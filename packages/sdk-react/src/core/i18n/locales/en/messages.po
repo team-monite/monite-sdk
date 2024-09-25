@@ -88,6 +88,10 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
+#: src/ui/DueDateCell/DueDateCell.tsx:41
+msgid "{overdueDays} {0} overdue"
+msgstr "{overdueDays} {0} overdue"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:272
 msgid "+ Add reminder"
 msgstr "+ Add reminder"
@@ -379,7 +383,8 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:102
+#: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:48
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:103
 msgid "All items"
 msgstr "All items"
 
@@ -417,7 +422,7 @@ msgstr "Amount"
 
 #. Payables Table "Amount" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:310
+#: src/components/payables/PayablesTable/PayablesTable.tsx:320
 msgid "Amount Name"
 msgstr "Amount"
 
@@ -730,8 +735,8 @@ msgid "Bank account"
 msgstr "Bank account"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:124
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:422
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:428
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:426
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:432
 msgid "Bank Account"
 msgstr "Bank Account"
 
@@ -1550,9 +1555,9 @@ msgstr "Counseling Services"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:203
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:451
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:375
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:381
-#: src/components/payables/PayablesTable/PayablesTable.tsx:236
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:379
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:385
+#: src/components/payables/PayablesTable/PayablesTable.tsx:246
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:114
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:165
 #: src/components/userRoles/consts.ts:28
@@ -1723,8 +1728,8 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:362
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:452
-#: src/components/payables/PayablesTable/PayablesTable.tsx:388
-#: src/components/payables/PayablesTable/PayablesTable.tsx:475
+#: src/components/payables/PayablesTable/PayablesTable.tsx:416
+#: src/components/payables/PayablesTable/PayablesTable.tsx:515
 #: src/components/products/ProductsTable/ProductsTable.tsx:347
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:281
@@ -1920,6 +1925,14 @@ msgstr "Date of birth"
 msgid "Dating/Escort Services"
 msgstr "Dating/Escort Services"
 
+#: src/ui/DueDateCell/DueDateCell.tsx:42
+#~ msgid "day"
+#~ msgstr "day"
+
+#: src/ui/DueDateCell/DueDateCell.tsx:42
+#~ msgid "days"
+#~ msgstr "days"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:232
 #~ msgid "days after"
 #~ msgstr "days after"
@@ -2076,7 +2089,7 @@ msgstr "Description"
 msgid "Description:"
 msgstr "Description:"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:339
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:343
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:185
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:97
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:42
@@ -2231,7 +2244,7 @@ msgstr "Dry Cleaners"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:212
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:94
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:510
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:514
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:283
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:105
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
@@ -2245,7 +2258,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:284
+#: src/components/payables/PayablesTable/PayablesTable.tsx:294
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -3231,7 +3244,7 @@ msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:186
-#: src/components/payables/PayablesTable/PayablesTable.tsx:210
+#: src/components/payables/PayablesTable/PayablesTable.tsx:220
 msgid "Invoice #"
 msgstr "Invoice #"
 
@@ -3239,9 +3252,9 @@ msgstr "Invoice #"
 msgid "Invoice cancel confirmation"
 msgstr "Invoice cancel confirmation"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:479
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:483
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:82
-#: src/components/payables/PayablesTable/PayablesTable.tsx:246
+#: src/components/payables/PayablesTable/PayablesTable.tsx:256
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -3264,7 +3277,7 @@ msgid "Invoice number"
 msgstr "Invoice number"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:85
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:349
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:353
 msgid "Invoice Number"
 msgstr "Invoice Number"
 
@@ -3348,7 +3361,7 @@ msgstr "Issue date"
 
 #. Payables Table "Issue date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:270
+#: src/components/payables/PayablesTable/PayablesTable.tsx:280
 msgid "Issue date Name"
 msgstr "Issue date"
 
@@ -3405,8 +3418,8 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:175
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:207
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:176
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:208
 msgid "item"
 msgstr "item"
 
@@ -3442,12 +3455,12 @@ msgstr "Item tax"
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:175
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:207
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:176
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:208
 msgid "items"
 msgstr "items"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:582
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:587
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:379
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:111
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:226
@@ -4064,9 +4077,9 @@ msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
 #: src/components/payables/Payables.tsx:138
-#: src/components/payables/PayablesTable/PayablesTable.tsx:389
-#: src/components/payables/PayablesTable/PayablesTable.tsx:391
-#: src/components/payables/PayablesTable/PayablesTable.tsx:476
+#: src/components/payables/PayablesTable/PayablesTable.tsx:417
+#: src/components/payables/PayablesTable/PayablesTable.tsx:419
+#: src/components/payables/PayablesTable/PayablesTable.tsx:516
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4191,7 +4204,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:385
+#: src/components/payables/PayablesTable/PayablesTable.tsx:413
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4346,8 +4359,8 @@ msgid "Overdue"
 msgstr "Overdue"
 
 #: src/ui/DueDateCell/DueDateCell.tsx:40
-msgid "Overdue by {overdueDays} {0}"
-msgstr "Overdue by {overdueDays} {0}"
+#~ msgid "Overdue by {overdueDays} {0}"
+#~ msgstr "Overdue by {overdueDays} {0}"
 
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:242
 msgctxt "InvoicesTableRowActionMenu"
@@ -4474,7 +4487,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:474
+#: src/components/payables/PayablesTable/PayablesTable.tsx:514
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -4835,7 +4848,7 @@ msgstr "Privacy"
 #~ msgid "Processing file"
 #~ msgstr "Processing file"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:255
+#: src/components/payables/PayablesTable/PayablesTable.tsx:265
 msgid "Processing file…"
 msgstr "Processing file…"
 
@@ -5653,7 +5666,7 @@ msgstr "Status"
 
 #. Payables Table "Status" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:298
+#: src/components/payables/PayablesTable/PayablesTable.tsx:308
 msgid "Status Name"
 msgstr "Status"
 
@@ -5682,7 +5695,7 @@ msgstr "Submit"
 msgid "Submit invoice"
 msgstr "Submit invoice"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:592
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:597
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:433
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:431
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
@@ -5762,7 +5775,7 @@ msgid "Tag “{0}” was deleted"
 msgstr "Tag “{0}” was deleted"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:116
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:557
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:562
 #: src/components/tags/Tags.tsx:52
 #: src/components/tags/TagsTable/TagsTable.tsx:275
 msgid "Tags"
@@ -5852,7 +5865,7 @@ msgstr "Tax Preparation Services"
 msgid "Tax Registration Number (UAE)"
 msgstr "Tax Registration Number (UAE)"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:606
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:611
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:444
 msgid "Taxes"
 msgstr "Taxes"
@@ -6128,7 +6141,7 @@ msgstr "Tonga"
 msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:621
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:626
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:456
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:444
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
@@ -6442,9 +6455,9 @@ msgid "Upload a document here."
 msgstr "Upload a document here."
 
 #: src/components/payables/Payables.tsx:148
-#: src/components/payables/PayablesTable/PayablesTable.tsx:389
-#: src/components/payables/PayablesTable/PayablesTable.tsx:393
-#: src/components/payables/PayablesTable/PayablesTable.tsx:476
+#: src/components/payables/PayablesTable/PayablesTable.tsx:417
+#: src/components/payables/PayablesTable/PayablesTable.tsx:421
+#: src/components/payables/PayablesTable/PayablesTable.tsx:516
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -6787,7 +6800,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:387
+#: src/components/payables/PayablesTable/PayablesTable.tsx:415
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -6873,7 +6886,7 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:386
+#: src/components/payables/PayablesTable/PayablesTable.tsx:414
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 

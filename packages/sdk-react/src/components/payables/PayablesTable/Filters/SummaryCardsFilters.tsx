@@ -3,6 +3,7 @@ import { ComponentProps } from 'react';
 import { components } from '@/api';
 import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
+import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -51,7 +52,7 @@ interface StyledCardProps extends ComponentProps<typeof Card> {
   theme: Theme;
 }
 
-const StyledCard = styled(Card)(
+export const SummaryStyledCard = styled(Card)(
   ({ selected, isAllItems, theme }: StyledCardProps) => ({
     cursor: 'pointer',
     border: `2px solid ${
@@ -73,7 +74,7 @@ const AmountTypography = styled(Typography)(() => ({
   alignItems: 'baseline',
 }));
 
-const className = 'Monite-SummaryCard';
+export const summaryCardClassName = 'Monite-SummaryCard';
 
 const SummaryCard = ({
   status,
@@ -120,15 +121,15 @@ const SummaryCard = ({
   const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
 
   return (
-    <StyledCard
+    <SummaryStyledCard
       theme={theme}
       onClick={onClick}
       selected={selected}
       isAllItems={isAllItems}
       className={classNames(
-        className,
-        `${className}-${status}`,
-        selected ? `${className}-selected` : ''
+        summaryCardClassName,
+        `${summaryCardClassName}-${status}`,
+        selected ? `${summaryCardClassName}-selected` : ''
       )}
     >
       <CardContent
@@ -159,8 +160,8 @@ const SummaryCard = ({
                 fontWeight={700}
                 sx={{ fontSize: 16 }}
                 className={classNames(
-                  className,
-                  `${className}-title-${status}`
+                  summaryCardClassName,
+                  `${summaryCardClassName}-title-${status}`
                 )}
               >
                 {statusText}
@@ -182,9 +183,9 @@ const SummaryCard = ({
                 fontWeight={700}
                 fontSize="small"
                 className={classNames(
-                  `${className}-StatusTypography`,
-                  `${className}-StatusTypography-${status}`,
-                  `${className}-StatusTypography-${status}-${selected}`
+                  `${summaryCardClassName}-StatusTypography`,
+                  `${summaryCardClassName}-StatusTypography-${status}`,
+                  `${summaryCardClassName}-StatusTypography-${status}-${selected}`
                 )}
                 color={colorValue}
               >
@@ -220,9 +221,9 @@ const SummaryCard = ({
               variant="h5"
               fontWeight={700}
               className={classNames(
-                `${className}-AmountTypography`,
-                `${className}-AmountTypography-${status}`,
-                `${className}-AmountTypography-${status}-${selected}`
+                `${summaryCardClassName}-AmountTypography`,
+                `${summaryCardClassName}-AmountTypography-${status}`,
+                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
               )}
             >
               ${integerPart}.
@@ -238,7 +239,7 @@ const SummaryCard = ({
           </Box>
         )}
       </CardContent>
-    </StyledCard>
+    </SummaryStyledCard>
   );
 };
 
@@ -262,23 +263,11 @@ export const SummaryCardsFilters = ({
       <Skeleton
         variant="rectangular"
         height={80}
-        className={classNames(`${className}-Skeleton`)}
+        className={classNames(`${summaryCardClassName}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
     );
   }
-
-  const predefinedOrder = [
-    'all',
-    'draft',
-    'new',
-    'approve_in_progress',
-    'rejected',
-    'waiting_to_be_paid',
-    'partially_paid',
-    'paid',
-    'canceled',
-  ];
 
   const enhancedData = [
     {
@@ -294,7 +283,8 @@ export const SummaryCardsFilters = ({
 
   const sortedData = enhancedData.sort(
     (a, b) =>
-      predefinedOrder.indexOf(a.status) - predefinedOrder.indexOf(b.status)
+      DEFAULT_CARDS_ORDER.indexOf(a.status) -
+      DEFAULT_CARDS_ORDER.indexOf(b.status)
   );
 
   const handleSelectStatus = (status: ExtendedPayableStateEnum) => {
