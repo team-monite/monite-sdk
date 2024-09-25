@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteCustomFilters } from '@/components/payables/PayablesTable/Filters/MoniteCustomFilters';
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -45,12 +46,12 @@ import { addDays, formatISO } from 'date-fns';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
+  DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-  FILTER_TYPE_OVERDUE,
-  DEFAULT_FIELD_ORDER,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
@@ -111,6 +112,29 @@ export interface PayableGridSortModel {
   sort: NonNullable<GridSortDirection>;
 }
 
+/**
+ * PayablesTable component.
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayablesTable: {
+ *       defaultProps: {
+ *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *         summaryCardFilters: {
+ *           'Overdue Invoices': {
+ *             status__in: ['waiting_to_be_paid'],
+ *             overdue: true,
+ *           },
+ *           'High-Value Invoices': {
+ *             amount__gte: 10000,
+ *           },
+ *         },
+ *       },
+ *     },
+ *   },
+ * });
+ */
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
     <PayablesTableBase {...props} />
@@ -128,7 +152,7 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards, fieldOrder } =
+  const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
     usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -177,6 +201,10 @@ const PayablesTableBase = ({
       is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
         ? currentFilter[FILTER_TYPE_OVERDUE]
         : undefined,
+      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+        ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
+        : {}),
     },
   });
 
@@ -365,10 +393,17 @@ const PayablesTableBase = ({
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
-    setCurrentFilter((prevFilter) => ({
-      ...prevFilter,
-      [field]: value === 'all' ? null : value,
-    }));
+    if (field === FILTER_TYPE_SUMMARY_CARD && value) {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [FILTER_TYPE_SUMMARY_CARD]: value as keyof typeof summaryCardFilters,
+      }));
+    } else {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [field]: value === 'all' ? null : value,
+      }));
+    }
 
     onChangeFilterCallback?.({ field, value });
   };
@@ -431,10 +466,22 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      {isShowingSummaryCards && (
+      {isShowingSummaryCards && !summaryCardFilters && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
           selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
+      {summaryCardFilters && Object.keys(summaryCardFilters).length > 0 && (
+        <MoniteCustomFilters
+          summaryCardFiltersData={summaryCardFilters}
+          onChangeFilter={onChangeFilter}
+          selectedFilter={
+            typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+              ? currentFilter[FILTER_TYPE_SUMMARY_CARD]
+              : 'all'
+          }
           sx={{ mb: 2 }}
         />
       )}
@@ -505,7 +552,7 @@ const PayablesTableBase = ({
   );
 };
 
-export const usePayableTableThemeProps = (
+const usePayableTableThemeProps = (
   inProps: Partial<MonitePayableTableProps>
 ): MonitePayableTableProps =>
   useThemeProps({

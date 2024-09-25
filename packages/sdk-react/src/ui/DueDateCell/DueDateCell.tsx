@@ -1,5 +1,6 @@
 import { components } from '@/api';
 import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
+import { createDayPluralForm } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -37,9 +38,10 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
           fontWeight="bold"
           fontSize="small"
         >
-          {t(i18n)`Overdue by ${overdueDays} ${
-            overdueDays === 1 ? 'day' : 'days'
-          }`}
+          {t(i18n)`${overdueDays} ${createDayPluralForm(
+            i18n,
+            overdueDays
+          )} overdue`}
         </Typography>
       )}
     </Box>

@@ -932,6 +932,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MonitePayableDetailsInfo: {
+    defaultProps: {
+      ocrMismatchFields: {
+        amount_to_pay: false,
+        counterpart_bank_account_id: false,
+      },
+    },
+  },
   MonitePayableTable: {
     defaultProps: {
       isShowingSummaryCards: true,
