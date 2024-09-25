@@ -86,7 +86,7 @@ const MoniteCustomFilter = ({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          paddingBottom: '0 !important', //TODO: this should be not important
+          paddingBottom: '0 !important',
         }}
       >
         <Box
