@@ -934,25 +934,46 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MonitePayableDetailsInfo: {
     defaultProps: {
+      isTagsDisabled: true,
       ocrMismatchFields: {
-        amount_to_pay: false,
-        counterpart_bank_account_id: false,
+        amount_to_pay: true,
+        counterpart_bank_account_id: true,
       },
     },
   },
   MonitePayableTable: {
     defaultProps: {
-      isShowingSummaryCards: true,
+      isShowingSummaryCards: false,
       fieldOrder: [
         'document_id',
         'counterpart_id',
         'created_at',
         'issued_at',
         'due_date',
-        'status',
         'amount',
+        'status',
         'pay',
       ],
+      summaryCardFilters: {
+        Unpaid: {
+          status__in: ['draft', 'new', 'approve_in_progress', 'rejected'],
+          amount__isnull: true,
+          scheduled: false,
+          paid: false,
+        },
+        Scheduled: {
+          status__in: ['draft', 'new', 'approve_in_progress', 'rejected'],
+          amount__isnull: true,
+          scheduled: true,
+          paid: false,
+        },
+        Paid: {
+          status__in: ['paid'],
+          amount__isnull: false,
+          scheduled: false,
+          paid: true,
+        },
+      },
     },
   },
   MuiFormHelperText: {
