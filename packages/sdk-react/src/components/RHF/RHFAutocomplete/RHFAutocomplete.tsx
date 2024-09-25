@@ -32,7 +32,7 @@ export type RHFAutocompleteProps<
   TOption
 > = RHFAutocompleteBaseProps<TFieldValues, TName> &
   Optional<CustomAutocompleteProps<TOption>, 'renderInput'> &
-  TextFieldProps;
+  Pick<TextFieldProps, 'size' | 'required'>;
 
 interface CustomAutocompleteProps<TOption>
   extends AutocompleteProps<
@@ -83,10 +83,6 @@ export const RHFAutocomplete = <
         label={label}
         error={!!error?.message}
         helperText={error?.message}
-        inputProps={{
-          ...params.inputProps,
-          autoComplete: 'new-password',
-        }}
       />
     );
   };
@@ -152,10 +148,12 @@ export const RHFAutocomplete = <
           }}
           options={options}
           blurOnSelect
-          onChange={(event, value, reason, details) => {
-            field.onChange(getChangedValue(value));
-            onChange?.(event, value, reason, details);
-          }}
+          onChange={
+            onChange ??
+            ((_, value) => {
+              field.onChange(getChangedValue(value));
+            })
+          }
           value={getValue(field.value)}
           id={name}
           getOptionLabel={getOptionLabel}

@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
 
 import { components } from '@/api';
+import { createDayPluralForm } from '@/core/i18n/plural/createDayPluralForm';
 import { I18n } from '@lingui/core';
-import { plural, t } from '@lingui/macro';
+import { t } from '@lingui/macro';
 
 type ReminderCardTerm = {
   termPeriodName: ReactNode;
@@ -68,13 +69,3 @@ export const createPaymentReminderCardTerms = (
     ];
   }, []);
 };
-
-const createDayPluralForm = (i18n: I18n, days: number) =>
-  t(i18n)`${plural(days, {
-    one: 'day',
-    two: 'days',
-    few: 'days',
-    many: 'days',
-    zero: 'days',
-    other: 'days',
-  })}`;
