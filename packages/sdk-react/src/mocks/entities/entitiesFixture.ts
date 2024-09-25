@@ -47,7 +47,7 @@ function generateEntityData(entityId: string): EntityResponse {
     : undefined;
 
   if (type === 'individual') {
-    const individual: EntityIndividualResponse = {
+    return {
       id: entityId,
       created_at: faker.date.past().toISOString(),
       updated_at: faker.date.past().toISOString(),
@@ -63,11 +63,9 @@ function generateEntityData(entityId: string): EntityResponse {
         title: faker.person.jobTitle(),
       },
     };
-
-    return individual;
   }
 
-  const organization: EntityOrganizationResponse = {
+  return {
     id: entityId,
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.past().toISOString(),
@@ -81,8 +79,6 @@ function generateEntityData(entityId: string): EntityResponse {
       legal_name: faker.company.name(),
     },
   };
-
-  return organization;
 }
 
 export const entitySettingsById: Record<string, MergedSettingsResponse> = {

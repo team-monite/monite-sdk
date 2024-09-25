@@ -80,15 +80,15 @@ interface ApprovalPolicyDetailsFormProps {
   onUpdated?: (id: string) => void;
 }
 
-export const ApprovalPolicyDetailsForm = (
+export const ApprovalPolicyDetailsFormAdvanced = (
   props: ApprovalPolicyDetailsFormProps
 ) => (
   <MoniteScopedProviders>
-    <ApprovalPolicyDetailsFormBase {...props} />
+    <ApprovalPolicyDetailsFormAdvancedBase {...props} />
   </MoniteScopedProviders>
 );
 
-export const ApprovalPolicyDetailsFormBase = ({
+export const ApprovalPolicyDetailsFormAdvancedBase = ({
   approvalPolicy,
   onChangeEditMode,
   onCreated,
