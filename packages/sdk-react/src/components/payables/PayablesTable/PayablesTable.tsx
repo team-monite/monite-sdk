@@ -198,9 +198,6 @@ const PayablesTableBase = ({
           })
         : undefined,
       search_text: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
-        ? currentFilter[FILTER_TYPE_OVERDUE]
-        : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
         ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
