@@ -20,6 +20,7 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,11 +39,18 @@ import {
   DialogActions,
 } from '@mui/material';
 
+import * as yup from 'yup';
+
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
 import { AutocompleteCounterparts } from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
+
+const validationSchema = yup.object().shape({
+  name: yup.string().required(),
+  description: yup.string().required(),
+});
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
@@ -279,6 +287,7 @@ export const ApprovalPolicyForm = ({
   };
 
   const methods = useForm<FormValues>({
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
