@@ -303,15 +303,27 @@ export const ApprovalPolicyForm = ({
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
-  const currentTriggers = watch('triggers');
-  const currentRules = watch('rules');
-  const currentAmountOperator = watch('amountOperator');
-  const currentAmountValue = watch('amountValue');
-  const currentAmountRangeLeftValue = watch('amountRangeLeftValue');
-  const currentAmountRangeRightValue = watch('amountRangeRightValue');
-  const currentAmountCurrency = watch('amountCurrency');
-  const currentTriggerType = watch('triggerType');
-  const currentScriptType = watch('scriptType');
+  const [
+    currentTriggers,
+    currentRules,
+    currentAmountOperator,
+    currentAmountValue,
+    currentAmountRangeLeftValue,
+    currentAmountRangeRightValue,
+    currentAmountCurrency,
+    currentTriggerType,
+    currentScriptType,
+  ] = watch([
+    'triggers',
+    'rules',
+    'amountOperator',
+    'amountValue',
+    'amountRangeLeftValue',
+    'amountRangeRightValue',
+    'amountCurrency',
+    'triggerType',
+    'scriptType',
+  ]);
 
   // setup default values for conditions and rules
   useEffect(
@@ -1122,9 +1134,9 @@ export const ApprovalPolicyForm = ({
       <DialogActions>
         {triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule ? (
           <>
-            <Button variant="outlined" onClick={resetFormTriggerOrScript}>{t(
-              i18n
-            )`Cancel`}</Button>
+            <Button variant="outlined" onClick={resetFormTriggerOrScript}>
+              {t(i18n)`Cancel`}
+            </Button>
             <Button
               variant="contained"
               onClick={(e) => {
@@ -1155,7 +1167,9 @@ export const ApprovalPolicyForm = ({
               type="submit"
               form={formId}
               disabled={updateMutation.isPending || createMutation.isPending}
-            >{t(i18n)`Save`}</Button>
+            >
+              {t(i18n)`Save`}
+            </Button>
           </>
         )}
       </DialogActions>
