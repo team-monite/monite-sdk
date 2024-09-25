@@ -1,5 +1,8 @@
 import type { components } from '@/api';
-import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import {
+  useApprovalPolicyTrigger,
+  Triggers,
+} from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 
 import * as Styled from '../styles';
 import { UBuilding } from './icons/UBuilding';
@@ -15,7 +18,7 @@ interface ApprovalPoliciesTriggersProps {
 export const ApprovalPoliciesTriggers = ({
   approvalPolicy,
 }: ApprovalPoliciesTriggersProps) => {
-  const { triggerKeys, getTriggerName } = useApprovalPolicyTrigger({
+  const { triggers, getTriggerName } = useApprovalPolicyTrigger({
     approvalPolicy,
   });
 
@@ -25,21 +28,12 @@ export const ApprovalPoliciesTriggers = ({
 
   return (
     <Styled.ColumnList>
-      {triggerKeys.map((triggerKey) => {
+      {(Object.keys(triggers) as Array<keyof Triggers>).map((triggerKey) => {
         switch (triggerKey) {
           case 'amount': {
             return (
               <li key={triggerKey}>
                 <UMoneyBill width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
-
-          case 'currency': {
-            return (
-              <li key={triggerKey}>
-                <UMoneyStack width={18} />
                 {getTriggerName(triggerKey)}
               </li>
             );

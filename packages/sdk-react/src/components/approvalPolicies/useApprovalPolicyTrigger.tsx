@@ -139,48 +139,12 @@ export const useApprovalPolicyTrigger = ({
   if (!isApprovalPolicyTrigger(approvalPolicy?.trigger)) {
     // TODO: display error message
     return {
-      triggerKeys: [],
       triggers: {} as Triggers,
       getTriggerName,
       getTriggerLabel,
       getAmountLabel,
     };
   }
-
-  const triggerKeys: ApprovalPoliciesTriggerKey[] =
-    approvalPolicy.trigger?.all?.reduce<ApprovalPoliciesTriggerKey[]>(
-      (acc, trigger) => {
-        if (
-          trigger.left_operand &&
-          trigger.hasOwnProperty('operator') &&
-          trigger.hasOwnProperty('right_operand')
-        ) {
-          let rawTriggerKey =
-            typeof trigger.left_operand === 'object'
-              ? trigger.left_operand.name.replace('invoice.', '')
-              : trigger.left_operand;
-
-          if (rawTriggerKey === 'tags.id') {
-            rawTriggerKey = 'tags';
-          }
-
-          // skip `currency` trigger because it is a part of `amount` trigger
-          if (rawTriggerKey === 'currency') {
-            return acc;
-          }
-
-          if (
-            isValidTriggerKey(rawTriggerKey) &&
-            !acc.includes(rawTriggerKey)
-          ) {
-            return [...acc, rawTriggerKey];
-          }
-        }
-
-        return acc;
-      },
-      []
-    );
 
   const triggers = approvalPolicy.trigger?.all?.reduce<Triggers>(
     (acc, trigger) => {
@@ -233,7 +197,6 @@ export const useApprovalPolicyTrigger = ({
   );
 
   return {
-    triggerKeys,
     triggers,
     getTriggerName,
     getTriggerLabel,
