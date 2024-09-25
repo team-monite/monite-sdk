@@ -197,7 +197,7 @@ const PayablesTableBase = ({
             representation: 'date',
           })
         : undefined,
-      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      search_text: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
         ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
         : {}),
