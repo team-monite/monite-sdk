@@ -99,10 +99,6 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         value: faker.number.int({ min: 10, max: 30_000 }),
         currency: 'EUR',
       },
-      price_after_vat: {
-        value: faker.number.int({ min: 10, max: 30_000 }),
-        currency: 'EUR',
-      },
       vat_rate: {
         id: productVatId.id,
         value: productVatId.value,
