@@ -296,7 +296,7 @@ function createRandomInvoice(
     overdue_reminder_id: overdueReminderListFixture[0].id,
     payment_reminder_id: paymentReminderListFixture[0].id,
     tags: [],
-    vat_mode: faker.datatype.boolean() ? 'inclusive' : 'exclusive',
+    vat_mode: 'exclusive',
   };
 }
 
@@ -336,7 +336,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     entity: createRandomEntity(),
     status: getRandomItemFromArray(CreditNoteStateEnum),
     tags: [],
-    vat_mode: faker.datatype.boolean() ? 'inclusive' : 'exclusive',
+    vat_mode: 'exclusive',
   };
 }
 

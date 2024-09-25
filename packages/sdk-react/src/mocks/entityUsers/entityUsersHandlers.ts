@@ -132,12 +132,29 @@ export const entityUsersHandlers = [
 
   http.get<{}, undefined, EntityUserPaginationResponse>(
     `*/entity_users`,
-    async () => {
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const searchParams = url.searchParams;
+      const id_in = searchParams.getAll('id__in');
+
+      const users = entityUsersFixture.data.filter((user) => {
+        if (!id_in) return true;
+
+        return id_in.includes(user.id);
+      });
+
       await delay();
 
-      return HttpResponse.json(
-        entityUsersFixture as unknown as EntityUserPaginationResponse
-      );
+      if (!users.length)
+        return HttpResponse.json(
+          entityUsersFixture as unknown as EntityUserPaginationResponse
+        );
+
+      return HttpResponse.json({
+        data: users,
+        prev_pagination_token: null,
+        next_pagination_token: null,
+      } as unknown as EntityUserPaginationResponse);
     }
   ),
 
