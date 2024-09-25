@@ -957,21 +957,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       summaryCardFilters: {
         Unpaid: {
           status__in: ['draft', 'new', 'approve_in_progress', 'rejected'],
-          amount__isnull: true,
-          scheduled: false,
-          paid: false,
         },
         Scheduled: {
-          status__in: ['draft', 'new', 'approve_in_progress', 'rejected'],
-          amount__isnull: true,
-          scheduled: true,
-          paid: false,
+          tag_ids: ['c0d0a4b0-e33d-4a58-a4b2-c0527f18b301'],
         },
         Paid: {
           status__in: ['paid'],
-          amount__isnull: false,
-          scheduled: false,
-          paid: true,
         },
       },
     },
