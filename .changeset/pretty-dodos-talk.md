@@ -2,4 +2,4 @@
 '@monite/sdk-react': patch
 ---
 
-improvements to email invoice functionality
+feat(DEV-12590): improvements to email invoice functionality

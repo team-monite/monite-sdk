@@ -1,4 +1,5 @@
 import {
+  EntityResponse,
   isIndividualEntity,
   isOrganizationEntity,
 } from '@/components/counterparts/helpers';
@@ -43,17 +44,26 @@ export const useMyEntity = () => {
     queryProps.data?.address && queryProps.data?.address.country === 'US'
   );
 
+  const entityName = getEntityName(queryProps.data);
+
   return {
     ...queryProps,
+    entityName,
     isUSEntity,
   };
 };
 
-export const useMyEntityName = () => {
-  const { data: myEntity } = useMyEntity();
+export const getEntityName = (entity?: EntityResponse) => {
+  if (!entity) return '';
 
-  if (isOrganizationEntity(myEntity)) return myEntity.organization.legal_name;
-  else if (isIndividualEntity(myEntity))
-    return myEntity.individual.first_name + ' ' + myEntity.individual.last_name;
+  if (isIndividualEntity(entity)) {
+    const { first_name, last_name } = entity.individual;
+    return `${first_name} ${last_name}`;
+  }
+
+  if (isOrganizationEntity(entity)) {
+    return entity.organization.legal_name;
+  }
+
   return '';
 };

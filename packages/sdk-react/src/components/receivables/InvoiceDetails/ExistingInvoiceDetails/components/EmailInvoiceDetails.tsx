@@ -3,13 +3,12 @@ import {
   useCallback,
   useEffect,
   useId,
-  useRef,
+  useMemo,
   useState,
 } from 'react';
 import {
   Control,
   Controller,
-  SetFieldValue,
   useForm,
   UseFormGetValues,
 } from 'react-hook-form';
@@ -21,7 +20,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useMe,
-  useMyEntityName,
+  useMyEntity,
   useReceivableById,
   useReceivableContacts,
 } from '@/core/queries';
@@ -63,74 +62,91 @@ interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
 }
+interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
+  subject: string;
+  body: string;
+  to: string;
+  isLoading: boolean;
+}
 
-export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => (
-  <MoniteScopedProviders>
-    <EmailInvoiceDetailsBase {...props} />
-  </MoniteScopedProviders>
-);
+export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
+  const { i18n } = useLingui();
+  const { data: me, isLoading: isLoadingUser } = useMe();
+  const { data: receivable, isLoading: isLoadingReceivable } =
+    useReceivableById(props.invoiceId);
+  const { data: contacts, isLoading: isLoadingContacts } =
+    useReceivableContacts(props.invoiceId);
+  const { entityName, isLoading: isLoadingEntity } = useMyEntity();
+
+  const defaultContact =
+    contacts && contacts.length
+      ? contacts?.find((c) => c.is_default) || contacts?.[0]
+      : undefined;
+
+  const to = defaultContact?.email ?? '';
+
+  const body =
+    defaultContact && me
+      ? t(i18n)`Hi ${defaultContact.first_name},
+
+          Please find the invoice attached as discussed.
+
+          Kind Regards,
+          ${me.first_name}`
+      : '';
+
+  const subject =
+    receivable && entityName
+      ? receivable.document_id
+        ? t(i18n)`Invoice ${receivable.document_id} from ${entityName}`
+        : t(i18n)`Invoice from ${entityName}`
+      : '';
+  const isLoading =
+    isLoadingContacts ||
+    isLoadingReceivable ||
+    isLoadingUser ||
+    isLoadingEntity;
+
+  return (
+    <MoniteScopedProviders>
+      <EmailInvoiceDetailsBase
+        {...props}
+        to={to}
+        body={body}
+        subject={subject}
+        isLoading={isLoading}
+      />
+    </MoniteScopedProviders>
+  );
+};
 
 const EmailInvoiceDetailsBase = ({
   invoiceId,
+  subject,
+  body,
+  to,
+  isLoading,
   onClose,
-}: EmailInvoiceDetailsProps) => {
+}: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
   const { monite, api } = useMoniteContext();
 
-  const { control, handleSubmit, getValues, setValue, trigger, watch } =
-    useForm({
-      resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
-      defaultValues: {
-        subject: '',
-        body: '',
-        to: '',
+  const { control, handleSubmit, getValues, trigger, reset } = useForm({
+    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
+    defaultValues: useMemo(
+      () => ({
+        subject,
+        body,
+        to,
         // TODO: add support for multiple recipients, cc and bcc fields
-      },
-    });
+      }),
+      [subject, body, to]
+    ),
+  });
 
-  const { data: me } = useMe();
-  const { data: receivable } = useReceivableById(invoiceId);
-  const { data: contacts } = useReceivableContacts(invoiceId);
-  const to = watch('to');
-  const body = watch('body');
-  const previousBody = useRef(body);
   useEffect(() => {
-    if (me && to && contacts && body == previousBody.current) {
-      const contact = contacts.find(({ email }) => email == to);
-      if (contact) {
-        const newBody = t(i18n)`Hi ${contact.first_name},
-
-Please find the invoice attached as discussed.
-
-Kind Regards,
-${me.first_name}`;
-        previousBody.current = newBody;
-        setValue('body', newBody, {
-          shouldValidate: false,
-          shouldDirty: true,
-          shouldTouch: true,
-        });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [to, me, contacts]);
-  const subject = watch('subject');
-  const previousSubject = useRef(subject);
-  const myCompanyName = useMyEntityName();
-  useEffect(() => {
-    if (receivable && myCompanyName && subject == previousSubject.current) {
-      const newSubject = receivable.document_id
-        ? t(i18n)`Invoice ${receivable.document_id} from ${myCompanyName}`
-        : t(i18n)`Invoice from ${myCompanyName}`;
-      previousSubject.current = newSubject;
-      setValue('subject', newSubject, {
-        shouldValidate: false,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [receivable, myCompanyName]);
+    reset({ subject, body, to });
+  }, [body, reset, subject, to]);
 
   // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
   // TODO: Form persistance disabled as requested by Joao on Sep 5
@@ -295,7 +311,7 @@ ${me.first_name}`;
                     color="primary"
                     type="button"
                     form={formName}
-                    disabled={isDisabled}
+                    disabled={isDisabled || isLoading}
                     onClick={async () => {
                       const isValid = await trigger();
                       if (isValid) setPresentation(FormPresentation.Preview);
@@ -307,7 +323,7 @@ ${me.first_name}`;
                   color="primary"
                   type="submit"
                   form={formName}
-                  disabled={isDisabled}
+                  disabled={isDisabled || isLoading}
                 >{t(i18n)`Issue and send`}</Button>
               </Stack>
             </Grid>
@@ -321,16 +337,20 @@ ${me.first_name}`;
           p: isPreview ? 0 : '0 32px 32px 32px',
         }}
       >
-        {presentation == FormPresentation.Edit && (
-          <Form
-            invoiceId={invoiceId}
-            formName={formName}
-            handleIssueAndSend={handleIssueAndSend}
-            control={control}
-            isDisabled={isDisabled}
-            getValues={getValues}
-            setValue={setValue}
-          />
+        {isLoading ? (
+          <CenteredContentBox className="Monite-LoadingPage">
+            <CircularProgress />
+          </CenteredContentBox>
+        ) : (
+          presentation == FormPresentation.Edit && (
+            <Form
+              invoiceId={invoiceId}
+              formName={formName}
+              handleIssueAndSend={handleIssueAndSend}
+              control={control}
+              isDisabled={isDisabled}
+            />
+          )
         )}
         {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
       </DialogContent>
@@ -345,31 +365,13 @@ interface FormProps {
 }
 
 const RecipientSelector = ({
-  field,
   invoiceId,
   control,
-  getValues,
-  setValue,
 }: {
-  field: keyof FormProps;
   invoiceId: string;
   control: Control<FormProps>;
-  getValues: () => { [_: string]: any };
-  setValue: SetFieldValue<any>;
 }) => {
   const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
-
-  useEffect(() => {
-    const currentValue = getValues()[field];
-    if (!currentValue && contacts && contacts.length > 0) {
-      const defaultContact = contacts.find((c) => c.is_default) ?? contacts[0];
-      setValue(field, defaultContact.email, {
-        shouldValidate: false,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-    }
-  }, [contacts, field, getValues, setValue]);
 
   const { root } = useRootElements();
 
@@ -377,7 +379,7 @@ const RecipientSelector = ({
 
   return (
     <Controller
-      name={field}
+      name="to"
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl
@@ -413,15 +415,11 @@ const Form = ({
   handleIssueAndSend,
   control,
   isDisabled,
-  getValues,
-  setValue,
 }: {
   invoiceId: string;
   formName: string;
   handleIssueAndSend: (e: BaseSyntheticEvent) => void;
   control: Control<FormProps>;
-  getValues: () => { [_: string]: any };
-  setValue: SetFieldValue<any>;
   isDisabled: boolean;
 }) => {
   const { i18n } = useLingui();
@@ -441,13 +439,7 @@ const Form = ({
             <Typography variant="body2" sx={{ minWidth: '52px' }}>{t(
               i18n
             )`To`}</Typography>
-            <RecipientSelector
-              field="to"
-              invoiceId={invoiceId}
-              control={control}
-              getValues={getValues}
-              setValue={setValue}
-            />
+            <RecipientSelector invoiceId={invoiceId} control={control} />
           </Stack>
         </CardContent>
       </Card>
