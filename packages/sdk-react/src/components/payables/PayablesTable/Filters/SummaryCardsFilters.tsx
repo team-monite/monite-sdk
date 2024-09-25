@@ -46,13 +46,13 @@ interface SummaryCardsFiltersProps {
   sx?: SxProps<Theme>;
 }
 
-interface StyledCardProps extends ComponentProps<typeof Card> {
+export interface StyledCardProps extends ComponentProps<typeof Card> {
   selected: boolean;
   isAllItems?: boolean;
   theme: Theme;
 }
 
-export const SummaryStyledCard = styled(Card)(
+const SummaryStyledCard = styled(Card)(
   ({ selected, isAllItems, theme }: StyledCardProps) => ({
     cursor: 'pointer',
     border: `2px solid ${
