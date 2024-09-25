@@ -40,7 +40,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
-    MonitePayableTable: 'root';
+    MonitePayableTable: 'never';
   }
 
   /**
