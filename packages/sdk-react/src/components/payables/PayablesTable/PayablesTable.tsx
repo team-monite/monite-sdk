@@ -156,6 +156,7 @@ const PayablesTableBase = ({
 
   const payablesQueryParameters = api.payables.getPayables.getQueryKey({
     query: {
+      sort: sortModel?.field,
       order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
