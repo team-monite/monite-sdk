@@ -1,8 +1,8 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartAddresses, useCounterpartById } from '@/core/queries';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { Avatar, Skeleton, Stack, Typography } from '@mui/material';
 
 interface CounterpartCellProps {
@@ -28,6 +28,8 @@ export const CounterPartCellByName = ({
   city?: string;
   isLoading?: boolean;
 }) => {
+  const { i18n } = useLingui();
+
   if (!name && !isLoading) name = t(i18n)`Unspecified`;
   const nameParts = name.split(' ');
   // Split name into parts by ' ' and take first letters from the first and last parts of the name
