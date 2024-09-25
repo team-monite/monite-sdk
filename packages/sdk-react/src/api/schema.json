@@ -32,9 +32,9 @@
   "paths": {
     "/accounting/receivables": {
       "get": {
-        "tags": ["Receivables"],
-        "summary": "Get receivables",
-        "description": "Get all receivables",
+        "tags": ["Accounting data pull"],
+        "summary": "Get invoice list from accounting system",
+        "description": "Returns a list of invoices that exist in the entity's accounting system. This requires that an accounting connection has been previously established. Refer to the [Accounting integration guide](https://docs.monite.com/accounting/integration/index) for details.\n\nThis endpoint only provides read-only access to the accounting system's data but does not pull those invoices into Monite. You can use it to review the data in the accounting system and find out which of those invoices already exist or do not exist in Monite.\n\nData is actual as of the date and time of the last accounting synchronization, which is specified by the `last_pull` value in the response from `GET /accounting_connections/{connection_id}`. To make sure you are accessing the most up-to-date accounting data, you can use `POST /accounting_connections/{connection_id}/sync` to trigger on-demand synchronization before getting the invoice list.",
         "operationId": "get_accounting_receivables",
         "parameters": [
           {
@@ -45,22 +45,25 @@
             "in": "header"
           },
           {
-            "description": "Limit of results",
+            "description": "Number of results per page.",
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Limit of results",
+              "maximum": 500.0,
+              "minimum": 1.0,
+              "description": "Number of results per page.",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "Offset of results",
+            "description": "Number of results to skip before selecting items to return.",
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Offset of results",
+              "minimum": 0.0,
+              "description": "Number of results to skip before selecting items to return.",
               "default": 0
             },
             "name": "offset",
@@ -84,7 +87,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ReceivableList" }
+                "schema": {
+                  "$ref": "#/components/schemas/AccountingReceivableList"
+                }
               }
             }
           },
@@ -118,9 +123,9 @@
     },
     "/accounting/receivables/{invoice_id}": {
       "get": {
-        "tags": ["Receivables"],
-        "summary": "Get a receivable by ID",
-        "description": "Get receivable by id",
+        "tags": ["Accounting data pull"],
+        "summary": "Get invoice details from accounting system",
+        "description": "Returns information about an individual invoice that exists in the entity's accounting system. This invoice may or may not also exist in Monite.",
         "operationId": "get_accounting_receivables_id",
         "parameters": [
           {
@@ -154,7 +159,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Receivable" }
+                "schema": {
+                  "$ref": "#/components/schemas/AccountingReceivable"
+                }
               }
             }
           },
@@ -1118,14 +1125,14 @@
           },
           {
             "required": false,
-            "schema": { "$ref": "#/components/schemas/ApprovalPolicyStatus" },
+            "schema": { "type": "string", "enum": ["active", "pending"] },
             "name": "status",
             "in": "query"
           },
           {
             "required": false,
             "schema": {
-              "items": { "$ref": "#/components/schemas/ApprovalPolicyStatus" },
+              "items": { "type": "string", "enum": ["active", "pending"] },
               "type": "array"
             },
             "name": "status__in",
@@ -11515,8 +11522,8 @@
     "/events": {
       "get": {
         "tags": ["Events"],
-        "summary": "Get",
-        "description": "Get events for a given entity.",
+        "summary": "Get events",
+        "description": "Returns all webhook events that were triggered for the specified entity based on your enabled webhook subscriptions. These are the same events that were sent to your configured webhook listener endpoints, aggregated into a single list. Results can be filtered by the related object type or time period.\n\nYou can use this to get the missed events for the time periods when your webhook listener was temporarily unavailable.\n\nWe guarantee access to event data only from the last three months. Earlier events may be unavailable.",
         "operationId": "get_events",
         "parameters": [
           {
@@ -11655,8 +11662,8 @@
     "/events/{event_id}": {
       "get": {
         "tags": ["Events"],
-        "summary": "Get By Id",
-        "description": "Get event by ID.",
+        "summary": "Get an event by ID",
+        "description": "Get a webhook event by its ID. The data is the same as you might have previously received in a webhook sent by Monite to your server.",
         "operationId": "get_events_id",
         "parameters": [
           {
@@ -11667,8 +11674,13 @@
             "in": "header"
           },
           {
+            "description": "ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`.",
             "required": true,
-            "schema": { "type": "string", "format": "uuid" },
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`."
+            },
             "name": "event_id",
             "in": "path"
           }
@@ -17892,6 +17904,24 @@
           },
           {
             "required": false,
+            "schema": { "type": "string" },
+            "name": "counterpart_name__contains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "counterpart_name__icontains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "search_text",
+            "in": "query"
+          },
+          {
+            "required": false,
             "schema": { "type": "string", "format": "date" },
             "name": "due_date",
             "in": "query"
@@ -17965,23 +17995,23 @@
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the line_item associated with it.",
+            "description": "Search for a payable by the identifier of the line item associated with it.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "Search for a payable by the identifier of the line_item associated with it."
+              "description": "Search for a payable by the identifier of the line item associated with it."
             },
             "name": "line_item_id",
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the purchase_order associated with it.",
+            "description": "Search for a payable by the identifier of the purchase order associated with it.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "Search for a payable by the identifier of the purchase_order associated with it."
+              "description": "Search for a payable by the identifier of the purchase order associated with it."
             },
             "name": "purchase_order_id",
             "in": "query"
@@ -17998,12 +18028,12 @@
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the tags associated with it.",
+            "description": "Search for a payable by the identifiers of the tags associated with it.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
               "type": "array",
-              "description": "Search for a payable by the identifier of the tags associated with it."
+              "description": "Search for a payable by the identifiers of the tags associated with it."
             },
             "name": "tag_ids",
             "in": "query"
@@ -18326,6 +18356,24 @@
           },
           {
             "required": false,
+            "schema": { "type": "string" },
+            "name": "counterpart_name__contains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "counterpart_name__icontains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "search_text",
+            "in": "query"
+          },
+          {
+            "required": false,
             "schema": { "type": "string", "format": "date" },
             "name": "due_date",
             "in": "query"
@@ -18399,23 +18447,23 @@
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the line_item associated with it.",
+            "description": "Search for a payable by the identifier of the line item associated with it.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "Search for a payable by the identifier of the line_item associated with it."
+              "description": "Search for a payable by the identifier of the line item associated with it."
             },
             "name": "line_item_id",
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the purchase_order associated with it.",
+            "description": "Search for a payable by the identifier of the purchase order associated with it.",
             "required": false,
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "Search for a payable by the identifier of the purchase_order associated with it."
+              "description": "Search for a payable by the identifier of the purchase order associated with it."
             },
             "name": "purchase_order_id",
             "in": "query"
@@ -18432,12 +18480,12 @@
             "in": "query"
           },
           {
-            "description": "Search for a payable by the identifier of the tags associated with it.",
+            "description": "Search for a payable by the identifiers of the tags associated with it.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
               "type": "array",
-              "description": "Search for a payable by the identifier of the tags associated with it."
+              "description": "Search for a payable by the identifiers of the tags associated with it."
             },
             "name": "tag_ids",
             "in": "query"
@@ -19054,6 +19102,99 @@
           },
           "409": {
             "description": "Possible responses: `Action for {object_type} at permissions not found: {action}`, `Object type at permissions not found: {object_type}`, `Action {action} for {object_type} not allowed`, `Payable couldn't be updated due to current state`, `The file cannot be attached because another file is already attached. Please note that only one file attachment is allowed.`",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "delete": {
+        "tags": ["Payables"],
+        "summary": "Delete a payable",
+        "description": "Deletes a specific payable.",
+        "operationId": "delete_payables_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payable_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -30479,7 +30620,7 @@
             "schema": {
               "allOf": [
                 {
-                  "$ref": "#/components/schemas/monite__server__pagination__OrderEnum"
+                  "$ref": "#/components/schemas/monite_db__pagination__model__OrderEnum"
                 }
               ],
               "description": "Order by",
@@ -33917,7 +34058,8 @@
     "/webhook_deliveries": {
       "get": {
         "tags": ["Webhook deliveries"],
-        "summary": "Get aggregated webhook deliveries",
+        "summary": "Get the webhook delivery log",
+        "description": "Returns an aggregated log of webhook delivery attempts. The data contains a list of triggered webhook events, how many times Monite tried to send each event to your server, the last HTTP status code returned by your webhook listener endpoint, and whether the final attempt to deliver that event was successful.\n\nWe guarantee access to webhook delivery data only from the last three months. Earlier data may be unavailable.\n\nNote that if the same event type is included in multiple webhook subscriptions, the results will include several entries for each occurrence of this event - one entry per subscription.",
         "operationId": "get_webhook_deliveries",
         "parameters": [
           {
@@ -34709,19 +34851,6 @@
         "type": "object",
         "required": ["type", "value"]
       },
-      "AccountResponse": {
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "bank_accounts": {
-            "items": { "$ref": "#/components/schemas/BankAccount" },
-            "type": "array"
-          },
-          "type": { "$ref": "#/components/schemas/PaymentAccountType" }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["id", "type"]
-      },
       "AccountingConnectionList": {
         "properties": {
           "data": {
@@ -34760,11 +34889,140 @@
         "type": "object",
         "required": ["id", "created_at", "updated_at", "connection_url"]
       },
+      "AccountingCustomerRefObject": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier of the customer in the accounting system.",
+            "example": "120"
+          },
+          "company_name": {
+            "type": "string",
+            "description": "Customer name in the accounting system.",
+            "example": "Acme Inc."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
+      },
+      "AccountingLineItem": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "The name or description of the product or service being invoiced.",
+            "example": "Logo design"
+          },
+          "discount_amount": {
+            "type": "number",
+            "description": "Discount amount for this line item (if any)."
+          },
+          "discount_percentage": {
+            "type": "number",
+            "description": "Discount percentage for this line item (if any)."
+          },
+          "ledger_account_id": {
+            "type": "string",
+            "description": "ID of the ledger account associated with this line item. You can use `GET /ledger_accounts/{ledger_account_id}` to get further details about this ledger account."
+          },
+          "quantity": {
+            "type": "number",
+            "description": "The quantity of the product or service."
+          },
+          "tax_rate_ref": {
+            "allOf": [{ "$ref": "#/components/schemas/AccountingRefObject" }],
+            "description": "An internal reference to the tax rate in the accounting system that the line item is linked to."
+          },
+          "unit_amount": {
+            "type": "number",
+            "description": "The cost per unit of the product or service."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["quantity", "unit_amount"],
+        "description": "Contains the details of an invoice line item retrieved from an accounting system."
+      },
       "AccountingMessageResponse": {
         "properties": { "message": { "type": "string" } },
         "additionalProperties": false,
         "type": "object",
         "required": ["message"]
+      },
+      "AccountingReceivable": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An internal identifier of the invoice in the accounting system."
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 currency code of the invoice.",
+            "example": "EUR"
+          },
+          "currency_rate": {
+            "type": "number",
+            "description": "Rate to convert the total amount of the transaction into the entity's base currency at the time of the transaction."
+          },
+          "customer_ref": {
+            "allOf": [
+              { "$ref": "#/components/schemas/AccountingCustomerRefObject" }
+            ],
+            "description": "Information about the customer that the invoice was sent to."
+          },
+          "due_date": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "string", "format": "date" }
+            ],
+            "description": "Invoice due date."
+          },
+          "invoice_number": {
+            "type": "string",
+            "description": "Invoice document number."
+          },
+          "lines": {
+            "items": { "$ref": "#/components/schemas/AccountingLineItem" },
+            "type": "array"
+          },
+          "memo": {
+            "type": "string",
+            "description": "Any additional information or business notes about the invoice."
+          },
+          "pass_through": {
+            "type": "object",
+            "description": "An object containing additional invoice data returned by the accounting system. This sometimes includes custom invoice fields."
+          },
+          "posted_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the invoice was added to the accounting service. This may differ from the invoice creation date."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "Invoice details retrieved from an accounting system."
+      },
+      "AccountingReceivableList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/AccountingReceivable" },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
+      "AccountingRefObject": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An internal ID of the tax rate in the accounting system."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
       },
       "AccountingSettingsPayload": {
         "properties": {
@@ -35622,8 +35880,10 @@
           },
           "id": { "type": "string", "format": "uuid" },
           "status": {
-            "allOf": [{ "$ref": "#/components/schemas/ApprovalPolicyStatus" }],
-            "description": "The current status of the approval policy."
+            "type": "string",
+            "enum": ["active", "pending"],
+            "description": "The current status of the approval policy.",
+            "example": "active"
           },
           "created_at": { "type": "string", "format": "date-time" },
           "updated_at": { "type": "string", "format": "date-time" },
@@ -35953,22 +36213,74 @@
       },
       "BankAccount": {
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "account_holder_name": { "type": "string" },
-          "account_number": { "type": "string" },
-          "bic": { "type": "string", "maxLength": 11 },
-          "country": { "$ref": "#/components/schemas/AllowedCountries" },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "display_name": { "type": "string" },
-          "iban": { "type": "string", "maxLength": 34 },
-          "is_default": { "type": "boolean", "default": false },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the bank account."
+          },
+          "account_holder_name": {
+            "type": "string",
+            "description": "The name of the person or business that owns this bank account.",
+            "example": "Bob Jones"
+          },
+          "account_number": {
+            "type": "string",
+            "description": "The bank account number. Typically used for UK and US bank accounts. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits.",
+            "example": "12345678"
+          },
+          "bic": {
+            "type": "string",
+            "maxLength": 11,
+            "description": "The BIC/SWIFT code of the bank.",
+            "example": "DEUTDEFFXXX"
+          },
+          "country": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "The country in which the bank account is registered, repsesented as a two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).",
+            "example": "DE"
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/references/currencies).",
+            "example": "EUR"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "User-defined name of this bank account, such as 'Primary account' or 'Savings account'. Used only for entity bank accounts.",
+            "example": "Primary account"
+          },
+          "iban": {
+            "type": "string",
+            "maxLength": 34,
+            "description": "The IBAN of the bank account.",
+            "example": "DE74500700100100000900"
+          },
+          "is_default": {
+            "type": "boolean",
+            "description": "Indicates whether this bank account is the default one for its currency.",
+            "default": false
+          },
           "name": {
             "type": "string",
             "maxLength": 200,
-            "description": "Display name of a bank account"
+            "description": "User-defined name of this bank account, such as 'Primary account' or 'Savings account'. Used only for counterpart bank accounts.",
+            "example": "Primary account"
           },
-          "sort_code": { "type": "string" },
-          "was_created_by_user_id": { "type": "string", "format": "uuid" }
+          "routing_number": {
+            "type": "string",
+            "description": "The bank's routing transit number (RTN). Typically used for US banks. US routing numbers consist of 9 digits."
+          },
+          "sort_code": {
+            "type": "string",
+            "description": "The bank's sort code. Typically used for UK banks.",
+            "example": "123456"
+          },
+          "was_created_by_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity user who added this bank account, or `null` if it was added using a partner access token. Used only for entity bank accounts."
+          }
         },
         "additionalProperties": false,
         "type": "object",
@@ -36000,6 +36312,15 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["data"]
+      },
+      "BasedOnReceivableCreatedEventData": {
+        "properties": {
+          "receivable_id": { "type": "string", "format": "uuid" },
+          "type": { "$ref": "#/components/schemas/ReceivableType" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["receivable_id", "type"]
       },
       "BasedOnTransitionType": {
         "type": "string",
@@ -38431,15 +38752,6 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["data"]
-      },
-      "CustomerRefObject": {
-        "properties": {
-          "id": { "type": "string" },
-          "company_name": { "type": "string" }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["id"]
       },
       "DNSRecord": {
         "properties": {
@@ -41083,6 +41395,20 @@
         },
         "type": "object",
         "required": ["data", "total_logs", "total_pages"]
+      },
+      "MailSentEventData": {
+        "properties": {
+          "mail_id": { "type": "string", "format": "uuid" },
+          "mail_status": {
+            "$ref": "#/components/schemas/ReceivableMailStatusEnum"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/ReceivableMailRecipients"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["mail_id", "mail_status", "recipients"]
       },
       "MailSettingsPayload": {
         "properties": {
@@ -44263,10 +44589,42 @@
         "type": "string",
         "enum": ["payables_purchase_order", "payables_notify_approver"]
       },
+      "PayerAccountResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of a payment account"
+          },
+          "bank_accounts": {
+            "items": { "$ref": "#/components/schemas/BankAccount" },
+            "type": "array",
+            "description": "List of bank accounts"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of a payment account"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/PaymentAccountType" }],
+            "description": "Type of a payment account. Can be `entity` or `counterpart`"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "type"]
+      },
       "PaymentAccountObject": {
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "type": { "$ref": "#/components/schemas/PaymentAccountType" }
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of a payment account"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/PaymentAccountType" }],
+            "description": "Type of a payment account. Can be `entity` or `counterpart`"
+          }
         },
         "additionalProperties": false,
         "type": "object",
@@ -44338,7 +44696,7 @@
           "currency": { "type": "string" },
           "invoice": { "$ref": "#/components/schemas/Invoice" },
           "object": { "$ref": "#/components/schemas/PaymentObject" },
-          "payer": { "$ref": "#/components/schemas/AccountResponse" },
+          "payer": { "$ref": "#/components/schemas/PayerAccountResponse" },
           "payment_link_id": { "type": "string", "format": "uuid" },
           "payment_methods": {
             "items": {
@@ -44380,7 +44738,7 @@
           "invoice": { "$ref": "#/components/schemas/Invoice" },
           "key": { "$ref": "#/components/schemas/StripeData" },
           "object": { "$ref": "#/components/schemas/PaymentObject" },
-          "payer": { "$ref": "#/components/schemas/AccountResponse" },
+          "payer": { "$ref": "#/components/schemas/PayerAccountResponse" },
           "payment_link_id": { "type": "string", "format": "uuid" },
           "payment_methods": {
             "items": {
@@ -44621,6 +44979,16 @@
       "PaymentPriorityEnum": {
         "type": "string",
         "enum": ["working_capital", "balanced", "bottom_line"]
+      },
+      "PaymentReceivedEventData": {
+        "properties": {
+          "amount_due": { "type": "integer" },
+          "amount_paid": { "type": "integer" },
+          "comment": { "type": "string" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["amount_due", "amount_paid"]
       },
       "PaymentRecordCursorFields": {
         "type": "string",
@@ -46009,7 +46377,7 @@
           "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
           "expires_at": { "type": "string", "format": "date-time" },
           "invoice": { "$ref": "#/components/schemas/Invoice" },
-          "payer": { "$ref": "#/components/schemas/AccountResponse" },
+          "payer": { "$ref": "#/components/schemas/PayerAccountResponse" },
           "payment_intent": { "$ref": "#/components/schemas/PaymentIntent" },
           "payment_intent_id": { "type": "string", "format": "uuid" },
           "payment_methods": { "items": { "type": "string" }, "type": "array" },
@@ -47125,30 +47493,6 @@
           "deleted"
         ]
       },
-      "Receivable": {
-        "properties": {
-          "id": { "type": "string" },
-          "currency": { "type": "string" },
-          "currency_rate": { "type": "number" },
-          "customer_ref": { "$ref": "#/components/schemas/CustomerRefObject" },
-          "due_date": {
-            "anyOf": [
-              { "type": "string", "format": "date-time" },
-              { "type": "string", "format": "date" }
-            ]
-          },
-          "invoice_number": { "type": "string" },
-          "lines": {
-            "items": { "$ref": "#/components/schemas/LineItem" },
-            "type": "array"
-          },
-          "memo": { "type": "string" },
-          "pass_through": { "type": "object" },
-          "posted_date": { "type": "string", "format": "date" }
-        },
-        "additionalProperties": false,
-        "type": "object"
-      },
       "ReceivableCounterpartContact": {
         "properties": {
           "address": {
@@ -47851,48 +48195,56 @@
       },
       "ReceivableHistoryResponse": {
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the history record."
+          },
           "current_pdf_url": {
             "type": "string",
             "maxLength": 65536,
             "minLength": 1,
             "format": "uri",
-            "description": "Link, that will lead to the PDF that shows the state of the document after this change. If this change doesn’t change PDF - this field will be empty"
+            "description": "Link, that will lead to the PDF that shows the state of the document after this change. If this change doesn’t change PDF - this field will be empty."
           },
           "entity_user_id": { "type": "string", "format": "uuid" },
           "event_data": {
-            "type": "object",
-            "description": "Payload of the event"
+            "anyOf": [
+              { "$ref": "#/components/schemas/StatusChangedEventData" },
+              { "$ref": "#/components/schemas/ReceivableUpdatedEventData" },
+              {
+                "$ref": "#/components/schemas/BasedOnReceivableCreatedEventData"
+              },
+              { "$ref": "#/components/schemas/PaymentReceivedEventData" },
+              { "$ref": "#/components/schemas/MailSentEventData" }
+            ],
+            "description": "Payload of the event."
           },
           "event_type": {
             "allOf": [
               { "$ref": "#/components/schemas/ReceivableHistoryEventTypeEnum" }
             ],
-            "description": "The type of event"
+            "description": "The type of event."
           },
           "receivable_id": {
             "type": "string",
             "format": "uuid",
-            "description": "ID of receivable that was changed"
+            "description": "ID of receivable that was changed."
           },
           "timestamp": {
             "type": "string",
             "format": "date-time",
-            "description": "Timestamp when the event has happened"
+            "description": "Timestamp when the event has happened."
           }
         },
         "type": "object",
-        "required": ["event_data", "event_type", "receivable_id", "timestamp"]
-      },
-      "ReceivableList": {
-        "properties": {
-          "data": {
-            "items": { "$ref": "#/components/schemas/Receivable" },
-            "type": "array"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["data"]
+        "required": [
+          "id",
+          "event_data",
+          "event_type",
+          "receivable_id",
+          "timestamp"
+        ]
       },
       "ReceivableMailCursorFields": {
         "type": "string",
@@ -47913,7 +48265,6 @@
             "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["data"]
       },
@@ -47984,7 +48335,6 @@
             "description": "The status of the mail sent by receivable"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["id", "created_at", "updated_at", "status"]
       },
@@ -48227,6 +48577,11 @@
         ],
         "additionalProperties": false
       },
+      "ReceivableUpdatedEventData": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object"
+      },
       "ReceivablesPreviewTypeEnum": {
         "type": "string",
         "enum": ["receivable", "discount_reminder", "final_reminder"]
@@ -48375,13 +48730,24 @@
       },
       "RecipientAccountResponse": {
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of a payment account"
+          },
           "bank_accounts": {
             "items": { "$ref": "#/components/schemas/BankAccount" },
-            "type": "array"
+            "type": "array",
+            "description": "List of bank accounts"
           },
-          "name": { "type": "string" },
-          "type": { "$ref": "#/components/schemas/PaymentAccountType" }
+          "name": {
+            "type": "string",
+            "description": "Display name of a payment account"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/PaymentAccountType" }],
+            "description": "Type of a payment account. Can be `entity` or `counterpart`"
+          }
         },
         "additionalProperties": false,
         "type": "object",
@@ -48963,6 +49329,17 @@
       "SourceOfPayableDataEnum": {
         "type": "string",
         "enum": ["ocr", "user_specified"]
+      },
+      "StatusChangedEventData": {
+        "properties": {
+          "new_status": {
+            "$ref": "#/components/schemas/ReceivablesStatusEnum"
+          },
+          "old_status": { "$ref": "#/components/schemas/ReceivablesStatusEnum" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["new_status", "old_status"]
       },
       "StatusEnum": { "type": "string", "enum": ["active", "deleted"] },
       "StripeData": {
@@ -51248,6 +51625,7 @@
   "tags": [
     { "name": "Access tokens" },
     { "name": "Accounting connections" },
+    { "name": "Accounting data pull" },
     { "name": "Accounting synchronized records" },
     { "name": "Accounting tax rates" },
     { "name": "Approval policies" },

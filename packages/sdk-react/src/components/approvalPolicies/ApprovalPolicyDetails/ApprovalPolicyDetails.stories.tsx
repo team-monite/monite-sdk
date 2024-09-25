@@ -1,5 +1,5 @@
 import { Dialog } from '@/components/Dialog';
-import { approvalPoliciesSearchFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
+import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -12,7 +12,7 @@ const meta: Meta<typeof ApprovalPolicyDetails> = {
 
 type Story = StoryObj<typeof ApprovalPolicyDetails>;
 
-const approvalPolicyId = approvalPoliciesSearchFixture.data[0].id;
+const approvalPolicyId = approvalPoliciesListFixture.data[0].id;
 
 export const DialogDetailsView: Story = {
   args: {},
