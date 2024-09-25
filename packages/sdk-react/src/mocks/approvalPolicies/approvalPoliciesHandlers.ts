@@ -3,10 +3,7 @@ import { entityUser2 } from '@/mocks/entityUsers/entityUserByIdFixture';
 
 import { http, HttpResponse, delay } from 'msw';
 
-import {
-  approvalPoliciesSearchFixture,
-  approvalPolicyByIdFixtures,
-} from './approvalPoliciesFixture';
+import { approvalPoliciesListFixture } from './approvalPoliciesFixture';
 
 const approvalPoliciesPath: `*${Extract<
   keyof paths,
@@ -14,7 +11,7 @@ const approvalPoliciesPath: `*${Extract<
 >}` = `*/approval_policies`;
 const approvalPolicyPathById = `${approvalPoliciesPath}/:approvalPolicyId`;
 
-let approvalPoliciesList = approvalPoliciesSearchFixture.data;
+let approvalPoliciesList = approvalPoliciesListFixture.data;
 
 export const approvalPoliciesHandlers = [
   /**
@@ -77,7 +74,7 @@ export const approvalPoliciesHandlers = [
   >(approvalPolicyPathById, async ({ params }) => {
     const { approvalPolicyId } = params;
 
-    const fixture = approvalPolicyByIdFixtures.find(
+    const fixture = approvalPoliciesListFixture.data.find(
       (policy) => policy.id === approvalPolicyId
     );
 
@@ -123,6 +120,8 @@ export const approvalPoliciesHandlers = [
       updated_by: entityUser2.id,
       status: 'active',
     };
+
+    approvalPoliciesListFixture.data.push(newApprovalPolicy);
 
     await delay();
     return HttpResponse.json(newApprovalPolicy);
@@ -171,6 +170,23 @@ export const approvalPoliciesHandlers = [
     await delay();
     return HttpResponse.json(updatedApprovalPolicy);
   }),
+
+  http.delete<{ approvalPolicyId: string }>(
+    approvalPolicyPathById,
+    async ({ params }) => {
+      const approvalPolicyId = params.approvalPolicyId;
+
+      approvalPoliciesList = approvalPoliciesList.filter(
+        (approvalPolicy) => approvalPolicy.id !== approvalPolicyId
+      );
+
+      await delay();
+
+      return new HttpResponse(null, {
+        status: 204,
+      });
+    }
+  ),
 ];
 
 type ApprovalPolicyCreate = components['schemas']['ApprovalPolicyCreate'];
