@@ -8,7 +8,6 @@ import * as Styled from '../styles';
 import { UBuilding } from './icons/UBuilding';
 import { ULabel } from './icons/ULabel';
 import { UMoneyBill } from './icons/UMoneyBill';
-import { UMoneyStack } from './icons/UMoneyStack';
 import { UUserCircle } from './icons/UUserCircle';
 
 interface ApprovalPoliciesTriggersProps {
