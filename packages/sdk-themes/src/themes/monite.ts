@@ -935,8 +935,8 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableDetailsInfo: {
     defaultProps: {
       ocrMismatchFields: {
-        amount_to_pay: true,
-        counterpart_bank_account_id: true,
+        amount_to_pay: false,
+        counterpart_bank_account_id: false,
       },
     },
   },
@@ -953,24 +953,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         'amount',
         'pay',
       ],
-      summaryCardFilters: {
-        'New Large Invoices': {
-          status__in: ['draft', 'new'],
-          amount__gt: 1000,
-          sort: 'created_at',
-          order: 'asc',
-        },
-        Unpaid: {
-          status__in: ['waiting_to_be_paid', 'partially_paid'],
-        },
-        'Overdue Invoices': {
-          status__in: ['waiting_to_be_paid'],
-          overdue: true,
-        },
-        'High-Value Invoices': {
-          amount__gte: 10000,
-        },
-      },
     },
   },
   MuiFormHelperText: {

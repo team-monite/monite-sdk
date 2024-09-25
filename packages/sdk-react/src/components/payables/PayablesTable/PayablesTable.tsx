@@ -112,6 +112,29 @@ export interface PayableGridSortModel {
   sort: NonNullable<GridSortDirection>;
 }
 
+/**
+ * PayablesTable component.
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayablesTable: {
+ *       defaultProps: {
+ *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *         summaryCardFilters: {
+ *           'Overdue Invoices': {
+ *             status__in: ['waiting_to_be_paid'],
+ *             overdue: true,
+ *           },
+ *           'High-Value Invoices': {
+ *             amount__gte: 10000,
+ *           },
+ *         },
+ *       },
+ *     },
+ *   },
+ * });
+ */
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
     <PayablesTableBase {...props} />
