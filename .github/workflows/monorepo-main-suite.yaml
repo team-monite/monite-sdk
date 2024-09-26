@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - dev
+      - packages-version-update-3.16.0-beta.5
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
