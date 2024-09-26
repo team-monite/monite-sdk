@@ -46,7 +46,7 @@ interface SummaryCardsFiltersProps {
   sx?: SxProps<Theme>;
 }
 
-interface StyledCardProps extends ComponentProps<typeof Card> {
+export interface StyledCardProps extends ComponentProps<typeof Card> {
   selected: boolean;
   isAllItems?: boolean;
   theme: Theme;

@@ -1,7 +1,7 @@
 import { FILTER_TYPE_SUMMARY_CARD } from '@/components/payables/PayablesTable/consts';
 import {
+  StyledCardProps,
   summaryCardClassName,
-  SummaryStyledCard,
 } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
@@ -11,13 +11,14 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
+  Card,
   CardContent,
   Skeleton,
   SxProps,
   Theme,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 type FilterTypes = Record<typeof FILTER_TYPE_SUMMARY_CARD, 'all'>;
 
@@ -39,6 +40,23 @@ interface MoniteCustomFiltersProps {
   >['summaryCardFilters'];
 }
 
+const CustomStyledCard = styled(Card)(
+  ({ selected, isAllItems, theme }: StyledCardProps) => ({
+    cursor: 'pointer',
+    border: `2px solid ${
+      selected ? theme.palette.primary.main : 'transparent'
+    }`,
+    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+    display: 'flex',
+    padding: '16px 18px',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: 40,
+    minWidth: isAllItems ? '118px' : '220px',
+    flexShrink: 0,
+  })
+);
+
 const MoniteCustomFilter = ({
   title,
   onClick,
@@ -51,7 +69,7 @@ const MoniteCustomFilter = ({
   const titleText = isAllItems ? t(i18n)`All items` : title;
 
   return (
-    <SummaryStyledCard
+    <CustomStyledCard
       theme={theme}
       onClick={onClick}
       selected={selected}
@@ -68,7 +86,7 @@ const MoniteCustomFilter = ({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          height: '100%',
+          paddingBottom: '0 !important',
         }}
       >
         <Box
@@ -80,7 +98,7 @@ const MoniteCustomFilter = ({
           <Typography
             variant="h6"
             fontWeight={700}
-            sx={{ fontSize: 16 }}
+            sx={{ fontSize: 16, paddingBottom: 0 }}
             className={classNames(
               summaryCardClassName,
               `${summaryCardClassName}-Title-${title}`
@@ -90,7 +108,7 @@ const MoniteCustomFilter = ({
           </Typography>
         </Box>
       </CardContent>
-    </SummaryStyledCard>
+    </CustomStyledCard>
   );
 };
 

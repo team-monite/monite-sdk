@@ -836,7 +836,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           display: 'flex',
           borderRadius: '3px',
           backgroundColor: '#ffffff',
-          height: 80,
           boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
         },
         '&.Monite-SummaryCard-selected': {
