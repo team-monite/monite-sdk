@@ -1,5 +1,18 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-beta.5
+
+### Patch Changes
+
+- 43a2d4e6: encapsulate entity check logic
+- Updated dependencies [59ff0c92]
+- Updated dependencies [202101f0]
+- Updated dependencies [43a2d4e6]
+- Updated dependencies [0f7e21a5]
+- Updated dependencies [84ee5502]
+  - @team-monite/sdk-themes@0.2.0-beta.3
+  - @monite/sdk-api@3.16.0-beta.5
+
 ## 1.8.0-beta.4
 
 ### Minor Changes

@@ -1,5 +1,29 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.5
+
+### Minor Changes
+
+- b7c796bd: feat: display warning when ocr data mismatch
+- 59ff0c92: feat: Summary cards added for payables with theme customisation
+- 202101f0: feat(DEV-12699): disable summary cards via theme customisation
+- 74d288f7: feat(DEV-12285): implement memo field for creating and updating invoice
+- 932c4ce2: Open newly created invoice for preview immediately after creation.
+- 0f7e21a5: feat: Move order of columns - extend config to pass order
+- 84ee5502: feat(DEV-12179): custom Tabs for Payables
+- a551b255: feat(DEV-12655): overdue ap flag new design
+- 09b7a670: chore(upgrade): api version upgrade to 2024-05-25
+
+### Patch Changes
+
+- a71c3111: feat(DEV-12410): ability for partners to remove tags
+- b155c2f3: feat(DEV-12177): extended wildcard search for payables
+- 43a2d4e6: encapsulate entity check logic
+- 292f0ebf: add support for body_text and subject_text when creating or updating recurring invoices
+- 39b55464: feat(DEV-12590): improvements to email invoice functionality
+- Updated dependencies [43a2d4e6]
+  - @monite/sdk-api@3.16.0-beta.5
+
 ## 3.16.0-beta.4
 
 ### Minor Changes
