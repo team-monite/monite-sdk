@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.6.0-beta.4
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.4
+
 ## 1.6.0-beta.3
 
 ### Patch Changes
