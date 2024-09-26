@@ -959,6 +959,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
         Scheduled: {
           tag_ids__in: ['c0d0a4b0-e33d-4a58-a4b2-c0527f18b301'],
+          status__in: [
+            'draft',
+            'new',
+            'approve_in_progress',
+            'waiting_to_be_paid',
+            'partially_paid',
+          ],
         },
         Paid: {
           status__in: ['paid'],
