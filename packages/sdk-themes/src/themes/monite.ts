@@ -958,7 +958,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           status__in: ['draft', 'new', 'approve_in_progress', 'rejected'],
         },
         Scheduled: {
-          tag_ids__in: ['c0d0a4b0-e33d-4a58-a4b2-c0527f18b301'],
+          tag_ids: ['f4031683-7605-48c6-969c-dcfc5397935b'],
           status__in: [
             'draft',
             'new',
