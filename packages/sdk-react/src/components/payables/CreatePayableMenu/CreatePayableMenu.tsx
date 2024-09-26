@@ -1,6 +1,7 @@
 import React, { DragEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useFileInput, useMenuButton } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -10,7 +11,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Alert,
   alpha,
@@ -20,6 +20,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+
+const MENU_WIDTH = 550;
 
 interface CreatePayableMenuProps {
   isCreateAllowed: boolean;
@@ -36,6 +38,10 @@ export const CreatePayableMenu = ({
   const { buttonProps, menuProps, open, closeMenu } = useMenuButton();
   const { FileInput, openFileInput } = useFileInput();
   const [dragIsOver, setDragIsOver] = useState(false);
+  const { api } = useMoniteContext();
+
+  const { data: mailboxes } = api.mailboxes.getMailboxes.useQuery();
+  const mailboxAddress = mailboxes?.data?.[0]?.mailbox_full_address;
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -68,11 +74,11 @@ export const CreatePayableMenu = ({
       >
         {t(i18n)`New bill`}
       </Button>
-      <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: 550 } }}>
+      <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: MENU_WIDTH } }}>
         <Stack
           spacing={3}
           flexDirection="column"
-          sx={{ p: 2, width: 550 }}
+          sx={{ p: 2, width: MENU_WIDTH }}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -85,29 +91,20 @@ export const CreatePayableMenu = ({
               alignItems="center"
               mb={2}
             >
-              <Typography variant="subtitle1">{t(
-                i18n
-              )`Forward to email`}</Typography>
-              <Button
-                variant="text"
-                endIcon={<SettingsIcon />}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >{t(i18n)`Customise`}</Button>
+              <Typography variant="subtitle1">
+                {t(i18n)`Forward to email`}
+              </Typography>
             </Stack>
             <Alert
               severity="info"
               icon={<MailOutlineIcon color="primary" />}
               action={
                 <Button
+                  disabled={!mailboxAddress}
                   variant="outlined"
                   startIcon={<ContentCopyIcon />}
                   onClick={() => {
-                    navigator.clipboard.writeText(
-                      'incoming-bills-silver-wind@x-platform.com'
-                    );
+                    navigator.clipboard.writeText(mailboxAddress || '');
                     toast.success(t(i18n)`Copied to clipboard`);
                   }}
                 >
@@ -121,9 +118,7 @@ export const CreatePayableMenu = ({
             >
               <Box>
                 <Typography variant="body1" color="primary">
-                  {/* TODO: add support for email */}
-                  {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-                  {'incoming-bills-silver-wind@x-platform.com'}
+                  {mailboxAddress || t(i18n)`No email address`}
                 </Typography>
               </Box>
             </Alert>
