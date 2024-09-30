@@ -1,12 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import type { Services } from '@/api';
+import type { components, Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { t, select } from '@lingui/macro';
+import { select, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { LanguageCodeEnum } from '@monite/sdk-api';
 
 export const useReceivables = (
   query: Services['receivables']['getReceivables']['types']['parameters']['query'],
@@ -520,3 +522,71 @@ export function useInvoiceDetails({
     },
   };
 }
+
+export const useReceivableEmailPreview = (
+  receivable_id: string,
+  subject_text: string,
+  body_text: string
+) => {
+  const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+
+  const mutation = api.receivables.postReceivablesIdPreview.useMutation({
+    path: {
+      receivable_id,
+    },
+  });
+
+  const [preview, setPreview] = useState<string>('');
+  const [attemptNumber, setAttemptNumber] = useState(0);
+
+  const refresh = () => {
+    setAttemptNumber(attemptNumber + 1);
+  };
+
+  const isLanguageCodeEnum = (
+    value: string
+  ): value is components['schemas']['LanguageCodeEnum'] => {
+    return Object.values(LanguageCodeEnum).includes(value as LanguageCodeEnum);
+  };
+
+  const language = () => {
+    const locale = i18n.locale;
+    const dashIndex = locale.indexOf('-');
+    const languageCode =
+      dashIndex >= 0 ? locale.substring(0, dashIndex) : locale;
+
+    if (isLanguageCodeEnum(languageCode)) {
+      return languageCode;
+    }
+
+    return 'en';
+  };
+
+  useEffect(() => {
+    mutation
+      .mutateAsync({
+        body_text,
+        subject_text,
+        language: language(),
+        type: 'receivable',
+      })
+      .then((response) => {
+        setPreview(response.body_preview);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attemptNumber]);
+
+  return {
+    isLoading: mutation.isPending,
+    error: mutation.error,
+    preview,
+    refresh,
+  };
+};
+
+export const useReceivableContacts = (receivable_id: string) => {
+  const { data: receivable } = useReceivableById(receivable_id);
+
+  return useCounterpartContactList(receivable?.counterpart_id);
+};

@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -13,6 +12,9 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -35,6 +37,13 @@ type CreditNotesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 };
 
 export interface CreditNotesTableSortModel {
@@ -48,7 +57,10 @@ export const CreditNotesTable = (props: CreditNotesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
+const CreditNotesTableBase = ({
+  onRowClick,
+  setIsCreateInvoiceDialogOpen,
+}: CreditNotesTableProps) => {
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -67,7 +79,12 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: creditNotes, isLoading } = useReceivables({
+  const {
+    data: creditNotes,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -116,7 +133,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {
@@ -150,6 +167,36 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'CreditNotesTable'
   );
+
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
+
+  if (
+    !isLoading &&
+    creditNotes?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Credit Notes`}
+        descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
+        descriptionLine2={t(i18n)`You can create your first credit note.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-CreditNotesTable';
 
@@ -204,6 +251,21 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
                   setPageSize(pageSize);
                   setPaginationToken(page ?? undefined);
                 }}
+              />
+            ),
+            noRowsOverlay: () => (
+              <GetNoRowsOverlay
+                isLoading={isLoading}
+                dataLength={creditNotes?.data.length || 0}
+                isFiltering={isFiltering}
+                isSearching={isSearching}
+                isError={isError}
+                onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
+                refetch={refetch}
+                entityName={t(i18n)`Credit Notes`}
+                actionButtonLabel={t(i18n)`Create Invoice`}
+                actionOptions={[t(i18n)`Invoice`]}
+                type="no-data"
               />
             ),
           }}

@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { ExtendedPayableStateEnum } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
@@ -21,6 +22,18 @@ export const ROW_TO_STATUS_MUI_MAP: {
   canceled: 'secondary',
   rejected: 'error',
   waiting: 'warning',
+};
+
+export const STATUS_TO_MUI_MAP: Record<ExtendedPayableStateEnum, string> = {
+  draft: 'text.secondary',
+  new: 'primary.main',
+  approve_in_progress: 'warning.main',
+  paid: 'success.main',
+  waiting_to_be_paid: 'primary.main',
+  rejected: 'error.main',
+  partially_paid: 'secondary.main',
+  canceled: 'warning.main',
+  all: 'text.primary',
 };
 
 export const APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP: Record<

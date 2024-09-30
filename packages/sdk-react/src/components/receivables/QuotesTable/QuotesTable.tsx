@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -13,6 +12,10 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -47,6 +50,13 @@ type QuotesTableProps = {
    * @param {QuotesTableSortModel} params - The sort model.
    */
   onChangeSort?: (params: QuotesTableSortModel) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 };
 
 export const QuotesTable = (props: QuotesTableProps) => (
@@ -58,6 +68,7 @@ export const QuotesTable = (props: QuotesTableProps) => (
 const QuotesTableBase = ({
   onRowClick,
   onChangeSort: onChangeSortCallback,
+  setIsCreateInvoiceDialogOpen,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
 
@@ -77,7 +88,12 @@ const QuotesTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: quotes, isLoading } = useReceivables({
+  const {
+    data: quotes,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -94,6 +110,13 @@ const QuotesTableBase = ({
 
     onChangeSortCallback?.(model);
   };
+
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
 
   const areCounterpartsLoading = useAreCounterpartsLoading(quotes?.data);
   const dateFormat = useDateFormat();
@@ -130,7 +153,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Customer`,
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {
@@ -139,6 +162,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Due date`,
         width: 120,
         valueFormatter: (value) => value && i18n.date(value, dateFormat),
+        renderCell: (params) => <DueDateCell data={params.row} />,
       },
       {
         field: 'status',
@@ -172,6 +196,24 @@ const QuotesTableBase = ({
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'QuotesTable'
   );
+
+  if (!isLoading && quotes?.data.length === 0 && !isFiltering && !isSearching) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Quotes`}
+        descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
+        descriptionLine2={t(i18n)`You can create your first quote.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-QuotesTable';
 
@@ -225,6 +267,25 @@ const QuotesTableBase = ({
                 setPageSize(pageSize);
                 setPaginationToken(page ?? undefined);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={quotes?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              refetch={refetch}
+              entityName={t(i18n)`Quotes`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Invoice`]}
+              onCreate={(type) => {
+                if (type === t(i18n)`Invoice`) {
+                  setIsCreateInvoiceDialogOpen?.(true);
+                }
+              }}
+              type="no-data"
             />
           ),
         }}

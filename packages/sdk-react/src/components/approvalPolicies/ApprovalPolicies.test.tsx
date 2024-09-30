@@ -23,11 +23,11 @@ describe('ApprovalPolicies', () => {
         expect(createApprovalPolicyButton).resolves.not.toBeDisabled()
       );
 
-      const approvalPolicyCell = await screen.findByText(
+      const approvalPolicyCell = await screen.findAllByText(
         t`Users from the list`
       );
 
-      expect(approvalPolicyCell).toBeInTheDocument();
+      expect(approvalPolicyCell.length).toBeGreaterThanOrEqual(1);
     });
 
     test('support empty permissions', async () => {
@@ -76,8 +76,11 @@ describe('ApprovalPolicies', () => {
         expect(createApprovalPolicyButton).resolves.not.toBeDisabled()
       );
 
-      const approvalPolicyCell = screen.findByText(t`Users from the list`);
-      await expect(approvalPolicyCell).resolves.toBeInTheDocument();
+      const approvalPolicyCell = await screen.findAllByText(
+        t`Users from the list`
+      );
+
+      expect(approvalPolicyCell.length).toBeGreaterThanOrEqual(1);
     });
   });
 });

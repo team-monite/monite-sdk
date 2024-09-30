@@ -9,6 +9,8 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -32,6 +34,7 @@ import { TagFormModal } from '../TagFormModal';
 
 interface TagsTableProps {
   onChangeSort?: (params: TagsTableSortModel) => void;
+  showCreationModal?: () => void;
 }
 
 interface TagsTableSortModel {
@@ -47,6 +50,7 @@ export const TagsTable = (props: TagsTableProps) => (
 
 const TagsTableBase = ({
   onChangeSort: onChangeSortCallback,
+  showCreationModal,
 }: TagsTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -85,6 +89,7 @@ const TagsTableBase = ({
     isLoading,
     isError,
     error,
+    refetch,
   } = api.tags.getTags.useQuery({
     query: {
       sort: sortModel?.field,
@@ -196,6 +201,24 @@ const TagsTableBase = ({
     openEditModal,
   ]);
 
+  if (!isLoading && tags?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Tags`}
+        descriptionLine1={t(i18n)`You don’t have any tags yet.`}
+        descriptionLine2={t(i18n)`You can create your first tag.`}
+        actionButtonLabel={t(i18n)`Create new tag`}
+        actionOptions={[t(i18n)`Tag`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Tag`) {
+            showCreationModal?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
   return (
     <Box
       className={ScopedCssBaselineContainerClassName}
@@ -238,6 +261,21 @@ const TagsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={tags?.data.length || 0}
+              isFiltering={false}
+              isSearching={false}
+              isError={isError}
+              onCreate={showCreationModal}
+              refetch={refetch}
+              entityName={t(i18n)`Tags`}
+              actionButtonLabel={t(i18n)`Create new tag`}
+              actionOptions={[t(i18n)`Tag`]}
+              type="no-data"
             />
           ),
         }}

@@ -1,24 +1,23 @@
-import { useMoniteContext } from '@/core/context/MoniteContext';
-
-import * as Styled from '../styles';
+import type { components } from '@/api';
 import {
-  ApprovalChain,
-  ApprovalPoliciesRulesItem,
-  ScriptItemProps,
-} from './ApprovalPoliciesRulesItem';
+  useApprovalPolicyScript,
+  Rules,
+} from '@/components/approvalPolicies/useApprovalPolicyScript';
+
+import { UListUiAlt } from '../components/icons/UListUiAlt';
+import { UUserCircle } from '../components/icons/UUserCircle';
+import { UUsersAlt } from '../components/icons/UUsersAlt';
+import { UUserSquare } from '../components/icons/UUserSquare';
+import * as Styled from '../styles';
 
 interface ApprovalPoliciesRulesProps {
-  approvalPolicyId: string;
+  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
 }
 
 export const ApprovalPoliciesRules = ({
-  approvalPolicyId,
+  approvalPolicy,
 }: ApprovalPoliciesRulesProps) => {
-  const { api } = useMoniteContext();
-  const { data: approvalPolicy } =
-    api.approvalPolicies.getApprovalPoliciesId.useQuery({
-      path: { approval_policy_id: approvalPolicyId },
-    });
+  const { rules, getRuleName } = useApprovalPolicyScript({ approvalPolicy });
 
   if (!approvalPolicy) {
     return null;
@@ -26,21 +25,39 @@ export const ApprovalPoliciesRules = ({
 
   return (
     <Styled.ColumnList>
-      {approvalPolicy.script.length > 1 ? (
-        <ApprovalChain />
-      ) : (
-        isScriptItem(approvalPolicy.script[0]) && (
-          <ApprovalPoliciesRulesItem rule={approvalPolicy.script[0]} />
-        )
-      )}
+      {rules &&
+        (Object.keys(rules) as Array<keyof Rules>).map((ruleKey) => {
+          switch (ruleKey) {
+            case 'single_user':
+              return (
+                <li key={ruleKey}>
+                  <UUserCircle width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'users_from_list':
+              return (
+                <li key={ruleKey}>
+                  <UUsersAlt width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'roles_from_list':
+              return (
+                <li key={ruleKey}>
+                  <UUserSquare width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'approval_chain':
+              return (
+                <li key={ruleKey}>
+                  <UListUiAlt width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+          }
+        })}
     </Styled.ColumnList>
   );
-};
-
-const isScriptItem = (
-  scriptItem: ScriptItemProps | unknown
-): scriptItem is ScriptItemProps => {
-  if (!scriptItem) return false;
-  if (typeof scriptItem !== 'object') return false;
-  return 'call' in scriptItem || 'all' in scriptItem || 'any' in scriptItem;
 };

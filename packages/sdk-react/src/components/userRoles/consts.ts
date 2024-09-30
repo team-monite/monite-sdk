@@ -28,6 +28,7 @@ export const getPermissionToLabelMap = (i18n: I18n) => ({
   counterpart: t(i18n)`Counterpart`,
   entity_user: t(i18n)`Entity user`,
   entity: t(i18n)`Entity`,
+  project: t(i18n)`Project`,
   entity_vat_ids: t(i18n)`Entity VAT IDs`,
   counterpart_vat_id: t(i18n)`Counterpart VAT ID`,
   entity_bank_account: t(i18n)`Entity bank account`,

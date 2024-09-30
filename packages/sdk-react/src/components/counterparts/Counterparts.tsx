@@ -159,7 +159,13 @@ const CounterpartsBase = () => {
         }
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
-      {isReadAllowed && <CounterpartsTable onRowClick={setId} onEdit={setId} />}
+      {isReadAllowed && (
+        <CounterpartsTable
+          onRowClick={setId}
+          onEdit={setId}
+          setType={setType}
+        />
+      )}
       {counterpartDetails}
     </>
   );

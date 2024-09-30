@@ -1,7 +1,7 @@
 {
   "name": "@monite/sdk-react",
-  "version": "3.16.0-beta.3",
-  "apiVersion": "2024-01-31",
+  "version": "3.16.0-beta.5",
+  "apiVersion": "2024-05-25",
   "publishConfig": {
     "access": "public"
   },
@@ -83,7 +83,7 @@
     "@team-monite/sdk-themes": "workspace:~",
     "@testing-library/dom": "~9.3.1",
     "@testing-library/jest-dom": "~5.16.5",
-    "@testing-library/react": "~14.0.0",
+    "@testing-library/react": "~14.1.0",
     "@testing-library/user-event": "~14.4.3",
     "@types/deep-eql": "~4.0.2",
     "@types/jest": "~29.5.11",
@@ -104,7 +104,7 @@
     "react-dom": "^18.2.0",
     "react-select-event": "~5.5.1",
     "rimraf": "~5.0.0",
-    "rollup": "~3.29.4",
+    "rollup": "~3.29.5",
     "storybook": "~7.6.7",
     "typescript": "~5.5.4"
   },

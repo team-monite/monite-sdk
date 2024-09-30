@@ -8,6 +8,7 @@ import {
 } from '@/components/counterparts/helpers';
 import {
   isFieldRequired,
+  isOcrMismatch,
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
@@ -43,7 +44,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
 
 import { OptionalFields } from '../../types';
@@ -75,7 +76,41 @@ const StyledLabelTableCell = styled(TableCell)<StyledLabelTableCellProps>(
     width: '35%',
   })
 );
-
+/**
+ * PayableDetailsInfo component.
+ *
+ * This component is responsible for rendering the information about the payable..
+ *
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayableDetailsInfo: {
+ *       defaultProps: {
+ *         optionalFields: {
+ *           invoiceDate: true,         // Show the invoice date field
+ *           tags: true,                // Show the tags field
+ *         },
+ *         ocrMismatchFields: {
+ *           amount_to_pay: true,       // Show the amount to pay field
+ *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *         },
+ *         ocrRequiredFields: {
+ *           invoiceNumber: true,       // The invoice number is required based on OCR data
+ *           dueDate: true,             // The due date is required based on OCR data
+ *           currency: true,            // The currency is required based on OCR data
+ *         },
+ *         ocrMismatchFields: {
+ *           amount_to_pay: true,       // Show the amount to pay field
+ *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *         },
+ *         isTagsDisabled: true,        // The tags field is disabled
+ *       },
+ *     },
+ *   },
+ * });
+ *
+ */
 export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
   <MoniteScopedProviders>
     <PayableDetailsInfoBase {...props} />
@@ -88,7 +123,7 @@ const PayableDetailsInfoBase = ({
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
-  const { ocrRequiredFields, optionalFields } =
+  const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
@@ -104,6 +139,23 @@ const PayableDetailsInfoBase = ({
     }
   );
 
+  const ocrMismatchWarning = useMemo(() => {
+    if (!payable || !ocrMismatchFields) return null;
+
+    const { isAmountMismatch, isBankAccountMismatch } = isOcrMismatch(payable);
+
+    if (
+      (ocrMismatchFields.amount_to_pay && isAmountMismatch) ||
+      (ocrMismatchFields.counterpart_bank_account_id && isBankAccountMismatch)
+    ) {
+      return t(
+        i18n
+      )`There may be a mismatch between the OCR data and payable data. Please review the details`;
+    }
+
+    return null;
+  }, [payable, ocrMismatchFields, i18n]);
+
   const { data: lineItemsData } = lineItemsQuery;
 
   const lineItems = lineItemsData?.data;
@@ -116,7 +168,7 @@ const PayableDetailsInfoBase = ({
     useApprovalPolicyById(payable.approval_policy_id);
 
   const defaultContact = useMemo(
-    () => contacts?.data.find((contact) => contact.is_default),
+    () => contacts?.find((contact) => contact.is_default),
     [contacts]
   );
   const counterpartBankAccount = useMemo(
@@ -129,6 +181,7 @@ const PayableDetailsInfoBase = ({
 
   const className = 'Monite-PayableDetailsInfo';
   const dateFormat = useDateFormat();
+  const theme = useTheme();
 
   if (isPayableInOCRProcessing(payable)) {
     return (
@@ -168,6 +221,16 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
+                {ocrMismatchWarning && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={2}
+                      style={{ color: theme.palette.error.main }}
+                    >
+                      {ocrMismatchWarning}
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <StyledLabelTableCell
                     isRequired={

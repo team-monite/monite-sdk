@@ -14,6 +14,10 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -31,7 +35,6 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
@@ -46,6 +49,13 @@ interface InvoicesTableBaseProps {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export type InvoicesTableProps =
@@ -65,6 +75,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
 
 const InvoicesTableBase = ({
   onRowClick,
+  setIsCreateInvoiceDialogOpen,
   ...restProps
 }: InvoicesTableProps) => {
   const { i18n } = useLingui();
@@ -85,7 +96,12 @@ const InvoicesTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { filters, onChangeFilter } = useReceivablesFilters();
 
-  const { data: invoices, isLoading } = useReceivables({
+  const {
+    data: invoices,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -160,7 +176,7 @@ const InvoicesTableBase = ({
         display: 'flex',
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {
@@ -211,6 +227,7 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        renderCell: (params) => <DueDateCell data={params.row} />,
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
@@ -223,6 +240,36 @@ const InvoicesTableBase = ({
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'InvoicesTable'
   );
+
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
+
+  if (
+    !isLoading &&
+    invoices?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Receivables`}
+        descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+        descriptionLine2={t(i18n)`You can create your first invoice.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-InvoicesTable';
 
@@ -285,6 +332,21 @@ const InvoicesTableBase = ({
                 setPageSize(pageSize);
                 setPaginationToken(page ?? undefined);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={invoices?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
+              refetch={refetch}
+              entityName={t(i18n)`Invoices`}
+              actionButtonLabel={t(i18n)`Create Invoice`}
+              actionOptions={[t(i18n)`Invoice`]}
+              type="no-data"
             />
           ),
         }}

@@ -1,3 +1,4 @@
+import { Receivables } from '@/components';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
@@ -11,8 +12,6 @@ import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
-
-import { Receivables } from './Receivables';
 
 describe('Receivables', () => {
   describe('# Permissions', () => {
@@ -103,7 +102,6 @@ describe('Receivables', () => {
         ),
       });
 
-      await waitUntilTableIsLoaded();
       await waitUntilTableIsLoaded();
 
       const createInvoiceButton = screen.findByRole('button', {

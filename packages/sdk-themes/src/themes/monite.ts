@@ -33,6 +33,18 @@ interface MonitePaletteOptions extends PaletteOptions {
   };
 }
 
+const statusBackgroundColors = {
+  draft: '#000000D6',
+  new: '#3737FF',
+  approve_in_progress: '#E75300',
+  paid: '#13705F',
+  waiting_to_be_paid: '#3737FF',
+  rejected: '#FF475D',
+  partially_paid: '#A06DC8',
+  canceled: '#E75300',
+  all: '#F4F4FE',
+};
+
 export const paletteLight: MonitePaletteOptions = {
   primary: {
     dark: 'rgb(46, 46, 229)',
@@ -57,6 +69,11 @@ export const paletteLight: MonitePaletteOptions = {
     '95': '#f9f9f9',
   },
   divider: '#DDDDDD',
+  text: {
+    primary: 'rgba(0,0,0,0.84)',
+    secondary: 'rgba(0,0,0,0.68)',
+    disabled: 'rgba(0,0,0,0.52)',
+  },
 };
 
 export const paletteDark: MonitePaletteOptions = {
@@ -113,6 +130,16 @@ const statusColors: {
   },
 };
 
+// Array of colours for counterpart 'logos'. A random color will be used
+// from the array. See: calculateColorIndex
+const counterpartColors: string[] = [
+  'rgba(0,0,255,0.05)',
+  'rgba(255,0,32,0.05)',
+  'rgba(0,255,220,0.05)',
+  'rgba(225,1,251,0.05)',
+  'rgba(255,123,0,0.05)',
+];
+
 export const defaultMoniteTypography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
@@ -152,9 +179,10 @@ export const defaultMoniteTypography:
     lineHeight: '24px',
   },
   body2: {
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: '14px',
     lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.56)',
   },
   caption: {
     fontSize: '1rem',
@@ -182,6 +210,8 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
   },
 });
 
+const filterControlWidth = '160px';
+
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteOptions: {
     defaultProps: {
@@ -201,7 +231,42 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiTypography: {
     styleOverrides: {
-      body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
+      root: {
+        '&.Monite-SummaryCard-StatusTypography': {
+          fontSize: 14,
+        },
+        '&.Monite-SummaryCard-StatusTypography-draft': {
+          color: statusBackgroundColors.draft,
+        },
+        '&.Monite-SummaryCard-StatusTypography-new': {
+          color: statusBackgroundColors.new,
+        },
+        '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
+          color: statusBackgroundColors.approve_in_progress,
+        },
+        '&.Monite-SummaryCard-StatusTypography-paid': {
+          color: statusBackgroundColors.paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
+          color: statusBackgroundColors.waiting_to_be_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-rejected': {
+          color: statusBackgroundColors.rejected,
+        },
+        '&.Monite-SummaryCard-StatusTypography-partially_paid': {
+          color: statusBackgroundColors.partially_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-canceled': {
+          color: statusBackgroundColors.canceled,
+        },
+        '&.Monite-SummaryCard-StatusTypography-all': {
+          color: statusBackgroundColors.all,
+        },
+        '&.Monite-SummaryCard-AmountTypography': {
+          fontSize: 20,
+          marginTop: 4,
+        },
+      },
     },
   },
   MuiFormLabel: {
@@ -239,10 +304,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiInputBase: {
     styleOverrides: {
       root: {
+        fontWeight: 400,
         borderRadius: `8px`,
         minHeight: '40px',
         '& .MuiInputBase-input': {
           height: '40px',
+          lineHeight: '40px',
           padding: '0 14px', // Adjust padding if needed
           boxSizing: 'border-box',
         },
@@ -289,6 +356,8 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           height: '40px',
           minHeight: '40px',
           maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
 
           '.MuiInputBase-root': {
             marginTop: 0,
@@ -305,6 +374,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
+          '.MuiSelect-select': {
+            fontSize: '14px',
+          },
+
           '.MuiFormLabel-root': {
             position: 'absolute',
             left: '20px',
@@ -318,9 +391,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiInputAdornment-positionEnd': {
-            marginRight: '6px',
-          },
           '.MuiIconButton-root': {
             marginRight: '-6px',
           },
@@ -338,6 +408,73 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               opacity: 0,
             },
           },
+
+          '& .MuiInputBase-input:not(.MuiSelect-select)': {
+            padding: '0 0 0 8px',
+            fontSize: '14px',
+            textOverflow: 'ellipsis',
+
+            '& + .MuiInputAdornment-root': {
+              marginLeft: 0,
+            },
+          },
+        },
+        '&.Monite-SearchField': {
+          maxWidth: '400px',
+          width: '100%',
+        },
+      },
+    },
+  },
+  MuiSelect: {
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiSelect-select': {
+            paddingLeft: '0',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderStyle: 'none',
+          },
+        },
+        '&.Monite-RecipientSelector': {
+          '& .MuiChip-root': {
+            backgroundColor: 'transparent',
+            borderColor: 'divider',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            padding: '7px 8px',
+            '& .MuiChip-label': {
+              color: 'text.primary',
+            },
+          },
+          '& .MuiSelect-icon': {
+            backgroundColor: 'primary.80',
+            borderRadius: '8px',
+            width: '32px',
+            height: '32px',
+            transform: 'translate(7px, -2px)',
+            path: {
+              fill: 'primary.main',
+              transform: 'scale(0.6) translate(8px, 8px)',
+            },
+          },
+        },
+      },
+    },
+  },
+  MuiStack: {
+    styleOverrides: {
+      root: {
+        '&.Monite-Filters': {
+          '& > *': {
+            flexBasis: 'fit-content',
+            flexGrow: 1,
+          },
+
+          '& .Monite-Filters-Group': {
+            marginLeft: '16px',
+          },
         },
       },
     },
@@ -350,6 +487,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           alignItems: 'flex-start',
           '.MuiFormControlLabel-label': {
             padding: '9px 0',
+          },
+        },
+
+        '&.Monite-FilterControl': {
+          marginLeft: 0,
+          marginRight: 0,
+          alignItems: 'center',
+          width: 'auto',
+          '& .MuiTypography-root': {
+            fontSize: '14px',
+            lineHeight: '20px',
           },
         },
       },
@@ -367,6 +515,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           paddingTop: 0,
           paddingBottom: 0,
         },
+        '&.Monite-FilterControl': {
+          height: '40px',
+          minHeight: '40px',
+          maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
+        },
       },
     },
   },
@@ -374,6 +529,28 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       InputLabelProps: {
         shrink: true,
+      },
+    },
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiInputBase-root': {
+            minHeight: '32px',
+            padding: 0,
+
+            '& .MuiInputBase-input': {
+              height: '32px',
+              lineHeight: '32px',
+              padding: 0,
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderStyle: 'none',
+            },
+          },
+          '& .MuiFormHelperText-root.Mui-error': {
+            marginLeft: 0,
+          },
+        },
       },
     },
   },
@@ -501,6 +678,37 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiAvatar: {
+    styleOverrides: {
+      root: {
+        '&.MuiAvatar-colored': {
+          margin: 0,
+          color: 'text.primary',
+          fontSize: '16px',
+          fontWeight: 600,
+          lineHeight: '40px',
+          width: '40px',
+          height: '40px',
+
+          '&.MuiAvatar-0': {
+            backgroundColor: counterpartColors[0],
+          },
+          '&.MuiAvatar-1': {
+            backgroundColor: counterpartColors[1],
+          },
+          '&.MuiAvatar-2': {
+            backgroundColor: counterpartColors[2],
+          },
+          '&.MuiAvatar-3': {
+            backgroundColor: counterpartColors[3],
+          },
+          '&.MuiAvatar-4': {
+            backgroundColor: counterpartColors[4],
+          },
+        },
+      },
+    },
+  },
   MuiChip: {
     styleOverrides: {
       root: {
@@ -552,14 +760,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         fontWeight: 400,
         fontSize: '14px',
         // Align counterpart avatar with the cell header
-        '&[data-field="counterpart_id"]': {
-          '.MuiChip-root': {
-            paddingLeft: 0,
-            '.MuiAvatar-root': {
-              margin: 0,
+        '&[data-field="counterpart_id"], &[data-field="counterpart_name"], &[data-field="was_created_by_user_id"]':
+          {
+            '.MuiChip-root': {
+              paddingLeft: 0,
             },
           },
-        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
@@ -624,14 +830,23 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
   },
   MuiCard: {
-    defaultProps: {
-      variant: 'outlined',
+    styleOverrides: {
+      root: {
+        '&.Monite-SummaryCard': {
+          display: 'flex',
+          borderRadius: '3px',
+          backgroundColor: '#ffffff',
+          boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+        },
+        '&.Monite-SummaryCard-selected': {
+          border: '2px solid #3737FF',
+        },
+        '&.Monite-SummaryCard-all': {
+          minWidth: '118px',
+          backgroundColor: '#F4F4FE',
+        },
+      },
     },
-    // styleOverrides: {
-    //   root: {
-    //     backgroundColor: 'neutral.90',
-    //   },
-    // },
   },
   MuiCardContent: {
     styleOverrides: {
@@ -716,6 +931,29 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MonitePayableDetailsInfo: {
+    defaultProps: {
+      ocrMismatchFields: {
+        amount_to_pay: false,
+        counterpart_bank_account_id: false,
+      },
+    },
+  },
+  MonitePayableTable: {
+    defaultProps: {
+      isShowingSummaryCards: true,
+      fieldOrder: [
+        'document_id',
+        'counterpart_id',
+        'created_at',
+        'issued_at',
+        'due_date',
+        'status',
+        'amount',
+        'pay',
+      ],
+    },
+  },
   MuiFormHelperText: {
     styleOverrides: {
       root: {
@@ -726,11 +964,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteApprovalRequestStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
   },
   MoniteInvoiceStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -791,6 +1031,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -832,6 +1073,20 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     ],
   },
+  MoniteCounterpartStatusChip: {
+    defaultProps: {
+      size: 'small',
+    },
+    styleOverrides: {
+      root: {
+        height: '24px',
+        padding: '7px 8px',
+        backgroundColor: 'transparent',
+        color: 'text.primary',
+        borderColor: 'neutral.80',
+      },
+    },
+  },
 };
 
 // Copied from mui/utils sourcecode since we cannot import external libraries in this file
@@ -869,6 +1124,7 @@ const colorProps = [
   'backgroundColor',
   'bgcolor',
   'borderColor',
+  'fill',
   '--DataGrid-rowBorderColor',
 ];
 

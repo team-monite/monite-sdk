@@ -12,7 +12,9 @@ import {
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -111,26 +113,30 @@ const ApprovalRequestsTableBase = ({
   );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
-  const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
-    api.approvalRequests.getApprovalRequests.useQuery({
-      query: {
-        sort: 'updated_at',
-        order: 'desc',
-        object_type: 'payable',
-        pagination_token: currentPaginationToken ?? undefined,
-        limit: pageSize,
-        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
-        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-          : undefined,
-        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-          : undefined,
-        created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
-          ? user?.id
-          : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
-      },
-    });
+  const {
+    data: approvalRequests,
+    isLoading: isApprovalRequestsLoading,
+    isError,
+    refetch,
+  } = api.approvalRequests.getApprovalRequests.useQuery({
+    query: {
+      sort: 'updated_at',
+      order: 'desc',
+      object_type: 'payable',
+      pagination_token: currentPaginationToken ?? undefined,
+      limit: pageSize,
+      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
+        ? user?.id
+        : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
+    },
+  });
 
   const { data: payables, isLoading: isPayablesLoading } =
     api.payables.getPayables.useQuery({
@@ -187,7 +193,7 @@ const ApprovalRequestsTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.value} />
+          <CounterpartCellById counterpartId={params.value} />
         ),
       },
       {
@@ -261,6 +267,31 @@ const ApprovalRequestsTableBase = ({
     return <AccessRestriction />;
   }
 
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterTypes] !== null &&
+      currentFilter[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching =
+    !!currentFilter[FILTER_TYPE_CREATED_AT] ||
+    !!currentFilter[FILTER_TYPE_ADDED_BY];
+
+  if (
+    !isApprovalRequestsLoading &&
+    approvalRequests?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Requests`}
+        descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval request.`}
+        type="no-data"
+      />
+    );
+  }
+
   return (
     <Box
       className={ScopedCssBaselineContainerClassName}
@@ -310,6 +341,18 @@ const ApprovalRequestsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isApprovalRequestsLoading}
+              dataLength={approvalRequests?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              refetch={refetch}
+              entityName={t(i18n)`Approval Requests`}
+              type="no-data"
             />
           ),
         }}

@@ -126,18 +126,37 @@ export function useAutosizeGridColumns(
         field: string;
       }[] = JSON.parse(serializedColumnsStr);
       for (const serializedColumn of serializedColumns) {
-        grid.setColumnWidth(serializedColumn.field, serializedColumn.width);
+        if (typeof grid.setColumnWidth === 'function') {
+          grid.setColumnWidth(serializedColumn.field, serializedColumn.width);
+        } else {
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          console.warn(`setColumnWidth is not a function on the grid object`);
+          //Todo: Handle the situation where setColumnWidth is not available
+        }
       }
       columnsRestored.current = columns; // Allow serialization of updated column widths
     }
 
     return () => {
       // Save columns only after restoring them or performing autosize
-      if (grid && (columnsRestored.current || autoSizePerformed.current)) {
+      if (
+        grid &&
+        typeof grid.getAllColumns === 'function' &&
+        (columnsRestored.current || autoSizePerformed.current)
+      ) {
         const columnsState = grid
           .getAllColumns()
           .map(({ field, width }) => ({ field, width }));
         localStorage.setItem(serializationKey, JSON.stringify(columnsState));
+      } else {
+        if (!grid) {
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          console.warn('Grid object is not defined.');
+        } else if (typeof grid.getAllColumns !== 'function') {
+          // eslint-disable-next-line lingui/no-unlocalized-strings
+          console.warn('getAllColumns is not a function on the grid object.');
+        }
+        //Todo: Handle the situation where getAllColumns is not available or grid is undefined
       }
     };
   }, [gridApiRef, columnSerializationKey, columns]);
