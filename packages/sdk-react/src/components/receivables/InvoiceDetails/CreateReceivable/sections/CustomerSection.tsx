@@ -100,8 +100,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     useCounterpartById(counterpartId);
   const {
     data: counterpartAddresses,
-    isLoading: isCounterpartAddressesLoading,
+    isLoading: _isCounterpartAddressesLoading,
   } = useCounterpartAddresses(counterpartId);
+  // _isCounterpartAddressesLoading will be true if counterpartId isn't set
+  const isCounterpartAddressesLoading =
+    counterpartId && _isCounterpartAddressesLoading;
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
@@ -259,9 +262,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     : ''
                 }
                 InputProps={{
-                  startAdornment: isContactPersonsLoading ? (
-                    <CircularProgress size={20} />
-                  ) : null,
+                  startAdornment:
+                    counterpartId && isContactPersonsLoading ? (
+                      <CircularProgress size={20} />
+                    ) : null,
                 }}
               />
               <Collapse in={Boolean(contactPersonError)}>

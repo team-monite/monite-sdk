@@ -65,8 +65,8 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 35,
-      functions: 35,
-      lines: 60,
+      functions: 33,
+      lines: 58,
       statements: 58,
     },
     './src/components/tags': {

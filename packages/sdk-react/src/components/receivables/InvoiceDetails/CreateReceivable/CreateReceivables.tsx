@@ -10,7 +10,7 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses } from '@/core/queries';
+import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -57,8 +57,11 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { api, monite } = useMoniteContext();
+  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
+
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: useMemo(
       () => ({
         type,
@@ -75,6 +78,7 @@ const CreateReceivablesBase = ({
         entity_bank_account_id: '',
         overdue_reminder_id: '',
         payment_reminder_id: '',
+        memo: '',
       }),
       [type]
     ),
@@ -87,7 +91,6 @@ const CreateReceivablesBase = ({
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { api, monite } = useMoniteContext();
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
       path: { entity_id: monite.entityId },
@@ -111,7 +114,7 @@ const CreateReceivablesBase = ({
 
   const theme = useTheme();
 
-  if (isSettingsLoading) {
+  if (isSettingsLoading || isEntityLoading) {
     return <LoadingPage />;
   }
 
@@ -139,7 +142,7 @@ const CreateReceivablesBase = ({
               type="submit"
               form={formName}
               disabled={createReceivable.isPending}
-            >{t(i18n)`Create`}</Button>
+            >{t(i18n)`Next page`}</Button>
           </Box>
         </Toolbar>
       </DialogTitle>
@@ -191,10 +194,15 @@ const CreateReceivablesBase = ({
                   line_items: values.line_items.map((item) => ({
                     quantity: item.quantity,
                     product_id: item.product_id,
-                    vat_rate_id: item.vat_rate_id,
+                    ...(isUSEntity
+                      ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
+                      : { vat_rate_id: item.vat_rate_id }),
                   })),
+                  memo: values.memo,
                   vat_exemption_rationale: values.vat_exemption_rationale,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
+                  ...(!isUSEntity && values.entity_vat_id_id
+                    ? { entity_vat_id_id: values.entity_vat_id_id }
+                    : {}),
                   fulfillment_date: values.fulfillment_date
                     ? /**
                        * We have to change the date as Backend accepts it.
@@ -206,6 +214,7 @@ const CreateReceivablesBase = ({
                   currency: actualCurrency,
                   payment_reminder_id: values.payment_reminder_id || undefined,
                   overdue_reminder_id: values.overdue_reminder_id || undefined,
+                  tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
                 };
 
               createReceivable.mutate(invoicePayload, {
@@ -226,6 +235,7 @@ const CreateReceivablesBase = ({
                 defaultCurrency={settings?.currency?.default}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
+                isUSEntity={isUSEntity}
               />
               <PaymentSection disabled={createReceivable.isPending} />
               <ReminderSection

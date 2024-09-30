@@ -1,5 +1,33 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-beta.5
+
+### Patch Changes
+
+- 43a2d4e6: encapsulate entity check logic
+- Updated dependencies [59ff0c92]
+- Updated dependencies [202101f0]
+- Updated dependencies [43a2d4e6]
+- Updated dependencies [0f7e21a5]
+- Updated dependencies [84ee5502]
+  - @team-monite/sdk-themes@0.2.0-beta.3
+  - @monite/sdk-api@3.16.0-beta.5
+
+## 1.8.0-beta.4
+
+### Minor Changes
+
+- e9eeb68f: feat(DEV-12284): add Approval Policies builder component
+
+### Patch Changes
+
+- Updated dependencies [0a37dc68]
+- Updated dependencies [6c3faf43]
+- Updated dependencies [cddff2af]
+- Updated dependencies [5d4c1274]
+  - @team-monite/sdk-themes@0.2.0-beta.2
+  - @monite/sdk-api@3.16.0-beta.4
+
 ## 1.8.0-beta.3
 
 ### Patch Changes

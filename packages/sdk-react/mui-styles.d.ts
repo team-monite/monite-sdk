@@ -1,6 +1,7 @@
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
 import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
@@ -39,6 +40,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
+    MonitePayableTable: 'never';
   }
 
   /**
@@ -53,6 +55,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
+    MonitePayableTable: Partial<MonitePayableTableProps>;
   }
 
   interface MoniteOptions {
@@ -70,6 +73,7 @@ declare module '@mui/material/styles' {
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
     MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
+    MonitePayableTable?: ComponentType<'MonitePayableTable'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;

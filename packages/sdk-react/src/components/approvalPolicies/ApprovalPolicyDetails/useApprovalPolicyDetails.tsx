@@ -50,7 +50,7 @@ export const useApprovalPolicyDetails = ({
 
   const updateMutation =
     api.approvalPolicies.patchApprovalPoliciesId.useMutation(undefined, {
-      onSuccess: async (updatedAppprovalPolicy) => {
+      onSuccess: async (updatedApprovalPolicy) => {
         await Promise.all([
           api.approvalPolicies.getApprovalPolicies.invalidateQueries(
             queryClient
@@ -58,7 +58,7 @@ export const useApprovalPolicyDetails = ({
           api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
             {
               parameters: {
-                path: { approval_policy_id: updatedAppprovalPolicy.id },
+                path: { approval_policy_id: updatedApprovalPolicy.id },
               },
             },
             queryClient

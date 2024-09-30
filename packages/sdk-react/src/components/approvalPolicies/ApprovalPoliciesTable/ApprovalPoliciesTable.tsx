@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
+import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -26,7 +27,6 @@ import {
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalPoliciesTriggers } from './components/ApprovalPoliciesTriggers';
-import { ApprovalPoliciesUser } from './components/ApprovalPoliciesUser';
 import { Filters } from './Filters';
 
 interface onChangeSortParams {
@@ -144,20 +144,20 @@ const ApprovalPoliciesTableBase = ({
       },
       {
         field: 'triggers',
-        headerName: t(i18n)`Triggers`,
+        headerName: t(i18n)`Conditions`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesTriggers approvalPolicy={params.row} />
         ),
       },
       {
         field: 'rule',
-        headerName: t(i18n)`Rule`,
+        headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
         ),
       },
       {
@@ -172,9 +172,7 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Created by`,
         sortable: false,
         flex: 0.8,
-        renderCell: ({ value }) => (
-          <ApprovalPoliciesUser entityUserId={value} />
-        ),
+        renderCell: ({ value }) => <User userId={value} />,
       },
     ];
   }, [dateFormat, i18n]);
@@ -208,7 +206,10 @@ const ApprovalPoliciesTableBase = ({
         descriptionLine1={t(i18n)`You don’t have any approval policies yet.`}
         descriptionLine2={t(i18n)`You can create your first approval policy.`}
         actionButtonLabel={t(i18n)`Create`}
-        onAction={() => onCreateClick?.()}
+        actionOptions={[t(i18n)`Approval Policy`]}
+        onAction={() => {
+          onCreateClick?.();
+        }}
         type="no-data"
       />
     );

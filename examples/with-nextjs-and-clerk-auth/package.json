@@ -21,8 +21,8 @@
     "codegen:api-version": "echo \"// This file was generated automatically\nexport const apiVersion = '$(node -p 'require(\"@monite/sdk-react/package.json\").apiVersion')';\" > src/lib/monite-api/api-version.ts"
   },
   "dependencies": {
-    "@clerk/clerk-sdk-node": "4.13.7",
-    "@clerk/nextjs": "4.29.4",
+    "@clerk/clerk-sdk-node": "4.13.21",
+    "@clerk/nextjs": "4.31.4",
     "@emotion/cache": "~11.11.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",

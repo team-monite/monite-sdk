@@ -137,7 +137,7 @@ export const entitiesHandlers = [
 
 type EntityResponse = components['schemas']['EntityResponse'];
 type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
-type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type OnboardingPaymentMethodsResponse =

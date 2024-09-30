@@ -3,9 +3,9 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteCustomFilters } from '@/components/payables/PayablesTable/Filters/MoniteCustomFilters';
+import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -21,6 +21,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -32,6 +33,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
+import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -44,16 +46,17 @@ import { addDays, formatISO } from 'date-fns';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
+  DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-  FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue } from './types';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 
-interface PayablesTableProps {
+interface PayablesTableProps extends MonitePayableTableProps {
   /**
    * The event handler for a row click.
    *
@@ -109,6 +112,29 @@ export interface PayableGridSortModel {
   sort: NonNullable<GridSortDirection>;
 }
 
+/**
+ * PayablesTable component.
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayablesTable: {
+ *       defaultProps: {
+ *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *         summaryCardFilters: {
+ *           'Overdue Invoices': {
+ *             status__in: ['waiting_to_be_paid'],
+ *             overdue: true,
+ *           },
+ *           'High-Value Invoices': {
+ *             amount__gte: 10000,
+ *           },
+ *         },
+ *       },
+ *     },
+ *   },
+ * });
+ */
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
     <PayablesTableBase {...props} />
@@ -121,9 +147,13 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
   openFileInput,
   setIsCreateInvoiceDialogOpen,
+  ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
+
+  const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
+    usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -167,10 +197,10 @@ const PayablesTableBase = ({
             representation: 'date',
           })
         : undefined,
-      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
-        ? currentFilter[FILTER_TYPE_OVERDUE]
-        : undefined,
+      search_text: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+        ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
+        : {}),
     },
   });
 
@@ -198,7 +228,14 @@ const PayablesTableBase = ({
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
   const dateFormat = useDateFormat();
 
-  const columns = useMemo<GridColDef[]>(() => {
+  const calculatedFieldOrder = useMemo<string[]>(() => {
+    if (fieldOrder && Array.isArray(fieldOrder)) {
+      return fieldOrder as string[];
+    }
+    return DEFAULT_FIELD_ORDER;
+  }, [fieldOrder]);
+
+  const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'document_id',
@@ -283,6 +320,7 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Due date" heading title',
         }),
         width: 120,
+        renderCell: (params) => <DueDateCell data={params.row} />,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
         ) => value && i18n.date(value, dateFormat),
@@ -297,26 +335,7 @@ const PayablesTableBase = ({
         }),
         display: 'flex',
         width: 160,
-        renderCell: (params) => {
-          const payable = params.row;
-          const isOverdue = isInvoiceOverdue(payable);
-
-          return (
-            <Box display="flex" alignItems="center" gap={1}>
-              <PayableStatusChip status={params.value} />
-              {isOverdue && (
-                <StyledChip
-                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
-                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
-                  status={params.value}
-                  color="error"
-                  label={t(i18n)`Overdue`}
-                  size={'small'}
-                />
-              )}
-            </Box>
-          );
-        },
+        renderCell: (params) => <PayableStatusChip status={params.value} />,
       },
       {
         field: 'amount',
@@ -349,6 +368,17 @@ const PayablesTableBase = ({
     ];
   }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
 
+  const columns = useMemo<GridColDef[]>(() => {
+    return columnsConfig.sort((a, b) => {
+      const aIndex = calculatedFieldOrder.indexOf(a.field);
+      const bIndex = calculatedFieldOrder.indexOf(b.field);
+
+      if (aIndex === -1 || bIndex === -1) return 0;
+
+      return aIndex - bIndex;
+    });
+  }, [columnsConfig, calculatedFieldOrder]);
+
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
     columns,
@@ -359,10 +389,17 @@ const PayablesTableBase = ({
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
-    setCurrentFilter((prevFilter) => ({
-      ...prevFilter,
-      [field]: value === 'all' ? null : value,
-    }));
+    if (field === FILTER_TYPE_SUMMARY_CARD && value) {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [FILTER_TYPE_SUMMARY_CARD]: value as keyof typeof summaryCardFilters,
+      }));
+    } else {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [field]: value === 'all' ? null : value,
+      }));
+    }
 
     onChangeFilterCallback?.({ field, value });
   };
@@ -425,9 +462,26 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      {isShowingSummaryCards && !summaryCardFilters && (
+        <SummaryCardsFilters
+          onChangeFilter={onChangeFilter}
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
+      {summaryCardFilters && Object.keys(summaryCardFilters).length > 0 && (
+        <MoniteCustomFilters
+          summaryCardFiltersData={summaryCardFilters}
+          onChangeFilter={onChangeFilter}
+          selectedFilter={
+            typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+              ? currentFilter[FILTER_TYPE_SUMMARY_CARD]
+              : 'all'
+          }
+          sx={{ mb: 2 }}
+        />
+      )}
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
@@ -493,3 +547,11 @@ const PayablesTableBase = ({
     </Box>
   );
 };
+
+const usePayableTableThemeProps = (
+  inProps: Partial<MonitePayableTableProps>
+): MonitePayableTableProps =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableTable',
+  });

@@ -35,15 +35,7 @@ export const DialogDetailsForm: Story = {
   },
   render: (args) => {
     return (
-      <Dialog
-        open={true}
-        fullScreen
-        onClose={() => {
-          action('onClose')();
-        }}
-        onSubmit={() => {}}
-        onClosed={action('onClosed')}
-      >
+      <Dialog alignDialog="right" open={true} onClose={action('onClose')}>
         <ExtendThemeProvider
           theme={{
             components: {
@@ -58,6 +50,10 @@ export const DialogDetailsForm: Story = {
                     counterpart: true, // The counterpart is required based on OCR data
                     dueDate: true, // The due date is required based on OCR data
                     currency: true, // The currency is required based on OCR data
+                  },
+                  ocrMismatchFields: {
+                    amount_to_pay: true,
+                    counterpart_bank_account_id: true,
                   },
                 },
               },

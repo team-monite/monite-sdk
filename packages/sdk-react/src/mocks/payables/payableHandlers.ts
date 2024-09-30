@@ -1,9 +1,10 @@
-import { components } from '@/api';
+import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+  generateAggregatedPayables,
   PAYABLE_ID_WITHOUT_FILE,
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
@@ -312,6 +313,20 @@ export const payableHandlers = [
     }
   }),
 
+  http.get<
+    {},
+    undefined,
+    paths['/payables/analytics']['get']['responses']['200']['content']['application/json']
+  >(`${payablePath}/analytics`, async () => {
+    await delay();
+
+    return HttpResponse.json({
+      data: generateAggregatedPayables().data,
+      sum_total_amount: generateAggregatedPayables().sum_total_amount,
+      count: generateAggregatedPayables().count,
+    });
+  }),
+
   // update (patch) payable by id
   http.patch<
     { payableId: string },
@@ -441,7 +456,7 @@ export const payableHandlers = [
 
   http.post<
     {},
-    components['schemas']['UploadFileAttach'],
+    components['schemas']['UploadFile'],
     | components['schemas']['PayableResponseSchema']
     | components['schemas']['ErrorSchemaResponse']
   >(`${payablePath}/upload_from_file`, async ({ request }) => {
@@ -486,7 +501,7 @@ export const payableHandlers = [
 
   http.post<
     { payableId: string },
-    components['schemas']['UploadFileAttach'],
+    components['schemas']['UploadFile'],
     | components['schemas']['PayableResponseSchema']
     | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/attach_file`, async ({ request }) => {

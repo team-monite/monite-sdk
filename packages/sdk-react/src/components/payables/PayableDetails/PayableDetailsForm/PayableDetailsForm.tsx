@@ -153,6 +153,7 @@ const getValidationSchema = (i18n: I18n) =>
  *           dueDate: true,             // The due date is required based on OCR data
  *           currency: true,            // The currency is required based on OCR data
  *         },
+ *         isTagsDisabled: true,        // The tags field is disabled
  *       },
  *     },
  *   },
@@ -199,6 +200,9 @@ const PayableDetailsFormBase = forwardRef<
       formatToMinorUnits,
       formatCurrencyToDisplay,
     } = useCurrencies();
+
+    const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
+
     const defaultValues = useMemo(
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
@@ -528,6 +532,7 @@ const PayableDetailsFormBase = forwardRef<
                             <FormControl
                               variant="outlined"
                               fullWidth
+                              disabled={isTagsDisabled}
                               required={isFieldRequired(
                                 'tags',
                                 ocrRequiredFields
@@ -537,7 +542,7 @@ const PayableDetailsFormBase = forwardRef<
                               <Autocomplete
                                 {...field}
                                 id={field.name}
-                                disabled={!isTagsReadAllowed}
+                                disabled={isTagsDisabled || !isTagsReadAllowed}
                                 multiple
                                 filterSelectedOptions
                                 getOptionLabel={(option) => option.label}

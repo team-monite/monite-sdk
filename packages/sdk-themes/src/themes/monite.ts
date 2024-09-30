@@ -33,6 +33,18 @@ interface MonitePaletteOptions extends PaletteOptions {
   };
 }
 
+const statusBackgroundColors = {
+  draft: '#000000D6',
+  new: '#3737FF',
+  approve_in_progress: '#E75300',
+  paid: '#13705F',
+  waiting_to_be_paid: '#3737FF',
+  rejected: '#FF475D',
+  partially_paid: '#A06DC8',
+  canceled: '#E75300',
+  all: '#F4F4FE',
+};
+
 export const paletteLight: MonitePaletteOptions = {
   primary: {
     dark: 'rgb(46, 46, 229)',
@@ -219,7 +231,42 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiTypography: {
     styleOverrides: {
-      body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
+      root: {
+        '&.Monite-SummaryCard-StatusTypography': {
+          fontSize: 14,
+        },
+        '&.Monite-SummaryCard-StatusTypography-draft': {
+          color: statusBackgroundColors.draft,
+        },
+        '&.Monite-SummaryCard-StatusTypography-new': {
+          color: statusBackgroundColors.new,
+        },
+        '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
+          color: statusBackgroundColors.approve_in_progress,
+        },
+        '&.Monite-SummaryCard-StatusTypography-paid': {
+          color: statusBackgroundColors.paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
+          color: statusBackgroundColors.waiting_to_be_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-rejected': {
+          color: statusBackgroundColors.rejected,
+        },
+        '&.Monite-SummaryCard-StatusTypography-partially_paid': {
+          color: statusBackgroundColors.partially_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-canceled': {
+          color: statusBackgroundColors.canceled,
+        },
+        '&.Monite-SummaryCard-StatusTypography-all': {
+          color: statusBackgroundColors.all,
+        },
+        '&.Monite-SummaryCard-AmountTypography': {
+          fontSize: 20,
+          marginTop: 4,
+        },
+      },
     },
   },
   MuiFormLabel: {
@@ -783,14 +830,23 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
   },
   MuiCard: {
-    defaultProps: {
-      variant: 'outlined',
+    styleOverrides: {
+      root: {
+        '&.Monite-SummaryCard': {
+          display: 'flex',
+          borderRadius: '3px',
+          backgroundColor: '#ffffff',
+          boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+        },
+        '&.Monite-SummaryCard-selected': {
+          border: '2px solid #3737FF',
+        },
+        '&.Monite-SummaryCard-all': {
+          minWidth: '118px',
+          backgroundColor: '#F4F4FE',
+        },
+      },
     },
-    // styleOverrides: {
-    //   root: {
-    //     backgroundColor: 'neutral.90',
-    //   },
-    // },
   },
   MuiCardContent: {
     styleOverrides: {
@@ -873,6 +929,29 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           margin: '0 auto',
         },
       },
+    },
+  },
+  MonitePayableDetailsInfo: {
+    defaultProps: {
+      ocrMismatchFields: {
+        amount_to_pay: false,
+        counterpart_bank_account_id: false,
+      },
+    },
+  },
+  MonitePayableTable: {
+    defaultProps: {
+      isShowingSummaryCards: true,
+      fieldOrder: [
+        'document_id',
+        'counterpart_id',
+        'created_at',
+        'issued_at',
+        'due_date',
+        'status',
+        'amount',
+        'pay',
+      ],
     },
   },
   MuiFormHelperText: {
