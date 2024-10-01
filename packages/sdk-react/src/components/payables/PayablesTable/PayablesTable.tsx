@@ -118,7 +118,7 @@ export interface PayableGridSortModel {
  * @example MUI theming
  * const theme = createTheme({
  *   components: {
- *     MonitePayablesTable: {
+ *     MonitePayableTable: {
  *       defaultProps: {
  *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
  *         summaryCardFilters: {
