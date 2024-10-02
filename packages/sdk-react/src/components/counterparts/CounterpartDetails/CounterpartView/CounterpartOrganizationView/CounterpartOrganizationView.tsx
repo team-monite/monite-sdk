@@ -26,7 +26,7 @@ export const DefaultEmail = ({
         {email}
       </Typography>
       {isDefault && (
-        <Box ml="auto" mr={1} display="inline">
+        <Box ml={2} mr={1} display="inline">
           <Chip
             label={t(i18n)`default`}
             variant="filled"
@@ -47,7 +47,7 @@ export const DefaultEmail = ({
 type CounterpartOrganizationViewProps = {
   actions: ReactNode;
   counterpart: CounterpartOrganizationFields & { taxId: string | undefined };
-  isEmailDefault?: boolean;
+  isEmailDefault: boolean;
 } & CounterpartShowCategories;
 
 export const CounterpartOrganizationView = ({

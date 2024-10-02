@@ -11,6 +11,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -81,6 +82,12 @@ export interface ProductTableProps {
    * @param productId - Removed product ID.
    */
   onDeleted?: (productId: ProductServiceResponse['id']) => void;
+
+  /**
+   * The event handler open create modal
+   * Triggers when the user click on the create new button for no data state
+   */
+  openCreateModal?: () => void;
 }
 
 interface ProductsTableSortModel {
@@ -100,6 +107,7 @@ const ProductsTableBase = ({
   onRowClick,
   onEdit,
   onDeleted,
+  openCreateModal,
 }: ProductTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -140,7 +148,12 @@ const ProductsTableBase = ({
 
   const { api } = useMoniteContext();
 
-  const { data: products, isLoading } = api.products.getProducts.useQuery({
+  const {
+    data: products,
+    isLoading,
+    isError,
+    refetch,
+  } = api.products.getProducts.useQuery({
     query: {
       sort: sortModel?.field,
       order: sortModel?.sort,
@@ -262,6 +275,13 @@ const ProductsTableBase = ({
     return <AccessRestriction />;
   }
 
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterType] !== null &&
+      currentFilter[key as keyof FilterType] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
+
   return (
     <Box
       className={ScopedCssBaselineContainerClassName}
@@ -312,6 +332,21 @@ const ProductsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={products?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={openCreateModal}
+              refetch={refetch}
+              entityName={t(i18n)`Products`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Product`]}
+              type="no-data"
             />
           ),
         }}

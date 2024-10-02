@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMyEntity } from '@/core/queries';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -23,7 +24,7 @@ export const OnboardingEntityDocuments = () => {
 
   const { api } = useMoniteContext();
 
-  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery();
+  const { data: entity } = useMyEntity();
 
   const { data: descriptions } = useDocumentDescriptions(
     entity?.address.country

@@ -13,6 +13,7 @@ import { getUpdateInvoiceValidationSchema } from '@/components/receivables/Invoi
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMyEntity } from '@/core/queries';
 import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
@@ -63,8 +64,10 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
+  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
+
   const methods = useForm<UpdateReceivablesFormProps>({
-    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: {
       /** Customer section */
       counterpart_id: invoice.counterpart_id,
@@ -89,9 +92,10 @@ const EditInvoiceDetailsContent = ({
         vat_rate_value: lineItem.product.vat_rate.value,
         name: lineItem.product.name,
         price: lineItem.product.price,
-        measure_unit_id: lineItem.product.measure_unit_id,
+        measure_unit_id: lineItem.product.measure_unit?.id ?? '',
       })),
       vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+      memo: invoice.memo ?? '',
 
       /** Items section */
       entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
@@ -128,7 +132,9 @@ const EditInvoiceDetailsContent = ({
   const updateReceivable = useUpdateReceivable(invoice.id);
 
   const isLoading =
-    updateReceivableLineItems.isPending || updateReceivable.isPending;
+    updateReceivableLineItems.isPending ||
+    updateReceivable.isPending ||
+    isEntityLoading;
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
@@ -192,6 +198,7 @@ const EditInvoiceDetailsContent = ({
                     counterpart_vat_id_id:
                       values.counterpart_vat_id_id || undefined,
                     currency: actualCurrency,
+                    memo: values.memo,
                     vat_exemption_rationale: values.vat_exemption_rationale,
                     // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                     counterpart_shipping_address_id:
@@ -243,6 +250,7 @@ const EditInvoiceDetailsContent = ({
               <CustomerSection disabled={isLoading} />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
+                isUSEntity={isUSEntity}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
               />

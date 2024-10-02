@@ -13,7 +13,7 @@ import {
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface InvoiceRecurrenceIterationStatusChipProps {
+export interface MoniteInvoiceRecurrenceIterationStatusChipProps {
   /** The status of the iteration. */
   status: components['schemas']['IterationStatus'];
   /** The variant of the Chip. */
@@ -53,7 +53,7 @@ export interface InvoiceRecurrenceIterationStatusChipProps {
  */
 export const InvoiceRecurrenceIterationStatusChip = forwardRef<
   HTMLDivElement,
-  InvoiceRecurrenceIterationStatusChipProps
+  MoniteInvoiceRecurrenceIterationStatusChipProps
 >((inProps, ref) => {
   const { status, variant, icon, size } = useThemeProps({
     props: inProps,
@@ -71,7 +71,7 @@ export const InvoiceRecurrenceIterationStatusChip = forwardRef<
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getIterationStatusLabel(i18n, status)}
       status={status}
-      size={size ?? 'small'}
+      size={size}
       variant={variant ?? 'filled'}
     />
   );
@@ -80,23 +80,12 @@ export const InvoiceRecurrenceIterationStatusChip = forwardRef<
 const StyledChip = styled(
   forwardRef<
     HTMLDivElement,
-    ChipProps & Omit<InvoiceRecurrenceIterationStatusChipProps, 'icon'>
+    ChipProps & Omit<MoniteInvoiceRecurrenceIterationStatusChipProps, 'icon'>
   >((props, ref) => <Chip ref={ref} {...props} />),
   {
     name: 'MoniteInvoiceRecurrenceIterationStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-        case 'size':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});
 

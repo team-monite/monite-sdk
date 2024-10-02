@@ -1,5 +1,17 @@
 # @monite/sdk-api
 
+## 3.16.0-beta.5
+
+### Patch Changes
+
+- 43a2d4e6: encapsulate entity check logic
+
+## 3.16.0-beta.4
+
+## 3.16.0-beta.3
+
+## 3.16.0-beta.2
+
 ## 3.16.0-beta.1
 
 ## 3.16.0-beta.0

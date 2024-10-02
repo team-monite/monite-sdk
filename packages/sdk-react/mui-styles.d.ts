@@ -1,10 +1,13 @@
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
-import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
+import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
+import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
+import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
+import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
+import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
-import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
+import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
@@ -34,8 +37,11 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip: 'root';
     MoniteApprovalRequestStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
+    MonitePayableDetailsInfo: 'never';
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
+    MoniteCounterpartStatusChip: 'root';
+    MonitePayableTable: 'never';
     MoniteReceivablesTable: never; // no slots available
   }
 
@@ -43,25 +49,37 @@ declare module '@mui/material/styles' {
    * Extends MUI component list
    */
   interface ComponentsPropsList {
-    MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
-    MonitePayableStatusChip: Partial<PayableStatusChipProps>;
+    MoniteInvoiceStatusChip: Partial<MoniteInvoiceStatusChipProps>;
+    MonitePayableStatusChip: Partial<MonitePayableStatusChipProps>;
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
-    MoniteInvoiceRecurrenceStatusChip: Partial<InvoiceRecurrenceStatusChipProps>;
-    MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
+    MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
+    MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
+    MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
+    MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
+    MonitePayableTable: Partial<MonitePayableTableProps>;
     MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
+  }
+
+  interface MoniteOptions {
+    dateFormat?: Intl.DateTimeFormatOptions;
+    dateTimeFormat?: Intl.DateTimeFormatOptions;
   }
 
   /**
    * Extends theme `components`
    */
   interface Components {
+    MoniteOptions?: { defaultProps: MoniteOptions };
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
+    MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
+    MonitePayableTable?: ComponentType<'MonitePayableTable'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
+    MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
   }
 }

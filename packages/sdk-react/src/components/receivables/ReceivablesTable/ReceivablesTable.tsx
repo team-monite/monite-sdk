@@ -43,6 +43,12 @@ export interface MoniteReceivablesTableProps {
   tabs?: Array<MoniteReceivablesTab>;
 }
 
+export enum ReceivablesTableTabEnum {
+  Quotes,
+  Invoices,
+  CreditNotes,
+}
+
 interface ReceivablesTableBaseProps {
   /**
    * The event handler for a row click.
@@ -50,6 +56,13 @@ interface ReceivablesTableBaseProps {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+    @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export type ReceivablesTableProps =
@@ -136,6 +149,7 @@ type MoniteReceivablesTab = {
 const ReceivablesTableBase = ({
   onRowClick,
   onTabChange,
+  setIsCreateInvoiceDialogOpen,
   ...inProps
 }: ReceivablesTableProps) => {
   const { tab, tabs } = useReceivablesTableProps(inProps);
@@ -191,6 +205,7 @@ const ReceivablesTableBase = ({
           <QuotesTable
             key={activeTabIndex}
             onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             query={activeTabItem?.query}
           />
         </Box>
@@ -211,6 +226,7 @@ const ReceivablesTableBase = ({
           <InvoicesTable
             key={activeTabIndex}
             onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             query={activeTabItem?.query}
             filters={activeTabItem?.filters}
           />
@@ -232,6 +248,7 @@ const ReceivablesTableBase = ({
           <CreditNotesTable
             key={activeTabIndex}
             onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             query={activeTabItem?.query}
           />
         </Box>

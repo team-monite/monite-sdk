@@ -1,5 +1,36 @@
 # @monite/sdk-drop-in
 
+## 1.6.0-beta.5
+
+### Patch Changes
+
+- 43a2d4e6: encapsulate entity check logic
+- Updated dependencies [43a2d4e6]
+  - @monite/sdk-api@3.16.0-beta.5
+
+## 1.6.0-beta.4
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.4
+
+## 1.6.0-beta.3
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.3
+
+## 1.6.0-beta.2
+
+### Minor Changes
+
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- 369ba2c9: add Recurrence Invoice support
+  - @monite/sdk-api@3.16.0-beta.2
+
 ## 1.6.0-beta.1
 
 ### Patch Changes

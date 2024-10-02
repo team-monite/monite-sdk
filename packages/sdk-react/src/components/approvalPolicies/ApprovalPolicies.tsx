@@ -85,7 +85,12 @@ const ApprovalPoliciesBase = () => {
       />
 
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
-      {isReadAllowed && <ApprovalPoliciesTable onRowClick={onRowClick} />}
+      {isReadAllowed && (
+        <ApprovalPoliciesTable
+          onRowClick={onRowClick}
+          onCreateClick={onCreateClick}
+        />
+      )}
 
       <Dialog
         open={isCreateDialogOpened}
@@ -94,7 +99,7 @@ const ApprovalPoliciesBase = () => {
       >
         <ApprovalPolicyDetails
           id={selectedApprovalPolicyId}
-          onCreated={() => setIsCreateDialogOpened(false)}
+          onCreated={(id) => setSelectedApprovalPolicyId(id)}
         />
       </Dialog>
     </>

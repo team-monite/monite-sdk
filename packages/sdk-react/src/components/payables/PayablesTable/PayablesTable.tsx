@@ -3,26 +3,37 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteCustomFilters } from '@/components/payables/PayablesTable/Filters/MoniteCustomFilters';
+import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAreCounterpartsLoading,
+  useAutosizeGridColumns,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
+import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -35,15 +46,17 @@ import { addDays, formatISO } from 'date-fns';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
+  DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue } from './types';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 
-interface PayablesTableProps {
+interface PayablesTableProps extends MonitePayableTableProps {
   /**
    * The event handler for a row click.
    *
@@ -78,6 +91,20 @@ interface PayablesTableProps {
     sort: 'created_at';
     order: 'asc' | 'desc' | null;
   }) => void;
+
+  /**
+   * The event handler for the file input when no data is present.
+   * This triggers the file upload process when the user selects a file.
+   */
+  openFileInput?: () => void;
+
+  /**
+   * The event handler for opening the "New Invoice" dialog when no data is present.
+   * This function controls the visibility of the dialog for invoice creation.
+   *
+   * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export interface PayableGridSortModel {
@@ -85,6 +112,29 @@ export interface PayableGridSortModel {
   sort: NonNullable<GridSortDirection>;
 }
 
+/**
+ * PayablesTable component.
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayableTable: {
+ *       defaultProps: {
+ *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *         summaryCardFilters: {
+ *           'Overdue Invoices': {
+ *             status__in: ['waiting_to_be_paid'],
+ *             overdue: true,
+ *           },
+ *           'High-Value Invoices': {
+ *             amount__gte: 10000,
+ *           },
+ *         },
+ *       },
+ *     },
+ *   },
+ * });
+ */
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
     <PayablesTableBase {...props} />
@@ -95,9 +145,15 @@ const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
+  openFileInput,
+  setIsCreateInvoiceDialogOpen,
+  ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
+
+  const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
+    usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -141,7 +197,10 @@ const PayablesTableBase = ({
             representation: 'date',
           })
         : undefined,
-      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      search_text: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+        ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
+        : {}),
     },
   });
 
@@ -150,6 +209,7 @@ const PayablesTableBase = ({
     isLoading,
     isError,
     error,
+    refetch,
   } = api.payables.getPayables.useQuery(payablesQueryParameters, {
     refetchInterval: api.payables.getPayables
       .getQueryData(payablesQueryParameters, queryClient)
@@ -165,7 +225,17 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
-  const columns = useMemo<GridColDef[]>(() => {
+  const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
+  const dateFormat = useDateFormat();
+
+  const calculatedFieldOrder = useMemo<string[]>(() => {
+    if (fieldOrder && Array.isArray(fieldOrder)) {
+      return fieldOrder as string[];
+    }
+    return DEFAULT_FIELD_ORDER;
+  }, [fieldOrder]);
+
+  const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'document_id',
@@ -186,7 +256,11 @@ const PayablesTableBase = ({
             );
           }
 
-          return payable.document_id;
+          return (
+            <span className="Monite-TextOverflowContainer">
+              {payable.document_id}
+            </span>
+          );
         },
       },
       {
@@ -194,9 +268,9 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Counterpart`,
         display: 'flex',
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.value} />
+          <CounterpartCellById counterpartId={params.value} />
         ),
       },
       {
@@ -220,7 +294,7 @@ const PayablesTableBase = ({
         },
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'issued_at',
@@ -234,7 +308,7 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'due_date',
@@ -246,9 +320,10 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Due date" heading title',
         }),
         width: 120,
+        renderCell: (params) => <DueDateCell data={params.row} />,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'status',
@@ -291,14 +366,40 @@ const PayablesTableBase = ({
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n, onPay]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return columnsConfig.sort((a, b) => {
+      const aIndex = calculatedFieldOrder.indexOf(a.field);
+      const bIndex = calculatedFieldOrder.indexOf(b.field);
+
+      if (aIndex === -1 || bIndex === -1) return 0;
+
+      return aIndex - bIndex;
+    });
+  }, [columnsConfig, calculatedFieldOrder]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    payables?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'PayablesTable'
+  );
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
-    setCurrentFilter((prevFilter) => ({
-      ...prevFilter,
-      [field]: value === 'all' ? null : value,
-    }));
+    if (field === FILTER_TYPE_SUMMARY_CARD && value) {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [FILTER_TYPE_SUMMARY_CARD]: value as keyof typeof summaryCardFilters,
+      }));
+    } else {
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [field]: value === 'all' ? null : value,
+      }));
+    }
 
     onChangeFilterCallback?.({ field, value });
   };
@@ -317,6 +418,38 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterTypes] !== null &&
+      currentFilter[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
+
+  if (
+    !isLoading &&
+    payables?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Payables`}
+        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
+        descriptionLine2={t(i18n)`You can add a new payable.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+        onAction={(action) => {
+          if (action === t(i18n)`New Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          } else if (action === t(i18n)`Upload File`) {
+            openFileInput?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -329,15 +462,33 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      {isShowingSummaryCards && !summaryCardFilters && (
+        <SummaryCardsFilters
+          onChangeFilter={onChangeFilter}
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
+      {summaryCardFilters && Object.keys(summaryCardFilters).length > 0 && (
+        <MoniteCustomFilters
+          summaryCardFiltersData={summaryCardFilters}
+          onChangeFilter={onChangeFilter}
+          selectedFilter={
+            typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+              ? currentFilter[FILTER_TYPE_SUMMARY_CARD]
+              : 'all'
+          }
+          sx={{ mb: 2 }}
+        />
+      )}
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
             sortModel: [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
@@ -368,6 +519,27 @@ const PayablesTableBase = ({
               }}
             />
           ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={payables?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={(type) => {
+                if (type === 'New Invoice') {
+                  setIsCreateInvoiceDialogOpen?.(true);
+                } else if (type === 'Upload File') {
+                  openFileInput?.();
+                }
+              }}
+              refetch={refetch}
+              entityName={t(i18n)`Payable`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+              type="no-data"
+            />
+          ),
         }}
         columns={columns}
         rows={payables?.data || []}
@@ -375,3 +547,11 @@ const PayablesTableBase = ({
     </Box>
   );
 };
+
+const usePayableTableThemeProps = (
+  inProps: Partial<MonitePayableTableProps>
+): MonitePayableTableProps =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableTable',
+  });

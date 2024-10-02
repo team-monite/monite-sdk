@@ -100,8 +100,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     useCounterpartById(counterpartId);
   const {
     data: counterpartAddresses,
-    isLoading: isCounterpartAddressesLoading,
+    isLoading: _isCounterpartAddressesLoading,
   } = useCounterpartAddresses(counterpartId);
+  // _isCounterpartAddressesLoading will be true if counterpartId isn't set
+  const isCounterpartAddressesLoading =
+    counterpartId && _isCounterpartAddressesLoading;
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
@@ -122,7 +125,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     [counterparts]
   );
 
-  const defaultContactName = counterpartContacts?.data.find(
+  const defaultContactName = counterpartContacts?.find(
     (contact) => contact.is_default
   );
 
@@ -259,9 +262,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     : ''
                 }
                 InputProps={{
-                  startAdornment: isContactPersonsLoading ? (
-                    <CircularProgress size={20} />
-                  ) : null,
+                  startAdornment:
+                    counterpartId && isContactPersonsLoading ? (
+                      <CircularProgress size={20} />
+                    ) : null,
                 }}
               />
               <Collapse in={Boolean(contactPersonError)}>
@@ -274,7 +278,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 in={
                   !contactPersonError &&
                   !isContactPersonsLoading &&
-                  counterpartContacts?.data.length === 0
+                  counterpartContacts?.length === 0
                 }
               >
                 <FormHelperText>

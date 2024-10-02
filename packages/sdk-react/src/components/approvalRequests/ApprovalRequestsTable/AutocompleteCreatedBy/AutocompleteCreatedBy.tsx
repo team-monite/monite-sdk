@@ -69,6 +69,7 @@ export const AutocompleteCreatedBy = ({
         onChangeFilter(newValue?.id);
         refetch();
       }}
+      className="Monite-ApprovalAddedByFilter-Container Monite-FilterControl"
       renderInput={(params) => (
         <TextField
           {...params}

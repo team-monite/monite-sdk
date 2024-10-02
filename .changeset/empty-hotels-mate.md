@@ -3,4 +3,4 @@
 '@monite/sdk-react': patch
 ---
 
-add Recurrence Invoice support
+feat(DEV-11417): add Recurring Invoice support

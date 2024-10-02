@@ -9,11 +9,13 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -32,6 +34,7 @@ import { TagFormModal } from '../TagFormModal';
 
 interface TagsTableProps {
   onChangeSort?: (params: TagsTableSortModel) => void;
+  showCreationModal?: () => void;
 }
 
 interface TagsTableSortModel {
@@ -47,6 +50,7 @@ export const TagsTable = (props: TagsTableProps) => (
 
 const TagsTableBase = ({
   onChangeSort: onChangeSortCallback,
+  showCreationModal,
 }: TagsTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -85,6 +89,7 @@ const TagsTableBase = ({
     isLoading,
     isError,
     error,
+    refetch,
   } = api.tags.getTags.useQuery({
     query: {
       sort: sortModel?.field,
@@ -128,6 +133,8 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -142,7 +149,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'updated_at',
@@ -150,7 +157,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['updated_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'created_by_entity_user_id',
@@ -185,7 +192,32 @@ const TagsTableBase = ({
         ],
       },
     ];
-  }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
+  }, [
+    dateFormat,
+    i18n,
+    isDeleteAllowed,
+    isUpdateAllowed,
+    openDeleteModal,
+    openEditModal,
+  ]);
+
+  if (!isLoading && tags?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Tags`}
+        descriptionLine1={t(i18n)`You don’t have any tags yet.`}
+        descriptionLine2={t(i18n)`You can create your first tag.`}
+        actionButtonLabel={t(i18n)`Create new tag`}
+        actionOptions={[t(i18n)`Tag`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Tag`) {
+            showCreationModal?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   return (
     <Box
@@ -229,6 +261,21 @@ const TagsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={tags?.data.length || 0}
+              isFiltering={false}
+              isSearching={false}
+              isError={isError}
+              onCreate={showCreationModal}
+              refetch={refetch}
+              entityName={t(i18n)`Tags`}
+              actionButtonLabel={t(i18n)`Create new tag`}
+              actionOptions={[t(i18n)`Tag`]}
+              type="no-data"
             />
           ),
         }}

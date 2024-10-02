@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
-import {
-  useControlledTab,
-  useReceivablesTableProps,
-} from '@/components/receivables/ReceivablesTable/ReceivablesTable';
+import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -27,40 +24,24 @@ const ReceivablesBase = () => {
   const { i18n } = useLingui();
 
   const [invoiceId, setInvoiceId] = useState<string>('');
-  const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
 
-  const { tabs: receivablesTabs, tab: inReceivablesTab } =
-    useReceivablesTableProps();
+  const [activeTab, setActiveTab] = useState<ReceivablesTableTabEnum>(
+    ReceivablesTableTabEnum.Invoices
+  );
 
-  const [activeTabIndex, setActiveTabIndex] = useControlledTab({
-    tab: inReceivablesTab ?? 0,
-  });
-
-  useEffect(() => {
-    if (!invoiceId) {
-      setOpenDetails(false);
-
-      return;
-    }
-
-    if (invoiceId) {
-      setOpenDetails(true);
-    }
-  }, [invoiceId]);
-
-  const onRowClick = (id: string) => {
+  const openInvoiceModal = (id: string) => {
     setInvoiceId(id);
   };
 
-  const closeModal = () => {
-    setOpenDetails(false);
+  const onRowClick = (id: string) => {
+    openInvoiceModal(id);
   };
 
-  const closedModal = useCallback(() => {
+  const closeModal = () => {
     setInvoiceId('');
-  }, []);
+  };
 
   const { root } = useRootElements();
 
@@ -110,18 +91,18 @@ const ReceivablesBase = () => {
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
         <ReceivablesTable
-          tab={activeTabIndex}
-          onTabChange={setActiveTabIndex}
+          tab={activeTab}
+          onTabChange={setActiveTab}
           onRowClick={onRowClick}
+          setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
       <Dialog
         className={className + '-Dialog-ReceivableDetails'}
-        open={openDetails}
+        open={!!invoiceId}
         fullScreen
         container={root}
         onClose={closeModal}
-        onClosed={closedModal}
       >
         <InvoiceDetails id={invoiceId} />
       </Dialog>
@@ -136,16 +117,10 @@ const ReceivablesBase = () => {
       >
         <InvoiceDetails
           type={'invoice'}
-          onCreate={() => {
+          onCreate={(receivableId: string) => {
             setIsCreateInvoiceDialogOpen(false);
-            setActiveTabIndex(
-              Math.max(
-                0,
-                receivablesTabs?.findIndex(
-                  (tab) => tab.query?.type === 'invoice'
-                ) ?? 0
-              )
-            );
+            setActiveTab(ReceivablesTableTabEnum.Invoices);
+            openInvoiceModal(receivableId);
           }}
         />
       </Dialog>

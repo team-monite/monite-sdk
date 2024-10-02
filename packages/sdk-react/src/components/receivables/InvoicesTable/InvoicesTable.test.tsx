@@ -1,8 +1,16 @@
 import { InvoicesTable } from '@/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { renderWithClient } from '@/utils/test-utils';
-import { findByLabelText, fireEvent, screen } from '@testing-library/react';
+import { i18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+import {
+  findByLabelText,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 
 describe('InvoicesTable', () => {
   test('renders action menu if onRowAction property specified', async () => {
@@ -108,5 +116,29 @@ describe('InvoicesTable', () => {
     expect(
       screen.queryByRole('columnheader', { name: 'Action menu' })
     ).not.toBeInTheDocument();
+  });
+
+  describe('DataGridEmptyState', () => {
+    test('renders with correct title and descriptions', () => {
+      render(
+        <DataGridEmptyState
+          title={t(i18n)`No Receivables`}
+          descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+          descriptionLine2={t(i18n)`You can create your first invoice.`}
+          actionButtonLabel={t(i18n)`Create Invoice`}
+          onAction={() => {}}
+          type="no-data"
+        />
+      );
+
+      expect(screen.getByText('No Receivables')).toBeInTheDocument();
+      expect(
+        screen.getByText('You don’t have any invoices yet.')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('You can create your first invoice.')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Create Invoice')).toBeInTheDocument();
+    });
   });
 });

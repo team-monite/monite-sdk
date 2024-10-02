@@ -1,10 +1,10 @@
 import { forwardRef, useEffect, useMemo, useRef } from 'react';
 import {
   Controller,
-  useForm,
-  useFormState,
   FieldNamesMarkedBoolean,
   FormProvider,
+  useForm,
+  useFormState,
 } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -48,17 +48,20 @@ import * as yup from 'yup';
 import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
+  calculateTotalsForPayable,
   counterpartsToSelect,
-  tagsToSelect,
+  isFieldRequired,
+  LineItem,
+  MonitePayableDetailsInfoProps,
+  PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
-  PayableDetailsFormFields,
-  LineItem,
-  calculateTotalsForPayable,
+  tagsToSelect,
+  usePayableDetailsThemeProps,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 
-interface PayableDetailsFormProps {
+export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,
@@ -70,7 +73,6 @@ interface PayableDetailsFormProps {
     payable: components['schemas']['PayableUploadWithDataSchema'],
     createdLineItems?: Array<LineItem>
   ) => void;
-  optionalFields?: OptionalFields;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
 }
@@ -128,6 +130,45 @@ const getValidationSchema = (i18n: I18n) =>
     })
     .required();
 
+/**
+ * PayableDetailsForm component.
+ *
+ * This component is responsible for rendering a form that allows users to create or edit payable details, including invoice number, counterpart, due date, line items, and tags. It uses various hooks and utilities to manage form state, validation, and submission.
+ *
+ * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
+ *
+ * @component
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayableDetailsForm: {
+ *       defaultProps: {
+ *         optionalFields: {
+ *           invoiceDate: true,         // Show the invoice date field
+ *           tags: true,                // Show the tags field
+ *         },
+ *         ocrRequiredFields: {
+ *           invoiceNumber: true,       // The invoice number is required based on OCR data
+ *           counterpart: true,         // The counterpart is required based on OCR data
+ *           dueDate: true,             // The due date is required based on OCR data
+ *           currency: true,            // The currency is required based on OCR data
+ *         },
+ *         isTagsDisabled: true,        // The tags field is disabled
+ *       },
+ *     },
+ *   },
+ * });
+ *
+ * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
+ * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
+ * @param {(payable: components['schemas']['PayableUploadWithDataSchema'], createdLineItems?: Array<LineItem>) => void} [createPayable] - Callback function to create a new payable.
+ * @param {OptionalFields} [optionalFields] - Configuration object to show or hide optional fields.
+ * @param {components['schemas']['LineItemResponse'][]} [lineItems] - Array of line items associated with the payable.
+ * @param {Record<string, boolean> | undefined} [ocrRequiredFields] - Array of required fields that should be provided by OCR.
+ * @param {string} payableDetailsFormId - Unique identifier for the form.
+ *
+ * @returns {JSX.Element} The PayableDetailsForm component.
+ */
 export const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayableDetailsFormProps
@@ -146,18 +187,22 @@ const PayableDetailsFormBase = forwardRef<
       payable,
       savePayable,
       createPayable,
-      optionalFields,
       lineItems,
       payableDetailsFormId,
+      ...inProps
     },
     ref
   ) => {
     const { i18n } = useLingui();
+
     const {
       formatFromMinorUnits,
       formatToMinorUnits,
       formatCurrencyToDisplay,
     } = useCurrencies();
+
+    const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
+
     const defaultValues = useMemo(
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
@@ -166,7 +211,8 @@ const PayableDetailsFormBase = forwardRef<
       resolver: yupResolver(getValidationSchema(i18n)),
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, resetField } = methods;
+    const { control, handleSubmit, watch, reset, resetField, trigger } =
+      methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
     const currentInvoiceDate = watch('invoiceDate');
@@ -214,6 +260,8 @@ const PayableDetailsFormBase = forwardRef<
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
+    const { ocrRequiredFields, optionalFields } =
+      usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
       optionalFields,
       {
@@ -233,6 +281,10 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
 
     const className = 'Monite-PayableDetailsForm';
+
+    useEffect(() => {
+      trigger();
+    }, [trigger]);
 
     return (
       <>
@@ -303,7 +355,10 @@ const PayableDetailsFormBase = forwardRef<
                             fullWidth
                             error={Boolean(error)}
                             helperText={error?.message}
-                            required
+                            required={isFieldRequired(
+                              'invoiceNumber',
+                              ocrRequiredFields
+                            )}
                           />
                         )}
                       />
@@ -315,6 +370,10 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
+                            required={isFieldRequired(
+                              'counterpart',
+                              ocrRequiredFields
+                            )}
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
@@ -326,7 +385,9 @@ const PayableDetailsFormBase = forwardRef<
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
                               onChange={(event) => {
-                                resetField('counterpartBankAccount');
+                                resetField('counterpartBankAccount', {
+                                  keepTouched: true,
+                                });
 
                                 return field.onChange(event);
                               }}
@@ -356,6 +417,10 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
+                            required={isFieldRequired(
+                              'counterpartBankAccount',
+                              ocrRequiredFields
+                            )}
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Bank Account`}
@@ -408,6 +473,10 @@ const PayableDetailsFormBase = forwardRef<
                                   fullWidth: true,
                                   error: Boolean(error),
                                   helperText: error?.message,
+                                  required: isFieldRequired(
+                                    'invoiceDate',
+                                    ocrRequiredFields
+                                  ),
                                 },
                               }}
                               {...field}
@@ -435,7 +504,10 @@ const PayableDetailsFormBase = forwardRef<
                                 fullWidth: true,
                                 error: Boolean(error),
                                 helperText: error?.message,
-                                required: true,
+                                required: isFieldRequired(
+                                  'dueDate',
+                                  ocrRequiredFields
+                                ),
                               },
                             }}
                             {...field}
@@ -447,7 +519,10 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required
+                        required={isFieldRequired(
+                          'currency',
+                          ocrRequiredFields
+                        )}
                       />
                       {showTags && (
                         <Controller
@@ -457,13 +532,17 @@ const PayableDetailsFormBase = forwardRef<
                             <FormControl
                               variant="outlined"
                               fullWidth
-                              required
+                              disabled={isTagsDisabled}
+                              required={isFieldRequired(
+                                'tags',
+                                ocrRequiredFields
+                              )}
                               error={Boolean(error)}
                             >
                               <Autocomplete
                                 {...field}
                                 id={field.name}
-                                disabled={!isTagsReadAllowed}
+                                disabled={isTagsDisabled || !isTagsReadAllowed}
                                 multiple
                                 filterSelectedOptions
                                 getOptionLabel={(option) => option.label}

@@ -11,17 +11,27 @@ import {
 } from '@/components/receivables/ReceivablesTable/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAreCounterpartsLoading,
+  useAutosizeGridColumns,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Sync } from '@mui/icons-material';
 import { Box, Skeleton, Typography } from '@mui/material';
 import {
   DataGrid,
@@ -30,7 +40,6 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
   useInvoiceRowActionMenuCell,
@@ -44,6 +53,13 @@ interface InvoicesTableBaseProps {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 
   /**
    * The query to be used for the Table
@@ -71,6 +87,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
 
 const InvoicesTableBase = ({
   onRowClick,
+  setIsCreateInvoiceDialogOpen,
   query,
   filters: filtersProp,
   ...restProps
@@ -103,7 +120,12 @@ const InvoicesTableBase = ({
     query
   );
 
-  const { data: invoices, isLoading } = useReceivables({
+  const {
+    data: invoices,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -123,6 +145,9 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<
     GridColDef<components['schemas']['ReceivableResponse']>[]
   >(() => {
@@ -133,19 +158,39 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 100,
         renderCell: ({ value, row }) => {
-          if (row.status === 'recurring') return t(i18n)`Recurring`;
+          if (row.status === 'recurring')
+            return (
+              <Typography
+                className="Monite-TextOverflowContainer"
+                color="text.primary"
+                component="span"
+                variant="body2"
+                sx={{
+                  alignItems: 'center',
+                  display: 'inline-flex',
+                  verticalAlign: 'middle',
+                  fontSize: 'inherit',
+                  gap: 0.5,
+                }}
+              >
+                <Sync fontSize="small" color="inherit" />
+                {t(i18n)`Recurring`}
+              </Typography>
+            );
 
           if (!value) {
             return (
-              <Typography
-                color="text.secondary"
-                component="span"
-                fontSize="inherit"
-              >{t(i18n)`INV-auto`}</Typography>
+              <span className="Monite-TextOverflowContainer">
+                <Typography
+                  color="text.secondary"
+                  component="span"
+                  fontSize="inherit"
+                >{t(i18n)`INV-auto`}</Typography>
+              </span>
             );
           }
 
-          return value;
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
         },
       },
       {
@@ -153,9 +198,9 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         display: 'flex',
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {
@@ -163,16 +208,14 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Created on`,
         sortable: false,
         width: 140,
-        valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       {
         field: 'status',
@@ -207,12 +250,52 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Due date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        renderCell: (params) => <DueDateCell data={params.row} />,
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
-  }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
+  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, dateFormat]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    invoices?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'InvoicesTable'
+  );
+
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+
+  const isSearching =
+    !!filters['document_id__contains' as keyof typeof filters];
+
+  if (
+    !isLoading &&
+    invoices?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Receivables`}
+        descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+        descriptionLine2={t(i18n)`You can create your first invoice.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-InvoicesTable';
 
@@ -243,6 +326,7 @@ const InvoicesTableBase = ({
             sortModel: sortModel && [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
@@ -269,6 +353,21 @@ const InvoicesTableBase = ({
                 setPageSize(pageSize);
                 setPaginationToken(page ?? undefined);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={invoices?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
+              refetch={refetch}
+              entityName={t(i18n)`Invoices`}
+              actionButtonLabel={t(i18n)`Create Invoice`}
+              actionOptions={[t(i18n)`Invoice`]}
+              type="no-data"
             />
           ),
         }}

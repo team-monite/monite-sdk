@@ -20,7 +20,7 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
@@ -149,7 +149,10 @@ export const OverviewTabPanel = ({
             ? {
                 label: t(i18n)`Current status`,
                 value: recurrence ? (
-                  <InvoiceRecurrenceStatusChip status={recurrence?.status} />
+                  <InvoiceRecurrenceStatusChip
+                    status={recurrence?.status}
+                    size="small"
+                  />
                 ) : (
                   <Skeleton variant="text" width="50%" />
                 ),
@@ -346,6 +349,7 @@ const LinkedDocumentsCard = ({
   internalNavigation?: boolean;
 }) => {
   const { i18n } = useLingui();
+  const dateFormat = useDateFormat();
 
   const transformCreditNotes = (
     creditNotes: components['schemas']['ReceivableResponse'][]
@@ -358,7 +362,7 @@ const LinkedDocumentsCard = ({
         : null;
 
       const formattedDate = issueDate
-        ? i18n.date(issueDate, DateTimeFormatOptions.EightDigitDate)
+        ? i18n.date(issueDate, dateFormat)
         : t(i18n)`Unknown date`;
 
       const authorName =

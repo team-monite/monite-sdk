@@ -118,7 +118,7 @@ export function useCounterpartView({
 
   return {
     addresses: addresses?.data || [],
-    contacts: contacts?.data || [],
+    contacts: contacts || [],
     banks: banks?.data || [],
     vats: vats?.data || [],
     counterpart,

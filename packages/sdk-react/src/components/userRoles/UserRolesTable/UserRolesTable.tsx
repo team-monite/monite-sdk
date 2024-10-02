@@ -10,12 +10,14 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -61,6 +63,11 @@ interface UserRolesTableProps {
    * @param id - The id of the row that was clicked.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * Triggered when the create button is clicked for no data state
+   */
+  handleCreateNew?: () => void;
 }
 
 interface UserRolesTableSortModel {
@@ -78,6 +85,7 @@ const UserRolesTableBase = ({
   onFilterChanged,
   onSortChanged,
   onRowClick,
+  handleCreateNew,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -101,7 +109,12 @@ const UserRolesTableBase = ({
       entityUserId: user?.id,
     });
 
-  const { data: roles, isLoading } = api.roles.getRoles.useQuery({
+  const {
+    data: roles,
+    isLoading,
+    isError,
+    refetch,
+  } = api.roles.getRoles.useQuery({
     query: {
       sort: sortModel?.field,
       order: sortModel?.sort,
@@ -134,6 +147,8 @@ const UserRolesTableBase = ({
     onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -162,10 +177,10 @@ const UserRolesTableBase = ({
         flex: 1,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, dateFormat),
       },
     ];
-  }, [i18n, onRowClick]);
+  }, [dateFormat, i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
@@ -173,6 +188,29 @@ const UserRolesTableBase = ({
 
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterType] !== null &&
+      currentFilter[key as keyof FilterType] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
+
+  if (!isLoading && roles?.data.length === 0 && !isFiltering && !isSearching) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Roles`}
+        descriptionLine1={t(i18n)`You don’t have any roles yet.`}
+        descriptionLine2={t(i18n)`You can create your first role.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`Role`]}
+        onAction={() => {
+          handleCreateNew?.();
+        }}
+        type="no-data"
+      />
+    );
   }
 
   return (
@@ -221,6 +259,21 @@ const UserRolesTableBase = ({
                 setCurrentPaginationToken(page);
                 setPageSize(pageSize);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={roles?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={() => handleCreateNew?.()}
+              refetch={refetch}
+              entityName={t(i18n)`Roles`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Role`]}
+              type="no-data"
             />
           ),
         }}
