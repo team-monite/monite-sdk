@@ -78,9 +78,6 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
               labelId="status"
               label={t(i18n)`Status`}
               defaultValue={undefined}
-              // value={
-              //   filters.find((filter) => filter.field === 'status')?.value ?? ''
-              // }
               MenuProps={{ container: root }}
               onChange={(event) => {
                 onChange(
@@ -111,10 +108,6 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
             labelId="counterpart_id"
             label={t(i18n)`Customer`}
             defaultValue={undefined}
-            // value={
-            //   filters.find((filter) => filter.field === 'counterpart_id')
-            //     ?.value ?? ''
-            // }
             MenuProps={{ container: root }}
             onChange={(event) => {
               onChange(
@@ -141,9 +134,6 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
           className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Due date`}
           views={['year', 'month', 'day']}
-          // value={
-          //   filters.find((filter) => filter.field === 'due_date__lte')?.value
-          // }
           onChange={(value, error) => {
             if (error.validationError) return;
             if (value === null || value === undefined)

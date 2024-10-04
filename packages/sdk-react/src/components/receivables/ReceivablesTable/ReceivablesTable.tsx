@@ -180,7 +180,7 @@ const ReceivablesTableBase = ({
         >
           {tabs?.map(({ label }, index) => (
             <Tab
-              key={index}
+              key={`${label}-${tabsIdBase}-${index}`}
               id={`${tabsIdBase}-${index}-tab`}
               aria-controls={`${tabsIdBase}-${index}-tabpanel`}
               label={label}

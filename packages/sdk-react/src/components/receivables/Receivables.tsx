@@ -26,7 +26,6 @@ const ReceivablesBase = () => {
   const [invoiceId, setInvoiceId] = useState<string>('');
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
-
   const [activeTab, setActiveTab] = useState<ReceivablesTableTabEnum>(
     ReceivablesTableTabEnum.Invoices
   );

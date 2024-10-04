@@ -30,23 +30,21 @@ export const useReceivablesFilters = <T extends keyof ReceivableFilterType>(
     filters: useMemo(
       () =>
         availableFilters.map((field) => {
-          return (
-            field === 'status'
-              ? {
-                  field,
-                  value: filtersQuery[field],
-                  options: predefinedQuery?.type
-                    ? filterStatusesByReceivableType(
-                        predefinedQuery.type,
-                        predefinedQuery?.status__in
-                      )
-                    : [],
-                }
-              : {
-                  field,
-                  value: filtersQuery[field],
-                }
-          ) satisfies ReceivableFilter<keyof ReceivableFilterType>;
+          return field === 'status'
+            ? {
+                field,
+                value: filtersQuery[field],
+                options: predefinedQuery?.type
+                  ? filterStatusesByReceivableType(
+                      predefinedQuery.type,
+                      predefinedQuery?.status__in
+                    )
+                  : [],
+              }
+            : {
+                field,
+                value: filtersQuery[field],
+              };
         }) as ReceivableFilter<T>[],
       [availableFilters, filtersQuery, predefinedQuery]
     ),
@@ -58,8 +56,11 @@ const filterStatusesByReceivableType = (
   receivableType: components['schemas']['ReceivableType'],
   inStatuses: Array<ReceivablesStatusEnum> | undefined
 ) => {
-  if (receivableType === 'invoice') {
-    const invoiceStatuses = [
+  const statusMap: Record<
+    components['schemas']['ReceivableType'],
+    Array<ReceivablesStatusEnum>
+  > = {
+    invoice: [
       'recurring',
       'draft',
       'issued',
@@ -68,39 +69,15 @@ const filterStatusesByReceivableType = (
       'overdue',
       'canceled',
       'uncollectible',
-    ] satisfies Array<ReceivablesStatusEnum>;
+    ],
+    quote: ['draft', 'issued', 'accepted', 'expired', 'declined'],
+    credit_note: ['draft', 'issued'],
+  };
 
-    if (!inStatuses) return invoiceStatuses;
-
-    return invoiceStatuses.filter((status) => inStatuses.includes(status));
-  }
-
-  if (receivableType === 'quote') {
-    const quoteStatuses = [
-      'draft',
-      'issued',
-      'accepted',
-      'expired',
-      'declined',
-    ] satisfies Array<ReceivablesStatusEnum>;
-
-    if (!inStatuses) return quoteStatuses;
-
-    return quoteStatuses.filter((status) => inStatuses.includes(status));
-  }
-
-  if (receivableType === 'credit_note') {
-    const creditNoteStatuses = [
-      'draft',
-      'issued',
-    ] satisfies Array<ReceivablesStatusEnum>;
-
-    if (!inStatuses) return creditNoteStatuses;
-
-    return creditNoteStatuses.filter((status) => inStatuses.includes(status));
-  }
-
-  throw new Error(`Unknown receivable type: ${receivableType}`);
+  if (!inStatuses) return statusMap[receivableType];
+  return statusMap[receivableType].filter((status) =>
+    inStatuses.includes(status)
+  );
 };
 
 type ReceivablesStatusEnum = components['schemas']['ReceivablesStatusEnum'];

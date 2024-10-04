@@ -42,7 +42,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
     MonitePayableTable: 'never';
-    MoniteReceivablesTable: never; // no slots available
+    MoniteReceivablesTable: 'never';
   }
 
   /**
