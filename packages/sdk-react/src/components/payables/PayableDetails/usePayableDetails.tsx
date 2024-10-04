@@ -24,6 +24,7 @@ export type PayableDetailsPermissions =
   | 'submit'
   | 'reject'
   | 'approve'
+  | 'reopen'
   | 'pay';
 
 export type UsePayableDetailsProps = {
