@@ -541,6 +541,13 @@ export function usePayableDetails({
 
         break;
       }
+
+      case 'rejected': {
+        if (isReopenAvailable) {
+          setPermissions(['reopen']);
+        }
+        break;
+      }
     }
 
     setIsPermissionsLoading(false);
