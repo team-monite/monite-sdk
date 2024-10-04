@@ -132,6 +132,14 @@ export type UsePayableDetailsProps = {
    */
   onApproved?: (id: string) => void;
 
+  /** Callback function that is called when the payable is reopened
+   *
+   * @param {string} id - The ID of the payable
+   *
+   * @returns {void}
+   */
+  onReopened?: (id: string) => void;
+
   /**
    * Callback function that is called when the user press the Pay button
    *
@@ -154,6 +162,7 @@ export function usePayableDetails({
   onSubmitted,
   onRejected,
   onApproved,
+  onReopened,
   onPay,
 }: UsePayableDetailsProps) {
   const { api, queryClient } = useMoniteContext();
@@ -273,6 +282,11 @@ export function usePayableDetails({
   const { data: isPayAvailable } = useIsActionAllowed({
     method: 'payable',
     action: 'pay',
+    entityUserId: payable?.was_created_by_user_id,
+  });
+  const { data: isReopenAvailable } = useIsActionAllowed({
+    method: 'payable',
+    action: 'reopen',
     entityUserId: payable?.was_created_by_user_id,
   });
 
@@ -417,6 +431,23 @@ export function usePayableDetails({
       },
     });
 
+  const reopenMutation = api.payables.postPayablesIdReopen.useMutation(
+    undefined,
+    {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
   const status = payable?.status;
 
   useEffect(() => {
@@ -520,6 +551,7 @@ export function usePayableDetails({
     isPayAvailable,
     isSubmitAvailable,
     isUpdatesAvailable,
+    isReopenAvailable,
     status,
     payableId,
   ]);
@@ -543,7 +575,8 @@ export function usePayableDetails({
         cancelMutation.isPending ||
         submitMutation.isPending ||
         rejectMutation.isPending ||
-        approveMutation.isPending
+        approveMutation.isPending ||
+        reopenMutation.isPending
     );
   }, [
     createMutation.isPending,
@@ -552,6 +585,7 @@ export function usePayableDetails({
     submitMutation.isPending,
     rejectMutation.isPending,
     approveMutation.isPending,
+    reopenMutation.isPending,
   ]);
 
   const createInvoice = async (
@@ -780,6 +814,24 @@ export function usePayableDetails({
     }
   };
 
+  const reopenInvoice = async () => {
+    if (payableId) {
+      await reopenMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" has been reopened`
+            );
+          },
+        }
+      );
+      onReopened?.(payableId);
+    }
+  };
+
   const payInvoice = useCallback(() => {
     if (payableId) {
       onPay?.(payableId);
@@ -804,6 +856,7 @@ export function usePayableDetails({
       submitInvoice,
       rejectInvoice,
       approveInvoice,
+      reopenInvoice,
       cancelInvoice,
       payInvoice,
     },

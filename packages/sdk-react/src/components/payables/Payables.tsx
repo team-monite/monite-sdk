@@ -37,6 +37,7 @@ export type PayablesProps = Pick<
   | 'onSubmitted'
   | 'onRejected'
   | 'onApproved'
+  | 'onReopened'
   | 'onPay'
 >;
 
@@ -54,6 +55,7 @@ const PayablesBase = ({
   onSubmitted,
   onRejected,
   onApproved,
+  onReopened,
   onPay,
 }: PayablesProps) => {
   const { i18n } = useLingui();
@@ -221,6 +223,7 @@ const PayablesBase = ({
           onSubmitted={onSubmitted}
           onRejected={onRejected}
           onApproved={onApproved}
+          onReopened={onReopened}
           onPay={onPay}
         />
       </Dialog>
