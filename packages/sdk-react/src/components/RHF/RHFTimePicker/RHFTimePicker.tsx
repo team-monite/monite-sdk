@@ -1,7 +1,6 @@
 import { Controller, FieldError } from 'react-hook-form';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
-// import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Alert } from '@mui/material';
 import { TimeField } from '@mui/x-date-pickers';
 import type { TimePickerProps } from '@mui/x-date-pickers';
@@ -17,8 +16,6 @@ export const RHFTimePicker = <T extends FieldValues>({
   TimePickerProps<Date> & { required?: boolean; fullWidth?: boolean }) => {
   const isErrorCustom = (error: FieldError | undefined) =>
     error?.type === 'custom';
-
-  // const { root } = useRootElements();
 
   return (
     <Controller
@@ -41,20 +38,10 @@ export const RHFTimePicker = <T extends FieldValues>({
               {...other}
               required={required}
               fullWidth={fullWidth}
-              // id={name}
               value={date}
-              // error={isInvalid && !!error?.message}
               helperText={isInvalid && error?.message}
               slotProps={{
                 ...slotProps,
-                // popper: {
-                //   ...slotProps?.popper,
-                //   container: root,
-                // },
-                // dialog: {
-                //   ...slotProps?.dialog,
-                //   container: root,
-                // },
                 textField: {
                   ...slotProps?.textField,
                   id: name,
