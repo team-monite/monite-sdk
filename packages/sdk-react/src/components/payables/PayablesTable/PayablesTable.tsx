@@ -319,7 +319,7 @@ const PayablesTableBase = ({
           message: 'Due date',
           comment: 'Payables Table "Due date" heading title',
         }),
-        width: 120,
+        width: 150,
         renderCell: (params) => <DueDateCell data={params.row} />,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
@@ -334,7 +334,7 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Status" heading title',
         }),
         display: 'flex',
-        width: 160,
+        width: 120,
         renderCell: (params) => <PayableStatusChip status={params.value} />,
       },
       {
