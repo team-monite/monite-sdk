@@ -101,5 +101,6 @@ export const useMenuButton = () => {
     open: anchorEl.open,
     menuProps,
     buttonProps,
+    closeMenu,
   };
 };

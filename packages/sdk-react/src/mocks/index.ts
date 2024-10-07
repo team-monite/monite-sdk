@@ -8,4 +8,5 @@ export * from './entityUsers';
 export * from './lineItems';
 export * from './receivables/receivablesFixture';
 export * from './authentication';
+export * from './mailboxes';
 export * from './measureUnits';
