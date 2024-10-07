@@ -1,7 +1,7 @@
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
-import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
+import type { MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip/ApprovalRequestStatusChip';
+import type { MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
+import type { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import type { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
@@ -20,7 +20,7 @@ type Theme = Omit<MuiTheme, 'components'>;
  * Extends theme `components` with Monite components,
  * allowing to configure default props, style overrides, and variants.
  */
-interface ComponentType<T> {
+interface ComponentType<T extends keyof ComponentsPropsList> {
   defaultProps?: ComponentsPropsList[T];
   styleOverrides?: ComponentsOverrides<Theme>[T];
   variants?: ComponentsVariants[T];
