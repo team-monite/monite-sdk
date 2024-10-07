@@ -27,6 +27,7 @@ export interface PayablesDetailsHeaderProps {
   rejectInvoice: () => void;
   approveInvoice: () => void;
   cancelInvoice: () => void;
+  reopenInvoice: () => void;
   payInvoice: () => void;
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
@@ -41,6 +42,7 @@ export const PayableDetailsHeader = ({
   rejectInvoice,
   approveInvoice,
   cancelInvoice,
+  reopenInvoice,
   payInvoice,
   payableDetailsFormId,
   onClose,
@@ -78,6 +80,12 @@ export const PayableDetailsHeader = ({
       color: 'error',
       onClick: rejectInvoice,
       children: t(i18n)`Reject`,
+    },
+    reopen: {
+      variant: 'text',
+      color: 'error',
+      onClick: reopenInvoice,
+      children: t(i18n)`Reopen`,
     },
     approve: {
       variant: 'contained',

@@ -397,7 +397,7 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:51
+#: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:69
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:103
 msgid "All items"
 msgstr "All items"
@@ -569,7 +569,7 @@ msgstr "Approval type"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:188
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:519
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:540
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:85
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:93
 #: src/components/userRoles/consts.ts:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:222
 msgid "Approve"
@@ -1113,8 +1113,8 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:145
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:393
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:414
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:69
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:91
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:71
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:99
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:124
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:199
@@ -1354,7 +1354,7 @@ msgstr "Close approval policy details"
 msgid "Close invoice details"
 msgstr "Close invoice details"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:110
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:118
 msgid "Close payable details"
 msgstr "Close payable details"
 
@@ -1811,7 +1811,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:68
 #: src/components/counterparts/Counterparts.test.tsx:103
 #: src/components/counterparts/Counterparts.tsx:131
-#: src/components/payables/Payables.tsx:127
+#: src/components/payables/Payables.tsx:129
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:102
 #: src/components/userRoles/UserRoles.tsx:61
@@ -2338,7 +2338,7 @@ msgstr "Due date"
 msgid "Due Date"
 msgstr "Due Date"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:185
+#: src/components/payables/PayableDetails/PayableDetails.tsx:189
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -2392,7 +2392,7 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:340
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:366
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:585
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:55
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:57
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:245
 #: src/components/products/Products.test.tsx:159
 #: src/components/products/Products.test.tsx:256
@@ -4209,11 +4209,11 @@ msgstr "New"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:118
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:126
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/Payables.tsx:138
+#: src/components/payables/Payables.tsx:140
 #: src/components/payables/PayablesTable/PayablesTable.tsx:440
 #: src/components/payables/PayablesTable/PayablesTable.tsx:442
 #: src/components/payables/PayablesTable/PayablesTable.tsx:539
@@ -4621,7 +4621,7 @@ msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:225
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:559
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:96
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:104
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:45
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:226
@@ -4638,39 +4638,43 @@ msgstr "Pay"
 msgid "Payable"
 msgstr "Payable"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:773
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:815
 msgid "Payable \"{0}\" has been approved"
 msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:716
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:758
 msgid "Payable \"{0}\" has been canceled"
 msgstr "Payable \"{0}\" has been canceled"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:568
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:610
 msgid "Payable \"{0}\" has been created"
 msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:754
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:796
 msgid "Payable \"{0}\" has been rejected"
 msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:735
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:834
+msgid "Payable \"{0}\" has been reopened"
+msgstr "Payable \"{0}\" has been reopened"
+
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:777
 msgid "Payable \"{0}\" has been submitted"
 msgstr "Payable \"{0}\" has been submitted"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:623
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:665
 msgid "Payable \"{0}\" has been updated"
 msgstr "Payable \"{0}\" has been updated"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:117
+#: src/components/payables/PayableDetails/PayableDetails.tsx:120
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:194
+#: src/components/payables/Payables.tsx:196
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:111
+#: src/components/payables/Payables.tsx:113
 msgid "Payables"
 msgstr "Payables"
 
@@ -5216,7 +5220,7 @@ msgstr "Registered Number (Japan)"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:185
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:477
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:498
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
 msgid "Reject"
 msgstr "Reject"
 
@@ -5300,6 +5304,7 @@ msgstr "Remove person"
 msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:88
 #: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:234
 msgid "Reopen"
@@ -5480,7 +5485,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:281
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:346
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:372
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:61
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:63
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:155
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:222
@@ -5832,7 +5837,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:148
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:435
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:456
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:74
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:76
 #: src/components/userRoles/consts.ts:72
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:218
 msgid "Submit"
@@ -6127,7 +6132,7 @@ msgstr "There is no counterpart by provided id: {0}"
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:118
+#: src/components/payables/PayableDetails/PayableDetails.tsx:121
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
@@ -6498,7 +6503,7 @@ msgstr "Unrecognized error. Please contact support."
 msgid "Unspecified"
 msgstr "Unspecified"
 
-#: src/components/payables/Payables.tsx:182
+#: src/components/payables/Payables.tsx:184
 msgid "Unsupported file format"
 msgstr "Unsupported file format"
 
@@ -6567,7 +6572,7 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/Payables.tsx:148
+#: src/components/payables/Payables.tsx:150
 #: src/components/payables/PayablesTable/PayablesTable.tsx:440
 #: src/components/payables/PayablesTable/PayablesTable.tsx:444
 #: src/components/payables/PayablesTable/PayablesTable.tsx:539
@@ -6575,11 +6580,11 @@ msgid "Upload File"
 msgstr "Upload File"
 
 #: src/components/payables/Payables.test.tsx:38
-#: src/components/payables/Payables.tsx:166
+#: src/components/payables/Payables.tsx:168
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:193
+#: src/components/payables/Payables.tsx:195
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
