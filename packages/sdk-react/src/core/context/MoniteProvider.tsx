@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode } from 'react';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
@@ -7,13 +7,12 @@ import {
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
-import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
-import { MoniteContextProvider } from './MoniteContext';
+import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
 
 export interface MoniteProviderProps {
   children?: ReactNode;
@@ -44,19 +43,22 @@ export const MoniteProvider = ({
   children,
   locale,
 }: MoniteProviderProps) => {
-  const muiTheme = useMemo(() => createThemeWithDefaults(theme), [theme]);
-
   return (
-    <MoniteContextProvider monite={monite} locale={locale} theme={muiTheme}>
+    <MoniteContextProvider monite={monite} locale={locale} theme={theme}>
       <EmotionCacheProvider cacheKey="monite-css-baseline">
-        <MuiThemeProvider theme={muiTheme}>
+        <MoniteMuiThemeProvider>
           <ContainerCssBaseline enableColorScheme />
           <GlobalToast />
-        </MuiThemeProvider>
+        </MoniteMuiThemeProvider>
       </EmotionCacheProvider>
       <MoniteAPIProvider APIContext={MoniteQraftContext}>
         {children}
       </MoniteAPIProvider>
     </MoniteContextProvider>
   );
+};
+
+const MoniteMuiThemeProvider = ({ children }: { children: ReactNode }) => {
+  const { theme } = useMoniteContext();
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 };
