@@ -8,6 +8,8 @@ export const recurrenceFixture = (
     | components['schemas']['UpdateRecurrencePayload']
 ): components['schemas']['Recurrence'] => {
   return {
+    body_text: faker.lorem.paragraph(),
+    subject_text: faker.lorem.sentence(),
     id: faker.string.uuid(),
     body_text: faker.lorem.paragraph(),
     subject_text: faker.lorem.sentence(),

@@ -3,24 +3,28 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { SxProps } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+
+import { Theme } from 'mui-styles';
 
 import { FILTER_TYPE_CREATED_AT, FILTER_TYPE_SEARCH } from '../../consts';
 import { FilterTypes, FilterValue } from '../../types';
 
 type Props = {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
+  sx?: SxProps<Theme>;
 };
 
-export const Filters = (props: Props) => {
+export const Filters = ({ onChangeFilter, sx }: Props) => {
   const { i18n } = useLingui();
-  const onChangeFilter = props.onChangeFilter;
   const { root } = useRootElements();
   const className = 'Monite-ApprovalPoliciesFilters';
 
   return (
     <FilterContainer
       className={className}
+      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search`}

@@ -18,6 +18,9 @@ function getEntitySettings(): MergedSettingsResponse {
       default: 'EUR',
       exchange_rates: [],
     },
+    generate_paid_invoice_pdf: false,
+    quote_signature_required: false,
+    vat_mode: 'exclusive',
   };
 }
 

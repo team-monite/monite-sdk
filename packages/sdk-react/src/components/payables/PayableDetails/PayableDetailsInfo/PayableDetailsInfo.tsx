@@ -132,12 +132,10 @@ const PayableDetailsInfoBase = ({
       showTags: true,
     }
   );
-  const { counterpartBankAccountQuery, lineItemsQuery } = usePayableDetailsInfo(
-    {
-      currentCounterpartId: payable.counterpart_id,
-      payableId: payable.id,
-    }
-  );
+  const { lineItemsQuery } = usePayableDetailsInfo({
+    currentCounterpartId: payable.counterpart_id,
+    payableId: payable.id,
+  });
 
   const ocrMismatchWarning = useMemo(() => {
     if (!payable || !ocrMismatchFields) return null;
@@ -170,13 +168,6 @@ const PayableDetailsInfoBase = ({
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),
     [contacts]
-  );
-  const counterpartBankAccount = useMemo(
-    () =>
-      counterpartBankAccountQuery.data?.data.find(
-        (bankAccount) => bankAccount.id === payable.counterpart_bank_account_id
-      ),
-    [counterpartBankAccountQuery, payable]
   );
 
   const className = 'Monite-PayableDetailsInfo';
@@ -273,20 +264,6 @@ const PayableDetailsInfoBase = ({
                     </TableCell>
                   </TableRow>
                 )}
-                {counterpartBankAccount && (
-                  <TableRow>
-                    <StyledLabelTableCell
-                      isRequired={
-                        isFieldRequired(
-                          'counterpartBankAccount',
-                          ocrRequiredFields,
-                          counterpartBankAccount?.name
-                        ) && payable?.ocr_status === null
-                      }
-                    />
-                    <TableCell>{counterpartBankAccount.name}</TableCell>
-                  </TableRow>
-                )}
                 {showInvoiceDate && (
                   <TableRow>
                     <StyledLabelTableCell
@@ -370,7 +347,9 @@ const PayableDetailsInfoBase = ({
                           payable.tags?.[0].id
                         ) && payable?.ocr_status === null
                       }
-                    />
+                    >
+                      {t(i18n)`Tags`}:
+                    </StyledLabelTableCell>
                     <TableCell>
                       <Stack
                         spacing={1}
@@ -445,7 +424,7 @@ const PayableDetailsInfoBase = ({
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
-                            {t(i18n)`excl. VAT`}{' '}
+                            {t(i18n)`excl. Tax`}{' '}
                             {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>

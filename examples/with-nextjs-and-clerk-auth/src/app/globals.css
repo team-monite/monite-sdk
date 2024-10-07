@@ -22,7 +22,7 @@ html {
   height: inherit;
 
   > .Monite-PageContainer {
-    padding: var(--demo-padding-4) var(--demo-padding-4) 0 var(--demo-padding-4);
+    padding: var(--demo-padding-4) var(--demo-padding-4) var(--demo-padding-4) var(--demo-padding-4);
     height: inherit;
 
     display: flex;

@@ -1,11 +1,12 @@
 import { useEntityUserById } from '@/core/queries';
 import { calculateAvatarColorIndex } from '@/ui/CounterpartCell/CounterpartCell';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { Avatar, Skeleton, Stack } from '@mui/material';
 
 export const UserCell = ({ userId }: { userId: string }) => {
   const { data: entityUser, isLoading } = useEntityUserById(userId);
+  const { i18n } = useLingui();
 
   const user = entityUser || {
     first_name: t(i18n)`Unspecified`,
@@ -32,6 +33,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
       direction="row"
       alignItems="center"
       spacing={1.5}
+      sx={{ maxWidth: '100%' }}
     >
       {isLoading ? (
         <Skeleton
@@ -60,14 +62,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
           sx={{ flexShrink: 0, minWidth: '4em' }}
         />
       ) : (
-        <span
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {name}
-        </span>
+        <span className="Monite-TextOverflowContainer">{name}</span>
       )}
     </Stack>
   );
