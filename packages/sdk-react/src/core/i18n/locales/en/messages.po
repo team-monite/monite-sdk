@@ -23,6 +23,10 @@ msgstr "Product Details"
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:174
+msgid "(.pdf, .png, .jpg supported)"
+msgstr "(.pdf, .png, .jpg supported)"
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
 msgid "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 msgstr "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
@@ -241,6 +245,10 @@ msgstr "Add another owner"
 msgid "Add bank account"
 msgstr "Add bank account"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:181
+msgid "Add bill manually"
+msgstr "Add bill manually"
+
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:608
 msgid "Add Condition"
 msgstr "Add Condition"
@@ -396,6 +404,10 @@ msgstr "All future iterations of this invoice will be canceled."
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:68
 msgid "All invoices"
 msgstr "All invoices"
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:126
+msgid "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
+msgstr "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 
 #: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:69
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:103
@@ -1587,6 +1599,14 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:108
+msgid "Copied to clipboard"
+msgstr "Copied to clipboard"
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:111
+msgid "Copy"
+msgstr "Copy"
+
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:206
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
@@ -1763,6 +1783,10 @@ msgstr "Create an item with this currency to add it"
 msgid "Create Approval Policy"
 msgstr "Create Approval Policy"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:192
+msgid "Create bill manually"
+msgstr "Create bill manually"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:126
 msgid "Create counterpart"
 msgstr "Create counterpart"
@@ -1811,7 +1835,6 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:68
 #: src/components/counterparts/Counterparts.test.tsx:103
 #: src/components/counterparts/Counterparts.tsx:131
-#: src/components/payables/Payables.tsx:129
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:102
 #: src/components/userRoles/UserRoles.tsx:61
@@ -2286,9 +2309,17 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:133
+msgid "Drag & Drop"
+msgstr "Drag & Drop"
+
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:190
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:171
+msgid "Drag files or click to upload"
+msgstr "Drag files or click to upload"
 
 #: src/components/onboarding/dicts/mccCodes.ts:520
 msgid "Drapery, Window Covering, and Upholstery Stores"
@@ -2839,6 +2870,10 @@ msgstr "Flow"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:346
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:95
+msgid "Forward to email"
+msgstr "Forward to email"
 
 #: src/core/utils/countries.ts:92
 msgid "France"
@@ -4205,6 +4240,10 @@ msgstr "Netherlands Antilles"
 msgid "New"
 msgstr "New"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:75
+msgid "New bill"
+msgstr "New bill"
+
 #: src/core/utils/countries.ts:174
 msgid "New Caledonia"
 msgstr "New Caledonia"
@@ -4213,7 +4252,6 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/Payables.tsx:140
 #: src/components/payables/PayablesTable/PayablesTable.tsx:440
 #: src/components/payables/PayablesTable/PayablesTable.tsx:442
 #: src/components/payables/PayablesTable/PayablesTable.tsx:539
@@ -4329,6 +4367,10 @@ msgstr "No Credit Notes"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:196
 msgid "No default email for selected Counterpart. Reminders will not be sent."
 msgstr "No default email for selected Counterpart. Reminders will not be sent."
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:121
+msgid "No email address"
+msgstr "No email address"
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:107
 msgid "No file provided"
@@ -4670,11 +4712,11 @@ msgstr "Payable \"{0}\" has been updated"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:196
+#: src/components/payables/Payables.tsx:93
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:113
+#: src/components/payables/Payables.tsx:125
 msgid "Payables"
 msgstr "Payables"
 
@@ -6503,7 +6545,7 @@ msgstr "Unrecognized error. Please contact support."
 msgid "Unspecified"
 msgstr "Unspecified"
 
-#: src/components/payables/Payables.tsx:184
+#: src/components/payables/Payables.tsx:81
 msgid "Unsupported file format"
 msgstr "Unsupported file format"
 
@@ -6572,19 +6614,19 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/Payables.tsx:150
 #: src/components/payables/PayablesTable/PayablesTable.tsx:440
 #: src/components/payables/PayablesTable/PayablesTable.tsx:444
 #: src/components/payables/PayablesTable/PayablesTable.tsx:539
 msgid "Upload File"
 msgstr "Upload File"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:200
 #: src/components/payables/Payables.test.tsx:38
-#: src/components/payables/Payables.tsx:168
+#: src/components/payables/Payables.tsx:151
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:195
+#: src/components/payables/Payables.tsx:92
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
