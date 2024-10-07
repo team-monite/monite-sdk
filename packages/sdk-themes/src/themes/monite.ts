@@ -948,21 +948,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
       },
     },
-    styleOverrides: {
-      root: {
-        '&.Monite-SummaryCard': {
-          borderRadius: '3px',
-          backgroundColor: '#FFFFFF',
-        },
-        '&.Monite-SummaryCard-all': {
-          backgroundColor: '#F4F4FE',
-        },
-        '&.Monite-SummaryCard-selected': {
-          backgroundColor: 'transparent',
-          borderColor: '#3737FF',
-        },
-      },
-    },
   },
   MuiCardContent: {
     styleOverrides: {
