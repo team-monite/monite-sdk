@@ -31,6 +31,7 @@ import {
   Divider,
   IconButton,
   Link,
+  Stack,
   styled,
   Table,
   TableBody,
@@ -381,53 +382,60 @@ export const UserRoleDetailsDialog = ({
             id={formName}
             noValidate
             onSubmit={handleSubmit(handleRoleFormSubmission)}
+            style={{ maxHeight: '100%' }}
           >
-            {view == UserRoleDetailsView.Mutate && (
-              <RHFTextField
-                label={t(i18n)`Name`}
-                name="name"
-                control={control}
-                fullWidth
-                required
-              />
-            )}
-            <StyledTableTitle variant="subtitle2" mt={4} mb={1}>
-              {t(i18n)`Permissions`}
-              <StyledDocLink
-                underline="none"
-                rel="noopener noreferrer"
-                href="https://docs.monite.com/docs/monite-account-structure#connect-entity-users"
-                target="_blank"
-              >
-                {t(i18n)`Go to Docs`}
-                &nbsp;
-                <OpenInNewIcon />
-              </StyledDocLink>
-            </StyledTableTitle>
-            <StyledTableContainer>
-              <Table stickyHeader>
-                <StyledTableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <StyledTableCell key={column.id}>
-                        {column.headerName}
-                      </StyledTableCell>
+            <Stack
+              direction="column"
+              alignItems="stretch"
+              sx={{ width: '100%', height: '100%' }}
+            >
+              {view == UserRoleDetailsView.Mutate && (
+                <RHFTextField
+                  label={t(i18n)`Name`}
+                  name="name"
+                  control={control}
+                  fullWidth
+                  required
+                />
+              )}
+              <StyledTableTitle variant="subtitle2" mt={4} mb={1}>
+                {t(i18n)`Permissions`}
+                <StyledDocLink
+                  underline="none"
+                  rel="noopener noreferrer"
+                  href="https://docs.monite.com/docs/monite-account-structure#connect-entity-users"
+                  target="_blank"
+                >
+                  {t(i18n)`Go to Docs`}
+                  &nbsp;
+                  <OpenInNewIcon />
+                </StyledDocLink>
+              </StyledTableTitle>
+              <StyledTableContainer>
+                <Table stickyHeader>
+                  <StyledTableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <StyledTableCell key={column.id}>
+                          {column.headerName}
+                        </StyledTableCell>
+                      ))}
+                    </TableRow>
+                  </StyledTableHead>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <UserRoleRow
+                        key={row.name}
+                        index={index}
+                        view={view}
+                        row={row}
+                        columns={columns}
+                      />
                     ))}
-                  </TableRow>
-                </StyledTableHead>
-                <TableBody>
-                  {rows.map((row, index) => (
-                    <UserRoleRow
-                      key={row.name}
-                      index={index}
-                      view={view}
-                      row={row}
-                      columns={columns}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </StyledTableContainer>
+                  </TableBody>
+                </Table>
+              </StyledTableContainer>
+            </Stack>
           </form>
         </FormProvider>
       </StyledDialogContainer>
@@ -443,11 +451,11 @@ export const UserRoleDetailsDialog = ({
         )}
         {view === UserRoleDetailsView.Mutate && (
           <>
-            <Button variant="outlined" color="inherit" onClick={handleCancel}>
+            <Button variant="outlined" onClick={handleCancel}>
               {t(i18n)`Cancel`}
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               type="submit"
               form={formName}
               disabled={

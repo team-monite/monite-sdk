@@ -191,7 +191,7 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: watchedLineItems,
+    lineItems: [...watchedLineItems],
     formatCurrencyToDisplay,
     isUSEntity,
   });
@@ -258,7 +258,7 @@ export const ItemsSection = ({
                   <TableCell align="right">{t(i18n)`Price`}</TableCell>
                   <TableCell align="right">{t(i18n)`Amount`}</TableCell>
                   <TableCell>
-                    {isUSEntity ? t(i18n)`TAX` : t(i18n)`VAT`}
+                    {isUSEntity ? t(i18n)`Tax` : t(i18n)`VAT`}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
