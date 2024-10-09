@@ -104,29 +104,15 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
     [mutateSelectedTheme]
   );
 
-  const theme = useMemo(() => {
-    const { variant, mode } = selectedTheme.data ?? {};
-
-    switch (true) {
-      case variant === 'monite' && mode === 'dark':
-        return themes.moniteDark();
-
-      case variant === 'material' && mode === 'light':
-        return themes.materialLight();
-
-      case variant === 'material' && mode === 'dark':
-        return themes.materialDark();
-
-      default:
-        return themes.moniteLight();
-    }
-  }, [selectedTheme.data]);
-
   return (
     <RootThemeProviderContext.Provider
-      value={{ onThemeChange, selectedTheme: selectedTheme.data, theme }}
+      value={{
+        onThemeChange,
+        selectedTheme: selectedTheme.data,
+        theme: themes.moniteLight(),
+      }}
     >
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themes.moniteLight()}>
         <CssBaseline />
         {children}
       </ThemeProvider>
