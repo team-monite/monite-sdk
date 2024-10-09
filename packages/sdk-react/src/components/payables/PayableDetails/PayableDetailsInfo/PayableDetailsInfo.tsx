@@ -132,10 +132,12 @@ const PayableDetailsInfoBase = ({
       showTags: true,
     }
   );
-  const { lineItemsQuery } = usePayableDetailsInfo({
-    currentCounterpartId: payable.counterpart_id,
-    payableId: payable.id,
-  });
+  const { counterpartBankAccountQuery, lineItemsQuery } = usePayableDetailsInfo(
+    {
+      currentCounterpartId: payable.counterpart_id,
+      payableId: payable.id,
+    }
+  );
 
   const ocrMismatchWarning = useMemo(() => {
     if (!payable || !ocrMismatchFields) return null;
@@ -168,6 +170,13 @@ const PayableDetailsInfoBase = ({
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),
     [contacts]
+  );
+  const counterpartBankAccount = useMemo(
+    () =>
+      counterpartBankAccountQuery.data?.data.find(
+        (bankAccount) => bankAccount.id === payable.counterpart_bank_account_id
+      ),
+    [counterpartBankAccountQuery, payable]
   );
 
   const className = 'Monite-PayableDetailsInfo';
@@ -262,6 +271,20 @@ const PayableDetailsInfoBase = ({
                     <TableCell>
                       {`${defaultContact.first_name} ${defaultContact.last_name}`}
                     </TableCell>
+                  </TableRow>
+                )}
+                {counterpartBankAccount && (
+                  <TableRow>
+                    <StyledLabelTableCell
+                      isRequired={
+                        isFieldRequired(
+                          'counterpartBankAccount',
+                          ocrRequiredFields,
+                          counterpartBankAccount?.name
+                        ) && payable?.ocr_status === null
+                      }
+                    />
+                    <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
                 )}
                 {showInvoiceDate && (
