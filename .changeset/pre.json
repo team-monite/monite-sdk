@@ -1,0 +1,20 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@team-monite/e2e": "1.0.1",
+    "sdk-demo-with-nextjs-and-clerk-auth": "0.1.0",
+    "@team-monite/eslint-plugin": "2.0.3",
+    "@team-monite/rollup-config": "1.1.0",
+    "@monite/sdk-api": "3.16.0",
+    "@team-monite/sdk-demo": "1.8.0",
+    "@monite/sdk-drop-in": "1.6.0",
+    "@monite/sdk-react": "3.16.0",
+    "@team-monite/sdk-themes": "0.2.0"
+  },
+  "changesets": [
+    "poor-dolphins-glow",
+    "pretty-parrots-fold",
+    "smart-kangaroos-admire"
+  ]
+}
