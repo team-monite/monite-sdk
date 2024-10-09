@@ -1,5 +1,13 @@
 # @monite/sdk-drop-in
 
+## 1.8.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [5370ff8a]
+  - @team-monite/sdk-themes@0.2.1-beta.0
+  - @monite/sdk-api@3.17.0-beta.0
+
 ## 1.8.0
 
 ### Minor Changes

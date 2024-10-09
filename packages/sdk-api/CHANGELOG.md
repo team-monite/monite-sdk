@@ -1,5 +1,7 @@
 # @monite/sdk-api
 
+## 3.17.0-beta.0
+
 ## 3.16.0
 
 ### Patch Changes

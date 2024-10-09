@@ -1,5 +1,11 @@
 # @team-monite/sdk-themes
 
+## 0.2.1-beta.0
+
+### Patch Changes
+
+- 5370ff8a: chore(proposal): better typings system for monite.ts themesation file
+
 ## 0.2.0
 
 ### Minor Changes

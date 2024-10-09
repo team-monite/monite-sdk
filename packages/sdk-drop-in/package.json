@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-drop-in",
-  "version": "1.6.0",
+  "version": "1.6.1-beta.0",
   "publishConfig": {
     "access": "public"
   },
