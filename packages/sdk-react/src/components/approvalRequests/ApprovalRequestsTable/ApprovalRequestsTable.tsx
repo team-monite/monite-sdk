@@ -191,6 +191,7 @@ const ApprovalRequestsTableBase = ({
         field: 'counterpart_id',
         headerName: t(i18n)`Counterpart`,
         sortable: false,
+        display: 'flex',
         flex: 1,
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.value} />
@@ -303,9 +304,7 @@ const ApprovalRequestsTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
-      </Box>
+      <ApprovalRequestsFilter onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         rowSelection={false}
         disableColumnFilter={true}
@@ -320,14 +319,6 @@ const ApprovalRequestsTableBase = ({
         apiRef={gridApiRef}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

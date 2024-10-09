@@ -141,7 +141,7 @@ const getValidationSchema = (i18n: I18n) =>
  * @example MUI theming
  * const theme = createTheme({
  *   components: {
- *     MonitePayableDetailsForm: {
+ *     MonitePayableDetailsInfo: {
  *       defaultProps: {
  *         optionalFields: {
  *           invoiceDate: true,         // Show the invoice date field

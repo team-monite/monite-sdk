@@ -1,7 +1,9 @@
 import { components } from '@/api';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
+import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,6 +29,7 @@ export interface PayablesDetailsHeaderProps {
   rejectInvoice: () => void;
   approveInvoice: () => void;
   cancelInvoice: () => void;
+  reopenInvoice: () => void;
   payInvoice: () => void;
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
@@ -41,12 +44,16 @@ export const PayableDetailsHeader = ({
   rejectInvoice,
   approveInvoice,
   cancelInvoice,
+  reopenInvoice,
   payInvoice,
   payableDetailsFormId,
   onClose,
 }: PayablesDetailsHeaderProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { data: counterpart } = useCounterpartById(payable?.counterpart_id);
+
+  const counterpartName = getCounterpartName(counterpart);
 
   const buttonsByPermissions: Record<PayableDetailsPermissions, ButtonProps> = {
     edit: {
@@ -78,6 +85,12 @@ export const PayableDetailsHeader = ({
       color: 'error',
       onClick: rejectInvoice,
       children: t(i18n)`Reject`,
+    },
+    reopen: {
+      variant: 'text',
+      color: 'error',
+      onClick: reopenInvoice,
+      children: t(i18n)`Reopen`,
     },
     approve: {
       variant: 'contained',
@@ -115,7 +128,11 @@ export const PayableDetailsHeader = ({
 
         <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
           <Typography variant="h3" sx={{ ml: 3, flex: 1 }} component="div">
-            {payable?.document_id ?? t(i18n)`New incoming invoice`}
+            {payable?.document_id
+              ? counterpartName
+                ? `${counterpartName} - #${payable.document_id}`
+                : payable.document_id
+              : t(i18n)`New incoming invoice`}
           </Typography>
           <PayableStatusChip status={payable?.status ?? 'draft'} />
         </Box>

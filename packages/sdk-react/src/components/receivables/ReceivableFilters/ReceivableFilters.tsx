@@ -16,21 +16,25 @@ import {
   InputLabel as MuiInputLabel,
   MenuItem,
   Select,
+  SxProps,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { formatISO } from 'date-fns';
+import { Theme } from 'mui-styles';
 
 import { type ReceivablesFilterHandler } from './useReceivablesFilters';
 
 type ReceivableFiltersProps = {
   onChange: ReceivablesFilterHandler;
   filters: Array<keyof ReceivableFilterType>;
+  sx?: SxProps<Theme>;
 };
 
 export const ReceivableFilters = ({
   onChange,
   filters,
+  sx,
 }: ReceivableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -42,6 +46,7 @@ export const ReceivableFilters = ({
   return (
     <FilterContainer
       className={className}
+      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search`}
