@@ -1,4 +1,4 @@
-export function classNames(...args: (string | undefined | null)[]) {
+export function classNames(...args: (string | undefined | null | false)[]) {
   let result = '';
   for (const arg of args) {
     if (arg) {

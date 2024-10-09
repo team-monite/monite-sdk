@@ -148,7 +148,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                 disabled
                 fullWidth
                 variant="outlined"
-                label={t(i18n)`Your TAX ID`}
+                label={t(i18n)`Your Tax ID`}
                 value={entity?.tax_id ?? ''}
                 InputProps={{
                   startAdornment: isEntityLoading ? (
@@ -159,7 +159,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                 }}
               />
               <Collapse in={Boolean(!entity?.tax_id) && !isEntityLoading}>
-                <FormHelperText>{t(i18n)`No TAX ID available`}</FormHelperText>
+                <FormHelperText>{t(i18n)`No Tax ID available`}</FormHelperText>
               </Collapse>
             </Grid>
             <Grid item {...gridItemProps}>

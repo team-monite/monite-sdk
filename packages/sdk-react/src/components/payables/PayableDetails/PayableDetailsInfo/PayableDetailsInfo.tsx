@@ -370,7 +370,9 @@ const PayableDetailsInfoBase = ({
                           payable.tags?.[0].id
                         ) && payable?.ocr_status === null
                       }
-                    />
+                    >
+                      {t(i18n)`Tags`}:
+                    </StyledLabelTableCell>
                     <TableCell>
                       <Stack
                         spacing={1}
@@ -445,7 +447,7 @@ const PayableDetailsInfoBase = ({
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
-                            {t(i18n)`excl. VAT`}{' '}
+                            {t(i18n)`excl. Tax`}{' '}
                             {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>

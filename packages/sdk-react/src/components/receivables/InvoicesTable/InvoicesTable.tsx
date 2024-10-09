@@ -213,6 +213,8 @@ const InvoicesTableBase = ({
       {
         field: 'total_amount',
         headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
@@ -284,20 +286,19 @@ const InvoicesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ReceivableFilters
-          onChange={(field, value) => {
-            setPaginationToken(undefined);
-            onChangeFilter(field, value);
-          }}
-          filters={[
-            'document_id__contains',
-            'status',
-            'counterpart_id',
-            'due_date__lte',
-          ]}
-        />
-      </Box>
+      <ReceivableFilters
+        onChange={(field, value) => {
+          setPaginationToken(undefined);
+          onChangeFilter(field, value);
+        }}
+        filters={[
+          'document_id__contains',
+          'status',
+          'counterpart_id',
+          'due_date__lte',
+        ]}
+        sx={{ mb: 2 }}
+      />
 
       <DataGrid<components['schemas']['ReceivableResponse']>
         initialState={{
@@ -309,14 +310,6 @@ const InvoicesTableBase = ({
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         slots={{

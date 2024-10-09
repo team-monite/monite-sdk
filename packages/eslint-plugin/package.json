@@ -1,7 +1,7 @@
 {
   "name": "@team-monite/eslint-plugin",
   "packageManager": "yarn@3.5.0",
-  "version": "2.0.3-beta.0",
+  "version": "2.0.3",
   "private": true,
   "scripts": {
     "test": "jest --runInBand --coverage",
