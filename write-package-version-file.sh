@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Creates a file with the package version
 # Package version is read from `package.json` and written to `src/packageVersion.ts`
