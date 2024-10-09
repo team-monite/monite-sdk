@@ -379,9 +379,10 @@ export const ProductsTable = ({
                   );
                 }}
               />
-              <Box sx={{ mb: 2 }}>
-                <ProductsTableFilters onChangeFilter={onChangeFilter} />
-              </Box>
+              <ProductsTableFilters
+                onChangeFilter={onChangeFilter}
+                sx={{ mb: 2 }}
+              />
               <Paper
                 variant="outlined"
                 style={{ height: '100%' }}

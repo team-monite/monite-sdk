@@ -54,7 +54,7 @@ const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
               vat_rate_id: yup.string().label(t(i18n)`VAT`),
               tax_rate_value: yup
                 .number()
-                .label(t(i18n)`TAX`)
+                .label(t(i18n)`Tax`)
                 .min(0)
                 .max(100)
                 .required(),
@@ -62,7 +62,7 @@ const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
           : {
               tax_rate_value: yup
                 .number()
-                .label(t(i18n)`TAX`)
+                .label(t(i18n)`Tax`)
                 .min(0)
                 .max(100),
               vat_rate_value: yup

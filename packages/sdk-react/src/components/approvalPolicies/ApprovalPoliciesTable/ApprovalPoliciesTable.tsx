@@ -226,9 +226,7 @@ const ApprovalPoliciesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
-      </Box>
+      <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         disableColumnFilter={true}
         rowSelection={false}
@@ -241,12 +239,6 @@ const ApprovalPoliciesTableBase = ({
           },
           '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
             py: '22px',
-          },
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
           },
         }}
         loading={isLoading}

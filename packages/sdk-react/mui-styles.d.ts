@@ -20,7 +20,7 @@ type Theme = Omit<MuiTheme, 'components'>;
  * Extends theme `components` with Monite components,
  * allowing to configure default props, style overrides, and variants.
  */
-interface ComponentType<T> {
+interface ComponentType<T extends keyof ComponentsPropsList> {
   defaultProps?: ComponentsPropsList[T];
   styleOverrides?: ComponentsOverrides<Theme>[T];
   variants?: ComponentsVariants[T];
