@@ -9,4 +9,5 @@ export const ROUTES = {
   receivables: '/receivables',
   products: '/products',
   onboarding: '/onboarding',
+  rolesApprovals: '/settings/roles-approvals',
 };

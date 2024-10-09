@@ -55,7 +55,7 @@ msgstr "Material UI"
 msgid "Monite"
 msgstr "Monite"
 
-#: src/components/Menu/consts.tsx:66
+#: src/components/Menu/consts.tsx:61
 msgid "Onboard Entity"
 msgstr "Onboard Entity"
 
@@ -67,6 +67,10 @@ msgstr "Payables"
 msgid "Products"
 msgstr "Products"
 
+#: src/components/Menu/consts.tsx:51
+msgid "Roles & Approvals"
+msgstr "Roles & Approvals"
+
 #: src/components/Menu/consts.tsx:31
 msgid "Sales"
 msgstr "Sales"
@@ -75,7 +79,7 @@ msgstr "Sales"
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/Menu/consts.tsx:61
+#: src/components/Menu/consts.tsx:56
 msgid "Tags"
 msgstr "Tags"
 
