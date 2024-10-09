@@ -1,6 +1,6 @@
 'use client';
 
-import React, { PropsWithChildren, useCallback, useMemo } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useAuth } from '@clerk/nextjs';

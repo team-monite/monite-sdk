@@ -16,6 +16,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { MoniteCurrency } from '@/ui/Currency';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -255,9 +256,10 @@ const PayableDetailsFormBase = forwardRef<
       methods.setValue,
     ]);
 
-    const { tagQuery, counterpartQuery } = usePayableDetailsForm({
-      currentCounterpartId: currentCounterpart,
-    });
+    const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
+      usePayableDetailsForm({
+        currentCounterpartId: currentCounterpart,
+      });
     const { ocrRequiredFields, optionalFields } =
       usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
@@ -400,6 +402,51 @@ const PayableDetailsFormBase = forwardRef<
                                   {counterpart.label}
                                 </MenuItem>
                               ))}
+                            </Select>
+                            {error && (
+                              <FormHelperText>{error.message}</FormHelperText>
+                            )}
+                          </FormControl>
+                        )}
+                      />
+                      <Controller
+                        name="counterpartBankAccount"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                          <FormControl
+                            variant="outlined"
+                            fullWidth
+                            error={Boolean(error)}
+                            required={isFieldRequired(
+                              'counterpartBankAccount',
+                              ocrRequiredFields
+                            )}
+                          >
+                            <InputLabel htmlFor={field.name}>
+                              {t(i18n)`Bank Account`}
+                            </InputLabel>
+                            <Select
+                              {...field}
+                              id={field.name}
+                              labelId={field.name}
+                              label={t(i18n)`Bank Account`}
+                              MenuProps={{ container: root }}
+                              disabled={
+                                !counterpartBankAccountQuery?.data ||
+                                counterpartBankAccountQuery?.data?.data
+                                  .length === 0
+                              }
+                            >
+                              {counterpartBankAccountQuery?.data?.data.map(
+                                (bankAccount) => (
+                                  <MenuItem
+                                    key={bankAccount.id}
+                                    value={bankAccount.id}
+                                  >
+                                    {getBankAccountName(i18n, bankAccount)}
+                                  </MenuItem>
+                                )
+                              )}
                             </Select>
                             {error && (
                               <FormHelperText>{error.message}</FormHelperText>
