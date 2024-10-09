@@ -120,10 +120,6 @@ export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
   ],
 };
 
-type EntityIndividualResponse =
-  components['schemas']['EntityIndividualResponse'];
-type EntityOrganizationResponse =
-  components['schemas']['EntityOrganizationResponse'];
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];

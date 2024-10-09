@@ -222,6 +222,7 @@ export class ReceivablesService extends GeneralService {
               .id,
             payment_reminder_id: paymentReminderId,
             overdue_reminder_id: overdueReminderId,
+            tag_ids: [],
           };
         const { data, error, response } = await this.request.POST(
           `/receivables`,
@@ -281,6 +282,7 @@ export class ReceivablesService extends GeneralService {
                 }),
               entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
                 .id,
+              tag_ids: [],
             },
           }
         );

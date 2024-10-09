@@ -5,7 +5,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
 export const defaultCounterpartColumnWidth = 250;
-const maximumDocumentIdColumnWidth = 200;
+const maximumDocumentIdColumnWidth = 300;
 
 export function useAreCounterpartsLoading(
   rows?: { counterpart_id?: string }[]
@@ -66,6 +66,7 @@ export function useAutosizeGridColumns(
                 await grid.autosizeColumns({
                   includeHeaders: true,
                   includeOutliers: true,
+                  expand: true,
                 });
                 previousColumnsState.forEach((previousColumnState) => {
                   const currentColumnState = grid.getColumn(
@@ -114,7 +115,7 @@ export function useAutosizeGridColumns(
   // use useEffect since we need this code to be executed after isFirstRender / useEffect in useGridColumns.js
   useEffect(() => {
     const grid = gridApiRef.current;
-    const serializationKey = 'Monite-DataGridColumns-' + columnSerializationKey;
+    const serializationKey = `Monite-DataGridColumns-${columnSerializationKey}-2`;
     const serializedColumnsStr = localStorage.getItem(serializationKey);
     if (
       serializedColumnsStr &&
