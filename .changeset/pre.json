@@ -12,5 +12,9 @@
     "@monite/sdk-react": "3.16.0",
     "@team-monite/sdk-themes": "0.2.0"
   },
-  "changesets": []
+  "changesets": [
+    "poor-dolphins-glow",
+    "pretty-parrots-fold",
+    "smart-kangaroos-admire"
+  ]
 }

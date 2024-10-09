@@ -1,5 +1,17 @@
 # @monite/sdk-react
 
+## 3.17.0-beta.0
+
+### Minor Changes
+
+- 14106eed: feat(DEV-12440): AP cards statuses
+
+### Patch Changes
+
+- 5370ff8a: chore(proposal): better typings system for monite.ts themesation file
+- e7ea8955: add reopened state to payables details form after rejected
+  - @monite/sdk-api@3.17.0-beta.0
+
 ## 3.16.0
 
 ### Minor Changes
