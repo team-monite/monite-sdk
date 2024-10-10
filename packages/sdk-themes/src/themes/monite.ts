@@ -1,5 +1,5 @@
 // noinspection JSAnnotator
-/// <reference path="../../../sdk-react/mui-styles.d.ts" />
+/// <reference path="../../mui-styles.d.ts" />
 import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,

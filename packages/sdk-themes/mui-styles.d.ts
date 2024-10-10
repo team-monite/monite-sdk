@@ -1,12 +1,12 @@
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
-import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
-import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
-import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
-import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
+import { type MoniteApprovalRequestStatusChipProps } from '@monite/sdk-react/src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip/ApprovalRequestStatusChip';
+import { type MoniteCounterpartStatusChipProps } from '@monite/sdk-react/src/components/counterparts/CounterpartStatusChip';
+import { type MonitePayableDetailsInfoProps } from '@monite/sdk-react/src/components/payables/PayableDetails/PayableDetailsForm';
+import { type MonitePayableTableProps } from '@monite/sdk-react/src/components/payables/PayablesTable/types';
+import { type MonitePayableStatusChipProps } from '@monite/sdk-react/src/components/payables/PayableStatusChip/PayableStatusChip';
+import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@monite/sdk-react/src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
+import { type MoniteInvoiceRecurrenceStatusChipProps } from '@monite/sdk-react/src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
+import { type MoniteInvoiceStatusChipProps } from '@monite/sdk-react/src/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import { type MoniteTablePaginationProps } from '@monite/sdk-react/src/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
@@ -22,7 +22,7 @@ type Theme = Omit<MuiTheme, 'components'>;
  */
 interface ComponentType<T extends keyof ComponentsPropsList> {
   defaultProps?: ComponentsPropsList[T];
-  styleOverrides?: ComponentsOverrides<Theme>[T];
+  styleOverrides?: any;
   variants?: ComponentsVariants[T];
 }
 
