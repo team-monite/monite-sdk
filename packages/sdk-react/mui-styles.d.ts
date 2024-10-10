@@ -1,19 +1,28 @@
-import { MoniteApprovalStatusChipProps } from '@/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
-import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
-import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
-import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
-import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
   ComponentsVariants,
   Theme as MuiTheme,
 } from '@mui/material/styles';
+
+/**
+ * TODO: Currently, we are using relative paths without aliases because the
+ * TypeScript configuration is unable to resolve aliases.
+ *
+ * Note: The path must exactly match the location of the interface,
+ * otherwise it will be treated as `any` in `monite.ts`.
+ * It should not target index.ts or exported files, only exact location;
+ */
+import { type MoniteApprovalStatusChipProps } from './src/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
+import { type MoniteApprovalRequestStatusChipProps } from './src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip/ApprovalRequestStatusChip';
+import { type MoniteCounterpartStatusChipProps } from './src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip';
+import { type MonitePayableDetailsInfoProps } from './src/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { type MonitePayableTableProps } from './src/components/payables/PayablesTable/types';
+import { type MonitePayableStatusChipProps } from './src/components/payables/PayableStatusChip/PayableStatusChip';
+import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from './src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
+import { type MoniteInvoiceRecurrenceStatusChipProps } from './src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
+import { type MoniteInvoiceStatusChipProps } from './src/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import { type MoniteTablePaginationProps } from './src/ui/table/TablePagination';
 
 type Theme = Omit<MuiTheme, 'components'>;
 
