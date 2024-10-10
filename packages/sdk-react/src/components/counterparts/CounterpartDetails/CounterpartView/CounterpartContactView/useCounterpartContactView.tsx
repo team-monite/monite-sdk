@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 
-import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
-import { useDeleteCounterpartContact } from '@/core/queries/useCounterpart';
+import {
+  GenericCounterpartContact,
+  useDeleteCounterpartContact,
+} from '@/core/queries/useCounterpart';
 
 export type CounterpartContactViewProps = {
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-  contact: components['schemas']['CounterpartContactResponse'];
+  contact: GenericCounterpartContact;
   permissions: CounterpartActionsPermissions;
 };
 

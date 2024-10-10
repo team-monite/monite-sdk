@@ -20,7 +20,7 @@ export const Tags: Story = {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        height: 600px;
+        height: 100vh;
         padding: 20px;
       `}
     >

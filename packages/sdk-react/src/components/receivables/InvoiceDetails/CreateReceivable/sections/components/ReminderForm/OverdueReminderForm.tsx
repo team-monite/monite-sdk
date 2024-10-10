@@ -229,7 +229,7 @@ const CreateOverdueReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days after`}
+                      {t(i18n)`days after due date`}
                     </Typography>
                   </>
                 }
@@ -274,9 +274,9 @@ const CreateOverdueReminderComponent = ({
               </>
             )}
           </Stack>
-          {formState.errors.terms && (
+          {formState.errors.terms?.message && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              {formState.errors.terms?.message}
+              {formState.errors.terms.message}
             </Alert>
           )}
         </form>

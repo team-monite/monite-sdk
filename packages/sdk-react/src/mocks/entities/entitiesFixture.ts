@@ -11,12 +11,13 @@ function getEntitySettings(): MergedSettingsResponse {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'non_compliant',
-    currency: faker.datatype.boolean()
-      ? {
-          default: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
-          exchange_rates: [],
-        }
-      : undefined,
+    generate_paid_invoice_pdf: false,
+    quote_signature_required: false,
+    vat_mode: 'exclusive',
+    currency: {
+      default: 'EUR',
+      exchange_rates: [],
+    },
   };
 }
 
@@ -35,7 +36,7 @@ function generateEntityVatIdResourceList(
 function generateEntityData(entityId: string): EntityResponse {
   const type = faker.datatype.boolean() ? 'individual' : 'organization';
   const address: components['schemas']['EntityAddressSchema'] = {
-    country: getRandomItemFromArray(['DE', 'US', 'KZ']),
+    country: 'DE',
     city: faker.location.city(),
     line1: faker.location.streetAddress(),
     postal_code: faker.location.zipCode(),
@@ -46,7 +47,7 @@ function generateEntityData(entityId: string): EntityResponse {
     : undefined;
 
   if (type === 'individual') {
-    const individual: EntityIndividualResponse = {
+    return {
       id: entityId,
       created_at: faker.date.past().toISOString(),
       updated_at: faker.date.past().toISOString(),
@@ -62,11 +63,9 @@ function generateEntityData(entityId: string): EntityResponse {
         title: faker.person.jobTitle(),
       },
     };
-
-    return individual;
   }
 
-  const organization: EntityOrganizationResponse = {
+  return {
     id: entityId,
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.past().toISOString(),
@@ -80,8 +79,6 @@ function generateEntityData(entityId: string): EntityResponse {
       legal_name: faker.company.name(),
     },
   };
-
-  return organization;
 }
 
 export const entitySettingsById: Record<string, MergedSettingsResponse> = {
@@ -123,22 +120,9 @@ export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
   ],
 };
 
-type AllowedCountries = components['schemas']['AllowedCountries'];
-type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type EntityIndividualResponse =
-  components['schemas']['EntityIndividualResponse'];
-type EntityOrganizationResponse =
-  components['schemas']['EntityOrganizationResponse'];
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
-type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
-type MoniteAllPaymentMethods = components['schemas']['MoniteAllPaymentMethods'];
-type MoniteAllPaymentMethodsTypes =
-  components['schemas']['MoniteAllPaymentMethodsTypes'];
+type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type OnboardingPaymentMethodsResponse =
   components['schemas']['OnboardingPaymentMethodsResponse'];
-type PaymentMethodDirection = components['schemas']['PaymentMethodDirection'];
-type PaymentMethodStatus = components['schemas']['PaymentMethodStatus'];
-type StatusEnum = components['schemas']['StatusEnum'];
-type VatIDTypeEnum = components['schemas']['VatIDTypeEnum'];

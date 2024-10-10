@@ -12,6 +12,7 @@ const filters: Record<
   issue_date: 'issue_date',
   document_id: 'document_id',
   created_at: 'created_at',
+  project_id: 'project_id',
 };
 
 export const ReceivableCursorFields = Object.values(filters);

@@ -42,6 +42,11 @@ const UserRolesBase = () => {
     setSelectedUserRoleID(id);
   };
 
+  const handleCreateNew = () => {
+    setSelectedUserRoleID(undefined);
+    setIsDetailsDialogOpened(true);
+  };
+
   return (
     <>
       <PageHeader
@@ -51,10 +56,7 @@ const UserRolesBase = () => {
             variant="contained"
             color="primary"
             disabled={isCreateAllowedLoading || !isCreateAllowed}
-            onClick={() => {
-              setSelectedUserRoleID(undefined);
-              setIsDetailsDialogOpened(true);
-            }}
+            onClick={handleCreateNew}
           >
             {t(i18n)`Create New`}
           </Button>
@@ -62,7 +64,12 @@ const UserRolesBase = () => {
       />
 
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
-      {isReadAllowed && <UserRolesTable onRowClick={onRowClick} />}
+      {isReadAllowed && (
+        <UserRolesTable
+          onRowClick={onRowClick}
+          handleCreateNew={handleCreateNew}
+        />
+      )}
 
       <Dialog
         open={isDetailsDialogOpened}

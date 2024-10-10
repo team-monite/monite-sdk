@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { createAPIClient } from '@/api/client';
 import {
@@ -21,13 +21,10 @@ import {
   Hub,
   makeFetchTransport,
 } from '@sentry/react';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -102,35 +99,32 @@ export const Provider = ({
     context: MoniteQraftContext,
   });
 
+  useEffect(() => {
+    client.mount();
+    return () => client.unmount();
+  }, [client]);
+
   return (
-    <QueryClientProvider client={client}>
-      <MoniteContext.Provider
-        value={{
-          locale: getLocaleWithDefaults(moniteProviderProps?.locale),
-          monite,
-          i18n,
-          sentryHub,
-          queryClient: client,
-          theme: createThemeWithDefaults(moniteProviderProps?.theme),
-          dateFnsLocale,
-          apiUrl: monite.baseUrl,
-          fetchToken: monite.fetchToken,
-          ...apiClient,
-        }}
-      >
-        <MoniteI18nProvider>
-          <MoniteAPIProvider
-            apiUrl={monite.baseUrl}
-            fetchToken={monite.fetchToken}
-            requestFn={apiClient.requestFn}
-            queryClient={queryClient}
-            APIContext={MoniteQraftContext}
-          >
-            {children}
-          </MoniteAPIProvider>
-        </MoniteI18nProvider>
-      </MoniteContext.Provider>
-    </QueryClientProvider>
+    <MoniteContext.Provider
+      value={{
+        locale: getLocaleWithDefaults(moniteProviderProps?.locale),
+        monite,
+        i18n,
+        sentryHub,
+        queryClient: client,
+        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        dateFnsLocale,
+        apiUrl: monite.baseUrl,
+        fetchToken: monite.fetchToken,
+        ...apiClient,
+      }}
+    >
+      <MoniteI18nProvider>
+        <MoniteAPIProvider APIContext={MoniteQraftContext}>
+          {children}
+        </MoniteAPIProvider>
+      </MoniteI18nProvider>
+    </MoniteContext.Provider>
   );
 };
 
@@ -152,7 +146,7 @@ interface ICreateRenderWithClientProps {
  * @see {@link https://tkdodo.eu/blog/testing-react-query#always-await-the-query}
  */
 export function createRenderWithClient(props?: ICreateRenderWithClientProps) {
-  return ({ children }: { children: ReactElement }) => (
+  return ({ children }: { children: React.ReactNode }) => (
     <Provider
       client={queryClient}
       children={children}
@@ -219,6 +213,35 @@ export async function waitUntilTableIsLoaded(
 }
 
 /**
+ * Waits for condition to be true
+ *
+ * @param predicate Predicate checking for condition
+ * @param timeout Wait function timeout
+ * @param checkInterval Wait function check interval
+ */
+export function waitForCondition(
+  predicate: () => boolean,
+  timeout: number = 1_000,
+  checkInterval: number = 50
+) {
+  return new Promise<void>((resolve, reject) => {
+    let timeLeft = timeout;
+    const intervalId = setInterval(() => {
+      if (predicate()) {
+        clearInterval(intervalId);
+        resolve();
+      } else {
+        timeLeft -= checkInterval;
+        if (timeLeft <= 0) {
+          clearInterval(intervalId);
+          reject(new Error('Timed out in waitForCondition.'));
+        }
+      }
+    }, checkInterval);
+  });
+}
+
+/**
  * Triggers a click on a select option
  *
  * @param selectName Select name
@@ -256,6 +279,29 @@ export function triggerClickOnAutocompleteOption(
 
   const option = screen.getByText(selectOption);
   fireEvent.click(option);
+}
+
+export async function triggerClickOnFirstAutocompleteOption(
+  selectName: string | RegExp,
+  timeout: number = 3_000
+) {
+  const dropdown = screen.getByRole('combobox', {
+    name: selectName,
+  });
+  act(() => fireEvent.mouseDown(dropdown));
+
+  await waitForCondition(
+    () => screen.queryAllByRole('option').length > 0,
+    timeout
+  );
+  const options = screen.getAllByRole('option');
+  act(() => fireEvent.click(options[0]));
+
+  // Wait for options to be hidden
+  await waitForCondition(
+    () => !screen.queryAllByRole('option').length,
+    timeout
+  );
 }
 
 /**
@@ -372,4 +418,15 @@ export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
 
   if (roleQuery.status !== 'success' || meQuery.status !== 'success')
     throw new Error('Permissions not loaded');
+}
+
+export function findParentElement(
+  childElement: HTMLElement,
+  predicate: (elem: HTMLElement) => boolean
+) {
+  let parent: HTMLElement | null | undefined = childElement.parentElement;
+  do {
+    if (parent && predicate(parent)) return parent;
+    parent = parent?.parentElement;
+  } while (parent != null);
 }

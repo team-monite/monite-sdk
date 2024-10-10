@@ -9,26 +9,16 @@ import { PayablesTable } from '@/components/payables/PayablesTable';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useFileInput, useMenuButton } from '@/core/hooks';
+import { useFileInput } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import AddIcon from '@mui/icons-material/Add';
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
+
+import { CreatePayableMenu } from './CreatePayableMenu';
 
 export type PayablesProps = Pick<
   UsePayableDetailsProps,
@@ -37,6 +27,7 @@ export type PayablesProps = Pick<
   | 'onSubmitted'
   | 'onRejected'
   | 'onApproved'
+  | 'onReopened'
   | 'onPay'
 >;
 
@@ -54,6 +45,7 @@ const PayablesBase = ({
   onSubmitted,
   onRejected,
   onApproved,
+  onReopened,
   onPay,
 }: PayablesProps) => {
   const { i18n } = useLingui();
@@ -63,8 +55,6 @@ const PayablesBase = ({
     invoiceId: string | undefined;
     open: boolean;
   }>({ invoiceId: undefined, open: false });
-
-  const { buttonProps, menuProps, open } = useMenuButton();
 
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
@@ -81,6 +71,30 @@ const PayablesBase = ({
         },
       }
     );
+
+  const handleFileUpload = (file: File) => {
+    if (
+      !['application/pdf', 'image/png', 'image/jpeg', 'image/tiff'].includes(
+        file.type
+      )
+    ) {
+      toast.error(t(i18n)`Unsupported file format`);
+      return;
+    }
+
+    toast.promise(
+      payableUploadFromFileMutation.mutateAsync({
+        file,
+        // TODO why is this file_type was removed in 2024-01-31?
+        // file_type: 'payables',
+      }),
+      {
+        loading: t(i18n)`Uploading payable file`,
+        success: t(i18n)`Payable uploaded successfully`,
+        error: (error) => getAPIErrorMessage(i18n, error),
+      }
+    );
+  };
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -115,39 +129,11 @@ const PayablesBase = ({
           </>
         }
         extra={
-          <Box>
-            <Button
-              {...buttonProps}
-              disabled={!isCreateAllowed}
-              endIcon={
-                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-              }
-            >
-              {t(i18n)`Create New`}
-            </Button>
-            <Menu {...menuProps}>
-              <MenuItem
-                onClick={() => {
-                  setIsCreateInvoiceDialogOpen(true);
-                }}
-              >
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText>{t(i18n)`New Invoice`}</ListItemText>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  openFileInput();
-                }}
-              >
-                <ListItemIcon>
-                  <DriveFolderUploadIcon />
-                </ListItemIcon>
-                <ListItemText>{t(i18n)`Upload File`}</ListItemText>
-              </MenuItem>
-            </Menu>
-          </Box>
+          <CreatePayableMenu
+            isCreateAllowed={isCreateAllowed}
+            onCreateInvoice={() => setIsCreateInvoiceDialogOpen(true)}
+            handleFileUpload={handleFileUpload}
+          />
         }
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
@@ -155,30 +141,18 @@ const PayablesBase = ({
         <PayablesTable
           onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
           onPay={onPay}
+          openFileInput={openFileInput}
+          setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
 
       <FileInput
-        accept="application/pdf"
+        accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable file`}
         onChange={(event) => {
           const file = event.target.files?.item(0);
 
-          if (!file) {
-            return;
-          }
-
-          toast.promise(
-            payableUploadFromFileMutation.mutateAsync({
-              file,
-              file_type: 'payables',
-            }),
-            {
-              loading: t(i18n)`Uploading payable file`,
-              success: t(i18n)`Payable uploaded successfully`,
-              error: (error) => getAPIErrorMessage(i18n, error),
-            }
-          );
+          if (file) handleFileUpload(file);
         }}
       />
       <Dialog
@@ -205,6 +179,7 @@ const PayablesBase = ({
           onSubmitted={onSubmitted}
           onRejected={onRejected}
           onApproved={onApproved}
+          onReopened={onReopened}
           onPay={onPay}
         />
       </Dialog>

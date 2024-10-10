@@ -36,17 +36,24 @@ export const DefaultLayout = ({
     window.scrollTo(0, 0);
   }, [location]);
 
+  const drawerWidth = '240px';
+
   return (
     <>
       <Box
-        sx={{ display: 'flex', margin: 0, height: '100%', minHeight: '100vh' }}
+        sx={{
+          display: 'flex',
+          m: 0,
+          height: '100vh',
+          width: '100vw',
+        }}
       >
         <Drawer
           sx={{
-            width: '240px',
+            width: drawerWidth,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: '240px',
+              width: drawerWidth,
               boxSizing: 'border-box',
             },
           }}
@@ -88,24 +95,13 @@ export const DefaultLayout = ({
           sx={{
             display: 'flex',
             flex: 1,
-            minWidth: 0,
+            flexDirection: 'column',
+            height: 'inherit',
+            position: 'relative',
+            width: `calc(100vw - ${drawerWidth})`,
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flex: '1 1 auto',
-              flexDirection: 'column',
-              minWidth: 0,
-              minHeight: '100vh',
-
-              '& .MuiDataGrid-root': {
-                height: 'calc(100vh - 272px)',
-              },
-            }}
-          >
-            {children}
-          </Box>
+          {children}
         </Box>
       </Box>
     </>

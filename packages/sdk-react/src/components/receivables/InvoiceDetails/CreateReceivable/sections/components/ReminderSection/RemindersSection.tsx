@@ -84,6 +84,13 @@ const ReminderSectionContent = ({
     action: 'create',
   });
 
+  const { monite } = useMoniteContext();
+
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: monite.entityId },
+    });
+
   const { control, watch, resetField } =
     useFormContext<CreateReceivablesFormProps>();
   const counterpartId = watch('counterpart_id');
@@ -167,23 +174,35 @@ const ReminderSectionContent = ({
           : []),
       ];
 
+  const isReminderDisabledForEntity =
+    !isSettingsLoading && settings?.reminder?.enabled === false;
+
+  const isCounterpartWarningRequired =
+    !hasValidReminderEmailLoading &&
+    (!hasValidReminderEmail || !counterpart?.reminders_enabled);
+
+  const shouldShowError =
+    isReminderDisabledForEntity && isCounterpartWarningRequired;
+
   return (
     <>
-      {!hasValidReminderEmailLoading && Boolean(counterpartId) && (
-        <>
-          {!counterpart?.reminders_enabled && (
-            <Alert severity="warning" sx={{ mb: 2 }}>{t(
-              i18n
-            )`Reminders are disabled for this Counterpart.`}</Alert>
-          )}
-          {!hasValidReminderEmail && (
-            <Alert severity="warning" sx={{ mb: 2 }}>{t(
-              i18n
-            )`No default email for selected Counterpart. Reminders will not be sent.`}</Alert>
-          )}
-        </>
+      {!isCounterpartLoading && !counterpart?.reminders_enabled && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(i18n)`Reminders are disabled for this Counterpart.`}
+        </Alert>
       )}
-
+      {!hasValidReminderEmailLoading && !hasValidReminderEmail && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(
+            i18n
+          )`No default email for selected Counterpart. Reminders will not be sent.`}
+        </Alert>
+      )}
+      {shouldShowError && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(i18n)`Reminders are disabled for this Entity.`}
+        </Alert>
+      )}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <SelectReminderLayout
@@ -345,12 +364,13 @@ const SelectReminderLayout = ({
   const { i18n } = useLingui();
 
   return (
-    <Grid container alignItems="stretch" spacing={1}>
+    // Use bottom alignment to correctly align editors with buttons
+    <Grid container alignItems="bottom" spacing={1}>
       <Grid item xs={onUpdate ? 10 : 12}>
         {children}
       </Grid>
       {onUpdate && (
-        <Grid item xs={2} sx={{ display: 'flex' }}>
+        <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
           <Button
             variant="outlined"
             disabled={updateDisabled}
@@ -390,7 +410,7 @@ export const ReminderSection = (props: ReminderSectionProps) => {
 
   return (
     <Stack spacing={1} className={className}>
-      <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
+      <Typography variant="h3">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <ReminderSectionContent {...props} />

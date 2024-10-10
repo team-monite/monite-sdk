@@ -59,6 +59,7 @@ export const counterpartHandlers = [
       (url.searchParams.get('sort') as GetRequest['sort']) || undefined;
     const type =
       (url.searchParams.get('type') as GetRequest['type']) || undefined;
+    const idIn = url.searchParams.getAll('id__in') || undefined;
 
     const subTypes = (() => {
       const isCustomer = url.searchParams.get('is_customer') === 'true';
@@ -97,6 +98,7 @@ export const counterpartHandlers = [
       data: new CounterpartMockBuilder()
         .withPage(page)
         .withLimit(limit)
+        .withIdIn(idIn)
         .withOrder(order)
         .withSearch(search)
         .withType(type)

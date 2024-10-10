@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -11,6 +11,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -19,7 +20,7 @@ import {
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Typography } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ProductType } from '../ProductDetails/components/ProductType';
@@ -81,6 +82,12 @@ export interface ProductTableProps {
    * @param productId - Removed product ID.
    */
   onDeleted?: (productId: ProductServiceResponse['id']) => void;
+
+  /**
+   * The event handler open create modal
+   * Triggers when the user click on the create new button for no data state
+   */
+  openCreateModal?: () => void;
 }
 
 interface ProductsTableSortModel {
@@ -100,6 +107,7 @@ const ProductsTableBase = ({
   onRowClick,
   onEdit,
   onDeleted,
+  openCreateModal,
 }: ProductTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -140,7 +148,12 @@ const ProductsTableBase = ({
 
   const { api } = useMoniteContext();
 
-  const { data: products, isLoading } = api.products.getProducts.useQuery({
+  const {
+    data: products,
+    isLoading,
+    isError,
+    refetch,
+  } = api.products.getProducts.useQuery({
     query: {
       sort: sortModel?.field,
       order: sortModel?.sort,
@@ -169,6 +182,91 @@ const ProductsTableBase = ({
     onChangeSortCallback?.(model[0] as ProductsTableSortModel);
   };
 
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'name',
+        headerName: t(i18n)`Name, description`,
+        display: 'flex',
+        flex: 3,
+        renderCell: (params) => (
+          <Stack spacing={0} width="100%">
+            <Typography variant="body1">{params.row.name}</Typography>
+            <Typography
+              variant="body2"
+              className="Monite-TextOverflowContainer"
+            >
+              {params.row.description}
+            </Typography>
+          </Stack>
+        ),
+      },
+      {
+        field: 'type',
+        headerName: t(i18n)`Type`,
+        display: 'flex',
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return params.row.type ? (
+            <ProductType type={params.row.type} />
+          ) : null;
+        },
+      },
+      {
+        field: 'price',
+        headerName: t(i18n)`Price per unit`,
+        headerAlign: 'right',
+        align: 'right',
+        flex: 1,
+        sortable: false,
+        valueGetter: (value: ProductServiceResponse['price']) => {
+          const price = value;
+
+          return price
+            ? formatCurrencyToDisplay(price.value, price.currency)
+            : '';
+        },
+      },
+      {
+        field: 'measure_unit_id',
+        headerName: t(i18n)`Units`,
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return <MeasureUnit unitId={params.value} />;
+        },
+      },
+      {
+        field: 'actions',
+        sortable: false,
+        headerName: '',
+        width: 70,
+        renderCell: (params) => (
+          <TableActions
+            permissions={{
+              isUpdateAllowed: isUpdateSupported,
+              isDeleteAllowed: isDeleteSupported,
+            }}
+            onEdit={() => onEdit?.(params.row)}
+            onDelete={() => {
+              setIsDeleteDialogOpen({
+                id: params.row.id,
+                open: true,
+              });
+            }}
+          />
+        ),
+      },
+    ];
+  }, [
+    formatCurrencyToDisplay,
+    i18n,
+    isDeleteSupported,
+    isUpdateSupported,
+    onEdit,
+  ]);
+
   if (isReadSupportedLoading) {
     return <LoadingPage />;
   }
@@ -177,147 +275,86 @@ const ProductsTableBase = ({
     return <AccessRestriction />;
   }
 
-  return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
-            },
-          }}
-          rowSelection={false}
-          disableColumnFilter={true}
-          rows={products?.data || []}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => {
-            onRowClick?.(params.row);
-          }}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name, description`,
-              display: 'flex',
-              flex: 3,
-              renderCell: (params) => (
-                <Stack spacing={1} width="100%">
-                  <Typography variant="caption">{params.row.name}</Typography>
-                  <Typography
-                    color="secondary"
-                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  >
-                    {params.row.description}
-                  </Typography>
-                </Stack>
-              ),
-            },
-            {
-              field: 'type',
-              headerName: t(i18n)`Type`,
-              display: 'flex',
-              flex: 1,
-              sortable: false,
-              renderCell: (params) => {
-                return params.row.type ? (
-                  <ProductType type={params.row.type} />
-                ) : null;
-              },
-            },
-            {
-              field: 'price',
-              headerName: t(i18n)`Price per unit`,
-              flex: 1,
-              sortable: false,
-              align: 'right',
-              headerAlign: 'right',
-              valueGetter: (value: ProductServiceResponse['price']) => {
-                const price = value;
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterType] !== null &&
+      currentFilter[key as keyof FilterType] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
 
-                return price
-                  ? formatCurrencyToDisplay(price.value, price.currency)
-                  : '';
-              },
-            },
-            {
-              field: 'measure_unit_id',
-              headerName: t(i18n)`Units`,
-              flex: 1,
-              sortable: false,
-              renderCell: (params) => {
-                return <MeasureUnit unitId={params.value} />;
-              },
-            },
-            {
-              field: 'actions',
-              sortable: false,
-              headerName: '',
-              width: 70,
-              renderCell: (params) => (
-                <TableActions
-                  permissions={{
-                    isUpdateAllowed: isUpdateSupported,
-                    isDeleteAllowed: isDeleteSupported,
-                  }}
-                  onEdit={() => onEdit?.(params.row)}
-                  onDelete={() => {
-                    setIsDeleteDialogOpen({
-                      id: params.row.id,
-                      open: true,
-                    });
-                  }}
-                />
-              ),
-            },
-          ]}
-          loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={products?.prev_pagination_token}
-                nextPage={products?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
+  return (
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        rows={products?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => {
+          onRowClick?.(params.row);
+        }}
+        columns={columns}
+        loading={isLoading}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={products?.prev_pagination_token}
+              nextPage={products?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={products?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={openCreateModal}
+              refetch={refetch}
+              entityName={t(i18n)`Products`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Product`]}
+              type="no-data"
+            />
+          ),
+        }}
+      />
+      {isDeleteDialogOpen.id && (
+        <ProductDeleteModal
+          id={isDeleteDialogOpen.id}
+          open={isDeleteDialogOpen.open}
+          onDeleted={onDeleted}
+          onClose={() =>
+            setIsDeleteDialogOpen((prev) => ({
+              ...prev,
+              open: false,
+            }))
+          }
         />
-        {isDeleteDialogOpen.id && (
-          <ProductDeleteModal
-            id={isDeleteDialogOpen.id}
-            open={isDeleteDialogOpen.open}
-            onDeleted={onDeleted}
-            onClose={() =>
-              setIsDeleteDialogOpen((prev) => ({
-                ...prev,
-                open: false,
-              }))
-            }
-          />
-        )}
-      </Box>
-    </>
+      )}
+    </Box>
   );
 };
 

@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 
-export interface Props {
+export interface JSONFormatterInputProps {
   /** Name attribute of the input element. */
   name: string;
 
@@ -18,7 +18,10 @@ export interface Props {
  * This component renders a text area input field for JSON data. It includes a formatter to format the input value as JSON and handles errors.
  *
  */
-export const JSONFormatterInput = ({ name, label }: Props) => {
+export const JSONFormatterInput = ({
+  name,
+  label,
+}: JSONFormatterInputProps) => {
   const { control, setValue, setError, clearErrors } = useFormContext();
   const inputRef = useRef<HTMLTextAreaElement>(null);
 

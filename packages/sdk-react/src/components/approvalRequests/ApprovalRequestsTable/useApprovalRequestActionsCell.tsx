@@ -83,13 +83,14 @@ const RejectButton = ({ id, onClick }: ActionButtonProps) => {
 export const useApprovalRequestActionsCell = (
   props: UseApprovalRequestActionsCellProps | {}
 ): GridBaseColDef | undefined => {
+  const { i18n } = useLingui();
   const { data: user } = useEntityUserByAuthToken();
 
   if (!('onRowActionClick' in props && props.onRowActionClick)) return;
 
   return {
     field: 'actions',
-    renderHeader: () => null,
+    headerName: t(i18n)`Actions`,
     sortable: false,
     display: 'flex',
     align: 'right',

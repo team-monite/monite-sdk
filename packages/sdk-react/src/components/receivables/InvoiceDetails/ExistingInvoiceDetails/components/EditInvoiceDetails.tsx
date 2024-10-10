@@ -2,6 +2,7 @@ import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
@@ -12,6 +13,7 @@ import { getUpdateInvoiceValidationSchema } from '@/components/receivables/Invoi
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMyEntity } from '@/core/queries';
 import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
@@ -32,6 +34,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -61,8 +64,10 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
+  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
+
   const methods = useForm<UpdateReceivablesFormProps>({
-    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: {
       /** Customer section */
       counterpart_id: invoice.counterpart_id,
@@ -87,9 +92,10 @@ const EditInvoiceDetailsContent = ({
         vat_rate_value: lineItem.product.vat_rate.value,
         name: lineItem.product.name,
         price: lineItem.product.price,
-        measure_unit_id: lineItem.product.measure_unit_id,
+        measure_unit_id: lineItem.product.measure_unit?.id ?? '',
       })),
       vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+      memo: invoice.memo ?? '',
 
       /** Items section */
       entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
@@ -126,7 +132,9 @@ const EditInvoiceDetailsContent = ({
   const updateReceivable = useUpdateReceivable(invoice.id);
 
   const isLoading =
-    updateReceivableLineItems.isPending || updateReceivable.isPending;
+    updateReceivableLineItems.isPending ||
+    updateReceivable.isPending ||
+    isEntityLoading;
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
@@ -141,6 +149,8 @@ const EditInvoiceDetailsContent = ({
   } = useInvoiceReminderDialogs({ getValues });
 
   const className = 'Monite-EditInvoiceDetails';
+
+  const theme = useTheme();
 
   return (
     <>
@@ -188,6 +198,7 @@ const EditInvoiceDetailsContent = ({
                     counterpart_vat_id_id:
                       values.counterpart_vat_id_id || undefined,
                     currency: actualCurrency,
+                    memo: values.memo,
                     vat_exemption_rationale: values.vat_exemption_rationale,
                     // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                     counterpart_shipping_address_id:
@@ -228,29 +239,28 @@ const EditInvoiceDetailsContent = ({
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <Typography variant="h2" sx={{ mb: 2 }}>
-                {t(i18n)`Edit invoice ${invoice.id}`}
-              </Typography>
-              <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={isLoading} />
-                <EntitySection
-                  disabled={isLoading}
-                  hidden={['purchase_order']}
-                />
-                <ItemsSection
-                  actualCurrency={actualCurrency}
-                  onCurrencyChanged={setActualCurrency}
-                />
-                <PaymentSection disabled={isLoading} />
-                <ReminderSection
-                  disabled={isLoading}
-                  onUpdateOverdueReminder={onEditOverdueReminder}
-                  onUpdatePaymentReminder={onEditPaymentReminder}
-                  onCreateReminder={onCreateReminder}
-                />
-              </Stack>
+            <Typography variant="h1" sx={{ mb: 7 }}>
+              {t(i18n)`Edit invoice ${
+                invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+              }`}
+            </Typography>
+            <Stack direction="column" spacing={4}>
+              <CustomerSection disabled={isLoading} />
+              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              <ItemsSection
+                isUSEntity={isUSEntity}
+                actualCurrency={actualCurrency}
+                onCurrencyChanged={setActualCurrency}
+              />
+              <PaymentSection disabled={isLoading} />
+              <ReminderSection
+                disabled={isLoading}
+                onUpdateOverdueReminder={onEditOverdueReminder}
+                onUpdatePaymentReminder={onEditPaymentReminder}
+                onCreateReminder={onCreateReminder}
+              />
             </Stack>
             <Dialog
               className={className + '-Dialog-CancelWithoutSaving'}

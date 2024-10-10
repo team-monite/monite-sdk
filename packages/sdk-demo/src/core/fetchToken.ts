@@ -24,14 +24,13 @@ export async function fetchToken(
   });
 
   if (!res.ok) {
-    throw new Error('Could not fetch token');
+    throw new Error(`Could not fetch token: ${await res.text()}`);
   }
 
   return await res.json();
 }
 
 export type AuthCredentials = {
-  entity_id: string;
   entity_user_id: string;
   client_id: string;
   client_secret: string;

@@ -1,10 +1,18 @@
+import { FieldValue, FieldValues } from 'react-hook-form';
+
 import { components } from '@/api';
 import {
   getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
+import {
+  OcrRequiredField,
+  OcrRequiredFields,
+  OptionalFields,
+} from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
+import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';
 
@@ -225,3 +233,79 @@ function formatTaxToMinorUnits(tax: number): number {
 function formatTaxFromMinorUnits(tax: number): number {
   return tax / 100;
 }
+
+export const isFieldRequired = <TFieldValues extends FieldValues>(
+  fieldName: OcrRequiredField,
+  ocrRequiredFields: OcrRequiredFields,
+  value?: FieldValue<TFieldValues>
+) => {
+  const defaultRequiredFields: Record<string, boolean> = {
+    invoiceNumber: true,
+    dueDate: true,
+    tags: true,
+    currency: true,
+  };
+
+  if (value) {
+    return false;
+  }
+
+  const isDefaultRequired = defaultRequiredFields[fieldName] ?? false;
+  const isOcrRequired = ocrRequiredFields?.[fieldName] ?? false;
+
+  return isDefaultRequired || isOcrRequired;
+};
+
+export const isOcrMismatch = (
+  payableData: components['schemas']['PayableResponseSchema']
+) => {
+  const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
+    payableData;
+
+  if (!other_extracted_data || !('total' in other_extracted_data)) {
+    return {
+      isAmountMismatch: false,
+      isBankAccountMismatch: false,
+    };
+  }
+
+  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
+    other_extracted_data;
+
+  const isAmountMismatch = amount_to_pay !== ocrTotal;
+
+  const isBankAccountMismatch =
+    counterpart_bank_account_id && ocrBankAccountId
+      ? counterpart_bank_account_id !== ocrBankAccountId
+      : false;
+
+  return {
+    isAmountMismatch,
+    isBankAccountMismatch,
+  };
+};
+
+export type OcrMismatchField =
+  | keyof Pick<
+      components['schemas']['PayableResponseSchema'],
+      'amount_to_pay' | 'counterpart_bank_account_id'
+    >;
+
+export type OcrMismatchFields =
+  | Partial<Record<OcrMismatchField, boolean>>
+  | undefined;
+
+export interface MonitePayableDetailsInfoProps {
+  optionalFields?: OptionalFields;
+  ocrRequiredFields?: OcrRequiredFields;
+  ocrMismatchFields?: OcrMismatchFields;
+  isTagsDisabled?: boolean;
+}
+
+export const usePayableDetailsThemeProps = (
+  inProps?: Partial<MonitePayableDetailsInfoProps>
+) =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableDetailsInfo',
+  });

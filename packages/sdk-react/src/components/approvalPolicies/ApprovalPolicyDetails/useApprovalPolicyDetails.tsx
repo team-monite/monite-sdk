@@ -5,7 +5,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-interface Props {
+interface ApprovalPolicyDetailsProps {
   /** Callback is fired when the user clicks on `Edit` button */
   onChangeEditMode: (isEdit: boolean) => void;
 
@@ -26,7 +26,7 @@ export const useApprovalPolicyDetails = ({
   onChangeEditMode,
   onCreated,
   onUpdated,
-}: Props) => {
+}: ApprovalPolicyDetailsProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
@@ -50,7 +50,7 @@ export const useApprovalPolicyDetails = ({
 
   const updateMutation =
     api.approvalPolicies.patchApprovalPoliciesId.useMutation(undefined, {
-      onSuccess: async (updatedAppprovalPolicy) => {
+      onSuccess: async (updatedApprovalPolicy) => {
         await Promise.all([
           api.approvalPolicies.getApprovalPolicies.invalidateQueries(
             queryClient
@@ -58,7 +58,7 @@ export const useApprovalPolicyDetails = ({
           api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
             {
               parameters: {
-                path: { approval_policy_id: updatedAppprovalPolicy.id },
+                path: { approval_policy_id: updatedApprovalPolicy.id },
               },
             },
             queryClient

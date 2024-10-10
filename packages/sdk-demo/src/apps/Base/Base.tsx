@@ -2,15 +2,14 @@ import { ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  ApprovalPolicies,
   ApprovalRequests,
-  UserRoles,
   Counterparts,
   Payables,
   Receivables,
   Products,
   Tags,
   Onboarding,
+  RolesAndApprovalPolicies,
 } from '@monite/sdk-react';
 import { Box } from '@mui/material';
 
@@ -55,14 +54,6 @@ export const Base = () => {
         }
       />
       <Route
-        path={ROUTES.approvalPolicies}
-        element={
-          <Gutter>
-            <ApprovalPolicies />
-          </Gutter>
-        }
-      />
-      <Route
         path={ROUTES.approvalRequests}
         element={
           <Gutter>
@@ -71,10 +62,10 @@ export const Base = () => {
         }
       />
       <Route
-        path={ROUTES.roles}
+        path={ROUTES.rolesApprovals}
         element={
           <Gutter>
-            <UserRoles />
+            <RolesAndApprovalPolicies />
           </Gutter>
         }
       />

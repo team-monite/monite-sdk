@@ -10,7 +10,7 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses } from '@/core/queries';
+import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,6 +27,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -50,13 +51,20 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
   </MoniteScopedProviders>
 );
 
-const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
+const CreateReceivablesBase = ({
+  type,
+  onCreate,
+}: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { api, monite } = useMoniteContext();
+  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
+
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: useMemo(
       () => ({
+        type,
         counterpart_id: '',
         counterpart_contact: '',
         counterpart_vat_id_id: '',
@@ -68,11 +76,11 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
         entity_vat_id_id: '',
         line_items: [],
         entity_bank_account_id: '',
-        type: props.type,
         overdue_reminder_id: '',
         payment_reminder_id: '',
+        memo: '',
       }),
-      [props.type]
+      [type]
     ),
   });
 
@@ -83,7 +91,6 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { api, monite } = useMoniteContext();
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
       path: { entity_id: monite.entityId },
@@ -105,7 +112,9 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
 
-  if (isSettingsLoading) {
+  const theme = useTheme();
+
+  if (isSettingsLoading || isEntityLoading) {
     return <LoadingPage />;
   }
 
@@ -133,7 +142,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               type="submit"
               form={formName}
               disabled={createReceivable.isPending}
-            >{t(i18n)`Create`}</Button>
+            >{t(i18n)`Next page`}</Button>
           </Box>
         </Toolbar>
       </DialogTitle>
@@ -185,10 +194,15 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   line_items: values.line_items.map((item) => ({
                     quantity: item.quantity,
                     product_id: item.product_id,
-                    vat_rate_id: item.vat_rate_id,
+                    ...(isUSEntity
+                      ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
+                      : { vat_rate_id: item.vat_rate_id }),
                   })),
+                  memo: values.memo,
                   vat_exemption_rationale: values.vat_exemption_rationale,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
+                  ...(!isUSEntity && values.entity_vat_id_id
+                    ? { entity_vat_id_id: values.entity_vat_id_id }
+                    : {}),
                   fulfillment_date: values.fulfillment_date
                     ? /**
                        * We have to change the date as Backend accepts it.
@@ -200,35 +214,36 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   currency: actualCurrency,
                   payment_reminder_id: values.payment_reminder_id || undefined,
                   overdue_reminder_id: values.overdue_reminder_id || undefined,
+                  tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
                 };
 
               createReceivable.mutate(invoicePayload, {
                 onSuccess: (createdReceivable) => {
-                  props.onCreate?.(createdReceivable.id);
+                  onCreate?.(createdReceivable.id);
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <Typography variant="h2" sx={{ mb: 2 }}>
-                {t(i18n)`Create Invoice`}
-              </Typography>
-              <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={createReceivable.isPending} />
-                <EntitySection disabled={createReceivable.isPending} />
-                <ItemsSection
-                  defaultCurrency={settings?.currency?.default}
-                  actualCurrency={actualCurrency}
-                  onCurrencyChanged={setActualCurrency}
-                />
-                <PaymentSection disabled={createReceivable.isPending} />
-                <ReminderSection
-                  disabled={createReceivable.isPending}
-                  onUpdateOverdueReminder={onEditOverdueReminder}
-                  onUpdatePaymentReminder={onEditPaymentReminder}
-                  onCreateReminder={onCreateReminder}
-                />
-              </Stack>
+            <Typography variant="h1" sx={{ mb: 7 }}>
+              {t(i18n)`Create Invoice`}
+            </Typography>
+            <Stack direction="column" spacing={4}>
+              <CustomerSection disabled={createReceivable.isPending} />
+              <EntitySection disabled={createReceivable.isPending} />
+              <ItemsSection
+                defaultCurrency={settings?.currency?.default}
+                actualCurrency={actualCurrency}
+                onCurrencyChanged={setActualCurrency}
+                isUSEntity={isUSEntity}
+              />
+              <PaymentSection disabled={createReceivable.isPending} />
+              <ReminderSection
+                disabled={createReceivable.isPending}
+                onUpdateOverdueReminder={onEditOverdueReminder}
+                onUpdatePaymentReminder={onEditPaymentReminder}
+                onCreateReminder={onCreateReminder}
+              />
             </Stack>
           </form>
         </FormProvider>

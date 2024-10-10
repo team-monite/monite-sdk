@@ -103,7 +103,7 @@ export function useCounterpartVatForm({
         value,
       };
 
-      return !!vat ? updateVat(payload) : createVat(payload);
+      return vat ? updateVat(payload) : createVat(payload);
     },
     [vat, updateVat, createVat]
   );
