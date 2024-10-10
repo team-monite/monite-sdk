@@ -51,11 +51,11 @@ test('theme switching works', async ({ page }) => {
   expect(bgColor).toBe('rgb(18, 18, 18)');
 });
 
-test('test the Roles button under Settings', async ({ page }) => {
+test('test the Roles & Approvals button under Settings', async ({ page }) => {
   await page.goto(`${consumerPage}${routingPaths.receivables}`);
 
   await page.getByRole('button', { name: 'Settings' }).click();
-  await expect(page.getByRole('button', { name: 'Roles' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Roles & Approvals' })).toBeVisible();
   await page.getByRole('button', { name: 'Roles & Approvals' }).click();
 
   const iframe = page.frameLocator('iframe');
