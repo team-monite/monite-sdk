@@ -11,6 +11,7 @@ const schema: {
   payables_purchase_order: 'payables_purchase_order',
   payables_notify_approver: 'payables_notify_approver',
   payables_notify_payer: 'payables_notify_payer',
+  receivables_paid_invoice: 'receivables_paid_invoice',
 };
 
 export const DocumentObjectTypeRequestEnum = Object.values(schema);

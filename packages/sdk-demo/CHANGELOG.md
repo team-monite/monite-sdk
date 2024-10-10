@@ -1,5 +1,90 @@
 # @monite/sdk-drop-in
 
+## 1.8.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [5370ff8a]
+  - @team-monite/sdk-themes@0.2.1-beta.0
+  - @monite/sdk-api@3.17.0-beta.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- 47e6e95e: feat(DEV-12284): add Approval Policies builder component
+- ab0a1842: feat(DEV-11689): migrated API from version `2023-09-01` to `2024-01-31`
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- 47e6e95e: encapsulate entity check logic
+- Updated dependencies [d0fd99c0]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [4605fe5e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [1f30c113]
+  - @team-monite/sdk-themes@0.2.0
+  - @monite/sdk-api@3.16.0
+
+## 1.8.0-beta.5
+
+### Patch Changes
+
+- 43a2d4e6: encapsulate entity check logic
+- Updated dependencies [59ff0c92]
+- Updated dependencies [202101f0]
+- Updated dependencies [43a2d4e6]
+- Updated dependencies [0f7e21a5]
+- Updated dependencies [84ee5502]
+  - @team-monite/sdk-themes@0.2.0-beta.3
+  - @monite/sdk-api@3.16.0-beta.5
+
+## 1.8.0-beta.4
+
+### Minor Changes
+
+- e9eeb68f: feat(DEV-12284): add Approval Policies builder component
+
+### Patch Changes
+
+- Updated dependencies [0a37dc68]
+- Updated dependencies [6c3faf43]
+- Updated dependencies [cddff2af]
+- Updated dependencies [5d4c1274]
+  - @team-monite/sdk-themes@0.2.0-beta.2
+  - @monite/sdk-api@3.16.0-beta.4
+
+## 1.8.0-beta.3
+
+### Patch Changes
+
+- Updated dependencies [4605fe5e]
+  - @team-monite/sdk-themes@0.2.0-beta.1
+  - @monite/sdk-api@3.16.0-beta.3
+
+## 1.8.0-beta.2
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- Updated dependencies [d0fd99c0]
+- Updated dependencies [1f30c113]
+  - @team-monite/sdk-themes@0.2.0-beta.0
+  - @monite/sdk-api@3.16.0-beta.2
+
 ## 1.8.0-beta.1
 
 ### Patch Changes

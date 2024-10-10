@@ -108,9 +108,9 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
   TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
-  TableFoot: ({ children }) => {
-    return <>{children}</>;
-  },
+  TableFoot: forwardRef<HTMLTableSectionElement>((props, ref) => (
+    <tfoot {...props} ref={ref} />
+  )),
 };
 
 const getTableHeadCells = (i18n: I18n) => [
@@ -379,18 +379,18 @@ export const ProductsTable = ({
                   );
                 }}
               />
-              <Box sx={{ mb: 2 }}>
-                <ProductsTableFilters onChangeFilter={onChangeFilter} />
-              </Box>
+              <ProductsTableFilters
+                onChangeFilter={onChangeFilter}
+                sx={{ mb: 2 }}
+              />
               <Paper
                 variant="outlined"
-                style={{ height: '100%', overflow: 'scroll' }}
+                style={{ height: '100%' }}
                 sx={{
                   '& .MuiListItem-root': {
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                   },
-                  borderRadius: 3,
                 }}
               >
                 <TableVirtuoso
@@ -420,33 +420,42 @@ export const ProductsTable = ({
                     EmptyPlaceholder: () => {
                       if (isLoading) {
                         return (
-                          <TableCell colSpan={3}>
-                            <CenteredContentBox>
-                              <CircularProgress />
-                            </CenteredContentBox>
-                          </TableCell>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell colSpan={3}>
+                                <CenteredContentBox>
+                                  <CircularProgress />
+                                </CenteredContentBox>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
                         );
                       }
 
                       return (
-                        <TableCell colSpan={3}>
-                          <CenteredContentBox>
-                            <Stack alignItems="center" sx={{ p: 4 }}>
-                              <FileIcon color="primary" sx={{ mb: 2 }} />
-                              <Typography variant="body1" sx={{ mb: 0.5 }}>{t(
-                                i18n
-                              )`No items yet`}</Typography>
-                              <Typography variant="body2" sx={{ mb: 2 }}>{t(
-                                i18n
-                              )`Create an item with this currency to add it`}</Typography>
-                              <Button
-                                variant="contained"
-                                onClick={handleCreateNewProduct}
-                                size="small"
-                              >{t(i18n)`Create product or service`}</Button>
-                            </Stack>
-                          </CenteredContentBox>
-                        </TableCell>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell colSpan={3}>
+                              <CenteredContentBox>
+                                <Stack alignItems="center" sx={{ p: 4 }}>
+                                  <FileIcon color="primary" sx={{ mb: 2 }} />
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ mb: 0.5 }}
+                                  >{t(i18n)`No items yet`}</Typography>
+                                  <Typography variant="body2" sx={{ mb: 2 }}>{t(
+                                    i18n
+                                  )`Create an item with this currency to add it`}</Typography>
+                                  <Button
+                                    variant="contained"
+                                    onClick={handleCreateNewProduct}
+                                    size="small"
+                                  >{t(i18n)`Create product or service`}</Button>
+                                </Stack>
+                              </CenteredContentBox>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
                       );
                     },
                   }}
@@ -486,7 +495,7 @@ export const ProductsTable = ({
                     );
                   }}
                   fixedFooterContent={() => {
-                    if (isLoading) {
+                    if (!isLoading) {
                       return null;
                     }
 
@@ -499,17 +508,19 @@ export const ProductsTable = ({
                     }
 
                     return (
-                      <TableCell colSpan={3}>
-                        <Box
-                          sx={{
-                            p: 2,
-                            display: 'flex',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <CircularProgress size={30} />
-                        </Box>
-                      </TableCell>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              display: 'flex',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <CircularProgress size={30} />
+                          </Box>
+                        </TableCell>
+                      </TableRow>
                     );
                   }}
                   itemContent={(_index, row) => (

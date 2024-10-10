@@ -13,17 +13,15 @@ import { getRowToStatusTextMap } from '../../helpers';
 
 type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
 
-interface ApprovalRequestStatusChipRootProps {
+export interface MoniteApprovalRequestStatusChipProps {
   /** The status of the approval request. */
   status: ApprovalRequestStatus;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-}
-
-export interface ApprovalRequestStatusChipProps
-  extends ApprovalRequestStatusChipRootProps {
-  /** Display status icon? */
+  /** The size of the Chip. */
   icon?: boolean;
+  /** Display status icon? */
+  variant?: ChipProps['variant'];
+  /** The variant of the Chip. */
+  size?: ChipProps['size'];
 }
 
 /**
@@ -54,9 +52,9 @@ export interface ApprovalRequestStatusChipProps
 
 export const ApprovalRequestStatusChip = forwardRef<
   HTMLDivElement,
-  ApprovalRequestStatusChipProps
+  MoniteApprovalRequestStatusChipProps
 >((inProps, ref) => {
-  const props = useThemeProps({
+  const { status, icon, size, variant } = useThemeProps({
     props: inProps,
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteApprovalRequestStatusChip',
@@ -64,38 +62,30 @@ export const ApprovalRequestStatusChip = forwardRef<
 
   const { i18n } = useLingui();
 
-  const Icon = APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP[props.status];
+  const Icon = APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP[status];
 
   return (
     <StyledChip
       ref={ref}
-      color={ROW_TO_STATUS_MUI_MAP[props.status]}
-      icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
-      label={getRowToStatusTextMap(i18n)[props.status]}
-      status={props.status}
-      variant={props.variant ?? 'filled'}
+      color={ROW_TO_STATUS_MUI_MAP[status]}
+      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      label={getRowToStatusTextMap(i18n)[status]}
+      size={size}
+      status={status}
+      variant={variant ?? 'filled'}
     />
   );
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & ApprovalRequestStatusChipRootProps>(
-    (props, ref) => <Chip ref={ref} {...props} />
-  ),
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MoniteApprovalRequestStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteApprovalRequestStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});

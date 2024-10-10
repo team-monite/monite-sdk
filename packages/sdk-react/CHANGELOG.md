@@ -1,5 +1,166 @@
 # @monite/sdk-react
 
+## 3.17.0-beta.0
+
+### Minor Changes
+
+- 14106eed: feat(DEV-12440): AP cards statuses
+
+### Patch Changes
+
+- 5370ff8a: chore(proposal): better typings system for monite.ts themesation file
+- e7ea8955: add reopened state to payables details form after rejected
+  - @monite/sdk-api@3.17.0-beta.0
+
+## 3.16.0
+
+### Minor Changes
+
+- 004b1dab: feat(DEV-11865): add payment reminders selection for invoice
+- 04524bf6: feat(DEV-12368): Implement toggle to turn reminders on/off on counterpart level
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- dc11374d: feat(DEV-12084): make default option for counterparts contacts
+- d0fd99c0: feat(DEV-12191): improve `DataGrid` auto-sizing algorithm to reduce layout jumps and preserve column widths
+  between page reloads
+- 47e6e95e: feat(DEV-12417): cover no data grid logic for receivalbes and tags
+- 01e91e0d: feat(DEV-12181): configure custom fields that need to be mandatory after OCR for user to check
+- 8964658c: feat(DEV-11928): introduced icon states to indicate the status of Counterparts for Payables processed via OCR.
+
+  - **State 1**: Counterpart not found in the system.
+  - **State 2**: Counterpart found but not selected in the document.
+  - Note: If a Counterpart is already selected for the Payable, no icon will be displayed.
+
+- c8450cc8: feat(DEV-12180): mark overdue date for payables
+- 47e6e95e: feat: display warning when ocr data mismatch
+- c36b9802: fix(DEV-12101): [SDK] [AP] OCR is not showing the correct Total, Tax field
+- 47e6e95e: feat: Summary cards added for payables with theme customisation
+- 47e6e95e: feat(DEV-12699): disable summary cards via theme customisation
+- 47e6e95e: feat(DEV-12284): add Approval Policies builder component
+- 037e81f7: feat(DEV-12296): fix DataGrid borders broken during PR approve
+- dff7a844: feat(DEV-11981): **Invoice Creation and Editing**: Introduced the ability to specify Payment and
+  Overdue reminders during the creation and editing of invoices.
+- 18483022: feat(11876): Added a dialog for creating and editing both payment and overdue invoice reminders.
+- 47e6e95e: Add country and city name next to counterpart name in tables.
+- 47e6e95e: feat(DEV-12285): implement memo field for creating and updating invoice
+- 47e6e95e: Open newly created invoice for preview immediately after creation.
+- 47f48538: feat(DEV-11857): cancel invoice
+- 47e6e95e: Add coloured avatars for counterparts in tables, improve look of Counterparts table.
+- 09960120: refactor(DEV-12059): make label for reminders more clear, add warning for overdue reminders
+- 47e6e95e: feat: Move order of columns - extend config to pass order
+- 47e6e95e: Fix table filters layout, fix 'Status' filter font size
+- 47e6e95e: feat(DEV-12179): custom Tabs for Payables
+- 8d3fd461: feat(DEV-11928): implemented automatic selection of Counterparts for Payables processed via OCR in the editing form.
+
+  - If a Counterpart is not selected for a Payable after file upload and OCR processing, it will be auto-selected if available.
+
+- 47e6e95e: Table empty state (filters applied, not content to display)
+- 4a69935d: feat(DEV-12283): payable upload file support pdf | png | jpeg | tiff
+- 47e6e95e: Add the capability to change invoice recipient and preview invoice email before sending.
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+- 47e6e95e: feat(DEV-12655): overdue ap flag new design
+- 70ffd3bb: Change date format from '08/20/2024' to US format 'Aug 21, 2024'
+- 47e6e95e: chore(upgrade): api version upgrade to 2024-05-25
+- 603a4659: feat(DEV-12154): align sorting in all table components with available API sort options
+
+### Patch Changes
+
+- 369ba2c9: feat(DEV-11417): add Recurring Invoice support
+- 47e6e95e: feat(DEV-12410): ability for partners to remove tags
+- c962003e: chore(DEV-11417): unify custom status chip interfaces
+
+  Removed forced small size for status chips, allowing backward compatibility.
+
+- eb4a7fe8: fix(DEV-12146): fix generated fields for <Onboarding />
+- 47e6e95e: feat(DEV-12177): extended wildcard search for payables
+- 47e6e95e: encapsulate entity check logic
+- 47e6e95e: add support for body_text and subject_text when creating or updating recurring invoices
+- 47e6e95e: feat(DEV-12590): improvements to email invoice functionality
+- 8302fb12: fix chips by forwarding custom prop status
+- 55ce4cdb: fix(onboarding): fix mobile DatePicker for web component
+- 3519c12f: feat(DEV-11417): display recurring icon in the Invoices Table
+- 878fa936: fix(DEV-11734): updated `CounterpartsTable` component to show the full name of individuals.
+- Updated dependencies [47e6e95e]
+  - @monite/sdk-api@3.16.0
+
+## 3.16.0-beta.5
+
+### Minor Changes
+
+- b7c796bd: feat: display warning when ocr data mismatch
+- 59ff0c92: feat: Summary cards added for payables with theme customisation
+- 202101f0: feat(DEV-12699): disable summary cards via theme customisation
+- 74d288f7: feat(DEV-12285): implement memo field for creating and updating invoice
+- 932c4ce2: Open newly created invoice for preview immediately after creation.
+- 0f7e21a5: feat: Move order of columns - extend config to pass order
+- 84ee5502: feat(DEV-12179): custom Tabs for Payables
+- a551b255: feat(DEV-12655): overdue ap flag new design
+- 09b7a670: chore(upgrade): api version upgrade to 2024-05-25
+
+### Patch Changes
+
+- a71c3111: feat(DEV-12410): ability for partners to remove tags
+- b155c2f3: feat(DEV-12177): extended wildcard search for payables
+- 43a2d4e6: encapsulate entity check logic
+- 292f0ebf: add support for body_text and subject_text when creating or updating recurring invoices
+- 39b55464: feat(DEV-12590): improvements to email invoice functionality
+- Updated dependencies [43a2d4e6]
+  - @monite/sdk-api@3.16.0-beta.5
+
+## 3.16.0-beta.4
+
+### Minor Changes
+
+- 017c0c20: feat(DEV-12417): cover no data grid logic for receivalbes and tags
+- e9eeb68f: feat(DEV-12284): add Approval Policies builder component
+- 0a37dc68: Add country and city name next to counterpart name in tables.
+- 6c3faf43: Add coloured avatars for counterparts in tables, improve look of Counterparts table.
+- 14106eed: feat(DEV-12440): AP cards statuses
+- cddff2af: Fix table filters layout, fix 'Status' filter font size
+- 6523f5b9: Table empty state (filters applied, not content to display)
+- 5d4c1274: Add the capability to change invoice recipient and preview invoice email before sending.
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.4
+
+## 3.16.0-beta.3
+
+### Minor Changes
+
+- 04524bf6: feat(DEV-12368): Implement toggle to turn reminders on/off on counterpart level
+- 01e91e0d: feat(DEV-12181): configure custom fields that need to be mandatory after OCR for user to check
+- c8450cc8: feat(DEV-12180): mark overdue date for payables
+- 70ffd3bb: Change date format from '08/20/2024' to US format 'Aug 21, 2024'
+
+### Patch Changes
+
+- c962003e: chore(DEV-11417): unify custom status chip interfaces
+
+  Removed forced small size for status chips, allowing backward compatibility.
+
+- 8302fb12: fix chips by forwarding custom prop status
+- 3519c12f: feat(DEV-11417): display recurring icon in the Invoices Table
+  - @monite/sdk-api@3.16.0-beta.3
+
+## 3.16.0-beta.2
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- dc11374d: feat(DEV-12084): make default option for counterparts contacts
+- d0fd99c0: 1. Improves DataGrid autosizing algorithm (reduces amount of layout jumps), 2. Preserves column widths between page reloads
+- 037e81f7: feat(DEV-12296): fix DataGrid borders broken during PR approve
+- 47f48538: feat(DEV-11857): cancel invoice
+- 09960120: refactor(DEV-12059): make label for reminders more clear, add warning for overdue reminders
+- 4a69935d: feat(DEV-12283): payable upload file support pdf | png | jpeg | tiff
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+- 603a4659: feat(DEV-12154): align sorting in all table components with available API sort options
+
+### Patch Changes
+
+- 369ba2c9: add Recurrence Invoice support
+  - @monite/sdk-api@3.16.0-beta.2
+
 ## 3.16.0-beta.1
 
 ### Minor Changes

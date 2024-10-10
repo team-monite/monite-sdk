@@ -10,7 +10,10 @@ import {
   InputAdornment,
   Select,
   MenuItem,
+  SxProps,
 } from '@mui/material';
+
+import { Theme } from 'mui-styles';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -23,16 +26,18 @@ import {
 
 export interface ProductsTableFiltersProps {
   onChangeFilter: (field: keyof FilterType, value: FilterValue) => void;
+  sx?: SxProps<Theme>;
 }
 
 export const ProductsTableFilters = ({
   onChangeFilter,
+  sx,
 }: ProductsTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={sx}>
       <Grid item xs={6}>
         <FormControl variant="outlined" fullWidth size="small">
           <InputLabel htmlFor="search-by-name">{t(i18n)`Search`}</InputLabel>

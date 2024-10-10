@@ -65,3 +65,17 @@ export function getCounterpartName(
 
   return '';
 }
+
+export type EntityResponse =
+  | components['schemas']['EntityOrganizationResponse']
+  | components['schemas']['EntityIndividualResponse'];
+
+export const isIndividualEntity = (
+  counterpart: EntityResponse | undefined
+): counterpart is components['schemas']['EntityIndividualResponse'] =>
+  counterpart?.type === 'individual';
+
+export const isOrganizationEntity = (
+  counterpart: EntityResponse | undefined
+): counterpart is components['schemas']['EntityOrganizationResponse'] =>
+  counterpart?.type === 'organization';

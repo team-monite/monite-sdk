@@ -10,16 +10,16 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-interface InvoiceStatusChipRootProps {
+export interface MoniteInvoiceStatusChipProps {
+  icon?: boolean;
+  /** The variant of the Chip. */
+  variant?: ChipProps['variant'];
+  /** The size of the Chip. */
+  size?: ChipProps['size'];
+  /** Display status icon? */
   /** The status of the invoice. */
   status: components['schemas']['ReceivablesStatusEnum'];
   /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-}
-
-export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
-  /** Display status icon? */
-  icon?: boolean;
 }
 
 /**
@@ -33,6 +33,7 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
  *     MoniteInvoiceStatusChip: {
  *       defaultProps: {
  *         icon: true, // Display status icon?
+ *         size: 'small', // The size of the chip
  *         variant: 'outlined', // The variant of the chip
  *       },
  *       variants: [
@@ -56,11 +57,10 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
 
 export const InvoiceStatusChip = forwardRef<
   HTMLDivElement,
-  InvoiceStatusChipProps
+  MoniteInvoiceStatusChipProps
 >((inProps, ref) => {
-  const { status, variant, icon } = useThemeProps({
+  const { status, variant, icon, size } = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
   });
 
@@ -74,6 +74,7 @@ export const InvoiceStatusChip = forwardRef<
       color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getCommonStatusLabel(i18n, status)}
+      size={size}
       status={status}
       variant={variant ?? 'filled'}
     />
@@ -81,23 +82,13 @@ export const InvoiceStatusChip = forwardRef<
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & InvoiceStatusChipRootProps>(
-    (props, ref) => <Chip ref={ref} {...props} />
-  ),
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MoniteInvoiceStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});

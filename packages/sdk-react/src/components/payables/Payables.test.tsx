@@ -69,7 +69,9 @@ describe('Payables', () => {
         timeout: 5_000,
       });
 
-      const createPayableButton = screen.findByText('Create New');
+      const createPayableButton = screen.findByRole('button', {
+        name: t`New bill`,
+      });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
       await expect(createPayableButton).resolves.not.toBeDisabled();
@@ -105,7 +107,9 @@ describe('Payables', () => {
 
       await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
-      const createPayableButton = screen.findByText('Create New');
+      const createPayableButton = screen.findByRole('button', {
+        name: t`New bill`,
+      });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
       await expect(createPayableButton).resolves.toBeDisabled();
@@ -145,7 +149,9 @@ describe('Payables', () => {
         timeout: 5_000,
       });
 
-      const createPayableButton = screen.findByText('Create New');
+      const createPayableButton = screen.findByRole('button', {
+        name: t`New bill`,
+      });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
       await expect(createPayableButton).resolves.not.toBeDisabled();

@@ -5,6 +5,7 @@ import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 
 interface UseCreateInvoiceProductsTable {
+  isUSEntity: boolean;
   lineItems: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
@@ -25,6 +26,7 @@ interface UseCreateInvoiceProductsTableProps {
 export const useCreateInvoiceProductsTable = ({
   lineItems,
   formatCurrencyToDisplay,
+  isUSEntity,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
@@ -53,7 +55,10 @@ export const useCreateInvoiceProductsTable = ({
       const price = field.price?.value ?? 0;
       const quantity = field.quantity;
       const subtotalPrice = price * quantity;
-      const taxRate = field.vat_rate_value;
+
+      const taxRate = isUSEntity
+        ? (field?.tax_rate_value ?? 0) * 100
+        : field.vat_rate_value;
 
       if (!taxRate) {
         return acc;
@@ -76,7 +81,7 @@ export const useCreateInvoiceProductsTable = ({
       currency: currencyItem.price.currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay]);
+  }, [lineItems, formatCurrencyToDisplay, isUSEntity]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
@@ -86,9 +91,8 @@ export const useCreateInvoiceProductsTable = ({
     return subtotalPrice.add(totalTaxes);
   }, [subtotalPrice, totalTaxes]);
 
-  const shouldShowVatExemptRationale = lineItems.some(
-    (lineItem) => lineItem.vat_rate_value === 0
-  );
+  const shouldShowVatExemptRationale =
+    !isUSEntity && lineItems.some((lineItem) => lineItem.vat_rate_value === 0);
 
   return {
     subtotalPrice,

@@ -174,7 +174,7 @@ export const productsHandlers = [
 
     try {
       await createProductValidationSchema.validate(jsonBody);
-    } catch (e) {
+    } catch (_error) {
       await delay();
 
       return HttpResponse.json(

@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
+  useCancelReceivableById,
   useDeleteReceivableById,
   useIssueReceivableById,
   useSendReceivableById,
@@ -30,6 +31,8 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: UseExistingInvoiceDetailsProps) {
+  const { monite } = useMoniteContext();
+
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
@@ -46,6 +49,7 @@ export function useExistingInvoiceDetails({
   });
 
   const deleteMutation = useDeleteReceivableById(receivableId);
+  const cancelMutation = useCancelReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
   const issueMutation = useIssueReceivableById(receivableId);
   const { api } = useMoniteContext();
@@ -53,10 +57,23 @@ export function useExistingInvoiceDetails({
     path: { receivable_id: receivableId },
   });
 
+  const recurrence_id =
+    receivable?.type === 'invoice' && receivable.recurrence_id
+      ? receivable.recurrence_id
+      : '';
+
+  const isCancelRecurrenceMutating = Boolean(
+    api.recurrences.postRecurrencesIdCancel.useIsMutating({
+      parameters: { path: { recurrence_id } },
+    })
+  );
+
   const mutationInProgress =
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
+    cancelMutation.isPending ||
+    isCancelRecurrenceMutating ||
     pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
@@ -75,6 +92,10 @@ export function useExistingInvoiceDetails({
     }
   }, [view]);
 
+  const handleCancelInvoice = useCallback(() => {
+    cancelMutation.mutate();
+  }, [cancelMutation]);
+
   const handleDownloadPDF = useCallback(async () => {
     await pdfQuery.refetch();
 
@@ -90,6 +111,7 @@ export function useExistingInvoiceDetails({
       case 'paid':
       case 'overdue':
       case 'canceled':
+      case 'recurring':
       case 'uncollectible': {
         return true;
       }
@@ -133,11 +155,26 @@ export function useExistingInvoiceDetails({
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
 
+  const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: monite.entityId },
+  });
+
+  const isCancelButtonVisible =
+    (receivable?.status === 'issued' || receivable?.status === 'overdue') &&
+    isUpdateAllowed &&
+    entity?.receivable_edit_flow !== 'compliant';
+
+  const isCancelButtonDisabled = mutationInProgress;
+
+  const isCancelRecurrenceButtonDisabled =
+    !isUpdateAllowed || mutationInProgress;
+
   return {
     view,
     callbacks: {
       handleIssueOnly,
       handleDownloadPDF,
+      handleCancelInvoice,
       handleChangeViewInvoice: handleChangeInvoiceView,
     },
     loading: mutationInProgress,
@@ -149,6 +186,9 @@ export function useExistingInvoiceDetails({
       isEditButtonVisible,
       isComposeEmailButtonVisible,
       isIssueButtonVisible,
+      isCancelButtonVisible,
+      isCancelButtonDisabled,
+      isCancelRecurrenceButtonDisabled,
     },
   };
 }

@@ -66,7 +66,7 @@ const TagsBase = () => {
         }
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
-      {isReadAllowed && <TagsTable />}
+      {isReadAllowed && <TagsTable showCreationModal={showCreationModal} />}
 
       <TagFormModal open={creationModalOpened} onClose={hideCreationModal} />
     </>

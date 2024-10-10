@@ -1,24 +1,30 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
+import {
+  defaultCounterpartColumnWidth,
+  useAreCounterpartsLoading,
+  useAutosizeGridColumns,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -31,6 +37,13 @@ type CreditNotesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 };
 
 export interface CreditNotesTableSortModel {
@@ -44,7 +57,10 @@ export const CreditNotesTable = (props: CreditNotesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
+const CreditNotesTableBase = ({
+  onRowClick,
+  setIsCreateInvoiceDialogOpen,
+}: CreditNotesTableProps) => {
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -63,7 +79,12 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: creditNotes, isLoading } = useReceivables({
+  const {
+    data: creditNotes,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -77,22 +98,128 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
-  const gridApiRef = useAutosizeGridColumns(creditNotes);
+  const areCounterpartsLoading = useAreCounterpartsLoading(creditNotes?.data);
+  const dateFormat = useDateFormat();
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'document_id',
+        headerName: t(i18n)`Number`,
+        width: 100,
+        renderCell: ({ value }) => {
+          if (!value) {
+            return t(i18n)`INV-auto`;
+          }
+
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
+        },
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created on`,
+        width: 140,
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+      },
+      {
+        field: 'issue_date',
+        headerName: t(i18n)`Issue date`,
+        width: 120,
+        valueFormatter: (value) => value && i18n.date(value, dateFormat),
+      },
+      {
+        field: 'counterpart_name',
+        headerName: t(i18n)`Customer`,
+        sortable: ReceivableCursorFields.includes('counterpart_name'),
+        width: defaultCounterpartColumnWidth,
+        display: 'flex',
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
+        ),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: ReceivableCursorFields.includes('status'),
+        width: 80,
+        renderCell: (params) => {
+          const status = params.value;
+          return <InvoiceStatusChip status={status} />;
+        },
+      },
+      {
+        field: 'amount',
+        headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
+        sortable: ReceivableCursorFields.includes('amount'),
+        width: 120,
+        valueGetter: (_, row) => {
+          const value = row.total_amount;
+
+          return value && formatCurrencyToDisplay(value, row.currency);
+        },
+      },
+    ];
+  }, [dateFormat, formatCurrencyToDisplay, i18n]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    creditNotes?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'CreditNotesTable'
+  );
+
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
+
+  if (
+    !isLoading &&
+    creditNotes?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Credit Notes`}
+        descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
+        descriptionLine2={t(i18n)`You can create your first credit note.`}
+        actionButtonLabel={t(i18n)`Create Credit Note`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-CreditNotesTable';
 
   return (
     <>
       <Box
-        sx={{ padding: 2, width: '100%' }}
         className={classNames(ScopedCssBaselineContainerClassName, className)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          height: 'inherit',
+          pt: 2,
+        }}
       >
-        <Box sx={{ marginBottom: 2 }}>
-          <ReceivableFilters
-            onChange={onChangeFilter}
-            filters={['document_id__contains', 'status', 'counterpart_id']}
-          />
-        </Box>
+        <ReceivableFilters
+          sx={{ mb: 2 }}
+          onChange={onChangeFilter}
+          filters={['document_id__contains', 'status', 'counterpart_id']}
+        />
         <DataGrid
           initialState={{
             sorting: {
@@ -103,14 +230,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           slots={{
@@ -128,63 +247,23 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
                 }}
               />
             ),
+            noRowsOverlay: () => (
+              <GetNoRowsOverlay
+                isLoading={isLoading}
+                dataLength={creditNotes?.data.length || 0}
+                isFiltering={isFiltering}
+                isSearching={isSearching}
+                isError={isError}
+                onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
+                refetch={refetch}
+                entityName={t(i18n)`Credit Notes`}
+                actionButtonLabel={t(i18n)`Create Credit Note`}
+                actionOptions={[t(i18n)`Invoice`]}
+                type="no-data"
+              />
+            ),
           }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-              flex: 1.3,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 0.7,
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 0.7,
-            },
-            {
-              field: 'counterpart_name',
-              headerName: t(i18n)`Customer`,
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              display: 'flex',
-              flex: 1,
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'status',
-              headerName: t(i18n)`Status`,
-              sortable: ReceivableCursorFields.includes('status'),
-              flex: 1,
-              renderCell: (params) => {
-                const status = params.value;
-                return <InvoiceStatusChip status={status} />;
-              },
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value && formatCurrencyToDisplay(value, row.currency);
-              },
-              flex: 0.5,
-            },
-          ]}
+          columns={columns}
           rows={creditNotes?.data ?? []}
         />
       </Box>

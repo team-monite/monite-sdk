@@ -30,6 +30,13 @@ export type ReceivablesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+    @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 } & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
 
 export enum ReceivablesTableTabEnum {
@@ -48,6 +55,7 @@ const ReceivablesTableBase = ({
   tab,
   onTabChange,
   onRowClick,
+  setIsCreateInvoiceDialogOpen,
 }: ReceivablesTableProps) => {
   const { i18n } = useLingui();
   const [activeTab, setActiveTab] = useSetActiveTab({ tab, onTabChange });
@@ -60,8 +68,10 @@ const ReceivablesTableBase = ({
   return (
     <>
       <Box
-        sx={{ paddingLeft: 2, paddingRight: 2 }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className + '-Tabs'
+        )}
       >
         <Tabs
           value={activeTab}
@@ -97,8 +107,17 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
-          <QuotesTable onRowClick={onRowClick} />
+          <QuotesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
 
@@ -107,8 +126,17 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
-          <InvoicesTable onRowClick={onRowClick} />
+          <InvoicesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
 
@@ -117,8 +145,17 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
-          <CreditNotesTable onRowClick={onRowClick} />
+          <CreditNotesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
     </>

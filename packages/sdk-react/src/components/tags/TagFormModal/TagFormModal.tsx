@@ -1,5 +1,5 @@
 import { useEffect, useId } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -12,15 +12,14 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
   TextField,
-  Button,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import * as yup from 'yup';
 
@@ -74,8 +73,7 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
   const tagCreateMutation = api.tags.postTags.useMutation(
     {},
     {

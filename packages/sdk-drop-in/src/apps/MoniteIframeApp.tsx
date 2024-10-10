@@ -3,14 +3,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
-import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { moniteIframeAppComponents } from '@/lib/moniteIframeAppComponents';
 import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots';
 import { css, Global } from '@emotion/react';
 import { type APISchema } from '@monite/sdk-react';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SDKDemoAPIProvider } from '@team-monite/sdk-demo';
+import { EntityIdLoader, SDKDemoAPIProvider } from '@team-monite/sdk-demo';
 
 import { DropInMoniteProvider } from '../lib/DropInMoniteProvider';
 
@@ -81,16 +80,24 @@ const MoniteIframeAppComponent = ({
         <CssBaseline enableColorScheme />
         <Global
           styles={css`
-            body {
-              padding: 20px;
-            }
-
+            body,
             :root,
-            :host {
-              line-height: 1.5;
+            :host,
+            #root {
+              width: 100%;
+              height: 100%;
               -webkit-font-smoothing: antialiased;
               isolation: isolate;
             }
+
+            #root {
+              padding: 32px 32px 0 32px;
+              display: flex;
+              flex-direction: column;
+              overflow: hidden;
+              justify-content: stretch;
+            }
+
             *,
             *::before,
             *::after {

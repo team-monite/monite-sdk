@@ -1,39 +1,45 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import {
+  useAreCounterpartsLoading,
+  useAutosizeGridColumns,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
 import {
-  FILTER_TYPE_STATUS,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_ADDED_BY,
+  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
+  FILTER_TYPE_STATUS,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestsFilter } from './ApprovalRequestsFilter/ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import {
-  UseApprovalRequestActionsCellProps,
   useApprovalRequestActionsCell,
+  UseApprovalRequestActionsCellProps,
 } from './useApprovalRequestActionsCell';
 import { UserCell } from './UserCell/UserCell';
 
@@ -107,26 +113,30 @@ const ApprovalRequestsTableBase = ({
   );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
-  const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
-    api.approvalRequests.getApprovalRequests.useQuery({
-      query: {
-        sort: 'updated_at',
-        order: 'desc',
-        object_type: 'payable',
-        pagination_token: currentPaginationToken ?? undefined,
-        limit: pageSize,
-        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
-        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-          : undefined,
-        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-          : undefined,
-        created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
-          ? user?.id
-          : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
-      },
-    });
+  const {
+    data: approvalRequests,
+    isLoading: isApprovalRequestsLoading,
+    isError,
+    refetch,
+  } = api.approvalRequests.getApprovalRequests.useQuery({
+    query: {
+      sort: 'updated_at',
+      order: 'desc',
+      object_type: 'payable',
+      pagination_token: currentPaginationToken ?? undefined,
+      limit: pageSize,
+      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
+        ? user?.id
+        : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
+    },
+  });
 
   const { data: payables, isLoading: isPayablesLoading } =
     api.payables.getPayables.useQuery({
@@ -165,6 +175,87 @@ const ApprovalRequestsTableBase = ({
     }));
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(rows);
+
+  const dateFormat = useDateFormat();
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'number',
+        headerName: t(i18n)`Invoice #`,
+        sortable: false,
+        flex: 0.7,
+      },
+      {
+        field: 'counterpart_id',
+        headerName: t(i18n)`Counterpart`,
+        sortable: false,
+        display: 'flex',
+        flex: 1,
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.value} />
+        ),
+      },
+      {
+        field: 'issued_at',
+        type: 'date',
+        headerName: t(i18n)`Issue date`,
+        sortable: false,
+        flex: 0.7,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['issued_at']
+        ) => value && i18n.date(value, dateFormat),
+      },
+      {
+        field: 'due_date',
+        type: 'date',
+        headerName: t(i18n)`Due date`,
+        sortable: false,
+        flex: 0.7,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['due_date']
+        ) => value && i18n.date(value, dateFormat),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: false,
+        flex: 0.7,
+        renderCell: (params) => (
+          <ApprovalRequestStatusChip status={params.value} />
+        ),
+      },
+      {
+        field: 'amount',
+        headerName: t(i18n)`Amount`,
+        sortable: false,
+        flex: 0.5,
+        valueGetter: (_, payable) => {
+          return payable.amount_to_pay && payable.currency
+            ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
+            : '';
+        },
+      },
+      {
+        field: 'created_by',
+        headerName: t(i18n)`Added by`,
+        sortable: false,
+        flex: 1,
+        renderCell: ({ value }) => <UserCell entityUserId={value} />,
+      },
+      ...(actionsCell ? [actionsCell] : []),
+    ];
+  }, [actionsCell, dateFormat, formatCurrencyToDisplay, i18n]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    payables?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'ApprovalRequestsTable'
+  );
+
   if (
     isApprovalReadSupportedLoading ||
     isPayableReadSupportedLoading ||
@@ -177,16 +268,44 @@ const ApprovalRequestsTableBase = ({
     return <AccessRestriction />;
   }
 
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterTypes] !== null &&
+      currentFilter[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching =
+    !!currentFilter[FILTER_TYPE_CREATED_AT] ||
+    !!currentFilter[FILTER_TYPE_ADDED_BY];
+
+  if (
+    !isApprovalRequestsLoading &&
+    approvalRequests?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Requests`}
+        descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval request.`}
+        type="no-data"
+      />
+    );
+  }
+
   return (
     <Box
-      sx={{ padding: 2, width: '100%', height: '100%' }}
       className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
     >
-      <Box sx={{ marginBottom: 2 }}>
-        <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
-      </Box>
+      <ApprovalRequestsFilter onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
-        autoHeight
         rowSelection={false}
         disableColumnFilter={true}
         initialState={{
@@ -197,16 +316,9 @@ const ApprovalRequestsTableBase = ({
             },
           },
         }}
+        apiRef={gridApiRef}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination
@@ -222,79 +334,20 @@ const ApprovalRequestsTableBase = ({
               }}
             />
           ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isApprovalRequestsLoading}
+              dataLength={approvalRequests?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              refetch={refetch}
+              entityName={t(i18n)`Approval Requests`}
+              type="no-data"
+            />
+          ),
         }}
-        columns={[
-          {
-            field: 'number',
-            headerName: t(i18n)`Invoice #`,
-            sortable: false,
-            flex: 0.7,
-          },
-          {
-            field: 'counterpart_id',
-            headerName: t(i18n)`Counterpart`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <CounterpartCell counterpartId={params.value} />
-            ),
-          },
-          {
-            field: 'issued_at',
-            type: 'date',
-            headerName: t(i18n)`Issue date`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: (
-              value: components['schemas']['PayableResponseSchema']['issued_at']
-            ) =>
-              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'due_date',
-            type: 'date',
-            headerName: t(i18n)`Due date`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: (
-              value: components['schemas']['PayableResponseSchema']['due_date']
-            ) =>
-              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'status',
-            headerName: t(i18n)`Status`,
-            sortable: false,
-            flex: 0.7,
-            renderCell: (params) => (
-              <ApprovalRequestStatusChip status={params.value} />
-            ),
-          },
-          {
-            field: 'amount',
-            headerName: t(i18n)`Amount`,
-            sortable: false,
-            flex: 0.5,
-            valueGetter: (_, row) => {
-              const payable = row;
-
-              return payable.amount_to_pay && payable.currency
-                ? formatCurrencyToDisplay(
-                    payable.amount_to_pay,
-                    payable.currency
-                  )
-                : '';
-            },
-          },
-          {
-            field: 'created_by',
-            headerName: t(i18n)`Added by`,
-            sortable: false,
-            flex: 1,
-            renderCell: ({ value }) => <UserCell entityUserId={value} />,
-          },
-          ...(actionsCell ? [actionsCell] : []),
-        ]}
+        columns={columns}
         rows={rows ?? []}
       />
     </Box>

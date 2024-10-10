@@ -1,5 +1,7 @@
+import { components } from '@/api';
 import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
+import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import {
   changeDocumentIdByPayableId,
@@ -11,7 +13,7 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
+import { MoniteSDK, PayableStateEnum } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import {
   fireEvent,
@@ -172,13 +174,13 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(0);
       });
 
-      test('should show "Pending" tag, "Reject" and "Approve" button for payable in "Pending" status', async () => {
+      test('should show "In Approval" tag, "Reject" and "Approve" button for payable in "In Approval" status', async () => {
         fixture.status = 'approve_in_progress';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
 
-        const pendingStatus = screen.getByText(t`Pending`);
+        const pendingStatus = screen.getByText(t`In Approval`);
         const rejectButton = await screen.findByRole('button', {
           name: t`Reject`,
         });
@@ -212,13 +214,13 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(0);
       });
 
-      test('should show "Waiting to be paid" tag, "Pay" button for payable in "Waiting to be paid" status', async () => {
+      test('should show "Approved" tag, "Pay" button for payable in "Approved" status', async () => {
         fixture.status = 'waiting_to_be_paid';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
 
-        const waitingStatus = screen.getByText(t`Waiting to be paid`);
+        const waitingStatus = screen.getByText(t`Approved`);
         const payButton = await screen.findByRole('button', {
           name: t`Pay`,
         });
@@ -608,6 +610,69 @@ describe('PayableDetails', () => {
           screen.findByDisplayValue(oldDocumentId!)
         ).rejects.toThrowError(/Unable to find an element/);
       });
+    });
+
+    describe('getInvoiceOverdueDays', () => {
+      const createPayableInvoice = (
+        status: components['schemas']['PayableStateEnum'],
+        due_date: components['schemas']['PayableResponseSchema']['due_date']
+      ): components['schemas']['PayableResponseSchema'] => ({
+        id: 'some-unique-id',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        entity_id: 'some-entity-id',
+        status,
+        due_date,
+        payable_origin: 'upload',
+        source_of_payable_data: 'user_specified',
+      });
+
+      const testCasesPayable = [
+        {
+          description:
+            'should return false when due_date is after today for payable',
+          status: PayableStateEnum.DRAFT,
+          due_date: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+          expected: 0,
+        },
+        {
+          description: 'should return false when due_date is today for payable',
+          status: PayableStateEnum.NEW,
+          due_date: new Date().toISOString(),
+          expected: 0,
+        },
+        {
+          description:
+            'should return overdue days when due_date is before today for payable',
+          status: PayableStateEnum.WAITING_TO_BE_PAID,
+          due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          expected: 1,
+        },
+        {
+          description:
+            'should return false for status not in overdue statuses, even if due_date is before today for payable',
+          status: PayableStateEnum.PAID,
+          due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          expected: 0,
+        },
+        {
+          description:
+            'should return false for status not in overdue statuses and due_date is today for payable',
+          status: PayableStateEnum.APPROVE_IN_PROGRESS,
+          due_date: new Date().toISOString(),
+          expected: 0,
+        },
+      ];
+
+      testCasesPayable.forEach(
+        ({ description, status, due_date, expected }) => {
+          it(description, () => {
+            const invoice: components['schemas']['PayableResponseSchema'] =
+              createPayableInvoice(status, due_date);
+            expect(getInvoiceOverdueDays(invoice)).toBe(expected);
+          });
+        }
+      );
     });
   });
 });

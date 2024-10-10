@@ -52,6 +52,7 @@ const PayableDetailsBase = ({
   onSubmitted,
   onRejected,
   onApproved,
+  onReopened,
   onPay,
 }: PayablesDetailsProps) => {
   const {
@@ -70,6 +71,7 @@ const PayableDetailsBase = ({
       rejectInvoice,
       approveInvoice,
       cancelInvoice,
+      reopenInvoice,
     },
   } = usePayableDetails({
     id,
@@ -83,6 +85,7 @@ const PayableDetailsBase = ({
     onSubmitted,
     onRejected,
     onApproved,
+    onReopened,
     onPay,
   });
   const { i18n } = useLingui();
@@ -146,6 +149,7 @@ const PayableDetailsBase = ({
           submitInvoice={submitInvoice}
           rejectInvoice={rejectInvoice}
           approveInvoice={approveInvoice}
+          reopenInvoice={reopenInvoice}
           cancelInvoice={cancelInvoice}
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}

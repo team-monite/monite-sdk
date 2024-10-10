@@ -11,7 +11,6 @@ import { styled } from '@mui/material/styles';
 import * as yup from 'yup';
 
 const validationSchema = yup.object().shape({
-  entity_id: yup.string().required('Entity ID is required'),
   entity_user_id: yup.string().required('Entity User ID is required'),
   client_id: yup.string().required('Client ID is required'),
   client_secret: yup.string().required('Client Secret is required'),
@@ -28,7 +27,6 @@ export const LoginForm = ({
   const { handleSubmit, control } = useForm<AuthCredentials>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      entity_id: '',
       entity_user_id: '',
       client_id: '',
       client_secret: '',
@@ -99,22 +97,6 @@ export const LoginForm = ({
                   {...field}
                   id={field.name}
                   label={t(i18n)`Client Secret`}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                />
-              )}
-            />
-            <Controller
-              name="entity_id"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  id={field.name}
-                  label={t(i18n)`Entity ID`}
                   required
                   variant="outlined"
                   fullWidth

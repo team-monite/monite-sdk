@@ -1,81 +1,121 @@
-import { useCallback } from 'react';
-
 import { components } from '@/api';
-import { useCounterpartById } from '@/core/queries';
-import CorporateFareIcon from '@mui/icons-material/CorporateFare';
-import PersonIcon from '@mui/icons-material/Person';
-import { Chip, Box, Avatar, Skeleton, Typography } from '@mui/material';
+import { getCounterpartName } from '@/components/counterparts/helpers';
+import { useCounterpartAddresses, useCounterpartById } from '@/core/queries';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Avatar, Skeleton, Stack, Typography } from '@mui/material';
 
-interface Props {
+interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
-export const CounterpartCell = ({ counterpartId }: Props) => {
-  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-
-  const getCounterpartText = useCallback(
-    (counterpart: components['schemas']['CounterpartResponse']) => {
-      return counterpart.type === 'organization'
-        ? (
-            counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-          ).organization.legal_name
-        : `${
-            (
-              counterpart as components['schemas']['CounterpartIndividualRootResponse']
-            ).individual.first_name
-          } ${
-            (
-              counterpart as components['schemas']['CounterpartIndividualRootResponse']
-            ).individual.last_name
-          }`;
-    },
-    []
-  );
-
-  if (!counterpartId || (!isLoading && !counterpart)) {
-    return null;
+export const calculateAvatarColorIndex = (name: string) => {
+  let sum = 0;
+  for (let i = name.length - 1; i >= 0; i--) {
+    sum += name.charCodeAt(i);
   }
+  return sum % 5;
+};
 
+export const CounterPartCellByName = ({
+  name,
+  country,
+  city,
+  isLoading,
+}: {
+  name: string;
+  country?: string;
+  city?: string;
+  isLoading?: boolean;
+}) => {
+  const { i18n } = useLingui();
+
+  if (!name && !isLoading) name = t(i18n)`Unspecified`;
+  const nameParts = name.split(' ');
+  // Split name into parts by ' ' and take first letters from the first and last parts of the name
+  // For example, Mike Borough -> MB
+  // Ambercombie -> A
+  const avatarLetters = (
+    nameParts.length >= 2
+      ? nameParts[0][0] + nameParts[nameParts.length - 1][0]
+      : name[0] || ''
+  ).toUpperCase();
   return (
-    <Box sx={{ width: '100%' }}>
-      <Chip
-        avatar={
-          isLoading ? (
-            <Skeleton
-              animation="wave"
-              variant="circular"
-              width={24}
-              height={24}
-              sx={{ flexShrink: 0 }}
-            />
-          ) : (
-            <Avatar sx={{ width: 24, height: 24 }}>
-              {counterpart?.type === 'organization' ? (
-                <CorporateFareIcon sx={{ fontSize: 16 }} />
-              ) : (
-                <PersonIcon sx={{ fontSize: 20 }} />
-              )}
-            </Avatar>
-          )
-        }
-        label={
-          isLoading || !counterpart ? (
-            <Skeleton
-              animation="wave"
-              height={10}
-              width="100%"
-              sx={{ flexShrink: 0, ml: 1, minWidth: '4em' }}
-            />
-          ) : (
+    <Stack
+      className="Monite-CounterpartCell"
+      direction="row"
+      alignItems="center"
+      spacing={1.5}
+      justifyContent="stretch"
+      sx={{ maxWidth: '100%', overflow: 'hidden' }}
+    >
+      {isLoading ? (
+        <Skeleton
+          animation="wave"
+          variant="circular"
+          width={40}
+          height={40}
+          sx={{ flexShrink: 0 }}
+        />
+      ) : (
+        <Avatar
+          className={
+            'MuiAvatar-colored MuiAvatar-' +
+            calculateAvatarColorIndex(avatarLetters)
+          }
+        >
+          {avatarLetters}
+        </Avatar>
+      )}
+      {isLoading || !name ? (
+        <Skeleton
+          animation="wave"
+          height={10}
+          width="100%"
+          sx={{ flexShrink: 0, minWidth: '4em' }}
+        />
+      ) : (
+        <Stack
+          direction="column"
+          alignItems="stretch"
+          gap={0}
+          sx={{
+            maxWidth: '100%',
+            flexBasis: 0,
+            flexShrink: 2,
+            flexGrow: 2,
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="body1" className="Monite-TextOverflowContainer">
+            {name}
+          </Typography>
+          {country && city && (
             <Typography
-              sx={{ ml: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}
+              variant="body2"
+              className="Monite-TextOverflowContainer"
             >
-              {getCounterpartText(counterpart)}
+              {country} &#x2022; {city}
             </Typography>
-          )
-        }
-        sx={{ backgroundColor: 'transparent', color: 'text.primary' }}
-      />
-    </Box>
+          )}
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+
+export const CounterpartCellById = ({
+  counterpartId,
+}: CounterpartCellProps) => {
+  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
+  const { data: address } = useCounterpartAddresses(counterpartId);
+  const name = counterpart ? getCounterpartName(counterpart) : '';
+  return (
+    <CounterPartCellByName
+      name={name}
+      country={address?.data[0]?.country}
+      city={address?.data[0]?.city}
+      isLoading={isLoading}
+    />
   );
 };

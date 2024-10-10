@@ -57,7 +57,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption">
-          {Boolean(contact)
+          {contact
             ? getIndividualName(watch('firstName'), watch('lastName'))
             : t(i18n)`Add contact person`}
         </Typography>
@@ -173,7 +173,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
           onClick={submitForm}
           disabled={isLoading}
         >
-          {Boolean(contact) ? t(i18n)`Update contact` : t(i18n)`Add contact`}
+          {contact ? t(i18n)`Update contact` : t(i18n)`Add contact`}
         </Button>
       </DialogActions>
     </>

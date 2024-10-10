@@ -4,11 +4,11 @@ import { components, Services } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
+  isIndividualCounterpart,
 } from '@/components/counterparts/helpers';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
@@ -121,9 +121,8 @@ export const useCounterpartBankById = (
 };
 
 export const useUpdateCounterpartBank = () => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
 
   return api.counterparts.patchCounterpartsIdBankAccountsId.useMutation(
     undefined,
@@ -162,8 +161,7 @@ export const useUpdateCounterpartBank = () => {
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsIdBankAccountsId.useMutation(
     undefined,
@@ -278,9 +276,8 @@ export const useUpdateCounterpartVat = () => {
 };
 
 export const useDeleteCounterpartVat = (counterpartId: string) => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
 
   return api.counterparts.deleteCounterpartsIdVatIdsId.useMutation(undefined, {
     onSuccess: async () => {
@@ -300,19 +297,77 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
   });
 };
 
+export interface GenericCounterpartContact {
+  id: string;
+  counterpart_id: string;
+  /**
+   * @description Is default contact person
+   */
+  is_default?: boolean;
+  /** @description The address of a contact person. */
+  address?: components['schemas']['CounterpartAddress'];
+  /**
+   * Format: email
+   * @description The email address of a contact person.
+   * @example contact@example.org
+   */
+  email?: string;
+  /**
+   * @description The person's first name.
+   * @example Adnan
+   */
+  first_name: string;
+  /** @description Indicates if the counterpart is a customer. */
+  is_customer: boolean;
+  /** @description Indicates if the counterpart is a vendor. */
+  is_vendor: boolean;
+  /**
+   * @description The person's last name.
+   * @example Singh
+   */
+  last_name: string;
+  /**
+   * @description The person's phone number.
+   * @example 5553211234
+   */
+  phone?: string;
+  /**
+   * @description The person's title or honorific. Examples: Mr., Ms., Dr., Prof.
+   * @example Mr.
+   */
+  title?: string;
+}
+
 export const useCounterpartContactList = (
   counterpartId: string | undefined
-) => {
+): {
+  data?: GenericCounterpartContact[];
+  error?:
+    | Error
+    | { error: { message: string } }
+    | {
+        detail?:
+          | { loc: (string | number)[]; msg: string; type: string }[]
+          | undefined;
+      }
+    | null;
+  isLoading: boolean;
+} => {
   const { api } = useMoniteContext();
 
-  const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
-    { path: { counterpart_id: counterpartId ?? '' } },
-    {
-      enabled: !!counterpartId,
-    }
-  );
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    api.counterparts.getCounterpartsId.useQuery(
+      { path: { counterpart_id: counterpartId ?? '' } },
+      {
+        enabled: !!counterpartId,
+      }
+    );
 
-  return api.counterparts.getCounterpartsIdContacts.useQuery(
+  const {
+    data: contacts,
+    isLoading: areContactsLoading,
+    error,
+  } = api.counterparts.getCounterpartsIdContacts.useQuery(
     {
       path: { counterpart_id: counterpartId ?? '' },
     },
@@ -320,12 +375,54 @@ export const useCounterpartContactList = (
       enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
+
+  if (counterpart && isIndividualCounterpart(counterpart)) {
+    const individual = counterpart.individual;
+    return {
+      isLoading: false,
+      data: [
+        {
+          id: counterpart.id,
+          counterpart_id: counterpartId ?? '',
+          is_default: true,
+          email: individual.email,
+          first_name: individual.first_name,
+          is_customer: individual.is_customer,
+          is_vendor: individual.is_vendor,
+          last_name: individual.last_name,
+          phone: individual.phone,
+          title: individual.title,
+        },
+      ],
+    };
+  }
+
+  return {
+    isLoading: !counterpartId || isCounterpartLoading || areContactsLoading,
+    error,
+    data: contacts?.data.map((contact) => {
+      const organization =
+        counterpart as components['schemas']['CounterpartOrganizationRootResponse'];
+      return {
+        id: contact.id,
+        counterpart_id: counterpartId ?? '',
+        is_default: contact.is_default,
+        address: contact.address,
+        email: contact.email,
+        first_name: contact.first_name,
+        is_customer: organization?.organization?.is_customer,
+        is_vendor: organization?.organization?.is_vendor,
+        last_name: contact.last_name,
+        phone: contact.phone,
+        title: contact.title,
+      };
+    }),
+  };
 };
 
 export const useCreateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdContacts.useMutation(undefined, {
     onSuccess: async (contact) => {
@@ -372,8 +469,7 @@ export const useCounterpartContactById = (
 
 export const useUpdateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
     onSuccess: async (contact) => {
@@ -415,8 +511,7 @@ export const useUpdateCounterpartContact = () => {
 
 export const useDeleteCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsIdContactsId.useMutation(
     undefined,
@@ -450,8 +545,7 @@ export const useCounterpartList = (
 
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterparts.useMutation(
     {},
@@ -489,8 +583,7 @@ export const useCounterpartById = (id?: string) => {
 
 export const useUpdateCounterpart = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsId.useMutation(undefined, {
     onSuccess: async (counterpart) => {
@@ -521,9 +614,8 @@ export const useUpdateCounterpart = () => {
 };
 
 export const useDeleteCounterpart = () => {
-  const queryClient = useQueryClient();
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsId.useMutation(undefined, {
     onSuccess: async () => {

@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-drop-in",
-  "version": "1.6.0-beta.1",
+  "version": "1.6.1-beta.0",
   "publishConfig": {
     "access": "public"
   },
@@ -55,7 +55,7 @@
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
     "@mui/material": "~5.15.14",
-    "@openapi-qraft/react": "1.13.0",
+    "@openapi-qraft/react": "1.14.0",
     "@playwright/test": "~1.45.0",
     "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
@@ -71,7 +71,7 @@
     "react-use": "^17.3.2",
     "rimraf": "~5.0.0",
     "typescript": "~5.5.4",
-    "vite": "~5.1.4"
+    "vite": "~5.1.8"
   },
   "dependencies": {
     "@monite/sdk-api": "workspace:~"

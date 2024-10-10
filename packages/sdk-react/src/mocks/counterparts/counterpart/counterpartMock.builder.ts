@@ -13,6 +13,7 @@ export interface GetRequest {
   pagination_token?: string;
   is_customer?: boolean;
   is_vendor?: boolean;
+  id__in?: Array<string>;
 }
 
 export class CounterpartMockBuilder {
@@ -20,6 +21,7 @@ export class CounterpartMockBuilder {
   limit: number = 3;
   sort: components['schemas']['CounterpartCursorFields'] | undefined;
   order: GetRequest['order'] = 'asc';
+  idIn: Array<string> | undefined;
 
   data: Array<CounterpartResponse> = counterpartListFixture;
 
@@ -33,7 +35,7 @@ export class CounterpartMockBuilder {
 
   withLimit(
     limit: number
-  ): Pick<CounterpartMockBuilder, 'withOrder' | 'withSearch'> {
+  ): Pick<CounterpartMockBuilder, 'withOrder' | 'withSearch' | 'withIdIn'> {
     this.limit = limit;
 
     return this;
@@ -142,6 +144,19 @@ export class CounterpartMockBuilder {
           counterpart.individual.is_customer === is_customer
         );
       }
+    });
+
+    return this;
+  }
+
+  withIdIn(idIn: Array<string>): Pick<CounterpartMockBuilder, 'withOrder'> {
+    if (!idIn || idIn.length === 0) return this;
+
+    this.page = 0;
+    this.idIn = idIn;
+
+    this.data = this.data.filter((counterpart) => {
+      return idIn.includes(counterpart.id);
     });
 
     return this;

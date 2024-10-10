@@ -71,7 +71,7 @@ const createInitialPermissionState = <
   objectType: payablePermissionsObjectType | commonPermissionsObjectType,
   actionEnum: T[]
 ): PayablePermissionRow | CommonPermissionRow => {
-  let permission: Record<string, boolean | typeof objectType> = {};
+  const permission: Record<string, boolean | typeof objectType> = {};
 
   permission.name = objectType;
 
@@ -90,7 +90,7 @@ export const transformPermissionsToComponentFormat = (
       if (!object.object_type) return null;
 
       if (isCommonPermissionObjectType(object.object_type)) {
-        let permission: CommonPermissionRow = { name: object.object_type };
+        const permission: CommonPermissionRow = { name: object.object_type };
 
         return transformActionsToComponentFormat(
           object.actions as components['schemas']['ActionSchema'][],
@@ -100,7 +100,7 @@ export const transformPermissionsToComponentFormat = (
       }
 
       if (isPayablePermissionObjectType(object.object_type)) {
-        let permission: PayablePermissionRow = { name: object.object_type };
+        const permission: PayablePermissionRow = { name: object.object_type };
 
         return transformActionsToComponentFormat(
           object.actions as components['schemas']['PayableActionSchema'][],

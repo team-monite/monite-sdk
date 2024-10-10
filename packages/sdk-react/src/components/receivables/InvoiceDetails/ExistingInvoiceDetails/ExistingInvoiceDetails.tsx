@@ -1,33 +1,35 @@
-import { useCallback, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
+import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
+import { InvoicePDFViewer } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer';
+import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
-import { CenteredContentBox } from '@/ui/box';
-import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Alert,
-  Box,
   Button,
-  CircularProgress,
   DialogContent,
   DialogTitle,
   Grid,
@@ -41,7 +43,7 @@ import {
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
-import { EmailInvoiceDetails } from './components/EmailInvoiceDetails';
+import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import {
   DeliveryMethod,
   ExistingInvoiceDetailsView,
@@ -105,7 +107,7 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
   );
@@ -120,42 +122,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     props.id
   );
 
+  const { data: recurrence } = useRecurrenceByInvoiceId(props.id);
+
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
     action: 'update',
     entityUserId: receivable?.entity_user_id,
   });
 
-  /** Is the deleting modal opened? */
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
-
-  const {
-    data: pdf,
-    isLoading: isPdfLoading,
-    error: pdfError,
-  } = api.receivables.getReceivablesIdPdfLink.useQuery(
-    {
-      path: {
-        receivable_id: props.id,
-      },
-    },
-    {
-      staleTime: 10_000,
-      refetchIntervalInBackground: true,
-      refetchInterval: api.receivables.getReceivablesIdPdfLink.getQueryData(
-        {
-          path: { receivable_id: props.id },
-        },
-        queryClient
-      )?.file_url
-        ? false
-        : 1_000,
-    }
-  );
-
-  const handleIssueAndSend = useCallback(() => {
-    setPresentation(InvoiceDetailsPresentation.Email);
-  }, []);
+  const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
+  const [cancelRecurrenceModalOpened, setCancelRecurrenceModalOpened] =
+    useState(false);
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
@@ -199,8 +177,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const documentId = receivable.document_id ?? 'INV-auto';
+  const documentId = receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID;
 
   if (presentation === InvoiceDetailsPresentation.Email) {
     return (
@@ -225,6 +202,22 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         }}
       />
 
+      <InvoiceCancelModal
+        invoiceId={props.id}
+        open={cancelModalOpened}
+        onClose={() => {
+          setCancelModalOpened(false);
+        }}
+      />
+
+      <InvoiceRecurrenceCancelModal
+        receivableId={props.id}
+        open={cancelRecurrenceModalOpened}
+        onClose={() => {
+          setCancelRecurrenceModalOpened(false);
+        }}
+      />
+
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
@@ -241,10 +234,27 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     <CloseIcon />
                   </IconButton>
                 )}
-                <Typography variant="h3">{t(
-                  i18n
-                )`Invoice ${documentId}`}</Typography>
-                <InvoiceStatusChip status={receivable.status} />
+
+                {receivable.status === 'recurring' ? (
+                  <>
+                    <Typography variant="h3">{t(
+                      i18n
+                    )`Recurring invoice`}</Typography>
+                    {recurrence && (
+                      <InvoiceRecurrenceStatusChip
+                        status={recurrence.status}
+                        icon={false}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h3">{t(
+                      i18n
+                    )`Invoice ${documentId}`}</Typography>
+                    <InvoiceStatusChip status={receivable.status} />
+                  </>
+                )}
               </Stack>
             </Grid>
             <Grid item xs={6}>
@@ -292,6 +302,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
                       </MenuItem>
+                      {buttons.isCancelButtonVisible && (
+                        <MenuItem
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCancelModalOpened(true);
+                          }}
+                          disabled={buttons.isCancelButtonDisabled}
+                        >
+                          <CancelIcon fontSize="small" />
+                          {t(i18n)`Cancel Invoice`}
+                        </MenuItem>
+                      )}
                     </StyledMenu>
                   </>
                 )}
@@ -307,7 +329,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleIssueAndSend}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setPresentation(InvoiceDetailsPresentation.Email);
+                    }}
                     disabled={loading}
                     endIcon={<KeyboardArrowRightIcon />}
                   >{t(i18n)`Compose email`}</Button>
@@ -320,6 +345,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     disabled={loading}
                   >{t(i18n)`Issue`}</Button>
                 )}
+                {receivable.status === 'recurring' &&
+                  recurrence?.status === 'active' && (
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      disabled={buttons.isCancelRecurrenceButtonDisabled}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setCancelRecurrenceModalOpened(true);
+                      }}
+                    >{t(i18n)`Cancel recurrence`}</Button>
+                  )}
               </Stack>
             </Grid>
           </Grid>
@@ -331,36 +368,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
       >
         <Grid container columnSpacing={4} height="100%">
           <Grid item container xs={6} height="100%">
-            {isPdfLoading ? (
-              <LoadingPage />
-            ) : !pdf?.file_url && !pdfError ? (
-              <CenteredContentBox>
-                <Stack alignItems="center" gap={2}>
-                  <CircularProgress />
-                  <Box textAlign="center">
-                    <Typography variant="body2" fontWeight="500">{t(
-                      i18n
-                    )`Updating the invoice`}</Typography>
-                    <Typography variant="body2" fontWeight="500">{t(
-                      i18n
-                    )`information...`}</Typography>
-                  </Box>
-                </Stack>
-              </CenteredContentBox>
-            ) : pdf?.file_url ? (
-              <FileViewer
-                mimetype="application/pdf"
-                url={pdf.file_url}
-                onReloadCallback={() =>
-                  void api.receivables.getReceivablesIdPdfLink.resetQueries(
-                    {
-                      parameters: { path: { receivable_id: props.id } },
-                    },
-                    queryClient
-                  )
-                }
-              />
-            ) : null}
+            <InvoicePDFViewer receivable_id={props.id} />
           </Grid>
           <Grid
             item

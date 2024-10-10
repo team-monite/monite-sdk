@@ -6,15 +6,14 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
-  Button,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface ConfirmDeleteModalProps {
   /** The tag what we want to delete */
@@ -47,8 +46,7 @@ const ConfirmDeleteModalBase = ({
 }: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
   const tag_id = tag?.id;
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   const deleteTagMutation = api.tags.deleteTagsId.useMutation(
     {
