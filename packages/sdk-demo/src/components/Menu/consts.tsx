@@ -47,14 +47,9 @@ export const getNavigationData = (
     url: ROUTES.settings,
     renderIcon: (props) => <SettingsIcon {...props} />,
     children: {
-      approvalPolicies: {
-        label: 'Approval Policies',
-        url: ROUTES.approvalPolicies,
-        renderIcon: (props) => <TabIcon {...props} />,
-      },
-      roles: {
-        label: 'Roles',
-        url: ROUTES.roles,
+      rolesApprovals: {
+        label: t(i18n)`Roles & Approvals`,
+        url: ROUTES.rolesApprovals,
         renderIcon: (props) => <BadgeIcon {...props} />,
       },
       tags: {
