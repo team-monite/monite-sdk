@@ -1,6 +1,5 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   APPROVAL_STATUS_TO_MUI_ICON_MAP,
   getRowToStatusTextMap,
@@ -9,6 +8,8 @@ import {
 import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
+
+import { components } from '../../../api';
 
 export interface MoniteApprovalStatusChipProps {
   /** The status of the payable. */
