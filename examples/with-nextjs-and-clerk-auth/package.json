@@ -5,7 +5,6 @@
   "type": "module",
   "apiVersion": "2024-05-25",
   "scripts": {
-    "dev": "next dev --port 3000 & dotenv -e .env.local -- npm run webhook-relay",
     "build": "next build && yarn build:demo-data-generator",
     "start": "next start --port 3000",
     "lint": "next lint",

@@ -11,7 +11,7 @@ import {
  *
  * Note: The path must exactly match the location of the interface,
  * otherwise it will be treated as `any` in `monite.ts`.
- * It should not target index.ts or exported files, only exact location;
+ * It should not target index.ts or exported files, only exact location
  */
 import { type MoniteApprovalStatusChipProps } from './src/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
 import { type MoniteApprovalRequestStatusChipProps } from './src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip/ApprovalRequestStatusChip';
