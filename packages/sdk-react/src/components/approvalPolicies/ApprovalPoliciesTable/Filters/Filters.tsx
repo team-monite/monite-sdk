@@ -1,17 +1,10 @@
 import { AutocompleteCreatedBy } from '@/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy';
-import { FILTER_TYPE_ADDED_BY } from '@/components/approvalRequests/consts';
 import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import { SxProps } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { Theme } from 'mui-styles';
@@ -47,7 +40,7 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
       }
     >
       <AutocompleteCreatedBy
-        onChange={(id) => onChangeFilter(FILTER_TYPE_ADDED_BY, id || null)}
+        onChange={(id) => onChangeFilter(FILTER_TYPE_CREATED_BY, id || null)}
       />
       <DatePicker
         className="Monite-ApprovalPolicyCreateAtFilter Monite-FilterControl Monite-DateFilterControl"

@@ -56,10 +56,12 @@ test('test the Roles button under Settings', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Roles' })).toBeVisible();
-  await page.getByRole('button', { name: 'Roles' }).click();
+  await page.getByRole('button', { name: 'Roles & Approvals' }).click();
 
   const iframe = page.frameLocator('iframe');
-  await expect(iframe.getByRole('heading', { name: 'Roles' })).toBeVisible();
+  await expect(
+    iframe.getByRole('heading', { name: 'Roles & Approvals' })
+  ).toBeVisible();
 });
 
 test('test the Tags button under Settings', async ({ page }) => {
