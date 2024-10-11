@@ -32,14 +32,17 @@ const getValidationSchema = (i18n: I18n) =>
   yup.object({
     name: yup
       .string()
+      .label(i18n._(t(i18n)`Policy Name`))
       .max(255)
       .required(t(i18n)`Policy name is required`),
     description: yup
       .string()
+      .label(i18n._(t(i18n)`Description`))
       .max(255)
       .required(t(i18n)`Description is required`),
     trigger: yup
       .string()
+      .label(i18n._(t(i18n)`Script in Monite Script`))
       .required(t(i18n)`Trigger in Monite Script is required`),
     script: yup.string().required(t(i18n)`Script in Monite Script is required`),
   });
