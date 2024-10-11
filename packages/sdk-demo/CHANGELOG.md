@@ -1,5 +1,40 @@
 # @monite/sdk-drop-in
 
+## 1.8.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [5370ff8a]
+  - @team-monite/sdk-themes@0.2.1-beta.0
+  - @monite/sdk-api@3.17.0-beta.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- 47e6e95e: feat(DEV-12284): add Approval Policies builder component
+- ab0a1842: feat(DEV-11689): migrated API from version `2023-09-01` to `2024-01-31`
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- 47e6e95e: encapsulate entity check logic
+- Updated dependencies [d0fd99c0]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [4605fe5e]
+- Updated dependencies [47e6e95e]
+- Updated dependencies [1f30c113]
+  - @team-monite/sdk-themes@0.2.0
+  - @monite/sdk-api@3.16.0
+
 ## 1.8.0-beta.5
 
 ### Patch Changes

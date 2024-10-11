@@ -158,6 +158,12 @@ export const roles_default_permissions: {
       update: 'allowed',
       delete: 'allowed',
     },
+    project: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
     workflow: {
       read: 'allowed',
       create: 'allowed',
@@ -317,6 +323,12 @@ export const roles_default_permissions: {
       delete: 'allowed',
     },
     product: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    project: {
       read: 'allowed',
       create: 'allowed',
       update: 'allowed',
@@ -486,6 +498,12 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    project: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
     workflow: {
       read: 'not_allowed',
       create: 'not_allowed',
@@ -645,6 +663,12 @@ export const roles_default_permissions: {
       delete: 'allowed',
     },
     product: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    project: {
       read: 'allowed',
       create: 'allowed',
       update: 'allowed',
@@ -814,6 +838,12 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    project: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
     workflow: {
       read: 'allowed',
       create: 'not_allowed',
@@ -973,6 +1003,12 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     product: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    project: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -1142,6 +1178,12 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    project: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
     workflow: {
       read: 'allowed',
       create: 'not_allowed',
@@ -1301,6 +1343,12 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     product: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    project: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',

@@ -1,3 +1,4 @@
+import { MoniteApprovalStatusChipProps } from '@/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
 import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
@@ -21,7 +22,7 @@ type Theme = Omit<MuiTheme, 'components'>;
  * Extends theme `components` with Monite components,
  * allowing to configure default props, style overrides, and variants.
  */
-interface ComponentType<T> {
+interface ComponentType<T extends keyof ComponentsPropsList> {
   defaultProps?: ComponentsPropsList[T];
   styleOverrides?: ComponentsOverrides<Theme>[T];
   variants?: ComponentsVariants[T];
@@ -41,6 +42,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
+    MoniteApprovalStatusChip: 'root';
     MonitePayableTable: 'never';
     MoniteReceivablesTable: 'never';
   }
@@ -58,6 +60,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
     MonitePayableTable: Partial<MonitePayableTableProps>;
+    MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
     MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
   }
 
@@ -80,6 +83,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
+    MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
     MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
   }
 }

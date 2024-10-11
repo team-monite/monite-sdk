@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
+import { ApprovalStatusChip } from '@/components/approvalPolicies/ApprovalStatusChip';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -52,7 +53,7 @@ interface onFilterChangeParams {
   value: FilterValue;
 }
 
-interface ApprovalPoliciesTableProps {
+export interface ApprovalPoliciesTableProps {
   /**
    * Triggered when the sorting options are changed.
    *
@@ -152,12 +153,38 @@ const ApprovalPoliciesTableBase = ({
         ),
       },
       {
+        field: 'approvals',
+        headerName: t(i18n)`Approvals`,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => {
+          const script = params.row.script?.[0]?.all?.[0]?.params;
+          const requiredApprovalCount =
+            script?.required_approval_count || t(i18n)`N/A`;
+          return (
+            <span>
+              {requiredApprovalCount} {t(i18n)`approvals required`}
+            </span>
+          );
+        },
+      },
+      {
         field: 'rule',
         headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
+        renderCell: (params) => {
+          console.log(params.row);
+          return <ApprovalPoliciesRules approvalPolicy={params.row} />;
+        },
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: false,
+        flex: 0.7,
         renderCell: (params) => (
-          <ApprovalPoliciesRules approvalPolicy={params.row} />
+          <ApprovalStatusChip status={params.row.status} />
         ),
       },
       {
@@ -226,9 +253,7 @@ const ApprovalPoliciesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
-      </Box>
+      <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         disableColumnFilter={true}
         rowSelection={false}
@@ -241,12 +266,6 @@ const ApprovalPoliciesTableBase = ({
           },
           '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
             py: '22px',
-          },
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
           },
         }}
         loading={isLoading}

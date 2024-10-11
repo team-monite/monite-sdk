@@ -1,5 +1,27 @@
 # @monite/sdk-drop-in
 
+## 1.6.1-beta.0
+
+### Patch Changes
+
+- @monite/sdk-api@3.17.0-beta.0
+
+## 1.6.0
+
+### Minor Changes
+
+- ab0a1842: feat(DEV-11689): migrated API from version `2023-09-01` to `2024-01-31`
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- 369ba2c9: feat(DEV-11417): add Recurring Invoice support
+- 47e6e95e: encapsulate entity check logic
+- 47e6e95e: chore(DEV-11611): update iframe docs
+- 55ce4cdb: fix(onboarding): fix mobile DatePicker for web component
+- Updated dependencies [47e6e95e]
+  - @monite/sdk-api@3.16.0
+
 ## 1.6.0-beta.5
 
 ### Patch Changes

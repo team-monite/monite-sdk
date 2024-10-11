@@ -151,6 +151,7 @@ const CreditNotesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         width: defaultCounterpartColumnWidth,
+        display: 'flex',
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
@@ -168,6 +169,8 @@ const CreditNotesTableBase = ({
       {
         field: 'amount',
         headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
@@ -207,7 +210,7 @@ const CreditNotesTableBase = ({
         title={t(i18n)`No Credit Notes`}
         descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
         descriptionLine2={t(i18n)`You can create your first credit note.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionButtonLabel={t(i18n)`Create Credit Note`}
         actionOptions={[t(i18n)`Invoice`]}
         onAction={(action) => {
           if (action === t(i18n)`Invoice`) {
@@ -246,14 +249,6 @@ const CreditNotesTableBase = ({
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           slots={{
@@ -281,7 +276,7 @@ const CreditNotesTableBase = ({
                 onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
                 refetch={refetch}
                 entityName={t(i18n)`Credit Notes`}
-                actionButtonLabel={t(i18n)`Create Invoice`}
+                actionButtonLabel={t(i18n)`Create Credit Note`}
                 actionOptions={[t(i18n)`Invoice`]}
                 type="no-data"
               />

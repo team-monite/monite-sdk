@@ -10,8 +10,11 @@ import {
   MenuItem,
   Select,
   Switch,
+  SxProps,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+
+import { Theme } from 'mui-styles';
 
 import {
   APPROVAL_REQUEST_STATUSES,
@@ -26,15 +29,16 @@ import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy/AutocompleteCrea
 
 interface FilterProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
+  sx?: SxProps<Theme>;
 }
 
-export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
+export const ApprovalRequestsFilter = ({ onChangeFilter, sx }: FilterProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const className = 'Monite-ApprovalRequestsFilters';
 
   return (
-    <FilterContainer className={className}>
+    <FilterContainer className={className} sx={sx}>
       <FormControl
         variant="outlined"
         fullWidth

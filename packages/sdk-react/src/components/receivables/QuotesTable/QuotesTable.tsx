@@ -172,6 +172,7 @@ const QuotesTableBase = ({
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         headerName: t(i18n)`Customer`,
         width: defaultCounterpartColumnWidth,
+        display: 'flex',
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
@@ -198,6 +199,8 @@ const QuotesTableBase = ({
       {
         field: 'amount',
         headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
@@ -223,7 +226,7 @@ const QuotesTableBase = ({
         title={t(i18n)`No Quotes`}
         descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
         descriptionLine2={t(i18n)`You can create your first quote.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionButtonLabel={t(i18n)`Create Quote`}
         actionOptions={[t(i18n)`Invoice`]}
         onAction={(action) => {
           if (action === t(i18n)`Invoice`) {
@@ -262,14 +265,6 @@ const QuotesTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         slots={{
           pagination: () => (
@@ -295,7 +290,7 @@ const QuotesTableBase = ({
               isError={isError}
               refetch={refetch}
               entityName={t(i18n)`Quotes`}
-              actionButtonLabel={t(i18n)`Create new`}
+              actionButtonLabel={t(i18n)`Create Quote`}
               actionOptions={[t(i18n)`Invoice`]}
               onCreate={(type) => {
                 if (type === t(i18n)`Invoice`) {

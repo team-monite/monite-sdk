@@ -3,18 +3,21 @@ import { useState } from 'react';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
 interface AutocompleteCreatedByProps {
   onChange: (id?: string) => void;
+  className?: string;
 }
 
 type EntityUserType = components['schemas']['EntityUserResponse'];
 
 export const AutocompleteCreatedBy = ({
   onChange: onChangeFilter,
+  className,
 }: AutocompleteCreatedByProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -69,7 +72,11 @@ export const AutocompleteCreatedBy = ({
         onChangeFilter(newValue?.id);
         refetch();
       }}
-      className="Monite-ApprovalAddedByFilter-Container Monite-FilterControl"
+      className={classNames(
+        'Monite-ApprovalAddedByFilter-Container',
+        'Monite-FilterControl',
+        className
+      )}
       renderInput={(params) => (
         <TextField
           {...params}

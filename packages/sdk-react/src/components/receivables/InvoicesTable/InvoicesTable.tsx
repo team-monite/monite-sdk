@@ -237,6 +237,8 @@ const InvoicesTableBase = ({
       {
         field: 'total_amount',
         headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
@@ -330,14 +332,6 @@ const InvoicesTableBase = ({
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         slots={{
