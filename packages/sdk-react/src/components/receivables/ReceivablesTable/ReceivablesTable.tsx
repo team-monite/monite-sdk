@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import { CreditNotesTable } from '@/components';
 import { InvoicesTable } from '@/components';
@@ -155,14 +155,16 @@ const ReceivablesTableBase = ({
   const { tab, tabs } = useReceivablesTableProps(inProps);
 
   const { i18n } = useLingui();
-  const [activeTabIndex, setActiveTabIndex] = useControlledTab({
-    tab,
-    onTabChange,
-  });
+  const [activeTabIndex, setActiveTabIndex] = useState(tab ?? 0);
   const tabsIdBase = `Monite-ReceivablesTable-Tabs-${useId()}-`;
   const className = 'Monite-ReceivablesTable';
 
   const activeTabItem = tabs?.[activeTabIndex];
+
+  const handleTabChange = (tab: number) => {
+    setActiveTabIndex(tab);
+    onTabChange?.(tab);
+  };
 
   return (
     <>
@@ -176,7 +178,7 @@ const ReceivablesTableBase = ({
           value={activeTabIndex}
           variant="standard"
           aria-label={t(i18n)`Receivables tabs`}
-          onChange={(_, value) => setActiveTabIndex(Number(value))}
+          onChange={(_, value) => handleTabChange(Number(value))}
         >
           {tabs?.map(({ label }, index) => (
             <Tab
@@ -255,33 +257,6 @@ const ReceivablesTableBase = ({
       )}
     </>
   );
-};
-
-/**
- * Manages the active tab state for controlled mode and uncontrolled modes.
- *
- * - If the `tab === undefined || onTabChange === undefined`, the hook behaves uncontrolled hook;
- *   that means it handles the internal state.
- *   - Whenever `tab` is updated, the hook updates the internal state.
- * - If the `tab !== undefined` and `onTabChange !== undefined`, the hook behaves controlled hook;
- *   that means it just returns the original state.
- */
-export const useControlledTab = ({
-  tab: controlledTab,
-  onTabChange: setControlledTab,
-}: Pick<ReceivablesTableProps, 'tab' | 'onTabChange'>) => {
-  const [uncontrolledTab, setUncontrolledTab] = useState(controlledTab ?? 0);
-
-  useEffect(() => {
-    if (controlledTab === undefined) return;
-    if (setControlledTab === undefined) setUncontrolledTab(controlledTab);
-  }, [setControlledTab, controlledTab]);
-
-  if (controlledTab !== undefined && setControlledTab !== undefined) {
-    return [controlledTab, setControlledTab] as const;
-  }
-
-  return [uncontrolledTab, setUncontrolledTab] as const;
 };
 
 export const useReceivablesTableProps = (
