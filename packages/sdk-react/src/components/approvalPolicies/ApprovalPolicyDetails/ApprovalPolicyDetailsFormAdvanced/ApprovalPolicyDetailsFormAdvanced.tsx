@@ -32,22 +32,16 @@ const getValidationSchema = (i18n: I18n) =>
   yup.object({
     name: yup
       .string()
-      .label(i18n._(t(i18n)`Policy Name`))
       .max(255)
-      .required(),
+      .required(t(i18n)`Policy name is required`),
     description: yup
       .string()
-      .label(i18n._(t(i18n)`Description`))
       .max(255)
-      .required(),
+      .required(t(i18n)`Description is required`),
     trigger: yup
       .string()
-      .label(i18n._(t(i18n)`Trigger in Monite Script`))
-      .required(),
-    script: yup
-      .string()
-      .label(i18n._(t(i18n)`Script in Monite Script`))
-      .required(),
+      .required(t(i18n)`Trigger in Monite Script is required`),
+    script: yup.string().required(t(i18n)`Script in Monite Script is required`),
   });
 
 export interface ApprovalPolicyFormFields {
@@ -102,10 +96,10 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
       trigger: approvalPolicy?.trigger
-        ? JSON.stringify(approvalPolicy.trigger || {}, null, 2)
+        ? JSON.stringify(approvalPolicy.trigger, null, 2)
         : '',
       script: approvalPolicy?.script
-        ? JSON.stringify(approvalPolicy?.script || {}, null, 2)
+        ? JSON.stringify(approvalPolicy?.script, null, 2)
         : '',
     },
   });

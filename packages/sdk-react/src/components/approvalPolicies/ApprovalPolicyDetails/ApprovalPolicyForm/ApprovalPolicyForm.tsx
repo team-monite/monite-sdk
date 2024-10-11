@@ -21,7 +21,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { t, Trans } from '@lingui/macro';
+import { Trans } from '@lingui/macro';
+import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -46,11 +47,6 @@ import { RulesTable } from '../RulesTable';
 import { AutocompleteCounterparts } from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
-
-const validationSchema = yup.object().shape({
-  name: yup.string().required(),
-  description: yup.string().required(),
-});
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
@@ -285,6 +281,26 @@ export const ApprovalPolicyForm = ({
 
     return response;
   };
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required(t(i18n)`Policy name is required`),
+    description: yup.string().required(t(i18n)`Description is required`),
+    amountValue: yup
+      .number()
+      .typeError(t(i18n)`Amount must be a number`)
+      .positive(t(i18n)`Amount must be a positive number`)
+      .nullable(),
+    usersFromListCount: yup
+      .number()
+      .typeError(t(i18n)`Number of approvals required must be a number`)
+      .positive(t(i18n)`Number of approvals must be positive`)
+      .nullable(),
+    rolesFromListCount: yup
+      .number()
+      .typeError(t(i18n)`Number of approvals required must be a number`)
+      .positive(t(i18n)`Number of approvals must be positive`)
+      .nullable(),
+  });
 
   const methods = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
