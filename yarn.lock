@@ -4713,21 +4713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/swc-plugin@npm:4.0.10":
-  version: 4.0.10
-  resolution: "@lingui/swc-plugin@npm:4.0.10"
-  peerDependencies:
-    "@lingui/macro": 4
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    next:
-      optional: true
-  checksum: 10/c0701f6ad13b11b34eab1f09a22622385b7f95a69494a017d71d221504f96927c7a094643aecd75838e10d4eecc1dfbb6822211c006988a7970f4bd276e9e3ae
-  languageName: node
-  linkType: hard
-
-"@lingui/swc-plugin@npm:~4.0.4":
+"@lingui/swc-plugin@npm:4.0.8, @lingui/swc-plugin@npm:~4.0.4":
   version: 4.0.8
   resolution: "@lingui/swc-plugin@npm:4.0.8"
   peerDependencies:
@@ -22705,7 +22691,7 @@ __metadata:
     "@lingui/core": "npm:~4.7.0"
     "@lingui/macro": "npm:~4.7.0"
     "@lingui/react": "npm:~4.7.0"
-    "@lingui/swc-plugin": "npm:4.0.10"
+    "@lingui/swc-plugin": "npm:4.0.8"
     "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": "npm:~5.14.3"
