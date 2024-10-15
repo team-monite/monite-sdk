@@ -23,7 +23,7 @@ type PayableParams = { payableId: string };
 
 export const PAYABLES_ENDPOINT = 'payables';
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
-const payableIdPath = `${payablePath}/:payableId`;
+const payableIdPath = `*/${payablePath}/:payableId`;
 
 let payable: components['schemas']['PayableResponseSchema'] =
   payableFixturePages[0];
@@ -122,6 +122,17 @@ export function addNewItemToPayablesList(): components['schemas']['PayableRespon
 }
 
 export const payableHandlers = [
+  http.get<{}, {}, components['schemas']['PayableValidationsResource']>(
+    `${payablePath}/validations`,
+    async () => {
+      await delay();
+
+      return HttpResponse.json({
+        required_fields: ['counterpart_id'],
+      });
+    }
+  ),
+
   // read the list
   http.get<
     {},

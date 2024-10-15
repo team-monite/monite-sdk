@@ -84,7 +84,27 @@ const getValidationSchema = (i18n: I18n) =>
         .string()
         .label(t(i18n)`Invoice Number`)
         .required(),
-      counterpart: yup.string().label(t(i18n)`Counterpart`),
+      counterpart: yup
+        .string()
+        .label(t(i18n)`Counterpart`)
+        .when(
+          '$payablesValidations',
+          (
+            payablesValidations:
+              | components['schemas']['PayableValidationsResource']
+              | undefined,
+            schema
+          ) => {
+            if (
+              payablesValidations &&
+              payablesValidations.required_fields.indexOf('counterpart_id') > -1
+            ) {
+              return schema.required();
+            }
+
+            return schema;
+          }
+        ),
       counterpartBankAccount: yup
         .string()
         .label(t(i18n)`Counterpart bank account`),
@@ -194,6 +214,7 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
+    const { api } = useMoniteContext();
 
     const {
       formatFromMinorUnits,
@@ -203,12 +224,22 @@ const PayableDetailsFormBase = forwardRef<
 
     const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
 
+    const { data: payablesValidations } =
+      api.payables.getPayablesValidations.useQuery();
+
     const defaultValues = useMemo(
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
     );
+    const formContext = useMemo(
+      () => ({
+        payablesValidations,
+      }),
+      [payablesValidations]
+    );
     const methods = useForm<PayableDetailsFormFields>({
       resolver: yupResolver(getValidationSchema(i18n)),
+      context: formContext,
       defaultValues,
     });
     const { control, handleSubmit, watch, reset, resetField, trigger } =
@@ -223,10 +254,13 @@ const PayableDetailsFormBase = forwardRef<
     const totals = calculateTotalsForPayable(currentLineItems);
 
     useEffect(() => {
+      methods.reset();
+    }, [payablesValidations, methods]);
+
+    useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
 
-    const { api } = useMoniteContext();
     const { data: matchingToOCRCounterpartId } =
       api.counterparts.getCounterparts.useQuery(
         {
@@ -370,10 +404,16 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired(
-                              'counterpart',
-                              ocrRequiredFields
-                            )}
+                            required={
+                              isFieldRequired(
+                                'counterpart',
+                                ocrRequiredFields
+                              ) ||
+                              (payablesValidations &&
+                                payablesValidations.required_fields.indexOf(
+                                  'counterpart_id'
+                                ) > -1)
+                            }
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
