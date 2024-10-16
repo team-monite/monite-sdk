@@ -185,10 +185,5 @@ export const payableFixtureWithoutFile: components['schemas']['PayableResponseSc
 
 export const payableValidationsFixture: components['schemas']['PayableValidationsResource'] =
   {
-    required_fields: [
-      'counterpart_id',
-      'counterpart_bank_account_id',
-      'issued_at',
-      'currency',
-    ],
+    required_fields: [],
   };
