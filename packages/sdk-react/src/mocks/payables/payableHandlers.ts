@@ -17,6 +17,7 @@ import { filterByPageAndLimit } from '../utils';
 import {
   payableFixturePages,
   payableFixtureWithoutFile,
+  payableValidationsFixture,
 } from './payablesFixture';
 
 type PayableParams = { payableId: string };
@@ -127,9 +128,7 @@ export const payableHandlers = [
     async () => {
       await delay();
 
-      return HttpResponse.json({
-        required_fields: ['counterpart_id'],
-      });
+      return HttpResponse.json(payableValidationsFixture);
     }
   ),
 

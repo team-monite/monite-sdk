@@ -77,6 +77,19 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payableDetailsFormId: string;
 }
 
+export const isFieldRequiredByValidations = (
+  fieldName: components['schemas']['PayablesFieldsAllowedForValidate'],
+  payablesValidations:
+    | components['schemas']['PayableValidationsResource']
+    | undefined
+): boolean => {
+  if (payablesValidations && payablesValidations.required_fields) {
+    return payablesValidations.required_fields.includes(fieldName);
+  }
+
+  return false;
+};
+
 const getValidationSchema = (i18n: I18n) =>
   yup
     .object({
@@ -87,33 +100,45 @@ const getValidationSchema = (i18n: I18n) =>
       counterpart: yup
         .string()
         .label(t(i18n)`Counterpart`)
-        .when(
-          '$payablesValidations',
-          (
-            payablesValidations:
-              | components['schemas']['PayableValidationsResource']
-              | undefined,
-            schema
-          ) => {
-            if (
-              payablesValidations &&
-              payablesValidations.required_fields.indexOf('counterpart_id') > -1
-            ) {
-              return schema.required();
-            }
-
-            return schema;
-          }
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('counterpart_id', payablesValidations)
+            ? schema.required()
+            : schema
         ),
       counterpartBankAccount: yup
         .string()
-        .label(t(i18n)`Counterpart bank account`),
+        .label(t(i18n)`Counterpart bank account`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations(
+            'counterpart_bank_account_id',
+            payablesValidations
+          )
+            ? schema.required()
+            : schema
+        ),
+      invoiceDate: yup
+        .date()
+        .typeError(t(i18n)`Invalid date`)
+        .label(t(i18n)`Invoice date`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('issued_at', payablesValidations)
+            ? schema.required()
+            : schema
+        ),
       dueDate: yup
         .date()
         .typeError(t(i18n)`Invalid date`)
         .label(t(i18n)`Due date`)
         .nullable()
         .required(),
+      currency: yup
+        .string()
+        .label(t(i18n)`Currency`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('currency', payablesValidations)
+            ? schema.required()
+            : schema
+        ),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
@@ -409,10 +434,10 @@ const PayableDetailsFormBase = forwardRef<
                                 'counterpart',
                                 ocrRequiredFields
                               ) ||
-                              (payablesValidations &&
-                                payablesValidations.required_fields.indexOf(
-                                  'counterpart_id'
-                                ) > -1)
+                              isFieldRequiredByValidations(
+                                'counterpart_id',
+                                payablesValidations
+                              )
                             }
                           >
                             <InputLabel htmlFor={field.name}>
@@ -457,10 +482,16 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired(
-                              'counterpartBankAccount',
-                              ocrRequiredFields
-                            )}
+                            required={
+                              isFieldRequired(
+                                'counterpartBankAccount',
+                                ocrRequiredFields
+                              ) ||
+                              isFieldRequiredByValidations(
+                                'counterpart_bank_account_id',
+                                payablesValidations
+                              )
+                            }
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Bank Account`}
@@ -513,10 +544,15 @@ const PayableDetailsFormBase = forwardRef<
                                   fullWidth: true,
                                   error: Boolean(error),
                                   helperText: error?.message,
-                                  required: isFieldRequired(
-                                    'invoiceDate',
-                                    ocrRequiredFields
-                                  ),
+                                  required:
+                                    isFieldRequired(
+                                      'invoiceDate',
+                                      ocrRequiredFields
+                                    ) ||
+                                    isFieldRequiredByValidations(
+                                      'issued_at',
+                                      payablesValidations
+                                    ),
                                 },
                               }}
                               {...field}
@@ -559,10 +595,13 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required={isFieldRequired(
-                          'currency',
-                          ocrRequiredFields
-                        )}
+                        required={
+                          isFieldRequired('currency', ocrRequiredFields) ||
+                          isFieldRequiredByValidations(
+                            'currency',
+                            payablesValidations
+                          )
+                        }
                       />
                       {showTags && (
                         <Controller
