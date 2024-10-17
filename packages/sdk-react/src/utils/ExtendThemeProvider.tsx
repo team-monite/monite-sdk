@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
 
-import {
-  createTheme,
-  ThemeOptions,
-  ThemeProvider,
-  useTheme,
-} from '@mui/material';
+import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 
 /**
  * Extends the current theme with the provided theme options.
@@ -19,10 +15,18 @@ export function ExtendThemeProvider({
   theme: ThemeOptions;
   children: ReactNode;
 }) {
-  const mainTheme = useTheme();
+  const moniteContext = useMoniteContext();
+  const extendedTheme = createTheme(moniteContext.theme, theme);
   return (
-    <ThemeProvider theme={createTheme(mainTheme, theme)}>
-      {children}
+    <ThemeProvider theme={extendedTheme}>
+      <MoniteContext.Provider
+        value={{
+          ...moniteContext,
+          theme: extendedTheme,
+        }}
+      >
+        {children}
+      </MoniteContext.Provider>
     </ThemeProvider>
   );
 }

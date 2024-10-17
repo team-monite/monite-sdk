@@ -7,6 +7,7 @@ import { type MonitePayableStatusChipProps } from '@/components/payables/Payable
 import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
@@ -43,6 +44,7 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip: 'root';
     MoniteApprovalStatusChip: 'root';
     MonitePayableTable: 'never';
+    MoniteReceivablesTable: 'never';
   }
 
   /**
@@ -59,6 +61,7 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
     MonitePayableTable: Partial<MonitePayableTableProps>;
     MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
+    MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
   }
 
   interface MoniteOptions {
@@ -81,5 +84,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
+    MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
   }
 }

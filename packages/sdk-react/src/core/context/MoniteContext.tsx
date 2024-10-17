@@ -16,9 +16,10 @@ import {
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { SentryFactory } from '@/core/services';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
-import type { Theme } from '@mui/material';
+import type { Theme, ThemeOptions } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
@@ -29,7 +30,6 @@ interface MoniteContextBaseValue {
   locale: MoniteLocaleWithRequired;
   i18n: I18n;
   dateFnsLocale: DateFnsLocale;
-  theme: Theme;
 }
 
 export interface MoniteContextValue
@@ -38,6 +38,7 @@ export interface MoniteContextValue
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
+  theme: Theme;
   fetchToken: () => Promise<{
     access_token: string;
     expires_in: number;
@@ -68,7 +69,7 @@ export function useMoniteContext() {
 interface MoniteContextProviderProps {
   monite: MoniteSDK;
   locale: Partial<MoniteLocale> | undefined;
-  theme: Theme;
+  theme: Theme | ThemeOptions | undefined;
   children: ReactNode;
 }
 
@@ -100,6 +101,7 @@ export const MoniteContextProvider = ({
 
 interface ContextProviderProps extends MoniteContextBaseValue {
   children: ReactNode;
+  theme: Theme | ThemeOptions | undefined;
 }
 
 const ContextProvider = ({
@@ -107,7 +109,7 @@ const ContextProvider = ({
   locale,
   i18n,
   dateFnsLocale,
-  theme,
+  theme: userTheme,
   children,
 }: ContextProviderProps) => {
   const sentryHub = useMemo(() => {
@@ -131,6 +133,11 @@ const ContextProvider = ({
         context: MoniteQraftContext,
       }),
     [monite.entityId]
+  );
+
+  const theme = useMemo(
+    () => createThemeWithDefaults(i18n, userTheme),
+    [i18n, userTheme]
   );
 
   useEffect(() => {
