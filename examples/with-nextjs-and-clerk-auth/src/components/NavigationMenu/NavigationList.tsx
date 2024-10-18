@@ -27,7 +27,6 @@ import {
   IconUserCircle,
   IconUsersAlt,
 } from '@/icons';
-import { IconBolt } from '@/icons/IconBolt';
 
 export const NavigationList = () => {
   const { i18n } = useLingui();
@@ -37,9 +36,6 @@ export const NavigationList = () => {
       <List className="NavigationList" disablePadding>
         <NavigationListItem href="/" icon={<IconApps />}>
           {t(i18n)`Dashboard`}
-        </NavigationListItem>
-        <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
-          {t(i18n)`AI Assistant`}
         </NavigationListItem>
         <NavigationListItem href="/payables" icon={<IconUsdCircle />}>
           {t(i18n)`Purchases`}
