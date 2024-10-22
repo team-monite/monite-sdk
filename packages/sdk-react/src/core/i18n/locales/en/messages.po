@@ -1584,7 +1584,7 @@ msgstr "Contact Person has been made default."
 msgid "Contact persons"
 msgstr "Contact persons"
 
-#: src/ui/Error/Error.tsx:70
+#: src/ui/error/Error.tsx:70
 msgid "Contact support"
 msgstr "Contact support"
 
@@ -5828,7 +5828,7 @@ msgid "Somalia"
 msgstr "Somalia"
 
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:30
-#: src/ui/Error/Error.tsx:32
+#: src/ui/error/Error.tsx:32
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -6481,7 +6481,7 @@ msgstr "Truck/Utility Trailer Rentals"
 msgid "Try adjusting your search or filter."
 msgstr "Try adjusting your search or filter."
 
-#: src/ui/Error/Error.tsx:64
+#: src/ui/error/Error.tsx:64
 msgid "Try again"
 msgstr "Try again"
 
