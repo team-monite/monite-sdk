@@ -49,6 +49,10 @@ const defaultFetchTokenMock = () =>
   });
 
 describe('MoniteSDK', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('# Initialize MoniteSDK', () => {
     test('should check that if the user does not pass "fetchToken" required parameter the error will be thrown', () => {
       expect(
@@ -147,17 +151,18 @@ describe('MoniteSDK', () => {
 
       await monite.api.receivable.getAllReceivables();
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          headers: new Headers({
-            Accept: 'application/json',
-            Authorization: 'Bearer MY_PRIVATE_TOKEN',
-            'x-monite-entity-id': entityId,
-            'x-monite-version': apiVersion,
-            'x-monite-sdk-version': packageVersion,
-          }),
-        })
+      expect(fetchSpy).toHaveBeenCalled();
+
+      const [, config] = fetchSpy.mock.calls[0];
+
+      expect(config?.headers).toEqual(
+        expect.arrayContaining([
+          ['Accept', 'application/json'],
+          ['Authorization', 'Bearer MY_PRIVATE_TOKEN'],
+          ['x-monite-entity-id', entityId],
+          ['x-monite-version', apiVersion],
+          ['x-monite-sdk-version', packageVersion],
+        ])
       );
     });
 
@@ -175,18 +180,19 @@ describe('MoniteSDK', () => {
 
       await monite.api.receivable.getAllReceivables();
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          headers: new Headers({
-            Accept: 'application/json',
-            Authorization: 'Bearer MY_PRIVATE_TOKEN',
-            'x-monite-entity-id': entityId,
-            'x-monite-version': apiVersion,
-            'x-monite-sdk-version': packageVersion,
-            'my-additional-header': 'MY_USER_ID',
-          }),
-        })
+      expect(fetchSpy).toHaveBeenCalled();
+
+      const [, config] = fetchSpy.mock.calls[0];
+
+      expect(config?.headers).toEqual(
+        expect.arrayContaining([
+          ['Accept', 'application/json'],
+          ['Authorization', 'Bearer MY_PRIVATE_TOKEN'],
+          ['x-monite-entity-id', entityId],
+          ['x-monite-version', apiVersion],
+          ['x-monite-sdk-version', packageVersion],
+          ['my-additional-header', 'MY_USER_ID'],
+        ])
       );
     });
 
@@ -204,17 +210,18 @@ describe('MoniteSDK', () => {
 
       await monite.api.receivable.getAllReceivables();
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          headers: new Headers({
-            Accept: 'application/json',
-            Authorization: 'Bearer MY_PRIVATE_TOKEN',
-            'x-monite-entity-id': entityId,
-            'x-monite-version': 'MY_UPDATED_BACKEND_VERSION',
-            'x-monite-sdk-version': packageVersion,
-          }),
-        })
+      expect(fetchSpy).toHaveBeenCalled();
+
+      const [, config] = fetchSpy.mock.calls[0];
+
+      expect(config?.headers).toEqual(
+        expect.arrayContaining([
+          ['Accept', 'application/json'],
+          ['Authorization', 'Bearer MY_PRIVATE_TOKEN'],
+          ['x-monite-entity-id', entityId],
+          ['x-monite-version', 'MY_UPDATED_BACKEND_VERSION'],
+          ['x-monite-sdk-version', packageVersion],
+        ])
       );
     });
 
@@ -232,10 +239,16 @@ describe('MoniteSDK', () => {
 
       await monite.api.receivable.getAllReceivables();
 
-      const functionCallData = fetchSpy.mock.calls[0][1];
-      const headers = functionCallData?.headers as Headers;
+      expect(fetchSpy).toHaveBeenCalled();
 
-      expect(headers.get('x-monite-sdk-version')).toEqual(packageVersion);
+      const [, config] = fetchSpy.mock.calls[0];
+
+      const headers = config?.headers as string[][] | undefined;
+
+      const sdkVersionHeader = headers?.find(
+        ([key]) => key === 'x-monite-sdk-version'
+      );
+      expect(sdkVersionHeader?.[1]).toEqual(packageVersion);
     });
   });
 
