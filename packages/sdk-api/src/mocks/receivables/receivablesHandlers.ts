@@ -17,7 +17,7 @@ export const receivablesHandlers = [
   /** Get all receivables */
   http.get<{}, undefined, ReceivablePaginationResponse | ErrorSchemaResponse>(
     receivablePath,
-    ({ request }) => {
+    () => {
       return HttpResponse.json(receivablesFixture);
     }
   ),
@@ -27,7 +27,7 @@ export const receivablesHandlers = [
     { receivableId: string },
     undefined,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivableDetailPath, ({ request, params }) => {
+  >(receivableDetailPath, ({ params }) => {
     if (!params.receivableId)
       return HttpResponse.json(undefined, { status: 400 });
 
