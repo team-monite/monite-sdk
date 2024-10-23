@@ -12,14 +12,15 @@ import { PreviewCustomerSection } from './sections/PreviewCustomerSection';
 import { PreviewDetailsSection } from './sections/PreviewDetailsSection';
 import { PreviewItemsSection } from './sections/PreviewItemsSection';
 import { PreviewPaymentDetailsSection } from './sections/PreviewPaymentDetailsSection';
+import { PaymentTabPanel } from './TabPanels/PaymentTabPanel/PaymentTabPanel';
 
 export const Overview = (
   invoice: components['schemas']['InvoiceResponsePayload']
 ) => {
   const { i18n } = useLingui();
-  const [view, setView] = useState<'overview' | 'details' | 'recurrence'>(
-    'overview'
-  );
+  const [view, setView] = useState<
+    'overview' | 'details' | 'recurrence' | 'payments'
+  >('overview');
   const { data: recurrence, isLoading: isRecurrenceLoading } =
     useRecurrenceByInvoiceId(invoice.id);
   const tabsBaseId = `Monite-InvoiceDetails-overview-${useId()}-tab-`;
@@ -53,6 +54,12 @@ export const Overview = (
             value="recurrence"
           />
         )}
+        <Tab
+          label={t(i18n)`Payments`}
+          id={`${tabsBaseId}-payments-tab`}
+          aria-controls={`${tabsBaseId}-payments-tabpanel`}
+          value="payments"
+        />
       </Tabs>
 
       {view === 'overview' && (
@@ -93,6 +100,16 @@ export const Overview = (
               <Skeleton variant="text" width="100%" />
             ) : null}
           </Card>
+        </Box>
+      )}
+
+      {view === 'payments' && (
+        <Box
+          role="tabpanel"
+          id={`${tabsBaseId}-payments-tabpanel`}
+          aria-labelledby={`${tabsBaseId}-payments-tab`}
+        >
+          <PaymentTabPanel invoice={invoice} />
         </Box>
       )}
     </Stack>
