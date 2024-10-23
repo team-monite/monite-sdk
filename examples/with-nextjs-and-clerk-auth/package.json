@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "4.13.21",
-    "@clerk/nextjs": "4.31.4",
+    "@clerk/nextjs": "4.31.5",
     "@emotion/cache": "~11.11.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",

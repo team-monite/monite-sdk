@@ -96,7 +96,7 @@
     "jest-environment-jsdom": "~29.7.0",
     "jest-fetch-mock": "~3.0.3",
     "jest-watch-typeahead": "~2.2.2",
-    "msw": "~2.2.13",
+    "msw": "~2.4.11",
     "msw-storybook-addon": "~2.0.0",
     "prettier": "^2.8.8",
     "prop-types": "^15.8.1",

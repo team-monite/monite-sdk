@@ -1,8 +1,8 @@
 // import 'whatwg-fetch';
-import { server } from './src/mocks/server';
-
 // require('jest-fetch-mock').enableMocks();
-require('jest-fetch-mock');
+import 'jest-fetch-mock';
+
+import { server } from './src/mocks/server';
 
 beforeAll(() => {
   server.listen();

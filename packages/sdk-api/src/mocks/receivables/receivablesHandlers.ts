@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   ErrorSchemaResponse,
@@ -15,20 +15,21 @@ const failedReceivableIdRequests = new Map<string, boolean>();
 
 export const receivablesHandlers = [
   /** Get all receivables */
-  rest.get<undefined, {}, ReceivablePaginationResponse | ErrorSchemaResponse>(
+  http.get<{}, undefined, ReceivablePaginationResponse | ErrorSchemaResponse>(
     receivablePath,
-    (_, res, ctx) => {
-      return res(ctx.json(receivablesFixture));
+    () => {
+      return HttpResponse.json(receivablesFixture);
     }
   ),
 
   /** Get receivable by id */
-  rest.get<
-    undefined,
+  http.get<
     { receivableId: string },
+    undefined,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivableDetailPath, ({ params }, res, ctx) => {
-    if (!params.receivableId) return res(ctx.status(404));
+  >(receivableDetailPath, ({ params }) => {
+    if (!params.receivableId)
+      return HttpResponse.json(undefined, { status: 400 });
 
     /** Emulate token expiration logic */
     if (
@@ -37,13 +38,15 @@ export const receivablesHandlers = [
     ) {
       failedReceivableIdRequests.set(params.receivableId, true);
 
-      return res(
-        ctx.status(400),
-        ctx.json({
+      return HttpResponse.json(
+        {
           error: {
             message: 'The token has been revoked, expired or not found.',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     } else {
       /** Clear `faildReceivableByIdIteration` on each success request */
@@ -51,16 +54,18 @@ export const receivablesHandlers = [
     }
 
     if (params.receivableId === 'token_expired_permanently') {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      return HttpResponse.json(
+        {
           error: {
             message: 'The token has been revoked, expired or not found.',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
-    return res(ctx.json(receivablesFixture.data[0]));
+    return HttpResponse.json(receivablesFixture.data[0]);
   }),
 ];
