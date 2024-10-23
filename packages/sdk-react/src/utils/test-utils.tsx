@@ -112,7 +112,7 @@ export const Provider = ({
         i18n,
         sentryHub,
         queryClient: client,
-        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        theme: createThemeWithDefaults(i18n, moniteProviderProps?.theme),
         dateFnsLocale,
         apiUrl: monite.baseUrl,
         fetchToken: monite.fetchToken,

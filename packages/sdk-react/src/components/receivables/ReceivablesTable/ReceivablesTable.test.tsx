@@ -1,65 +1,52 @@
-import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 
-import { ReceivablesTable, ReceivablesTableTabEnum } from './ReceivablesTable';
+import { ReceivablesTable } from './ReceivablesTable';
 
 describe('ReceivablesTable', () => {
-  test('should render the list of invoices by default', async () => {
+  test('renders "Invoices" tab by default', async () => {
     renderWithClient(<ReceivablesTable />);
+    const invoicesTab = screen.findByRole('tab', { name: 'Invoices' });
 
-    await waitUntilTableIsLoaded();
+    await expect(invoicesTab).resolves.toHaveAttribute('aria-selected', 'true');
 
     const documents = await screen.findAllByText(/INV-/);
 
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('should render the list of quotes by default when the customer provides it', async () => {
-    renderWithClient(
-      <ReceivablesTable
-        tab={ReceivablesTableTabEnum.Quotes}
-        onTabChange={jest.fn()}
-      />
-    );
+  test('renders the list of "Quotes" if tab specified', async () => {
+    renderWithClient(<ReceivablesTable tab={1} onTabChange={jest.fn()} />);
+
+    await expect(
+      screen.findByRole('tab', { name: 'Quotes' })
+    ).resolves.toHaveAttribute('aria-selected', 'true');
 
     const documents = await screen.findAllByText(/quote-/);
 
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('should render the list of invoices when click on tab "Invoices"', async () => {
+  test('renders "Quotes" tab panel when click on tab "Quotes"', async () => {
     renderWithClient(<ReceivablesTable />);
 
-    const invoicesTab = screen.getByText('Invoices');
-    fireEvent.click(invoicesTab);
+    const quotesTab = screen.findByRole('tab', { name: 'Quotes' });
 
-    await waitUntilTableIsLoaded();
+    fireEvent.click(await quotesTab);
 
-    const documents = await screen.findAllByText(/INV-/);
-
-    expect(documents[0]).toBeInTheDocument();
-  });
-
-  test('should render the list of quotes when click on tab "Quotes"', async () => {
-    renderWithClient(<ReceivablesTable />);
-
-    const quotesTab = screen.getByText('Quotes');
-    fireEvent.click(quotesTab);
-
-    await waitUntilTableIsLoaded();
+    await expect(quotesTab).resolves.toHaveAttribute('aria-selected', 'true');
 
     const documents = await screen.findAllByText(/quote--/);
 
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('should render the list of credit notes when click on tab "Credit notes"', async () => {
-    renderWithClient(<ReceivablesTable />);
+  test('renders the list of "Credit notes" if tab specified', async () => {
+    renderWithClient(<ReceivablesTable tab={2} onTabChange={jest.fn()} />);
 
-    const creditNotesTab = screen.getByText('Credit notes');
-    fireEvent.click(creditNotesTab);
-
-    await waitUntilTableIsLoaded();
+    await expect(
+      screen.findByRole('tab', { name: 'Credit notes' })
+    ).resolves.toHaveAttribute('aria-selected', 'true');
 
     const documents = await screen.findAllByText(/credit_note--/);
 
