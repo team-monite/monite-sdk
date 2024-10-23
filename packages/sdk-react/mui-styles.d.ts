@@ -1,3 +1,4 @@
+import { MoniteApprovalStatusChipProps } from '@/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
 import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
@@ -40,6 +41,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
+    MoniteApprovalStatusChip: 'root';
     MonitePayableTable: 'never';
   }
 
@@ -56,6 +58,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
     MonitePayableTable: Partial<MonitePayableTableProps>;
+    MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
   }
 
   interface MoniteOptions {
@@ -77,5 +80,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
+    MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
   }
 }

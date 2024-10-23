@@ -73,7 +73,7 @@ describe('TagsTable', () => {
       /** Wait until table is loaded */
       await waitUntilTableIsLoaded();
 
-      const nextButton = await screen.findByRole('button', {
+      const nextButton = screen.getByRole('button', {
         name: /next/i,
       });
 
@@ -96,7 +96,7 @@ describe('TagsTable', () => {
       /** Wait until table is loaded */
       await waitUntilTableIsLoaded();
 
-      const nextButton = await screen.findByRole('button', {
+      const nextButton = screen.getByRole('button', {
         name: /next/i,
       });
 
@@ -104,7 +104,7 @@ describe('TagsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const prevButton = await screen.findByRole('button', {
+      const prevButton = screen.getByRole('button', {
         name: /prev/i,
       });
 
@@ -467,6 +467,8 @@ describe('TagsTable', () => {
     );
 
     renderWithClient(<TagsTable />);
+
+    await waitUntilTableIsLoaded();
 
     const errorText = await screen.findByText(/No Tags/i);
 
