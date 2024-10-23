@@ -1,5 +1,19 @@
 # @monite/sdk-react
 
+## 3.17.0-beta.1
+
+### Minor Changes
+
+- 8a3195dd: feat(DEV-12896): apply validation form API to the payable form
+- c2874803: update swc plugins and libs to the compatible versions
+- 1845626f: chore: combined both tables user roles and approvals & added extra fields and filters for approval policies
+
+### Patch Changes
+
+- 1d2880a3: feat: extra validation for approval policy
+- Updated dependencies [c2874803]
+  - @monite/sdk-api@3.17.0-beta.1
+
 ## 3.17.0-beta.0
 
 ### Minor Changes
