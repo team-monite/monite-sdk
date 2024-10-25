@@ -590,3 +590,31 @@ export const useReceivableContacts = (receivable_id: string) => {
 
   return useCounterpartContactList(receivable?.counterpart_id);
 };
+
+export const useMarkInvoiceAsPaid = (receivable_id: string) => {
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
+
+  return api.receivables.postReceivablesIdMarkAsPaid.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
+    },
+    {
+      onSuccess: async () => {
+        await Promise.all([
+          api.receivables.getReceivables.invalidateQueries(queryClient),
+          api.receivables.getReceivablesId.invalidateQueries(
+            {
+              parameters: { path: { receivable_id } },
+            },
+            queryClient
+          ),
+        ]);
+
+        toast.success(t(i18n)`Invoice has been marked as paid`);
+      },
+    }
+  );
+};
