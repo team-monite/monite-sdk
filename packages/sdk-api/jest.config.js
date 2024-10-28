@@ -32,9 +32,17 @@ const config = useSwcConfig
 
 module.exports = {
   testEnvironment: 'jsdom',
+  /**
+   * We have to specify this option based on MSW's documentation
+   *
+   * @see {@link https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom}
+   */
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
   extensionsToTreatAsEsm: ['.ts'],
   automock: false,
   resetMocks: false,
-  setupFilesAfterEnv: ['./setupJest.ts'],
+  setupFilesAfterEnv: ['./setup-tests.cjs', './setupJest.ts'],
   transform: config,
 };
