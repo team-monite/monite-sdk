@@ -61,17 +61,9 @@ export const PaymentRecordForm: React.FC<Props> = ({
     reset(initialValues);
   }, [initialValues, reset]);
 
-  const handlePaymentRecordSubmition = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-
-    handleSubmit(onSubmit)(event);
-  };
-
   return (
     <>
-      <form onSubmit={handlePaymentRecordSubmition}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle sx={{ px: 4, pt: 4 }} variant="h3" id="dialog-title">{t(
           i18n
         )`Record payment`}</DialogTitle>

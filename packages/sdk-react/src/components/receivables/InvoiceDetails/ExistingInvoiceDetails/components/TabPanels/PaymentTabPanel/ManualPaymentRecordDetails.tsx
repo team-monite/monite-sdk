@@ -27,6 +27,7 @@ export const ManualPaymentRecordDetails: React.FC<Props> = ({
     new Date(paymentRecords.payment_date ?? ''),
     dateTimeFormat
   );
+  // Hidden for future iteration.
   // const dateTimeWithReplacedTime = new Date(
   //   paymentRecords.payment_date ?? ''
   // ).setHours(
