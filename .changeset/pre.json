@@ -13,8 +13,17 @@
     "@team-monite/sdk-themes": "0.2.0"
   },
   "changesets": [
+    "breezy-dodos-jog",
+    "dull-drinks-decide",
+    "modern-peas-scream",
+    "odd-starfishes-kneel",
     "poor-dolphins-glow",
     "pretty-parrots-fold",
-    "smart-kangaroos-admire"
+    "red-knives-attack",
+    "sharp-apes-shave",
+    "short-ties-approve",
+    "smart-kangaroos-admire",
+    "thick-fireants-wink",
+    "tough-panthers-play"
   ]
 }

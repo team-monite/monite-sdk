@@ -12,14 +12,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/components/NavigationMenu/NavigationList.tsx:42
-msgid "AI Assistant"
-msgstr "AI Assistant"
+#~ msgid "AI Assistant"
+#~ msgstr "AI Assistant"
 
 #: src/components/MoniteComponents.tsx:488
 #~ msgid "Cancel"
 #~ msgstr "Cancel"
 
-#: src/components/NavigationMenu/NavigationList.tsx:67
+#: src/components/NavigationMenu/NavigationList.tsx:63
 msgid "Company"
 msgstr "Company"
 
@@ -27,7 +27,7 @@ msgstr "Company"
 #~ msgid "Continue"
 #~ msgstr "Continue"
 
-#: src/components/NavigationMenu/NavigationList.tsx:54
+#: src/components/NavigationMenu/NavigationList.tsx:50
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -36,11 +36,11 @@ msgstr "Counterparts"
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
-#: src/components/NavigationMenu/NavigationList.tsx:39
+#: src/components/NavigationMenu/NavigationList.tsx:38
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/components/NavigationMenu/NavigationList.tsx:82
+#: src/components/NavigationMenu/NavigationList.tsx:78
 msgid "Email Templates"
 msgstr "Email Templates"
 
@@ -48,11 +48,11 @@ msgstr "Email Templates"
 msgid "English"
 msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:97
+#: src/components/NavigationMenu/NavigationList.tsx:93
 msgid "Get Help"
 msgstr "Get Help"
 
-#: src/components/NavigationMenu/NavigationList.tsx:73
+#: src/components/NavigationMenu/NavigationList.tsx:69
 msgid "Integrations"
 msgstr "Integrations"
 
@@ -60,7 +60,7 @@ msgstr "Integrations"
 #~ msgid "Invoice {documentId}"
 #~ msgstr "Invoice {documentId}"
 
-#: src/components/NavigationMenu/NavigationList.tsx:76
+#: src/components/NavigationMenu/NavigationList.tsx:72
 msgid "Invoice Design"
 msgstr "Invoice Design"
 
@@ -77,7 +77,7 @@ msgstr "Light Mode"
 msgid "Material UI"
 msgstr "Material UI"
 
-#: src/components/NavigationMenu/NavigationList.tsx:79
+#: src/components/NavigationMenu/NavigationList.tsx:75
 msgid "Message Templates"
 msgstr "Message Templates"
 
@@ -86,7 +86,7 @@ msgstr "Message Templates"
 msgid "Monite"
 msgstr "Monite"
 
-#: src/components/NavigationMenu/NavigationList.tsx:61
+#: src/components/NavigationMenu/NavigationList.tsx:57
 msgid "My Profile"
 msgstr "My Profile"
 
@@ -102,23 +102,23 @@ msgstr "My Profile"
 #~ msgid "Payable \"{0}\" has been paid"
 #~ msgstr "Payable \"{0}\" has been paid"
 
-#: src/components/NavigationMenu/NavigationList.tsx:57
+#: src/components/NavigationMenu/NavigationList.tsx:53
 msgid "Products & Services"
 msgstr "Products & Services"
 
-#: src/components/NavigationMenu/NavigationList.tsx:51
+#: src/components/NavigationMenu/NavigationList.tsx:47
 msgid "Projects"
 msgstr "Projects"
 
-#: src/components/NavigationMenu/NavigationList.tsx:45
+#: src/components/NavigationMenu/NavigationList.tsx:41
 msgid "Purchases"
 msgstr "Purchases"
 
-#: src/components/NavigationMenu/NavigationList.tsx:70
+#: src/components/NavigationMenu/NavigationList.tsx:66
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
-#: src/components/NavigationMenu/NavigationList.tsx:48
+#: src/components/NavigationMenu/NavigationList.tsx:44
 msgid "Sales"
 msgstr "Sales"
 
@@ -126,11 +126,11 @@ msgstr "Sales"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:85
+#: src/components/NavigationMenu/NavigationList.tsx:81
 msgid "Tags"
 msgstr "Tags"
 
-#: src/components/NavigationMenu/NavigationList.tsx:64
+#: src/components/NavigationMenu/NavigationList.tsx:60
 msgid "Team"
 msgstr "Team"
 
