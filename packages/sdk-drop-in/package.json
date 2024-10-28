@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-drop-in",
-  "version": "1.6.1-beta.0",
+  "version": "1.7.0-beta.1",
   "publishConfig": {
     "access": "public"
   },
@@ -62,7 +62,7 @@
     "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "@vitejs/plugin-react-swc": "3.5.0",
+    "@vitejs/plugin-react-swc": "~3.7.1",
     "eslint": "~8.57.0",
     "playwright": "~1.45.0",
     "react": "^18.1.0",

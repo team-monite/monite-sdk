@@ -77,6 +77,19 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payableDetailsFormId: string;
 }
 
+export const isFieldRequiredByValidations = (
+  fieldName: components['schemas']['PayablesFieldsAllowedForValidate'],
+  payablesValidations:
+    | components['schemas']['PayableValidationsResource']
+    | undefined
+): boolean => {
+  if (payablesValidations && payablesValidations.required_fields) {
+    return payablesValidations.required_fields.includes(fieldName);
+  }
+
+  return false;
+};
+
 const getValidationSchema = (i18n: I18n) =>
   yup
     .object({
@@ -84,16 +97,48 @@ const getValidationSchema = (i18n: I18n) =>
         .string()
         .label(t(i18n)`Invoice Number`)
         .required(),
-      counterpart: yup.string().label(t(i18n)`Counterpart`),
+      counterpart: yup
+        .string()
+        .label(t(i18n)`Counterpart`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('counterpart_id', payablesValidations)
+            ? schema.required()
+            : schema
+        ),
       counterpartBankAccount: yup
         .string()
-        .label(t(i18n)`Counterpart bank account`),
+        .label(t(i18n)`Counterpart bank account`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations(
+            'counterpart_bank_account_id',
+            payablesValidations
+          )
+            ? schema.required()
+            : schema
+        ),
+      invoiceDate: yup
+        .date()
+        .typeError(t(i18n)`Invalid date`)
+        .label(t(i18n)`Invoice date`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('issued_at', payablesValidations)
+            ? schema.required()
+            : schema
+        ),
       dueDate: yup
         .date()
         .typeError(t(i18n)`Invalid date`)
         .label(t(i18n)`Due date`)
         .nullable()
         .required(),
+      currency: yup
+        .string()
+        .label(t(i18n)`Currency`)
+        .when('$payablesValidations', (payablesValidations, schema) =>
+          isFieldRequiredByValidations('currency', payablesValidations)
+            ? schema.required()
+            : schema
+        ),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
@@ -194,6 +239,7 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
+    const { api } = useMoniteContext();
 
     const {
       formatFromMinorUnits,
@@ -203,12 +249,22 @@ const PayableDetailsFormBase = forwardRef<
 
     const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
 
+    const { data: payablesValidations } =
+      api.payables.getPayablesValidations.useQuery();
+
     const defaultValues = useMemo(
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
     );
+    const formContext = useMemo(
+      () => ({
+        payablesValidations,
+      }),
+      [payablesValidations]
+    );
     const methods = useForm<PayableDetailsFormFields>({
       resolver: yupResolver(getValidationSchema(i18n)),
+      context: formContext,
       defaultValues,
     });
     const { control, handleSubmit, watch, reset, resetField, trigger } =
@@ -223,10 +279,13 @@ const PayableDetailsFormBase = forwardRef<
     const totals = calculateTotalsForPayable(currentLineItems);
 
     useEffect(() => {
+      methods.reset();
+    }, [payablesValidations, methods]);
+
+    useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
 
-    const { api } = useMoniteContext();
     const { data: matchingToOCRCounterpartId } =
       api.counterparts.getCounterparts.useQuery(
         {
@@ -370,10 +429,16 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired(
-                              'counterpart',
-                              ocrRequiredFields
-                            )}
+                            required={
+                              isFieldRequired(
+                                'counterpart',
+                                ocrRequiredFields
+                              ) ||
+                              isFieldRequiredByValidations(
+                                'counterpart_id',
+                                payablesValidations
+                              )
+                            }
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
@@ -417,10 +482,16 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired(
-                              'counterpartBankAccount',
-                              ocrRequiredFields
-                            )}
+                            required={
+                              isFieldRequired(
+                                'counterpartBankAccount',
+                                ocrRequiredFields
+                              ) ||
+                              isFieldRequiredByValidations(
+                                'counterpart_bank_account_id',
+                                payablesValidations
+                              )
+                            }
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Bank Account`}
@@ -473,10 +544,15 @@ const PayableDetailsFormBase = forwardRef<
                                   fullWidth: true,
                                   error: Boolean(error),
                                   helperText: error?.message,
-                                  required: isFieldRequired(
-                                    'invoiceDate',
-                                    ocrRequiredFields
-                                  ),
+                                  required:
+                                    isFieldRequired(
+                                      'invoiceDate',
+                                      ocrRequiredFields
+                                    ) ||
+                                    isFieldRequiredByValidations(
+                                      'issued_at',
+                                      payablesValidations
+                                    ),
                                 },
                               }}
                               {...field}
@@ -519,10 +595,13 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required={isFieldRequired(
-                          'currency',
-                          ocrRequiredFields
-                        )}
+                        required={
+                          isFieldRequired('currency', ocrRequiredFields) ||
+                          isFieldRequiredByValidations(
+                            'currency',
+                            payablesValidations
+                          )
+                        }
                       />
                       {showTags && (
                         <Controller
