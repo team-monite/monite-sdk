@@ -174,7 +174,6 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => {
-          console.log(params.row);
           return <ApprovalPoliciesRules approvalPolicy={params.row} />;
         },
       },
