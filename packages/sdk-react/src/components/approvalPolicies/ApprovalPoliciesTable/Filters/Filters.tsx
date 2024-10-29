@@ -58,7 +58,11 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
       }
     >
       <Grid item xs={3}>
-        <FormControl variant="outlined" fullWidth size="small">
+        <FormControl
+          fullWidth
+          size="small"
+          className="Monite-SearchField Monite-FilterControl"
+        >
           {!theme?.components?.MuiFormControl ? (
             <InputLabel id="created-by-label">{t(i18n)`Added by`}</InputLabel>
           ) : null}
