@@ -51,8 +51,15 @@
     "@storybook/builder-webpack5/@swc/core": "1.4.17",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
+    "micromatch@npm:^4.0.5": "4.0.8",
+    "micromatch@npm:^4.0.4": "4.0.8",
+    "micromatch@npm:^4.0.2": "4.0.8",
+    "micromatch@npm:4.0.2": "4.0.8",
     "vite@npm:5.1.8/rollup": "4.22.4",
     "tsup@npm:8.0.2/rollup": "4.22.4",
+    "cookie@npm:0.5.0": "0.7.2",
+    "cookie@npm:^0.5.0": "0.7.2",
+    "cookie@npm:0.6.0": "0.7.2",
     "ws": "^8.17.1"
   },
   "packageManager": "yarn@4.4.0"
