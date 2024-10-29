@@ -44,6 +44,7 @@ import {
 import { styled, alpha } from '@mui/material/styles';
 
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
+import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
 import {
   DeliveryMethod,
   ExistingInvoiceDetailsView,
@@ -325,6 +326,16 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     disabled={loading}
                   >{t(i18n)`Download PDF`}</Button>
                 )}
+                <RecordManualPaymentModal invoice={receivable}>
+                  {({ openModal }) => (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={openModal}
+                      disabled={loading}
+                    >{t(i18n)`Record payment`}</Button>
+                  )}
+                </RecordManualPaymentModal>
                 {buttons.isComposeEmailButtonVisible && (
                   <Button
                     variant="contained"

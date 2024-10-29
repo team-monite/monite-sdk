@@ -4,3 +4,6 @@ export * from './useReceivables';
 export * from './useApprovalPolicies';
 export * from './useFiles';
 export * from './useMe';
+export * from './usePaymentRecords';
+export * from './usePaymentIntent';
+export * from './useEntitySettings';
