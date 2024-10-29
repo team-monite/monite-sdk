@@ -31,7 +31,7 @@ type UpdatePDFFormValues = {
   auto_update_pdf: boolean;
 };
 
-export const UpdatePDFModal: React.FC<Props> = ({ invoice }) => {
+export const UpdatePDFModal = ({ invoice }: Props) => {
   const { i18n } = useLingui();
   const [modalOpen, setModalOpen] = useState(false);
   const { api, monite } = useMoniteContext();

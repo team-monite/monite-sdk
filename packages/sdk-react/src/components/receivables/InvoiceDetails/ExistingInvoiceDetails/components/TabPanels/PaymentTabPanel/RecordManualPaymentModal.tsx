@@ -39,10 +39,7 @@ const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
   payment_date: new Date(),
 };
 
-export const RecordManualPaymentModal: React.FC<Props> = ({
-  children,
-  invoice,
-}) => {
+export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmSubmission, setConfirmSubmission] = useState(false);
   const [formValues, setFormValues] = useState<PaymentRecordDetails>(

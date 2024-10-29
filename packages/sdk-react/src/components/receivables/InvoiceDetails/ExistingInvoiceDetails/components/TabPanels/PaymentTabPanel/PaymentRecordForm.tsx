@@ -31,13 +31,13 @@ type Props = {
   onSubmit: (data: PaymentRecordFormValues) => void;
 };
 
-export const PaymentRecordForm: React.FC<Props> = ({
+export const PaymentRecordForm = ({
   invoice,
   initialValues,
   isLoading,
   onSubmit,
   onCancel,
-}) => {
+}: Props) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
 

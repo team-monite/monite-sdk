@@ -9,7 +9,7 @@ type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
 };
 
-export const UpdatePDFSection: React.FC<Props> = ({ invoice }) => {
+export const UpdatePDFSection = ({ invoice }: Props) => {
   const { i18n } = useLingui();
 
   if (invoice.status !== 'paid') {

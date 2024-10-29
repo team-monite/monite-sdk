@@ -16,7 +16,7 @@ type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
 };
 
-export const PaymentTabPanel: React.FC<Props> = ({ invoice }) => {
+export const PaymentTabPanel = ({ invoice }: Props) => {
   const { i18n } = useLingui();
 
   const { formatCurrencyToDisplay } = useCurrencies();

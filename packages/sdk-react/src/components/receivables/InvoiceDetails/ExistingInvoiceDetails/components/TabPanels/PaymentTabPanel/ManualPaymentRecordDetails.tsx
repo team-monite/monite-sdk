@@ -15,10 +15,10 @@ type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
 };
 
-export const ManualPaymentRecordDetails: React.FC<Props> = ({
+export const ManualPaymentRecordDetails = ({
   paymentRecords,
   invoice,
-}) => {
+}: Props) => {
   const { i18n } = useLingui();
   const dateTimeFormat = useDateTimeFormat();
   const { formatCurrencyToDisplay } = useCurrencies();
