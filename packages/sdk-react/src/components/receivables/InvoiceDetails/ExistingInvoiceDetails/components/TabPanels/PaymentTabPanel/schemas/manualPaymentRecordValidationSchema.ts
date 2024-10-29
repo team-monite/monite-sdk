@@ -22,19 +22,9 @@ export const manualPaymentRecordValidationSchema = (
           return currencyAmount > 0 && currencyAmount <= amount_due;
         }
       ),
-    // reference_number: yup
-    //   .string()
-    //   .label(i18n._(t(i18n)`Reference number`))
-    //   .max(255)
-    //   .required(),
     payment_date: yup
       .date()
       .max(new Date(), i18n._(t(i18n)`Date must be today or in the past`))
       .label(i18n._(t(i18n)`Date`))
       .required(),
-    // payment_time: yup
-    //   .date()
-    //   .label(i18n._(t(i18n)`Time`))
-    //   .required(),
   });
-// Extra fields to be added in the future

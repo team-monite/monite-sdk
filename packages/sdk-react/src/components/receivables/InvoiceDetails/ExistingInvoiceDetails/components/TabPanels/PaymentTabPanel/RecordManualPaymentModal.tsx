@@ -29,10 +29,7 @@ type Props = {
 export type PaymentRecordDetails = {
   amount: number;
   payment_date: Date | null;
-  // reference_number: string;
-  // payment_time: Date | null;
 };
-// Fields to be added in the future
 
 const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
   amount: 0,
@@ -66,13 +63,6 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
 
   const createManualPaymentRecord = () => {
     const paid_at = new Date(formValues.payment_date ?? '');
-    // Hidden for future iteration.
-    // const dateTimeWithReplacedTime = new Date(formValues.payment_date ?? '').setHours(
-    //   formValues.payment_time?.getHours() ?? 0,
-    //   formValues.payment_time?.getMinutes() ?? 0
-    // );
-
-    // const paid_at = new Date(dateTimeWithReplacedTime);
 
     createPaymentRecord.mutate(
       {

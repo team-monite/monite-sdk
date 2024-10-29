@@ -28,7 +28,6 @@ export const RHFTimePicker = <T extends FieldValues>({
       }) => {
         const isInvalid = (isTouched || !isValid) && !isErrorCustom(error);
 
-        // new Date(null) generates "1970-01-01T00:00:00.000Z" and undefined is not acceptable because component becames uncontrolled
         const date = field.value !== null ? new Date(field.value) : null;
 
         return (

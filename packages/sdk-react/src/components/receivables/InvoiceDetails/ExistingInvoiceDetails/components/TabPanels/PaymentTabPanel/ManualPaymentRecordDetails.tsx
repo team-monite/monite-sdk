@@ -27,18 +27,6 @@ export const ManualPaymentRecordDetails = ({
     new Date(paymentRecords.payment_date ?? ''),
     dateTimeFormat
   );
-  // Hidden for future iteration.
-  // const dateTimeWithReplacedTime = new Date(
-  //   paymentRecords.payment_date ?? ''
-  // ).setHours(
-  //   paymentRecords.payment_time?.getHours() ?? 0,
-  //   paymentRecords.payment_time?.getMinutes() ?? 0
-  // );
-
-  // const dateTime = i18n.date(
-  //   new Date(dateTimeWithReplacedTime),
-  //   dateTimeFormat
-  // );
 
   const { data: entityUser, isLoading: isEntityUserLoading } =
     useEntityUserByAuthToken();

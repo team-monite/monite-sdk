@@ -5,7 +5,6 @@ import { components } from '@/api';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useCurrencies } from '@/core/hooks';
-// import { RHFTimePicker } from '@/components/RHF/RHFTimePicker'; // Hidden for future iteration.
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -49,9 +48,7 @@ export const PaymentRecordForm = ({
       () =>
         initialValues ?? {
           amount: 0,
-          // reference_number: '', // Hidden for future iteration.
           payment_date: null,
-          // payment_time: null, // Hidden for future iteration.
         },
       [initialValues]
     ),
@@ -82,19 +79,6 @@ export const PaymentRecordForm = ({
                 {formatCurrencyToDisplay(invoice.amount_due, invoice.currency)}
               </FormHelperText>
             </Grid>
-            {/* Hidden for future iteration */}
-            {/* <Grid item xs={6}>
-              <RHFTextField
-                label={t(i18n)`Reference number`}
-                name="reference_number"
-                control={control}
-                fullWidth
-                required
-              />
-              <FormHelperText>{t(
-                i18n
-              )`Or fill in the transaction ID instead`}</FormHelperText>
-            </Grid> */}
             <Grid item xs={6}>
               <RHFDatePicker
                 label={t(i18n)`Date`}
@@ -102,16 +86,6 @@ export const PaymentRecordForm = ({
                 control={control}
               />
             </Grid>
-            {/* Hidden for future iteration */}
-            {/* <Grid item xs={6}>
-              <RHFTimePicker
-                label={t(i18n)`Time`}
-                name="payment_time"
-                control={control}
-                required
-                fullWidth
-              />
-            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions sx={{ px: 4, pb: 4 }}>

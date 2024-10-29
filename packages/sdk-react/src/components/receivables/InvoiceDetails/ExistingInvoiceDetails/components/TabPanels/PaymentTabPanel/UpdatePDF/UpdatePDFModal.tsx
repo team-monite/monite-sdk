@@ -57,7 +57,6 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
       {},
       {
         onSuccess: async () => {
-          // Ideally, we shouldn't require to refetch the entity settings here
           const { data: entitySettings } =
             await api.entities.getEntitiesIdSettings.useQuery(
               {
@@ -68,7 +67,6 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
               { enabled: true }
             );
 
-          //  Ideally the fields other than generate_paid_invoice_pdf should be optional, but the types are not allowing it
           await mutateAsync({
             vat_mode: entitySettings!.vat_mode,
             allow_purchase_order_autolinking:

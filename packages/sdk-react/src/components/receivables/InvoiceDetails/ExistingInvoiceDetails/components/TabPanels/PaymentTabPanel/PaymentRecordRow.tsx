@@ -7,8 +7,6 @@ import { useLingui } from '@lingui/react';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { Box, Alert, Skeleton, Typography } from '@mui/material';
 
-// import { ChevronRight } from '@mui/icons-material'; // Hidden for future design iteration
-
 export const PaymentRecordRow = ({
   invoice,
   record,
@@ -85,10 +83,6 @@ export const PaymentRecordRow = ({
         <Typography variant="body1" color="textSecondary">
           {formatCurrencyToDisplay(record.amount, invoice.currency)}
         </Typography>
-        {/* Hidden for future design iteration */}
-        {/* <Box>
-            <ChevronRight />
-          </Box> */}
       </Box>
     </Box>
   );
