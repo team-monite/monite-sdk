@@ -288,6 +288,9 @@ export const ApprovalPolicyForm = ({
     amountValue: yup
       .number()
       .typeError(t(i18n)`Amount must be a number`)
+      .transform((value, originalValue) =>
+        originalValue === '' ? null : value
+      )
       .positive(t(i18n)`Amount must be a positive number`)
       .nullable(),
     usersFromListCount: yup
@@ -304,6 +307,7 @@ export const ApprovalPolicyForm = ({
 
   const methods = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
+    mode: 'onChange',
     defaultValues: {
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
