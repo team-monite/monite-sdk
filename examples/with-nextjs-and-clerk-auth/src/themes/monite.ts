@@ -1,4 +1,3 @@
-import '@monite/sdk-react/mui-styles.d.ts';
 import { createTheme } from '@mui/material';
 import {
   moniteDark as baseMoniteDark,

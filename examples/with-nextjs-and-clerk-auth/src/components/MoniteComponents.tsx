@@ -29,7 +29,6 @@ import {
   useRootElements,
   UserRoles as UserRolesBase,
 } from '@monite/sdk-react';
-import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
   Button,
@@ -51,6 +50,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { Theme } from '@mui/material/styles/createTheme';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 

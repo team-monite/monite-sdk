@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../../sdk-react/mui-styles.d.ts" />
 import { useLocalStorage } from 'react-use';
 
 import { ThemeConfig } from '@/types';

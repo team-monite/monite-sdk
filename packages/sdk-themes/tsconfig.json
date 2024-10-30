@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "NodeNext",
+    "target": "ESNext",
+    "module": "ESNext",
     "outDir": "dist",
     "baseUrl": ".",
     "strict": true,

@@ -1,5 +1,6 @@
-import { components } from '@monite/sdk-react/src/api';
 import { ChipProps, SelectProps } from '@mui/material';
+
+import { components } from '../api';
 
 interface MoniteTablePaginationRootSlotProps {
   pageSizeOptions?: number[];
