@@ -1,9 +1,4 @@
-import {
-  UnitListResponse,
-  UnitRequest,
-  UnitResponse,
-  UnitUpdate,
-} from '../../api';
+import { UnitListResponse, UnitRequest, UnitResponse, UnitUpdate } from '../';
 import { CancelablePromise } from '../CancelablePromise';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';

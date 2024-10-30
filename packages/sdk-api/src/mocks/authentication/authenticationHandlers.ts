@@ -4,8 +4,8 @@ import {
   AccessTokenResponse,
   ErrorSchemaResponse,
   ObtainTokenPayload,
-} from '../../api';
-import { AUTH_TOKEN_ENDPOINT } from '../../api/services';
+} from '../../old-api';
+import { AUTH_TOKEN_ENDPOINT } from '../../old-api/services';
 import { authenticationTokenFixture } from './authenticationFixtures';
 
 const tokenAuthPath = `*/${AUTH_TOKEN_ENDPOINT}`;

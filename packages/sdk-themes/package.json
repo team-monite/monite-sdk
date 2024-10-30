@@ -21,6 +21,7 @@
     }
   },
   "dependencies": {
+    "@monite/sdk-api": "workspace:~",
     "@mui/material": "~5.15.14"
   },
   "devDependencies": {

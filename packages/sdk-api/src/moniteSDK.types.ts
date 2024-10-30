@@ -1,4 +1,4 @@
-import { AccessTokenResponse } from './api';
+import { AccessTokenResponse } from './old-api';
 
 /**
  * The function that will be called to fetch the access token.

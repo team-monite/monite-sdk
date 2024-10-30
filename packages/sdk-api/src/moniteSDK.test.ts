@@ -1,8 +1,8 @@
-import { AccessTokenResponse, GrantType, ObtainTokenPayload } from './api';
-import { ApiError } from './api/ApiError';
-import { apiVersion } from './api/apiVersion';
 import { authenticationTokenFixture } from './mocks';
 import { MoniteSDK } from './moniteSDK';
+import { AccessTokenResponse, GrantType, ObtainTokenPayload } from './old-api';
+import { ApiError } from './old-api/ApiError';
+import { apiVersion } from './old-api/apiVersion';
 import { packageVersion } from './packageVersion';
 
 const fetchTokenMockWithImplementation =

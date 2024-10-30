@@ -1,4 +1,4 @@
-import { AccessTokenResponse } from '../../api';
+import { AccessTokenResponse } from '../../old-api';
 
 export const authenticationTokenFixture: AccessTokenResponse = {
   access_token: 'L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg',

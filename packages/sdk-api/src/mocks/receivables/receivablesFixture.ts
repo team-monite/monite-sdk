@@ -7,7 +7,7 @@ import {
   ReceivablePaginationResponse,
   ReceivablesEntityOrganization,
   ReceivablesStatusEnum,
-} from '../../api';
+} from '../../old-api';
 
 export const receivablesFixture: ReceivablePaginationResponse = {
   data: [

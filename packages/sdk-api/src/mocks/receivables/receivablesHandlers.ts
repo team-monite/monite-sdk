@@ -4,8 +4,8 @@ import {
   ErrorSchemaResponse,
   ReceivablePaginationResponse,
   ReceivableResponse,
-} from '../../api';
-import { RECEIVABLES_ENDPOINT } from '../../api/services/ReceivableService';
+} from '../../old-api';
+import { RECEIVABLES_ENDPOINT } from '../../old-api/services/ReceivableService';
 import { receivablesFixture } from './receivablesFixture';
 
 const receivablePath = `*/${RECEIVABLES_ENDPOINT}`;

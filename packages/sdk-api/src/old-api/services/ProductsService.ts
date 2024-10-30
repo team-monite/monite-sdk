@@ -7,7 +7,7 @@ import {
   ProductServiceRequest,
   ProductServiceResponse,
   ProductServiceUpdate,
-} from '../../api';
+} from '../';
 import { CancelablePromise } from '../CancelablePromise';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';

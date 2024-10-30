@@ -7,6 +7,8 @@ import { apiVersion } from './api-version';
 import { createAPIClient as createAPIClientBase } from './create-api-client';
 import { Services } from './services';
 
+const packageVersion = '3.17.0-beta.1';
+
 export type API = Services;
 
 export interface CreateMoniteAPIClientResult {
@@ -30,7 +32,7 @@ export const createAPIClient = ({
   const moniteRequestFn: typeof requestFn = (schema, requestInfo, options) => {
     const predefinedHeaders: Record<string, string | undefined> = {
       'x-monite-version': apiVersion,
-      'x-monite-sdk-version': '20', //TODO: this
+      'x-monite-sdk-version': packageVersion,
     };
 
     if (isMoniteEntityIdPath(schema.url))

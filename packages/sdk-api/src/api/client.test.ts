@@ -1,4 +1,4 @@
-import { isMoniteEntityIdPath } from './client';
+import { isMoniteEntityIdPath } from '@/api/client';
 
 describe('moniteEntityIdPathsRegExp', () => {
   test('should not match paths that are not in the list of paths that require', () => {

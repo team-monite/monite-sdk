@@ -1,6 +1,6 @@
-import { ApiService } from './api/ApiService';
-import { apiVersion } from './api/apiVersion';
 import type { MoniteFetchToken, MoniteApiUrl } from './moniteSDK.types';
+import { ApiService } from './old-api/ApiService';
+import { apiVersion } from './old-api/apiVersion';
 import { packageVersion } from './packageVersion';
 
 export interface MoniteSDKConfig {

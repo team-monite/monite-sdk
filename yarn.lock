@@ -4979,6 +4979,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@monite/sdk-api@workspace:packages/sdk-api"
   dependencies:
+    "@openapi-qraft/react": "npm:~1.14.2"
     "@swc/jest": "npm:~0.2.26"
     "@team-monite/eslint-plugin": "workspace:~"
     "@types/jest": "npm:~29.5.11"
@@ -5675,6 +5676,17 @@ __metadata:
     "@tanstack/react-query": ^5.0.0
     react: ^18.0.0
   checksum: 10/64ffb8e070a094ec43b56a7edbcf817cc0832a0931a813525fea5999a539adb72e5581aa737c4cd888ae74e4c4d778cbf7e228264bf1e0b3fb4e3d0d2cef1054
+  languageName: node
+  linkType: hard
+
+"@openapi-qraft/react@npm:~1.14.2":
+  version: 1.14.2
+  resolution: "@openapi-qraft/react@npm:1.14.2"
+  peerDependencies:
+    "@tanstack/query-core": ^5.0.0
+    "@tanstack/react-query": ^5.0.0
+    react: ^18.0.0
+  checksum: 10/7575c8d9d8e14e9eaa9592e4db1a5781de592dfd9563192f998c9e5e92d1662710f7dda7eb4f43521669eebd4737bb062a158ab1b4fead3311166a096846440f
   languageName: node
   linkType: hard
 
@@ -8476,6 +8488,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@team-monite/sdk-themes@workspace:packages/sdk-themes"
   dependencies:
+    "@monite/sdk-api": "workspace:~"
     "@mui/material": "npm:~5.15.14"
     rimraf: "npm:~5.0.5"
     typescript: "npm:~5.5.4"

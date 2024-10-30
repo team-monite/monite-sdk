@@ -4,7 +4,7 @@ import {
   TagCreateOrUpdateSchema,
   OrderEnum,
   TagReadSchema,
-} from '../../api';
+} from '../';
 import type { CancelablePromise } from '../CancelablePromise';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';
