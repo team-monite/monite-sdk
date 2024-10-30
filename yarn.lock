@@ -8476,6 +8476,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@team-monite/sdk-themes@workspace:packages/sdk-themes"
   dependencies:
+    "@monite/sdk-react": "workspace:~"
     "@mui/material": "npm:~5.15.14"
     rimraf: "npm:~5.0.5"
     typescript: "npm:~5.5.4"

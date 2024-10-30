@@ -1,6 +1,9 @@
-// noinspection JSAnnotator
-/// <reference path="../../../sdk-react/mui-styles.d.ts" />
-import type { Components } from '@mui/material/styles/components.js';
+import {
+  Components,
+  ComponentsOverrides,
+  ComponentsPropsList,
+  ComponentsVariants,
+} from '@mui/material';
 import type {
   Palette,
   PaletteOptions,
@@ -9,6 +12,71 @@ import type {
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
 import '@mui/x-data-grid/themeAugmentation';
+
+import { type MoniteApprovalStatusChipProps } from './types';
+import { type MoniteApprovalRequestStatusChipProps } from './types';
+import { type MoniteCounterpartStatusChipProps } from './types';
+import { type MonitePayableDetailsInfoProps } from './types';
+import { type MonitePayableTableProps } from './types';
+import { type MonitePayableStatusChipProps } from './types';
+import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from './types';
+import { type MoniteInvoiceRecurrenceStatusChipProps } from './types';
+import { type MoniteInvoiceStatusChipProps } from './types';
+import { type MoniteTablePaginationProps } from './types';
+
+interface ComponentType<T extends keyof ComponentsPropsList> {
+  defaultProps?: ComponentsPropsList[T];
+  styleOverrides?: ComponentsOverrides<Theme>;
+  variants?: ComponentsVariants[T];
+}
+
+// Extend MUI Theme
+declare module '@mui/material/styles' {
+  interface ComponentNameToClassKey {
+    MoniteInvoiceStatusChip: 'root';
+    MonitePayableStatusChip: 'root';
+    MoniteApprovalRequestStatusChip: 'root';
+    MoniteTablePagination: 'root' | 'menu';
+    MonitePayableDetailsInfo: 'never';
+    MoniteInvoiceRecurrenceStatusChip: 'root';
+    MoniteInvoiceRecurrenceIterationStatusChip: 'root';
+    MoniteCounterpartStatusChip: 'root';
+    MoniteApprovalStatusChip: 'root';
+    MonitePayableTable: 'never';
+  }
+
+  interface ComponentsPropsList {
+    MoniteInvoiceStatusChip: Partial<MoniteInvoiceStatusChipProps>;
+    MonitePayableStatusChip: Partial<MonitePayableStatusChipProps>;
+    MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
+    MoniteTablePagination: Partial<MoniteTablePaginationProps>;
+    MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
+    MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
+    MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
+    MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
+    MonitePayableTable: Partial<MonitePayableTableProps>;
+    MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
+  }
+
+  interface MoniteOptions {
+    dateFormat?: Intl.DateTimeFormatOptions;
+    dateTimeFormat?: Intl.DateTimeFormatOptions;
+  }
+
+  interface Components {
+    MoniteOptions?: { defaultProps: MoniteOptions };
+    MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
+    MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
+    MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
+    MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
+    MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
+    MonitePayableTable?: ComponentType<'MonitePayableTable'>;
+    MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
+    MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
+    MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
+    MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
+  }
+}
 
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
   '90': string;
@@ -217,6 +285,7 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
 
 const filterControlWidth = '160px';
 
+// @ts-ignore
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteOptions: {
     defaultProps: {
@@ -1074,6 +1143,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       size: 'small',
     },
     styleOverrides: {
+      //@ts-expect-error
       root: {
         fontSize: '13px',
       },
@@ -1135,6 +1205,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       size: 'small',
     },
     styleOverrides: {
+      //@ts-expect-error
       root: {
         fontSize: '13px',
       },
@@ -1179,6 +1250,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       size: 'small',
     },
     styleOverrides: {
+      //@ts-expect-error
       root: {
         height: '24px',
         padding: '7px 8px',

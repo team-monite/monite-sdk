@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "strict": true,
     "noEmitOnError": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "declaration": true,
