@@ -1,4 +1,3 @@
-import { createAPIClient } from '@/api/client';
 import {
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
@@ -6,6 +5,7 @@ import {
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
+import { createAPIClient } from '@monite/sdk-api/src/api/client';
 import { requestFn } from '@openapi-qraft/react';
 import {
   fireEvent,

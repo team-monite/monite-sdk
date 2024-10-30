@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { usePrevious } from 'react-use';
 
-import { components } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
@@ -20,6 +19,7 @@ import {
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {

@@ -1,7 +1,6 @@
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { Dialog } from '@/components';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
@@ -17,6 +16,7 @@ import { Price } from '@/core/utils/price';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {

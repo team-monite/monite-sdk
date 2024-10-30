@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import {
   useApprovalPolicyScript,
@@ -15,6 +14,7 @@ import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,

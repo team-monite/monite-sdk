@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { FieldNamesMarkedBoolean } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import {
   LineItem,
   PayableDetailsFormFields,
@@ -15,6 +14,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 export type PayableDetailsPermissions =
   | 'edit'

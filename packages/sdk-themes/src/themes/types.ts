@@ -1,4 +1,4 @@
-import { components } from '@monite/sdk-api/src/api';
+import { components, Services } from '@monite/sdk-api/src/api';
 import { ChipProps, SelectProps } from '@mui/material';
 
 interface MoniteTablePaginationRootSlotProps {
@@ -77,7 +77,7 @@ export type FieldValueTypes =
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: FieldValueTypes[];
-  summaryCardFilters?: any;
+  summaryCardFilters?: Record<string, PayablesTabFilter | null>;
 }
 
 export type OptionalFields = {
@@ -107,9 +107,9 @@ export type OcrRequiredFields =
   | Partial<Record<OcrRequiredField, boolean>>
   | undefined;
 
-// export type PayablesTabFilter = NonNullable<
-//   API['payables']['getPayables']['types']['parameters']['query']
-// >;
+export type PayablesTabFilter = NonNullable<
+  Services['payables']['getPayables']['types']['parameters']['query']
+>;
 
 export type OcrMismatchField =
   | keyof Pick<

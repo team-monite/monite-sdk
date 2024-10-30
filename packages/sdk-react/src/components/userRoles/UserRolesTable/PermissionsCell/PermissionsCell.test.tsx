@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { renderWithClient } from '@/utils/test-utils';
+import { components } from '@monite/sdk-api/src/api';
 import { screen, act, fireEvent } from '@testing-library/react';
 
 import { PermissionsCell } from './PermissionsCell';

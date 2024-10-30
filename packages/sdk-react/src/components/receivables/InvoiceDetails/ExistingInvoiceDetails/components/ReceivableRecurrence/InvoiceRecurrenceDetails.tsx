@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-import { components } from '@/api';
 import { MoniteCardItem } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box } from '@mui/material';
 
 export const InvoiceRecurrenceDetails = ({

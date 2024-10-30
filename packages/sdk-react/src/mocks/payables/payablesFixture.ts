@@ -1,4 +1,3 @@
-import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
@@ -8,6 +7,7 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components, paths } from '@monite/sdk-api/src/api';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
 

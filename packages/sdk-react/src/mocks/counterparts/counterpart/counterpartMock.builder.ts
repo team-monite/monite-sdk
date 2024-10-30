@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
+import { components } from '@monite/sdk-api/src/api';
 
 import { counterpartListFixture } from './counterpartFixture';
 

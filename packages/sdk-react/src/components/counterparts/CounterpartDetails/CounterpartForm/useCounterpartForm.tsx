@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
 
-import { components } from '@/api';
 import type {
   CounterpartDefaultValues,
   CounterpartShowCategories,
@@ -10,6 +9,7 @@ import {
   useCreateCounterpart,
   useUpdateCounterpart,
 } from '@/core/queries/useCounterpart';
+import { components } from '@monite/sdk-api/src/api';
 
 export type CounterpartsFormProps = {
   /**

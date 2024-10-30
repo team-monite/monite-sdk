@@ -1,9 +1,9 @@
 import { FormProvider } from 'react-hook-form';
 
-import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,

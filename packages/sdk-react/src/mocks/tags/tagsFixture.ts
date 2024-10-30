@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import {
   entityUser2,
   entityUser3,
@@ -7,6 +6,7 @@ import {
   entityUser6,
   entityUserByIdFixture,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
+import { components } from '@monite/sdk-api/src/api';
 
 export const tagListFixture: components['schemas']['TagReadSchema'][] = [
   {

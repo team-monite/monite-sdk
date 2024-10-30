@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import {
   ACTION_TO_LATTER_MAP,
   actionOrder,
@@ -6,6 +5,7 @@ import {
 } from '@/components/userRoles/consts';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { styled, Tooltip } from '@mui/material';
 
 interface PermissionProps {

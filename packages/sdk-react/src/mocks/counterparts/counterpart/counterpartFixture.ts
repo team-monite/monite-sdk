@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { getRandomBoolean, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 import { individualId, organizationId } from '../counterpart.mocks.types';
 

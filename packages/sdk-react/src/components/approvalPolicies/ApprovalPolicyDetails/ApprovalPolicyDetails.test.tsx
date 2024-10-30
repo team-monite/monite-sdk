@@ -1,10 +1,10 @@
-import { components } from '@/api';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
 import {
   renderWithClient,
   triggerChangeInput,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
+import { components } from '@monite/sdk-api/src/api';
 import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

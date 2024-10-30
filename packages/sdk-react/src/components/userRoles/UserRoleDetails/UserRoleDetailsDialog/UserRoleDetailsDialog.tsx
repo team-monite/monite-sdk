@@ -2,7 +2,6 @@ import { useState, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
@@ -18,6 +17,7 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Close as CloseIcon,
   OpenInNew as OpenInNewIcon,

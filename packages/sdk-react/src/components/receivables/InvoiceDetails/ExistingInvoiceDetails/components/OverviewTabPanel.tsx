@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { InvoiceRecurrence } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence';
 import { InvoiceRecurrenceBasedOn } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceBasedOn';
@@ -23,6 +22,7 @@ import { MoniteCard } from '@/ui/Card/Card';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { CancelScheduleSend } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {

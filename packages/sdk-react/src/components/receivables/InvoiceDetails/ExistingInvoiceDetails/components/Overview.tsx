@@ -1,10 +1,10 @@
 import { useId, useState } from 'react';
 
-import { components } from '@/api';
 import { OverviewTabPanel } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel';
 import { InvoiceRecurrenceIterations } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Card, Skeleton, Stack, Tab, Tabs } from '@mui/material';
 
 import { useRecurrenceByInvoiceId } from '../components/ReceivableRecurrence/useInvoiceRecurrence';

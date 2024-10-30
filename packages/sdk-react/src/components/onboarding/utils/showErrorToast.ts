@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 
 /**
  * Shows an error toast message.

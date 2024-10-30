@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
@@ -8,6 +7,7 @@ import {
 } from '@/core/queries/useOnboarding';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button } from '@mui/material';
 

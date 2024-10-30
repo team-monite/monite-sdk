@@ -1,9 +1,9 @@
-import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserById, usePaymentIntentById } from '@/core/queries';
 import { useDateTimeFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { Box, Alert, Skeleton, Typography } from '@mui/material';
 

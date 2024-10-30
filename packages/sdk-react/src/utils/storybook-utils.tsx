@@ -1,6 +1,5 @@
 import { ReactNode, useMemo } from 'react';
 
-import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
@@ -9,6 +8,7 @@ import { css, Global } from '@emotion/react';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
+import { apiVersion } from '@monite/sdk-api/src/api/api-version';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';

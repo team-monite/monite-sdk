@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import type { OnboardingTestData } from '@/components/onboarding/types';
+import { components } from '@monite/sdk-api/src/api';
 
 function getBankAccount(): Omit<
   CreateEntityBankAccountRequest,

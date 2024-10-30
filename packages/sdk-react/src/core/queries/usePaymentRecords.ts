@@ -1,10 +1,10 @@
 import { toast } from 'react-hot-toast';
 
-import type { Services } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import type { Services } from '@monite/sdk-api/src/api';
 
 export const usePaymentRecords = (
   query: Services['paymentRecords']['getPaymentRecords']['types']['parameters']['query'],

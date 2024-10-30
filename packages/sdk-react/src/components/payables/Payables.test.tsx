@@ -1,6 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { createAPIClient } from '@/api/client';
 import { Payables } from '@/components';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -14,6 +13,7 @@ import {
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
+import { createAPIClient } from '@monite/sdk-api/src/api/client';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

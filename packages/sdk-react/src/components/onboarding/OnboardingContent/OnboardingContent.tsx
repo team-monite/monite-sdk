@@ -1,9 +1,9 @@
-import { components } from '@/api';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Alert, LinearProgress } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';

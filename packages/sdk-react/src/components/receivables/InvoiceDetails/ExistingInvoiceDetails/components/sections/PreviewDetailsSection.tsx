@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { MoniteCard } from '@/ui/Card/Card';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Typography } from '@mui/material';
 
 export const PreviewDetailsSection = ({

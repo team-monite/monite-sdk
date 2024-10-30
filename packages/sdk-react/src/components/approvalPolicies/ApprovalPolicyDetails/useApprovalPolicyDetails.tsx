@@ -1,9 +1,9 @@
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 interface ApprovalPolicyDetailsProps {
   /** Callback is fired when the user clicks on `Edit` button */

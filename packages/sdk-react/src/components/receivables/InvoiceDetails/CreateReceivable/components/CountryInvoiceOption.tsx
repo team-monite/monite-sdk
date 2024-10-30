@@ -1,7 +1,7 @@
-import { components } from '@/api';
 import { css } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { useTheme } from '@mui/material/styles';
 
 interface CountryOptionProps {

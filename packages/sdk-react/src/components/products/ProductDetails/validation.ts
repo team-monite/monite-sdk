@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { getCurrencies } from '@/core/utils';
 import { currenciesToStringArray } from '@/core/utils/selectHelpers';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 
 import * as yup from 'yup';
 

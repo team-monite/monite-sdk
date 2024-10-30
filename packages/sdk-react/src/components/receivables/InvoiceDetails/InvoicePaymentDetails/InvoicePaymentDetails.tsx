@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Box,
   Card,

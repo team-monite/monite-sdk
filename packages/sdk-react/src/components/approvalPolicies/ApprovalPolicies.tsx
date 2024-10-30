@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 
-import { components } from '@/api';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
@@ -10,6 +9,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';

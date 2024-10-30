@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import type { components, Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
@@ -9,6 +8,7 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { select, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LanguageCodeEnum } from '@monite/sdk-api';
+import type { components, Services } from '@monite/sdk-api/src/api';
 
 export const useReceivables = (
   query: Services['receivables']['getReceivables']['types']['parameters']['query'],

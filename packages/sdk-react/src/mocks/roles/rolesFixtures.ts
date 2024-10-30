@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export const FULL_PERMISSION_ROLE_ID = 'full_permission_role_id';
 export const LOW_PERMISSION_ROLE_ID = 'low_permission_role_id';

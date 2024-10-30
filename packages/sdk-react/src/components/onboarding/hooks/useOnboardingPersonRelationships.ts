@@ -7,11 +7,11 @@ import {
   useState,
 } from 'react';
 
-import { components } from '@/api';
 import {
   useOnboardingPersonMask,
   useOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { components } from '@monite/sdk-api/src/api';
 
 import deepEqual from 'deep-eql';
 

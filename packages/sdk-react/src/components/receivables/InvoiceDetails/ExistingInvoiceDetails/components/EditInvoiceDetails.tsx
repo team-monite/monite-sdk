@@ -1,7 +1,6 @@
 import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
@@ -21,6 +20,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,

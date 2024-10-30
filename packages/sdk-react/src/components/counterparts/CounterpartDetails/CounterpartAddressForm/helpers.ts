@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
+import { components } from '@monite/sdk-api/src/api';
 
 export interface CounterpartAddressFormFields {
   line1: string;

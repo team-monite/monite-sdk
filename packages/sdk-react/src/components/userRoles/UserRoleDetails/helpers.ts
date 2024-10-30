@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import {
   COMMON_PERMISSIONS_OBJECTS_TYPES,
   commonPermissionsObjectType,
@@ -7,6 +6,7 @@ import {
 } from '@/core/queries/usePermissions';
 import { ActionEnum } from '@/enums/ActionEnum';
 import { PayableActionEnum } from '@/enums/PayableActionEnum';
+import { components } from '@monite/sdk-api/src/api';
 
 import {
   PermissionRow,

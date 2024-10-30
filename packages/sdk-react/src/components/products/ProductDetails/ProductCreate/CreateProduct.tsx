@@ -1,7 +1,6 @@
 import { useId, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -9,6 +8,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,

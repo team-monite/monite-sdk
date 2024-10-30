@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartContactById,
@@ -10,6 +9,7 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import {
   CounterpartContactFields,

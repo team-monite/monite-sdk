@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLatest } from 'react-use';
 
-import { components } from '@/api';
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+import { components } from '@monite/sdk-api/src/api';
 
 type CounterpartId = string;
 type BankAccountId = string;

@@ -1,7 +1,7 @@
-import { components } from '@/api';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Button } from '@mui/material';
 
 interface PayablesTableActionProps {

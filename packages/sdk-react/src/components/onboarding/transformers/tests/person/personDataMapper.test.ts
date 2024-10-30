@@ -1,4 +1,4 @@
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 import { waitFor } from '@testing-library/react';
 
 import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';

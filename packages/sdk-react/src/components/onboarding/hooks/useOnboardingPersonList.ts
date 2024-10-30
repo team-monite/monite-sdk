@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { components } from '@/api';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { components } from '@monite/sdk-api/src/api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import {

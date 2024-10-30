@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { ProductFormValues } from '@/components/products/ProductDetails/validation';
+import { components } from '@monite/sdk-api/src/api';
 
 import { ExistingProductDetails } from './ExistingProductDetails';
 import { CreateProduct } from './ProductCreate';

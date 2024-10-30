@@ -1,4 +1,3 @@
-import type { components } from '@/api';
 import { ProductServiceTypeEnum } from '@/enums/ProductServiceTypeEnum';
 import { entityIds } from '@/mocks/entities';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
@@ -7,6 +6,7 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import type { components } from '@monite/sdk-api/src/api';
 
 import { measureUnitsListFixture } from '../measureUnits/measureUnitsFixture';
 

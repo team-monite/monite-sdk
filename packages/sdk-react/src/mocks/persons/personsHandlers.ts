@@ -1,9 +1,9 @@
-import { components, paths } from '@/api';
 import { generateValuesByFields } from '@/components/onboarding/transformers';
 import {
   mapPersonToOnboarding,
   personsList as personsListFixture,
 } from '@/mocks/onboarding';
+import { components, paths } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   FormControl,
   FormControlLabel,

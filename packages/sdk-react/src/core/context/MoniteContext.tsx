@@ -6,7 +6,6 @@ import {
   useMemo,
 } from 'react';
 
-import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
@@ -18,6 +17,10 @@ import {
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
+import {
+  createAPIClient,
+  CreateMoniteAPIClientResult,
+} from '@monite/sdk-api/src/api/client';
 import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';

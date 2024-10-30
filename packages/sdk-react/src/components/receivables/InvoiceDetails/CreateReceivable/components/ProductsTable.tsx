@@ -9,7 +9,6 @@ import {
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import { Dialog } from '@/components/Dialog';
 import { ProductDetails } from '@/components/products';
@@ -35,6 +34,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import AddIcon from '@mui/icons-material/Add';
 import FileIcon from '@mui/icons-material/InsertDriveFile';
 import {

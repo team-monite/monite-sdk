@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { Dialog } from '@/components';
 import { InvoiceDetailsPermissions } from '@/core/queries/useReceivables';
 import { receivableListFixture } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { components } from '@monite/sdk-api/src/api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { InvoiceDetails } from './InvoiceDetails';

@@ -1,5 +1,5 @@
-import { components } from '@/api';
-import { API } from '@/api/client';
+import { components } from '@monite/sdk-api/src/api';
+import { API } from '@monite/sdk-api/src/api/client';
 
 import {
   FILTER_TYPE_CREATED_AT,

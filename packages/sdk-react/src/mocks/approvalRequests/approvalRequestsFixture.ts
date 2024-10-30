@@ -1,10 +1,10 @@
-import type { components, Services } from '@/api';
 import {
   entityUserByIdFixture,
   entityUsers,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import type { components, Services } from '@monite/sdk-api/src/api';
 
 export const approvalRequestsListFixture: Services['approvalRequests']['getApprovalRequests']['types']['data']['data'] =
   new Array(130).fill('_').map((_) => ({

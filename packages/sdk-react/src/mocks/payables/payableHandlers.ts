@@ -1,4 +1,3 @@
-import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import {
@@ -9,6 +8,7 @@ import {
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { components, paths } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

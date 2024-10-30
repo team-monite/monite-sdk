@@ -1,4 +1,4 @@
-import { paths } from '@/api';
+import { paths } from '@monite/sdk-api/src/api';
 
 import { delay, http, HttpResponse } from 'msw';
 

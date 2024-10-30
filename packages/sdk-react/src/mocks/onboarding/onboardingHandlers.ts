@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import {
   enrichFieldsByValues,
   generateOptionalFields,
@@ -7,6 +6,7 @@ import {
 import { personMask } from '@/components/onboarding/transformers/tests/person';
 import { onboardingBankAccountFixture } from '@/mocks/onboarding/onboardingBankAccountFixtures';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

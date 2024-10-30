@@ -1,6 +1,6 @@
-import { paths } from '@/api';
 import { entityIds } from '@/mocks/entities';
 import { faker } from '@faker-js/faker';
+import { paths } from '@monite/sdk-api/src/api';
 
 export const createPaymentReminderListItemFixture = (
   reminder?: paths['/payment_reminders']['post']['requestBody']['content']['application/json']

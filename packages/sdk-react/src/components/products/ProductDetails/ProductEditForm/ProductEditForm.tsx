@@ -1,7 +1,6 @@
 import { useId } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -11,6 +10,7 @@ import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import {

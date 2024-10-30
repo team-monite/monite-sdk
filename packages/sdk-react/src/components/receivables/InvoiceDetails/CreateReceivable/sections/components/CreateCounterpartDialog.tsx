@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
 import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Box,
   Button,

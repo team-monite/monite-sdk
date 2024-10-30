@@ -1,6 +1,6 @@
-import { apiVersion } from '@/api/api-version';
 import { packageVersion } from '@/packageVersion';
 import type { MoniteSDK } from '@monite/sdk-api';
+import { apiVersion } from '@monite/sdk-api/src/api/api-version';
 import {
   Hub,
   BrowserClient,

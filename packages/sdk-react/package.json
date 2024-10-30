@@ -24,10 +24,7 @@
     "compile-translations": "lingui compile",
     "write-package-version-file": "yarn exec ../../write-package-version-file.sh",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook_static",
-    "download-openapi-document": "yarn exec ./download-openapi-document.sh",
-    "codegen": "yarn codegen:api-version && yarn exec ./generate-api-client.sh",
-    "codegen:api-version": "echo \"// This file was generated automatically \n export const apiVersion = '$(node -p 'require(\"@monite/sdk-react/package.json\").apiVersion')';\" > src/api/api-version.ts"
+    "build-storybook": "storybook build -o storybook_static"
   },
   "author": "",
   "license": "MIT",

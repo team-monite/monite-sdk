@@ -1,6 +1,5 @@
 import { ComponentProps } from 'react';
 
-import { components } from '@/api';
 import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts';
@@ -10,6 +9,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Box,
   Card,

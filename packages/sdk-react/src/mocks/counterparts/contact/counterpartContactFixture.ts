@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { counterpartListFixture } from '@/mocks';
@@ -7,6 +6,7 @@ import {
   getRandomNumber,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 const genCounterpartContactFixture = (
   id: number = 0,

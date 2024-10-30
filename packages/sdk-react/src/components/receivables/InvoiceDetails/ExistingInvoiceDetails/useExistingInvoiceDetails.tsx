@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
@@ -9,6 +8,7 @@ import {
   useIssueReceivableById,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
+import { components } from '@monite/sdk-api/src/api';
 
 export enum DeliveryMethod {
   Email = 'email',

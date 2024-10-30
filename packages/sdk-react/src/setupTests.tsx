@@ -4,7 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import { ReactNode } from 'react';
 
-import type { createAPIClient } from '@/api/client';
+import type { createAPIClient } from '@monite/sdk-api/src/api/client';
 import type { DataGridProps } from '@mui/x-data-grid';
 import { mergeHeaders, requestFn } from '@openapi-qraft/react';
 import '@testing-library/jest-dom';
@@ -64,8 +64,8 @@ jest.mock('@openapi-qraft/react', () => {
   };
 });
 
-jest.mock('@/api/client', () => {
-  const originalModule = jest.requireActual('@/api/client');
+jest.mock('@monite/sdk-api/src/api/client', () => {
+  const originalModule = jest.requireActual('@monite/sdk-api/src/api/client');
 
   const createAPIClientMocked: typeof createAPIClient = (options) => {
     const apiClient = originalModule.createAPIClient(options);

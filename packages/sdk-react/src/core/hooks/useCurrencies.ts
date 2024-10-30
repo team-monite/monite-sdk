@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 

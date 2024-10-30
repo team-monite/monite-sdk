@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
 import { counterpartListFixture } from '@/mocks';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { InvoiceRecurrenceIterationStatusChip } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip';
 import { MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
@@ -8,6 +7,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useReceivableById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Skeleton,
   Table,

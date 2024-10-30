@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { components } from '@/api';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import { Stack } from '@mui/material';

@@ -1,11 +1,11 @@
 import { FormProvider } from 'react-hook-form';
 
-import { components } from '@/api';
 import { useOnboardingEntity } from '@/components/onboarding/hooks/useOnboardingEntity';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { useOnboardingForm } from '../hooks';
 import { OnboardingAddress } from '../OnboardingAddress';

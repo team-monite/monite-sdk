@@ -1,7 +1,7 @@
-import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Grid, Link } from '@mui/material';
 
 import { Permission } from './Permission';

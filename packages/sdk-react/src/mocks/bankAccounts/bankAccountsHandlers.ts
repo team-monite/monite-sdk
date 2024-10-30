@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

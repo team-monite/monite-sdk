@@ -1,6 +1,6 @@
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 
 import { OnboardingFileUploader } from './OnboardingFileUploader';
 import { OnboardingFileViewer } from './OnboardingFileViever';

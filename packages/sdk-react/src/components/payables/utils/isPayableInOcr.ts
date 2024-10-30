@@ -1,4 +1,4 @@
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 
 /** Returns true if the payable is in OCR processing.
  *

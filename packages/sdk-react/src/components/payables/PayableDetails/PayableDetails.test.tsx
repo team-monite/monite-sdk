@@ -1,5 +1,3 @@
-import { components } from '@/api';
-import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
 import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
@@ -14,6 +12,8 @@ import {
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK, PayableStateEnum } from '@monite/sdk-api';
+import { components } from '@monite/sdk-api/src/api';
+import { createAPIClient } from '@monite/sdk-api/src/api/client';
 import { QueryClient } from '@tanstack/react-query';
 import {
   fireEvent,

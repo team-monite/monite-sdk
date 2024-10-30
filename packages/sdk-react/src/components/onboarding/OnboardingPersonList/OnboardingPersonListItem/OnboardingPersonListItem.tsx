@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Typography, styled } from '@mui/material';
 
 export const OnboardingPersonListItem = ({

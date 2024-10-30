@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { I18n } from '@lingui/core';
+import { components } from '@monite/sdk-api/src/api';
 
 import type { AnyObjectSchema } from 'yup';
 import { object } from 'yup';

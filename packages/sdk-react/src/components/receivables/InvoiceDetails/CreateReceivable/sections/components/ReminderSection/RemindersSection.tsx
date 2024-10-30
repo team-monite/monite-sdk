@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
@@ -10,6 +9,7 @@ import { useCounterpartById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,

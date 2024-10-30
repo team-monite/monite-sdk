@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { getRandomNumber } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export function generatePaymentTerm(index?: number): PaymentTermsResponse {
   const days = faker.number.int({ min: 2, max: 100 });

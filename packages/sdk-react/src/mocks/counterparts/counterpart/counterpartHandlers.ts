@@ -1,9 +1,9 @@
-import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks/entityUsers';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

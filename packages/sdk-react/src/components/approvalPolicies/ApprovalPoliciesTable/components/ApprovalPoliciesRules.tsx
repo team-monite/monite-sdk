@@ -1,8 +1,8 @@
-import type { components } from '@/api';
 import {
   useApprovalPolicyScript,
   Rules,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
+import type { components } from '@monite/sdk-api/src/api';
 
 import { UListUiAlt } from '../components/icons/UListUiAlt';
 import { UUserCircle } from '../components/icons/UUserCircle';

@@ -1,7 +1,7 @@
-import { components } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 
 import * as yup from 'yup';
 

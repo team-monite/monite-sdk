@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   counterpartBankFixture,
@@ -14,6 +13,7 @@ import {
   triggerClickOnSelectOption,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 

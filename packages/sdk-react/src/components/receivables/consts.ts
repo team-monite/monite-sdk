@@ -1,4 +1,4 @@
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';

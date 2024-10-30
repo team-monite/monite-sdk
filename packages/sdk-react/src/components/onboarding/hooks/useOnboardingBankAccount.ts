@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingBankAccountMask,
@@ -11,6 +10,7 @@ import {
 } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { enrichFieldsByValues, generateFieldsByMask } from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';

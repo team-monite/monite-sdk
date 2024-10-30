@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export const entityIds = ['be035ef1-dd47-4f47-a6ad-eef2e7f2e608'] as const;
 

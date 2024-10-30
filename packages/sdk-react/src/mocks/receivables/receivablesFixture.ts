@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { CreditNoteStateEnum } from '@/enums/CreditNoteStateEnum';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
@@ -24,6 +23,7 @@ import {
   getRandomNumber,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export type ReceivablesListFixture = {
   quote: Array<components['schemas']['QuoteResponsePayload']>;

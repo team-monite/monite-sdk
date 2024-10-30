@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCreatePaymentRecord } from '@/core/queries/usePaymentRecords';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 import {
   Box,
   Button,

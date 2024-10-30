@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { plural, t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 
 type ReminderCardTerm = {
   termPeriodName: ReactNode;

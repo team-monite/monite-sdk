@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import { components } from '@/api';
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import type { GridActionsColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 

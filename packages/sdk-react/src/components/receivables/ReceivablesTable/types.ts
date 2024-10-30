@@ -1,4 +1,4 @@
-import { components, Services } from '@/api';
+import { components, Services } from '@monite/sdk-api/src/api';
 
 export type ReceivableFilterType = Pick<
   NonNullable<

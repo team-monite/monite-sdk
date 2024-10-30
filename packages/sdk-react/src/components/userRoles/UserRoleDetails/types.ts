@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import {
   commonPermissionsObjectType,
   payablePermissionsObjectType,
 } from '@/core/queries/usePermissions';
+import { components } from '@monite/sdk-api/src/api';
 
 export type CommonActions = {
   [key in components['schemas']['ActionEnum']]?: boolean;

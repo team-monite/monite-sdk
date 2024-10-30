@@ -1,10 +1,10 @@
-import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { useDateTimeFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Alert, Box, Skeleton, Typography } from '@mui/material';
 

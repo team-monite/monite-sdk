@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
@@ -7,6 +6,7 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export const bankAccountsFixture: EntityBankAccountPaginationResponse = {
   prev_pagination_token: undefined,

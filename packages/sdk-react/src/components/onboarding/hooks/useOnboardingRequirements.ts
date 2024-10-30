@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { components } from '@/api';
 import { useMyEntity } from '@/core/queries';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { OnboardingRequirement } from '@/enums/OnboardingRequirement';
+import { components } from '@monite/sdk-api/src/api';
 
 import { getEntityName } from '../helpers';
 import { OnboardingPersonId } from '../types';

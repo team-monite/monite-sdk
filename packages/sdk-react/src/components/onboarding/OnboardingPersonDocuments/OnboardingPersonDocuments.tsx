@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
@@ -9,6 +8,7 @@ import {
 import { useDocumentDescriptions } from '@/core/queries/useOnboardingDocuments';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import { useOnboardingForm } from '../hooks';

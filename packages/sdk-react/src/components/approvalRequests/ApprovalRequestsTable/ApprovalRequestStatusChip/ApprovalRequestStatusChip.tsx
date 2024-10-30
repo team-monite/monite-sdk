@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 

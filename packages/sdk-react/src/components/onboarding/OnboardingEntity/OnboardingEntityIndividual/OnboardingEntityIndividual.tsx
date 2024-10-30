@@ -1,10 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 type IndividualType = { individual: OptionalIndividualSchema };
 

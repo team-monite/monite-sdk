@@ -1,6 +1,6 @@
-import type { components } from '@/api';
 import { receivableListFixture } from '@/mocks';
 import { faker } from '@faker-js/faker';
+import type { components } from '@monite/sdk-api/src/api';
 
 export const recurrenceFixture = (
   payload?:

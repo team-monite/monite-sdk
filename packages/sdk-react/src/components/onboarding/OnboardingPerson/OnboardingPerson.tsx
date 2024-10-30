@@ -1,6 +1,5 @@
 import { FormProvider } from 'react-hook-form';
 
-import { components } from '@/api';
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -8,6 +7,7 @@ import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { FormGroup, FormHelperText } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';

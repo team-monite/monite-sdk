@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
 
-import { createAPIClient } from '@/api/client';
 import {
   MoniteAPIProvider,
   MoniteQraftContext,
@@ -15,6 +14,7 @@ import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import { MoniteSDK } from '@monite/sdk-api';
+import { createAPIClient } from '@monite/sdk-api/src/api/client';
 import {
   BrowserClient,
   defaultStackParser,

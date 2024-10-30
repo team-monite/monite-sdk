@@ -1,9 +1,9 @@
 import { ChangeEvent, ReactNode, useCallback } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { CloudUpload } from '@mui/icons-material';
 import {
   Alert,

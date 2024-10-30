@@ -11,9 +11,9 @@ export * from './core/queries';
 export * from './utils';
 export { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 export { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
-export type * as APISchema from './api/schema';
+export type * as APISchema from '@monite/sdk-api/src/api/schema';
 export {
   createAPIClient,
   type CreateMoniteAPIClientResult,
   type CreateMoniteAPIClientOptions,
-} from '@/api/client';
+} from '@monite/sdk-api/src/api/client';

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
+import { components } from '@monite/sdk-api/src/api';
 
 export interface CounterpartAddressViewProps {
   address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];

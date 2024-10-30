@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { entityUserByIdFixture } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export const generateLineItem = (
   payableId?: string,

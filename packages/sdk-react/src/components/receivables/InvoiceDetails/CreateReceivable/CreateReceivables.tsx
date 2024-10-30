@@ -1,7 +1,6 @@
 import { useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
@@ -16,6 +15,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,

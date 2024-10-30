@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -14,6 +13,7 @@ import {
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
+import { components } from '@monite/sdk-api/src/api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   act,

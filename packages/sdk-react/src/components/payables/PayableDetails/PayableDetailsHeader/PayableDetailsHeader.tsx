@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
@@ -6,6 +5,7 @@ import { PayableDataTestId } from '@/components/payables/types';
 import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,

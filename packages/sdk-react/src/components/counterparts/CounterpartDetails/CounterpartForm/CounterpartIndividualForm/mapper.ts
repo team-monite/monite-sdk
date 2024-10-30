@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
+import { components } from '@monite/sdk-api/src/api';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 

@@ -1,9 +1,9 @@
-import { components } from '@/api';
 import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { createDayPluralForm } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Typography } from '@mui/material';
 
 interface DueDateCellProps {

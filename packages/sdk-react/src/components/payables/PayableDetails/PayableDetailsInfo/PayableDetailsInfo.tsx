@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getCounterpartName,
@@ -28,6 +27,7 @@ import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
 import {
   Box,

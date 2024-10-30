@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import {
   individualId,
   organizationId,
@@ -16,6 +15,7 @@ import {
   READ_ONLY_ROLE_ID,
 } from '@/mocks/roles/rolesFixtures';
 import { tagListFixture } from '@/mocks/tags';
+import { components } from '@monite/sdk-api/src/api';
 
 export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyResourceList'] =
   {

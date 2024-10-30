@@ -1,8 +1,8 @@
-import type { components } from '@/api';
 import {
   useApprovalPolicyTrigger,
   Triggers,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import type { components } from '@monite/sdk-api/src/api';
 
 import * as Styled from '../styles';
 import { UBuilding } from './icons/UBuilding';

@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 
-import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
@@ -20,6 +19,7 @@ import {
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box } from '@mui/material';
 import {
   DataGrid,

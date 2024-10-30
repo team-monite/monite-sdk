@@ -1,4 +1,4 @@
-import { type Services } from '@/api';
+import { type Services } from '@monite/sdk-api/src/api';
 
 export type ReadableReceivablesStatus = NonNullable<
   NonNullable<

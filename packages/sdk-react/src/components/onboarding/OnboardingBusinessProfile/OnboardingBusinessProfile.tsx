@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
@@ -8,6 +7,7 @@ import {
 } from '@/core/queries/useOnboarding';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { getMccCodes } from '../dicts/mccCodes';
 import { useOnboardingForm } from '../hooks';

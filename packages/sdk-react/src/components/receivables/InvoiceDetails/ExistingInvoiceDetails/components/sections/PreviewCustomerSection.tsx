@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Skeleton, Typography } from '@mui/material';
 
 const getAddress = (address?: components['schemas']['CounterpartAddress']) => {

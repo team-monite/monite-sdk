@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { CounterpartContactView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
@@ -20,6 +19,7 @@ import {
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
+import { components } from '@monite/sdk-api/src/api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 

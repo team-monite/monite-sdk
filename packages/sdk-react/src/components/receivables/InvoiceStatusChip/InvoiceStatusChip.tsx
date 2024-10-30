@@ -1,12 +1,12 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   INVOICE_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_TAG_STATUS_MUI_MAP,
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 

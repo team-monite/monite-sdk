@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -14,6 +13,7 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { MoniteSDK } from '@monite/sdk-api';
+import { components } from '@monite/sdk-api/src/api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { PayablesTable } from './PayablesTable';

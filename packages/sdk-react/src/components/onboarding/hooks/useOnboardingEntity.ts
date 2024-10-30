@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { components } from '@monite/sdk-api/src/api';
 
 import { companyRoleToRequirement } from '../helpers';
 import { generateValuesByFields, prepareValuesToSubmit } from '../transformers';

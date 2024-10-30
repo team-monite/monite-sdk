@@ -1,10 +1,10 @@
-import { components } from '@/api';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   generateRandomDate,
   generateRandomId,
   getRandomProperty,
 } from '@/utils/storybook-utils';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

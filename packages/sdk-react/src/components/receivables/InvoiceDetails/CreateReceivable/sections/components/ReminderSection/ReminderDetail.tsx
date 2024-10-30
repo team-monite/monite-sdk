@@ -1,9 +1,9 @@
-import { components } from '@/api';
 import {
   createOverdueReminderCardTerms,
   createPaymentReminderCardTerms,
 } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { CalendarToday, NotificationsActive } from '@mui/icons-material';
 import { Box, Grid, Typography } from '@mui/material';
 

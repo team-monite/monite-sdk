@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';

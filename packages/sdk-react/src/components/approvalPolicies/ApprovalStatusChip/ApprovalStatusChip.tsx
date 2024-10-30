@@ -1,12 +1,12 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   APPROVAL_STATUS_TO_MUI_ICON_MAP,
   getRowToStatusTextMap,
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/approvalPolicies/consts';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 

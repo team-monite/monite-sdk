@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
 interface AutocompleteCreatedByProps {

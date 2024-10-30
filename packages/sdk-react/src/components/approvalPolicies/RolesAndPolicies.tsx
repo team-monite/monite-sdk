@@ -1,6 +1,5 @@
 import { useCallback, useId, useState } from 'react';
 
-import { components } from '@/api';
 import {
   ApprovalPolicyDetails,
   UserRoleDetails,
@@ -17,6 +16,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Box, Button, CircularProgress, Tab, Tabs } from '@mui/material';
 
 /**

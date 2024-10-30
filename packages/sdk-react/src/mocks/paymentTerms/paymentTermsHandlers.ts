@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms/paymentTermsFixtures';
+import { components } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse } from 'msw';
 

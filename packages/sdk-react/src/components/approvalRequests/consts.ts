@@ -1,5 +1,5 @@
-import { components } from '@/api';
 import { ExtendedPayableStateEnum } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
+import { components } from '@monite/sdk-api/src/api';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';

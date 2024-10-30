@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { components } from '@/api';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { components } from '@monite/sdk-api/src/api';
 
 import { generateFieldsByValues } from '../transformers';
 import { type OnboardingAgreementsSchema } from '../validators';

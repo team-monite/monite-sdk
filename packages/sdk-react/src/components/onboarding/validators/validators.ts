@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 
 import { differenceInCalendarYears, isValid } from 'date-fns';
 import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';

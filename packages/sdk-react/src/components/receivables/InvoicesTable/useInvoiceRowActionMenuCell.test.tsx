@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { receivableListFixture } from '@/mocks/receivables';
 import { createRenderWithClient } from '@/utils/test-utils';
+import { components } from '@monite/sdk-api/src/api';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import {

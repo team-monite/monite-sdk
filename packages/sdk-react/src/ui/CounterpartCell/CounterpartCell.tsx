@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartAddresses, useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import { Avatar, Skeleton, Stack, Typography } from '@mui/material';
 
 interface CounterpartCellProps {

@@ -1,6 +1,5 @@
 import { FieldValue, FieldValues } from 'react-hook-form';
 
-import { components } from '@/api';
 import {
   getIndividualName,
   isIndividualCounterpart,
@@ -12,6 +11,7 @@ import {
   OptionalFields,
 } from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
+import { components } from '@monite/sdk-api/src/api';
 import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';

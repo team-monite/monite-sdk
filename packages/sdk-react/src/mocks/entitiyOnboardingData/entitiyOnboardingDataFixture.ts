@@ -1,6 +1,6 @@
-import { components } from '@/api';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
+import { components } from '@monite/sdk-api/src/api';
 
 export function getEntityOnboardingDataFixture(
   payload?: EntityOnboardingDataResponse

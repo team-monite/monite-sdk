@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { components } from '@/api';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
@@ -13,6 +12,7 @@ import {
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 
 import { getCounterpartName } from '../../helpers';
 

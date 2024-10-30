@@ -7,8 +7,8 @@ import {
   DefaultValues,
 } from 'react-hook-form';
 
-import { components } from '@/api';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { components } from '@monite/sdk-api/src/api';
 
 import deepEqual from 'deep-eql';
 

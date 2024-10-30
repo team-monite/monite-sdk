@@ -1,8 +1,8 @@
-import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import { getCurrencies } from '@/core/utils/currencies';
 import { type I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { components } from '@monite/sdk-api/src/api';
 
 export const getBankAccountName = (
   i18n: I18n,

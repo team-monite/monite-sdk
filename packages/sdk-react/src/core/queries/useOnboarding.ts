@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 

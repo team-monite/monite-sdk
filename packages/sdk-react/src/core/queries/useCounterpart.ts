@@ -1,6 +1,5 @@
 import { toast } from 'react-hot-toast';
 
-import { components, Services } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
@@ -9,6 +8,7 @@ import {
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components, Services } from '@monite/sdk-api/src/api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 

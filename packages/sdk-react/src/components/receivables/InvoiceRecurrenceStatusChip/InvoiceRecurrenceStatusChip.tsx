@@ -1,9 +1,9 @@
 import { ElementType, forwardRef } from 'react';
 
-import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { components } from '@monite/sdk-api/src/api';
 import {
   CancelOutlined,
   CheckCircleOutline,

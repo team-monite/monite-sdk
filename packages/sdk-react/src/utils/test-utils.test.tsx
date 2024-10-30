@@ -1,5 +1,5 @@
-import { createAPIClient } from '@/api/client';
 import { checkPermissionQueriesLoaded } from '@/utils/test-utils';
+import { createAPIClient } from '@monite/sdk-api/src/api/client';
 import { QueryClient } from '@tanstack/react-query';
 
 const { api } = createAPIClient();

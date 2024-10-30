@@ -1,5 +1,5 @@
-import { components, paths } from '@/api';
 import { entityUser2 } from '@/mocks/entityUsers/entityUserByIdFixture';
+import { components, paths } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 

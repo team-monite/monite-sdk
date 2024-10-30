@@ -1,4 +1,4 @@
-import { components } from '@/api';
+import { components } from '@monite/sdk-api/src/api';
 
 const countries: Record<
   components['schemas']['AllowedCountries'],

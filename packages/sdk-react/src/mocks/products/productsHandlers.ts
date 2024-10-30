@@ -1,10 +1,10 @@
-import type { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
 import { filterByPageAndLimit } from '@/mocks/utils';
+import type { components, paths } from '@monite/sdk-api/src/api';
 
 import { http, HttpResponse, delay } from 'msw';
 import * as yup from 'yup';
