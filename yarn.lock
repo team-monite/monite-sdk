@@ -4979,6 +4979,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@monite/sdk-api@workspace:packages/sdk-api"
   dependencies:
+    "@openapi-qraft/cli": "npm:1.14.0"
     "@openapi-qraft/react": "npm:~1.14.2"
     "@swc/jest": "npm:~0.2.26"
     "@team-monite/eslint-plugin": "workspace:~"

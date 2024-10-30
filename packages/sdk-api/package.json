@@ -33,6 +33,7 @@
     "@openapi-qraft/react": "~1.14.2"
   },
   "devDependencies": {
+    "@openapi-qraft/cli": "1.14.0",
     "@openapi-qraft/react": "~1.14.2",
     "@swc/jest": "~0.2.26",
     "@team-monite/eslint-plugin": "workspace:~",
