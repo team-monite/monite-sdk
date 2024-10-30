@@ -22,7 +22,10 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --max-warnings 0",
     "write-package-version-file": "yarn exec ../../write-package-version-file.sh",
-    "gen:openapi": "yarn exec ./genOpenApi.sh"
+    "gen:openapi": "yarn exec ./genOpenApi.sh",
+    "download-openapi-document": "yarn exec ./download-openapi-document.sh",
+    "codegen": "yarn codegen:api-version && yarn exec ./generate-api-client.sh",
+    "codegen:api-version": "echo \"// This file was generated automatically \n export const apiVersion = '$(node -p 'require(\"@monite/sdk-react/package.json\").apiVersion')';\" > src/api/api-version.ts"
   },
   "author": "",
   "license": "MIT",
