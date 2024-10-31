@@ -52,35 +52,15 @@ export const NavigationList = () => {
         <NavigationListItem href="/products" icon={<IconBox />}>
           {t(i18n)`Products & Services`}
         </NavigationListItem>
-        <NavigationListCollapse icon={<IconCog />} label="Settings">
-          <NavigationListItem icon={<IconUserCircle />}>
-            {t(i18n)`My Profile`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconUsersAlt />}>
-            {t(i18n)`Team`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconBuilding />}>
-            {t(i18n)`Company`}
-          </NavigationListItem>
-          <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
-            {t(i18n)`Roles & Approvals`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconSync />}>
-            {t(i18n)`Integrations`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconFileHeart />}>
-            {t(i18n)`Invoice Design`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconFilesLandscapes />}>
-            {t(i18n)`Message Templates`}
-          </NavigationListItem>
-          <NavigationListItem icon={<IconEnvelopeHeart />}>
-            {t(i18n)`Email Templates`}
-          </NavigationListItem>
-          <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
-            {t(i18n)`Tags`}
-          </NavigationListItem>
-        </NavigationListCollapse>
+        <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
+          {t(i18n)`Tags`}
+        </NavigationListItem>
+        <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
+          {t(i18n)`Roles & Approvals`}
+        </NavigationListItem>
+        <NavigationListItem icon={<IconFilesLandscapes />}>
+          {t(i18n)`Settings`}
+        </NavigationListItem>
       </List>
       <Box
         display="flex"
