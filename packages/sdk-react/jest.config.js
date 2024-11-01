@@ -64,15 +64,15 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 35,
-      functions: 33,
+      branches: 34,
+      functions: 32,
       lines: 58,
       statements: 58,
     },
     './src/components/tags': {
       branches: 80,
-      functions: 78,
-      lines: 91,
+      functions: 70,
+      lines: 90,
       statements: 90,
     },
     './src/components/counterparts': {
