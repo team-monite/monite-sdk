@@ -10,7 +10,6 @@ import { Box, Button, Skeleton, Typography } from '@mui/material';
 
 import { EmptyPaymentRecord, PaymentRecordRow } from './PaymentRecordRow';
 import { RecordManualPaymentModal } from './RecordManualPaymentModal';
-import { UpdatePDFSection } from './UpdatePDF/UpdatePDFSection';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -97,9 +96,6 @@ export const PaymentTabPanel = ({ invoice }: Props) => {
           </Box>
         </Box>
       )}
-      <Box marginTop={4}>
-        <UpdatePDFSection invoice={invoice} />
-      </Box>
     </>
   );
 };
