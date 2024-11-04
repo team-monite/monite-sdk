@@ -8,7 +8,7 @@ import {
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
-import { Theme, ThemeOptions } from '@mui/material';
+import { ThemeConfig } from '@/core/theme/types';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
@@ -26,12 +26,8 @@ export interface MoniteProviderProps {
   /**
    * `theme` responsible for global styling of all Widgets provided.
    * If `theme` is not provided, `Monite` uses default theme.
-   *
-   * `Monite` uses `Material UI` for styling. If you want to know
-   *  more how to customize theme, please visit:
-   * @see {@link https://mui.com/customization/default-theme/ Default theme}
    */
-  theme?: ThemeOptions | Theme;
+  theme?: ThemeConfig;
 
   /** Monite initial settings  */
   monite: MoniteSettings;

@@ -1,12 +1,9 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import {
-  createTheme,
-  type Theme,
-  type ThemeOptions,
-  type Components,
-} from '@mui/material';
+import { getTheme } from '@/core/theme/monite';
+import { ThemeConfig } from '@/core/theme/types';
+import { createTheme, type Theme, type Components } from '@mui/material';
 
 import { FINANCING_LABEL } from '../queries/useFinancing';
 
@@ -15,9 +12,12 @@ import { FINANCING_LABEL } from '../queries/useFinancing';
  */
 export const createThemeWithDefaults = (
   i18n: I18n,
-  theme: Theme | ThemeOptions | undefined
-) =>
-  createTheme(
+  theme: ThemeConfig | undefined
+) => {
+  const themeOptions = getTheme(theme || {});
+
+  return createTheme(
+    themeOptions,
     {
       components: {
         MoniteReceivablesTable: {
@@ -25,11 +25,11 @@ export const createThemeWithDefaults = (
             tabs: [
               {
                 label: t(i18n)`Invoices`,
-                query: { type: 'invoice' },
+                query: { type: "invoice" }
               },
               {
                 label: t(i18n)`Quotes`,
-                query: { type: 'quote' },
+                query: { type: "quote" }
               },
               {
                 label: t(i18n)`Credit notes`,
@@ -48,36 +48,37 @@ export const createThemeWithDefaults = (
       components: {
         ...createComponentsThemeDefaultProps(
           [
-            'MuiMenu',
-            'MuiModal',
-            'MuiPopper',
-            'MuiDialogTitle',
-            'MuiDialogContent',
-            'MuiDialogActions',
-            'MuiDivider',
+            "MuiMenu",
+            "MuiModal",
+            "MuiPopper",
+            "MuiDialogTitle",
+            "MuiDialogContent",
+            "MuiDialogActions",
+            "MuiDivider"
           ],
           {
             classes: {
-              root: ScopedCssBaselineContainerClassName,
-            },
+              root: ScopedCssBaselineContainerClassName
+            }
           }
         ),
-        ...createComponentsThemeDefaultProps(['MuiGrid', 'MuiDialog'], {
-          classes: { container: ScopedCssBaselineContainerClassName },
+        ...createComponentsThemeDefaultProps(["MuiGrid", "MuiDialog"], {
+          classes: { container: ScopedCssBaselineContainerClassName }
         }),
         MuiStack: {
           defaultProps: {
-            className: ScopedCssBaselineContainerClassName,
-          },
+            className: ScopedCssBaselineContainerClassName
+          }
         },
         MuiAutocomplete: {
           defaultProps: {
-            classes: { popper: ScopedCssBaselineContainerClassName },
-          },
-        },
-      },
+            classes: { popper: ScopedCssBaselineContainerClassName }
+          }
+        }
+      }
     } satisfies ThemeOptions
   );
+};
 
 /**
  * Create a `defaultProps` for the given MUI component list
