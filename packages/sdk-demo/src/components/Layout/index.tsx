@@ -1,10 +1,8 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
 import { useSDKDemoAPI } from '@/context/SDKDemoAPIProvider';
-import { ThemeConfig } from '@/types';
 import {
   Avatar,
   Box,
@@ -17,16 +15,9 @@ import {
 type DefaultLayoutProps = {
   children?: ReactNode;
   siderProps?: { footer?: ReactNode };
-  themeConfig: ThemeConfig;
-  setThemeConfig: (themeConfig: ThemeConfig) => void;
 };
 
-export const DefaultLayout = ({
-  children,
-  siderProps,
-  themeConfig,
-  setThemeConfig,
-}: DefaultLayoutProps) => {
+export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
   const location = useLocation();
   const { api } = useSDKDemoAPI();
   const { data: user, isLoading: isUserLoading } =
@@ -85,7 +76,6 @@ export const DefaultLayout = ({
           </Box>
           <Box>
             <Stack direction="column" spacing={2} mx={2} mb={2}>
-              <ThemeSelect value={themeConfig} onChange={setThemeConfig} />
               {siderProps?.footer}
             </Stack>
           </Box>
