@@ -6,15 +6,13 @@ import { ConfigLoader } from '@/lib/ConfigLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { type APISchema } from '@monite/sdk-react';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   DefaultLayout,
   EntityIdLoader,
-  getThemeOptions,
   SDKDemoAPIProvider,
   SDKDemoI18nProvider,
-  useThemeConfig,
 } from '@team-monite/sdk-demo';
 
 export const MoniteIframeAppDemo = () => {
@@ -56,18 +54,14 @@ const MoniteIframeAppConsumerComponent = ({
   appHostname: string;
   fetchToken: FetchTokenHandler;
 }) => {
-  const { themeConfig, setThemeConfig } = useThemeConfig();
-
   const localeCode = 'en-US';
+
   return (
-    <ThemeProvider theme={createTheme(getThemeOptions(themeConfig))}>
+    <>
       <CssBaseline enableColorScheme />
       <SDKDemoI18nProvider localeCode={localeCode}>
         <BrowserRouter basename={location.pathname.split('/')[1]}>
-          <DefaultLayout
-            themeConfig={themeConfig}
-            setThemeConfig={setThemeConfig}
-          >
+          <DefaultLayout>
             <Routes>
               <Route
                 path="/"
@@ -77,7 +71,6 @@ const MoniteIframeAppConsumerComponent = ({
                     appHostname={appHostname}
                     fetchToken={fetchToken}
                     localeCode={localeCode}
-                    themeConfig={themeConfig}
                   />
                 }
               />
@@ -89,7 +82,6 @@ const MoniteIframeAppConsumerComponent = ({
                     appHostname={appHostname}
                     fetchToken={fetchToken}
                     localeCode={localeCode}
-                    themeConfig={themeConfig}
                   />
                 }
               />
@@ -101,7 +93,6 @@ const MoniteIframeAppConsumerComponent = ({
                     appHostname={appHostname}
                     fetchToken={fetchToken}
                     localeCode={localeCode}
-                    themeConfig={themeConfig}
                   />
                 }
               />
@@ -109,7 +100,7 @@ const MoniteIframeAppConsumerComponent = ({
           </DefaultLayout>
         </BrowserRouter>
       </SDKDemoI18nProvider>
-    </ThemeProvider>
+    </>
   );
 };
 
@@ -118,13 +109,11 @@ const MoniteIframe = ({
   appBasename,
   localeCode,
   fetchToken,
-  themeConfig,
 }: {
   appHostname: string;
   appBasename: string;
   localeCode: string;
   fetchToken: FetchTokenHandler;
-  themeConfig: ReturnType<typeof useThemeConfig>['themeConfig'];
 }) => {
   const portSegment = location.port ? `:${location.port}` : '';
   const { component = 'payables' } = useParams<'component'>();
@@ -145,14 +134,12 @@ const MoniteIframe = ({
     if (!iframeCommunicator) return;
     iframeCommunicator.mountSlot('fetch-token', fetchToken);
     iframeCommunicator.mountSlot('locale', { code: localeCode });
-    iframeCommunicator.mountSlot('theme', getThemeOptions(themeConfig));
 
     return () => {
       iframeCommunicator.unmountSlot('fetch-token');
       iframeCommunicator.unmountSlot('locale');
-      iframeCommunicator.unmountSlot('theme');
     };
-  }, [iframeCommunicator, fetchToken, iframeElement, localeCode, themeConfig]);
+  }, [iframeCommunicator, fetchToken, iframeElement, localeCode]);
 
   useEffect(() => {
     if (!iframeCommunicator) return;
