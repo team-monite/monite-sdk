@@ -5,8 +5,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCreatePaymentRecord } from '@/core/queries/usePaymentRecords';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   Box,
   Button,
@@ -42,6 +42,8 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const [formValues, setFormValues] = useState<PaymentRecordDetails>(
     DEFAULT_PAYMENT_RECORD
   );
+
+  const { i18n } = useLingui();
   const { root } = useRootElements();
 
   const openModal = () => setModalOpen(true);
@@ -113,7 +115,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
         onClose={closeModal}
         container={root}
         aria-labelledby="dialog-title"
-        fullWidth={true}
+        fullWidth
         maxWidth="sm"
       >
         {confirmSubmission ? (
