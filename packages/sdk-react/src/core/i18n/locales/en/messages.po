@@ -4904,15 +4904,19 @@ msgstr "Payable \"{0}\" has been submitted"
 msgid "Payable \"{0}\" has been updated"
 msgstr "Payable \"{0}\" has been updated"
 
+#: src/components/payables/Payables.tsx:97
+msgid "Payable {0} uploaded successfully"
+msgstr "Payable {0} uploaded successfully"
+
 #: src/components/payables/PayableDetails/PayableDetails.tsx:120
 msgid "Payable not found"
 msgstr "Payable not found"
 
 #: src/components/payables/Payables.tsx:93
-msgid "Payable uploaded successfully"
-msgstr "Payable uploaded successfully"
+#~ msgid "Payable uploaded successfully"
+#~ msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:125
+#: src/components/payables/Payables.tsx:130
 msgid "Payables"
 msgstr "Payables"
 
@@ -6843,8 +6847,12 @@ msgid "Unspecified"
 msgstr "Unspecified"
 
 #: src/components/payables/Payables.tsx:81
-msgid "Unsupported file format"
-msgstr "Unsupported file format"
+#~ msgid "Unsupported file format"
+#~ msgstr "Unsupported file format"
+
+#: src/components/payables/Payables.tsx:87
+msgid "Unsupported file format for {0}"
+msgstr "Unsupported file format for {0}"
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:115
 msgid "Unsupported file type"
@@ -6927,15 +6935,22 @@ msgstr "Upload a document here."
 msgid "Upload File"
 msgstr "Upload File"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:205
 #: src/components/payables/Payables.test.tsx:38
-#: src/components/payables/Payables.tsx:151
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:205
+#: src/components/payables/Payables.tsx:155
+msgid "Upload payable files"
+msgstr "Upload payable files"
+
+#: src/components/payables/Payables.tsx:96
+msgid "Uploading {0}"
+msgstr "Uploading {0}"
+
 #: src/components/payables/Payables.tsx:92
-msgid "Uploading payable file"
-msgstr "Uploading payable file"
+#~ msgid "Uploading payable file"
+#~ msgstr "Uploading payable file"
 
 #: src/core/utils/countries.ts:250
 msgid "Uruguay"
