@@ -72,28 +72,33 @@ const PayablesBase = ({
       }
     );
 
-  const handleFileUpload = (file: File) => {
-    if (
-      !['application/pdf', 'image/png', 'image/jpeg', 'image/tiff'].includes(
-        file.type
-      )
-    ) {
-      toast.error(t(i18n)`Unsupported file format`);
-      return;
-    }
+  const handleFileUpload = (files: File | FileList) => {
+    const allowedTypes = [
+      'application/pdf',
+      'image/png',
+      'image/jpeg',
+      'image/tiff',
+    ];
 
-    toast.promise(
-      payableUploadFromFileMutation.mutateAsync({
-        file,
-        // TODO why is this file_type was removed in 2024-01-31?
-        // file_type: 'payables',
-      }),
-      {
-        loading: t(i18n)`Uploading payable file`,
-        success: t(i18n)`Payable uploaded successfully`,
-        error: (error) => getAPIErrorMessage(i18n, error),
+    const fileArray = files instanceof File ? [files] : Array.from(files);
+
+    fileArray.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+        return;
       }
-    );
+
+      toast.promise(
+        payableUploadFromFileMutation.mutateAsync({
+          file,
+        }),
+        {
+          loading: t(i18n)`Uploading ${file.name}`,
+          success: t(i18n)`Payable ${file.name} uploaded successfully`,
+          error: (error) => getAPIErrorMessage(i18n, error),
+        }
+      );
+    });
   };
 
   const { data: user } = useEntityUserByAuthToken();
@@ -145,14 +150,13 @@ const PayablesBase = ({
           setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
-
       <FileInput
         accept="application/pdf, image/png, image/jpeg, image/tiff"
-        aria-label={t(i18n)`Upload payable file`}
+        aria-label={t(i18n)`Upload payable files`}
+        multiple
         onChange={(event) => {
-          const file = event.target.files?.item(0);
-
-          if (file) handleFileUpload(file);
+          const files = event.target.files;
+          if (files) handleFileUpload(files);
         }}
       />
       <Dialog
