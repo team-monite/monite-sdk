@@ -31,7 +31,9 @@ export const ManualPaymentRecordDetails = ({
   const { data: entityUser, isLoading: isEntityUserLoading } =
     useEntityUserByAuthToken();
 
-  const paymentAuthor = `${entityUser?.first_name} ${entityUser?.last_name}`;
+  const paymentAuthor = `${entityUser?.first_name ?? ''} ${
+    entityUser?.last_name ?? ''
+  }`;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
