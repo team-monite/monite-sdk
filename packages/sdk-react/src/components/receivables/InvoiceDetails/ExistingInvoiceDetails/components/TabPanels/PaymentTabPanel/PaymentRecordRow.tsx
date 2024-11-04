@@ -78,6 +78,7 @@ export const PaymentRecordRow = ({
           alignItems: 'center',
           display: 'flex',
           gap: 4,
+          textAlign: 'right',
         }}
       >
         <Typography variant="body1" color="textSecondary">

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { components } from '@/api';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { RHFTimePicker } from '@/components/RHF/RHFTimePicker';
 import { useCurrencies } from '@/core/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -38,7 +39,7 @@ export const PaymentRecordForm = ({
   onCancel,
 }: Props) => {
   const { i18n } = useLingui();
-  const { formatCurrencyToDisplay } = useCurrencies();
+  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
 
   const { control, handleSubmit, reset, setValue } =
     useForm<PaymentRecordFormValues>({
@@ -48,8 +49,9 @@ export const PaymentRecordForm = ({
       defaultValues: useMemo(
         () =>
           initialValues ?? {
-            amount: 0,
+            amount: null,
             payment_date: null,
+            payment_time: null,
           },
         [initialValues]
       ),
@@ -59,6 +61,8 @@ export const PaymentRecordForm = ({
     reset(initialValues);
   }, [initialValues, reset]);
 
+  const currencySymbol = getSymbolFromCurrency(invoice.currency);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,12 +70,25 @@ export const PaymentRecordForm = ({
           i18n
         )`Record payment`}</DialogTitle>
         <DialogContent sx={{ p: 4 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
               <RHFTextField
                 label={t(i18n)`Amount`}
                 name="amount"
+                placeholder="0"
                 control={control}
+                sx={{
+                  '::after': {
+                    content: `"${currencySymbol}"`,
+                    position: 'absolute',
+                    right: '16px',
+                    bottom: 0,
+                    transform: 'translateY(-50%)',
+                    fontSize: '16px',
+                    color: 'rgba(0,0,0,0.28)',
+                    pointerEvents: 'none',
+                  },
+                }}
                 fullWidth
                 required
               />
@@ -94,6 +111,27 @@ export const PaymentRecordForm = ({
                 label={t(i18n)`Date`}
                 name="payment_date"
                 control={control}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <RHFTimePicker
+                label={t(i18n)`Time`}
+                name="payment_time"
+                control={control}
+                sx={{
+                  '::after': {
+                    content: '"UTC"',
+                    position: 'absolute',
+                    right: '16px',
+                    bottom: 0,
+                    transform: 'translateY(-50%)',
+                    fontSize: '16px',
+                    color: 'rgba(0,0,0,0.28)',
+                    pointerEvents: 'none',
+                  },
+                }}
+                fullWidth
+                required
               />
             </Grid>
           </Grid>
