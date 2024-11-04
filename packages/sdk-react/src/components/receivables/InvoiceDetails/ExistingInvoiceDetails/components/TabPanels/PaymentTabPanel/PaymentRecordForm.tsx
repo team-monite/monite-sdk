@@ -40,19 +40,20 @@ export const PaymentRecordForm = ({
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
 
-  const { control, handleSubmit, reset } = useForm<PaymentRecordFormValues>({
-    resolver: yupResolver(
-      manualPaymentRecordValidationSchema(i18n, invoice.amount_due)
-    ),
-    defaultValues: useMemo(
-      () =>
-        initialValues ?? {
-          amount: 0,
-          payment_date: null,
-        },
-      [initialValues]
-    ),
-  });
+  const { control, handleSubmit, reset, setValue } =
+    useForm<PaymentRecordFormValues>({
+      resolver: yupResolver(
+        manualPaymentRecordValidationSchema(i18n, invoice.amount_due)
+      ),
+      defaultValues: useMemo(
+        () =>
+          initialValues ?? {
+            amount: 0,
+            payment_date: null,
+          },
+        [initialValues]
+      ),
+    });
 
   useEffect(() => {
     reset(initialValues);
@@ -76,7 +77,16 @@ export const PaymentRecordForm = ({
               />
               <FormHelperText>
                 {t(i18n)`Enter full amount due of`}{' '}
-                {formatCurrencyToDisplay(invoice.amount_due, invoice.currency)}
+                <Button
+                  variant="text"
+                  sx={{ textDecoration: 'underline' }}
+                  onClick={() => setValue('amount', invoice.amount_due / 100)}
+                >
+                  {formatCurrencyToDisplay(
+                    invoice.amount_due,
+                    invoice.currency
+                  )}
+                </Button>
               </FormHelperText>
             </Grid>
             <Grid item xs={6}>
