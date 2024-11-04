@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "cache": true,
       "dependsOn": [
@@ -9,7 +9,11 @@
         "codegen",
         "^build"
       ],
-      "outputs": ["dist/**", "build/**", ".next/**"]
+      "outputs": [
+        "dist/**",
+        "build/**",
+        ".next/**"
+      ]
     },
     "storybook": {
       "cache": false,
@@ -27,7 +31,9 @@
         "compile-translations",
         "^build"
       ],
-      "outputs": ["storybook_static/**"]
+      "outputs": [
+        "storybook_static/**"
+      ]
     },
     "test": {
       "cache": true,
@@ -36,7 +42,9 @@
         "compile-translations",
         "^build"
       ],
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "typecheck": {
       "cache": true,
@@ -85,19 +93,28 @@
         "src/core/i18n/locales/*/messages.po",
         "src/locales/*/messages.po"
       ],
-      "inputs": ["src/**/*.{ts,tsx,js,jsx,json}", ".babelrc"]
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx,json}",
+        ".babelrc"
+      ]
     },
     "write-package-version-file": {
       "cache": true,
-      "outputs": ["src/packageVersion.ts"],
-      "inputs": ["package.json"]
+      "outputs": [
+        "src/packageVersion.ts"
+      ],
+      "inputs": [
+        "package.json"
+      ]
     },
     "clean": {
       "cache": false
     },
     "e2e": {
       "cache": true,
-      "outputs": ["test-results/**"],
+      "outputs": [
+        "test-results/**"
+      ],
       "dependsOn": [
         "write-package-version-file",
         "compile-translations",
@@ -112,7 +129,12 @@
         "!src/api/client.ts",
         "!src/api/client.test.ts"
       ],
-      "inputs": ["src/api/schema.json", "src/api/client.ts", "src/lib/monite-api/schema.json", "package.json"]
+      "inputs": [
+        "src/api/schema.json",
+        "src/api/client.ts",
+        "src/lib/monite-api/schema.json",
+        "package.json"
+      ]
     }
   }
 }
