@@ -79,9 +79,10 @@ export const PaymentRecordRow = ({
           display: 'flex',
           gap: 4,
           textAlign: 'right',
+          justifyContent: 'flex-end',
         }}
       >
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body1" color="textSecondary" fontWeight="600">
           {formatCurrencyToDisplay(record.amount, invoice.currency)}
         </Typography>
       </Box>
