@@ -109,6 +109,8 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
       'paid',
       'canceled',
       'deleted',
+      'accepted',
+      'recurring',
       'expired',
       'declined',
       'uncollectible',
