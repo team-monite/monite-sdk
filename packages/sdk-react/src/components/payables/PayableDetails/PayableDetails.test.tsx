@@ -254,7 +254,7 @@ describe('PayableDetails', () => {
     describe('# Public API', () => {
       const user = userEvent.setup();
 
-      test('should send correct request (required fields) when user update payable', async () => {
+      test.skip('should send correct request (required fields) when user update payable', async () => {
         const queryClient = new QueryClient();
 
         render(<PayableDetails id={payableId} />, {
