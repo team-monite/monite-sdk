@@ -5,8 +5,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCreatePaymentRecord } from '@/core/queries/usePaymentRecords';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   Box,
   Button,
@@ -27,13 +27,15 @@ type Props = {
 };
 
 export type PaymentRecordDetails = {
-  amount: number;
+  amount: number | null;
   payment_date: Date | null;
+  payment_time: Date | null;
 };
 
 const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
   amount: 0,
   payment_date: new Date(),
+  payment_time: new Date(),
 };
 
 export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
@@ -42,6 +44,8 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const [formValues, setFormValues] = useState<PaymentRecordDetails>(
     DEFAULT_PAYMENT_RECORD
   );
+
+  const { i18n } = useLingui();
   const { root } = useRootElements();
 
   const openModal = () => setModalOpen(true);
@@ -52,7 +56,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const { data: user, isLoading: isLoadingUser } = useEntityUserByAuthToken();
 
   const showConfirmation = (data: PaymentRecordFormValues) => {
-    setFormValues({ ...data, amount: data.amount * 100 });
+    setFormValues({ ...data, amount: (data?.amount ?? 0) * 100 });
     setConfirmSubmission(true);
   };
 
@@ -62,11 +66,18 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   };
 
   const createManualPaymentRecord = () => {
-    const paid_at = new Date(formValues.payment_date ?? '');
+    const dateTimeWithReplacedTime = new Date(
+      formValues.payment_date ?? ''
+    ).setHours(
+      formValues.payment_time?.getHours() ?? 0,
+      formValues.payment_time?.getMinutes() ?? 0
+    );
+
+    const paid_at = new Date(dateTimeWithReplacedTime);
 
     createPaymentRecord.mutate(
       {
-        amount: formValues.amount,
+        amount: formValues?.amount ?? 0,
         currency: invoice.currency,
         paid_at: paid_at.toISOString(),
         object: {
@@ -98,6 +109,8 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
       'paid',
       'canceled',
       'deleted',
+      'accepted',
+      'recurring',
       'expired',
       'declined',
       'uncollectible',
@@ -113,7 +126,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
         onClose={closeModal}
         container={root}
         aria-labelledby="dialog-title"
-        fullWidth={true}
+        fullWidth
         maxWidth="sm"
       >
         {confirmSubmission ? (
@@ -144,7 +157,10 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
         ) : (
           <PaymentRecordForm
             invoice={invoice}
-            initialValues={{ ...formValues, amount: formValues.amount / 100 }}
+            initialValues={{
+              ...formValues,
+              amount: formValues.amount ? formValues.amount / 100 : null,
+            }}
             isLoading={isLoading}
             onCancel={closeModal}
             onSubmit={showConfirmation}
