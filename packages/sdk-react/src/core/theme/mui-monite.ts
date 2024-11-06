@@ -7,7 +7,11 @@ import type {
 } from '@mui/material/styles/createPalette.js';
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { isPlainObject } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
+
+import { getNeutralColors, getPrimaryColors } from './colors';
 
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
   '90': string;
@@ -30,21 +34,6 @@ interface MonitePaletteOptions extends PaletteOptions {
   menu: {
     background: string;
   };
-}
-
-// Copied from mui/utils sourcecode since we cannot import external libraries in this file
-function isPlainObject(item: unknown) {
-  if (typeof item !== 'object' || item === null) {
-    return false;
-  }
-  const prototype = Object.getPrototypeOf(item);
-  return (
-    (prototype === null ||
-      prototype === Object.prototype ||
-      Object.getPrototypeOf(prototype) === null) &&
-    !(Symbol.toStringTag in item) &&
-    !(Symbol.iterator in item)
-  );
 }
 
 // Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
@@ -99,7 +88,6 @@ function renderColors<T extends { [key: string]: any }>(
   return output;
 }
 
-// TODO apply new theme config values to this MUI theme
 export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const statusBackgroundColors = {
     draft: '#000000D6',
@@ -114,17 +102,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   };
 
   const paletteLight: MonitePaletteOptions = {
-    primary: {
-      dark: 'rgb(46, 46, 229)',
-      main: '#3737FF',
-      light: '#F4F8FF',
-      '60': '#9999ff',
-      '80': 'rgb(203, 203, 254)',
-      '90': 'rgb(235, 235, 255)',
-    },
+    primary: getPrimaryColors(theme.colors?.primary || '#3737FF'),
     secondary: {
-      main: '#707070',
       dark: 'rgb(39, 39, 44)',
+      main: '#707070',
     },
     background: {
       default: 'rgba(250, 250, 250, 1)',
@@ -133,14 +114,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     menu: {
       background: 'rgba(250, 250, 250, 1)',
     },
-    neutral: {
-      '10': '#111111',
-      '50': '#707070',
-      '70': 'rgb(184, 184, 184)',
-      '80': '#DDDDDD',
-      '90': 'rgb(242, 242, 242)',
-      '95': '#f9f9f9',
-    },
+    neutral: getNeutralColors(theme?.colors?.neutral || '#707070'),
     divider: '#DDDDDD',
     text: {
       primary: 'rgba(0,0,0,0.84)',

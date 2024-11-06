@@ -1,7 +1,7 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { getTheme } from '@/core/theme/monite';
+import { getTheme } from '@/core/theme/mui-monite';
 import { ThemeConfig } from '@/core/theme/types';
 import { createTheme, type Theme, type Components } from '@mui/material';
 
