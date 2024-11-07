@@ -25,7 +25,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -34,7 +33,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   MenuItem,
   Stack,
   Typography,

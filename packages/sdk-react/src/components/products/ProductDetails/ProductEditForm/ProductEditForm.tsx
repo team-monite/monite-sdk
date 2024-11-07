@@ -12,7 +12,6 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import {
   Box,
@@ -21,7 +20,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   Stack,
   Typography,
 } from '@mui/material';

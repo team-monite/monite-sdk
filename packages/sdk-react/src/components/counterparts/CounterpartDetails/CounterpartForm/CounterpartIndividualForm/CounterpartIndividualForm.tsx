@@ -13,7 +13,6 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
   DialogContent,
@@ -27,7 +26,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  IconButton,
 } from '@mui/material';
 
 import { getIndividualName } from '../../../helpers';

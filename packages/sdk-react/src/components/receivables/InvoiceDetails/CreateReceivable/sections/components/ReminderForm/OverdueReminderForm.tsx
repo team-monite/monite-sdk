@@ -12,7 +12,6 @@ import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -20,7 +19,6 @@ import {
   DialogContent,
   DialogActions,
   Divider,
-  IconButton,
   Stack,
   Typography,
   InputLabel,

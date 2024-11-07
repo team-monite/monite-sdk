@@ -14,7 +14,6 @@ import { NotFound } from '@/ui/notFound';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
   Avatar,
@@ -25,7 +24,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Table,
   TableBody,
   TableCell,

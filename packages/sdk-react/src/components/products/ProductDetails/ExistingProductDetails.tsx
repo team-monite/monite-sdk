@@ -20,7 +20,6 @@ import { NotFound } from '@/ui/notFound';
 import { useDateTimeFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -29,7 +28,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   Table,
   TableBody,
   Typography,

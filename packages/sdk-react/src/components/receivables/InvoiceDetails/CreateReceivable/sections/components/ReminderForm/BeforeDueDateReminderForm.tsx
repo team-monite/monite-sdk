@@ -7,12 +7,12 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMenuButton } from '@/core/hooks';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
@@ -22,7 +22,6 @@ import {
   DialogContent,
   DialogActions,
   Divider,
-  IconButton,
   InputLabel,
   ListItemText,
   Menu,
@@ -196,7 +195,7 @@ const CreateBeforeDueDateReminderComponent = ({
               : t(i18n)`Create “Before due date” reminder`}
           </Typography>
           {props.onClose && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={(event) => {

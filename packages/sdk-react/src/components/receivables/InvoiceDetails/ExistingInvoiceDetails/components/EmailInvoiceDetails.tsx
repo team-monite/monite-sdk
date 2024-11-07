@@ -35,7 +35,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
@@ -48,7 +47,6 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  IconButton,
   MenuItem,
   Select,
   Stack,

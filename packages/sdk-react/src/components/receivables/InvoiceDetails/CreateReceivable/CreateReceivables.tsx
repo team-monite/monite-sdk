@@ -17,14 +17,12 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Stack,
   Toolbar,
   Typography,

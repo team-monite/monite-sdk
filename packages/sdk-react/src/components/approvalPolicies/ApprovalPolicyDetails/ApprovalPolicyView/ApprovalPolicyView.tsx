@@ -16,7 +16,6 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -25,7 +24,6 @@ import {
   DialogActions,
   DialogContent,
   Divider,
-  IconButton,
   List,
   ListItem,
   Typography,

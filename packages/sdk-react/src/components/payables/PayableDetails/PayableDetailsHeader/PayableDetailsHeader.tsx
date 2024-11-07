@@ -7,13 +7,11 @@ import { useCounterpartById } from '@/core/queries';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
   ButtonProps,
   DialogTitle,
-  IconButton,
   Stack,
   Toolbar,
   Typography,

@@ -2,13 +2,11 @@ import { useDialog } from '@/components/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Typography,
 } from '@mui/material';
 

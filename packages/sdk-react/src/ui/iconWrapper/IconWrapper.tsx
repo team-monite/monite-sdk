@@ -102,7 +102,7 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
       icon ||
         fallbackIcon ||
-        (themeShowCloseIcon ? <IconWrapper showCloseIcon /> : <ArrowBackIcon />)
+        (themeShowCloseIcon ? <CloseIcon /> : <ArrowBackIcon />)
     );
 
     useEffect(() => {

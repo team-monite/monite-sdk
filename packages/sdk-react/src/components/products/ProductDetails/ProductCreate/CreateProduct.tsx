@@ -10,14 +10,12 @@ import { useCurrencies } from '@/core/hooks';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
   DialogActions,
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 

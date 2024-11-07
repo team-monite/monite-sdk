@@ -19,10 +19,7 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Close as CloseIcon,
-  OpenInNew as OpenInNewIcon,
-} from '@mui/icons-material';
+import { OpenInNew as OpenInNewIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -30,7 +27,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Link,
   Stack,
   styled,

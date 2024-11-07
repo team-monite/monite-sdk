@@ -10,7 +10,6 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Alert,
   Box,
@@ -20,7 +19,6 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  IconButton,
   MenuItem,
   Stack,
   Typography,
