@@ -10,7 +10,6 @@ import { Box, Button, Skeleton, Typography } from '@mui/material';
 
 import { EmptyPaymentRecord, PaymentRecordRow } from './PaymentRecordRow';
 import { RecordManualPaymentModal } from './RecordManualPaymentModal';
-import { UpdatePDFSection } from './UpdatePDF/UpdatePDFSection';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -74,30 +73,29 @@ export const PaymentTabPanel = ({ invoice }: Props) => {
           </Box>
         )}
       </RecordManualPaymentModal>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 4,
-          justifyContent: 'space-between',
-          marginTop: 2,
-        }}
-      >
-        <Box>
-          <Typography variant="body2">{t(i18n)`Amount due`}</Typography>
-          <Typography variant="subtitle1">
-            {formatCurrencyToDisplay(invoice.amount_due, invoice.currency)}
-          </Typography>
+      {records.length > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 4,
+            justifyContent: 'space-between',
+            marginTop: 2,
+          }}
+        >
+          <Box>
+            <Typography variant="body2">{t(i18n)`Amount due`}</Typography>
+            <Typography variant="subtitle1">
+              {formatCurrencyToDisplay(invoice.amount_due, invoice.currency)}
+            </Typography>
+          </Box>
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography variant="body2">{t(i18n)`Amount paid`}</Typography>
+            <Typography variant="subtitle1">
+              {formatCurrencyToDisplay(invoice.amount_paid, invoice.currency)}
+            </Typography>
+          </Box>
         </Box>
-        <Box>
-          <Typography variant="body2">{t(i18n)`Amount paid`}</Typography>
-          <Typography variant="subtitle1">
-            {formatCurrencyToDisplay(invoice.amount_paid, invoice.currency)}
-          </Typography>
-        </Box>
-      </Box>
-      <Box marginTop={4}>
-        <UpdatePDFSection invoice={invoice} />
-      </Box>
+      )}
     </>
   );
 };
