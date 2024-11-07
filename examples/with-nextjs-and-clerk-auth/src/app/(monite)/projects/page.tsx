@@ -3,6 +3,7 @@
 import React from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Box, Stack, Typography } from '@mui/material';
 
@@ -15,7 +16,9 @@ export default function ProjectsPage() {
         <Box className="Monite-Projects-Header">
           <Typography variant="h2">Projects</Typography>
         </Box>
-        <Image priority src={stubSvg} alt="" />
+        <Link href="https://docs.monite.com/common/projects" target="_blank">
+          <Image priority src={stubSvg} alt="Projects" />
+        </Link>
       </Stack>
     </Box>
   );

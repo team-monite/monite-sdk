@@ -89,7 +89,11 @@ export const NavigationList = () => {
         justifyContent="flex-end"
       >
         <List className="NavigationList" disablePadding>
-          <NavigationListItem icon={<IconQuestionCircle />}>
+          <NavigationListItem
+            href="https://docs.monite.com/"
+            target="_blank"
+            icon={<IconQuestionCircle />}
+          >
             {t(i18n)`Get Help`}
           </NavigationListItem>
         </List>
