@@ -48,7 +48,7 @@ msgstr "Email Templates"
 msgid "English"
 msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:93
+#: src/components/NavigationMenu/NavigationList.tsx:97
 msgid "Get Help"
 msgstr "Get Help"
 
