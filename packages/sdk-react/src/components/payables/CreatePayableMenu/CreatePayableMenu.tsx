@@ -52,8 +52,21 @@ export const CreatePayableMenu = ({
     setDragIsOver(false);
 
     const droppedFiles = Array.from(event.dataTransfer.files);
+    const allowedTypes = [
+      'application/pdf',
+      'image/png',
+      'image/jpeg',
+      'image/tiff',
+    ];
 
-    handleFileUpload(droppedFiles[0]);
+    droppedFiles.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+        return;
+      }
+
+      handleFileUpload(file);
+    });
 
     closeMenu();
   };
