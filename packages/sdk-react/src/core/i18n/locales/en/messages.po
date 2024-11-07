@@ -23,7 +23,7 @@ msgstr "Product Details"
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:179
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:192
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
@@ -271,7 +271,7 @@ msgstr "Add another owner"
 msgid "Add bank account"
 msgstr "Add bank account"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:186
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:199
 msgid "Add bill manually"
 msgstr "Add bill manually"
 
@@ -431,7 +431,7 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:144
 msgid "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 msgstr "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 
@@ -1691,11 +1691,11 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:111
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:124
 msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:114
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:127
 msgid "Copy"
 msgstr "Copy"
 
@@ -1876,7 +1876,7 @@ msgstr "Create an item with this currency to add it"
 msgid "Create Approval Policy"
 msgstr "Create Approval Policy"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:197
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:210
 msgid "Create bill manually"
 msgstr "Create bill manually"
 
@@ -2087,7 +2087,7 @@ msgstr "Customers"
 msgid "Customers & Vendors"
 msgstr "Customers & Vendors"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:98
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:111
 msgid "Customise"
 msgstr "Customise"
 
@@ -2430,7 +2430,7 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:138
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:151
 msgid "Drag & Drop"
 msgstr "Drag & Drop"
 
@@ -2438,7 +2438,7 @@ msgstr "Drag & Drop"
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:176
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:189
 msgid "Drag files or click to upload"
 msgstr "Drag files or click to upload"
 
@@ -3024,7 +3024,7 @@ msgstr "Flow"
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:88
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:101
 msgid "Forward to email"
 msgstr "Forward to email"
 
@@ -4416,7 +4416,7 @@ msgstr "Netherlands Antilles"
 msgid "New"
 msgstr "New"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:69
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:82
 #: src/components/payables/Payables.test.tsx:73
 #: src/components/payables/Payables.test.tsx:111
 #: src/components/payables/Payables.test.tsx:153
@@ -6850,6 +6850,7 @@ msgstr "Unspecified"
 #~ msgid "Unsupported file format"
 #~ msgstr "Unsupported file format"
 
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:64
 #: src/components/payables/Payables.tsx:87
 msgid "Unsupported file format for {0}"
 msgstr "Unsupported file format for {0}"
@@ -6939,7 +6940,7 @@ msgstr "Upload File"
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:205
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:218
 #: src/components/payables/Payables.tsx:155
 msgid "Upload payable files"
 msgstr "Upload payable files"
