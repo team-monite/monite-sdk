@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,13 +33,12 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
         <Grid container padding={2} className={className + '-InDialog-Header'}>
           <Grid item xs={11} />
           <Grid item xs={1}>
-            <IconButton
+            <IconWrapper
               onClick={dialogContext.onClose}
               color="inherit"
               aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           </Grid>
         </Grid>
       )}

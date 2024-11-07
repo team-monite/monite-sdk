@@ -8,6 +8,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -98,13 +99,12 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           </Grid>
           <Grid item xs={1}>
             {dialogContext?.isDialogContent && (
-              <IconButton
+              <IconWrapper
                 aria-label={t(i18n)`Edit Product Close`}
                 onClick={dialogContext.onClose}
                 color="inherit"
-              >
-                <CloseIcon />
-              </IconButton>
+                showCloseIcon
+              />
             )}
           </Grid>
         </Grid>
@@ -175,13 +175,12 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Edit Product Close`}
               onClick={dialogContext.onClose}
               color="inherit"
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           )}
         </Grid>
       </Grid>

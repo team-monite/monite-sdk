@@ -6,6 +6,7 @@ import { components } from '@/api';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -177,7 +178,7 @@ const CreateOverdueReminderComponent = ({
               : t(i18n)`Create “Overdue” reminder`}
           </Typography>
           {props.onClose && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={(event) => {
@@ -185,9 +186,8 @@ const CreateOverdueReminderComponent = ({
                 props.onClose?.();
               }}
               aria-label={t(i18n)`Close reminder's creation`}
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           )}
         </Box>
       </DialogTitle>

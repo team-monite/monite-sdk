@@ -14,6 +14,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { useDateTimeFormat } from '@/utils/MoniteOptions';
@@ -133,13 +134,12 @@ const ExistingProductDetailsBase = ({
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Product Close`}
               onClick={dialogContext.onClose}
               color="inherit"
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           )}
         </Grid>
       </Grid>

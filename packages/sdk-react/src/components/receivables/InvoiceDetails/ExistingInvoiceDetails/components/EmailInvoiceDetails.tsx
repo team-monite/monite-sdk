@@ -30,6 +30,7 @@ import {
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -285,16 +286,15 @@ const EmailInvoiceDetailsBase = ({
                   </>
                 )}
                 {isPreview && (
-                  <IconButton
+                  <IconWrapper
                     edge="start"
                     color="inherit"
                     onClick={() => {
                       setPresentation(FormPresentation.Edit);
                     }}
                     aria-label="close"
-                  >
-                    <CloseIcon />
-                  </IconButton>
+                    showCloseIcon
+                  />
                 )}
               </Stack>
             </Grid>

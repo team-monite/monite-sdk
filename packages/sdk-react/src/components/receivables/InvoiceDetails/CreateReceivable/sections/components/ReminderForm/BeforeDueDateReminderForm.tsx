@@ -204,9 +204,8 @@ const CreateBeforeDueDateReminderComponent = ({
                 props.onClose?.();
               }}
               aria-label={t(i18n)`Close`}
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           )}
         </Box>
       </DialogTitle>

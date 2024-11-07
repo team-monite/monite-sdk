@@ -1,6 +1,7 @@
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CachedIcon from '@mui/icons-material/Cached';
@@ -38,13 +39,12 @@ const ErrorBase = (props: ErrorProps) => {
         <Grid container padding={2}>
           <Grid item xs={11} />
           <Grid item xs={1}>
-            <IconButton
+            <IconWrapper
               onClick={dialogContext.onClose}
               color="inherit"
               aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
+              showCloseIcon
+            />
           </Grid>
         </Grid>
       )}

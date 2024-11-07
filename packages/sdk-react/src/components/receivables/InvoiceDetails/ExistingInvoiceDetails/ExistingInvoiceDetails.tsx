@@ -231,9 +231,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     onClick={dialogContext?.onClose}
                     aria-label="close"
                     disabled={loading}
-                  >
-                    <CloseIcon />
-                  </IconButton>
+                    showCloseIcon
+                  />
                 )}
 
                 {receivable.status === 'recurring' ? (

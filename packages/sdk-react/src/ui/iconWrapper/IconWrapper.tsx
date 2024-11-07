@@ -21,7 +21,7 @@ interface IconWrapperEvents {
   onBlur?: (event: FocusEvent<HTMLButtonElement>) => void;
 }
 
-interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
+export interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
   icon?: ReactNode;
   fallbackIcon?: ReactNode;
   tooltip?: string;
@@ -36,7 +36,6 @@ interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
     | 'success'
     | 'warning';
   sx?: SxProps<Theme>;
-  onClick: () => void;
   isDynamic?: boolean;
   ariaLabelOverride?: string;
 }
@@ -83,7 +82,7 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       icon,
       fallbackIcon,
       tooltip,
-      onClick,
+      onClick = () => {},
       onHover,
       onFocus,
       onBlur,
@@ -97,27 +96,33 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
     const { showCloseIcon: themeShowCloseIcon = true } = useThemeProps({
       props: { showCloseIcon },
       // eslint-disable-next-line lingui/no-unlocalized-strings
-      name: 'IconWrapper',
+      name: 'MoniteIconWrapper',
     });
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
       icon ||
         fallbackIcon ||
-        (themeShowCloseIcon ? <CloseIcon /> : <ArrowBackIcon />)
+        (themeShowCloseIcon ? <IconWrapper showCloseIcon /> : <ArrowBackIcon />)
     );
 
     useEffect(() => {
       setDisplayIcon(
         icon ||
           fallbackIcon ||
-          (themeShowCloseIcon ? <CloseIcon /> : <ArrowBackIcon />)
+          (themeShowCloseIcon ? (
+            <IconWrapper showCloseIcon />
+          ) : (
+            <ArrowBackIcon />
+          ))
       );
     }, [icon, fallbackIcon, themeShowCloseIcon]);
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
       if (isDynamic) {
-        setDisplayIcon(showCloseIcon ? <ArrowBackIcon /> : <CloseIcon />);
+        setDisplayIcon(
+          showCloseIcon ? <ArrowBackIcon /> : <IconWrapper showCloseIcon />
+        );
       }
     };
 
@@ -125,7 +130,11 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       setDisplayIcon(
         icon ||
           fallbackIcon ||
-          (themeShowCloseIcon ? <CloseIcon /> : <ArrowBackIcon />)
+          (themeShowCloseIcon ? (
+            <IconWrapper showCloseIcon />
+          ) : (
+            <ArrowBackIcon />
+          ))
       );
     };
 

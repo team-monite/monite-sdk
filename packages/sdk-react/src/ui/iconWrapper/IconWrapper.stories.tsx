@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Button } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
@@ -96,9 +97,9 @@ const ToggleableIconWrapper = () => {
         onClick={action('onClick')}
         tooltip="Toggleable Icon"
       />
-      <button onClick={() => setShowCloseIcon(!showCloseIcon)}>
+      <Button onClick={() => setShowCloseIcon(!showCloseIcon)}>
         Toggle Icon
-      </button>
+      </Button>
     </>
   );
 };
