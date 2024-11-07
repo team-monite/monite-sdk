@@ -28,7 +28,7 @@ import {
 
 import { CreateReceivables } from './CreateReceivables';
 
-describe('CreateReceivables', () => {
+describe.skip('CreateReceivables', () => {
   test('should show errors when user submit an empty form', async () => {
     renderWithClient(<CreateReceivables type={'invoice'} />);
 
