@@ -3,7 +3,6 @@ import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,
   PaletteOptions,
-  SimplePaletteColorOptions,
 } from '@mui/material/styles/createPalette.js';
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
@@ -11,29 +10,19 @@ import type { TypographyOptions } from '@mui/material/styles/createTypography.js
 import { isPlainObject } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
 
-import { getNeutralColors, getPrimaryColors } from './colors';
-
-interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
-  '90': string;
-  '60': string;
-  '80': string;
-}
-
-interface MoniteNeutralColorOptions {
-  '10': string;
-  '50': string;
-  '70': string;
-  '80': string;
-  '90': string;
-  '95': string;
-}
+import { getTheme as getMoniteTheme } from '../monite';
+import {
+  getPrimaryColors,
+  MonitePaletteColorOptions,
+  getSecondaryColors,
+  getNeutralColors,
+  MoniteNeutralColorOptions,
+  getTextColors,
+} from './colors';
 
 interface MonitePaletteOptions extends PaletteOptions {
   primary: MonitePaletteColorOptions;
   neutral: MoniteNeutralColorOptions;
-  menu: {
-    background: string;
-  };
 }
 
 // Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
@@ -89,38 +78,33 @@ function renderColors<T extends { [key: string]: any }>(
 }
 
 export const getTheme = (theme: ThemeConfig): ThemeOptions => {
+  const moniteTheme = getMoniteTheme(theme);
+
   const statusBackgroundColors = {
     draft: '#000000D6',
-    new: '#3737FF',
+    new: moniteTheme.colors.primary,
     approve_in_progress: '#E75300',
     paid: '#13705F',
-    waiting_to_be_paid: '#3737FF',
+    waiting_to_be_paid: moniteTheme.colors.primary,
     rejected: '#FF475D',
     partially_paid: '#A06DC8',
     canceled: '#E75300',
     all: '#F4F4FE',
   };
 
-  const paletteLight: MonitePaletteOptions = {
-    primary: getPrimaryColors(theme.colors?.primary || '#3737FF'),
-    secondary: {
-      dark: 'rgb(39, 39, 44)',
-      main: '#707070',
-    },
+  const palette: MonitePaletteOptions = {
+    primary: getPrimaryColors(moniteTheme.colors.primary),
+    secondary: getSecondaryColors(moniteTheme.colors.secondary),
+    neutral: getNeutralColors(moniteTheme.colors.neutral),
+
     background: {
-      default: 'rgba(250, 250, 250, 1)',
+      default: moniteTheme.colors.background,
       paper: '#ffffff',
     },
-    menu: {
-      background: 'rgba(250, 250, 250, 1)',
-    },
-    neutral: getNeutralColors(theme?.colors?.neutral || '#707070'),
+
+    text: getTextColors(moniteTheme.colors.text),
+
     divider: '#DDDDDD',
-    text: {
-      primary: 'rgba(0,0,0,0.84)',
-      secondary: 'rgba(0,0,0,0.68)',
-      disabled: 'rgba(0,0,0,0.52)',
-    },
   };
 
   const statusColors: {
@@ -131,7 +115,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       backgroundColor: '#F2F2F2',
     },
     blue: {
-      color: '#3737FF',
+      color: moniteTheme.colors.primary,
       backgroundColor: '#F4F4FE',
     },
     violet: {
@@ -165,9 +149,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const defaultMoniteTypography:
     | TypographyOptions
     | ((palette: Palette) => TypographyOptions) = {
-    fontFamily:
-      theme?.typography?.fontFamily ??
-      '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    fontFamily: moniteTheme.typography.fontFamily,
     fontSize: 16,
     fontWeightMedium: 400,
     fontWeightBold: 500,
@@ -221,9 +203,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
   };
 
-  const typographyLight = Object.assign({}, defaultMoniteTypography, {
+  const typography = Object.assign({}, defaultMoniteTypography, {
     body2: {
-      color: paletteLight.neutral && paletteLight.neutral['10'],
+      color: palette.neutral && palette.neutral['10'],
     },
   });
 
@@ -1202,14 +1184,13 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
   };
 
-  const lightComponents = renderColors(defaultMoniteComponents, paletteLight);
+  const components = renderColors(defaultMoniteComponents, palette);
 
   return {
     palette: {
-      mode: 'light',
-      ...paletteLight,
+      ...palette,
     },
-    typography: typographyLight,
-    components: lightComponents,
+    typography,
+    components,
   };
 };
