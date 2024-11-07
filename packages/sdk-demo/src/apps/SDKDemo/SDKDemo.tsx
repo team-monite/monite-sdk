@@ -110,7 +110,18 @@ const SDKDemoComponent = ({
                     fetchToken,
                   }}
                   // TODO: remove this once we find a better way to test theme config
-                  theme={{ typography: { fontFamily: 'monospace' } }}
+                  theme={{
+                    colors: {
+                      primary: '#eb3333',
+                      secondary: '#b3f192',
+                      neutral: '#cd12ae',
+
+                      background: '#ead391',
+                    },
+                    typography: {
+                      fontFamily: 'monospace',
+                    },
+                  }}
                 >
                   <MoniteReactQueryDevtools />
                   <Global styles={getFontFaceStyles} />
