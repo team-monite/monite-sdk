@@ -12,17 +12,18 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -124,13 +125,14 @@ const CreateReceivablesBase = ({
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           {dialogContext?.isDialogContent && (
-            <IconWrapper
+            <IconButton
               edge="start"
               color="inherit"
               onClick={dialogContext?.onClose}
               aria-label="close"
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconButton>
           )}
           <Box sx={{ marginLeft: 'auto' }}>
             <Button

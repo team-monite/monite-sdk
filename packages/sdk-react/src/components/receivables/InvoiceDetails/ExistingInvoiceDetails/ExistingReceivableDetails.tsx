@@ -8,12 +8,12 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useInvoiceDetails } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
   Avatar,
@@ -24,6 +24,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -178,11 +179,12 @@ const ExistingReceivableDetailsBase = (
             <InvoiceStatusChip status={invoice.status} />
           </Box>
           {dialogContext?.isDialogContent && (
-            <IconWrapper
+            <IconButton
               aria-label={t(i18n)`Close invoice details`}
               onClick={dialogContext.onClose}
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconButton>
           )}
         </Box>
       </DialogTitle>

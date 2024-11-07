@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -8,11 +8,11 @@ import { useApprovalPolicyDetails } from '@/components/approvalPolicies/Approval
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   Box,
@@ -21,6 +21,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Link,
   Typography,
 } from '@mui/material';
@@ -134,11 +135,14 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
               : t(i18n)`Create Approval Policy`}
           </Typography>
           {dialogContext?.isDialogContent && (
-            <IconWrapper
-              showCloseIcon
-              tooltip={t(i18n)`Close approval policy details`}
+            <IconButton
+              edge="start"
+              color="inherit"
               onClick={dialogContext.onClose}
-            />
+              aria-label={t(i18n)`Close approval policy details`}
+            >
+              <CloseIcon />
+            </IconButton>
           )}
         </Box>
       </DialogTitle>

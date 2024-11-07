@@ -2,9 +2,9 @@ import { components } from '@/api';
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Link,
   Typography,
   Paper,
@@ -66,13 +67,14 @@ const ExistingApprovalPolicyDetailsAdvancedBase = ({
             {approvalPolicy?.name}
           </Typography>
           {dialogContext?.isDialogContent && (
-            <IconWrapper
+            <IconButton
               edge="start"
               color="inherit"
               onClick={dialogContext.onClose}
               aria-label={t(i18n)`Close approval policy details`}
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconButton>
           )}
         </Box>
       </DialogTitle>

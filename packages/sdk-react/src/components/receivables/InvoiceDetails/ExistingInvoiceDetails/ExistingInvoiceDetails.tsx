@@ -18,12 +18,12 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -33,6 +33,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   Menu,
   MenuItem,
   MenuProps,
@@ -224,14 +225,15 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
             <Grid item xs={6}>
               <Stack direction="row" alignItems="center" spacing={2}>
                 {dialogContext && (
-                  <IconWrapper
+                  <IconButton
                     edge="start"
                     color="inherit"
                     onClick={dialogContext?.onClose}
                     aria-label="close"
                     disabled={loading}
-                    showCloseIcon
-                  />
+                  >
+                    <CloseIcon />
+                  </IconButton>
                 )}
 
                 {receivable.status === 'recurring' ? (
