@@ -24,7 +24,7 @@ import {
 interface CreatePayableMenuProps {
   isCreateAllowed: boolean;
   onCreateInvoice: () => void;
-  handleFileUpload: (file: File) => void;
+  handleFileUpload: (file: File | FileList) => void;
 }
 
 export const CreatePayableMenu = ({
@@ -52,8 +52,21 @@ export const CreatePayableMenu = ({
     setDragIsOver(false);
 
     const droppedFiles = Array.from(event.dataTransfer.files);
+    const allowedTypes = [
+      'application/pdf',
+      'image/png',
+      'image/jpeg',
+      'image/tiff',
+    ];
 
-    handleFileUpload(droppedFiles[0]);
+    droppedFiles.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+        return;
+      }
+
+      handleFileUpload(file);
+    });
 
     closeMenu();
   };
@@ -202,12 +215,13 @@ export const CreatePayableMenu = ({
       </Menu>
       <FileInput
         accept="application/pdf, image/png, image/jpeg, image/tiff"
-        aria-label={t(i18n)`Upload payable file`}
+        aria-label={t(i18n)`Upload payable files`}
+        multiple
         onChange={(event) => {
-          const file = event.target.files?.item(0);
+          const files = event.target.files;
+          console.debug('Files selected:', files);
 
-          if (file) handleFileUpload(file);
-
+          if (files) handleFileUpload(files);
           closeMenu();
         }}
       />
