@@ -1,5 +1,11 @@
 # @team-monite/rollup-config
 
+## 1.2.0
+
+### Minor Changes
+
+- c2874803: update swc plugins and libs to the compatible versions
+
 ## 1.2.0-beta.0
 
 ### Minor Changes
