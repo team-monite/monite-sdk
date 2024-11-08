@@ -1,5 +1,5 @@
 import { ThemeConfig } from '@/core/theme/types';
-import type { Components } from '@mui/material/styles/components.js';
+import { Components } from '@mui/material/styles';
 import type {
   Palette,
   PaletteOptions,
