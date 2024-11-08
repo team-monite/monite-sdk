@@ -1,5 +1,27 @@
 # @monite/sdk-react
 
+## 3.17.0
+
+### Minor Changes
+
+- 8a3195dd: feat(DEV-12896): apply validation form API to the payable form
+- 14106eed: feat(DEV-12440): AP cards statuses
+- f39c1a25: feat(DEV-12623): manual payment record implementation
+- c2874803: update swc plugins and libs to the compatible versions
+- 62f54a82: feat: allow multiple files upload and drag
+- 1845626f: chore: combined both tables user roles and approvals & added extra fields and filters for approval policies
+
+### Patch Changes
+
+- 7a7b7d83: feat: allow multiple files upload on dragging
+- 1d2880a3: feat: extra validation for approval policy
+- 46dad74d: fix(DEV-12623): add more checks to manual payment records
+- 5370ff8a: chore(proposal): better typings system for monite.ts themesation file
+- 4f504a6d: fix: validation fixes for approval policies creation
+- e7ea8955: add reopened state to payables details form after rejected
+- Updated dependencies [c2874803]
+  - @monite/sdk-api@3.17.0
+
 ## 3.17.0-beta.1
 
 ### Minor Changes
