@@ -8,7 +8,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
-describe.skip('ApprovalRequestTable', () => {
+describe('ApprovalRequestTable', () => {
   describe('# Permissions', () => {
     test('should render access restricted message when user does not have access to approval requests', async () => {
       const monite = new MoniteSDK({
