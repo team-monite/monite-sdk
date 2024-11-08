@@ -1,14 +1,16 @@
-import { MoniteApprovalStatusChipProps } from '@/components/approvalPolicies/ApprovalStatusChip/ApprovalStatusChip';
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { type MoniteCounterpartStatusChipProps } from '@/components/counterparts/CounterpartStatusChip';
-import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
-import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
-import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import {
+  type MoniteApprovalRequestStatusChipProps,
+  type MoniteApprovalStatusChipProps,
+  type MoniteCounterpartStatusChipProps,
+  type MoniteInvoiceRecurrenceIterationStatusChipProps,
+  type MoniteInvoiceRecurrenceStatusChipProps,
+  type MoniteInvoiceStatusChipProps,
+  type MonitePayableDetailsInfoProps,
+  type MonitePayableStatusChipProps,
+  type MonitePayableTableProps,
+  type MoniteTablePaginationProps,
+} from '@/core/theme/types';
 import { type MoniteIconWrapperProps } from '@/ui/iconWrapper/IconWrapper';
-import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
