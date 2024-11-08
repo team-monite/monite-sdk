@@ -1,5 +1,19 @@
 # @monite/sdk-drop-in
 
+## 1.9.0
+
+### Minor Changes
+
+- c2874803: update swc plugins and libs to the compatible versions
+- 1845626f: chore: combined both tables user roles and approvals & added extra fields and filters for approval policies
+
+### Patch Changes
+
+- Updated dependencies [5370ff8a]
+- Updated dependencies [c2874803]
+  - @team-monite/sdk-themes@0.2.1
+  - @monite/sdk-api@3.17.0
+
 ## 1.9.0-beta.1
 
 ### Minor Changes
