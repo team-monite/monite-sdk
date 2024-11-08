@@ -1,5 +1,17 @@
 # @monite/sdk-drop-in
 
+## 1.7.0
+
+### Minor Changes
+
+- 61e288f6: update lingui swc plugin and nextjs versions
+- c2874803: update swc plugins and libs to the compatible versions
+
+### Patch Changes
+
+- Updated dependencies [c2874803]
+  - @monite/sdk-api@3.17.0
+
 ## 1.7.0-beta.1
 
 ### Minor Changes
