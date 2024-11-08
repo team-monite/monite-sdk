@@ -21,8 +21,8 @@ describe('MoniteProvider', () => {
   describe('# Themes', () => {
     test('should updated primary color after deep merge', () => {
       const partialTheme = {
-        palette: {
-          primary: { main: '#fff' },
+        colors: {
+          primary: '#fff',
         },
       };
 
@@ -36,7 +36,7 @@ describe('MoniteProvider', () => {
 
       waitFor(() =>
         expect(result.current.palette.primary.main).toBe(
-          partialTheme.palette.primary.main
+          partialTheme.colors.primary
         )
       );
     });
