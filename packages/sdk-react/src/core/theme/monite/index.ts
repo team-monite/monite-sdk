@@ -14,7 +14,8 @@ export const getTheme = (theme: ThemeConfig) => {
 
     typography: {
       fontFamily:
-        theme?.typography?.fontFamily ??
+        theme?.typography?.fontFamily ||
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
     },
   };
