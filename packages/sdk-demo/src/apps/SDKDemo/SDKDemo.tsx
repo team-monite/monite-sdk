@@ -117,6 +117,8 @@ const SDKDemoComponent = ({
                       neutral: '#cd12ae',
 
                       background: '#ead391',
+
+                      text: '#242dd3',
                     },
                     typography: {
                       fontFamily: 'monospace',
