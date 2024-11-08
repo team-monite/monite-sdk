@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   ReactNode,
   forwardRef,
@@ -117,7 +116,7 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       );
     }, [icon, fallbackIcon, themeShowCloseIcon]);
 
-    const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
       if (isDynamic) {
         setDisplayIcon(
@@ -164,6 +163,3 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
     );
   }
 );
-
-// eslint-disable-next-line lingui/no-unlocalized-strings
-IconWrapper.displayName = 'IconWrapper';
