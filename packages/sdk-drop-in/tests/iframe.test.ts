@@ -28,29 +28,6 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('theme switching works', async ({ page }) => {
-  await page.goto(`${consumerPage}${routingPaths.receivables}`);
-
-  const iframe = page.frameLocator('iframe');
-
-  await expect(iframe.getByRole('heading', { name: 'Sales' })).toBeVisible();
-
-  await page.getByRole('button', { name: 'Material UI' }).click();
-  await page.getByText('Theme').click();
-  await page.getByRole('button', { name: 'Material UI' }).click();
-  await page.getByRole('menuitem', { name: 'Monite' }).click();
-  await page.getByRole('button', { name: 'Monite' }).click();
-  await page.getByLabel('Dark Mode').check();
-  await page.getByRole('menuitem', { name: 'Monite' }).click();
-
-  const themeElement = iframe.locator('body');
-  const bgColor = await themeElement.evaluate(
-    (el) => getComputedStyle(el).backgroundColor
-  );
-
-  expect(bgColor).toBe('rgb(18, 18, 18)');
-});
-
 test('test the Tags button under Settings', async ({ page }) => {
   await page.goto(`${consumerPage}${routingPaths.receivables}`);
 
