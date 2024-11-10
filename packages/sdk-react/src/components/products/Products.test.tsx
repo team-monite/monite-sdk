@@ -30,7 +30,7 @@ interface DialogProps {
 }
 
 jest.mock('@/components/Dialog', () => ({
-  Dialog: ({ open, children }: DialogProps) => <>{children}</>,
+  Dialog: ({ children }: DialogProps) => <>{children}</>,
   useDialog: jest.fn(() => ({
     openDialog: jest.fn(),
     closeDialog: jest.fn(),
