@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   ReactNode,
   forwardRef,
@@ -10,7 +9,6 @@ import {
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
-import { SxProps } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
@@ -89,16 +87,15 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       showCloseIcon,
       ariaLabelOverride,
       isDynamic = false,
-      showCloseIcon: themeShowCloseIcon = true,
       ...props
     },
     ref
   ) => {
-    // const { showCloseIcon: themeShowCloseIcon = true } = useThemeProps({
-    //   props: { showCloseIcon },
-    //   // eslint-disable-next-line lingui/no-unlocalized-strings
-    //   name: 'MoniteIconWrapper',
-    // });
+    const { showCloseIcon: themeShowCloseIcon = true } = useThemeProps({
+      props: { showCloseIcon },
+      // eslint-disable-next-line lingui/no-unlocalized-strings
+      name: 'MoniteIconWrapper',
+    });
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
       icon ||
@@ -118,7 +115,7 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       );
     }, [icon, fallbackIcon, themeShowCloseIcon]);
 
-    const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
       if (isDynamic) {
         setDisplayIcon(
@@ -165,6 +162,3 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
     );
   }
 );
-
-// eslint-disable-next-line lingui/no-unlocalized-strings
-IconWrapper.displayName = 'IconWrapper';
