@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
@@ -21,6 +23,19 @@ import {
 } from '@testing-library/react';
 
 import { Products } from './Products';
+
+interface DialogProps {
+  open: boolean;
+  children: ReactNode;
+}
+
+jest.mock('@/components/Dialog', () => ({
+  Dialog: ({ open, children }: DialogProps) => <>{children}</>,
+  useDialog: jest.fn(() => ({
+    openDialog: jest.fn(),
+    closeDialog: jest.fn(),
+  })),
+}));
 
 describe('Products', () => {
   describe('# Permissions', () => {
@@ -132,12 +147,11 @@ describe('Products', () => {
 
       fireEvent.click(createButton);
 
-      const createTitle = /create new product/i;
-      const createTitleElement = screen.getByRole('heading', {
-        name: createTitle,
+      const createTitleElements = await screen.findAllByRole('heading', {
+        name: /create new product/i,
       });
 
-      expect(createTitleElement).toBeInTheDocument();
+      expect(createTitleElements[0]).toBeInTheDocument();
     });
 
     test('should appear "edit" and "delete" buttons when we click on right action button', async () => {
