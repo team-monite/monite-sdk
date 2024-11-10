@@ -72,8 +72,9 @@ describe('Products', () => {
 
       await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
 
-      const createProductButton = screen.findByText(/Create New/i);
-
+      const createProductButton = screen.findByRole('button', {
+        name: /Create New/i,
+      });
       await expect(createProductButton).resolves.toBeInTheDocument();
       await expect(createProductButton).resolves.toBeDisabled();
 
