@@ -9,6 +9,7 @@ import {
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
+import { SxProps, useThemeProps } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
