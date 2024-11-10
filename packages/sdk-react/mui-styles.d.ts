@@ -7,7 +7,7 @@ import { type MonitePayableStatusChipProps } from '@/components/payables/Payable
 import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
-import { type MoniteIconWrapperProps } from '@/ui/iconWrapper';
+import { type IconWrapperProps } from '@/ui/iconWrapper/IconWrapper';
 import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
@@ -60,7 +60,7 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
     MonitePayableTable: Partial<MonitePayableTableProps>;
     MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
-    MoniteIconWrapper: Partial<MoniteIconWrapperProps>;
+    MoniteIconWrapper: Partial<IconWrapperProps>;
   }
 
   interface MoniteOptions {
