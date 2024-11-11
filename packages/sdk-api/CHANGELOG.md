@@ -1,5 +1,11 @@
 # @monite/sdk-api
 
+## 3.17.0
+
+### Minor Changes
+
+- c2874803: update swc plugins and libs to the compatible versions
+
 ## 3.17.0-beta.1
 
 ### Minor Changes

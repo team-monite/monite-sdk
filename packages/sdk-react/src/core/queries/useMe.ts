@@ -4,6 +4,7 @@ import {
   isOrganizationEntity,
 } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { VAT_SUPPORTED_COUNTRIES } from '@/enums/VatCountries';
 
 /**
  * @note We are deviating from the default query configuration because the data
@@ -40,8 +41,9 @@ export const useMyEntity = () => {
     }
   );
 
-  const isUSEntity = Boolean(
-    queryProps.data?.address && queryProps.data?.address.country === 'US'
+  const isVatSupported = Boolean(
+    queryProps.data?.address &&
+      VAT_SUPPORTED_COUNTRIES.includes(queryProps.data?.address.country)
   );
 
   const entityName = getEntityName(queryProps.data);
@@ -49,7 +51,7 @@ export const useMyEntity = () => {
   return {
     ...queryProps,
     entityName,
-    isUSEntity,
+    isNonVatSupported: !isVatSupported,
   };
 };
 

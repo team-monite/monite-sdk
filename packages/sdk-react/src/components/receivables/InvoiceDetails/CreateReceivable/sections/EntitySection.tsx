@@ -69,7 +69,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   const {
     data: entity,
     isLoading: isEntityLoading,
-    isUSEntity,
+    isNonVatSupported,
   } = useMyEntity();
 
   /** Describes if `Same as invoice date` checkbox is checked */
@@ -98,7 +98,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
       <Card variant="outlined">
         <CardContent>
           <Grid container spacing={3}>
-            {!isUSEntity && (
+            {!isNonVatSupported && (
               <Grid item {...gridItemProps}>
                 <Controller
                   name="entity_vat_id_id"

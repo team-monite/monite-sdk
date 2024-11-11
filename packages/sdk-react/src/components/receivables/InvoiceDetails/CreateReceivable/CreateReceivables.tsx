@@ -12,6 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -23,7 +24,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -58,10 +58,12 @@ const CreateReceivablesBase = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, monite } = useMoniteContext();
-  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
+  const { isNonVatSupported, isLoading: isEntityLoading } = useMyEntity();
 
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n, isUSEntity)),
+    resolver: yupResolver(
+      getCreateInvoiceValidationSchema(i18n, isNonVatSupported)
+    ),
     defaultValues: useMemo(
       () => ({
         type,
@@ -125,14 +127,14 @@ const CreateReceivablesBase = ({
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={dialogContext?.onClose}
               aria-label="close"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
           <Box sx={{ marginLeft: 'auto' }}>
             <Button
@@ -194,13 +196,13 @@ const CreateReceivablesBase = ({
                   line_items: values.line_items.map((item) => ({
                     quantity: item.quantity,
                     product_id: item.product_id,
-                    ...(isUSEntity
+                    ...(isNonVatSupported
                       ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
                       : { vat_rate_id: item.vat_rate_id }),
                   })),
                   memo: values.memo,
                   vat_exemption_rationale: values.vat_exemption_rationale,
-                  ...(!isUSEntity && values.entity_vat_id_id
+                  ...(!isNonVatSupported && values.entity_vat_id_id
                     ? { entity_vat_id_id: values.entity_vat_id_id }
                     : {}),
                   fulfillment_date: values.fulfillment_date
@@ -235,7 +237,7 @@ const CreateReceivablesBase = ({
                 defaultCurrency={settings?.currency?.default}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
-                isUSEntity={isUSEntity}
+                isNonVatSupported={isNonVatSupported}
               />
               <PaymentSection disabled={createReceivable.isPending} />
               <ReminderSection

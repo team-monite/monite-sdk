@@ -23,15 +23,24 @@ export const ManualPaymentRecordDetails = ({
   const dateTimeFormat = useDateTimeFormat();
   const { formatCurrencyToDisplay } = useCurrencies();
 
+  const dateTimeWithReplacedTime = new Date(
+    paymentRecords.payment_date ?? ''
+  ).setHours(
+    paymentRecords.payment_time?.getHours() ?? 0,
+    paymentRecords.payment_time?.getMinutes() ?? 0
+  );
+
   const dateTime = i18n.date(
-    new Date(paymentRecords.payment_date ?? ''),
+    new Date(dateTimeWithReplacedTime),
     dateTimeFormat
   );
 
   const { data: entityUser, isLoading: isEntityUserLoading } =
     useEntityUserByAuthToken();
 
-  const paymentAuthor = `${entityUser?.first_name} ${entityUser?.last_name}`;
+  const paymentAuthor = `${entityUser?.first_name ?? ''} ${
+    entityUser?.last_name ?? ''
+  }`;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -62,7 +71,10 @@ export const ManualPaymentRecordDetails = ({
         )`Manual payment record`}</Typography>
         <Box>
           <Typography variant="h2">
-            {formatCurrencyToDisplay(paymentRecords.amount, invoice.currency)}
+            {formatCurrencyToDisplay(
+              paymentRecords?.amount ?? 0,
+              invoice.currency
+            )}
           </Typography>
           <Typography variant="body1">{t(
             i18n
