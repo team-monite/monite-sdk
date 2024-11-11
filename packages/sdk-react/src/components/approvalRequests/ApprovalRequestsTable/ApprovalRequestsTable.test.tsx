@@ -59,6 +59,7 @@ describe('ApprovalRequestTable', () => {
   });
 
   describe('# Public API', () => {
+    //TODO: fix this test after we solve problem with multiple spinners on waitUntilTableIsLoaded
     test.skip('should trigger an `onRowClick` callback when clicking on a row', async () => {
       const onRowClickMock = jest.fn();
 

@@ -57,6 +57,7 @@ describe('CreateReceivables', () => {
     expect(error).toBeInTheDocument();
   });
 
+  //TODO: fix this test after we solve problem with multiple spinners on waitUntilTableIsLoaded
   test.skip('newly created invoice should be opened after creation', async () => {
     const queryClient = new QueryClient({
       defaultOptions: {
@@ -233,6 +234,7 @@ describe('CreateReceivables', () => {
       expect(await screen.findByText(/Select invoice currency/i));
     });
 
+    //TODO: fix this test after we solve problem with multiple spinners on waitUntilTableIsLoaded
     test.skip('should show "Create product" dialog when the user clicks on "Add item" button and then "Create new" button', async () => {
       const onCreateMock = jest.fn();
 

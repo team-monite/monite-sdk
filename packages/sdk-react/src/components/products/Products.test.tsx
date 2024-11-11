@@ -180,7 +180,7 @@ describe('Products', () => {
       expect(editButton).toBeInTheDocument();
       expect(deleteButton).toBeInTheDocument();
     });
-
+    //TODO: fix this test after we solve problem with multiple spinners on waitUntilTableIsLoaded
     test.skip('should appear delete modal when we click on "delete" button', async () => {
       renderWithClient(<Products />);
 
