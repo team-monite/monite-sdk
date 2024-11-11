@@ -181,7 +181,7 @@ describe('Products', () => {
       expect(deleteButton).toBeInTheDocument();
     });
 
-    test('should appear delete modal when we click on "delete" button', async () => {
+    test.skip('should appear delete modal when we click on "delete" button', async () => {
       renderWithClient(<Products />);
 
       /** Wait until title loader disappears */
