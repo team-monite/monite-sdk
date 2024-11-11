@@ -242,10 +242,17 @@ describe('CreateReceivables', () => {
 
       await waitUntilTableIsLoaded();
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add item' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Create new' }));
+      const addItemButton = screen.getByRole('button', { name: /Add item/i });
+      fireEvent.click(addItemButton);
 
-      expect(await screen.findByText(/Create New Product/i));
+      const createNewButton = await screen.findByRole('button', {
+        name: /Create new/i,
+      });
+      fireEvent.click(createNewButton);
+
+      expect(
+        await screen.findByText(/Create New Product/i)
+      ).toBeInTheDocument();
     });
   });
 

@@ -42,20 +42,20 @@ describe('Products', () => {
     test('support "read" and "create" permissions', async () => {
       renderWithClient(<Products />);
 
-      /** Wait until title loader disappears */
       await waitUntilTableIsLoaded();
 
-      /** Wait until table loader disappears */
-      await waitUntilTableIsLoaded();
+      const createProductButtons = await screen.findAllByRole('button', {
+        name: /Create New/i,
+      });
+      expect(createProductButtons[0]).toBeInTheDocument();
 
-      const createProductButton = screen.findByText(/Create New/i);
+      expect(createProductButtons[0]).not.toBeDisabled();
 
-      await expect(createProductButton).resolves.toBeInTheDocument();
-      await expect(createProductButton).resolves.not.toBeDisabled();
-
-      const productCells = screen.findAllByText(productsListFixture[0].name);
-      await expect(productCells).resolves.toBeDefined();
-    }, 10_000);
+      const productCells = await screen.findAllByText(
+        productsListFixture[0].name
+      );
+      expect(productCells.length).toBeGreaterThan(0);
+    });
 
     test('support empty permissions', async () => {
       const monite = new MoniteSDK({
