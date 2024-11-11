@@ -59,7 +59,7 @@ describe('ApprovalRequestTable', () => {
   });
 
   describe('# Public API', () => {
-    test('should trigger a `onRowClick` callback when click on a row', async () => {
+    test('should trigger an `onRowClick` callback when clicking on a row', async () => {
       const onRowClickMock = jest.fn();
 
       renderWithClient(<ApprovalRequestsTable onRowClick={onRowClickMock} />);
@@ -67,13 +67,14 @@ describe('ApprovalRequestTable', () => {
       const firstApproval = approvalRequestsListFixture[0];
       expect(firstApproval.id).toBeDefined();
 
-      const firstRow = await waitFor(async () => {
-        const rows = await screen.findAllByRole('row');
-        expect(rows.length).toBeGreaterThan(1);
-        return rows[1]; // skip the header row
+      const rows = await waitFor(async () => {
+        const tableRows = await screen.findAllByRole('row');
+        expect(tableRows.length).toBeGreaterThan(1); // Ensure data rows are loaded
+        return tableRows;
       });
 
-      fireEvent.click(firstRow);
+      const firstDataRow = rows[1];
+      fireEvent.click(firstDataRow);
 
       expect(onRowClickMock).toHaveBeenCalledWith(firstApproval.id);
     });

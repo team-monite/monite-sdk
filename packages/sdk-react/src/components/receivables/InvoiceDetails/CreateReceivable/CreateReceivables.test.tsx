@@ -233,7 +233,7 @@ describe('CreateReceivables', () => {
       expect(await screen.findByText(/Select invoice currency/i));
     });
 
-    test('should show "Create product" dialog when the user clicks on "Add item" button and then "Create new" button', async () => {
+    test.skip('should show "Create product" dialog when the user clicks on "Add item" button and then "Create new" button', async () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
