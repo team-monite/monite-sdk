@@ -8,6 +8,7 @@ import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -26,7 +27,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  IconButton,
 } from '@mui/material';
 
 import { CounterpartAddressForm } from '../../CounterpartAddressForm';
@@ -184,13 +184,13 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Counterpart Close`}
               onClick={dialogContext.onClose}
               color="inherit"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Grid>
       </Grid>

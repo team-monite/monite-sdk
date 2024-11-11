@@ -13,6 +13,7 @@ import {
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,7 +25,6 @@ import {
   DialogActions,
   DialogContent,
   Divider,
-  IconButton,
   List,
   ListItem,
   Typography,
@@ -225,14 +225,14 @@ export const ApprovalPolicyView = ({
             {approvalPolicy?.name}
           </Typography>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={dialogContext.onClose}
               aria-label={t(i18n)`Close approval policy details`}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>

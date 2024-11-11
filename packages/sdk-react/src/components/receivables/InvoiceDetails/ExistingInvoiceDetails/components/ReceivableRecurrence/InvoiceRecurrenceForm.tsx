@@ -6,6 +6,7 @@ import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -19,7 +20,6 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  IconButton,
   MenuItem,
   Stack,
   Typography,
@@ -185,14 +185,14 @@ export const InvoiceRecurrenceForm = ({
               : t(i18n)`Convert invoice into recurring template`}
           </Typography>
 
-          <IconButton
+          <IconWrapper
             edge="start"
             color="inherit"
             onClick={onCancel}
             aria-label={t(i18n)`Close recurrence details`}
           >
             <CloseIcon />
-          </IconButton>
+          </IconWrapper>
         </Box>
       </DialogTitle>
       <Divider />
