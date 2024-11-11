@@ -22,7 +22,7 @@ export type CreateReceivablesProductsFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceProductsValidationSchema>
 >;
 
-const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
+const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
   yup
     .array()
     .of(
@@ -48,7 +48,7 @@ const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
           .string()
           .label(t(i18n)`Product`)
           .required(),
-        ...(isUSEntity
+        ...(isNonVatSupported
           ? {
               vat_rate_value: yup.number().label(t(i18n)`VAT`),
               vat_rate_id: yup.string().label(t(i18n)`VAT`),
@@ -105,7 +105,7 @@ const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
 
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
-  isUSEntity: boolean
+  isNonVatSupported: boolean
 ) =>
   yup.object({
     type: yup.string().required(),
@@ -114,7 +114,7 @@ export const getCreateInvoiceValidationSchema = (
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: isUSEntity
+    entity_vat_id_id: isNonVatSupported
       ? yup.string().label(t(i18n)`VAT ID`)
       : yup
           .string()
@@ -142,7 +142,7 @@ export const getCreateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Payment terms`)
       .required(),
-    line_items: getLineItemsSchema(i18n, isUSEntity),
+    line_items: getLineItemsSchema(i18n, isNonVatSupported),
     overdue_reminder_id: yup
       .string()
       .optional()
@@ -157,7 +157,7 @@ export const getCreateInvoiceValidationSchema = (
 
 export const getUpdateInvoiceValidationSchema = (
   i18n: I18n,
-  isUSEntity: boolean
+  isNonVatSupported: boolean
 ) =>
   yup.object({
     counterpart_id: yup
@@ -165,7 +165,7 @@ export const getUpdateInvoiceValidationSchema = (
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: isUSEntity
+    entity_vat_id_id: isNonVatSupported
       ? yup.string().label(t(i18n)`VAT ID`)
       : yup
           .string()
@@ -193,7 +193,7 @@ export const getUpdateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Payment terms`)
       .required(),
-    line_items: getLineItemsSchema(i18n, isUSEntity),
+    line_items: getLineItemsSchema(i18n, isNonVatSupported),
     overdue_reminder_id: yup
       .string()
       .optional()

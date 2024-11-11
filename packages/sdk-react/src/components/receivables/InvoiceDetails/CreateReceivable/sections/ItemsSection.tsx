@@ -143,14 +143,14 @@ interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
   onCurrencyChanged: (currency: CurrencyEnum) => void;
-  isUSEntity: boolean;
+  isNonVatSupported: boolean;
 }
 
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
   onCurrencyChanged,
-  isUSEntity,
+  isNonVatSupported,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const {
@@ -193,7 +193,7 @@ export const ItemsSection = ({
   } = useCreateInvoiceProductsTable({
     lineItems: [...watchedLineItems],
     formatCurrencyToDisplay,
-    isUSEntity,
+    isNonVatSupported: isNonVatSupported,
   });
 
   const generalError = useMemo(() => {
@@ -258,7 +258,7 @@ export const ItemsSection = ({
                   <TableCell align="right">{t(i18n)`Price`}</TableCell>
                   <TableCell align="right">{t(i18n)`Amount`}</TableCell>
                   <TableCell>
-                    {isUSEntity ? t(i18n)`Tax` : t(i18n)`VAT`}
+                    {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
@@ -306,7 +306,7 @@ export const ItemsSection = ({
                       />
                     </TableCell>
                     <TableCell>
-                      {isUSEntity ? (
+                      {isNonVatSupported ? (
                         <Controller
                           name={`line_items.${index}.tax_rate_value`}
                           control={control}

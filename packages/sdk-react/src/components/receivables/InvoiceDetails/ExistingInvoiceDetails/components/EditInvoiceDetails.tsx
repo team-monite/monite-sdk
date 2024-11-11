@@ -64,10 +64,12 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
-  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
+  const { isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
 
   const methods = useForm<UpdateReceivablesFormProps>({
-    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n, isUSEntity)),
+    resolver: yupResolver(
+      getUpdateInvoiceValidationSchema(i18n, isNonVatSupported)
+    ),
     defaultValues: {
       /** Customer section */
       counterpart_id: invoice.counterpart_id,
@@ -250,7 +252,7 @@ const EditInvoiceDetailsContent = ({
               <CustomerSection disabled={isLoading} />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
-                isUSEntity={isUSEntity}
+                isNonVatSupported={isNonVatSupported}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
               />
