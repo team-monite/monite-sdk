@@ -20,6 +20,7 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
@@ -33,7 +34,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   MenuItem,
   Stack,
   Typography,
@@ -643,14 +643,14 @@ export const ApprovalPolicyForm = ({
             </Typography>
           )}
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={dialogContext.onClose}
               aria-label={t(i18n)`Close approval policy details`}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>

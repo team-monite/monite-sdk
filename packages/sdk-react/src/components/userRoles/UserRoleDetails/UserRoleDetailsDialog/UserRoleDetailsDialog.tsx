@@ -15,6 +15,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -29,7 +30,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Link,
   Stack,
   styled,
@@ -364,14 +364,14 @@ export const UserRoleDetailsDialog = ({
               : t(i18n)`Create User Role`}
           </Typography>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={dialogContext.onClose}
               aria-label={t(i18n)`Close role details`}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>
