@@ -5,6 +5,7 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CachedIcon from '@mui/icons-material/Cached';
+import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
@@ -35,8 +36,9 @@ const ErrorBase = (props: ErrorProps) => {
               onClick={dialogContext.onClose}
               color="inherit"
               aria-label="close"
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconWrapper>
           </Grid>
         </Grid>
       )}

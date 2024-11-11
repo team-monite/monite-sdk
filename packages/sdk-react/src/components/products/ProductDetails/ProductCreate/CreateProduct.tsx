@@ -10,6 +10,7 @@ import { useCurrencies } from '@/core/hooks';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
   DialogActions,
@@ -98,8 +99,9 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
               aria-label={t(i18n)`Create New Product Close`}
               onClick={dialogContext.onClose}
               color="inherit"
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconWrapper>
           )}
         </Grid>
       </Grid>

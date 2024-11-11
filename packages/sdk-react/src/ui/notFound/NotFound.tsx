@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
@@ -24,9 +25,10 @@ export const NotFound = ({ title, description }: NotFoundProps) => {
               onClick={dialogContext.onClose}
               color="inherit"
               ariaLabelOverride="close"
-              showCloseIcon
               aria-label="close"
-            />
+            >
+              <CloseIcon />
+            </IconWrapper>
           </Grid>
         </Grid>
       )}

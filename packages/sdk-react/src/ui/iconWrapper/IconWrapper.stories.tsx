@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
@@ -10,11 +11,6 @@ const meta: Meta<typeof IconWrapper> = {
   title: 'components/IconWrapper',
   component: IconWrapper,
   argTypes: {
-    showCloseIcon: {
-      control: 'boolean',
-      description: 'Toggle between Close (X) and Arrow icon',
-      defaultValue: true,
-    },
     tooltip: {
       control: 'text',
       description: 'Tooltip text that displays on hover',
@@ -47,7 +43,6 @@ type Story = StoryObj<typeof IconWrapper>;
 
 export const Default: Story = {
   args: {
-    showCloseIcon: true,
     tooltip: 'Close the dialog',
   },
   render: (args) => <IconWrapper {...args} onClick={action('onClick')} />,
@@ -55,7 +50,6 @@ export const Default: Story = {
 
 export const ArrowIcon: Story = {
   args: {
-    showCloseIcon: false,
     tooltip: 'Go back',
   },
   render: (args) => <IconWrapper {...args} onClick={action('onClick')} />,
@@ -63,7 +57,6 @@ export const ArrowIcon: Story = {
 
 export const WithTooltip: Story = {
   args: {
-    showCloseIcon: true,
     tooltip: 'Custom Tooltip Example',
     color: 'primary',
   },
@@ -72,7 +65,6 @@ export const WithTooltip: Story = {
 
 export const DynamicIcon: Story = {
   args: {
-    showCloseIcon: true,
     isDynamic: true,
     tooltip: 'Hover to swap icon',
   },
@@ -92,11 +84,9 @@ const ToggleableIconWrapper = () => {
 
   return (
     <>
-      <IconWrapper
-        showCloseIcon={showCloseIcon}
-        onClick={action('onClick')}
-        tooltip="Toggleable Icon"
-      />
+      <IconWrapper onClick={action('onClick')} tooltip="Toggleable Icon">
+        <CloseIcon />
+      </IconWrapper>
       <Button onClick={() => setShowCloseIcon(!showCloseIcon)}>
         Toggle Icon
       </Button>

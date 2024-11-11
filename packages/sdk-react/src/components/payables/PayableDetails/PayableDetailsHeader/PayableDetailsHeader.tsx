@@ -7,6 +7,7 @@ import { useCounterpartById } from '@/core/queries';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -120,9 +121,10 @@ export const PayableDetailsHeader = ({
             color="inherit"
             onClick={onClose}
             ariaLabelOverride={t(i18n)`Close payable details`}
-            showCloseIcon
             tooltip={t(i18n)`Close payable details`}
-          />
+          >
+            <CloseIcon />
+          </IconWrapper>
         )}
 
         <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>

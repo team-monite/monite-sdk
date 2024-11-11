@@ -5,6 +5,7 @@ import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CloseIcon from '@mui/icons-material/Close';
 import LockIcon from '@mui/icons-material/Lock';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
@@ -36,8 +37,9 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
               onClick={dialogContext.onClose}
               color="inherit"
               aria-label="close"
-              showCloseIcon
-            />
+            >
+              <CloseIcon />
+            </IconWrapper>
           </Grid>
         </Grid>
       )}

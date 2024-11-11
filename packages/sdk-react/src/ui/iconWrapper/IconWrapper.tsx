@@ -1,4 +1,4 @@
-import {
+import React, {
   ReactNode,
   forwardRef,
   useState,
@@ -20,11 +20,12 @@ interface IconWrapperEvents {
   onBlur?: (event: FocusEvent<HTMLButtonElement>) => void;
 }
 
-export interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
+export interface MoniteIconWrapperProps
+  extends IconButtonProps,
+    IconWrapperEvents {
   icon?: ReactNode;
   fallbackIcon?: ReactNode;
   tooltip?: string;
-  showCloseIcon?: boolean;
   color?:
     | 'inherit'
     | 'default'
@@ -43,10 +44,10 @@ export interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
  * IconWrapper component
  *
  * A customizable wrapper for icon buttons that allows:
- * - Theming compatibility with Material UI.
- * - Accessibility features including customizable `aria-label`.
+ * - Compatibility with Material UI theming.
+ * - Accessibility features, including a customizable `aria-label`.
  * - Optional tooltips for additional context.
- * - Dynamic swapping of icons on hover.
+ * - Dynamic icon swapping on hover if `isDynamic` is enabled.
  * - Integration of custom event handlers (onClick, onHover, onFocus, onBlur).
  *
  * @component
@@ -56,26 +57,27 @@ export interface IconWrapperProps extends IconButtonProps, IconWrapperEvents {
  *   fallbackIcon={<ArrowBackIcon />}
  *   tooltip="Go back"
  *   onClick={() => console.log('Icon clicked')}
- *   showCloseIcon={false}
  *   isDynamic={true}
  * />
  *
- * @param {ReactNode} [icon] - A custom icon to display in place of default icons.
- * @param {ReactNode} [fallbackIcon] - A fallback icon if `icon` is not provided, defaults to `CloseIcon` or `ArrowBackIcon` based on `showCloseIcon`.
+ * @param {ReactNode} [icon] - A custom icon to display, which can be any React node, SVG, image, or component.
+ * @param {ReactNode} [fallbackIcon] - A fallback icon used when `icon` is not provided.
  * @param {string} [tooltip] - Tooltip text displayed on hover.
- * @param {boolean} [showCloseIcon=true] - Controls default icon appearance. `true` shows `CloseIcon`; `false` shows `ArrowBackIcon`.
  * @param {'inherit' | 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'} [color="default"] - Icon color, using MUI theme colors.
  * @param {SxProps<Theme>} [sx] - MUI system properties for custom styling.
  * @param {() => void} onClick - Callback executed on button click.
  * @param {boolean} [isDynamic=false] - Determines if icon should change on hover.
- * @param {string} [ariaLabelOverride] - Custom `aria-label` for screen readers, default is based on `showCloseIcon`.
+ * @param {string} [ariaLabelOverride] - Custom `aria-label` for screen readers, defaults based on icon.
  * @param {React.MouseEvent<HTMLButtonElement>} [onHover] - Callback for hover events.
  * @param {React.FocusEvent<HTMLButtonElement>} [onFocus] - Callback for focus events.
  * @param {React.FocusEvent<HTMLButtonElement>} [onBlur] - Callback for blur events.
  *
  * @returns {JSX.Element} The IconWrapper component
  */
-export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
+export const IconWrapper = forwardRef<
+  HTMLButtonElement,
+  MoniteIconWrapperProps
+>(
   (
     {
       icon,
@@ -85,61 +87,42 @@ export const IconWrapper = forwardRef<HTMLButtonElement, IconWrapperProps>(
       onHover,
       onFocus,
       onBlur,
-      showCloseIcon,
       ariaLabelOverride,
       isDynamic = false,
       ...props
     },
     ref
   ) => {
-    const { showCloseIcon: themeShowCloseIcon = true } = useThemeProps({
-      props: { showCloseIcon },
-      // eslint-disable-next-line lingui/no-unlocalized-strings
+    const themeProps = useThemeProps({
+      props: { icon, fallbackIcon },
       name: 'MoniteIconWrapper',
     });
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
-      icon ||
-        fallbackIcon ||
-        (themeShowCloseIcon ? <CloseIcon /> : <ArrowBackIcon />)
+      themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
     );
 
     useEffect(() => {
       setDisplayIcon(
-        icon ||
-          fallbackIcon ||
-          (themeShowCloseIcon ? (
-            <IconWrapper showCloseIcon />
-          ) : (
-            <ArrowBackIcon />
-          ))
+        themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
       );
-    }, [icon, fallbackIcon, themeShowCloseIcon]);
+    }, [themeProps.icon, themeProps.fallbackIcon]);
 
     const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
       if (isDynamic) {
-        setDisplayIcon(
-          showCloseIcon ? <ArrowBackIcon /> : <IconWrapper showCloseIcon />
-        );
+        setDisplayIcon(<ArrowBackIcon />);
       }
     };
 
     const handleMouseLeave = () => {
       setDisplayIcon(
-        icon ||
-          fallbackIcon ||
-          (themeShowCloseIcon ? (
-            <IconWrapper showCloseIcon />
-          ) : (
-            <ArrowBackIcon />
-          ))
+        themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
       );
     };
 
-    const ariaLabel =
-      // eslint-disable-next-line lingui/no-unlocalized-strings
-      ariaLabelOverride || (themeShowCloseIcon ? 'Close' : 'Back');
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    const ariaLabel = ariaLabelOverride || 'Icon button';
 
     const renderIconButton = () => (
       <IconButton
