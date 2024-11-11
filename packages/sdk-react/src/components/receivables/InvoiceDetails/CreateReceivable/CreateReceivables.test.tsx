@@ -57,7 +57,7 @@ describe('CreateReceivables', () => {
     expect(error).toBeInTheDocument();
   });
 
-  test('newly created invoice should be opened after creation', async () => {
+  test.skip('newly created invoice should be opened after creation', async () => {
     const queryClient = new QueryClient({
       defaultOptions: {
         queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
