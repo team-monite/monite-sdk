@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -17,6 +18,7 @@ export const PayablesTableAction = ({
   payable,
   onPay,
 }: PayablesTableActionProps) => {
+  const { root } = useRootElements();
   const { i18n } = useLingui();
   const { data: isPayAllowed } = useIsActionAllowed({
     method: 'payable',
@@ -57,11 +59,7 @@ export const PayablesTableAction = ({
           {t(i18n)`Pay`}
         </Button>
 
-        <Modal
-          open={modalOpen}
-          onClose={handleCloseModal}
-          container={document.body}
-        >
+        <Modal open={modalOpen} onClose={handleCloseModal} container={root}>
           <Box
             sx={{
               position: 'absolute',
