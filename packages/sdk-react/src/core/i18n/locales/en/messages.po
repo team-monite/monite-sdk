@@ -4008,6 +4008,10 @@ msgstr "Linked documents"
 msgid "Lithuania"
 msgstr "Lithuania"
 
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:86
+msgid "Loading payment page..."
+msgstr "Loading payment page..."
+
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:113
 msgid "Loading..."
 msgstr "Loading..."
@@ -4572,6 +4576,10 @@ msgstr "No overdue reminders available"
 msgid "No Payables"
 msgstr "No Payables"
 
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:124
+msgid "No payment link found for this payable. Please, create a payment link first."
+msgstr "No payment link found for this payable. Please, create a payment link first."
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:226
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
@@ -4865,7 +4873,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:225
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:559
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:109
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:45
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:59
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:227
 msgid "Pay"
