@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -23,34 +23,29 @@ export const PayablesTableAction = ({
   onPay,
 }: PayablesTableActionProps) => {
   const { i18n } = useLingui();
-
   const { data: isPayAllowed } = useIsActionAllowed({
     method: 'payable',
     action: 'pay',
     entityUserId: payable.was_created_by_user_id,
   });
 
-  const { handlePay, isPaymentLinkAvailable } = usePaymentHandler(payable);
+  const { handlePay } = usePaymentHandler(payable);
 
-  const handleClick = () => {
-    const paymentPageUrl = handlePay();
-    if (paymentPageUrl && onPay) {
-      onPay(payable.id);
-    }
-  };
-
-  if (
-    isPayAllowed &&
-    payable.status === 'waiting_to_be_paid' &&
-    isPaymentLinkAvailable
-  ) {
+  if (isPayAllowed && payable.status === 'waiting_to_be_paid') {
     return (
       <Button
         variant="outlined"
         size="small"
         onClick={(e) => {
+          /**
+           * We have to stop propagation to disable
+           *  `onRowClick` callback when the user
+           *  clicks on the `Pay` button
+           */
           e.stopPropagation();
-          handleClick();
+
+          onPay?.(payable.id);
+          handlePay();
         }}
       >
         {t(i18n)`Pay`}
@@ -75,11 +70,14 @@ export const usePaymentHandler = (
 
   const paymentLinkId = paymentIntentQuery.data?.data?.[0]?.payment_link_id;
 
-  const paymentLinkQuery = paymentLinkId
-    ? api.paymentLinks.getPaymentLinksId.useQuery({
-        path: { payment_link_id: paymentLinkId },
-      })
-    : null;
+  const paymentLinkQuery = api.paymentLinks.getPaymentLinksId.useQuery(
+    {
+      path: { payment_link_id: paymentLinkId || '' },
+    },
+    {
+      enabled: !!paymentLinkId,
+    }
+  );
 
   const handlePay = () => {
     const paymentPageUrl = paymentLinkQuery?.data?.payment_page_url;
