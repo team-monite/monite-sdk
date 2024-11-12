@@ -12,6 +12,7 @@ import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 describe('Receivables', () => {
   describe('# Permissions', () => {
@@ -36,6 +37,10 @@ describe('Receivables', () => {
 
       await expect(createInvoiceButton).resolves.toBeInTheDocument();
       await expect(createInvoiceButton).resolves.not.toBeDisabled();
+
+      const invoicesTab = await screen.findByRole('tab', { name: /invoices/i });
+
+      await userEvent.click(invoicesTab);
 
       const invoiceCells = screen.findAllByText(/INV-/);
 
@@ -107,6 +112,10 @@ describe('Receivables', () => {
       const createInvoiceButton = screen.findByRole('button', {
         name: t`Create Invoice`,
       });
+
+      const invoicesTab = await screen.findByRole('tab', { name: /invoices/i });
+
+      await userEvent.click(invoicesTab);
 
       await expect(createInvoiceButton).resolves.toBeInTheDocument();
       await expect(createInvoiceButton).resolves.not.toBeDisabled();

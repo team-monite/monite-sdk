@@ -8,6 +8,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useInvoiceDetails } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { useDateFormat } from '@/utils/MoniteOptions';
@@ -24,7 +25,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -179,12 +179,12 @@ const ExistingReceivableDetailsBase = (
             <InvoiceStatusChip status={invoice.status} />
           </Box>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Close invoice details`}
               onClick={dialogContext.onClose}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>

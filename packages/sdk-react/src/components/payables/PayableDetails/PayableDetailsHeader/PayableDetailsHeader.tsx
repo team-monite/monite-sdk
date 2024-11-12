@@ -4,6 +4,7 @@ import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
 import { useCounterpartById } from '@/core/queries';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,7 +13,6 @@ import {
   Button,
   ButtonProps,
   DialogTitle,
-  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -116,14 +116,15 @@ export const PayableDetailsHeader = ({
     <DialogTitle sx={{ position: 'relative' }} className={className}>
       <Toolbar>
         {dialogContext?.isDialogContent && (
-          <IconButton
+          <IconWrapper
             edge="start"
             color="inherit"
             onClick={onClose}
-            aria-label={t(i18n)`Close payable details`}
+            ariaLabelOverride={t(i18n)`Close payable details`}
+            tooltip={t(i18n)`Close payable details`}
           >
             <CloseIcon />
-          </IconButton>
+          </IconWrapper>
         )}
 
         <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>

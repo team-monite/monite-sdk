@@ -4,26 +4,52 @@ import { CreditNotesTable } from '@/components';
 import { InvoicesTable } from '@/components';
 import { QuotesTable } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import {
+  ReceivableFilterType,
+  ReceivablesTabFilter,
+} from '@/components/receivables/ReceivablesTable/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs } from '@mui/material';
-
-interface ReceivablesTableUncontrolledProps {
-  tab?: undefined;
-  onTabChange?: undefined;
-}
+import { useThemeProps } from '@mui/material/styles';
 
 interface ReceivablesTableControlledProps {
-  /** Active selected tab */
-  tab: ReceivablesTableTabEnum;
-
   /** Event handler for tab change */
-  onTabChange: (tab: ReceivablesTableTabEnum) => void;
+  onTabChange: (tab: number) => void;
+
+  /** Active-selected tab */
+  tab: number;
 }
 
-export type ReceivablesTableProps = {
+interface ReceivablesTableUncontrolledProps {
+  /** Active-selected tab */
+  tab?: number;
+  onTabChange?: never;
+}
+
+/**
+ * Receivables Table props for MUI theming
+ */
+export interface MoniteReceivablesTableProps {
+  /** Active-selected tab */
+  tab?: number;
+
+  /**
+   * The tabs to display in the ReceivablesTable.
+   * By default, the component will display tabs for Invoices, Quotes, and Credit Notes.
+   */
+  tabs?: Array<MoniteReceivablesTab>;
+}
+
+export enum ReceivablesTableTabEnum {
+  Quotes,
+  Invoices,
+  CreditNotes,
+}
+
+interface ReceivablesTableBaseProps {
   /**
    * The event handler for a row click.
    *
@@ -37,33 +63,108 @@ export type ReceivablesTableProps = {
     @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
-} & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
-
-export enum ReceivablesTableTabEnum {
-  Quotes,
-  Invoices,
-  CreditNotes,
 }
 
+export type ReceivablesTableProps =
+  | (ReceivablesTableControlledProps & ReceivablesTableBaseProps)
+  | (ReceivablesTableUncontrolledProps & ReceivablesTableBaseProps);
+
+/**
+ * ReceivablesTable component
+ * Displays Invoices, Quotes, Credit Notes
+ *
+ * @example MUI theming
+ * ```ts
+ * // You can configure the component through MUI theming like this:
+ * const theme = createTheme(myTheme, {
+ *   components: {
+ *     MoniteReceivablesTable: {
+ *       defaultProps: {
+ *         tab: 0,                      // The default tab index to display
+ *         tabs: [
+ *           {
+ *             label: 'Draft Invoices', // The label of the Tab
+ *             query: {                 // The query parameters for the Tab
+ *               type: 'invoice',       // The type of the Receivables, *required*
+ *               sort: 'created_at',
+ *               order: 'desc',
+ *               status__in: ['draft'],
+ *             },
+ *             filters: [               // The UI filters for the Tab
+ *               'document_id__contains',
+ *               'counterpart_id',
+ *               'due_date__lte',
+ *             ],
+ *           },
+ *           {
+ *             label: 'Recurring invoices',
+ *             query: {
+ *               type: 'invoice',
+ *               status__in: ['recurring'],
+ *             },
+ *             filters: ['document_id__contains', 'counterpart_id'],
+ *           },
+ *           {
+ *             label: 'Other Invoices',
+ *             query: {
+ *               type: 'invoice',
+ *               sort: 'created_at',
+ *               order: 'desc',
+ *               status__in: [             // The "status" filter for the Tab will
+ *                 'issued',               // only contain the values specified in "status__in"
+ *                 'overdue',
+ *                 'partially_paid',
+ *                 'paid',
+ *                 'uncollectible',
+ *                 'canceled',
+ *               ],
+ *               // If no "filters" are specified, default UI filters will be displayed
+ *             },
+ *           },
+ *           {
+ *             label: 'Credit notes',
+ *             query: {
+ *               type: 'credit_note',
+ *             },
+ *           },
+ *         ],
+ *       },
+ *     },
+ *   },
+ * });
+ * ```
+ */
 export const ReceivablesTable = (props: ReceivablesTableProps) => (
   <MoniteScopedProviders>
     <ReceivablesTableBase {...props} />
   </MoniteScopedProviders>
 );
 
+type MoniteReceivablesTab = {
+  label: string;
+  query?: ReceivablesTabFilter;
+  filters?: Array<keyof ReceivableFilterType>;
+};
+
 const ReceivablesTableBase = ({
-  tab,
-  onTabChange,
   onRowClick,
+  onTabChange,
   setIsCreateInvoiceDialogOpen,
+  ...inProps
 }: ReceivablesTableProps) => {
+  const { tab, tabs } = useReceivablesTableProps(inProps);
+
   const { i18n } = useLingui();
-  const [activeTab, setActiveTab] = useSetActiveTab({ tab, onTabChange });
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const tabIdPrefix = `ReceivablesTable-Tab-${useId()}-`;
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const tabPanelIdPrefix = `ReceivablesTable-TabPanel-${useId()}-`;
+  const [activeTabIndex, setActiveTabIndex] = useState(tab ?? 0);
+  const tabsIdBase = `Monite-ReceivablesTable-Tabs-${useId()}-`;
   const className = 'Monite-ReceivablesTable';
+
+  const activeTabItem = tabs?.[activeTabIndex];
+
+  const handleTabChange = (tab: number) => {
+    setActiveTabIndex(tab);
+    onTabChange?.(tab);
+  };
 
   return (
     <>
@@ -74,39 +175,28 @@ const ReceivablesTableBase = ({
         )}
       >
         <Tabs
-          value={activeTab}
+          value={activeTabIndex}
           variant="standard"
           aria-label={t(i18n)`Receivables tabs`}
-          onChange={(_, value) => setActiveTab(value)}
+          onChange={(_, value) => handleTabChange(Number(value))}
         >
-          <Tab
-            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
-            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
-            label={t(i18n)`Invoices`}
-            value={ReceivablesTableTabEnum.Invoices}
-          />
-
-          <Tab
-            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
-            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
-            label={t(i18n)`Quotes`}
-            value={ReceivablesTableTabEnum.Quotes}
-          />
-
-          <Tab
-            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
-            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
-            label={t(i18n)`Credit notes`}
-            value={ReceivablesTableTabEnum.CreditNotes}
-          />
+          {tabs?.map(({ label }, index) => (
+            <Tab
+              key={`${label}-${tabsIdBase}-${index}`}
+              id={`${tabsIdBase}-${index}-tab`}
+              aria-controls={`${tabsIdBase}-${index}-tabpanel`}
+              label={label}
+              value={index}
+            />
+          ))}
         </Tabs>
       </Box>
 
-      {activeTab === ReceivablesTableTabEnum.Quotes && (
+      {activeTabItem?.query?.type === 'quote' && (
         <Box
           role="tabpanel"
-          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
-          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+          id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
+          aria-labelledby={`${tabsIdBase}-${activeTabIndex}-tab`}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -115,17 +205,19 @@ const ReceivablesTableBase = ({
           }}
         >
           <QuotesTable
+            key={activeTabIndex}
             onRowClick={onRowClick}
             setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+            query={activeTabItem?.query}
           />
         </Box>
       )}
 
-      {activeTab === ReceivablesTableTabEnum.Invoices && (
+      {activeTabItem?.query?.type === 'invoice' && (
         <Box
           role="tabpanel"
-          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
-          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+          id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
+          aria-labelledby={`${tabsIdBase}-${activeTabIndex}-tab`}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -134,17 +226,20 @@ const ReceivablesTableBase = ({
           }}
         >
           <InvoicesTable
+            key={activeTabIndex}
             onRowClick={onRowClick}
             setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+            query={activeTabItem?.query}
+            filters={activeTabItem?.filters}
           />
         </Box>
       )}
 
-      {activeTab === ReceivablesTableTabEnum.CreditNotes && (
+      {activeTabItem?.query?.type === 'credit_note' && (
         <Box
           role="tabpanel"
-          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
-          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+          id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
+          aria-labelledby={`${tabsIdBase}-${activeTabIndex}-tab`}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -153,8 +248,10 @@ const ReceivablesTableBase = ({
           }}
         >
           <CreditNotesTable
+            key={activeTabIndex}
             onRowClick={onRowClick}
             setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+            query={activeTabItem?.query}
           />
         </Box>
       )}
@@ -162,16 +259,11 @@ const ReceivablesTableBase = ({
   );
 };
 
-/**
- * Manages the active tab state.
- * If the `tab` prop is provided, the component is controlled.
- */
-const useSetActiveTab = ({
-  tab,
-  onTabChange,
-}: Pick<ReceivablesTableProps, 'tab' | 'onTabChange'>) => {
-  const [tabControlled, onTabChangeControlled] =
-    useState<ReceivablesTableTabEnum>(ReceivablesTableTabEnum.Invoices);
-
-  return [tab ?? tabControlled, onTabChange ?? onTabChangeControlled] as const;
+export const useReceivablesTableProps = (
+  inProps?: Partial<MoniteReceivablesTableProps>
+) => {
+  return useThemeProps({
+    props: inProps,
+    name: 'MoniteReceivablesTable',
+  });
 };

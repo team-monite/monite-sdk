@@ -71,9 +71,6 @@ export const NavigationList = () => {
           <NavigationListItem icon={<IconFileHeart />}>
             {t(i18n)`Invoice Design`}
           </NavigationListItem>
-          <NavigationListItem icon={<IconFilesLandscapes />}>
-            {t(i18n)`Message Templates`}
-          </NavigationListItem>
           <NavigationListItem icon={<IconEnvelopeHeart />}>
             {t(i18n)`Email Templates`}
           </NavigationListItem>
