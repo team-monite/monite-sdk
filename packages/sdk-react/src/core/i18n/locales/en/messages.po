@@ -162,7 +162,7 @@ msgstr "Accepted"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:52
 #: src/components/counterparts/Counterparts.test.tsx:74
 #: src/components/receivables/Receivables.test.tsx:83
-#: src/ui/accessRestriction/AccessRestriction.tsx:20
+#: src/ui/accessRestriction/AccessRestriction.tsx:21
 msgid "Access Restricted"
 msgstr "Access Restricted"
 
@@ -218,7 +218,7 @@ msgstr "Activity"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1172
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:555
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:133
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:134
 msgid "Add"
 msgstr "Add"
 
@@ -787,7 +787,7 @@ msgid "Automotive Tire Stores"
 msgstr "Automotive Tire Stores"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:364
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:121
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:122
 msgid "Available items"
 msgstr "Available items"
 
@@ -1459,6 +1459,7 @@ msgid "Close invoice details"
 msgstr "Close invoice details"
 
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:123
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:124
 msgid "Close payable details"
 msgstr "Close payable details"
 
@@ -1545,7 +1546,7 @@ msgstr "Company name is required"
 msgid "Completed"
 msgstr "Completed"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:143
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:144
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:282
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:349
 msgid "Compose email"
@@ -1624,7 +1625,7 @@ msgid "Contact information"
 msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:258
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
@@ -1654,7 +1655,7 @@ msgstr "Contact Person has been made default."
 msgid "Contact persons"
 msgstr "Contact persons"
 
-#: src/ui/error/Error.tsx:70
+#: src/ui/error/Error.tsx:64
 msgid "Contact support"
 msgstr "Contact support"
 
@@ -1906,7 +1907,7 @@ msgstr "Create Credit Note"
 msgid "Create from mail"
 msgstr "Create from mail"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:80
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:81
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:231
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:128
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:290
@@ -1937,7 +1938,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:68
 #: src/components/counterparts/Counterparts.test.tsx:103
 #: src/components/counterparts/Counterparts.tsx:131
-#: src/components/products/Products.test.tsx:89
+#: src/components/products/Products.test.tsx:105
 #: src/components/products/Products.tsx:102
 #: src/components/userRoles/UserRoles.tsx:61
 msgid "Create New"
@@ -2192,9 +2193,9 @@ msgstr "default"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:497
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:237
-#: src/components/products/Products.test.tsx:160
-#: src/components/products/Products.test.tsx:187
-#: src/components/products/Products.test.tsx:219
+#: src/components/products/Products.test.tsx:175
+#: src/components/products/Products.test.tsx:202
+#: src/components/products/Products.test.tsx:234
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:271
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:75
@@ -2550,8 +2551,8 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:585
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:62
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:245
-#: src/components/products/Products.test.tsx:159
-#: src/components/products/Products.test.tsx:256
+#: src/components/products/Products.test.tsx:174
+#: src/components/products/Products.test.tsx:271
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:247
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:384
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
@@ -3784,7 +3785,7 @@ msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:666
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:415
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:111
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:112
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:226
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:90
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:23
@@ -4431,7 +4432,7 @@ msgstr "New bill"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:135
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:136
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
@@ -4465,8 +4466,8 @@ msgstr "News Dealers and Newsstands"
 msgid "next on {0}"
 msgstr "next on {0}"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:87
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:91
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:88
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:92
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:147
 #: src/ui/table/TablePagination.tsx:130
 #: src/ui/table/TablePagination.tsx:143
@@ -5439,7 +5440,7 @@ msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:159
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:178
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:180
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
@@ -6025,7 +6026,7 @@ msgid "Somalia"
 msgstr "Somalia"
 
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:30
-#: src/ui/error/Error.tsx:32
+#: src/ui/error/Error.tsx:26
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -6687,7 +6688,7 @@ msgstr "Truck/Utility Trailer Rentals"
 msgid "Try adjusting your search or filter."
 msgstr "Try adjusting your search or filter."
 
-#: src/ui/error/Error.tsx:64
+#: src/ui/error/Error.tsx:58
 msgid "Try again"
 msgstr "Try again"
 
@@ -7423,7 +7424,7 @@ msgstr "You don’t have any tags yet."
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
-#: src/ui/accessRestriction/AccessRestriction.tsx:22
+#: src/ui/accessRestriction/AccessRestriction.tsx:23
 msgid "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 msgstr "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 

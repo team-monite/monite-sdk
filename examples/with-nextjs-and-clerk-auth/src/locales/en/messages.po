@@ -44,7 +44,7 @@ msgstr "Dark Mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/components/NavigationMenu/NavigationList.tsx:78
+#: src/components/NavigationMenu/NavigationList.tsx:75
 msgid "Email Templates"
 msgstr "Email Templates"
 
@@ -52,7 +52,7 @@ msgstr "Email Templates"
 msgid "English"
 msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:97
+#: src/components/NavigationMenu/NavigationList.tsx:94
 msgid "Get Help"
 msgstr "Get Help"
 
@@ -86,8 +86,8 @@ msgid "Material UI"
 msgstr "Material UI"
 
 #: src/components/NavigationMenu/NavigationList.tsx:75
-msgid "Message Templates"
-msgstr "Message Templates"
+#~ msgid "Message Templates"
+#~ msgstr "Message Templates"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:45
 #: src/components/ThemeSelect/useThemeSelect.ts:19
@@ -134,7 +134,7 @@ msgstr "Roles & Approvals"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:81
+#: src/components/NavigationMenu/NavigationList.tsx:78
 msgid "Tags"
 msgstr "Tags"
 
