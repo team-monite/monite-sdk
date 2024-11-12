@@ -30,11 +30,11 @@ export const createThemeWithDefaults = (
             tabs: [
               {
                 label: t(i18n)`Invoices`,
-                query: { type: "invoice" }
+                query: { type: 'invoice' },
               },
               {
                 label: t(i18n)`Quotes`,
-                query: { type: "quote" }
+                query: { type: 'quote' },
               },
               {
                 label: t(i18n)`Credit notes`,
@@ -53,34 +53,34 @@ export const createThemeWithDefaults = (
       components: {
         ...createComponentsThemeDefaultProps(
           [
-            "MuiMenu",
-            "MuiModal",
-            "MuiPopper",
-            "MuiDialogTitle",
-            "MuiDialogContent",
-            "MuiDialogActions",
-            "MuiDivider"
+            'MuiMenu',
+            'MuiModal',
+            'MuiPopper',
+            'MuiDialogTitle',
+            'MuiDialogContent',
+            'MuiDialogActions',
+            'MuiDivider',
           ],
           {
             classes: {
-              root: ScopedCssBaselineContainerClassName
-            }
+              root: ScopedCssBaselineContainerClassName,
+            },
           }
         ),
-        ...createComponentsThemeDefaultProps(["MuiGrid", "MuiDialog"], {
-          classes: { container: ScopedCssBaselineContainerClassName }
+        ...createComponentsThemeDefaultProps(['MuiGrid', 'MuiDialog'], {
+          classes: { container: ScopedCssBaselineContainerClassName },
         }),
         MuiStack: {
           defaultProps: {
-            className: ScopedCssBaselineContainerClassName
-          }
+            className: ScopedCssBaselineContainerClassName,
+          },
         },
         MuiAutocomplete: {
           defaultProps: {
-            classes: { popper: ScopedCssBaselineContainerClassName }
-          }
-        }
-      }
+            classes: { popper: ScopedCssBaselineContainerClassName },
+          },
+        },
+      },
     } satisfies ThemeOptions
   );
 };
