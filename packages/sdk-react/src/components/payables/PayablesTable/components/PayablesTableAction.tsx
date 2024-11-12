@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -5,16 +6,10 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button } from '@mui/material';
+import { Button, Modal, Box } from '@mui/material';
 
 interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
-
-  /**
-   * The event handler for the pay action
-   *
-   * @param id - The identifier of the row to perform the pay action on, a string.
-   */
   onPay?: (id: string) => void;
 }
 
@@ -31,25 +26,70 @@ export const PayablesTableAction = ({
 
   const { handlePay } = usePaymentHandler(payable);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
+
+  const handleOpenModal = async () => {
+    const url = await handlePay();
+    if (url) {
+      setIframeUrl(url);
+      setModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setIframeUrl(null);
+  };
+
   if (isPayAllowed && payable.status === 'waiting_to_be_paid') {
     return (
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={(e) => {
-          /**
-           * We have to stop propagation to disable
-           *  `onRowClick` callback when the user
-           *  clicks on the `Pay` button
-           */
-          e.stopPropagation();
+      <>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            onPay?.(payable.id);
+            handleOpenModal();
+          }}
+        >
+          {t(i18n)`Pay`}
+        </Button>
 
-          onPay?.(payable.id);
-          handlePay();
-        }}
-      >
-        {t(i18n)`Pay`}
-      </Button>
+        <Modal
+          open={modalOpen}
+          onClose={handleCloseModal}
+          container={document.body}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '80%',
+              maxWidth: 600,
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+              borderRadius: 2,
+            }}
+          >
+            {iframeUrl ? (
+              <iframe
+                src={iframeUrl}
+                title="Payment Page"
+                width="100%"
+                height="400px"
+                style={{ border: 'none' }}
+              />
+            ) : (
+              <p>{t(i18n)`Loading payment page...`}</p>
+            )}
+          </Box>
+        </Modal>
+      </>
     );
   }
 
@@ -79,16 +119,15 @@ export const usePaymentHandler = (
     }
   );
 
-  const handlePay = () => {
+  const handlePay = async () => {
     const paymentPageUrl = paymentLinkQuery?.data?.payment_page_url;
-    console.log('Payment page URL:', paymentPageUrl);
     if (!paymentLinkId || !paymentPageUrl) {
       toast.error(
         t(
           i18n
         )`No payment link found for this payable. Please, create a payment link first.`
       );
-      return;
+      return null;
     }
 
     return paymentPageUrl;
