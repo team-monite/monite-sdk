@@ -6,20 +6,9 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import SettingsIcon from '@mui/icons-material/Settings';
-import {
-  Alert,
-  alpha,
-  Box,
-  Button,
-  Menu,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { alpha, Box, Button, Menu, Stack, Typography } from '@mui/material';
 
 interface CreatePayableMenuProps {
   isCreateAllowed: boolean;
@@ -91,61 +80,6 @@ export const CreatePayableMenu = ({
             e.stopPropagation();
           }}
         >
-          <Box>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={2}
-            >
-              <Typography variant="subtitle1">{t(
-                i18n
-              )`Forward to email`}</Typography>
-              <Button
-                variant="text"
-                endIcon={<SettingsIcon />}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >{t(i18n)`Customise`}</Button>
-            </Stack>
-            <Alert
-              severity="info"
-              icon={<MailOutlineIcon color="primary" />}
-              action={
-                <Button
-                  variant="outlined"
-                  startIcon={<ContentCopyIcon />}
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      'incoming-bills-silver-wind@x-platform.com'
-                    );
-                    toast.success(t(i18n)`Copied to clipboard`);
-                  }}
-                >
-                  {t(i18n)`Copy`}
-                </Button>
-              }
-              sx={{
-                '& .MuiPaper-root': { alignItems: 'center' },
-                '& .MuiAlert-action': { pt: 0 },
-              }}
-            >
-              <Box>
-                <Typography variant="body1" color="primary">
-                  {/* TODO: add support for email */}
-                  {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-                  {'incoming-bills-silver-wind@x-platform.com'}
-                </Typography>
-              </Box>
-            </Alert>
-            <Typography variant="body2" mt={1}>
-              {t(
-                i18n
-              )`All invoices and bills sent to this email will be automatically processed and added to the system as drafts.`}
-            </Typography>
-          </Box>
           <Box>
             <Typography variant="subtitle1" mb={1}>
               {t(i18n)`Drag & Drop`}
@@ -228,5 +162,3 @@ export const CreatePayableMenu = ({
     </>
   );
 };
-
-CreatePayableMenu;
