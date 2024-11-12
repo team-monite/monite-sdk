@@ -1,5 +1,38 @@
 # @monite/sdk-react
 
+## 3.18.0
+
+### Minor Changes
+
+- cb1a0cc6: introduce Custom Tabs for `<ReceivablesTable/>`
+
+  ### Description
+
+  Implemented the ability to configure custom tabs for Receivables using MUI. Users can now select the specific tabs they
+  need, while backward compatibility is maintained. By default, the standard tabs Invoices, Quotes, and Credit Notes are
+  displayed.
+
+  ### Breaking Changes
+
+  The `<ReceivablesTable/>` component interface has changed. Instead of using `ReceivablesTableTabEnum` for the active
+  tab, you now need to pass a `number` representing the tab index. Additionally, the default tab indices have been
+  updated:
+
+  - **Invoices**: 0 (previously 1)
+  - **Quotes**: 1 (previously 0)
+  - **Credit Notes**: 2 (unchanged)
+
+  Please update any existing integrations to reflect these changes.
+
+- 315cde5a: feat: introduce icon wrapper component for all close icons to be cusotmisable from theme props
+- 7232f7de: feat: add integration of payment flow with iframe modal
+
+### Patch Changes
+
+- e288b141: feat(DEV-13151): expand tax value check for non-vat supported countries
+- 6233bff3: hide email section for upload bill dropdown
+  - @monite/sdk-api@3.18.0
+
 ## 3.17.0
 
 ### Minor Changes

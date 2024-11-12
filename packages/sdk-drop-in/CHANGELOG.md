@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.7.1
+
+### Patch Changes
+
+- @monite/sdk-api@3.18.0
+
 ## 1.7.0
 
 ### Minor Changes
