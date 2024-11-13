@@ -8,6 +8,7 @@ import {
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -179,6 +180,8 @@ export function usePayableDetails({
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActionButtonLoading, setIsActionButtonLoading] = useState(false);
+  const { handlePay, modalComponent, isPaymentLinkAvailable } =
+    usePaymentHandler(id!);
 
   useEffect(() => {
     if (onSave && onSaved) {
@@ -842,9 +845,10 @@ export function usePayableDetails({
 
   const payInvoice = useCallback(() => {
     if (payableId) {
+      handlePay();
       onPay?.(payableId);
     }
-  }, [payableId, onPay]);
+  }, [payableId, handlePay, onPay]);
 
   return {
     payable,
@@ -867,6 +871,9 @@ export function usePayableDetails({
       reopenInvoice,
       cancelInvoice,
       payInvoice,
+      handlePay,
+      modalComponent,
+      isPaymentLinkAvailable,
     },
   };
 }
