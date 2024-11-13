@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
@@ -34,6 +36,8 @@ export interface PayablesDetailsHeaderProps {
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
   onClose?: () => void;
+  isPaymentLinkAvailable: boolean;
+  modalComponent: ReactNode;
 }
 
 export const PayableDetailsHeader = ({
@@ -47,7 +51,9 @@ export const PayableDetailsHeader = ({
   reopenInvoice,
   payInvoice,
   payableDetailsFormId,
+  isPaymentLinkAvailable,
   onClose,
+  modalComponent,
 }: PayablesDetailsHeaderProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -106,6 +112,7 @@ export const PayableDetailsHeader = ({
     pay: {
       variant: 'contained',
       onClick: payInvoice,
+      disabled: !isPaymentLinkAvailable,
       children: t(i18n)`Pay`,
     },
   };
@@ -158,6 +165,7 @@ export const PayableDetailsHeader = ({
           </Stack>
         )}
       </Toolbar>
+      {modalComponent}
     </DialogTitle>
   );
 };

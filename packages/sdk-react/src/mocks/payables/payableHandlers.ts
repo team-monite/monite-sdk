@@ -259,6 +259,14 @@ export const payableHandlers = [
     const { payableId } = params;
     const entityId = request.headers.get('x-monite-entity-id');
 
+    if (payableId === 'waiting-to-be-paid-id') {
+      return HttpResponse.json({
+        ...payableFixturePages[0],
+        id: payableId,
+        status: 'waiting_to_be_paid',
+      });
+    }
+
     if (payableId === PAYABLE_ID_WITHOUT_FILE) {
       await delay();
 
