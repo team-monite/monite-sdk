@@ -1633,7 +1633,7 @@ msgid "Contact information"
 msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:131
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
@@ -1915,7 +1915,7 @@ msgstr "Create Credit Note"
 msgid "Create from mail"
 msgstr "Create from mail"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:80
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:81
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:128
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:290
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:362
@@ -2080,7 +2080,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:132
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:151
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:400
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
@@ -2564,7 +2564,7 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:269
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:340
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:366
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:585
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:587
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:68
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:245
 #: src/components/products/Products.test.tsx:174
@@ -3568,18 +3568,18 @@ msgstr "Invalid IBAN"
 msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:193
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:195
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:261
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:229
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:247
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:265
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:267
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:341
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:210
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:212
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:276
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:278
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:214
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:216
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:280
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:230
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:249
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:291
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:293
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:363
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:230
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:232
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:294
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:296
 msgid "Invoice"
 msgstr "Invoice"
 
@@ -4055,7 +4055,7 @@ msgstr "Linked documents"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:80
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:81
 msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
@@ -4516,9 +4516,9 @@ msgstr "News Dealers and Newsstands"
 msgid "next on {0}"
 msgstr "next on {0}"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:87
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:91
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:212
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:88
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:92
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:213
 #: src/ui/table/TablePagination.tsx:130
 #: src/ui/table/TablePagination.tsx:143
 msgid "Next page"
@@ -4622,7 +4622,7 @@ msgstr "No overdue reminders available"
 msgid "No Payables"
 msgstr "No Payables"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:41
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:42
 msgid "No payment link found for this payable. Please, create a payment link first."
 msgstr "No payment link found for this payable. Please, create a payment link first."
 
@@ -4926,9 +4926,8 @@ msgid "Pawn Shops"
 msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:225
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:559
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:116
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:33
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:44
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:227
 msgid "Pay"
@@ -5004,7 +5003,7 @@ msgstr "Payment details"
 msgid "Payment Details"
 msgstr "Payment Details"
 
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:36
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:47
 msgid "Payment not allowed"
 msgstr "Payment not allowed"
 
