@@ -5,10 +5,8 @@ import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
-import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
 import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
-import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection';
 import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
@@ -39,6 +37,8 @@ import {
 
 import { format } from 'date-fns';
 import * as yup from 'yup';
+
+import { BillToSection } from '../../CreateReceivable/sections/components/BillToSection';
 
 interface EditInvoiceDetailsProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -241,20 +241,20 @@ const EditInvoiceDetailsContent = ({
             })}
             style={{ marginBottom: theme.spacing(7) }}
           >
-            <Typography variant="h1" sx={{ mb: 7 }}>
-              {t(i18n)`Edit invoice ${
-                invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID
-              }`}
-            </Typography>
             <Stack direction="column" spacing={4}>
-              <CustomerSection disabled={isLoading} />
+              <BillToSection disabled={isLoading} />
+              <Typography variant="h1" sx={{ mb: 2 }}>
+                {t(i18n)`Invoice`}{' '}
+                <span style={{ color: '#707070' }}>
+                  #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
+                </span>
+              </Typography>
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
                 isUSEntity={isUSEntity}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
               />
-              <PaymentSection disabled={isLoading} />
               <ReminderSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}
