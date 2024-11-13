@@ -30,6 +30,7 @@ import {
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -47,7 +48,6 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  IconButton,
   MenuItem,
   Select,
   Stack,
@@ -285,7 +285,7 @@ const EmailInvoiceDetailsBase = ({
                   </>
                 )}
                 {isPreview && (
-                  <IconButton
+                  <IconWrapper
                     edge="start"
                     color="inherit"
                     onClick={() => {
@@ -294,7 +294,7 @@ const EmailInvoiceDetailsBase = ({
                     aria-label="close"
                   >
                     <CloseIcon />
-                  </IconButton>
+                  </IconWrapper>
                 )}
               </Stack>
             </Grid>

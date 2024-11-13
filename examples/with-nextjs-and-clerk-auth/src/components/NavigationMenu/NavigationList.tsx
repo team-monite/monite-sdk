@@ -38,10 +38,10 @@ export const NavigationList = () => {
           {t(i18n)`Dashboard`}
         </NavigationListItem>
         <NavigationListItem href="/payables" icon={<IconUsdCircle />}>
-          {t(i18n)`Purchases`}
+          {t(i18n)`Bill Pay`}
         </NavigationListItem>
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
-          {t(i18n)`Sales`}
+          {t(i18n)`Invoicing`}
         </NavigationListItem>
         <NavigationListItem href="/projects" icon={<IconBag />}>
           {t(i18n)`Projects`}
@@ -71,9 +71,6 @@ export const NavigationList = () => {
           <NavigationListItem icon={<IconFileHeart />}>
             {t(i18n)`Invoice Design`}
           </NavigationListItem>
-          <NavigationListItem icon={<IconFilesLandscapes />}>
-            {t(i18n)`Message Templates`}
-          </NavigationListItem>
           <NavigationListItem icon={<IconEnvelopeHeart />}>
             {t(i18n)`Email Templates`}
           </NavigationListItem>
@@ -89,7 +86,11 @@ export const NavigationList = () => {
         justifyContent="flex-end"
       >
         <List className="NavigationList" disablePadding>
-          <NavigationListItem icon={<IconQuestionCircle />}>
+          <NavigationListItem
+            href="https://docs.monite.com/"
+            target="_blank"
+            icon={<IconQuestionCircle />}
+          >
             {t(i18n)`Get Help`}
           </NavigationListItem>
         </List>

@@ -1,20 +1,14 @@
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CachedIcon from '@mui/icons-material/Cached';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import type { FallbackRender } from '@sentry/react';
 
 type ErrorProps = Parameters<FallbackRender>[0];
@@ -38,13 +32,13 @@ const ErrorBase = (props: ErrorProps) => {
         <Grid container padding={2}>
           <Grid item xs={11} />
           <Grid item xs={1}>
-            <IconButton
+            <IconWrapper
               onClick={dialogContext.onClose}
               color="inherit"
               aria-label="close"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           </Grid>
         </Grid>
       )}

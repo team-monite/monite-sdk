@@ -1,4 +1,5 @@
 import { useDialog } from '@/components/Dialog';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,7 +8,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Typography,
 } from '@mui/material';
 
@@ -31,12 +31,12 @@ export const InvoiceError = ({
             </Typography>
           </Box>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Close invoice details`}
               onClick={onClose}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>

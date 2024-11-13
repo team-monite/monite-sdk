@@ -8,6 +8,7 @@ import { useApprovalPolicyDetails } from '@/components/approvalPolicies/Approval
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -21,7 +22,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   Link,
   Typography,
 } from '@mui/material';
@@ -135,14 +135,14 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
               : t(i18n)`Create Approval Policy`}
           </Typography>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               edge="start"
               color="inherit"
               onClick={dialogContext.onClose}
               aria-label={t(i18n)`Close approval policy details`}
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Box>
       </DialogTitle>

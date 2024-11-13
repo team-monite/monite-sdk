@@ -1,4 +1,5 @@
 import { components, Services } from '@/api';
+import { API } from '@/api/client';
 
 export type ReceivableFilterType = Pick<
   NonNullable<
@@ -16,3 +17,7 @@ export type FilterValue =
   | components['schemas']['ReceivablesStatusEnum']
   | string
   | null;
+
+export type ReceivablesTabFilter = NonNullable<
+  API['receivables']['getReceivables']['types']['parameters']['query']
+>;

@@ -18,6 +18,7 @@ type NavigationLinkProps = {
   children?: ReactNode;
   endIcon?: ReactNode;
   href?: string;
+  target?: string;
   icon: ReactNode;
   onClick?: ListItemButtonProps['onClick'];
 };
@@ -26,13 +27,15 @@ export const NavigationListItem = ({
   endIcon,
   children,
   href,
+  target,
   icon,
   onClick,
 }: NavigationLinkProps) => {
   const pathname = usePathname();
   const selected = pathname === href;
 
-  const buttonProps = href !== undefined ? { component: Link, href } : {};
+  const buttonProps =
+    href !== undefined ? { component: Link, href, target } : {};
 
   return (
     <ListItem sx={{ padding: 0 }}>

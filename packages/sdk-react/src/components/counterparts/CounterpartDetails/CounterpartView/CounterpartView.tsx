@@ -5,6 +5,7 @@ import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
@@ -16,7 +17,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
   Typography,
-  IconButton,
   Divider,
   Grid,
   DialogContent,
@@ -185,13 +185,13 @@ export const CounterpartView = (props: CounterpartViewProps) => {
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Counterpart Close`}
               onClick={dialogContext.onClose}
               color="default"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Grid>
       </Grid>

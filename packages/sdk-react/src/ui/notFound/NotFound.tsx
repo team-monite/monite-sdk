@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
+import { IconWrapper } from '@/ui/iconWrapper';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 
 interface NotFoundProps {
   title: ReactNode;
@@ -20,13 +21,14 @@ export const NotFound = ({ title, description }: NotFoundProps) => {
         <Grid container padding={2}>
           <Grid item xs={11} />
           <Grid item xs={1}>
-            <IconButton
+            <IconWrapper
               onClick={dialogContext.onClose}
               color="inherit"
+              ariaLabelOverride="close"
               aria-label="close"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           </Grid>
         </Grid>
       )}

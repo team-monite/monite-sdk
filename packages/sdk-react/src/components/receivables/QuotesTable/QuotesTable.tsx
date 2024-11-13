@@ -3,6 +3,11 @@ import { useMemo, useState } from 'react';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/ReceivableFilters/ReceivableFilters';
+import {
+  ReceivableFilterType,
+  ReceivablesTabFilter,
+} from '@/components/receivables/ReceivablesTable/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
@@ -28,7 +33,6 @@ import { Box } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 
 export interface QuotesTableSortModel {
@@ -57,6 +61,14 @@ type QuotesTableProps = {
    @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
+
+  /**
+   * The query to be used for the Table
+   */
+  query?: ReceivablesTabFilter;
+
+  /** Filters to be applied to the table */
+  filters?: Array<keyof ReceivableFilterType>;
 };
 
 export const QuotesTable = (props: QuotesTableProps) => (
@@ -69,6 +81,8 @@ const QuotesTableBase = ({
   onRowClick,
   onChangeSort: onChangeSortCallback,
   setIsCreateInvoiceDialogOpen,
+  query,
+  filters: filtersProp,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
 
@@ -81,12 +95,17 @@ const QuotesTableBase = ({
   );
 
   const [sortModel, setSortModel] = useState<QuotesTableSortModel>({
-    field: 'created_at',
-    sort: 'desc',
+    field: query?.sort ?? 'created_at',
+    sort: query?.order ?? 'desc',
   });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { onChangeFilter, filters } = useReceivablesFilters();
+  const { onChangeFilter, filters, filtersQuery } = useReceivablesFilters(
+    (['document_id__contains', 'status', 'counterpart_id'] as const).filter(
+      (filter) => filtersProp?.includes(filter) ?? true
+    ),
+    query
+  );
 
   const {
     data: quotes,
@@ -94,7 +113,7 @@ const QuotesTableBase = ({
     isError,
     refetch,
   } = useReceivables({
-    ...filters,
+    ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
     limit: pageSize,
@@ -116,7 +135,8 @@ const QuotesTableBase = ({
       filters[key as keyof typeof filters] !== null &&
       filters[key as keyof typeof filters] !== undefined
   );
-  const isSearching = !!filters['document_id__contains'];
+  const isSearching =
+    !!filters['document_id__contains' as keyof typeof filters];
 
   const areCounterpartsLoading = useAreCounterpartsLoading(quotes?.data);
   const dateFormat = useDateFormat();
@@ -231,11 +251,9 @@ const QuotesTableBase = ({
         pt: 2,
       }}
     >
-      <ReceivableFilters
-        sx={{ mb: 2 }}
-        onChange={onChangeFilter}
-        filters={['document_id__contains', 'status', 'counterpart_id']}
-      />
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters onChange={onChangeFilter} filters={filters} />
+      </Box>
       <DataGrid
         initialState={{
           sorting: {

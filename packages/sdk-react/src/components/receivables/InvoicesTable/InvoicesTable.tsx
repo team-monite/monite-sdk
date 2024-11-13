@@ -4,6 +4,11 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/ReceivableFilters/ReceivableFilters';
+import {
+  ReceivableFilterType,
+  ReceivablesTabFilter,
+} from '@/components/receivables/ReceivablesTable/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -35,7 +40,6 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
   useInvoiceRowActionMenuCell,
@@ -56,6 +60,14 @@ interface InvoicesTableBaseProps {
    @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
+
+  /**
+   * The query to be used for the Table
+   */
+  query?: ReceivablesTabFilter;
+
+  /** Filters to be applied to the table */
+  filters?: Array<keyof ReceivableFilterType>;
 }
 
 export type InvoicesTableProps =
@@ -76,6 +88,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
 const InvoicesTableBase = ({
   onRowClick,
   setIsCreateInvoiceDialogOpen,
+  query,
+  filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
   const { i18n } = useLingui();
@@ -89,12 +103,22 @@ const InvoicesTableBase = ({
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
-    field: 'created_at',
-    sort: 'desc',
+    field: query?.sort ?? 'created_at',
+    sort: query?.order ?? 'desc',
   });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { filters, onChangeFilter } = useReceivablesFilters();
+  const { filtersQuery, filters, onChangeFilter } = useReceivablesFilters(
+    (
+      [
+        'document_id__contains',
+        'status',
+        'counterpart_id',
+        'due_date__lte',
+      ] as const
+    ).filter((filter) => filtersProp?.includes(filter) ?? true),
+    query
+  );
 
   const {
     data: invoices,
@@ -102,7 +126,7 @@ const InvoicesTableBase = ({
     isError,
     refetch,
   } = useReceivables({
-    ...filters,
+    ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
     limit: pageSize,
@@ -248,7 +272,9 @@ const InvoicesTableBase = ({
       filters[key as keyof typeof filters] !== null &&
       filters[key as keyof typeof filters] !== undefined
   );
-  const isSearching = !!filters['document_id__contains'];
+
+  const isSearching =
+    !!filters['document_id__contains' as keyof typeof filters];
 
   if (
     !isLoading &&
@@ -286,21 +312,17 @@ const InvoicesTableBase = ({
         pt: 2,
       }}
     >
-      <ReceivableFilters
-        onChange={(field, value) => {
-          setPaginationToken(undefined);
-          onChangeFilter(field, value);
-        }}
-        filters={[
-          'document_id__contains',
-          'status',
-          'counterpart_id',
-          'due_date__lte',
-        ]}
-        sx={{ mb: 2 }}
-      />
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters
+          filters={filters}
+          onChange={(field, value) => {
+            setPaginationToken(undefined);
+            onChangeFilter(field, value);
+          }}
+        />
+      </Box>
 
-      <DataGrid<components['schemas']['ReceivableResponse']>
+      <DataGrid
         initialState={{
           sorting: {
             sortModel: sortModel && [sortModel],

@@ -25,6 +25,7 @@ export const DEBOUNCE_SEARCH_TIMEOUT: number = 500;
 interface SearchFieldProps {
   label: string;
   onChange: (value: string | null) => void;
+  value?: string;
 }
 
 /**
@@ -35,6 +36,7 @@ interface SearchFieldProps {
  * @component
  * @param {object} props - The properties that define the `SearchField` component.
  * @param {string} props.label - The label for the search field.
+ * @param {string} props.value - The initial value of the search field.
  * @param {(value: string | null) => void} props.onChange - The function to be called when the input value changes.
  *
  * @example
@@ -43,7 +45,7 @@ interface SearchFieldProps {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange }: SearchFieldProps) => {
+export const SearchField = ({ label, onChange, value }: SearchFieldProps) => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
@@ -67,6 +69,7 @@ export const SearchField = ({ label, onChange }: SearchFieldProps) => {
         name="search-by-name"
         aria-label="search-by-name"
         label={label}
+        value={value}
         onChange={(search) => {
           debouncedOnChange(search.target.value || null);
         }}

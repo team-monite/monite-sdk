@@ -1,9 +1,12 @@
+import { ReactNode } from 'react';
+
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
 import { useCounterpartById } from '@/core/queries';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,7 +15,6 @@ import {
   Button,
   ButtonProps,
   DialogTitle,
-  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -34,6 +36,8 @@ export interface PayablesDetailsHeaderProps {
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
   onClose?: () => void;
+  isPaymentLinkAvailable: boolean;
+  modalComponent: ReactNode;
 }
 
 export const PayableDetailsHeader = ({
@@ -47,7 +51,9 @@ export const PayableDetailsHeader = ({
   reopenInvoice,
   payInvoice,
   payableDetailsFormId,
+  isPaymentLinkAvailable,
   onClose,
+  modalComponent,
 }: PayablesDetailsHeaderProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -106,6 +112,7 @@ export const PayableDetailsHeader = ({
     pay: {
       variant: 'contained',
       onClick: payInvoice,
+      disabled: !isPaymentLinkAvailable,
       children: t(i18n)`Pay`,
     },
   };
@@ -116,14 +123,15 @@ export const PayableDetailsHeader = ({
     <DialogTitle sx={{ position: 'relative' }} className={className}>
       <Toolbar>
         {dialogContext?.isDialogContent && (
-          <IconButton
+          <IconWrapper
             edge="start"
             color="inherit"
             onClick={onClose}
-            aria-label={t(i18n)`Close payable details`}
+            ariaLabelOverride={t(i18n)`Close payable details`}
+            tooltip={t(i18n)`Close payable details`}
           >
             <CloseIcon />
-          </IconButton>
+          </IconWrapper>
         )}
 
         <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
@@ -157,6 +165,7 @@ export const PayableDetailsHeader = ({
           </Stack>
         )}
       </Toolbar>
+      {modalComponent}
     </DialogTitle>
   );
 };

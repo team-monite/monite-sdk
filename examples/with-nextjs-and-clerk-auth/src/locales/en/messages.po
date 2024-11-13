@@ -15,6 +15,10 @@ msgstr ""
 #~ msgid "AI Assistant"
 #~ msgstr "AI Assistant"
 
+#: src/components/NavigationMenu/NavigationList.tsx:41
+msgid "Bill Pay"
+msgstr "Bill Pay"
+
 #: src/components/MoniteComponents.tsx:488
 #~ msgid "Cancel"
 #~ msgstr "Cancel"
@@ -40,7 +44,7 @@ msgstr "Dark Mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/components/NavigationMenu/NavigationList.tsx:78
+#: src/components/NavigationMenu/NavigationList.tsx:75
 msgid "Email Templates"
 msgstr "Email Templates"
 
@@ -48,7 +52,7 @@ msgstr "Email Templates"
 msgid "English"
 msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:93
+#: src/components/NavigationMenu/NavigationList.tsx:94
 msgid "Get Help"
 msgstr "Get Help"
 
@@ -64,6 +68,10 @@ msgstr "Integrations"
 msgid "Invoice Design"
 msgstr "Invoice Design"
 
+#: src/components/NavigationMenu/NavigationList.tsx:44
+msgid "Invoicing"
+msgstr "Invoicing"
+
 #: src/components/ThemeSelect/ThemeSelect.tsx:118
 msgid "Language"
 msgstr "Language"
@@ -78,8 +86,8 @@ msgid "Material UI"
 msgstr "Material UI"
 
 #: src/components/NavigationMenu/NavigationList.tsx:75
-msgid "Message Templates"
-msgstr "Message Templates"
+#~ msgid "Message Templates"
+#~ msgstr "Message Templates"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:45
 #: src/components/ThemeSelect/useThemeSelect.ts:19
@@ -111,22 +119,22 @@ msgid "Projects"
 msgstr "Projects"
 
 #: src/components/NavigationMenu/NavigationList.tsx:41
-msgid "Purchases"
-msgstr "Purchases"
+#~ msgid "Purchases"
+#~ msgstr "Purchases"
 
 #: src/components/NavigationMenu/NavigationList.tsx:66
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
 #: src/components/NavigationMenu/NavigationList.tsx:44
-msgid "Sales"
-msgstr "Sales"
+#~ msgid "Sales"
+#~ msgstr "Sales"
 
 #: src/components/MoniteComponents.tsx:356
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:81
+#: src/components/NavigationMenu/NavigationList.tsx:78
 msgid "Tags"
 msgstr "Tags"
 

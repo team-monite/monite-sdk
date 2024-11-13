@@ -34,12 +34,12 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
   const {
     data: entity,
     isLoading: isEntityLoading,
-    isUSEntity,
+    isNonVatSupported,
   } = useMyEntity();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {!isUSEntity && (
+      {!isNonVatSupported && (
         <Controller
           name="entity_vat_id_id"
           control={control}

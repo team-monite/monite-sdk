@@ -1040,6 +1040,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MoniteIconWrapper: {
+    defaultProps: {
+      showCloseIcon: true,
+    },
+  },
   MonitePayableTable: {
     defaultProps: {
       isShowingSummaryCards: true,

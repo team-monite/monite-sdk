@@ -1,5 +1,60 @@
 # @monite/sdk-react
 
+## 3.18.0
+
+### Minor Changes
+
+- cb1a0cc6: introduce Custom Tabs for `<ReceivablesTable/>`
+
+  ### Description
+
+  Implemented the ability to configure custom tabs for Receivables using MUI. Users can now select the specific tabs they
+  need, while backward compatibility is maintained. By default, the standard tabs Invoices, Quotes, and Credit Notes are
+  displayed.
+
+  ### Breaking Changes
+
+  The `<ReceivablesTable/>` component interface has changed. Instead of using `ReceivablesTableTabEnum` for the active
+  tab, you now need to pass a `number` representing the tab index. Additionally, the default tab indices have been
+  updated:
+
+  - **Invoices**: 0 (previously 1)
+  - **Quotes**: 1 (previously 0)
+  - **Credit Notes**: 2 (unchanged)
+
+  Please update any existing integrations to reflect these changes.
+
+- 315cde5a: feat: introduce icon wrapper component for all close icons to be cusotmisable from theme props
+- 7232f7de: feat: add integration of payment flow with iframe modal
+
+### Patch Changes
+
+- e288b141: feat(DEV-13151): expand tax value check for non-vat supported countries
+- 6233bff3: hide email section for upload bill dropdown
+  - @monite/sdk-api@3.18.0
+
+## 3.17.0
+
+### Minor Changes
+
+- 8a3195dd: feat(DEV-12896): apply validation form API to the payable form
+- 14106eed: feat(DEV-12440): AP cards statuses
+- f39c1a25: feat(DEV-12623): manual payment record implementation
+- c2874803: update swc plugins and libs to the compatible versions
+- 62f54a82: feat: allow multiple files upload and drag
+- 1845626f: chore: combined both tables user roles and approvals & added extra fields and filters for approval policies
+
+### Patch Changes
+
+- 7a7b7d83: feat: allow multiple files upload on dragging
+- 1d2880a3: feat: extra validation for approval policy
+- 46dad74d: fix(DEV-12623): add more checks to manual payment records
+- 5370ff8a: chore(proposal): better typings system for monite.ts themesation file
+- 4f504a6d: fix: validation fixes for approval policies creation
+- e7ea8955: add reopened state to payables details form after rejected
+- Updated dependencies [c2874803]
+  - @monite/sdk-api@3.17.0
+
 ## 3.17.0-beta.1
 
 ### Minor Changes

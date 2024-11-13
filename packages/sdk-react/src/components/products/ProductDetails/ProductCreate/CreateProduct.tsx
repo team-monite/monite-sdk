@@ -7,6 +7,7 @@ import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,7 +17,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 
@@ -95,13 +95,13 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
-            <IconButton
+            <IconWrapper
               aria-label={t(i18n)`Create New Product Close`}
               onClick={dialogContext.onClose}
               color="inherit"
             >
               <CloseIcon />
-            </IconButton>
+            </IconWrapper>
           )}
         </Grid>
       </Grid>
