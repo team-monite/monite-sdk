@@ -77,7 +77,7 @@ describe('InvoiceDetails', () => {
   });
 
   describe('# UI', () => {
-    describe.only('# Create invoice', () => {
+    describe('# Create invoice', () => {
       test('should render Create Invoice form when we provide `type` but not `id`', async () => {
         renderWithClient(<InvoiceDetails type="invoice" />);
 
