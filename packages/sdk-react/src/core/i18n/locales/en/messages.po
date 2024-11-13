@@ -5034,9 +5034,10 @@ msgid "Payment reminder error"
 msgstr "Payment reminder error"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:45
-msgid "Payment term"
-msgstr "Payment term"
+#~ msgid "Payment term"
+#~ msgstr "Payment term"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:45
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:143
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:194
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:21
