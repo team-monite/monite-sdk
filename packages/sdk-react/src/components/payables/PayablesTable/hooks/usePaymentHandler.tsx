@@ -12,7 +12,7 @@ export const usePaymentHandler = (
   payableId: components['schemas']['PayableResponseSchema']['id']
 ) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { root } = useRootElements();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -29,9 +29,42 @@ export const usePaymentHandler = (
     { enabled: !!paymentLinkId }
   );
 
-  const handleCloseModal = () => {
+  const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
+    undefined,
+    {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+      onError: (error) => {
+        toast.error(error.toString());
+      },
+    }
+  );
+
+  const markInvoiceAsPaid = async (payableId: string) => {
+    if (payableId) {
+      await payMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(`Payable "${payable.document_id}" has been paid`);
+          },
+        }
+      );
+    }
+  };
+
+  const handleCloseModal = async () => {
     setModalOpen(false);
     setIframeUrl(null);
+    await markInvoiceAsPaid(payableId);
   };
 
   const handlePay = () => {
