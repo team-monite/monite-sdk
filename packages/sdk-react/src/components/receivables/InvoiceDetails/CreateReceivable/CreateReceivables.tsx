@@ -33,6 +33,7 @@ import {
 import { format } from 'date-fns';
 
 import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
+import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { BillToSection } from './sections/components/BillToSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
@@ -226,7 +227,13 @@ const CreateReceivablesBase = ({
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
               <Box>
-                <Typography variant="h1" sx={{ mb: 2 }}>
+                <Typography
+                  variant="h1"
+                  sx={{ mb: 2 }}
+                  data-testid={
+                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
+                  }
+                >
                   {t(i18n)`Invoice`}{' '}
                   <span style={{ color: '#707070' }}>
                     #{INVOICE_DOCUMENT_AUTO_ID}

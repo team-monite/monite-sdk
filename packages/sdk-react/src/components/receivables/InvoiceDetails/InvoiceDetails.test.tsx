@@ -5,6 +5,7 @@ import { receivableListFixture } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
+import { ActiveInvoiceTitleTestId } from './CreateReceivable/components/ProductsTable.types';
 import { InvoiceDetails } from './InvoiceDetails';
 
 const invoice = receivableListFixture.invoice[0];
@@ -76,13 +77,17 @@ describe('InvoiceDetails', () => {
   });
 
   describe('# UI', () => {
-    describe('# Create invoice', () => {
+    describe.only('# Create invoice', () => {
       test('should render Create Invoice form when we provide `type` but not `id`', async () => {
         renderWithClient(<InvoiceDetails type="invoice" />);
 
         await waitUntilTableIsLoaded();
 
-        expect(screen.getByText(/create invoice/i)).toBeInTheDocument();
+        expect(
+          screen.getByTestId(
+            new RegExp(ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId, 'i')
+          )
+        ).toBeInTheDocument();
       });
     });
 

@@ -38,6 +38,7 @@ import {
 import { format } from 'date-fns';
 import * as yup from 'yup';
 
+import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
 import { BillToSection } from '../../CreateReceivable/sections/components/BillToSection';
 
 interface EditInvoiceDetailsProps {
@@ -245,7 +246,11 @@ const EditInvoiceDetailsContent = ({
           >
             <Stack direction="column" spacing={4}>
               <BillToSection disabled={isLoading} />
-              <Typography variant="h1" sx={{ mb: 2 }}>
+              <Typography
+                variant="h1"
+                sx={{ mb: 2 }}
+                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
+              >
                 {t(i18n)`Invoice`}{' '}
                 <span style={{ color: '#707070' }}>
                   #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
