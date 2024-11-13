@@ -42,7 +42,7 @@ export const PaymentSection = ({
           select
           name="payment_terms_id"
           control={control}
-          label={t(i18n)`Payment term`}
+          label={t(i18n)`Payment terms`}
           disabled={disabled || !paymentTerms?.data?.length}
           required
         >
