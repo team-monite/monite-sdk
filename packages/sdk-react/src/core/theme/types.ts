@@ -14,6 +14,43 @@ export type ThemeConfig = {
 
   typography?: {
     fontFamily?: string;
+    fontSize?: number;
+
+    h1?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    h2?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    h3?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    subtitle1?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    subtitle2?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    body1?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
+    body2?: {
+      fontSize?: string | number;
+      fontWeight?: string | number;
+      lineHeight?: string | number;
+    };
   };
 };
 
