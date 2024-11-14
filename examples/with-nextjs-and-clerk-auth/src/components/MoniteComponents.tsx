@@ -496,38 +496,7 @@ const USPayDialog = ({
 };
 
 export const Payables = () => {
-  const { root } = useRootElements();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
-
-  const onCloseDialogClick = () => {
-    setModalOpen(false);
-  };
-
-  return (
-    <>
-      <PayablesBase
-        onPay={(payableId: string) => {
-          setCurrentPayableId(payableId);
-          setModalOpen(true);
-        }}
-      />
-      {currentPayableId && (
-        <Dialog
-          open={modalOpen}
-          container={root}
-          aria-label={`Pay invoice`}
-          fullWidth={true}
-          maxWidth="sm"
-        >
-          <USPayDialog
-            payableId={currentPayableId}
-            onCloseDialogClick={onCloseDialogClick}
-          />
-        </Dialog>
-      )}
-    </>
-  );
+  return <PayablesBase />;
 };
 
 export const Receivables = () => {
