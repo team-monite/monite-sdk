@@ -54,7 +54,9 @@ export const usePaymentHandler = (
         },
         {
           onSuccess: (payable) => {
-            toast.success(`Payable "${payable.document_id}" has been paid`);
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" has been paid`
+            );
           },
         }
       );
