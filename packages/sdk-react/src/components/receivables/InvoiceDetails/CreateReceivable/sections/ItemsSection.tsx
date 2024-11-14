@@ -431,9 +431,9 @@ export const ItemsSection = ({
           display: 'flex',
           justifyContent: 'flex-end',
           borderRadius: 0,
-          borderTop: 0,
-          borderRight: 0,
-          borderLeft: 0,
+          border: 0,
+          borderBottom: '1px solid',
+          borderBottomColor: 'divider',
           paddingBottom: 6,
         }}
       >

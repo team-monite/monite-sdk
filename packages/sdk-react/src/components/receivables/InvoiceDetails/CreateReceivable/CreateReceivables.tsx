@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { showErrorToast } from '@/components/onboarding/utils';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
@@ -124,11 +125,13 @@ const CreateReceivablesBase = ({
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
     if (values.type !== 'invoice') {
-      throw new Error('`type` except `invoice` is not supported yet');
+      showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+      return;
     }
 
     if (!actualCurrency) {
-      throw new Error('`actualCurrency` is not defined');
+      showErrorToast(new Error('`actualCurrency` is not defined'));
+      return;
     }
 
     const billingAddressId = values.default_billing_address_id;
@@ -137,7 +140,8 @@ const CreateReceivablesBase = ({
     );
 
     if (!counterpartBillingAddress) {
-      throw new Error('`Billing address` is not provided');
+      showErrorToast(new Error('`Billing address` is not provided'));
+      return;
     }
 
     const shippingAddressId = values.default_shipping_address_id;
@@ -235,9 +239,13 @@ const CreateReceivablesBase = ({
                   }
                 >
                   {t(i18n)`Invoice`}{' '}
-                  <span style={{ color: '#707070' }}>
+                  <Typography
+                    component="span"
+                    variant="h1"
+                    color="textSecondary"
+                  >
                     #{INVOICE_DOCUMENT_AUTO_ID}
-                  </span>
+                  </Typography>
                 </Typography>
                 <EntitySection disabled={createReceivable.isPending} />
               </Box>

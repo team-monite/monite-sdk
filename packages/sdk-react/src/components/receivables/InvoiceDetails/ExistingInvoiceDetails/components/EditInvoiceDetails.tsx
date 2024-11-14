@@ -252,9 +252,9 @@ const EditInvoiceDetailsContent = ({
                 data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
               >
                 {t(i18n)`Invoice`}{' '}
-                <span style={{ color: '#707070' }}>
+                <Typography component="span" variant="h1" color="textSecondary">
                   #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
-                </span>
+                </Typography>
               </Typography>
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection

@@ -29,7 +29,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
 
   const dateTime = i18n.date(new Date(), dateTimeFormat);
 
-  /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
 
