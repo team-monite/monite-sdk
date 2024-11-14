@@ -19,3 +19,4 @@ export { IconUniversity } from './IconUniversity';
 export { IconUsdCircle } from './IconUsdCircle';
 export { IconUserCircle } from './IconUserCircle';
 export { IconUsersAlt } from './IconUsersAlt';
+export { IconBolt } from './IconBolt';
