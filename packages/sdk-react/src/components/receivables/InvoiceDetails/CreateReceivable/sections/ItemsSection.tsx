@@ -424,8 +424,20 @@ export const ItemsSection = ({
           </Collapse>
         </CardContent>
       </Card>
-      <Card className={className + '-Totals'} variant="outlined">
-        <CardContent>
+      <Card
+        className={className + '-Totals'}
+        variant="outlined"
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          borderRadius: 0,
+          border: 0,
+          borderBottom: '1px solid',
+          borderBottomColor: 'divider',
+          paddingBottom: 6,
+        }}
+      >
+        <CardContent sx={{ maxWidth: '560px', width: '100%' }}>
           <Stack>
             <CardTableItem
               label={t(i18n)`Subtotal`}

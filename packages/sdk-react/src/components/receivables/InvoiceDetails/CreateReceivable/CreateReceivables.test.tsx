@@ -104,7 +104,7 @@ describe('CreateReceivables', () => {
       )
     ).toBeNull();
 
-    await triggerClickOnFirstAutocompleteOption(/Bill to/i);
+    await triggerClickOnFirstAutocompleteOption(/Customer/i);
     await triggerClickOnFirstAutocompleteOption(/Billing address/i);
     await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
     await triggerClickOnFirstAutocompleteOption(/Payment terms/i);
@@ -147,7 +147,7 @@ describe('CreateReceivables', () => {
   }, 30_000);
 
   describe('# Select Counterpart', () => {
-    test('should show "Create counterpart" dialog when the user clicks on "Bill to" select and "Create new counterpart" button', async () => {
+    test('should show "Create counterpart" dialog when the user clicks on "Customer" select and "Create new counterpart" button', async () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
@@ -156,7 +156,7 @@ describe('CreateReceivables', () => {
 
       await waitUntilTableIsLoaded();
 
-      triggerClickOnAutocompleteOption(/Bill to/i, /Create new counterpart/i);
+      triggerClickOnAutocompleteOption(/Customer/i, /Create new counterpart/i);
 
       const counterpartDialog = await screen.findByTestId(
         CreateCounterpartDialogTestEnum.DataTestId
@@ -174,7 +174,7 @@ describe('CreateReceivables', () => {
 
       await waitUntilTableIsLoaded();
 
-      triggerClickOnAutocompleteOption(/Bill to/i, /Create new counterpart/i);
+      triggerClickOnAutocompleteOption(/Customer/i, /Create new counterpart/i);
 
       const individualButton = await screen.findByText(/Individual person/i);
       fireEvent.click(individualButton);
@@ -191,7 +191,7 @@ describe('CreateReceivables', () => {
 
       await waitUntilTableIsLoaded();
 
-      triggerClickOnAutocompleteOption(/Bill to/i, /Create new counterpart/i);
+      triggerClickOnAutocompleteOption(/Customer/i, /Create new counterpart/i);
 
       const organizationButton = await screen.findByText(/Organization/i);
 

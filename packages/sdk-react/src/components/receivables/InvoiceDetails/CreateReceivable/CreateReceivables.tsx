@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { showErrorToast } from '@/components/onboarding/utils';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
@@ -32,10 +33,11 @@ import {
 
 import { format } from 'date-fns';
 
-import { CustomerSection } from './sections/CustomerSection';
+import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
+import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
+import { BillToSection } from './sections/components/BillToSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
-import { PaymentSection } from './sections/PaymentSection';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
@@ -121,6 +123,75 @@ const CreateReceivablesBase = ({
   }
 
   const className = 'Monite-CreateReceivable';
+  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    if (values.type !== 'invoice') {
+      showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+      return;
+    }
+
+    if (!actualCurrency) {
+      showErrorToast(new Error('`actualCurrency` is not defined'));
+      return;
+    }
+
+    const billingAddressId = values.default_billing_address_id;
+    const counterpartBillingAddress = counterpartAddresses?.data?.find(
+      (address) => address.id === billingAddressId
+    );
+
+    if (!counterpartBillingAddress) {
+      showErrorToast(new Error('`Billing address` is not provided'));
+      return;
+    }
+
+    const shippingAddressId = values.default_shipping_address_id;
+
+    const counterpartShippingAddress = counterpartAddresses?.data?.find(
+      (address) => address.id === shippingAddressId
+    );
+
+    const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
+      {
+        type: values.type,
+        counterpart_id: values.counterpart_id,
+        counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
+        counterpart_billing_address_id: counterpartBillingAddress.id,
+        counterpart_shipping_address_id: counterpartShippingAddress?.id,
+
+        entity_bank_account_id: values.entity_bank_account_id || undefined,
+        payment_terms_id: values.payment_terms_id,
+        line_items: values.line_items.map((item) => ({
+          quantity: item.quantity,
+          product_id: item.product_id,
+          ...(isNonVatSupported
+            ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
+            : { vat_rate_id: item.vat_rate_id }),
+        })),
+        memo: values.memo,
+        vat_exemption_rationale: values.vat_exemption_rationale,
+        ...(!isNonVatSupported && values.entity_vat_id_id
+          ? { entity_vat_id_id: values.entity_vat_id_id }
+          : {}),
+        fulfillment_date: values.fulfillment_date
+          ? /**
+             * We have to change the date as Backend accepts it.
+             * There is no `time` in the request, only year, month and date
+             */
+            format(values.fulfillment_date, 'yyyy-MM-dd')
+          : undefined,
+        purchase_order: values.purchase_order || undefined,
+        currency: actualCurrency,
+        payment_reminder_id: values.payment_reminder_id || undefined,
+        overdue_reminder_id: values.overdue_reminder_id || undefined,
+        tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
+      };
+
+    createReceivable.mutate(invoicePayload, {
+      onSuccess: (createdReceivable) => {
+        onCreate?.(createdReceivable.id);
+      },
+    });
+  };
 
   return (
     <>
@@ -154,92 +225,36 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit((values) => {
-              if (values.type !== 'invoice') {
-                throw new Error('`type` except `invoice` is not supported yet');
-              }
-
-              if (!actualCurrency) {
-                throw new Error('`actualCurrency` is not defined');
-              }
-
-              const billingAddressId = values.default_billing_address_id;
-              const counterpartBillingAddress =
-                counterpartAddresses?.data?.find(
-                  (address) => address.id === billingAddressId
-                );
-
-              if (!counterpartBillingAddress) {
-                throw new Error('`Billing address` is not provided');
-              }
-
-              const shippingAddressId = values.default_shipping_address_id;
-
-              const counterpartShippingAddress =
-                counterpartAddresses?.data?.find(
-                  (address) => address.id === shippingAddressId
-                );
-
-              const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
-                {
-                  type: values.type,
-                  counterpart_id: values.counterpart_id,
-                  counterpart_vat_id_id:
-                    values.counterpart_vat_id_id || undefined,
-                  counterpart_billing_address_id: counterpartBillingAddress.id,
-                  counterpart_shipping_address_id:
-                    counterpartShippingAddress?.id,
-
-                  entity_bank_account_id:
-                    values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id,
-                  line_items: values.line_items.map((item) => ({
-                    quantity: item.quantity,
-                    product_id: item.product_id,
-                    ...(isNonVatSupported
-                      ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
-                      : { vat_rate_id: item.vat_rate_id }),
-                  })),
-                  memo: values.memo,
-                  vat_exemption_rationale: values.vat_exemption_rationale,
-                  ...(!isNonVatSupported && values.entity_vat_id_id
-                    ? { entity_vat_id_id: values.entity_vat_id_id }
-                    : {}),
-                  fulfillment_date: values.fulfillment_date
-                    ? /**
-                       * We have to change the date as Backend accepts it.
-                       * There is no `time` in the request, only year, month and date
-                       */
-                      format(values.fulfillment_date, 'yyyy-MM-dd')
-                    : undefined,
-                  purchase_order: values.purchase_order || undefined,
-                  currency: actualCurrency,
-                  payment_reminder_id: values.payment_reminder_id || undefined,
-                  overdue_reminder_id: values.overdue_reminder_id || undefined,
-                  tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
-                };
-
-              createReceivable.mutate(invoicePayload, {
-                onSuccess: (createdReceivable) => {
-                  onCreate?.(createdReceivable.id);
-                },
-              });
-            })}
+            onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
-            <Typography variant="h1" sx={{ mb: 7 }}>
-              {t(i18n)`Create Invoice`}
-            </Typography>
-            <Stack direction="column" spacing={4}>
-              <CustomerSection disabled={createReceivable.isPending} />
-              <EntitySection disabled={createReceivable.isPending} />
+            <Stack direction="column" spacing={7}>
+              <BillToSection disabled={createReceivable.isPending} />
+              <Box>
+                <Typography
+                  variant="h1"
+                  sx={{ mb: 2 }}
+                  data-testid={
+                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
+                  }
+                >
+                  {t(i18n)`Invoice`}{' '}
+                  <Typography
+                    component="span"
+                    variant="h1"
+                    color="textSecondary"
+                  >
+                    #{INVOICE_DOCUMENT_AUTO_ID}
+                  </Typography>
+                </Typography>
+                <EntitySection disabled={createReceivable.isPending} />
+              </Box>
               <ItemsSection
                 defaultCurrency={settings?.currency?.default}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
-              <PaymentSection disabled={createReceivable.isPending} />
               <ReminderSection
                 disabled={createReceivable.isPending}
                 onUpdateOverdueReminder={onEditOverdueReminder}
