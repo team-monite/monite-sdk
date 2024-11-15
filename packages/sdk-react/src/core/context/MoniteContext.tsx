@@ -18,15 +18,15 @@ import {
 import { SentryFactory } from '@/core/services';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
-import type { MoniteSDK } from '@monite/sdk-api';
 import type { Theme, ThemeOptions } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 
+import { MoniteSettings } from './MoniteProvider';
+
 interface MoniteContextBaseValue {
-  monite: MoniteSDK;
   locale: MoniteLocaleWithRequired;
   i18n: I18n;
   dateFnsLocale: DateFnsLocale;
@@ -35,6 +35,8 @@ interface MoniteContextBaseValue {
 export interface MoniteContextValue
   extends MoniteContextBaseValue,
     CreateMoniteAPIClientResult {
+  environment: 'dev' | 'sandbox' | 'production';
+  entityId: string;
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
@@ -67,7 +69,7 @@ export function useMoniteContext() {
 }
 
 interface MoniteContextProviderProps {
-  monite: MoniteSDK;
+  monite: MoniteSettings;
   locale: Partial<MoniteLocale> | undefined;
   theme: Theme | ThemeOptions | undefined;
   children: ReactNode;
@@ -100,6 +102,7 @@ export const MoniteContextProvider = ({
 };
 
 interface ContextProviderProps extends MoniteContextBaseValue {
+  monite: MoniteSettings;
   children: ReactNode;
   theme: Theme | ThemeOptions | undefined;
 }
@@ -112,14 +115,29 @@ const ContextProvider = ({
   theme: userTheme,
   children,
 }: ContextProviderProps) => {
+  const { entityId, apiUrl, fetchToken } = monite;
+  let environment: 'dev' | 'sandbox' | 'production';
+
+  if (apiUrl) {
+    if (apiUrl.match(/dev/)) {
+      environment = 'dev';
+    } else if (apiUrl.match(/sandbox/)) {
+      environment = 'sandbox';
+    } else {
+      environment = 'production';
+    }
+  } else {
+    environment = 'sandbox';
+  }
+
   const sentryHub = useMemo(() => {
     return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
       ? new SentryFactory({
-          environment: monite.environment,
-          entityId: monite.entityId,
+          environment,
+          entityId,
         }).create()
       : undefined;
-  }, [monite.entityId, monite.environment]);
+  }, [entityId, environment]);
 
   const queryClient = useMemo(
     () => createQueryClient(i18n, sentryHub),
@@ -129,10 +147,10 @@ const ContextProvider = ({
   const { api, version, requestFn } = useMemo(
     () =>
       createAPIClient({
-        entityId: monite.entityId,
+        entityId: entityId,
         context: MoniteQraftContext,
       }),
-    [monite.entityId]
+    [entityId]
   );
 
   const theme = useMemo(
@@ -148,15 +166,16 @@ const ContextProvider = ({
   return (
     <MoniteContext.Provider
       value={{
+        environment,
+        entityId,
         theme,
-        monite,
         queryClient,
         sentryHub,
         i18n,
         locale,
         dateFnsLocale,
-        apiUrl: monite.baseUrl,
-        fetchToken: monite.fetchToken,
+        apiUrl: apiUrl || 'https://api.sandbox.monite.com/v1',
+        fetchToken,
         api,
         version,
         requestFn,
