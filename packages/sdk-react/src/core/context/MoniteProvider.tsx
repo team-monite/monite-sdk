@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { components } from '@/api';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import {
@@ -7,12 +8,17 @@ import {
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
-import { MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
 import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
+
+export interface MoniteSettings {
+  entityId: string;
+  apiUrl?: string;
+  fetchToken: () => Promise<components['schemas']['AccessTokenResponse']>;
+}
 
 export interface MoniteProviderProps {
   children?: ReactNode;
@@ -27,8 +33,8 @@ export interface MoniteProviderProps {
    */
   theme?: ThemeOptions | Theme;
 
-  /** An instance of `MoniteSDK` */
-  monite: MoniteSDK;
+  /** Monite initial settings  */
+  monite: MoniteSettings;
 
   /**
    * `locale` responsible for internationalisation
