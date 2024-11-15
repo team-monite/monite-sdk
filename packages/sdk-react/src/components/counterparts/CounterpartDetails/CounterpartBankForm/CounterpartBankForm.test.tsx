@@ -7,7 +7,7 @@ import {
 } from '@/mocks/counterparts';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import {
-  cachedMoniteSDK,
+  cachedMoniteSettings,
   renderWithClient,
   triggerChangeInput,
   triggerClickOnAutocompleteOption,
@@ -139,7 +139,7 @@ describe('CounterpartBankForm', () => {
 
       renderWithClient(
         <CounterpartBankForm counterpartId={individualId} />,
-        cachedMoniteSDK
+        cachedMoniteSettings
       );
 
       const accountName = '[create] Account name';
@@ -183,7 +183,7 @@ describe('CounterpartBankForm', () => {
 
       renderWithClient(
         <CounterpartBankForm counterpartId={individualId} />,
-        cachedMoniteSDK
+        cachedMoniteSettings
       );
 
       const accountName = '[create] Account name';
@@ -241,7 +241,7 @@ describe('CounterpartBankForm', () => {
           <MoniteScopedProviders>
             <CounterpartBankForm counterpartId={individualId} />
           </MoniteScopedProviders>,
-          cachedMoniteSDK
+          cachedMoniteSettings
         );
 
         const countrySelectName = /country/i;
@@ -312,7 +312,7 @@ describe('CounterpartBankForm', () => {
               bankId={firstBankListFixture.id}
             />
           </MoniteScopedProviders>,
-          cachedMoniteSDK
+          cachedMoniteSettings
         );
 
         const submitBtn = await screen.findByRole('button', {

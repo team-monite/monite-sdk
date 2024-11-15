@@ -10,11 +10,13 @@ import {
   getLocaleWithDefaults,
   MoniteI18nProvider,
 } from '@/core/context/MoniteI18nProvider';
-import { MoniteProviderProps } from '@/core/context/MoniteProvider';
+import {
+  MoniteProviderProps,
+  MoniteSettings,
+} from '@/core/context/MoniteProvider';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
-import { MoniteSDK } from '@monite/sdk-api';
 import {
   BrowserClient,
   defaultStackParser,
@@ -55,7 +57,7 @@ afterEach(() => {
   queryClient.removeQueries();
 });
 
-export const cachedMoniteSDK = new MoniteSDK({
+export const cachedMoniteSettings: MoniteSettings = {
   entityId: entityIds[0],
   fetchToken: () =>
     Promise.resolve({
@@ -63,20 +65,20 @@ export const cachedMoniteSDK = new MoniteSDK({
       token_type: 'Bearer',
       expires_in: 10_000,
     }),
-});
+};
 
 export const Provider = ({
   children,
   client,
-  sdk,
+  monite,
   moniteProviderProps,
 }: {
   children: ReactNode;
   client: QueryClient;
-  sdk?: MoniteSDK;
+  monite?: MoniteSettings;
   moniteProviderProps?: ICreateRenderWithClientProps['providerOptions'];
 }) => {
-  const monite = sdk ?? cachedMoniteSDK;
+  const moniteSettings = monite ?? cachedMoniteSettings;
   const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
   const dateFnsLocale = moniteProviderProps?.dateFnsLocale ?? DateFnsDeLocale;
 
@@ -95,7 +97,7 @@ export const Provider = ({
   });
   const sentryHub = new Hub(sentryClient);
   const apiClient = createAPIClient({
-    entityId: monite.entityId,
+    entityId: moniteSettings.entityId,
     context: MoniteQraftContext,
   });
 
@@ -107,15 +109,16 @@ export const Provider = ({
   return (
     <MoniteContext.Provider
       value={{
+        entityId: moniteSettings.entityId,
+        environment: 'dev',
         locale: getLocaleWithDefaults(moniteProviderProps?.locale),
-        monite,
         i18n,
         sentryHub,
         queryClient: client,
         theme: createThemeWithDefaults(i18n, moniteProviderProps?.theme),
         dateFnsLocale,
-        apiUrl: monite.baseUrl,
-        fetchToken: monite.fetchToken,
+        apiUrl: moniteSettings.apiUrl || 'https://api.sandbox.monite.com/v1',
+        fetchToken: moniteSettings.fetchToken,
         ...apiClient,
       }}
     >
@@ -129,7 +132,7 @@ export const Provider = ({
 };
 
 interface ICreateRenderWithClientProps {
-  monite?: MoniteSDK;
+  monite?: MoniteSettings;
   providerOptions?: Omit<MoniteProviderProps, 'monite'> & {
     dateFnsLocale?: DateFnsLocale;
   };
@@ -150,14 +153,14 @@ export function createRenderWithClient(props?: ICreateRenderWithClientProps) {
     <Provider
       client={queryClient}
       children={children}
-      sdk={props?.monite}
+      monite={props?.monite}
       moniteProviderProps={props?.providerOptions}
     />
   );
 }
 
 // for component testing
-export function renderWithClient(children: ReactElement, sdk?: MoniteSDK) {
+export function renderWithClient(children: ReactElement, sdk?: MoniteSettings) {
   // const testQueryClient = createReactQueryClient();
   const testQueryClient = queryClient;
   testQueryClient.cancelQueries();
@@ -166,7 +169,7 @@ export function renderWithClient(children: ReactElement, sdk?: MoniteSDK) {
 
   const { rerender, ...result } = render(children, {
     wrapper: ({ children }) => (
-      <Provider client={testQueryClient} children={children} sdk={sdk} />
+      <Provider client={testQueryClient} children={children} monite={sdk} />
     ),
   });
 
@@ -174,7 +177,7 @@ export function renderWithClient(children: ReactElement, sdk?: MoniteSDK) {
     ...result,
     rerender: (children: ReactElement) =>
       rerender(
-        <Provider client={testQueryClient} children={children} sdk={sdk} />
+        <Provider client={testQueryClient} children={children} monite={sdk} />
       ),
   };
 }

@@ -2,14 +2,13 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { useLingui } from '@lingui/react';
-import { MoniteSDK } from '@monite/sdk-api';
 import { useTheme } from '@mui/material/styles';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { MoniteProvider } from './MoniteProvider';
 
 describe('MoniteProvider', () => {
-  const moniteMock = new MoniteSDK({
+  const moniteSettingsMock = {
     entityId: '123',
     fetchToken: () =>
       Promise.resolve({
@@ -17,7 +16,7 @@ describe('MoniteProvider', () => {
         token_type: 'Bearer',
         expires_in: 3600,
       }),
-  });
+  };
 
   describe('# Themes', () => {
     test('should updated primary color after deep merge', () => {
@@ -29,7 +28,7 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useTheme(), {
         wrapper: (props) => (
-          <MoniteProvider monite={moniteMock} theme={partialTheme}>
+          <MoniteProvider monite={moniteSettingsMock} theme={partialTheme}>
             <MoniteScopedProviders>{props.children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -49,7 +48,7 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>
+          <MoniteProvider monite={moniteSettingsMock}>
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -67,7 +66,7 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>
+          <MoniteProvider monite={moniteSettingsMock}>
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -85,7 +84,7 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>
+          <MoniteProvider monite={moniteSettingsMock}>
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -101,7 +100,7 @@ describe('MoniteProvider', () => {
     test('should return "US$100,00" when user set `de` code', async () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock} locale={{ code: 'de' }}>
+          <MoniteProvider monite={moniteSettingsMock} locale={{ code: 'de' }}>
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -117,7 +116,7 @@ describe('MoniteProvider', () => {
     test('should return "US$100,00" when user set `en` code', async () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock} locale={{ code: 'en' }}>
+          <MoniteProvider monite={moniteSettingsMock} locale={{ code: 'en' }}>
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -135,7 +134,10 @@ describe('MoniteProvider', () => {
     test('check that currency locale is correct after setting it by user', async () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock} locale={{ code: 'de-DE' }}>
+          <MoniteProvider
+            monite={moniteSettingsMock}
+            locale={{ code: 'de-DE' }}
+          >
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -152,7 +154,10 @@ describe('MoniteProvider', () => {
     test('check that cucerrency locale is correct after setting it by user', async () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock} locale={{ code: 'en-US' }}>
+          <MoniteProvider
+            monite={moniteSettingsMock}
+            locale={{ code: 'en-US' }}
+          >
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
@@ -170,7 +175,10 @@ describe('MoniteProvider', () => {
     test('check that cucerrency locale is correct after setting it by user', async () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock} locale={{ code: 'en-GB' }}>
+          <MoniteProvider
+            monite={moniteSettingsMock}
+            locale={{ code: 'en-GB' }}
+          >
             <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
