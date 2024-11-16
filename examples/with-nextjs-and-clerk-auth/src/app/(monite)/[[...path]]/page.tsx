@@ -7,12 +7,15 @@ import Image from 'next/image';
 import { Box, Stack } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
+import EmptyState from '@/components/EmptyState';
 import {
   IconUniversity,
   IconBolt,
   IconReceipt,
   IconPayable,
   IconChart,
+  IconSmilyFace,
+  IconPresentation,
 } from '@/icons';
 
 import dashboardBalance from './balance.svg';
@@ -72,21 +75,84 @@ const DashboardMockup = () => {
 };
 
 const CashCard = () => {
-  return <DashboardCard title="Cash on accounts" icon={<IconUniversity />} />;
+  const emptyState = (
+    <EmptyState renderIcon={(props) => <IconUniversity {...props} />}>
+      No bank accounts connected
+    </EmptyState>
+  );
+
+  return (
+    <DashboardCard title="Cash on accounts" icon={<IconUniversity />}>
+      {emptyState}
+    </DashboardCard>
+  );
 };
 
 const RecomendedActionsCard = () => {
-  return <DashboardCard title="Recomended actions" icon={<IconBolt />} />;
+  const emptyState = (
+    <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
+      All looks good!
+      <br />
+      No recommended actions for you at the moment.
+    </EmptyState>
+  );
+
+  return (
+    <DashboardCard title="Recomended actions" icon={<IconBolt />}>
+      {emptyState}
+    </DashboardCard>
+  );
 };
 
 const CashFlowCard = () => {
-  return <DashboardCard title="Cash flow" icon={<IconChart />} />;
+  const emptyState = (
+    <EmptyState
+      renderIcon={(props) => <IconPresentation {...props} />}
+      vertical
+    >
+      Cash Flow analysis will appear when enough transaction data is available.
+    </EmptyState>
+  );
+
+  return (
+    <DashboardCard title="Cash flow" icon={<IconChart />}>
+      {emptyState}
+    </DashboardCard>
+  );
 };
 
 const OutstandingInvoicesCard = () => {
-  return <DashboardCard title="Outstanding invoices" icon={<IconReceipt />} />;
+  const emptyState = (
+    <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
+      All looks good! All invoices are collected.
+    </EmptyState>
+  );
+
+  return (
+    <DashboardCard
+      title="Outstanding invoices"
+      icon={<IconReceipt />}
+      iconVariant="success"
+    >
+      {emptyState}
+    </DashboardCard>
+  );
 };
 
 const DuePayablesCard = () => {
-  return <DashboardCard title="Due payables" icon={<IconPayable />} />;
+  const emptyState = (
+    <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
+      All looks good! All bills are paid.
+    </EmptyState>
+  );
+
+  return (
+    <DashboardCard
+      title="Due payables"
+      icon={<IconPayable />}
+      iconVariant="critical"
+    >
+      {emptyState}
+    </DashboardCard>
+  );
 };

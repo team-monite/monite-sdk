@@ -1,19 +1,20 @@
-import { ReactElement, cloneElement, CSSProperties } from 'react';
+import { ReactElement, cloneElement, CSSProperties, ReactNode } from 'react';
 
 import { Card, CardHeader, CardContent } from '@mui/material';
+
+type IconVariant = 'info' | 'success' | 'critical';
 
 interface DashboardCardProps {
   title: string;
   icon: ReactElement;
-  emptyState?: ReactElement;
-  showEmptyState?: boolean;
+  iconVariant?: IconVariant;
+  children?: ReactNode;
 }
 
 const iconWrapperStyles: CSSProperties = {
   width: 40,
   height: 40,
   borderRadius: 10,
-  backgroundColor: '#F4F4FE',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -22,24 +23,52 @@ const iconWrapperStyles: CSSProperties = {
 const iconStyles: CSSProperties = {
   width: 20,
   height: 20,
-  fill: '#3737FF',
 } as const;
 
-export default function DashboardCard(props: DashboardCardProps) {
+const iconVariantStyles: Record<IconVariant, CSSProperties> = {
+  info: {
+    backgroundColor: '#f4f4fe',
+    fill: '#3737ff',
+  },
+  success: {
+    backgroundColor: '#eefbf9',
+    fill: '#0daa8e',
+  },
+  critical: {
+    backgroundColor: '#fff8f9',
+    fill: '#ff475d',
+  },
+} as const;
+
+const getIconStyles = (variant: IconVariant) => {
+  const { fill, backgroundColor } = iconVariantStyles[variant];
+
+  return {
+    icon: { ...iconStyles, fill },
+    wrapper: { ...iconWrapperStyles, backgroundColor },
+  };
+};
+
+export default function DashboardCard({
+  title,
+  icon,
+  iconVariant,
+  children,
+}: DashboardCardProps) {
+  const { icon: iconStyles, wrapper } = getIconStyles(iconVariant || 'info');
+
   return (
     <Card>
       <CardHeader
-        title={props.title}
+        title={title}
         titleTypographyProps={{
           variant: 'subtitle1',
         }}
         avatar={
-          <div style={iconWrapperStyles}>
-            {cloneElement(props.icon, { style: iconStyles })}
-          </div>
+          <div style={wrapper}>{cloneElement(icon, { style: iconStyles })}</div>
         }
-      ></CardHeader>
-      <CardContent>{props.showEmptyState && props.emptyState}</CardContent>
+      />
+      <CardContent>{children}</CardContent>
     </Card>
   );
 }
