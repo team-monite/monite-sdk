@@ -1,12 +1,12 @@
-import { ReactElement, cloneElement, CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
-import { Card, CardHeader, CardContent } from '@mui/material';
+import { Card, CardHeader, CardContent, SvgIconProps } from '@mui/material';
 
 type IconVariant = 'info' | 'success' | 'critical';
 
 interface DashboardCardProps {
   title: string;
-  icon: ReactElement;
+  renderIcon: (props: SvgIconProps) => ReactNode;
   iconVariant?: IconVariant;
   children?: ReactNode;
 }
@@ -51,7 +51,7 @@ const getIconStyles = (variant: IconVariant) => {
 
 export default function DashboardCard({
   title,
-  icon,
+  renderIcon,
   iconVariant,
   children,
 }: DashboardCardProps) {
@@ -64,9 +64,7 @@ export default function DashboardCard({
         titleTypographyProps={{
           variant: 'subtitle1',
         }}
-        avatar={
-          <div style={wrapper}>{cloneElement(icon, { style: iconStyles })}</div>
-        }
+        avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
       />
       <CardContent>{children}</CardContent>
     </Card>

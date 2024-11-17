@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -23,14 +23,33 @@ import dashboardCashflow from './cashflow.svg';
 import dashboardHeader from './header.svg';
 
 export default function DefaultPage() {
+  const [useMockup, setUseMockup] = useState(true);
+
+  useEffect(() => {
+    const showNewDashboard =
+      localStorage.getItem('showNewDashboard') === 'true';
+
+    setUseMockup(!showNewDashboard);
+  }, []);
+
   return (
     <Box className="Monite-PageContainer Monite-Dashboard">
-      <DashboardMockup />
+      {useMockup ? <DashboardMockup /> : <Dashboard />}
     </Box>
   );
 }
 
 const DashboardMockup = () => {
+  return (
+    <Stack direction="column" justifyContent="flex-start" alignItems="center">
+      <Image priority src={dashboardHeader} alt="" />
+      <Image priority src={dashboardBalance} alt="" />
+      <Image priority src={dashboardCashflow} alt="" />
+    </Stack>
+  );
+};
+
+const Dashboard = () => {
   return (
     <Stack direction="column" justifyContent="flex-start" alignItems="center">
       <Image priority src={dashboardHeader} alt="" />
@@ -41,18 +60,16 @@ const DashboardMockup = () => {
         justifyContent="space-between"
         sx={{ width: '100%' }}
       >
-        <Box sx={{ width: '50%' }}>
+        <Box sx={{ flex: 1 }}>
           <CashCard />
         </Box>
-        <Box sx={{ width: '50%' }}>
+        <Box sx={{ flex: 1 }}>
           <RecomendedActionsCard />
         </Box>
       </Stack>
-      <Stack sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ width: '100%' }}>
-          <CashFlowCard />
-        </Box>
-      </Stack>
+      <Box sx={{ width: '100%', mt: 3 }}>
+        <CashFlowCard />
+      </Box>
       <Stack
         direction="row"
         spacing={3}
@@ -60,16 +77,13 @@ const DashboardMockup = () => {
         justifyContent="space-between"
         sx={{ width: '100%', mt: 3 }}
       >
-        <Box sx={{ width: '50%' }}>
+        <Box sx={{ flex: 1 }}>
           <OutstandingInvoicesCard />
         </Box>
-        <Box sx={{ width: '50%' }}>
+        <Box sx={{ flex: 1 }}>
           <DuePayablesCard />
         </Box>
       </Stack>
-
-      {/* <Image priority src={dashboardBalance} alt="" />
-      <Image priority src={dashboardCashflow} alt="" /> */}
     </Stack>
   );
 };
@@ -82,7 +96,10 @@ const CashCard = () => {
   );
 
   return (
-    <DashboardCard title="Cash on accounts" icon={<IconUniversity />}>
+    <DashboardCard
+      title="Cash on accounts"
+      renderIcon={(props) => <IconUniversity {...props} />}
+    >
       {emptyState}
     </DashboardCard>
   );
@@ -98,7 +115,10 @@ const RecomendedActionsCard = () => {
   );
 
   return (
-    <DashboardCard title="Recomended actions" icon={<IconBolt />}>
+    <DashboardCard
+      title="Recomended actions"
+      renderIcon={(props) => <IconBolt {...props} />}
+    >
       {emptyState}
     </DashboardCard>
   );
@@ -115,7 +135,10 @@ const CashFlowCard = () => {
   );
 
   return (
-    <DashboardCard title="Cash flow" icon={<IconChart />}>
+    <DashboardCard
+      title="Cash flow"
+      renderIcon={(props) => <IconChart {...props} />}
+    >
       {emptyState}
     </DashboardCard>
   );
@@ -131,7 +154,7 @@ const OutstandingInvoicesCard = () => {
   return (
     <DashboardCard
       title="Outstanding invoices"
-      icon={<IconReceipt />}
+      renderIcon={(props) => <IconReceipt {...props} />}
       iconVariant="success"
     >
       {emptyState}
@@ -149,7 +172,7 @@ const DuePayablesCard = () => {
   return (
     <DashboardCard
       title="Due payables"
-      icon={<IconPayable />}
+      renderIcon={(props) => <IconPayable {...props} />}
       iconVariant="critical"
     >
       {emptyState}
