@@ -4,7 +4,6 @@ import {
 } from '@/mocks';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { screen, waitFor } from '@testing-library/react';
 
 import { ApprovalPolicies } from './ApprovalPolicies';
@@ -31,7 +30,7 @@ describe('ApprovalPolicies', () => {
     });
 
     test('support empty permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -39,7 +38,7 @@ describe('ApprovalPolicies', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<ApprovalPolicies />, monite);
 
@@ -55,7 +54,7 @@ describe('ApprovalPolicies', () => {
     });
 
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -63,7 +62,7 @@ describe('ApprovalPolicies', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<ApprovalPolicies />, monite);
 

@@ -13,7 +13,6 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK, PayableStateEnum } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import {
   fireEvent,
@@ -49,7 +48,7 @@ describe('PayableDetails', () => {
   describe('# Existing payable', () => {
     describe('# UI', () => {
       test('should show "Access restricted" view if the user has no permissions to see the page', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
           fetchToken: () =>
             Promise.resolve({
@@ -57,7 +56,7 @@ describe('PayableDetails', () => {
               token_type: 'Bearer',
               expires_in: 3600,
             }),
-        });
+        };
 
         renderWithClient(<PayableDetails id={payableId} />, monite);
 
@@ -629,38 +628,43 @@ describe('PayableDetails', () => {
         source_of_payable_data: 'user_specified',
       });
 
-      const testCasesPayable = [
+      const testCasesPayable: {
+        description: string;
+        status: components['schemas']['PayableStateEnum'];
+        due_date: string;
+        expected: number;
+      }[] = [
         {
           description:
             'should return false when due_date is after today for payable',
-          status: PayableStateEnum.DRAFT,
+          status: 'draft',
           due_date: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
           expected: 0,
         },
         {
           description: 'should return false when due_date is today for payable',
-          status: PayableStateEnum.NEW,
+          status: 'new',
           due_date: new Date().toISOString(),
           expected: 0,
         },
         {
           description:
             'should return overdue days when due_date is before today for payable',
-          status: PayableStateEnum.WAITING_TO_BE_PAID,
+          status: 'waiting_to_be_paid',
           due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           expected: 1,
         },
         {
           description:
             'should return false for status not in overdue statuses, even if due_date is before today for payable',
-          status: PayableStateEnum.PAID,
+          status: 'paid',
           due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           expected: 0,
         },
         {
           description:
             'should return false for status not in overdue statuses and due_date is today for payable',
-          status: PayableStateEnum.APPROVE_IN_PROGRESS,
+          status: 'approve_in_progress',
           due_date: new Date().toISOString(),
           expected: 0,
         },

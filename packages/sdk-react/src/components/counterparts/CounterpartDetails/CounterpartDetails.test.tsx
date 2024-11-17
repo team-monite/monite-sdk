@@ -19,7 +19,6 @@ import {
 } from '@/utils/test-utils';
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -161,7 +160,7 @@ describe('CounterpartDetails', () => {
       });
 
       test('should NOT show "Delete" button if the user has no permissions to delete counterpart', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           entityId: ENTITY_ID_FOR_LOW_PERMISSIONS,
           fetchToken: () =>
             Promise.resolve({
@@ -169,7 +168,7 @@ describe('CounterpartDetails', () => {
               token_type: 'Bearer',
               expires_in: 3600,
             }),
-        });
+        };
 
         renderWithClient(<CounterpartDetails id={individualId} />, monite);
 

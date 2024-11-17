@@ -2,13 +2,12 @@ import { ReactNode, useMemo } from 'react';
 
 import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteProvider } from '@/core/context/MoniteProvider';
+import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { MoniteSDK } from '@monite/sdk-api';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -53,7 +52,7 @@ export function getRandomNumber(min = 0, max = 100) {
 
 export const withGlobalStorybookDecorator = (
   cb?: () => {
-    monite: MoniteSDK;
+    monite: MoniteSettings;
   }
 ): any => {
   const { monite } = cb?.() ?? { monite: undefined };
@@ -78,35 +77,34 @@ export const withGlobalStorybookDecorator = (
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
   theme?: ThemeOptions;
-  monite?: MoniteSDK;
+  monite?: MoniteSettings;
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
 
   const monite = useMemo(
-    () =>
-      new MoniteSDK({
-        entityId: entityIds[0],
-        apiUrl,
-        fetchToken: async () => {
-          const request = {
-            grant_type: 'entity_user',
-            client_id: 'c59964ce-d1c5-4cf3-8e22-9ab0c5e2ffc4',
-            client_secret: '49b55da0-f917-4c90-a2be-e45693600bf7',
-            entity_user_id: '8ee9e41c-cb3c-4f85-84c8-58aa54b09f44',
-          };
+    () => ({
+      entityId: entityIds[0],
+      apiUrl,
+      fetchToken: async () => {
+        const request = {
+          grant_type: 'entity_user',
+          client_id: 'c59964ce-d1c5-4cf3-8e22-9ab0c5e2ffc4',
+          client_secret: '49b55da0-f917-4c90-a2be-e45693600bf7',
+          entity_user_id: '8ee9e41c-cb3c-4f85-84c8-58aa54b09f44',
+        };
 
-          const response = await fetch(`${apiUrl}/auth/token`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-monite-version': apiVersion,
-            },
-            body: JSON.stringify(request),
-          });
+        const response = await fetch(`${apiUrl}/auth/token`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-monite-version': apiVersion,
+          },
+          body: JSON.stringify(request),
+        });
 
-          return await response.json();
-        },
-      }),
+        return await response.json();
+      },
+    }),
     []
   );
 
