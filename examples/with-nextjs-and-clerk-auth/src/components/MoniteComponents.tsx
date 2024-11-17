@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 
 import { useLingui } from '@lingui/react';
-import { MoniteSDK } from '@monite/sdk-api';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
   Counterparts as CounterpartsBase,
@@ -88,12 +87,11 @@ export const MoniteProvider = ({
   }, [entityUserId]);
 
   const monite = useMemo(
-    () =>
-      new MoniteSDK({
-        apiUrl,
-        entityId,
-        fetchToken,
-      }),
+    () => ({
+      apiUrl,
+      entityId,
+      fetchToken,
+    }),
     [apiUrl, entityId, fetchToken]
   );
 
