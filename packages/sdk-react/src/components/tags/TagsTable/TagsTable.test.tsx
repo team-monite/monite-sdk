@@ -5,7 +5,6 @@ import {
 } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   fireEvent,
@@ -384,7 +383,7 @@ describe('TagsTable', () => {
     });
 
     test('support no "update" and no "delete" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -392,7 +391,7 @@ describe('TagsTable', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<TagsTable />, monite);
 
@@ -415,7 +414,7 @@ describe('TagsTable', () => {
     });
 
     test('support "allowed_for_own" access for "update" and "delete" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -423,7 +422,7 @@ describe('TagsTable', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<TagsTable />, monite);
 

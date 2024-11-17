@@ -1,5 +1,4 @@
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { Typography } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -72,7 +71,7 @@ export const WithLowPermissions: Story = {
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -80,7 +79,7 @@ export const WithLowPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),
