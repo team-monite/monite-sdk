@@ -10,10 +10,9 @@ import {
   waitUntilTableIsLoaded,
   triggerClickOnSelectOption,
   triggerChangeInput,
-  cachedMoniteSDK,
+  cachedMoniteSettings,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   act,
@@ -54,7 +53,7 @@ describe('CounterpartsTable', () => {
 
   describe('# UI', () => {
     test('should render access restricted message when user does not have access to counterparts', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -62,7 +61,7 @@ describe('CounterpartsTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(<CounterpartsTable />, monite);
 
@@ -72,7 +71,7 @@ describe('CounterpartsTable', () => {
     });
 
     test('should not render action button on row when user does not have update and delete access to counterparts', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -80,7 +79,7 @@ describe('CounterpartsTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(<CounterpartsTable />, monite);
 
@@ -467,7 +466,7 @@ describe('CounterpartsTable', () => {
     test('should filter items by name when we fill information in "Search by name"', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -492,7 +491,7 @@ describe('CounterpartsTable', () => {
     test('should filter items by "Customers" when we click on "Customers" filter', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -512,7 +511,7 @@ describe('CounterpartsTable', () => {
     test('should filter items by "Vendors" when we click on "Vendors" filter', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -532,7 +531,7 @@ describe('CounterpartsTable', () => {
     test('should filter items by "Individuals" when we click on "Individuals" filter', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -552,7 +551,7 @@ describe('CounterpartsTable', () => {
     test('should filter items by "Companies" when we click on "Companies" filter', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -602,7 +601,7 @@ describe('CounterpartsTable', () => {
     test('should fetch next items when we click on "next" button', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 
@@ -633,7 +632,7 @@ describe('CounterpartsTable', () => {
     test.skip('should fetch previous elements when we click on "prev" button', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-      renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
+      renderWithClient(<CounterpartsTable />, cachedMoniteSettings);
 
       await waitUntilTableIsLoaded();
 

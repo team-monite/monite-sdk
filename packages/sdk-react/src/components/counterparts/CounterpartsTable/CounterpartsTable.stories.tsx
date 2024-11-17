@@ -4,7 +4,6 @@ import {
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
 } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -41,7 +40,7 @@ export const WithReadOnlyPermissions: Story = {
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -49,7 +48,7 @@ export const WithReadOnlyPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),
@@ -71,7 +70,7 @@ export const WithEmptyPermissions: Story = {
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -79,7 +78,7 @@ export const WithEmptyPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),

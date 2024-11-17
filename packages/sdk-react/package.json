@@ -37,7 +37,6 @@
     "@lingui/macro": "~4.7.0",
     "@lingui/message-utils": "~4.7.0",
     "@lingui/react": "~4.7.0",
-    "@monite/sdk-api": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.15.14",
     "@mui/x-data-grid": "~7.11.1",
