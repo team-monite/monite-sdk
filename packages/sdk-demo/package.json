@@ -50,7 +50,6 @@
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
     "@lingui/react": "~4.7.0",
-    "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/rollup-config": "workspace:~",
@@ -83,7 +82,6 @@
     "yup": "~0.32.11"
   },
   "dependencies": {
-    "@monite/sdk-api": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.15.14",
     "@openapi-qraft/react": "1.14.0",
