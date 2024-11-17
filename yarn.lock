@@ -65,18 +65,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apidevtools/json-schema-ref-parser@npm:9.0.9":
-  version: 9.0.9
-  resolution: "@apidevtools/json-schema-ref-parser@npm:9.0.9"
-  dependencies:
-    "@jsdevtools/ono": "npm:^7.1.3"
-    "@types/json-schema": "npm:^7.0.6"
-    call-me-maybe: "npm:^1.0.1"
-    js-yaml: "npm:^4.1.0"
-  checksum: 10/4b73ebbb3a3c1d7620c993a7a7067d71897d9c8be32bf5cf5bee1d2fdab594b2ef32074cbd55464f28dc6930fa715e420fda2a06b23f8889559eedb4422e074e
-  languageName: node
-  linkType: hard
-
 "@aw-web-design/x-default-browser@npm:1.4.126":
   version: 1.4.126
   resolution: "@aw-web-design/x-default-browser@npm:1.4.126"
@@ -4755,13 +4743,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsdevtools/ono@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "@jsdevtools/ono@npm:7.1.3"
-  checksum: 10/d4a036ccb9d2b21b7e4cec077c59a5a83fad58adacbce89e7e6b77a703050481ff5b6d813aef7f5ff0a8347a85a0eedf599e2e6bb5784a971a93e53e43b10157
-  languageName: node
-  linkType: hard
-
 "@juggle/resize-observer@npm:^3.3.1":
   version: 3.4.0
   resolution: "@juggle/resize-observer@npm:3.4.0"
@@ -4975,34 +4956,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@monite/sdk-api@workspace:packages/sdk-api, @monite/sdk-api@workspace:~":
-  version: 0.0.0-use.local
-  resolution: "@monite/sdk-api@workspace:packages/sdk-api"
-  dependencies:
-    "@swc/jest": "npm:~0.2.26"
-    "@team-monite/eslint-plugin": "workspace:~"
-    "@types/jest": "npm:~29.5.11"
-    cross-env: "npm:^7.0.3"
-    eslint: "npm:~8.57.0"
-    jest: "npm:~29.7.0"
-    jest-environment-jsdom: "npm:~29.7.0"
-    jest-fetch-mock: "npm:~3.0.3"
-    msw: "npm:~2.4.11"
-    openapi-typescript-codegen: "npm:~0.24.0"
-    rimraf: "npm:~5.0.0"
-    tsup: "npm:~8.0.2"
-    typescript: "npm:~5.5.4"
-  peerDependencies:
-    typescript: "*"
-  languageName: unknown
-  linkType: soft
-
 "@monite/sdk-drop-in@workspace:packages/sdk-drop-in":
   version: 0.0.0-use.local
   resolution: "@monite/sdk-drop-in@workspace:packages/sdk-drop-in"
   dependencies:
     "@emotion/react": "npm:~11.11.1"
-    "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/material": "npm:~5.15.14"
     "@openapi-qraft/react": "npm:1.14.0"
@@ -5041,7 +4999,6 @@ __metadata:
     "@lingui/macro": "npm:~4.7.0"
     "@lingui/message-utils": "npm:~4.7.0"
     "@lingui/react": "npm:~4.7.0"
-    "@monite/sdk-api": "workspace:~"
     "@mui/icons-material": "npm:~5.14.3"
     "@mui/material": "npm:~5.15.14"
     "@mui/x-data-grid": "npm:~7.11.1"
@@ -8432,7 +8389,6 @@ __metadata:
     "@lingui/core": "npm:~4.7.0"
     "@lingui/macro": "npm:~4.7.0"
     "@lingui/react": "npm:~4.7.0"
-    "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": "npm:~5.14.3"
     "@mui/material": "npm:~5.15.14"
@@ -8978,7 +8934,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.12, @types/json-schema@npm:^7.0.6, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.12, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10/1a3c3e06236e4c4aab89499c428d585527ce50c24fe8259e8b3926d3df4cfbbbcf306cfc73ddfb66cbafc973116efd15967020b0f738f63e09e64c7d260519e7
@@ -11472,13 +11428,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"call-me-maybe@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "call-me-maybe@npm:1.0.2"
-  checksum: 10/3d375b6f810a82c751157b199daba60452876186c19ac653e81bfc5fc10d1e2ba7aedb8622367c3a8aca6879f0e6a29435a1193b35edb8f7fd8267a67ea32373
-  languageName: node
-  linkType: hard
-
 "callsites@npm:^3.0.0":
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
@@ -11514,7 +11463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^6.2.0, camelcase@npm:^6.3.0":
+"camelcase@npm:^6.2.0":
   version: 6.3.0
   resolution: "camelcase@npm:6.3.0"
   checksum: 10/8c96818a9076434998511251dcb2761a94817ea17dbdc37f47ac080bd088fc62c7369429a19e2178b993497132c8cbcf5cc1f44ba963e76782ba469c0474938d
@@ -17923,15 +17872,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-ref-parser@npm:^9.0.9":
-  version: 9.0.9
-  resolution: "json-schema-ref-parser@npm:9.0.9"
-  dependencies:
-    "@apidevtools/json-schema-ref-parser": "npm:9.0.9"
-  checksum: 10/54f42b439abd865f9364e24f29e8e6849bae7565f40d11ef939e99e8285ad86673b7ff16f31398a15d6bff233844949b2f3f45de31d31393cc1c4d18957fc2e3
-  languageName: node
-  linkType: hard
-
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -20207,21 +20147,6 @@ __metadata:
   dependencies:
     openapi-typescript-helpers: "npm:^0.0.5"
   checksum: 10/28da01ec9c748e1fa085e9d79d991c852c1291f33e103d8b1f1b17e5c2b51c41d94b56a7ed676e4485e83cd557df8e187374092bdf0b310d4504404aa49e5bc5
-  languageName: node
-  linkType: hard
-
-"openapi-typescript-codegen@npm:~0.24.0":
-  version: 0.24.0
-  resolution: "openapi-typescript-codegen@npm:0.24.0"
-  dependencies:
-    camelcase: "npm:^6.3.0"
-    commander: "npm:^10.0.0"
-    fs-extra: "npm:^11.1.1"
-    handlebars: "npm:^4.7.7"
-    json-schema-ref-parser: "npm:^9.0.9"
-  bin:
-    openapi: bin/index.js
-  checksum: 10/855ed38164d3fc8f33cf854430047a6464caa81d0cce4d782c53e75a8b698cb6d7a8bca5a804a557b04424a982eba69e6df79767b4d198e2acb82de20fcc392c
   languageName: node
   linkType: hard
 
@@ -23176,7 +23101,6 @@ __metadata:
     "@lingui/macro": "npm:~4.7.0"
     "@lingui/react": "npm:~4.7.0"
     "@lingui/swc-plugin": "npm:4.0.8"
-    "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": "npm:~5.14.3"
     "@mui/material": "npm:~5.15.14"
@@ -24977,7 +24901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:~8.0.1, tsup@npm:~8.0.2":
+"tsup@npm:~8.0.1":
   version: 8.0.2
   resolution: "tsup@npm:8.0.2"
   dependencies:
