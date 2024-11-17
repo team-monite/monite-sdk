@@ -2,12 +2,11 @@ import { UserRolesTable } from '@/components/userRoles';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 describe('UserRolesTable', () => {
   test('should render access restricted message when user does not have access to products', async () => {
-    const monite = new MoniteSDK({
+    const monite = {
       entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
       fetchToken: () =>
         Promise.resolve({
@@ -15,7 +14,7 @@ describe('UserRolesTable', () => {
           token_type: 'Bearer',
           expires_in: 10_000,
         }),
-    });
+    };
 
     renderWithClient(
       <MoniteProvider monite={monite}>

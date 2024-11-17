@@ -5,7 +5,6 @@ import {
 } from '@/mocks';
 import { Provider, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 
@@ -41,7 +40,7 @@ describe('Counterparts', () => {
     });
 
     test('support empty permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -49,7 +48,7 @@ describe('Counterparts', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       const queryClient = new QueryClient({
         defaultOptions: {
@@ -59,7 +58,7 @@ describe('Counterparts', () => {
 
       render(<Counterparts />, {
         wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
+          <Provider client={queryClient} monite={monite} children={children} />
         ),
       });
 
@@ -76,7 +75,7 @@ describe('Counterparts', () => {
     });
 
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -84,7 +83,7 @@ describe('Counterparts', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       const queryClient = new QueryClient({
         defaultOptions: {
@@ -94,7 +93,7 @@ describe('Counterparts', () => {
 
       render(<Counterparts />, {
         wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
+          <Provider client={queryClient} monite={monite} children={children} />
         ),
       });
 
