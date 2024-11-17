@@ -20,6 +20,7 @@ export const DropInMoniteProvider = ({
     () => ({
       entityId,
       apiUrl,
+
       fetchToken: () => fetchTokenLatest.current(),
     }),
     [apiUrl, entityId, fetchTokenLatest]
