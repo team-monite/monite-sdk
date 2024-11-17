@@ -27,7 +27,6 @@
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
     "@lingui/react": "~4.7.0",
-    "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.15.14",
