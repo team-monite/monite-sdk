@@ -1,6 +1,6 @@
 import { apiVersion } from '@/api/api-version';
+import { MoniteSettings } from '@/core/context/MoniteProvider';
 import { packageVersion } from '@/packageVersion';
-import type { MoniteSDK } from '@monite/sdk-api';
 import {
   Hub,
   BrowserClient,
@@ -11,7 +11,7 @@ import {
 } from '@sentry/react';
 
 export interface ISentryService {
-  create(sdk: MoniteSDK): Hub;
+  create(sdk: MoniteSettings): Hub;
 }
 
 interface ISentryConfig {

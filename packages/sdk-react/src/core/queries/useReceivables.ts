@@ -6,9 +6,9 @@ import { ExistingReceivableDetailsProps } from '@/components/receivables/Invoice
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { select, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { LanguageCodeEnum } from '@monite/sdk-api';
 
 export const useReceivables = (
   query: Services['receivables']['getReceivables']['types']['parameters']['query'],
@@ -547,7 +547,9 @@ export const useReceivableEmailPreview = (
   const isLanguageCodeEnum = (
     value: string
   ): value is components['schemas']['LanguageCodeEnum'] => {
-    return Object.values(LanguageCodeEnum).includes(value as LanguageCodeEnum);
+    return Object.values(LanguageCodeEnum).includes(
+      value as components['schemas']['LanguageCodeEnum']
+    );
   };
 
   const language = () => {

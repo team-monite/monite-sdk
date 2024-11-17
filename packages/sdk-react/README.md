@@ -45,7 +45,6 @@ Once you have a user access token and an entity ID, you can initialize the Monit
 The following example renders a table that displays an entity's counterparts:
 
 ```js
-import { MoniteSDK } from "@monite/sdk-api";
 import {
   MoniteProvider,
   CounterpartsTable,
@@ -73,11 +72,11 @@ function App() {
     return response.json();
   };
 
-  const monite = new MoniteSDK({
+  const monite = {
     apiUrl: "https://api.sandbox.monite.com/v1", // '<https://api.monite.com/v1>' if in Production
     entityId: "ENTITY_ID",
     fetchToken,
-  });
+  };
 
   return (
     <MoniteProvider monite={monite} locale={{ code: "de-DE" }}>

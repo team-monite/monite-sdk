@@ -13,7 +13,6 @@ import {
   triggerClickOnSelectOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { PayablesTable } from './PayablesTable';
@@ -24,7 +23,7 @@ jest.setTimeout(10000);
 describe('PayablesTable', () => {
   describe('# UI', () => {
     test('should render access restricted message when user does not have access to payables', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -32,7 +31,7 @@ describe('PayablesTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(
         <MoniteProvider monite={monite}>
@@ -153,7 +152,7 @@ describe('PayablesTable', () => {
     test('should NOT show "Pay" button for payables in status "Waiting to be paid" but the user has NO permission to pay', async () => {
       const onPayMock = jest.fn();
 
-      const monite = new MoniteSDK({
+      const monite = {
         /**
          * If the `entity-id` is `low-permissions`,
          *  then the server will say that all actions
@@ -166,7 +165,7 @@ describe('PayablesTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(<PayablesTable onPay={onPayMock} />, monite);
 
