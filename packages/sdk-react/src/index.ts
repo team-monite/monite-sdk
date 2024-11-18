@@ -1,6 +1,9 @@
 export * from './components';
 
-export { MoniteProvider } from './core/context/MoniteProvider';
+export {
+  MoniteProvider,
+  type MoniteSettings,
+} from './core/context/MoniteProvider';
 export * from './core/context/RootElementsProvider';
 export { useMoniteContext } from './core/context/MoniteContext';
 export { toast } from './ui/toast';
