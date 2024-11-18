@@ -150,6 +150,15 @@ export type UsePayableDetailsProps = {
    * @returns {void}
    */
   onPay?: (id: string) => void;
+
+  /**
+   * Callback function that is called when the user press the Pay button in US
+   *
+   * @param {string} id - The ID of the payable
+   *
+   * @returns {void}
+   */
+  onPayUS?: (id: string) => void;
 };
 
 export function usePayableDetails({
@@ -166,6 +175,7 @@ export function usePayableDetails({
   onApproved,
   onReopened,
   onPay,
+  onPayUS,
 }: UsePayableDetailsProps) {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
@@ -845,11 +855,16 @@ export function usePayableDetails({
   };
 
   const payInvoice = useCallback(() => {
-    if (payableId) {
-      handlePay();
-      onPay?.(payableId);
+    if (payable) {
+      // TODO: remove onPayUS prop
+      if (onPayUS && payable.currency === 'USD') {
+        onPayUS(payable.id);
+      } else {
+        onPay?.(payable.id);
+        handlePay();
+      }
     }
-  }, [payableId, handlePay, onPay]);
+  }, [payable, handlePay, onPay, onPayUS]);
 
   return {
     payable,

@@ -12,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import {
+  Box,
   Alert,
   Button,
   Card,
@@ -204,7 +205,7 @@ const ReminderSectionContent = ({
         </Alert>
       )}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12}>
           <SelectReminderLayout
             reminder={paymentReminder}
             isReminderLoading={isPaymentReminderLoading}
@@ -240,7 +241,7 @@ const ReminderSectionContent = ({
 
                 if (!option.value) return '';
                 if (option.value === 'create')
-                  return t(i18n)`Create a reminder preset` ?? '';
+                  return t(i18n)`Create a reminder preset`;
                 return option.label || '—';
               }}
               renderOption={(props, option) => (
@@ -272,7 +273,7 @@ const ReminderSectionContent = ({
             />
           </SelectReminderLayout>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12}>
           <SelectReminderLayout
             reminder={overdueReminder}
             isReminderLoading={isOverdueReminderLoading}
@@ -308,7 +309,7 @@ const ReminderSectionContent = ({
 
                 if (!option.value) return '';
                 if (option.value === 'create')
-                  return t(i18n)`Create a reminder preset` ?? '';
+                  return t(i18n)`Create a reminder preset`;
                 return option.label || '—';
               }}
               renderOption={(props, option) => (
@@ -409,13 +410,34 @@ export const ReminderSection = (props: ReminderSectionProps) => {
   const className = 'Monite-CreateReceivable-ReminderSection';
 
   return (
-    <Stack spacing={1} className={className}>
-      <Typography variant="h3">{t(i18n)`Reminders`}</Typography>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <CardContent>
-          <ReminderSectionContent {...props} />
-        </CardContent>
-      </Card>
-    </Stack>
+    <Box>
+      <Typography variant="h3">{t(i18n)`Set reminders`}</Typography>
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{ gap: '24px', alignItems: 'flex-start', mt: 1 }}
+        className={className}
+      >
+        <Box sx={{ flex: '1 1 0%' }}>
+          <Typography>{t(
+            i18n
+          )`Choose a preset to send the reminders before and/or after the due date of this invoice`}</Typography>
+        </Box>
+        <Card
+          variant="outlined"
+          sx={{ borderRadius: 2, maxWidth: '560px', width: '100%' }}
+        >
+          <CardContent>
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <ReminderSectionContent {...props} />
+            </Box>
+          </CardContent>
+        </Card>
+      </Stack>
+    </Box>
   );
 };

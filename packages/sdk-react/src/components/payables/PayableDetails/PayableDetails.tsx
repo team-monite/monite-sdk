@@ -55,6 +55,7 @@ const PayableDetailsBase = ({
   onApproved,
   onReopened,
   onPay,
+  onPayUS,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -91,6 +92,7 @@ const PayableDetailsBase = ({
     onApproved,
     onReopened,
     onPay,
+    onPayUS,
   });
   const { i18n } = useLingui();
 
