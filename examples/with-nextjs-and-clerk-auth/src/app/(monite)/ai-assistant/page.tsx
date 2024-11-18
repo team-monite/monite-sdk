@@ -134,7 +134,9 @@ const AiCard = ({
         <Stack direction="column" alignItems="flex-start" gap={2}>
           <Icon sx={{ width: '40px', height: '40px' }} />
           <Typography variant="body1">{title}</Typography>
-          <Typography variant="body2">{body}</Typography>
+          <Typography variant="body2" color="rgba(0, 0, 0, 0.5)" fontSize={14}>
+            {body}
+          </Typography>
         </Stack>
       </CardContent>
     </Card>
