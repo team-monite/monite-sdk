@@ -8,11 +8,13 @@ import { Button } from '@mui/material';
 interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
   onPay?: (id: string) => void;
+  onPayUS?: (id: string) => void;
 }
 
 export const PayablesTableAction = ({
   payable,
   onPay,
+  onPayUS, // TODO: remove onPayUS prop
 }: PayablesTableActionProps) => {
   const { i18n } = useLingui();
   const { data: isPayAllowed } = useIsActionAllowed({
@@ -37,8 +39,14 @@ export const PayablesTableAction = ({
             size="small"
             onClick={(e) => {
               e.stopPropagation();
-              onPay?.(payable.id);
-              handlePay();
+
+              // TODO: remove onPayUS prop
+              if (onPayUS && payable.currency === 'USD') {
+                onPayUS?.(payable.id);
+              } else {
+                onPay?.(payable.id);
+                handlePay();
+              }
             }}
           >
             {t(i18n)`Pay`}
