@@ -12,7 +12,7 @@ export const DropInMoniteProvider = ({
   children,
   theme,
   locale,
-  sdkConfig: { headers, entityId, apiUrl, fetchToken },
+  sdkConfig: { entityId, apiUrl, fetchToken },
 }: DropInMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
 
@@ -20,10 +20,9 @@ export const DropInMoniteProvider = ({
     () => ({
       entityId,
       apiUrl,
-      headers,
-      fetchToken: (...rest) => fetchTokenLatest.current(...rest),
+      fetchToken: () => fetchTokenLatest.current(),
     }),
-    [apiUrl, entityId, fetchTokenLatest, headers]
+    [apiUrl, entityId, fetchTokenLatest]
   );
 
   return (
