@@ -6,7 +6,7 @@
 # without need to read `package.json` and include it in the build output.
 # Usage example (run from the root of the monorepo):
 # ```bash
-# (cd packages/sdk-api && yarn exec ../../write-package-version-file.sh)
+# (cd packages/sdk-react && yarn exec ../../write-package-version-file.sh)
 # ```
 
 if [ ! -f ./package.json ]; then
