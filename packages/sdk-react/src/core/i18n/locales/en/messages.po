@@ -2879,6 +2879,10 @@ msgstr "Failed to create Contact Person."
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:120
+msgid "Failed to create payment link. Please try again."
+msgstr "Failed to create payment link. Please try again."
+
 #: src/core/queries/usePaymentRecords.ts:39
 msgid "Failed to create payment record: {errorMessage}"
 msgstr "Failed to create payment record: {errorMessage}"
@@ -4055,7 +4059,7 @@ msgstr "Linked documents"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:140
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:167
 msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
@@ -4565,6 +4569,10 @@ msgstr "No {entityName}"
 msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:98
+msgid "No active payment methods available. Please configure payment methods first."
+msgstr "No active payment methods available. Please configure payment methods first."
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:192
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
@@ -4622,9 +4630,13 @@ msgstr "No overdue reminders available"
 msgid "No Payables"
 msgstr "No Payables"
 
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:130
+msgid "No payment link found for this payable. Please try again."
+msgstr "No payment link found for this payable. Please try again."
+
 #: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:101
-msgid "No payment link found for this payable. Please, create a payment link first."
-msgstr "No payment link found for this payable. Please, create a payment link first."
+#~ msgid "No payment link found for this payable. Please, create a payment link first."
+#~ msgstr "No payment link found for this payable. Please, create a payment link first."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:227
 msgid "No payment reminders available"
@@ -4955,7 +4967,7 @@ msgstr "Payable \"{0}\" has been canceled"
 msgid "Payable \"{0}\" has been created"
 msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:82
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:68
 msgid "Payable \"{0}\" has been paid"
 msgstr "Payable \"{0}\" has been paid"
 
@@ -5724,6 +5736,10 @@ msgstr "Required"
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:199
 msgid "Resource name"
 msgstr "Resource name"
+
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:85
+msgid "Return URL must use HTTPS protocol"
+msgstr "Return URL must use HTTPS protocol"
 
 #: src/core/utils/countries.ts:197
 msgid "Reunion"
