@@ -178,7 +178,6 @@ const PayablesBase = ({
       >
         <PayableDetails
           id={invoiceIdDialog.invoiceId}
-          counterpartId={invoiceIdDialog}
           onClose={() => {
             setInvoiceIdDialog((prev) => ({ ...prev, open: false }));
           }}

@@ -35,11 +35,6 @@ export type UsePayableDetailsProps = {
   id?: string;
 
   /**
-   * The ID of the counterpart to which the payable belongs
-   */
-  counterpartId?: string;
-
-  /**
    * Callback function that is called when the payable is saved
    *
    * @param {string} id - The ID of the payable
