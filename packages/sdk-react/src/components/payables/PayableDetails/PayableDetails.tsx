@@ -40,6 +40,7 @@ export const PayableDetails = (props: PayablesDetailsProps) => (
 
 const PayableDetailsBase = ({
   id,
+  counterpartId,
   optionalFields,
   onClose,
   onSave,
@@ -77,6 +78,7 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
+    counterpartId,
     onSave,
     onCancel,
     onSubmit,

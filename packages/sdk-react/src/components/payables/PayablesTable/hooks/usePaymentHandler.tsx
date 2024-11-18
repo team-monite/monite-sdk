@@ -9,7 +9,8 @@ import { useLingui } from '@lingui/react';
 import { Modal, Box } from '@mui/material';
 
 export const usePaymentHandler = (
-  payableId: components['schemas']['PayableResponseSchema']['id']
+  payableId: components['schemas']['PayableResponseSchema']['id'],
+  counterpartId: components['schemas']['PayableResponseSchema']['counterpart_id']
 ) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -21,6 +22,29 @@ export const usePaymentHandler = (
   const paymentIntentQuery = api.paymentIntents.getPaymentIntents.useQuery({
     query: { object_id: payableId },
   });
+
+  const createPaymentLinkMutation =
+    api.paymentLinks.postPaymentLinks.useMutation({});
+
+  const createPaymentLink = createPaymentLinkMutation.mutateAsync;
+
+  createPaymentLink({
+    recipient: {
+      id: counterpartId!,
+      type: 'counterpart',
+    },
+    object: {
+      id: payableId,
+      type: 'payable',
+    },
+    payment_methods: ['sepa_credit'],
+  })
+    .then((r) => {
+      console.log('We are here sucess!', r);
+    })
+    .catch((e) => {
+      console.error('Error', e);
+    });
 
   const paymentLinkId = paymentIntentQuery.data?.data?.[0]?.payment_link_id;
 
