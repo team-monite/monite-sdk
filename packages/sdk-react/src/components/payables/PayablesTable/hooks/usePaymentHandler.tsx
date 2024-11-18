@@ -26,26 +26,6 @@ export const usePaymentHandler = (
   const createPaymentLinkMutation =
     api.paymentLinks.postPaymentLinks.useMutation({});
 
-  const createPaymentLink = createPaymentLinkMutation.mutateAsync;
-
-  createPaymentLink({
-    recipient: {
-      id: counterpartId!,
-      type: 'counterpart',
-    },
-    object: {
-      id: payableId,
-      type: 'payable',
-    },
-    payment_methods: ['sepa_credit'],
-  })
-    .then((r) => {
-      console.log('We are here sucess!', r);
-    })
-    .catch((e) => {
-      console.error('Error', e);
-    });
-
   const paymentLinkId = paymentIntentQuery.data?.data?.[0]?.payment_link_id;
 
   const paymentLinkQuery = api.paymentLinks.getPaymentLinksId.useQuery(
@@ -93,24 +73,40 @@ export const usePaymentHandler = (
     await markInvoiceAsPaid(payableId);
   };
 
-  const handlePay = () => {
-    const paymentPageUrl = paymentLinkQuery?.data?.payment_page_url;
-
-    if (!paymentLinkId || !paymentPageUrl) {
-      toast.error(
-        t(
-          i18n
-        )`No payment link found for this payable. Please, create a payment link first.`
-      );
-      return null;
+  const handlePay = async () => {
+    if (!paymentLinkId) {
+      try {
+        await createPaymentLinkMutation.mutateAsync({
+          recipient: {
+            id: counterpartId!,
+            type: 'counterpart',
+          },
+          object: {
+            id: payableId,
+            type: 'payable',
+          },
+          payment_methods: ['sepa_credit'],
+        });
+      } catch (error) {
+        console.error(error);
+        return;
+      }
     }
+
+    const paymentPageUrl = paymentLinkQuery?.data?.payment_page_url;
+    if (!paymentPageUrl) {
+      toast.error(
+        t(i18n)`No payment link found for this payable. Please try again.`
+      );
+      return;
+    }
+
     setIframeUrl(paymentPageUrl);
     setModalOpen(true);
   };
 
   return {
     handlePay,
-    //TODO: integrate based on payment link availability if it's broken
     isPaymentLinkAvailable: true,
     modalComponent: (
       <Modal open={modalOpen} onClose={handleCloseModal} container={root}>
