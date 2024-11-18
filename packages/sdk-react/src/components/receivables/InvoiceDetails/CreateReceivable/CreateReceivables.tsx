@@ -164,7 +164,7 @@ const CreateReceivablesBase = ({
           quantity: item.quantity,
           product_id: item.product_id,
           ...(isNonVatSupported
-            ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
+            ? { tax_rate_value: item?.tax_rate_value * 100 ?? 0 * 100 }
             : { vat_rate_id: item.vat_rate_id }),
         })),
         memo: values.memo,
