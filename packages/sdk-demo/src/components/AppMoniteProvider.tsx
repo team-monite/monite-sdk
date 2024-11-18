@@ -12,7 +12,7 @@ type AppMoniteProvider = {
 const AppMoniteProvider = ({
   children,
   theme,
-  sdkConfig: { headers, entityId, apiUrl, fetchToken },
+  sdkConfig: { entityId, apiUrl, fetchToken },
 }: AppMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
 
@@ -20,10 +20,9 @@ const AppMoniteProvider = ({
     () => ({
       entityId,
       apiUrl,
-      headers,
-      fetchToken: (...rest) => fetchTokenLatest.current(...rest),
+      fetchToken: () => fetchTokenLatest.current(),
     }),
-    [apiUrl, entityId, fetchTokenLatest, headers]
+    [apiUrl, entityId, fetchTokenLatest]
   );
 
   const { i18n } = useLingui();
