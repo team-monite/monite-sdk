@@ -80,46 +80,52 @@ export const usePaymentHandler = (
   };
 
   const handlePay = async () => {
-    if (!paymentLinkId) {
-      if (!returnUrl?.startsWith('https://')) {
-        toast.error(t(i18n)`Return URL must use HTTPS protocol`);
-        return;
-      }
+    if (!returnUrl?.startsWith('https://')) {
+      toast.error(t(i18n)`Return URL must use HTTPS protocol`);
+      return;
+    }
 
-      const availablePaymentMethods = paymentMethods
-        ? paymentMethods.data.filter(
-            ({ status, direction }) =>
-              status === 'active' && direction === 'receive'
-          )
-        : [];
+    const availablePaymentMethods = paymentMethods
+      ? paymentMethods.data.filter(
+          ({ status, direction }) =>
+            status === 'active' && direction === 'receive'
+        )
+      : [];
 
-      if (availablePaymentMethods.length === 0) {
-        toast.error(
-          t(
-            i18n
-          )`No active payment methods available. Please configure payment methods first.`
-        );
-        return;
-      }
+    if (availablePaymentMethods.length === 0) {
+      toast.error(
+        t(
+          i18n
+        )`No active payment methods available. Please configure payment methods first.`
+      );
+      return;
+    }
 
-      try {
-        await createPaymentLinkMutation.mutateAsync({
-          recipient: {
-            id: counterpartId!,
-            type: 'counterpart',
-          },
-          object: {
-            id: payableId,
-            type: 'payable',
-          },
-          payment_methods: availablePaymentMethods.map((method) => method.type),
-          return_url: returnUrl,
-        });
-      } catch (error) {
-        console.error('Payment link creation error:', error);
-        toast.error(t(i18n)`Failed to create payment link. Please try again.`);
-        return;
-      }
+    if (!counterpartId) {
+      toast.error(
+        t(i18n)`Counterpart not found. Please create a counterpart first.`
+      );
+      return;
+    }
+
+    try {
+      await createPaymentLinkMutation.mutateAsync({
+        recipient: {
+          id: counterpartId,
+          type: 'counterpart',
+        },
+        object: {
+          id: payableId,
+          type: 'payable',
+        },
+        payment_methods: ['sepa_credit'],
+        return_url: returnUrl,
+        expires_at: new Date(Date.now() + 3600 * 1000).toISOString(), // Time: 1 hour
+      });
+    } catch (error) {
+      console.error('Payment link creation error:', error);
+      toast.error(t(i18n)`Failed to create payment link. Please try again.`);
+      return;
     }
 
     await paymentLinkQuery.refetch();
