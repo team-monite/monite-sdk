@@ -70,6 +70,12 @@ interface PayablesTableProps extends MonitePayableTableProps {
    */
   onPay?: (id: string) => void;
   /**
+   * The event handler for the pay action in US
+   *
+   * @param id - The identifier of the row to perform the pay action on, a string.
+   */
+  onPayUS?: (id: string) => void;
+  /**
    * Triggered when the filtering options are changed
    *
    * @param filter - An object containing the filter parameters.
@@ -144,6 +150,7 @@ export const PayablesTable = (props: PayablesTableProps) => (
 const PayablesTableBase = ({
   onRowClick,
   onPay,
+  onPayUS,
   onChangeFilter: onChangeFilterCallback,
   openFileInput,
   setIsCreateInvoiceDialogOpen,
@@ -362,11 +369,17 @@ const PayablesTableBase = ({
         renderCell: (params) => {
           const payable = params.row;
 
-          return <PayablesTableAction payable={payable} onPay={onPay} />;
+          return (
+            <PayablesTableAction
+              payable={payable}
+              onPay={onPay}
+              onPayUS={onPayUS}
+            />
+          );
         },
       },
     ];
-  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay, onPayUS]);
 
   const columns = useMemo<GridColDef[]>(() => {
     return columnsConfig.sort((a, b) => {
