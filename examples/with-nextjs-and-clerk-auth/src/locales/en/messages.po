@@ -37,8 +37,8 @@ msgstr "Counterparts"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:134
 #: src/components/ThemeSelect/useThemeSelect.ts:33
-msgid "Dark Mode"
-msgstr "Dark Mode"
+#~ msgid "Dark Mode"
+#~ msgstr "Dark Mode"
 
 #: src/components/NavigationMenu/NavigationList.tsx:39
 msgid "Dashboard"
@@ -49,8 +49,8 @@ msgid "Email Templates"
 msgstr "Email Templates"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:121
-msgid "English"
-msgstr "English"
+#~ msgid "English"
+#~ msgstr "English"
 
 #: src/components/NavigationMenu/NavigationList.tsx:98
 msgid "Get Help"
@@ -73,17 +73,17 @@ msgid "Invoicing"
 msgstr "Invoicing"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:118
-msgid "Language"
-msgstr "Language"
+#~ msgid "Language"
+#~ msgstr "Language"
 
 #: src/components/ThemeSelect/useThemeSelect.ts:30
-msgid "Light Mode"
-msgstr "Light Mode"
+#~ msgid "Light Mode"
+#~ msgstr "Light Mode"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:44
 #: src/components/ThemeSelect/useThemeSelect.ts:22
-msgid "Material UI"
-msgstr "Material UI"
+#~ msgid "Material UI"
+#~ msgstr "Material UI"
 
 #: src/components/NavigationMenu/NavigationList.tsx:75
 #~ msgid "Message Templates"
@@ -91,8 +91,8 @@ msgstr "Material UI"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:45
 #: src/components/ThemeSelect/useThemeSelect.ts:19
-msgid "Monite"
-msgstr "Monite"
+#~ msgid "Monite"
+#~ msgstr "Monite"
 
 #: src/components/NavigationMenu/NavigationList.tsx:61
 msgid "My Profile"
@@ -143,8 +143,8 @@ msgid "Team"
 msgstr "Team"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:99
-msgid "Theme"
-msgstr "Theme"
+#~ msgid "Theme"
+#~ msgstr "Theme"
 
 #: src/components/MoniteComponents.tsx:372
 #~ msgid "Total"
@@ -155,5 +155,5 @@ msgstr "Theme"
 #~ msgstr "Total fee"
 
 #: src/components/ThemeRegistry/AppThemeProvider.tsx:91
-msgid "We were unable to save your theme selection, please try again."
-msgstr "We were unable to save your theme selection, please try again."
+#~ msgid "We were unable to save your theme selection, please try again."
+#~ msgstr "We were unable to save your theme selection, please try again."
