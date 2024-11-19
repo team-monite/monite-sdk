@@ -419,8 +419,8 @@ const USPayDialog = ({
           path: { payable_id: payableId },
         },
         {
-          onSuccess: (payable) => {
-            toast.success(`Payable "${payable.document_id}" has been paid`);
+          onSuccess: () => {
+            toast.success('Payable has been paid');
           },
         }
       );
