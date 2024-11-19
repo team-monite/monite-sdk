@@ -24,7 +24,7 @@ export const PayablesTableAction = ({
   });
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(payable.id);
+    usePaymentHandler(payable.id, payable.counterpart_id);
 
   if (!isPayAllowed) {
     return null;

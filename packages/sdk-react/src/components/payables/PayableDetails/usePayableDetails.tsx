@@ -190,8 +190,6 @@ export function usePayableDetails({
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActionButtonLoading, setIsActionButtonLoading] = useState(false);
-  const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(id!);
 
   useEffect(() => {
     if (onSave && onSaved) {
@@ -258,6 +256,9 @@ export function usePayableDetails({
       refetchOnMount: true,
     }
   );
+
+  const { handlePay, modalComponent, isPaymentLinkAvailable } =
+    usePaymentHandler(id!, payable?.counterpart_id);
 
   useEffect(() => {
     if (isOcrProcessing)
