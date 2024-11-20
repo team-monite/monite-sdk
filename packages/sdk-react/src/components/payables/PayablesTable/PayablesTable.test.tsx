@@ -48,20 +48,12 @@ describe('PayablesTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const payableInOcr = payableFixturePages[1];
-
-      const fileNameCell = await screen.findByRole('gridcell', {
-        name: String(payableInOcr.file?.name),
-      });
       const ocrStatusCell = screen.getByRole('gridcell', {
         name: /Processing file/i,
       });
 
-      expect(fileNameCell).toBeInTheDocument();
-      expect(fileNameCell.getAttribute('aria-colspan')).toEqual('2');
-
       expect(ocrStatusCell).toBeInTheDocument();
-      expect(ocrStatusCell.getAttribute('aria-colspan')).toEqual('3');
+      expect(ocrStatusCell.getAttribute('aria-colspan')).toEqual('4');
     });
   });
 

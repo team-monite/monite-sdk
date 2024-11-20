@@ -50,9 +50,8 @@ import {
   TableCell,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
-
-import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
 /* eslint-disable */
 
@@ -67,7 +66,7 @@ export const MoniteProvider = ({
   entityUserId: string;
   children: ReactNode;
 }) => {
-  const { theme } = useAppTheme();
+  const theme = useTheme();
   const { i18n } = useLingui();
 
   const fetchToken = useCallback(async () => {
