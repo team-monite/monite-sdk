@@ -26,7 +26,8 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
       display="flex"
       flexDirection="column"
       alignItems="start"
-      sx={overdueDays > 0 ? { marginTop: 0.8 } : { marginTop: 2 }}
+      height="inherit"
+      justifyContent="center"
     >
       <Typography variant="body2" color={overdueDays > 0 ? 'error' : ''}>
         {formattedDate}
