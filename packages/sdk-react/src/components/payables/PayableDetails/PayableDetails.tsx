@@ -54,6 +54,7 @@ const PayableDetailsBase = ({
   onApproved,
   onReopened,
   onPay,
+  onPayUS,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -72,6 +73,8 @@ const PayableDetailsBase = ({
       approveInvoice,
       cancelInvoice,
       reopenInvoice,
+      isPaymentLinkAvailable,
+      modalComponent,
     },
   } = usePayableDetails({
     id,
@@ -87,6 +90,7 @@ const PayableDetailsBase = ({
     onApproved,
     onReopened,
     onPay,
+    onPayUS,
   });
   const { i18n } = useLingui();
 
@@ -154,6 +158,8 @@ const PayableDetailsBase = ({
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
+          isPaymentLinkAvailable={isPaymentLinkAvailable}
+          modalComponent={modalComponent}
         />
         <Divider />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>

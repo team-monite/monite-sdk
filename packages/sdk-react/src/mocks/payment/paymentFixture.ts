@@ -51,3 +51,18 @@ export const paymentIntent: components['schemas']['PaymentIntentWithSecrets'] =
       },
     },
   };
+
+export const paymentIntentFilterObjectID: components['schemas']['PaymentIntentResponse'] =
+  {
+    id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    amount: 1500,
+    currency: 'EUR',
+    invoice: paymentIntent.invoice,
+    payer: paymentIntent.payer,
+    payment_methods: ['card', 'sepa_credit'],
+    payment_reference: paymentIntent.payment_reference,
+    payment_link_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    status: 'active',
+    recipient: paymentIntent.recipient,
+    updated_at: new Date().toISOString(),
+  };

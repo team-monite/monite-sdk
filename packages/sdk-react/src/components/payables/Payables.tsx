@@ -29,6 +29,7 @@ export type PayablesProps = Pick<
   | 'onApproved'
   | 'onReopened'
   | 'onPay'
+  | 'onPayUS'
 >;
 
 export const Payables = (props: PayablesProps) => {
@@ -47,6 +48,7 @@ const PayablesBase = ({
   onApproved,
   onReopened,
   onPay,
+  onPayUS,
 }: PayablesProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -146,6 +148,7 @@ const PayablesBase = ({
         <PayablesTable
           onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
           onPay={onPay}
+          onPayUS={onPayUS}
           openFileInput={openFileInput}
           setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
@@ -185,6 +188,7 @@ const PayablesBase = ({
           onApproved={onApproved}
           onReopened={onReopened}
           onPay={onPay}
+          onPayUS={onPayUS}
         />
       </Dialog>
 

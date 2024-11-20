@@ -19,3 +19,8 @@ export { IconUniversity } from './IconUniversity';
 export { IconUsdCircle } from './IconUsdCircle';
 export { IconUserCircle } from './IconUserCircle';
 export { IconUsersAlt } from './IconUsersAlt';
+export { IconBolt } from './IconBolt';
+export { IconChart } from './IconChart';
+export { IconPayable } from './IconPayable';
+export { IconSmilyFace } from './IconSmilyFace';
+export { IconPresentation } from './IconPresentation';

@@ -5,6 +5,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Card,
@@ -30,60 +32,85 @@ export default function AiAssistantPage() {
     <Box className="Monite-PageContainer Monite-AiAssistant">
       <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
         <Typography variant="h2">AI Assistant</Typography>
-        <Box flexGrow={2}>
-          {!replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Typography
-                variant="subtitle2"
-                sx={{ width: '100%', maxWidth: '720px' }}
+        <Box sx={{ mt: 6 }}>
+          <Alert
+            severity="info"
+            variant="filled"
+            sx={{ bgcolor: '#6666FF', py: 2, px: 3, fontWeight: 500 }}
+            icon={
+              <AlertIcon sx={{ width: 40, height: 40, alignSelf: 'center' }} />
+            }
+          >
+            <AlertTitle variant="subtitle1" sx={{ fontWeight: 600 }}>
+              Available on production API
+            </AlertTitle>
+            AI Assistant functionality is available on our production API only
+            for now. Contact our team to get more info!
+          </Alert>
+        </Box>
+        <Stack sx={{ overflow: 'auto', height: '100%' }}>
+          <Box flexGrow={2} sx={{ mt: 8 }}>
+            {!replyShown && (
+              <Stack
+                direction="column"
+                alignItems="center"
+                gap={2}
+                sx={{ width: '100%', height: '100%' }}
               >
-                Some examples of what you can do:
-              </Typography>
-              <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>
-                <AiCard
-                  Icon={Icon1}
-                  title="Find documents quickly"
-                  body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon2}
-                  title="Automate & schedule"
-                  body="Schedule payments, emails and notifications. Create new
-                      documents, approval policies or any other items."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon3}
-                  title="Generate custom reports"
-                  body="Choose what information to combine is a custom-made
-                      reports tailored to exact needs of your business."
-                  onClick={onCardClick}
+                <Typography
+                  variant="subtitle2"
+                  sx={{ width: '100%', maxWidth: '720px' }}
+                >
+                  Some examples of what you can do:
+                </Typography>
+                <Stack
+                  direction="row"
+                  gap={2}
+                  sx={{ maxWidth: '720px', mb: 4 }}
+                >
+                  <AiCard
+                    Icon={Icon1}
+                    title="Find documents quickly"
+                    body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
+                    onClick={onCardClick}
+                  />
+                  <AiCard
+                    Icon={Icon2}
+                    title="Automate & schedule"
+                    body="Schedule payments, emails and notifications. Create new
+                        documents, approval policies or any other items."
+                    onClick={onCardClick}
+                  />
+                  <AiCard
+                    Icon={Icon3}
+                    title="Generate custom reports"
+                    body="Choose what information to combine is a custom-made
+                        reports tailored to exact needs of your business."
+                    onClick={onCardClick}
+                  />
+                </Stack>
+              </Stack>
+            )}
+
+            {replyShown && (
+              <Stack
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                gap={2}
+                sx={{ width: '100%', height: '100%' }}
+              >
+                <Image
+                  src={aiStub}
+                  alt=""
+                  onClick={() => setReplyShown(false)}
                 />
               </Stack>
-            </Stack>
-          )}
-
-          {replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />
-            </Stack>
-          )}
-        </Box>
-        <Stack alignItems="center" justifyContent="center">
-          <SearchBar />
+            )}
+          </Box>
+          <Stack alignItems="center" justifyContent="center">
+            <SearchBar />
+          </Stack>
         </Stack>
       </Stack>
     </Box>
@@ -107,7 +134,9 @@ const AiCard = ({
         <Stack direction="column" alignItems="flex-start" gap={2}>
           <Icon sx={{ width: '40px', height: '40px' }} />
           <Typography variant="body1">{title}</Typography>
-          <Typography variant="body2">{body}</Typography>
+          <Typography variant="body2" color="rgba(0, 0, 0, 0.5)" fontSize={14}>
+            {body}
+          </Typography>
         </Stack>
       </CardContent>
     </Card>
@@ -131,6 +160,7 @@ const SearchBar = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
       fullWidth
       sx={{ maxWidth: '720px', background: '#ffffff', borderRadius: '4px' }}
+      disabled
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
@@ -139,6 +169,7 @@ const SearchBar = () => {
               size="small"
               className="Monite-withShadow"
               onClick={handleSearch}
+              disabled
               style={{ textTransform: 'none' }} // Ensures "Send" text is not all caps
             >
               Send
@@ -149,6 +180,27 @@ const SearchBar = () => {
     />
   );
 };
+
+const AlertIcon = createSvgIcon(
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="40"
+    height="40"
+    viewBox="0 0 40 40"
+    fill="none"
+  >
+    <g opacity="0.4">
+      <rect width="40" height="40" rx="10" fill="#9999FF" />
+    </g>
+    <g transform="translate(9.5, 9.5)">
+      <path
+        d="M18.7522 14.6735H2.4257C2.2092 14.6735 2.00156 14.7595 1.84847 14.9126C1.69538 15.0657 1.60938 15.2734 1.60938 15.4899C1.60938 15.7064 1.69538 15.914 1.84847 16.0671C2.00156 16.2202 2.2092 16.3062 2.4257 16.3062H18.7522C18.9687 16.3062 19.1764 16.2202 19.3295 16.0671C19.4826 15.914 19.5686 15.7064 19.5686 15.4899C19.5686 15.2734 19.4826 15.0657 19.3295 14.9126C19.1764 14.7595 18.9687 14.6735 18.7522 14.6735ZM18.7522 17.9388H2.4257C2.2092 17.9388 2.00156 18.0248 1.84847 18.1779C1.69538 18.331 1.60938 18.5387 1.60938 18.7552C1.60938 18.9717 1.69538 19.1793 1.84847 19.3324C2.00156 19.4855 2.2092 19.5715 2.4257 19.5715H18.7522C18.9687 19.5715 19.1764 19.4855 19.3295 19.3324C19.4826 19.1793 19.5686 18.9717 19.5686 18.7552C19.5686 18.5387 19.4826 18.331 19.3295 18.1779C19.1764 18.0248 18.9687 17.9388 18.7522 17.9388ZM5.69101 6.51026C5.52955 6.51026 5.37173 6.55814 5.23748 6.64784C5.10324 6.73754 4.99861 6.86503 4.93682 7.0142C4.87503 7.16336 4.85887 7.3275 4.89037 7.48585C4.92186 7.6442 4.99961 7.78966 5.11378 7.90382C5.22794 8.01799 5.3734 8.09573 5.53175 8.12723C5.6901 8.15873 5.85424 8.14256 6.0034 8.08078C6.15257 8.01899 6.28006 7.91436 6.36976 7.78012C6.45946 7.64587 6.50733 7.48804 6.50733 7.32659C6.50733 7.11009 6.42133 6.90245 6.26824 6.74936C6.11515 6.59627 5.90751 6.51026 5.69101 6.51026ZM17.1196 1.6123H4.05835C3.40884 1.6123 2.78594 1.87032 2.32666 2.32959C1.86739 2.78887 1.60938 3.41177 1.60938 4.06128V10.5919C1.60938 11.2414 1.86739 11.8643 2.32666 12.3236C2.78594 12.7829 3.40884 13.0409 4.05835 13.0409H17.1196C17.7691 13.0409 18.392 12.7829 18.8513 12.3236C19.3105 11.8643 19.5686 11.2414 19.5686 10.5919V4.06128C19.5686 3.41177 19.3105 2.78887 18.8513 2.32959C18.392 1.87032 17.7691 1.6123 17.1196 1.6123ZM17.9359 10.5919C17.9359 10.8084 17.8499 11.016 17.6968 11.1691C17.5437 11.3222 17.3361 11.4082 17.1196 11.4082H4.05835C3.84185 11.4082 3.63422 11.3222 3.48112 11.1691C3.32803 11.016 3.24203 10.8084 3.24203 10.5919V4.06128C3.24203 3.84478 3.32803 3.63715 3.48112 3.48405C3.63422 3.33096 3.84185 3.24496 4.05835 3.24496H17.1196C17.3361 3.24496 17.5437 3.33096 17.6968 3.48405C17.8499 3.63715 17.9359 3.84478 17.9359 4.06128V10.5919ZM10.589 4.87761C10.1046 4.87761 9.63112 5.02124 9.22839 5.29034C8.82565 5.55944 8.51176 5.94191 8.3264 6.38941C8.14105 6.8369 8.09255 7.32931 8.18704 7.80436C8.28154 8.27942 8.51478 8.71579 8.85728 9.05828C9.19977 9.40078 9.63614 9.63402 10.1112 9.72851C10.5863 9.82301 11.0787 9.77451 11.5262 9.58915C11.9736 9.4038 12.3561 9.0899 12.6252 8.68717C12.8943 8.28444 13.0379 7.81095 13.0379 7.32659C13.0379 6.67708 12.7799 6.05417 12.3207 5.5949C11.8614 5.13563 11.2385 4.87761 10.589 4.87761ZM10.589 8.14292C10.4275 8.14292 10.2697 8.09504 10.1354 8.00534C10.0012 7.91564 9.89657 7.78815 9.83478 7.63899C9.77299 7.48982 9.75683 7.32569 9.78833 7.16733C9.81982 7.00898 9.89757 6.86353 10.0117 6.74936C10.1259 6.6352 10.2714 6.55745 10.4297 6.52595C10.5881 6.49445 10.7522 6.51062 10.9014 6.5724C11.0505 6.63419 11.178 6.73882 11.2677 6.87306C11.3574 7.00731 11.4053 7.16514 11.4053 7.32659C11.4053 7.54309 11.3193 7.75073 11.1662 7.90382C11.0131 8.05691 10.8055 8.14292 10.589 8.14292ZM15.4869 6.51026C15.3255 6.51026 15.1676 6.55814 15.0334 6.64784C14.8992 6.73754 14.7945 6.86503 14.7327 7.0142C14.671 7.16336 14.6548 7.3275 14.6863 7.48585C14.7178 7.6442 14.7955 7.78966 14.9097 7.90382C15.0239 8.01799 15.1693 8.09573 15.3277 8.12723C15.486 8.15873 15.6502 8.14256 15.7993 8.08078C15.9485 8.01899 16.076 7.91436 16.1657 7.78012C16.2554 7.64587 16.3033 7.48804 16.3033 7.32659C16.3033 7.11009 16.2172 6.90245 16.0642 6.74936C15.9111 6.59627 15.7034 6.51026 15.4869 6.51026Z"
+        fill="white"
+      />
+    </g>
+  </svg>,
+  'AlertIcon'
+);
 
 const Icon1 = createSvgIcon(
   <svg

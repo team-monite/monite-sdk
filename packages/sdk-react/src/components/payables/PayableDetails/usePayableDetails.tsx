@@ -8,6 +8,7 @@ import {
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -149,6 +150,15 @@ export type UsePayableDetailsProps = {
    * @returns {void}
    */
   onPay?: (id: string) => void;
+
+  /**
+   * Callback function that is called when the user press the Pay button in US
+   *
+   * @param {string} id - The ID of the payable
+   *
+   * @returns {void}
+   */
+  onPayUS?: (id: string) => void;
 };
 
 export function usePayableDetails({
@@ -165,6 +175,7 @@ export function usePayableDetails({
   onApproved,
   onReopened,
   onPay,
+  onPayUS,
 }: UsePayableDetailsProps) {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
@@ -245,6 +256,9 @@ export function usePayableDetails({
       refetchOnMount: true,
     }
   );
+
+  const { handlePay, modalComponent, isPaymentLinkAvailable } =
+    usePaymentHandler(id!, payable?.counterpart_id);
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -841,10 +855,16 @@ export function usePayableDetails({
   };
 
   const payInvoice = useCallback(() => {
-    if (payableId) {
-      onPay?.(payableId);
+    if (payable) {
+      // TODO: remove onPayUS prop
+      if (onPayUS && payable.currency === 'USD') {
+        onPayUS(payable.id);
+      } else {
+        onPay?.(payable.id);
+        handlePay();
+      }
     }
-  }, [payableId, onPay]);
+  }, [payable, handlePay, onPay, onPayUS]);
 
   return {
     payable,
@@ -867,6 +887,9 @@ export function usePayableDetails({
       reopenInvoice,
       cancelInvoice,
       payInvoice,
+      handlePay,
+      modalComponent,
+      isPaymentLinkAvailable,
     },
   };
 }

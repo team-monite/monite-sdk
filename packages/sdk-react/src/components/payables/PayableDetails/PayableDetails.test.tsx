@@ -547,22 +547,24 @@ describe('PayableDetails', () => {
         });
       });
 
+      //TODO: cover with test for integration flow of payments intent
       test('should trigger "onPay" callback when we click on "Pay" button', async () => {
         const onPayMock = jest.fn();
-        fixture.status = 'waiting_to_be_paid';
+        const payableId = 'waiting-to-be-paid-id';
+        const fixture = { status: 'waiting_to_be_paid', id: payableId };
 
-        renderWithClient(<PayableDetails id={payableId} onPay={onPayMock} />);
-
-        await waitUntilTableIsLoaded();
-
-        const payButton = await screen.findByRole('button', {
-          name: t`Pay`,
-        });
-
-        await user.click(payButton);
+        renderWithClient(<PayableDetails id={fixture.id} onPay={onPayMock} />);
 
         await waitFor(() => {
-          expect(onPayMock).toHaveBeenCalledWith(payableId);
+          expect(screen.getByRole('button', { name: /pay/i })).toBeEnabled();
+        });
+
+        const payButton = screen.getByRole('button', { name: /pay/i });
+
+        await userEvent.click(payButton);
+
+        await waitFor(() => {
+          expect(onPayMock).toHaveBeenCalledWith(fixture.id);
         });
       });
     });

@@ -44,8 +44,8 @@ export interface MoniteReceivablesTableProps {
 }
 
 export enum ReceivablesTableTabEnum {
-  Quotes,
   Invoices,
+  Quotes,
   CreditNotes,
 }
 

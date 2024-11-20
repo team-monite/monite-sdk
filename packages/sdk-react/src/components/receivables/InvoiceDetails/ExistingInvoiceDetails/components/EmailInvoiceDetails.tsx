@@ -201,7 +201,7 @@ const EmailInvoiceDetailsBase = ({
            * Otherwise, the recipient won't be able to pay the invoice.
            *
            * The link will be automatically attached to the email because we provide `object` field
-           *  with the invoice id and type.
+           *  with the invoice id and type
            *
            * For more information, you could check Monite API documentation:
            * @see {@link https://docs.monite.com/docs/payment-links#22-payment-link-for-a-receivable}

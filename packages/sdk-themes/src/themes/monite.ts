@@ -203,17 +203,9 @@ export const defaultMoniteTypography:
   },
 };
 
-const typographyLight = Object.assign({}, defaultMoniteTypography, {
-  body2: {
-    color: paletteLight.neutral && paletteLight.neutral['10'],
-  },
-});
+const typographyLight = Object.assign({}, defaultMoniteTypography, {});
 
-const typographyDark = Object.assign({}, defaultMoniteTypography, {
-  body2: {
-    color: paletteDark.neutral && paletteDark.neutral['10'],
-  },
-});
+const typographyDark = Object.assign({}, defaultMoniteTypography, {});
 
 const filterControlWidth = '160px';
 
@@ -1049,13 +1041,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       isShowingSummaryCards: true,
       fieldOrder: [
-        'document_id',
         'counterpart_id',
-        'created_at',
-        'issued_at',
-        'due_date',
-        'status',
+        'document_id',
         'amount',
+        'due_date',
+        'was_created_by_user_id',
         'pay',
       ],
     },
