@@ -299,14 +299,19 @@ const PayablesTableBase = ({
         headerAlign: 'right',
         align: 'right',
         headerName: t(i18n)({
-          id: 'Amount Name',
-          message: 'Amount',
-          comment: 'Payables Table "Amount" heading title',
+          id: 'Total',
+          message: 'Total',
+          comment: 'Payables Table "Total" heading title',
         }),
         width: 120,
         valueGetter: (_, payable) => {
-          return payable.amount_to_pay && payable.currency
-            ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
+          const amount =
+            payable.status === 'paid'
+              ? payable.total_amount
+              : payable.amount_to_pay;
+
+          return amount && payable.currency
+            ? formatCurrencyToDisplay(amount, payable.currency)
             : '';
         },
       },
