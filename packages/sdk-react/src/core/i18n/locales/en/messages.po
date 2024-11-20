@@ -1797,6 +1797,10 @@ msgstr "Counterpart has been deleted."
 msgid "Counterpart not found"
 msgstr "Counterpart not found"
 
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:106
+msgid "Counterpart not found. Please create a counterpart first."
+msgstr "Counterpart not found. Please create a counterpart first."
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:174
 #: src/components/userRoles/consts.ts:33
@@ -2892,7 +2896,7 @@ msgstr "Failed to create Contact Person."
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:120
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:127
 msgid "Failed to create payment link. Please try again."
 msgstr "Failed to create payment link. Please try again."
 
@@ -4064,7 +4068,7 @@ msgstr "Linked documents"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:167
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:173
 msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
@@ -4574,7 +4578,7 @@ msgstr "No {entityName}"
 msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:98
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:97
 msgid "No active payment methods available. Please configure payment methods first."
 msgstr "No active payment methods available. Please configure payment methods first."
 
@@ -4635,7 +4639,7 @@ msgstr "No overdue reminders available"
 msgid "No Payables"
 msgstr "No Payables"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:130
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:136
 msgid "No payment link found for this payable. Please try again."
 msgstr "No payment link found for this payable. Please try again."
 
@@ -5745,7 +5749,7 @@ msgstr "Required"
 msgid "Resource name"
 msgstr "Resource name"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:85
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:84
 msgid "Return URL must use HTTPS protocol"
 msgstr "Return URL must use HTTPS protocol"
 
