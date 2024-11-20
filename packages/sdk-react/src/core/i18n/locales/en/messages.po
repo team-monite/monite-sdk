@@ -4579,8 +4579,8 @@ msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
 #: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:97
-msgid "No active payment methods available. Please configure payment methods first."
-msgstr "No active payment methods available. Please configure payment methods first."
+#~ msgid "No active payment methods available. Please configure payment methods first."
+#~ msgstr "No active payment methods available. Please configure payment methods first."
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:192
 msgid "No active payment methods available. The email will be sent without a payment link"
@@ -4980,7 +4980,7 @@ msgstr "Payable \"{0}\" has been canceled"
 msgid "Payable \"{0}\" has been created"
 msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:68
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:63
 msgid "Payable \"{0}\" has been paid"
 msgstr "Payable \"{0}\" has been paid"
 
@@ -5749,7 +5749,7 @@ msgstr "Required"
 msgid "Resource name"
 msgstr "Resource name"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:84
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:79
 msgid "Return URL must use HTTPS protocol"
 msgstr "Return URL must use HTTPS protocol"
 

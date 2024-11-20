@@ -14,19 +14,14 @@ export const usePaymentHandler = (
   returnUrl: string = 'https://www.monite.com'
 ) => {
   const { i18n } = useLingui();
-  const { api, monite, queryClient } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { root } = useRootElements();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
 
-  const { data: paymentMethods } =
-    api.entities.getEntitiesIdPaymentMethods.useQuery({
-      path: { entity_id: monite.entityId },
-    });
-
   const paymentIntentQuery = api.paymentIntents.getPaymentIntents.useQuery({
-    query: { object_id: payableId },
+    query: { object_id: payableId, order: 'desc' },
   });
 
   const createPaymentLinkMutation =
@@ -85,21 +80,26 @@ export const usePaymentHandler = (
       return;
     }
 
-    const availablePaymentMethods = paymentMethods
-      ? paymentMethods.data.filter(
-          ({ status, direction }) =>
-            status === 'active' && direction === 'receive'
-        )
-      : [];
-
-    if (availablePaymentMethods.length === 0) {
-      toast.error(
-        t(
-          i18n
-        )`No active payment methods available. Please configure payment methods first.`
-      );
-      return;
-    }
+    // TODO: for a moment, we are blocking payment methods check and only keep
+    // const { data: paymentMethods } =
+    //   api.entities.getEntitiesIdPaymentMethods.useQuery({
+    //     path: { entity_id: monite.entityId },
+    //   });
+    // const availablePaymentMethods = paymentMethods
+    //   ? paymentMethods.data.filter(
+    //       ({ status, direction }) =>
+    //         status === 'active' && direction === 'receive' // modify based on no direction provided
+    //     )
+    //   : [];
+    //
+    // if (availablePaymentMethods.length === 0) {
+    //   toast.error(
+    //     t(
+    //       i18n
+    //     )`No active payment methods available. Please configure payment methods first.`
+    //   );
+    //   return;
+    // }
 
     if (!counterpartId) {
       toast.error(
