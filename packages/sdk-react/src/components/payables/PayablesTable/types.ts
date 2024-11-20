@@ -31,13 +31,11 @@ export type FilterValue =
 
 //TODO: better to map it with schema.json keyof values
 export type FieldValueTypes =
-  | 'document_id'
   | 'counterpart_id'
-  | 'created_at'
-  | 'issued_at'
-  | 'due_date'
-  | 'status'
+  | 'document_id'
   | 'amount'
+  | 'due_date'
+  | 'was_created_by_user_id'
   | 'pay';
 
 export interface MonitePayableTableProps {

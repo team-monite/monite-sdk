@@ -50,9 +50,8 @@ import {
   TableCell,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
-
-import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
 /* eslint-disable */
 
@@ -67,7 +66,7 @@ export const MoniteProvider = ({
   entityUserId: string;
   children: ReactNode;
 }) => {
-  const { theme } = useAppTheme();
+  const theme = useTheme();
   const { i18n } = useLingui();
 
   const fetchToken = useCallback(async () => {
@@ -419,8 +418,8 @@ const USPayDialog = ({
           path: { payable_id: payableId },
         },
         {
-          onSuccess: (payable) => {
-            toast.success(`Payable "${payable.document_id}" has been paid`);
+          onSuccess: () => {
+            toast.success('Payable has been paid');
           },
         }
       );
@@ -496,7 +495,38 @@ const USPayDialog = ({
 };
 
 export const Payables = () => {
-  return <PayablesBase />;
+  const { root } = useRootElements();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
+
+  const onCloseDialogClick = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <>
+      <PayablesBase
+        onPayUS={(payableId: string) => {
+          setCurrentPayableId(payableId);
+          setModalOpen(true);
+        }}
+      />
+      {currentPayableId && (
+        <Dialog
+          open={modalOpen}
+          container={root}
+          aria-label={`Pay invoice`}
+          fullWidth={true}
+          maxWidth="sm"
+        >
+          <USPayDialog
+            payableId={currentPayableId}
+            onCloseDialogClick={onCloseDialogClick}
+          />
+        </Dialog>
+      )}
+    </>
+  );
 };
 
 export const Receivables = () => {

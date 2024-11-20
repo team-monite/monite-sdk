@@ -108,6 +108,7 @@ function generatePayable(
     subtotal: Number(faker.finance.amount()),
     tax: 1100,
     tax_amount: Number(faker.finance.amount()),
+    total_amount: Number(faker.finance.amount()),
     sender: undefined,
   };
 
