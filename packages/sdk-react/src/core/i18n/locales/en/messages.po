@@ -343,7 +343,7 @@ msgstr "Add VAT ID"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:242
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:83
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:529
-#: src/components/payables/PayablesTable/PayablesTable.tsx:347
+#: src/components/payables/PayablesTable/PayablesTable.tsx:336
 msgid "Added by"
 msgstr "Added by"
 
@@ -503,7 +503,7 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:78
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:231
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:334
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:170
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:171
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:259
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:76
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:13
@@ -3752,7 +3752,7 @@ msgstr "Issue at"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:203
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:300
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:154
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:145
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:45
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:225
 msgid "Issue date"
