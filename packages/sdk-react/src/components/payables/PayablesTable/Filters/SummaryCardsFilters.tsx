@@ -191,51 +191,49 @@ const SummaryCard = ({
               >
                 {statusText}
               </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                fontWeight={700}
-                fontSize="small"
-                sx={{
-                  mt: amount != null ? 0 : 1,
-                  color: colorValue,
-                  borderRadius: 2,
-                  paddingLeft: '4px',
-                  paddingRight: '4px',
-                  backgroundColor: lighten(colorValue, 0.8),
-                }}
-              >
-                {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
-              </Typography>
+              {/*<Typography*/}
+              {/*  variant="body2"*/}
+              {/*  color="text.secondary"*/}
+              {/*  fontWeight={700}*/}
+              {/*  fontSize="small"*/}
+              {/*  sx={{*/}
+              {/*    mt: amount != null ? 0 : 1,*/}
+              {/*    color: colorValue,*/}
+              {/*    borderRadius: 2,*/}
+              {/*    paddingLeft: '4px',*/}
+              {/*    paddingRight: '4px',*/}
+              {/*    backgroundColor: lighten(colorValue, 0.8),*/}
+              {/*  }}*/}
+              {/*>*/}
+              {/*  {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}*/}
+              {/*</Typography>*/}
             </>
           )}
         </Box>
         {status !== 'all' && (
           <Box
             display="flex"
-            justifyContent="flex-end"
+            justifyContent="flex-start"
             alignItems="flex-end"
             mt="auto"
           >
-            <AmountTypography
-              variant="h5"
+            {/* TODO: Enable amount calculations with analytics endpoint */}
+            <Typography
+              variant="body2"
+              color="text.secondary"
               fontWeight={700}
-              className={classNames(
-                `${summaryCardClassName}-AmountTypography`,
-                `${summaryCardClassName}-AmountTypography-${status}`,
-                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
-              )}
+              fontSize="small"
+              sx={{
+                mt: 1,
+                color: colorValue,
+                borderRadius: 2,
+                paddingLeft: '4px',
+                paddingRight: '4px',
+                backgroundColor: lighten(colorValue, 0.8),
+              }}
             >
-              ${integerPart}.
-              <Typography
-                component="span"
-                fontWeight={700}
-                fontSize="small"
-                sx={{ color: 'gray' }}
-              >
-                {decimalPart}
-              </Typography>
-            </AmountTypography>
+              {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
+            </Typography>
           </Box>
         )}
       </CardContent>
