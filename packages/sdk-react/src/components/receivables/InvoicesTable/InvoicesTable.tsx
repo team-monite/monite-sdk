@@ -157,6 +157,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Number, status`,
         sortable: false,
         width: 100,
+        display: 'flex',
         renderCell: ({ value, row }) => (
           <Stack
             direction="column"

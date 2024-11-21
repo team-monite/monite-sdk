@@ -147,6 +147,7 @@ const QuotesTableBase = ({
         field: 'document_id',
         headerName: t(i18n)`Number, status`,
         width: 100,
+        display: 'flex',
         renderCell: ({ value, row }) => (
           <Stack
             direction="column"
