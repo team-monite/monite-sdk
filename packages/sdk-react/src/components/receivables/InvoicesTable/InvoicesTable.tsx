@@ -32,7 +32,7 @@ import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Sync } from '@mui/icons-material';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -154,44 +154,58 @@ const InvoicesTableBase = ({
     return [
       {
         field: 'document_id',
-        headerName: t(i18n)`Number`,
+        headerName: t(i18n)`Number, status`,
         sortable: false,
         width: 100,
-        renderCell: ({ value, row }) => {
-          if (row.status === 'recurring')
-            return (
-              <Typography
-                className="Monite-TextOverflowContainer"
-                color="text.primary"
-                component="span"
-                variant="body2"
-                sx={{
-                  alignItems: 'center',
-                  display: 'inline-flex',
-                  verticalAlign: 'middle',
-                  fontSize: 'inherit',
-                  gap: 0.5,
-                }}
-              >
-                <Sync fontSize="small" color="inherit" />
-                {t(i18n)`Recurring`}
-              </Typography>
-            );
+        renderCell: ({ value, row }) => (
+          <Stack
+            direction="column"
+            alignItems="flex-start"
+            gap={0.5}
+            sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
+          >
+            <Typography
+              variant="body1"
+              className="Monite-TextOverflowContainer"
+            >
+              {(() => {
+                if (row.status === 'recurring') {
+                  return (
+                    <Box
+                      sx={{
+                        alignItems: 'center',
+                        display: 'inline-flex',
+                        verticalAlign: 'middle',
+                        fontSize: 'inherit',
+                        gap: 0.5,
+                      }}
+                    >
+                      <Sync fontSize="small" color="inherit" />
+                      {t(i18n)`Recurring`}
+                    </Box>
+                  );
+                }
 
-          if (!value) {
-            return (
-              <span className="Monite-TextOverflowContainer">
-                <Typography
-                  color="text.secondary"
-                  component="span"
-                  fontSize="inherit"
-                >{t(i18n)`INV-auto`}</Typography>
-              </span>
-            );
-          }
+                if (!value) {
+                  return <Box color="text.secondary">{t(i18n)`INV-auto`}</Box>;
+                }
 
-          return <span className="Monite-TextOverflowContainer">{value}</span>;
-        },
+                return value;
+              })()}
+            </Typography>
+            {(() => {
+              if (row.type === 'invoice' && row.recurrence_id) {
+                return (
+                  <InvoiceRecurrenceStatusChipLoader
+                    recurrenceId={row.recurrence_id}
+                  />
+                );
+              }
+
+              return <InvoiceStatusChip status={row.status} size="small" />;
+            })()}
+          </Stack>
+        ),
       },
       {
         field: 'counterpart_name',
@@ -216,23 +230,6 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
-      },
-      {
-        field: 'status',
-        headerName: t(i18n)`Status`,
-        sortable: ReceivableCursorFields.includes('status'),
-        width: 80,
-        renderCell: ({ value: status, row }) => {
-          if (row.type === 'invoice' && row.recurrence_id) {
-            return (
-              <InvoiceRecurrenceStatusChipLoader
-                recurrenceId={row.recurrence_id}
-              />
-            );
-          }
-
-          return <InvoiceStatusChip status={status} />;
-        },
       },
       {
         field: 'total_amount',
