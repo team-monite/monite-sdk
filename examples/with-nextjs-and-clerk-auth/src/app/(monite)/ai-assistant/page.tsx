@@ -42,10 +42,10 @@ export default function AiAssistantPage() {
             }
           >
             <AlertTitle variant="subtitle1" sx={{ fontWeight: 600 }}>
-              Available on production API
+              Unavailable on Sandbox
             </AlertTitle>
-            AI Assistant functionality is available on our production API only
-            for now. Contact our team to get more info!
+            The Finance AI Assistant is currently available exclusively on
+            Production. Contact our team to see it in action!
           </Alert>
         </Box>
         <Stack sx={{ overflow: 'auto', height: '100%' }}>
@@ -65,27 +65,26 @@ export default function AiAssistantPage() {
                 </Typography>
                 <Stack
                   direction="row"
+                  justifyContent="center"
                   gap={2}
                   sx={{ maxWidth: '720px', mb: 4 }}
                 >
                   <AiCard
                     Icon={Icon1}
                     title="Find documents quickly"
-                    body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
+                    body="Enter any prompt, and we’ll locate all related documents, presenting the most relevant information in an organized format."
                     onClick={onCardClick}
                   />
                   <AiCard
                     Icon={Icon2}
                     title="Automate & schedule"
-                    body="Schedule payments, emails and notifications. Create new
-                        documents, approval policies or any other items."
+                    body="Schedule payments, emails, and notifications, or create documents and workflows to streamline operations."
                     onClick={onCardClick}
                   />
                   <AiCard
                     Icon={Icon3}
                     title="Generate custom reports"
-                    body="Choose what information to combine is a custom-made
-                        reports tailored to exact needs of your business."
+                    body="Choose information you need to create tailored reports designed to meet the specific needs of your business."
                     onClick={onCardClick}
                   />
                 </Stack>
@@ -155,7 +154,7 @@ const SearchBar = () => {
     <TextField
       className="Monite-AiSearchField"
       variant="outlined"
-      placeholder="What we can help you with?"
+      placeholder="What can I help you with?"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       fullWidth
