@@ -122,8 +122,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
       <BillToSelector
         setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}
+        disabled={disabled}
       />
-      {defaultContactName && (
+      {counterpartId && (
         <>
           <Box>
             <TextField
