@@ -251,9 +251,7 @@ const QuotesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ReceivableFilters onChange={onChangeFilter} filters={filters} />
-      </Box>
+      <ReceivableFilters onChange={onChangeFilter} filters={filters} />
       <DataGrid
         initialState={{
           sorting: {
