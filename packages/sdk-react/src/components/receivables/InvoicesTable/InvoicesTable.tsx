@@ -193,17 +193,13 @@ const InvoicesTableBase = ({
                 return value;
               })()}
             </Typography>
-            {(() => {
-              if (row.type === 'invoice' && row.recurrence_id) {
-                return (
-                  <InvoiceRecurrenceStatusChipLoader
-                    recurrenceId={row.recurrence_id}
-                  />
-                );
-              }
-
-              return <InvoiceStatusChip status={row.status} size="small" />;
-            })()}
+            {row.type === 'invoice' && row.recurrence_id ? (
+              <InvoiceRecurrenceStatusChipLoader
+                recurrenceId={row.recurrence_id}
+              />
+            ) : (
+              <InvoiceStatusChip status={row.status} size="small" />
+            )}
           </Stack>
         ),
       },
@@ -391,5 +387,7 @@ const InvoiceRecurrenceStatusChipLoader = ({
 
   if (!recurrence?.status) return null;
 
-  return <InvoiceRecurrenceStatusChip status={recurrence.status} />;
+  return (
+    <InvoiceRecurrenceStatusChip status={recurrence.status} size="small" />
+  );
 };
