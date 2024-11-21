@@ -312,15 +312,13 @@ const InvoicesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ReceivableFilters
-          filters={filters}
-          onChange={(field, value) => {
-            setPaginationToken(undefined);
-            onChangeFilter(field, value);
-          }}
-        />
-      </Box>
+      <ReceivableFilters
+        filters={filters}
+        onChange={(field, value) => {
+          setPaginationToken(undefined);
+          onChangeFilter(field, value);
+        }}
+      />
 
       <DataGrid
         initialState={{
