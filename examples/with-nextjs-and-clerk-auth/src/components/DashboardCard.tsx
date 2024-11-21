@@ -5,7 +5,7 @@ import { Card, CardHeader, CardContent, SvgIconProps } from '@mui/material';
 type IconVariant = 'info' | 'success' | 'critical';
 
 interface DashboardCardProps {
-  title: string;
+  title: ReactNode;
   renderIcon: (props: SvgIconProps) => ReactNode;
   iconVariant?: IconVariant;
   children?: ReactNode;
@@ -66,7 +66,7 @@ export default function DashboardCard({
         }}
         avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
       />
-      <CardContent>{children}</CardContent>
+      <CardContent sx={{ pt: 0 }}>{children}</CardContent>
     </Card>
   );
 }
