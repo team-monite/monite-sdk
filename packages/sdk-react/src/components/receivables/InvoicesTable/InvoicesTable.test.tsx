@@ -27,7 +27,7 @@ describe('InvoicesTable', () => {
     renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: INVOICE_DOCUMENT_AUTO_ID,
+      name: new RegExp(INVOICE_DOCUMENT_AUTO_ID),
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -64,7 +64,7 @@ describe('InvoicesTable', () => {
     );
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: INVOICE_DOCUMENT_AUTO_ID,
+      name: new RegExp(INVOICE_DOCUMENT_AUTO_ID),
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -109,7 +109,7 @@ describe('InvoicesTable', () => {
 
     await expect(
       screen.findAllByRole('gridcell', {
-        name: String(firstInvoiceNotEmptyDocumentId),
+        name: new RegExp(String(firstInvoiceNotEmptyDocumentId)),
       })
     ).resolves.toBeInstanceOf(Array);
 

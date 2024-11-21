@@ -190,6 +190,8 @@ export function usePayableDetails({
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActionButtonLoading, setIsActionButtonLoading] = useState(false);
+  //TODO: align better with internal state structure
+  const [tempPayableID, setTempPayableID] = useState(payableId);
 
   useEffect(() => {
     if (onSave && onSaved) {
@@ -258,7 +260,7 @@ export function usePayableDetails({
   );
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(id!, payable?.counterpart_id);
+    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id);
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -794,6 +796,7 @@ export function usePayableDetails({
         }
       );
       onSubmit?.(payableId);
+      setTempPayableID(payableId);
       onSubmitted?.(payableId);
     }
   };

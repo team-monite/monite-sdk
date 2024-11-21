@@ -64,15 +64,10 @@ export const SummaryStyledCard = styled(Card)(
     flexDirection: 'column',
     justifyContent: 'center',
     height: 80,
-    minWidth: isAllItems ? '118px' : '220px',
+    minWidth: isAllItems ? '118px' : '180px',
     flexShrink: 0,
   })
 );
-
-const AmountTypography = styled(Typography)(() => ({
-  display: 'flex',
-  alignItems: 'baseline',
-}));
 
 export const summaryCardClassName = 'Monite-SummaryCard';
 
@@ -86,18 +81,6 @@ const SummaryCard = ({
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
   const theme = useTheme();
-
-  const formatAmount = (amount: number) => {
-    const dividedAmount = amount / 100;
-    return dividedAmount.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-    });
-  };
-
-  const formattedAmount = amount != null ? formatAmount(amount) : '';
-  const [integerPart, decimalPart] = formattedAmount.includes('.')
-    ? formattedAmount.split('.')
-    : ['0', '00'];
 
   const statusText = isAllItems
     ? t(i18n)`All items`
@@ -191,51 +174,33 @@ const SummaryCard = ({
               >
                 {statusText}
               </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                fontWeight={700}
-                fontSize="small"
-                sx={{
-                  mt: amount != null ? 0 : 1,
-                  color: colorValue,
-                  borderRadius: 2,
-                  paddingLeft: '4px',
-                  paddingRight: '4px',
-                  backgroundColor: lighten(colorValue, 0.8),
-                }}
-              >
-                {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
-              </Typography>
             </>
           )}
         </Box>
         {status !== 'all' && (
           <Box
             display="flex"
-            justifyContent="flex-end"
+            justifyContent="flex-start"
             alignItems="flex-end"
             mt="auto"
           >
-            <AmountTypography
-              variant="h5"
+            {/* TODO: Enable amount calculations with analytics endpoint */}
+            <Typography
+              variant="body2"
+              color="text.secondary"
               fontWeight={700}
-              className={classNames(
-                `${summaryCardClassName}-AmountTypography`,
-                `${summaryCardClassName}-AmountTypography-${status}`,
-                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
-              )}
+              fontSize="small"
+              sx={{
+                mt: 1,
+                color: colorValue,
+                borderRadius: 2,
+                paddingLeft: '4px',
+                paddingRight: '4px',
+                backgroundColor: lighten(colorValue, 0.8),
+              }}
             >
-              ${integerPart}.
-              <Typography
-                component="span"
-                fontWeight={700}
-                fontSize="small"
-                sx={{ color: 'gray' }}
-              >
-                {decimalPart}
-              </Typography>
-            </AmountTypography>
+              {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
+            </Typography>
           </Box>
         )}
       </CardContent>

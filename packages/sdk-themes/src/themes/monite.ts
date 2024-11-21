@@ -937,6 +937,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.Monite-SummaryCard-all': {
           minWidth: '118px',
           backgroundColor: '#F4F4FE',
+          '&.Monite-SummaryCard-selected': {
+            background: '#ffffff',
+          },
         },
       },
     },
