@@ -260,7 +260,7 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Number, status`,
         width: 100,
         display: 'flex',
-        colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 4 : 1),
+        colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 5 : 1),
         renderCell: (params) => {
           const payable = params.row;
 
@@ -314,6 +314,17 @@ const PayablesTableBase = ({
             ? formatCurrencyToDisplay(amount, payable.currency)
             : '';
         },
+      },
+      {
+        field: 'created_at',
+        type: 'date',
+        headerName: t(i18n)`Invoice date`,
+        width: 140,
+        display: 'flex',
+        renderCell: ({ formattedValue }) => formattedValue,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['created_at']
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'due_date',
