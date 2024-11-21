@@ -29,7 +29,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
       yup.object({
         quantity: yup
           .number()
-          .min(1)
+          .min(0.1)
           .label(t(i18n)`Quantity`)
           .when('smallest_amount', (smallestAmount, schema) => {
             if (!smallestAmount) {
