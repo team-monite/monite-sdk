@@ -53,7 +53,7 @@ describe('PayablesTable', () => {
       });
 
       expect(ocrStatusCell).toBeInTheDocument();
-      expect(ocrStatusCell.getAttribute('aria-colspan')).toEqual('4');
+      expect(ocrStatusCell.getAttribute('aria-colspan')).toEqual('5');
     });
   });
 
