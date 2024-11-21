@@ -226,7 +226,7 @@ msgid "Action menu"
 msgstr "Action menu"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:93
-#: src/components/payables/PayablesTable/PayablesTable.tsx:345
+#: src/components/payables/PayablesTable/PayablesTable.tsx:356
 msgid "Actions"
 msgstr "Actions"
 
@@ -996,8 +996,8 @@ msgstr "Bill to"
 msgid "Billiard/Pool Establishments"
 msgstr "Billiard/Pool Establishments"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:245
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:251
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:246
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:252
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:131
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:182
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:83
@@ -1649,7 +1649,7 @@ msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:97
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:133
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:134
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
 msgstr "Contact person"
@@ -1950,8 +1950,8 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:361
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
-#: src/components/payables/PayablesTable/PayablesTable.tsx:433
-#: src/components/payables/PayablesTable/PayablesTable.tsx:532
+#: src/components/payables/PayablesTable/PayablesTable.tsx:444
+#: src/components/payables/PayablesTable/PayablesTable.tsx:543
 #: src/components/products/ProductsTable/ProductsTable.tsx:337
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:206
@@ -1969,7 +1969,7 @@ msgstr "Create new"
 msgid "Create New"
 msgstr "Create New"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:400
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:401
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
@@ -2103,7 +2103,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:151
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:408
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:409
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:198
@@ -2521,7 +2521,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:322
+#: src/components/payables/PayablesTable/PayablesTable.tsx:333
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -3648,6 +3648,7 @@ msgstr "Invoice cancel confirmation"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:122
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:559
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:82
+#: src/components/payables/PayablesTable/PayablesTable.tsx:321
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -4512,9 +4513,9 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:434
-#: src/components/payables/PayablesTable/PayablesTable.tsx:436
-#: src/components/payables/PayablesTable/PayablesTable.tsx:533
+#: src/components/payables/PayablesTable/PayablesTable.tsx:445
+#: src/components/payables/PayablesTable/PayablesTable.tsx:447
+#: src/components/payables/PayablesTable/PayablesTable.tsx:544
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4616,7 +4617,7 @@ msgstr "No Approval Requests"
 msgid "No conditions"
 msgstr "No conditions"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:157
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:158
 msgid "No contact persons available"
 msgstr "No contact persons available"
 
@@ -4648,7 +4649,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:430
+#: src/components/payables/PayablesTable/PayablesTable.tsx:441
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4706,7 +4707,7 @@ msgstr "No tags found"
 msgid "No Tax ID available"
 msgstr "No Tax ID available"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:229
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:230
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
 
@@ -4976,7 +4977,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:531
+#: src/components/payables/PayablesTable/PayablesTable.tsx:542
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -5990,7 +5991,7 @@ msgstr "Security number"
 msgid "See all"
 msgstr "See all"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:409
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:410
 msgid "Select counterpart"
 msgstr "Select counterpart"
 
@@ -6083,8 +6084,8 @@ msgstr "Seychelles"
 msgid "Seychellois Rupee"
 msgstr "Seychellois Rupee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:281
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:289
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:282
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:290
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:133
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:184
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:88
@@ -6443,8 +6444,8 @@ msgstr "Tax"
 msgid "Tax ID"
 msgstr "Tax ID"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:205
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:220
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:206
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:221
 msgid "TAX ID"
 msgstr "TAX ID"
 
@@ -7076,9 +7077,9 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:434
-#: src/components/payables/PayablesTable/PayablesTable.tsx:438
-#: src/components/payables/PayablesTable/PayablesTable.tsx:533
+#: src/components/payables/PayablesTable/PayablesTable.tsx:445
+#: src/components/payables/PayablesTable/PayablesTable.tsx:449
+#: src/components/payables/PayablesTable/PayablesTable.tsx:544
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -7279,8 +7280,8 @@ msgstr "VAT has been deleted."
 msgid "Vat ID"
 msgstr "Vat ID"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:177
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:181
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:178
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:182
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:118
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:121
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:169
@@ -7463,7 +7464,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:432
+#: src/components/payables/PayablesTable/PayablesTable.tsx:443
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -7549,7 +7550,7 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:431
+#: src/components/payables/PayablesTable/PayablesTable.tsx:442
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
