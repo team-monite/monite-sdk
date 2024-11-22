@@ -29,6 +29,7 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
       currency,
       country,
       account_number,
+      account_holder_name,
       sort_code,
       routing_number,
     },
@@ -92,6 +93,10 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
         {
           label: t(i18n)`Account number`,
           value: account_number,
+        },
+        {
+          label: t(i18n)`Account holder name`,
+          value: account_holder_name,
         },
         {
           label: t(i18n)`Sort code`,

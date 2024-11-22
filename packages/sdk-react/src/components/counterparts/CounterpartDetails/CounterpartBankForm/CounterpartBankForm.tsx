@@ -107,6 +107,21 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               )}
             />
             <Controller
+              name="account_holder_name"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  id={field.name}
+                  label={t(i18n)`Bank account holder name`}
+                  variant="outlined"
+                  fullWidth
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
               name="iban"
               control={control}
               render={({ field, fieldState: { error } }) => (
