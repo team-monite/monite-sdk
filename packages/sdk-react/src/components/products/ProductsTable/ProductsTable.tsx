@@ -17,6 +17,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Typography } from '@mui/material';
@@ -305,7 +306,9 @@ const ProductsTableBase = ({
         rows={products?.data || []}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => {
-          onRowClick?.(params.row);
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row);
+          }
         }}
         columns={columns}
         loading={isLoading}
