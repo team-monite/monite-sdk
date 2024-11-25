@@ -23,6 +23,7 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -403,7 +404,11 @@ const CounterpartsTableBase = ({
         }}
         onSortModelChange={onChangeSort}
         loading={isLoading}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
+        onRowClick={(params) => {
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row.id);
+          }
+        }}
         columnVisibilityModel={{
           category: showCategories,
         }}

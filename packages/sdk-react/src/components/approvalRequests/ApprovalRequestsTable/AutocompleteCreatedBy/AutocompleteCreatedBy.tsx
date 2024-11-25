@@ -33,7 +33,7 @@ export const AutocompleteCreatedBy = ({
     refetch,
   } = api.entityUsers.getEntityUsers.useQuery(
     {
-      query: { first_name: inputValue || undefined },
+      query: { name__istartswith: inputValue || undefined },
     },
     { enabled: open }
   );
