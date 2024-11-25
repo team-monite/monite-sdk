@@ -69,6 +69,7 @@ function generatePayable(
     other_extracted_data: {
       total: 290400,
       currency: 'NGN',
+      total_paid_amount_raw: 290400,
       counterpart_name: 'Test IO',
       counterpart_address: undefined,
       counterpart_account_id: undefined,
