@@ -203,11 +203,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
   };
 
-  const typography = Object.assign({}, defaultMoniteTypography, {
-    body2: {
-      color: palette.neutral && palette.neutral['10'],
-    },
-  });
+  const typography = Object.assign({}, defaultMoniteTypography, {});
 
   const filterControlWidth = '160px';
 
