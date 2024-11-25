@@ -830,6 +830,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           lineHeight: '17.57px',
         },
       },
+      row: {
+        '&:hover': {
+          cursor: 'pointer',
+        },
+      },
       cell: {
         '&[role="gridcell"]': {
           borderLeftStyle: 'solid',
