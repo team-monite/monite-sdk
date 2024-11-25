@@ -799,6 +799,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
     styleOverrides: {
       root: {
+        color: 'text.primary',
         backgroundColor: 'background.paper',
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,

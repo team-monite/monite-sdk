@@ -89,6 +89,7 @@
     "@openapi-qraft/react": "1.14.0",
     "@tanstack/react-query": "~5.28.6",
     "@tanstack/react-query-devtools": "~5.28.6",
-    "@team-monite/sdk-themes": "workspace:~"
+    "@team-monite/sdk-themes": "workspace:~",
+    "vite-plugin-html-config": "~2.0.2"
   }
 }

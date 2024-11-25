@@ -2,6 +2,18 @@ import react from '@vitejs/plugin-react-swc';
 
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import htmlPlugin from 'vite-plugin-html-config';
+
+import { version } from './package.json';
+
+const htmlPluginOpt = {
+  metas: [
+    {
+      name: 'version',
+      content: version,
+    },
+  ],
+};
 
 export default async function viteConfig() {
   return defineConfig({
@@ -13,6 +25,7 @@ export default async function viteConfig() {
           ['@swc/plugin-emotion', {}],
         ],
       }),
+      htmlPlugin(htmlPluginOpt),
     ],
     build: {
       rollupOptions: {

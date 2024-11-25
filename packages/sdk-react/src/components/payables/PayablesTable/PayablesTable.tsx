@@ -347,7 +347,8 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Added by`,
         display: 'flex',
-        width: 120,
+        width: 240,
+        minWidth: 200,
         renderCell: (params) => (
           <UserCell userId={params.row.was_created_by_user_id} />
         ),

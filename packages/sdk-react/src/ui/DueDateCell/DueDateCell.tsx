@@ -29,7 +29,10 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
       height="inherit"
       justifyContent="center"
     >
-      <Typography variant="body2" color={overdueDays > 0 ? 'error' : ''}>
+      <Typography
+        variant="body2"
+        color={overdueDays > 0 ? 'error' : 'text.primary'}
+      >
         {formattedDate}
       </Typography>
       {overdueDays > 0 && (
