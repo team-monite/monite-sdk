@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, SyntheticEvent } from 'react';
 
 import Image from 'next/image';
 
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
 
+import { CashCard } from '@/components/CashCard';
 import DashboardCard from '@/components/DashboardCard';
 import EmptyState from '@/components/EmptyState';
 import {
-  IconUniversity,
   IconBolt,
   IconReceipt,
   IconPayable,
@@ -50,58 +50,61 @@ const DashboardMockup = () => {
 };
 
 const Dashboard = () => {
-  return (
-    <Stack direction="column" justifyContent="flex-start" alignItems="center">
-      <Image priority src={dashboardHeader} alt="" />
-      <Stack
-        direction="row"
-        spacing={3}
-        useFlexGap={true}
-        justifyContent="space-between"
-        sx={{ width: '100%' }}
-      >
-        <Box sx={{ flex: 1 }}>
-          <CashCard />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <RecomendedActionsCard />
-        </Box>
-      </Stack>
-      <Box sx={{ width: '100%', mt: 3 }}>
-        <CashFlowCard />
-      </Box>
-      <Stack
-        direction="row"
-        spacing={3}
-        useFlexGap={true}
-        justifyContent="space-between"
-        sx={{ width: '100%', mt: 3 }}
-      >
-        <Box sx={{ flex: 1 }}>
-          <OutstandingInvoicesCard />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <DuePayablesCard />
-        </Box>
-      </Stack>
-    </Stack>
-  );
-};
-
-const CashCard = () => {
-  const emptyState = (
-    <EmptyState renderIcon={(props) => <IconUniversity {...props} />}>
-      No bank accounts connected
-    </EmptyState>
-  );
+  const [currentTab, setCurrentTab] = useState<number>(1);
+  const changeTab = (_event: SyntheticEvent, newTab: number) =>
+    setCurrentTab(newTab);
 
   return (
-    <DashboardCard
-      title="Cash on accounts"
-      renderIcon={(props) => <IconUniversity {...props} />}
-    >
-      {emptyState}
-    </DashboardCard>
+    <>
+      <Typography variant="h2">Dashboard</Typography>
+      <Tabs
+        value={currentTab}
+        onChange={changeTab}
+        sx={{ mt: 4 }}
+        textColor="secondary"
+      >
+        <Tab label="Overview" value={1} />
+        <Tab label="Xue’s view" value={2} disabled />
+      </Tabs>
+      <Stack
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        sx={{ mt: 3 }}
+      >
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap={true}
+          justifyContent="space-between"
+          sx={{ width: '100%' }}
+        >
+          <Box sx={{ flex: 1 }}>
+            <CashCard />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <RecomendedActionsCard />
+          </Box>
+        </Stack>
+        <Box sx={{ width: '100%', mt: 3 }}>
+          <CashFlowCard />
+        </Box>
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap={true}
+          justifyContent="space-between"
+          sx={{ width: '100%', mt: 3 }}
+        >
+          <Box sx={{ flex: 1 }}>
+            <OutstandingInvoicesCard />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <DuePayablesCard />
+          </Box>
+        </Stack>
+      </Stack>
+    </>
   );
 };
 
