@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Monite Partner API",
-    "version": "2024-11-25",
+    "version": "2024-05-25",
     "description": "The Monite REST API, for Monite partners to integrate with our solution.",
     "termsOfService": "https://monite.com/terms",
     "contact": {
@@ -40,7 +40,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -124,7 +124,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -194,7 +194,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -278,7 +278,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -350,7 +350,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -413,7 +413,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -488,7 +488,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -559,7 +559,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -629,7 +629,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -700,7 +700,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -875,7 +875,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -944,7 +944,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1013,7 +1013,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1118,7 +1118,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1189,7 +1189,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1410,7 +1410,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1507,7 +1507,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1600,7 +1600,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1684,7 +1684,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1795,7 +1795,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1890,7 +1890,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -1989,7 +1989,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2088,7 +2088,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2188,7 +2188,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2433,7 +2433,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2547,7 +2547,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2657,7 +2657,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2767,7 +2767,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2877,7 +2877,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -2987,7 +2987,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3121,7 +3121,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3185,7 +3185,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -3245,7 +3245,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -3312,7 +3312,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3383,7 +3383,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3465,7 +3465,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3540,7 +3540,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3613,7 +3613,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3698,7 +3698,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3774,7 +3774,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3870,7 +3870,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -3951,7 +3951,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4037,7 +4037,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4115,7 +4115,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4185,7 +4185,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4259,7 +4259,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4330,7 +4330,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4491,7 +4491,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4594,7 +4594,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4693,7 +4693,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4785,7 +4785,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -4893,7 +4893,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5178,7 +5178,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5250,7 +5250,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5324,7 +5324,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5391,7 +5391,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5477,7 +5477,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5553,7 +5553,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5639,7 +5639,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5721,7 +5721,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5794,7 +5794,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5888,7 +5888,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -5956,7 +5956,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6044,7 +6044,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6126,7 +6126,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6199,7 +6199,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6293,7 +6293,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6363,7 +6363,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6431,7 +6431,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6519,7 +6519,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6601,7 +6601,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6674,7 +6674,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6768,7 +6768,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6852,7 +6852,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6920,7 +6920,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -6998,7 +6998,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7066,7 +7066,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7152,7 +7152,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7234,7 +7234,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7307,7 +7307,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7401,7 +7401,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7565,7 +7565,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7677,7 +7677,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7861,7 +7861,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -7957,7 +7957,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8047,7 +8047,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8137,7 +8137,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8247,7 +8247,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8315,7 +8315,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8418,7 +8418,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8483,7 +8483,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8547,7 +8547,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8617,7 +8617,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8688,7 +8688,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8753,7 +8753,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -8941,7 +8941,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -9009,7 +9009,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -9068,7 +9068,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -9137,7 +9137,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9203,7 +9203,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9279,7 +9279,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9347,7 +9347,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9415,7 +9415,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9468,7 +9468,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9545,7 +9545,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9605,7 +9605,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9679,7 +9679,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9763,7 +9763,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9849,7 +9849,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9910,7 +9910,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -9968,7 +9968,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10036,7 +10036,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10094,7 +10094,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10162,7 +10162,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10228,7 +10228,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10303,7 +10303,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10360,7 +10360,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10433,7 +10433,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10502,7 +10502,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10564,7 +10564,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10644,7 +10644,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10860,7 +10860,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -10941,7 +10941,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -10999,7 +10999,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11069,7 +11069,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11127,7 +11127,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11195,7 +11195,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11247,7 +11247,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11321,7 +11321,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11389,7 +11389,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11476,7 +11476,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11609,7 +11609,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11667,7 +11667,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11726,7 +11726,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11785,7 +11785,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11840,7 +11840,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -11891,7 +11891,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -11949,7 +11949,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -12010,7 +12010,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12070,7 +12070,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12135,7 +12135,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12204,7 +12204,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12326,7 +12326,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -12384,7 +12384,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12441,7 +12441,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12500,7 +12500,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12557,7 +12557,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12626,7 +12626,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12695,7 +12695,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12755,7 +12755,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12812,7 +12812,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12881,7 +12881,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -12950,7 +12950,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13019,7 +13019,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13076,7 +13076,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13151,7 +13151,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13216,7 +13216,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13275,7 +13275,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13348,7 +13348,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13415,7 +13415,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13495,7 +13495,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13578,7 +13578,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13652,7 +13652,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13717,7 +13717,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13838,7 +13838,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -13938,7 +13938,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14034,7 +14034,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14139,7 +14139,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14244,7 +14244,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14315,7 +14315,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14467,7 +14467,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -14531,7 +14531,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14606,7 +14606,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -14658,7 +14658,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14716,7 +14716,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14765,7 +14765,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14835,7 +14835,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -14895,7 +14895,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -14961,7 +14961,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -15053,7 +15053,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15128,7 +15128,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15226,7 +15226,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15303,7 +15303,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15398,7 +15398,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15487,7 +15487,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15572,7 +15572,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15656,7 +15656,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15750,7 +15750,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15848,7 +15848,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -15939,7 +15939,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16048,7 +16048,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16113,7 +16113,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16186,7 +16186,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16250,7 +16250,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16328,7 +16328,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16426,7 +16426,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16518,7 +16518,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16609,7 +16609,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16721,7 +16721,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -16973,7 +16973,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17064,7 +17064,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -17123,7 +17123,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17207,7 +17207,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17282,7 +17282,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17378,7 +17378,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17490,7 +17490,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17611,7 +17611,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -17987,7 +17987,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18086,7 +18086,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18410,7 +18410,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18515,7 +18515,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18602,7 +18602,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18701,7 +18701,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18790,7 +18790,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18863,7 +18863,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -18964,7 +18964,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19056,7 +19056,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19167,7 +19167,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19278,7 +19278,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19389,7 +19389,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19500,7 +19500,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19611,7 +19611,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19756,7 +19756,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -19883,7 +19883,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20000,7 +20000,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20113,7 +20113,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20211,7 +20211,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20334,7 +20334,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20452,7 +20452,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20571,7 +20571,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20682,7 +20682,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20793,7 +20793,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -20904,7 +20904,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21006,7 +21006,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21117,7 +21117,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21185,7 +21185,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21265,7 +21265,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21335,7 +21335,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21409,7 +21409,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21479,7 +21479,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21549,7 +21549,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21623,7 +21623,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21737,7 +21737,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21809,7 +21809,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21879,7 +21879,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -21957,7 +21957,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22053,7 +22053,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22145,7 +22145,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22236,7 +22236,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22348,7 +22348,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22426,7 +22426,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22524,7 +22524,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22616,7 +22616,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22707,7 +22707,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22819,7 +22819,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22895,7 +22895,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -22957,7 +22957,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23031,7 +23031,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23121,7 +23121,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23199,7 +23199,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23263,7 +23263,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23334,7 +23334,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23384,7 +23384,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23434,7 +23434,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -23519,7 +23519,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23600,7 +23600,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -23667,7 +23667,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -23750,7 +23750,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -23818,7 +23818,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -23905,7 +23905,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -23988,7 +23988,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24078,7 +24078,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24161,7 +24161,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24244,7 +24244,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -24331,7 +24331,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -24418,7 +24418,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -24515,7 +24515,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -24612,7 +24612,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24667,7 +24667,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24722,7 +24722,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24777,7 +24777,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24832,7 +24832,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -24901,7 +24901,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -24976,7 +24976,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25055,7 +25055,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25132,7 +25132,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25211,7 +25211,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25298,7 +25298,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -25379,7 +25379,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -25480,7 +25480,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -25545,7 +25545,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -25638,7 +25638,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25725,7 +25725,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25804,7 +25804,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25881,7 +25881,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -25964,7 +25964,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26043,7 +26043,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26130,7 +26130,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26227,7 +26227,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26314,7 +26314,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -26407,7 +26407,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26498,7 +26498,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -26579,7 +26579,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26660,7 +26660,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26747,7 +26747,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26846,7 +26846,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -26929,7 +26929,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27018,7 +27018,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27250,7 +27250,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27346,7 +27346,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27446,7 +27446,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27537,7 +27537,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27648,7 +27648,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -27909,7 +27909,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28004,7 +28004,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28103,7 +28103,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28195,7 +28195,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28304,7 +28304,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28683,7 +28683,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28796,7 +28796,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -28865,7 +28865,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -28963,7 +28963,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29062,7 +29062,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29180,7 +29180,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29295,7 +29295,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29396,7 +29396,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29504,7 +29504,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29621,7 +29621,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29807,7 +29807,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -29915,7 +29915,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30024,7 +30024,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30140,7 +30140,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30325,7 +30325,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30433,7 +30433,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30549,7 +30549,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30668,7 +30668,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30785,7 +30785,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30885,7 +30885,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -30997,7 +30997,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31115,7 +31115,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31235,7 +31235,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31337,7 +31337,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31429,7 +31429,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31533,7 +31533,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31631,7 +31631,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31741,7 +31741,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -31843,7 +31843,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32021,7 +32021,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32099,7 +32099,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32174,7 +32174,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32259,7 +32259,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -32319,7 +32319,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -32391,7 +32391,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32545,7 +32545,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32656,7 +32656,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32763,7 +32763,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32855,7 +32855,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -32972,7 +32972,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33053,7 +33053,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33128,7 +33128,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33197,7 +33197,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33258,7 +33258,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33340,7 +33340,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33411,7 +33411,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33536,7 +33536,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33682,7 +33682,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33805,7 +33805,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           }
@@ -33904,7 +33904,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -33961,7 +33961,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -34009,7 +34009,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -34078,7 +34078,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -34137,7 +34137,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -34196,7 +34196,7 @@
           {
             "required": true,
             "schema": { "type": "string", "format": "date" },
-            "example": "2024-11-25",
+            "example": "2024-05-25",
             "name": "x-monite-version",
             "in": "header"
           },
@@ -34644,20 +34644,23 @@
         "type": "object",
         "required": ["id"]
       },
+      "ActionEnum": {
+        "type": "string",
+        "enum": ["create", "read", "update", "delete"]
+      },
       "ActionSchema": {
         "properties": {
           "action_name": {
-            "allOf": [{ "$ref": "#/components/schemas/PortalActionEnum" }],
+            "allOf": [{ "$ref": "#/components/schemas/ActionEnum" }],
             "description": "Action name",
             "default": "read"
           },
           "permission": {
-            "allOf": [{ "$ref": "#/components/schemas/PortalPermissionEnum" }],
+            "allOf": [{ "$ref": "#/components/schemas/PermissionEnum" }],
             "description": "Permission type",
             "default": "allowed"
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
       "AddCustomTemplateSchema": {
@@ -39577,79 +39580,36 @@
       },
       "FileSchema": {
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of this file."
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
-          },
-          "file_type": {
-            "type": "string",
-            "description": "The type of the business object associated with this file.",
-            "example": "payables"
-          },
-          "md5": {
-            "type": "string",
-            "description": "The MD5 hash of the file.",
-            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).",
-            "example": "application/pdf"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 512,
-            "description": "The original file name (if available).",
-            "example": "invoice.pdf"
-          },
-          "pages": {
-            "items": { "$ref": "#/components/schemas/PageSchema" },
-            "type": "array",
-            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
-            "default": []
-          },
-          "previews": {
-            "items": { "$ref": "#/components/schemas/PreviewSchema" },
-            "type": "array",
-            "description": "Preview images generated for this file. There can be multiple images with different sizes.",
-            "default": []
-          },
-          "region": {
-            "type": "string",
-            "description": "Geographical region of the data center where the file is stored.",
-            "example": "eu-central-1"
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The file size in bytes.",
-            "example": 24381
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the file.",
-            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "entity_id": { "type": "string", "format": "uuid" },
+          "file_type": { "type": "string" },
+          "md5": { "type": "string" },
+          "mimetype": { "type": "string" },
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "s3_bucket": { "type": "string" },
+          "s3_file_path": { "type": "string" },
+          "size": { "type": "integer" },
+          "url": { "type": "string" }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "id",
           "created_at",
+          "updated_at",
           "file_type",
           "md5",
           "mimetype",
           "name",
           "region",
+          "s3_bucket",
+          "s3_file_path",
           "size",
           "url"
-        ],
-        "description": "Represents a file (such as a PDF invoice) that was uploaded to Monite."
+        ]
       },
       "FilesResponse": {
         "properties": {
@@ -42795,40 +42755,6 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "PageSchema": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of the image."
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.",
-            "example": "image/png"
-          },
-          "number": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The page number in the PDF document, from 0.",
-            "example": 0
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Image file size, in bytes.",
-            "example": 21972
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the image.",
-            "example": "https://bucket.s3.amazonaws.com/123/456.png"
-          }
-        },
-        "type": "object",
-        "required": ["id", "mimetype", "number", "size", "url"],
-        "description": "When a PDF document is uploaded to Monite, it extracts individual pages from the document\nand saves them as PNG images. This object contains the image and metadata of a single page."
-      },
       "PartiallyPaidPayload": {
         "properties": {
           "amount_paid": {
@@ -45343,10 +45269,6 @@
         ],
         "description": "Possible platform names (i.e. serviceName) from Railz:\n- https://docs.railz.ai/docs/supported-accounting-integrations\n\nPresent in webhook events from Railz e.g. Authentication Completed:\n- https://docs.railz.ai/reference/connection-webhooks#authentication-completed"
       },
-      "PortalActionEnum": {
-        "type": "string",
-        "enum": ["create", "read", "update", "delete"]
-      },
       "PortalBizObjectsSchema": {
         "properties": {
           "objects": {
@@ -45369,10 +45291,6 @@
           "role"
         ]
       },
-      "PortalPermissionEnum": {
-        "type": "string",
-        "enum": ["allowed", "allowed_for_own", "not_allowed"]
-      },
       "PortalUserProfileResponseWithOptionalRole": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -45389,28 +45307,6 @@
       "PortalUserStatus": {
         "type": "string",
         "enum": ["sent_confirmation", "active", "deleted", "archived"]
-      },
-      "PreviewSchema": {
-        "properties": {
-          "height": {
-            "type": "integer",
-            "description": "The image height in pixels.",
-            "example": 400
-          },
-          "url": {
-            "type": "string",
-            "description": "The image URL.",
-            "example": "https://bucketname.s3.amazonaws.com/1/2/3.png"
-          },
-          "width": {
-            "type": "integer",
-            "description": "The image width in pixels.",
-            "example": 200
-          }
-        },
-        "type": "object",
-        "required": ["height", "url", "width"],
-        "description": "A preview image generated for a file."
       },
       "PreviewTemplateRequest": {
         "properties": {
@@ -50890,7 +50786,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+            "description": "UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
           },
           "file_type": {
             "type": "string",
