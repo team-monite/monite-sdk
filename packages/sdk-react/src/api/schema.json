@@ -30,6 +30,160 @@
     }
   ],
   "paths": {
+    "/accounting/payables": {
+      "get": {
+        "tags": ["Accounting data pull"],
+        "summary": "Get payables list from accounting system",
+        "description": "Returns a list of accounts payable invoices (bills) that exist in the entity's accounting system. This requires that an accounting connection has been previously established. Refer to the [Accounting integration guide](https://docs.monite.com/accounting/integration/index) for details.\n\nThis endpoint only provides read-only access to the accounting system's data but does not pull those payables into Monite. You can use it to review the data in the accounting system and find out which of those payables already exist or do not exist in Monite.\n\nData is actual as of the date and time of the last accounting synchronization, which is specified by the `last_pull` value in the response from `GET /accounting_connections/{connection_id}`. To make sure you are accessing the most up-to-date accounting data, you can use `POST /accounting_connections/{connection_id}/sync` to trigger on-demand synchronization before getting the list of payables.",
+        "operationId": "get_accounting_payables",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "Number of results per page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500.0,
+              "minimum": 1.0,
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "Number of results to skip before selecting items to return.",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0, "default": 0 },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountingPayableList"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/accounting/payables/{payable_id}": {
+      "get": {
+        "tags": ["Accounting data pull"],
+        "summary": "Get payable details from accounting system",
+        "description": "Returns information about an individual payable invoice (bill) that exists in the entity's accounting system. This payable may or may not also exist in Monite.",
+        "operationId": "get_accounting_payables_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "An internal ID of the payable invoice (bill) in the accounting system. You can get these IDs from `GET /accounting/payables`.",
+            "required": true,
+            "schema": { "type": "string" },
+            "name": "payable_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AccountingPayable" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/accounting/receivables": {
       "get": {
         "tags": ["Accounting data pull"],
@@ -51,7 +205,6 @@
               "type": "integer",
               "maximum": 500.0,
               "minimum": 1.0,
-              "description": "Number of results per page.",
               "default": 100
             },
             "name": "limit",
@@ -60,12 +213,7 @@
           {
             "description": "Number of results to skip before selecting items to return.",
             "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0.0,
-              "description": "Number of results to skip before selecting items to return.",
-              "default": 0
-            },
+            "schema": { "type": "integer", "minimum": 0.0, "default": 0 },
             "name": "offset",
             "in": "query"
           },
@@ -75,7 +223,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -136,6 +283,7 @@
             "in": "header"
           },
           {
+            "description": "An internal ID of the invoice in the accounting system. You can get these IDs from `GET /accounting/receivables`.",
             "required": true,
             "schema": { "type": "string" },
             "name": "invoice_id",
@@ -147,7 +295,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -213,7 +360,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -277,7 +423,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -359,7 +504,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -431,7 +575,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -502,7 +645,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -573,7 +715,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -586,7 +727,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -595,10 +735,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -608,8 +745,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/SyncRecordCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -684,7 +820,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -756,7 +891,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -826,7 +960,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -889,7 +1022,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -902,7 +1034,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -911,10 +1042,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -924,8 +1052,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/TaxRateAccountCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -936,7 +1063,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1008,7 +1134,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1069,11 +1194,16 @@
             "in": "header"
           },
           {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "process_id",
+            "in": "query"
+          },
+          {
             "description": "Order by",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -1086,7 +1216,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -1095,10 +1224,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -1108,8 +1234,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ApprovalPolicyCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -1216,7 +1341,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1296,7 +1420,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1400,7 +1523,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1494,7 +1616,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1579,7 +1700,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1691,7 +1811,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1793,7 +1912,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1893,7 +2011,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -1993,7 +2110,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2081,7 +2197,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -2094,7 +2209,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -2103,10 +2217,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -2116,8 +2227,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ApprovalRequestCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -2239,7 +2349,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2334,7 +2443,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2455,7 +2563,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2566,7 +2673,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2677,7 +2783,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -2788,7 +2893,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3218,7 +3322,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3290,7 +3393,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3373,7 +3475,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3449,7 +3550,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3529,7 +3629,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3615,7 +3714,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3692,7 +3790,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3789,7 +3886,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3871,7 +3967,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -3958,7 +4053,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4037,7 +4131,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4102,7 +4195,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4183,7 +4275,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4262,7 +4353,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -4275,7 +4365,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -4284,10 +4373,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -4295,8 +4381,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/CommentCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/CommentCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -4331,7 +4416,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4417,7 +4501,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4527,7 +4610,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4627,7 +4709,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4720,7 +4801,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -4820,22 +4900,14 @@
           {
             "description": "The IBAN of the counterpart's bank account.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "maxLength": 34,
-              "description": "The IBAN of the counterpart's bank account."
-            },
+            "schema": { "type": "string", "maxLength": 34 },
             "name": "iban",
             "in": "query"
           },
           {
             "description": "The bank's sort code.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "maxLength": 100,
-              "description": "The bank's sort code."
-            },
+            "schema": { "type": "string", "maxLength": 100 },
             "example": "123456",
             "name": "sort_code",
             "in": "query"
@@ -4843,33 +4915,21 @@
           {
             "description": "The bank account number. Required for US bank accounts to accept ACH payments. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "maxLength": 100,
-              "description": "The bank account number. Required for US bank accounts to accept ACH payments. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits."
-            },
+            "schema": { "type": "string", "maxLength": 100 },
             "name": "account_number",
             "in": "query"
           },
           {
             "description": "The tax ID of the counterpart.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "maxLength": 30,
-              "description": "The tax ID of the counterpart."
-            },
+            "schema": { "type": "string", "maxLength": 30 },
             "name": "tax_id",
             "in": "query"
           },
           {
             "description": "The VAT ID of the counterpart.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "maxLength": 30,
-              "description": "The VAT ID of the counterpart."
-            },
+            "schema": { "type": "string", "maxLength": 30 },
             "name": "vat_id",
             "in": "query"
           },
@@ -4878,8 +4938,7 @@
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
-              "type": "array",
-              "description": "A list of counterpart IDs to search through."
+              "type": "array"
             },
             "name": "id__in",
             "in": "query"
@@ -4889,7 +4948,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -4902,7 +4960,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -4911,10 +4968,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -4924,8 +4978,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/CounterpartCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -5065,7 +5118,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5136,7 +5188,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5215,7 +5266,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5290,7 +5340,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5358,7 +5407,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5445,7 +5493,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5522,7 +5569,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5615,7 +5661,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5698,7 +5743,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5772,7 +5816,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5861,7 +5904,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -5930,7 +5972,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6025,7 +6066,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6108,7 +6148,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6182,7 +6221,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6277,7 +6315,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6342,7 +6379,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6411,7 +6447,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6506,7 +6541,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6589,7 +6623,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6663,7 +6696,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6758,7 +6790,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6837,7 +6868,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6906,7 +6936,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -6985,7 +7014,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7054,7 +7082,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7147,7 +7174,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7230,7 +7256,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7304,7 +7329,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7386,7 +7410,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -7399,7 +7422,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -7408,10 +7430,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -7421,8 +7440,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/DataExportCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -7463,7 +7481,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7558,7 +7575,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7670,7 +7686,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -7683,7 +7698,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -7692,10 +7706,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -7705,8 +7716,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ExportSettingCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -7783,7 +7793,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7862,7 +7871,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -7965,7 +7973,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8056,7 +8063,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8147,7 +8153,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8252,7 +8257,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8327,7 +8331,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8425,7 +8428,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8491,7 +8493,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8562,7 +8563,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8633,7 +8633,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8705,7 +8704,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -8764,7 +8762,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -8777,7 +8774,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -8786,10 +8782,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -8797,8 +8790,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/EntityCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/EntityCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -9152,11 +9144,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -9222,11 +9210,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -9302,11 +9286,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -9374,11 +9354,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -9450,15 +9426,6 @@
             "in": "path"
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/EntityOnboardingDocuments"
-              }
-            }
-          }
-        },
         "responses": {
           "204": { "description": "Successful Response" },
           "405": {
@@ -9487,6 +9454,7 @@
           }
         },
         "deprecated": true,
+        "schema_name": "EntityOnboardingDocuments",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -9507,11 +9475,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -9588,11 +9552,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -10209,11 +10169,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -10279,11 +10235,7 @@
           {
             "description": "A unique ID to specify the entity.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "A unique ID to specify the entity."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5",
             "name": "entity_id",
             "in": "path"
@@ -10697,47 +10649,41 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/EntityUserCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -10795,6 +10741,12 @@
           },
           {
             "required": false,
+            "schema": { "type": "string" },
+            "name": "name__istartswith",
+            "in": "query"
+          },
+          {
+            "required": false,
             "schema": { "type": "string", "format": "date-time" },
             "name": "created_at__gt",
             "in": "query"
@@ -10823,7 +10775,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -10919,7 +10870,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -11313,7 +11263,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -11388,7 +11337,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -11457,7 +11405,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -11534,45 +11481,39 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/EventCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/EventCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -11613,7 +11554,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -11676,11 +11616,7 @@
           {
             "description": "ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`.",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "event_id",
             "in": "path"
           }
@@ -12144,7 +12080,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -12284,7 +12219,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -12297,7 +12231,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -12306,10 +12239,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -12319,8 +12249,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/SyncStatusCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -12343,7 +12272,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -13734,7 +13662,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -13818,8 +13745,7 @@
             "description": "Country code",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
-              "description": "Country code"
+              "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }]
             },
             "name": "country",
             "in": "query"
@@ -13830,7 +13756,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -13935,7 +13860,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -14030,7 +13954,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -14127,7 +14050,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -14226,7 +14148,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -14239,7 +14160,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -14248,10 +14168,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -14261,8 +14178,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/LedgerAccountCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -14273,7 +14189,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -14345,7 +14260,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -14410,7 +14324,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -14423,7 +14336,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -14432,10 +14344,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -14445,8 +14354,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/CustomTemplatesCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -14633,7 +14541,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15329,7 +15236,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15407,7 +15313,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15503,7 +15408,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15599,7 +15503,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15679,7 +15582,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15764,7 +15666,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15865,7 +15766,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -15964,7 +15864,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16056,7 +15955,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16160,7 +16058,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16226,7 +16123,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16300,7 +16196,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16365,7 +16260,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16444,7 +16338,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16549,7 +16442,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16642,7 +16534,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16734,7 +16625,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -16840,7 +16730,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -16853,7 +16742,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -16862,10 +16750,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -16875,8 +16760,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/PurchaseOrderCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -17021,7 +16905,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17100,7 +16983,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17257,7 +17139,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17342,7 +17223,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17418,7 +17298,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17515,7 +17394,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17628,7 +17506,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -17743,7 +17620,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -17756,7 +17632,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -17765,10 +17640,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -17776,8 +17648,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/PayableCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/PayableCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -17997,33 +17868,21 @@
           {
             "description": "Search for a payable by the identifier of the line item associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the line item associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "line_item_id",
             "in": "query"
           },
           {
             "description": "Search for a payable by the identifier of the purchase order associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the purchase order associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "purchase_order_id",
             "in": "query"
           },
           {
             "description": "Search for a payable by the identifier of the project associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the project associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "project_id",
             "in": "query"
           },
@@ -18032,8 +17891,7 @@
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
-              "type": "array",
-              "description": "Search for a payable by the identifiers of the tags associated with it."
+              "type": "array"
             },
             "name": "tag_ids",
             "in": "query"
@@ -18044,7 +17902,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18140,7 +17997,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18449,33 +18305,21 @@
           {
             "description": "Search for a payable by the identifier of the line item associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the line item associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "line_item_id",
             "in": "query"
           },
           {
             "description": "Search for a payable by the identifier of the purchase order associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the purchase order associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "purchase_order_id",
             "in": "query"
           },
           {
             "description": "Search for a payable by the identifier of the project associated with it.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "Search for a payable by the identifier of the project associated with it."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "project_id",
             "in": "query"
           },
@@ -18484,8 +18328,7 @@
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
-              "type": "array",
-              "description": "Search for a payable by the identifiers of the tags associated with it."
+              "type": "array"
             },
             "name": "tag_ids",
             "in": "query"
@@ -18496,7 +18339,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18578,7 +18420,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18684,7 +18525,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18772,7 +18612,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18872,7 +18711,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -18962,7 +18800,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19042,7 +18879,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19144,7 +18980,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19237,7 +19072,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19349,7 +19183,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19461,7 +19294,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19573,7 +19405,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19685,7 +19516,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19796,7 +19626,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -19809,7 +19638,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -19818,10 +19646,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -19829,10 +19654,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [
-                { "$ref": "#/components/schemas/LineItemCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/LineItemCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -19849,7 +19671,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -19951,7 +19772,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20079,7 +19899,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20203,7 +20022,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20317,7 +20135,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20416,7 +20233,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20534,7 +20350,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20653,7 +20468,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20773,7 +20587,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20885,7 +20698,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -20997,7 +20809,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21109,7 +20920,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21205,7 +21015,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -21218,7 +21027,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -21227,10 +21035,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -21240,8 +21045,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/PaymentIntentCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -21249,11 +21053,7 @@
           {
             "description": "ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice."
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "object_id",
             "in": "query"
           },
@@ -21263,7 +21063,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21334,7 +21133,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21403,7 +21201,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21484,7 +21281,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21549,7 +21345,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21630,7 +21425,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21701,7 +21495,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21766,7 +21559,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -21840,7 +21632,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -21853,7 +21644,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -21862,10 +21652,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -21875,8 +21662,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/PaymentRecordCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -21899,9 +21685,8 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource."
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
-            "example": "9d2b4c8f-2087-4738-ba91-7359683c49a4",
             "name": "x-monite-entity-id",
             "in": "header"
           }
@@ -21917,64 +21702,8 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
           "405": {
             "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "409": {
-            "description": "Business logic error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "416": {
-            "description": "Requested Range Not Satisfiable",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -22018,9 +21747,8 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource."
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
-            "example": "9d2b4c8f-2087-4738-ba91-7359683c49a4",
             "name": "x-monite-entity-id",
             "in": "header"
           }
@@ -22044,64 +21772,8 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
           "405": {
             "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "409": {
-            "description": "Business logic error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "416": {
-            "description": "Requested Range Not Satisfiable",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -22153,9 +21825,8 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource."
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
-            "example": "9d2b4c8f-2087-4738-ba91-7359683c49a4",
             "name": "x-monite-entity-id",
             "in": "header"
           }
@@ -22171,64 +21842,8 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
           "405": {
             "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "409": {
-            "description": "Business logic error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "416": {
-            "description": "Requested Range Not Satisfiable",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -22274,7 +21889,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22353,7 +21967,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22456,7 +22069,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22549,7 +22161,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22641,7 +22252,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22748,7 +22358,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22827,7 +22436,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -22932,7 +22540,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -23025,7 +22632,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -23117,7 +22723,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -23225,7 +22830,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "description": "The ID of the entity that owns the requested resource."
@@ -23302,7 +22906,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "description": "The ID of the entity that owns the requested resource."
@@ -23371,7 +22974,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "description": "The ID of the entity that owns the requested resource."
@@ -23446,7 +23048,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "description": "The ID of the entity that owns the requested resource."
@@ -23537,7 +23138,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "description": "The ID of the entity that owns the requested resource."
@@ -23615,22 +23215,12 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
             "in": "header"
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/PersonOnboardingDocuments"
-              }
-            }
-          }
-        },
         "responses": {
           "204": { "description": "Successful Response" },
           "405": {
@@ -23659,6 +23249,7 @@
           }
         },
         "deprecated": true,
+        "schema_name": "PersonOnboardingDocuments",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -23688,7 +23279,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -27436,12 +27026,7 @@
             "description": "Order by",
             "required": false,
             "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/monite_db__pagination__model__OrderEnum"
-                }
-              ],
-              "description": "Order by",
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -27454,7 +27039,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -27463,10 +27047,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -27474,8 +27055,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/ProductCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/ProductCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -27594,7 +27174,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -27681,7 +27260,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -27784,7 +27362,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -27885,7 +27462,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -27977,7 +27553,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28082,7 +27657,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -28095,7 +27669,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -28104,10 +27677,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -28115,8 +27685,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/ProjectCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/ProjectCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -28247,7 +27816,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28351,7 +27919,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28453,7 +28020,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28553,7 +28119,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28646,7 +28211,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -28734,6 +28298,7 @@
       "get": {
         "tags": ["Receivables"],
         "summary": "Get receivables",
+        "description": "Returns a list of [accounts receivable](https://docs.monite.com/accounts-receivable/index) documents - invoices, quotes, and credit notes - of the specified entity.\n\nResults can be filtered by amount, counterpart, due date, and other criteria. Multiple filters are combined using logical AND unless specified otherwise. If no documents matching the search criteria are found, the endpoint returns a successful response with an empty `data` array.\n\nThis endpoint supports [pagination](https://docs.monite.com/api/concepts/pagination-sorting-filtering) and sorting. By default, results are sorted by the creation date in ascending order (from oldest to newest).\n\n#### Examples\n\n##### Invoices\n\n* Get all overdue invoices:\n    ```\n    GET /receivables?type=invoice&status=overdue\n    ```\n\n* Get all invoices created for the counterpart named \"Solarwind\" (case-insensitive):\n\n    ```\n    GET /receivables?type=invoice?counterpart_name__icontains=Solarwind\n    ```\n\n* Get invoices whose total amount starts from 500 EUR:\n\n    ```\n    GET /receivables?type=invoice&total_amount__gte=50000\n    ```\n\n* Get invoices that are due for payment in September 2024:\n\n    ```\n    GET /receivables?type=invoice&due_date__gte=2024-09-01T00:00:00Z&due_date__lt=2024-10-01T00:00:00Z\n    ```\n\n* Get invoices created on or after September 1, 2024:\n\n    ```\n    GET /receivables?type=invoice&created_at__gte=2024-09-01T00:00:00Z\n    ```\n\n* Find an invoice created from a specific quote:\n\n    ```\n    GET /receivables?type=invoice?based_on=QUOTE_ID\n    ```\n\n##### Quotes\n\n* Get the latest created quote:\n\n    ```\n    GET /receivables?type=quote&sort=created_at&order=desc&limit=1\n    ```\n\n* Get the latest issued quote:\n\n    ```\n    GET /receivables?type=quote&sort=issue_date&order=desc&limit=1\n    ```\n\n##### Credit notes\n\n* Find all credit notes created for a specific invoice:\n\n    ```\n    GET /receivables?type=credit_note?based_on=INVOICE_ID\n    ```",
         "operationId": "get_receivables",
         "parameters": [
           {
@@ -28744,44 +28309,36 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/monite__server__pagination__OrderEnum"
-                }
-              ],
-              "description": "Order by",
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page. \n\nWhen using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.",
             "required": false,
             "schema": {
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters except `limit` are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
+            "description": "Return only receivables with the specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.\n\nTo specify multiple IDs, repeat this parameter for each value:\n`id__in=<id1>&id__in=<id2>`",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
@@ -28791,6 +28348,7 @@
             "in": "query"
           },
           {
+            "description": "Return only receivables that have the specified statuses. See the applicable [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index), [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index), and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).\n\nTo specify multiple statuses, repeat this parameter for each value:\n`status__in=draft&status__in=issued`",
             "required": false,
             "schema": {
               "items": {
@@ -28815,6 +28373,7 @@
             "in": "query"
           },
           {
+            "description": "Return only receivables created by the entity users with the specified IDs.To specify multiple user IDs, repeat this parameter for each ID:\n`entity_user_id__in=<user1>&entity_user_id__in=<user2>`\n\nIf the request is authenticated using an entity user token, this user must have the `receivable.read.allowed` (rather than `allowed_for_own`) permission to be able to query receivables created by other users.\n\nIDs of deleted users will still produce results here if those users had associated receivables. Valid but nonexistent user IDs do not raise errors but produce no results.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
@@ -28824,18 +28383,18 @@
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ReceivableCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
           },
           {
+            "description": "Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.\n\nFor example, given receivables with the following tags:\n1. tagA\n2. tagB\n3. tagA, tagB\n4. tagC\n5. tagB, tagC\n\n\n`tag_ids__in=<tagA>&tag_ids__in=<tagB>` will return receivables 1, 2, 3, and 5.\n\nValid but nonexistent tag IDs do not raise errors but produce no results.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
@@ -29039,7 +28598,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29135,7 +28693,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29324,7 +28881,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29423,7 +28979,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29523,7 +29078,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29642,7 +29196,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29758,7 +29311,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29860,7 +29412,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -29969,7 +29520,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30085,12 +29635,7 @@
             "description": "Order by",
             "required": false,
             "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/monite_db__pagination__model__OrderEnum"
-                }
-              ],
-              "description": "Order by",
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -30103,7 +29648,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -30112,10 +29656,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -30125,8 +29666,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ReceivableHistoryCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -30181,7 +29721,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30290,7 +29829,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30393,7 +29931,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30503,7 +30040,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30618,12 +30154,7 @@
             "description": "Order by",
             "required": false,
             "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/monite_db__pagination__model__OrderEnum"
-                }
-              ],
-              "description": "Order by",
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -30636,7 +30167,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -30645,10 +30175,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -30658,8 +30185,7 @@
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/ReceivableMailCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -30713,7 +30239,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30822,7 +30347,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -30925,7 +30449,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31042,7 +30565,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31162,7 +30684,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31280,7 +30801,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31381,7 +30901,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31494,7 +31013,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31613,7 +31131,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31734,7 +31251,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31831,7 +31347,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -31924,7 +31439,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32035,7 +31549,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32134,7 +31647,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32245,7 +31757,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32341,7 +31852,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -32354,7 +31864,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -32363,10 +31872,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -32374,8 +31880,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/RoleCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/RoleCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -32431,7 +31936,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32527,7 +32031,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32612,7 +32115,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32688,7 +32190,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -32899,7 +32400,6 @@
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
@@ -32912,7 +32412,6 @@
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
@@ -32921,10 +32420,7 @@
           {
             "description": "A token, obtained from previous page. Prior over other filters",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
@@ -32932,8 +32428,7 @@
             "description": "Allowed sort fields",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/TagCursorFields" }],
-              "description": "Allowed sort fields"
+              "allOf": [{ "$ref": "#/components/schemas/TagCursorFields" }]
             },
             "name": "sort",
             "in": "query"
@@ -32965,7 +32460,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33061,7 +32555,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33179,7 +32672,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33287,7 +32779,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33380,7 +32871,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33510,7 +33000,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33574,7 +33063,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33656,7 +33144,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33717,11 +33204,7 @@
           {
             "description": "UUID text_template ID",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "UUID text_template ID"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "text_template_id",
             "in": "path"
           },
@@ -33731,7 +33214,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33783,11 +33265,7 @@
           {
             "description": "UUID text_template ID",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "UUID text_template ID"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "text_template_id",
             "in": "path"
           },
@@ -33797,7 +33275,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33870,11 +33347,7 @@
           {
             "description": "UUID text_template ID",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "description": "UUID text_template ID"
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "name": "text_template_id",
             "in": "path"
           },
@@ -33884,7 +33357,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -33979,7 +33451,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -34070,47 +33541,41 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
                 { "$ref": "#/components/schemas/WebhookDeliveryCursorFields" }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -34163,7 +33628,6 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "description": "The ID of the entity that owns the requested resource.",
               "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
             },
             "name": "x-monite-entity-id",
@@ -34223,49 +33687,43 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
-              "description": "Order by",
               "default": "asc"
             },
             "name": "order",
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
               "maximum": 100.0,
               "minimum": 1.0,
-              "description": "Max is 100",
               "default": 100
             },
             "name": "limit",
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
-            "schema": {
-              "type": "string",
-              "description": "A token, obtained from previous page. Prior over other filters"
-            },
+            "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
                 {
                   "$ref": "#/components/schemas/WebhookSubscriptionCursorFields"
                 }
-              ],
-              "description": "Allowed sort fields"
+              ]
             },
             "name": "sort",
             "in": "query"
@@ -34940,7 +34398,6 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["quantity", "unit_amount"],
         "description": "Contains the details of an invoice line item retrieved from an accounting system."
       },
       "AccountingMessageResponse": {
@@ -34948,6 +34405,113 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["message"]
+      },
+      "AccountingPayable": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An internal identifier of the payable in the accounting system."
+          },
+          "amount_due": {
+            "type": "number",
+            "description": "Remaining amount to be paid."
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 currency code of the payable.",
+            "example": "EUR"
+          },
+          "currency_rate": {
+            "type": "number",
+            "description": "Rate to convert the total amount of the transaction into the entity's base currency at the time of the transaction."
+          },
+          "due_date": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "string", "format": "date" }
+            ],
+            "description": "The payable's due date."
+          },
+          "invoice_number": {
+            "type": "string",
+            "description": "Invoice number of the payable."
+          },
+          "lines": {
+            "items": { "$ref": "#/components/schemas/AccountingLineItem" },
+            "type": "array"
+          },
+          "memo": {
+            "type": "string",
+            "description": "Any additional information or business notes about the payable."
+          },
+          "posted_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the payable was added to the accounting service. This may differ from the payable creation date."
+          },
+          "purchase_order_refs": {
+            "items": {
+              "$ref": "#/components/schemas/AccountingPurchaseOrderRef"
+            },
+            "type": "array",
+            "description": "A list of purchase orders linked to the payable, if any."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the payable in the accounting system. Possible values: `open`, `draft`, `partially_paid`, `paid`, `unknown`, `void`.",
+            "example": "paid"
+          },
+          "subtotal": {
+            "type": "number",
+            "description": "Amount payable, including discounts but excluding VAT/taxes."
+          },
+          "tax_amount": {
+            "type": "number",
+            "description": "Total VAT or tax amount."
+          },
+          "total_amount": {
+            "type": "number",
+            "description": "The total amount payable, including discounts and VAT/taxes."
+          },
+          "vendor_ref": {
+            "allOf": [
+              { "$ref": "#/components/schemas/AccountingVendorRefObject" }
+            ],
+            "description": "Information about the vendor from whom the payable was received."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "status", "total_amount"],
+        "description": "Details of an accounts payable invoice (bill) retrieved from an accounting system."
+      },
+      "AccountingPayableList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/AccountingPayable" },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
+      "AccountingPurchaseOrderRef": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An internal ID of the purchase order in the accounting system.",
+            "example": "10"
+          },
+          "name": {
+            "type": "string",
+            "description": "Reference number of the purchase order.",
+            "example": "PO-1234"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
       },
       "AccountingReceivable": {
         "properties": {
@@ -35024,31 +34588,6 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "AccountingSettingsPayload": {
-        "properties": {
-          "provider": { "type": "string", "minLength": 1 },
-          "token": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Token for the accounting provider (Codat only)"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["provider"]
-      },
-      "AccountingSettingsResponse": {
-        "properties": {
-          "provider": { "type": "string", "minLength": 1 },
-          "token": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Token for the accounting provider (Codat only)"
-          }
-        },
-        "type": "object",
-        "required": ["provider"]
-      },
       "AccountingTaxRateListResponse": {
         "properties": {
           "data": {
@@ -35085,6 +34624,23 @@
             "description": "Total (not compounded) sum of the components of a tax rate in [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250."
           }
         },
+        "type": "object",
+        "required": ["id"]
+      },
+      "AccountingVendorRefObject": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier of the vendor in the accounting system.",
+            "example": "120"
+          },
+          "name": {
+            "type": "string",
+            "description": "Vendor name in the accounting system.",
+            "example": "Acme Inc."
+          }
+        },
+        "additionalProperties": false,
         "type": "object",
         "required": ["id"]
       },
@@ -35799,6 +35355,16 @@
       },
       "ApprovalPolicyCreate": {
         "properties": {
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC."
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC."
+          },
           "name": {
             "type": "string",
             "maxLength": 255,
@@ -35844,6 +35410,16 @@
       },
       "ApprovalPolicyResource": {
         "properties": {
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC."
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC."
+          },
           "name": {
             "type": "string",
             "maxLength": 255,
@@ -35927,6 +35503,16 @@
       },
       "ApprovalPolicyUpdate": {
         "properties": {
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC."
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC."
+          },
           "name": {
             "type": "string",
             "description": "The name of the approval policy."
@@ -37996,7 +37582,7 @@
           },
           "routing_number": {
             "type": "string",
-            "description": "The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits."
+            "description": "The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits."
           },
           "sort_code": {
             "type": "string",
@@ -38031,7 +37617,7 @@
           "phone": {
             "type": "string",
             "maxLength": 100,
-            "description": "A phone number of the entity"
+            "description": "The contact phone number of the entity. Required for US organizations to use payments."
           },
           "tax_id": {
             "type": "string",
@@ -38067,13 +37653,13 @@
             "type": "string",
             "maxLength": 255,
             "description": "First name",
-            "example": "Andrey"
+            "example": "Casey"
           },
           "last_name": {
             "type": "string",
             "maxLength": 255,
             "description": "Last name",
-            "example": "Korchak"
+            "example": "Peters"
           },
           "login": { "type": "string", "maxLength": 255 },
           "phone": {
@@ -38089,7 +37675,7 @@
             "type": "string",
             "maxLength": 255,
             "description": "Title",
-            "example": "Boss"
+            "example": "Finance Manager"
           }
         },
         "additionalProperties": false,
@@ -39073,15 +38659,6 @@
         "type": "object",
         "required": ["client_id", "client_secret", "provider"]
       },
-      "EInvoicingSettingsResponse": {
-        "properties": {
-          "client_id": { "type": "string", "minLength": 1 },
-          "client_secret": { "type": "string", "minLength": 1 },
-          "provider": { "$ref": "#/components/schemas/EInvoicingProviderEnum" }
-        },
-        "type": "object",
-        "required": ["client_id", "client_secret", "provider"]
-      },
       "EnabledPaymentMethods": {
         "properties": {
           "payment_methods": {
@@ -39273,7 +38850,7 @@
           },
           "routing_number": {
             "type": "string",
-            "description": "The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits."
+            "description": "The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits."
           },
           "sort_code": {
             "type": "string",
@@ -39429,62 +39006,6 @@
               { "$ref": "#/components/schemas/TermsOfServiceAcceptance" }
             ],
             "description": "Details on the entity's acceptance of the service agreement."
-          }
-        },
-        "type": "object"
-      },
-      "EntityOnboardingDocuments": {
-        "properties": {
-          "verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "bank_account_ownership_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_license": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_memorandum_of_association": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_ministerial_decree": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_registration_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_tax_id_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "proof_of_registration": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
           }
         },
         "type": "object"
@@ -39721,7 +39242,7 @@
           "login": {
             "type": "string",
             "description": "Login",
-            "example": "Meme Lord"
+            "example": "caseyp"
           },
           "phone": {
             "type": "string",
@@ -40475,7 +39996,7 @@
           "fulfillment_date": {
             "type": "string",
             "format": "date",
-            "description": "The date when the goods are shipped or the service is provided.\n\nIf omitted, defaults to the invoice issue date,\nand the value is automatically set when the invoice status changes to `issued`."
+            "description": "The date when the goods are shipped or the service is provided. Can be a current, past, or future date.\n\nIf omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status."
           },
           "issue_date": {
             "type": "string",
@@ -41424,19 +40945,6 @@
         "type": "object",
         "required": ["attach_documents_as_pdf"]
       },
-      "MailSettingsResponse": {
-        "properties": {
-          "attach_documents_as_pdf": { "type": "boolean" },
-          "from_email_username": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1
-          },
-          "from_name": { "type": "string", "maxLength": 30, "minLength": 1 }
-        },
-        "type": "object",
-        "required": ["attach_documents_as_pdf"]
-      },
       "MailboxDataResponse": {
         "properties": {
           "data": {
@@ -41643,6 +41151,12 @@
             "type": "integer",
             "description": "Total in cents/eurocents. Outdated, actual conversion happens in payables.",
             "example": 7000
+          },
+          "total_paid_amount_raw": {
+            "type": "number",
+            "description": "Total paid amount",
+            "default": 0,
+            "example": 50
           },
           "total_raw": {
             "type": "number",
@@ -43274,12 +42788,6 @@
       },
       "PartnerProjectSettingsPayload": {
         "properties": {
-          "accounting": {
-            "allOf": [
-              { "$ref": "#/components/schemas/AccountingSettingsPayload" }
-            ],
-            "description": "Settings for the accounting module."
-          },
           "api_version": {
             "allOf": [{ "$ref": "#/components/schemas/APIVersion" }],
             "description": "Default API version for partner."
@@ -43337,12 +42845,6 @@
       },
       "PartnerProjectSettingsResponse": {
         "properties": {
-          "accounting": {
-            "allOf": [
-              { "$ref": "#/components/schemas/AccountingSettingsResponse" }
-            ],
-            "description": "Settings for the accounting module."
-          },
           "api_version": {
             "allOf": [{ "$ref": "#/components/schemas/APIVersion" }],
             "description": "Default API version for partner."
@@ -43362,29 +42864,29 @@
           },
           "einvoicing": {
             "allOf": [
-              { "$ref": "#/components/schemas/EInvoicingSettingsResponse" }
+              { "$ref": "#/components/schemas/EInvoicingSettingsPayload" }
             ],
             "description": "Settings for the e-invoicing module."
           },
           "mail": {
-            "allOf": [{ "$ref": "#/components/schemas/MailSettingsResponse" }],
+            "allOf": [{ "$ref": "#/components/schemas/MailSettingsPayload" }],
             "description": "Settings for email and mailboxes."
           },
           "payable": {
             "allOf": [
-              { "$ref": "#/components/schemas/PayableSettingsResponse" }
+              { "$ref": "#/components/schemas/PayableSettingsPayload" }
             ],
             "description": "Settings for the payables module."
           },
           "payments": {
             "allOf": [
-              { "$ref": "#/components/schemas/PaymentsSettingsResponse" }
+              { "$ref": "#/components/schemas/PaymentsSettingsPayload" }
             ],
             "description": "Settings for the payments module."
           },
           "receivable": {
             "allOf": [
-              { "$ref": "#/components/schemas/ReceivableSettingsResponse" }
+              { "$ref": "#/components/schemas/ReceivableSettingsPayload" }
             ],
             "description": "Settings for the receivables module."
           },
@@ -43968,6 +43470,11 @@
             "format": "uuid",
             "description": "The ID of counterpart VAT ID object stored in counterparts service"
           },
+          "created_by_role_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the role that the entity user who created this payable had at that time. If the payable was created using a partner access token, the value is `null`."
+          },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
             "description": "The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable.",
@@ -43979,6 +43486,11 @@
           "description": {
             "type": "string",
             "description": "An arbitrary description of this payable."
+          },
+          "discount": {
+            "type": "integer",
+            "description": "The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.",
+            "example": 500
           },
           "document_id": {
             "type": "string",
@@ -44178,45 +43690,13 @@
             "description": "Starting from version 2024-05-25 by default is always set to True.",
             "default": true,
             "deprecated": true
+          },
+          "skip_approval_for_paid_invoice": {
+            "type": "boolean",
+            "default": false
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "required": ["approve_page_url"]
-      },
-      "PayableSettingsResponse": {
-        "properties": {
-          "allow_cancel_duplicates_automatically": {
-            "type": "boolean",
-            "default": false
-          },
-          "allow_counterpart_autocreation": {
-            "type": "boolean",
-            "default": false
-          },
-          "allow_counterpart_autolinking": {
-            "type": "boolean",
-            "default": false
-          },
-          "approve_page_url": {
-            "type": "string",
-            "maxLength": 65536,
-            "minLength": 1,
-            "format": "uri",
-            "example": "https://monite.com"
-          },
-          "default_state": {
-            "type": "string",
-            "description": "A state each new payable will have upon creation",
-            "example": "new"
-          },
-          "enable_line_items": {
-            "type": "boolean",
-            "description": "Starting from version 2024-05-25 by default is always set to True.",
-            "default": true,
-            "deprecated": true
-          }
-        },
         "type": "object",
         "required": ["approve_page_url"]
       },
@@ -44309,6 +43789,11 @@
             "type": "string",
             "maxLength": 255,
             "description": "An arbitrary description of this payable."
+          },
+          "discount": {
+            "type": "integer",
+            "description": "The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.",
+            "example": 500
           },
           "document_id": {
             "type": "string",
@@ -44427,6 +43912,11 @@
             "type": "string",
             "maxLength": 255,
             "description": "An arbitrary description of this payable."
+          },
+          "discount": {
+            "type": "integer",
+            "description": "The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.",
+            "example": 500
           },
           "document_id": {
             "type": "string",
@@ -44927,29 +44417,6 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "PaymentPageThemeResponse": {
-        "properties": {
-          "background_color": { "type": "string", "format": "color" },
-          "border_radius": { "type": "string" },
-          "button": { "$ref": "#/components/schemas/ButtonThemeResponse" },
-          "card": { "$ref": "#/components/schemas/CardThemeResponse" },
-          "font_color": { "type": "string", "format": "color" },
-          "font_family": { "type": "string" },
-          "font_link_href": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri"
-          },
-          "logo_src": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri"
-          }
-        },
-        "type": "object"
-      },
       "PaymentPageThemeWithFooterResponse": {
         "properties": {
           "background_color": { "type": "string", "format": "color" },
@@ -45415,20 +44882,6 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "PaymentsSettingsResponse": {
-        "properties": {
-          "payment_page_domain": { "type": "string" },
-          "payment_page_theme": {
-            "$ref": "#/components/schemas/PaymentPageThemeResponse"
-          },
-          "support_email": {
-            "type": "string",
-            "format": "email",
-            "description": "The support email address"
-          }
-        },
-        "type": "object"
-      },
       "PermissionEnum": {
         "type": "string",
         "enum": ["allowed", "allowed_for_own", "not_allowed"]
@@ -45458,7 +44911,7 @@
             "description": "City, district, suburb, town, or village"
           },
           "country": {
-            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "$ref": "#/components/schemas/AllowedCountries",
             "description": "Two-letter country code (ISO 3166-1 alpha-2)",
             "examples": ["DE"]
           },
@@ -45523,27 +44976,6 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["city", "country", "line1", "postal_code"]
-      },
-      "PersonOnboardingDocuments": {
-        "properties": {
-          "verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          }
-        },
-        "type": "object"
       },
       "PersonOnboardingDocumentsPayload": {
         "properties": {
@@ -45676,9 +45108,7 @@
             "description": "The person's phone number"
           },
           "relationship": {
-            "allOf": [
-              { "$ref": "#/components/schemas/PersonRelationshipRequest" }
-            ],
+            "$ref": "#/components/schemas/PersonRelationshipRequest",
             "description": "Describes the person's relationship to the entity"
           },
           "id_number": {
@@ -45781,9 +45211,7 @@
             "description": "The person's phone number"
           },
           "relationship": {
-            "allOf": [
-              { "$ref": "#/components/schemas/PersonRelationshipResponse" }
-            ],
+            "$ref": "#/components/schemas/PersonRelationshipResponse",
             "description": "Describes the person's relationship to the entity"
           },
           "ssn_last_4": {
@@ -45833,7 +45261,13 @@
       },
       "Platform": {
         "type": "string",
-        "enum": ["xero", "quickbooks_online", "quickbooks_online_sandbox"]
+        "enum": [
+          "xero",
+          "quickbooks",
+          "quickbooks_online",
+          "quickbooks_online_sandbox"
+        ],
+        "description": "Possible platform names (i.e. serviceName) from Railz:\n- https://docs.railz.ai/docs/supported-accounting-integrations\n\nPresent in webhook events from Railz e.g. Authentication Completed:\n- https://docs.railz.ai/reference/connection-webhooks#authentication-completed"
       },
       "PortalBizObjectsSchema": {
         "properties": {
@@ -46776,7 +46210,6 @@
         "required": [
           "counterpart_id",
           "currency",
-          "entity_vat_id_id",
           "items",
           "message",
           "valid_for_days"
@@ -47914,6 +47347,13 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
+          "document_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.",
+            "examples": ["INV-0001", "2024-027", "CUST/2024/00027"]
+          },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
@@ -47928,7 +47368,7 @@
           "fulfillment_date": {
             "type": "string",
             "format": "date",
-            "description": "The date when the goods are shipped or the service is provided.\n\nIf omitted, defaults to the invoice issue date,\nand the value is automatically set when the invoice status changes to `issued`."
+            "description": "The date when the goods are shipped or the service is provided. Can be a current, past, or future date.\n\nIf omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status."
           },
           "line_items": {
             "items": { "$ref": "#/components/schemas/LineItem" },
@@ -48055,6 +47495,13 @@
           "discount": {
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.",
+            "examples": ["INV-0001", "2024-027", "CUST/2024/00027"]
           },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
@@ -48490,18 +47937,6 @@
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "required": ["create_without_personal_info"]
-      },
-      "ReceivableSettingsResponse": {
-        "properties": {
-          "create_without_personal_info": { "type": "boolean" },
-          "deduction_title": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1
-          }
-        },
         "type": "object",
         "required": ["create_without_personal_info"]
       },
@@ -49976,8 +49411,7 @@
           "tag_ids": {
             "items": { "type": "string", "format": "uuid" },
             "type": "array",
-            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
-            "default": []
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable."
           }
         },
         "additionalProperties": false,
@@ -50102,7 +49536,7 @@
           "phone": {
             "type": "string",
             "maxLength": 100,
-            "description": "A phone number of the entity"
+            "description": "The contact phone number of the entity. Required for US organizations to use payments."
           },
           "tax_id": {
             "type": "string",
@@ -50133,19 +49567,19 @@
             "type": "string",
             "maxLength": 255,
             "description": "First name",
-            "example": "Andrey"
+            "example": "Casey"
           },
           "last_name": {
             "type": "string",
             "maxLength": 255,
             "description": "Last name",
-            "example": "Korchak"
+            "example": "Peters"
           },
           "login": {
             "type": "string",
             "maxLength": 255,
             "description": "Login",
-            "example": "Meme Lord"
+            "example": "caseyp"
           },
           "phone": {
             "type": "string",
@@ -50160,7 +49594,7 @@
             "type": "string",
             "maxLength": 255,
             "description": "Title",
-            "example": "Boss"
+            "example": "Finance Manager"
           }
         },
         "additionalProperties": false,
@@ -50223,7 +49657,7 @@
           "fulfillment_date": {
             "type": "string",
             "format": "date",
-            "description": "The date when the goods are shipped or the service is provided.\n\nIf omitted, defaults to the invoice issue date,\nand the value is automatically set when the invoice status changes to `issued`."
+            "description": "The date when the goods are shipped or the service is provided. Can be a current, past, or future date.\n\nIf omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status."
           },
           "line_items": {
             "items": { "$ref": "#/components/schemas/LineItemUpdate" },
@@ -50246,7 +49680,11 @@
             "description": "Link to your invoice's custom payment rails or external payment link."
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
-          "payment_terms_id": { "type": "string", "format": "uuid" },
+          "payment_terms_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the payment terms."
+          },
           "project_id": {
             "type": "string",
             "format": "uuid",
@@ -50255,8 +49693,7 @@
           "tag_ids": {
             "items": { "type": "string", "format": "uuid" },
             "type": "array",
-            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
-            "default": []
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable."
           },
           "trade_name": {
             "type": "string",
@@ -50279,8 +49716,7 @@
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "description": "Raise if None was explicitly passed to given fields"
+        "type": "object"
       },
       "UpdateInvoicePayload": {
         "properties": {
@@ -50329,7 +49765,7 @@
           "fulfillment_date": {
             "type": "string",
             "format": "date",
-            "description": "The date when the goods are shipped or the service is provided.\n\nIf omitted, defaults to the invoice issue date,\nand the value is automatically set when the invoice status changes to `issued`."
+            "description": "The date when the goods are shipped or the service is provided. Can be a current, past, or future date."
           },
           "memo": {
             "type": "string",
@@ -50355,8 +49791,7 @@
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "description": "Raise if None was explicitly passed to given fields"
+        "type": "object"
       },
       "UpdateIssuedInvoicePayload": {
         "properties": {
@@ -50405,13 +49840,13 @@
             "type": "string",
             "maxLength": 255,
             "description": "First name",
-            "example": "Andrey"
+            "example": "Casey"
           },
           "last_name": {
             "type": "string",
             "maxLength": 255,
             "description": "Last name",
-            "example": "Korchak"
+            "example": "Peters"
           },
           "phone": {
             "type": "string",
@@ -50421,7 +49856,7 @@
             "type": "string",
             "maxLength": 255,
             "description": "Title",
-            "example": "Boss"
+            "example": "Finance Manager"
           }
         },
         "additionalProperties": false,
@@ -50597,8 +50032,7 @@
           "tag_ids": {
             "items": { "type": "string", "format": "uuid" },
             "type": "array",
-            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
-            "default": []
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable."
           },
           "trade_name": {
             "type": "string",
@@ -50621,8 +50055,7 @@
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "description": "Raise if None was explicitly passed to given fields"
+        "type": "object"
       },
       "UpdateQuotePayload": {
         "properties": {
@@ -51125,7 +50558,8 @@
           "overdue_reminder",
           "payment_reminder",
           "accounting_connection",
-          "project"
+          "project",
+          "approval_policy_process"
         ]
       },
       "WebhookSubscriptionCursorFields": {
@@ -51477,11 +50911,6 @@
         "type": "object",
         "required": ["url", "width", "height"],
         "description": "A preview image generated for a file."
-      },
-      "monite__server__pagination__OrderEnum": { "enum": ["asc", "desc"] },
-      "monite_db__pagination__model__OrderEnum": {
-        "type": "string",
-        "enum": ["asc", "desc"]
       },
       "package__entities__unversioned__schemas__file_saver__FileSchema": {
         "properties": {
