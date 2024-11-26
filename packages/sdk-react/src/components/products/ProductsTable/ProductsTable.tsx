@@ -33,9 +33,6 @@ import {
 } from './consts';
 import { Filters as FilterType, FilterValue } from './types';
 
-/** @deprecated Use `ProductTableProps` instead */
-export type IProductTableProps = ProductTableProps;
-
 export interface ProductTableProps {
   /**
    * Triggered when the filtering options are changed.
