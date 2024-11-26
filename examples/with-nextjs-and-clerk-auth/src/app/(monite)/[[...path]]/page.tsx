@@ -21,10 +21,10 @@ import {
 
 import dashboardBalanceUS from './balance.svg';
 import dashboardCashflowUS from './cashflow.svg';
-import dashboardCashflowEU from './dashboard-widgets-1-eur.svg';
-import dashboardCashflowUK from './dashboard-widgets-1-gbp.svg';
-import dashboardBalanceEU from './dashboard-widgets-2-eur.svg';
-import dashboardBalanceUK from './dashboard-widgets-2-gbp.svg';
+import dashboardBalanceEU from './dashboard-widgets-1-eur.svg';
+import dashboardBalanceUK from './dashboard-widgets-1-gbp.svg';
+import dashboardCashflowEU from './dashboard-widgets-2-eur.svg';
+import dashboardCashflowUK from './dashboard-widgets-2-gbp.svg';
 import dashboardHeader from './header.svg';
 
 export default function DefaultPage() {
@@ -126,15 +126,13 @@ const DashboardMockup = () => {
         </>
       ) : (
         <>
-          <Image width={1127} priority src={dashboardHeader} alt="" />
+          <Image priority src={dashboardHeader} alt="" />
           <Image
-            width={1127}
             priority
             alt=""
             src={getDashboardBalanceImage(currentCountry)}
           />
           <Image
-            width={1127}
             priority
             src={getDashboardCashFlowImage(currentCountry)}
             alt=""
