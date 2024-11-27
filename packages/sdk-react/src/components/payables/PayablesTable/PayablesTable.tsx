@@ -440,10 +440,10 @@ const PayablesTableBase = ({
   ) {
     return (
       <DataGridEmptyState
-        title={t(i18n)`No Payables`}
-        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
-        descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create new`}
+        title={t(i18n)`No bills found`}
+        descriptionLine1={t(i18n)`Try adjusting your search or filter criteria`}
+        descriptionLine2={''}
+        actionButtonLabel={t(i18n)`Add new bill`}
         actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
         onAction={(action) => {
           if (action === t(i18n)`New Invoice`) {
@@ -530,6 +530,11 @@ const PayablesTableBase = ({
           ),
           noRowsOverlay: () => (
             <GetNoRowsOverlay
+              noDataTitle={t(i18n)`No bills found`}
+              filterDescription1={t(
+                i18n
+              )`Try adjusting your search or filter criteria`}
+              filterDescription2={' '}
               isLoading={isLoading}
               dataLength={payables?.data.length || 0}
               isFiltering={isFiltering}

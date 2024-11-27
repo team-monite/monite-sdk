@@ -68,7 +68,7 @@ export const CreatePayableMenu = ({
         disabled={!isCreateAllowed}
         endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       >
-        {t(i18n)`New bill`}
+        {t(i18n)`Add new bill`}
       </Button>
       <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: 550 } }}>
         <Stack
@@ -82,7 +82,7 @@ export const CreatePayableMenu = ({
         >
           <Box>
             <Typography variant="subtitle1" mb={1}>
-              {t(i18n)`Drag & Drop`}
+              {t(i18n)`Upload files`}
             </Typography>
             <Box
               sx={{
@@ -120,7 +120,7 @@ export const CreatePayableMenu = ({
               >
                 <CloudUploadOutlinedIcon color="primary" fontSize="large" />
                 <Typography color="primary" variant="subtitle2">
-                  {t(i18n)`Drag files or click to upload`}
+                  {t(i18n)`Drag and drop files or click to upload`}
                 </Typography>
                 <Typography color="text.secondary" variant="body2">
                   {t(i18n)`(.pdf, .png, .jpg supported)`}
@@ -130,7 +130,7 @@ export const CreatePayableMenu = ({
           </Box>
           <Box>
             <Typography variant="subtitle1" mb={1}>
-              {t(i18n)`Add bill manually`}
+              {t(i18n)`Or add bill manually`}
             </Typography>
             <Box flex={0}>
               <Button
@@ -141,7 +141,7 @@ export const CreatePayableMenu = ({
                   onCreateInvoice();
                 }}
               >
-                {t(i18n)`Create bill manually`}
+                {t(i18n)`Add new bill`}
               </Button>
             </Box>
           </Box>
