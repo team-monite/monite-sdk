@@ -63,7 +63,7 @@ export const PayableDetailsHeader = ({
 
   const buttonsByPermissions: Record<PayableDetailsPermissions, ButtonProps> = {
     edit: {
-      variant: 'contained',
+      variant: 'outlined',
       onClick: () => setEdit(true),
       children: t(i18n)`Edit`,
     },
@@ -107,7 +107,7 @@ export const PayableDetailsHeader = ({
       variant: 'text',
       color: 'error',
       onClick: cancelInvoice,
-      children: t(i18n)`Cancel`,
+      children: t(i18n)`Cancel bill`,
     },
     pay: {
       variant: 'contained',
