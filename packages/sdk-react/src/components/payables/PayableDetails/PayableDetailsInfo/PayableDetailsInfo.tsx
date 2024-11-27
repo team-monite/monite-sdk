@@ -241,7 +241,7 @@ const PayableDetailsInfoBase = ({
                       ) && payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Invoice number`}:
+                    {t(i18n)`Number`}
                   </StyledLabelTableCell>
                   <TableCell>{payable.document_id ?? '—'}</TableCell>
                 </TableRow>
@@ -252,7 +252,7 @@ const PayableDetailsInfoBase = ({
                       payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Supplier`}:
+                    {t(i18n)`Vendor`}
                   </StyledLabelTableCell>
                   <TableCell>
                     <PayableCounterpartName payable={payable} />
@@ -266,7 +266,7 @@ const PayableDetailsInfoBase = ({
                         payable?.ocr_status === null
                       }
                     >
-                      {t(i18n)`Contact person`}:
+                      {t(i18n)`Contact person`}
                     </StyledLabelTableCell>
                     <TableCell>
                       {`${defaultContact.first_name} ${defaultContact.last_name}`}
@@ -284,7 +284,7 @@ const PayableDetailsInfoBase = ({
                         ) && payable?.ocr_status === null
                       }
                     >
-                      {t(i18n)`Bank account`}:
+                      {t(i18n)`Bank account`}
                     </StyledLabelTableCell>
                     <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
@@ -297,7 +297,7 @@ const PayableDetailsInfoBase = ({
                         payable?.ocr_status === null
                       }
                     >
-                      {t(i18n)`Issue date`}:
+                      {t(i18n)`Issue date`}
                     </StyledLabelTableCell>
                     <TableCell>
                       {payable.issued_at
@@ -331,7 +331,7 @@ const PayableDetailsInfoBase = ({
                       payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Amount`}:
+                    {t(i18n)`Total`}
                   </StyledLabelTableCell>
                   <TableCell>
                     <Box
@@ -373,7 +373,7 @@ const PayableDetailsInfoBase = ({
                         ) && payable?.ocr_status === null
                       }
                     >
-                      {t(i18n)`Tags`}:
+                      {t(i18n)`Tags`}
                     </StyledLabelTableCell>
                     <TableCell>
                       <Stack
@@ -401,7 +401,7 @@ const PayableDetailsInfoBase = ({
                       payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Applied policy`}:
+                    {t(i18n)`Applied policy`}
                   </StyledLabelTableCell>
                   <TableCell>
                     {!isApprovalPolicyLoading &&
@@ -479,7 +479,7 @@ const PayableDetailsInfoBase = ({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>{t(i18n)`Taxes`}</TableCell>
+                  <TableCell>{t(i18n)`VAT Total`}</TableCell>
                   <TableCell align="right">
                     {payable.tax_amount && payable.currency
                       ? formatCurrencyToDisplay(
@@ -526,7 +526,7 @@ const PayableDetailsInfoBase = ({
                         payable?.ocr_status === null
                       }
                     >
-                      {t(i18n)`Added by`}:
+                      {t(i18n)`Added by`}
                     </StyledLabelTableCell>
                     <TableCell>
                       <Box
@@ -557,7 +557,7 @@ const PayableDetailsInfoBase = ({
                       payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Added on`}:
+                    {t(i18n)`Added on`}
                   </StyledLabelTableCell>
                   <TableCell>
                     {payable.created_at
@@ -575,7 +575,7 @@ const PayableDetailsInfoBase = ({
                       payable?.ocr_status === null
                     }
                   >
-                    {t(i18n)`Updated on`}:
+                    {t(i18n)`Last updated on`}
                   </StyledLabelTableCell>
                   <TableCell>
                     {payable.updated_at
