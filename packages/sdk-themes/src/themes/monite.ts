@@ -431,6 +431,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.Monite-SearchField': {
           maxWidth: '400px',
           width: '100%',
+          '& label': {
+            color: 'secondary.main',
+          },
         },
       },
     },

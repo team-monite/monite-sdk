@@ -40,7 +40,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          label={t(i18n)`Search by number or vendor`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
