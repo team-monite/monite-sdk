@@ -78,29 +78,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
         </Select>
       </FormControl>
       <DatePicker
-        className="Monite-PayableDateFilter Monite-FilterControl Monite-DateFilterControl"
-        label={t(i18n)`Invoice date`}
-        onChange={(value, error) => {
-          if (error.validationError) {
-            return;
-          }
-
-          onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
-        }}
-        slotProps={{
-          popper: {
-            container: root,
-          },
-          dialog: {
-            container: root,
-          },
-          actionBar: {
-            actions: ['clear', 'today'],
-          },
-        }}
-        views={['year', 'month', 'day']}
-      />
-      <DatePicker
         className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
         label={t(i18n)`Due date`}
         onChange={(value, error) => {
