@@ -248,7 +248,7 @@ const PayablesTableBase = ({
       {
         field: 'counterpart_id',
         sortable: false,
-        headerName: t(i18n)`Supplier`,
+        headerName: t(i18n)`Vendor`,
         display: 'flex',
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
