@@ -246,16 +246,6 @@ const PayablesTableBase = ({
   const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
-        field: 'counterpart_id',
-        sortable: false,
-        headerName: t(i18n)`Vendor`,
-        display: 'flex',
-        width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartCellById counterpartId={params.value} />
-        ),
-      },
-      {
         field: 'document_id',
         sortable: false,
         headerName: t(i18n)`Number, status`,
@@ -293,6 +283,16 @@ const PayablesTableBase = ({
             </Stack>
           );
         },
+      },
+      {
+        field: 'counterpart_id',
+        sortable: false,
+        headerName: t(i18n)`Vendor`,
+        display: 'flex',
+        width: defaultCounterpartColumnWidth,
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.value} />
+        ),
       },
       {
         field: 'amount',
