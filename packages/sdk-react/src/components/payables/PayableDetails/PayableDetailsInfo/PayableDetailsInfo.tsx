@@ -346,6 +346,8 @@ const PayableDetailsInfoBase = ({
                               payable.total_amount,
                               payable.currency
                             )
+                          : payable.currency
+                          ? formatCurrencyToDisplay(0, payable.currency)
                           : '—'}
                       </Box>
                       {payable.currency_exchange?.default_currency_code &&
@@ -453,6 +455,8 @@ const PayableDetailsInfoBase = ({
                             {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>
+                      ) : payable.currency ? (
+                        formatCurrencyToDisplay(0, payable.currency)
                       ) : (
                         '—'
                       )}
@@ -475,6 +479,8 @@ const PayableDetailsInfoBase = ({
                           payable.subtotal,
                           payable.currency
                         )
+                      : payable.currency
+                      ? formatCurrencyToDisplay(0, payable.currency)
                       : '—'}
                   </TableCell>
                 </TableRow>
@@ -486,6 +492,8 @@ const PayableDetailsInfoBase = ({
                           payable.tax_amount,
                           payable.currency
                         )
+                      : payable.currency
+                      ? formatCurrencyToDisplay(0, payable.currency)
                       : '—'}
                   </TableCell>
                 </TableRow>
@@ -502,6 +510,8 @@ const PayableDetailsInfoBase = ({
                             payable.total_amount,
                             payable.currency
                           )
+                        : payable.currency
+                        ? formatCurrencyToDisplay(0, payable.currency)
                         : '—'}
                     </Typography>
                   </TableCell>
