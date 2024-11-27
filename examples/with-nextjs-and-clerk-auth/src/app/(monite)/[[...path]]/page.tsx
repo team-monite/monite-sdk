@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { Box, Stack } from '@mui/material';
+import { useMoniteContext } from '@monite/sdk-react';
+import { Box, Stack, Skeleton } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
 import EmptyState from '@/components/EmptyState';
@@ -18,8 +19,12 @@ import {
   IconPresentation,
 } from '@/icons';
 
-import dashboardBalance from './balance.svg';
-import dashboardCashflow from './cashflow.svg';
+import dashboardBalanceUS from './balance.svg';
+import dashboardCashflowUS from './cashflow.svg';
+import dashboardBalanceEU from './dashboard-widgets-1-eur.svg';
+import dashboardBalanceUK from './dashboard-widgets-1-gbp.svg';
+import dashboardCashflowEU from './dashboard-widgets-2-eur.svg';
+import dashboardCashflowUK from './dashboard-widgets-2-gbp.svg';
 import dashboardHeader from './header.svg';
 
 export default function DefaultPage() {
@@ -40,11 +45,100 @@ export default function DefaultPage() {
 }
 
 const DashboardMockup = () => {
+  const dashboardBalanceImages: { [key: string]: string } = {
+    US: dashboardBalanceUS, // US
+    GB: dashboardBalanceUK, // UK
+    AT: dashboardBalanceEU, // Austria
+    BE: dashboardBalanceEU, // Belgium
+    CY: dashboardBalanceEU, // Cyprus
+    EE: dashboardBalanceEU, // Estonia
+    FI: dashboardBalanceEU, // Finland
+    FR: dashboardBalanceEU, // France
+    DE: dashboardBalanceEU, // Germany
+    GR: dashboardBalanceEU, // Greece
+    IE: dashboardBalanceEU, // Ireland
+    IT: dashboardBalanceEU, // Italy
+    LV: dashboardBalanceEU, // Latvia
+    LT: dashboardBalanceEU, // Lithuania
+    LU: dashboardBalanceEU, // Luxembourg
+    MT: dashboardBalanceEU, // Malta
+    NL: dashboardBalanceEU, // Netherlands
+    PT: dashboardBalanceEU, // Portugal
+    SK: dashboardBalanceEU, // Slovakia
+    SI: dashboardBalanceEU, // Slovenia
+    ES: dashboardBalanceEU, // Spain
+  };
+  const dashboardCashflowImages: { [key: string]: string } = {
+    US: dashboardCashflowUS, // US
+    GB: dashboardCashflowUK, // UK
+    AT: dashboardCashflowEU, // Austria
+    BE: dashboardCashflowEU, // Belgium
+    CY: dashboardCashflowEU, // Cyprus
+    EE: dashboardCashflowEU, // Estonia
+    FI: dashboardCashflowEU, // Finland
+    FR: dashboardCashflowEU, // France
+    DE: dashboardCashflowEU, // Germany
+    GR: dashboardCashflowEU, // Greece
+    IE: dashboardCashflowEU, // Ireland
+    IT: dashboardCashflowEU, // Italy
+    LV: dashboardCashflowEU, // Latvia
+    LT: dashboardCashflowEU, // Lithuania
+    LU: dashboardCashflowEU, // Luxembourg
+    MT: dashboardCashflowEU, // Malta
+    NL: dashboardCashflowEU, // Netherlands
+    PT: dashboardCashflowEU, // Portugal
+    SK: dashboardCashflowEU, // Slovakia
+    SI: dashboardCashflowEU, // Slovenia
+    ES: dashboardCashflowEU, // Spain
+  };
+
+  const { api } = useMoniteContext();
+  const { data: entity, isLoading } =
+    api.entityUsers.getEntityUsersMyEntity.useQuery();
+  const getDashboardCashFlowImage = (countryCode?: string) =>
+    countryCode && countryCode in dashboardCashflowImages
+      ? dashboardCashflowImages[countryCode]
+      : dashboardCashflowUS;
+
+  const getDashboardBalanceImage = (countryCode?: string) =>
+    countryCode && countryCode in dashboardBalanceImages
+      ? dashboardBalanceImages[countryCode]
+      : dashboardBalanceUS;
+
+  const currentCountry = entity?.address.country;
+
   return (
     <Stack direction="column" justifyContent="flex-start" alignItems="center">
-      <Image priority src={dashboardHeader} alt="" />
-      <Image priority src={dashboardBalance} alt="" />
-      <Image priority src={dashboardCashflow} alt="" />
+      {isLoading ? (
+        <>
+          <p>
+            <Skeleton variant="rounded" width={1127} height={150} />
+          </p>
+          <p>
+            <Skeleton variant="rounded" width={1127} height={400} />
+          </p>
+          <p>
+            <Skeleton variant="rounded" width={1127} height={150} />
+          </p>
+          <p>
+            <Skeleton variant="rounded" width={1127} height={150} />
+          </p>
+        </>
+      ) : (
+        <>
+          <Image priority src={dashboardHeader} alt="" />
+          <Image
+            priority
+            alt=""
+            src={getDashboardBalanceImage(currentCountry)}
+          />
+          <Image
+            priority
+            src={getDashboardCashFlowImage(currentCountry)}
+            alt=""
+          />
+        </>
+      )}
     </Stack>
   );
 };
