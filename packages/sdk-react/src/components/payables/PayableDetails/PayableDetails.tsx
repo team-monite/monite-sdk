@@ -150,6 +150,7 @@ const PayableDetailsBase = ({
           payable={payable}
           permissions={permissions}
           setEdit={setEdit}
+          isEdit={isEdit}
           submitInvoice={submitInvoice}
           rejectInvoice={rejectInvoice}
           approveInvoice={approveInvoice}

@@ -27,6 +27,7 @@ export interface PayablesDetailsHeaderProps {
   payable?: components['schemas']['PayableResponseSchema'];
   permissions: PayableDetailsPermissions[];
   setEdit: (isEdit: boolean) => void;
+  isEdit: boolean;
   submitInvoice: () => void;
   rejectInvoice: () => void;
   approveInvoice: () => void;
@@ -44,6 +45,7 @@ export const PayableDetailsHeader = ({
   payable,
   permissions,
   setEdit,
+  isEdit,
   submitInvoice,
   rejectInvoice,
   approveInvoice,
@@ -138,7 +140,11 @@ export const PayableDetailsHeader = ({
           <Typography variant="h3" sx={{ ml: 3, flex: 1 }} component="div">
             {payable?.document_id
               ? counterpartName
-                ? `${counterpartName} - #${payable.document_id}`
+                ? `${t(i18n)`Bill`} #${payable.document_id} ${t(
+                    i18n
+                  )`from`} ${counterpartName}`
+                : isEdit
+                ? `${t(i18n)`Edit bill`} #${payable.document_id}`
                 : `${t(i18n)`Bill`} #${payable.document_id}`
               : t(i18n)`New incoming invoice`}
           </Typography>

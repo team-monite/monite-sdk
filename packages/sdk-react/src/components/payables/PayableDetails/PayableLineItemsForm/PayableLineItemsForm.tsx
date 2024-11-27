@@ -126,7 +126,7 @@ export const PayableLineItemsForm = () => {
                   <TextField
                     {...field}
                     id={field.name}
-                    label={t(i18n)`Tax`}
+                    label={t(i18n)`VAT`}
                     variant="outlined"
                     type="number"
                     inputProps={{ min: 0, max: 100 }}
