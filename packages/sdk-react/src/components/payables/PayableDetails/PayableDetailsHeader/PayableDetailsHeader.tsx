@@ -139,7 +139,7 @@ export const PayableDetailsHeader = ({
             {payable?.document_id
               ? counterpartName
                 ? `${counterpartName} - #${payable.document_id}`
-                : payable.document_id
+                : `${t(i18n)`Bill`} #${payable.document_id}`
               : t(i18n)`New incoming invoice`}
           </Typography>
           <PayableStatusChip status={payable?.status ?? 'draft'} />
