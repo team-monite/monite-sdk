@@ -10,14 +10,29 @@ import { YourVatDetailsForm } from './Billing/YourVatDetailsForm';
 export const BillToSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 4 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 4,
+        alignItems: 'stretch',
+      }}
+    >
       <Box sx={{ width: '100%', maxWidth: '400px' }}>
         <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
           i18n
         )`Bill to`}</Typography>
         <CustomerSection disabled={disabled} />
       </Box>
-      <Box sx={{ width: '100%', maxWidth: '400px' }}>
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: '400px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <Box sx={{ mb: 2 }}>
           <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
             i18n
