@@ -328,30 +328,6 @@ describe('PayableDetails', () => {
         expect(onCloseMock).toHaveBeenCalled();
       });
 
-      test('should trigger "onSave" callback when we click on "Save" button', async () => {
-        const onSaveMock = jest.fn();
-
-        renderWithClient(<PayableDetails id={payableId} onSave={onSaveMock} />);
-
-        await waitUntilTableIsLoaded();
-
-        const editButton = await screen.findByRole('button', {
-          name: t`Edit`,
-        });
-
-        await user.click(editButton);
-
-        const saveButton = await screen.findByRole('button', {
-          name: t`Save`,
-        });
-
-        await user.click(saveButton);
-
-        await waitFor(() => {
-          expect(onSaveMock).toHaveBeenCalledWith(payableId);
-        });
-      });
-
       test('should trigger "onSaved" callback when we click on "Save" button', async () => {
         const onSavedMock = jest.fn();
 
@@ -378,27 +354,6 @@ describe('PayableDetails', () => {
         });
       });
 
-      test('should trigger "onCancel" callback when we click on "Cancel" button', async () => {
-        fixture.status = 'new';
-        const onCancelMock = jest.fn();
-
-        renderWithClient(
-          <PayableDetails id={payableId} onCancel={onCancelMock} />
-        );
-
-        await waitUntilTableIsLoaded();
-
-        const cancelButton = await screen.findByRole('button', {
-          name: t`Cancel`,
-        });
-
-        await user.click(cancelButton);
-
-        await waitFor(() => {
-          expect(onCancelMock).toHaveBeenCalledWith(payableId);
-        });
-      });
-
       test('should trigger "onCanceled" callback when we click on "Cancel" button', async () => {
         fixture.status = 'new';
         const onCanceledMock = jest.fn();
@@ -417,27 +372,6 @@ describe('PayableDetails', () => {
 
         await waitFor(() => {
           expect(onCanceledMock).toHaveBeenCalledWith(payableId);
-        });
-      });
-
-      test('should trigger "onSubmit" callback when we click on "Submit" button', async () => {
-        fixture.status = 'new';
-        const onSubmitMock = jest.fn();
-
-        renderWithClient(
-          <PayableDetails id={payableId} onSubmit={onSubmitMock} />
-        );
-
-        await waitUntilTableIsLoaded();
-
-        const submitButton = await screen.findByRole('button', {
-          name: t`Submit`,
-        });
-
-        await user.click(submitButton);
-
-        await waitFor(() => {
-          expect(onSubmitMock).toHaveBeenCalledWith(payableId);
         });
       });
 
@@ -462,27 +396,6 @@ describe('PayableDetails', () => {
         });
       });
 
-      test('should trigger "onReject" callback when we click on "Reject" button', async () => {
-        fixture.status = 'approve_in_progress';
-        const onRejectMock = jest.fn();
-
-        renderWithClient(
-          <PayableDetails id={payableId} onReject={onRejectMock} />
-        );
-
-        await waitUntilTableIsLoaded();
-
-        const rejectButton = await screen.findByRole('button', {
-          name: t`Reject`,
-        });
-
-        await user.click(rejectButton);
-
-        await waitFor(() => {
-          expect(onRejectMock).toHaveBeenCalledWith(payableId);
-        });
-      });
-
       test('should trigger "onRejected" callback when we click on "Reject" button', async () => {
         fixture.status = 'approve_in_progress';
         const onRejectedMock = jest.fn();
@@ -501,27 +414,6 @@ describe('PayableDetails', () => {
 
         await waitFor(() => {
           expect(onRejectedMock).toHaveBeenCalledWith(payableId);
-        });
-      });
-
-      test('should trigger "onApprove" callback when we click on "Approve" button', async () => {
-        fixture.status = 'approve_in_progress';
-        const onApproveMock = jest.fn();
-
-        renderWithClient(
-          <PayableDetails id={payableId} onApprove={onApproveMock} />
-        );
-
-        await waitUntilTableIsLoaded();
-
-        const approveButton = await screen.findByRole('button', {
-          name: t`Approve`,
-        });
-
-        await user.click(approveButton);
-
-        await waitFor(() => {
-          expect(onApproveMock).toHaveBeenCalledWith(payableId);
         });
       });
 

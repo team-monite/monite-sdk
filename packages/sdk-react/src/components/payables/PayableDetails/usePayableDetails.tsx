@@ -40,61 +40,6 @@ export type UsePayableDetailsProps = {
    * @param {string} id - The ID of the payable
    *
    * @returns {void}
-   *
-   * @deprecated Please use `onSaved` method instead. This method will be removed in 4.0.0 version
-   */
-  onSave?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the payable is canceled
-   *
-   * @param {string} id - The ID of the payable
-   *
-   * @returns {void}
-   *
-   * @deprecated Please use `onCanceled` method instead. This method will be removed in 4.0.0 version
-   */
-  onCancel?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the payable is submitted
-   *
-   * @param {string} id - The ID of the payable
-   *
-   * @returns {void}
-   *
-   * @deprecated Please use `onSubmitted` method instead. This method will be removed in 4.0.0 version
-   */
-  onSubmit?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the payable is rejected
-   *
-   * @param {string} id - The ID of the payable
-   *
-   * @returns {void}
-   *
-   * @deprecated Please use `onRejected` method instead. This method will be removed in 4.0.0 version
-   */
-  onReject?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the payable is approved
-   *
-   * @param {string} id - The ID of the payable
-   *
-   * @returns {void}
-   *
-   * @deprecated Please use `onApproved` method instead. This method will be removed in 4.0.0 version
-   */
-  onApprove?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the payable is saved
-   *
-   * @param {string} id - The ID of the payable
-   *
-   * @returns {void}
    */
   onSaved?: (id: string) => void;
 
@@ -163,11 +108,6 @@ export type UsePayableDetailsProps = {
 
 export function usePayableDetails({
   id,
-  onSave,
-  onCancel,
-  onSubmit,
-  onReject,
-  onApprove,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -192,49 +132,6 @@ export function usePayableDetails({
   const [isActionButtonLoading, setIsActionButtonLoading] = useState(false);
   //TODO: align better with internal state structure
   const [tempPayableID, setTempPayableID] = useState(payableId);
-
-  useEffect(() => {
-    if (onSave && onSaved) {
-      throw new Error(
-        'Both onSave and onSaved props were provided. Please provide only one of them.'
-      );
-    }
-
-    if (onCancel && onCanceled) {
-      throw new Error(
-        'Both onCancel and onCanceled props were provided. Please provide only one of them.'
-      );
-    }
-
-    if (onSubmit && onSubmitted) {
-      throw new Error(
-        'Both onSubmit and onSubmitted props were provided. Please provide only one of them.'
-      );
-    }
-
-    if (onReject && onRejected) {
-      throw new Error(
-        'Both onReject and onRejected props were provided. Please provide only one of them.'
-      );
-    }
-
-    if (onApprove && onApproved) {
-      throw new Error(
-        'Both onApprove and onApproved props were provided. Please provide only one of them.'
-      );
-    }
-  }, [
-    onSave,
-    onSaved,
-    onCancel,
-    onCanceled,
-    onSubmit,
-    onSubmitted,
-    onReject,
-    onRejected,
-    onApprove,
-    onApproved,
-  ]);
 
   const cachedPayable = api.payables.getPayablesId.getQueryData(
     {
@@ -660,7 +557,6 @@ export function usePayableDetails({
     setPayableId(payable.id);
 
     isEdit && setEdit(false);
-    onSave?.(payable.id);
     onSaved?.(payable.id);
   };
 
@@ -758,7 +654,6 @@ export function usePayableDetails({
     );
 
     isEdit && setEdit(false);
-    onSave?.(id);
     onSaved?.(id);
   };
 
@@ -776,7 +671,6 @@ export function usePayableDetails({
           },
         }
       );
-      onCancel?.(payableId);
       onCanceled?.(payableId);
     }
   };
@@ -795,7 +689,6 @@ export function usePayableDetails({
           },
         }
       );
-      onSubmit?.(payableId);
       setTempPayableID(payableId);
       onSubmitted?.(payableId);
     }
@@ -815,7 +708,6 @@ export function usePayableDetails({
           },
         }
       );
-      onReject?.(payableId);
       onRejected?.(payableId);
     }
   };
@@ -834,7 +726,6 @@ export function usePayableDetails({
           },
         }
       );
-      onApprove?.(payableId);
       onApproved?.(payableId);
     }
   };
