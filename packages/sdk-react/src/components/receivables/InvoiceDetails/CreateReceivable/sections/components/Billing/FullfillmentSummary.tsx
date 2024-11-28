@@ -39,36 +39,38 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
   );
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Box>
-        <Typography variant="body2" color="textSecondary" fontWeight={500}>
-          {t(i18n)`Issue date`}
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <Typography variant="body2" color="textSecondary">
-            {dateTime}
+    <>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box>
+          <Typography variant="body2" color="textSecondary" fontWeight={500}>
+            {t(i18n)`Issue date`}
           </Typography>
-          <LockOutlined sx={{ color: 'divider', width: '16px' }} />
-          <Typography variant="body2" color="textSecondary">
-            {t(i18n)`Set on issuance`}
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            <Typography variant="body2" color="textSecondary">
+              {dateTime}
+            </Typography>
+            <LockOutlined sx={{ color: 'divider', width: '16px' }} />
+            <Typography variant="body2" color="textSecondary">
+              {t(i18n)`Set on issuance`}
+            </Typography>
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant="body2" color="textSecondary" fontWeight={500}>
+            {t(i18n)`Due date`}
           </Typography>
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            <Typography variant="body2" color="textSecondary">
+              {t(i18n)`${selectedPaymentTerm?.name ?? 'Not selected'}`}
+            </Typography>
+            <LockOutlined sx={{ color: 'divider', width: '16px' }} />
+            <Typography variant="body2" color="textSecondary">
+              {t(i18n)`Set by payment term`}
+            </Typography>
+          </Box>
         </Box>
       </Box>
-      <Box>
-        <Typography variant="body2" color="textSecondary" fontWeight={500}>
-          {t(i18n)`Due date`}
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <Typography variant="body2" color="textSecondary">
-            {t(i18n)`${selectedPaymentTerm?.name ?? 'Not selected'}`}
-          </Typography>
-          <LockOutlined sx={{ color: 'divider', width: '16px' }} />
-          <Typography variant="body2" color="textSecondary">
-            {t(i18n)`Set by payment term`}
-          </Typography>
-        </Box>
-      </Box>
-      <Box>
+      <Box mt={2}>
         <Controller
           name="fulfillment_date"
           control={control}
@@ -147,6 +149,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
           />
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };

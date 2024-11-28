@@ -67,7 +67,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:63
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:64
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:37
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:46
@@ -986,7 +986,7 @@ msgstr "BIC"
 msgid "Bicycle Shops"
 msgstr "Bicycle Shops"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/BillToSection.tsx:15
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/BillToSection.tsx:22
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:61
 msgid "Bill to"
 msgstr "Bill to"
@@ -2194,7 +2194,7 @@ msgstr "days before discount date 2"
 msgid "days before due date"
 msgstr "days before due date"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:50
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:38
 msgid "Dear client, as discussed, please find attached our invoice:"
 msgstr "Dear client, as discussed, please find attached our invoice:"
 
@@ -2344,7 +2344,7 @@ msgstr "Description:"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:402
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:219
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/BillToSection.tsx:22
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/BillToSection.tsx:37
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:43
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -2508,7 +2508,7 @@ msgstr "Dry Cleaners"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:590
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:317
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:105
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:59
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:60
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
@@ -3159,7 +3159,7 @@ msgstr "Front of your identity document"
 msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:92
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:94
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:177
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
@@ -3752,7 +3752,7 @@ msgstr "Issue at"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:203
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:298
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:145
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:45
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:46
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:215
 msgid "Issue date"
 msgstr "Issue date"
@@ -5485,7 +5485,6 @@ msgstr "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Hous
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:71
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:179
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:37
@@ -5888,7 +5887,7 @@ msgstr "Sales"
 msgid "Sales and Service Tax (Malaysia)"
 msgstr "Sales and Service Tax (Malaysia)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:137
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:139
 msgid "Same as invoice date"
 msgstr "Same as invoice date"
 
@@ -6045,7 +6044,7 @@ msgstr "Services"
 msgid "Set a recurrence period to issue invoices automatically"
 msgstr "Set a recurrence period to issue invoices automatically"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:67
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:68
 msgid "Set by payment term"
 msgstr "Set by payment term"
 
@@ -6053,7 +6052,7 @@ msgstr "Set by payment term"
 #~ msgid "Set by payment terms"
 #~ msgstr "Set by payment terms"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:53
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:54
 msgid "Set on issuance"
 msgstr "Set on issuance"
 
