@@ -7,14 +7,6 @@ import { Box, FormControl, TextField } from '@mui/material';
 
 import type { SectionGeneralProps } from './Section.types';
 
-/** All available fields for current component */
-const allFields = [
-  'entity_vat_id_id',
-  'tax_id',
-  'fulfillment_date',
-  'purchase_order',
-] as const;
-
 interface EntitySectionProps extends SectionGeneralProps {
   /**
    * Describes which fields should be hidden from the user
@@ -24,13 +16,9 @@ interface EntitySectionProps extends SectionGeneralProps {
   hidden?: ['purchase_order'];
 }
 
-export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
+export const EntitySection = ({ disabled }: EntitySectionProps) => {
   const { i18n } = useLingui();
   const { control } = useFormContext<CreateReceivablesFormProps>();
-
-  const visibleFields = allFields.filter((field) =>
-    hidden ? field !== 'purchase_order' : true
-  );
 
   return (
     <Box>
@@ -58,25 +46,6 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
           </FormControl>
         )}
       />
-      <Box sx={{ maxWidth: '406px', mt: 2 }}>
-        {visibleFields.includes('purchase_order') && (
-          <Controller
-            name="purchase_order"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                variant="outlined"
-                label={t(i18n)`Purchase order`}
-                error={Boolean(error)}
-                helperText={error?.message}
-                disabled={disabled}
-              />
-            )}
-          />
-        )}
-      </Box>
     </Box>
   );
 };
