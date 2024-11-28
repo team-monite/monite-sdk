@@ -20,12 +20,6 @@ const meta: Meta<typeof PayableDetails> = {
 type Story = StoryObj<typeof PayableDetails>;
 
 const actions = {
-  // storybook adds action functions to properties, so we need to reset deprecated ones intentionally
-  onSave: undefined,
-  onCancel: undefined,
-  onSubmit: undefined,
-  onReject: undefined,
-  onApprove: undefined,
   onSaved: action('onSaved'),
   onCanceled: action('onCanceled'),
   onSubmitted: action('onSubmitted'),
@@ -52,8 +46,6 @@ export const DialogDetailsView: Story = {
           action('onClose')();
           setOpen(false);
         }}
-        // onSubmit types are incompatible due to the spread operator
-        onSubmit={() => {}}
         onClosed={action('onClosed')}
       >
         <PayableDetails {...args} />
