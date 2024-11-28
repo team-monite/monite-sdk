@@ -30,6 +30,7 @@ import {
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
@@ -346,7 +347,8 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Added by`,
         display: 'flex',
-        width: 120,
+        width: 240,
+        minWidth: 200,
         renderCell: (params) => (
           <UserCell userId={params.row.was_created_by_user_id} />
         ),
@@ -499,7 +501,9 @@ const PayablesTableBase = ({
         loading={isLoading}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => {
-          onRowClick?.(params.row.id);
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row.id);
+          }
         }}
         sx={{
           '& .MuiDataGrid-withBorderColor': {

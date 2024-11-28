@@ -799,6 +799,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
     styleOverrides: {
       root: {
+        color: 'text.primary',
         backgroundColor: 'background.paper',
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
@@ -827,6 +828,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           fontWeight: 600,
           fontSize: '14px',
           lineHeight: '17.57px',
+        },
+      },
+      row: {
+        '&:hover': {
+          cursor: 'pointer',
         },
       },
       cell: {
@@ -937,6 +943,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.Monite-SummaryCard-all': {
           minWidth: '118px',
           backgroundColor: '#F4F4FE',
+          '&.Monite-SummaryCard-selected': {
+            background: '#ffffff',
+          },
         },
       },
     },

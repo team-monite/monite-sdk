@@ -27,9 +27,10 @@ import {
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box } from '@mui/material';
+import { Typography, Box, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -145,15 +146,25 @@ const QuotesTableBase = ({
     return [
       {
         field: 'document_id',
-        headerName: t(i18n)`Number`,
+        headerName: t(i18n)`Number, status`,
         width: 100,
-        renderCell: ({ value }) => {
-          if (!value) {
-            return t(i18n)`INV-auto`;
-          }
-
-          return <span className="Monite-TextOverflowContainer">{value}</span>;
-        },
+        display: 'flex',
+        renderCell: ({ value, row }) => (
+          <Stack
+            direction="column"
+            alignItems="flex-start"
+            gap={0.5}
+            sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
+          >
+            <Typography
+              variant="body1"
+              className="Monite-TextOverflowContainer"
+            >
+              {value || t(i18n)`INV-auto`}
+            </Typography>
+            <InvoiceStatusChip status={row.status} size="small" />
+          </Stack>
+        ),
       },
       {
         field: 'created_at',
@@ -184,17 +195,6 @@ const QuotesTableBase = ({
         width: 120,
         valueFormatter: (value) => value && i18n.date(value, dateFormat),
         renderCell: (params) => <DueDateCell data={params.row} />,
-      },
-      {
-        field: 'status',
-        sortable: ReceivableCursorFields.includes('status'),
-        headerName: t(i18n)`Status`,
-        width: 80,
-        renderCell: (params) => {
-          const status = params.value;
-
-          return <InvoiceStatusChip status={status} />;
-        },
       },
       {
         field: 'amount',
@@ -263,7 +263,11 @@ const QuotesTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
+        onRowClick={(params) => {
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row.id);
+          }
+        }}
         slots={{
           pagination: () => (
             <TablePagination
