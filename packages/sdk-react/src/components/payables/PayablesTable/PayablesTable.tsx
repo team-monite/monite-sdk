@@ -42,13 +42,12 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { addDays, formatISO } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   DEFAULT_FIELD_ORDER,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
@@ -192,13 +191,6 @@ const PayablesTableBase = ({
       order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
-      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-        : undefined,
-      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-        : undefined,
       status: currentFilter[FILTER_TYPE_STATUS] || undefined,
       due_date: currentFilter[FILTER_TYPE_DUE_DATE]
         ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
