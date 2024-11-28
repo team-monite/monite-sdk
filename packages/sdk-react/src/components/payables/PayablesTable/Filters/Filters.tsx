@@ -17,7 +17,6 @@ import { Theme } from 'mui-styles';
 
 import { getRowToStatusTextMap } from '../../consts';
 import {
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
