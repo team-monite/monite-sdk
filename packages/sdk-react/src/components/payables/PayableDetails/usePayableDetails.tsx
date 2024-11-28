@@ -550,7 +550,8 @@ export function usePayableDetails({
         break;
       }
 
-      case 'waiting_to_be_paid': {
+      case 'waiting_to_be_paid':
+      case 'partially_paid': {
         if (isPayAvailable) {
           setPermissions(['pay']);
         }
