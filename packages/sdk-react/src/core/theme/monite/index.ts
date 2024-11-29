@@ -2,6 +2,8 @@ import { ThemeConfig } from '@/core/theme/types';
 
 export const getTheme = (theme: ThemeConfig) => {
   return {
+    borderRadius: theme.borderRadius || 3,
+
     colors: {
       primary: theme.colors?.primary || '#3737FF',
       secondary: theme.colors?.secondary || '#707070',
