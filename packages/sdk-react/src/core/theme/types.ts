@@ -3,6 +3,7 @@ import { ChipProps, SelectProps } from '@mui/material';
 
 export type ThemeConfig = {
   borderRadius?: number;
+
   colors?: {
     primary?: string;
     secondary?: string;
