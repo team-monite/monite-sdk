@@ -307,7 +307,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           fontWeight: 400,
-          borderRadius: `8px`,
+          borderRadius: moniteTheme.borderRadius * 2.67,
           minHeight: '40px',
           '& .MuiInputBase-input': {
             height: '40px',
@@ -341,7 +341,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         root: {
           '& .MuiInputBase-root': {
             minHeight: '48px',
-            borderRadius: '8px',
+            borderRadius: moniteTheme.borderRadius * 2.67,
           },
           '& .MuiOutlinedInput-notchedOutline': {
             top: 0,
@@ -366,7 +366,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               height: '40px',
               minHeight: '40px',
               maxHeight: '40px',
-              borderRadius: '3px',
+              borderRadius: moniteTheme.borderRadius,
               color: 'black',
               backgroundColor: 'transparent',
               padding: '0 6px',
@@ -457,7 +457,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             },
             '& .MuiSelect-icon': {
               backgroundColor: 'primary.80',
-              borderRadius: '8px',
+              borderRadius: moniteTheme.borderRadius * 2.67,
               width: '32px',
               height: '32px',
               transform: 'translate(7px, -2px)',
@@ -477,10 +477,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             backgroundColor: 'background.paper',
             padding: '14px',
             marginBottom: 0,
-            borderTopLeftRadius: '6px',
-            borderTopRightRadius: '6px',
-            borderBottomLeftRadius: '0',
-            borderBottomRightRadius: '0',
+            borderTopLeftRadius: moniteTheme.borderRadius * 2,
+            borderTopRightRadius: moniteTheme.borderRadius * 2,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
             borderStyle: 'solid',
             borderWidth: '1px',
             borderColor: 'divider',
@@ -621,7 +621,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             },
 
             '.MuiListItemButton-root': {
-              borderRadius: 6,
+              borderRadius: moniteTheme.borderRadius * 2,
               padding: '8px 12px',
             },
 
@@ -663,7 +663,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           maxHeight: '48px',
 
           '&.ThemeSelect': {
-            borderRadius: '3px',
+            borderRadius: moniteTheme.borderRadius,
           },
           '&.ThemeSelect .ThemeSelect-modeLabel': {
             display: 'flex',
@@ -678,16 +678,16 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         containedPrimary: {
           minWidth: '120px',
           backgroundColor: 'primary.main',
-          borderRadius: '3px',
+          borderRadius: moniteTheme.borderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.60',
-            borderRadius: '3px',
+            borderRadius: moniteTheme.borderRadius,
             boxShadow: 'none',
           },
           '&:active': {
             backgroundColor: 'primary.dark',
-            borderRadius: '3px',
+            borderRadius: moniteTheme.borderRadius,
             boxShadow: 'none',
           },
           '&:disabled': {
@@ -700,7 +700,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         outlinedPrimary: {
           backgroundColor: 'primary.90',
           borderColor: 'primary.90',
-          borderRadius: '3px',
+          borderRadius: moniteTheme.borderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.80',
@@ -725,7 +725,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         paper: {
           border: 'none',
-          borderRadius: 16,
+          borderRadius: moniteTheme.borderRadius * 5.33,
           width: 240,
         },
       },
@@ -765,7 +765,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           backgroundColor: 'primary.light',
-          borderRadius: '4px',
+          borderRadius: moniteTheme.borderRadius * 1.33,
           color: 'primary.main',
           fontSize: '14px',
           lineHeight: '16px',
@@ -800,8 +800,8 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           backgroundColor: 'background.paper',
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
-          borderBottomLeftRadius: '6px',
-          borderBottomRightRadius: '6px',
+          borderBottomLeftRadius: moniteTheme.borderRadius * 2,
+          borderBottomRightRadius: moniteTheme.borderRadius * 2,
           '--DataGrid-rowBorderColor': 'divider',
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
@@ -925,7 +925,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         root: {
           '&.Monite-SummaryCard': {
             display: 'flex',
-            borderRadius: '3px',
+            borderRadius: moniteTheme.borderRadius,
             backgroundColor: '#ffffff',
             boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
           },
@@ -950,7 +950,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          borderRadius: '8px',
+          borderRadius: moniteTheme.borderRadius * 2.67,
           borderColor: 'neutral.80',
         },
         elevation: {
@@ -959,7 +959,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         rounded: {
-          borderRadius: '16px',
+          borderRadius: moniteTheme.borderRadius * 5.33,
           '&.Monite-PayableDetailsForm-Items': {
             // Align delete button with the editor
             'button[aria-label="delete"]': {
