@@ -1191,6 +1191,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     palette: {
       ...palette,
     },
+    shape: {
+      borderRadius: moniteTheme.borderRadius,
+    },
     typography,
     components,
   };

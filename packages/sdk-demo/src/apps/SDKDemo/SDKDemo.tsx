@@ -111,6 +111,8 @@ const SDKDemoComponent = ({
                   }}
                   // TODO: remove this once we find a better way to test theme config
                   theme={{
+                    borderRadius: 10,
+
                     colors: {
                       primary: '#eb3333',
                       secondary: '#b3f192',
