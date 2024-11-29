@@ -85,7 +85,7 @@ describe('PayablesTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const search = screen.getByLabelText('Search');
+      const search = screen.getByLabelText('Search by number or vendor');
 
       const searchValue = 'Acme';
       fireEvent.change(search, {
@@ -186,7 +186,7 @@ describe('PayablesTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const search = screen.getByLabelText('Search');
+      const search = screen.getByLabelText('Search by number or vendor');
 
       const searchValue = 'Acme Inc Second Page';
       fireEvent.change(search, {

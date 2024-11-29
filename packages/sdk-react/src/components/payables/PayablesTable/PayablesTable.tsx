@@ -42,13 +42,12 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { addDays, formatISO } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   DEFAULT_FIELD_ORDER,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
@@ -192,13 +191,6 @@ const PayablesTableBase = ({
       order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
-      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-        : undefined,
-      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-        : undefined,
       status: currentFilter[FILTER_TYPE_STATUS] || undefined,
       due_date: currentFilter[FILTER_TYPE_DUE_DATE]
         ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
@@ -246,16 +238,6 @@ const PayablesTableBase = ({
   const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
-        field: 'counterpart_id',
-        sortable: false,
-        headerName: t(i18n)`Supplier`,
-        display: 'flex',
-        width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartCellById counterpartId={params.value} />
-        ),
-      },
-      {
         field: 'document_id',
         sortable: false,
         headerName: t(i18n)`Number, status`,
@@ -293,6 +275,16 @@ const PayablesTableBase = ({
             </Stack>
           );
         },
+      },
+      {
+        field: 'counterpart_id',
+        sortable: false,
+        headerName: t(i18n)`Vendor`,
+        display: 'flex',
+        width: defaultCounterpartColumnWidth,
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.value} />
+        ),
       },
       {
         field: 'amount',
@@ -440,10 +432,10 @@ const PayablesTableBase = ({
   ) {
     return (
       <DataGridEmptyState
-        title={t(i18n)`No Payables`}
-        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
-        descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create new`}
+        title={t(i18n)`No bills found`}
+        descriptionLine1={t(i18n)`Try adjusting your search or filter criteria`}
+        descriptionLine2={''}
+        actionButtonLabel={t(i18n)`Add new bill`}
         actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
         onAction={(action) => {
           if (action === t(i18n)`New Invoice`) {
@@ -530,6 +522,11 @@ const PayablesTableBase = ({
           ),
           noRowsOverlay: () => (
             <GetNoRowsOverlay
+              noDataTitle={t(i18n)`No bills found`}
+              filterDescription1={t(
+                i18n
+              )`Try adjusting your search or filter criteria`}
+              filterDescription2={' '}
               isLoading={isLoading}
               dataLength={payables?.data.length || 0}
               isFiltering={isFiltering}

@@ -17,7 +17,6 @@ import { Theme } from 'mui-styles';
 
 import { getRowToStatusTextMap } from '../../consts';
 import {
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
@@ -40,7 +39,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          label={t(i18n)`Search by number or vendor`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -77,29 +76,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
           ))}
         </Select>
       </FormControl>
-      <DatePicker
-        className="Monite-PayableDateFilter Monite-FilterControl Monite-DateFilterControl"
-        label={t(i18n)`Invoice date`}
-        onChange={(value, error) => {
-          if (error.validationError) {
-            return;
-          }
-
-          onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
-        }}
-        slotProps={{
-          popper: {
-            container: root,
-          },
-          dialog: {
-            container: root,
-          },
-          actionBar: {
-            actions: ['clear', 'today'],
-          },
-        }}
-        views={['year', 'month', 'day']}
-      />
       <DatePicker
         className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
         label={t(i18n)`Due date`}

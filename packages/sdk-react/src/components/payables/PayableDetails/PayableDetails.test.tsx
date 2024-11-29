@@ -142,7 +142,7 @@ describe('PayableDetails', () => {
           name: t`Edit`,
         });
         const cancelButton = screen.getByRole('button', {
-          name: t`Cancel`,
+          name: t`Cancel bill`,
         });
         const submitButton = screen.getByRole('button', {
           name: t`Submit`,
@@ -390,7 +390,7 @@ describe('PayableDetails', () => {
         await waitUntilTableIsLoaded();
 
         const cancelButton = await screen.findByRole('button', {
-          name: t`Cancel`,
+          name: t`Cancel bill`,
         });
 
         await user.click(cancelButton);
@@ -411,7 +411,7 @@ describe('PayableDetails', () => {
         await waitUntilTableIsLoaded();
 
         const cancelButton = await screen.findByRole('button', {
-          name: t`Cancel`,
+          name: t`Cancel bill`,
         });
 
         await user.click(cancelButton);

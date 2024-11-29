@@ -70,7 +70,7 @@ describe('Payables', () => {
       });
 
       const createPayableButton = screen.findByRole('button', {
-        name: t`New bill`,
+        name: t`Add new bill`,
       });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
@@ -108,7 +108,7 @@ describe('Payables', () => {
       await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createPayableButton = screen.findByRole('button', {
-        name: t`New bill`,
+        name: t`Add new bill`,
       });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
@@ -150,7 +150,7 @@ describe('Payables', () => {
       });
 
       const createPayableButton = screen.findByRole('button', {
-        name: t`New bill`,
+        name: t`Add new bill`,
       });
 
       await expect(createPayableButton).resolves.toBeInTheDocument();
