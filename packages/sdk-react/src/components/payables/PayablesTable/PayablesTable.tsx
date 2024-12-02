@@ -424,31 +424,6 @@ const PayablesTableBase = ({
   );
   const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
 
-  if (
-    !isLoading &&
-    payables?.data.length === 0 &&
-    !isFiltering &&
-    !isSearching
-  ) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No bills found`}
-        descriptionLine1={t(i18n)`Try adjusting your search or filter criteria`}
-        descriptionLine2={''}
-        actionButtonLabel={t(i18n)`Add new bill`}
-        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-        onAction={(action) => {
-          if (action === t(i18n)`New Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          } else if (action === t(i18n)`Upload File`) {
-            openFileInput?.();
-          }
-        }}
-        type="no-data"
-      />
-    );
-  }
-
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -522,16 +497,19 @@ const PayablesTableBase = ({
           ),
           noRowsOverlay: () => (
             <GetNoRowsOverlay
-              noDataTitle={t(i18n)`No bills found`}
+              noDataTitle={t(i18n)`No bills yet`}
+              noDataDescription1={t(i18n)`You don’t have any bills yet`}
+              noDataDescription2={t(i18n)`Add your first bill`}
+              filterTitle={t(i18n)`No bills found`}
               filterDescription1={t(
                 i18n
               )`Try adjusting your search or filter criteria`}
               filterDescription2={' '}
               isLoading={isLoading}
-              dataLength={payables?.data.length || 0}
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
+              dataLength={payables?.data.length || 0}
               onCreate={(type) => {
                 if (type === 'New Invoice') {
                   setIsCreateInvoiceDialogOpen?.(true);
@@ -541,9 +519,9 @@ const PayablesTableBase = ({
               }}
               refetch={refetch}
               entityName={t(i18n)`Payable`}
-              actionButtonLabel={t(i18n)`Create new`}
-              actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-              type="no-data"
+              // actionButtonLabel={t(i18n)`Add new bill`}
+              // actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+              type="no-data=payables"
             />
           ),
         }}
