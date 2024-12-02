@@ -227,6 +227,7 @@ const TagsTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: 500,
         pt: 2,
       }}
     >
