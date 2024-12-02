@@ -324,7 +324,6 @@ msgstr "Add item"
 #: src/components/payables/Payables.test.tsx:73
 #: src/components/payables/Payables.test.tsx:111
 #: src/components/payables/Payables.test.tsx:153
-#: src/components/payables/PayablesTable/PayablesTable.tsx:438
 msgid "Add new bill"
 msgstr "Add new bill"
 
@@ -349,6 +348,10 @@ msgstr "Add someone new"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:276
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
+
+#: src/components/payables/PayablesTable/PayablesTable.tsx:502
+msgid "Add your first bill"
+msgstr "Add your first bill"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:242
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:83
@@ -1970,7 +1973,6 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:362
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:447
-#: src/components/payables/PayablesTable/PayablesTable.tsx:544
 #: src/components/products/ProductsTable/ProductsTable.tsx:340
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:207
@@ -2968,7 +2970,7 @@ msgstr "Failed to delete VAT."
 msgid "Failed to generate email preview"
 msgstr "Failed to generate email preview"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:90
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:93
 msgid "Failed to Load {entityName}"
 msgstr "Failed to Load {entityName}"
 
@@ -4548,8 +4550,8 @@ msgstr "New incoming invoice"
 #: src/components/payables/PayablesTable/PayablesTable.tsx:439
 #: src/components/payables/PayablesTable/PayablesTable.tsx:441
 #: src/components/payables/PayablesTable/PayablesTable.tsx:545
-msgid "New Invoice"
-msgstr "New Invoice"
+#~ msgid "New Invoice"
+#~ msgstr "New Invoice"
 
 #: src/components/tags/TagFormModal/TagFormModal.tsx:126
 msgid "New tag “{0}” created"
@@ -4612,15 +4614,15 @@ msgstr "Niue"
 msgid "No"
 msgstr "No"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:49
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:52
 msgid "No {0} match your search or filter criteria."
 msgstr "No {0} match your search or filter criteria."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:66
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:69
 msgid "No {entityName}"
 msgstr "No {entityName}"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:46
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:49
 msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
@@ -4644,10 +4646,13 @@ msgstr "No Approval Requests"
 #~ msgid "No bank accounts available"
 #~ msgstr "No bank accounts available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:435
-#: src/components/payables/PayablesTable/PayablesTable.tsx:525
+#: src/components/payables/PayablesTable/PayablesTable.tsx:503
 msgid "No bills found"
 msgstr "No bills found"
+
+#: src/components/payables/PayablesTable/PayablesTable.tsx:500
+msgid "No bills yet"
+msgstr "No bills yet"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:274
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:144
@@ -5009,7 +5014,7 @@ msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:225
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:118
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:52
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:55
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:227
 msgid "Pay"
@@ -5020,20 +5025,20 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:543
+#: src/components/payables/PayablesTable/PayablesTable.tsx:521
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:832
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:833
 msgid "Payable \"{0}\" has been approved"
 msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:774
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:775
 msgid "Payable \"{0}\" has been canceled"
 msgstr "Payable \"{0}\" has been canceled"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:626
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:627
 msgid "Payable \"{0}\" has been created"
 msgstr "Payable \"{0}\" has been created"
 
@@ -5041,19 +5046,19 @@ msgstr "Payable \"{0}\" has been created"
 msgid "Payable \"{0}\" has been paid"
 msgstr "Payable \"{0}\" has been paid"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:813
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:814
 msgid "Payable \"{0}\" has been rejected"
 msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:851
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:852
 msgid "Payable \"{0}\" has been reopened"
 msgstr "Payable \"{0}\" has been reopened"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:793
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:794
 msgid "Payable \"{0}\" has been submitted"
 msgstr "Payable \"{0}\" has been submitted"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:681
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:682
 msgid "Payable \"{0}\" has been updated"
 msgstr "Payable \"{0}\" has been updated"
 
@@ -5089,7 +5094,7 @@ msgstr "Payment details"
 msgid "Payment Details"
 msgstr "Payment Details"
 
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:55
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:58
 msgid "Payment not allowed"
 msgstr "Payment not allowed"
 
@@ -5296,7 +5301,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:94
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:97
 msgid "Please try again later."
 msgstr "Please try again later."
 
@@ -5712,7 +5717,7 @@ msgstr "Religious Organizations"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:556
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:95
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:98
 msgid "Reload"
 msgstr "Reload"
 
@@ -6678,7 +6683,7 @@ msgstr "There is no such counterpart yet, you can create it in respective sectio
 msgid "There may be a mismatch between the OCR data and payable data. Please review the details"
 msgstr "There may be a mismatch between the OCR data and payable data. Please review the details"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:91
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:94
 msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
 
@@ -6867,12 +6872,11 @@ msgstr "Truck StopIteration"
 msgid "Truck/Utility Trailer Rentals"
 msgstr "Truck/Utility Trailer Rentals"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:436
-#: src/components/payables/PayablesTable/PayablesTable.tsx:526
+#: src/components/payables/PayablesTable/PayablesTable.tsx:504
 msgid "Try adjusting your search or filter criteria"
 msgstr "Try adjusting your search or filter criteria"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:54
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:57
 msgid "Try adjusting your search or filter."
 msgstr "Try adjusting your search or filter."
 
@@ -7127,8 +7131,8 @@ msgstr "Upload a document here."
 #: src/components/payables/PayablesTable/PayablesTable.tsx:439
 #: src/components/payables/PayablesTable/PayablesTable.tsx:443
 #: src/components/payables/PayablesTable/PayablesTable.tsx:545
-msgid "Upload File"
-msgstr "Upload File"
+#~ msgid "Upload File"
+#~ msgstr "Upload File"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:85
 msgid "Upload files"
@@ -7539,7 +7543,7 @@ msgstr "You can change this setting if you wish to forbid sending any payment re
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:73
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:76
 msgid "You can create your first {0}."
 msgstr "You can create your first {0}."
 
@@ -7588,7 +7592,7 @@ msgstr "You can not create receivable with a type other than \"{invoice}\""
 msgid "You can set a different period length and the date of issuance. The starting date cannot be updated."
 msgstr "You can set a different period length and the date of issuance. The starting date cannot be updated."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:69
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:72
 msgid "You don’t have any {0} yet."
 msgstr "You don’t have any {0} yet."
 
@@ -7599,6 +7603,10 @@ msgstr "You don’t have any approval policies yet."
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:289
 msgid "You don’t have any approval requests yet."
 msgstr "You don’t have any approval requests yet."
+
+#: src/components/payables/PayablesTable/PayablesTable.tsx:501
+msgid "You don’t have any bills yet"
+msgstr "You don’t have any bills yet"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:359
 msgid "You don’t have any counterparts yet."
