@@ -248,6 +248,7 @@ const QuotesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: '500px',
         pt: 2,
       }}
     >
