@@ -1,5 +1,20 @@
 # @monite/sdk-drop-in
 
+## 1.10.0
+
+### Minor Changes
+
+- 2b602ef1: chore: add meta hmtl tag for package version in index.html file on bundling process
+
+### Patch Changes
+
+- Updated dependencies [95ff47cc]
+- Updated dependencies [3abc9641]
+- Updated dependencies [f6538fe7]
+- Updated dependencies [c0182f2b]
+  - @team-monite/sdk-themes@0.3.0
+  - @monite/sdk-api@3.19.0
+
 ## 1.9.1
 
 ### Patch Changes

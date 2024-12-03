@@ -1,5 +1,35 @@
 # @monite/sdk-react
 
+## 3.19.0
+
+### Minor Changes
+
+- 65d692b2: Design improved in BillPay (payables) component
+- 95ff47cc: fix(proposal): update default values for payables and receivables tables to align with the sep5 demo
+- 3abc9641: fix(proposal): apply sep5 demo styles & features to the Payables Table component
+- 0c65061e: feat(DEV-13257): add min height to all table components
+- 7a7a149d: fix(proposal): add default and min width to added by column
+- d71589f2: feat(proposal): temp paid marked on iframe close & update handle counterpart recipient for payment flow
+- f0023941: chore(proposal): improve payment link generation based on payable
+- ae5bf3cf: feat: add payment flow to payable details header component
+- 859964e7: feat(proposal): merge number and status columns for the Receivables Table component
+- a168d61f: fix(DEV-13228): Allow payments on partially_paid payables
+- 01e9e402: chore: update api version by last schema from our current open api spec and added new query param for autocomplete search field component
+
+### Patch Changes
+
+- 6733e680: Added label to Bank account field in Bill Pay component
+- 4956ae2b: refactor(DEV-12983): remove purchase order field and update design alignment of invoice fields
+- 66682a7c: feat: add bank account holder name for counterpart creation
+- 58559a0c: fix(proposal): remove margin bottom for the filter components it tables
+- 076c81a2: feat(DEV-12983): invoice creation and update redesign
+- c8e99f5e: feat: billing form items until customer is selected
+- f6538fe7: Prevent click event on table rows when selecting text
+- 84950a4e: feat(proposal): update line items validation and check for bill information
+- c0182f2b: fix(proposal): set default color for texts in datagrid
+- cb2e795b: fix incorrect tax value in generated invoice
+  - @monite/sdk-api@3.19.0
+
 ## 3.18.0
 
 ### Minor Changes
