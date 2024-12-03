@@ -65,16 +65,10 @@ declare module '@mui/material/styles' {
     MoniteIconWrapper: Partial<MoniteIconWrapperProps>;
   }
 
-  interface MoniteOptions {
-    dateFormat?: Intl.DateTimeFormatOptions;
-    dateTimeFormat?: Intl.DateTimeFormatOptions;
-  }
-
   /**
    * Extends theme `components`
    */
   interface Components {
-    MoniteOptions?: { defaultProps: MoniteOptions };
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
