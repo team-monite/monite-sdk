@@ -23,7 +23,6 @@ import {
   toast,
   useCounterpartById,
   useCurrencies,
-  useDateFormat,
   useMoniteContext,
   useRootElements,
   UserRoles as UserRolesBase,
@@ -219,7 +218,7 @@ const ChooseBankAccountPage = () => {
 
 const TransferTypePage = () => {
   const { i18n } = useLingui();
-  const dateTimeFormat = useDateFormat();
+  const { locale } = useMoniteContext();
   const [selectedValue, setSelectedValue] = useState('option1');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -273,7 +272,7 @@ const TransferTypePage = () => {
                       $1 fee, take 2-3 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 3),
-                        dateTimeFormat
+                        locale.dateTimeFormat
                       )}
                     </Typography>
                   </Box>
@@ -290,7 +289,7 @@ const TransferTypePage = () => {
                       $5 fee, take 5-7 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 7),
-                        dateTimeFormat
+                        locale.dateTimeFormat
                       )}
                     </Typography>
                   </Box>
