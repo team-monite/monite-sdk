@@ -94,7 +94,7 @@ const SDKDemoComponent = ({
 
   return (
     <ThemeProvider theme={sdkDemoTheme}>
-      <SDKDemoI18nProvider localeCode="en-US">
+      <SDKDemoI18nProvider localeCode={navigator.language}>
         <CssBaseline enableColorScheme />
         <AuthErrorsBackdrop
           errors={[fetchTokenError, authData].filter(

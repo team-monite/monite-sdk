@@ -1,1 +1,1 @@
-export { useDateFormat, useDateTimeFormat } from './MoniteOptions';
+export { useDateTimeFormat } from './MoniteOptions';
