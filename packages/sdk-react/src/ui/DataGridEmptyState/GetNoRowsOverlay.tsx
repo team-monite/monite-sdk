@@ -14,6 +14,7 @@ interface EmptyStateProps extends BaseProps {
   noDataTitle?: string;
   noDataDescription1?: string;
   noDataDescription2?: string;
+  filterTitle?: string;
   filterDescription1?: string;
   filterDescription2?: string;
   filterType?: string;
@@ -31,19 +32,21 @@ export const GetNoRowsOverlay = ({
   noDataTitle,
   noDataDescription1,
   noDataDescription2,
+  filterTitle,
   filterDescription1,
   filterDescription2,
   actionButtonLabel,
   actionOptions,
   onAction,
   className,
+  type,
 }: EmptyStateProps) => {
   const { i18n } = useLingui();
 
   if (!isLoading && dataLength === 0 && (isFiltering || isSearching)) {
     return (
       <DataGridEmptyState
-        title={noDataTitle || t(i18n)`No ${entityName} Found`}
+        title={filterTitle || noDataTitle || t(i18n)`No ${entityName} Found`}
         descriptionLine1={
           filterDescription1 ||
           t(
@@ -78,7 +81,7 @@ export const GetNoRowsOverlay = ({
           if (!action) return;
           if (onCreate) onCreate(action);
         }}
-        type="no-data"
+        type={type || 'no-data'}
         className={className}
       />
     );
