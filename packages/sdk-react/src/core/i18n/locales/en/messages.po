@@ -227,7 +227,7 @@ msgid "Action menu"
 msgstr "Action menu"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:93
-#: src/components/payables/PayablesTable/PayablesTable.tsx:350
+#: src/components/payables/PayablesTable/PayablesTable.tsx:349
 msgid "Actions"
 msgstr "Actions"
 
@@ -356,7 +356,7 @@ msgstr "Add your first bill"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:242
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:83
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:539
-#: src/components/payables/PayablesTable/PayablesTable.tsx:340
+#: src/components/payables/PayablesTable/PayablesTable.tsx:339
 msgid "Added by"
 msgstr "Added by"
 
@@ -1973,7 +1973,6 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:362
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:448
-#: src/components/payables/PayablesTable/PayablesTable.tsx:545
 #: src/components/products/ProductsTable/ProductsTable.tsx:341
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:207
@@ -2547,7 +2546,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:326
+#: src/components/payables/PayablesTable/PayablesTable.tsx:325
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -3680,7 +3679,7 @@ msgid "Invoice cancel confirmation"
 msgstr "Invoice cancel confirmation"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:122
-#: src/components/payables/PayablesTable/PayablesTable.tsx:314
+#: src/components/payables/PayablesTable/PayablesTable.tsx:313
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -4551,8 +4550,8 @@ msgstr "New incoming invoice"
 #: src/components/payables/PayablesTable/PayablesTable.tsx:439
 #: src/components/payables/PayablesTable/PayablesTable.tsx:441
 #: src/components/payables/PayablesTable/PayablesTable.tsx:546
-msgid "New Invoice"
-msgstr "New Invoice"
+#~ msgid "New Invoice"
+#~ msgstr "New Invoice"
 
 #: src/components/tags/TagFormModal/TagFormModal.tsx:126
 msgid "New tag “{0}” created"
@@ -4647,8 +4646,7 @@ msgstr "No Approval Requests"
 #~ msgid "No bank accounts available"
 #~ msgstr "No bank accounts available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:435
-#: src/components/payables/PayablesTable/PayablesTable.tsx:526
+#: src/components/payables/PayablesTable/PayablesTable.tsx:503
 msgid "No bills found"
 msgstr "No bills found"
 
@@ -4818,7 +4816,7 @@ msgstr "Number of approvals must be positive"
 msgid "Number of approvals required must be a number"
 msgstr "Number of approvals required must be a number"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:243
+#: src/components/payables/PayablesTable/PayablesTable.tsx:242
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:158
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:149
 msgid "Number, status"
@@ -5027,7 +5025,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:544
+#: src/components/payables/PayablesTable/PayablesTable.tsx:521
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -5441,7 +5439,7 @@ msgstr "Price:"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:255
+#: src/components/payables/PayablesTable/PayablesTable.tsx:254
 msgid "Processing file"
 msgstr "Processing file"
 
@@ -6800,7 +6798,7 @@ msgstr "Total"
 
 #. Payables Table "Total" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:294
+#: src/components/payables/PayablesTable/PayablesTable.tsx:293
 msgid "Total"
 msgstr "Total"
 
@@ -6874,8 +6872,7 @@ msgstr "Truck StopIteration"
 msgid "Truck/Utility Trailer Rentals"
 msgstr "Truck/Utility Trailer Rentals"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:436
-#: src/components/payables/PayablesTable/PayablesTable.tsx:527
+#: src/components/payables/PayablesTable/PayablesTable.tsx:504
 msgid "Try adjusting your search or filter criteria"
 msgstr "Try adjusting your search or filter criteria"
 
@@ -7134,8 +7131,8 @@ msgstr "Upload a document here."
 #: src/components/payables/PayablesTable/PayablesTable.tsx:439
 #: src/components/payables/PayablesTable/PayablesTable.tsx:443
 #: src/components/payables/PayablesTable/PayablesTable.tsx:546
-msgid "Upload File"
-msgstr "Upload File"
+#~ msgid "Upload File"
+#~ msgstr "Upload File"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:85
 msgid "Upload files"
@@ -7395,7 +7392,7 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:102
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:444
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:255
-#: src/components/payables/PayablesTable/PayablesTable.tsx:282
+#: src/components/payables/PayablesTable/PayablesTable.tsx:281
 msgid "Vendor"
 msgstr "Vendor"
 
