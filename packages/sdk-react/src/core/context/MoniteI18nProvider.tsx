@@ -26,7 +26,7 @@ export type MoniteLocale = {
   code?: string;
 
   /**
-   * Message` responsible for internationalised Widgets translation.
+   * `messages` responsible for internationalised Widgets translation.
    * By default, it uses `enLocaleMessages` as a fallback in MoniteProvider.
    *
    * The message object is a key-value pair where the key is the Message ID,
@@ -57,7 +57,7 @@ export type MoniteLocale = {
   messages?: MoniteSupportedMessages;
 
   /**
-   * `currencyDisplay` responsible for currency formatting.
+   * `currencyNumberFormat` responsible for currency formatting.
    */
   currencyNumberFormat?: {
     /**
@@ -78,6 +78,22 @@ export type MoniteLocale = {
      */
     localeCode?: string;
   };
+
+  /**
+   * `dateFormat` responsible for date formatting.
+   *
+   * By default, it uses the following options:
+   * ```ts
+   * {
+   *   day: '2-digit',
+   *   month: 'short',
+   *   year: 'numeric',
+   * }
+   * ```
+   */
+  dateFormat?: Partial<
+    Pick<Intl.DateTimeFormatOptions, 'day' | 'month' | 'year'>
+  >;
 };
 
 export type MoniteLocaleWithRequired = DeepRequired<
@@ -318,6 +334,11 @@ export function getLocaleWithDefaults(
     currencyNumberFormat: {
       localeCode: locale?.currencyNumberFormat?.localeCode ?? code,
       display: locale?.currencyNumberFormat?.display ?? 'symbol',
+    },
+    dateFormat: {
+      day: locale?.dateFormat?.day ?? '2-digit',
+      month: locale?.dateFormat?.month ?? 'short',
+      year: locale?.dateFormat?.year ?? 'numeric',
     },
   };
 }

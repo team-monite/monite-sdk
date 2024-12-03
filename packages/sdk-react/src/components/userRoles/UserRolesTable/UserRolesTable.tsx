@@ -17,7 +17,6 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -89,7 +88,7 @@ const UserRolesTableBase = ({
   handleCreateNew,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -148,8 +147,6 @@ const UserRolesTableBase = ({
     onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
-  const dateFormat = useDateFormat();
-
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -178,10 +175,10 @@ const UserRolesTableBase = ({
         flex: 1,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, dateFormat),
+        ) => i18n.date(value, locale.dateFormat),
       },
     ];
-  }, [dateFormat, i18n, onRowClick]);
+  }, [locale.dateFormat, i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

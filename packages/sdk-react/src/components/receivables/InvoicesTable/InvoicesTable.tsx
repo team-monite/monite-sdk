@@ -28,7 +28,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -93,6 +92,7 @@ const InvoicesTableBase = ({
   filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
+  const { locale } = useMoniteContext();
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -147,7 +147,6 @@ const InvoicesTableBase = ({
   });
 
   const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<
     GridColDef<components['schemas']['ReceivableResponse']>[]
@@ -220,14 +219,16 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Created on`,
         sortable: false,
         width: 140,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'total_amount',
@@ -247,12 +248,13 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Due date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
         renderCell: (params) => <DueDateCell data={params.row} />,
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
-  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, dateFormat]);
+  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, locale.dateFormat]);
 
   const gridApiRef = useAutosizeGridColumns(
     invoices?.data,

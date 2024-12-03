@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { createDayPluralForm } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
-import { useDateFormat } from '@/utils/MoniteOptions';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -14,11 +14,11 @@ interface DueDateCellProps {
 
 export const DueDateCell = ({ data }: DueDateCellProps) => {
   const { i18n } = useLingui();
-  const dateFormat = useDateFormat();
+  const { locale } = useMoniteContext();
 
   if (!data.due_date) return null;
 
-  const formattedDate = i18n.date(new Date(data.due_date), dateFormat);
+  const formattedDate = i18n.date(new Date(data.due_date), locale.dateFormat);
   const overdueDays = getInvoiceOverdueDays(data);
 
   return (

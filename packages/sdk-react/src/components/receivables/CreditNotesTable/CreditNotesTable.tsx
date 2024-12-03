@@ -8,6 +8,7 @@ import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
@@ -25,7 +26,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -77,6 +77,7 @@ const CreditNotesTableBase = ({
   filters: filtersProp,
 }: CreditNotesTableProps) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
@@ -119,7 +120,6 @@ const CreditNotesTableBase = ({
   };
 
   const areCounterpartsLoading = useAreCounterpartsLoading(creditNotes?.data);
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -149,13 +149,14 @@ const CreditNotesTableBase = ({
         field: 'created_at',
         headerName: t(i18n)`Created on`,
         width: 140,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         width: 120,
-        valueFormatter: (value) => value && i18n.date(value, dateFormat),
+        valueFormatter: (value) => value && i18n.date(value, locale.dateFormat),
       },
       {
         field: 'counterpart_name',
@@ -181,7 +182,7 @@ const CreditNotesTableBase = ({
         },
       },
     ];
-  }, [dateFormat, formatCurrencyToDisplay, i18n]);
+  }, [locale.dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     creditNotes?.data,
