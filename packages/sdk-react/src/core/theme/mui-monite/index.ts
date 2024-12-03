@@ -429,6 +429,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.Monite-SearchField': {
             maxWidth: '400px',
             width: '100%',
+            '& label': {
+              color: 'secondary.main',
+            },
           },
         },
       },
