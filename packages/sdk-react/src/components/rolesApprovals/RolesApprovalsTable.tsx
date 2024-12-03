@@ -84,7 +84,7 @@ const RolesAndPoliciesTableBase = ({
             display: 'flex',
             flexDirection: 'column',
             height: 'inherit',
-            minHeight: 500,
+            minHeight: '500px',
           }}
         >
           <UserRolesTable handleCreateNew={handleCreateNewRole} />
@@ -100,7 +100,7 @@ const RolesAndPoliciesTableBase = ({
             display: 'flex',
             flexDirection: 'column',
             height: 'inherit',
-            minHeight: 500,
+            minHeight: '500px',
           }}
         >
           <ApprovalPoliciesTable

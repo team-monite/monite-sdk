@@ -381,7 +381,7 @@ const CounterpartsTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
-        minHeight: 500,
+        minHeight: '500px',
         pt: 2,
       }}
     >
