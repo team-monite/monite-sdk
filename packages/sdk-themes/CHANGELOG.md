@@ -1,5 +1,17 @@
 # @team-monite/sdk-themes
 
+## 0.3.0
+
+### Minor Changes
+
+- 95ff47cc: fix(proposal): update default values for payables and receivables tables to align with the sep5 demo
+- 3abc9641: fix(proposal): apply sep5 demo styles & features to the Payables Table component
+
+### Patch Changes
+
+- f6538fe7: Prevent click event on table rows when selecting text
+- c0182f2b: fix(proposal): set default color for texts in datagrid
+
 ## 0.2.1
 
 ### Patch Changes
