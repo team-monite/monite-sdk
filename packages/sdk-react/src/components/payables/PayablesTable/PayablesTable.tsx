@@ -28,7 +28,6 @@ import {
 } from '@/ui/table/TablePagination';
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -156,7 +155,7 @@ const PayablesTableBase = ({
   ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api, locale, queryClient } = useMoniteContext();
 
   const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
     usePayableTableThemeProps(inProps);
@@ -225,7 +224,6 @@ const PayablesTableBase = ({
   }, [isError, error, i18n]);
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
-  const dateFormat = useDateFormat();
 
   const calculatedFieldOrder = useMemo<string[]>(() => {
     if (fieldOrder && Array.isArray(fieldOrder)) {
@@ -316,7 +314,7 @@ const PayablesTableBase = ({
         renderCell: ({ formattedValue }) => formattedValue,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, dateFormat),
+        ) => i18n.date(value, locale.dateFormat),
       },
       {
         field: 'due_date',
@@ -331,7 +329,7 @@ const PayablesTableBase = ({
         renderCell: (params) => <DueDateCell data={params.row} />,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, dateFormat),
+        ) => value && i18n.date(value, locale.dateFormat),
       },
       {
         field: 'was_created_by_user_id',
@@ -364,7 +362,7 @@ const PayablesTableBase = ({
         },
       },
     ];
-  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay, onPayUS]);
+  }, [locale.dateFormat, formatCurrencyToDisplay, i18n, onPay, onPayUS]);
 
   const columns = useMemo<GridColDef[]>(() => {
     return columnsConfig.sort((a, b) => {
