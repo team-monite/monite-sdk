@@ -291,6 +291,7 @@ const ProductsTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: '500px',
         pt: 2,
       }}
     >

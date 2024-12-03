@@ -8,6 +8,7 @@ import NoDataIcon from '@mui/icons-material/Block';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import CountryUnsupportedIcon from '@mui/icons-material/HourglassEmpty';
 import AccessRestrictedIcon from '@mui/icons-material/Lock';
+import ReceiptLong from '@mui/icons-material/ReceiptLong';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
@@ -16,8 +17,9 @@ export interface BaseProps {
   onAction?: (option?: string) => void;
   actionButtonLabel?: string;
   actionOptions?: string[];
-  type:
+  type?:
     | 'no-data'
+    | 'no-data=payables'
     | 'error'
     | 'access-restricted'
     | 'unsupported-country'
@@ -52,33 +54,34 @@ export const DataGridEmptyState = ({
   switch (type) {
     case 'error':
       defaultIcon = (
-        <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
+        <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main' }} />
       );
       break;
     case 'no-data':
       defaultIcon = (
-        <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
+        <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main' }} />
+      );
+      break;
+    case 'no-data=payables':
+      defaultIcon = (
+        <ReceiptLong sx={{ fontSize: '4rem', color: 'primary.main' }} />
       );
       break;
     case 'no-filter':
       defaultIcon = (
-        <SearchOffIcon
-          sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }}
-        />
+        <SearchOffIcon sx={{ fontSize: '4rem', color: 'primary.main' }} />
       );
       break;
     case 'access-restricted':
       defaultIcon = (
         <AccessRestrictedIcon
-          sx={{ fontSize: '4rem', color: 'warning.main', mb: 2 }}
+          sx={{ fontSize: '4rem', color: 'warning.main' }}
         />
       );
       break;
     case 'unsupported-country':
       defaultIcon = (
-        <CountryUnsupportedIcon
-          sx={{ fontSize: '4rem', color: 'grey.500', mb: 2 }}
-        />
+        <CountryUnsupportedIcon sx={{ fontSize: '4rem', color: 'grey.500' }} />
       );
       break;
     case 'custom':
