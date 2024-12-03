@@ -16,7 +16,7 @@ export const Default: Story = {
     onChangeSort: action('onChangeSort'),
   },
   render: (args) => (
-    <div style={{ height: 600, padding: 20 }}>
+    <div style={{ padding: 20 }}>
       <ApprovalPoliciesTable {...args} />
     </div>
   ),
