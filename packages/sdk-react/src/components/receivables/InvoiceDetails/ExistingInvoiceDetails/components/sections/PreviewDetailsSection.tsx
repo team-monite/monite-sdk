@@ -1,6 +1,6 @@
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteCard } from '@/ui/Card/Card';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -12,7 +12,7 @@ export const PreviewDetailsSection = ({
   memo,
 }: components['schemas']['InvoiceResponsePayload']) => {
   const { i18n } = useLingui();
-  const dateFormat = useDateFormat();
+  const { locale } = useMoniteContext();
 
   return (
     <Box>
@@ -29,7 +29,7 @@ export const PreviewDetailsSection = ({
           {
             label: t(i18n)`Fulfillment date`,
             value: fulfillment_date
-              ? i18n.date(fulfillment_date, dateFormat)
+              ? i18n.date(fulfillment_date, locale.dateFormat)
               : '—',
             withEmptyStateFiller: true,
           },

@@ -20,7 +20,6 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -66,7 +65,7 @@ const ApprovalRequestsTableBase = ({
   onRowClick,
   ...restProps
 }: ApprovalRequestsTableProps) => {
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
   const { data: user } = useEntityUserByAuthToken();
@@ -177,8 +176,6 @@ const ApprovalRequestsTableBase = ({
 
   const areCounterpartsLoading = useAreCounterpartsLoading(rows);
 
-  const dateFormat = useDateFormat();
-
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -205,7 +202,7 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, dateFormat),
+        ) => value && i18n.date(value, locale.dateFormat),
       },
       {
         field: 'due_date',
@@ -215,7 +212,7 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, dateFormat),
+        ) => value && i18n.date(value, locale.dateFormat),
       },
       {
         field: 'status',
@@ -246,7 +243,7 @@ const ApprovalRequestsTableBase = ({
       },
       ...(actionsCell ? [actionsCell] : []),
     ];
-  }, [actionsCell, dateFormat, formatCurrencyToDisplay, i18n]);
+  }, [actionsCell, locale.dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
