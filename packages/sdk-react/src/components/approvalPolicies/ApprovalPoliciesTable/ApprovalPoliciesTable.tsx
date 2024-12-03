@@ -14,6 +14,7 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -250,6 +251,7 @@ const ApprovalPoliciesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: '500px',
         pt: 2,
       }}
     >
@@ -272,7 +274,11 @@ const ApprovalPoliciesTableBase = ({
         getRowHeight={() => 'auto'}
         columns={columns}
         rows={approvalPolicies?.data || []}
-        onRowClick={(params) => onRowClick?.(params.row)}
+        onRowClick={(params) => {
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row);
+          }
+        }}
         slots={{
           pagination: () => (
             <TablePagination

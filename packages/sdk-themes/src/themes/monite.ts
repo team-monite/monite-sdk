@@ -431,6 +431,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.Monite-SearchField': {
           maxWidth: '400px',
           width: '100%',
+          '& label': {
+            color: 'secondary.main',
+          },
         },
       },
     },
@@ -828,6 +831,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           fontWeight: 600,
           fontSize: '14px',
           lineHeight: '17.57px',
+        },
+      },
+      row: {
+        '&:hover': {
+          cursor: 'pointer',
         },
       },
       cell: {

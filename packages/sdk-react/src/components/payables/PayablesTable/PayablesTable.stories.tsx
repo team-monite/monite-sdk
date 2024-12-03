@@ -23,7 +23,7 @@ export const FullPermissions: Story = {
     onChangeSort: action('onChangeSort'),
   },
   render: (args) => (
-    <div style={{ height: 600, padding: 20 }}>
+    <div style={{ padding: 20 }}>
       <PayablesTable {...args} />
     </div>
   ),
@@ -43,7 +43,6 @@ export const AutoUpdatedTable: Story = {
     <div
       style={{
         display: 'flex',
-        height: 700,
         flexDirection: 'column',
         padding: 20,
       }}
@@ -90,7 +89,6 @@ export const WithLowPermissions: Story = {
       <div
         style={{
           display: 'flex',
-          height: 500,
           flexDirection: 'column',
           justifyContent: 'center',
           padding: 20,

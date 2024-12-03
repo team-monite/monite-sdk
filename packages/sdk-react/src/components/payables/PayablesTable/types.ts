@@ -2,7 +2,6 @@ import { components } from '@/api';
 import { API } from '@/api/client';
 
 import {
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
@@ -18,7 +17,6 @@ export type FilterTypes = Partial<{
   [FILTER_TYPE_SEARCH]: string | null;
   [FILTER_TYPE_STATUS]: components['schemas']['PayableStateEnum'] | null;
   [FILTER_TYPE_DUE_DATE]: Date | null;
-  [FILTER_TYPE_CREATED_AT]: Date | null;
   [FILTER_TYPE_SUMMARY_CARD]: PayablesTabFilter | null;
 }>;
 

@@ -19,7 +19,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -30,6 +29,7 @@ import {
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
@@ -41,13 +41,12 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { addDays, formatISO } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   DEFAULT_FIELD_ORDER,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
@@ -191,13 +190,6 @@ const PayablesTableBase = ({
       order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
-      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-        : undefined,
-      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-        : undefined,
       status: currentFilter[FILTER_TYPE_STATUS] || undefined,
       due_date: currentFilter[FILTER_TYPE_DUE_DATE]
         ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
@@ -245,16 +237,6 @@ const PayablesTableBase = ({
   const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
-        field: 'counterpart_id',
-        sortable: false,
-        headerName: t(i18n)`Supplier`,
-        display: 'flex',
-        width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartCellById counterpartId={params.value} />
-        ),
-      },
-      {
         field: 'document_id',
         sortable: false,
         headerName: t(i18n)`Number, status`,
@@ -292,6 +274,16 @@ const PayablesTableBase = ({
             </Stack>
           );
         },
+      },
+      {
+        field: 'counterpart_id',
+        sortable: false,
+        headerName: t(i18n)`Vendor`,
+        display: 'flex',
+        width: defaultCounterpartColumnWidth,
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.value} />
+        ),
       },
       {
         field: 'amount',
@@ -431,31 +423,6 @@ const PayablesTableBase = ({
   );
   const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
 
-  if (
-    !isLoading &&
-    payables?.data.length === 0 &&
-    !isFiltering &&
-    !isSearching
-  ) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Payables`}
-        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
-        descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create new`}
-        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-        onAction={(action) => {
-          if (action === t(i18n)`New Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          } else if (action === t(i18n)`Upload File`) {
-            openFileInput?.();
-          }
-        }}
-        type="no-data"
-      />
-    );
-  }
-
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -465,6 +432,7 @@ const PayablesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: '500px',
         pt: 2,
       }}
     >
@@ -500,7 +468,9 @@ const PayablesTableBase = ({
         loading={isLoading}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => {
-          onRowClick?.(params.row.id);
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row.id);
+          }
         }}
         sx={{
           '& .MuiDataGrid-withBorderColor': {
@@ -527,11 +497,19 @@ const PayablesTableBase = ({
           ),
           noRowsOverlay: () => (
             <GetNoRowsOverlay
+              noDataTitle={t(i18n)`No bills yet`}
+              noDataDescription1={t(i18n)`You don’t have any bills yet`}
+              noDataDescription2={t(i18n)`Add your first bill`}
+              filterTitle={t(i18n)`No bills found`}
+              filterDescription1={t(
+                i18n
+              )`Try adjusting your search or filter criteria`}
+              filterDescription2={' '}
               isLoading={isLoading}
-              dataLength={payables?.data.length || 0}
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
+              dataLength={payables?.data.length || 0}
               onCreate={(type) => {
                 if (type === 'New Invoice') {
                   setIsCreateInvoiceDialogOpen?.(true);
@@ -541,9 +519,7 @@ const PayablesTableBase = ({
               }}
               refetch={refetch}
               entityName={t(i18n)`Payable`}
-              actionButtonLabel={t(i18n)`Create new`}
-              actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-              type="no-data"
+              type="no-data=payables"
             />
           ),
         }}

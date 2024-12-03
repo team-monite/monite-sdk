@@ -409,7 +409,7 @@ const PayableDetailsFormBase = forwardRef<
                           <TextField
                             {...field}
                             id={field.name}
-                            label={t(i18n)`Invoice Number`}
+                            label={t(i18n)`Number`}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -441,7 +441,7 @@ const PayableDetailsFormBase = forwardRef<
                             }
                           >
                             <InputLabel htmlFor={field.name}>
-                              {t(i18n)`Counterpart`}
+                              {t(i18n)`Vendor`}
                             </InputLabel>
                             <Select
                               {...field}
@@ -494,7 +494,7 @@ const PayableDetailsFormBase = forwardRef<
                             }
                           >
                             <InputLabel htmlFor={field.name}>
-                              {t(i18n)`Bank Account`}
+                              {t(i18n)`Bank account`}
                             </InputLabel>
                             <Select
                               {...field}
@@ -556,7 +556,7 @@ const PayableDetailsFormBase = forwardRef<
                                 },
                               }}
                               {...field}
-                              label={t(i18n)`Invoice date`}
+                              label={t(i18n)`Issue date`}
                               views={['year', 'month', 'day']}
                             />
                           )}
@@ -687,7 +687,7 @@ const PayableDetailsFormBase = forwardRef<
                           </TableCell>
                         </TableRow>
                         <TableRow className={className + '-Totals-Taxes'}>
-                          <TableCell>{t(i18n)`Taxes`}</TableCell>
+                          <TableCell>{t(i18n)`VAT total`}</TableCell>
                           <TableCell align="right">
                             {totals.taxes && currentCurrency
                               ? formatCurrencyToDisplay(

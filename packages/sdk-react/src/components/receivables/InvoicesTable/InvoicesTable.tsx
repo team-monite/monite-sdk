@@ -29,6 +29,7 @@ import {
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Sync } from '@mui/icons-material';
@@ -303,6 +304,7 @@ const InvoicesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
+        minHeight: '500px',
         pt: 2,
       }}
     >
@@ -325,7 +327,11 @@ const InvoicesTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
+        onRowClick={(params) => {
+          if (!hasSelectedText()) {
+            onRowClick?.(params.row.id);
+          }
+        }}
         slots={{
           pagination: () => (
             <TablePagination
