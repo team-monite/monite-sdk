@@ -4,7 +4,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDateTimeFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LockOutlined } from '@mui/icons-material';
@@ -19,15 +18,14 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
   const { control, resetField, setValue, watch } =
     useFormContext<CreateReceivablesFormProps>();
 
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
 
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
     api.paymentTerms.getPaymentTerms.useQuery();
 
   const { root } = useRootElements();
-  const dateTimeFormat = useDateTimeFormat();
 
-  const dateTime = i18n.date(new Date(), dateTimeFormat);
+  const dateTime = i18n.date(new Date(), locale.dateTimeFormat);
 
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
