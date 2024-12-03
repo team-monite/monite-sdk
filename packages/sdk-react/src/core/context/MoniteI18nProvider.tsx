@@ -18,7 +18,7 @@ type MoniteSupportedMessages = Messages;
 export type MoniteLocale = {
   /**
    * `code` responsible for internationalised Widgets language, internationalised number and currency formatting.
-   * By default it uses `navigator.language` as a fallback in MoniteProvider.
+   * By default, it uses `navigator.language` as a fallback in MoniteProvider.
    * Intl format values are accepted and won't cause any trouble.
    *
    * E.g. 'en-GB', 'de-DE', etc.
@@ -80,7 +80,7 @@ export type MoniteLocale = {
   };
 
   /**
-   * `dateFormat` responsible for date formatting.
+   * `dateFormat` responsible for date & time formatting. It is used in the `Intl.DateTimeFormat` constructor.
    *
    * By default, it uses the following options:
    * ```ts
@@ -88,18 +88,32 @@ export type MoniteLocale = {
    *   day: '2-digit',
    *   month: 'short',
    *   year: 'numeric',
+   *   hour: '2-digit',
+   *   minute: '2-digit',
    * }
    * ```
    */
-  dateFormat?: Partial<
-    Pick<Intl.DateTimeFormatOptions, 'day' | 'month' | 'year'>
+  dateFormat?: Pick<
+    Intl.DateTimeFormatOptions,
+    | 'weekday'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'hour'
+    | 'minute'
+    | 'second'
+    | 'timeZoneName'
+    | 'hour12'
+    | 'timeZone'
   >;
 };
 
 export type MoniteLocaleWithRequired = DeepRequired<
-  Omit<MoniteLocale, 'messages'>
+  Omit<MoniteLocale, 'messages' | 'dateFormat'>
 > &
-  Partial<Pick<MoniteLocale, 'messages'>>;
+  Partial<Pick<MoniteLocale, 'messages' | 'dateFormat'>> & {
+    dateTimeFormat: Intl.DateTimeFormatOptions;
+  };
 
 export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
   const { i18n, dateFnsLocale } = useMoniteContext();
@@ -336,9 +350,28 @@ export function getLocaleWithDefaults(
       display: locale?.currencyNumberFormat?.display ?? 'symbol',
     },
     dateFormat: {
-      day: locale?.dateFormat?.day ?? '2-digit',
-      month: locale?.dateFormat?.month ?? 'short',
+      weekday: locale?.dateFormat?.weekday ?? undefined,
       year: locale?.dateFormat?.year ?? 'numeric',
+      month: locale?.dateFormat?.month ?? 'short',
+      day: locale?.dateFormat?.day ?? '2-digit',
+      hour: locale?.dateFormat?.hour ?? undefined,
+      minute: locale?.dateFormat?.minute ?? undefined,
+      second: locale?.dateFormat?.second ?? undefined,
+      timeZoneName: locale?.dateFormat?.timeZoneName ?? undefined,
+      hour12: locale?.dateFormat?.hour12 ?? undefined,
+      timeZone: locale?.dateFormat?.timeZone ?? undefined,
+    },
+    dateTimeFormat: {
+      weekday: locale?.dateFormat?.weekday ?? undefined,
+      year: locale?.dateFormat?.year ?? 'numeric',
+      month: locale?.dateFormat?.month ?? 'short',
+      day: locale?.dateFormat?.day ?? '2-digit',
+      hour: locale?.dateFormat?.hour ?? '2-digit',
+      minute: locale?.dateFormat?.minute ?? '2-digit',
+      second: locale?.dateFormat?.second ?? undefined,
+      timeZoneName: locale?.dateFormat?.timeZoneName ?? undefined,
+      hour12: locale?.dateFormat?.hour12 ?? undefined,
+      timeZone: locale?.dateFormat?.timeZone ?? undefined,
     },
   };
 }
