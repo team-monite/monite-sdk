@@ -518,8 +518,6 @@ const PayablesTableBase = ({
               }}
               refetch={refetch}
               entityName={t(i18n)`Payable`}
-              // actionButtonLabel={t(i18n)`Add new bill`}
-              // actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
               type="no-data=payables"
             />
           ),
