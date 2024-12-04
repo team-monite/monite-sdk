@@ -350,28 +350,34 @@ export function getLocaleWithDefaults(
       display: locale?.currencyNumberFormat?.display ?? 'symbol',
     },
     dateFormat: {
-      weekday: locale?.dateFormat?.weekday ?? undefined,
+      ...(locale?.dateFormat?.weekday && {
+        weekday: locale?.dateFormat?.weekday,
+      }),
       year: locale?.dateFormat?.year ?? 'numeric',
       month: locale?.dateFormat?.month ?? 'short',
       day: locale?.dateFormat?.day ?? '2-digit',
-      hour: locale?.dateFormat?.hour ?? undefined,
-      minute: locale?.dateFormat?.minute ?? undefined,
-      second: locale?.dateFormat?.second ?? undefined,
-      timeZoneName: locale?.dateFormat?.timeZoneName ?? undefined,
-      hour12: locale?.dateFormat?.hour12 ?? undefined,
-      timeZone: locale?.dateFormat?.timeZone ?? undefined,
     },
     dateTimeFormat: {
-      weekday: locale?.dateFormat?.weekday ?? undefined,
+      ...(locale?.dateFormat?.weekday && {
+        weekday: locale?.dateFormat?.weekday,
+      }),
       year: locale?.dateFormat?.year ?? 'numeric',
       month: locale?.dateFormat?.month ?? 'short',
       day: locale?.dateFormat?.day ?? '2-digit',
       hour: locale?.dateFormat?.hour ?? '2-digit',
       minute: locale?.dateFormat?.minute ?? '2-digit',
-      second: locale?.dateFormat?.second ?? undefined,
-      timeZoneName: locale?.dateFormat?.timeZoneName ?? undefined,
-      hour12: locale?.dateFormat?.hour12 ?? undefined,
-      timeZone: locale?.dateFormat?.timeZone ?? undefined,
+      ...(locale?.dateFormat?.second && {
+        second: locale?.dateFormat?.second,
+      }),
+      ...(locale?.dateFormat?.timeZoneName && {
+        timeZoneName: locale?.dateFormat?.timeZoneName,
+      }),
+      ...(locale?.dateFormat?.hour12 && {
+        hour12: locale?.dateFormat?.hour12,
+      }),
+      ...(locale?.dateFormat?.timeZone && {
+        timeZone: locale?.dateFormat?.timeZone,
+      }),
     },
   };
 }
