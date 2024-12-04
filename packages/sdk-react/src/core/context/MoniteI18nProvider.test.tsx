@@ -186,6 +186,13 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
           display: 'name',
           localeCode: 'fr',
         },
+        dateFormat: {
+          day: '2-digit',
+          month: 'short',
+          year: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        },
       })
     ).toEqual({
       code: 'de',
@@ -193,25 +200,39 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
         display: 'name',
         localeCode: 'fr',
       },
-    });
-  });
-
-  test('returns default currency locale if not specified', async () => {
-    expect(getLocaleWithDefaults({ code: 'de' })).toEqual({
-      code: 'de',
-      currencyNumberFormat: {
-        display: 'symbol',
-        localeCode: 'de',
+      dateFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit',
+      },
+      dateTimeFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
       },
     });
   });
 
-  test('returns default currency locale if not specified', async () => {
+  test('returns default locale if not specified', async () => {
     expect(getLocaleWithDefaults(undefined)).toEqual({
       code: 'en-US', // Jest's default locale
       currencyNumberFormat: {
         display: 'symbol',
         localeCode: 'en-US',
+      },
+      dateFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      },
+      dateTimeFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
       },
     });
   });
