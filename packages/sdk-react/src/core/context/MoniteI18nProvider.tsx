@@ -112,7 +112,7 @@ export type MoniteLocaleWithRequired = DeepRequired<
   Omit<MoniteLocale, 'messages' | 'dateFormat'>
 > &
   Partial<Pick<MoniteLocale, 'messages' | 'dateFormat'>> & {
-    dateTimeFormat: Intl.DateTimeFormatOptions;
+    dateTimeFormat?: Intl.DateTimeFormatOptions;
   };
 
 export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
