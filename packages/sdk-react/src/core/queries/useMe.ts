@@ -46,12 +46,17 @@ export const useMyEntity = () => {
       VAT_SUPPORTED_COUNTRIES.includes(queryProps.data?.address.country)
   );
 
+  const isUSEntity = Boolean(
+    queryProps.data?.address && queryProps.data?.address.country === 'US'
+  );
+
   const entityName = getEntityName(queryProps.data);
 
   return {
     ...queryProps,
     entityName,
     isNonVatSupported: !isVatSupported,
+    isUSEntity,
   };
 };
 
