@@ -27,14 +27,14 @@ describe('ApprovalRequestTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the page limit is 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the page limit is 15 (by default)', async () => {
       renderWithClient(<ApprovalRequestsTable />);
 
       await waitFor(() => {
         // remove the header row
         const items = screen.getAllByRole('row').slice(1);
 
-        expect(items.length).toBe(10);
+        expect(items.length).toBe(15);
       });
     });
 

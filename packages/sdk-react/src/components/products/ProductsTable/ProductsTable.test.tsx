@@ -180,7 +180,7 @@ describe('ProductsTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the "limit" set as 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the "limit" set as 15 (by default)', async () => {
       renderWithClient(<ProductsTable />);
 
       await waitUntilTableIsLoaded();
@@ -188,7 +188,7 @@ describe('ProductsTable', () => {
       const items = screen.getAllByRole('row').slice(1);
 
       await waitFor(() => {
-        expect(items.length).toBe(10);
+        expect(items.length).toBe(15);
       });
     });
 
