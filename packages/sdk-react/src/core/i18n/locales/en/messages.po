@@ -67,6 +67,8 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:58
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:62
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:64
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:37
@@ -477,6 +479,10 @@ msgstr "All invoices"
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:86
 msgid "All items"
 msgstr "All items"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:69
+msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
+msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
 
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:89
 msgid "All statuses"
@@ -3026,6 +3032,10 @@ msgstr "Falkland Islands (Malvinas)"
 msgid "Family Clothing Stores"
 msgstr "Family Clothing Stores"
 
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:55
+msgid "FAQ"
+msgstr "FAQ"
+
 #: src/core/utils/countries.ts:89
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
@@ -3253,6 +3263,10 @@ msgstr "Germany"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/BillingSummary.tsx:59
 #~ msgid "Germany Frankfurt am Main"
 #~ msgstr "Germany Frankfurt am Main"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:49
+msgid "Get your business moving and accelerate growth with quick and easy access to funding. Multiple options available."
+msgstr "Get your business moving and accelerate growth with quick and easy access to funding. Multiple options available."
 
 #: src/core/utils/countries.ts:100
 msgid "Ghana"
@@ -6157,6 +6171,10 @@ msgstr "Sierra Leone"
 #: src/core/utils/currencies.ts:122
 msgid "Sierra Leonean Leone"
 msgstr "Sierra Leonean Leone"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:46
+msgid "Simplified, fast funding for your growing business"
+msgstr "Simplified, fast funding for your growing business"
 
 #: src/core/utils/countries.ts:214
 msgid "Singapore"
