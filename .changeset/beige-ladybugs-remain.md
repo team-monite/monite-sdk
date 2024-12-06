@@ -3,4 +3,4 @@
 '@team-monite/sdk-demo': minor
 ---
 
-add new styling approach for the SDK
+feat(DEV-12955): add new styling approach for the SDK
