@@ -208,22 +208,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const filterControlWidth = '160px';
 
   const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
-    MoniteOptions: {
-      defaultProps: {
-        dateFormat: {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        },
-        dateTimeFormat: {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        },
-      },
-    },
     MuiAlert: {
       styleOverrides: {
         standardInfo: {
