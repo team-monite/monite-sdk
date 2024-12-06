@@ -33,6 +33,10 @@ export const createThemeWithDefaults = (
                 label: t(i18n)`Credit notes`,
                 query: { type: 'credit_note' },
               },
+              {
+                label: t(i18n)`Financing`,
+                query: { type: 'financing' },
+              },
             ],
           },
         },
