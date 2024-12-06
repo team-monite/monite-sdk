@@ -35,6 +35,10 @@ msgstr "Entity User ID"
 msgid "Error: <0>{0}</0>"
 msgstr "Error: <0>{0}</0>"
 
+#: src/components/Menu/consts.tsx:66
+msgid "Integrations"
+msgstr "Integrations"
+
 #: src/components/LoginForm/LoginForm.tsx:128
 msgid "Login"
 msgstr "Login"

@@ -9,5 +9,6 @@ export const ROUTES = {
   receivables: '/receivables',
   products: '/products',
   onboarding: '/onboarding',
+  integrations: '/integrations',
   rolesApprovals: '/settings/roles-approvals',
 };

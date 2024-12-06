@@ -9,3 +9,4 @@ export * from './tags';
 export * from './userRoles';
 export * from './PageHeader';
 export * from './Dialog';
+export * from './integrations';
