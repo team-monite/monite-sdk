@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { FinanceFaqWrapper } from '../FinanceFaq/FinanceFaqWrapper';
 import { MoneyIcon } from '../infographics/MoneyIcon';
-import { FinanceFaqWrapper } from './FinanceFaq/FinanceFaqWrapper';
 
 export const FinanceApplicationCard = () => {
   const { i18n } = useLingui();
