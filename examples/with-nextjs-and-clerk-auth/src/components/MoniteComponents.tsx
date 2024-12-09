@@ -95,12 +95,6 @@ export const MoniteProvider = ({
   return (
     <MoniteProviderBase
       monite={monite}
-      theme={{
-        typography: {
-          // TODO: remove this once we find a better way to test theme config
-          fontFamily: 'monospace',
-        },
-      }}
       locale={{
         code: i18n.locale,
         messages: {

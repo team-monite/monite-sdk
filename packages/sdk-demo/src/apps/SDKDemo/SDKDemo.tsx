@@ -109,60 +109,6 @@ const SDKDemoComponent = ({
                     apiUrl,
                     fetchToken,
                   }}
-                  // TODO: remove this once we find a better way to test theme config
-                  theme={{
-                    borderRadius: 10,
-
-                    colors: {
-                      primary: '#eb3333',
-                      secondary: '#b3f192',
-                      neutral: '#cd12ae',
-
-                      background: '#ead391',
-
-                      text: '#242dd3',
-                    },
-                    typography: {
-                      fontFamily: 'monospace',
-                      fontSize: 14,
-
-                      h1: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      h2: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      h3: {
-                        fontSize: 12,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      subtitle1: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      subtitle2: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      body1: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                      body2: {
-                        fontSize: 10,
-                        fontWeight: 100,
-                        lineHeight: '10px',
-                      },
-                    },
-                  }}
                 >
                   <MoniteReactQueryDevtools />
                   <Global styles={getFontFaceStyles} />
