@@ -15,6 +15,8 @@ import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { useThemeProps } from '@mui/material/styles';
 
+import { FinanceTab } from '../Financing/FinanceTab/FinanceTab';
+
 interface ReceivablesTableControlledProps {
   /** Event handler for tab change */
   onTabChange: (tab: number) => void;
@@ -47,6 +49,7 @@ export enum ReceivablesTableTabEnum {
   Invoices,
   Quotes,
   CreditNotes,
+  Financing,
 }
 
 interface ReceivablesTableBaseProps {
@@ -253,6 +256,21 @@ const ReceivablesTableBase = ({
             setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             query={activeTabItem?.query}
           />
+        </Box>
+      )}
+      {activeTabItem?.query?.type === 'financing' && (
+        <Box
+          role="tabpanel"
+          id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
+          aria-labelledby={`${tabsIdBase}-${activeTabIndex}-tab`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
+        >
+          <FinanceTab />
         </Box>
       )}
     </>
