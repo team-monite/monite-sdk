@@ -115,6 +115,7 @@ export function addNewItemToPayablesList(): components['schemas']['PayableRespon
     document_id: (Math.random() + 1).toString(36).substring(7),
     subtotal: undefined,
     tax: undefined,
+    credit_notes: [],
   };
 
   payableFixturePages.unshift(newItem);
