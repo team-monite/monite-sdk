@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { FinanceFaqWrapper } from './FinanceFaq/FinanceFaqWrapper';
+import { FinanceFaqWrapper } from '../FinanceFaq/FinanceFaqWrapper';
 
 const LOCAL_STORAGE_KEY = 'financing_banner_hidden';
 
