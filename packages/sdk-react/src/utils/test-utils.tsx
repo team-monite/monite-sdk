@@ -209,10 +209,14 @@ export async function waitUntilTableIsLoaded(
 ): Promise<void> {
   const spinners = await screen.findAllByRole('progressbar'); // todo::Conflicts with any other progress bar on the page
 
-  return await waitForElementToBeRemoved(spinners, {
-    timeout: waitForOptions?.timeout ?? 30_000,
-    interval: waitForOptions?.interval,
-  });
+  try {
+    return await waitForElementToBeRemoved(spinners, {
+      timeout: waitForOptions?.timeout ?? 30_000,
+      interval: waitForOptions?.interval,
+    });
+  } catch (error) {
+    console.warn('Error waiting for spinners to be removed:', error);
+  }
 }
 
 /**

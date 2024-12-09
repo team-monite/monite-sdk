@@ -16,9 +16,9 @@ import {
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { SentryFactory } from '@/core/services';
+import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
-import type { Theme, ThemeOptions } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
@@ -40,7 +40,7 @@ export interface MoniteContextValue
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
-  theme: Theme;
+  theme: ThemeConfig;
   fetchToken: () => Promise<{
     access_token: string;
     expires_in: number;
@@ -71,7 +71,7 @@ export function useMoniteContext() {
 interface MoniteContextProviderProps {
   monite: MoniteSettings;
   locale: Partial<MoniteLocale> | undefined;
-  theme: Theme | ThemeOptions | undefined;
+  theme: ThemeConfig | undefined;
   children: ReactNode;
 }
 
@@ -104,7 +104,7 @@ export const MoniteContextProvider = ({
 interface ContextProviderProps extends MoniteContextBaseValue {
   monite: MoniteSettings;
   children: ReactNode;
-  theme: Theme | ThemeOptions | undefined;
+  theme: ThemeConfig | undefined;
 }
 
 const ContextProvider = ({

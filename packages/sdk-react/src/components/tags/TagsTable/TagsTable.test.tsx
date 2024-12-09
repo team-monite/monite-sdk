@@ -32,13 +32,13 @@ describe('TagsTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the `limit` set as 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the `limit` set as 15 (by default)', async () => {
       renderWithClient(<TagsTable />);
 
       await waitUntilTableIsLoaded();
 
       const existsTag = screen.findByText('tag 1');
-      const notExists = screen.findByText('tag 11', undefined, {
+      const notExists = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -66,7 +66,7 @@ describe('TagsTable', () => {
       expect(nextDisabled).toBeFalsy();
     });
 
-    test('should fetch next 10 elements when we click on "next" button', async () => {
+    test('should fetch next 15 elements when we click on "next" button', async () => {
       renderWithClient(<TagsTable />);
 
       /** Wait until table is loaded */
@@ -81,7 +81,7 @@ describe('TagsTable', () => {
       const notExists = screen.findByText('tag 1', undefined, {
         timeout: 200,
       });
-      const existsTag = screen.findByText('tag 11', undefined, {
+      const existsTag = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -89,7 +89,7 @@ describe('TagsTable', () => {
       await expect(existsTag).resolves.toBeInTheDocument();
     });
 
-    test('should fetch previous 10 elements when we click on "next" and then on "prev" buttons', async () => {
+    test('should fetch previous 15 elements when we click on "next" and then on "prev" buttons', async () => {
       renderWithClient(<TagsTable />);
 
       /** Wait until table is loaded */
@@ -112,7 +112,7 @@ describe('TagsTable', () => {
       const existsTag = screen.findByText('tag 1', undefined, {
         timeout: 200,
       });
-      const notExists = screen.findByText('tag 11', undefined, {
+      const notExists = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -140,7 +140,7 @@ describe('TagsTable', () => {
         );
 
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: undefined,
           sort: undefined,
         });
@@ -161,7 +161,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'asc',
           sort: 'created_at',
         });
@@ -185,7 +185,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'desc',
           sort: 'created_at',
         });
@@ -205,7 +205,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'asc',
           sort: 'updated_at',
         });
@@ -227,7 +227,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'desc',
           sort: 'updated_at',
         });
@@ -251,7 +251,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: undefined,
           sort: undefined,
         });

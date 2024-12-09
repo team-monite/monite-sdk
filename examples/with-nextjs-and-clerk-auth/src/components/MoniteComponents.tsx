@@ -48,7 +48,6 @@ import {
   TableCell,
   TableRow,
   Typography,
-  useTheme,
 } from '@mui/material';
 
 /* eslint-disable */
@@ -64,7 +63,6 @@ export const MoniteProvider = ({
   entityUserId: string;
   children: ReactNode;
 }) => {
-  const theme = useTheme();
   const { i18n } = useLingui();
 
   const fetchToken = useCallback(async () => {
@@ -97,7 +95,6 @@ export const MoniteProvider = ({
   return (
     <MoniteProviderBase
       monite={monite}
-      theme={theme}
       locale={{
         code: i18n.locale,
         messages: {
