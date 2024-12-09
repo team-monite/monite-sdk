@@ -67,6 +67,8 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:58
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:62
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:64
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:37
@@ -486,6 +488,10 @@ msgstr "All invoices"
 msgid "All items"
 msgstr "All items"
 
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:69
+msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
+msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
+
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:89
 msgid "All statuses"
 msgstr "All statuses"
@@ -687,7 +693,7 @@ msgstr "approvals required"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:519
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:540
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:106
-#: src/components/userRoles/consts.ts:73
+#: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:223
 msgid "Approve"
 msgstr "Approve"
@@ -1275,7 +1281,7 @@ msgstr "Canadian Dollar"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:102
 #: src/components/tags/TagFormModal/TagFormModal.tsx:204
-#: src/components/userRoles/consts.ts:76
+#: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:231
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:455
 msgid "Cancel"
@@ -1907,7 +1913,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:85
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:117
 #: src/components/tags/TagFormModal/TagFormModal.tsx:214
-#: src/components/userRoles/consts.ts:69
+#: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:71
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:207
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:467
@@ -1960,7 +1966,7 @@ msgstr "Create Counterpart – Company"
 msgid "Create Credit Note"
 msgstr "Create Credit Note"
 
-#: src/components/userRoles/consts.ts:75
+#: src/components/userRoles/consts.ts:76
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:239
 msgid "Create from mail"
 msgstr "Create from mail"
@@ -2283,7 +2289,7 @@ msgstr "default"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:412
 #: src/components/tags/TagsTable/TagsTable.test.tsx:443
 #: src/components/tags/TagsTable/TagsTable.tsx:190
-#: src/components/userRoles/consts.ts:71
+#: src/components/userRoles/consts.ts:72
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:215
 msgid "Delete"
 msgstr "Delete"
@@ -3046,6 +3052,10 @@ msgstr "Falkland Islands (Malvinas)"
 msgid "Family Clothing Stores"
 msgstr "Family Clothing Stores"
 
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:55
+msgid "FAQ"
+msgstr "FAQ"
+
 #: src/core/utils/countries.ts:89
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
@@ -3285,6 +3295,10 @@ msgstr "Germany"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/BillingSummary.tsx:59
 #~ msgid "Germany Frankfurt am Main"
 #~ msgstr "Germany Frankfurt am Main"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:49
+msgid "Get your business moving and accelerate growth with quick and easy access to funding. Multiple options available."
+msgstr "Get your business moving and accelerate growth with quick and easy access to funding. Multiple options available."
 
 #: src/core/utils/countries.ts:100
 msgid "Ghana"
@@ -4188,6 +4202,10 @@ msgstr "Macedonian Denar"
 msgid "Madagascar"
 msgstr "Madagascar"
 
+#: src/components/userRoles/consts.ts:52
+msgid "Mailbox"
+msgstr "Mailbox"
+
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:163
 msgid "Make default"
 msgstr "Make default"
@@ -5061,7 +5079,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:225
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:118
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:55
-#: src/components/userRoles/consts.ts:74
+#: src/components/userRoles/consts.ts:75
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:227
 msgid "Pay"
 msgstr "Pay"
@@ -5627,7 +5645,7 @@ msgstr "Quotes"
 msgid "Railroads"
 msgstr "Railroads"
 
-#: src/components/userRoles/consts.ts:68
+#: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:203
 msgid "Read"
 msgstr "Read"
@@ -5832,7 +5850,7 @@ msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:101
-#: src/components/userRoles/consts.ts:77
+#: src/components/userRoles/consts.ts:78
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:235
 msgid "Reopen"
 msgstr "Reopen"
@@ -6217,6 +6235,10 @@ msgstr "Sierra Leone"
 msgid "Sierra Leonean Leone"
 msgstr "Sierra Leonean Leone"
 
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:46
+msgid "Simplified, fast funding for your growing business"
+msgstr "Simplified, fast funding for your growing business"
+
 #: src/core/utils/countries.ts:214
 msgid "Singapore"
 msgstr "Singapore"
@@ -6408,7 +6430,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:435
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:456
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:89
-#: src/components/userRoles/consts.ts:72
+#: src/components/userRoles/consts.ts:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:219
 msgid "Submit"
 msgstr "Submit"
@@ -7129,7 +7151,7 @@ msgstr "Unsupported file type"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:177
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:148
-#: src/components/userRoles/consts.ts:70
+#: src/components/userRoles/consts.ts:71
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:47
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:211
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:467
