@@ -122,6 +122,10 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:118
+msgid "{displayButtonMessage}"
+msgstr "{displayButtonMessage}"
+
 #: src/ui/DueDateCell/DueDateCell.tsx:45
 msgid "{overdueDays} {0} overdue"
 msgstr "{overdueDays} {0} overdue"
@@ -526,7 +530,7 @@ msgstr "American Samoa"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:76
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:13
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:35
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:234
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:235
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:201
 msgid "Amount"
 msgstr "Amount"
@@ -1964,8 +1968,8 @@ msgstr "Create from mail"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:81
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:128
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:285
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:360
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:286
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:364
 #: src/components/receivables/Receivables.test.tsx:35
 #: src/components/receivables/Receivables.test.tsx:76
 #: src/components/receivables/Receivables.test.tsx:113
@@ -2061,7 +2065,7 @@ msgid "Created by user"
 msgstr "Created by user"
 
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:150
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:220
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:221
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:171
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:41
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:175
@@ -2133,7 +2137,7 @@ msgstr "Current status"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:409
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:210
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:211
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:184
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:106
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:109
@@ -2544,7 +2548,7 @@ msgstr "Dry Cleaners"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:247
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:248
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:194
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:135
 msgid "Due date"
@@ -3216,6 +3220,10 @@ msgstr "Fulfillment date"
 msgid "Full name"
 msgstr "Full name"
 
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:86
+msgid "Fund your sales/purchases"
+msgstr "Fund your sales/purchases"
+
 #: src/components/onboarding/dicts/mccCodes.ts:660
 msgid "Funeral Services, Crematories"
 msgstr "Funeral Services, Crematories"
@@ -3263,6 +3271,10 @@ msgstr "Germany"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/BillingSummary.tsx:59
 #~ msgid "Germany Frankfurt am Main"
 #~ msgstr "Germany Frankfurt am Main"
+
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:90
+msgid "Get a small business loan plan to manage finances more efficiently."
+msgstr "Get a small business loan plan to manage finances more efficiently."
 
 #: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:49
 msgid "Get your business moving and accelerate growth with quick and easy access to funding. Multiple options available."
@@ -3443,6 +3455,10 @@ msgstr ""
 "Please find the invoice attached as discussed.\n"
 "Kind Regards,\n"
 "{1}"
+
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:107
+msgid "Hide"
+msgstr "Hide"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:526
 msgid "History"
@@ -3626,7 +3642,7 @@ msgid "Intra-Company Purchases"
 msgstr "Intra-Company Purchases"
 
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:142
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:192
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:193
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:163
 msgid "INV-auto"
 msgstr "INV-auto"
@@ -3650,9 +3666,9 @@ msgstr "Invalid issuance"
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:284
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:241
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:254
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:286
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:288
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:361
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:287
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:289
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:365
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:230
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:232
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:297
@@ -3743,7 +3759,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:359
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:363
 #: src/core/utils/createThemeWithDefaults.ts:25
 msgid "Invoices"
 msgstr "Invoices"
@@ -3798,7 +3814,7 @@ msgstr "Issue at"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:300
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:156
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:46
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:227
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:228
 msgid "Issue date"
 msgstr "Issue date"
 
@@ -4738,7 +4754,7 @@ msgid "No Quotes"
 msgstr "No Quotes"
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:125
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:282
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:283
 msgid "No Receivables"
 msgstr "No Receivables"
 
@@ -4835,7 +4851,7 @@ msgid "Number of approvals required must be a number"
 msgstr "Number of approvals required must be a number"
 
 #: src/components/payables/PayablesTable/PayablesTable.tsx:242
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:158
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:159
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:149
 msgid "Number, status"
 msgstr "Number, status"
@@ -5600,6 +5616,10 @@ msgstr "Railroads"
 msgid "Read"
 msgstr "Read"
 
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:100
+msgid "Read more >"
+msgstr "Read more >"
+
 #: src/components/onboarding/dicts/mccCodes.ts:1140
 msgid "Real Estate Agents and Managers - Rentals"
 msgstr "Real Estate Agents and Managers - Rentals"
@@ -5675,7 +5695,7 @@ msgid "Recurrence was completed, all invoices were issued"
 msgstr "Recurrence was completed, all invoices were issued"
 
 #: src/components/receivables/getCommonStatusLabel.ts:21
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:186
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:187
 msgid "Recurring"
 msgstr "Recurring"
 
@@ -7586,7 +7606,7 @@ msgid "You can create your first credit note."
 msgstr "You can create your first credit note."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:127
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:284
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:285
 msgid "You can create your first invoice."
 msgstr "You can create your first invoice."
 
@@ -7639,7 +7659,7 @@ msgid "You don’t have any credit notes yet."
 msgstr "You don’t have any credit notes yet."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:126
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:283
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:284
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
