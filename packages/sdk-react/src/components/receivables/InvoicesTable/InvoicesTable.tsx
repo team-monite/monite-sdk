@@ -41,6 +41,7 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
+import { FinanceBanner } from '../Financing/FinanceBanner/FinanceBanner';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
   useInvoiceRowActionMenuCell,
@@ -308,6 +309,9 @@ const InvoicesTableBase = ({
         pt: 2,
       }}
     >
+      <Box mb={2}>
+        <FinanceBanner />
+      </Box>
       <ReceivableFilters
         filters={filters}
         onChange={(field, value) => {

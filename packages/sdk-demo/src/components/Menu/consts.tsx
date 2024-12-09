@@ -62,6 +62,11 @@ export const getNavigationData = (
         url: ROUTES.onboarding,
         renderIcon: (props) => <LabelIcon {...props} />,
       },
+      integrations: {
+        label: t(i18n)`Integrations`,
+        url: ROUTES.integrations,
+        renderIcon: (props) => <LabelIcon {...props} />,
+      },
     },
   },
 });
