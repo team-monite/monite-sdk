@@ -47,7 +47,6 @@ export const FinanceInvoice = ({
   ].includes(invoice.status);
 
   const financeInvoice = async () => {
-    // TODO: Consider using the connect token here
     try {
       setIsFinancingAnInvoice(true);
       financeInvoiceMutation.mutate(
@@ -73,8 +72,7 @@ export const FinanceInvoice = ({
           },
         }
       );
-    } catch (error) {
-      console.log('🚀 ~ financeInvoice ~ error:', error);
+    } catch {
       setIsFinancingAnInvoice(false);
     }
   };
@@ -92,7 +90,10 @@ export const FinanceInvoice = ({
   if (isFinanced) {
     return (
       <Box>
-        <FinanceOverviewCard invoice={invoice} />
+        <FinanceOverviewCard
+          invoice={invoice}
+          offers={financeOffersData ?? null}
+        />
       </Box>
     );
   }

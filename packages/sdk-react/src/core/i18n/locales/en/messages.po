@@ -102,6 +102,10 @@ msgstr "{0} has been updated"
 msgid "{0}/{1} issued"
 msgstr "{0}/{1} issued"
 
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:46
+msgid "{0}% advance rate, Pay in {1} days, {2}% fee"
+msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
+
 #: src/core/utils/getBankAccountName.tsx:14
 msgid "{bankAccountName} (Default)"
 msgstr "{bankAccountName} (Default)"
@@ -122,11 +126,11 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:104
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:129
 msgid "{issueDate}"
 msgstr "{issueDate}"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:125
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:150
 msgid "{item}"
 msgstr "{item}"
 
@@ -134,11 +138,11 @@ msgstr "{item}"
 msgid "{overdueDays} {0} overdue"
 msgstr "{overdueDays} {0} overdue"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:186
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:212
 msgid "{paymentDate}"
 msgstr "{paymentDate}"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:134
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:159
 msgid "{repaymentDate}"
 msgstr "{repaymentDate}"
 
@@ -196,7 +200,7 @@ msgstr "Accept ownership declaration"
 msgid "Accept Service Agreement"
 msgstr "Accept Service Agreement"
 
-#: src/components/receivables/getCommonStatusLabel.ts:15
+#: src/components/receivables/getCommonStatusLabel.ts:17
 msgid "Accepted"
 msgstr "Accepted"
 
@@ -1346,7 +1350,7 @@ msgstr "Cancel without saving?"
 #: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:39
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:167
-#: src/components/receivables/getCommonStatusLabel.ts:31
+#: src/components/receivables/getCommonStatusLabel.ts:33
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:124
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:132
 msgid "Canceled"
@@ -2242,13 +2246,17 @@ msgstr "days before due date"
 msgid "Dear client, as discussed, please find attached our invoice:"
 msgstr "Dear client, as discussed, please find attached our invoice:"
 
-#: src/components/receivables/getCommonStatusLabel.ts:19
+#: src/components/receivables/getCommonStatusLabel.ts:21
 msgid "Declined"
 msgstr "Declined"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:31
 msgid "default"
 msgstr "default"
+
+#: src/components/receivables/getCommonStatusLabel.ts:39
+msgid "Defaulted"
+msgstr "Defaulted"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:330
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.test.tsx:25
@@ -2346,7 +2354,7 @@ msgid "Delete trigger"
 msgstr "Delete trigger"
 
 #: src/components/approvalPolicies/consts.ts:27
-#: src/components/receivables/getCommonStatusLabel.ts:33
+#: src/components/receivables/getCommonStatusLabel.ts:35
 msgid "Deleted"
 msgstr "Deleted"
 
@@ -2492,7 +2500,7 @@ msgstr "Dominican Peso"
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:136
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:137
 msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
 
@@ -2511,7 +2519,7 @@ msgstr "Download PDF"
 #: src/components/payables/consts.ts:32
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:84
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:121
-#: src/components/receivables/getCommonStatusLabel.ts:11
+#: src/components/receivables/getCommonStatusLabel.ts:13
 msgid "Draft"
 msgstr "Draft"
 
@@ -2932,7 +2940,7 @@ msgstr "excl. Tax"
 msgid "Executive"
 msgstr "Executive"
 
-#: src/components/receivables/getCommonStatusLabel.ts:17
+#: src/components/receivables/getCommonStatusLabel.ts:19
 msgid "Expired"
 msgstr "Expired"
 
@@ -3096,7 +3104,11 @@ msgstr "File successfully attached"
 msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:119
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:43
+msgid "Financing plan"
+msgstr "Financing plan"
+
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:144
 msgid "Financing plan 1"
 msgstr "Financing plan 1"
 
@@ -3148,7 +3160,7 @@ msgstr "Florists Supplies, Nursery Stock, and Flowers"
 msgid "Flow"
 msgstr "Flow"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:94
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:119
 msgid "For {invoiceAmount} | Issued {issueDate}"
 msgstr "For {invoiceAmount} | Issued {issueDate}"
 
@@ -3244,13 +3256,21 @@ msgstr "Fulfillment date"
 msgid "Full name"
 msgstr "Full name"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:70
+#: src/components/receivables/getCommonStatusLabel.ts:43
+msgid "Funded"
+msgstr "Funded"
+
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:95
 msgid "Funding details"
 msgstr "Funding details"
 
 #: src/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard.tsx:52
-msgid "Funding for {invoiceAmount}"
-msgstr "Funding for {invoiceAmount}"
+#~ msgid "Funding for {invoiceAmount}"
+#~ msgstr "Funding for {invoiceAmount}"
+
+#: src/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard.tsx:73
+msgid "Funding for {repaymentAmount}"
+msgstr "Funding for {repaymentAmount}"
 
 #: src/components/onboarding/dicts/mccCodes.ts:660
 msgid "Funeral Services, Crematories"
@@ -3300,7 +3320,7 @@ msgstr "Germany"
 #~ msgid "Germany Frankfurt am Main"
 #~ msgstr "Germany Frankfurt am Main"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:167
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:168
 msgid "Get paid now"
 msgstr "Get paid now"
 
@@ -3700,7 +3720,7 @@ msgstr "Invalid issuance"
 msgid "Invoice"
 msgstr "Invoice"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:86
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:111
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:177
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
@@ -3859,7 +3879,7 @@ msgstr "Issue invoice and email it to a customer"
 msgid "Issue only"
 msgstr "Issue only"
 
-#: src/components/receivables/getCommonStatusLabel.ts:13
+#: src/components/receivables/getCommonStatusLabel.ts:15
 msgid "Issued"
 msgstr "Issued"
 
@@ -4074,6 +4094,10 @@ msgstr "Last update:"
 msgid "Last updated on"
 msgstr "Last updated on"
 
+#: src/components/receivables/getCommonStatusLabel.ts:45
+msgid "Late"
+msgstr "Late"
+
 #: src/core/utils/countries.ts:139
 msgid "Latvia"
 msgstr "Latvia"
@@ -4172,7 +4196,7 @@ msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:113
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:166
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:167
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -4585,6 +4609,7 @@ msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
 #: src/components/payables/consts.ts:33
+#: src/components/receivables/getCommonStatusLabel.ts:37
 msgid "New"
 msgstr "New"
 
@@ -4947,7 +4972,7 @@ msgstr "Orthopedic Goods - Prosthetic Devices"
 msgid "Osteopaths"
 msgstr "Osteopaths"
 
-#: src/components/receivables/getCommonStatusLabel.ts:27
+#: src/components/receivables/getCommonStatusLabel.ts:29
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:18
 msgid "Overdue"
 msgstr "Overdue"
@@ -4993,7 +5018,8 @@ msgstr "Package Stores-Beer, Wine, and Liquor"
 
 #: src/components/payables/consts.ts:35
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:243
-#: src/components/receivables/getCommonStatusLabel.ts:25
+#: src/components/receivables/getCommonStatusLabel.ts:27
+#: src/components/receivables/getCommonStatusLabel.ts:41
 msgid "Paid"
 msgstr "Paid"
 
@@ -5051,7 +5077,7 @@ msgid "Parking Lots, Garages"
 msgstr "Parking Lots, Garages"
 
 #: src/components/payables/consts.ts:38
-#: src/components/receivables/getCommonStatusLabel.ts:23
+#: src/components/receivables/getCommonStatusLabel.ts:25
 msgid "Partially Paid"
 msgstr "Partially Paid"
 
@@ -5142,7 +5168,7 @@ msgstr "Payables purchase order"
 #~ msgid "Payment"
 #~ msgstr "Payment"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:183
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:209
 msgid "Payment amount"
 msgstr "Payment amount"
 
@@ -5671,7 +5697,7 @@ msgstr "Receivables tabs"
 msgid "Received"
 msgstr "Received"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:159
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:185
 msgid "Received sum"
 msgstr "Received sum"
 
@@ -5720,7 +5746,7 @@ msgstr "Recurrence was cancelled, no new invoices will be issued"
 msgid "Recurrence was completed, all invoices were issued"
 msgstr "Recurrence was completed, all invoices were issued"
 
-#: src/components/receivables/getCommonStatusLabel.ts:21
+#: src/components/receivables/getCommonStatusLabel.ts:23
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:186
 msgid "Recurring"
 msgstr "Recurring"
@@ -5768,6 +5794,7 @@ msgstr "Reject request"
 #: src/components/approvalRequests/helpers.ts:14
 #: src/components/payables/consts.ts:37
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:207
+#: src/components/receivables/getCommonStatusLabel.ts:47
 msgid "Rejected"
 msgstr "Rejected"
 
@@ -5847,15 +5874,15 @@ msgstr "Removing an executive role from this person is not allowed"
 msgid "Reopen"
 msgstr "Reopen"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:131
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:156
 msgid "Repayment on"
 msgstr "Repayment on"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard.tsx:55
+#: src/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard.tsx:76
 msgid "Repayment on {repaymentDate}"
 msgstr "Repayment on {repaymentDate}"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:167
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:193
 msgid "Repayment sum"
 msgstr "Repayment sum"
 
@@ -6160,7 +6187,7 @@ msgstr "Serbian Dinar"
 msgid "Service"
 msgstr "Service"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:163
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:189
 msgid "Service Fee"
 msgstr "Service Fee"
 
@@ -6410,7 +6437,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:222
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:53
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:56
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:137
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:162
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:57
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:76
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:79
@@ -6707,7 +6734,7 @@ msgstr "The following fields are required:"
 msgid "The IBAN should correspond to the chosen country - {country}."
 msgstr "The IBAN should correspond to the chosen country - {country}."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:143
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:144
 msgid "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 msgstr "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 
@@ -6794,7 +6821,7 @@ msgstr "This action can't be undone."
 msgid "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 msgstr "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:140
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:141
 msgid "This invoice can be financed"
 msgstr "This invoice can be financed"
 
@@ -7056,7 +7083,7 @@ msgstr "Ukraine"
 msgid "Ukrainian Hryvnia"
 msgstr "Ukrainian Hryvnia"
 
-#: src/components/receivables/getCommonStatusLabel.ts:29
+#: src/components/receivables/getCommonStatusLabel.ts:31
 msgid "Uncollectible"
 msgstr "Uncollectible"
 
@@ -7587,7 +7614,7 @@ msgstr "Who needs to approve the document and how:"
 msgid "Wholesale Clubs"
 msgstr "Wholesale Clubs"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:151
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:152
 msgid "Why?"
 msgstr "Why?"
 

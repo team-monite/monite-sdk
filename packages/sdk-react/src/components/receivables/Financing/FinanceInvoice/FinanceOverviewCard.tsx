@@ -3,33 +3,54 @@ import { useState } from 'react';
 import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { useCurrencies } from '@/core/hooks';
+import { useGetFinancedInvoices } from '@/core/queries/useFinancing';
 import { useDateFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 
 import { InvoiceStatusChip } from '../../InvoiceStatusChip';
 import { FinanceDetails } from './FinanceDetails';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
+  offers: {
+    offers: components['schemas']['FinancingOffer'][];
+    business_status: components['schemas']['WCBusinessStatus'];
+  } | null;
 };
 
-export const FinanceOverviewCard = ({ invoice }: Props) => {
+export const FinanceOverviewCard = ({ invoice, offers }: Props) => {
   const { i18n } = useLingui();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const { formatCurrencyToDisplay } = useCurrencies();
+
+  const { isLoading, data } = useGetFinancedInvoices({
+    invoice_id: invoice.id,
+    type: 'receivable',
+  });
+
+  const financedInvoice = data?.data?.[0] ?? null;
+
   const dateFormat = useDateFormat();
 
-  const invoiceAmount = formatCurrencyToDisplay(
-    invoice.amount_due,
-    invoice.currency
-  );
-
-  const repaymentDate = invoice?.issue_date
-    ? i18n.date(invoice?.issue_date, dateFormat)
+  const repaymentAmount = financedInvoice
+    ? formatCurrencyToDisplay(
+        financedInvoice.repayment_schedule?.repayment_amount ?? 0,
+        invoice.currency
+      )
     : '—';
+
+  const repaymentDate = financedInvoice?.repayment_schedule?.repayment_date
+    ? i18n.date(financedInvoice?.repayment_schedule?.repayment_date, dateFormat)
+    : '—';
+
+  const repaymentStatus = financedInvoice?.status;
+
+  if (isLoading) {
+    return <Skeleton variant="rounded" height={80} />;
+  }
 
   return (
     <>
@@ -49,24 +70,27 @@ export const FinanceOverviewCard = ({ invoice }: Props) => {
       >
         <Box>
           <Typography variant="subtitle2">
-            {t(i18n)`Funding for ${invoiceAmount}`}
+            {t(i18n)`Funding for ${repaymentAmount}`}
           </Typography>
           <Typography variant="body1">
             {t(i18n)`Repayment on ${repaymentDate}`}
           </Typography>
         </Box>
         <Box>
-          <InvoiceStatusChip status={invoice.status} />
+          <InvoiceStatusChip status={repaymentStatus ?? 'DEFAULTED'} />
         </Box>
       </Box>
 
       <Dialog
-        // className={className + '-Dialog-ProductsTable'}
         open={dialogIsOpen}
         onClose={() => setDialogIsOpen(false)}
         alignDialog="right"
       >
-        <FinanceDetails invoice={invoice} />
+        <FinanceDetails
+          invoice={invoice}
+          offers={offers}
+          financedInvoice={financedInvoice}
+        />
       </Dialog>
     </>
   );
