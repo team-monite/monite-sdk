@@ -122,6 +122,7 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:94
 #: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:118
 msgid "{displayButtonMessage}"
 msgstr "{displayButtonMessage}"
@@ -619,6 +620,10 @@ msgstr "Any user with role"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:406
 msgid "Applied policy"
 msgstr "Applied policy"
+
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:78
+msgid "Apply for a monthly plan loans to manage your business more efficiently"
+msgstr "Apply for a monthly plan loans to manage your business more efficiently"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:69
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:193
@@ -3080,6 +3085,10 @@ msgstr "File successfully attached"
 msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:44
+msgid "Financing is currently only available for US entities"
+msgstr "Financing is currently only available for US entities"
+
 #: src/components/onboarding/dicts/mccCodes.ts:625
 msgid "Fines - Government Administrative Entities"
 msgstr "Fines - Government Administrative Entities"
@@ -3637,6 +3646,10 @@ msgstr "Insurance - Default"
 msgid "Insurance Underwriting, Premiums"
 msgstr "Insurance Underwriting, Premiums"
 
+#: src/components/integrations/Integrations.tsx:21
+msgid "Integrations"
+msgstr "Integrations"
+
 #: src/components/onboarding/dicts/mccCodes.ts:787
 msgid "Intra-Company Purchases"
 msgstr "Intra-Company Purchases"
@@ -3716,6 +3729,10 @@ msgstr "Invoice date"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:46
 msgid "Invoice delete confirmation"
 msgstr "Invoice delete confirmation"
+
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:74
+msgid "Invoice financing"
+msgstr "Invoice financing"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:102
 msgid "Invoice from {entityName}"
@@ -5615,6 +5632,10 @@ msgstr "Railroads"
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:203
 msgid "Read"
 msgstr "Read"
+
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:100
+msgid "Read more"
+msgstr "Read more"
 
 #: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:100
 msgid "Read more >"
