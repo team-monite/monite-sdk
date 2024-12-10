@@ -1,6 +1,12 @@
 import { components, Services } from '@/api';
 import { ChipProps, SelectProps } from '@mui/material';
 
+type TypographyStyle = {
+  fontSize?: string | number;
+  fontWeight?: string | number;
+  lineHeight?: string | number;
+};
+
 export type ThemeConfig = {
   borderRadius?: number;
 
@@ -18,41 +24,13 @@ export type ThemeConfig = {
     fontFamily?: string;
     fontSize?: number;
 
-    h1?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    h2?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    h3?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    subtitle1?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    subtitle2?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    body1?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
-    body2?: {
-      fontSize?: string | number;
-      fontWeight?: string | number;
-      lineHeight?: string | number;
-    };
+    h1?: TypographyStyle;
+    h2?: TypographyStyle;
+    h3?: TypographyStyle;
+    subtitle1?: TypographyStyle;
+    subtitle2?: TypographyStyle;
+    body1?: TypographyStyle;
+    body2?: TypographyStyle;
   };
 };
 
