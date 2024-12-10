@@ -9,6 +9,7 @@ import {
   Products,
   Tags,
   Onboarding,
+  Integrations,
   RolesAndApprovalPolicies,
 } from '@monite/sdk-react';
 import { Box } from '@mui/material';
@@ -94,6 +95,14 @@ export const Base = () => {
         }
       />
       <Route path={ROUTES.onboarding} element={<Onboarding />} />
+      <Route
+        path={ROUTES.integrations}
+        element={
+          <Gutter>
+            <Integrations />
+          </Gutter>
+        }
+      />
       <Route path="*" element={<Navigate to={ROUTES.counterparts} />} />
     </Routes>
   );

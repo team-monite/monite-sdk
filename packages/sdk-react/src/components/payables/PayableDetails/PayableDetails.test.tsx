@@ -627,6 +627,7 @@ describe('PayableDetails', () => {
         due_date,
         payable_origin: 'upload',
         source_of_payable_data: 'user_specified',
+        credit_notes: [],
       });
 
       const testCasesPayable = [

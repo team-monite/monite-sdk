@@ -18,6 +18,7 @@ function generatePayable(
 ): components['schemas']['PayableResponseSchema'] {
   const createdPayable: components['schemas']['PayableResponseSchema'] = {
     id: faker.string.uuid(),
+    credit_notes: [],
     entity_id: getRandomProperty(entityUsers).id,
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
