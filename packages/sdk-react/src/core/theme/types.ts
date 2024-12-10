@@ -51,50 +51,61 @@ export interface MoniteTablePaginationProps
   extends MoniteTablePaginationSlotProps,
     MoniteTablePaginationRootSlotProps {}
 
-export interface MoniteInvoiceStatusChipProps {
-  icon?: boolean;
+interface BaseChipProps {
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
+}
+
+interface BaseStatusChipProps extends BaseChipProps {
   /** Display status icon? */
+  icon?: boolean;
+}
+
+export type MoniteCounterpartType = 'customer' | 'vendor';
+
+export interface MoniteInvoiceStatusChipProps extends BaseStatusChipProps {
   /** The status of the invoice. */
   status: components['schemas']['ReceivablesStatusEnum'];
-  /** The variant of the Chip. */
 }
 
-export interface MoniteInvoiceRecurrenceStatusChipProps {
+export interface MoniteInvoiceRecurrenceStatusChipProps
+  extends BaseStatusChipProps {
   /** The status of the recurrence. */
   status: components['schemas']['RecurrenceStatus'];
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  icon?: boolean;
 }
 
-export interface MoniteInvoiceRecurrenceIterationStatusChipProps {
+export interface MoniteInvoiceRecurrenceIterationStatusChipProps
+  extends BaseStatusChipProps {
   /** The status of the iteration. */
   status: components['schemas']['IterationStatus'];
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  icon?: boolean;
 }
 
-export interface MonitePayableStatusChipProps {
+export interface MonitePayableStatusChipProps extends BaseStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
-  /** Display status icon? */
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
 }
+
+export interface MoniteCounterpartStatusChipProps extends BaseChipProps {
+  /** The status of the invoice. */
+  status: MoniteCounterpartType;
+}
+
+export interface MoniteApprovalRequestStatusChipProps
+  extends BaseStatusChipProps {
+  /** The status of the approval request. */
+  status: components['schemas']['ApprovalRequestStatus'];
+}
+
+export interface MoniteApprovalStatusChipProps extends BaseStatusChipProps {
+  /** The status of the payable. */
+  status: components['schemas']['ApprovalPolicyStatus'];
+}
+
+export type PayablesTabFilter = NonNullable<
+  Services['payables']['getPayables']['types']['parameters']['query']
+>;
 
 //TODO: better to map it with schema.json keyof values
 export type FieldValueTypes =
@@ -140,10 +151,6 @@ export type OcrRequiredFields =
   | Partial<Record<OcrRequiredField, boolean>>
   | undefined;
 
-export type PayablesTabFilter = NonNullable<
-  Services['payables']['getPayables']['types']['parameters']['query']
->;
-
 export type OcrMismatchField =
   | keyof Pick<
       components['schemas']['PayableResponseSchema'],
@@ -159,39 +166,4 @@ export interface MonitePayableDetailsInfoProps {
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
   isTagsDisabled?: boolean;
-}
-
-export interface MoniteApprovalStatusChipProps {
-  /** The status of the payable. */
-  status: components['schemas']['ApprovalPolicyStatus'];
-  /** Display status icon? */
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-}
-
-type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
-
-export interface MoniteApprovalRequestStatusChipProps {
-  /** The status of the approval request. */
-  status: ApprovalRequestStatus;
-  /** The size of the Chip. */
-  icon?: boolean;
-  /** Display status icon? */
-  variant?: ChipProps['variant'];
-  /** The variant of the Chip. */
-  size?: ChipProps['size'];
-}
-
-export type MoniteCounterpartType = 'customer' | 'vendor';
-
-export interface MoniteCounterpartStatusChipProps {
-  /** The status of the invoice. */
-  status: MoniteCounterpartType;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
 }
