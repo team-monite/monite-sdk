@@ -16,11 +16,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import {
-  materialDark as themeMoniteDark,
-  materialLight as themeMoniteLight,
-} from '@team-monite/sdk-themes';
 
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';
 
@@ -58,14 +53,6 @@ export const withGlobalStorybookDecorator = (
   const { monite } = cb?.() ?? { monite: undefined };
 
   return withThemeFromJSXProvider({
-    themes: {
-      light: themeMoniteLight,
-      dark: themeMoniteDark,
-    },
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    defaultTheme: window.matchMedia?.('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light',
     Provider: (...args: any[]) => {
       const updatedArgs = monite ? { ...args[0], monite } : args[0];
 

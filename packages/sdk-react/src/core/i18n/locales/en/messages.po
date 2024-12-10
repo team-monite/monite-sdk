@@ -2064,7 +2064,7 @@ msgstr "Created on"
 msgid "Creating payment link..."
 msgstr "Creating payment link..."
 
-#: src/core/utils/createThemeWithDefaults.ts:33
+#: src/core/utils/createThemeWithDefaults.ts:38
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -3727,7 +3727,7 @@ msgid "Invoice total"
 msgstr "Invoice total"
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:361
-#: src/core/utils/createThemeWithDefaults.ts:25
+#: src/core/utils/createThemeWithDefaults.ts:30
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -5558,7 +5558,7 @@ msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:296
-#: src/core/utils/createThemeWithDefaults.ts:29
+#: src/core/utils/createThemeWithDefaults.ts:34
 msgid "Quotes"
 msgstr "Quotes"
 

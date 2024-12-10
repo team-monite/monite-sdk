@@ -1,11 +1,13 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { getTheme } from '@/core/theme/mui-monite';
+import { ThemeConfig } from '@/core/theme/types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import {
   createTheme,
   type Theme,
-  type ThemeOptions,
   type Components,
+  type ThemeOptions,
 } from '@mui/material';
 
 /**
@@ -13,9 +15,12 @@ import {
  */
 export const createThemeWithDefaults = (
   i18n: I18n,
-  theme: Theme | ThemeOptions | undefined
-) =>
-  createTheme(
+  theme: ThemeConfig | undefined
+) => {
+  const themeOptions = getTheme(theme || {});
+
+  return createTheme(
+    themeOptions,
     {
       components: {
         MoniteReceivablesTable: {
@@ -73,6 +78,7 @@ export const createThemeWithDefaults = (
       },
     } satisfies ThemeOptions
   );
+};
 
 /**
  * Create a `defaultProps` for the given MUI component list

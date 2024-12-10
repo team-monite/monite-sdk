@@ -227,7 +227,7 @@ describe('PayablesTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the page limit is 10', async () => {
+    test('should fetch only first 15 elements when the page limit is 15', async () => {
       renderWithClient(<PayablesTable />);
 
       await waitUntilTableIsLoaded();
@@ -235,7 +235,7 @@ describe('PayablesTable', () => {
       await waitFor(() => {
         const items = screen.getAllByRole('row').slice(1);
 
-        expect(items.length).toBe(10);
+        expect(items.length).toBe(15);
       });
     });
 
@@ -254,7 +254,7 @@ describe('PayablesTable', () => {
       expect(prevDisabled).toBeTruthy();
     });
 
-    test('should fetch previous 10 elements when we click on "prev" button', async () => {
+    test('should fetch previous 15 elements when we click on "prev" button', async () => {
       renderWithClient(<PayablesTable />);
 
       await waitUntilTableIsLoaded();
