@@ -1,27 +1,12 @@
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
-// import { useMenuButton } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-// import CancelIcon from '@mui/icons-material/Cancel';
-// import EmailIcon from '@mui/icons-material/MailOutline';
-// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import {
-  Box,
-  CircularProgress, // Button,
-  //   CircularProgress,
-  //   List,
-  //   ListItem,
-  // MenuItem,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
-// import { StyledMenu } from '../../InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
-import { FinanceCardStack } from '../infographics/FinanceCardStack';
+// import { FinanceCardStack } from '../infographics/FinanceCardStack';
 
-// type Props = {};
-
-export const FinanceLimit = ({
+export const FinanceLimits = ({
   isLoading,
   offers,
 }: {
@@ -29,7 +14,6 @@ export const FinanceLimit = ({
   offers?: components['schemas']['FinancingOffer'][];
 }) => {
   const { i18n } = useLingui();
-  // const { buttonProps, menuProps } = useMenuButton();
   const { formatCurrencyToDisplay } = useCurrencies();
   const totalLimit = offers?.[0]?.total_amount ?? 0;
   const remainingLimit = offers?.[0]?.available_amount ?? 0;
@@ -56,7 +40,7 @@ export const FinanceLimit = ({
           position: 'relative',
         }}
       >
-        <FinanceCardStack
+        {/* <FinanceCardStack
           sx={{
             position: 'absolute',
             width: '360px',
@@ -65,7 +49,7 @@ export const FinanceLimit = ({
             right: 0,
             zIndex: 0,
           }}
-        />
+        /> */}
         <Box
           sx={{
             gap: 4,
@@ -115,47 +99,6 @@ export const FinanceLimit = ({
             `}
             </Typography>
           </Box>
-          {/* Action buttons */}
-          {/* <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                <Button
-                  sx={{ backgroundColor: 'black' }}
-                  variant="contained"
-                >{t(i18n)`Finance invoices`}</Button>
-                <Button sx={{ color: 'black' }}>{t(
-                  i18n
-                )`Payment schedule`}</Button>
-              </Box>
-              <Box>
-                <Button
-                  {...buttonProps}
-                  variant="text"
-                  color="primary"
-                  disableElevation
-                  endIcon={<MoreHorizIcon sx={{ color: 'black' }} />}
-                ></Button>
-                <StyledMenu {...menuProps}>
-                  <MenuItem onClick={() => {}}>
-                    <EmailIcon fontSize="small" />
-                    {t(i18n)`Some action`}
-                  </MenuItem>
-                  <MenuItem
-                    onClick={(event) => {
-                      event.preventDefault();
-                    }}
-                  >
-                    <CancelIcon fontSize="small" />
-                    {t(i18n)`Cancel Invoice`}
-                  </MenuItem>
-                </StyledMenu>
-              </Box>
-            </Box> */}
         </Box>
       </Box>
     </Box>

@@ -43,8 +43,8 @@ import {
 import {
   useInvoiceRowActionMenuCell,
   UseInvoiceRowActionMenuCellProps,
-} from '../../InvoicesTable/useInvoiceRowActionMenuCell';
-import { useReceivablesFilters } from '../../ReceivableFilters/useReceivablesFilters';
+} from '../../../InvoicesTable/useInvoiceRowActionMenuCell';
+import { useReceivablesFilters } from '../../../ReceivableFilters/useReceivablesFilters';
 
 interface FinancedInvoicesTableBaseProps {
   /**

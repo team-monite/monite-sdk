@@ -258,7 +258,7 @@ const ReceivablesTableBase = ({
           />
         </Box>
       )}
-      {activeTabItem?.query?.type === 'financing' && (
+      {activeTabItem?.label == 'Financing' && (
         <Box
           role="tabpanel"
           id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}

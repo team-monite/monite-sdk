@@ -1,12 +1,10 @@
 import { useGetFinanceOffers } from '@/core/queries/useFinancing';
 import { Box, CircularProgress } from '@mui/material';
 
-import { FinanceLimit } from './FinanceLimit';
+import { FinanceLimits } from './FinanceLimits';
 import { FinanceOffers } from './FinanceOffers';
 
-// type Props = {};
-
-export const FinanceSummary = () => {
+export const FinanceWidget = () => {
   const { isLoading, data } = useGetFinanceOffers();
 
   if (isLoading) {
@@ -21,7 +19,7 @@ export const FinanceSummary = () => {
     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
       {/* Limit */}
       <Box sx={{ flex: '1 1 0%', maxWidth: '496px', width: '100%' }}>
-        <FinanceLimit isLoading={isLoading} offers={data?.offers} />
+        <FinanceLimits isLoading={isLoading} offers={data?.offers} />
       </Box>
       {/* Current offer */}
       <Box

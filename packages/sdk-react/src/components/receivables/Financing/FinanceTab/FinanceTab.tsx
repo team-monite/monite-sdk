@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 
 // import { FinancedInvoicesTable } from './FinancedInvoicesTable';
-import { FinanceSummary } from './FinanceSummary';
+import { FinanceWidget } from './FinanceWidget/FinanceWidget';
 
 export const FinanceTab = () => {
   const { i18n } = useLingui();
@@ -26,7 +26,7 @@ export const FinanceTab = () => {
 
   return (
     <Stack mt={4} gap={4}>
-      <FinanceSummary />
+      <FinanceWidget />
 
       <DataGridEmptyState
         title={t(i18n)`No financed invoices yet`}

@@ -4,10 +4,10 @@ import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Box, // Button,
+  Box,
   CircularProgress,
   List,
-  ListItem, // MenuItem,
+  ListItem,
   Typography,
 } from '@mui/material';
 
