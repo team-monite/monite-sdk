@@ -16,17 +16,13 @@ export const FinanceWidget = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+    <Box sx={{ display: 'flex', gap: 4 }}>
       {/* Limit */}
-      <Box sx={{ flex: '1 1 0%', maxWidth: '496px', width: '100%' }}>
+      <Box sx={{ width: '100%' }}>
         <FinanceLimits isLoading={isLoading} offers={data?.offers} />
       </Box>
       {/* Current offer */}
-      <Box
-        sx={{
-          width: '542px',
-        }}
-      >
+      <Box sx={{ width: '100%' }}>
         <FinanceOffers isLoading={isLoading} offers={data?.offers} />
       </Box>
     </Box>

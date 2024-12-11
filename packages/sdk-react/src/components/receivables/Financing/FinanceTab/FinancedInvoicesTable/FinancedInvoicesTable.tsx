@@ -123,7 +123,7 @@ const FinancedInvoicesTableBase = ({
         field: 'document_id',
         headerName: t(i18n)`Number`,
         sortable: false,
-        width: 100,
+        width: 140,
         renderCell: ({ value }) => {
           if (!value) {
             return (
@@ -157,7 +157,7 @@ const FinancedInvoicesTableBase = ({
         field: 'status',
         headerName: t(i18n)`Status`,
         sortable: ReceivableCursorFields.includes('status'),
-        width: 80,
+        width: 160,
         renderCell: ({ value: status }) => {
           return <InvoiceStatusChip status={status} />;
         },
