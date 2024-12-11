@@ -33,18 +33,7 @@ export const FinanceApplicationCard = () => {
   }
 
   if (!isEnabled) {
-    return (
-      <Stack
-        gap={3}
-        sx={{ border: '1px solid', borderColor: 'divider' }}
-        borderRadius={3}
-        p={3}
-      >
-        <Typography variant="body1">
-          {t(i18n)`Financing is currently only available for US entities`}
-        </Typography>
-      </Stack>
-    );
+    return null;
   }
 
   return (

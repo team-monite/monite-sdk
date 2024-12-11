@@ -39,9 +39,9 @@ interface FinancedInvoicesTableBaseProps {
   /**
    * The event handler for a row click.
    *
-   * @param id - The identifier of the clicked row, a string.
+   * @param invoice_id - The identifier of the clicked row, a string.
    */
-  onRowClick?: (id: string) => void;
+  onRowClick?: (invoice_id: string) => void;
 
   /**
    * The event handler for the creation new invoice for no data state
@@ -246,7 +246,7 @@ const FinancedInvoicesTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
+        onRowClick={(params) => onRowClick?.(params.row.invoice_id)}
         slots={{
           pagination: () => (
             <TablePagination

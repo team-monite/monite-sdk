@@ -1,5 +1,5 @@
 import { useGetFinanceOffers } from '@/core/queries/useFinancing';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 
 import { FinanceLimits } from './FinanceLimits';
 import { FinanceOffers } from './FinanceOffers';
@@ -8,7 +8,18 @@ export const FinanceWidget = () => {
   const { isLoading, data } = useGetFinanceOffers();
 
   if (isLoading) {
-    return <CircularProgress color="inherit" size={20} />;
+    return (
+      <Box sx={{ display: 'flex', gap: 4 }}>
+        {/* Limit */}
+        <Box sx={{ width: '100%' }}>
+          <Skeleton variant="rounded" height="250px" width="100%" />
+        </Box>
+        {/* Current offer */}
+        <Box sx={{ width: '100%' }}>
+          <Skeleton variant="rounded" height="250px" width="100%" />
+        </Box>
+      </Box>
+    );
   }
 
   if (!data?.offers || data.offers.length === 0) {

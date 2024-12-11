@@ -4,7 +4,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-import { FinanceCardStack } from '../../infographics/FinanceCardStack';
+import { FinanceCardStack } from '../../../infographics/FinanceCardStack';
 
 export const FinanceLimits = ({
   isLoading,

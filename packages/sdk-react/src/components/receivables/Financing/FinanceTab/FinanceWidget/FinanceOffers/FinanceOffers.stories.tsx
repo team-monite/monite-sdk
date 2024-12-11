@@ -3,16 +3,16 @@ import { MemoryRouter } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
 
-import { FinanceLimits as FinanceLimitsComponent } from './FinanceLimits';
+import { FinanceOffers as FinanceOffersComponent } from './FinanceOffers';
 
 const Story = {
-  title: 'Financing/FinanceTab/FinanceLimits',
-  component: FinanceLimitsComponent,
+  title: 'Financing/FinanceTab/FinanceWidget/FinanceOffers',
+  component: FinanceOffersComponent,
 };
 
-type Story = StoryObj<typeof FinanceLimitsComponent>;
+type Story = StoryObj<typeof FinanceOffersComponent>;
 
-export const FinanceLimits: Story = {
+export const FinanceOffers: Story = {
   args: {},
   render: () => (
     <div
@@ -25,7 +25,7 @@ export const FinanceLimits: Story = {
       `}
     >
       <MemoryRouter>
-        <FinanceLimitsComponent isLoading={false} />
+        <FinanceOffersComponent isLoading={false} />
       </MemoryRouter>
     </div>
   ),

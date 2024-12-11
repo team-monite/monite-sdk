@@ -102,7 +102,7 @@ msgstr "{0} has been updated"
 msgid "{0}/{1} issued"
 msgstr "{0}/{1} issued"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:73
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:73
 msgid "{0}% advance rate"
 msgstr "{0}% advance rate"
 
@@ -110,7 +110,7 @@ msgstr "{0}% advance rate"
 msgid "{0}% advance rate, Pay in {1} days, {2}% fee"
 msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:83
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:83
 msgid "{0}% fee"
 msgstr "{0}% fee"
 
@@ -2110,7 +2110,7 @@ msgstr "Created on"
 msgid "Creating payment link..."
 msgstr "Creating payment link..."
 
-#: src/core/utils/createThemeWithDefaults.ts:33
+#: src/core/utils/createThemeWithDefaults.ts:35
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -2156,7 +2156,7 @@ msgstr "Cuba"
 msgid "Currency"
 msgstr "Currency"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:33
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:33
 msgid "Current offer"
 msgstr "Current offer"
 
@@ -2165,8 +2165,8 @@ msgid "Current status"
 msgstr "Current status"
 
 #: src/components/receivables/Financing/FinanceTab/FinanceTab.tsx:20
-msgid "Currently only supported for US entities"
-msgstr "Currently only supported for US entities"
+#~ msgid "Currently only supported for US entities"
+#~ msgstr "Currently only supported for US entities"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:272
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:275
@@ -3127,7 +3127,7 @@ msgstr "File size exceeds {maxFileSizeInMB}MB limit."
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:68
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:68
 msgid "Finance plan"
 msgstr "Finance plan"
 
@@ -3140,8 +3140,8 @@ msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
 #: src/core/utils/createThemeWithDefaults.ts:37
-msgid "Financing"
-msgstr "Financing"
+#~ msgid "Financing"
+#~ msgstr "Financing"
 
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:191
 msgid "Financing date"
@@ -3879,7 +3879,7 @@ msgstr "Invoice total"
 
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:273
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:363
-#: src/core/utils/createThemeWithDefaults.ts:25
+#: src/core/utils/createThemeWithDefaults.ts:27
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -4610,7 +4610,7 @@ msgstr "Mozambique"
 msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits.tsx:32
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits/FinanceLimits.tsx:32
 msgid "My financing"
 msgstr "My financing"
 
@@ -5198,7 +5198,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:78
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:78
 msgid "Pay in {0}"
 msgstr "Pay in {0}"
 
@@ -5754,7 +5754,7 @@ msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:295
-#: src/core/utils/createThemeWithDefaults.ts:29
+#: src/core/utils/createThemeWithDefaults.ts:31
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -5796,7 +5796,7 @@ msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:159
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:183
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:185
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
@@ -5919,7 +5919,7 @@ msgstr "Religious Organizations"
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits.tsx:64
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits/FinanceLimits.tsx:64
 msgid "Remaining limit"
 msgstr "Remaining limit"
 
@@ -7889,7 +7889,7 @@ msgstr "You don't have permission to issue this document. Please, contact your s
 msgid "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 msgstr "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits.tsx:97
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceLimits/FinanceLimits.tsx:97
 msgid "Your remaining limit is the amount available to you for financing additional invoices"
 msgstr "Your remaining limit is the amount available to you for financing additional invoices"
 

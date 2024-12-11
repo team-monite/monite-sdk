@@ -9,6 +9,7 @@ import {
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { FINANCING_LABEL, useFinancing } from '@/core/queries/useFinancing';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -156,6 +157,7 @@ const ReceivablesTableBase = ({
   ...inProps
 }: ReceivablesTableProps) => {
   const { tab, tabs } = useReceivablesTableProps(inProps);
+  const { isLoading, isEnabled } = useFinancing();
 
   const { i18n } = useLingui();
   const [activeTabIndex, setActiveTabIndex] = useState(tab ?? 0);
@@ -183,15 +185,22 @@ const ReceivablesTableBase = ({
           aria-label={t(i18n)`Receivables tabs`}
           onChange={(_, value) => handleTabChange(Number(value))}
         >
-          {tabs?.map(({ label }, index) => (
-            <Tab
-              key={`${label}-${tabsIdBase}-${index}`}
-              id={`${tabsIdBase}-${index}-tab`}
-              aria-controls={`${tabsIdBase}-${index}-tabpanel`}
-              label={label}
-              value={index}
-            />
-          ))}
+          {tabs?.map(({ label }, index) => {
+            if (label == FINANCING_LABEL && !isEnabled) {
+              return null;
+            }
+
+            return (
+              <Tab
+                key={`${label}-${tabsIdBase}-${index}`}
+                id={`${tabsIdBase}-${index}-tab`}
+                aria-controls={`${tabsIdBase}-${index}-tabpanel`}
+                label={label}
+                value={index}
+                disabled={isLoading}
+              />
+            );
+          })}
         </Tabs>
       </Box>
 
@@ -258,7 +267,7 @@ const ReceivablesTableBase = ({
           />
         </Box>
       )}
-      {activeTabItem?.label == 'Financing' && (
+      {activeTabItem?.label == FINANCING_LABEL && (
         <Box
           role="tabpanel"
           id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
@@ -270,7 +279,7 @@ const ReceivablesTableBase = ({
             minHeight: '0',
           }}
         >
-          <FinanceTab />
+          <FinanceTab onRowClick={onRowClick} />
         </Box>
       )}
     </>

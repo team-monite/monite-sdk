@@ -8,6 +8,8 @@ import {
   type Components,
 } from '@mui/material';
 
+import { FINANCING_LABEL } from '../queries/useFinancing';
+
 /**
  * Create a theme with the default component's `defaultProps`
  */
@@ -34,7 +36,7 @@ export const createThemeWithDefaults = (
                 query: { type: 'credit_note' },
               },
               {
-                label: t(i18n)`Financing`,
+                label: FINANCING_LABEL,
                 query: { type: 'financing' },
               },
             ],
