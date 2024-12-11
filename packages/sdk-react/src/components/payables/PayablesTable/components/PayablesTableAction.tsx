@@ -47,8 +47,7 @@ export const PayablesTableAction = ({
               if (onPayUS && payable.currency === 'USD') {
                 onPayUS?.(payable.id);
               } else {
-                onPay?.(payable.id);
-                handlePay();
+                onPay ? onPay?.(payable.id) : handlePay();
               }
             }}
           >
