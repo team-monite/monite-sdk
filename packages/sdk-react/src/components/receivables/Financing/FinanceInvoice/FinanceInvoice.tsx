@@ -7,6 +7,7 @@ import { FinanceCardStack } from '@/components/receivables/Financing/infographic
 import {
   useFinanceAnInvoice,
   useFinancing,
+  useGetFinancedInvoices,
   useGetFinanceOffers,
 } from '@/core/queries/useFinancing';
 // import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -29,6 +30,12 @@ export const FinanceInvoice = ({
   const { i18n } = useLingui();
   const [isFinancingAnInvoice, setIsFinancingAnInvoice] = useState(false);
 
+  const { isLoading: isLoadingFinancedInvoices, data: financedInvoices } =
+    useGetFinancedInvoices({
+      invoice_id: invoice.id,
+      type: 'receivable',
+    });
+
   const {
     isLoading: isLoadingFinanceSdk,
     isEnabled,
@@ -38,13 +45,12 @@ export const FinanceInvoice = ({
   const { isLoading: isLoadingFinanceOffers, data: financeOffersData } =
     useGetFinanceOffers();
 
-  const isLoading = isLoadingFinanceOffers || isLoadingFinanceSdk;
+  const isLoading =
+    isLoadingFinanceOffers || isLoadingFinanceSdk || isLoadingFinancedInvoices;
   const financeInvoiceMutation = useFinanceAnInvoice();
-  const invoiceIsEligibleForFinance = [
-    'issued',
-    'partially_paid',
-    'overdue',
-  ].includes(invoice.status);
+  const invoiceIsEligibleForFinance = ['issued', 'partially_paid'].includes(
+    invoice.status
+  );
 
   const financeInvoice = async () => {
     try {
@@ -77,15 +83,17 @@ export const FinanceInvoice = ({
     }
   };
 
+  const isOnboarded = financeOffersData?.business_status === 'ONBOARDED';
+
   if (isLoading) {
     return <CircularProgress color="inherit" size={20} />;
   }
 
-  if (!isEnabled || !invoiceIsEligibleForFinance) {
+  if (!isEnabled || !invoiceIsEligibleForFinance || !isOnboarded) {
     return null;
   }
 
-  const isFinanced = financeOffersData?.business_status === 'ONBOARDED';
+  const isFinanced = financedInvoices?.data?.length;
 
   if (isFinanced) {
     return (

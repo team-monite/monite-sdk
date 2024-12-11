@@ -43,9 +43,9 @@ export const FinanceDetails = ({ invoice, offers, financedInvoice }: Props) => {
     name: t(i18n)`Financing plan`,
     items: offer.pricing_plans.map(
       (item) =>
-        t(
-          i18n
-        )`${item.advance_rate_percentage}% advance rate, Pay in ${item.repayment_duration_days} days, ${item.fee_percentage}% fee`
+        t(i18n)`${item.advance_rate_percentage / 100}% advance rate, Pay in ${
+          item.repayment_duration_days
+        } days, ${item.fee_percentage / 100}% fee`
     ),
   }));
 
@@ -132,7 +132,7 @@ export const FinanceDetails = ({ invoice, offers, financedInvoice }: Props) => {
       </Box>
 
       {/* Finance plans */}
-      {financePlans?.map((plan) => (
+      {financePlans?.map((plan, index) => (
         <Box
           key={plan.name}
           sx={{
@@ -143,10 +143,10 @@ export const FinanceDetails = ({ invoice, offers, financedInvoice }: Props) => {
           <Box width="100%">
             <Typography variant="body1" color={theme.palette.text.secondary}>{t(
               i18n
-            )`Financing plan 1`}</Typography>
+            )`Financing plan ${index + 1}`}</Typography>
             <List>
               {plan.items.map((item) => (
-                <ListItem key={item} sx={{ p: 0 }}>
+                <ListItem key={item} sx={{ p: 0, mt: 1 }}>
                   <Typography variant="body1">{t(i18n)`${item}`}</Typography>
                 </ListItem>
               ))}

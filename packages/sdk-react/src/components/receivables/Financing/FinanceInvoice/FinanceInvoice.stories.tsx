@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { receivableListFixture } from '@/mocks';
 import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
@@ -25,9 +23,7 @@ export const FinanceInvoice: Story = {
         padding: 20px;
       `}
     >
-      <MemoryRouter>
-        <FinanceInvoiceComponent invoice={receivableListFixture.invoice[0]} />
-      </MemoryRouter>
+      <FinanceInvoiceComponent invoice={receivableListFixture.invoice[0]} />
     </div>
   ),
 };
