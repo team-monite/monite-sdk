@@ -134,7 +134,7 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
-#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:94
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:83
 #: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:118
 msgid "{displayButtonMessage}"
 msgstr "{displayButtonMessage}"
@@ -650,7 +650,7 @@ msgstr "Any user with role"
 msgid "Applied policy"
 msgstr "Applied policy"
 
-#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:78
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:67
 msgid "Apply for a monthly plan loans to manage your business more efficiently"
 msgstr "Apply for a monthly plan loans to manage your business more efficiently"
 
@@ -3148,8 +3148,8 @@ msgid "Financing date"
 msgstr "Financing date"
 
 #: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:44
-msgid "Financing is currently only available for US entities"
-msgstr "Financing is currently only available for US entities"
+#~ msgid "Financing is currently only available for US entities"
+#~ msgstr "Financing is currently only available for US entities"
 
 #: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:43
 msgid "Financing plan"
@@ -3831,7 +3831,7 @@ msgstr "Invoice date"
 msgid "Invoice delete confirmation"
 msgstr "Invoice delete confirmation"
 
-#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:74
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:63
 msgid "Invoice financing"
 msgstr "Invoice financing"
 
@@ -5767,7 +5767,7 @@ msgstr "Railroads"
 msgid "Read"
 msgstr "Read"
 
-#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:100
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:89
 msgid "Read more"
 msgstr "Read more"
 
