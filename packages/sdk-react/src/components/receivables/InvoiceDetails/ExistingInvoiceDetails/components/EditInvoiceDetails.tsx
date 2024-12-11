@@ -65,11 +65,19 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
-  const { isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
+  const {
+    isLoading: isEntityLoading,
+    isNonVatSupported,
+    isNonCompliantFlow,
+  } = useMyEntity();
 
   const methods = useForm<UpdateReceivablesFormProps>({
     resolver: yupResolver(
-      getUpdateInvoiceValidationSchema(i18n, isNonVatSupported)
+      getUpdateInvoiceValidationSchema(
+        i18n,
+        isNonVatSupported,
+        isNonCompliantFlow
+      )
     ),
     defaultValues: {
       /** Customer section */

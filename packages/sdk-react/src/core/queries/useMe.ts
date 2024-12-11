@@ -29,7 +29,7 @@ export const useMe = () => {
 };
 
 export const useMyEntity = () => {
-  const { api } = useMoniteContext();
+  const { api, monite } = useMoniteContext();
 
   const queryProps = api.entityUsers.getEntityUsersMyEntity.useQuery(
     {},
@@ -40,11 +40,17 @@ export const useMyEntity = () => {
       refetchOnWindowFocus: false,
     }
   );
+  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: monite.entityId },
+  });
 
   const isVatSupported = Boolean(
     queryProps.data?.address &&
       VAT_SUPPORTED_COUNTRIES.includes(queryProps.data?.address.country)
   );
+
+  const isNonCompliantFlow =
+    entitySettings?.receivable_edit_flow === 'non_compliant';
 
   const entityName = getEntityName(queryProps.data);
 
@@ -52,6 +58,7 @@ export const useMyEntity = () => {
     ...queryProps,
     entityName,
     isNonVatSupported: !isVatSupported,
+    isNonCompliantFlow,
   };
 };
 

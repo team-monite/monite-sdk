@@ -60,11 +60,19 @@ const CreateReceivablesBase = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, monite } = useMoniteContext();
-  const { isNonVatSupported, isLoading: isEntityLoading } = useMyEntity();
+  const {
+    isNonVatSupported,
+    isLoading: isEntityLoading,
+    isNonCompliantFlow,
+  } = useMyEntity();
 
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(
-      getCreateInvoiceValidationSchema(i18n, isNonVatSupported)
+      getCreateInvoiceValidationSchema(
+        i18n,
+        isNonVatSupported,
+        isNonCompliantFlow
+      )
     ),
     defaultValues: useMemo(
       () => ({
