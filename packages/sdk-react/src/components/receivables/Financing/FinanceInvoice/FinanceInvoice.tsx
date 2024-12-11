@@ -22,6 +22,8 @@ import {
   Typography,
 } from '@mui/material';
 
+const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
+
 export const FinanceInvoice = ({
   invoice,
 }: {
@@ -48,9 +50,18 @@ export const FinanceInvoice = ({
   const isLoading =
     isLoadingFinanceOffers || isLoadingFinanceSdk || isLoadingFinancedInvoices;
   const financeInvoiceMutation = useFinanceAnInvoice();
-  const invoiceIsEligibleForFinance = ['issued', 'partially_paid'].includes(
+
+  const invoiceStatusIsValid = ['issued', 'partially_paid'].includes(
     invoice.status
   );
+
+  const invoiceDueDateIsValid = invoice.due_date
+    ? new Date(invoice.due_date).getTime() -
+        (new Date().getTime() + SIX_DAYS_IN_MILLISECONDS) >
+      0
+    : false;
+  const invoiceIsEligibleForFinance =
+    invoiceStatusIsValid && invoiceDueDateIsValid;
 
   const financeInvoice = async () => {
     try {
