@@ -4,7 +4,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-// import { FinanceCardStack } from '../infographics/FinanceCardStack';
+import { FinanceCardStack } from '../../infographics/FinanceCardStack';
 
 export const FinanceLimits = ({
   isLoading,
@@ -40,7 +40,7 @@ export const FinanceLimits = ({
           position: 'relative',
         }}
       >
-        {/* <FinanceCardStack
+        <FinanceCardStack
           sx={{
             position: 'absolute',
             width: '360px',
@@ -49,7 +49,7 @@ export const FinanceLimits = ({
             right: 0,
             zIndex: 0,
           }}
-        /> */}
+        />
         <Box
           sx={{
             gap: 4,

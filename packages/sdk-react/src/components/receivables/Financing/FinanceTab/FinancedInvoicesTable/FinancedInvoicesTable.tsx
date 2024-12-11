@@ -171,7 +171,7 @@ const FinancedInvoicesTableBase = ({
         valueGetter: (_, row) => {
           const value = row.repayment_schedule?.repayment_amount;
 
-          return value ? formatCurrencyToDisplay(value, row.currency) : '';
+          return value ? formatCurrencyToDisplay(value, row.currency) : '-';
         },
       },
       {
@@ -183,7 +183,7 @@ const FinancedInvoicesTableBase = ({
         valueGetter: (_, row) => {
           const value = row.repayment_schedule?.repayment_principal_amount;
 
-          return value ? formatCurrencyToDisplay(value, row.currency) : '';
+          return value ? formatCurrencyToDisplay(value, row.currency) : '-';
         },
       },
       {
@@ -199,16 +199,6 @@ const FinancedInvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
-      },
-      {
-        field: 'status',
-        headerName: t(i18n)`Financing`,
-        headerAlign: 'right',
-        align: 'right',
-        width: 120,
-        valueGetter: (_, row) => {
-          return row.status;
-        },
       },
     ];
   }, [formatCurrencyToDisplay, i18n, dateFormat]);
@@ -287,6 +277,7 @@ const FinancedInvoicesTableBase = ({
           ),
         }}
         columns={columns}
+        getRowId={(row) => row.document_id}
         rows={collectionData ?? []}
       />
     </Box>

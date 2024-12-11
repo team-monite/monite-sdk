@@ -3099,7 +3099,7 @@ msgstr "File size exceeds {maxFileSizeInMB}MB limit."
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:67
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers.tsx:68
 msgid "Finance plan"
 msgstr "Finance plan"
 
@@ -3111,7 +3111,6 @@ msgstr "Financed invoices"
 msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
-#: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:205
 #: src/core/utils/createThemeWithDefaults.ts:37
 msgid "Financing"
 msgstr "Financing"
