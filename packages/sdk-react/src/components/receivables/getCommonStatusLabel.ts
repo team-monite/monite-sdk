@@ -4,7 +4,9 @@ import { t } from '@lingui/macro';
 
 export const getCommonStatusLabel = (
   i18n: I18n,
-  status: components['schemas']['ReceivablesStatusEnum']
+  status:
+    | components['schemas']['ReceivablesStatusEnum']
+    | components['schemas']['WCInvoiceStatus']
 ) => {
   switch (status) {
     case 'draft':
@@ -31,6 +33,18 @@ export const getCommonStatusLabel = (
       return t(i18n)`Canceled`;
     case 'deleted':
       return t(i18n)`Deleted`;
+    case 'NEW':
+      return t(i18n)`New`;
+    case 'DEFAULTED':
+      return t(i18n)`Defaulted`;
+    case 'PAID':
+      return t(i18n)`Paid`;
+    case 'FUNDED':
+      return t(i18n)`Funded`;
+    case 'LATE':
+      return t(i18n)`Late`;
+    case 'REJECTED':
+      return t(i18n)`Rejected`;
     default:
       throw new Error(`Unknown status ${JSON.stringify(status)}`);
   }
