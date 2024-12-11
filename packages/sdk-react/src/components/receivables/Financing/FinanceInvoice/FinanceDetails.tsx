@@ -53,30 +53,30 @@ export const FinanceDetails = ({ invoice, offers, financedInvoice }: Props) => {
     ? i18n.date(financedInvoice.repayment_schedule.repayment_date, dateFormat)
     : '—';
 
-  const receivedSum = financedInvoice
+  const receivedSum = financedInvoice?.total_amount
     ? formatCurrencyToDisplay(
         financedInvoice.total_amount,
         financedInvoice.currency
       )
     : '-';
 
-  const serviceFee = financedInvoice
+  const serviceFee = financedInvoice?.repayment_schedule
     ? formatCurrencyToDisplay(
-        financedInvoice.repayment_schedule?.repayment_fee_amount ?? 0,
+        financedInvoice.repayment_schedule.repayment_fee_amount,
         financedInvoice.currency
       )
     : '-';
 
-  const repaymentSum = financedInvoice
+  const repaymentSum = financedInvoice?.repayment_schedule
     ? formatCurrencyToDisplay(
-        financedInvoice.repayment_schedule?.repayment_amount ?? 0,
+        financedInvoice.repayment_schedule.repayment_amount,
         financedInvoice.currency
       )
     : '-';
   const paymentDate = financedInvoice?.repayment_schedule?.repayment_date
     ? i18n.date(financedInvoice?.repayment_schedule?.repayment_date, dateFormat)
     : '—';
-  const paymentAmount = financedInvoice
+  const paymentAmount = financedInvoice?.total_amount
     ? formatCurrencyToDisplay(
         financedInvoice.total_amount,
         financedInvoice.currency
