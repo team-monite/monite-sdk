@@ -8,7 +8,6 @@ on:
     branches:
       - main
       - dev
-      - v4
     types: [synchronize, edited]
 
 concurrency:
