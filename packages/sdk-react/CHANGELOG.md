@@ -1,5 +1,14 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+- e2ae09a: feat(DEV-12955): add new styling approach for the SDK
+- eb51f82: refactor(DEV-12028): remove deprecated methods for payable details
+- 14a706d: feat(DEV-13343): move date time format to locale
+
 ## 3.19.1
 
 ### Patch Changes
