@@ -15,7 +15,7 @@ export const FinanceOffers = ({
   isLoading,
   offers,
 }: {
-  isLoading: boolean;
+  isLoading?: boolean;
   offers?: components['schemas']['FinancingOffer'][];
 }) => {
   const { i18n } = useLingui();

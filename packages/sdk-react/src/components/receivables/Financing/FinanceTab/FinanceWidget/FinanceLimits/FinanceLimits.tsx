@@ -7,10 +7,10 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { FinanceCardStack } from '../../../infographics/FinanceCardStack';
 
 export const FinanceLimits = ({
-  isLoading,
-  offers,
+  isLoading = false,
+  offers = [],
 }: {
-  isLoading: boolean;
+  isLoading?: boolean;
   offers?: components['schemas']['FinancingOffer'][];
 }) => {
   const { i18n } = useLingui();

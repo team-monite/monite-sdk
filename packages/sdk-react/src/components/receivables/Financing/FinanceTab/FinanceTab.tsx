@@ -2,7 +2,7 @@ import { useFinancing } from '@/core/queries/useFinancing';
 import { CircularProgress, Stack } from '@mui/material';
 
 import { FinancedInvoicesTable } from './FinancedInvoicesTable';
-import { FinanceWidget } from './FinanceWidget/FinanceWidget';
+import { FinanceWidget } from './FinanceWidget';
 
 export const FinanceTab = ({
   onRowClick,

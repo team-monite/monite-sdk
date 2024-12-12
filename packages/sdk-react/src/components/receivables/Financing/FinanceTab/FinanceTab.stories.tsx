@@ -1,5 +1,3 @@
-import { MemoryRouter } from 'react-router-dom';
-
 import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
 
@@ -24,9 +22,7 @@ export const FinanceTab: Story = {
         padding: 20px;
       `}
     >
-      <MemoryRouter>
-        <FinanceTabComponent />
-      </MemoryRouter>
+      <FinanceTabComponent />
     </div>
   ),
 };
