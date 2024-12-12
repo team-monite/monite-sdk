@@ -105,7 +105,8 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
 
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
-  isNonVatSupported: boolean
+  isNonVatSupported: boolean,
+  isNonCompliantFlow: boolean
 ) =>
   yup.object({
     type: yup.string().required(),
@@ -114,12 +115,13 @@ export const getCreateInvoiceValidationSchema = (
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: isNonVatSupported
-      ? yup.string().label(t(i18n)`VAT ID`)
-      : yup
-          .string()
-          .label(t(i18n)`VAT ID`)
-          .required(),
+    entity_vat_id_id:
+      isNonCompliantFlow || isNonVatSupported
+        ? yup.string().label(t(i18n)`VAT ID`)
+        : yup
+            .string()
+            .label(t(i18n)`VAT ID`)
+            .required(),
     counterpart_vat_id_id: yup.string().label(t(i18n)`Counterpart VAT ID`),
     fulfillment_date: yup
       .date()
@@ -157,7 +159,8 @@ export const getCreateInvoiceValidationSchema = (
 
 export const getUpdateInvoiceValidationSchema = (
   i18n: I18n,
-  isNonVatSupported: boolean
+  isNonVatSupported: boolean,
+  isNonCompliantFlow: boolean
 ) =>
   yup.object({
     counterpart_id: yup
@@ -165,12 +168,13 @@ export const getUpdateInvoiceValidationSchema = (
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: isNonVatSupported
-      ? yup.string().label(t(i18n)`VAT ID`)
-      : yup
-          .string()
-          .label(t(i18n)`VAT ID`)
-          .required(),
+    entity_vat_id_id:
+      isNonCompliantFlow || isNonVatSupported
+        ? yup.string().label(t(i18n)`VAT ID`)
+        : yup
+            .string()
+            .label(t(i18n)`VAT ID`)
+            .required(),
     counterpart_vat_id_id: yup.string().label(t(i18n)`Counterpart VAT ID`),
     fulfillment_date: yup
       .date()
