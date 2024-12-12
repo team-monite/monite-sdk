@@ -18,7 +18,9 @@ export interface MoniteInvoiceStatusChipProps {
   size?: ChipProps['size'];
   /** Display status icon? */
   /** The status of the invoice. */
-  status: components['schemas']['ReceivablesStatusEnum'];
+  status:
+    | components['schemas']['ReceivablesStatusEnum']
+    | components['schemas']['WCInvoiceStatus'];
   /** The variant of the Chip. */
 }
 

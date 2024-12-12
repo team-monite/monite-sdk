@@ -49,6 +49,7 @@ export const getPermissionToLabelMap = (i18n: I18n) => ({
   approval_policy: t(i18n)`Approval policy`,
   payment_record: t(i18n)`Payment record`,
   payable: t(i18n)`Payable`,
+  mailbox: t(i18n)`Mailbox`,
 });
 
 export const ACTION_TO_LATTER_MAP = {

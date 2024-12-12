@@ -98,7 +98,6 @@ export const rolesHandlers = [
     const updatedRole = {
       ...getAllRolesFixture.data[roleIndex],
       name: jsonBody.name || '',
-      permissions: jsonBody.permissions || {},
     };
 
     return HttpResponse.json(updatedRole);

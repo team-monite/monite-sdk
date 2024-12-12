@@ -51,7 +51,7 @@ import {
   useExistingInvoiceDetails,
 } from './useExistingInvoiceDetails';
 
-const StyledMenu = styled((props: MenuProps) => {
+export const StyledMenu = styled((props: MenuProps) => {
   const { root } = useRootElements();
 
   return (
