@@ -37,7 +37,6 @@ export const createThemeWithDefaults = (
               },
               {
                 label: FINANCING_LABEL,
-                query: { type: 'financing' },
               },
             ],
           },
