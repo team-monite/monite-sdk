@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 1.11.0-alpha.0
+
+### Minor Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+- e2ae09a: feat(DEV-12955): add new styling approach for the SDK
+
 ## 1.10.0
 
 ### Minor Changes

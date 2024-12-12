@@ -10,5 +10,11 @@
     "@monite/sdk-drop-in": "1.7.2",
     "@monite/sdk-react": "3.19.0"
   },
-  "changesets": []
+  "changesets": [
+    "afraid-hornets-knock",
+    "beige-ladybugs-remain",
+    "heavy-stingrays-provide",
+    "real-ways-eat",
+    "swift-zebras-obey"
+  ]
 }
