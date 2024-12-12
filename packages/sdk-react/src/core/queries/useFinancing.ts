@@ -6,6 +6,8 @@ import { Services } from '@/api';
 import { useMoniteContext } from '../context/MoniteContext';
 import { useMyEntity } from './useMe';
 
+export const FINANCING_LABEL = 'My Financing';
+
 export const useGetFinancedInvoices = (
   query: Services['financingInvoices']['getFinancingInvoices']['types']['parameters']['query'],
   enabled = true

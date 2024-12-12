@@ -100,7 +100,7 @@ export const FinanceInvoice = ({
     return <CircularProgress color="inherit" size={20} />;
   }
 
-  if (!isEnabled || !invoiceIsEligibleForFinance || !isOnboarded) {
+  if (!isEnabled || !isOnboarded) {
     return null;
   }
 
@@ -115,6 +115,10 @@ export const FinanceInvoice = ({
         />
       </Box>
     );
+  }
+
+  if (!invoiceIsEligibleForFinance) {
+    return null;
   }
 
   return (
