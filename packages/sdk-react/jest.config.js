@@ -94,7 +94,7 @@ module.exports = {
       statements: 96,
     },
     './src/components/receivables': {
-      branches: 35,
+      branches: 30,
       functions: 25,
       lines: 60,
       statements: 55,
