@@ -77,7 +77,7 @@ export const FinanceOffers = ({
                   <ListItem sx={{ p: 0 }}>
                     <Typography variant="body1">{t(
                       i18n
-                    )`Pay in ${item.repayment_duration_days}`}</Typography>
+                    )`Pay in ${item.repayment_duration_days} days`}</Typography>
                   </ListItem>
                   <ListItem sx={{ p: 0 }}>
                     <Typography variant="body1">{t(i18n)`${

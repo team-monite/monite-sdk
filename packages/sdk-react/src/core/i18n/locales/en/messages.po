@@ -2527,7 +2527,7 @@ msgstr "Dominican Peso"
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:156
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:160
 msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
 
@@ -3379,7 +3379,7 @@ msgstr "Germany"
 msgid "Get a small business loan plan to manage finances more efficiently."
 msgstr "Get a small business loan plan to manage finances more efficiently."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:187
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:191
 msgid "Get paid now"
 msgstr "Get paid now"
 
@@ -4270,7 +4270,7 @@ msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:113
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:186
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:190
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -5199,8 +5199,12 @@ msgid "Pay"
 msgstr "Pay"
 
 #: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:78
-msgid "Pay in {0}"
-msgstr "Pay in {0}"
+#~ msgid "Pay in {0}"
+#~ msgstr "Pay in {0}"
+
+#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:78
+msgid "Pay in {0} days"
+msgstr "Pay in {0} days"
 
 #: src/components/payables/PayablesTable/PayablesTable.tsx:521
 #: src/components/userRoles/consts.ts:51
@@ -6850,7 +6854,7 @@ msgstr "The following fields are required:"
 msgid "The IBAN should correspond to the chosen country - {country}."
 msgstr "The IBAN should correspond to the chosen country - {country}."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:163
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:167
 msgid "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 msgstr "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 
@@ -6937,7 +6941,7 @@ msgstr "This action can't be undone."
 msgid "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 msgstr "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:160
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:164
 msgid "This invoice can be financed"
 msgstr "This invoice can be financed"
 
@@ -7734,7 +7738,7 @@ msgstr "Who needs to approve the document and how:"
 msgid "Wholesale Clubs"
 msgstr "Wholesale Clubs"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:171
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:175
 msgid "Why?"
 msgstr "Why?"
 
