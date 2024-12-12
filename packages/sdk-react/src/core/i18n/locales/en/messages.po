@@ -514,8 +514,12 @@ msgid "All items"
 msgstr "All items"
 
 #: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:69
-msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
-msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
+msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
+msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:69
+#~ msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
+#~ msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here."
 
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:89
 msgid "All statuses"
@@ -3550,6 +3554,10 @@ msgstr "Hearing Aids Sales and Supplies"
 #: src/components/onboarding/dicts/mccCodes.ts:737
 msgid "Heating, Plumbing, A/C"
 msgstr "Heating, Plumbing, A/C"
+
+#: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:76
+msgid "here."
+msgstr "here."
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:90
 msgid ""
@@ -7723,8 +7731,12 @@ msgid "Western Sahara"
 msgstr "Western Sahara"
 
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:220
-msgid "What invoices can be financed?."
-msgstr "What invoices can be financed?."
+msgid "What invoices can be financed?"
+msgstr "What invoices can be financed?"
+
+#: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:220
+#~ msgid "What invoices can be financed?."
+#~ msgstr "What invoices can be financed?."
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:260
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."

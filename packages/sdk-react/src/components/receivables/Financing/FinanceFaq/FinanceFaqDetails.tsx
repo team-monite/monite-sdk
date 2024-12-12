@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
 const faqs = [
   {
@@ -68,7 +68,12 @@ export const FinanceFaqDetails = () => {
         <Typography variant="body2">
           {t(
             i18n
-          )`All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon here.`}
+          )`All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon`}{' '}
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://kanmon.com"
+          >{t(i18n)`here.`}</Link>
         </Typography>
       </Box>
     </Box>

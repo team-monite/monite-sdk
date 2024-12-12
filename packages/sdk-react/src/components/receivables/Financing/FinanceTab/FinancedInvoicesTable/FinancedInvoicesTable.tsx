@@ -217,7 +217,7 @@ const FinancedInvoicesTableBase = ({
         descriptionLine1={t(
           i18n
         )`Select invoices you would like to finance and send them for review.`}
-        descriptionLine2={t(i18n)`What invoices can be financed?.`}
+        descriptionLine2={t(i18n)`What invoices can be financed?`}
         type="no-data"
       />
     );
