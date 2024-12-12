@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.0
+
+### Minor Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+
 ## 1.7.2
 
 ### Patch Changes
