@@ -195,7 +195,6 @@ const EditInvoiceDetailsContent = ({
             id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
-              console.log("hanlding submit");
               const lineItems: components['schemas']['UpdateLineItems'] = {
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
