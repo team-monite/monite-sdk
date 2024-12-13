@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 3.19.1
+
+### Patch Changes
+
+- 1b4331b: fix(DEV-13498): fix vat validation based on current receivable_edit_flow
+- 5c63146: fix(proposal): fix the pay button logic
+  - @monite/sdk-api@3.19.1
+
 ## 3.19.0
 
 ### Minor Changes
