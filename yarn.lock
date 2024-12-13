@@ -8517,7 +8517,7 @@ __metadata:
     eslint: "npm:~8.57.0"
     express: "npm:^4.21.1"
     lodash-es: "npm:~4.17.21"
-    nanoid: "npm:~4.0.0"
+    nanoid: "npm:~5.0.9"
     node-fetch: "npm:~3.3.1"
     react: "npm:^18.1.0"
     react-dom: "npm:^18.1.0"
@@ -19068,12 +19068,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:~4.0.0":
-  version: 4.0.0
-  resolution: "nanoid@npm:4.0.0"
+"nanoid@npm:~5.0.9":
+  version: 5.0.9
+  resolution: "nanoid@npm:5.0.9"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10/9bd4e0cdff99b651d930d8a57c1f781b96fc91ab0b3a206a825843b99cb6cb2ffcae18f07e6ddb3e55dafac2d610ae9c973ed3b61a4b60e734df00dc6e2abfa4
+  checksum: 10/8a3f9104f81095e3e4785f58caae47a05755599824b8611b9730cbf73db706b664f100e6189f8303f08764f144d499613d8e4a39e83125c53f4b4986d6576621
   languageName: node
   linkType: hard
 
