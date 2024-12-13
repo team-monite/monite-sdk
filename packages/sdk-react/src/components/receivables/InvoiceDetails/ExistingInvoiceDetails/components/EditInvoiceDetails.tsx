@@ -99,8 +99,9 @@ const EditInvoiceDetailsContent = ({
       line_items: invoice.line_items.map((lineItem) => ({
         quantity: lineItem.quantity,
         product_id: lineItem.product.id,
-        vat_rate_id: lineItem.product.vat_rate.id,
-        vat_rate_value: lineItem.product.vat_rate.value,
+        ...(lineItem.vat_rate_id !== undefined
+          ? { vat_rate_id: lineItem.vat_rate_id }
+          : { tax_rate_value: lineItem.tax_rate_value * 100 }),
         name: lineItem.product.name,
         price: lineItem.product.price,
         measure_unit_id: lineItem.product.measure_unit?.id ?? '',
@@ -116,9 +117,7 @@ const EditInvoiceDetailsContent = ({
       overdue_reminder_id: invoice.overdue_reminder_id ?? '',
     },
   });
-
   const [actualCurrency, setActualCurrency] = useState(invoice.currency);
-
   const {
     handleSubmit,
     formState: { isDirty },
@@ -148,6 +147,8 @@ const EditInvoiceDetailsContent = ({
     isEntityLoading;
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  console.log(formName);
 
   const {
     createReminderDialog,
@@ -193,11 +194,14 @@ const EditInvoiceDetailsContent = ({
             id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
+              console.log("hanlding submit");
               const lineItems: components['schemas']['UpdateLineItems'] = {
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
                   product_id: lineItem.product_id,
-                  vat_rate_id: lineItem.vat_rate_id,
+                  ...(lineItem.vat_rate_id !== undefined
+                    ? { vat_rate_id: lineItem.vat_rate_id }
+                    : { tax_rate_value: lineItem.tax_rate_value * 100 }),
                 })),
               };
 
