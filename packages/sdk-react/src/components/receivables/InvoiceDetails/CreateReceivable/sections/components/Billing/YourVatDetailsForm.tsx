@@ -35,11 +35,20 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
     data: entity,
     isLoading: isEntityLoading,
     isNonVatSupported,
+    isNonCompliantFlow,
   } = useMyEntity();
+
+  const showEntityVatIdField =
+    !isNonVatSupported &&
+    !(
+      isNonCompliantFlow &&
+      entityVatIds?.data &&
+      entityVatIds.data.length === 0
+    );
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {!isNonVatSupported && (
+      {showEntityVatIdField && (
         <Controller
           name="entity_vat_id_id"
           control={control}
@@ -47,7 +56,7 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
             <FormControl
               variant="outlined"
               fullWidth
-              required
+              required={!isNonCompliantFlow}
               disabled={isEntityVatIdsLoading || disabled}
               error={Boolean(error)}
             >

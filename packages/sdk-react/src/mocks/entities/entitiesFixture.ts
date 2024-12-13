@@ -10,7 +10,7 @@ function getEntitySettings(): MergedSettingsResponse {
   return {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
-    receivable_edit_flow: 'non_compliant',
+    receivable_edit_flow: 'compliant',
     generate_paid_invoice_pdf: false,
     quote_signature_required: false,
     vat_mode: 'exclusive',

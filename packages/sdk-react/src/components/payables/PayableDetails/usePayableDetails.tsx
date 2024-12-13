@@ -864,8 +864,7 @@ export function usePayableDetails({
       if (onPayUS && payable.currency === 'USD') {
         onPayUS(payable.id);
       } else {
-        onPay?.(payable.id);
-        handlePay();
+        onPay ? onPay?.(payable.id) : handlePay();
       }
     }
   }, [payable, handlePay, onPay, onPayUS]);
