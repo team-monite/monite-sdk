@@ -148,8 +148,6 @@ const EditInvoiceDetailsContent = ({
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
-  console.log(formName);
-
   const {
     createReminderDialog,
     editReminderDialog,
