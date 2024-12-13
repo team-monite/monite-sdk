@@ -39,6 +39,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { FinanceInvoice } from '../../../Financing/FinanceInvoice/FinanceInvoice';
+
 interface OverviewTabPanelProps
   extends Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'> {
   onSetView: (view: 'recurrence') => void;
@@ -123,151 +125,154 @@ export const OverviewTabPanel = ({
   );
 
   return (
-    <Box
-      sx={{
-        '& > * + *': {
-          mt: 5,
-        },
-      }}
-      {...restProps}
-    >
-      <MoniteCard
-        items={[
-          {
-            label: t(i18n)`Customer`,
-            value: isCounterpartLoading ? (
-              <Skeleton variant="text" width="50%" />
-            ) : counterpartError || !counterpart ? (
-              '—'
-            ) : (
-              <Typography fontWeight={500}>
-                {getCounterpartName(counterpart)}
-              </Typography>
-            ),
+    <>
+      <FinanceInvoice invoice={invoice} />
+      <Box
+        sx={{
+          '& > * + *': {
+            mt: 5,
           },
-          invoice.recurrence_id
-            ? {
-                label: t(i18n)`Current status`,
-                value: recurrence ? (
-                  <InvoiceRecurrenceStatusChip
-                    status={recurrence?.status}
-                    size="small"
-                  />
-                ) : (
-                  <Skeleton variant="text" width="50%" />
-                ),
-              }
-            : undefined,
-          {
-            label: t(i18n)`Invoice total`,
-            value: (
-              <Typography fontWeight={500}>
-                {formatCurrencyToDisplay(
-                  invoice.total_amount_with_credit_notes,
-                  invoice.currency
-                )}
-              </Typography>
-            ),
-          },
-        ].filter((item) => !!item)}
-      />
-
-      {Boolean(
-        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
-      ) && (
-        <Box sx={{ '& > * + *': { mt: 2 } }}>
-          {creditNoteQuery?.data && creditNoteQuery.data.length > 0 && (
-            <Typography variant="subtitle2" sx={{ mb: 2 }}>
-              {t(i18n)`Linked documents`}
-            </Typography>
-          )}
-          {isCreditNoteLoading && <Skeleton variant="text" />}
-          {creditNoteQuery?.data && (
-            <LinkedDocumentsCard creditNotes={creditNoteQuery.data} />
-          )}
-        </Box>
-      )}
-
-      {(invoice.status === 'draft' || Boolean(invoice.recurrence_id)) && (
-        <Box>
-          <InvoiceRecurrence
-            invoiceId={invoice.id}
-            viewAll={
-              <Button
-                size="small"
-                variant="text"
-                onClick={(event) => {
-                  event.preventDefault();
-                  onSetView('recurrence');
-                }}
-              >
-                {t(i18n)`View all`}
-              </Button>
-            }
-          />
-        </Box>
-      )}
-      {!!invoice.based_on && (
-        <Box>
-          <InvoiceRecurrenceBasedOn receivableId={invoice.based_on} />
-        </Box>
-      )}
-
-      {Boolean(
-        paymentReminderQuery.data ||
-          overdueReminderQuery.data?.terms?.length ||
-          paymentReminderQuery.isLoading ||
-          overdueReminderQuery.isLoading ||
-          paymentReminderQuery.isError ||
-          overdueReminderQuery.isError
-      ) && (
-        <Box
-          sx={{
-            '& > * + *': {
-              mt: 2,
+        }}
+        {...restProps}
+      >
+        <MoniteCard
+          items={[
+            {
+              label: t(i18n)`Customer`,
+              value: isCounterpartLoading ? (
+                <Skeleton variant="text" width="50%" />
+              ) : counterpartError || !counterpart ? (
+                '—'
+              ) : (
+                <Typography fontWeight={500}>
+                  {getCounterpartName(counterpart)}
+                </Typography>
+              ),
             },
-          }}
-        >
-          <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
-            i18n
-          )`Reminder emails`}</Typography>
-          {paymentReminderQuery.isLoading && <Skeleton variant="text" />}
-          {!!paymentReminderQuery.data && (
-            <RemindersCard
-              cardTitle={paymentReminderQuery.data.name}
-              reminderTerms={createPaymentReminderCardTerms(
-                i18n,
-                paymentReminderQuery.data
-              )}
-              status={paymentReminderQuery.data.status}
-            />
-          )}
-          {paymentReminderQuery.isError && (
-            <Alert severity="error">
-              {getAPIErrorMessage(i18n, paymentReminderQuery.error)}
-            </Alert>
-          )}
+            invoice.recurrence_id
+              ? {
+                  label: t(i18n)`Current status`,
+                  value: recurrence ? (
+                    <InvoiceRecurrenceStatusChip
+                      status={recurrence?.status}
+                      size="small"
+                    />
+                  ) : (
+                    <Skeleton variant="text" width="50%" />
+                  ),
+                }
+              : undefined,
+            {
+              label: t(i18n)`Invoice total`,
+              value: (
+                <Typography fontWeight={500}>
+                  {formatCurrencyToDisplay(
+                    invoice.total_amount_with_credit_notes,
+                    invoice.currency
+                  )}
+                </Typography>
+              ),
+            },
+          ].filter((item) => !!item)}
+        />
 
-          {overdueReminderQuery.isLoading && <Skeleton variant="text" />}
-          {!!overdueReminderQuery.data?.terms?.length && (
-            <RemindersCard
-              cardTitle={overdueReminderQuery.data.name}
-              reminderTerms={createOverdueReminderCardTerms(
-                i18n,
-                overdueReminderQuery.data
-              )}
-              // overdue reminders are always active
-              status={'active'}
+        {Boolean(
+          creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
+        ) && (
+          <Box sx={{ '& > * + *': { mt: 2 } }}>
+            {creditNoteQuery?.data && creditNoteQuery.data.length > 0 && (
+              <Typography variant="subtitle2" sx={{ mb: 2 }}>
+                {t(i18n)`Linked documents`}
+              </Typography>
+            )}
+            {isCreditNoteLoading && <Skeleton variant="text" />}
+            {creditNoteQuery?.data && (
+              <LinkedDocumentsCard creditNotes={creditNoteQuery.data} />
+            )}
+          </Box>
+        )}
+
+        {(invoice.status === 'draft' || Boolean(invoice.recurrence_id)) && (
+          <Box>
+            <InvoiceRecurrence
+              invoiceId={invoice.id}
+              viewAll={
+                <Button
+                  size="small"
+                  variant="text"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onSetView('recurrence');
+                  }}
+                >
+                  {t(i18n)`View all`}
+                </Button>
+              }
             />
-          )}
-          {overdueReminderQuery.isError && (
-            <Alert severity="error">
-              {getAPIErrorMessage(i18n, overdueReminderQuery.error)}
-            </Alert>
-          )}
-        </Box>
-      )}
-    </Box>
+          </Box>
+        )}
+        {!!invoice.based_on && (
+          <Box>
+            <InvoiceRecurrenceBasedOn receivableId={invoice.based_on} />
+          </Box>
+        )}
+
+        {Boolean(
+          paymentReminderQuery.data ||
+            overdueReminderQuery.data?.terms?.length ||
+            paymentReminderQuery.isLoading ||
+            overdueReminderQuery.isLoading ||
+            paymentReminderQuery.isError ||
+            overdueReminderQuery.isError
+        ) && (
+          <Box
+            sx={{
+              '& > * + *': {
+                mt: 2,
+              },
+            }}
+          >
+            <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
+              i18n
+            )`Reminder emails`}</Typography>
+            {paymentReminderQuery.isLoading && <Skeleton variant="text" />}
+            {!!paymentReminderQuery.data && (
+              <RemindersCard
+                cardTitle={paymentReminderQuery.data.name}
+                reminderTerms={createPaymentReminderCardTerms(
+                  i18n,
+                  paymentReminderQuery.data
+                )}
+                status={paymentReminderQuery.data.status}
+              />
+            )}
+            {paymentReminderQuery.isError && (
+              <Alert severity="error">
+                {getAPIErrorMessage(i18n, paymentReminderQuery.error)}
+              </Alert>
+            )}
+
+            {overdueReminderQuery.isLoading && <Skeleton variant="text" />}
+            {!!overdueReminderQuery.data?.terms?.length && (
+              <RemindersCard
+                cardTitle={overdueReminderQuery.data.name}
+                reminderTerms={createOverdueReminderCardTerms(
+                  i18n,
+                  overdueReminderQuery.data
+                )}
+                // overdue reminders are always active
+                status={'active'}
+              />
+            )}
+            {overdueReminderQuery.isError && (
+              <Alert severity="error">
+                {getAPIErrorMessage(i18n, overdueReminderQuery.error)}
+              </Alert>
+            )}
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 

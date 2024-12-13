@@ -9,11 +9,14 @@ import {
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { FINANCING_LABEL, useFinancing } from '@/core/queries/useFinancing';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { useThemeProps } from '@mui/material/styles';
+
+import { FinanceTab } from '../Financing/FinanceTab/FinanceTab';
 
 interface ReceivablesTableControlledProps {
   /** Event handler for tab change */
@@ -47,6 +50,7 @@ export enum ReceivablesTableTabEnum {
   Invoices,
   Quotes,
   CreditNotes,
+  Financing,
 }
 
 interface ReceivablesTableBaseProps {
@@ -153,6 +157,7 @@ const ReceivablesTableBase = ({
   ...inProps
 }: ReceivablesTableProps) => {
   const { tab, tabs } = useReceivablesTableProps(inProps);
+  const { isLoading, isEnabled } = useFinancing();
 
   const { i18n } = useLingui();
   const [activeTabIndex, setActiveTabIndex] = useState(tab ?? 0);
@@ -180,15 +185,22 @@ const ReceivablesTableBase = ({
           aria-label={t(i18n)`Receivables tabs`}
           onChange={(_, value) => handleTabChange(Number(value))}
         >
-          {tabs?.map(({ label }, index) => (
-            <Tab
-              key={`${label}-${tabsIdBase}-${index}`}
-              id={`${tabsIdBase}-${index}-tab`}
-              aria-controls={`${tabsIdBase}-${index}-tabpanel`}
-              label={label}
-              value={index}
-            />
-          ))}
+          {tabs?.map(({ label }, index) => {
+            if (label == FINANCING_LABEL && !isEnabled) {
+              return null;
+            }
+
+            return (
+              <Tab
+                key={`${label}-${tabsIdBase}-${index}`}
+                id={`${tabsIdBase}-${index}-tab`}
+                aria-controls={`${tabsIdBase}-${index}-tabpanel`}
+                label={label}
+                value={index}
+                disabled={isLoading}
+              />
+            );
+          })}
         </Tabs>
       </Box>
 
@@ -253,6 +265,21 @@ const ReceivablesTableBase = ({
             setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             query={activeTabItem?.query}
           />
+        </Box>
+      )}
+      {activeTabItem?.label == FINANCING_LABEL && (
+        <Box
+          role="tabpanel"
+          id={`${tabsIdBase}-${activeTabIndex}-tabpanel`}
+          aria-labelledby={`${tabsIdBase}-${activeTabIndex}-tab`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
+        >
+          <FinanceTab onRowClick={onRowClick} />
         </Box>
       )}
     </>
