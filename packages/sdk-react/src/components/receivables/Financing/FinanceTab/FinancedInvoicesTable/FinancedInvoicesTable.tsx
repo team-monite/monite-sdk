@@ -7,6 +7,7 @@ import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
@@ -22,7 +23,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -79,6 +79,7 @@ const FinancedInvoicesTableBase = ({
   query,
 }: FinancedInvoicesTableProps) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
@@ -113,7 +114,7 @@ const FinancedInvoicesTableBase = ({
     setPaginationToken(undefined);
   };
 
-  const dateFormat = useDateFormat();
+  const dateFormat = locale.dateFormat;
 
   const columns = useMemo<
     GridColDef<components['schemas']['FinancingInvoice']>[]
