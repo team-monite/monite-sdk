@@ -5,10 +5,11 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { ThemeConfig } from '@/core/theme/types';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { ThemeProvider, Theme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -62,6 +63,13 @@ export const withGlobalStorybookDecorator = (
   });
 };
 
+/**
+ * Default theme config for storybook stories.
+ *
+ * This theme config is used to create the default theme for storybook stories.
+ */
+const defaultThemeConfig: ThemeConfig = {};
+
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
   theme?: ThemeConfig;
@@ -96,11 +104,9 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
-  const defaultThemeConfig: ThemeConfig = {};
-
   return (
     <>
-      <FallbackProviders>
+      <FallbackProviders theme={deepmerge(defaultThemeConfig, props.theme)}>
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
@@ -121,7 +127,7 @@ const MoniteReactQueryDevtools = () => {
 
 /**
  * Provides fallback providers for the storybook stories.
- * If a component is not wrapped in a `<MoniteScopedProviders/>,
+ * If a component is not wrapped in a `<MoniteScopedProviders />,
  * it will use these providers.
  */
 function FallbackProviders({
@@ -129,7 +135,7 @@ function FallbackProviders({
   theme,
 }: {
   children: ReactNode;
-  theme?: Theme;
+  theme: ThemeConfig;
 }) {
   const i18n = useMemo(() => {
     return setupI18n({
@@ -141,7 +147,12 @@ function FallbackProviders({
   }, []);
 
   return (
-    <ThemeProvider theme={theme || {}}>
+    <ThemeProvider
+      theme={createThemeWithDefaults(
+        i18n,
+        deepmerge(defaultThemeConfig, theme)
+      )}
+    >
       <I18nProvider
         // Due to the imperative nature of the I18nProvider,
         // a `key` must be added to change the locale in real time
