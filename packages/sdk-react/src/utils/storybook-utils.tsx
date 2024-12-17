@@ -8,7 +8,8 @@ import { ThemeConfig } from '@/core/theme/types';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Theme } from '@mui/material';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -97,15 +98,26 @@ export const GlobalStorybookDecorator = (props: {
 
   const defaultThemeConfig: ThemeConfig = {
     borderRadius: 10,
+    spacing: 4,
 
     colors: {
       primary: '#000000',
+      secondary: '#CD0F0F',
+      neutral: '#c6c9f8',
+      background: '#f4f4fe',
+
+      text: '#242dd3',
+    },
+
+    typography: {
+      fontFamily: 'monospace',
+      fontSize: 12,
     },
   };
 
   return (
     <>
-      <FallbackProviders theme={deepmerge(defaultThemeConfig, props.theme)}>
+      <FallbackProviders>
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
@@ -131,10 +143,10 @@ const MoniteReactQueryDevtools = () => {
  */
 function FallbackProviders({
   children,
-  theme = {},
+  theme,
 }: {
   children: ReactNode;
-  theme?: ThemeConfig;
+  theme?: Theme;
 }) {
   const i18n = useMemo(() => {
     return setupI18n({
@@ -146,7 +158,7 @@ function FallbackProviders({
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme || {}}>
       <I18nProvider
         // Due to the imperative nature of the I18nProvider,
         // a `key` must be added to change the locale in real time

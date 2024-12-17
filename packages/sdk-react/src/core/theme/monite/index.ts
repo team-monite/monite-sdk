@@ -3,7 +3,7 @@ import { ThemeConfig } from '@/core/theme/types';
 export const getTheme = (theme: ThemeConfig) => {
   return {
     borderRadius: theme.borderRadius || 3,
-    spacing: theme.spacing || 24,
+    spacing: theme.spacing || 8,
 
     colors: {
       primary: theme.colors?.primary || '#3737FF',

@@ -1175,6 +1175,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const components = renderColors(defaultMoniteComponents, palette);
 
   return {
+    spacing: moniteTheme.spacing,
     palette: {
       ...palette,
     },
