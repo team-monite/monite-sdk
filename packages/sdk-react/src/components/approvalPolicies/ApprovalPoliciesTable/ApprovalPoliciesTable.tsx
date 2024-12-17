@@ -171,10 +171,9 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
-        renderCell: (params) => {
-          console.log(params.row);
-          return <ApprovalPoliciesRules approvalPolicy={params.row} />;
-        },
+        renderCell: (params) => (
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
+        ),
       },
       {
         field: 'status',

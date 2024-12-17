@@ -17,9 +17,9 @@ import { FINANCING_LABEL } from '../queries/useFinancing';
  */
 export const createThemeWithDefaults = (
   i18n: I18n,
-  theme: ThemeConfig | undefined
+  theme: ThemeConfig = {}
 ) => {
-  const themeOptions = getTheme(theme || {});
+  const themeOptions = getTheme(theme);
 
   return createTheme(
     themeOptions,
@@ -48,7 +48,6 @@ export const createThemeWithDefaults = (
         },
       },
     } satisfies ThemeOptions,
-    theme ?? {},
     {
       components: {
         ...createComponentsThemeDefaultProps(

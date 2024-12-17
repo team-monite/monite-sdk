@@ -19,7 +19,7 @@ import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
-import type { Theme, ThemeOptions } from '@mui/material';
+import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
