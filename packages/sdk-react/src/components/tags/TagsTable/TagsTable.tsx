@@ -225,7 +225,6 @@ const TagsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <DataGrid
