@@ -220,7 +220,6 @@ const UserRolesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />

@@ -234,7 +234,6 @@ const FinancedInvoicesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
-        pt: 2,
       }}
     >
       <Typography mb={2} variant="subtitle1">{t(

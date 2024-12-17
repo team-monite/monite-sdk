@@ -289,7 +289,6 @@ const ProductsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />

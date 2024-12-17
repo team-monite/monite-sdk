@@ -96,24 +96,7 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
-  const defaultThemeConfig: ThemeConfig = {
-    borderRadius: 10,
-    spacing: 4,
-
-    colors: {
-      primary: '#000000',
-      secondary: '#CD0F0F',
-      neutral: '#c6c9f8',
-      background: '#f4f4fe',
-
-      text: '#242dd3',
-    },
-
-    typography: {
-      fontFamily: 'monospace',
-      fontSize: 12,
-    },
-  };
+  const defaultThemeConfig: ThemeConfig = {};
 
   return (
     <>

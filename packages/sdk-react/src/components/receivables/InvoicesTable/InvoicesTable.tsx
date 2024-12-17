@@ -308,7 +308,6 @@ const InvoicesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <Box mb={2}>
