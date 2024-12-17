@@ -4,12 +4,12 @@ import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
+import { ThemeConfig } from '@/core/theme/types';
 import { entityIds } from '@/mocks/entities';
-import { css, Global } from '@emotion/react';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
-import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
+import { ThemeProvider } from '@mui/material';
+import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -63,7 +63,7 @@ export const withGlobalStorybookDecorator = (
 
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
-  theme?: ThemeOptions;
+  theme?: ThemeConfig;
   monite?: MoniteSettings;
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
@@ -95,24 +95,21 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
-  const muiTheme = createTheme(props.theme);
+  const defaultThemeConfig: ThemeConfig = {
+    borderRadius: 10,
 
-  const backgroundColor =
-    muiTheme.palette?.mode === 'light'
-      ? '#FFFFFF'
-      : muiTheme.palette?.background?.default;
+    colors: {
+      primary: '#000000',
+    },
+  };
 
   return (
     <>
-      <Global
-        styles={css`
-          body {
-            background-color: ${backgroundColor} !important;
-          }
-        `}
-      />
-      <FallbackProviders theme={muiTheme}>
-        <MoniteProvider monite={props.monite ?? monite} theme={muiTheme}>
+      <FallbackProviders theme={deepmerge(defaultThemeConfig, props.theme)}>
+        <MoniteProvider
+          monite={props.monite ?? monite}
+          theme={deepmerge(defaultThemeConfig, props.theme)}
+        >
           <MoniteReactQueryDevtools />
           {props.children}
         </MoniteProvider>
@@ -134,10 +131,10 @@ const MoniteReactQueryDevtools = () => {
  */
 function FallbackProviders({
   children,
-  theme,
+  theme = {},
 }: {
   children: ReactNode;
-  theme: ThemeProviderProps['theme'];
+  theme?: ThemeConfig;
 }) {
   const i18n = useMemo(() => {
     return setupI18n({

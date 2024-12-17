@@ -9,6 +9,7 @@ type TypographyStyle = {
 
 export type ThemeConfig = {
   borderRadius?: number;
+  spacing?: number;
 
   colors?: {
     primary?: string;
