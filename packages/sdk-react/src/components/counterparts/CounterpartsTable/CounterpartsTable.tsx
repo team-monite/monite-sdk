@@ -382,7 +382,6 @@ const CounterpartsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <FiltersComponent

@@ -236,7 +236,6 @@ const CreditNotesTableBase = ({
           overflow: 'hidden',
           height: 'inherit',
           minHeight: '500px',
-          pt: 2,
         }}
       >
         <ReceivableFilters onChange={onChangeFilter} filters={filters} />
