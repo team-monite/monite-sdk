@@ -19,6 +19,7 @@ import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
+import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
@@ -40,7 +41,7 @@ export interface MoniteContextValue
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
-  theme: ThemeConfig;
+  theme: Theme;
   fetchToken: () => Promise<{
     access_token: string;
     expires_in: number;

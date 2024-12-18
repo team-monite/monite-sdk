@@ -299,7 +299,6 @@ const ApprovalRequestsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <ApprovalRequestsFilter onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
