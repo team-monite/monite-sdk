@@ -129,7 +129,7 @@ const EmailInvoiceDetailsBase = ({
   onClose,
 }: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
-  const { monite, api } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
 
   const { control, handleSubmit, getValues, trigger, reset } = useForm({
     resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
@@ -159,7 +159,7 @@ const EmailInvoiceDetailsBase = ({
 
   const { data: paymentMethods } =
     api.entities.getEntitiesIdPaymentMethods.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const [presentation, setPresentation] = useState<FormPresentation>(
@@ -208,7 +208,7 @@ const EmailInvoiceDetailsBase = ({
            */
           await createPaymentLink({
             recipient: {
-              id: monite.entityId,
+              id: entityId,
               type: 'entity',
             },
             payment_methods: availablePaymentMethods.map(
@@ -248,7 +248,7 @@ const EmailInvoiceDetailsBase = ({
       handleSubmit,
       i18n,
       invoiceId,
-      monite.entityId,
+      entityId,
       onClose,
       paymentMethods,
       sendMutation.mutate,

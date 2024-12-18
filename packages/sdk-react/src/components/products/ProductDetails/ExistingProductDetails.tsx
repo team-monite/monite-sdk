@@ -17,7 +17,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { useDateTimeFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -62,7 +61,7 @@ const ExistingProductDetailsBase = ({
 
   const dialogContext = useDialog();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
   const {
     data: product,
     error: productQueryError,
@@ -91,8 +90,6 @@ const ExistingProductDetailsBase = ({
     action: 'delete',
     entityUserId: user?.id,
   });
-
-  const dateTimeFormat = useDateTimeFormat();
 
   if (isLoading || isReadAllowedLoading) {
     return <LoadingPage />;
@@ -210,11 +207,11 @@ const ExistingProductDetailsBase = ({
               <TableBody>
                 <ProductDetailsTableCell
                   label={t(i18n)`Created at:`}
-                  value={i18n.date(product.created_at, dateTimeFormat)}
+                  value={i18n.date(product.created_at, locale.dateTimeFormat)}
                 />
                 <ProductDetailsTableCell
                   label={t(i18n)`Last update:`}
-                  value={i18n.date(product.updated_at, dateTimeFormat)}
+                  value={i18n.date(product.updated_at, locale.dateTimeFormat)}
                 />
               </TableBody>
             </Table>

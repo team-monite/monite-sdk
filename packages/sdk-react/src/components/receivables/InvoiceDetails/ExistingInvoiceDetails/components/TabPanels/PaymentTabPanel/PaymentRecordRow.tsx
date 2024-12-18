@@ -1,7 +1,7 @@
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserById, usePaymentIntentById } from '@/core/queries';
-import { useDateTimeFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
@@ -15,7 +15,7 @@ export const PaymentRecordRow = ({
   record: components['schemas']['PaymentRecordResponse'];
 }) => {
   const { i18n } = useLingui();
-  const dateTimeFormat = useDateTimeFormat();
+  const { locale } = useMoniteContext();
   const { data: entityUser, isLoading: isEntityUserLoading } =
     useEntityUserById(record.entity_user_id);
 
@@ -69,7 +69,7 @@ export const PaymentRecordRow = ({
           <Typography variant="body1">{recordTitle}</Typography>
         )}
         <Typography variant="body2" color="textSecondary">
-          {i18n.date(new Date(record.paid_at), dateTimeFormat)}
+          {i18n.date(new Date(record.paid_at), locale.dateTimeFormat)}
         </Typography>
       </Box>
       <Box

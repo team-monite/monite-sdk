@@ -1,8 +1,8 @@
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
-import { useDateTimeFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -20,7 +20,7 @@ export const ManualPaymentRecordDetails = ({
   invoice,
 }: Props) => {
   const { i18n } = useLingui();
-  const dateTimeFormat = useDateTimeFormat();
+  const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
 
   const dateTimeWithReplacedTime = new Date(
@@ -32,7 +32,7 @@ export const ManualPaymentRecordDetails = ({
 
   const dateTime = i18n.date(
     new Date(dateTimeWithReplacedTime),
-    dateTimeFormat
+    locale.dateTimeFormat
   );
 
   const { data: entityUser, isLoading: isEntityUserLoading } =

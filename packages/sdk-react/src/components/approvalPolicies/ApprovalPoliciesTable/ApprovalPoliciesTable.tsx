@@ -13,7 +13,6 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -106,7 +105,7 @@ const ApprovalPoliciesTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
 
   const {
     data: approvalPolicies,
@@ -133,8 +132,6 @@ const ApprovalPoliciesTableBase = ({
       setCurrentPaginationToken(null);
     }
   }, [currentPaginationToken, approvalPolicies]);
-
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -174,10 +171,9 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
-        renderCell: (params) => {
-          console.log(params.row);
-          return <ApprovalPoliciesRules approvalPolicy={params.row} />;
-        },
+        renderCell: (params) => (
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
+        ),
       },
       {
         field: 'status',
@@ -193,7 +189,7 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Created at`,
         sortable: false,
         flex: 0.7,
-        valueFormatter: (value) => i18n.date(value, dateFormat),
+        valueFormatter: (value) => i18n.date(value, locale.dateFormat),
       },
       {
         field: 'created_by',
@@ -203,7 +199,7 @@ const ApprovalPoliciesTableBase = ({
         renderCell: ({ value }) => <User userId={value} />,
       },
     ];
-  }, [dateFormat, i18n]);
+  }, [locale.dateFormat, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -252,7 +248,6 @@ const ApprovalPoliciesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />

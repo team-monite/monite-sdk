@@ -93,4 +93,32 @@ export const tagListFixture: components['schemas']['TagReadSchema'][] = [
     updated_at: '2023-11-21T16:35:18.484507+00:00',
     created_by_entity_user_id: entityUserByIdFixture.id,
   },
+  {
+    id: 'tag-13',
+    name: 'tag 13',
+    created_at: '2022-10-11T16:35:18.484507+00:00',
+    updated_at: '2023-11-21T16:35:18.484507+00:00',
+    created_by_entity_user_id: entityUserByIdFixture.id,
+  },
+  {
+    id: 'tag-14',
+    name: 'tag 14',
+    created_at: '2022-10-11T16:35:18.484507+00:00',
+    updated_at: '2023-11-21T16:35:18.484507+00:00',
+    created_by_entity_user_id: entityUserByIdFixture.id,
+  },
+  {
+    id: 'tag-15',
+    name: 'tag 15',
+    created_at: '2022-10-11T16:35:18.484507+00:00',
+    updated_at: '2023-11-21T16:35:18.484507+00:00',
+    created_by_entity_user_id: entityUserByIdFixture.id,
+  },
+  {
+    id: 'tag-16',
+    name: 'tag 16',
+    created_at: '2022-10-11T16:35:18.484507+00:00',
+    updated_at: '2023-11-21T16:35:18.484507+00:00',
+    created_by_entity_user_id: entityUserByIdFixture.id,
+  },
 ];

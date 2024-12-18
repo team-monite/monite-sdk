@@ -27,6 +27,6 @@ export const getMoniteApiUrl = (): string => {
 export const getMoniteApiVersion = (): string => {
   const moniteApiVersion = apiVersion;
   if (!moniteApiVersion)
-    throw new Error('apiVersion is not exists in "@monite/sdk-api"');
+    throw new Error('apiVersion is not exists in "@monite/sdk-react"');
   return moniteApiVersion;
 };

@@ -18,7 +18,7 @@ type MoniteSupportedMessages = Messages;
 export type MoniteLocale = {
   /**
    * `code` responsible for internationalised Widgets language, internationalised number and currency formatting.
-   * By default it uses `navigator.language` as a fallback in MoniteProvider.
+   * By default, it uses `navigator.language` as a fallback in MoniteProvider.
    * Intl format values are accepted and won't cause any trouble.
    *
    * E.g. 'en-GB', 'de-DE', etc.
@@ -26,7 +26,7 @@ export type MoniteLocale = {
   code?: string;
 
   /**
-   * Message` responsible for internationalised Widgets translation.
+   * `messages` responsible for internationalised Widgets translation.
    * By default, it uses `enLocaleMessages` as a fallback in MoniteProvider.
    *
    * The message object is a key-value pair where the key is the Message ID,
@@ -57,7 +57,7 @@ export type MoniteLocale = {
   messages?: MoniteSupportedMessages;
 
   /**
-   * `currencyDisplay` responsible for currency formatting.
+   * `currencyNumberFormat` responsible for currency formatting.
    */
   currencyNumberFormat?: {
     /**
@@ -78,12 +78,42 @@ export type MoniteLocale = {
      */
     localeCode?: string;
   };
+
+  /**
+   * `dateFormat` responsible for date & time formatting. It is used in the `Intl.DateTimeFormat` constructor.
+   *
+   * By default, it uses the following options:
+   * ```ts
+   * {
+   *   day: '2-digit',
+   *   month: 'short',
+   *   year: 'numeric',
+   *   hour: '2-digit',
+   *   minute: '2-digit',
+   * }
+   * ```
+   */
+  dateFormat?: Pick<
+    Intl.DateTimeFormatOptions,
+    | 'weekday'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'hour'
+    | 'minute'
+    | 'second'
+    | 'timeZoneName'
+    | 'hour12'
+    | 'timeZone'
+  >;
 };
 
 export type MoniteLocaleWithRequired = DeepRequired<
-  Omit<MoniteLocale, 'messages'>
+  Omit<MoniteLocale, 'messages' | 'dateFormat'>
 > &
-  Partial<Pick<MoniteLocale, 'messages'>>;
+  Partial<Pick<MoniteLocale, 'messages' | 'dateFormat'>> & {
+    dateTimeFormat?: Intl.DateTimeFormatOptions;
+  };
 
 export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
   const { i18n, dateFnsLocale } = useMoniteContext();
@@ -318,6 +348,36 @@ export function getLocaleWithDefaults(
     currencyNumberFormat: {
       localeCode: locale?.currencyNumberFormat?.localeCode ?? code,
       display: locale?.currencyNumberFormat?.display ?? 'symbol',
+    },
+    dateFormat: {
+      ...(locale?.dateFormat?.weekday && {
+        weekday: locale?.dateFormat?.weekday,
+      }),
+      year: locale?.dateFormat?.year ?? 'numeric',
+      month: locale?.dateFormat?.month ?? 'short',
+      day: locale?.dateFormat?.day ?? '2-digit',
+    },
+    dateTimeFormat: {
+      ...(locale?.dateFormat?.weekday && {
+        weekday: locale?.dateFormat?.weekday,
+      }),
+      year: locale?.dateFormat?.year ?? 'numeric',
+      month: locale?.dateFormat?.month ?? 'short',
+      day: locale?.dateFormat?.day ?? '2-digit',
+      hour: locale?.dateFormat?.hour ?? '2-digit',
+      minute: locale?.dateFormat?.minute ?? '2-digit',
+      ...(locale?.dateFormat?.second && {
+        second: locale?.dateFormat?.second,
+      }),
+      ...(locale?.dateFormat?.timeZoneName && {
+        timeZoneName: locale?.dateFormat?.timeZoneName,
+      }),
+      ...(locale?.dateFormat?.hour12 && {
+        hour12: locale?.dateFormat?.hour12,
+      }),
+      ...(locale?.dateFormat?.timeZone && {
+        timeZone: locale?.dateFormat?.timeZone,
+      }),
     },
   };
 }

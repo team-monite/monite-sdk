@@ -23,6 +23,7 @@ interface IconWrapperEvents {
 export interface MoniteIconWrapperProps
   extends IconButtonProps,
     IconWrapperEvents {
+  showCloseIcon?: boolean;
   icon?: ReactNode;
   fallbackIcon?: ReactNode;
   tooltip?: string;

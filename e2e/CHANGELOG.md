@@ -1,5 +1,11 @@
 # @team-monite/e2e
 
+## 1.1.0-alpha.0
+
+### Minor Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+
 ## 1.0.1
 
 ### Patch Changes

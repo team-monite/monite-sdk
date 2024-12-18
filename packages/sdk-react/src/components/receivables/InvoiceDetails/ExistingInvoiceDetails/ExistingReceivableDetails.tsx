@@ -11,7 +11,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -63,7 +62,7 @@ const ExistingReceivableDetailsBase = (
   props: ExistingReceivableDetailsProps
 ) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
 
   const {
     receivable: invoice,
@@ -128,8 +127,6 @@ const ExistingReceivableDetailsBase = (
         ),
       }
     );
-
-  const dateFormat = useDateFormat();
 
   if (!props.id) return null;
 
@@ -201,7 +198,7 @@ const ExistingReceivableDetailsBase = (
                   <TableCell>
                     <Typography>
                       {fulfillmentDate
-                        ? i18n.date(fulfillmentDate, dateFormat)
+                        ? i18n.date(fulfillmentDate, locale.dateFormat)
                         : '—'}
                     </Typography>
                   </TableCell>
@@ -212,7 +209,7 @@ const ExistingReceivableDetailsBase = (
                   </TableCell>
                   <TableCell>
                     <Typography>
-                      {dueDate ? i18n.date(dueDate, dateFormat) : '—'}
+                      {dueDate ? i18n.date(dueDate, locale.dateFormat) : '—'}
                     </Typography>
                   </TableCell>
                 </TableRow>

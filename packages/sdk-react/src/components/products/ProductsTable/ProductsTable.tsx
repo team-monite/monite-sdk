@@ -33,9 +33,6 @@ import {
 } from './consts';
 import { Filters as FilterType, FilterValue } from './types';
 
-/** @deprecated Use `ProductTableProps` instead */
-export type IProductTableProps = ProductTableProps;
-
 export interface ProductTableProps {
   /**
    * Triggered when the filtering options are changed.
@@ -292,7 +289,6 @@ const ProductsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
