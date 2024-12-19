@@ -14,21 +14,12 @@ import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
 import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
-import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { createAPIClient, useMoniteContext } from '@monite/sdk-react';
 import { Logout } from '@mui/icons-material';
-import {
-  Alert,
-  Backdrop,
-  Button,
-  createTheme,
-  CssBaseline,
-  Stack,
-} from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
+import { Alert, Backdrop, Button, CssBaseline, Stack } from '@mui/material';
 import {
   QueryClient,
   QueryClientProvider,
@@ -64,9 +55,7 @@ const SDKDemoComponent = ({
   authData,
 }: AuthCredentialsProviderForwardProps) => {
   const { api_url } = useConfig();
-  const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
-  const sdkDemoTheme = createTheme(getThemeOptions(themeConfig));
 
   const [fetchTokenError, setFetchTokenError] = useState<Error | null>(null);
   const fetchToken = useCallback(async () => {
@@ -93,57 +82,52 @@ const SDKDemoComponent = ({
   }, [logoutCallback, api, queryClient]);
 
   return (
-    <ThemeProvider theme={sdkDemoTheme}>
-      <SDKDemoI18nProvider localeCode="en-US">
-        <CssBaseline enableColorScheme />
-        <AuthErrorsBackdrop
-          errors={[fetchTokenError, authData].filter(
-            (error) => error instanceof Error
-          )}
-          logout={logout}
-        />
+    <SDKDemoI18nProvider localeCode={navigator.language}>
+      <CssBaseline enableColorScheme />
+      <AuthErrorsBackdrop
+        errors={[fetchTokenError, authData].filter(
+          (error) => error instanceof Error
+        )}
+        logout={logout}
+      />
 
-        {authData === undefined && !fetchTokenError && (
-          <LoginForm login={login} />
-        )}
-        {authData && !(authData instanceof Error) && (
-          <Suspense>
-            <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
-              {(entityId) => (
-                <SDKDemoAPIProvider
-                  apiUrl={apiUrl}
-                  entityId={entityId}
-                  fetchToken={fetchToken}
+      {authData === undefined && !fetchTokenError && (
+        <LoginForm login={login} />
+      )}
+      {authData && !(authData instanceof Error) && (
+        <Suspense>
+          <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
+            {(entityId) => (
+              <SDKDemoAPIProvider
+                apiUrl={apiUrl}
+                entityId={entityId}
+                fetchToken={fetchToken}
+              >
+                <AppMoniteProvider
+                  sdkConfig={{
+                    entityId,
+                    apiUrl,
+                    fetchToken,
+                  }}
                 >
-                  <AppMoniteProvider
-                    theme={sdkDemoTheme}
-                    sdkConfig={{
-                      entityId,
-                      apiUrl,
-                      fetchToken,
-                    }}
-                  >
-                    <MoniteReactQueryDevtools />
-                    <Global styles={getFontFaceStyles} />
-                    <BrowserRouter>
-                      <DefaultLayout
-                        themeConfig={themeConfig}
-                        setThemeConfig={setThemeConfig}
-                        siderProps={{
-                          footer: <SiderFooter onLogout={logout} />,
-                        }}
-                      >
-                        <Base />
-                      </DefaultLayout>
-                    </BrowserRouter>
-                  </AppMoniteProvider>
-                </SDKDemoAPIProvider>
-              )}
-            </EntityIdLoader>
-          </Suspense>
-        )}
-      </SDKDemoI18nProvider>
-    </ThemeProvider>
+                  <MoniteReactQueryDevtools />
+                  <Global styles={getFontFaceStyles} />
+                  <BrowserRouter>
+                    <DefaultLayout
+                      siderProps={{
+                        footer: <SiderFooter onLogout={logout} />,
+                      }}
+                    >
+                      <Base />
+                    </DefaultLayout>
+                  </BrowserRouter>
+                </AppMoniteProvider>
+              </SDKDemoAPIProvider>
+            )}
+          </EntityIdLoader>
+        </Suspense>
+      )}
+    </SDKDemoI18nProvider>
   );
 };
 

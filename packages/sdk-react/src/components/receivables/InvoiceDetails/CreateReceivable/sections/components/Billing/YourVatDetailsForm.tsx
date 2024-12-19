@@ -25,10 +25,10 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
 
   const { root } = useRootElements();
 
-  const { api, monite } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
   const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
     api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const {

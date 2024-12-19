@@ -50,7 +50,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
       }
     >
       <FormControl
-        variant="outlined"
+        variant="standard"
         fullWidth
         className="Monite-ProductTypeFilter Monite-FilterControl"
       >
@@ -85,7 +85,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
         </Select>
       </FormControl>
       <FormControl
-        variant="outlined"
+        variant="standard"
         fullWidth
         disabled={isMeasureUnitsLoading}
         className="Monite-ProductUnitFilter Monite-FilterControl"

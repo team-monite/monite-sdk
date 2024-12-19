@@ -31,7 +31,7 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: UseExistingInvoiceDetailsProps) {
-  const { monite } = useMoniteContext();
+  const { entityId } = useMoniteContext();
 
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
@@ -156,7 +156,7 @@ export function useExistingInvoiceDetails({
     receivable?.status === 'draft' && isDeleteAllowed;
 
   const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
-    path: { entity_id: monite.entityId },
+    path: { entity_id: entityId },
   });
 
   const isCancelButtonVisible =

@@ -34,7 +34,7 @@ type UpdatePDFFormValues = {
 export const UpdatePDFModal = ({ invoice }: Props) => {
   const { i18n } = useLingui();
   const [modalOpen, setModalOpen] = useState(false);
-  const { api, monite } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
   const { root } = useRootElements();
   const closeModal = () => setModalOpen(false);
   const { handleSubmit, control } = useForm<{
@@ -61,7 +61,7 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
             await api.entities.getEntitiesIdSettings.useQuery(
               {
                 path: {
-                  entity_id: monite.entityId,
+                  entity_id: entityId,
                 },
               },
               { enabled: true }

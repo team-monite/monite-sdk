@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useGetFinancedInvoices } from '@/core/queries/useFinancing';
-import { useDateFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Skeleton, Typography } from '@mui/material';
@@ -22,6 +22,7 @@ type Props = {
 
 export const FinanceOverviewCard = ({ invoice, offers }: Props) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -33,7 +34,7 @@ export const FinanceOverviewCard = ({ invoice, offers }: Props) => {
 
   const financedInvoice = data?.data?.[0] ?? null;
 
-  const dateFormat = useDateFormat();
+  const dateFormat = locale.dateFormat;
 
   const repaymentAmount = financedInvoice
     ? formatCurrencyToDisplay(
