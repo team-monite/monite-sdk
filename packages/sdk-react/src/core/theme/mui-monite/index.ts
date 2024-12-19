@@ -356,6 +356,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               backgroundColor: palette.neutral['95'],
               padding: '0 6px',
 
+              '.MuiSelect-icon': {
+                color: palette.text.primary,
+              },
+
               '&.Mui-focused': {
                 backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
                 border: `1px solid ${palette.primary.main}`,
@@ -366,21 +370,32 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             },
 
             '&:hover': {
-              '& .MuiInputBase-root': {
+              '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
                 backgroundColor: palette.neutral['90'],
+              },
 
-                '&.Mui-focused': {
-                  backgroundColor: palette.neutral['80'],
+              '.MuiFormLabel-root.MuiFormLabel-filled': {
+                opacity: 0,
+
+                '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+                  backgroundColor: chroma(palette.primary.main)
+                    .alpha(0.12)
+                    .hex(),
                 },
               },
             },
 
             '& .MuiSelect-select': {
               fontSize: '14px',
+
+              '&:focus': {
+                backgroundColor: 'transparent',
+              },
             },
 
             '& .MuiFormLabel-root': {
               position: 'absolute',
+              zIndex: 1,
               left: '45px',
               top: '10px',
               fontSize: '14px',
@@ -390,6 +405,17 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
 
               '&.MuiFormLabel-filled': {
                 opacity: 0,
+
+                '+ .MuiInputBase-root': {
+                  color: palette.primary.main,
+                  backgroundColor: chroma(palette.primary.main)
+                    .alpha(0.05)
+                    .hex(),
+
+                  '.MuiSelect-icon, .MuiSvgIcon-root, .MuiSvgIcon-root>*': {
+                    color: palette.primary.main,
+                  },
+                },
               },
             },
 

@@ -47,7 +47,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
       }
     >
       <FormControl
-        variant="outlined"
+        variant="standard"
         className="Monite-PayableStatusFilter Monite-FilterControl"
       >
         <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
@@ -87,6 +87,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
           onChangeFilter(FILTER_TYPE_DUE_DATE, value as string);
         }}
         slotProps={{
+          textField: { variant: 'standard' },
           popper: {
             container: root,
           },
