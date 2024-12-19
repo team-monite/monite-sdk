@@ -28,6 +28,7 @@ export type PayablesProps = Pick<
   | 'onRejected'
   | 'onApproved'
   | 'onReopened'
+  | 'onDeleted'
   | 'onPay'
   | 'onPayUS'
 >;
@@ -47,6 +48,7 @@ const PayablesBase = ({
   onRejected,
   onApproved,
   onReopened,
+  onDeleted,
   onPay,
   onPayUS,
 }: PayablesProps) => {
@@ -57,6 +59,14 @@ const PayablesBase = ({
     invoiceId: string | undefined;
     open: boolean;
   }>({ invoiceId: undefined, open: false });
+
+  const closeEditDialog = () => {
+    setInvoiceIdDialog((prev) => ({
+      ...prev,
+      open: false,
+      invoiceId: undefined,
+    }));
+  };
 
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
@@ -166,27 +176,26 @@ const PayablesBase = ({
         className={className + '-Dialog-PayableDetails'}
         open={invoiceIdDialog.open}
         container={root}
-        onClose={() => {
-          setInvoiceIdDialog((prev) => ({ ...prev, open: false }));
-        }}
-        onClosed={() => {
-          setInvoiceIdDialog((prev) =>
-            prev.open ? prev : { open: false, invoiceId: undefined }
-          );
-        }}
+        onClose={closeEditDialog}
+        onClosed={closeEditDialog}
         fullScreen
       >
         <PayableDetails
           id={invoiceIdDialog.invoiceId}
-          onClose={() => {
-            setInvoiceIdDialog((prev) => ({ ...prev, open: false }));
-          }}
+          onClose={closeEditDialog}
           onSaved={onSaved}
           onCanceled={onCanceled}
           onSubmitted={onSubmitted}
           onRejected={onRejected}
           onApproved={onApproved}
           onReopened={onReopened}
+          onDeleted={(payableId) => {
+            onDeleted?.(payableId);
+            closeEditDialog();
+            toast(t(i18n)`Bill #${payableId} has been deleted`, {
+              duration: 5000,
+            });
+          }}
           onPay={onPay}
           onPayUS={onPayUS}
         />

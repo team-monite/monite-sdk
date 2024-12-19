@@ -33,6 +33,7 @@ export interface PayablesDetailsHeaderProps {
   approveInvoice: () => void;
   cancelInvoice: () => void;
   reopenInvoice: () => void;
+  deleteInvoice: () => void;
   payInvoice: () => void;
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
@@ -51,6 +52,7 @@ export const PayableDetailsHeader = ({
   approveInvoice,
   cancelInvoice,
   reopenInvoice,
+  deleteInvoice,
   payInvoice,
   payableDetailsFormId,
   isPaymentLinkAvailable,
@@ -110,6 +112,15 @@ export const PayableDetailsHeader = ({
       color: 'error',
       onClick: cancelInvoice,
       children: t(i18n)`Cancel bill`,
+    },
+    delete: {
+      variant: 'text',
+      color: 'error',
+      onClick: () => {
+        deleteInvoice();
+        onClose && onClose();
+      },
+      children: t(i18n)`Delete bill`,
     },
     pay: {
       variant: 'contained',
