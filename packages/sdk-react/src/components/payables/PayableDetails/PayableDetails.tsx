@@ -53,6 +53,7 @@ const PayableDetailsBase = ({
   onRejected,
   onApproved,
   onReopened,
+  onDeleted,
   onPay,
   onPayUS,
 }: PayablesDetailsProps) => {
@@ -73,6 +74,7 @@ const PayableDetailsBase = ({
       approveInvoice,
       cancelInvoice,
       reopenInvoice,
+      deleteInvoice,
       isPaymentLinkAvailable,
       modalComponent,
     },
@@ -89,6 +91,7 @@ const PayableDetailsBase = ({
     onRejected,
     onApproved,
     onReopened,
+    onDeleted,
     onPay,
     onPayUS,
   });
@@ -156,6 +159,7 @@ const PayableDetailsBase = ({
           approveInvoice={approveInvoice}
           reopenInvoice={reopenInvoice}
           cancelInvoice={cancelInvoice}
+          deleteInvoice={deleteInvoice}
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
