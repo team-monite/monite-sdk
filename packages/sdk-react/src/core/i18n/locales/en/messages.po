@@ -389,7 +389,7 @@ msgid "Add your first bill"
 msgstr "Add your first bill"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:239
-#: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:83
+#: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:84
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:538
 #: src/components/payables/PayablesTable/PayablesTable.tsx:337
 msgid "Added by"
@@ -4999,7 +4999,7 @@ msgstr "Onboarding Completed"
 msgid "One Stop Shop Value Added Tax (EU)"
 msgstr "One Stop Shop Value Added Tax (EU)"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:105
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:106
 msgid "Only my approvals"
 msgstr "Only my approvals"
 
