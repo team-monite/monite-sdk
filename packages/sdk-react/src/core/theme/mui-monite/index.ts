@@ -10,20 +10,15 @@ import type { TypographyOptions } from '@mui/material/styles/createTypography.js
 import { isPlainObject } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
 
+import chroma from 'chroma-js';
+
 import { getTheme as getMoniteTheme } from '../monite';
 import {
   getPrimaryColors,
-  MonitePaletteColorOptions,
   getSecondaryColors,
   getNeutralColors,
-  MoniteNeutralColorOptions,
   getTextColors,
 } from './colors';
-
-interface MonitePaletteOptions extends PaletteOptions {
-  primary: MonitePaletteColorOptions;
-  neutral: MoniteNeutralColorOptions;
-}
 
 // Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
 function renderColor(strVal: string, palette: PaletteOptions): string {
@@ -92,7 +87,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     all: '#F4F4FE',
   };
 
-  const palette: MonitePaletteOptions = {
+  const palette = {
     primary: getPrimaryColors(moniteTheme.colors.primary),
     secondary: getSecondaryColors(moniteTheme.colors.secondary),
     neutral: getNeutralColors(moniteTheme.colors.neutral),
@@ -293,6 +288,11 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           fontWeight: 400,
           borderRadius: moniteTheme.borderRadius * 2.67,
           minHeight: '40px',
+          '&:before, &:after': {
+            display: 'none',
+            content: 'none',
+            visibility: 'hidden',
+          },
           '& .MuiInputBase-input': {
             height: '40px',
             lineHeight: '40px',
@@ -350,23 +350,53 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               height: '40px',
               minHeight: '40px',
               maxHeight: '40px',
-              borderRadius: moniteTheme.borderRadius,
-              color: 'black',
-              backgroundColor: 'transparent',
+              borderRadius: moniteTheme.borderRadius * 2,
+              color: palette.text.primary,
+              fontWeight: 500,
+              backgroundColor: palette.neutral['95'],
               padding: '0 6px',
 
-              '.MuiOutlinedInput-notchedOutline': {
-                // borderStyle: 'none',
+              '.MuiSelect-icon': {
+                color: palette.text.primary,
+              },
+
+              '&.Mui-focused': {
+                backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
+                border: `1px solid ${palette.primary.main}`,
+                boxShadow: `0 0 0 4px ${chroma(palette.primary.main)
+                  .alpha(0.24)
+                  .hex()}`,
+              },
+            },
+
+            '&:hover': {
+              '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+                backgroundColor: palette.neutral['90'],
+              },
+
+              '.MuiFormLabel-root.MuiFormLabel-filled': {
+                opacity: 0,
+
+                '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+                  backgroundColor: chroma(palette.primary.main)
+                    .alpha(0.12)
+                    .hex(),
+                },
               },
             },
 
             '& .MuiSelect-select': {
               fontSize: '14px',
+
+              '&:focus': {
+                backgroundColor: 'transparent',
+              },
             },
 
             '& .MuiFormLabel-root': {
               position: 'absolute',
-              left: '20px',
+              zIndex: 1,
+              left: '45px',
               top: '10px',
               fontSize: '14px',
               maxWidth: 'calc(100% - 52px)',
@@ -375,11 +405,23 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
 
               '&.MuiFormLabel-filled': {
                 opacity: 0,
+
+                '+ .MuiInputBase-root': {
+                  color: palette.primary.main,
+                  backgroundColor: chroma(palette.primary.main)
+                    .alpha(0.05)
+                    .hex(),
+
+                  '.MuiSelect-icon, .MuiSvgIcon-root, .MuiSvgIcon-root>*': {
+                    color: palette.primary.main,
+                  },
+                },
               },
             },
 
             '& .MuiInputLabel-root': {
-              fontWeight: 400,
+              fontWeight: 500,
+              color: palette.text.secondary,
             },
 
             '& .MuiIconButton-root': {
@@ -390,7 +432,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 width: '20px',
                 height: '20px',
                 '> *': {
-                  color: 'black',
+                  color: palette.text.primary,
                 },
               },
 
