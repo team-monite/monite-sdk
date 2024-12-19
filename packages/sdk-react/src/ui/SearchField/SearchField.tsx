@@ -1,12 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-} from '@mui/material';
+import { FormControl, InputAdornment, InputLabel, Input } from '@mui/material';
 import { debounce } from '@mui/material/utils';
 
 /**
@@ -59,21 +54,21 @@ export const SearchField = ({ label, onChange, value }: SearchFieldProps) => {
 
   return (
     <FormControl
-      variant="outlined"
       aria-label="search-by-name"
       className="Monite-SearchField Monite-FilterControl"
     >
-      <InputLabel htmlFor="search-by-name">{label}</InputLabel>
-      <OutlinedInput
+      <InputLabel htmlFor="search-by-name" shrink>
+        {label}
+      </InputLabel>
+      <Input
         id="search-by-name"
         name="search-by-name"
         aria-label="search-by-name"
-        label={label}
         value={value}
         onChange={(search) => {
           debouncedOnChange(search.target.value || null);
         }}
-        endAdornment={
+        startAdornment={
           <InputAdornment position="end">
             <SearchIcon fontSize="medium" />
           </InputAdornment>
