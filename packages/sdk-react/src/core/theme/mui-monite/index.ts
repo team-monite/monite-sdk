@@ -17,6 +17,7 @@ import {
   getPrimaryColors,
   getSecondaryColors,
   getNeutralColors,
+  getSeverityColors,
   getTextColors,
 } from './colors';
 
@@ -91,6 +92,11 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     primary: getPrimaryColors(moniteTheme.colors.primary),
     secondary: getSecondaryColors(moniteTheme.colors.secondary),
     neutral: getNeutralColors(moniteTheme.colors.neutral),
+
+    info: getSeverityColors(moniteTheme.colors.info),
+    success: getSeverityColors(moniteTheme.colors.success),
+    warning: getSeverityColors(moniteTheme.colors.warning),
+    error: getSeverityColors(moniteTheme.colors.error),
 
     background: {
       default: moniteTheme.colors.background,
@@ -208,8 +214,38 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     MuiAlert: {
       styleOverrides: {
-        standardInfo: {
-          backgroundColor: 'primary.90',
+        root: {
+          borderRadius: moniteTheme.borderRadius,
+
+          '&.MuiAlert-colorInfo': {
+            backgroundColor: chroma(palette.info.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.info.main,
+            },
+          },
+
+          '&.MuiAlert-colorSuccess': {
+            backgroundColor: chroma(palette.success.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.success.main,
+            },
+          },
+          '&.MuiAlert-colorWarning': {
+            backgroundColor: chroma(palette.warning.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.warning.main,
+            },
+          },
+          '&.MuiAlert-colorError': {
+            backgroundColor: chroma(palette.error.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.error.main,
+            },
+          },
         },
       },
     },
