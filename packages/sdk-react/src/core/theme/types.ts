@@ -16,6 +16,11 @@ export type ThemeConfig = {
     secondary?: string;
     neutral?: string;
 
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+
     background?: string;
 
     text?: string;
@@ -33,6 +38,59 @@ export type ThemeConfig = {
     body1?: TypographyStyle;
     body2?: TypographyStyle;
   };
+};
+
+export type MonitePalette = {
+  primary: {
+    dark: string;
+    main: string;
+    light: string;
+    '60': string;
+    '80': string;
+    '90': string;
+  };
+  secondary: {
+    main: string;
+    dark: string;
+  };
+  neutral: {
+    '10': string;
+    '50': string;
+    '70': string;
+    '80': string;
+    '90': string;
+    '95': string;
+  };
+  info: {
+    main: string;
+    light: string;
+    dark: string;
+  };
+  success: {
+    main: string;
+    light: string;
+    dark: string;
+  };
+  warning: {
+    main: string;
+    light: string;
+    dark: string;
+  };
+  error: {
+    main: string;
+    light: string;
+    dark: string;
+  };
+  background: {
+    default: string;
+    paper: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+    disabled: string;
+  };
+  divider: string;
 };
 
 interface MoniteTablePaginationRootSlotProps {

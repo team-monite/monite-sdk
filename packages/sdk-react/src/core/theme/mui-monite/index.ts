@@ -1,4 +1,4 @@
-import { ThemeConfig } from '@/core/theme/types';
+import { MonitePalette, ThemeConfig } from '@/core/theme/types';
 import { Components } from '@mui/material/styles';
 import type {
   Palette,
@@ -17,8 +17,10 @@ import {
   getPrimaryColors,
   getSecondaryColors,
   getNeutralColors,
+  getSeverityColors,
   getTextColors,
 } from './colors';
+import { getFormControlStyles } from './components';
 
 // Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
 function renderColor(strVal: string, palette: PaletteOptions): string {
@@ -87,10 +89,15 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     all: '#F4F4FE',
   };
 
-  const palette = {
+  const palette: MonitePalette = {
     primary: getPrimaryColors(moniteTheme.colors.primary),
     secondary: getSecondaryColors(moniteTheme.colors.secondary),
     neutral: getNeutralColors(moniteTheme.colors.neutral),
+
+    info: getSeverityColors(moniteTheme.colors.info),
+    success: getSeverityColors(moniteTheme.colors.success),
+    warning: getSeverityColors(moniteTheme.colors.warning),
+    error: getSeverityColors(moniteTheme.colors.error),
 
     background: {
       default: moniteTheme.colors.background,
@@ -152,16 +159,19 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       fontSize: moniteTheme.typography.h1.fontSize,
       fontWeight: moniteTheme.typography.h1.fontWeight,
       lineHeight: moniteTheme.typography.h1.lineHeight,
+      color: palette.text.primary,
     },
     h2: {
       fontSize: moniteTheme.typography.h2.fontSize,
       fontWeight: moniteTheme.typography.h2.fontWeight,
       lineHeight: moniteTheme.typography.h2.lineHeight,
+      color: palette.text.primary,
     },
     h3: {
       fontSize: moniteTheme.typography.h3.fontSize,
       fontWeight: moniteTheme.typography.h3.fontWeight,
       lineHeight: moniteTheme.typography.h3.lineHeight,
+      color: palette.text.primary,
     },
     subtitle1: {
       fontSize: moniteTheme.typography.subtitle1.fontSize,
@@ -205,8 +215,38 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     MuiAlert: {
       styleOverrides: {
-        standardInfo: {
-          backgroundColor: 'primary.90',
+        root: {
+          borderRadius: moniteTheme.borderRadius,
+
+          '&.MuiAlert-colorInfo': {
+            backgroundColor: chroma(palette.info.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.info.main,
+            },
+          },
+
+          '&.MuiAlert-colorSuccess': {
+            backgroundColor: chroma(palette.success.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.success.main,
+            },
+          },
+          '&.MuiAlert-colorWarning': {
+            backgroundColor: chroma(palette.warning.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.warning.main,
+            },
+          },
+          '&.MuiAlert-colorError': {
+            backgroundColor: chroma(palette.error.main).alpha(0.05).hex(),
+
+            '.MuiAlert-icon, .MuiAlert-message': {
+              color: palette.error.main,
+            },
+          },
         },
       },
     },
@@ -320,148 +360,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          '& .MuiInputBase-root': {
-            minHeight: '48px',
-            borderRadius: moniteTheme.borderRadius * 2.67,
-          },
-          '& .MuiOutlinedInput-notchedOutline': {
-            top: 0,
-          },
-          // Hide border cutout
-          '& .MuiOutlinedInput-notchedOutline legend': {
-            display: 'none',
-          },
-          '& .MuiOutlinedInput-root': {
-            left: 0,
-            top: 0,
-          },
-          '&.Monite-FilterControl': {
-            height: '40px',
-            minHeight: '40px',
-            maxHeight: '40px',
-            maxWidth: filterControlWidth,
-            width: '100%',
-
-            '& .MuiInputBase-root': {
-              marginTop: 0,
-              height: '40px',
-              minHeight: '40px',
-              maxHeight: '40px',
-              borderRadius: moniteTheme.borderRadius * 2,
-              color: palette.text.primary,
-              fontWeight: 500,
-              backgroundColor: palette.neutral['95'],
-              padding: '0 6px',
-
-              '.MuiSelect-icon': {
-                color: palette.text.primary,
-              },
-
-              '&.Mui-focused': {
-                backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
-                border: `1px solid ${palette.primary.main}`,
-                boxShadow: `0 0 0 4px ${chroma(palette.primary.main)
-                  .alpha(0.24)
-                  .hex()}`,
-              },
-            },
-
-            '&:hover': {
-              '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-                backgroundColor: palette.neutral['90'],
-              },
-
-              '.MuiFormLabel-root.MuiFormLabel-filled': {
-                opacity: 0,
-
-                '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-                  backgroundColor: chroma(palette.primary.main)
-                    .alpha(0.12)
-                    .hex(),
-                },
-              },
-            },
-
-            '& .MuiSelect-select': {
-              fontSize: '14px',
-
-              '&:focus': {
-                backgroundColor: 'transparent',
-              },
-            },
-
-            '& .MuiFormLabel-root': {
-              position: 'absolute',
-              zIndex: 1,
-              left: '45px',
-              top: '10px',
-              fontSize: '14px',
-              maxWidth: 'calc(100% - 52px)',
-              textOverflow: 'ellipsis',
-              pointerEvents: 'none',
-
-              '&.MuiFormLabel-filled': {
-                opacity: 0,
-
-                '+ .MuiInputBase-root': {
-                  color: palette.primary.main,
-                  backgroundColor: chroma(palette.primary.main)
-                    .alpha(0.05)
-                    .hex(),
-
-                  '.MuiSelect-icon, .MuiSvgIcon-root, .MuiSvgIcon-root>*': {
-                    color: palette.primary.main,
-                  },
-                },
-              },
-            },
-
-            '& .MuiInputLabel-root': {
-              fontWeight: 500,
-              color: palette.text.secondary,
-            },
-
-            '& .MuiIconButton-root': {
-              marginRight: '-6px',
-            },
-            '& .MuiInputAdornment-positionEnd .MuiSvgIcon-root, & .MuiIconButton-root .MuiSvgIcon-root':
-              {
-                width: '20px',
-                height: '20px',
-                '> *': {
-                  color: palette.text.primary,
-                },
-              },
-
-            '&.Monite-DateFilterControl': {
-              'input::placeholder': {
-                opacity: 0,
-              },
-            },
-
-            '& .MuiInputBase-input:not(.MuiSelect-select)': {
-              padding: '0 0 0 8px',
-              fontSize: '14px',
-              textOverflow: 'ellipsis',
-
-              '& + .MuiInputAdornment-root': {
-                marginLeft: 0,
-              },
-            },
-          },
-          '&.Monite-SearchField': {
-            maxWidth: '400px',
-            width: '100%',
-            '& label': {
-              color: 'secondary.main',
-            },
-          },
-        },
-      },
-    },
+    MuiFormControl: getFormControlStyles(palette, theme, filterControlWidth),
     MuiSelect: {
       styleOverrides: {
         root: {
@@ -934,17 +833,47 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           '& .MuiTab-root': {
+            color: palette.neutral[50],
             padding: '16px',
+            boxSizing: 'border-box',
+
+            '&:hover': {
+              '&:after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: 4,
+                backgroundColor: palette.neutral[50],
+                borderRadius: 10,
+              },
+            },
+
+            '&:active': {
+              backgroundColor: palette.neutral[90],
+              borderTopLeftRadius: moniteTheme.borderRadius * 2,
+              borderTopRightRadius: moniteTheme.borderRadius * 2,
+            },
           },
           '& .MuiTab-root.Mui-selected': {
-            backgroundColor: 'transparent',
-            color: 'secondary.dark',
-            borderRadius: 0,
+            backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
+            color: palette.primary.main,
+            borderTopLeftRadius: moniteTheme.borderRadius * 2,
+            borderTopRightRadius: moniteTheme.borderRadius * 2,
+
+            '&:hover': {
+              backgroundColor: chroma(palette.primary.main).alpha(0.12).hex(),
+            },
+
+            '&:active': {
+              backgroundColor: chroma(palette.primary.main).alpha(0.24).hex(),
+            },
           },
         },
         indicator: {
-          borderRadius: 0,
-          backgroundColor: 'secondary.dark',
+          borderRadius: 6,
+          backgroundColor: palette.primary.main,
           height: '4px',
         },
       },

@@ -10,6 +10,11 @@ export const getTheme = (theme: ThemeConfig) => {
       secondary: theme.colors?.secondary || '#707070',
       neutral: theme.colors?.neutral || '#707070',
 
+      info: theme.colors?.info || theme.colors?.primary || '#3737FF',
+      success: theme.colors?.success || '#1FBCA0',
+      warning: theme.colors?.warning || '#C78032',
+      error: theme.colors?.error || '#CC394B',
+
       background: theme.colors?.background || '#FAFAFA',
 
       text: theme.colors?.text || '#292929',
@@ -28,8 +33,8 @@ export const getTheme = (theme: ThemeConfig) => {
         lineHeight: theme.typography?.h1?.lineHeight || '68px',
       },
       h2: {
-        fontSize: theme.typography?.h2?.fontSize || 32,
-        fontWeight: theme.typography?.h2?.fontWeight || 600,
+        fontSize: theme.typography?.h2?.fontSize || 34,
+        fontWeight: theme.typography?.h2?.fontWeight || 640,
         lineHeight: theme.typography?.h2?.lineHeight || '40px',
       },
       h3: {
