@@ -10,6 +10,11 @@ export const getTheme = (theme: ThemeConfig) => {
       secondary: theme.colors?.secondary || '#707070',
       neutral: theme.colors?.neutral || '#707070',
 
+      info: theme.colors?.info || theme.colors?.primary || '#3737FF',
+      success: theme.colors?.success || '#1FBCA0',
+      warning: theme.colors?.warning || '#C78032',
+      error: theme.colors?.error || '#CC394B',
+
       background: theme.colors?.background || '#FAFAFA',
 
       text: theme.colors?.text || '#292929',
