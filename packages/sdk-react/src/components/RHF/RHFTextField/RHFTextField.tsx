@@ -33,6 +33,7 @@ export const RHFTextField = <T extends FieldValues>({
               {...field}
               {...other}
               id={name}
+              variant="standard"
               value={field.value ?? ''} // This makes component controlled https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled otherwise there are warnings in console
               error={isInvalid && !!error?.message}
               helperText={isInvalid && error?.message}

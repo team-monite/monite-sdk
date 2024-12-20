@@ -383,7 +383,7 @@ const RecipientSelector = ({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           error={Boolean(error)}
@@ -461,7 +461,7 @@ const Form = ({
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   id={field.name}
-                  variant="outlined"
+                  variant="standard"
                   className="Monite-NakedField"
                   fullWidth
                   error={Boolean(error)}
@@ -481,7 +481,7 @@ const Form = ({
             render={({ field, fieldState: { error } }) => (
               <TextField
                 id={field.name}
-                variant="outlined"
+                variant="standard"
                 className="Monite-NakedField"
                 fullWidth
                 error={Boolean(error)}

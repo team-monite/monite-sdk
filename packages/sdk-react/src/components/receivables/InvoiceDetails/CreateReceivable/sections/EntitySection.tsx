@@ -27,7 +27,7 @@ export const EntitySection = ({ disabled }: EntitySectionProps) => {
         control={control}
         render={({ field, fieldState: { error } }) => (
           <FormControl
-            variant="outlined"
+            variant="standard"
             fullWidth
             required
             disabled={disabled}
