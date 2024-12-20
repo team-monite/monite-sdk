@@ -81,7 +81,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                         <TextField
                           id={field.name}
                           label={t(i18n)`First name`}
-                          variant="outlined"
+                          variant="standard"
                           fullWidth
                           error={Boolean(error)}
                           helperText={error?.message}
@@ -99,7 +99,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                         <TextField
                           id={field.name}
                           label={t(i18n)`Last name`}
-                          variant="outlined"
+                          variant="standard"
                           fullWidth
                           error={Boolean(error)}
                           helperText={error?.message}
@@ -119,7 +119,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                     <TextField
                       id={field.name}
                       label={t(i18n)`Email`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}
@@ -137,7 +137,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                     <TextField
                       id={field.name}
                       label={t(i18n)`Phone number`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}

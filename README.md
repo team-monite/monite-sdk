@@ -7,8 +7,6 @@ This repository is a monorepo that contains several npm packages. The packages c
 
 * [**@monite/sdk-react**](./packages/sdk-react/README.md) - A library of ready-to-use React UI components connected to the Monite API. Can be used to display and manage data served by the API.
 
-* [**@monite/sdk-api**](./packages/sdk-api/README.md) - A JavaScript library for making requests to the Monite API.
-
 ## Requirements
 Before using any of these packages, you need to register a partner account with Monite, get API credentials, and generate an access token. For details, see [Get started with Monite API](https://docs.monite.com/docs/get-your-credentials).
 
@@ -59,11 +57,11 @@ At the final step, it will show the changeset it will generate and confirm that 
 >   ```
 
 
-A changeset that major bumps `@monite/sdk-api` would look like this:
+A changeset that major bumps `@monite/sdk-react` would look like this:
 
 ```
 ---
-"@monite/sdk-api": major
+"@monite/sdk-react": major
 ---
 
 Add API URL as required parameter to SDK constructor

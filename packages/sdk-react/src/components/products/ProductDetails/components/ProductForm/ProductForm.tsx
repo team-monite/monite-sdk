@@ -103,7 +103,7 @@ export const ProductForm = (props: ProductFormProps) => {
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       required

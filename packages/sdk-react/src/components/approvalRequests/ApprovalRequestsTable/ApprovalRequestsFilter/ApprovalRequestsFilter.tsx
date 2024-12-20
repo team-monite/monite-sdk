@@ -40,7 +40,7 @@ export const ApprovalRequestsFilter = ({ onChangeFilter, sx }: FilterProps) => {
   return (
     <FilterContainer className={className} sx={sx}>
       <FormControl
-        variant="outlined"
+        variant="standard"
         fullWidth
         className="Monite-ApprovalStatusFilter Monite-FilterControl"
       >
@@ -87,6 +87,7 @@ export const ApprovalRequestsFilter = ({ onChangeFilter, sx }: FilterProps) => {
           onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
         }}
         slotProps={{
+          textField: { variant: 'standard' },
           popper: {
             container: root,
           },

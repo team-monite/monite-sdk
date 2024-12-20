@@ -6,7 +6,6 @@ import {
 } from '@/mocks';
 import { entityUserByIdWithOwnerPermissionsFixture } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { createRenderWithClient } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { useIsActionAllowed, usePermissions } from './usePermissions';
@@ -86,7 +85,7 @@ describe('useRoles', () => {
     });
 
     test('should return all not allowed permissions for "payable" action when the user have all permissions not_allowed', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: getRandomToken(),
@@ -94,7 +93,7 @@ describe('useRoles', () => {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_LOW_PERMISSIONS,
-      });
+      };
 
       const { result } = renderHook(() => usePermissions('payable'), {
         wrapper: createRenderWithClient({ monite }),
@@ -139,7 +138,7 @@ describe('useRoles', () => {
     });
 
     test('should return all permissions for "payable" action with "allowed_for_owner" status', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: getRandomToken(),
@@ -147,7 +146,7 @@ describe('useRoles', () => {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-      });
+      };
 
       const { result } = renderHook(() => usePermissions('payable'), {
         wrapper: createRenderWithClient({ monite }),
@@ -192,7 +191,7 @@ describe('useRoles', () => {
     });
 
     test('should return zero permissions for "payable" action when the user have not permissions at all', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: getRandomToken(),
@@ -200,7 +199,7 @@ describe('useRoles', () => {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-      });
+      };
 
       const { result } = renderHook(() => usePermissions('payable'), {
         wrapper: createRenderWithClient({ monite }),
@@ -212,7 +211,7 @@ describe('useRoles', () => {
     });
 
     test('should return zero permissions for "counterpart" action when the user have not permissions at all', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: getRandomToken(),
@@ -220,7 +219,7 @@ describe('useRoles', () => {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-      });
+      };
 
       const { result } = renderHook(() => usePermissions('counterpart'), {
         wrapper: createRenderWithClient({ monite }),
@@ -267,7 +266,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user have NOT permission for "payable" READ action', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -275,7 +274,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -294,7 +293,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user have NOT permission for "counterpart" READ action', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -302,7 +301,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -321,7 +320,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user have empty permission list for "payable" READ', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -329,7 +328,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_ABSENT_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -348,7 +347,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user have empty permission list for "counterpart" READ', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -356,7 +355,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_ABSENT_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -375,7 +374,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user IS EMPTY and "payable" returns ALLOWED_FOR_OWN status', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -383,7 +382,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -402,7 +401,7 @@ describe('useRoles', () => {
       });
 
       test('should return "true" when the user IS the owner of "payable" but "payable" returns ALLOWED_FOR_OWN status', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -410,7 +409,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>
@@ -430,7 +429,7 @@ describe('useRoles', () => {
       });
 
       test('should return "false" when the user IS NOT the owner of "payable" but "payable" returns ALLOWED_FOR_OWN status', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           fetchToken: () =>
             Promise.resolve({
               access_token: getRandomToken(),
@@ -438,7 +437,7 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-        });
+        };
 
         const { result } = renderHook(
           () =>

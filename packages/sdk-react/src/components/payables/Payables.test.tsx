@@ -13,7 +13,6 @@ import {
   renderWithClient,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -89,7 +88,7 @@ describe('Payables', () => {
         },
       });
 
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -97,11 +96,11 @@ describe('Payables', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       render(<Payables />, {
         wrapper: ({ children }) => (
-          <Provider client={queryClient} children={children} sdk={monite} />
+          <Provider client={queryClient} children={children} monite={monite} />
         ),
       });
 
@@ -126,7 +125,7 @@ describe('Payables', () => {
         },
       });
 
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -134,11 +133,11 @@ describe('Payables', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       render(<Payables />, {
         wrapper: ({ children }) => (
-          <Provider client={queryClient} children={children} sdk={monite} />
+          <Provider client={queryClient} children={children} monite={monite} />
         ),
       });
 

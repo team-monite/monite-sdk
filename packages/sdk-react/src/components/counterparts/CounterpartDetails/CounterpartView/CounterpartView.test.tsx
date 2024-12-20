@@ -6,22 +6,12 @@ import {
 } from '@/mocks';
 import { organizationId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { screen, within } from '@testing-library/react';
 
 import { CounterpartView } from './CounterpartView';
 
 describe('CounterpartView', () => {
-  new MoniteSDK({
-    entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-    fetchToken: () =>
-      Promise.resolve({
-        access_token: 'token',
-        token_type: 'Bearer',
-        expires_in: 3600,
-      }),
-  });
-  const sdkWithReadPermissions = new MoniteSDK({
+  const sdkWithReadPermissions = {
     entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
     fetchToken: () =>
       Promise.resolve({
@@ -29,7 +19,7 @@ describe('CounterpartView', () => {
         token_type: 'Bearer',
         expires_in: 3600,
       }),
-  });
+  };
 
   describe('# Interface', () => {
     describe('# Organization information actions', () => {
@@ -74,7 +64,7 @@ describe('CounterpartView', () => {
       });
 
       test('should show "Access restricted" view if the user has no permissions to see the page', async () => {
-        const monite = new MoniteSDK({
+        const monite = {
           entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
           fetchToken: () =>
             Promise.resolve({
@@ -82,7 +72,7 @@ describe('CounterpartView', () => {
               token_type: 'Bearer',
               expires_in: 3600,
             }),
-        });
+        };
 
         renderWithClient(
           <MoniteScopedProviders>

@@ -48,6 +48,7 @@ export const RHFDatePicker = <T extends FieldValues>({
                   container: root,
                 },
                 textField: {
+                  variant: 'standard',
                   ...slotProps?.textField,
                   id: name,
                   error: isInvalid && !!error?.message,

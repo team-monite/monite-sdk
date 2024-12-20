@@ -39,7 +39,7 @@ export const ProductsTableFilters = ({
   return (
     <Grid container spacing={2} sx={sx}>
       <Grid item xs={6}>
-        <FormControl variant="outlined" fullWidth size="small">
+        <FormControl variant="standard" fullWidth size="small">
           <InputLabel htmlFor="search-by-name">{t(i18n)`Search`}</InputLabel>
           <OutlinedInput
             id="search-by-name"
@@ -56,7 +56,7 @@ export const ProductsTableFilters = ({
         </FormControl>
       </Grid>
       <Grid item xs={3}>
-        <FormControl variant="outlined" fullWidth size="small">
+        <FormControl variant="standard" fullWidth size="small">
           <InputLabel htmlFor="type">{t(i18n)`Type`}</InputLabel>
           <Select
             labelId="type"

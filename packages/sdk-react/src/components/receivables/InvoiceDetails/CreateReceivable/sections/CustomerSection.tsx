@@ -130,7 +130,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
             <TextField
               disabled
               fullWidth
-              variant="outlined"
+              variant="standard"
               label={t(i18n)`Contact person`}
               value={
                 defaultContactName ? getIndividualName(defaultContactName) : ''
@@ -165,7 +165,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl
-                variant="outlined"
+                variant="standard"
                 fullWidth
                 disabled={
                   isCounterpartVatsLoading ||
@@ -202,7 +202,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
             <TextField
               disabled
               fullWidth
-              variant="outlined"
+              variant="standard"
               label={t(i18n)`TAX ID`}
               value={counterpart?.tax_id ?? ''}
               InputProps={{
@@ -235,7 +235,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl
-                variant="outlined"
+                variant="standard"
                 fullWidth
                 required
                 error={Boolean(error)}
@@ -272,7 +272,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl
-                variant="outlined"
+                variant="standard"
                 fullWidth
                 error={Boolean(error)}
                 disabled={

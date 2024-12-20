@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": ["@changesets/cli/commit", { "skipCI": false }],
-  "fixed": [["@monite/sdk-react", "@monite/sdk-api"]],
+  "fixed": [["@monite/sdk-react"]],
   "linked": [],
   "access": "public",
   "baseBranch": "origin/dev",

@@ -59,7 +59,7 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { api, monite } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
@@ -105,7 +105,7 @@ const CreateReceivablesBase = ({
   const createReceivable = useCreateReceivable();
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const [actualCurrency, setActualCurrency] = useState<

@@ -30,6 +30,7 @@ export const RHFTextFieldPhone = <T extends FieldValues>({
               {...otherField}
               {...other}
               id={name}
+              variant="standard"
               onChange={(value) => onChange(value)}
               value={value ?? ''} // This makes component controlled https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled otherwise there are warnings in console
               error={isInvalid && !!error?.message}

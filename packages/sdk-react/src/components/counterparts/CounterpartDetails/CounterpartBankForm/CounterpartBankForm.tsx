@@ -98,7 +98,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`Account name`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -113,7 +113,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`Bank account holder name`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -128,7 +128,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`IBAN`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -143,7 +143,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`Account number`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -158,7 +158,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`Sort code`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -173,7 +173,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`Routing number`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -188,7 +188,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 <TextField
                   id={field.name}
                   label={t(i18n)`BIC`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -201,7 +201,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <FormControl
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   required
                   error={Boolean(error)}

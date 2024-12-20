@@ -43,7 +43,7 @@ export const PayableLineItemsForm = () => {
                     {...field}
                     id={field.name}
                     label={t(i18n)`Name`}
-                    variant="outlined"
+                    variant="standard"
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
@@ -60,7 +60,7 @@ export const PayableLineItemsForm = () => {
                     {...field}
                     id={field.name}
                     label={t(i18n)`Quantity`}
-                    variant="outlined"
+                    variant="standard"
                     type="number"
                     inputProps={{ min: 1 }}
                     error={Boolean(error)}
@@ -105,7 +105,7 @@ export const PayableLineItemsForm = () => {
                     {...field}
                     id={field.name}
                     label={t(i18n)`Price`}
-                    variant="outlined"
+                    variant="standard"
                     type="number"
                     inputProps={{ min: 0 }}
                     error={Boolean(error)}
@@ -127,7 +127,7 @@ export const PayableLineItemsForm = () => {
                     {...field}
                     id={field.name}
                     label={t(i18n)`VAT`}
-                    variant="outlined"
+                    variant="standard"
                     type="number"
                     inputProps={{ min: 0, max: 100 }}
                     error={Boolean(error)}

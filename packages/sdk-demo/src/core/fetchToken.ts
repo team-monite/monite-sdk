@@ -1,5 +1,3 @@
-import { GrantType } from '@monite/sdk-api';
-
 export async function fetchToken(
   apiUrl: string,
   {
@@ -16,7 +14,7 @@ export async function fetchToken(
       'x-monite-version': '2023-04-12',
     },
     body: JSON.stringify({
-      grant_type: GrantType.ENTITY_USER,
+      grant_type: 'entity_user',
       entity_user_id,
       client_id,
       client_secret,

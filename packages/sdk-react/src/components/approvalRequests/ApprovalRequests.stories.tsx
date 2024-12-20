@@ -1,7 +1,6 @@
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { css } from '@emotion/react';
-import { MoniteSDK } from '@monite/sdk-api';
 import { StoryObj } from '@storybook/react';
 
 import { ApprovalRequests as ApprovalRequestsComponent } from './ApprovalRequests';
@@ -34,7 +33,7 @@ export const ApprovalRequestsLowPermissions: Story = {
   args: {},
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -42,7 +41,7 @@ export const ApprovalRequestsLowPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_LOW_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),

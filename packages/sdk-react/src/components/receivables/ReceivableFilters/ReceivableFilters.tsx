@@ -69,9 +69,9 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
         statusFilterOptions.length > 1 &&
         filters.some((filter) => filter.field === 'status') && (
           <MuiFormControl
-            variant="outlined"
             fullWidth
             className="Monite-ReceivableStatusFilter Monite-FilterControl"
+            variant="standard"
           >
             <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
             <Select<ReadableReceivablesStatus>
@@ -99,7 +99,7 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
 
       {filters.some((filter) => filter.field === 'counterpart_id') && (
         <MuiFormControl
-          variant="outlined"
+          variant="standard"
           fullWidth
           className="Monite-ReceivableCounterpartFilter Monite-FilterControl"
         >
@@ -147,6 +147,7 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
             );
           }}
           slotProps={{
+            textField: { variant: 'standard' },
             popper: {
               container: root,
             },
