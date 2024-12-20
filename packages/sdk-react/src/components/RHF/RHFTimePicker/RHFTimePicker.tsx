@@ -35,6 +35,7 @@ export const RHFTimePicker = <T extends FieldValues>({
             <TimeField
               {...field}
               {...other}
+              variant="standard"
               required={required}
               fullWidth={fullWidth}
               value={date}
