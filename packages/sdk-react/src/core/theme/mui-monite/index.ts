@@ -152,16 +152,19 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       fontSize: moniteTheme.typography.h1.fontSize,
       fontWeight: moniteTheme.typography.h1.fontWeight,
       lineHeight: moniteTheme.typography.h1.lineHeight,
+      color: palette.text.primary,
     },
     h2: {
       fontSize: moniteTheme.typography.h2.fontSize,
       fontWeight: moniteTheme.typography.h2.fontWeight,
       lineHeight: moniteTheme.typography.h2.lineHeight,
+      color: palette.text.primary,
     },
     h3: {
       fontSize: moniteTheme.typography.h3.fontSize,
       fontWeight: moniteTheme.typography.h3.fontWeight,
       lineHeight: moniteTheme.typography.h3.lineHeight,
+      color: palette.text.primary,
     },
     subtitle1: {
       fontSize: moniteTheme.typography.subtitle1.fontSize,
@@ -934,17 +937,47 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           '& .MuiTab-root': {
+            color: palette.neutral[50],
             padding: '16px',
+            boxSizing: 'border-box',
+
+            '&:hover': {
+              '&:after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: 4,
+                backgroundColor: palette.neutral[50],
+                borderRadius: 10,
+              },
+            },
+
+            '&:active': {
+              backgroundColor: palette.neutral[90],
+              borderTopLeftRadius: moniteTheme.borderRadius * 2,
+              borderTopRightRadius: moniteTheme.borderRadius * 2,
+            },
           },
           '& .MuiTab-root.Mui-selected': {
-            backgroundColor: 'transparent',
-            color: 'secondary.dark',
-            borderRadius: 0,
+            backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
+            color: palette.primary.main,
+            borderTopLeftRadius: moniteTheme.borderRadius * 2,
+            borderTopRightRadius: moniteTheme.borderRadius * 2,
+
+            '&:hover': {
+              backgroundColor: chroma(palette.primary.main).alpha(0.12).hex(),
+            },
+
+            '&:active': {
+              backgroundColor: chroma(palette.primary.main).alpha(0.24).hex(),
+            },
           },
         },
         indicator: {
-          borderRadius: 0,
-          backgroundColor: 'secondary.dark',
+          borderRadius: 6,
+          backgroundColor: palette.primary.main,
           height: '4px',
         },
       },
