@@ -16,6 +16,11 @@ export type ThemeConfig = {
     secondary?: string;
     neutral?: string;
 
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+
     background?: string;
 
     text?: string;

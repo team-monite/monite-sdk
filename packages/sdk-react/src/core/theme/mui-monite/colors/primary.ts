@@ -1,12 +1,4 @@
-import type { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
-
 import chroma from 'chroma-js';
-
-export interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
-  '90': string;
-  '60': string;
-  '80': string;
-}
 
 export const getPrimaryColors = (mainColor: string) => {
   return {
