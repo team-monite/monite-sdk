@@ -28,8 +28,8 @@ export const getTheme = (theme: ThemeConfig) => {
         lineHeight: theme.typography?.h1?.lineHeight || '68px',
       },
       h2: {
-        fontSize: theme.typography?.h2?.fontSize || 32,
-        fontWeight: theme.typography?.h2?.fontWeight || 600,
+        fontSize: theme.typography?.h2?.fontSize || 34,
+        fontWeight: theme.typography?.h2?.fontWeight || 640,
         lineHeight: theme.typography?.h2?.lineHeight || '40px',
       },
       h3: {
