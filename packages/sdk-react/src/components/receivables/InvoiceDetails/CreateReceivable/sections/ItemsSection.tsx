@@ -312,7 +312,7 @@ export const ItemsSection = ({
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               required
                               error={Boolean(error)}
@@ -340,7 +340,7 @@ export const ItemsSection = ({
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               required
                               error={Boolean(error)}

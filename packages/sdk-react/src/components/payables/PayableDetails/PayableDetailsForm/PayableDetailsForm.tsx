@@ -426,7 +426,7 @@ const PayableDetailsFormBase = forwardRef<
                             {...field}
                             id={field.name}
                             label={t(i18n)`Number`}
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             helperText={error?.message}
@@ -442,7 +442,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             required={
@@ -491,7 +491,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             required={
@@ -621,7 +621,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               disabled={isTagsDisabled}
                               required={isFieldRequired(
@@ -651,7 +651,7 @@ const PayableDetailsFormBase = forwardRef<
                                   <TextField
                                     {...params}
                                     label={t(i18n)`Tags`}
-                                    variant="outlined"
+                                    variant="standard"
                                     fullWidth
                                     error={Boolean(error)}
                                     helperText={error?.message}

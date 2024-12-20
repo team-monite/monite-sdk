@@ -54,7 +54,7 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <FormControl
-              variant="outlined"
+              variant="standard"
               fullWidth
               required={!isNonCompliantFlow}
               disabled={isEntityVatIdsLoading || disabled}
@@ -88,7 +88,7 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
       <TextField
         disabled
         fullWidth
-        variant="outlined"
+        variant="standard"
         label={t(i18n)`Your Tax ID`}
         value={entity?.tax_id ?? ''}
         InputProps={{

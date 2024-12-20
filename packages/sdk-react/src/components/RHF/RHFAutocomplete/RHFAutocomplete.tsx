@@ -79,6 +79,7 @@ export const RHFAutocomplete = <
     return (params: AutocompleteRenderInputParams) => (
       <TextField
         {...params}
+        variant="standard"
         required={required}
         label={label}
         error={!!error?.message}
