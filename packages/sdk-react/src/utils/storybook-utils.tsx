@@ -74,6 +74,11 @@ const defaultThemeConfig: ThemeConfig = {
 
     text: '#401d6d',
   },
+  components: {
+    TablePagination: {
+      pageSizeOptions: [10, 20, 100],
+    },
+  },
 };
 
 export const GlobalStorybookDecorator = (props: {

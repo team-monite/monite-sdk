@@ -8,7 +8,6 @@ import {
   type MonitePayableDetailsInfoProps,
   type MonitePayableStatusChipProps,
   type MonitePayableTableProps,
-  type MoniteTablePaginationProps,
 } from '@/core/theme/types';
 import { type MoniteIconWrapperProps } from '@/ui/iconWrapper/IconWrapper';
 import {
