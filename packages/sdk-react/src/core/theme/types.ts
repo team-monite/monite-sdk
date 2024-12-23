@@ -1,5 +1,5 @@
 import { components, Services } from '@/api';
-import { ChipProps, SelectProps } from '@mui/material';
+import { ChipProps } from '@mui/material';
 
 type TypographyStyle = {
   fontSize?: string | number;
@@ -37,6 +37,12 @@ export type ThemeConfig = {
     subtitle2?: TypographyStyle;
     body1?: TypographyStyle;
     body2?: TypographyStyle;
+  };
+
+  components?: {
+    TablePagination?: {
+      pageSizeOptions?: number[];
+    };
   };
 };
 
@@ -92,23 +98,6 @@ export type MonitePalette = {
   };
   divider: string;
 };
-
-interface MoniteTablePaginationRootSlotProps {
-  pageSizeOptions?: number[];
-}
-
-interface MoniteTablePaginationSlotProps {
-  slotProps?: {
-    pageSizeSelect?: Omit<
-      SelectProps,
-      'value' | 'defaultValue' | 'aria-label' | 'ref' | 'components'
-    >;
-  };
-}
-
-export interface MoniteTablePaginationProps
-  extends MoniteTablePaginationSlotProps,
-    MoniteTablePaginationRootSlotProps {}
 
 interface BaseChipProps {
   /** The variant of the Chip. */
