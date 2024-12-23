@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-// eslint-disable-next-line lingui/no-unlocalized-strings
 const componentName = 'MoniteTablePagination' as const;
 const DEFAULT_PAGE_SIZE = 10 as const;
 
@@ -56,24 +55,7 @@ interface TablePaginationProps<T> extends MoniteTablePaginationProps {
  * @param paginationModel The current pagination model. It should contain the current page and the page size.
  * @param nextPage The next page number. If undefined, the next page button will be disabled.
  * @param prevPage The previous page number. If undefined, the previous page button will be disabled.
- * @param pageSizeOptions The page size options. If not provided, will be used from MUI theme or hidden if only one option is available.
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MoniteTablePagination: {
- *       defaultProps: {
- *         // The default page size options
- *         pageSizeOptions: [5, 10, 15, 20],
- *         slotProps: {
- *           pageSizeSelect: {
- *             size: 'small',
- *           },
- *         },
- *       },
- *     }
- *   }
- * }
+ * @param pageSizeOptions The page size options. If not provided, will be used from theme or hidden if only one option is available.
  */
 export const TablePagination = <T,>({
   onPaginationModelChange,

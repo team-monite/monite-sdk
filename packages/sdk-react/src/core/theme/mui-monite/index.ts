@@ -714,7 +714,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
     MoniteTablePagination: {
       defaultProps: {
-        pageSizeOptions: [15, 30, 100],
+        pageSizeOptions: moniteTheme.components.TablePagination.pageSizeOptions,
       },
     },
     MuiDataGrid: {

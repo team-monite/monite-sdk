@@ -63,5 +63,13 @@ export const getTheme = (theme: ThemeConfig) => {
         lineHeight: theme.typography?.body2?.lineHeight || '20px',
       },
     },
+
+    components: {
+      TablePagination: {
+        pageSizeOptions: theme.components?.TablePagination?.pageSizeOptions || [
+          15, 30, 100,
+        ],
+      },
+    },
   };
 };
