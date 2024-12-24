@@ -74,11 +74,6 @@ const defaultThemeConfig: ThemeConfig = {
 
     text: '#401d6d',
   },
-  components: {
-    TablePagination: {
-      pageSizeOptions: [10, 20, 100],
-    },
-  },
 };
 
 export const GlobalStorybookDecorator = (props: {
@@ -121,6 +116,29 @@ export const GlobalStorybookDecorator = (props: {
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
+          componentSettings={{
+            approvalRequests: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            approvalPolicies: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            counterparts: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            products: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            receivables: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            tags: {
+              pageSizeOptions: [5, 10, 15],
+            },
+            userRoles: {
+              pageSizeOptions: [5, 10, 15],
+            },
+          }}
         >
           <MoniteReactQueryDevtools />
           {props.children}

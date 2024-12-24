@@ -9,10 +9,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -98,14 +95,14 @@ const ApprovalPoliciesTableBase = ({
   onCreateClick,
 }: ApprovalPoliciesTableProps) => {
   const { i18n } = useLingui();
+  const { api, locale, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.approvalPolicies.pageSizeOptions[0]
   );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
-  const { api, locale } = useMoniteContext();
 
   const {
     data: approvalPolicies,
@@ -277,6 +274,9 @@ const ApprovalPoliciesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={
+                componentSettings.approvalPolicies.pageSizeOptions
+              }
               nextPage={approvalPolicies?.next_pagination_token}
               prevPage={approvalPolicies?.prev_pagination_token}
               paginationModel={{

@@ -22,10 +22,7 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
@@ -155,7 +152,7 @@ const PayablesTableBase = ({
   ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
-  const { api, locale, queryClient } = useMoniteContext();
+  const { api, locale, queryClient, componentSettings } = useMoniteContext();
 
   const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
     usePayableTableThemeProps(inProps);
@@ -164,7 +161,7 @@ const PayablesTableBase = ({
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.payables.pageSizeOptions[0]
   );
   const [sortModel, setSortModel] = useState<PayableGridSortModel>({
     field: 'created_at',
@@ -480,6 +477,7 @@ const PayablesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.payables.pageSizeOptions}
               nextPage={payables?.next_pagination_token}
               prevPage={payables?.prev_pagination_token}
               paginationModel={{

@@ -23,10 +23,7 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
@@ -93,7 +90,7 @@ const InvoicesTableBase = ({
   filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
-  const { locale } = useMoniteContext();
+  const { locale, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -101,7 +98,7 @@ const InvoicesTableBase = ({
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions[0]
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
@@ -340,6 +337,7 @@ const InvoicesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={invoices?.next_pagination_token}
               prevPage={invoices?.prev_pagination_token}
               paginationModel={{

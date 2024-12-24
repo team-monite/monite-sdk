@@ -38,12 +38,6 @@ export type ThemeConfig = {
     body1?: TypographyStyle;
     body2?: TypographyStyle;
   };
-
-  components?: {
-    TablePagination?: {
-      pageSizeOptions?: number[];
-    };
-  };
 };
 
 export type MonitePalette = {

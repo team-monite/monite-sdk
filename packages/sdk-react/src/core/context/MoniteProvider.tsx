@@ -20,6 +20,33 @@ export interface MoniteSettings {
   fetchToken: () => Promise<components['schemas']['AccessTokenResponse']>;
 }
 
+export interface ComponentSettings {
+  approvalPolicies: {
+    pageSizeOptions: number[];
+  };
+  approvalRequests: {
+    pageSizeOptions: number[];
+  };
+  counterparts: {
+    pageSizeOptions: number[];
+  };
+  payables: {
+    pageSizeOptions: number[];
+  };
+  products: {
+    pageSizeOptions: number[];
+  };
+  receivables: {
+    pageSizeOptions: number[];
+  };
+  tags: {
+    pageSizeOptions: number[];
+  };
+  userRoles: {
+    pageSizeOptions: number[];
+  };
+}
+
 export interface MoniteProviderProps {
   children?: ReactNode;
 
@@ -37,16 +64,27 @@ export interface MoniteProviderProps {
    *  of all Widgets provided.
    */
   locale?: MoniteLocale;
+
+  /**
+   * Component settings
+   */
+  componentSettings?: Partial<ComponentSettings>;
 }
 
 export const MoniteProvider = ({
   monite,
   theme,
+  componentSettings,
   children,
   locale,
 }: MoniteProviderProps) => {
   return (
-    <MoniteContextProvider monite={monite} locale={locale} theme={theme}>
+    <MoniteContextProvider
+      monite={monite}
+      locale={locale}
+      theme={theme}
+      componentSettings={componentSettings}
+    >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
         <MoniteMuiThemeProvider>
           <ContainerCssBaseline enableColorScheme />

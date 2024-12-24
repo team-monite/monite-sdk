@@ -73,12 +73,10 @@ export const TablePagination = <T,>({
     name: componentName,
   });
 
-  const defaultPageSize = useTablePaginationThemeDefaultPageSize();
-
   const pageSize =
     'pageSize' in paginationModel
       ? paginationModel.pageSize
-      : pageSizeOptions?.[0] ?? defaultPageSize;
+      : pageSizeOptions?.[0] ?? DEFAULT_PAGE_SIZE;
 
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
@@ -179,16 +177,3 @@ const StyledSelect = styled(
     shouldForwardProp: () => true,
   }
 )({});
-
-/**
- * Returns the default `pageSize` from the Theme.
- * If not specified, it will return a fallback value.
- */
-export const useTablePaginationThemeDefaultPageSize = () => {
-  const { pageSizeOptions } = useThemeProps({
-    props: {} as MoniteTablePaginationRootSlotProps,
-    name: componentName,
-  });
-
-  return pageSizeOptions?.length ? pageSizeOptions[0] : DEFAULT_PAGE_SIZE;
-};
