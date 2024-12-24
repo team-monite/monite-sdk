@@ -712,11 +712,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MoniteTablePagination: {
-      defaultProps: {
-        pageSizeOptions: moniteTheme.components.TablePagination.pageSizeOptions,
-      },
-    },
     MuiDataGrid: {
       defaultProps: {
         columnHeaderHeight: 55,

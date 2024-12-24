@@ -38,7 +38,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
     MoniteApprovalRequestStatusChip: 'root';
-    MoniteTablePagination: 'root' | 'menu';
     MonitePayableDetailsInfo: 'never';
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
@@ -55,7 +54,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: Partial<MoniteInvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<MonitePayableStatusChipProps>;
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
-    MoniteTablePagination: Partial<MoniteTablePaginationProps>;
     MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
@@ -73,7 +71,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
-    MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
     MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
     MonitePayableTable?: ComponentType<'MonitePayableTable'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
