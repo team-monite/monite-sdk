@@ -7,6 +7,7 @@ import {
 } from 'react';
 
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
+import { getDefaultComponentSettings } from '@/core/componentSettings';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
@@ -25,7 +26,7 @@ import type { QueryClient } from '@tanstack/react-query';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 
-import { MoniteSettings } from './MoniteProvider';
+import { MoniteSettings, ComponentSettings } from './MoniteProvider';
 
 interface MoniteContextBaseValue {
   locale: MoniteLocaleWithRequired;
@@ -42,6 +43,7 @@ export interface MoniteContextValue
   queryClient: QueryClient;
   apiUrl: string;
   theme: Theme;
+  componentSettings: ComponentSettings;
   fetchToken: () => Promise<{
     access_token: string;
     expires_in: number;
@@ -73,6 +75,7 @@ interface MoniteContextProviderProps {
   monite: MoniteSettings;
   locale: Partial<MoniteLocale> | undefined;
   theme: ThemeConfig | undefined;
+  componentSettings: Partial<ComponentSettings> | undefined;
   children: ReactNode;
 }
 
@@ -106,6 +109,7 @@ interface ContextProviderProps extends MoniteContextBaseValue {
   monite: MoniteSettings;
   children: ReactNode;
   theme: ThemeConfig | undefined;
+  componentSettings?: Partial<ComponentSettings>;
 }
 
 const ContextProvider = ({
@@ -114,6 +118,7 @@ const ContextProvider = ({
   i18n,
   dateFnsLocale,
   theme: userTheme,
+  componentSettings,
   children,
 }: ContextProviderProps) => {
   const { entityId, apiUrl, fetchToken } = monite;
@@ -170,6 +175,7 @@ const ContextProvider = ({
         environment,
         entityId,
         theme,
+        componentSettings: getDefaultComponentSettings(componentSettings),
         queryClient,
         sentryHub,
         i18n,

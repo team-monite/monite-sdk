@@ -13,10 +13,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -88,12 +85,12 @@ const UserRolesTableBase = ({
   handleCreateNew,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
-  const { api, locale } = useMoniteContext();
+  const { api, locale, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.userRoles.pageSizeOptions[0]
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<UserRolesTableSortModel>({
@@ -249,6 +246,7 @@ const UserRolesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.userRoles.pageSizeOptions}
               prevPage={roles?.prev_pagination_token}
               nextPage={roles?.next_pagination_token}
               paginationModel={{
