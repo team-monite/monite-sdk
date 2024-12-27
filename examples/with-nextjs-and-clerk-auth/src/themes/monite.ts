@@ -806,11 +806,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MoniteTablePagination: {
-    defaultProps: {
-      pageSizeOptions: [15, 30, 100],
-    },
-  },
   MuiDataGrid: {
     defaultProps: {
       columnHeaderHeight: 55,

@@ -3,6 +3,7 @@ import { ReactNode, useMemo } from 'react';
 import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
+import { ComponentSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
@@ -76,6 +77,36 @@ const defaultThemeConfig: ThemeConfig = {
   },
 };
 
+/**
+ * Default component settings for storybook stories.
+ *
+ * These settings are used to configure default functionality of the SDK components in storybook stories.
+ */
+const defaultPageSizeOptions = [10, 30, 100];
+const defaultComponentSettings: Partial<ComponentSettings> = {
+  approvalRequests: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  approvalPolicies: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  counterparts: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  products: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  receivables: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  tags: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+  userRoles: {
+    pageSizeOptions: defaultPageSizeOptions,
+  },
+};
+
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
   theme?: ThemeConfig;
@@ -116,29 +147,7 @@ export const GlobalStorybookDecorator = (props: {
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
-          componentSettings={{
-            approvalRequests: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            approvalPolicies: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            counterparts: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            products: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            receivables: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            tags: {
-              pageSizeOptions: [5, 10, 15],
-            },
-            userRoles: {
-              pageSizeOptions: [5, 10, 15],
-            },
-          }}
+          componentSettings={defaultComponentSettings}
         >
           <MoniteReactQueryDevtools />
           {props.children}
