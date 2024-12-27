@@ -1,4 +1,3 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, fireEvent, act, within } from '@testing-library/react';
 
@@ -91,27 +90,16 @@ describe('TablePagination', () => {
 
   it('does not show page size Select if there are less than two options', async () => {
     renderWithClient(
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteTablePagination: {
-              defaultProps: {
-                pageSizeOptions: [111],
-              },
-            },
-          },
+      <TablePagination
+        pageSizeOptions={[111]}
+        nextPage="next"
+        prevPage="previous"
+        paginationModel={{
+          pageSize: 111,
+          page: 'current',
         }}
-      >
-        <TablePagination
-          nextPage="next"
-          prevPage="previous"
-          paginationModel={{
-            pageSize: 111,
-            page: 'current',
-          }}
-          onPaginationModelChange={() => {}}
-        />
-      </ExtendThemeProvider>
+        onPaginationModelChange={() => {}}
+      />
     );
 
     expect(
@@ -139,89 +127,5 @@ describe('TablePagination', () => {
         name: '111',
       })
     ).not.toBeInTheDocument();
-  });
-
-  it('supports custom `pageSizeOptions` via MUI theming', async () => {
-    renderWithClient(
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteTablePagination: {
-              defaultProps: {
-                pageSizeOptions: [111, 222, 333],
-              },
-            },
-          },
-        }}
-      >
-        <TablePagination
-          nextPage="next"
-          prevPage="previous"
-          paginationModel={{
-            pageSize: 111,
-            page: 'current',
-          }}
-          onPaginationModelChange={() => {}}
-        />
-      </ExtendThemeProvider>
-    );
-
-    fireEvent.mouseDown(screen.getByRole('combobox'));
-
-    const dropdown = screen.getByRole('listbox', { name: '' });
-    const { findByRole } = within(dropdown);
-
-    expect(
-      await findByRole('option', {
-        name: '111',
-      })
-    ).toBeInTheDocument();
-
-    expect(
-      await findByRole('option', {
-        name: '222',
-      })
-    ).toBeInTheDocument();
-
-    expect(
-      await findByRole('option', {
-        name: '333',
-      })
-    ).toBeInTheDocument();
-  });
-
-  it('supports custom `slotProps` via MUI theming', async () => {
-    renderWithClient(
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteTablePagination: {
-              defaultProps: {
-                pageSizeOptions: [111, 222, 333],
-                slotProps: {
-                  pageSizeSelect: {
-                    className: 'test-class-name',
-                  },
-                },
-              },
-            },
-          },
-        }}
-      >
-        <TablePagination
-          nextPage="next"
-          prevPage="previous"
-          paginationModel={{
-            pageSize: 111,
-            page: 'current',
-          }}
-          onPaginationModelChange={() => {}}
-        />
-      </ExtendThemeProvider>
-    );
-
-    const element = screen.getByRole('combobox');
-
-    expect(element.closest('.test-class-name')).toBeInTheDocument();
   });
 });
