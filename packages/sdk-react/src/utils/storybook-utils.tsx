@@ -82,7 +82,7 @@ const defaultThemeConfig: ThemeConfig = {
  *
  * These settings are used to configure default functionality of the SDK components in storybook stories.
  */
-const defaultPageSizeOptions = [10, 30, 100];
+const defaultPageSizeOptions = [15, 30, 100];
 const defaultComponentSettings: Partial<ComponentSettings> = {
   approvalRequests: {
     pageSizeOptions: defaultPageSizeOptions,
