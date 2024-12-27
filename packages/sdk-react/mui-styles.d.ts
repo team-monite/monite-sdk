@@ -9,7 +9,6 @@ import {
   type MonitePayableStatusChipProps,
   type MonitePayableTableProps,
 } from '@/core/theme/types';
-import { type MoniteIconWrapperProps } from '@/ui/iconWrapper/IconWrapper';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
@@ -61,7 +60,6 @@ declare module '@mui/material/styles' {
     MonitePayableTable: Partial<MonitePayableTableProps>;
     MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
     MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
-    MoniteIconWrapper: Partial<MoniteIconWrapperProps>;
   }
 
   /**
@@ -78,6 +76,5 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
     MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
-    MoniteIconWrapper?: ComponentType<'MoniteIconWrapper'>;
   }
 }

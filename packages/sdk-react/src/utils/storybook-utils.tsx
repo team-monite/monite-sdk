@@ -1,15 +1,16 @@
 import { ReactNode, useMemo } from 'react';
 
 import { apiVersion } from '@/api/api-version';
+import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
-import { ComponentSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ThemeProvider } from '@mui/material';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
@@ -84,6 +85,12 @@ const defaultThemeConfig: ThemeConfig = {
  */
 const defaultPageSizeOptions = [15, 30, 100];
 const defaultComponentSettings: Partial<ComponentSettings> = {
+  general: {
+    iconWrapper: {
+      icon: <ArrowBackIcon />,
+      showCloseIcon: true,
+    },
+  },
   approvalRequests: {
     pageSizeOptions: defaultPageSizeOptions,
   },
