@@ -1,6 +1,6 @@
 import { ComponentSettings } from '@/core/context/MoniteProvider';
 
-const defaultPageSizeOptions = [10, 30, 100];
+const defaultPageSizeOptions = [15, 30, 100];
 
 export const getDefaultComponentSettings = (
   componentSettings?: Partial<ComponentSettings>
