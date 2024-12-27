@@ -983,11 +983,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MoniteIconWrapper: {
-      defaultProps: {
-        showCloseIcon: true,
-      },
-    },
     MonitePayableTable: {
       defaultProps: {
         isShowingSummaryCards: true,

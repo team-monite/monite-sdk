@@ -8,6 +8,7 @@ import {
 
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
+import type { ComponentSettings } from '@/core/componentSettings';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
@@ -26,7 +27,7 @@ import type { QueryClient } from '@tanstack/react-query';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 
-import { MoniteSettings, ComponentSettings } from './MoniteProvider';
+import { MoniteSettings } from './MoniteProvider';
 
 interface MoniteContextBaseValue {
   locale: MoniteLocaleWithRequired;

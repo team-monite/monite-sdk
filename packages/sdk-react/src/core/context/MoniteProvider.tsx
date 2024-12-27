@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
+import type { ComponentSettings } from '@/core/componentSettings';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import {
   MoniteAPIProvider,
@@ -18,33 +19,6 @@ export interface MoniteSettings {
   entityId: string;
   apiUrl?: string;
   fetchToken: () => Promise<components['schemas']['AccessTokenResponse']>;
-}
-
-export interface ComponentSettings {
-  approvalPolicies: {
-    pageSizeOptions: number[];
-  };
-  approvalRequests: {
-    pageSizeOptions: number[];
-  };
-  counterparts: {
-    pageSizeOptions: number[];
-  };
-  payables: {
-    pageSizeOptions: number[];
-  };
-  products: {
-    pageSizeOptions: number[];
-  };
-  receivables: {
-    pageSizeOptions: number[];
-  };
-  tags: {
-    pageSizeOptions: number[];
-  };
-  userRoles: {
-    pageSizeOptions: number[];
-  };
 }
 
 export interface MoniteProviderProps {
