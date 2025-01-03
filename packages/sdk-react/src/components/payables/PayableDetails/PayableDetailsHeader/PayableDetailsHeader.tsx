@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
+import { PayableDetailsCancelModal } from '../PayableDetailsCancelModal';
 import { PayableDetailsPermissions } from '../usePayableDetails';
 
 export interface PayablesDetailsHeaderProps {
@@ -60,6 +61,7 @@ export const PayableDetailsHeader = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { data: counterpart } = useCounterpartById(payable?.counterpart_id);
+  const [showCancelationModal, setShowCancelationModal] = useState(false);
 
   const counterpartName = getCounterpartName(counterpart);
 
@@ -108,7 +110,7 @@ export const PayableDetailsHeader = ({
     cancel: {
       variant: 'text',
       color: 'error',
-      onClick: cancelInvoice,
+      onClick: () => setShowCancelationModal(true),
       children: t(i18n)`Cancel bill`,
     },
     pay: {
@@ -120,6 +122,7 @@ export const PayableDetailsHeader = ({
   };
 
   const className = 'Monite-PayableDetails-Header';
+  const canCancel = permissions.includes('cancel');
 
   return (
     <DialogTitle sx={{ position: 'relative' }} className={className}>
@@ -172,6 +175,13 @@ export const PayableDetailsHeader = ({
         )}
       </Toolbar>
       {modalComponent}
+      {canCancel && (
+        <PayableDetailsCancelModal
+          isOpen={showCancelationModal}
+          handleCloseModal={() => setShowCancelationModal(false)}
+          handleConfirmation={cancelInvoice}
+        />
+      )}
     </DialogTitle>
   );
 };
