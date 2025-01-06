@@ -3,20 +3,19 @@ import { useId, useState } from 'react';
 import { CreditNotesTable } from '@/components';
 import { InvoicesTable } from '@/components';
 import { QuotesTable } from '@/components';
+import { FinanceTab } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { FINANCING_LABEL, useFinancing } from '@/core/queries/useFinancing';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs } from '@mui/material';
-import { useThemeProps } from '@mui/material/styles';
-
-import { FinanceTab } from '../Financing/FinanceTab/FinanceTab';
 
 interface ReceivablesTableControlledProps {
   /** Event handler for tab change */
@@ -33,7 +32,7 @@ interface ReceivablesTableUncontrolledProps {
 }
 
 /**
- * Receivables Table props for MUI theming
+ * Receivables Table props for customisation via Monite Provider
  */
 export interface MoniteReceivablesTableProps {
   /** Active-selected tab */
@@ -77,15 +76,13 @@ export type ReceivablesTableProps =
  * ReceivablesTable component
  * Displays Invoices, Quotes, Credit Notes
  *
- * @example MUI theming
+ * @example Monite Provider customisation
  * ```ts
- * // You can configure the component through MUI theming like this:
- * const theme = createTheme(myTheme, {
- *   components: {
- *     MoniteReceivablesTable: {
- *       defaultProps: {
- *         tab: 0,                      // The default tab index to display
- *         tabs: [
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   receivables: {
+ *    tab: 0,                      // The default tab index to display
+ *    tabs: [
  *           {
  *             label: 'Draft Invoices', // The label of the Tab
  *             query: {                 // The query parameters for the Tab
@@ -131,9 +128,7 @@ export type ReceivablesTableProps =
  *               type: 'credit_note',
  *             },
  *           },
- *         ],
- *       },
- *     },
+ *     ],
  *   },
  * });
  * ```
@@ -289,8 +284,10 @@ const ReceivablesTableBase = ({
 export const useReceivablesTableProps = (
   inProps?: Partial<MoniteReceivablesTableProps>
 ) => {
-  return useThemeProps({
-    props: inProps,
-    name: 'MoniteReceivablesTable',
-  });
+  const { componentSettings } = useMoniteContext();
+
+  return {
+    tab: inProps?.tab ?? componentSettings?.receivables?.tab,
+    tabs: inProps?.tabs ?? componentSettings?.receivables?.tabs,
+  };
 };
