@@ -12,6 +12,10 @@ import {
   OptionalFields,
 } from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
+import {
+  CounterpartBankAccountResponse,
+  EntityBankAccountResponse,
+} from '@monite/sdk-api';
 import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -309,3 +313,10 @@ export const usePayableDetailsThemeProps = (
     props: inProps,
     name: 'MonitePayableDetailsInfo',
   });
+
+export const findDefaultBankAccount = (
+  accounts: EntityBankAccountResponse[]
+): string => {
+  const defaultAccount = accounts.find((acc) => acc.is_default_for_currency);
+  return defaultAccount?.id || '';
+};
