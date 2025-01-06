@@ -116,8 +116,9 @@ export const Provider = ({
         i18n,
         sentryHub,
         queryClient: client,
-        theme: createThemeWithDefaults(i18n, moniteProviderProps?.theme),
+        theme: createThemeWithDefaults(moniteProviderProps?.theme),
         componentSettings: getDefaultComponentSettings(
+          i18n,
           moniteProviderProps?.componentSettings
         ),
         dateFnsLocale,

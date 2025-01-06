@@ -43,7 +43,6 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip: 'root';
     MoniteApprovalStatusChip: 'root';
     MonitePayableTable: 'never';
-    MoniteReceivablesTable: 'never';
   }
 
   /**
@@ -59,7 +58,6 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
     MonitePayableTable: Partial<MonitePayableTableProps>;
     MoniteApprovalStatusChip: Partial<MoniteApprovalStatusChipProps>;
-    MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
   }
 
   /**
@@ -75,6 +73,5 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
-    MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
   }
 }
