@@ -51,16 +51,23 @@ export function getRandomNumber(min = 0, max = 100) {
 
 export const withGlobalStorybookDecorator = (
   cb?: () => {
-    monite: MoniteSettings;
+    monite?: MoniteSettings;
+    componentSettings?: Partial<ComponentSettings>;
   }
 ): any => {
-  const { monite } = cb?.() ?? { monite: undefined };
+  const { monite, componentSettings } = cb?.() ?? {
+    monite: undefined,
+    componentSettings: undefined,
+  };
 
   return withThemeFromJSXProvider({
     Provider: (...args: any[]) => {
-      const updatedArgs = monite ? { ...args[0], monite } : args[0];
-
-      return GlobalStorybookDecorator(updatedArgs);
+      return GlobalStorybookDecorator({
+        ...args,
+        children: args[0].children,
+        monite,
+        componentSettings,
+      });
     },
   });
 };
@@ -83,7 +90,6 @@ const defaultThemeConfig: ThemeConfig = {
  *
  * These settings are used to configure default functionality of the SDK components in storybook stories.
  */
-const defaultPageSizeOptions = [15, 30, 100];
 const defaultComponentSettings: Partial<ComponentSettings> = {
   general: {
     iconWrapper: {
@@ -91,33 +97,13 @@ const defaultComponentSettings: Partial<ComponentSettings> = {
       showCloseIcon: true,
     },
   },
-  approvalRequests: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  approvalPolicies: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  counterparts: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  products: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  receivables: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  tags: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
-  userRoles: {
-    pageSizeOptions: defaultPageSizeOptions,
-  },
 };
 
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
   theme?: ThemeConfig;
   monite?: MoniteSettings;
+  componentSettings?: Partial<ComponentSettings>;
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
 
@@ -154,7 +140,10 @@ export const GlobalStorybookDecorator = (props: {
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
-          componentSettings={defaultComponentSettings}
+          componentSettings={deepmerge(
+            defaultComponentSettings,
+            props.componentSettings
+          )}
         >
           <MoniteReactQueryDevtools />
           {props.children}
@@ -193,10 +182,7 @@ function FallbackProviders({
 
   return (
     <ThemeProvider
-      theme={createThemeWithDefaults(
-        i18n,
-        deepmerge(defaultThemeConfig, theme)
-      )}
+      theme={createThemeWithDefaults(deepmerge(defaultThemeConfig, theme))}
     >
       <I18nProvider
         // Due to the imperative nature of the I18nProvider,

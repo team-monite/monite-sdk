@@ -287,8 +287,6 @@ const ApprovalRequestsTableBase = ({
     );
   }
 
-  console.log(componentSettings);
-
   return (
     <Box
       className={ScopedCssBaselineContainerClassName}

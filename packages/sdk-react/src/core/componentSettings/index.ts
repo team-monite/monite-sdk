@@ -1,4 +1,12 @@
+import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
+import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+
+interface ReceivableSettings extends MoniteReceivablesTableProps {
+  pageSizeOptions: number[];
+}
 
 export interface ComponentSettings {
   general: {
@@ -19,9 +27,7 @@ export interface ComponentSettings {
   products: {
     pageSizeOptions: number[];
   };
-  receivables: {
-    pageSizeOptions: number[];
-  };
+  receivables: Partial<ReceivableSettings>;
   tags: {
     pageSizeOptions: number[];
   };
@@ -33,6 +39,7 @@ export interface ComponentSettings {
 const defaultPageSizeOptions = [15, 30, 100];
 
 export const getDefaultComponentSettings = (
+  i18n: I18n,
   componentSettings?: Partial<ComponentSettings>
 ) => ({
   general: {
@@ -69,6 +76,24 @@ export const getDefaultComponentSettings = (
   receivables: {
     pageSizeOptions:
       componentSettings?.receivables?.pageSizeOptions || defaultPageSizeOptions,
+    tab: componentSettings?.receivables?.tab || 0,
+    tabs: componentSettings?.receivables?.tabs || [
+      {
+        label: t(i18n)`Invoices`,
+        query: { type: 'invoice' },
+      },
+      {
+        label: t(i18n)`Quotes`,
+        query: { type: 'quote' },
+      },
+      {
+        label: t(i18n)`Credit notes`,
+        query: { type: 'credit_note' },
+      },
+      {
+        label: FINANCING_LABEL,
+      },
+    ],
   },
   tags: {
     pageSizeOptions:
