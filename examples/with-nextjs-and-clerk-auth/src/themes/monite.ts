@@ -1047,21 +1047,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MonitePayableTable: {
-    defaultProps: {
-      isShowingSummaryCards: true,
-      fieldOrder: [
-        'document_id',
-        'counterpart_id',
-        'created_at',
-        'issued_at',
-        'due_date',
-        'status',
-        'amount',
-        'pay',
-      ],
-    },
-  },
   MuiFormHelperText: {
     styleOverrides: {
       root: {

@@ -1,3 +1,4 @@
+import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
@@ -5,6 +6,10 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
 interface ReceivableSettings extends MoniteReceivablesTableProps {
+  pageSizeOptions: number[];
+}
+
+interface PayableSettings extends MonitePayableTableProps {
   pageSizeOptions: number[];
 }
 
@@ -21,9 +26,7 @@ export interface ComponentSettings {
   counterparts: {
     pageSizeOptions: number[];
   };
-  payables: {
-    pageSizeOptions: number[];
-  };
+  payables: Partial<PayableSettings>;
   products: {
     pageSizeOptions: number[];
   };
@@ -37,6 +40,15 @@ export interface ComponentSettings {
 }
 
 const defaultPageSizeOptions = [15, 30, 100];
+
+const defaultPayableFieldOrder = [
+  'document_id',
+  'counterpart_id',
+  'due_date',
+  'amount',
+  'was_created_by_user_id',
+  'pay',
+];
 
 export const getDefaultComponentSettings = (
   i18n: I18n,
@@ -68,6 +80,10 @@ export const getDefaultComponentSettings = (
   payables: {
     pageSizeOptions:
       componentSettings?.payables?.pageSizeOptions || defaultPageSizeOptions,
+    isShowingSummaryCards:
+      componentSettings?.payables?.isShowingSummaryCards ?? true,
+    fieldOrder:
+      componentSettings?.payables?.fieldOrder || defaultPayableFieldOrder,
   },
   products: {
     pageSizeOptions:
