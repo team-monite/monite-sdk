@@ -23,7 +23,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { EntityBankAccountResponse } from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -354,12 +353,13 @@ const PayableDetailsFormBase = forwardRef<
       ) {
         resetField('counterpartBankAccount', {
           defaultValue: findDefaultBankAccount(
-            counterpartBankAccountQuery.data.data as EntityBankAccountResponse[]
+            counterpartBankAccountQuery.data.data,
+            currentCurrency
           ),
           keepTouched: true,
         });
       }
-    }, [counterpartBankAccountQuery.data]);
+    }, [counterpartBankAccountQuery.data, currentCurrency]);
 
     return (
       <>

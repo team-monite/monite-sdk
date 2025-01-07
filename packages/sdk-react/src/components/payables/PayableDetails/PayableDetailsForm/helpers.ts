@@ -12,10 +12,6 @@ import {
   OptionalFields,
 } from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
-import {
-  CounterpartBankAccountResponse,
-  EntityBankAccountResponse,
-} from '@monite/sdk-api';
 import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -315,8 +311,11 @@ export const usePayableDetailsThemeProps = (
   });
 
 export const findDefaultBankAccount = (
-  accounts: EntityBankAccountResponse[]
+  accounts: components['schemas']['CounterpartBankAccountResponse'][],
+  currentCurrency: components['schemas']['CurrencyEnum']
 ): string => {
-  const defaultAccount = accounts.find((acc) => acc.is_default_for_currency);
+  const defaultAccount = accounts.find(
+    (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
+  );
   return defaultAccount?.id || '';
 };
