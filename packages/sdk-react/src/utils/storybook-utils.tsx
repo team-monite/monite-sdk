@@ -97,6 +97,16 @@ const defaultComponentSettings: Partial<ComponentSettings> = {
       showCloseIcon: true,
     },
   },
+  payables: {
+    fieldOrder: [
+      'amount',
+      'document_id',
+      'counterpart_id',
+      'was_created_by_user_id',
+      'due_date',
+      'pay',
+    ],
+  },
 };
 
 export const GlobalStorybookDecorator = (props: {
