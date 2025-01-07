@@ -29,7 +29,6 @@ import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -161,7 +160,7 @@ const PayablesTableBase = ({
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    componentSettings.payables.pageSizeOptions[0]
+    componentSettings.payables.pageSizeOptions?.[0] ?? 15
   );
   const [sortModel, setSortModel] = useState<PayableGridSortModel>({
     field: 'created_at',
@@ -527,8 +526,16 @@ const PayablesTableBase = ({
 
 const usePayableTableThemeProps = (
   inProps: Partial<MonitePayableTableProps>
-): MonitePayableTableProps =>
-  useThemeProps({
-    props: inProps,
-    name: 'MonitePayableTable',
-  });
+): MonitePayableTableProps => {
+  const { componentSettings } = useMoniteContext();
+
+  return {
+    isShowingSummaryCards:
+      inProps?.isShowingSummaryCards ??
+      componentSettings?.payables?.isShowingSummaryCards,
+    fieldOrder: inProps?.fieldOrder ?? componentSettings?.payables?.fieldOrder,
+    summaryCardFilters:
+      inProps?.summaryCardFilters ??
+      componentSettings?.payables?.summaryCardFilters,
+  };
+};

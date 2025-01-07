@@ -1,4 +1,4 @@
-import { components, Services } from '@/api';
+import { components } from '@/api';
 import { ChipProps } from '@mui/material';
 
 type TypographyStyle = {
@@ -143,27 +143,6 @@ export interface MoniteApprovalRequestStatusChipProps
 export interface MoniteApprovalStatusChipProps extends BaseStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['ApprovalPolicyStatus'];
-}
-
-export type PayablesTabFilter = NonNullable<
-  Services['payables']['getPayables']['types']['parameters']['query']
->;
-
-//TODO: better to map it with schema.json keyof values
-export type FieldValueTypes =
-  | 'document_id'
-  | 'counterpart_id'
-  | 'created_at'
-  | 'issued_at'
-  | 'due_date'
-  | 'status'
-  | 'amount'
-  | 'pay';
-
-export interface MonitePayableTableProps {
-  isShowingSummaryCards?: boolean;
-  fieldOrder?: FieldValueTypes[];
-  summaryCardFilters?: Record<string, PayablesTabFilter | null>;
 }
 
 export type OptionalFields = {

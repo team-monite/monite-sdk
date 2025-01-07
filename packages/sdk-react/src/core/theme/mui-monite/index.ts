@@ -983,21 +983,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MonitePayableTable: {
-      defaultProps: {
-        isShowingSummaryCards: true,
-        fieldOrder: [
-          'document_id',
-          'counterpart_id',
-          'created_at',
-          'issued_at',
-          'due_date',
-          'status',
-          'amount',
-          'pay',
-        ],
-      },
-    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
