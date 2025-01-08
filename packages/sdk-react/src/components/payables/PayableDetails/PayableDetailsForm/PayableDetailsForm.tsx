@@ -359,7 +359,7 @@ const PayableDetailsFormBase = forwardRef<
           keepTouched: true,
         });
       }
-    }, [counterpartBankAccountQuery.data, currentCurrency]);
+    }, [counterpartBankAccountQuery, currentCurrency, resetField]);
 
     return (
       <>

@@ -2,4 +2,4 @@
 '@monite/sdk-react': minor
 ---
 
-"@monite/sdk-react": minor -> Default bank account is selected during counterpart and currency selection
+feat(DEV-13389): Default bank account is selected during counterpart and currency selection
