@@ -236,25 +236,21 @@ const CreateReceivablesBase = ({
             onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
+            <Box>
+              <Typography
+                variant="h1"
+                sx={{ mb: 2 }}
+                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
+              >
+                {t(i18n)`Invoice`}{' '}
+                <Typography component="span" variant="h1" color="textSecondary">
+                  #{INVOICE_DOCUMENT_AUTO_ID}
+                </Typography>
+              </Typography>
+            </Box>
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
               <Box>
-                <Typography
-                  variant="h1"
-                  sx={{ mb: 2 }}
-                  data-testid={
-                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                  }
-                >
-                  {t(i18n)`Invoice`}{' '}
-                  <Typography
-                    component="span"
-                    variant="h1"
-                    color="textSecondary"
-                  >
-                    #{INVOICE_DOCUMENT_AUTO_ID}
-                  </Typography>
-                </Typography>
                 <EntitySection disabled={createReceivable.isPending} />
               </Box>
               <ItemsSection
