@@ -26,35 +26,6 @@ export interface MoniteInvoiceStatusChipProps {
 
 /**
  * Displays the status of an Invoice.
- * Could be customized through MUI theming.
- *
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MoniteInvoiceStatusChip: {
- *       defaultProps: {
- *         icon: true, // Display status icon?
- *         size: 'small', // The size of the chip
- *         variant: 'outlined', // The variant of the chip
- *       },
- *       variants: [
- *         {
- *           props: { status: 'paid' }, // Custom styles for the 'paid' status
- *           style: {
- *             border: '2px dashed lightgreen',
- *           },
- *         },
- *         {
- *           props: { status: 'overdue' }, // Custom styles for the 'overdue' status
- *           style: {
- *             border: '2px dashed red',
- *           },
- *         },
- *       ],
- *     },
- *   },
- * });
  */
 
 export const InvoiceStatusChip = forwardRef<

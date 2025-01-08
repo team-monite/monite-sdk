@@ -703,6 +703,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             marginLeft: 0,
             marginRight: '4px',
           },
+          gap: 8,
         },
         label: {
           padding: '0',
@@ -984,14 +985,31 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
     MoniteApprovalRequestStatusChip: {
       defaultProps: {
-        icon: false,
-        size: 'small',
+        icon: moniteTheme.components.approvalRequestStatusChip.icon,
+        size: moniteTheme.components.approvalRequestStatusChip.size,
+        variant: moniteTheme.components.approvalRequestStatusChip.variant,
+      },
+    },
+    MoniteInvoiceRecurrenceStatusChip: {
+      defaultProps: {
+        icon: moniteTheme.components.invoiceRecurrenceStatusChip.icon,
+        size: moniteTheme.components.invoiceRecurrenceStatusChip.size,
+        variant: moniteTheme.components.invoiceRecurrenceStatusChip.variant,
+      },
+    },
+    MoniteInvoiceRecurrenceIterationStatusChip: {
+      defaultProps: {
+        icon: moniteTheme.components.invoiceRecurrenceIterationStatusChip.icon,
+        size: moniteTheme.components.invoiceRecurrenceIterationStatusChip.size,
+        variant:
+          moniteTheme.components.invoiceRecurrenceIterationStatusChip.variant,
       },
     },
     MoniteInvoiceStatusChip: {
       defaultProps: {
-        icon: false,
-        size: 'small',
+        icon: moniteTheme.components.invoiceStatusChip.icon,
+        size: moniteTheme.components.invoiceStatusChip.size,
+        variant: moniteTheme.components.invoiceStatusChip.variant,
       },
       styleOverrides: {
         root: {
@@ -1051,8 +1069,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
     MonitePayableStatusChip: {
       defaultProps: {
-        icon: false,
-        size: 'small',
+        icon: moniteTheme.components.payableStatusChip.icon,
+        size: moniteTheme.components.payableStatusChip.size,
+        variant: moniteTheme.components.payableStatusChip.variant,
       },
       styleOverrides: {
         root: {
@@ -1096,7 +1115,8 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
     MoniteCounterpartStatusChip: {
       defaultProps: {
-        size: 'small',
+        size: moniteTheme.components.counterpartStatusChip.size,
+        variant: moniteTheme.components.counterpartStatusChip.variant,
       },
       styleOverrides: {
         root: {
@@ -1106,6 +1126,13 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           color: 'text.primary',
           borderColor: 'neutral.80',
         },
+      },
+    },
+    MoniteApprovalStatusChip: {
+      defaultProps: {
+        icon: moniteTheme.components.approvalStatusChip.icon,
+        size: moniteTheme.components.approvalStatusChip.size,
+        variant: moniteTheme.components.approvalStatusChip.variant,
       },
     },
   };

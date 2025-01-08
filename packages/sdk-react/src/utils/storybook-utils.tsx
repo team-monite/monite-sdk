@@ -52,11 +52,13 @@ export function getRandomNumber(min = 0, max = 100) {
 export const withGlobalStorybookDecorator = (
   cb?: () => {
     monite?: MoniteSettings;
+    theme?: Partial<ThemeConfig>;
     componentSettings?: Partial<ComponentSettings>;
   }
 ): any => {
-  const { monite, componentSettings } = cb?.() ?? {
+  const { monite, theme, componentSettings } = cb?.() ?? {
     monite: undefined,
+    theme: undefined,
     componentSettings: undefined,
   };
 
@@ -66,6 +68,7 @@ export const withGlobalStorybookDecorator = (
         ...args,
         children: args[0].children,
         monite,
+        theme,
         componentSettings,
       });
     },
