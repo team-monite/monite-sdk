@@ -1,5 +1,4 @@
 import { Dialog } from '@/components/Dialog';
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
