@@ -38,6 +38,16 @@ export type ThemeConfig = {
     body1?: TypographyStyle;
     body2?: TypographyStyle;
   };
+
+  components?: {
+    invoiceStatusChip?: Partial<MoniteInvoiceStatusChipProps>;
+    payableStatusChip?: Partial<MonitePayableStatusChipProps>;
+    approvalRequestStatusChip?: Partial<MoniteApprovalRequestStatusChipProps>;
+    invoiceRecurrenceStatusChip?: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
+    invoiceRecurrenceIterationStatusChip?: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
+    counterpartStatusChip?: Partial<MoniteCounterpartStatusChipProps>;
+    approvalStatusChip?: Partial<MoniteApprovalStatusChipProps>;
+  };
 };
 
 export type MonitePalette = {
