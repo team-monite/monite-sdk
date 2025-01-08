@@ -1,3 +1,4 @@
+import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { FINANCING_LABEL } from '@/core/queries/useFinancing';
@@ -9,7 +10,9 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
 }
 
-interface PayableSettings extends MonitePayableTableProps {
+interface PayableSettings
+  extends MonitePayableTableProps,
+    MonitePayableDetailsInfoProps {
   pageSizeOptions: number[];
 }
 
@@ -40,7 +43,6 @@ export interface ComponentSettings {
 }
 
 const defaultPageSizeOptions = [15, 30, 100];
-
 const defaultPayableFieldOrder = [
   'document_id',
   'counterpart_id',
@@ -84,6 +86,14 @@ export const getDefaultComponentSettings = (
       componentSettings?.payables?.isShowingSummaryCards ?? true,
     fieldOrder:
       componentSettings?.payables?.fieldOrder || defaultPayableFieldOrder,
+    summaryCardFilters: componentSettings?.payables?.summaryCardFilters,
+    optionalFields: componentSettings?.payables?.optionalFields,
+    ocrRequiredFields: componentSettings?.payables?.ocrRequiredFields,
+    ocrMismatchFields: componentSettings?.payables?.ocrMismatchFields ?? {
+      amount_to_pay: false,
+      counterpart_bank_account_id: false,
+    },
+    isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
   },
   products: {
     pageSizeOptions:
