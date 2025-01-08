@@ -1,5 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { Alert } from '@mui/material';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ApprovalRequestStatusChip as ApprovalRequestStatusChipComponent } from './ApprovalRequestStatusChip';
@@ -15,40 +14,20 @@ export const ApprovalRequestStatusChip: Story = {
   args: {
     status: 'approved',
   },
+  decorators: withGlobalStorybookDecorator(() => ({
+    theme: {
+      components: {
+        approvalRequestStatusChip: {
+          icon: true,
+          size: 'medium',
+          variant: 'outlined',
+        },
+      },
+    },
+  })),
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteApprovalRequestStatusChip: {
-              defaultProps: {
-                icon: true,
-              },
-              variants: [
-                {
-                  props: { status: 'approved' },
-                  style: {
-                    border: '2px dashed blue',
-                  },
-                },
-                {
-                  props: { status: 'rejected' },
-                  style: {
-                    border: '2px dashed orange',
-                  },
-                },
-              ],
-            },
-          },
-        }}
-      >
-        <ApprovalRequestStatusChipComponent {...args} />
-      </ExtendThemeProvider>
-
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<ApprovalRequestStatusChip />'}</code> could be customized
-        through MUI theming
-      </Alert>
+      <ApprovalRequestStatusChipComponent {...args} />
     </div>
   ),
 };

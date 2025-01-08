@@ -63,5 +63,49 @@ export const getTheme = (theme: ThemeConfig) => {
         lineHeight: theme.typography?.body2?.lineHeight || '20px',
       },
     },
+
+    components: {
+      invoiceStatusChip: {
+        icon: theme.components?.invoiceStatusChip?.icon || false,
+        size: theme.components?.invoiceStatusChip?.size || 'small',
+        variant: theme.components?.invoiceStatusChip?.variant || 'filled',
+      },
+      payableStatusChip: {
+        icon: theme.components?.payableStatusChip?.icon || false,
+        size: theme.components?.payableStatusChip?.size || 'small',
+        variant: theme.components?.payableStatusChip?.variant || 'filled',
+      },
+      approvalRequestStatusChip: {
+        icon: theme.components?.approvalRequestStatusChip?.icon || false,
+        size: theme.components?.approvalRequestStatusChip?.size || 'small',
+        variant:
+          theme.components?.approvalRequestStatusChip?.variant || 'filled',
+      },
+      invoiceRecurrenceStatusChip: {
+        icon: theme.components?.invoiceRecurrenceStatusChip?.icon || false,
+        size: theme.components?.invoiceRecurrenceStatusChip?.size || 'small',
+        variant:
+          theme.components?.invoiceRecurrenceStatusChip?.variant || 'filled',
+      },
+      invoiceRecurrenceIterationStatusChip: {
+        icon:
+          theme.components?.invoiceRecurrenceIterationStatusChip?.icon || false,
+        size:
+          theme.components?.invoiceRecurrenceIterationStatusChip?.size ||
+          'small',
+        variant:
+          theme.components?.invoiceRecurrenceIterationStatusChip?.variant ||
+          'filled',
+      },
+      counterpartStatusChip: {
+        size: theme.components?.counterpartStatusChip?.size || 'small',
+        variant: theme.components?.counterpartStatusChip?.variant || 'filled',
+      },
+      approvalStatusChip: {
+        icon: theme.components?.approvalStatusChip?.icon || false,
+        size: theme.components?.approvalStatusChip?.size || 'small',
+        variant: theme.components?.approvalStatusChip?.variant || 'filled',
+      },
+    },
   };
 };

@@ -23,29 +23,6 @@ export interface MonitePayableStatusChipProps {
 
 /**
  * Displays the status of a Payable.
- * Could be customized through MUI theming.
- *
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MonitePayableStatusChip: {
- *       defaultProps: {
- *         icon: true, // Display status icon?
- *         size: 'small', // The size of the chip
- *         variant: 'outlined', // The variant of the chip
- *       },
- *       variants: [
- *         {
- *           props: { status: 'approve_in_progress' }, // Custom styles for the 'Approve In Progress' status
- *           style: {
- *             border: '2px dashed lightgreen',
- *           },
- *         },
- *       ],
- *     },
- *   },
- * });
  */
 export const PayableStatusChip = forwardRef<
   HTMLDivElement,
