@@ -81,35 +81,28 @@ const StyledLabelTableCell = styled(TableCell)<StyledLabelTableCellProps>(
  * This component is responsible for rendering the information about the payable..
  *
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayableDetailsInfo: {
- *       defaultProps: {
- *         optionalFields: {
- *           invoiceDate: true,         // Show the invoice date field
- *           tags: true,                // Show the tags field
- *         },
- *         ocrMismatchFields: {
- *           amount_to_pay: true,       // Show the amount to pay field
- *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
- *         },
- *         ocrRequiredFields: {
- *           invoiceNumber: true,       // The invoice number is required based on OCR data
- *           dueDate: true,             // The due date is required based on OCR data
- *           currency: true,            // The currency is required based on OCR data
- *         },
- *         ocrMismatchFields: {
- *           amount_to_pay: true,       // Show the amount to pay field
- *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
- *         },
- *         isTagsDisabled: true,        // The tags field is disabled
- *       },
- *     },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   optionalFields: {
+ *     invoiceDate: true,         // Show the invoice date field
+ *     tags: true,                // Show the tags field
  *   },
- * });
- *
+ *   ocrMismatchFields: {
+ *     amount_to_pay: true,       // Show the amount to pay field
+ *     counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *   },
+ *   ocrRequiredFields: {
+ *     invoiceNumber: true,       // The invoice number is required based on OCR data
+ *     dueDate: true,             // The due date is required based on OCR data
+ *     currency: true,            // The currency is required based on OCR data
+ *   },
+ *   isTagsDisabled: true,        // The tags field is disabled
+ * };
+ * ```
  */
+
 export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
   <MoniteScopedProviders>
     <PayableDetailsInfoBase {...props} />

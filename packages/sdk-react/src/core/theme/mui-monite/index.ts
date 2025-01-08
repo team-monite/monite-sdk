@@ -975,14 +975,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MonitePayableDetailsInfo: {
-      defaultProps: {
-        ocrMismatchFields: {
-          amount_to_pay: false,
-          counterpart_bank_account_id: false,
-        },
-      },
-    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
