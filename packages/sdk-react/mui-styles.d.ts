@@ -5,7 +5,6 @@ import {
   type MoniteInvoiceRecurrenceIterationStatusChipProps,
   type MoniteInvoiceRecurrenceStatusChipProps,
   type MoniteInvoiceStatusChipProps,
-  type MonitePayableDetailsInfoProps,
   type MonitePayableStatusChipProps,
 } from '@/core/theme/types';
 import {
@@ -36,7 +35,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
     MoniteApprovalRequestStatusChip: 'root';
-    MonitePayableDetailsInfo: 'never';
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
     MoniteCounterpartStatusChip: 'root';
@@ -50,7 +48,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: Partial<MoniteInvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<MonitePayableStatusChipProps>;
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
-    MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
     MoniteCounterpartStatusChip: Partial<MoniteCounterpartStatusChipProps>;
@@ -64,7 +61,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
-    MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;

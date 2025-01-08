@@ -184,26 +184,26 @@ const getValidationSchema = (i18n: I18n) =>
  * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
  *
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayableDetailsInfo: {
- *       defaultProps: {
- *         optionalFields: {
- *           invoiceDate: true,         // Show the invoice date field
- *           tags: true,                // Show the tags field
- *         },
- *         ocrRequiredFields: {
- *           invoiceNumber: true,       // The invoice number is required based on OCR data
- *           counterpart: true,         // The counterpart is required based on OCR data
- *           dueDate: true,             // The due date is required based on OCR data
- *           currency: true,            // The currency is required based on OCR data
- *         },
- *         isTagsDisabled: true,        // The tags field is disabled
- *       },
- *     },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   optionalFields: {
+ *     invoiceDate: true,         // Show the invoice date field
+ *     tags: true,                // Show the tags field
  *   },
- * });
+ *   ocrMismatchFields: {
+ *     amount_to_pay: true,       // Show the amount to pay field
+ *     counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *   },
+ *   ocrRequiredFields: {
+ *     invoiceNumber: true,       // The invoice number is required based on OCR data
+ *     dueDate: true,             // The due date is required based on OCR data
+ *     currency: true,            // The currency is required based on OCR data
+ *   },
+ *   isTagsDisabled: true,        // The tags field is disabled
+ * };
+ * ```
  *
  * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
  * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
