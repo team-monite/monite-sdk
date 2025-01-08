@@ -83,7 +83,7 @@ const FinancedInvoicesTableBase = ({
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    componentSettings.receivables.pageSizeOptions[0]
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
