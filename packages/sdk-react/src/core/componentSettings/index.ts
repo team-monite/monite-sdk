@@ -1,5 +1,6 @@
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
+import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
@@ -43,7 +44,7 @@ export interface ComponentSettings {
 }
 
 const defaultPageSizeOptions = [15, 30, 100];
-const defaultPayableFieldOrder = [
+const defaultPayableFieldOrder: FieldValueTypes[] = [
   'document_id',
   'counterpart_id',
   'due_date',
