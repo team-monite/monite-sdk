@@ -22,10 +22,7 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
@@ -86,14 +83,14 @@ const QuotesTableBase = ({
   filters: filtersProp,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
-  const { locale } = useMoniteContext();
+  const { locale, componentSettings } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<QuotesTableSortModel>({
@@ -272,6 +269,7 @@ const QuotesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={quotes?.next_pagination_token}
               prevPage={quotes?.prev_pagination_token}
               paginationModel={{

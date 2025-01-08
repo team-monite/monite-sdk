@@ -1,6 +1,7 @@
 import { ReactNode, useMemo } from 'react';
 
 import { apiVersion } from '@/api/api-version';
+import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
@@ -9,6 +10,7 @@ import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ThemeProvider } from '@mui/material';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
@@ -49,16 +51,26 @@ export function getRandomNumber(min = 0, max = 100) {
 
 export const withGlobalStorybookDecorator = (
   cb?: () => {
-    monite: MoniteSettings;
+    monite?: MoniteSettings;
+    theme?: Partial<ThemeConfig>;
+    componentSettings?: Partial<ComponentSettings>;
   }
 ): any => {
-  const { monite } = cb?.() ?? { monite: undefined };
+  const { monite, theme, componentSettings } = cb?.() ?? {
+    monite: undefined,
+    theme: undefined,
+    componentSettings: undefined,
+  };
 
   return withThemeFromJSXProvider({
     Provider: (...args: any[]) => {
-      const updatedArgs = monite ? { ...args[0], monite } : args[0];
-
-      return GlobalStorybookDecorator(updatedArgs);
+      return GlobalStorybookDecorator({
+        ...args,
+        children: args[0].children,
+        monite,
+        theme,
+        componentSettings,
+      });
     },
   });
 };
@@ -76,10 +88,35 @@ const defaultThemeConfig: ThemeConfig = {
   },
 };
 
+/**
+ * Default component settings for storybook stories.
+ *
+ * These settings are used to configure default functionality of the SDK components in storybook stories.
+ */
+const defaultComponentSettings: Partial<ComponentSettings> = {
+  general: {
+    iconWrapper: {
+      icon: <ArrowBackIcon />,
+      showCloseIcon: true,
+    },
+  },
+  payables: {
+    fieldOrder: [
+      'amount',
+      'document_id',
+      'counterpart_id',
+      'was_created_by_user_id',
+      'due_date',
+      'pay',
+    ],
+  },
+};
+
 export const GlobalStorybookDecorator = (props: {
   children: ReactNode;
   theme?: ThemeConfig;
   monite?: MoniteSettings;
+  componentSettings?: Partial<ComponentSettings>;
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
 
@@ -116,6 +153,10 @@ export const GlobalStorybookDecorator = (props: {
         <MoniteProvider
           monite={props.monite ?? monite}
           theme={deepmerge(defaultThemeConfig, props.theme)}
+          componentSettings={deepmerge(
+            defaultComponentSettings,
+            props.componentSettings
+          )}
         >
           <MoniteReactQueryDevtools />
           {props.children}
@@ -154,10 +195,7 @@ function FallbackProviders({
 
   return (
     <ThemeProvider
-      theme={createThemeWithDefaults(
-        i18n,
-        deepmerge(defaultThemeConfig, theme)
-      )}
+      theme={createThemeWithDefaults(deepmerge(defaultThemeConfig, theme))}
     >
       <I18nProvider
         // Due to the imperative nature of the I18nProvider,

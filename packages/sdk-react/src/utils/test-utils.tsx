@@ -1,6 +1,7 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { createAPIClient } from '@/api/client';
+import { getDefaultComponentSettings } from '@/core/componentSettings';
 import {
   MoniteAPIProvider,
   MoniteQraftContext,
@@ -115,7 +116,11 @@ export const Provider = ({
         i18n,
         sentryHub,
         queryClient: client,
-        theme: createThemeWithDefaults(i18n, moniteProviderProps?.theme),
+        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        componentSettings: getDefaultComponentSettings(
+          i18n,
+          moniteProviderProps?.componentSettings
+        ),
         dateFnsLocale,
         apiUrl: moniteSettings.apiUrl || 'https://api.sandbox.monite.com/v1',
         fetchToken: moniteSettings.fetchToken,

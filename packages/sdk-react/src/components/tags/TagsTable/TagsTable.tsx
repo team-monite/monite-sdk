@@ -11,10 +11,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -52,11 +49,12 @@ const TagsTableBase = ({
   showCreationModal,
 }: TagsTableProps) => {
   const { i18n } = useLingui();
+  const { api, locale, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.tags.pageSizeOptions[0]
   );
   const [selectedTag, setSelectedTag] = useState<
     components['schemas']['TagReadSchema'] | undefined
@@ -81,7 +79,6 @@ const TagsTableBase = ({
   const closeDeleteModal = useCallback(() => {
     setDeleteModalOpened(false);
   }, []);
-  const { api, locale } = useMoniteContext();
 
   const {
     data: tags,
@@ -240,6 +237,7 @@ const TagsTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.tags.pageSizeOptions}
               prevPage={tags?.prev_pagination_token}
               nextPage={tags?.next_pagination_token}
               paginationModel={{

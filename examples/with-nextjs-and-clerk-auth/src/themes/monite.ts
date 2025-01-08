@@ -806,11 +806,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MoniteTablePagination: {
-    defaultProps: {
-      pageSizeOptions: [15, 30, 100],
-    },
-  },
   MuiDataGrid: {
     defaultProps: {
       columnHeaderHeight: 55,
@@ -1042,29 +1037,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           margin: '0 auto',
         },
       },
-    },
-  },
-  MonitePayableDetailsInfo: {
-    defaultProps: {
-      ocrMismatchFields: {
-        amount_to_pay: false,
-        counterpart_bank_account_id: false,
-      },
-    },
-  },
-  MonitePayableTable: {
-    defaultProps: {
-      isShowingSummaryCards: true,
-      fieldOrder: [
-        'document_id',
-        'counterpart_id',
-        'created_at',
-        'issued_at',
-        'due_date',
-        'status',
-        'amount',
-        'pay',
-      ],
     },
   },
   MuiFormHelperText: {

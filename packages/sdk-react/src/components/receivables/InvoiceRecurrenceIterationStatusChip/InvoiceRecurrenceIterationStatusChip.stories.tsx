@@ -1,5 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { Alert } from '@mui/material';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { InvoiceRecurrenceIterationStatusChip as InvoiceRecurrenceIterationStatusChipComponent } from './InvoiceRecurrenceIterationStatusChip';
@@ -16,54 +15,20 @@ export const InvoiceRecurrenceIterationStatusChip: Story = {
     status: 'pending',
     icon: true,
   },
+  decorators: withGlobalStorybookDecorator(() => ({
+    theme: {
+      components: {
+        invoiceRecurrenceIterationStatusChip: {
+          icon: true,
+          size: 'medium',
+          variant: 'outlined',
+        },
+      },
+    },
+  })),
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteInvoiceRecurrenceIterationStatusChip: {
-              variants: [
-                {
-                  props: { status: 'pending' },
-                  style: {
-                    border: '2px dashed orange',
-                  },
-                },
-                {
-                  props: { status: 'completed' },
-                  style: {
-                    border: '2px dashed green',
-                  },
-                },
-                {
-                  props: { status: 'canceled' },
-                  style: {
-                    border: '2px dashed red',
-                  },
-                },
-                {
-                  props: { status: 'issue_failed' },
-                  style: {
-                    border: '2px dashed purple',
-                  },
-                },
-                {
-                  props: { status: 'send_failed' },
-                  style: {
-                    border: '2px dashed brown',
-                  },
-                },
-              ],
-            },
-          },
-        }}
-      >
-        <InvoiceRecurrenceIterationStatusChipComponent {...args} />
-      </ExtendThemeProvider>
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<InvoiceRecurrenceIterationStatusChip />'}</code> could be
-        customized through MUI theming
-      </Alert>
+      <InvoiceRecurrenceIterationStatusChipComponent {...args} />
     </div>
   ),
 };

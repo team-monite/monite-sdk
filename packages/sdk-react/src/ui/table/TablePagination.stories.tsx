@@ -1,5 +1,3 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { TablePagination as TablePaginationComponent } from './TablePagination';
@@ -27,17 +25,14 @@ export const TablePaginationDefault: Story = {
       <div style={{ display: 'flex' }}>
         <TablePaginationComponent {...args} />
       </div>
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<TablePagination />'}</code> could be customized through MUI
-        theming
-      </Alert>
     </div>
   ),
 };
 
-export const TablePaginationThemed: Story = {
-  name: 'slots customization',
+export const TablePaginationCustomized: Story = {
+  name: 'props customization',
   args: {
+    pageSizeOptions: [55, 10, 155, 200],
     paginationModel: {
       pageSize: 10,
       page: 1,
@@ -48,30 +43,9 @@ export const TablePaginationThemed: Story = {
   },
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteTablePagination: {
-              defaultProps: {
-                pageSizeOptions: [55, 10, 155, 200],
-                slotProps: {
-                  pageSizeSelect: {
-                    size: 'small',
-                  },
-                },
-              },
-            },
-          },
-        }}
-      >
-        <div style={{ display: 'flex' }}>
-          <TablePaginationComponent {...args} />
-        </div>
-      </ExtendThemeProvider>
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<TablePagination />'}</code> could be customized through MUI
-        theming
-      </Alert>
+      <div style={{ display: 'flex' }}>
+        <TablePaginationComponent {...args} />
+      </div>
     </div>
   ),
 };
