@@ -320,3 +320,13 @@ export const usePayableDetailsThemeProps = (
       inProps?.isTagsDisabled ?? componentSettings?.payables?.isTagsDisabled,
   };
 };
+
+export const findDefaultBankAccount = (
+  accounts: components['schemas']['CounterpartBankAccountResponse'][],
+  currentCurrency: components['schemas']['CurrencyEnum']
+): string => {
+  const defaultAccount = accounts.find(
+    (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
+  );
+  return defaultAccount?.id || '';
+};

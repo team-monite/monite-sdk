@@ -50,6 +50,7 @@ import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   calculateTotalsForPayable,
   counterpartsToSelect,
+  findDefaultBankAccount,
   isFieldRequired,
   LineItem,
   MonitePayableDetailsInfoProps,
@@ -345,6 +346,21 @@ const PayableDetailsFormBase = forwardRef<
       trigger();
     }, [trigger]);
 
+    useEffect(() => {
+      if (
+        counterpartBankAccountQuery.isSuccess &&
+        counterpartBankAccountQuery.data?.data
+      ) {
+        resetField('counterpartBankAccount', {
+          defaultValue: findDefaultBankAccount(
+            counterpartBankAccountQuery.data.data,
+            currentCurrency
+          ),
+          keepTouched: true,
+        });
+      }
+    }, [counterpartBankAccountQuery, currentCurrency, resetField]);
+
     return (
       <>
         <Box
@@ -450,11 +466,7 @@ const PayableDetailsFormBase = forwardRef<
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
                               onChange={(event) => {
-                                resetField('counterpartBankAccount', {
-                                  keepTouched: true,
-                                });
-
-                                return field.onChange(event);
+                                field.onChange(event);
                               }}
                             >
                               {counterpartsToSelect(
