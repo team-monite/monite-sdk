@@ -250,15 +250,15 @@ const CreateReceivablesBase = ({
             </Box>
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
-              <Box>
-                <EntitySection disabled={createReceivable.isPending} />
-              </Box>
               <ItemsSection
                 defaultCurrency={settings?.currency?.default}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
+              <Box>
+                <EntitySection disabled={createReceivable.isPending} />
+              </Box>
               <ReminderSection
                 disabled={createReceivable.isPending}
                 onUpdateOverdueReminder={onEditOverdueReminder}

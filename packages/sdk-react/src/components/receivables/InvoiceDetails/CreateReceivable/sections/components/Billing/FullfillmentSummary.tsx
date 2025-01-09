@@ -103,7 +103,7 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
         </Box>
       </Box>
       <Box mt={2}>
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{ mt: 1, mb: 2 }}>
           <PaymentSection
             disabled={disabled}
             paymentTerms={paymentTerms}
@@ -160,28 +160,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
                     },
                   }}
                   views={['year', 'month', 'day']}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      checked={isSameAsInvoiceDateChecked}
-                      onChange={(event) => {
-                        const checked = event.target.checked;
-
-                        if (checked) {
-                          setValue(field.name, new Date(), {
-                            shouldValidate: true,
-                          });
-                        } else {
-                          resetField(field.name);
-                        }
-
-                        setIsSameAsInvoiceDateChecked(checked);
-                      }}
-                    />
-                  }
-                  label={t(i18n)`Same as invoice date`}
                 />
               </>
             )}

@@ -264,12 +264,12 @@ const EditInvoiceDetailsContent = ({
                   #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
                 </Typography>
               </Typography>
-              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
                 isNonVatSupported={isNonVatSupported}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
               />
+              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ReminderSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}
