@@ -1,3 +1,4 @@
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -21,9 +22,10 @@ export const PayableDetailsCancelModal = ({
   handleConfirmation,
 }: PayableDetailsCancelModalProps) => {
   const { i18n } = useLingui();
+  const { root } = useRootElements();
 
   return (
-    <Dialog open={isOpen} onClose={handleCloseModal}>
+    <Dialog open={isOpen} container={root} onClose={handleCloseModal}>
       <DialogTitle>{t(i18n)`Cancel bill?`}</DialogTitle>
       <DialogContent>
         <DialogContentText>{t(
