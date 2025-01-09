@@ -139,40 +139,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       />
       {counterpartId && (
         <>
-          <Box>
-            <TextField
-              disabled
-              fullWidth
-              variant="standard"
-              label={t(i18n)`Contact person`}
-              value={
-                defaultContactName ? getIndividualName(defaultContactName) : ''
-              }
-              InputProps={{
-                startAdornment:
-                  counterpartId && isContactPersonsLoading ? (
-                    <CircularProgress size={20} />
-                  ) : null,
-              }}
-            />
-            <Collapse in={Boolean(contactPersonError)}>
-              <FormHelperText>
-                {contactPersonDisplayableError &&
-                  getAPIErrorMessage(i18n, contactPersonDisplayableError)}
-              </FormHelperText>
-            </Collapse>
-            <Collapse
-              in={
-                !contactPersonError &&
-                !isContactPersonsLoading &&
-                counterpartContacts?.length === 0
-              }
-            >
-              <FormHelperText>{t(
-                i18n
-              )`No contact persons available`}</FormHelperText>
-            </Collapse>
-          </Box>
           <Controller
             name="counterpart_vat_id_id"
             control={control}
