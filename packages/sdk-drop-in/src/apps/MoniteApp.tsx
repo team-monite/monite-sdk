@@ -9,7 +9,7 @@ import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
 
 type ProviderProps = Pick<
   ComponentProps<typeof DropInMoniteProvider>,
-  'locale' | 'theme'
+  'locale' | 'theme' | 'componentSettings'
 >;
 
 export const MoniteApp = ({
@@ -19,6 +19,7 @@ export const MoniteApp = ({
   locale,
   rootElements,
   theme,
+  componentSettings,
   fetchToken,
   entityId,
   component,
@@ -57,6 +58,7 @@ export const MoniteApp = ({
       <DropInMoniteProvider
         locale={locale}
         theme={theme}
+        componentSettings={componentSettings}
         sdkConfig={{
           entityId,
           fetchToken,
