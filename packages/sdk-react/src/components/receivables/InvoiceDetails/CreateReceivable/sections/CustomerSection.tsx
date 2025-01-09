@@ -110,6 +110,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     usePrevious(contactPersonError) ?? contactPersonError;
 
   const className = 'Monite-CreateReceivable-CustomerSection';
+  const isHiddenForUS =
+    !_isCounterpartAddressesLoading &&
+    Array.isArray(counterpartAddresses?.data) &&
+    counterpartAddresses.data.length > 0 &&
+    counterpartAddresses.data[0]?.country === 'US';
 
   return (
     <Stack spacing={2} className={className}>
@@ -173,6 +178,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                   counterpartVats?.data.length === 0 ||
                   disabled
                 }
+                hidden={isHiddenForUS}
                 error={Boolean(error)}
               >
                 <InputLabel htmlFor={field.name}>{t(i18n)`VAT ID`}</InputLabel>
@@ -205,6 +211,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
               variant="standard"
               label={t(i18n)`TAX ID`}
               value={counterpart?.tax_id ?? ''}
+              hidden={isHiddenForUS}
               InputProps={{
                 startAdornment: isCounterpartLoading ? (
                   <CircularProgress size={20} />

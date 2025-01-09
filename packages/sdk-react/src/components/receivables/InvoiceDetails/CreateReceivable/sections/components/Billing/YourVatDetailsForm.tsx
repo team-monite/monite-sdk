@@ -46,6 +46,9 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
       entityVatIds.data.length === 0
     );
 
+  const isHiddenForUS =
+    entity?.address.country && entity?.address.country === 'US';
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {showEntityVatIdField && (
@@ -56,7 +59,8 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
             <FormControl
               variant="standard"
               fullWidth
-              required={!isNonCompliantFlow}
+              required={!isNonCompliantFlow && !isHiddenForUS}
+              hidden={isHiddenForUS}
               disabled={isEntityVatIdsLoading || disabled}
               error={Boolean(error)}
             >
@@ -88,6 +92,7 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
       <TextField
         disabled
         fullWidth
+        hidden={isHiddenForUS}
         variant="standard"
         label={t(i18n)`Your Tax ID`}
         value={entity?.tax_id ?? ''}

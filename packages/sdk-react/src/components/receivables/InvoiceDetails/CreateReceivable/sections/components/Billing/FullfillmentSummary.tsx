@@ -7,7 +7,14 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LockOutlined } from '@mui/icons-material';
-import { FormControlLabel, Checkbox, Box, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import {
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Box,
+  Typography,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { PaymentSection } from '../../PaymentSection';
@@ -29,6 +36,8 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
 
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
+
+  const [isFieldShown, setIsFieldShown] = useState<boolean>(false);
 
   const paymentTermsId = watch('payment_terms_id');
 
@@ -69,76 +78,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
         </Box>
       </Box>
       <Box mt={2}>
-        <Controller
-          name="fulfillment_date"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <DatePicker
-                {...field}
-                minDate={new Date()}
-                disabled={disabled}
-                onChange={(date) => {
-                  const today = new Date();
-
-                  if (today.toDateString() === date?.toDateString()) {
-                    setIsSameAsInvoiceDateChecked(true);
-                  } else {
-                    setIsSameAsInvoiceDateChecked(false);
-                  }
-
-                  field.onChange(date);
-                }}
-                label={t(i18n)`Fulfillment date`}
-                slotProps={{
-                  popper: {
-                    container: root,
-                  },
-                  dialog: {
-                    container: root,
-                  },
-                  actionBar: {
-                    actions: ['today'],
-                  },
-                  textField: {
-                    fullWidth: true,
-                    helperText: error?.message,
-                  },
-                  field: {
-                    clearable: true,
-                    onClear: () => {
-                      resetField(field.name);
-                      setIsSameAsInvoiceDateChecked(false);
-                    },
-                  },
-                }}
-                views={['year', 'month', 'day']}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    size="small"
-                    checked={isSameAsInvoiceDateChecked}
-                    onChange={(event) => {
-                      const checked = event.target.checked;
-
-                      if (checked) {
-                        setValue(field.name, new Date(), {
-                          shouldValidate: true,
-                        });
-                      } else {
-                        resetField(field.name);
-                      }
-
-                      setIsSameAsInvoiceDateChecked(checked);
-                    }}
-                  />
-                }
-                label={t(i18n)`Same as invoice date`}
-              />
-            </>
-          )}
-        />
         <Box sx={{ mt: 1 }}>
           <PaymentSection
             disabled={disabled}
@@ -146,6 +85,83 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
             isLoading={isPaymentTermsLoading}
           />
         </Box>
+        {!isFieldShown && (
+          <Button startIcon={<AddIcon />} onClick={() => setIsFieldShown(true)}>
+            {t(i18n)`Fulfillment date`}
+          </Button>
+        )}
+        {isFieldShown && (
+          <Controller
+            name="fulfillment_date"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <DatePicker
+                  {...field}
+                  minDate={new Date()}
+                  disabled={disabled}
+                  onChange={(date) => {
+                    const today = new Date();
+
+                    if (today.toDateString() === date?.toDateString()) {
+                      setIsSameAsInvoiceDateChecked(true);
+                    } else {
+                      setIsSameAsInvoiceDateChecked(false);
+                    }
+
+                    field.onChange(date);
+                  }}
+                  label={t(i18n)`Fulfillment date`}
+                  slotProps={{
+                    popper: {
+                      container: root,
+                    },
+                    dialog: {
+                      container: root,
+                    },
+                    actionBar: {
+                      actions: ['today'],
+                    },
+                    textField: {
+                      fullWidth: true,
+                      helperText: error?.message,
+                    },
+                    field: {
+                      clearable: true,
+                      onClear: () => {
+                        resetField(field.name);
+                        setIsSameAsInvoiceDateChecked(false);
+                      },
+                    },
+                  }}
+                  views={['year', 'month', 'day']}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      size="small"
+                      checked={isSameAsInvoiceDateChecked}
+                      onChange={(event) => {
+                        const checked = event.target.checked;
+
+                        if (checked) {
+                          setValue(field.name, new Date(), {
+                            shouldValidate: true,
+                          });
+                        } else {
+                          resetField(field.name);
+                        }
+
+                        setIsSameAsInvoiceDateChecked(checked);
+                      }}
+                    />
+                  }
+                  label={t(i18n)`Same as invoice date`}
+                />
+              </>
+            )}
+          />
+        )}
       </Box>
     </>
   );
