@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { usePaymentIntentByObjectId } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Modal, Box, CircularProgress } from '@mui/material';
@@ -13,49 +14,53 @@ import { useRetry } from './useRetry';
 export const usePaymentHandler = (
   payableId?: components['schemas']['PayableResponseSchema']['id'],
   counterpartId?: components['schemas']['PayableResponseSchema']['counterpart_id'],
+  onPaymentComplete?: () => void,
   returnUrl: string = 'https://www.monite.com'
 ) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api } = useMoniteContext();
   const { root } = useRootElements();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
 
+  const { data } = usePaymentIntentByObjectId(payable.id);
+  const paymentIntent = data?.data?.[0];
+
   const createPaymentLinkMutation =
     api.paymentLinks.postPaymentLinks.useMutation({});
-  const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
-    undefined,
-    {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-        ]),
-      onError: (error) => {
-        toast.error(error.toString());
-      },
-    }
-  );
+  // const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
+  //   undefined,
+  //   {
+  //     onSuccess: (payable) =>
+  //       Promise.all([
+  //         api.payables.getPayablesId.invalidateQueries(
+  //           { parameters: { path: { payable_id: payable.id } } },
+  //           queryClient
+  //         ),
+  //         api.payables.getPayables.invalidateQueries(queryClient),
+  //       ]),
+  //     onError: (error) => {
+  //       toast.error(error.toString());
+  //     },
+  //   }
+  // );
 
-  const {
-    executeWithRetry: executeWithRetryMarkPaid,
-    isRetrying: isRetryingMarkPaid,
-  } = useRetry({
-    maxAttempts: 5,
-    initialDelayMs: 1000,
-    backoffFactor: 1.5,
-    shouldRetry: () => {
-      if (!payableId) return true;
-      return true;
-    },
-    onRetry: (attempt, error) => {
-      console.log(`Marking as paid attempt ${attempt} failed:`, error);
-    },
-  });
+  // const {
+  //   executeWithRetry: executeWithRetryMarkPaid,
+  //   isRetrying: isRetryingMarkPaid,
+  // } = useRetry({
+  //   maxAttempts: 5,
+  //   initialDelayMs: 1000,
+  //   backoffFactor: 1.5,
+  //   shouldRetry: () => {
+  //     if (!payableId) return true;
+  //     return true;
+  //   },
+  //   onRetry: (attempt, error) => {
+  //     console.log(`Marking as paid attempt ${attempt} failed:`, error);
+  //   },
+  // });
 
   const {
     executeWithRetry: executeWithRetryCreateLink,
@@ -73,36 +78,37 @@ export const usePaymentHandler = (
     },
   });
 
-  const markInvoiceAsPaid = async (id?: string) => {
-    if (!id) return;
-
-    try {
-      await executeWithRetryMarkPaid(async () => {
-        if (!id) throw new Error('Payable ID is undefined');
-
-        return payMutation.mutateAsync(
-          {
-            path: { payable_id: id },
-          },
-          {
-            onSuccess: (payable) => {
-              toast.success(
-                t(i18n)`Payable "${payable.document_id}" has been paid`
-              );
-            },
-          }
-        );
-      });
-    } catch (error) {
-      console.error('Failed to mark invoice as paid after retries:', error);
-      toast.error(t(i18n)`Failed to mark invoice as paid. Please try again.`);
-    }
-  };
+  // const markInvoiceAsPaid = async (id?: string) => {
+  //   if (!id) return;
+  //
+  //   try {
+  //     await executeWithRetryMarkPaid(async () => {
+  //       if (!id) throw new Error('Payable ID is undefined');
+  //
+  //       return payMutation.mutateAsync(
+  //         {
+  //           path: { payable_id: id },
+  //         },
+  //         {
+  //           onSuccess: (payable) => {
+  //             toast.success(
+  //               t(i18n)`Payable "${payable.document_id}" has been paid`
+  //             );
+  //           },
+  //         }
+  //       );
+  //     });
+  //   } catch (error) {
+  //     console.error('Failed to mark invoice as paid after retries:', error);
+  //     toast.error(t(i18n)`Failed to mark invoice as paid. Please try again.`);
+  //   }
+  // };
 
   const handleCloseModal = async () => {
     setModalOpen(false);
     setIframeUrl(null);
-    await markInvoiceAsPaid(payableId);
+    onPaymentComplete();
+    // await markInvoiceAsPaid(payableId);
   };
 
   const handlePay = async () => {
@@ -157,9 +163,9 @@ export const usePaymentHandler = (
     if (isRetryingCreateLink) {
       return t(i18n)`Creating payment link...`;
     }
-    if (isRetryingMarkPaid) {
-      return t(i18n)`Marking invoice as paid...`;
-    }
+    // if (isRetryingMarkPaid) {
+    //   return t(i18n)`Marking invoice as paid...`;
+    // }
     return t(i18n)`Loading payment page...`;
   };
 

@@ -9,3 +9,18 @@ export const usePaymentIntentById = (payment_intent_id: string) => {
     },
   });
 };
+
+export const usePaymentIntentByObjectId = (objectId: string) => {
+  const { api } = useMoniteContext();
+
+  return api.paymentIntents.getPaymentIntents.useQuery(
+    {
+      query: {
+        object_id: objectId,
+        sort: 'created_at',
+        order: 'desc',
+      },
+    },
+    {}
+  );
+};

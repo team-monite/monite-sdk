@@ -1,5 +1,6 @@
 import { components } from '@/api';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
+import { usePaymentIntentByObjectId } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -7,12 +8,14 @@ import { Button } from '@mui/material';
 
 interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
+  onPayableActionComplete?: () => void;
   onPay?: (id: string) => void;
   onPayUS?: (id: string) => void;
 }
 
 export const PayablesTableAction = ({
   payable,
+  onPayableActionComplete,
   onPay,
   onPayUS, // TODO: remove onPayUS prop
 }: PayablesTableActionProps) => {
@@ -27,13 +30,17 @@ export const PayablesTableAction = ({
   );
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(payable.id, payable.counterpart_id);
+    usePaymentHandler(payable.id, payable.counterpart_id, () => {
+      onPayableActionComplete?.();
+    });
 
   if (!isPayAllowed) {
     return null;
   }
 
-  if (isPayAllowed && statusCanBePaid) {
+  const showPayButton = isPayAllowed && statusCanBePaid;
+
+  if (showPayButton) {
     return (
       <>
         {isPaymentLinkAvailable ? (
@@ -54,7 +61,7 @@ export const PayablesTableAction = ({
             {t(i18n)`Pay`}
           </Button>
         ) : (
-          <p>{t(i18n)`Payment not allowed`}</p>
+          <></>
         )}
         {modalComponent}
       </>

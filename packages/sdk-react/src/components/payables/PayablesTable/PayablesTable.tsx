@@ -357,6 +357,9 @@ const PayablesTableBase = ({
           return (
             <PayablesTableAction
               payable={payable}
+              onPayableActionComplete={() => {
+                refetch();
+              }}
               onPay={onPay}
               onPayUS={onPayUS}
             />
