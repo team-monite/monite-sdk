@@ -2,6 +2,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -115,6 +116,13 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     Array.isArray(counterpartAddresses?.data) &&
     counterpartAddresses.data.length > 0 &&
     counterpartAddresses.data[0]?.country === 'US';
+
+  useEffect(() => {
+    if (counterpartAddresses && counterpartAddresses.data.length === 1) {
+      setValue('default_shipping_address_id', counterpartAddresses.data[0].id);
+      setValue('default_billing_address_id', counterpartAddresses.data[0].id);
+    }
+  }, [counterpartAddresses]);
 
   return (
     <Stack spacing={2} className={className}>
@@ -247,7 +255,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 required
                 error={Boolean(error)}
                 disabled={
-                  isCounterpartAddressesLoading || !counterpartId || disabled
+                  isCounterpartAddressesLoading ||
+                  !counterpartId ||
+                  disabled ||
+                  counterpartAddresses?.data.length === 1
                 }
               >
                 <InputLabel id={field.name}>{t(
@@ -283,7 +294,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 fullWidth
                 error={Boolean(error)}
                 disabled={
-                  isCounterpartAddressesLoading || !counterpartId || disabled
+                  isCounterpartAddressesLoading ||
+                  !counterpartId ||
+                  disabled ||
+                  counterpartAddresses?.data.length === 1
                 }
               >
                 <InputLabel htmlFor={field.name}>{t(
@@ -301,19 +315,22 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     ) : null
                   }
                   endAdornment={
-                    <IconButton
-                      sx={{
-                        visibility: field.value ? 'visible' : 'hidden ',
-                        mr: 2,
-                      }}
-                      size="small"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setValue('default_shipping_address_id', '');
-                      }}
-                    >
-                      <ClearIcon fontSize="small" />
-                    </IconButton>
+                    counterpartAddresses &&
+                    counterpartAddresses?.data.length > 1 && (
+                      <IconButton
+                        sx={{
+                          visibility: field.value ? 'visible' : 'hidden ',
+                          mr: 2,
+                        }}
+                        size="small"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setValue('default_shipping_address_id', '');
+                        }}
+                      >
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                    )
                   }
                 >
                   {counterpartAddresses?.data.map((address) => (

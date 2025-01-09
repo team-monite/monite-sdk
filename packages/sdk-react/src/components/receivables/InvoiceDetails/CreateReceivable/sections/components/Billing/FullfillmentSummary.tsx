@@ -47,31 +47,56 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box>
-          <Typography variant="body2" color="textSecondary" fontWeight={500}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            mb={0.5}
+            fontWeight={500}
+          >
             {t(i18n)`Issue date`}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Box>
             <Typography variant="body2" color="textSecondary">
               {dateTime}
             </Typography>
-            <LockOutlined sx={{ color: 'divider', width: '16px' }} />
-            <Typography variant="body2" color="textSecondary">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+            >
+              <LockOutlined sx={{ color: 'divider', width: '16px' }} />
               {t(i18n)`Set on issuance`}
             </Typography>
           </Box>
         </Box>
-        <Box>
-          <Typography variant="body2" color="textSecondary" fontWeight={500}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            mb={0.5}
+            fontWeight={500}
+          >
             {t(i18n)`Due date`}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Box>
             <Typography variant="body2" color="textSecondary">
               {t(i18n)`${selectedPaymentTerm?.name ?? 'Not selected'}`}
             </Typography>
-            <LockOutlined sx={{ color: 'divider', width: '16px' }} />
-            <Typography variant="body2" color="textSecondary">
+
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+            >
+              <LockOutlined sx={{ color: 'divider', width: '16px' }} />
               {t(i18n)`Set by payment term`}
             </Typography>
           </Box>
