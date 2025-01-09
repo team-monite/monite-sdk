@@ -1,5 +1,5 @@
-import { components, Services } from '@/api';
-import { ChipProps, SelectProps } from '@mui/material';
+import { components } from '@/api';
+import { ChipProps } from '@mui/material';
 
 type TypographyStyle = {
   fontSize?: string | number;
@@ -37,6 +37,16 @@ export type ThemeConfig = {
     subtitle2?: TypographyStyle;
     body1?: TypographyStyle;
     body2?: TypographyStyle;
+  };
+
+  components?: {
+    invoiceStatusChip?: Partial<MoniteInvoiceStatusChipProps>;
+    payableStatusChip?: Partial<MonitePayableStatusChipProps>;
+    approvalRequestStatusChip?: Partial<MoniteApprovalRequestStatusChipProps>;
+    invoiceRecurrenceStatusChip?: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
+    invoiceRecurrenceIterationStatusChip?: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
+    counterpartStatusChip?: Partial<MoniteCounterpartStatusChipProps>;
+    approvalStatusChip?: Partial<MoniteApprovalStatusChipProps>;
   };
 };
 
@@ -93,23 +103,6 @@ export type MonitePalette = {
   divider: string;
 };
 
-interface MoniteTablePaginationRootSlotProps {
-  pageSizeOptions?: number[];
-}
-
-interface MoniteTablePaginationSlotProps {
-  slotProps?: {
-    pageSizeSelect?: Omit<
-      SelectProps,
-      'value' | 'defaultValue' | 'aria-label' | 'ref' | 'components'
-    >;
-  };
-}
-
-export interface MoniteTablePaginationProps
-  extends MoniteTablePaginationSlotProps,
-    MoniteTablePaginationRootSlotProps {}
-
 interface BaseChipProps {
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
@@ -160,69 +153,4 @@ export interface MoniteApprovalRequestStatusChipProps
 export interface MoniteApprovalStatusChipProps extends BaseStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['ApprovalPolicyStatus'];
-}
-
-export type PayablesTabFilter = NonNullable<
-  Services['payables']['getPayables']['types']['parameters']['query']
->;
-
-//TODO: better to map it with schema.json keyof values
-export type FieldValueTypes =
-  | 'document_id'
-  | 'counterpart_id'
-  | 'created_at'
-  | 'issued_at'
-  | 'due_date'
-  | 'status'
-  | 'amount'
-  | 'pay';
-
-export interface MonitePayableTableProps {
-  isShowingSummaryCards?: boolean;
-  fieldOrder?: FieldValueTypes[];
-  summaryCardFilters?: Record<string, PayablesTabFilter | null>;
-}
-
-export type OptionalFields = {
-  invoiceDate?: boolean;
-  tags?: boolean;
-};
-
-export type OcrRequiredField =
-  | 'currency'
-  | 'invoiceDate'
-  | 'counterpart'
-  | 'invoiceNumber'
-  | 'counterpartBankAccount'
-  | 'document_issued_at_date'
-  | 'dueDate'
-  | 'tags'
-  | 'counterpartName'
-  | 'contactPerson'
-  | 'issueDate'
-  | 'amount'
-  | 'appliedPolicy'
-  | 'addedByUser'
-  | 'addedOn'
-  | 'updatedOn';
-
-export type OcrRequiredFields =
-  | Partial<Record<OcrRequiredField, boolean>>
-  | undefined;
-
-export type OcrMismatchField =
-  | keyof Pick<
-      components['schemas']['PayableResponseSchema'],
-      'amount_to_pay' | 'counterpart_bank_account_id'
-    >;
-
-export type OcrMismatchFields =
-  | Partial<Record<OcrMismatchField, boolean>>
-  | undefined;
-
-export interface MonitePayableDetailsInfoProps {
-  optionalFields?: OptionalFields;
-  ocrRequiredFields?: OcrRequiredFields;
-  ocrMismatchFields?: OcrMismatchFields;
-  isTagsDisabled?: boolean;
 }

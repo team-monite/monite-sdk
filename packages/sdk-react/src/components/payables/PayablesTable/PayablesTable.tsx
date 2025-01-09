@@ -22,17 +22,13 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -119,25 +115,24 @@ export interface PayableGridSortModel {
 /**
  * PayablesTable component.
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayablesTable: {
- *       defaultProps: {
- *         fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
- *         summaryCardFilters: {
- *           'Overdue Invoices': {
- *             status__in: ['waiting_to_be_paid'],
- *             overdue: true,
- *           },
- *           'High-Value Invoices': {
- *             amount__gte: 10000,
- *           },
- *         },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   payables: {
+ *     fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *     summaryCardFilters: {
+ *       'Overdue Invoices': {
+ *         status__in: ['waiting_to_be_paid'],
+ *         overdue: true,
+ *       },
+ *       'High-Value Invoices': {
+ *         amount__gte: 10000,
  *       },
  *     },
  *   },
- * });
+ * };
+ * ```
  */
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
@@ -155,7 +150,7 @@ const PayablesTableBase = ({
   ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
-  const { api, locale, queryClient } = useMoniteContext();
+  const { api, locale, queryClient, componentSettings } = useMoniteContext();
 
   const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
     usePayableTableThemeProps(inProps);
@@ -164,7 +159,7 @@ const PayablesTableBase = ({
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.payables.pageSizeOptions?.[0] ?? 15
   );
   const [sortModel, setSortModel] = useState<PayableGridSortModel>({
     field: 'created_at',
@@ -480,6 +475,7 @@ const PayablesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.payables.pageSizeOptions}
               nextPage={payables?.next_pagination_token}
               prevPage={payables?.prev_pagination_token}
               paginationModel={{
@@ -529,8 +525,16 @@ const PayablesTableBase = ({
 
 const usePayableTableThemeProps = (
   inProps: Partial<MonitePayableTableProps>
-): MonitePayableTableProps =>
-  useThemeProps({
-    props: inProps,
-    name: 'MonitePayableTable',
-  });
+): MonitePayableTableProps => {
+  const { componentSettings } = useMoniteContext();
+
+  return {
+    isShowingSummaryCards:
+      inProps?.isShowingSummaryCards ??
+      componentSettings?.payables?.isShowingSummaryCards,
+    fieldOrder: inProps?.fieldOrder ?? componentSettings?.payables?.fieldOrder,
+    summaryCardFilters:
+      inProps?.summaryCardFilters ??
+      componentSettings?.payables?.summaryCardFilters,
+  };
+};

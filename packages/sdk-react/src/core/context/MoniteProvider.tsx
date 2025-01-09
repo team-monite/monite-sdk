@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
+import type { ComponentSettings } from '@/core/componentSettings';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import {
   MoniteAPIProvider,
@@ -37,16 +38,27 @@ export interface MoniteProviderProps {
    *  of all Widgets provided.
    */
   locale?: MoniteLocale;
+
+  /**
+   * Component settings
+   */
+  componentSettings?: Partial<ComponentSettings>;
 }
 
 export const MoniteProvider = ({
   monite,
   theme,
+  componentSettings,
   children,
   locale,
 }: MoniteProviderProps) => {
   return (
-    <MoniteContextProvider monite={monite} locale={locale} theme={theme}>
+    <MoniteContextProvider
+      monite={monite}
+      locale={locale}
+      theme={theme}
+      componentSettings={componentSettings}
+    >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
         <MoniteMuiThemeProvider>
           <ContainerCssBaseline enableColorScheme />

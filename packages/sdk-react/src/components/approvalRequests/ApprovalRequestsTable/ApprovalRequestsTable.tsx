@@ -16,10 +16,7 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -65,7 +62,7 @@ const ApprovalRequestsTableBase = ({
   onRowClick,
   ...restProps
 }: ApprovalRequestsTableProps) => {
-  const { api, locale } = useMoniteContext();
+  const { api, locale, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
   const { data: user } = useEntityUserByAuthToken();
@@ -108,7 +105,7 @@ const ApprovalRequestsTableBase = ({
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.approvalRequests.pageSizeOptions[0]
   );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
@@ -319,6 +316,9 @@ const ApprovalRequestsTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={
+                componentSettings.approvalRequests.pageSizeOptions
+              }
               prevPage={approvalRequests?.prev_pagination_token}
               nextPage={approvalRequests?.next_pagination_token}
               paginationModel={{

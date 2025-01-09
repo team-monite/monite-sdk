@@ -5,6 +5,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { CounterpartStatusChip } from '@/components/counterparts/CounterpartStatusChip';
 import { TableActions } from '@/components/TableActions';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { CounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
@@ -18,10 +19,7 @@ import { CounterpartCellById } from '@/ui/CounterpartCell/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
@@ -121,6 +119,7 @@ const CounterpartsTableBase = ({
   setType,
 }: CounterpartsTableProps) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [selectedCounterpart, setSelectedCounterpart] = useState<
     CounterpartResponse | undefined
@@ -130,7 +129,7 @@ const CounterpartsTableBase = ({
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.counterparts.pageSizeOptions[0]
   );
   const [currentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
@@ -415,6 +414,7 @@ const CounterpartsTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.counterparts.pageSizeOptions}
               prevPage={counterparts?.prev_pagination_token}
               nextPage={counterparts?.next_pagination_token}
               paginationModel={{

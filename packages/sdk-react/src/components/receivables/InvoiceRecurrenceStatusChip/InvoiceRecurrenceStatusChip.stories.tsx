@@ -1,5 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { Alert } from '@mui/material';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { InvoiceRecurrenceStatusChip as InvoiceRecurrenceStatusChipComponent } from './InvoiceRecurrenceStatusChip';
@@ -16,42 +15,20 @@ export const InvoiceRecurrenceStatusChip: Story = {
     status: 'active',
     icon: true,
   },
+  decorators: withGlobalStorybookDecorator(() => ({
+    theme: {
+      components: {
+        invoiceRecurrenceStatusChip: {
+          icon: true,
+          size: 'medium',
+          variant: 'outlined',
+        },
+      },
+    },
+  })),
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteInvoiceRecurrenceStatusChip: {
-              variants: [
-                {
-                  props: { status: 'active' },
-                  style: {
-                    border: '2px dashed lightgreen',
-                  },
-                },
-                {
-                  props: { status: 'canceled' },
-                  style: {
-                    border: '2px dashed red',
-                  },
-                },
-                {
-                  props: { status: 'completed' },
-                  style: {
-                    border: '2px dashed blue',
-                  },
-                },
-              ],
-            },
-          },
-        }}
-      >
-        <InvoiceRecurrenceStatusChipComponent {...args} />
-      </ExtendThemeProvider>
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<InvoiceRecurrenceStatusChip />'}</code> could be customized
-        through MUI theming
-      </Alert>
+      <InvoiceRecurrenceStatusChipComponent {...args} />
     </div>
   ),
 };

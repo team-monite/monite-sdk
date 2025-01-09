@@ -18,10 +18,7 @@ import { useGetFinancedInvoices } from '@/core/queries/useFinancing';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -79,14 +76,14 @@ const FinancedInvoicesTableBase = ({
   query,
 }: FinancedInvoicesTableProps) => {
   const { i18n } = useLingui();
-  const { locale } = useMoniteContext();
+  const { locale, componentSettings } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
@@ -250,6 +247,7 @@ const FinancedInvoicesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={invoices?.next_pagination_token}
               prevPage={invoices?.prev_pagination_token}
               paginationModel={{
