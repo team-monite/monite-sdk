@@ -10,7 +10,7 @@ import {
 } from '@/custom-elements/MoniteAppElementBase.tsx';
 
 export class MoniteAppElement extends MoniteAppElementBase<
-  'fetch-token' | 'theme' | 'locale'
+  'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private reactAppRoot: Root | undefined;
 
@@ -66,6 +66,19 @@ export class MoniteAppElement extends MoniteAppElementBase<
    *     {"fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"}
    *   </script>
    *   ```
+   * - `component-settings`: A JSON object containing the component settings to use. Example:
+   *   ```
+   *   <script slot="component-settings" type="application/json">
+   *     {
+   *       "general": {
+   *         iconWrapper: {
+   *           icon: <ArrowBackIcon />,
+   *           showCloseIcon: true,
+   *         },
+   *       },
+   *     }
+   *   </script>
+   *   ```
    * - `locale`: A JSON object containing the locale to use. Example:
    *    ```
    *    <script slot="locale" type="application/json">
@@ -77,7 +90,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
    *   ```
    */
   protected readonly slotsSchema: Record<
-    'fetch-token' | 'theme' | 'locale',
+    'fetch-token' | 'theme' | 'locale' | 'component-settings',
     SlotConfig
   > = {
     'fetch-token': {
@@ -87,6 +100,9 @@ export class MoniteAppElement extends MoniteAppElementBase<
       type: 'json',
     },
     locale: {
+      type: 'json',
+    },
+    'component-settings': {
       type: 'json',
     },
   };

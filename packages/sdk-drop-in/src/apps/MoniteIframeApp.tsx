@@ -16,7 +16,8 @@ import { DropInMoniteProvider } from '../lib/DropInMoniteProvider';
 export const MoniteIframeApp = () => {
   const queryClient = useMemo(() => new QueryClient(), []);
 
-  const { fetchToken, theme, locale } = useMoniteIframeAppSlots();
+  const { fetchToken, theme, locale, componentSettings } =
+    useMoniteIframeAppSlots();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -32,6 +33,7 @@ export const MoniteIframeApp = () => {
                 >
                   <MoniteIframeAppComponent
                     theme={theme}
+                    componentSettings={componentSettings}
                     locale={locale}
                     entityId={entityId}
                     apiUrl={apiUrl}
@@ -50,6 +52,7 @@ export const MoniteIframeApp = () => {
 
 const MoniteIframeAppComponent = ({
   theme,
+  componentSettings,
   locale,
   basename,
   apiUrl,
@@ -62,11 +65,15 @@ const MoniteIframeAppComponent = ({
   fetchToken: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
-} & Pick<ComponentProps<typeof DropInMoniteProvider>, 'locale' | 'theme'>) => {
+} & Pick<
+  ComponentProps<typeof DropInMoniteProvider>,
+  'locale' | 'theme' | 'componentSettings'
+>) => {
   return (
     <DropInMoniteProvider
       locale={locale}
       theme={theme}
+      componentSettings={componentSettings}
       sdkConfig={{
         entityId,
         apiUrl,

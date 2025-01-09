@@ -80,13 +80,7 @@ export const withGlobalStorybookDecorator = (
  *
  * This theme config is used to create the default theme for storybook stories.
  */
-const defaultThemeConfig: ThemeConfig = {
-  colors: {
-    primary: '#256c6f',
-
-    text: '#401d6d',
-  },
-};
+const defaultThemeConfig: ThemeConfig = {};
 
 /**
  * Default component settings for storybook stories.

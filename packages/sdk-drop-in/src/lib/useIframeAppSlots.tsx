@@ -5,7 +5,12 @@ import { MoniteProvider, type APISchema } from '@monite/sdk-react';
 
 export const useMoniteIframeAppSlots = () => {
   const [slots, setSlots] = useState<
-    Partial<Pick<ComponentProps<typeof MoniteProvider>, 'locale' | 'theme'>>
+    Partial<
+      Pick<
+        ComponentProps<typeof MoniteProvider>,
+        'locale' | 'theme' | 'componentSettings'
+      >
+    >
   >({});
 
   const [iframeCommunicator] = useState(
@@ -31,13 +36,18 @@ export const useMoniteIframeAppSlots = () => {
   useEffect(
     function subscribe() {
       iframeCommunicator.on('locale', (locale) => {
-        // @ts-expect-error - payload is not a valid theme object
+        // @ts-expect-error - payload is not a valid locale object
         setSlots((prevSlots) => ({ ...prevSlots, locale }));
       });
 
       iframeCommunicator.on('theme', (theme) => {
         // @ts-expect-error - payload is not a valid theme object
         setSlots((prevSlots) => ({ ...prevSlots, theme }));
+      });
+
+      iframeCommunicator.on('component-settings', (componentSettings) => {
+        // @ts-expect-error - payload is not a valid componentSettings object
+        setSlots((prevSlots) => ({ ...prevSlots, componentSettings }));
       });
 
       iframeCommunicator.connect();
