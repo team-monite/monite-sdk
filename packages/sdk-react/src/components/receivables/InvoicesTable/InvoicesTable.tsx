@@ -170,7 +170,7 @@ const InvoicesTableBase = ({
                     <Box
                       sx={{
                         alignItems: 'center',
-                        display: 'inline-flex',
+                        display: 'flex',
                         verticalAlign: 'middle',
                         fontSize: 'inherit',
                         gap: 0.5,
@@ -178,10 +178,15 @@ const InvoicesTableBase = ({
                     >
                       <Typography
                         variant="body1"
-                        className="Monite-TextOverflowContainer"
+                        sx={{ display: 'flex' }}
+                        className=""
                       >
                         <>
-                          <Sync fontSize="small" color="inherit" />
+                          <Sync
+                            fontSize="small"
+                            sx={{ marginRight: '4px' }}
+                            color="inherit"
+                          />
                           {t(i18n)`Recurring`}
                         </>
                       </Typography>
@@ -214,11 +219,29 @@ const InvoicesTableBase = ({
                 return value;
               })()}
               {row.type === 'invoice' && row.recurrence_id ? (
-                <InvoiceRecurrenceStatusChipLoader
-                  recurrenceId={row.recurrence_id}
-                />
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'inline-flex',
+                    verticalAlign: 'middle',
+                    marginLeft: '4px',
+                  }}
+                >
+                  <InvoiceRecurrenceStatusChipLoader
+                    recurrenceId={row.recurrence_id}
+                  />
+                </Box>
               ) : (
-                <InvoiceStatusChip status={row.status} size="small" />
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'inline-flex',
+                    verticalAlign: 'middle',
+                    marginLeft: '4px',
+                  }}
+                >
+                  <InvoiceStatusChip status={row.status} size="small" />
+                </Box>
               )}
             </Box>
           </Stack>
