@@ -1,0 +1,9 @@
+# Dockerfile.sdk-drop-in
+FROM cimg/node:20.12.2
+
+WORKDIR /app
+
+COPY . /app
+
+RUN yarn install --immutable
+RUN yarn build --filter='@monite/sdk-drop-in'

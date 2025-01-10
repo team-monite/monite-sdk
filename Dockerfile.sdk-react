@@ -1,0 +1,9 @@
+# Dockerfile.sdk-react
+FROM cimg/node:20.12.2
+
+WORKDIR /app
+
+COPY . /app
+
+RUN yarn install --immutable
+RUN yarn build --filter='@monite/sdk-react'

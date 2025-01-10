@@ -1,0 +1,11 @@
+# Dockerfile.sdk-demo-nginx
+FROM nginx:1.25.1
+
+WORKDIR /app
+
+COPY --from=sdk-demo /app/packages/sdk-demo/build /app
+
+RUN useradd -u 7000 -s /bin/bash app && \
+    ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
+
+USER app
