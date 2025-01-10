@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.1
+
+### Minor Changes
+
+- 331d6d4: feat(proposal): add component settings
+
 ## 1.8.0-alpha.0
 
 ### Minor Changes
