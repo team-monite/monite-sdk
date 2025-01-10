@@ -1,0 +1,38 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - DEV-13666-build-images
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: [Dockerfile.sdk-react, Dockerfile.sdk-demo-with-nextjs-and-clerk-auth, Dockerfile.sdk-demo, Dockerfile.sdk-demo-nginx, Dockerfile.sdk-drop-in, Dockerfile.sdk-drop-in-nginx, Dockerfile.private-registry]
+        image_name: [sdk-react, sdk-demo-with-nextjs-and-clerk-auth, sdk-demo, sdk-demo-nginx, sdk-drop-in, sdk-drop-in-nginx, private-registry]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.monite.com
+          username: ${{ secrets.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
+      - name: Build and push Docker image to Gitlab
+        run: |
+          COMMIT_SHA=${{ github.sha }}
+          IMAGE_TAG=${{ matrix.image_name }}-${COMMIT_SHA}
+          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./${{ matrix.dockerfile }} .
+          docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+
+      - name: Output Image Tags
+        run: |
+          echo "Image built and pushed for ${{ matrix.image_name }}: registry.monite.com/monite/frontend/sdkapp:${{ matrix.image_name }}-${{ github.sha }}"
