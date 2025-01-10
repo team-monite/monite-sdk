@@ -728,6 +728,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           borderBottomLeftRadius: moniteTheme.borderRadius * 2,
           borderBottomRightRadius: moniteTheme.borderRadius * 2,
           '--DataGrid-rowBorderColor': 'divider',
+          '--DataGrid-containerBackground': 'white',
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
