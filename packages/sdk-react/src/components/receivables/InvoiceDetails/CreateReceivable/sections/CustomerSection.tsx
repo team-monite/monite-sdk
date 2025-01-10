@@ -92,6 +92,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
+  const [isShippingAddressShown, setIsShippingAddressShown] =
+    useState<boolean>(false);
 
   const className = 'Monite-CreateReceivable-CustomerSection';
   const isHiddenForUS =
@@ -240,58 +242,69 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
               </FormControl>
             )}
           />
-          <Controller
-            name="default_shipping_address_id"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl
-                variant="standard"
-                fullWidth
-                error={Boolean(error)}
-                disabled={isAddressFormDisabled}
-              >
-                <InputLabel htmlFor={field.name}>{t(
-                  i18n
-                )`Shipping address`}</InputLabel>
-                <Select
-                  {...field}
-                  id={field.name}
-                  labelId={field.name}
-                  MenuProps={{ container: root }}
-                  label={t(i18n)`Shipping address`}
-                  startAdornment={
-                    isCounterpartAddressesLoading ? (
-                      <CircularProgress size={20} />
-                    ) : null
-                  }
-                  endAdornment={
-                    counterpartAddresses &&
-                    counterpartAddresses?.data.length > 1 && (
-                      <IconButton
-                        sx={{
-                          visibility: field.value ? 'visible' : 'hidden ',
-                          mr: 2,
-                        }}
-                        size="small"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setValue('default_shipping_address_id', '');
-                        }}
-                      >
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-                    )
-                  }
+          {!isShippingAddressShown && (
+            <Button
+              sx={{ alignSelf: 'baseline' }}
+              startIcon={<AddIcon />}
+              onClick={() => setIsShippingAddressShown(true)}
+            >
+              {t(i18n)`Shipping address`}
+            </Button>
+          )}
+          {isShippingAddressShown && (
+            <Controller
+              name="default_shipping_address_id"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl
+                  variant="standard"
+                  fullWidth
+                  error={Boolean(error)}
+                  disabled={isAddressFormDisabled}
                 >
-                  {counterpartAddresses?.data.map((address) => (
-                    <MenuItem key={address.id} value={address.id}>
-                      <CounterpartAddressView address={address} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          />
+                  <InputLabel htmlFor={field.name}>{t(
+                    i18n
+                  )`Shipping address`}</InputLabel>
+                  <Select
+                    {...field}
+                    id={field.name}
+                    labelId={field.name}
+                    MenuProps={{ container: root }}
+                    label={t(i18n)`Shipping address`}
+                    startAdornment={
+                      isCounterpartAddressesLoading ? (
+                        <CircularProgress size={20} />
+                      ) : null
+                    }
+                    endAdornment={
+                      counterpartAddresses &&
+                      counterpartAddresses?.data.length > 1 && (
+                        <IconButton
+                          sx={{
+                            visibility: field.value ? 'visible' : 'hidden ',
+                            mr: 2,
+                          }}
+                          size="small"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setValue('default_shipping_address_id', '');
+                          }}
+                        >
+                          <ClearIcon fontSize="small" />
+                        </IconButton>
+                      )
+                    }
+                  >
+                    {counterpartAddresses?.data.map((address) => (
+                      <MenuItem key={address.id} value={address.id}>
+                        <CounterpartAddressView address={address} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+          )}
         </>
       )}
     </Stack>
