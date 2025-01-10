@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.2
+
+### Patch Changes
+
+- 1a0042c: Fix styling issues in Receivables table
+
 ## 4.0.0-alpha.1
 
 ### Minor Changes
