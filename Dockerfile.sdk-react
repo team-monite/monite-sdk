@@ -1,9 +1,20 @@
 # Dockerfile.sdk-react
 FROM cimg/node:20.12.2
 
+# Create a non-root user and set permissions
+RUN groupadd -g 1000 app && \
+    useradd -m -u 1000 -g app -s /bin/bash app
+
+# Set the working directory
 WORKDIR /app
 
+# Copy files and adjust ownership
 COPY . /app
+RUN chown -R app:app /app
 
+# Switch to the non-root user
+USER app
+
+# Install dependencies and build
 RUN yarn install --immutable
 RUN yarn build --filter='@monite/sdk-react'

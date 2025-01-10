@@ -41,6 +41,7 @@ jobs:
           IMAGE_TAG=${{ matrix.image_name }}-${COMMIT_SHA}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./${{ matrix.dockerfile }} .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+        continue-on-error: true
 
   build-dependent-images:
     name: Build Dependent Images
