@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_BRANCH: "main"
+  RELEASE_BRANCH: "packages-version-update-4.0.0-alpha.1"
 
 jobs:
   npm-publish:

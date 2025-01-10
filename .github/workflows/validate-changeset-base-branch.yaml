@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - dev
+      - packages-version-update-4.0.0-alpha.1
     types: [synchronize, edited]
 
 concurrency:
