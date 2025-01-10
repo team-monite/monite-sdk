@@ -350,11 +350,13 @@ const InvoicesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
+        paddingTop: 2,
       }}
     >
-      <Box mb={2}>
+      <Box>
         <FinanceBanner />
       </Box>
+
       <ReceivableFilters
         filters={filters}
         onChange={(field, value) => {
