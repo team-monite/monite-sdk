@@ -201,11 +201,13 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 ),
               }}
             />
-            <Collapse
-              in={counterpart && !counterpart.tax_id && !isCounterpartLoading}
-            >
-              <FormHelperText>{t(i18n)`No TAX ID available`}</FormHelperText>
-            </Collapse>
+            {!isHiddenForUS && (
+              <Collapse
+                in={counterpart && !counterpart.tax_id && !isCounterpartLoading}
+              >
+                <FormHelperText>{t(i18n)`No TAX ID available`}</FormHelperText>
+              </Collapse>
+            )}
           </Box>
           <Controller
             name="default_billing_address_id"
