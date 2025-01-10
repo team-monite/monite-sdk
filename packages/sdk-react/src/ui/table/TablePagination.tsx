@@ -81,7 +81,7 @@ export const TablePagination = <T,>({
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
   return (
-    <RootGrid container m={2} boxSizing="border-box" className={className}>
+    <RootGrid container mx={2} boxSizing="border-box" className={className}>
       <Grid
         xs={12}
         item
