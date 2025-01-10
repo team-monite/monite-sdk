@@ -21,7 +21,10 @@ export const EntitySection = ({ disabled }: EntitySectionProps) => {
   const { control } = useFormContext<CreateReceivablesFormProps>();
 
   return (
-    <Box>
+    <Box
+      sx={{ borderBottom: '1px solid', borderBottomColor: 'divider' }}
+      pb={10}
+    >
       <Typography
         variant="caption"
         color="textSecondary"
