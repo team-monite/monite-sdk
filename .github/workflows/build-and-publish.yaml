@@ -8,8 +8,8 @@ on:
       - DEV-13666-build-images
 
 jobs:
-  build-base-images:
-    name: Build Base Images
+  build-sdk-react:
+    name: Build and Push sdk-react
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,42 +22,76 @@ jobs:
           username: ${{ vars.GITLAB_BOT_USERNAME }}
           password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
 
-      - name: Set Commit SHA
-        id: vars
-        run: echo "COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-
       - name: Build and Push sdk-react
-        id: sdk-react
         run: |
-          IMAGE_TAG=sdk-react-${COMMIT_SHA}
+          IMAGE_TAG=sdk-react-${{ github.sha }}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-react .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
+  build-sdk-demo-with-nextjs:
+    name: Build and Push sdk-demo-with-nextjs-and-clerk-auth
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
       - name: Build and Push sdk-demo-with-nextjs-and-clerk-auth
-        id: sdk-demo-with-nextjs-and-clerk-auth
         run: |
-          IMAGE_TAG=sdk-demo-with-nextjs-and-clerk-auth-${COMMIT_SHA}
+          IMAGE_TAG=sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-demo-with-nextjs-and-clerk-auth .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
+  build-sdk-demo:
+    name: Build and Push sdk-demo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
       - name: Build and Push sdk-demo
-        id: sdk-demo
         run: |
-          IMAGE_TAG=sdk-demo-${COMMIT_SHA}
+          IMAGE_TAG=sdk-demo-${{ github.sha }}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-demo .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
+  build-sdk-drop-in:
+    name: Build and Push sdk-drop-in
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
       - name: Build and Push sdk-drop-in
-        id: sdk-drop-in
         run: |
-          IMAGE_TAG=sdk-drop-in-${COMMIT_SHA}
+          IMAGE_TAG=sdk-drop-in-${{ github.sha }}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-drop-in .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
-  build-dependent-images:
-    name: Build Dependent Images
+  build-sdk-demo-nginx:
+    name: Build and Push sdk-demo-nginx
     runs-on: ubuntu-latest
-    needs: [build-base-images]
+    needs: build-sdk-demo
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -71,17 +105,32 @@ jobs:
 
       - name: Build and Push sdk-demo-nginx
         run: |
-          BASE_IMAGE_TAG=sdk-demo-${{ needs.build-base-images.outputs.vars.COMMIT_SHA }}
-          IMAGE_TAG=sdk-demo-nginx-${{ needs.build-base-images.outputs.vars.COMMIT_SHA }}
+          BASE_IMAGE_TAG=sdk-demo-${{ github.sha }}
+          IMAGE_TAG=sdk-demo-nginx-${{ github.sha }}
           docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
           docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
                        -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-demo-nginx .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
+  build-sdk-drop-in-nginx:
+    name: Build and Push sdk-drop-in-nginx
+    runs-on: ubuntu-latest
+    needs: build-sdk-drop-in
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
       - name: Build and Push sdk-drop-in-nginx
         run: |
-          BASE_IMAGE_TAG=sdk-drop-in-${{ needs.build-base-images.outputs.vars.COMMIT_SHA }}
-          IMAGE_TAG=sdk-drop-in-nginx-${{ needs.build-base-images.outputs.vars.COMMIT_SHA }}
+          BASE_IMAGE_TAG=sdk-drop-in-${{ github.sha }}
+          IMAGE_TAG=sdk-drop-in-nginx-${{ github.sha }}
           docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
           docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
                        -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-drop-in-nginx .
