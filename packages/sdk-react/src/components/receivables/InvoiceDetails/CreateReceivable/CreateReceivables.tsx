@@ -65,7 +65,7 @@ const CreateReceivablesBase = ({
     isLoading: isEntityLoading,
     isNonCompliantFlow,
   } = useMyEntity();
-
+  const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(
       getCreateInvoiceValidationSchema(
@@ -251,7 +251,9 @@ const CreateReceivablesBase = ({
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
               <ItemsSection
-                defaultCurrency={settings?.currency?.default}
+                defaultCurrency={
+                  settings?.currency?.default || fallbackCurrency
+                }
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
