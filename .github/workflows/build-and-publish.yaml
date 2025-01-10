@@ -36,7 +36,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: registry.monite.com
-          username: ${{ secrets.GITLAB_BOT_USERNAME }}
+          username: ${{ env.GITLAB_BOT_USERNAME }}
           password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
 
       - name: Build and push Docker image to GitLab
