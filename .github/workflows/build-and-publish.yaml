@@ -8,25 +8,23 @@ on:
       - DEV-13666-build-images
 
 jobs:
-  build-base-images:
-    name: Build Base Images
+  setup:
+    name: Setup Repository and Login
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - dockerfile: Dockerfile.sdk-react
-            image_name: sdk-react
-          - dockerfile: Dockerfile.sdk-demo
-            image_name: sdk-demo
-          - dockerfile: Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
-            image_name: sdk-demo-with-nextjs-and-clerk-auth
-          - dockerfile: Dockerfile.sdk-drop-in
-            image_name: sdk-drop-in
-          - dockerfile: Dockerfile.private-registry
-            image_name: private-registry
+    outputs:
+      workspace-path: ${{ steps.set-workspace-path.outputs.path }}
+      commit-sha: ${{ steps.set-commit-sha.outputs.commit_sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set Workspace Path
+        id: set-workspace-path
+        run: echo "::set-output name=path::$(pwd)"
+
+      - name: Set Commit SHA
+        id: set-commit-sha
+        run: echo "::set-output name=commit_sha::${GITHUB_SHA}"
 
       - name: Log in to GitLab Container Registry
         uses: docker/login-action@v3
@@ -35,44 +33,61 @@ jobs:
           username: ${{ vars.GITLAB_BOT_USERNAME }}
           password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
 
-      - name: Build and push Docker image to GitLab
+  build-images:
+    name: Build and Push All Images
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Build and Push SDK React
         run: |
-          COMMIT_SHA=${{ github.sha }}
-          IMAGE_TAG=${{ matrix.image_name }}-${COMMIT_SHA}
-          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./${{ matrix.dockerfile }} .
+          IMAGE_TAG=sdk-react-${{ needs.setup.outputs.commit-sha }}
+          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.sdk-react \
+                       ${{ needs.setup.outputs.workspace-path }}
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
-        continue-on-error: true
 
-  build-dependent-images:
-    name: Build Dependent Images
-    runs-on: ubuntu-latest
-    needs: build-base-images
-    strategy:
-      matrix:
-        include:
-          - dockerfile: Dockerfile.sdk-demo-nginx
-            base_image: sdk-demo
-            image_name: sdk-demo-nginx
-          - dockerfile: Dockerfile.sdk-drop-in-nginx
-            base_image: sdk-drop-in
-            image_name: sdk-drop-in-nginx
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Log in to GitLab Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: registry.monite.com
-          username: ${{ vars.GITLAB_BOT_USERNAME }}
-          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
-
-      - name: Build and push Docker image to GitLab
+      - name: Build and Push SDK Demo
         run: |
-          COMMIT_SHA=${{ github.sha }}
-          IMAGE_TAG=${{ matrix.image_name }}-${COMMIT_SHA}
-          BASE_IMAGE_TAG=${{ matrix.base_image }}-${COMMIT_SHA}
+          IMAGE_TAG=sdk-demo-${{ needs.setup.outputs.commit-sha }}
+          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.sdk-demo \
+                       ${{ needs.setup.outputs.workspace-path }}
+          docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+
+      - name: Build and Push SDK Demo NGINX
+        run: |
+          BASE_IMAGE_TAG=sdk-demo-${{ needs.setup.outputs.commit-sha }}
+          IMAGE_TAG=sdk-demo-nginx-${{ needs.setup.outputs.commit-sha }}
           docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
           docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
-                       -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./${{ matrix.dockerfile }} .
+                       -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.sdk-demo-nginx \
+                       ${{ needs.setup.outputs.workspace-path }}
+          docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+
+      - name: Build and Push SDK Drop-in
+        run: |
+          IMAGE_TAG=sdk-drop-in-${{ needs.setup.outputs.commit-sha }}
+          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.sdk-drop-in \
+                       ${{ needs.setup.outputs.workspace-path }}
+          docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+
+      - name: Build and Push SDK Drop-in NGINX
+        run: |
+          BASE_IMAGE_TAG=sdk-drop-in-${{ needs.setup.outputs.commit-sha }}
+          IMAGE_TAG=sdk-drop-in-nginx-${{ needs.setup.outputs.commit-sha }}
+          docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
+          docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
+                       -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.sdk-drop-in-nginx \
+                       ${{ needs.setup.outputs.workspace-path }}
+          docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
+
+      - name: Build and Push Private Registry
+        run: |
+          IMAGE_TAG=private-registry-${{ needs.setup.outputs.commit-sha }}
+          docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+                       -f ${{ needs.setup.outputs.workspace-path }}/Dockerfile.private-registry \
+                       ${{ needs.setup.outputs.workspace-path }}
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
