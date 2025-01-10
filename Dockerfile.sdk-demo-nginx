@@ -1,11 +1,20 @@
-# Dockerfile.sdk-demo-nginx
 FROM nginx:1.25.1
 
-WORKDIR /app
+# Temporarily switch to root to set up a non-root user
+USER root
 
-COPY --from=sdk-demo /app/packages/sdk-demo/build /app
-
+# Create a non-root user
 RUN useradd -u 7000 -s /bin/bash app && \
     ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
 
+# Set the working directory
+WORKDIR /app
+
+# Copy build artifacts
+COPY --from=sdk-demo /app/packages/sdk-demo/build /app
+
+# Set permissions
+RUN chown -R app:app /app
+
+# Switch to the non-root user
 USER app
