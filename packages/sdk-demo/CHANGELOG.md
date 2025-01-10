@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 1.11.0-alpha.1
+
+### Minor Changes
+
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+
 ## 1.11.0-alpha.0
 
 ### Minor Changes
