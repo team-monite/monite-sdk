@@ -12,8 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dockerfile: [Dockerfile.sdk-react, Dockerfile.sdk-demo-with-nextjs-and-clerk-auth, Dockerfile.sdk-demo, Dockerfile.sdk-demo-nginx, Dockerfile.sdk-drop-in, Dockerfile.sdk-drop-in-nginx, Dockerfile.private-registry]
-        image_name: [sdk-react, sdk-demo-with-nextjs-and-clerk-auth, sdk-demo, sdk-demo-nginx, sdk-drop-in, sdk-drop-in-nginx, private-registry]
+        include:
+          - dockerfile: Dockerfile.sdk-react
+            image_name: sdk-react
+          - dockerfile: Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
+            image_name: sdk-demo-with-nextjs-and-clerk-auth
+          - dockerfile: Dockerfile.sdk-demo
+            image_name: sdk-demo
+          - dockerfile: Dockerfile.sdk-demo-nginx
+            image_name: sdk-demo-nginx
+          - dockerfile: Dockerfile.sdk-drop-in
+            image_name: sdk-drop-in
+          - dockerfile: Dockerfile.sdk-drop-in-nginx
+            image_name: sdk-drop-in-nginx
+          - dockerfile: Dockerfile.private-registry
+            image_name: private-registry
 
     steps:
       - name: Checkout code
@@ -26,13 +39,13 @@ jobs:
           username: ${{ secrets.GITLAB_BOT_USERNAME }}
           password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
 
-      - name: Build and push Docker image to Gitlab
+      - name: Build and push Docker image to GitLab
         run: |
           COMMIT_SHA=${{ github.sha }}
           IMAGE_TAG=${{ matrix.image_name }}-${COMMIT_SHA}
           docker build -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./${{ matrix.dockerfile }} .
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
-      - name: Output Image Tags
+      - name: Output Image Tag
         run: |
-          echo "Image built and pushed for ${{ matrix.image_name }}: registry.monite.com/monite/frontend/sdkapp:${{ matrix.image_name }}-${{ github.sha }}"
+          echo "Image built and pushed: registry.monite.com/monite/frontend/sdkapp:${{ matrix.image_name }}-${{ github.sha }}"
