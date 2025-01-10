@@ -99,6 +99,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     Array.isArray(counterpartAddresses?.data) &&
     counterpartAddresses.data.length > 0 &&
     counterpartAddresses.data[0]?.country === 'US';
+  const isAddressFormDisabled =
+    isCounterpartAddressesLoading ||
+    !counterpartId ||
+    disabled ||
+    counterpartAddresses?.data.length === 1;
 
   useEffect(() => {
     if (counterpartAddresses && counterpartAddresses.data.length === 1) {
@@ -209,12 +214,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 fullWidth
                 required
                 error={Boolean(error)}
-                disabled={
-                  isCounterpartAddressesLoading ||
-                  !counterpartId ||
-                  disabled ||
-                  counterpartAddresses?.data.length === 1
-                }
+                disabled={isAddressFormDisabled}
               >
                 <InputLabel id={field.name}>{t(
                   i18n
@@ -248,12 +248,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 variant="standard"
                 fullWidth
                 error={Boolean(error)}
-                disabled={
-                  isCounterpartAddressesLoading ||
-                  !counterpartId ||
-                  disabled ||
-                  counterpartAddresses?.data.length === 1
-                }
+                disabled={isAddressFormDisabled}
               >
                 <InputLabel htmlFor={field.name}>{t(
                   i18n

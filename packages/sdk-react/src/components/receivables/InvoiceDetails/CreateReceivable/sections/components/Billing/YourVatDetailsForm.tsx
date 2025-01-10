@@ -115,9 +115,11 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
           ) : null,
         }}
       />
-      <Collapse in={Boolean(!entity?.tax_id) && !isEntityLoading}>
-        <FormHelperText>{t(i18n)`No Tax ID available`}</FormHelperText>
-      </Collapse>
+      {!isHiddenForUS && (
+        <Collapse in={Boolean(!entity?.tax_id) && !isEntityLoading}>
+          <FormHelperText>{t(i18n)`No Tax ID available`}</FormHelperText>
+        </Collapse>
+      )}
     </Box>
   );
 };
