@@ -7,24 +7,18 @@ import {
   useState,
 } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { usePrevious } from 'react-use';
 
 import { components } from '@/api';
-import {
-  getCounterpartName,
-  getIndividualName,
-} from '@/components/counterparts/helpers';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
   useCounterpartById,
-  useCounterpartContactList,
   useCounterpartList,
   useCounterpartVatList,
 } from '@/core/queries';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -84,11 +78,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const counterpartId = watch('counterpart_id');
 
-  const {
-    data: counterpartContacts,
-    error: contactPersonError,
-    isLoading: isContactPersonsLoading,
-  } = useCounterpartContactList(counterpartId);
   const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
     useCounterpartVatList(counterpartId);
   const { data: counterpart, isLoading: isCounterpartLoading } =
@@ -103,12 +92,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
-  const defaultContactName = counterpartContacts?.find(
-    (contact) => contact.is_default
-  );
-
-  const contactPersonDisplayableError =
-    usePrevious(contactPersonError) ?? contactPersonError;
 
   const className = 'Monite-CreateReceivable-CustomerSection';
   const isHiddenForUS =
@@ -123,6 +106,12 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       setValue('default_billing_address_id', counterpartAddresses.data[0].id);
     }
   }, [counterpartAddresses]);
+
+  useEffect(() => {
+    if (counterpartVats && counterpartVats.data.length === 1) {
+      setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
+    }
+  }, [counterpartVats]);
 
   return (
     <Stack spacing={2} className={className}>
@@ -149,7 +138,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 disabled={
                   isCounterpartVatsLoading ||
                   !counterpartVats?.data ||
-                  counterpartVats?.data.length === 0 ||
+                  counterpartVats?.data.length < 2 ||
                   disabled
                 }
                 hidden={isHiddenForUS}
