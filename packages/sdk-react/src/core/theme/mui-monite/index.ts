@@ -402,7 +402,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           '&.Monite-Filters': {
-            backgroundColor: 'background.paper',
+            backgroundColor: 'white',
             padding: '14px',
             marginBottom: 0,
             borderTopLeftRadius: moniteTheme.borderRadius * 2,
@@ -410,7 +410,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             borderStyle: 'solid',
-            borderWidth: '1px',
+            borderWidth: '0px',
             borderColor: 'divider',
             borderBottomStyle: 'none',
             '& > *': {
@@ -721,9 +721,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       },
       styleOverrides: {
         root: {
-          backgroundColor: 'background.paper',
+          backgroundColor: 'white',
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
+          borderWidth: 0,
           borderBottomLeftRadius: moniteTheme.borderRadius * 2,
           borderBottomRightRadius: moniteTheme.borderRadius * 2,
           '--DataGrid-rowBorderColor': 'divider',
@@ -741,9 +742,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
         columnHeader: {
           borderLeftStyle: 'solid',
-          borderLeftWidth: '1px',
+          borderLeftWidth: '0px',
           borderLeftColor: 'divider',
           padding: '0 15.5px',
+          background: 'white',
           '& .MuiDataGrid-columnHeaderTitle': {
             color: 'rgba(0, 0, 0, 0.77)',
             fontWeight: 600,
@@ -751,10 +753,13 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             lineHeight: '17.57px',
           },
         },
+        columnSeparator: {
+          border: 0,
+        },
         cell: {
           '&[role="gridcell"]': {
             borderLeftStyle: 'solid',
-            borderLeftWidth: '1px',
+            borderLeftWidth: '0px',
             borderLeftColor: 'divider',
           },
 
@@ -791,6 +796,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         footerContainer: {
+          margin: '0 16px',
           '& .Monite-RowsPerPageSelector div[role="combobox"]': {
             lineHeight: '40px',
           },

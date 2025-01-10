@@ -5,7 +5,7 @@
   "fixed": [["@monite/sdk-react"]],
   "linked": [],
   "access": "public",
-  "baseBranch": "origin/dev",
+  "baseBranch": "origin/v4",
   "updateInternalDependencies": "patch",
   "ignore": ["sdk-demo-with-nextjs-and-clerk-auth"]
 }

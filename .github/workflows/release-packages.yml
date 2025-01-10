@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_BRANCH: "main"
+  RELEASE_BRANCH: "v4"
 
 jobs:
   npm-publish:

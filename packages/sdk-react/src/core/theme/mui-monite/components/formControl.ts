@@ -13,11 +13,6 @@ export const getFormControlStyles = (
   return {
     styleOverrides: {
       root: {
-        '&[hidden]': {
-          display: 'none',
-          visibility: 'hidden',
-          opacity: 0,
-        },
         '& .MuiInputBase-root': {
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],
