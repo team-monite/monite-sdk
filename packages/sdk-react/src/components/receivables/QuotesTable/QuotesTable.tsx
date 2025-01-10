@@ -247,6 +247,7 @@ const QuotesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
+        paddingTop: 2,
       }}
     >
       <ReceivableFilters onChange={onChangeFilter} filters={filters} />
