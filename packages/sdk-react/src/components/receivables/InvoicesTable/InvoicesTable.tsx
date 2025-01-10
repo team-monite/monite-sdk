@@ -163,10 +163,7 @@ const InvoicesTableBase = ({
             gap={0.5}
             sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
           >
-            <Typography
-              variant="body1"
-              className="Monite-TextOverflowContainer"
-            >
+            <Box sx={{ display: 'flex' }}>
               {(() => {
                 if (row.status === 'recurring') {
                   return (
@@ -179,26 +176,51 @@ const InvoicesTableBase = ({
                         gap: 0.5,
                       }}
                     >
-                      <Sync fontSize="small" color="inherit" />
-                      {t(i18n)`Recurring`}
+                      <Typography
+                        variant="body1"
+                        className="Monite-TextOverflowContainer"
+                      >
+                        <>
+                          <Sync fontSize="small" color="inherit" />
+                          {t(i18n)`Recurring`}
+                        </>
+                      </Typography>
                     </Box>
                   );
                 }
 
                 if (!value) {
-                  return <Box color="text.secondary">{t(i18n)`INV-auto`}</Box>;
+                  return (
+                    <Box
+                      color="text.secondary"
+                      sx={{
+                        alignItems: 'center',
+                        display: 'inline-flex',
+                        verticalAlign: 'middle',
+                        fontSize: 'inherit',
+                        marginRight: '4px',
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        className="Monite-TextOverflowContainer"
+                      >
+                        {t(i18n)`INV-auto`}
+                      </Typography>
+                    </Box>
+                  );
                 }
 
                 return value;
               })()}
-            </Typography>
-            {row.type === 'invoice' && row.recurrence_id ? (
-              <InvoiceRecurrenceStatusChipLoader
-                recurrenceId={row.recurrence_id}
-              />
-            ) : (
-              <InvoiceStatusChip status={row.status} size="small" />
-            )}
+              {row.type === 'invoice' && row.recurrence_id ? (
+                <InvoiceRecurrenceStatusChipLoader
+                  recurrenceId={row.recurrence_id}
+                />
+              ) : (
+                <InvoiceStatusChip status={row.status} size="small" />
+              )}
+            </Box>
           </Stack>
         ),
       },
