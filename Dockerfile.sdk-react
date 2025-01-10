@@ -1,5 +1,7 @@
-# Dockerfile.sdk-react
 FROM cimg/node:20.12.2
+
+# Temporarily switch to root to create a non-root user
+USER root
 
 # Create a non-root user and set permissions
 RUN groupadd -g 1000 app && \
@@ -12,7 +14,7 @@ WORKDIR /app
 COPY . /app
 RUN chown -R app:app /app
 
-# Switch to the non-root user
+# Switch back to the non-root user
 USER app
 
 # Install dependencies and build
