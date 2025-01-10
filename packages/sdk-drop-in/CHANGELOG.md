@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.2
+
+### Patch Changes
+
+- 1a0042c: Fix styling issues in Receivables table
+
 ## 1.8.0-alpha.1
 
 ### Minor Changes
