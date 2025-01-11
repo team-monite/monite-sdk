@@ -10,8 +10,9 @@ RUN useradd -u 7000 -s /bin/bash app && \
 # Set the working directory
 WORKDIR /app
 
-# Copy build artifacts
-COPY --from=sdk-drop-in /app/packages/sdk-drop-in/dist /app
+# Use the dynamically specified base image for copying artifacts
+ARG BASE_IMAGE
+COPY --from=${BASE_IMAGE} /app/packages/sdk-drop-in/dist /app
 
 # Set permissions
 RUN chown -R app:app /app
