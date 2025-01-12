@@ -54,7 +54,7 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
     if (entityVatIds && entityVatIds.data.length === 1) {
       setValue('entity_vat_id_id', entityVatIds.data[0].id);
     }
-  }, [entityVatIds]);
+  }, [entityVatIds, setValue]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

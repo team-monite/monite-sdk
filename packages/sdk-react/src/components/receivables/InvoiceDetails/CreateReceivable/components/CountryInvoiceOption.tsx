@@ -15,7 +15,7 @@ export function CountryInvoiceOption({ code }: CountryOptionProps) {
   return (
     <img
       css={css`
-        margin-right: ${theme.spacing(1)};
+        margin: 0 ${theme.spacing(1)};
       `}
       loading="lazy"
       width="25"

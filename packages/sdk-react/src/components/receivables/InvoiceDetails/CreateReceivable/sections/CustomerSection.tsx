@@ -112,13 +112,13 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       setValue('default_shipping_address_id', counterpartAddresses.data[0].id);
       setValue('default_billing_address_id', counterpartAddresses.data[0].id);
     }
-  }, [counterpartAddresses]);
+  }, [counterpartAddresses, setValue]);
 
   useEffect(() => {
     if (counterpartVats && counterpartVats.data.length === 1) {
       setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
     }
-  }, [counterpartVats]);
+  }, [counterpartVats, setValue]);
 
   return (
     <Stack spacing={2} className={className}>

@@ -8,13 +8,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LockOutlined } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  Button,
-  FormControlLabel,
-  Checkbox,
-  Box,
-  Typography,
-} from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { PaymentSection } from '../../PaymentSection';
@@ -33,9 +27,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
   const { root } = useRootElements();
 
   const dateTime = i18n.date(new Date(), locale.dateTimeFormat);
-
-  const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
-    useState<boolean>(false);
 
   const [isFieldShown, setIsFieldShown] = useState<boolean>(false);
 
@@ -126,14 +117,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
                   minDate={new Date()}
                   disabled={disabled}
                   onChange={(date) => {
-                    const today = new Date();
-
-                    if (today.toDateString() === date?.toDateString()) {
-                      setIsSameAsInvoiceDateChecked(true);
-                    } else {
-                      setIsSameAsInvoiceDateChecked(false);
-                    }
-
                     field.onChange(date);
                   }}
                   label={t(i18n)`Fulfillment date`}
@@ -155,7 +138,6 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
                       clearable: true,
                       onClear: () => {
                         resetField(field.name);
-                        setIsSameAsInvoiceDateChecked(false);
                       },
                     },
                   }}
