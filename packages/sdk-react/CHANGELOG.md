@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.4
+
+### Patch Changes
+
+- 368fe8e: UI minor fixes in invoice creation
+
 ## 4.0.0-alpha.3
 
 ### Minor Changes

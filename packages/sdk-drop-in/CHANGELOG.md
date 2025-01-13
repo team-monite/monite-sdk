@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.4
+
+### Patch Changes
+
+- 368fe8e: UI minor fixes in invoice creation
+
 ## 1.8.0-alpha.3
 
 ### Minor Changes
