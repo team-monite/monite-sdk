@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, FormControl, TextField } from '@mui/material';
+import { Box, FormControl, TextField, Typography } from '@mui/material';
 
 import type { SectionGeneralProps } from './Section.types';
 
@@ -21,7 +21,17 @@ export const EntitySection = ({ disabled }: EntitySectionProps) => {
   const { control } = useFormContext<CreateReceivablesFormProps>();
 
   return (
-    <Box>
+    <Box
+      sx={{ borderBottom: '1px solid', borderBottomColor: 'divider' }}
+      pb={10}
+    >
+      <Typography
+        variant="caption"
+        color="textSecondary"
+        sx={{ lineHeight: 2 }}
+      >
+        {t(i18n)`Memo`}
+      </Typography>
       <Controller
         name="memo"
         control={control}
