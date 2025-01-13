@@ -21,6 +21,7 @@ export const getFormControlStyles = (
         '& .MuiInputBase-root': {
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],
+          border: `1px solid transparent`,
           borderRadius: moniteTheme.borderRadius * 2,
 
           '.MuiSelect-icon': {
@@ -29,7 +30,7 @@ export const getFormControlStyles = (
 
           '&.Mui-focused': {
             backgroundColor: palette.neutral['80'],
-            border: `1px solid ${palette.primary.main}`,
+            borderColor: `${palette.primary.main}`,
             boxShadow: `0 0 0 4px ${chroma(palette.primary.main)
               .alpha(0.24)
               .hex()}`,
