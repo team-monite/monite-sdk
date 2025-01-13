@@ -1,3 +1,8 @@
+# Dockerfile.sdk-drop-in-nginx
+
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as base
+
 FROM nginx:1.25.1
 
 # Temporarily switch to root to set up a non-root user
@@ -10,9 +15,8 @@ RUN useradd -u 7000 -s /bin/bash app && \
 # Set the working directory
 WORKDIR /app
 
-# Use the dynamically specified base image for copying artifacts
-ARG BASE_IMAGE
-COPY --from=${BASE_IMAGE} /app/packages/sdk-drop-in/dist /app
+# Copy the build artifacts from the "base" stage
+COPY --from=base /app/packages/sdk-drop-in/dist /app
 
 # Set permissions
 RUN chown -R app:app /app

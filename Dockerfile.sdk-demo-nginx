@@ -1,3 +1,8 @@
+# Dockerfile.sdk-demo-nginx
+
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as base
+
 FROM nginx:1.25.1
 
 # Temporarily switch to root to set up a non-root user
@@ -10,8 +15,8 @@ RUN useradd -u 7000 -s /bin/bash app && \
 # Set the working directory
 WORKDIR /app
 
-# Copy build artifacts
-COPY --from=sdk-demo /app/packages/sdk-demo/build /app
+# Copy the build artifacts from the "base" stage
+COPY --from=base /app/packages/sdk-demo/build /app
 
 # Set permissions
 RUN chown -R app:app /app

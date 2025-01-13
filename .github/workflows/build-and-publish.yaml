@@ -107,9 +107,14 @@ jobs:
         run: |
           BASE_IMAGE_TAG=sdk-demo-${{ github.sha }}
           IMAGE_TAG=sdk-demo-nginx-${{ github.sha }}
+
           docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
-          docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
-                       -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-demo-nginx .
+
+          docker build \
+            --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
+            -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+            -f ./Dockerfile.sdk-demo-nginx .
+
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
   build-sdk-drop-in-nginx:
@@ -131,7 +136,12 @@ jobs:
         run: |
           BASE_IMAGE_TAG=sdk-drop-in-${{ github.sha }}
           IMAGE_TAG=sdk-drop-in-nginx-${{ github.sha }}
+
           docker pull registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG}
-          docker build --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
-                       -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} -f ./Dockerfile.sdk-drop-in-nginx .
+
+          docker build \
+            --build-arg BASE_IMAGE=registry.monite.com/monite/frontend/sdkapp:${BASE_IMAGE_TAG} \
+            -t registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG} \
+            -f ./Dockerfile.sdk-drop-in-nginx .
+
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
