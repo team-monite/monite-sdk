@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.3
+
+### Minor Changes
+
+- 00808d4: update sdk dependency
+
 ## 1.8.0-alpha.2
 
 ### Patch Changes

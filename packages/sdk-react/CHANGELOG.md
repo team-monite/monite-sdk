@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.3
+
+### Minor Changes
+
+- 25d5f60: feat(DEV-13687) Argon changes during invoice creation
+
 ## 4.0.0-alpha.2
 
 ### Patch Changes
