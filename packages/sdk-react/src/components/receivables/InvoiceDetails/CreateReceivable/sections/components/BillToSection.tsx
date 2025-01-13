@@ -30,7 +30,7 @@ export const BillToSection = ({ disabled }: SectionGeneralProps) => {
           maxWidth: '400px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          // justifyContent: 'space-between', // TODO: Verify this is not needed in any use case
         }}
       >
         <Box sx={{ mb: 2 }}>

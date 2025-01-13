@@ -193,6 +193,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       sx={{
                         whiteSpace: 'nowrap',
                         mr: 1,
+                        ml: '14px',
                       }}
                     >
                       {t(i18n)`TAX ID`}
