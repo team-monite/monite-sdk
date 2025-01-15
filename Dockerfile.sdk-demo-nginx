@@ -5,8 +5,8 @@ FROM ${BASE_IMAGE} as base
 
 FROM nginx:1.25.1
 
-# Temporarily switch to root to set up a non-root user
-USER root
+# # Temporarily switch to root to set up a non-root user
+# USER root
 
 # Create a non-root user
 RUN ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
@@ -20,5 +20,5 @@ COPY --from=base /app/packages/sdk-demo/build /app
 # Set permissions
 RUN chown -R nginx:nginx /app
 
-# Switching back to default nginx user
-USER nginx
+# # Switching back to default nginx user
+# USER nginx
