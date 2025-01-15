@@ -30,6 +30,61 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
+            --config werf_react.yaml
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
-            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }} \
+            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
+    
+    build-sdk-demo:
+    name: Build and Push sdk-demo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - uses: werf/actions/install@v2
+        with:
+          version: v2.16.2
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
+      - name: Build and Push All Images
+        run: |
+          . $(werf ci-env github --as-file)
+          werf export \
+            --config werf_demo.yaml
+            --parallel-tasks-limit=-1 \
+            --repo registry.monite.com/monite/frontend/sdkapp \
+            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
+
+    build-sdk-drop-in:
+    name: Build and Push sdk-drop-in
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - uses: werf/actions/install@v2
+        with:
+          version: v2.16.2
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
+      - name: Build and Push All Images
+        run: |
+          . $(werf ci-env github --as-file)
+          werf export \
+            --config werf_drop_in.yaml
+            --parallel-tasks-limit=-1 \
+            --repo registry.monite.com/monite/frontend/sdkapp \
+            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
