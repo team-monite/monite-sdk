@@ -178,4 +178,5 @@ jobs:
             --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
