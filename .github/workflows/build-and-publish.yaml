@@ -148,6 +148,7 @@ jobs:
 
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment
+    environment: gitlab
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo-with-nextjs-and-clerk-auth
