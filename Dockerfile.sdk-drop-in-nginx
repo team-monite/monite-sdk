@@ -16,9 +16,3 @@ WORKDIR /app
 
 # Copy the build artifacts from the "base" stage
 COPY --from=base /app/packages/sdk-drop-in/dist /app
-
-# # Set permissions
-# RUN chown -R nginx:nginx /app
-
-# # Switching back to default nginx user
-# USER nginx

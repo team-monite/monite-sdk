@@ -1,0 +1,34 @@
+project: sdkapp
+configVersion: 1
+---
+image: sdk-react
+dockerfile: ./Dockerfile.sdk-react
+context: .
+---
+image: sdk-demo-with-nextjs-and-clerk-auth
+dockerfile: ./Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
+context: .
+---
+image: sdk-demo
+dockerfile: ./Dockerfile.sdk-demo
+context: .
+---
+image: sdk-drop-in
+dockerfile: ./Dockerfile.sdk-drop-in
+context: .
+---
+image: sdk-demo-nginx
+dockerfile: ./Dockerfile.sdk-demo-nginx
+context: .
+- image: sdk-demo
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE
+---
+image: sdk-drop-in-nginx
+dockerfile: ./Dockerfile.sdk-drop-in-nginx
+context: .
+- image: sdk-drop-in
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE

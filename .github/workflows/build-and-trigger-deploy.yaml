@@ -1,0 +1,34 @@
+name: Build and Push Docker Images Werf
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - DEV-13666-build-images
+
+jobs:
+  build-sdk-react:
+    name: Build and Push sdk-react
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - uses: werf/actions/install@v2
+        with:
+          version: v2.16.2
+
+      - name: Log in to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.monite.com
+          username: ${{ vars.GITLAB_BOT_USERNAME }}
+          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
+
+      - name: Build and Push sdk-react
+        run: |
+          . $(werf ci-env github --as-file)
+          werf export \
+            --repo registry.monite.com/monite/frontend/sdkapp \
+            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }} \
