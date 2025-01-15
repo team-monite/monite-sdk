@@ -20,6 +20,7 @@ context: .
 image: sdk-demo-nginx
 dockerfile: ./Dockerfile.sdk-demo-nginx
 context: .
+dependencies:
 - image: sdk-demo
   imports:
   - type: ImageName
@@ -28,6 +29,7 @@ context: .
 image: sdk-drop-in-nginx
 dockerfile: ./Dockerfile.sdk-drop-in-nginx
 context: .
+dependencies:
 - image: sdk-drop-in
   imports:
   - type: ImageName
