@@ -28,4 +28,4 @@ jobs:
 
       - name: Build and Push sdk-react
         run: |
-          werf build sdk-react --repo-container-registry gitlab --repo registry.monite.com/monite/frontend/sdkapp ---cache-repo registry.monite.com/monite/frontend/sdkapp --add-custom-tag sdk-react-test2
+          werf build sdk-react --repo-container-registry gitlab --repo registry.monite.com/monite/frontend/sdkapp --cache-repo registry.monite.com/monite/frontend/sdkapp --add-custom-tag sdk-react-test2
