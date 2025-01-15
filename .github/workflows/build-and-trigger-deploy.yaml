@@ -30,5 +30,6 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
+            --parallel-tasks-limit=-1
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }} \
