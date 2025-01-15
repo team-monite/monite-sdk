@@ -147,38 +147,38 @@ jobs:
           docker push registry.monite.com/monite/frontend/sdkapp:${IMAGE_TAG}
 
   trigger-gitlab-deploy:
-  name: Trigger GitLab Deployment
-  runs-on: ubuntu-latest
-  needs: 
-    - build-sdk-demo-with-nextjs-and-clerk-auth
-    - build-sdk-demo-nginx
-    - build-sdk-drop-in-nginx
+    name: Trigger GitLab Deployment
+    runs-on: ubuntu-latest
+    needs: 
+      - build-sdk-demo-with-nextjs-and-clerk-auth
+      - build-sdk-demo-nginx
+      - build-sdk-drop-in-nginx
 
-  steps:
-    - name: Trigger GitLab Pipeline
-      run: |
-        REPO="${{ secrets.GITLAB_HOST }}"
-        PROJECT_ID="${{ secrets.GITLAB_PROJECT_ID }}"
-        GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
+    steps:
+      - name: Trigger GitLab Pipeline
+        run: |
+          REPO="${{ secrets.GITLAB_HOST }}"
+          PROJECT_ID="${{ secrets.GITLAB_PROJECT_ID }}"
+          GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 
-        # Extract short SHA (first 8 chars) from the full GitHub commit SHA
-        GITHUB_SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-8)"
+          # Extract short SHA (first 8 chars) from the full GitHub commit SHA
+          GITHUB_SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-8)"
 
-        SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
-        SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
-        SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
+          SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
+          SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
+          SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
 
-        echo "Using short SHA = $GITHUB_SHORT_SHA"
-        echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
-        echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
-        echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
+          echo "Using short SHA = $GITHUB_SHORT_SHA"
+          echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
+          echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
+          echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
 
-        curl --request POST \
-          --form token="${GITLAB_TOKEN}" \
-          --form ref="DEV-13628-triggered-deploy" \
-          --form "variables[GITHUB_SHORT_SHA]=${GITHUB_SHORT_SHA}" \
-          --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
-          --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
-          --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
-          --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
-          "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
+          curl --request POST \
+            --form token="${GITLAB_TOKEN}" \
+            --form ref="DEV-13628-triggered-deploy" \
+            --form "variables[GITHUB_SHORT_SHA]=${GITHUB_SHORT_SHA}" \
+            --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
+            --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
+            --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
