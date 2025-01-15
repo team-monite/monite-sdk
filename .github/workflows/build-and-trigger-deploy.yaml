@@ -88,3 +88,36 @@ jobs:
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
+
+  trigger-gitlab-deploy:
+    name: Trigger GitLab Deployment
+    runs-on: ubuntu-latest
+    needs: 
+      - build-sdk-demo
+      - build-sdk-drop-in
+
+    steps:
+      - name: Trigger GitLab Pipeline
+        run: |
+          REPO="${{ vars.GITLAB_REPOSITORY }}"
+          PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
+          GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
+
+          SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
+          SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
+          SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
+
+          echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
+          echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
+          echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
+
+          curl --request POST \
+            --form token="${GITLAB_TOKEN}" \
+            --form ref="DEV-13628-triggered-deploy" \
+            --form "variables[GITHUB_SHA]=${{ github.sha }}" \
+            --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
+            --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
+            --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
