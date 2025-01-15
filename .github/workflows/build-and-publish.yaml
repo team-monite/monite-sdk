@@ -165,7 +165,6 @@ jobs:
           SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
 
-          echo "Using short SHA = $GITHUB_SHORT_SHA"
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"

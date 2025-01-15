@@ -9,8 +9,7 @@ FROM nginx:1.25.1
 USER root
 
 # Create a non-root user
-RUN useradd -u 7000 -s /bin/bash app && \
-    ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
 
 # Set the working directory
 WORKDIR /app
@@ -19,7 +18,7 @@ WORKDIR /app
 COPY --from=base /app/packages/sdk-drop-in/dist /app
 
 # Set permissions
-RUN chown -R app:app /app /var/cache/nginx
+RUN chown -R nginx:nginx /app
 
-# Switch to the non-root user
-USER app
+# Switching back to default nginx user
+USER nginx
