@@ -30,7 +30,7 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
-            --config werf_react.yaml \
+            --config werf.react.yaml \
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
@@ -57,7 +57,7 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
-            --config werf_demo.yaml \
+            --config werf.demo.yaml \
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
@@ -84,7 +84,7 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
-            --config werf_drop_in.yaml \
+            --config werf.drop_in.yaml \
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
