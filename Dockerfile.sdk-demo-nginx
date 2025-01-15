@@ -19,7 +19,7 @@ WORKDIR /app
 COPY --from=base /app/packages/sdk-demo/build /app
 
 # Set permissions
-RUN chown -R app:app /app
+RUN chown -R app:app /app /var/cache/nginx
 
 # Switch to the non-root user
 USER app
