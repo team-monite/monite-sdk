@@ -1,6 +1,6 @@
 project: sdkapp
 configVersion: 1
-
+---
 image: sdk-react
 dockerfile: ./Dockerfile.sdk-react
 context: .
