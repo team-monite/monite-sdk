@@ -14,11 +14,11 @@ RUN ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Ber
 # Set the working directory
 WORKDIR /app
 
-# Copy the build artifacts from the "base" stage
-COPY --from=base /app/packages/sdk-demo/build /app
+# # Copy the build artifacts from the "base" stage
+# COPY --from=base /app/packages/sdk-demo/build /app
 
-# Set permissions
-RUN chown -R nginx:nginx /app
+# # Set permissions
+# RUN chown -R nginx:nginx /app
 
 # # Switching back to default nginx user
 # USER nginx
