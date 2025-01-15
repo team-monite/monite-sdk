@@ -26,7 +26,7 @@ jobs:
           username: ${{ vars.GITLAB_BOT_USERNAME }}
           password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
 
-      - name: Build and Push sdk-react
+      - name: Build and Push All Images
         run: |
           . $(werf ci-env github --as-file)
           werf export \
