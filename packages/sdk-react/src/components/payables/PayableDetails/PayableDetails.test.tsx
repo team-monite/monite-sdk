@@ -389,7 +389,14 @@ describe('PayableDetails', () => {
 
         await waitUntilTableIsLoaded();
 
-        const cancelButton = await screen.findByRole('button', {
+        let cancelButton = await screen.findByRole('button', {
+          name: t`Cancel bill`,
+        });
+
+        await user.click(cancelButton);
+
+        // Reset cancelButton to the one from the modal
+        cancelButton = await screen.findByRole('button', {
           name: t`Cancel bill`,
         });
 
@@ -410,7 +417,14 @@ describe('PayableDetails', () => {
 
         await waitUntilTableIsLoaded();
 
-        const cancelButton = await screen.findByRole('button', {
+        let cancelButton = await screen.findByRole('button', {
+          name: t`Cancel bill`,
+        });
+
+        await user.click(cancelButton);
+
+        // Reset cancelButton to the one from the modal
+        cancelButton = await screen.findByRole('button', {
           name: t`Cancel bill`,
         });
 
