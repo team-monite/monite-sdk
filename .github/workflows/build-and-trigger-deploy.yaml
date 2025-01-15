@@ -35,7 +35,7 @@ jobs:
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
     
-    build-sdk-demo:
+  build-sdk-demo:
     name: Build and Push sdk-demo
     runs-on: ubuntu-latest
     steps:
@@ -62,7 +62,7 @@ jobs:
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
 
-    build-sdk-drop-in:
+  build-sdk-drop-in:
     name: Build and Push sdk-drop-in
     runs-on: ubuntu-latest
     steps:
