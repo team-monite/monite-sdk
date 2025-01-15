@@ -1,29 +1,34 @@
 project: sdkapp
 configVersion: 1
-images:
-  sdk-react:
-    dockerfile: ./Dockerfile.sdk-react
-    context: .
-  sdk-demo-with-nextjs-and-clerk-auth:
-    dockerfile: ./Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
-    context: .
-  sdk-demo:
-    dockerfile: ./Dockerfile.sdk-demo
-    context: .
-  sdk-drop-in:
-    dockerfile: ./Dockerfile.sdk-drop-in
-    context: .
-  sdk-demo-nginx:
-    dockerfile: ./Dockerfile.sdk-demo-nginx
-    context: .
-    import:
-      - image: sdk-demo
-        add: /app/packages/sdk-demo/build
-        to: /app
-  sdk-drop-in-nginx:
-    dockerfile: ./Dockerfile.sdk-drop-in-nginx
-    context: .
-    import:
-      - image: sdk-drop-in
-        add: /app/packages/sdk-drop-in/dist
-        to: /app
+
+image: sdk-react
+dockerfile: ./Dockerfile.sdk-react
+context: .
+---
+image: sdk-demo-with-nextjs-and-clerk-auth
+dockerfile: ./Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
+context: .
+---
+image: sdk-demo
+dockerfile: ./Dockerfile.sdk-demo
+context: .
+---
+image: sdk-drop-in
+dockerfile: ./Dockerfile.sdk-drop-in
+context: .
+---
+image: sdk-demo-nginx
+dockerfile: ./Dockerfile.sdk-demo-nginx
+context: .
+import:
+  - image: sdk-demo
+    add: /app/packages/sdk-demo/build
+    to: /app
+---
+image: sdk-drop-in-nginx
+dockerfile: ./Dockerfile.sdk-drop-in-nginx
+context: .
+import:
+  - image: sdk-drop-in
+    add: /app/packages/sdk-drop-in/dist
+    to: /app
