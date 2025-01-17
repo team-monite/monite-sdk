@@ -658,6 +658,11 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
+    MuiPopper: {
+      defaultProps: {
+        disablePortal: true,
+      },
+    },
     MuiAvatar: {
       styleOverrides: {
         root: {
