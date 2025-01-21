@@ -207,33 +207,32 @@ const CreateReceivablesBase = ({
   };
 
   return (
-    <>
-      <DialogTitle className={className + '-Title'}>
-        <Toolbar>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext?.onClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-          <Box sx={{ marginLeft: 'auto' }}>
-            <Button
-              variant="contained"
-              key="next"
-              color="primary"
-              type="submit"
-              form={formName}
-              disabled={createReceivable.isPending}
-            >{t(i18n)`Next page`}</Button>
-          </Box>
-        </Toolbar>
-      </DialogTitle>
-      <Divider className={className + '-Divider'} />
-      <DialogContent className={className + '-Content'}>
+    <Stack direction="row">
+      <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
+        <DialogTitle className={className + '-Title'}>
+          <Toolbar>
+            {dialogContext?.isDialogContent && (
+              <IconWrapper
+                edge="start"
+                color="inherit"
+                onClick={dialogContext?.onClose}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            )}
+            <Box sx={{ marginLeft: 'auto' }}>
+              <Button
+                variant="contained"
+                key="next"
+                color="primary"
+                type="submit"
+                form={formName}
+                disabled={createReceivable.isPending}
+              >{t(i18n)`Next page`}</Button>
+            </Box>
+          </Toolbar>
+        </DialogTitle>
         <FormProvider {...methods}>
           <form
             id={formName}
@@ -241,18 +240,18 @@ const CreateReceivablesBase = ({
             onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
-            <Box>
-              <Typography
-                variant="h1"
-                sx={{ mb: 2 }}
-                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
-              >
-                {t(i18n)`Invoice`}{' '}
-                <Typography component="span" variant="h1" color="textSecondary">
-                  #{INVOICE_DOCUMENT_AUTO_ID}
-                </Typography>
+            {/* replace Typography with header with title + buttons */}
+            <Typography
+              variant="h1"
+              sx={{ mb: 2, display: 'none' }}
+              data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
+            >
+              {t(i18n)`Invoice`}{' '}
+              <Typography component="span" variant="h1" color="textSecondary">
+                #{INVOICE_DOCUMENT_AUTO_ID}
               </Typography>
-            </Box>
+            </Typography>
+
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
               <ItemsSection
@@ -276,7 +275,14 @@ const CreateReceivablesBase = ({
           </form>
         </FormProvider>
       </DialogContent>
-
+      <Box
+        width="50%"
+        sx={{
+          background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
+        }}
+      >
+        Invoice preview
+      </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
         reminderType={createReminderDialog.reminderType}
@@ -298,6 +304,6 @@ const CreateReceivablesBase = ({
           onClose={closeUpdateReminderDialog}
         />
       )}
-    </>
+    </Stack>
   );
 };
