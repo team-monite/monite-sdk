@@ -15,7 +15,7 @@ export const getTheme = (theme: ThemeConfig) => {
       warning: theme.colors?.warning || '#C78032',
       error: theme.colors?.error || '#CC394B',
 
-      background: theme.colors?.background || '#FAFAFA',
+      background: theme.colors?.background || '#FFFFFF',
 
       text: theme.colors?.text || '#292929',
     },

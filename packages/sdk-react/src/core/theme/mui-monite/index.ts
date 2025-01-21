@@ -402,17 +402,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           '&.Monite-Filters': {
-            backgroundColor: 'white',
-            padding: '14px',
+            backgroundColor: moniteTheme.colors.background,
+            padding: moniteTheme.spacing * 1.8,
             marginBottom: 0,
-            borderTopLeftRadius: moniteTheme.borderRadius * 2,
-            borderTopRightRadius: moniteTheme.borderRadius * 2,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            borderStyle: 'solid',
-            borderWidth: '0px',
-            borderColor: 'divider',
-            borderBottomStyle: 'none',
             '& > *': {
               flexBasis: 'fit-content',
               flexGrow: 1,
@@ -726,14 +718,14 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       },
       styleOverrides: {
         root: {
-          backgroundColor: 'white',
+          backgroundColor: palette.background.default,
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
           borderWidth: 0,
           borderBottomLeftRadius: moniteTheme.borderRadius * 2,
           borderBottomRightRadius: moniteTheme.borderRadius * 2,
           '--DataGrid-rowBorderColor': 'divider',
-          '--DataGrid-containerBackground': 'white',
+          '--DataGrid-containerBackground': moniteTheme.colors.background,
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
@@ -751,9 +743,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           borderLeftWidth: '0px',
           borderLeftColor: 'divider',
           padding: '0 15.5px',
-          background: 'white',
+          background: moniteTheme.colors.background,
           '& .MuiDataGrid-columnHeaderTitle': {
-            color: 'rgba(0, 0, 0, 0.77)',
+            color: palette.text,
             fontWeight: 600,
             fontSize: '14px',
             lineHeight: '17.57px',
