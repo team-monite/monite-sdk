@@ -15,7 +15,7 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
   /**
    * A record defining the types and allowed attributes that can be set on the element.
    *
-   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies`
+   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies | user-roles`
    * - `app-url`: The URL of the Monite Iframe App. Example: `https://cdn.monite.com/monite-iframe-app` or `https://cdn.sandbox.monite.com/monite-iframe-app`
    *
    * @static

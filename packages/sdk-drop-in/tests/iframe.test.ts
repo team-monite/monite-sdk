@@ -13,6 +13,7 @@ const routingPaths: Record<WidgetType, string> = {
   tags: '/tags',
   'approval-policies': '/approval-policies',
   onboarding: '/onboarding',
+  'user-roles': '/user-roles',
 };
 
 test.beforeEach(async ({ page }) => {
