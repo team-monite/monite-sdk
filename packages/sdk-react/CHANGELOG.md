@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.5
+
+### Minor Changes
+
+- d452d77: feat(DEV-12235): Payment terms create/update/delete
+
 ## 4.0.0-alpha.4
 
 ### Patch Changes
