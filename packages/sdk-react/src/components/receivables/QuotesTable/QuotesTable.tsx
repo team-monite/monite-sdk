@@ -146,7 +146,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Number`,
         width: 100,
         display: 'flex',
-        renderCell: ({ value, row }) => (
+        renderCell: ({ value }) => (
           <Stack
             direction="column"
             alignItems="flex-start"
