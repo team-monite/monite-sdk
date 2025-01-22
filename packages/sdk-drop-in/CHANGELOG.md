@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-alpha.5
+
+### Minor Changes
+
+- 5dddf03: New pre-release v4
+
 ## 1.8.0-alpha.4
 
 ### Patch Changes
