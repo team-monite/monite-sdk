@@ -472,7 +472,6 @@ const CounterpartSelector = ({
               }
               return [...filtered, ...reverseFiltered];
             }}
-            freeSolo
             renderInput={(params) => {
               return (
                 <TextField

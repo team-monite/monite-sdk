@@ -455,19 +455,21 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
-          '& > .Monite-CounterpartSelector > .MuiInputBase-root': {
-            padding: '16px',
-            height: '70px',
-            lineHeight: '70px',
-            backgroundColor: 'transparent',
-            '&.Mui-focused, &:hover': {
+          '& > .Monite-CounterpartSelector > .MuiInputBase-root.MuiInputBase-adornedStart.MuiInputBase-formControl':
+            {
+              padding: '16px',
+              paddingRight: '16px',
+              height: '70px',
+              lineHeight: '70px',
               backgroundColor: 'transparent',
-              '& > .MuiOutlinedInput-notchedOutline': {
+              '&.Mui-focused, &:hover': {
                 backgroundColor: 'transparent',
-                borderColor: 'transparent',
+                '& > .MuiOutlinedInput-notchedOutline': {
+                  backgroundColor: 'transparent',
+                  borderColor: '#dedede',
+                },
               },
             },
-          },
           '& > .Monite-CounterpartSelector > .MuiFormLabel-root': {
             color: 'black',
             fontSize: '1.25rem',

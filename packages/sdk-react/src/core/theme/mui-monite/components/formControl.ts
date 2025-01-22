@@ -49,10 +49,7 @@ export const getFormControlStyles = (
           },
         },
 
-        'label+.MuiInputBase-root': {
-          marginTop: 0,
-        },
-        '&:not(.Monite-FilterControl):hover': {
+        '&:not(.Monite-CounterpartSelector):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             backgroundColor: 'transparent',
             border: `1px solid ${palette.primary.main}`,
@@ -66,26 +63,8 @@ export const getFormControlStyles = (
           },
         },
 
-        '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root': {
-          fontSize: '14px',
-          color: ' rgba(112, 112, 112, 1)',
-          paddingBottom: '0',
-          backgroundColor: 'transparent',
-          '&:hover, &.Mui-focused': {
-            backgroundColor: 'transparent',
-            '&:hover, &.Mui-focused': {
-              backgroundColor: 'transparent',
-              '& > .MuiOutlinedInput-notchedOutline': {
-                backgroundColor: 'transparent',
-              },
-            },
-            '&.Mui-required::after': {
-              content: '"●"',
-              position: 'relative',
-              bottom: '2px',
-              left: '4px',
-              color: ' rgba(255, 71, 93, 1)',
-            },
+        '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root.MuiFormLabel-filled':
+          {
             '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
               backgroundColor: 'transparent',
               border: `1px solid ${palette.neutral['80']}`,
@@ -96,10 +75,7 @@ export const getFormControlStyles = (
               border: `1px solid ${palette.primary.main}`,
             },
           },
-        '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
-          {
-            display: 'none',
-          },
+
         '& .MuiOutlinedInput-notchedOutline': {
           top: 0,
         },
