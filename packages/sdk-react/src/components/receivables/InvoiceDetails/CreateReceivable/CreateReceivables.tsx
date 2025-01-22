@@ -35,6 +35,8 @@ import { format } from 'date-fns';
 
 import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
+import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
+import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { BillToSection } from './sections/components/BillToSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
@@ -262,6 +264,23 @@ const CreateReceivablesBase = ({
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
+
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  // justifyContent: 'space-between', // TODO: Verify this is not needed in any use case
+                }}
+              >
+                <Box sx={{ mb: 2 }}>
+                  <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
+                    i18n
+                  )`Details`}</Typography>
+                  <YourVatDetailsForm disabled={createReceivable.isPending} />
+                </Box>
+                <FullfillmentSummary disabled={createReceivable.isPending} />
+              </Box>
               <Box>
                 <EntitySection disabled={createReceivable.isPending} />
               </Box>

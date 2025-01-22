@@ -340,6 +340,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             padding: '0 14px', // Adjust padding if needed
             boxSizing: 'border-box',
           },
+
           '& .MuiInputBase-inputAdornedStart': {
             display: 'flex',
             alignItems: 'center',
@@ -465,8 +466,12 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             width: '100%',
           },
         },
+        popper: {
+          paddingTop: '0.5rem',
+        },
       },
     },
+
     MuiTextField: {
       defaultProps: {
         InputLabelProps: {
