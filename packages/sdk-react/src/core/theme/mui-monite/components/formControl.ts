@@ -31,7 +31,7 @@ export const getFormControlStyles = (
 
           '&.Mui-focused': {
             backgroundColor: palette.neutral['80'],
-            borderColor: `${palette.primary.main}`,
+            borderColor: 'transparent',
             boxShadow: `0 0 0 4px ${chroma(palette.primary.main)
               .alpha(0.24)
               .hex()}`,
@@ -66,17 +66,18 @@ export const getFormControlStyles = (
           },
         },
 
-        '& .MuiFormLabel-root.MuiFormLabel-filled': {
-          '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-            backgroundColor: 'transparent',
-            border: `1px solid ${palette.neutral['80']}`,
-          },
+        '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root.MuiFormLabel-filled':
+          {
+            '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+              backgroundColor: 'transparent',
+              border: `1px solid ${palette.neutral['80']}`,
+            },
 
-          '+ .MuiInputBase-root.Mui-focused': {
-            backgroundColor: 'transparent',
-            border: `1px solid ${palette.primary.main}`,
+            '+ .MuiInputBase-root.Mui-focused': {
+              backgroundColor: 'transparent',
+              border: `1px solid ${palette.primary.main}`,
+            },
           },
-        },
 
         '& .MuiOutlinedInput-notchedOutline': {
           top: 0,
