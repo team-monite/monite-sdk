@@ -455,9 +455,28 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
-          '& .MuiInput-input.MuiAutocomplete-input': {
-            padding: '0 14px',
+          '& > .Monite-CounterpartSelector > .MuiInputBase-root': {
+            padding: '16px',
+            height: '70px',
+            lineHeight: '70px',
+            backgroundColor: 'transparent',
+            '&.Mui-focused, &:hover': {
+              backgroundColor: 'transparent',
+              '& > .MuiOutlinedInput-notchedOutline': {
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
+              },
+            },
           },
+          '& > .Monite-CounterpartSelector > .MuiFormLabel-root': {
+            color: 'black',
+            fontSize: '1.25rem',
+            paddingBottom: '1rem',
+            '& > .MuiInputLabel-asterisk': {
+              display: 'none',
+            },
+          },
+
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',

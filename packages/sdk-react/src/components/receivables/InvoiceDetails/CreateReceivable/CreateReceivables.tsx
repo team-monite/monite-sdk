@@ -40,8 +40,7 @@ import { format } from 'date-fns';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
-import { InvoicePreview } from './sections/components/InvoicePreview';
-import { CustomerSection } from './sections/CustomerSection';
+import { BillToSection } from './sections/components/BillToSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 //import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
@@ -327,24 +326,16 @@ const CreateReceivablesBase = ({
                   width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
+                  // justifyContent: 'space-between', // TODO: Verify this is not needed in any use case
                 }}
               >
                 <Box sx={{ mb: 2 }}>
                   <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
                     i18n
                   )`Details`}</Typography>
-                  <YourVatDetailsForm
-                    isEntityVatIdsLoading={isEntityVatIdsLoading}
-                    entityVatIds={entityVatIds}
-                    disabled={createReceivable.isPending}
-                  />
+                  <YourVatDetailsForm disabled={createReceivable.isPending} />
                 </Box>
-                <FullfillmentSummary
-                  paymentTerms={paymentTerms}
-                  isPaymentTermsLoading={isPaymentTermsLoading}
-                  refetch={refetchPaymentTerms}
-                  disabled={createReceivable.isPending}
-                />
+                <FullfillmentSummary disabled={createReceivable.isPending} />
               </Box>
               <Box>
                 <EntitySection disabled={createReceivable.isPending} />
