@@ -20,7 +20,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
    * - `router`: Allowed values are `memory | browser | hash`
    * - `basename`: Indicates the base path of your page.
    *   For example, if your app is served from `https://example.com/my-app/`, set `basename` to `/my-app` to properly resolve relative URLs.
-   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies`
+   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies | user-roles`
    * - `entity-id`: The ID of the entity to fetch data for.
    * - `api-url`: The URL of the API to fetch data from. Example: `https://api.snadbox.monite.com/v1`
    *
