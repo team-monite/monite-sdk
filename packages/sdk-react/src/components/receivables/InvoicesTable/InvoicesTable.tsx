@@ -152,9 +152,9 @@ const InvoicesTableBase = ({
     return [
       {
         field: 'document_id',
-        headerName: t(i18n)`Number, status`,
+        headerName: t(i18n)`Number`,
         sortable: false,
-        width: 100,
+        width: 150,
         display: 'flex',
         renderCell: ({ value, row }) => (
           <Stack
@@ -232,19 +232,29 @@ const InvoicesTableBase = ({
                   />
                 </Box>
               ) : (
-                <Box
-                  sx={{
-                    alignItems: 'center',
-                    display: 'inline-flex',
-                    verticalAlign: 'middle',
-                    marginLeft: '4px',
-                  }}
-                >
-                  <InvoiceStatusChip status={row.status} size="small" />
-                </Box>
+                <></>
               )}
             </Box>
           </Stack>
+        ),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: false,
+        display: 'flex',
+        width: 40,
+        renderCell: (params) => (
+          <Box
+            sx={{
+              alignItems: 'center',
+              display: 'inline-flex',
+              verticalAlign: 'middle',
+              marginLeft: '4px',
+            }}
+          >
+            <InvoiceStatusChip status={params.value} size="small" />
+          </Box>
         ),
       },
       {
