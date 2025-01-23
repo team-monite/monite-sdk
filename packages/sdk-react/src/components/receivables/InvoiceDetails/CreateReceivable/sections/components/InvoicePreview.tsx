@@ -14,11 +14,23 @@ const sample = {
   fulfillmentDate: '',
 };
 
-export const InvoicePreview = (
-  data: components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null
-) => {
+export const InvoicePreview = ({ data }) => {
   const { i18n } = useLingui();
   console.log({ data });
+
+  const {
+    counterpartAddressLine1,
+    counterpartAddressLine2,
+    counterpartAddressLine3,
+    counterpartEmail,
+    counterpartName,
+    currency,
+    items,
+    subtotal,
+    totalTax,
+    total,
+    logo,
+  } = data;
 
   return (
     <div className="invoice-preview">
@@ -29,7 +41,7 @@ export const InvoicePreview = (
         <aside className="header--flex-end-aside">
           {' '}
           <div className="block-entity-logo">
-            {true ? (
+            {logo ? (
               <span></span>
             ) : (
               <img src="https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/entity-logo/4d51474f-3f3d-4de0-a518-93f0a799f15a/5f1e169d-1328-4bb8-a5b7-06a84bc425f9.png" />
@@ -39,15 +51,15 @@ export const InvoicePreview = (
         <aside>
           <div className="block-counterpart-info">
             <div>
-              <b>Some Organization</b>
+              <b>{counterpartName}</b>
             </div>
             <div>
-              <div>Nobaro Street 146</div>
-              <div>1012 ABS, Amsterdam</div>
-              <div>The Netherlands</div>
+              <div>{counterpartAddressLine1}</div>
+              <div>{counterpartAddressLine2}</div>
+              <div>{counterpartAddressLine3}</div>
             </div>
             <hr style={{ height: '5pt', visibility: 'hidden' }} />
-            <div>qa-team@monite.com</div>
+            <div>{counterpartEmail}</div>
           </div>
         </aside>
         <aside className="header--flex-end-aside">
@@ -82,9 +94,13 @@ export const InvoicePreview = (
                 <th>{t(i18n)`Product`}</th>
                 <th>{t(i18n)`Qty`}</th>
                 <th>{t(i18n)`Units`}</th>
-                <th>{t(i18n)`Price`} (EUR)</th>
+                <th>
+                  {t(i18n)`Price`} ({currency})
+                </th>
                 <th>{t(i18n)`Disc.`}</th>
-                <th>{t(i18n)`Amount`} (EUR)</th>
+                <th>
+                  {t(i18n)`Amount`} ({currency})
+                </th>
                 <th>{t(i18n)`Tax`} (%)</th>
               </tr>
               <tr className="spacer">
@@ -92,17 +108,19 @@ export const InvoicePreview = (
               </tr>
             </thead>
             <tbody className="products">
-              <tr className="product">
-                <td>
-                  <div>test</div>
-                </td>
-                <td>1</td>
-                <td>kg</td>
-                <td>100,00</td>
-                <td> </td>
-                <td>100,00</td>
-                <td>0</td>
-              </tr>
+              {items.map((item) => (
+                <tr className="product">
+                  <td>
+                    <div>{item.name}</div>
+                  </td>
+                  <td>{item.qty}</td>
+                  <td>{item.unit}</td>
+                  <td>{item.price.value}</td>
+                  <td>{item.discount}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.tax}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <table cellPadding={0} cellSpacing={0} className="totals-table">
@@ -111,20 +129,26 @@ export const InvoicePreview = (
                 <td colSpan={4}>
                   <span>{t(i18n)`Subtotal`}</span>
                 </td>
-                <td>100,00 EUR</td>
+                <td>
+                  {subtotal} {currency}
+                </td>
               </tr>
               <tr>
                 <td colSpan={4}>
                   <span>{t(i18n)`Total Tax`} (0%)</span>
                 </td>
-                <td>0,00 EUR</td>
+                <td>
+                  {totalTax} {currency}
+                </td>
               </tr>
               <tr className="total">
                 <td colSpan={4}>
                   <span>{t(i18n)`Total`}</span>
                 </td>
                 <td>
-                  <span>100,00 EUR</span>
+                  <span>
+                    {total} {currency}
+                  </span>
                 </td>
               </tr>
             </tbody>
