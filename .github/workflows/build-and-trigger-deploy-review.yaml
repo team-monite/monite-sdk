@@ -120,4 +120,5 @@ jobs:
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
+            --form "variables[CI_ACTION]=review_deploy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"

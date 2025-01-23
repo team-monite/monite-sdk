@@ -23,7 +23,6 @@ jobs:
           curl --request POST \
             --form token="${GITLAB_TOKEN}" \
             --form ref="DEV-13628-triggered-deploy" \
-            --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
