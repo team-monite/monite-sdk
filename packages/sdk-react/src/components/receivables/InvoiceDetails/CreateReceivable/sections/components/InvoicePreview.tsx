@@ -1,80 +1,24 @@
 import { components } from '@/api';
-import {
-  getCounterpartName,
-  isIndividualCounterpart,
-  isOrganizationCounterpart,
-} from '@/components/counterparts/helpers';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Box, Typography } from '@mui/material';
 
-import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import { CreateReceivablesFormProps } from '../../validation';
+import { CustomerSection } from '../CustomerSection';
+import { SectionGeneralProps } from '../Section.types';
 import './InvoicePreview.css';
 
-interface InvoicePreviewProps {
-  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
-  counterpart?: components['schemas']['CounterpartResponse'];
-  counterpartVats:
-    | {
-        data: components['schemas']['CounterpartVatIDResponse'][];
-      }
-    | undefined;
-  currency?: components['schemas']['CurrencyEnum'];
-  watch: <T extends keyof CreateReceivablesFormProps>(
-    field: T
-  ) => CreateReceivablesFormProps[T];
-  entityData: any; //temporary
-  entityVatIds?: {
-    data: components['schemas']['EntityVatIDResponse'][];
-  };
-  isNonVatSupported: boolean;
-  paymentTerms:
-    | {
-        data?: components['schemas']['PaymentTermsResponse'][];
-      }
-    | undefined;
-}
+const sample = {
+  currency: 'EUR',
+  issuedDate: '',
+  fulfillmentDate: '',
+};
 
-export const InvoicePreview = ({
-  address,
-  counterpart,
-  counterpartVats,
-  currency,
-  watch,
-  entityData,
-  entityVatIds,
-  isNonVatSupported,
-  paymentTerms,
-}: InvoicePreviewProps) => {
+export const InvoicePreview = (
+  data: components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null
+) => {
   const { i18n } = useLingui();
-  const { locale } = useMoniteContext();
-  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
-  const currencySymbol = currency ? getSymbolFromCurrency(currency) : '';
-  const fulfillmentDate = watch('fulfillment_date');
-  const items = watch('line_items');
-  const memo = watch('memo');
-  // const discount = data?.discount?.amount;
-  const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
-  const selectedPaymentTerm = paymentTerms?.data?.find(
-    (term: any) => term.id === watch('payment_terms_id')
-  );
-
-  // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
-  const sanitizedItems = items.map((item) => ({
-    ...item,
-    smallest_amount: item.smallest_amount ?? undefined,
-  }));
-
-  const { subtotalPrice, totalPrice, totalTaxes } =
-    useCreateInvoiceProductsTable({
-      lineItems: sanitizedItems,
-      formatCurrencyToDisplay,
-      isNonVatSupported,
-    });
-  const dateTime = i18n.date(new Date(), locale.dateFormat);
+  console.log({ data });
 
   return (
     <div className="invoice-preview">
@@ -85,128 +29,50 @@ export const InvoicePreview = ({
         <aside className="header--flex-end-aside">
           {' '}
           <div className="block-entity-logo">
-            {entityData?.logo?.url ? (
-              <img src={entityData.logo.url} />
+            {true ? (
+              <span></span>
             ) : (
-              <span>{t(i18n)`No logo`}</span>
+              <img src="https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/entity-logo/4d51474f-3f3d-4de0-a518-93f0a799f15a/5f1e169d-1328-4bb8-a5b7-06a84bc425f9.png" />
             )}
           </div>
         </aside>
         <aside>
           <div className="block-counterpart-info">
             <div>
-              <b> {t(i18n)`Customer`}</b>
+              <b>Some Organization</b>
             </div>
             <div>
-              {!counterpartName && (
-                <p className="not-set">{t(i18n)`Not set`}</p>
-              )}
+              <div>Nobaro Street 146</div>
+              <div>1012 ABS, Amsterdam</div>
+              <div>The Netherlands</div>
             </div>
-            <div>{counterpartName}</div>
-            {address && (
-              <div>
-                <div>
-                  {address.line1} {address.line2}
-                  {address.postal_code} {address.city} {address.country}
-                </div>
-              </div>
-            )}
-
             <hr style={{ height: '5pt', visibility: 'hidden' }} />
-            <div>
-              {counterpart && isOrganizationCounterpart(counterpart)
-                ? counterpart.organization.email
-                : counterpart && isIndividualCounterpart(counterpart)
-                ? counterpart.individual.email
-                : ''}
-            </div>
-
-            {counterpart?.tax_id && (
-              <div>
-                {t(i18n)`TAX ID`} {counterpart?.tax_id}
-              </div>
-            )}
-            {counterpartVats?.data[0]?.id && (
-              <div>
-                {t(i18n)`VAT ID`} {counterpartVats.data[0].value}
-              </div>
-            )}
+            <div>qa-team@monite.com</div>
           </div>
         </aside>
         <aside className="header--flex-end-aside">
           <div className="block-receivable-date">
             <ul>
               <li>
-                <span>{t(i18n)`Issue date`}: </span> <span>{dateTime}</span>
+                <span>{t(i18n)`Issued date`}: </span> <span>17.10.2024</span>
               </li>
               <li>
-                <span>{t(i18n)`Due date`}: </span>{' '}
-                <span>
-                  {fulfillmentDate ? (
-                    i18n.date(fulfillmentDate, locale.dateFormat)
-                  ) : (
-                    <span className="not-set">{t(i18n)`Not set`}</span>
-                  )}
-                </span>
+                <span>{t(i18n)`Fulfillment date`}: </span>{' '}
+                <span>17.10.2024</span>
               </li>
-            </ul>
-            <ul>
-              <li>
-                <span>
-                  <b>{t(i18n)`Payment terms`}</b>
-                </span>
-              </li>
-              <li>
-                {!selectedPaymentTerm && (
-                  <span className="not-set">{t(i18n)`Not set`}</span>
-                )}
-              </li>
-              <li>
-                {selectedPaymentTerm?.term_1 && (
-                  <p>
-                    {t(
-                      i18n
-                    )`Pay in the first ${selectedPaymentTerm.term_1.number_of_days} days`}{' '}
-                    {selectedPaymentTerm.term_1.discount && (
-                      <span>
-                        <br />
-                        {t(
-                          i18n
-                        )`${selectedPaymentTerm.term_1.discount}% discount`}
-                      </span>
-                    )}
-                  </p>
-                )}
-                {selectedPaymentTerm?.term_2 && (
-                  <p>
-                    {t(
-                      i18n
-                    )`Pay in the first ${selectedPaymentTerm.term_2.number_of_days} days`}{' '}
-                    {selectedPaymentTerm.term_2.discount && (
-                      <span>
-                        <br />
-                        {t(
-                          i18n
-                        )`${selectedPaymentTerm.term_2.discount}%discount`}
-                      </span>
-                    )}
-                  </p>
-                )}
-                {selectedPaymentTerm?.term_final && (
-                  <p>
-                    {t(i18n)`Payment due`}{' '}
-                    {t(
-                      i18n
-                    )`${selectedPaymentTerm.term_final?.number_of_days} days`}
-                  </p>
-                )}
-              </li>
+              <li />
+              <li />
+              <li />
+              <li />
             </ul>
           </div>
         </aside>
       </header>
       <section className="payment-description">
-        <div className="block-memo">{memo}</div>
+        <div className="block-memo">
+          <h4 />
+          <div />
+        </div>
       </section>
       <article>
         <div className="block-line-items">
@@ -216,9 +82,9 @@ export const InvoicePreview = ({
                 <th>{t(i18n)`Product`}</th>
                 <th>{t(i18n)`Qty`}</th>
                 <th>{t(i18n)`Units`}</th>
-                <th>
-                  {t(i18n)`Price`} ({currencySymbol})
-                </th>
+                <th>{t(i18n)`Price`} (EUR)</th>
+                <th>{t(i18n)`Disc.`}</th>
+                <th>{t(i18n)`Amount`} (EUR)</th>
                 <th>{t(i18n)`Tax`} (%)</th>
               </tr>
               <tr className="spacer">
@@ -226,70 +92,43 @@ export const InvoicePreview = ({
               </tr>
             </thead>
             <tbody className="products">
-              {items.length > 0 ? (
-                items.map((item) => (
-                  <tr>
-                    <td style={{ maxWidth: '120px' }}>{item?.name}</td>
-                    <td>{item?.quantity}</td>
-                    <td>
-                      {item?.measure_unit_id && (
-                        <MeasureUnit unitId={item.measure_unit_id} />
-                      )}
-                    </td>
-                    <td>
-                      {formatCurrencyToDisplay(
-                        item.price.value,
-                        item.price.currency,
-                        false
-                      )}
-                    </td>
-                    <td>
-                      {(item?.tax_rate_value ?? item?.vat_rate_value ?? 0) /
-                        100}
-                      %
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr className="no-items">
-                  <td colSpan={6}>
-                    <p className="not-set"> {t(i18n)`No items`}</p>
-                  </td>
-                </tr>
-              )}
+              <tr className="product">
+                <td>
+                  <div>test</div>
+                </td>
+                <td>1</td>
+                <td>kg</td>
+                <td>100,00</td>
+                <td> </td>
+                <td>100,00</td>
+                <td>0</td>
+              </tr>
             </tbody>
           </table>
-          {items?.length > 1 && (
-            <table cellPadding={0} cellSpacing={0} className="totals-table">
-              <tbody>
-                <tr className="subtotal">
-                  <td colSpan={4}>
-                    <span>{t(i18n)`Subtotal`}</span>
-                  </td>
-                  <td>{subtotalPrice?.toString()}</td>
-                </tr>
-                <tr>
-                  <td colSpan={4}>
-                    <span>{t(i18n)`Total Tax`} (0%)</span>
-                  </td>
-                  <td>
-                    {totalTaxes?.toString()} {currency}
-                  </td>
-                </tr>
-                <tr className="total">
-                  <td colSpan={4}>
-                    <span>{t(i18n)`Total`}</span>
-                  </td>
-                  <td>
-                    <span>
-                      {totalPrice?.toString()}
-                      {currency}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          )}
+          <table cellPadding={0} cellSpacing={0} className="totals-table">
+            <tbody>
+              <tr className="subtotal">
+                <td colSpan={4}>
+                  <span>{t(i18n)`Subtotal`}</span>
+                </td>
+                <td>100,00 EUR</td>
+              </tr>
+              <tr>
+                <td colSpan={4}>
+                  <span>{t(i18n)`Total Tax`} (0%)</span>
+                </td>
+                <td>0,00 EUR</td>
+              </tr>
+              <tr className="total">
+                <td colSpan={4}>
+                  <span>{t(i18n)`Total`}</span>
+                </td>
+                <td>
+                  <span>100,00 EUR</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </article>
       <footer>
@@ -299,51 +138,50 @@ export const InvoicePreview = ({
               <div>
                 <div></div>
                 <div>
-                  <b>{entityData?.organization?.legal_name}</b>
+                  <b>Party Collective</b>
                 </div>
                 <div>
                   <div>
-                    {entityData?.address?.line1} {entityData?.address?.line2}
-                    {entityData?.address?.city} {entityData?.address?.country}
+                    Keizergracht 126 1015 CW, Amsterdam, The Netherlands
                   </div>
                 </div>
               </div>
             </div>{' '}
             <div>
               <hr style={{ height: '5pt', visibility: 'hidden' }} />
-
-              {entityData?.tax_id && (
-                <div>
-                  {t(i18n)`TAX ID`} {entityData?.tax_id}
-                </div>
-              )}
-              {entityVatIds?.data[0]?.id && (
-                <div>
-                  {t(i18n)`VAT ID`} {entityVatIds.data[0].value}
-                </div>
-              )}
-              <div>{entityData?.phone}</div>
-              <div>{entityData?.email}</div>
+              <div>+31 6 1234568</div>
+              <div>night@life.nl</div>
             </div>
           </aside>
           <aside className="footer-aside footer-aside__end">
             <aside>
               <div>
+                <h3 />
                 <div>
-                  <span>
-                    <b>{t(i18n)`Payment Details`}:</b>
-                  </span>
+                  <span>{t(i18n)`Account number`}:</span> 12345678901234
                 </div>
                 <div>
-                  <span>
-                    {t(i18n)`Set up bank account to add payment info
-                  and set a QR code`}{' '}
-                  </span>
+                  <span>SWIFT:</span> BARBKENADIA
+                </div>
+                <div>
+                  <span>{t(i18n)`Branch code`}:</span> 06015
+                </div>
+                <div>
+                  <span>{t(i18n)`Bank`}:</span> BANK OF BARODA (KENYA) LTD
                 </div>
               </div>
             </aside>
             <aside>
-              <div className="qr-code-data"></div>
+              <div className="qr-code-data" style={{ textAlign: 'center' }}>
+                <img
+                  style={{ width: 85, height: 85, border: 'none' }}
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAABOAQAAAACm0R2wAAABF0lEQVR42m2TQYptMQhEpTMVspWAU8GtC04FtxLIVLDzPzT9DO3oUkhRntSF+pmEj0+FIhFIwC/4ncgTOxXLP1VHK9mC+qhxiDVfVR2nPGqkZWpy91Xw/9MzVIUjzKhsvnBqozE0NQ6OIauEP9XtMs5Opuardvget98Mc59Q0LZ7zh5uYt03UuVeBqNfLGM5yZxtV91UfaB3tabIzUtNNWabruwtQxYv3uw972UT5Lq00xmOfpmdphZYDC/qeStWyEnoeePS2nEYOx0qnAusv0X4XuUqu3fnVidoAnU6sHZdvt23yjxApnU6cGT9K8TTyRAcGX33YliJBtg5oOciwsBnl+hUPHkzWTQ9nj6oU62lTyf/+Ie+AY2z9T1ccr/0AAAAAElFTkSuQmCC"
+                  alt="qr-code"
+                />
+                <div style={{ marginTop: 3 }}>
+                  <b>{t(i18n)`Scan to pay`}</b>
+                </div>
+              </div>
             </aside>
           </aside>
         </section>

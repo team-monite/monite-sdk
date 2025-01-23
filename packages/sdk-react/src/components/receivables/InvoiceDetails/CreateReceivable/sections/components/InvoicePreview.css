@@ -4,9 +4,9 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  min-height: 720px;
+  height: 80vh;
   margin: 50px;
-  padding: 1.5em 5em;
+  padding: 50px;
   width: 560px;
   --table-cell-padding-x: 10.1pt;
   --table-cell-padding-y: 12.2pt;
@@ -24,12 +24,6 @@
   line-height: 12px;
   font-weight: 400;
   isolation: isolate;
-}
-
-@media screen and (max-height: 720px) {
-  .invoice-preview {
-    margin-top: 0;
-  }
 }
 
 .invoice-preview img,
@@ -60,14 +54,10 @@
 
 .invoice-preview h3 {
   color: var(--theme-neutrals-bold-10-light-black-bd, #292929);
-  font-size: 25px;
+  font-size: 10pt;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-}
-
-.invoice-preview article {
-  flex-grow: 1;
 }
 
 .invoice-preview ul {
@@ -77,6 +67,7 @@
 
 .invoice-preview .line-items-table {
   width: 100%;
+  border-color: rgba(184, 184, 184, 1);
 }
 
 .invoice-preview .line-items-table tr.spacer {
@@ -86,7 +77,7 @@
 .invoice-preview .line-items-table th {
   color: rgba(112, 112, 112, 1);
   padding-bottom: 8pt;
-  font-size: 8px;
+  font-size: 8pt;
   font-weight: 400;
   white-space: nowrap;
   text-align: left;
@@ -97,7 +88,11 @@
 .invoice-preview .line-items-table td {
   padding: 12px;
   vertical-align: top;
-  padding-left: 0;
+}
+
+.line-items-table th:first-child,
+.line-items-table td:first-child {
+  padding-left: var(--table-cell-outer-padding-x, var(--table-cell-padding-x));
 }
 
 .line-items-table th:last-child,
@@ -106,12 +101,19 @@
 }
 
 .line-items-table tbody td {
-  font-size: 10px;
-  line-height: 1.3;
+  font-size: 14px;
   font-weight: 400;
   color: var(--theme-neutrals-30-dark-grey, #3b3b3b);
-  border: 1px rgb(223, 223, 223);
+  border: 0.26px rgba(184, 184, 184, 1);
   border-top-style: solid;
+  border-bottom-style: solid;
+}
+
+.line-items-table tbody td h3 {
+  font-size: 10pt;
+  font-weight: 400;
+  color: var(--theme-neutrals-bold-10-light-black-bd, #292929);
+  margin-bottom: 4pt;
 }
 
 .line-items-table thead {
@@ -139,9 +141,13 @@ th.line-items-table__fixed-item {
 .totals-table td {
   padding: var(--totals-table-cell-padding-y, 5.6pt) var(--table-cell-padding-x);
   color: var(--theme-neutrals-bold-10-light-black-bd, #292929);
-  font-size: 10px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
+}
+
+.totals-table td:first-child {
+  padding-left: var(--table-cell-outer-padding-x, var(--table-cell-padding-x));
 }
 
 .totals-table td:last-child {
@@ -150,32 +156,70 @@ th.line-items-table__fixed-item {
   white-space: nowrap;
 }
 
-.line-items-table .no-items td {
-  padding: 0;
-  border-bottom-style: solid;
-  padding-left: 0;
-}
-
-.line-items-table tr:last-child td {
-  border-bottom-style: solid;
-}
-
 .totals-table .total td {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
   background: var(--totals-table-total-cell-background, transparent);
   color: var(--totals-table-total-cell-color, inherit);
 }
 .totals-table:has(.amount_due) .total td {
+  font-size: var(--totals-table-font-size, 10pt);
   font-weight: 400;
   background: transparent;
   color: var(--theme-neutrals-bold-10-light-black-bd, #292929);
 }
 
 .totals-table .amount_due td {
+  font-size: var(--totals-table-accent-font-size, 12pt);
   font-weight: 600;
   background: var(--totals-table-total-cell-background, transparent);
   color: var(--totals-table-total-cell-color, inherit);
+}
+
+.invoice-preview .signature-block {
+  border: 0.38px solid #2a67f5;
+  padding: 20px;
+  max-width: 100%;
+  min-width: 70%;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.invoice-preview .signature-header {
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1.88px solid #2a67f5;
+  padding-bottom: 10px;
+}
+
+.invoice-preview .signature-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0 5px;
+}
+
+.invoice-preview .signature-table td {
+  padding: 5px 0;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invoice-preview .signature-table .signature-label {
+  color: rgba(0, 0, 0, 0.56);
+  width: 150px;
+}
+
+.invoice-preview .signature-footer {
+  max-width: 100%;
+  height: 60px;
+  float: right;
+}
+
+.invoice-preview .signature-footer img {
+  width: 100%;
+  height: 100%;
 }
 
 .invoice-preview footer {
@@ -197,8 +241,9 @@ th.line-items-table__fixed-item {
 }
 
 .invoice-preview footer {
+  position: running(paymentDetailsFooter);
   border-top: 0.26px solid #a6abb7;
-  font-size: 8px;
+  font-size: 6.375pt;
   line-height: 1.41;
   font-weight: 400;
 }
@@ -258,13 +303,262 @@ th.line-items-table__fixed-item {
 .invoice-preview footer .qr-code-data {
   display: inline-flex;
   flex-flow: column;
-  height: 85px;
-  width: 85px;
-  background-image: url('data:image/svg+xml,<svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(%23filter0_f_23098_280990)"><path d="M3.8291 3.87793V6.48663V9.09532V11.704V14.3127V16.9214V19.5301V22.1388H6.4378H9.04649H11.6552H14.2639H16.8726H19.4813H22.09V19.5301V16.9214V14.3127V11.704V9.09532V6.48663V3.87793H19.4813H16.8726H14.2639H11.6552H9.04649H6.4378H3.8291ZM24.6987 3.87793V6.48663V9.09532H27.3074V6.48663H29.9161V3.87793H27.3074H24.6987ZM29.9161 6.48663V9.09532H32.5248V6.48663H29.9161ZM32.5248 9.09532V11.704H35.1334H37.7421V9.09532V6.48663V3.87793H35.1334V6.48663V9.09532H32.5248ZM32.5248 11.704H29.9161H27.3074H24.6987V14.3127H27.3074H29.9161V16.9214H27.3074V19.5301H29.9161V22.1388H32.5248V19.5301H35.1334V22.1388H32.5248V24.7475H29.9161V27.3562H32.5248H35.1334V29.9649H37.7421V27.3562V24.7475V22.1388V19.5301V16.9214H35.1334V14.3127H32.5248V11.704ZM35.1334 29.9649H32.5248V32.5736H29.9161V35.1823V37.791H32.5248V40.3997V43.0084H29.9161H27.3074V40.3997H29.9161V37.791H27.3074V35.1823V32.5736H24.6987V29.9649H27.3074V32.5736H29.9161V29.9649V27.3562H27.3074H24.6987V24.7475H22.09H19.4813H16.8726V27.3562H14.2639V29.9649H11.6552V27.3562H14.2639V24.7475H11.6552H9.04649V27.3562H6.4378V29.9649V32.5736V35.1823H9.04649V32.5736H11.6552H14.2639H16.8726V29.9649H19.4813V27.3562H22.09V29.9649H19.4813V32.5736H22.09V35.1823H19.4813V37.791H22.09H24.6987V40.3997V43.0084V45.6171H27.3074V48.2258H29.9161H32.5248H35.1334V50.8344H32.5248H29.9161H27.3074V48.2258H24.6987V50.8344V53.4431H27.3074V56.0518H24.6987V58.6605H27.3074H29.9161V56.0518H32.5248V58.6605H35.1334H37.7421H40.3508H42.9595V56.0518H45.5682V58.6605H48.1769H50.7856H53.3943V56.0518H50.7856H48.1769V53.4431H45.5682V50.8344H42.9595V53.4431H40.3508H37.7421V56.0518H35.1334V53.4431H37.7421V50.8344V48.2258V45.6171H40.3508V43.0084H37.7421H35.1334V40.3997H37.7421V37.791V35.1823V32.5736H35.1334V29.9649ZM42.9595 50.8344V48.2258H40.3508V50.8344H42.9595ZM48.1769 53.4431H50.7856H53.3943V50.8344H50.7856H48.1769V53.4431ZM53.3943 50.8344H56.003V48.2258V45.6171V43.0084V40.3997H53.3943H50.7856H48.1769V37.791H45.5682V40.3997H42.9595V43.0084V45.6171H45.5682V43.0084H48.1769V45.6171V48.2258H50.7856H53.3943V50.8344ZM45.5682 37.791V35.1823H42.9595H40.3508V37.791H42.9595H45.5682ZM48.1769 37.791H50.7856V35.1823V32.5736V29.9649H53.3943V32.5736H56.003V35.1823H58.6117V32.5736V29.9649H56.003V27.3562H58.6117V24.7475H56.003H53.3943V27.3562H50.7856V24.7475H48.1769V27.3562H45.5682V29.9649H48.1769V32.5736V35.1823V37.791ZM45.5682 29.9649H42.9595V32.5736H45.5682V29.9649ZM56.003 35.1823H53.3943V37.791H56.003V35.1823ZM19.4813 35.1823V32.5736H16.8726V35.1823H19.4813ZM16.8726 35.1823H14.2639H11.6552H9.04649V37.791H11.6552H14.2639H16.8726V35.1823ZM6.4378 35.1823H3.8291V37.791H6.4378V35.1823ZM6.4378 27.3562V24.7475H3.8291V27.3562H6.4378ZM24.6987 24.7475H27.3074V22.1388V19.5301H24.6987V22.1388V24.7475ZM40.3508 3.87793V6.48663V9.09532V11.704V14.3127V16.9214V19.5301V22.1388H42.9595H45.5682H48.1769H50.7856H53.3943H56.003H58.6117V19.5301V16.9214V14.3127V11.704V9.09532V6.48663V3.87793H56.003H53.3943H50.7856H48.1769H45.5682H42.9595H40.3508ZM6.4378 6.48663H9.04649H11.6552H14.2639H16.8726H19.4813V9.09532V11.704V14.3127V16.9214V19.5301H16.8726H14.2639H11.6552H9.04649H6.4378V16.9214V14.3127V11.704V9.09532V6.48663ZM42.9595 6.48663H45.5682H48.1769H50.7856H53.3943H56.003V9.09532V11.704V14.3127V16.9214V19.5301H53.3943H50.7856H48.1769H45.5682H42.9595V16.9214V14.3127V11.704V9.09532V6.48663ZM9.04649 9.09532V11.704V14.3127V16.9214H11.6552H14.2639H16.8726V14.3127V11.704V9.09532H14.2639H11.6552H9.04649ZM45.5682 9.09532V11.704V14.3127V16.9214H48.1769H50.7856H53.3943V14.3127V11.704V9.09532H50.7856H48.1769H45.5682ZM40.3508 24.7475V27.3562H42.9595V24.7475H40.3508ZM3.8291 40.3997V43.0084V45.6171V48.2258V50.8344V53.4431V56.0518V58.6605H6.4378H9.04649H11.6552H14.2639H16.8726H19.4813H22.09V56.0518V53.4431V50.8344V48.2258V45.6171V43.0084V40.3997H19.4813H16.8726H14.2639H11.6552H9.04649H6.4378H3.8291ZM6.4378 43.0084H9.04649H11.6552H14.2639H16.8726H19.4813V45.6171V48.2258V50.8344V53.4431V56.0518H16.8726H14.2639H11.6552H9.04649H6.4378V53.4431V50.8344V48.2258V45.6171V43.0084ZM9.04649 45.6171V48.2258V50.8344V53.4431H11.6552H14.2639H16.8726V50.8344V48.2258V45.6171H14.2639H11.6552H9.04649ZM56.003 53.4431V56.0518H58.6117V53.4431H56.003Z" fill="black"/></g><defs><filter id="filter0_f_23098_280990" x="-2.04017" y="-1.99134" width="66.5217" height="66.5217" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="1.63043" result="effect1_foregroundBlur_23098_280990"/></filter></defs></svg>');
+  min-width: 20mm;
+}
+
+.invoice-preview .deduction-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-preview .deduction-info span:last-child {
+  font-size: 7pt;
+  color: var(--theme-neutrals-30-dark-grey, #3b3b3b);
 }
 
 .invoice-preview .divider {
   border-bottom: 0.5px solid var(--mollie-ui-color-palette-gray-300, #d2d3dd);
+}
+
+.invoice-preview .pagedjs_page_content > div {
+  display: flex;
+  flex-flow: column;
+}
+
+.invoice-preview .mollie_invoice-number {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-size: 16pt;
+  font-weight: 600;
+  line-height: 16pt;
+}
+
+.template-1,
+.template-3,
+.template-4 {
+  --table-cell-outer-padding-x: 0;
+}
+
+.invoice-preview .template-2 {
+  --totals-table-total-cell-background: var(
+    --theme-primary-50-base-default,
+    #e6e6e6
+  );
+
+  --totals-table-total-cell-color: var(
+    --theme-neutrals-bold-10-light-black-bd,
+    #292929
+  );
+}
+
+.invoice-preview .template-5 {
+  --totals-table-total-cell-background: var(
+    --theme-primary-50-base-default,
+    #e6e6e6
+  );
+  --totals-table-total-cell-color: var(
+    --theme-neutrals-transparent-100-white-tr,
+    #fff
+  );
+}
+
+.invoice-preview .template-2 .totals-table tr:last-child td,
+.invoice-preview .template-5 .totals-table tr:last-child td {
+  --totals-table-cell-padding-y: 9pt;
+}
+
+.invoice-preview .template-2 .line-items-table th {
+  background-color: var(--totals-table-total-cell-background);
+  color: var(--totals-table-total-cell-color);
+  padding-top: 8pt;
+  padding-bottom: 8pt;
+}
+/* CSS for Paged.js interface – v0.4 */
+
+/* Change the look */
+.invoice-preview {
+  --color-pageSheet: #cfcfcf;
+  --color-pageBox: violet;
+  --color-paper: white;
+  --color-marginBox: transparent;
+  --pagedjs-crop-color: black;
+  --pagedjs-crop-shadow: white;
+  --pagedjs-crop-stroke: 1px;
+}
+
+/* To define how the book look on the screen: */
+@media screen {
+  .invoice-preview .pagedjs_pages {
+    display: flex;
+    width: calc(var(--pagedjs-width) * 2);
+    flex: 0;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .invoice-preview .pagedjs_page {
+    background-color: var(--color-paper);
+    box-shadow: 0 0 0 1px var(--color-pageSheet);
+    margin: 0;
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-top: 10mm;
+  }
+
+  .invoice-preview .pagedjs_first_page {
+    margin-left: var(--pagedjs-width);
+  }
+
+  .invoice-preview .pagedjs_page:last-of-type {
+    margin-bottom: 10mm;
+  }
+
+  .invoice-preview .pagedjs_pagebox {
+    box-shadow: 0 0 0 1px var(--color-pageBox);
+  }
+
+  .invoice-preview .pagedjs_left_page {
+    z-index: 20;
+    width: calc(
+      var(--pagedjs-bleed-left) + var(--pagedjs-pagebox-width)
+    ) !important;
+  }
+
+  .invoice-preview .pagedjs_left_page .pagedjs_bleed-right .pagedjs_marks-crop {
+    border-color: transparent;
+  }
+
+  .invoice-preview
+    .pagedjs_left_page
+    .pagedjs_bleed-right
+    .pagedjs_marks-middle {
+    width: 0;
+  }
+
+  .invoice-preview .pagedjs_right_page {
+    z-index: 10;
+    position: relative;
+    left: calc(var(--pagedjs-bleed-left) * -1);
+  }
+
+  /* show the margin-box */
+
+  .pagedjs_margin-top-left-corner-holder,
+  .pagedjs_margin-top,
+  .pagedjs_margin-top-left,
+  .pagedjs_margin-top-center,
+  .pagedjs_margin-top-right,
+  .pagedjs_margin-top-right-corner-holder,
+  .pagedjs_margin-bottom-left-corner-holder,
+  .pagedjs_margin-bottom,
+  .pagedjs_margin-bottom-left,
+  .pagedjs_margin-bottom-center,
+  .pagedjs_margin-bottom-right,
+  .pagedjs_margin-bottom-right-corner-holder,
+  .pagedjs_margin-right,
+  .pagedjs_margin-right-top,
+  .pagedjs_margin-right-middle,
+  .pagedjs_margin-right-bottom,
+  .pagedjs_margin-left,
+  .pagedjs_margin-left-top,
+  .pagedjs_margin-left-middle,
+  .pagedjs_margin-left-bottom {
+    box-shadow: 0 0 0 1px inset var(--color-marginBox);
+  }
+
+  /* uncomment this part for recto/verso book : ------------------------------------ */
+
+  /*
+        .pagedjs_pages {
+                flex-direction: column;
+                width: 100%;
+        }
+
+        .pagedjs_first_page {
+                margin-left: 0;
+        }
+
+        .pagedjs_page {
+                margin: 0 auto;
+                margin-top: 10mm;
+        }
+
+        .pagedjs_left_page{
+                width: calc(var(--pagedjs-bleed-left) + var(--pagedjs-pagebox-width) + var(--pagedjs-bleed-left))!important;
+        }
+
+        .pagedjs_left_page .pagedjs_bleed-right .pagedjs_marks-crop{
+                border-color: var(--pagedjs-crop-color);
+        }
+
+        .pagedjs_left_page .pagedjs_bleed-right .pagedjs_marks-middle{
+                width: var(--pagedjs-cross-size)!important;
+        }
+
+        .pagedjs_right_page{
+                left: 0;
+        }
+        */
+
+  /*--------------------------------------------------------------------------------------*/
+
+  /* uncomment this par to see the baseline : -------------------------------------------*/
+
+  /* .pagedjs_pagebox {
+                --pagedjs-baseline: 22px;
+                --pagedjs-baseline-position: 5px;
+                --pagedjs-baseline-color: cyan;
+                background: linear-gradient(transparent 0%, transparent calc(var(--pagedjs-baseline) - 1px), var(--pagedjs-baseline-color) calc(var(--pagedjs-baseline) - 1px), var(--pagedjs-baseline-color) var(--pagedjs-baseline)), transparent;
+                background-size: 100% var(--pagedjs-baseline);
+                background-repeat: repeat-y;
+                background-position-y: var(--pagedjs-baseline-position);
+        }  */
+
+  /*--------------------------------------------------------------------------------------*/
+}
+
+/* Marks (to delete when merge in paged.js) */
+
+.invoice-preview .pagedjs_marks-crop {
+  z-index: 999999999999;
+}
+
+.invoice-preview .pagedjs_bleed-top .pagedjs_marks-crop,
+.invoice-preview .pagedjs_bleed-bottom .pagedjs_marks-crop {
+  box-shadow: 1px 0px 0px 0px var(--pagedjs-crop-shadow);
+}
+
+.invoice-preview .pagedjs_bleed-top .pagedjs_marks-crop:last-child,
+.invoice-preview .pagedjs_bleed-bottom .pagedjs_marks-crop:last-child {
+  box-shadow: -1px 0px 0px 0px var(--pagedjs-crop-shadow);
+}
+
+.invoice-preview .pagedjs_bleed-left .pagedjs_marks-crop,
+.invoice-preview .pagedjs_bleed-right .pagedjs_marks-crop {
+  box-shadow: 0px 1px 0px 0px var(--pagedjs-crop-shadow);
+}
+
+.invoice-preview .pagedjs_bleed-left .pagedjs_marks-crop:last-child,
+.invoice-preview .pagedjs_bleed-right .pagedjs_marks-crop:last-child {
+  box-shadow: 0px -1px 0px 0px var(--pagedjs-crop-shadow);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.invoice-preview {
+  /**
+         * paged.js does not support CSS Custom Props,
+         * make sure to add margins to the `@page` media rule bellow
+         */
+  --page-margin-x: 17mm;
+  --page-margin-top: 25mm;
+
+  --theme-neutrals-transparent-100-white-tr: #fff;
+  --brand-main-navy-secondary: #062766;
+  --theme-neutrals-bold-50-grey-bd: #707070;
+  --theme-neutrals-bold-10-light-black-bd: #292929;
+  --theme-neutrals-30-dark-grey: #3b3b3b;
+  --theme-neutrals-bold-30-dark-grey-bd: #3b3b3b;
 }
 
 .invoice-preview .header {
@@ -301,18 +595,6 @@ th.line-items-table__fixed-item {
   object-fit: contain;
 }
 
-.invoice-preview .block-counterpart-info {
-  font-size: 10px;
-}
-
-.invoice-preview .header .block-entity-logo span {
-  font-size: 13px;
-  color: white;
-  position: relative;
-  left: -15px;
-  top: 28px;
-}
-
 .invoice-preview .payment-details h3 {
   margin-bottom: 3pt;
   padding-bottom: 0.35em;
@@ -333,20 +615,6 @@ th.line-items-table__fixed-item {
   color: var(--theme-neutrals-bold-10-light-black-bd, #292929);
   font-style: normal;
   font-weight: 700;
-}
-
-.invoice-preview .block-receivable-date li {
-  display: flex;
-  font-size: 10px;
-  width: 130px;
-}
-
-.invoice-preview .block-memo {
-  font-size: 10px;
-}
-
-.invoice-preview .block-receivable-date li span:first-child {
-  margin-right: auto;
 }
 
 .invoice-preview .payment-description {

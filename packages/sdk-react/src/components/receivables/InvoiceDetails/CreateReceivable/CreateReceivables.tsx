@@ -36,11 +36,13 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
+import { debounce } from 'lodash';
 
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { BillToSection } from './sections/components/BillToSection';
+import { InvoicePreview } from './sections/components/InvoicePreview';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 //import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
@@ -177,32 +179,35 @@ const CreateReceivablesBase = ({
   }
 
   const className = 'Monite-CreateReceivable';
-  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+  const [previewData, setPreviewData] = useState<
+    components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null
+  >(null);
+
+  //not sure any of those changes are useful. seems like maybe i should explicitly send each form value to invoice preview
+  const generateInvoicePayload = (
+    values: CreateReceivablesFormProps
+  ): components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null => {
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
-      return;
+      return null;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
-      return;
+      return null;
     }
 
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
-      return;
+      return null;
     }
 
     const shippingAddressId = values.default_shipping_address_id;
-
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
       (address) => address.id === shippingAddressId
     );
 
-    const invoicePayload: Omit<
-      components['schemas']['ReceivableFacadeCreateInvoicePayload'],
-      'is_einvoice'
-    > = {
+    return {
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
@@ -227,8 +232,7 @@ const CreateReceivablesBase = ({
         ? /**
            * We have to change the date as Backend accepts it.
            * There is no `time` in the request, only year, month and date
-           */
-          format(values.fulfillment_date, 'yyyy-MM-dd')
+           */ format(values.fulfillment_date, 'yyyy-MM-dd')
         : undefined,
       purchase_order: values.purchase_order || undefined,
       currency: actualCurrency,
@@ -236,15 +240,36 @@ const CreateReceivablesBase = ({
       overdue_reminder_id: values.overdue_reminder_id || undefined,
       tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
     };
+  };
 
-    createReceivable.mutate(
-      invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
-      {
-        onSuccess: (createdReceivable) => {
-          onCreate?.(createdReceivable.id);
-        },
-      }
-    );
+  const handleChange = (formData: CreateReceivablesFormProps) => {
+    const updatedPayload = generateInvoicePayload(formData);
+    if (
+      updatedPayload &&
+      JSON.stringify(updatedPayload) !== JSON.stringify(previewData)
+    ) {
+      setPreviewData(updatedPayload);
+    }
+  };
+  const debouncedHandleChange = useMemo(
+    () => debounce(handleChange, 300),
+    [handleChange]
+  );
+
+  useEffect(() => {
+    const subscription = watch((formData) => debouncedHandleChange(formData));
+    return () => subscription.unsubscribe();
+  }, [watch, debouncedHandleChange]);
+
+  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    const invoicePayload = generateInvoicePayload(values);
+    if (!invoicePayload) return;
+
+    createReceivable.mutate(invoicePayload, {
+      onSuccess: (createdReceivable) => {
+        onCreate?.(createdReceivable.id);
+      },
+    });
   };
 
   return (
@@ -356,7 +381,7 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
         }}
       >
-        Invoice preview
+        <InvoicePreview data={previewData} />
       </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
