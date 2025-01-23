@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -32,12 +32,14 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
+import { debounce } from 'lodash';
 
 import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { BillToSection } from './sections/components/BillToSection';
+import { InvoicePreview } from './sections/components/InvoicePreview';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import {
@@ -133,15 +135,22 @@ const CreateReceivablesBase = ({
   }
 
   const className = 'Monite-CreateReceivable';
-  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+  const [previewData, setPreviewData] = useState<
+    components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null
+  >(null);
+
+  //not sure any of those changes are useful. seems like maybe i should explicitly send each form value to invoice preview
+  const generateInvoicePayload = (
+    values: CreateReceivablesFormProps
+  ): components['schemas']['ReceivableFacadeCreateInvoicePayload'] | null => {
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
-      return;
+      return null;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
-      return;
+      return null;
     }
 
     const billingAddressId = values.default_billing_address_id;
@@ -151,11 +160,10 @@ const CreateReceivablesBase = ({
 
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
-      return;
+      return null;
     }
 
     const shippingAddressId = values.default_shipping_address_id;
-
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
       (address) => address.id === shippingAddressId
     );
@@ -300,7 +308,7 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
         }}
       >
-        Invoice preview
+        <InvoicePreview data={previewData} />
       </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
