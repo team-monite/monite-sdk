@@ -18,7 +18,7 @@ jobs:
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
           GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 
-          NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
+          NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
           echo "NORMALIZED_GITHUB_BRANCH = $NORMALIZED_GITHUB_BRANCH"
 
           curl --request POST \
