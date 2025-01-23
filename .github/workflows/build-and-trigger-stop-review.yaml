@@ -25,7 +25,7 @@ jobs:
             --form token="${GITLAB_TOKEN}" \
             --form ref="DEV-13628-triggered-deploy" \
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
-            --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=destroy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
