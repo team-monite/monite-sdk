@@ -462,11 +462,20 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               height: '70px',
               lineHeight: '70px',
               backgroundColor: 'transparent',
-              '&.Mui-focused, &:hover': {
+              '&:hover, &.Mui-focused': {
                 backgroundColor: 'transparent',
                 '& > .MuiOutlinedInput-notchedOutline': {
                   backgroundColor: 'transparent',
+                },
+              },
+              '&:hover': {
+                '& > .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#dedede',
+                },
+              },
+              '&.Mui-focused': {
+                '& > .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'transparent',
                 },
               },
             },
