@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.6
+
+### Minor Changes
+
+- 2c645e2: Fixed style issues
+
 ## 4.0.0-alpha.5
 
 ### Minor Changes
