@@ -42,8 +42,15 @@ export const getFormControlStyles = (
               .alpha(0.24)
               .hex()}`,
           },
+
+          '&.MuiInputBase-adornedEnd': {
+            paddingRight: 8,
+          },
         },
 
+        'label+.MuiInputBase-root': {
+          marginTop: 0,
+        },
         '&:hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             backgroundColor: palette.neutral['90'],
