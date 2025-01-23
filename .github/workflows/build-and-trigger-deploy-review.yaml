@@ -1,9 +1,9 @@
-name: Build and Push Docker Images Werf
+name: Build Images and Deploy to Review
 
 on:
   push:
     branches:
-      - DEV-13666-build-images
+      - DEV-*
 
 jobs:
   build-sdk-react:
@@ -88,14 +88,14 @@ jobs:
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
 
   trigger-gitlab-deploy:
-    name: Trigger GitLab Deployment
+    name: Trigger GitLab Deployment to Review
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo
       - build-sdk-drop-in
 
     steps:
-      - name: Trigger GitLab Pipeline
+      - name: Trigger GitLab Pipeline Deploy to Review
         run: |
           REPO="${{ vars.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"

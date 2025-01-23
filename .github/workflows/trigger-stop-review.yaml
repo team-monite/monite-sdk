@@ -1,4 +1,4 @@
-name: Build and Push Docker Images Werf
+name: Trigger Stop Review
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger GitLab Pipeline
+      - name: Trigger GitLab Pipeline to Stop Review
         run: |
           REPO="${{ vars.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
@@ -27,5 +27,5 @@ jobs:
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
             --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
-            --form "variables[CI_ACTION]=destroy" \
+            --form "variables[CI_ACTION]=review_destroy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"

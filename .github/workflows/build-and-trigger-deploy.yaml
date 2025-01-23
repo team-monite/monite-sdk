@@ -1,11 +1,9 @@
-name: Build and Deploy Dev
+name: Build Images and Deploy to Dev
 
 on:
   push:
     branches:
       - main
-      - dev
-      - DEV-13666-build-images
 
 jobs:
   build-sdk-react:
@@ -97,7 +95,7 @@ jobs:
       - build-sdk-drop-in
 
     steps:
-      - name: Trigger GitLab Pipeline
+      - name: Trigger GitLab Pipeline Deploy to Dev
         run: |
           REPO="${{ vars.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
@@ -120,4 +118,5 @@ jobs:
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
+            --form "variables[CI_ACTION]=dev_deploy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
