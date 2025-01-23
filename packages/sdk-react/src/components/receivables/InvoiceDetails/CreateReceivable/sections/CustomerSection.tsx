@@ -21,7 +21,6 @@ import {
 } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AccountCircle } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
@@ -55,15 +54,15 @@ interface CounterpartsAutocompleteOptionProps {
 
 const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
-const CounterpartAddressView = ({
+function prepareAddressView({
   address,
 }: {
   address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
-}) => (
-  <>
-    {address.postal_code}, {address.city}, {address.line1}
-  </>
-);
+}) {
+  if (address)
+    return `${address.postal_code}, ${address.city}, ${address.line1}`;
+  return '';
+}
 
 const COUNTERPART_CREATE_NEW_ID = '__create-new__';
 const COUNTERPART_DIVIDER = '__divider__';
@@ -166,6 +165,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       <CounterpartSelector
         setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}
         disabled={disabled}
+        counterpartAddresses={counterpartAddresses}
       />
 
       {
@@ -280,7 +280,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                   >
                     {counterpartAddresses?.data.map((address) => (
                       <MenuItem key={address.id} value={address.id}>
-                        <CounterpartAddressView address={address} />
+                        {prepareAddressView({ address })}
                       </MenuItem>
                     ))}
                   </Select>
@@ -343,7 +343,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     >
                       {counterpartAddresses?.data.map((address) => (
                         <MenuItem key={address.id} value={address.id}>
-                          <CounterpartAddressView address={address} />
+                          {prepareAddressView({ address })}
                         </MenuItem>
                       ))}
                     </Select>
@@ -361,9 +361,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   disabled,
+  counterpartAddresses,
 }: {
   setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
   disabled?: boolean;
+  counterpartAddresses: any;
 }) => {
   const { i18n } = useLingui();
 
@@ -374,6 +376,7 @@ const CounterpartSelector = ({
   const handleCreateNewCounterpart = useCallback(() => {
     setIsCreateCounterpartOpened(true);
   }, [setIsCreateCounterpartOpened]);
+  const [address, setAddress] = useState('');
 
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
@@ -387,6 +390,13 @@ const CounterpartSelector = ({
         : [],
     [counterparts]
   );
+
+  useEffect(() => {
+    if (counterpartAddresses?.data[0]) {
+      const addressView = counterpartAddresses.data[0];
+      setAddress(prepareAddressView({ address: addressView }));
+    }
+  }, [counterpartAddresses]);
 
   return (
     <Controller
@@ -410,149 +420,154 @@ const CounterpartSelector = ({
           : null;
 
         return (
-          <Autocomplete
-            {...field}
-            value={selectedCounterpartOption}
-            onChange={(_, value) => {
-              if (
-                isCreateNewCounterpartOption(value) ||
-                isDividerOption(value)
-              ) {
-                field.onChange(null);
+          <>
+            <Autocomplete
+              {...field}
+              value={selectedCounterpartOption}
+              onChange={(_, value) => {
+                if (
+                  isCreateNewCounterpartOption(value) ||
+                  isDividerOption(value)
+                ) {
+                  field.onChange(null);
 
-                return;
-              }
-              field.onChange(value?.id);
-            }}
-            slotProps={{
-              popper: {
-                container: root,
-              },
-            }}
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              const reverseFiltered = options.filter(
-                (option) =>
-                  !filtered.some(
-                    (filteredOption) => filteredOption.id === option.id
-                  )
-              );
+                  return;
+                }
+                field.onChange(value?.id);
+              }}
+              slotProps={{
+                popper: {
+                  container: root,
+                },
+              }}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+                const reverseFiltered = options.filter(
+                  (option) =>
+                    !filtered.some(
+                      (filteredOption) => filteredOption.id === option.id
+                    )
+                );
 
-              filtered.unshift({
-                id: COUNTERPART_CREATE_NEW_ID,
-                label: t(i18n)`Create new counterpart`,
-              });
-
-              if (params.inputValue.length) {
-                filtered.push({
-                  id: COUNTERPART_DIVIDER,
-                  label: '-',
+                filtered.unshift({
+                  id: COUNTERPART_CREATE_NEW_ID,
+                  label: t(i18n)`Create new counterpart`,
                 });
-              }
-              return [...filtered, ...reverseFiltered];
-            }}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  {...params}
-                  label={t(i18n)`Customer`}
-                  placeholder={t(i18n)`Select customer`}
-                  required
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  className="Monite-CounterpartSelector"
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: isCounterpartsLoading ? (
-                      <CircularProgress size={20} />
-                    ) : (
-                      <InputAdornment
-                        sx={{
-                          width: '44px',
-                          height: '44px',
-                          maxHeight: '44px',
 
-                          justifyContent: 'center',
-                          backgroundColor: selectedCounterpartOption
-                            ? 'rgba(203, 203, 254, 1)'
-                            : 'rgba(235, 235, 255, 1)',
-                          borderRadius: '50%',
-                        }}
-                        position="start"
-                      >
-                        <Typography variant="caption">
-                          {selectedCounterpartOption
-                            ? Array.from(
-                                selectedCounterpartOption.label
-                              )[0].toUpperCase()
-                            : '+'}
-                        </Typography>
-                      </InputAdornment>
-                    ),
-                    endAdornment: (() => {
-                      if (
-                        selectedCounterpartOption &&
-                        !params.inputProps['aria-expanded']
-                      ) {
-                        return <Button>Edit</Button>;
-                      }
-                      if (
-                        selectedCounterpartOption &&
-                        params.inputProps['aria-expanded']
-                      ) {
-                        return (
-                          <IconButton onClick={() => field.onChange(null)}>
-                            <ClearIcon sx={{ width: '1rem', height: '1rem' }} />
-                          </IconButton>
-                        );
-                      }
-                      return null;
-                    })(),
-                  }}
-                />
-              );
-            }}
-            loading={isCounterpartsLoading || disabled}
-            options={counterpartsAutocompleteData}
-            getOptionLabel={(counterpartOption) =>
-              isCreateNewCounterpartOption(counterpartOption) ||
-              isDividerOption(counterpartOption)
-                ? ''
-                : counterpartOption.label
-            }
-            isOptionEqualToValue={(option, value) => {
-              return option.id === value.id;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            renderOption={(props, counterpartOption) =>
-              isCreateNewCounterpartOption(counterpartOption) ? (
-                <Button
-                  key={counterpartOption.id}
-                  variant="text"
-                  startIcon={<AddIcon />}
-                  fullWidth
-                  sx={{
-                    justifyContent: 'flex-start',
-                    px: 2,
-                  }}
-                  onClick={handleCreateNewCounterpart}
-                >
-                  {counterpartOption.label}
-                </Button>
-              ) : counterpartOption.id === COUNTERPART_DIVIDER ? (
-                <Divider
-                  key={counterpartOption.id}
-                  sx={{ padding: '8px', marginBottom: '16px' }}
-                />
-              ) : (
-                <li {...props} key={counterpartOption.id}>
-                  {counterpartOption.label}
-                </li>
-              )
-            }
-          />
+                if (params.inputValue.length) {
+                  filtered.push({
+                    id: COUNTERPART_DIVIDER,
+                    label: '-',
+                  });
+                }
+                return [...filtered, ...reverseFiltered];
+              }}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    {...params}
+                    label={t(i18n)`Customer`}
+                    placeholder={t(i18n)`Select customer`}
+                    required
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    className="Monite-CounterpartSelector"
+                    InputProps={{
+                      ...params.InputProps,
+                      value: params.inputProps.value,
+                      startAdornment: isCounterpartsLoading ? (
+                        <CircularProgress size={20} />
+                      ) : (
+                        <InputAdornment
+                          sx={{
+                            width: '44px',
+                            height: '44px',
+                            maxHeight: '44px',
+
+                            justifyContent: 'center',
+                            backgroundColor: selectedCounterpartOption
+                              ? 'rgba(203, 203, 254, 1)'
+                              : 'rgba(235, 235, 255, 1)',
+                            borderRadius: '50%',
+                          }}
+                          position="start"
+                        >
+                          <Typography variant="caption">
+                            {selectedCounterpartOption
+                              ? Array.from(
+                                  selectedCounterpartOption.label
+                                )[0].toUpperCase()
+                              : '+'}
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                      endAdornment: (() => {
+                        if (
+                          selectedCounterpartOption &&
+                          !params.inputProps['aria-expanded']
+                        ) {
+                          return <Button>Edit</Button>;
+                        }
+                        if (
+                          selectedCounterpartOption &&
+                          params.inputProps['aria-expanded']
+                        ) {
+                          return (
+                            <IconButton onClick={() => field.onChange(null)}>
+                              <ClearIcon
+                                sx={{ width: '1rem', height: '1rem' }}
+                              />
+                            </IconButton>
+                          );
+                        }
+                        return null;
+                      })(),
+                    }}
+                  />
+                );
+              }}
+              loading={isCounterpartsLoading || disabled}
+              options={counterpartsAutocompleteData}
+              getOptionLabel={(counterpartOption) =>
+                isCreateNewCounterpartOption(counterpartOption) ||
+                isDividerOption(counterpartOption)
+                  ? ''
+                  : counterpartOption.label + ' ' + address
+              }
+              isOptionEqualToValue={(option, value) => {
+                return option.id === value.id;
+              }}
+              selectOnFocus
+              clearOnBlur
+              handleHomeEndKeys
+              renderOption={(props, counterpartOption) =>
+                isCreateNewCounterpartOption(counterpartOption) ? (
+                  <Button
+                    key={counterpartOption.id}
+                    variant="text"
+                    startIcon={<AddIcon />}
+                    fullWidth
+                    sx={{
+                      justifyContent: 'flex-start',
+                      px: 2,
+                    }}
+                    onClick={handleCreateNewCounterpart}
+                  >
+                    {counterpartOption.label}
+                  </Button>
+                ) : counterpartOption.id === COUNTERPART_DIVIDER ? (
+                  <Divider
+                    key={counterpartOption.id}
+                    sx={{ padding: '8px', marginBottom: '16px' }}
+                  />
+                ) : (
+                  <li {...props} key={counterpartOption.id}>
+                    {counterpartOption.label}
+                  </li>
+                )
+              }
+            />
+          </>
         );
       }}
     />
