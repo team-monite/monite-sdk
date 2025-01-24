@@ -4,7 +4,7 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  min-height: 720px;
   margin: 50px;
   padding: 50px;
   width: 560px;
