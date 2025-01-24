@@ -1,5 +1,5 @@
 # Monite SDK
-Use Monite SDK to embed invoicing and payables powered by [Monite](https://monite.com/) into your products.
+Use Monite SDK to embed invoicing and payables powered by [Monite](https://monite.com/) into your products
 The SDK provides React UI components for displaying and managing data served via the Monite API, as well as a standalone JavaScript API client for those whose prefer to build a UI from scratch.
 
 ## Packages

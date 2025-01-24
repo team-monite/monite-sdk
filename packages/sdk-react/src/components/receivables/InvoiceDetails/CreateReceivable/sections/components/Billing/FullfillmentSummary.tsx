@@ -21,8 +21,11 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
 
   const { api } = useMoniteContext();
 
-  const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
-    api.paymentTerms.getPaymentTerms.useQuery();
+  const {
+    data: paymentTerms,
+    isLoading: isPaymentTermsLoading,
+    refetch,
+  } = api.paymentTerms.getPaymentTerms.useQuery();
 
   const { root } = useRootElements();
   const dateTimeFormat = useDateTimeFormat();
@@ -37,6 +40,11 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
   const selectedPaymentTerm = paymentTerms?.data?.find(
     (term) => term.id === paymentTermsId
   );
+
+  const handlePaymentTermsChange = async (newId: string = '') => {
+    await refetch();
+    setValue('payment_terms_id', newId);
+  };
 
   return (
     <>
@@ -146,6 +154,8 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
             disabled={disabled}
             paymentTerms={paymentTerms}
             isLoading={isPaymentTermsLoading}
+            selectedPaymentTerm={selectedPaymentTerm}
+            onPaymentTermsChange={handlePaymentTermsChange}
           />
         </Box>
       </Box>

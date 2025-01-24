@@ -49,6 +49,10 @@ export const useMyEntity = () => {
       VAT_SUPPORTED_COUNTRIES.includes(queryProps.data?.address.country)
   );
 
+  const isUSEntity = Boolean(
+    queryProps.data?.address && queryProps.data?.address.country === 'US'
+  );
+
   const isNonCompliantFlow =
     entitySettings?.receivable_edit_flow === 'non_compliant';
 
@@ -58,6 +62,7 @@ export const useMyEntity = () => {
     ...queryProps,
     entityName,
     isNonVatSupported: !isVatSupported,
+    isUSEntity,
     isNonCompliantFlow,
   };
 };

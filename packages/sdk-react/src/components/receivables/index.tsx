@@ -4,3 +4,4 @@ export * from './CreditNotesTable';
 export * from './InvoiceDetails';
 export * from './Receivables';
 export * from './ReceivablesTable';
+export * from './Financing';
