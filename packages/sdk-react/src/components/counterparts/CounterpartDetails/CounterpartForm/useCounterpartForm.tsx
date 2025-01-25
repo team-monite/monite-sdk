@@ -18,6 +18,7 @@ export type CounterpartsFormProps = {
    */
   id?: string;
   onCancel?: () => void;
+  onClose?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
   /**

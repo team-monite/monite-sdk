@@ -179,7 +179,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
           {dialogContext?.isDialogContent && (
             <IconWrapper
               aria-label={t(i18n)`Counterpart Close`}
-              onClick={dialogContext.onClose}
+              onClick={props.onClose || dialogContext.onClose}
               color="inherit"
             >
               <CloseIcon />
@@ -386,7 +386,11 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
           <Button
             variant="outlined"
             color="inherit"
-            onClick={isUpdateMode ? props.onCancel : dialogContext?.onClose}
+            onClick={
+              isUpdateMode
+                ? props.onCancel
+                : props.onClose || dialogContext?.onClose
+            }
           >
             {t(i18n)`Cancel`}
           </Button>
