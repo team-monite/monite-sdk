@@ -220,6 +220,30 @@ export const CounterpartIndividualForm = ({
           overflowY: 'auto',
         }}
       >
+        <Grid item xs={11}>
+          <Typography variant="h3" sx={{ padding: 3 }}>
+            {isUpdateMode
+              ? getIndividualName(
+                  watch('individual.firstName'),
+                  watch('individual.lastName')
+                )
+              : t(i18n)`Create Counterpart - Individual`}
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          {dialogContext?.isDialogContent && (
+            <IconWrapper
+              aria-label={t(i18n)`Counterpart Close`}
+              onClick={props.onClose || dialogContext.onClose}
+              color="inherit"
+            >
+              <CloseIcon />
+            </IconWrapper>
+          )}
+        </Grid>
+      </Grid>
+      <Divider />
+      <DialogContent>
         <FormProvider {...methods}>
           <form
             id="counterpartIndividualForm"
@@ -423,7 +447,8 @@ export const CounterpartIndividualForm = ({
       >
         {(isUpdateMode || dialogContext) && (
           <Button
-            variant="text"
+            variant="outlined"
+            color="inherit"
             onClick={
               isUpdateMode
                 ? props.onCancel

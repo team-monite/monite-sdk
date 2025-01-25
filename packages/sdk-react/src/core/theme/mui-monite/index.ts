@@ -416,9 +416,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               marginLeft: '16px',
             },
           },
-          '&.Monite-ContainerCssBaseline': {
-            overflow: 'hidden',
-          },
         },
       },
     },

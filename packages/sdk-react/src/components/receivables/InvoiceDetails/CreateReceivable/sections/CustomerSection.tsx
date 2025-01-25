@@ -58,7 +58,7 @@ import {
 
 import { CreateReceivablesFormProps } from '../validation';
 import { CreateCounterpartModal } from './components/CreateCounterpartModal';
-import { SectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from './Section.types';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -148,8 +148,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   return (
     <Stack spacing={2} className={className}>
-      <CreateCounterpartDialog
-        open={false}
+      <CreateCounterpartModal
+        open={isCreateCounterpartOpened}
         onClose={() => {
           setIsCreateCounterpartOpened(false);
         }}
@@ -157,29 +157,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
           setValue('counterpart_id', newCounterpartId);
         }}
       />
-
-      <Modal
-        open={isCreateCounterpartOpened}
-        onClose={() => setIsCreateCounterpartOpened(false)}
-        container={root}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-            maxWidth: 600,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-          }}
-        >
-          <p>Add new customer</p>
-        </Box>
-      </Modal>
 
       <CounterpartSelector
         setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}

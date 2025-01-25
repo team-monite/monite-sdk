@@ -97,47 +97,25 @@ export const CreateCounterpartDialog = ({
 
   const handleCreateCounterpart = useCallback(
     (type: components['schemas']['CounterpartType']) => {
-      setCounterpartType(type);
+      setCounterpartType('individual');
       setViewMode(View.CounterpartCreationMode);
     },
     []
   );
 
-  if (viewMode === View.CounterpartCreationMode && counterpartType) {
-    return (
-      <Dialog
-        alignDialog="right"
-        data-testid="create-counterpart-dialog"
-        open={open}
-        onClose={() => {
-          setViewMode(View.ChooseMode);
-          setCounterpartType(undefined);
-        }}
-      >
+  return (
+    <>
+      <Typography variant="h3" sx={{ p: 4 }}>{t(
+        i18n
+      )`Create customer`}</Typography>
+      <Divider />
+      <DialogContent>
         <CounterpartDetails
-          type={counterpartType}
+          type={'individual'}
           onCreate={() => {
-            setViewMode(View.ChooseMode);
-            setCounterpartType(undefined);
             onClose();
           }}
         />
-      </Dialog>
-    );
-  }
-
-  return (
-    <Dialog
-      alignDialog="right"
-      open={open}
-      onClose={onClose}
-      data-testid={CreateCounterpartDialogTestEnum.DataTestId}
-    >
-      <Typography variant="h3" sx={{ p: 4 }}>{t(
-        i18n
-      )`Create counterpart`}</Typography>
-      <Divider />
-      <DialogContent>
         <Typography sx={{ mb: 2, fontWeight: 500 }}>{t(
           i18n
         )`Choose counterpart type:`}</Typography>
@@ -172,6 +150,6 @@ export const CreateCounterpartDialog = ({
           {t(i18n)`Cancel`}
         </Button>
       </DialogActions>
-    </Dialog>
+    </>
   );
 };

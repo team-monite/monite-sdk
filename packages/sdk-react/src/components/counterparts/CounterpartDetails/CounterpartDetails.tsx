@@ -37,6 +37,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onAddressEdit,
     onAddressUpdate,
     contactId,
+    onClose,
     onContactEdit,
     onContactCreate,
     onContactUpdate,
@@ -147,6 +148,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onBankCreate,
     onBankEdit,
     onBankUpdate,
+    onClose,
     onContactCancel,
     onContactCreate,
     onContactEdit,
@@ -177,6 +179,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={showView}
             onClose={props.onClose}
             onCreate={onCreate}
+            onClose={props.onClose}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
