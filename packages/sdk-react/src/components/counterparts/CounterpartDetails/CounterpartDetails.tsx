@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { CircularProgress } from '@mui/material';
 
 import { CounterpartAddressFormUpdate } from './CounterpartAddressFormUpdate';
 import { CounterpartBankForm } from './CounterpartBankForm';
@@ -35,6 +36,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onAddressEdit,
     onAddressUpdate,
     contactId,
+    onClose,
     onContactEdit,
     onContactCreate,
     onContactUpdate,
@@ -60,7 +62,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const defaultValues = props.type ? props.defaultValues : undefined;
 
   const renderSubResource = useCallback(() => {
-    if (!counterpartId) return null;
+    if (!counterpartId) return <CircularProgress color="inherit" size={20} />;
 
     switch (counterpartView) {
       case COUNTERPART_VIEW.view:
@@ -145,6 +147,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onBankCreate,
     onBankEdit,
     onBankUpdate,
+    onClose,
     onContactCancel,
     onContactCreate,
     onContactEdit,
@@ -174,6 +177,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             id={counterpartId}
             onCancel={showView}
             onCreate={onCreate}
+            onClose={props.onClose}
             onUpdate={onUpdate}
             showCategories={showCategories}
             defaultValues={defaultValues}

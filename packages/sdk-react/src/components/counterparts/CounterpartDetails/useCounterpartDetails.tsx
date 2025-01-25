@@ -62,6 +62,8 @@ interface CommonCounterpartDetailsProps
    */
   onDelete?: (id: CounterpartId) => void;
 
+  onClose?: () => void;
+
   onContactCreate?: (id: CounterpartId) => void;
   onContactUpdate?: (id: CounterpartId) => void;
   onContactDelete?: (id: CounterpartId) => void;
@@ -149,6 +151,7 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
     }
   }, [actions, props.id, props.type]);
 
+  const onClose = useLatest(props.onClose);
   const onCreateImmutable = useLatest(props.onCreate);
   const onCreate = useCallback(
     (id: string) => {
@@ -311,6 +314,7 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
     vatId,
     counterpartView,
     actions,
+    onClose,
     onCreate,
     onUpdate,
     onEdit,
