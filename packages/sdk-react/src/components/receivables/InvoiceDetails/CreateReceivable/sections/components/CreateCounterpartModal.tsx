@@ -10,6 +10,7 @@ interface CreateCounterpartModalProps {
 export const CreateCounterpartModal = ({
   open,
   onClose,
+  onCreate,
 }: CreateCounterpartModalProps) => {
   const { root } = useRootElements();
 
@@ -33,7 +34,8 @@ export const CreateCounterpartModal = ({
         <CounterpartDetails
           type={'individual'}
           onClose={onClose}
-          onCreate={() => {
+          onCreate={(counterpartId) => {
+            onCreate(counterpartId);
             onClose();
           }}
         />
