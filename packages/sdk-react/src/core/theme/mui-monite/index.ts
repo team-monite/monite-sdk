@@ -345,6 +345,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             display: 'flex',
             alignItems: 'center',
           },
+          '&.MuiInput-underline.MuiInputBase-colorPrimary.MuiInputBase-formControl':
+            {
+              marginTop: '4px',
+            },
         },
       },
     },
@@ -968,7 +972,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.MuiTypography-h6': {
             padding: '12px 24px',
             '.MuiToolbar-root': {
-              padding: '0 8px 0 24px',
+              padding: '0 0 0 16px',
             },
           },
           '& + .MuiDivider-root': {
