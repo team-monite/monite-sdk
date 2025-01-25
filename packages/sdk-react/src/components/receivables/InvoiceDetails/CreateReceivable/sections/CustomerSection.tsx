@@ -143,6 +143,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
         onClose={() => {
           setIsCreateCounterpartOpened(false);
         }}
+        onCreate={(newCounterpartId: string) => {
+          setValue('counterpart_id', newCounterpartId);
+        }}
       />
 
       <CounterpartSelector
