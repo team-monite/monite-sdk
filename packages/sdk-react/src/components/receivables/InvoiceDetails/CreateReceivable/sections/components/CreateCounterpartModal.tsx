@@ -3,7 +3,6 @@ import { useRootElements } from '@/core/context/RootElementsProvider/RootElement
 import { Box, Modal } from '@mui/material';
 
 interface CreateCounterpartModalProps {
-  isLoading: boolean;
   open: boolean;
   onClose: () => void;
 }

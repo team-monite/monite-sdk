@@ -345,6 +345,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             display: 'flex',
             alignItems: 'center',
           },
+          '&.MuiInput-underline.MuiInputBase-colorPrimary.MuiInputBase-formControl':
+            {
+              marginTop: '4px',
+            },
         },
       },
     },

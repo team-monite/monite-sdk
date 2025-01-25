@@ -285,7 +285,7 @@ const CreateReceivablesBase = ({
     <Stack direction="row">
       <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
         <DialogTitle className={className + '-Title'}>
-          <Toolbar>
+          <Toolbar sx={{ padding: 0 }}>
             {dialogContext?.isDialogContent && (
               <IconWrapper
                 edge="start"
