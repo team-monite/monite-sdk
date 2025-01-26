@@ -151,8 +151,33 @@ const CreateReceivablesBase = ({
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
+  const [counterpartBillingAddress, setCounterpartBillingAddress] =
+    useState<any>(null);
+  const [counterpartShippingAddress, setCounterpartShippingAddress] =
+    useState<any>(null);
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  useEffect(() => {
+    const values = getValues();
+    const billingAddressId = values.default_billing_address_id;
+    if (billingAddressId) {
+      setCounterpartBillingAddress(
+        counterpartAddresses?.data?.find(
+          (address) => address.id === billingAddressId
+        )
+      );
+    }
+
+    const shippingAddressId = values.default_shipping_address_id;
+    if (shippingAddressId) {
+      setCounterpartShippingAddress(
+        counterpartAddresses?.data?.find(
+          (address) => address.id === shippingAddressId
+        )
+      );
+    }
+  }, [counterpartAddresses]);
 
   const {
     createReminderDialog,
@@ -182,21 +207,10 @@ const CreateReceivablesBase = ({
       return;
     }
 
-    const billingAddressId = values.default_billing_address_id;
-    const counterpartBillingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === billingAddressId
-    );
-
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
       return;
     }
-
-    const shippingAddressId = values.default_shipping_address_id;
-
-    const counterpartShippingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === shippingAddressId
-    );
 
     const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
       {
@@ -333,7 +347,7 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
         }}
       >
-        <InvoicePreview data={previewData} />
+        <InvoicePreview data={watch()} address={counterpartBillingAddress} />
       </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
