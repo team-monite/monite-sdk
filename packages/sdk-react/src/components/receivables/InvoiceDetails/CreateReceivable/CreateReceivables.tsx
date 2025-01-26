@@ -194,7 +194,7 @@ const CreateReceivablesBase = ({
         )
       );
     }
-  }, [counterpartAddresses, getValues]);
+  }, [counterpartAddresses]);
 
   const {
     createReminderDialog,
@@ -231,12 +231,6 @@ const CreateReceivablesBase = ({
       showErrorToast(new Error('`Billing address` is not provided'));
       return;
     }
-
-    const shippingAddressId = values.default_shipping_address_id;
-
-    const counterpartShippingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === shippingAddressId
-    );
 
     const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
       {
@@ -390,7 +384,7 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
         }}
       >
-        <InvoicePreview data={previewData} />
+        <InvoicePreview data={watch()} address={counterpartBillingAddress} />
       </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}

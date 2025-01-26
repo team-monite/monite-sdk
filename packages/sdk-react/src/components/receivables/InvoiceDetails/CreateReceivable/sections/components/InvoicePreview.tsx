@@ -1,4 +1,6 @@
 import { components } from '@/api';
+import { getCounterpartName } from '@/components/counterparts';
+import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -8,29 +10,27 @@ import { CustomerSection } from '../CustomerSection';
 import { SectionGeneralProps } from '../Section.types';
 import './InvoicePreview.css';
 
-const sample = {
-  currency: 'EUR',
-  issuedDate: '',
-  fulfillmentDate: '',
-};
-
-export const InvoicePreview = ({ data }) => {
+/* const {
+  counterpartAddressLine1,
+  counterpartAddressLine2,
+  counterpartAddressLine3,
+  counterpartEmail,
+  counterpartName,
+  currency,
+  items,
+  subtotal,
+  totalTax,
+  total,
+  logo,
+} = data;
+ */
+export const InvoicePreview = ({ data, address }: any) => {
   const { i18n } = useLingui();
-  console.log({ data });
-
-  const {
-    counterpartAddressLine1,
-    counterpartAddressLine2,
-    counterpartAddressLine3,
-    counterpartEmail,
-    counterpartName,
-    currency,
-    items,
-    subtotal,
-    totalTax,
-    total,
-    logo,
-  } = data;
+  const { data: counterpart } = useCounterpartById(data?.counterpart_id);
+  const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
+  console.log('invoice preview', { data });
+  const items = [];
+  const logo = '';
 
   return (
     <div className="invoice-preview">
@@ -53,13 +53,23 @@ export const InvoicePreview = ({ data }) => {
             <div>
               <b>{counterpartName}</b>
             </div>
-            <div>
-              <div>{counterpartAddressLine1}</div>
-              <div>{counterpartAddressLine2}</div>
-              <div>{counterpartAddressLine3}</div>
-            </div>
+            {address && (
+              <div>
+                <div>
+                  {address.line1} {address.line2}
+                </div>
+                <div>
+                  {address.postal_code} {address.city} {address.country}
+                </div>
+              </div>
+            )}
+
             <hr style={{ height: '5pt', visibility: 'hidden' }} />
-            <div>{counterpartEmail}</div>
+            <div>
+              {
+                //counterpartEmail
+              }
+            </div>
           </div>
         </aside>
         <aside className="header--flex-end-aside">
@@ -95,11 +105,19 @@ export const InvoicePreview = ({ data }) => {
                 <th>{t(i18n)`Qty`}</th>
                 <th>{t(i18n)`Units`}</th>
                 <th>
-                  {t(i18n)`Price`} ({currency})
+                  {t(i18n)`Price`} (
+                  {
+                    //currency
+                  }
+                  )
                 </th>
                 <th>{t(i18n)`Disc.`}</th>
                 <th>
-                  {t(i18n)`Amount`} ({currency})
+                  {t(i18n)`Amount`} (
+                  {
+                    //currency
+                  }
+                  )
                 </th>
                 <th>{t(i18n)`Tax`} (%)</th>
               </tr>
@@ -108,19 +126,20 @@ export const InvoicePreview = ({ data }) => {
               </tr>
             </thead>
             <tbody className="products">
-              {items.map((item) => (
-                <tr className="product">
-                  <td>
-                    <div>{item.name}</div>
-                  </td>
-                  <td>{item.qty}</td>
-                  <td>{item.unit}</td>
-                  <td>{item.price.value}</td>
-                  <td>{item.discount}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.tax}</td>
-                </tr>
-              ))}
+              {items.length > 0 &&
+                items.map((item) => (
+                  <tr className="product">
+                    <td>
+                      <div>{item.name}</div>
+                    </td>
+                    <td>{item.qty}</td>
+                    <td>{item.unit}</td>
+                    <td>{item.price.value}</td>
+                    <td>{item.discount}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.tax}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           <table cellPadding={0} cellSpacing={0} className="totals-table">
@@ -130,7 +149,12 @@ export const InvoicePreview = ({ data }) => {
                   <span>{t(i18n)`Subtotal`}</span>
                 </td>
                 <td>
-                  {subtotal} {currency}
+                  {
+                    //subtotal
+                  }{' '}
+                  {
+                    //currency
+                  }
                 </td>
               </tr>
               <tr>
@@ -138,7 +162,12 @@ export const InvoicePreview = ({ data }) => {
                   <span>{t(i18n)`Total Tax`} (0%)</span>
                 </td>
                 <td>
-                  {totalTax} {currency}
+                  {
+                    // totalTax
+                  }{' '}
+                  {
+                    //currency
+                  }
                 </td>
               </tr>
               <tr className="total">
@@ -147,7 +176,12 @@ export const InvoicePreview = ({ data }) => {
                 </td>
                 <td>
                   <span>
-                    {total} {currency}
+                    {
+                      //total
+                    }{' '}
+                    {
+                      //currency
+                    }
                   </span>
                 </td>
               </tr>
