@@ -3,7 +3,6 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
@@ -14,8 +13,8 @@ export const useDocumentTemplatesApi = () => {
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
     const filtered =
-      documentTemplates?.data?.filter((template) =>
-        ['invoice', 'receivable'].includes(template.document_type)
+      documentTemplates?.data?.filter(
+        (template) => template.document_type === 'invoice'
       ) || [];
 
     return [filtered, filtered.find((template) => template.is_default)];
@@ -48,9 +47,6 @@ export const useDocumentTemplatesApi = () => {
           toast.success(
             t(i18n)`${name} document template has been set as the default.`
           );
-        },
-        onError: (error) => {
-          toast.error(getAPIErrorMessage(i18n, error));
         },
       }
     );

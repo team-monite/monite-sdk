@@ -1,37 +1,74 @@
-import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+
 import { PageHeader } from '@/components';
+import { Dialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Box, Typography, Button, Stack } from '@mui/material';
+
+import { DocumentDesignSelection } from './components/DocumentDesignSelection/DocumentDesignSelection';
+import previewImg from './preview.svg';
 
 const DocumentDesignBase = () => {
-    const { i18n } = useLingui();
+  const { i18n } = useLingui();
+  const { root } = useRootElements();
 
-    return (
-        <>
-            <PageHeader title={t(i18n)`Documet design`}/>
-            <Box
-                padding={2}
-                sx={{
-                  borderRadius: 2,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  background: 'linear-gradient(rgb(244, 240, 254), rgb(255, 255, 255))'
-                }}
-            >
-                <Typography variant="subtitle2">
-                  {t(i18n)`Set your document style`}
-                </Typography>
-                <Typography variant="caption">
-                  {t(i18n)`Various templates for your documents`}
-                </Typography>
-            </Box>
-        </>
-    );
+  const [isDesignDialogOpen, setIsDesignDialogOpen] = useState(false);
+
+  return (
+    <>
+      <PageHeader title={t(i18n)`Document design`} />
+      <Box
+        padding={2}
+        sx={{
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          background: 'linear-gradient(rgb(244, 240, 254), rgb(255, 255, 255))',
+          display: 'flex',
+          justifyContent: 'space-between',
+          paddingBottom: 0,
+        }}
+      >
+        <Stack
+          direction="column"
+          sx={{ justifyContent: 'space-between', paddingBottom: 2 }}
+        >
+          <Box>
+            <Typography variant="subtitle2">
+              {t(i18n)`Set your document style`}
+            </Typography>
+            <Typography variant="caption">
+              {t(i18n)`Various templates for your documents`}
+            </Typography>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              onClick={() => setIsDesignDialogOpen(true)}
+            >{t(i18n)`Select template`}</Button>
+          </Box>
+        </Stack>
+        <Box sx={{ marginRight: 6 }}>
+          <img src={previewImg} />
+        </Box>
+      </Box>
+      <Dialog
+        open={isDesignDialogOpen}
+        container={root}
+        onClose={() => setIsDesignDialogOpen(false)}
+        fullScreen
+      >
+        <DocumentDesignSelection />
+      </Dialog>
+    </>
+  );
 };
 
 export const DocumentDesign = () => (
-    <MoniteScopedProviders>
-        <DocumentDesignBase />
-    </MoniteScopedProviders>
+  <MoniteScopedProviders>
+    <DocumentDesignBase />
+  </MoniteScopedProviders>
 );

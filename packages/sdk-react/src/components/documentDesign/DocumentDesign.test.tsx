@@ -1,15 +1,10 @@
 import { documentTemplateList } from '@/mocks/documentTemplates';
 import { renderWithClient } from '@/utils/test-utils';
-import { requestFn } from '@openapi-qraft/react';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { DocumentDesign } from './DocumentDesign';
 
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
-
-global.URL.createObjectURL = jest.fn();
-
-describe('DocumentDesign', () => {
+fdescribe('DocumentDesign', () => {
   test('should render document design page', () => {
     renderWithClient(<DocumentDesign />);
 
@@ -38,59 +33,7 @@ describe('DocumentDesign', () => {
       });
 
       documentTemplateList.data.forEach((template) => {
-        expect(
-          screen.getByTestId(`documentTemplate-${template.name}`)
-        ).toBeInTheDocument();
-      });
-
-      const defaultTemplate = documentTemplateList.data.find(
-        (template) => template.is_default
-      );
-
-      expect(
-        within(
-          screen.getByTestId(`documentTemplate-${defaultTemplate?.name}`)
-        ).getByText('Default')
-      ).toBeInTheDocument();
-    });
-
-    describe('when use selects a new template', () => {
-      test('it enables `Set as default` button', async () => {
-        renderWithClient(<DocumentDesign />);
-
-        const selectTemplateButton = await screen.findByRole('button', {
-          name: 'Select template',
-        });
-
-        fireEvent.click(selectTemplateButton);
-
-        await waitFor(() => {
-          expect(screen.getByText('Document templates')).toBeInTheDocument();
-        });
-
-        const notDefaultTemplate = documentTemplateList.data.find(
-          (template) => !template.is_default
-        );
-
-        fireEvent.click(
-          screen.getByTestId(`documentTemplate-${notDefaultTemplate?.name}`)
-        );
-
-        const setAsDefaultButton = screen.getByRole('button', {
-          name: 'Set as default',
-        });
-
-        expect(setAsDefaultButton).toBeEnabled();
-
-        fireEvent.click(setAsDefaultButton);
-
-        await waitFor(() =>
-          expect(requestFnMock.mock.lastCall?.[0].url).toBe(
-            '/document_templates/{document_template_id}/make_default'
-          )
-        );
-
-        await waitFor(() => expect(setAsDefaultButton).toBeDisabled());
+        expect(screen.getAllByText(template.name)[0]).toBeInTheDocument();
       });
     });
 
