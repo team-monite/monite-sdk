@@ -389,6 +389,7 @@ const CreateReceivablesBase = ({
       >
         <InvoicePreview
           data={watch()}
+          currency={actualCurrency}
           isNonVatSupported={isNonVatSupported}
           entityData={entityData}
           address={counterpartBillingAddress}
