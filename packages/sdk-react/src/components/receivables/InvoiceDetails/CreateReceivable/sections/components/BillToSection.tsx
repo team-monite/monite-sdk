@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -5,7 +6,20 @@ import { Box, Typography } from '@mui/material';
 import { CustomerSection } from '../CustomerSection';
 import { SectionGeneralProps } from '../Section.types';
 
-export const BillToSection = ({ disabled }: SectionGeneralProps) => {
+export interface BillToSectionProps extends SectionGeneralProps {
+  counterpartVats:
+    | {
+        data: components['schemas']['CounterpartVatIDResponse'][];
+      }
+    | undefined;
+  isCounterpartVatsLoading: boolean;
+}
+
+export const BillToSection = ({
+  counterpartVats,
+  isCounterpartVatsLoading,
+  disabled,
+}: BillToSectionProps) => {
   const { i18n } = useLingui();
   return (
     <Box mb={6}>
@@ -13,7 +27,11 @@ export const BillToSection = ({ disabled }: SectionGeneralProps) => {
         <Typography sx={{ mb: 2 }} variant="h3">{t(
           i18n
         )`Create invoice`}</Typography>
-        <CustomerSection disabled={disabled} />
+        <CustomerSection
+          disabled={disabled}
+          counterpartVats={counterpartVats}
+          isCounterpartVatsLoading={isCounterpartVatsLoading}
+        />
       </Box>
     </Box>
   );

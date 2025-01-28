@@ -11,7 +11,11 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
+import {
+  useCounterpartAddresses,
+  useCounterpartVatList,
+  useMyEntity,
+} from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -68,6 +72,10 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
+  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
+    api.entities.getEntitiesIdVatIds.useQuery({
+      path: { entity_id: entityId },
+    });
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
@@ -147,6 +155,8 @@ const CreateReceivablesBase = ({
   const counterpartId = watch('counterpart_id');
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
+  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
+    useCounterpartVatList(counterpartId);
 
   const createReceivable = useCreateReceivable();
   const { data: settings, isLoading: isSettingsLoading } =
@@ -308,7 +318,11 @@ const CreateReceivablesBase = ({
             </Typography>
 
             <Stack direction="column" spacing={7}>
-              <BillToSection disabled={createReceivable.isPending} />
+              <BillToSection
+                disabled={createReceivable.isPending}
+                counterpartVats={counterpartVats}
+                isCounterpartVatsLoading={isCounterpartVatsLoading}
+              />
               <ItemsSection
                 defaultCurrency={
                   settings?.currency?.default || fallbackCurrency
@@ -330,7 +344,11 @@ const CreateReceivablesBase = ({
                   <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
                     i18n
                   )`Details`}</Typography>
-                  <YourVatDetailsForm disabled={createReceivable.isPending} />
+                  <YourVatDetailsForm
+                    isEntityVatIdsLoading={isEntityVatIdsLoading}
+                    entityVatIds={entityVatIds}
+                    disabled={createReceivable.isPending}
+                  />
                 </Box>
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
@@ -360,9 +378,12 @@ const CreateReceivablesBase = ({
       >
         <InvoicePreview
           data={watch()}
+          isNonVatSupported={isNonVatSupported}
           entityData={entityData}
           address={counterpartBillingAddress}
           paymentTerms={paymentTerms}
+          entityVatIds={entityVatIds}
+          counterpartVats={counterpartVats}
         />
       </Box>
       <CreateInvoiceReminderDialog

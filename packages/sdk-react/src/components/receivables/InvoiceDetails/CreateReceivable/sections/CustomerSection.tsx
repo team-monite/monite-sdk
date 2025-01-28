@@ -48,6 +48,7 @@ import {
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
+import { BillToSectionProps } from './components/BillToSection';
 import { CreateCounterpartModal } from './components/CreateCounterpartModal';
 import type { SectionGeneralProps } from './Section.types';
 
@@ -83,7 +84,11 @@ function isDividerOption(
   return counterpartOption?.id === COUNTERPART_DIVIDER;
 }
 
-export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
+export const CustomerSection = ({
+  counterpartVats,
+  disabled,
+  isCounterpartVatsLoading,
+}: BillToSectionProps) => {
   const { i18n } = useLingui();
   const { control, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
@@ -92,8 +97,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const counterpartId = watch('counterpart_id');
 
-  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
-    useCounterpartVatList(counterpartId);
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
   const {
