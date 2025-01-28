@@ -5,6 +5,7 @@ import { Box, Modal } from '@mui/material';
 interface CreateCounterpartModalProps {
   open: boolean;
   onClose: () => void;
+  onCreate: () => void;
 }
 
 export const CreateCounterpartModal = ({
@@ -24,7 +25,7 @@ export const CreateCounterpartModal = ({
           transform: 'translate(-50%, -50%)',
           maxWidth: 600,
           maxHeight: '90%', //could be better to keep 90% to laptop screens but change to 600px to larger screens
-          overflowY: 'scroll',
+          overflowY: 'auto',
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
