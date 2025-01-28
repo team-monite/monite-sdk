@@ -28,9 +28,7 @@ interface FullfillmentSummaryProps extends SectionGeneralProps {
       {
         data?: components['schemas']['PaymentTermsResponse'][];
       },
-      | Error
-      | { error: components['schemas']['ErrorSchema'] }
-      | { detail?: { loc: (string | number)[]; msg: string; type: string }[] }
+      Error | { error: components['schemas']['ErrorSchema'] }
     >
   >;
 }
@@ -45,7 +43,7 @@ export const FullfillmentSummary = ({
   const { control, resetField, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
-  const { locale } = useMoniteContext();
+  const { api, locale } = useMoniteContext();
 
   const { root } = useRootElements();
 

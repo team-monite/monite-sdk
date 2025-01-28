@@ -1,13 +1,11 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts';
+import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
 
-import { CreateReceivablesFormProps } from '../../validation';
-import { CustomerSection } from '../CustomerSection';
-import { SectionGeneralProps } from '../Section.types';
 import './InvoicePreview.css';
 
 /* const {
@@ -24,12 +22,27 @@ import './InvoicePreview.css';
   logo,
 } = data;
  */
-export const InvoicePreview = ({ data, address }: any) => {
+export const InvoicePreview = ({
+  data,
+  entityData,
+  address,
+  paymentTerms,
+}: any) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
+  const fulfillmentDate = data?.fulfillment_date;
+  const items = data?.line_items;
+  const discount = data?.discount?.amount;
   const { data: counterpart } = useCounterpartById(data?.counterpart_id);
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
-  console.log('invoice preview', { data });
-  const items = [];
+  const selectedPaymentTerm = paymentTerms?.data?.find(
+    (term: any) => term.id === data?.payment_terms_id
+  );
+  //console.log('invoice preview', { data });
+  const dateTime = i18n.date(new Date(), {
+    ...locale.dateFormat,
+    month: '2-digit',
+  });
   const logo = '';
 
   return (
@@ -41,7 +54,7 @@ export const InvoicePreview = ({ data, address }: any) => {
         <aside className="header--flex-end-aside">
           {' '}
           <div className="block-entity-logo">
-            {logo ? (
+            {entityData?.logo ? (
               <span></span>
             ) : (
               <img src="https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/entity-logo/4d51474f-3f3d-4de0-a518-93f0a799f15a/5f1e169d-1328-4bb8-a5b7-06a84bc425f9.png" />
@@ -76,15 +89,53 @@ export const InvoicePreview = ({ data, address }: any) => {
           <div className="block-receivable-date">
             <ul>
               <li>
-                <span>{t(i18n)`Issued date`}: </span> <span>17.10.2024</span>
+                <span>{t(i18n)`Issued date`}: </span> <span>{dateTime}</span>
               </li>
               <li>
                 <span>{t(i18n)`Fulfillment date`}: </span>{' '}
-                <span>17.10.2024</span>
+                <span>
+                  {fulfillmentDate
+                    ? i18n.date(fulfillmentDate, {
+                        ...locale.dateFormat,
+                        month: '2-digit',
+                      })
+                    : ''}
+                </span>
+                <p></p>
               </li>
               <li />
-              <li />
-              <li />
+              <li>
+                {selectedPaymentTerm && (
+                  <p>
+                    <b>{t(i18n)`Payment terms`}</b>
+                  </p>
+                )}
+
+                {selectedPaymentTerm?.term_1 && (
+                  <p>
+                    {t(
+                      i18n
+                    )`Pay in the first ${selectedPaymentTerm.term_1.number_of_days} days`}{' '}
+                    {t(i18n)`${selectedPaymentTerm.term_1.discount}% discount`}
+                  </p>
+                )}
+                {selectedPaymentTerm?.term_2 && (
+                  <span>
+                    {t(
+                      i18n
+                    )`Pay in the first ${selectedPaymentTerm.term_2.number_of_days} days`}{' '}
+                    {t(i18n)`${selectedPaymentTerm.term_2.discount}% discount`}
+                  </span>
+                )}
+                {selectedPaymentTerm?.term_final && (
+                  <span>
+                    {t(i18n)`Payment due`}{' '}
+                    {t(
+                      i18n
+                    )`${selectedPaymentTerm.term_final?.number_of_days} days`}
+                  </span>
+                )}
+              </li>
               <li />
             </ul>
           </div>
@@ -97,97 +148,102 @@ export const InvoicePreview = ({ data, address }: any) => {
         </div>
       </section>
       <article>
-        <div className="block-line-items">
-          <table className="line-items-table" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>{t(i18n)`Product`}</th>
-                <th>{t(i18n)`Qty`}</th>
-                <th>{t(i18n)`Units`}</th>
-                <th>
-                  {t(i18n)`Price`} (
-                  {
-                    //currency
-                  }
-                  )
-                </th>
-                <th>{t(i18n)`Disc.`}</th>
-                <th>
-                  {t(i18n)`Amount`} (
-                  {
-                    //currency
-                  }
-                  )
-                </th>
-                <th>{t(i18n)`Tax`} (%)</th>
-              </tr>
-              <tr className="spacer">
-                <td colSpan={7} />
-              </tr>
-            </thead>
-            <tbody className="products">
-              {items.length > 0 &&
-                items.map((item) => (
+        {items?.length > 1 && (
+          <div className="block-line-items">
+            <table className="line-items-table" cellSpacing="0">
+              <thead>
+                <tr>
+                  <th>{t(i18n)`Product`}</th>
+                  <th>{t(i18n)`Qty`}</th>
+                  <th>{t(i18n)`Units`}</th>
+                  <th>
+                    {t(i18n)`Price`} (
+                    {
+                      //currency
+                    }
+                    )
+                  </th>
+                  <th>{t(i18n)`Disc.`}</th>
+                  <th>
+                    {t(i18n)`Amount`} (
+                    {
+                      //currency
+                    }
+                    )
+                  </th>
+                  <th>{t(i18n)`Tax`} (%)</th>
+                </tr>
+                <tr className="spacer">
+                  <td colSpan={7} />
+                </tr>
+              </thead>
+              <tbody className="products">
+                {items.map((item) => (
                   <tr className="product">
                     <td>
-                      <div>{item.name}</div>
+                      <div>{item?.name}</div>
                     </td>
-                    <td>{item.qty}</td>
-                    <td>{item.unit}</td>
-                    <td>{item.price.value}</td>
-                    <td>{item.discount}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.tax}</td>
+                    <td>{item?.quantity}</td>
+                    <td>
+                      {item?.measure_unit_id && (
+                        <MeasureUnit unitId={item.measure_unit_id} />
+                      )}
+                    </td>
+                    <td>{item?.price.value}</td>
+                    <td>{item?.discount}</td>
+                    <td>{item?.amount}</td>
+                    <td>{item?.tax_rate_value || item?.vat_rate_value}</td>
                   </tr>
                 ))}
-            </tbody>
-          </table>
-          <table cellPadding={0} cellSpacing={0} className="totals-table">
-            <tbody>
-              <tr className="subtotal">
-                <td colSpan={4}>
-                  <span>{t(i18n)`Subtotal`}</span>
-                </td>
-                <td>
-                  {
-                    //subtotal
-                  }{' '}
-                  {
-                    //currency
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={4}>
-                  <span>{t(i18n)`Total Tax`} (0%)</span>
-                </td>
-                <td>
-                  {
-                    // totalTax
-                  }{' '}
-                  {
-                    //currency
-                  }
-                </td>
-              </tr>
-              <tr className="total">
-                <td colSpan={4}>
-                  <span>{t(i18n)`Total`}</span>
-                </td>
-                <td>
-                  <span>
+              </tbody>
+            </table>
+            <table cellPadding={0} cellSpacing={0} className="totals-table">
+              <tbody>
+                <tr className="subtotal">
+                  <td colSpan={4}>
+                    <span>{t(i18n)`Subtotal`}</span>
+                  </td>
+                  <td>
                     {
-                      //total
+                      //subtotal
                     }{' '}
                     {
                       //currency
                     }
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={4}>
+                    <span>{t(i18n)`Total Tax`} (0%)</span>
+                  </td>
+                  <td>
+                    {
+                      // totalTax
+                    }{' '}
+                    {
+                      //currency
+                    }
+                  </td>
+                </tr>
+                <tr className="total">
+                  <td colSpan={4}>
+                    <span>{t(i18n)`Total`}</span>
+                  </td>
+                  <td>
+                    <span>
+                      {
+                        //total
+                      }{' '}
+                      {
+                        //currency
+                      }
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </article>
       <footer>
         <section>
@@ -196,19 +252,20 @@ export const InvoicePreview = ({ data, address }: any) => {
               <div>
                 <div></div>
                 <div>
-                  <b>Party Collective</b>
+                  <b>{entityData?.organization?.legal_name}</b>
                 </div>
                 <div>
                   <div>
-                    Keizergracht 126 1015 CW, Amsterdam, The Netherlands
+                    {entityData?.address?.line1} {entityData?.address?.line2}
+                    {entityData?.address?.city} {entityData?.address?.country}
                   </div>
                 </div>
               </div>
             </div>{' '}
             <div>
               <hr style={{ height: '5pt', visibility: 'hidden' }} />
-              <div>+31 6 1234568</div>
-              <div>night@life.nl</div>
+              <div>{entityData?.phone}</div>
+              <div>{entityData?.email}</div>
             </div>
           </aside>
           <aside className="footer-aside footer-aside__end">

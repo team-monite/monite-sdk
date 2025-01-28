@@ -73,10 +73,6 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
-    api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: entityId },
-    });
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
@@ -363,7 +359,12 @@ const CreateReceivablesBase = ({
                   )`Details`}</Typography>
                   <YourVatDetailsForm disabled={createReceivable.isPending} />
                 </Box>
-                <FullfillmentSummary disabled={createReceivable.isPending} />
+                <FullfillmentSummary
+                  paymentTerms={paymentTerms}
+                  isPaymentTermsLoading={isPaymentTermsLoading}
+                  refetch={refetchPaymentTerms}
+                  disabled={createReceivable.isPending}
+                />
               </Box>
               <Box>
                 <EntitySection disabled={createReceivable.isPending} />
@@ -384,7 +385,12 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
         }}
       >
-        <InvoicePreview data={watch()} address={counterpartBillingAddress} />
+        <InvoicePreview
+          data={watch()}
+          entityData={entityData}
+          address={counterpartBillingAddress}
+          paymentTerms={paymentTerms}
+        />
       </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
