@@ -35,7 +35,6 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
-import { debounce } from 'lodash';
 
 import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
@@ -112,43 +111,6 @@ const CreateReceivablesBase = ({
       [type]
     ),
   });
-
-  const previewData = {
-    // needed for invoice preview
-    counterpartAddressLine1: 'Nobaro Street 146',
-    counterpartAddressLine2: '1012 ABS, Amsterdam',
-    counterpartAddressLine3: 'The Netherlands',
-    counterpartEmail: 'qa-team@monite.com',
-    counterpartName: 'Some organization',
-    currency: 'EUR',
-    items: [
-      {
-        name: 'Ice cream',
-        price: {
-          currency: 'EUR',
-          value: 1500,
-        },
-        unit: 'liter',
-        discount: 10,
-        tax: 0,
-        qty: 1,
-      },
-      {
-        name: 'Bread',
-        price: {
-          currency: 'EUR',
-          value: 700,
-        },
-        unit: 'kg',
-        discount: 0,
-        qty: 800,
-        tax: 10,
-      },
-    ],
-    subtotal: 100,
-    totalTax: 200,
-    total: 500,
-  };
 
   const { handleSubmit, watch, getValues, setValue } = methods;
 

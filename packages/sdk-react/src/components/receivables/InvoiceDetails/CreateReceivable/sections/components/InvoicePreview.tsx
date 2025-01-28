@@ -40,8 +40,6 @@ export const InvoicePreview = ({
       formatCurrencyToDisplay,
       isNonVatSupported,
     });
-  console.log('invoice preview', { data });
-  console.log(counterpartVats);
   const dateTime = i18n.date(new Date(), locale.dateFormat);
 
   return (
@@ -89,7 +87,7 @@ export const InvoicePreview = ({
             )}
             {counterpartVats?.data[0]?.id && (
               <div>
-                {t(i18n)`VAT ID`} {counterpartVats.data[0].id}
+                {t(i18n)`VAT ID`} {counterpartVats.data[0].value}
               </div>
             )}
           </div>
