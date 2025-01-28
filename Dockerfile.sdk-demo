@@ -1,3 +1,4 @@
+# Dockerfile.sdk-demo
 FROM cimg/node:20.12.2
 
 # Temporarily switch to root to set up a non-root user
