@@ -13,7 +13,6 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   useCounterpartAddresses,
-  useCounterpartById,
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
@@ -73,6 +72,10 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
+  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
+    api.entities.getEntitiesIdVatIds.useQuery({
+      path: { entity_id: entityId },
+    });
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
@@ -318,24 +321,11 @@ const CreateReceivablesBase = ({
             </Typography>
 
             <Stack direction="column" spacing={7}>
-              <Box>
-                <Typography
-                  sx={{ mt: 2, mb: 5 }}
-                  data-testid={
-                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                  }
-                  variant="h3"
-                >{t(i18n)`Create invoice`}</Typography>
-
-                <CustomerSection
-                  disabled={createReceivable.isPending}
-                  counterpart={counterpart}
-                  counterpartVats={counterpartVats}
-                  isCounterpartVatsLoading={isCounterpartVatsLoading}
-                  isCounterpartLoading={isCounterpartLoading}
-                />
-              </Box>
-
+              <BillToSection
+                disabled={createReceivable.isPending}
+                counterpartVats={counterpartVats}
+                isCounterpartVatsLoading={isCounterpartVatsLoading}
+              />
               <ItemsSection
                 defaultCurrency={
                   settings?.currency?.default || fallbackCurrency
@@ -357,7 +347,11 @@ const CreateReceivablesBase = ({
                   <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
                     i18n
                   )`Details`}</Typography>
-                  <YourVatDetailsForm disabled={createReceivable.isPending} />
+                  <YourVatDetailsForm
+                    isEntityVatIdsLoading={isEntityVatIdsLoading}
+                    entityVatIds={entityVatIds}
+                    disabled={createReceivable.isPending}
+                  />
                 </Box>
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
@@ -387,9 +381,12 @@ const CreateReceivablesBase = ({
       >
         <InvoicePreview
           data={watch()}
+          isNonVatSupported={isNonVatSupported}
           entityData={entityData}
           address={counterpartBillingAddress}
           paymentTerms={paymentTerms}
+          entityVatIds={entityVatIds}
+          counterpartVats={counterpartVats}
         />
       </Box>
       <CreateInvoiceReminderDialog
