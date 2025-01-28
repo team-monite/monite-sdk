@@ -7,7 +7,7 @@ docker:
   WORKDIR: /app
   USER: app
 git:
-  - add: /monite-sdk
+  - add: /
     to: /app
     owner: app
     group: app
