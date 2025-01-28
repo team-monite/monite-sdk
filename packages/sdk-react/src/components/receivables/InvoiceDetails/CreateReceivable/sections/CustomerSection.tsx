@@ -9,24 +9,20 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import {
-  CounterpartIndividualForm,
-  CounterpartOrganizationForm,
-} from '@/components/counterparts/CounterpartDetails/CounterpartForm';
-import {
-  getCounterpartName,
-  isOrganizationCounterpart,
-} from '@/components/counterparts/helpers';
+import { useCounterpartView } from '@/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
+  useCounterpartById,
   useCounterpartContactList,
   useCounterpartList,
 } from '@/core/queries';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from '@mui/icons-material/Close';
@@ -108,6 +104,9 @@ export const CustomerSection = ({
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
+
+  const { data: contacts } = useCounterpartContactList(counterpartId);
+  const defaultContact = contacts?.find((c) => c.is_default);
   const {
     data: counterpartAddresses,
     isLoading: _isCounterpartAddressesLoading,
@@ -119,9 +118,6 @@ export const CustomerSection = ({
     useState<boolean>(false);
   const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
     useState<boolean>(false);
-  const [isShippingAddressShown, setIsShippingAddressShown] =
-    useState<boolean>(false);
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   const className = 'Monite-CreateReceivable-CustomerSection';
   const isHiddenForUS =
@@ -179,8 +175,9 @@ export const CustomerSection = ({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            maxWidth: 600,
+            maxWidth: 480,
             maxHeight: '90%', //could be better to keep 90% to laptop screens but change to 600px to larger screens
+            overflowY: 'auto',
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -193,7 +190,7 @@ export const CustomerSection = ({
             </Grid>
             <Grid item xs={1}>
               <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
+                aria-label={t(i18n)`Edit Customer Close`}
                 onClick={() => setIsEditCounterpartOpened(false)}
                 color="inherit"
               >
@@ -201,12 +198,145 @@ export const CustomerSection = ({
               </IconWrapper>
             </Grid>
           </Grid>
+
+          <CounterpartSelector
+            isSimplified
+            disabled={disabled}
+            counterpartAddresses={counterpartAddresses}
+          />
+          <List
+            sx={{
+              marginBottom: '2rem',
+              '& .MuiListItem-root': {
+                padding: '.25rem .5rem .25rem 0',
+                fontWeight: '400',
+                '& span': {
+                  color: 'rgba(112, 112, 112, 1)',
+                  minWidth: '144px',
+                  paddingRight: '1rem',
+                },
+              },
+            }}
+          >
+            <ListItem>
+              <span>{t(i18n)`Email`}</span> {counterpart?.organization?.email}
+            </ListItem>{' '}
+            {defaultContact && (
+              <ListItem>
+                <span>{t(i18n)`Contact person`}</span>{' '}
+                {defaultContact?.first_name} {defaultContact?.last_name}
+              </ListItem>
+            )}
+            {counterpart?.tax_id && (
+              <ListItem>
+                <span>{t(i18n)`TAX ID`}</span> {counterpart?.tax_id}
+              </ListItem>
+            )}
+            {counterpartVats?.data[0]?.id && (
+              <ListItem>
+                <span>{t(i18n)`VAT ID`}</span> {counterpartVats.data[0].value}
+              </ListItem>
+            )}
+          </List>
+
+          <Controller
+            name="default_billing_address_id"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl
+                variant="standard"
+                sx={{ marginBottom: '1rem' }}
+                fullWidth
+                required
+                error={Boolean(error)}
+                disabled={isAddressFormDisabled}
+              >
+                <InputLabel id={field.name}>{t(
+                  i18n
+                )`Billing address`}</InputLabel>
+                <Select
+                  {...field}
+                  labelId={field.name}
+                  label={t(i18n)`Billing address`}
+                  IconComponent={KeyboardArrowDown}
+                  MenuProps={{ container: root }}
+                  startAdornment={
+                    isCounterpartAddressesLoading ? (
+                      <CircularProgress size={20} />
+                    ) : null
+                  }
+                >
+                  {counterpartAddresses?.data.map((address) => (
+                    <MenuItem key={address.id} value={address.id}>
+                      {prepareAddressView({ address })}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {error && <FormHelperText>{error.message}</FormHelperText>}
+              </FormControl>
+            )}
+          />
+          <Controller
+            name="default_shipping_address_id"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl
+                variant="standard"
+                sx={{ marginBottom: '1rem' }}
+                fullWidth
+                error={Boolean(error)}
+                disabled={isAddressFormDisabled}
+              >
+                <InputLabel htmlFor={field.name}>{t(
+                  i18n
+                )`Shipping address`}</InputLabel>
+                <Select
+                  {...field}
+                  id={field.name}
+                  labelId={field.name}
+                  MenuProps={{ container: root }}
+                  label={t(i18n)`Shipping address`}
+                  IconComponent={KeyboardArrowDown}
+                  startAdornment={
+                    isCounterpartAddressesLoading ? (
+                      <CircularProgress size={20} />
+                    ) : null
+                  }
+                  endAdornment={
+                    counterpartAddresses &&
+                    counterpartAddresses?.data.length > 1 && (
+                      <IconButton
+                        sx={{
+                          visibility: field.value ? 'visible' : 'hidden ',
+                          mr: 2,
+                        }}
+                        size="small"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setValue('default_shipping_address_id', '');
+                        }}
+                      >
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                    )
+                  }
+                >
+                  {counterpartAddresses?.data.map((address) => (
+                    <MenuItem key={address.id} value={address.id}>
+                      {prepareAddressView({ address })}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
           <Controller
             name="counterpart_vat_id_id"
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl
                 variant="standard"
+                sx={{ marginBottom: '1rem' }}
                 fullWidth
                 disabled={
                   isCounterpartVatsLoading ||
@@ -214,7 +344,6 @@ export const CustomerSection = ({
                   counterpartVats?.data.length < 2 ||
                   disabled
                 }
-                sx={{ marginBottom: '32px' }}
                 hidden={isHiddenForUS}
                 error={Boolean(error)}
               >
@@ -223,6 +352,7 @@ export const CustomerSection = ({
                   {...field}
                   labelId={field.name}
                   label={t(i18n)`VAT ID`}
+                  IconComponent={KeyboardArrowDown}
                   MenuProps={{ container: root }}
                   startAdornment={
                     isCounterpartVatsLoading ? (
@@ -241,7 +371,7 @@ export const CustomerSection = ({
               </FormControl>
             )}
           />
-          <Box mb={isHiddenForUS ? 0 : 4}>
+          <Box mb={isHiddenForUS ? 0 : 1}>
             <TextField
               disabled
               fullWidth
@@ -277,105 +407,6 @@ export const CustomerSection = ({
               </Collapse>
             )}
           </Box>
-          <Controller
-            name="default_billing_address_id"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl
-                variant="standard"
-                fullWidth
-                required
-                error={Boolean(error)}
-                disabled={isAddressFormDisabled}
-                sx={{ marginBottom: '16px' }}
-              >
-                <InputLabel id={field.name}>{t(
-                  i18n
-                )`Billing address`}</InputLabel>
-                <Select
-                  {...field}
-                  labelId={field.name}
-                  label={t(i18n)`Billing address`}
-                  MenuProps={{ container: root }}
-                  startAdornment={
-                    isCounterpartAddressesLoading ? (
-                      <CircularProgress size={20} />
-                    ) : null
-                  }
-                >
-                  {counterpartAddresses?.data.map((address) => (
-                    <MenuItem key={address.id} value={address.id}>
-                      {prepareAddressView({ address })}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {error && <FormHelperText>{error.message}</FormHelperText>}
-              </FormControl>
-            )}
-          />
-          {!isShippingAddressShown && (
-            <Button
-              sx={{ alignSelf: 'baseline' }}
-              startIcon={<AddIcon />}
-              onClick={() => setIsShippingAddressShown(true)}
-            >
-              {t(i18n)`Shipping address`}
-            </Button>
-          )}
-          {isShippingAddressShown && (
-            <Controller
-              name="default_shipping_address_id"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  disabled={isAddressFormDisabled}
-                >
-                  <InputLabel htmlFor={field.name}>{t(
-                    i18n
-                  )`Shipping address`}</InputLabel>
-                  <Select
-                    {...field}
-                    id={field.name}
-                    labelId={field.name}
-                    MenuProps={{ container: root }}
-                    label={t(i18n)`Shipping address`}
-                    startAdornment={
-                      isCounterpartAddressesLoading ? (
-                        <CircularProgress size={20} />
-                      ) : null
-                    }
-                    endAdornment={
-                      counterpartAddresses &&
-                      counterpartAddresses?.data.length > 1 && (
-                        <IconButton
-                          sx={{
-                            visibility: field.value ? 'visible' : 'hidden ',
-                            mr: 2,
-                          }}
-                          size="small"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setValue('default_shipping_address_id', '');
-                          }}
-                        >
-                          <ClearIcon fontSize="small" />
-                        </IconButton>
-                      )
-                    }
-                  >
-                    {counterpartAddresses?.data.map((address) => (
-                      <MenuItem key={address.id} value={address.id}>
-                        {prepareAddressView({ address })}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
-          )}
         </Box>
       </Modal>
     </Stack>
@@ -385,13 +416,15 @@ export const CustomerSection = ({
 const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   setIsEditCounterpartOpened,
+  isSimplified = false,
   disabled,
   counterpartAddresses,
 }: {
-  setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
-  setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
   disabled?: boolean;
   counterpartAddresses: any;
+  isSimplified?: boolean;
+  setIsCreateCounterpartOpened?: Dispatch<SetStateAction<boolean>>;
+  setIsEditCounterpartOpened?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { i18n } = useLingui();
 
@@ -478,12 +511,13 @@ const CounterpartSelector = ({
                     )
                 );
 
-                filtered.unshift({
-                  id: COUNTERPART_CREATE_NEW_ID,
-                  label: t(i18n)`Create new counterpart`,
-                });
+                !isSimplified &&
+                  filtered.unshift({
+                    id: COUNTERPART_CREATE_NEW_ID,
+                    label: t(i18n)`Create new counterpart`,
+                  });
 
-                if (params.inputValue.length) {
+                if (!isSimplified && params.inputValue.length) {
                   filtered.push({
                     id: COUNTERPART_DIVIDER,
                     label: '-',
@@ -500,38 +534,43 @@ const CounterpartSelector = ({
                     required
                     error={Boolean(error)}
                     helperText={error?.message}
-                    className="Monite-CounterpartSelector"
+                    className={`Monite-CounterpartSelector ${
+                      isSimplified && 'isSimplified'
+                    }`}
                     InputProps={{
                       ...params.InputProps,
                       value: params.inputProps.value,
                       startAdornment: isCounterpartsLoading ? (
                         <CircularProgress size={20} />
                       ) : (
-                        <InputAdornment
-                          sx={{
-                            width: '44px',
-                            height: '44px',
-                            maxHeight: '44px',
+                        !isSimplified && (
+                          <InputAdornment
+                            sx={{
+                              width: '44px',
+                              height: '44px',
+                              maxHeight: '44px',
 
-                            justifyContent: 'center',
-                            backgroundColor: selectedCounterpartOption
-                              ? 'rgba(203, 203, 254, 1)'
-                              : 'rgba(235, 235, 255, 1)',
-                            borderRadius: '50%',
-                          }}
-                          position="start"
-                        >
-                          <Typography variant="caption">
-                            {selectedCounterpartOption
-                              ? Array.from(
-                                  selectedCounterpartOption.label
-                                )[0].toUpperCase()
-                              : '+'}
-                          </Typography>
-                        </InputAdornment>
+                              justifyContent: 'center',
+                              backgroundColor: selectedCounterpartOption
+                                ? 'rgba(203, 203, 254, 1)'
+                                : 'rgba(235, 235, 255, 1)',
+                              borderRadius: '50%',
+                            }}
+                            position="start"
+                          >
+                            <Typography variant="caption">
+                              {selectedCounterpartOption
+                                ? Array.from(
+                                    selectedCounterpartOption.label
+                                  )[0].toUpperCase()
+                                : '+'}
+                            </Typography>
+                          </InputAdornment>
+                        )
                       ),
                       endAdornment: (() => {
                         if (
+                          !isSimplified &&
                           selectedCounterpartOption &&
                           !params.inputProps['aria-expanded']
                         ) {
@@ -591,7 +630,7 @@ const CounterpartSelector = ({
                 ) : counterpartOption.id === COUNTERPART_DIVIDER ? (
                   <Divider
                     key={counterpartOption.id}
-                    sx={{ padding: '8px', marginBottom: '16px' }}
+                    sx={{ padding: '.5rem', marginBottom: '1rem' }}
                   />
                 ) : (
                   <li {...props} key={counterpartOption.id}>

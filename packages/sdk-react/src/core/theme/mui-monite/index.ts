@@ -491,6 +491,22 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               display: 'none',
             },
           },
+          '& > .Monite-CounterpartSelector.isSimplified': {
+            marginBottom: '2rem',
+          },
+          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputBase-root': {
+            paddingRight: '1rem',
+          },
+          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputLabel-root':
+            {
+              fontSize: '14px',
+              color: ' rgba(112, 112, 112, 1)',
+              paddingBottom: '0',
+            },
+          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputLabel-root > .MuiFormLabel-asterisk':
+            {
+              content: '"●"',
+            },
 
           '&.Monite-FilterControl': {
             height: '40px',
