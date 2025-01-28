@@ -10,21 +10,8 @@ import { useLingui } from '@lingui/react';
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import './InvoicePreview.css';
 
-/* const {
-  counterpartAddressLine1,
-  counterpartAddressLine2,
-  counterpartAddressLine3,
-  counterpartEmail,
-  counterpartName,
-  currency,
-  items,
-  subtotal,
-  totalTax,
-  total,
-  logo,
-} = data;
- */
 export const InvoicePreview = ({
+  currency,
   data,
   entityData,
   address,
@@ -35,7 +22,8 @@ export const InvoicePreview = ({
 }: any) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
-  const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
+  const currencySymbol = getSymbolFromCurrency(currency);
   const fulfillmentDate = data?.fulfillment_date;
   const items = data?.line_items;
   const memo = data?.memo;
@@ -176,19 +164,11 @@ export const InvoicePreview = ({
                 <th>{t(i18n)`Qty`}</th>
                 <th>{t(i18n)`Units`}</th>
                 <th>
-                  {t(i18n)`Price`} (
-                  {
-                    //currency
-                  }
-                  )
+                  {t(i18n)`Price`} ({currencySymbol})
                 </th>
                 <th>{t(i18n)`Disc.`}</th>
                 <th>
-                  {t(i18n)`Amount`} (
-                  {
-                    //currency
-                  }
-                  )
+                  {t(i18n)`Amount`} ({currencySymbol})
                 </th>
                 <th>{t(i18n)`Tax`} (%)</th>
               </tr>
