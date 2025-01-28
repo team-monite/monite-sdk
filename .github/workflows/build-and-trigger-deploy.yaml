@@ -121,3 +121,30 @@ jobs:
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=dev_deploy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
+
+  trigger-storybook-deploy:
+    name: Trigger GitLab Storybook build and deploy
+    runs-on: ubuntu-latest
+    needs: 
+      - build-sdk-demo
+
+    steps:
+      - name: Trigger GitLab Pipeline Storybook build and deploy
+        run: |
+          REPO="${{ vars.GITLAB_REPOSITORY }}"
+          PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
+          GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
+
+          SDK_DEMO="sdk-demo-${{ github.sha }}"
+
+          echo "sdk-demo = $SDK_DEMO"
+
+          curl --request POST \
+            --form token="${GITLAB_TOKEN}" \
+            --form ref="DEV-13628-triggered-deploy" \
+            --form "variables[GITHUB_SHA]=${{ github.sha }}" \
+            --form "variables[SDK_DEMO]=${SDK_DEMO}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
+            --form "variables[CI_ACTION]=build_storybook" \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
