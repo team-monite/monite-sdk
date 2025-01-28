@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -10,22 +11,39 @@ import { LockOutlined } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import { PaymentSection } from '../../PaymentSection';
 import { SectionGeneralProps } from '../../Section.types';
 
-export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
+interface FullfillmentSummaryProps extends SectionGeneralProps {
+  paymentTerms:
+    | {
+        data?: components['schemas']['PaymentTermsResponse'][];
+      }
+    | undefined;
+  isPaymentTermsLoading: boolean;
+  refetch: (options?: RefetchOptions) => Promise<
+    QueryObserverResult<
+      {
+        data?: components['schemas']['PaymentTermsResponse'][];
+      },
+      Error | { error: components['schemas']['ErrorSchema'] }
+    >
+  >;
+}
+
+export const FullfillmentSummary = ({
+  disabled,
+  paymentTerms,
+  isPaymentTermsLoading,
+  refetch,
+}: FullfillmentSummaryProps) => {
   const { i18n } = useLingui();
   const { control, resetField, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
   const { api, locale } = useMoniteContext();
-
-  const {
-    data: paymentTerms,
-    isLoading: isPaymentTermsLoading,
-    refetch,
-  } = api.paymentTerms.getPaymentTerms.useQuery();
 
   const { root } = useRootElements();
 

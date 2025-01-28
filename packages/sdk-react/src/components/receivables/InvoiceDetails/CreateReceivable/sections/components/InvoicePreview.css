@@ -67,7 +67,6 @@
 
 .invoice-preview .line-items-table {
   width: 100%;
-  border-color: rgba(184, 184, 184, 1);
 }
 
 .invoice-preview .line-items-table tr.spacer {
@@ -102,11 +101,11 @@
 
 .line-items-table tbody td {
   font-size: 14px;
+  line-height: 1.3;
   font-weight: 400;
   color: var(--theme-neutrals-30-dark-grey, #3b3b3b);
   border: 0.26px rgba(184, 184, 184, 1);
   border-top-style: solid;
-  border-bottom-style: solid;
 }
 
 .line-items-table tbody td h3 {
@@ -558,7 +557,6 @@ th.line-items-table__fixed-item {
   --theme-neutrals-bold-50-grey-bd: #707070;
   --theme-neutrals-bold-10-light-black-bd: #292929;
   --theme-neutrals-30-dark-grey: #3b3b3b;
-  --theme-neutrals-bold-30-dark-grey-bd: #3b3b3b;
 }
 
 .invoice-preview .header {
