@@ -449,7 +449,14 @@ export const CustomerSection = ({
               sx={{ display: 'flex', justifyContent: 'space-between' }}
               xs={6}
             >
-              <Button variant="text" onClick={() => setIsEditMode(false)}>
+              <Button
+                variant="text"
+                onClick={
+                  isEditMode
+                    ? () => setIsEditMode(false)
+                    : () => setIsEditCounterpartOpened(false)
+                }
+              >
                 {t(i18n)`Cancel`}
               </Button>
               <Button
@@ -470,19 +477,28 @@ export const CustomerSection = ({
   );
 };
 
+type CounterpartSelectorProps = {
+  disabled?: boolean;
+  counterpartAddresses: any;
+} & (
+  | {
+      isSimplified: true;
+      setIsCreateCounterpartOpened?: never;
+      setIsEditCounterpartOpened?: never;
+    }
+  | {
+      isSimplified?: false;
+      setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+      setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+    }
+);
 const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   setIsEditCounterpartOpened,
   isSimplified = false,
   disabled,
   counterpartAddresses,
-}: {
-  disabled?: boolean;
-  counterpartAddresses: any;
-  isSimplified?: boolean;
-  setIsCreateCounterpartOpened?: Dispatch<SetStateAction<boolean>>;
-  setIsEditCounterpartOpened?: Dispatch<SetStateAction<boolean>>;
-}) => {
+}: CounterpartSelectorProps) => {
   const { i18n } = useLingui();
 
   const { root } = useRootElements();
@@ -490,11 +506,16 @@ const CounterpartSelector = ({
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
   const handleCreateNewCounterpart = useCallback(() => {
-    setIsCreateCounterpartOpened(true);
-  }, [setIsCreateCounterpartOpened]);
+    if (!isSimplified && setIsCreateCounterpartOpened) {
+      setIsCreateCounterpartOpened(true);
+    }
+  }, [isSimplified, setIsCreateCounterpartOpened]);
+
   const handleEditCounterpart = useCallback(() => {
-    setIsEditCounterpartOpened(true);
-  }, [setIsEditCounterpartOpened]);
+    if (!isSimplified && setIsEditCounterpartOpened) {
+      setIsEditCounterpartOpened(true);
+    }
+  }, [isSimplified, setIsEditCounterpartOpened]);
   const [address, setAddress] = useState('');
 
   const counterpartsAutocompleteData = useMemo<
