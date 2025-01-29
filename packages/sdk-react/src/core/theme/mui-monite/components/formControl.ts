@@ -49,6 +49,11 @@ export const getFormControlStyles = (
           },
         },
 
+        '& .MuiSvgIcon-root': {
+          color: 'rgba(112, 112, 112, 1)',
+          paddingRight: '18px',
+        },
+
         '&:not(.Monite-CounterpartSelector):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             backgroundColor: 'transparent',
@@ -62,6 +67,30 @@ export const getFormControlStyles = (
             },
           },
         },
+
+        '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root': {
+          fontSize: '14px',
+          color: ' rgba(112, 112, 112, 1)',
+          paddingBottom: '0',
+          backgroundColor: 'transparent',
+          '&:hover, &.Mui-focused': {
+            backgroundColor: 'transparent',
+            '& > .MuiOutlinedInput-notchedOutline': {
+              backgroundColor: 'transparent',
+            },
+          },
+          '&.Mui-required::after': {
+            content: '"●"',
+            position: 'relative',
+            bottom: '2px',
+            left: '4px',
+            color: ' rgba(255, 71, 93, 1)',
+          },
+        },
+        '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
+          {
+            display: 'none',
+          },
 
         '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root.MuiFormLabel-filled':
           {

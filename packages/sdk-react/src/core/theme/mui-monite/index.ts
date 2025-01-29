@@ -502,10 +502,17 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               fontSize: '14px',
               color: ' rgba(112, 112, 112, 1)',
               paddingBottom: '0',
+              '&::after': {
+                content: '"●"',
+                position: 'relative',
+                bottom: '2px',
+                left: '4px',
+                color: ' rgba(255, 71, 93, 1)',
+              },
             },
           '& > .Monite-CounterpartSelector.isSimplified > .MuiInputLabel-root > .MuiFormLabel-asterisk':
             {
-              content: '"●"',
+              display: 'none',
             },
 
           '&.Monite-FilterControl': {

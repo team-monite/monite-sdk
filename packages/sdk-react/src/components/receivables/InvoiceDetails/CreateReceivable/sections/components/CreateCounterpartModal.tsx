@@ -5,7 +5,7 @@ import { Box, Modal } from '@mui/material';
 interface CreateCounterpartModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate: () => void;
+  onCreate: (newCounterpartId: string) => void;
 }
 
 export const CreateCounterpartModal = ({
