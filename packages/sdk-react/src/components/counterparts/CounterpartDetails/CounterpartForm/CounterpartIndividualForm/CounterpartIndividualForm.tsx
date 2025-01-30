@@ -75,7 +75,7 @@ export const CounterpartIndividualForm = ({
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-  console.log({ counterpart });
+
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
@@ -160,7 +160,7 @@ export const CounterpartIndividualForm = ({
   ]);
 
   if (isCreateAllowedLoading || isLoading) {
-    if (isInvoiceCreation) {
+    if (!isHeaderShown) {
       return (
         <Grid pb={4}>
           <LoadingPage />

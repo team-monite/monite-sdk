@@ -47,13 +47,13 @@ import {
 } from './validation';
 
 interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
-  isInvoiceCreation?: boolean;
+  isHeaderShown?: boolean;
 }
 
-export const CounterpartOrganizationForm = (
-  props: CounterpartOrganizationFormProps
-) => {
-  const isInvoiceCreation = props.isInvoiceCreation;
+export const CounterpartOrganizationForm = ({
+  isHeaderShown = true,
+  ...props
+}: CounterpartOrganizationFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -173,7 +173,7 @@ export const CounterpartOrganizationForm = (
   ]);
 
   if (isCreateAllowedLoading || isLoading) {
-    if (isInvoiceCreation) {
+    if (!isHeaderShown) {
       return (
         <Grid pb={4}>
           <LoadingPage />
@@ -189,43 +189,37 @@ export const CounterpartOrganizationForm = (
 
   return (
     <>
-      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
-        <Grid
-          container
-          alignItems="center"
-          data-testid={CounterpartDataTestId.OrganizationForm}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
-              {isInvoiceCreation
-                ? t(i18n)`Create customer`
-                : isUpdateMode
-                ? watch('organization.companyName')
-                : t(i18n)`Create Counterpart – Company`}
-            </Typography>
+      {' '}
+      {isHeaderShown && (
+        <>
+          <Grid
+            container
+            alignItems="center"
+            data-testid={CounterpartDataTestId.OrganizationForm}
+          >
+            <Grid item xs={11}>
+              <Typography variant="h3" sx={{ padding: 3 }}>
+                {isUpdateMode
+                  ? watch('organization.companyName')
+                  : t(i18n)`Create Counterpart – Company`}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              {dialogContext?.isDialogContent && (
+                <IconWrapper
+                  aria-label={t(i18n)`Counterpart Close`}
+                  onClick={dialogContext.onClose}
+                  color="inherit"
+                >
+                  <CloseIcon />
+                </IconWrapper>
+              )}
+            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
-                onClick={props.onClose || dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
+          <Divider />
+        </>
       )}
-
-      {!isInvoiceCreation && <Divider />}
-      <DialogContent
-        sx={{
-          padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 380,
-          overflowY: 'auto',
-        }}
-      >
+      <DialogContent>
         <FormProvider {...methods}>
           <form
             id="counterpartOrganizationForm"
