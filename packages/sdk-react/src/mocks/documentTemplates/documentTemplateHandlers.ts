@@ -13,24 +13,20 @@ export const documentTemplateHandlers = [
     documentTemplatePath,
     () => HttpResponse.json(documentTemplateList)
   ),
-
   http.post<
     { id: components['schemas']['TemplateReceivableResponse']['id'] },
     undefined,
     undefined
   >(`${documentTemplatePath}/:id/make_default`, async ({ params }) => {
     await delay();
-
     documentTemplateList.data = documentTemplateList.data.map((template) => ({
       ...template,
       is_default: template.id === params.id,
     }));
-
     return HttpResponse.json(undefined, {
       status: 200,
     });
   }),
-
   http.get<
     { id: components['schemas']['TemplateReceivableResponse']['id'] },
     undefined,
@@ -38,11 +34,7 @@ export const documentTemplateHandlers = [
   >(`${documentTemplatePath}/:id/preview`, async () => {
     await delay();
 
-    const buffer = await fetch(`/static/images/1`).then((response) =>
-      response.arrayBuffer()
-    );
-
-    return HttpResponse.arrayBuffer(buffer, {
+    return HttpResponse.arrayBuffer(new ArrayBuffer(0), {
       headers: {
         'Content-Type': 'application/pdf',
       },
