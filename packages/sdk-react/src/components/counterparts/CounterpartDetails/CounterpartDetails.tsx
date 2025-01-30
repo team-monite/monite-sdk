@@ -179,7 +179,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={showView}
             onClose={props.onClose}
             onCreate={onCreate}
-            onClose={props.onClose}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}

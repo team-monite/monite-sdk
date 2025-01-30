@@ -63,7 +63,6 @@ import {
 import { CreateReceivablesFormProps } from '../validation';
 import { BillToSectionProps } from './components/BillToSection';
 import { CreateCounterpartModal } from './components/CreateCounterpartModal';
-import type { SectionGeneralProps } from './Section.types';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -213,7 +212,7 @@ export const CustomerSection = ({
                 id={counterpartId}
                 onCancel={() => setIsEditMode(false)}
                 onUpdate={console.log}
-                isHeaderShown={false}
+                isInvoiceCreation={true}
                 showCategories={false}
               />
             ) : (
@@ -221,14 +220,14 @@ export const CustomerSection = ({
                 id={counterpartId}
                 onCancel={() => setIsEditMode(false)}
                 onUpdate={console.log}
-                isHeaderShown={false}
+                isInvoiceCreation={true}
                 showCategories={false}
               />
             )
           ) : (
             <>
               <Stack
-                sx={{ padding: '0 2rem', maxHeight: 600, overflowY: 'auto' }}
+                sx={{ padding: '0 2rem', maxHeight: 480, overflowY: 'auto' }}
               >
                 <CounterpartSelector
                   isSimplified
