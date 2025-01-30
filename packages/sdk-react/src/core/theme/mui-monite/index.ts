@@ -489,6 +489,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
           '& > .Monite-CounterpartSelector.isSimplified': {
             marginBottom: '2rem',
+            background: 'transparent',
           },
           '& > .Monite-CounterpartSelector.isSimplified > .MuiInputBase-root': {
             paddingRight: '1rem',

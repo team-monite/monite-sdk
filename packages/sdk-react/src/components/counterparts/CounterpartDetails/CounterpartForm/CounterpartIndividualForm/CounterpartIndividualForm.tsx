@@ -48,7 +48,7 @@ import {
 } from './validation';
 
 interface CounterpartIndividualFormProps extends CounterpartsFormProps {
-  isInvoiceCreation?: boolean;
+  isHeaderShown?: boolean;
 }
 
 /**
@@ -59,9 +59,9 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
  *  otherwise new counterpart will be created
  */
 export const CounterpartIndividualForm = ({
+  isHeaderShown = true,
   ...props
 }: CounterpartIndividualFormProps) => {
-  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -75,10 +75,7 @@ export const CounterpartIndividualForm = ({
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
-
+  console.log({ counterpart });
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
@@ -179,70 +176,39 @@ export const CounterpartIndividualForm = ({
 
   return (
     <>
-      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
-        <Grid
-          container
-          alignItems="center"
-          data-testid={CounterpartDataTestId.IndividualForm}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
-              {isInvoiceCreation
-                ? t(i18n)`Create customer`
-                : isUpdateMode
-                ? getIndividualName(
-                    watch('individual.firstName'),
-                    watch('individual.lastName')
-                  )
-                : t(i18n)`Create Counterpart - Individual`}
-            </Typography>
+      {isHeaderShown && (
+        <>
+          <Grid
+            container
+            alignItems="center"
+            data-testid={CounterpartDataTestId.IndividualForm}
+          >
+            <Grid item xs={11}>
+              <Typography variant="h3" sx={{ padding: 3 }}>
+                {isUpdateMode
+                  ? getIndividualName(
+                      watch('individual.firstName'),
+                      watch('individual.lastName')
+                    )
+                  : t(i18n)`Create Counterpart - Individual`}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              {dialogContext?.isDialogContent && (
+                <IconWrapper
+                  aria-label={t(i18n)`Counterpart Close`}
+                  onClick={props.onClose || dialogContext.onClose}
+                  color="inherit"
+                >
+                  <CloseIcon />
+                </IconWrapper>
+              )}
+            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
-                onClick={props.onClose || dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
+          <Divider />
+        </>
       )}
 
-      {!isInvoiceCreation && <Divider />}
-
-      <DialogContent
-        sx={{
-          padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 380,
-          overflowY: 'auto',
-        }}
-      >
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {isUpdateMode
-              ? getIndividualName(
-                  watch('individual.firstName'),
-                  watch('individual.lastName')
-                )
-              : t(i18n)`Create Counterpart - Individual`}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={props.onClose || dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
       <DialogContent>
         <FormProvider {...methods}>
           <form
@@ -458,12 +424,7 @@ export const CounterpartIndividualForm = ({
             {t(i18n)`Cancel`}
           </Button>
         )}
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={isLoading}
-          onClick={submitForm}
-        >
+        <Button variant="outlined" onClick={submitForm} disabled={isLoading}>
           {isUpdateMode ? t(i18n)`Save` : t(i18n)`Create`}
         </Button>
       </DialogActions>
