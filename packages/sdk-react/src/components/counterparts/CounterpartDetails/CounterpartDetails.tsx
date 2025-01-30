@@ -25,13 +25,14 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
 );
 
 const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
+  const isInvoiceCreation = props.isInvoiceCreation ?? false;
   const {
+    addressId,
     counterpartId,
     counterpartView,
     onCreate,
     onUpdate,
     onEdit,
-    addressId,
     onAddressCancel,
     onAddressEdit,
     onAddressUpdate,
@@ -176,9 +177,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
           <CounterpartIndividualForm
             id={counterpartId}
             onCancel={showView}
-            onCreate={onCreate}
             onClose={props.onClose}
+            onCreate={onCreate}
             onUpdate={onUpdate}
+            isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
           />
@@ -189,8 +191,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
           <CounterpartOrganizationForm
             id={counterpartId}
             onCancel={showView}
+            onClose={props.onClose}
             onCreate={onCreate}
             onUpdate={onUpdate}
+            isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
           />

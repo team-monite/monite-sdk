@@ -38,14 +38,16 @@ enum View {
   CounterpartCreationMode = 'counterpart-creation-mode',
 }
 
-const CardItem = ({
-  title,
+export const CounterpartTypeItem = ({
   description,
+  isTypeSelected,
+  title,
   type,
   onClick,
 }: {
-  title: string;
   description: string;
+  isTypeSelected?: boolean;
+  title: string;
   type: components['schemas']['CounterpartType'];
   onClick: (type: components['schemas']['CounterpartType']) => void;
 }) => {
@@ -58,11 +60,19 @@ const CardItem = ({
       variant="outlined"
       sx={{
         cursor: 'pointer',
+        border: 'none',
       }}
       onClick={handleClick}
     >
       <CardActionArea
-        sx={{ height: '100%', display: 'flex', alignItems: 'start' }}
+        sx={{
+          display: 'flex',
+          alignItems: 'start',
+          bgcolor: isTypeSelected
+            ? 'rgba(0, 0, 0, 0.04)'
+            : 'rgba(0, 0, 0, 0.02)',
+          borderColor: 'transparent',
+        }}
       >
         <CardContent>
           <Typography variant="body1" sx={{ fontWeight: 500, mb: 1 }}>
@@ -87,25 +97,47 @@ export const CreateCounterpartDialog = ({
 
   const handleCreateCounterpart = useCallback(
     (type: components['schemas']['CounterpartType']) => {
-      setCounterpartType('individual');
+      setCounterpartType(type);
       setViewMode(View.CounterpartCreationMode);
     },
     []
   );
 
-  return (
-    <>
-      <Typography variant="h3" sx={{ p: 4 }}>{t(
-        i18n
-      )`Create customer`}</Typography>
-      <Divider />
-      <DialogContent>
+  if (viewMode === View.CounterpartCreationMode && counterpartType) {
+    return (
+      <Dialog
+        alignDialog="right"
+        data-testid="create-counterpart-dialog"
+        open={open}
+        onClose={() => {
+          setViewMode(View.ChooseMode);
+          setCounterpartType(undefined);
+        }}
+      >
         <CounterpartDetails
-          type={'individual'}
+          type={counterpartType}
           onCreate={() => {
+            setViewMode(View.ChooseMode);
+            setCounterpartType(undefined);
             onClose();
           }}
         />
+      </Dialog>
+    );
+  }
+
+  return (
+    <Dialog
+      alignDialog="right"
+      open={open}
+      onClose={onClose}
+      data-testid={CreateCounterpartDialogTestEnum.DataTestId}
+    >
+      <Typography variant="h3" sx={{ p: 4 }}>{t(
+        i18n
+      )`Create counterpart`}</Typography>
+      <Divider />
+      <DialogContent>
         <Typography sx={{ mb: 2, fontWeight: 500 }}>{t(
           i18n
         )`Choose counterpart type:`}</Typography>
@@ -116,7 +148,7 @@ export const CreateCounterpartDialog = ({
             gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
           }}
         >
-          <CardItem
+          <CounterpartTypeItem
             title={t(i18n)`Individual person`}
             description={t(
               i18n
@@ -124,7 +156,7 @@ export const CreateCounterpartDialog = ({
             onClick={handleCreateCounterpart}
             type={'individual'}
           />
-          <CardItem
+          <CounterpartTypeItem
             title={t(i18n)`Organization`}
             description={t(
               i18n
@@ -140,6 +172,6 @@ export const CreateCounterpartDialog = ({
           {t(i18n)`Cancel`}
         </Button>
       </DialogActions>
-    </>
+    </Dialog>
   );
 };

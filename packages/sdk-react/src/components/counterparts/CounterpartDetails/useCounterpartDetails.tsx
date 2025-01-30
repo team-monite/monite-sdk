@@ -77,9 +77,9 @@ interface CommonCounterpartDetailsProps
   onVatDelete?: (id: VatId) => void;
 }
 
-export type CounterpartsDetailsProps =
-  | ExistingCounterpartDetail
-  | NewCounterpartDetail;
+export type CounterpartsDetailsProps = {
+  isInvoiceCreation?: boolean;
+} & (ExistingCounterpartDetail | NewCounterpartDetail);
 
 export enum COUNTERPART_VIEW {
   /** Used when we need to show for already created counterpart individual / organization */
