@@ -155,7 +155,7 @@ th.line-items-table__fixed-item {
 }
 
 .totals-table .total td {
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 600;
   background: var(--totals-table-total-cell-background, transparent);
   color: var(--totals-table-total-cell-color, inherit);

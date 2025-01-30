@@ -27,10 +27,9 @@ export const InvoicePreview = ({
   const fulfillmentDate = data?.fulfillment_date;
   const items = data?.line_items;
   const memo = data?.memo;
-  const discount = data?.discount?.amount;
+  // const discount = data?.discount?.amount;
   const { data: counterpart } = useCounterpartById(data?.counterpart_id);
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
-  console.log({ counterpart });
   const selectedPaymentTerm = paymentTerms?.data?.find(
     (term: any) => term.id === data?.payment_terms_id
   );
@@ -225,10 +224,7 @@ export const InvoicePreview = ({
                     <span>{t(i18n)`Total Tax`} (0%)</span>
                   </td>
                   <td>
-                    {totalTaxes?.toString()}{' '}
-                    {
-                      //currency
-                    }
+                    {totalTaxes?.toString()} {currency}
                   </td>
                 </tr>
                 <tr className="total">
@@ -238,9 +234,7 @@ export const InvoicePreview = ({
                   <td>
                     <span>
                       {totalPrice?.toString()}
-                      {
-                        //currency
-                      }
+                      {currency}
                     </span>
                   </td>
                 </tr>
