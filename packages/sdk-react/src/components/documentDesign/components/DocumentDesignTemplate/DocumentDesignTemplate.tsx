@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { components } from '@/api';
-import { ImageWithSkeleton } from '@/ui/imageWithSkeleton';
+import { FileViewer } from '@/ui/FileViewer';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -17,11 +19,11 @@ const StyledLabel = styled('label')({
     border: '2px solid transparent',
   },
   [`&:hover .${templateThumbnailClassName}`]: {
-    borderColor: 'rgba(86, 43, 214, 1)',
+    borderColor: '#562BD6',
   },
   [`& .${selectedtemplateThumbnailClassName}`]: {
-    outline: '8px solid rgba(238, 235, 255, 1)',
-    borderColor: 'rgba(86, 43, 214, 1)',
+    outline: '8px solid #EEEBFF',
+    borderColor: '#562BD6',
   },
 });
 
@@ -31,17 +33,28 @@ export interface DocumentDesignTemplateProps {
   template: DocumentTemplate;
   onSelect: () => void;
   isSelected: boolean;
+  getPreview: (id: string) => Promise<string>;
 }
 
 export const DocumentDesignTemplate = ({
   template,
   onSelect,
   isSelected,
+  getPreview,
 }: DocumentDesignTemplateProps) => {
   const { i18n } = useLingui();
+  const [preview, setPreview] = useState<string>();
+
+  useEffect(() => {
+    const waitForPreview = async () => {
+      setPreview(await getPreview(template.id));
+    };
+
+    waitForPreview();
+  }, [template, getPreview]);
 
   return (
-    <StyledLabel>
+    <StyledLabel data-testId={`documentTemplate-${template.name}`}>
       <Box
         className={classNames(
           templateThumbnailClassName,
@@ -49,7 +62,7 @@ export const DocumentDesignTemplate = ({
         )}
         sx={{
           height: 180,
-          width: '100%',
+          width: 'calc(100% + 1px)',
           textAlign: 'right',
           boxSizing: 'border-box',
           position: 'relative',
@@ -67,13 +80,36 @@ export const DocumentDesignTemplate = ({
             }}
           />
         )}
-        <ImageWithSkeleton url={template.preview?.url} alt={template.name} />
+        {!preview && (
+          <Skeleton
+            variant="rectangular"
+            sx={{ width: '100%', height: '100%' }}
+          />
+        )}
+        {preview && (
+          <FileViewer
+            mimetype="application/pdf"
+            url={preview}
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            pdfHeight="calc(100% + 1px)"
+            showPdfToolbar={0}
+          />
+        )}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+          }}
+        />
       </Box>
       <Typography
         variant="body2"
         sx={{
           marginTop: 2,
-          color: isSelected ? 'rgba(63, 29, 165, 1)' : 'inherit',
+          color: isSelected ? '#3F1DA5' : 'inherit',
         }}
       >
         {template.name}

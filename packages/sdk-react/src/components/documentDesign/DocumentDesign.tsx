@@ -9,7 +9,7 @@ import { useLingui } from '@lingui/react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 
 import { DocumentDesignSelection } from './components/DocumentDesignSelection/DocumentDesignSelection';
-import previewImg from './preview.svg';
+import previewImg from './preview.png';
 
 const DocumentDesignBase = () => {
   const { i18n } = useLingui();
@@ -26,7 +26,7 @@ const DocumentDesignBase = () => {
           borderRadius: 2,
           border: '1px solid',
           borderColor: 'divider',
-          background: 'linear-gradient(rgb(244, 240, 254), rgb(255, 255, 255))',
+          background: 'linear-gradient(#F4F0FE, #FFFFFF)',
           display: 'flex',
           justifyContent: 'space-between',
           paddingBottom: 0,
@@ -37,10 +37,10 @@ const DocumentDesignBase = () => {
           sx={{ justifyContent: 'space-between', paddingBottom: 2 }}
         >
           <Box>
-            <Typography variant="subtitle2">
+            <Typography variant="h3">
               {t(i18n)`Set your document style`}
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="body1" sx={{ marginTop: 1 }}>
               {t(i18n)`Various templates for your documents`}
             </Typography>
           </Box>
