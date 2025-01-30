@@ -44,7 +44,14 @@ import {
   getCreateCounterpartValidationSchema,
 } from './validation';
 
-export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
+interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
+  isHeaderShown?: boolean;
+}
+
+export const CounterpartOrganizationForm = ({
+  isHeaderShown = true,
+  ...props
+}: CounterpartOrganizationFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -161,6 +168,13 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   ]);
 
   if (isCreateAllowedLoading || isLoading) {
+    if (!isHeaderShown) {
+      return (
+        <Grid pb={4}>
+          <LoadingPage />
+        </Grid>
+      );
+    }
     return <LoadingPage />;
   }
 
@@ -170,31 +184,36 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
 
   return (
     <>
-      <Grid
-        container
-        alignItems="center"
-        data-testid={CounterpartDataTestId.OrganizationForm}
-      >
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {isUpdateMode
-              ? watch('organization.companyName')
-              : t(i18n)`Create Counterpart – Company`}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
+      {' '}
+      {isHeaderShown && (
+        <>
+          <Grid
+            container
+            alignItems="center"
+            data-testid={CounterpartDataTestId.OrganizationForm}
+          >
+            <Grid item xs={11}>
+              <Typography variant="h3" sx={{ padding: 3 }}>
+                {isUpdateMode
+                  ? watch('organization.companyName')
+                  : t(i18n)`Create Counterpart – Company`}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              {dialogContext?.isDialogContent && (
+                <IconWrapper
+                  aria-label={t(i18n)`Counterpart Close`}
+                  onClick={dialogContext.onClose}
+                  color="inherit"
+                >
+                  <CloseIcon />
+                </IconWrapper>
+              )}
+            </Grid>
+          </Grid>
+          <Divider />
+        </>
+      )}
       <DialogContent>
         <FormProvider {...methods}>
           <form

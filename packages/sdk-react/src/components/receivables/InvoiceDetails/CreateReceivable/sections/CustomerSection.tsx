@@ -9,8 +9,16 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { CounterpartIndividualForm } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
-import { getCounterpartName } from '@/components/counterparts/helpers';
+import {
+  CounterpartIndividualForm,
+  CounterpartOrganizationForm,
+  prepareCounterpartOrganization,
+} from '@/components/counterparts/CounterpartDetails/CounterpartForm';
+import { CounterpartOrganizationView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import {
+  getCounterpartName,
+  isOrganizationCounterpart,
+} from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
@@ -200,13 +208,23 @@ export const CustomerSection = ({
             </Grid>
           </Grid>
           {isEditMode ? (
-            <CounterpartIndividualForm
-              id={counterpartId}
-              onCancel={() => setIsEditMode(false)}
-              onUpdate={console.log}
-              isHeaderShown={false}
-              showCategories={false}
-            />
+            counterpart && isOrganizationCounterpart(counterpart) ? (
+              <CounterpartOrganizationForm
+                id={counterpartId}
+                onCancel={() => setIsEditMode(false)}
+                onUpdate={console.log}
+                isHeaderShown={false}
+                showCategories={false}
+              />
+            ) : (
+              <CounterpartIndividualForm
+                id={counterpartId}
+                onCancel={() => setIsEditMode(false)}
+                onUpdate={console.log}
+                isHeaderShown={false}
+                showCategories={false}
+              />
+            )
           ) : (
             <>
               <Stack
@@ -467,8 +485,7 @@ export const CustomerSection = ({
                 <Grid item xs={6}>
                   {!isEditMode && (
                     <Button
-                      variant="contained"
-                      color="secondary"
+                      variant="outlined"
                       onClick={() => setIsEditMode(true)}
                     >{t(i18n)`Edit profile`}</Button>
                   )}
