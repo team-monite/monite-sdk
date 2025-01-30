@@ -14,19 +14,6 @@ export const generateDocumentTemplate = (): TemplateReceivableResponse => ({
   name: faker.word.noun(),
   template: '',
   template_type: 'source_object',
-  preview: {
-    url: faker.image.url(),
-    id: faker.string.uuid(),
-    created_at: faker.date.past().toISOString(),
-    file_type: 'image',
-    md5: '',
-    mimetype: '',
-    name: '',
-    region: '',
-    size: 100,
-    previews: [],
-    pages: [],
-  },
 });
 
 export const generateDocumentTemplateList =
