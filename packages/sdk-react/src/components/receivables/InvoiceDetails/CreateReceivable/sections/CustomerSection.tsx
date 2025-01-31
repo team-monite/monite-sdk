@@ -152,7 +152,7 @@ export const CustomerSection = ({
 
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-  const handleEditSubmit = () => console.log;
+  //const handleEditSubmit = () => console.log;
   //const isVatErrorShown =
   // counterpart && !counterpart.tax_id && counterpartVats?.data.length === 0;
 
@@ -211,7 +211,6 @@ export const CustomerSection = ({
               <CounterpartOrganizationForm
                 id={counterpartId}
                 onCancel={() => setIsEditMode(false)}
-                onUpdate={console.log}
                 isInvoiceCreation={true}
                 showCategories={false}
               />
@@ -219,7 +218,6 @@ export const CustomerSection = ({
               <CounterpartIndividualForm
                 id={counterpartId}
                 onCancel={() => setIsEditMode(false)}
-                onUpdate={console.log}
                 isInvoiceCreation={true}
                 showCategories={false}
               />
@@ -506,11 +504,7 @@ export const CustomerSection = ({
                   </Button>
                   <Button
                     variant="contained"
-                    onClick={
-                      isEditMode
-                        ? () => handleEditSubmit()
-                        : () => setIsEditMode(false)
-                    }
+                    onClick={() => setIsEditMode(false)}
                   >
                     {t(i18n)`Save`}
                   </Button>
