@@ -28,7 +28,9 @@ interface FullfillmentSummaryProps extends SectionGeneralProps {
       {
         data?: components['schemas']['PaymentTermsResponse'][];
       },
-      Error | { error: components['schemas']['ErrorSchema'] }
+      | Error
+      | { error: components['schemas']['ErrorSchema'] }
+      | { detail?: { loc: (string | number)[]; msg: string; type: string }[] }
     >
   >;
 }

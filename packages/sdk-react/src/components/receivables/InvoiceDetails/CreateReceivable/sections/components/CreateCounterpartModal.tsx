@@ -73,7 +73,7 @@ export const CreateCounterpartModal = ({
         }}
       >
         {viewMode === View.CounterpartCreationMode && counterpartType ? (
-          <Grid sx={{ maxHeight: 600, overflowY: 'auto' }}>
+          <Grid sx={{ maxHeight: isLargeScreen ? 920 : 720 }}>
             <CounterpartDetails
               type={counterpartType}
               isInvoiceCreation={true}

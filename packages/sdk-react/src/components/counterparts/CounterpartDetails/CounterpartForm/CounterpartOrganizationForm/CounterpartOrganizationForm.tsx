@@ -424,7 +424,12 @@ export const CounterpartOrganizationForm = (
       </DialogContent>
       <Divider />
       <DialogActions
-        sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '1em',
+          padding: 4,
+        }}
       >
         {(isUpdateMode || dialogContext) && (
           <Button
