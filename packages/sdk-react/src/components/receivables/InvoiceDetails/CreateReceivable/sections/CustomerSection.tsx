@@ -539,6 +539,7 @@ type CounterpartSelectorProps = {
       setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
     }
 );
+
 const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   setIsEditCounterpartOpened,
@@ -580,13 +581,6 @@ const CounterpartSelector = ({
     [counterparts]
   );
 
-  useEffect(() => {
-    if (counterpartAddresses?.data[0]) {
-      const addressView = counterpartAddresses.data[0];
-      setAddress(prepareAddressView({ address: addressView }));
-    }
-  }, [counterpartAddresses]);
-
   return (
     <Controller
       name="counterpart_id"
@@ -607,6 +601,16 @@ const CounterpartSelector = ({
               label: getCounterpartName(selectedCounterpart),
             }
           : null;
+
+        useEffect(() => {
+          if (selectedCounterpart) {
+            setAddress(
+              prepareAddressView({ address: counterpartAddresses?.data[0] })
+            );
+          } else {
+            setAddress('');
+          }
+        }, [field.value, counterpartAddresses]);
 
         return (
           <>
