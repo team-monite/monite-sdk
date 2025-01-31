@@ -26,6 +26,12 @@
   isolation: isolate;
 }
 
+@media screen and (max-height: 720px) {
+  .invoice-preview {
+    margin-top: 0;
+  }
+}
+
 .invoice-preview img,
 .invoice-preview picture,
 .invoice-preview video,

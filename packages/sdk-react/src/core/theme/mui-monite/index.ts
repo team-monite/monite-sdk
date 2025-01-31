@@ -455,32 +455,36 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
-          '& > .Monite-CounterpartSelector > .MuiInputBase-root.MuiInputBase-adornedStart.MuiInputBase-formControl':
-            {
-              padding: '16px',
-              paddingRight: '16px',
-              height: '70px',
-              lineHeight: '70px',
-              backgroundColor: 'transparent',
-              '&:hover, &.Mui-focused': {
+          '& > .Monite-CounterpartSelector': {
+            '& > .MuiInputBase-root': {
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '16px',
+                paddingRight: '16px',
+                height: '70px',
+                lineHeight: '70px',
                 backgroundColor: 'transparent',
-                '& > .MuiOutlinedInput-notchedOutline': {
-                  backgroundColor: 'transparent',
+                '&:hover': {
+                  '& > .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#dedede',
+                  },
                 },
-              },
-              '&:hover': {
-                '& > .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#dedede',
-                },
-              },
-              '&.Mui-focused': {
-                '& > .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'transparent',
+                '&.Mui-focused': {
+                  '& > .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'transparent',
+                  },
                 },
               },
             },
+          },
+          '& > .Monite-CounterpartSelector > .MuiInputBase-root > .MuiInputAdornment-positionEnd + input:not(:placeholder-shown)':
+            {
+              opacity: 0,
+            },
+          '& > .Monite-CounterpartSelector > .MuiInputBase-root > .MuiInputAdornment-positionEnd + input::placeholder':
+            {
+              color: 'rgba(184, 184, 184, 1)',
+            },
           '& > .Monite-CounterpartSelector > .MuiFormLabel-root': {
-            color: 'black',
             fontSize: '1.25rem',
             paddingBottom: '1rem',
             '& > .MuiInputLabel-asterisk': {

@@ -237,7 +237,7 @@ const CreateReceivablesBase = ({
   };
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
       <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
         <DialogTitle className={className + '-Title'}>
           <Toolbar sx={{ padding: 0 }}>
@@ -270,18 +270,6 @@ const CreateReceivablesBase = ({
             onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
-            {/* replace Typography with header with title + buttons */}
-            <Typography
-              variant="h1"
-              sx={{ mb: 2, display: 'none' }}
-              data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
-            >
-              {t(i18n)`Invoice`}{' '}
-              <Typography component="span" variant="h1" color="textSecondary">
-                #{INVOICE_DOCUMENT_AUTO_ID}
-              </Typography>
-            </Typography>
-
             <Stack direction="column" spacing={7}>
               <BillToSection
                 disabled={createReceivable.isPending}
@@ -302,7 +290,6 @@ const CreateReceivablesBase = ({
                   width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  // justifyContent: 'space-between', // TODO: Verify this is not needed in any use case
                 }}
               >
                 <Box sx={{ mb: 2 }}>
@@ -339,6 +326,7 @@ const CreateReceivablesBase = ({
         width="50%"
         sx={{
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
+          height: '100vh',
         }}
       >
         <InvoicePreview
