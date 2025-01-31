@@ -1,3 +1,0 @@
----
-'@monite/sdk-react': major
----
