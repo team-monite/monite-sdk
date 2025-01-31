@@ -27,6 +27,8 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 
 import { getIndividualName } from '../../../helpers';
@@ -172,6 +174,9 @@ export const CounterpartIndividualForm = ({
     return <AccessRestriction />;
   }
 
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
+
   {
     console.log(props.onClose);
     console.log(props.isInvoiceCreation);
@@ -180,46 +185,54 @@ export const CounterpartIndividualForm = ({
 
   return (
     <>
-      <Grid
-        container
-        alignItems="center"
-        data-testid={CounterpartDataTestId.IndividualForm}
-      >
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
-            {isInvoiceCreation
-              ? t(i18n)`Create customer`
-              : isUpdateMode
-              ? getIndividualName(
-                  watch('individual.firstName'),
-                  watch('individual.lastName')
-                )
-              : t(i18n)`Create Counterpart - Individual`}
-          </Typography>
+      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+        <Grid
+          container
+          alignItems="center"
+          data-testid={CounterpartDataTestId.IndividualForm}
+        >
+          <Grid item xs={11}>
+            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
+              {isInvoiceCreation
+                ? t(i18n)`Create customer`
+                : isUpdateMode
+                ? getIndividualName(
+                    watch('individual.firstName'),
+                    watch('individual.lastName')
+                  )
+                : t(i18n)`Create Counterpart - Individual`}
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            {dialogContext?.isDialogContent && (
+              <IconWrapper
+                aria-label={t(i18n)`Counterpart Close`}
+                onClick={props.onClose || dialogContext.onClose}
+                color="inherit"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={props.onClose || dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
+      )}
 
       {!isInvoiceCreation && <Divider />}
 
-      <DialogContent>
+      <DialogContent
+        sx={{
+          padding: '0 2rem',
+          maxHeight: isLargeScreen ? 480 : 360,
+          overflowY: 'auto',
+        }}
+      >
         <FormProvider {...methods}>
           <form
             id="counterpartIndividualForm"
             ref={formRef}
             onSubmit={handleSubmitWithoutPropagation}
           >
-            <Grid container direction="column" rowSpacing={3}>
+            <Grid container direction="column" rowSpacing={3} pb={4}>
               <Grid item>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
