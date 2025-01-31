@@ -36,8 +36,6 @@ import {
 
 import { format } from 'date-fns';
 
-import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
-import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { BillToSection } from './sections/components/BillToSection';
@@ -338,7 +336,7 @@ const CreateReceivablesBase = ({
         }}
       >
         <InvoicePreview
-          data={watch()}
+          watch={watch}
           currency={actualCurrency}
           isNonVatSupported={isNonVatSupported}
           entityData={entityData}

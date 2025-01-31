@@ -24,7 +24,7 @@ export const BillToSection = ({
   return (
     <Box mb={6}>
       <Box sx={{ width: '100%', maxWidth: '960px' }}>
-        <Typography sx={{ mb: 2 }} variant="h3">{t(
+        <Typography sx={{ mb: 5 }} variant="h3">{t(
           i18n
         )`Create invoice`}</Typography>
         <CustomerSection

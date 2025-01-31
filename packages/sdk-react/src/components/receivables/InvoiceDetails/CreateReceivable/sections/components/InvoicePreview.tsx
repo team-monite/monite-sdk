@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -7,34 +8,66 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
+import { CreateReceivablesFormProps } from '../../validation';
 import './InvoicePreview.css';
 
+interface InvoicePreviewProps {
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+  counterpartVats:
+    | {
+        data: components['schemas']['CounterpartVatIDResponse'][];
+      }
+    | undefined;
+  currency?: components['schemas']['CurrencyEnum'];
+  watch: <T extends keyof CreateReceivablesFormProps>(
+    field: T
+  ) => CreateReceivablesFormProps[T];
+  entityData: any; //temporary
+  entityVatIds?: {
+    data: components['schemas']['EntityVatIDResponse'][];
+  };
+  isNonVatSupported: boolean;
+  paymentTerms:
+    | {
+        data?: components['schemas']['PaymentTermsResponse'][];
+      }
+    | undefined;
+}
+
 export const InvoicePreview = ({
-  currency,
-  data,
-  entityData,
   address,
-  paymentTerms,
+  counterpartVats,
+  currency,
+  watch,
+  entityData,
   entityVatIds,
   isNonVatSupported,
-  counterpartVats,
-}: any) => {
+  paymentTerms,
+}: InvoicePreviewProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
-  const currencySymbol = getSymbolFromCurrency(currency);
-  const fulfillmentDate = data?.fulfillment_date;
-  const items = data?.line_items;
-  const memo = data?.memo;
+  const currencySymbol = currency ? getSymbolFromCurrency(currency) : '';
+  const fulfillmentDate = watch('fulfillment_date');
+  const items = watch('line_items');
+  const memo = watch('memo');
   // const discount = data?.discount?.amount;
-  const { data: counterpart } = useCounterpartById(data?.counterpart_id);
+  const { data: counterpart } = useCounterpartById(watch('counterpart_id'));
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
   const selectedPaymentTerm = paymentTerms?.data?.find(
-    (term: any) => term.id === data?.payment_terms_id
+    (term: any) => term.id === watch('payment_terms_id')
   );
+
+  /*  attempt to fix typescript below but didnt help
+
+const sanitizedItems = items.map((item) => ({
+    ...item,
+    smallest_amount: item.smallest_amount ?? undefined,
+  }));
+ */
   const { subtotalPrice, totalPrice, totalTaxes } =
     useCreateInvoiceProductsTable({
-      lineItems: [...data?.line_items],
+      lineItems: items,
       formatCurrencyToDisplay,
       isNonVatSupported,
     });
@@ -191,7 +224,9 @@ export const InvoicePreview = ({
                     </td>
                     <td>{item?.amount}</td>
                     <td>
-                      {(item?.tax_rate_value || item?.vat_rate_value) / 100}%
+                      {(item?.tax_rate_value ?? item?.vat_rate_value ?? 0) /
+                        100}
+                      %
                     </td>
                   </tr>
                 ))
@@ -211,12 +246,7 @@ export const InvoicePreview = ({
                   <td colSpan={4}>
                     <span>{t(i18n)`Subtotal`}</span>
                   </td>
-                  <td>
-                    {subtotalPrice?.toString()}
-                    {
-                      //currency
-                    }
-                  </td>
+                  <td>{subtotalPrice?.toString()}</td>
                 </tr>
                 <tr>
                   <td colSpan={4}>
