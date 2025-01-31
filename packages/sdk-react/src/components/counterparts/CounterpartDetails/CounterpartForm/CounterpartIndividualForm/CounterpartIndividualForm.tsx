@@ -177,12 +177,6 @@ export const CounterpartIndividualForm = ({
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
-  {
-    console.log(props.onClose);
-    console.log(props.isInvoiceCreation);
-    console.log({ isInvoiceCreation });
-  }
-
   return (
     <>
       {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
