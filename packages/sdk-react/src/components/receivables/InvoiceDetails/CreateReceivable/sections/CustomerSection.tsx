@@ -12,9 +12,7 @@ import { components } from '@/api';
 import {
   CounterpartIndividualForm,
   CounterpartOrganizationForm,
-  prepareCounterpartOrganization,
 } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
-import { CounterpartOrganizationView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import {
   getCounterpartName,
   isOrganizationCounterpart,
@@ -155,6 +153,8 @@ export const CustomerSection = ({
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
   const handleEditSubmit = () => console.log;
+  //const isVatErrorShown =
+  // counterpart && !counterpart.tax_id && counterpartVats?.data.length === 0;
 
   return (
     <Stack spacing={2} className={className}>
@@ -565,6 +565,8 @@ const CounterpartSelector = ({
   }, [isSimplified, setIsEditCounterpartOpened]);
   const [address, setAddress] = useState('');
 
+  const [isFocused, setIsFocused] = useState(false);
+
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
   >(
@@ -660,36 +662,61 @@ const CounterpartSelector = ({
                     error={Boolean(error)}
                     helperText={error?.message}
                     className={`Monite-CounterpartSelector ${
-                      isSimplified && 'isSimplified'
+                      isSimplified ? 'isSimplified' : ''
                     }`}
                     InputProps={{
                       ...params.InputProps,
                       value: params.inputProps.value,
+                      onFocus: () => setIsFocused(true),
+                      onBlur: () => setIsFocused(false),
                       startAdornment: isCounterpartsLoading ? (
                         <CircularProgress size={20} />
                       ) : (
                         !isSimplified && (
-                          <InputAdornment
-                            sx={{
-                              width: '44px',
-                              height: '44px',
-                              maxHeight: '44px',
-                              justifyContent: 'center',
-                              backgroundColor: selectedCounterpartOption
-                                ? 'rgba(203, 203, 254, 1)'
-                                : 'rgba(235, 235, 255, 1)',
-                              borderRadius: '50%',
-                            }}
-                            position="start"
-                          >
-                            <Typography variant="caption">
-                              {selectedCounterpartOption
-                                ? Array.from(
-                                    selectedCounterpartOption.label
-                                  )[0].toUpperCase()
-                                : '+'}
-                            </Typography>
-                          </InputAdornment>
+                          <>
+                            <InputAdornment
+                              sx={{
+                                width: '44px',
+                                height: '44px',
+                                maxHeight: '44px',
+                                justifyContent: 'center',
+                                backgroundColor: selectedCounterpartOption
+                                  ? 'rgba(203, 203, 254, 1)'
+                                  : 'rgba(235, 235, 255, 1)',
+                                borderRadius: '50%',
+                              }}
+                              position="start"
+                            >
+                              <Typography variant="caption">
+                                {selectedCounterpartOption
+                                  ? Array.from(
+                                      selectedCounterpartOption.label
+                                    )[0].toUpperCase()
+                                  : '+'}
+                              </Typography>
+                            </InputAdornment>
+                            {!isFocused && (
+                              <InputAdornment
+                                position="end"
+                                sx={{
+                                  flexDirection: 'column',
+                                  alignItems: 'baseline',
+                                  height: 'auto',
+                                }}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  color={'rgba(41, 41, 41, 1)'}
+                                  fontWeight="bold"
+                                >
+                                  {params.inputProps.value}
+                                </Typography>
+                                <Typography variant="body2">
+                                  {address}
+                                </Typography>
+                              </InputAdornment>
+                            )}
+                          </>
                         )
                       ),
                       endAdornment: (() => {
@@ -734,7 +761,7 @@ const CounterpartSelector = ({
                 isCreateNewCounterpartOption(counterpartOption) ||
                 isDividerOption(counterpartOption)
                   ? ''
-                  : counterpartOption.label + ' ' + address
+                  : counterpartOption.label
               }
               isOptionEqualToValue={(option, value) => {
                 return option.id === value.id;

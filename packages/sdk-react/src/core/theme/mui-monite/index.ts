@@ -217,7 +217,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius: moniteTheme.borderRadius,
+          borderRadius: '.5em',
 
           '&.MuiAlert-colorInfo': {
             backgroundColor: chroma(palette.info.main).alpha(0.05).hex(),

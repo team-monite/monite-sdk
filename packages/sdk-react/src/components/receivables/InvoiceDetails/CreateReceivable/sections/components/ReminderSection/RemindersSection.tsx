@@ -183,165 +183,166 @@ const ReminderSectionContent = ({
     (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
   const shouldShowError =
-    isReminderDisabledForEntity && isCounterpartWarningRequired;
+    isReminderDisabledForEntity && isCounterpartWarningRequired && counterpart;
 
   return (
     <>
-      {!isCounterpartLoading && !counterpart?.reminders_enabled && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
-          {t(i18n)`Reminders are disabled for this Counterpart.`}
-        </Alert>
-      )}
-      {!hasValidReminderEmailLoading && !hasValidReminderEmail && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
-          {t(
-            i18n
-          )`No default email for selected Counterpart. Reminders will not be sent.`}
-        </Alert>
-      )}
+      {!isCounterpartLoading &&
+        counterpart &&
+        !counterpart?.reminders_enabled && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {t(i18n)`Reminders are disabled for this Counterpart.`}
+          </Alert>
+        )}
+      {!hasValidReminderEmailLoading &&
+        counterpart &&
+        !hasValidReminderEmail && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {t(
+              i18n
+            )`No default email for selected Counterpart. Reminders will not be sent.`}
+          </Alert>
+        )}
       {shouldShowError && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           {t(i18n)`Reminders are disabled for this Entity.`}
         </Alert>
       )}
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12}>
-          <SelectReminderLayout
-            reminder={paymentReminder}
-            isReminderLoading={isPaymentReminderLoading}
-            updateDisabled={
-              disabled || !isUpdatePaymentReminderAllowed || !paymentReminder
+      <Box sx={{ display: 'flex' }}>
+        <SelectReminderLayout
+          reminder={paymentReminder}
+          isReminderLoading={isPaymentReminderLoading}
+          updateDisabled={
+            disabled || !isUpdatePaymentReminderAllowed || !paymentReminder
+          }
+          onUpdate={onUpdatePaymentReminder}
+        >
+          <RHFAutocomplete
+            control={control}
+            name="payment_reminder_id"
+            label={t(i18n)`Before due date`}
+            options={[
+              { value: 'create', label: t(i18n)`Create a reminder preset` },
+              ...paymentReminderOptions,
+            ]}
+            optionKey="value"
+            labelKey="label"
+            noOptionsText={t(i18n)`No payment reminders available`}
+            disabled={
+              disabled ||
+              !counterpartId ||
+              !hasValidReminderEmail ||
+              !counterpart?.reminders_enabled
             }
-            onUpdate={onUpdatePaymentReminder}
-          >
-            <RHFAutocomplete
-              control={control}
-              name="payment_reminder_id"
-              label={t(i18n)`Before due date`}
-              options={[
-                { value: 'create', label: t(i18n)`Create a reminder preset` },
-                ...paymentReminderOptions,
-              ]}
-              optionKey="value"
-              labelKey="label"
-              noOptionsText={t(i18n)`No payment reminders available`}
-              disabled={
-                disabled ||
-                !counterpartId ||
-                !hasValidReminderEmail ||
-                !counterpart?.reminders_enabled
-              }
-              getOptionDisabled={(option) =>
-                option.value === 'create'
-                  ? Boolean(!isCreatePaymentReminderAllowed)
-                  : false
-              }
-              getOptionLabel={(option) => {
-                if (typeof option === 'string') return option;
-
-                if (!option.value) return '';
-                if (option.value === 'create')
-                  return t(i18n)`Create a reminder preset`;
-                return option.label || '—';
-              }}
-              renderOption={(props, option) => (
-                <MenuItem
-                  {...props}
-                  key={option.value}
-                  value={option.value}
-                  disabled={!isCreatePaymentReminderAllowed}
-                  sx={
-                    option.value === 'create'
-                      ? {
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          color: 'primary.main',
-                          whiteSpace: 'unset',
-                        }
-                      : {
-                          whiteSpace: 'unset',
-                        }
-                  }
-                >
-                  {option.value === 'create' && (
-                    <AddIcon sx={{ marginRight: 1 }} />
-                  )}
-                  {option.label}
-                </MenuItem>
-              )}
-            />
-          </SelectReminderLayout>
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <SelectReminderLayout
-            reminder={overdueReminder}
-            isReminderLoading={isOverdueReminderLoading}
-            updateDisabled={
-              disabled || !isUpdateOverdueReminderAllowed || !overdueReminder
+            getOptionDisabled={(option) =>
+              option.value === 'create'
+                ? Boolean(!isCreatePaymentReminderAllowed)
+                : false
             }
-            onUpdate={onUpdateOverdueReminder}
-          >
-            <RHFAutocomplete
-              control={control}
-              name="overdue_reminder_id"
-              label={t(i18n)`Overdue reminders`}
-              options={[
-                { value: 'create', label: t(i18n)`Create a reminder preset` },
-                ...overdueReminderOptions,
-              ]}
-              optionKey="value"
-              labelKey="label"
-              noOptionsText={t(i18n)`No overdue reminders available`}
-              disabled={
-                disabled ||
-                !counterpartId ||
-                !hasValidReminderEmail ||
-                !counterpart?.reminders_enabled
-              }
-              getOptionDisabled={(option) =>
-                option.value === 'create'
-                  ? Boolean(!isCreateOverdueReminderAllowed)
-                  : false
-              }
-              getOptionLabel={(option) => {
-                if (typeof option === 'string') return option;
+            getOptionLabel={(option) => {
+              if (typeof option === 'string') return option;
 
-                if (!option.value) return '';
-                if (option.value === 'create')
-                  return t(i18n)`Create a reminder preset`;
-                return option.label || '—';
-              }}
-              renderOption={(props, option) => (
-                <MenuItem
-                  {...props}
-                  key={option.value}
-                  value={option.value}
-                  disabled={!isCreatePaymentReminderAllowed}
-                  sx={
-                    option.value === 'create'
-                      ? {
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          color: 'primary.main',
-                          whiteSpace: 'unset',
-                        }
-                      : {
-                          whiteSpace: 'unset',
-                        }
-                  }
-                >
-                  {option.value === 'create' && (
-                    <AddIcon sx={{ marginRight: 1 }} />
-                  )}
-                  {option.label}
-                </MenuItem>
-              )}
-            />
-          </SelectReminderLayout>
-        </Grid>
-      </Grid>
+              if (!option.value) return '';
+              if (option.value === 'create')
+                return t(i18n)`Create a reminder preset`;
+              return option.label || '—';
+            }}
+            sx={{ flexWrap: 'nowrap' }}
+            renderOption={(props, option) => (
+              <MenuItem
+                {...props}
+                key={option.value}
+                value={option.value}
+                disabled={!isCreatePaymentReminderAllowed}
+                sx={
+                  option.value === 'create'
+                    ? {
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        color: 'primary.main',
+                        whiteSpace: 'unset',
+                      }
+                    : {
+                        whiteSpace: 'unset',
+                      }
+                }
+              >
+                {option.value === 'create' && (
+                  <AddIcon sx={{ marginRight: 1 }} />
+                )}
+                {option.label}
+              </MenuItem>
+            )}
+          />
+        </SelectReminderLayout>
+        <SelectReminderLayout
+          reminder={overdueReminder}
+          isReminderLoading={isOverdueReminderLoading}
+          updateDisabled={
+            disabled || !isUpdateOverdueReminderAllowed || !overdueReminder
+          }
+          onUpdate={onUpdateOverdueReminder}
+        >
+          <RHFAutocomplete
+            control={control}
+            name="overdue_reminder_id"
+            label={t(i18n)`Overdue reminders`}
+            options={[
+              { value: 'create', label: t(i18n)`Create a reminder preset` },
+              ...overdueReminderOptions,
+            ]}
+            optionKey="value"
+            labelKey="label"
+            noOptionsText={t(i18n)`No overdue reminders available`}
+            disabled={
+              disabled ||
+              !counterpartId ||
+              !hasValidReminderEmail ||
+              !counterpart?.reminders_enabled
+            }
+            getOptionDisabled={(option) =>
+              option.value === 'create'
+                ? Boolean(!isCreateOverdueReminderAllowed)
+                : false
+            }
+            getOptionLabel={(option) => {
+              if (typeof option === 'string') return option;
+
+              if (!option.value) return '';
+              if (option.value === 'create')
+                return t(i18n)`Create a reminder preset`;
+              return option.label || '—';
+            }}
+            renderOption={(props, option) => (
+              <MenuItem
+                {...props}
+                key={option.value}
+                value={option.value}
+                disabled={!isCreatePaymentReminderAllowed}
+                sx={
+                  option.value === 'create'
+                    ? {
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        color: 'primary.main',
+                        whiteSpace: 'unset',
+                      }
+                    : {
+                        whiteSpace: 'unset',
+                      }
+                }
+              >
+                {option.value === 'create' && (
+                  <AddIcon sx={{ marginRight: 1 }} />
+                )}
+                {option.label}
+              </MenuItem>
+            )}
+          />
+        </SelectReminderLayout>
+      </Box>
     </>
   );
 };
@@ -366,12 +367,21 @@ const SelectReminderLayout = ({
 
   return (
     // Use bottom alignment to correctly align editors with buttons
-    <Grid container alignItems="bottom" spacing={1}>
-      <Grid item xs={onUpdate ? 10 : 12}>
+    <Grid container alignItems="bottom" spacing={1} p={1}>
+      <Grid item xs={9}>
         {children}
       </Grid>
       {onUpdate && (
-        <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Grid
+          xs={2}
+          ml={1}
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            maxWidth: '33%',
+            flexBasis: '33%',
+          }}
+        >
           <Button
             variant="outlined"
             disabled={updateDisabled}
@@ -418,23 +428,9 @@ export const ReminderSection = (props: ReminderSectionProps) => {
         sx={{ gap: '24px', alignItems: 'flex-start', mt: 1 }}
         className={className}
       >
-        <Box sx={{ flex: '1 1 0%' }}>
-          <Typography>{t(
-            i18n
-          )`Choose a preset to send the reminders before and/or after the due date of this invoice`}</Typography>
-        </Box>
-        <Card
-          variant="outlined"
-          sx={{ borderRadius: 2, maxWidth: '560px', width: '100%' }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                mt: 2,
-              }}
-            >
-              <ReminderSectionContent {...props} />
-            </Box>
+        <Card sx={{ width: '100%', boxShadow: 'none', borderRadius: 'unset' }}>
+          <CardContent sx={{ padding: 0, mb: 2 }}>
+            <ReminderSectionContent {...props} />
           </CardContent>
         </Card>
       </Stack>

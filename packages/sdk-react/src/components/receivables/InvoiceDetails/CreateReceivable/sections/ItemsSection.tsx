@@ -220,6 +220,10 @@ export const ItemsSection = ({
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
+  const highestVatRate = vatRates?.data?.reduce(
+    (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
+    vatRates?.data[0]
+  )?.id;
 
   return (
     <Stack spacing={0} className={className}>
@@ -350,7 +354,7 @@ export const ItemsSection = ({
                                 id={field.name}
                                 labelId={field.name}
                                 size="small"
-                                defaultValue=""
+                                defaultValue={highestVatRate || ''}
                                 MenuProps={{ container: root }}
                                 onChange={(e) => {
                                   const vatRate = vatRates?.data.find(

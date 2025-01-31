@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -163,7 +162,6 @@ export const InvoicePreview = ({
                 <th>
                   {t(i18n)`Price`} ({currencySymbol})
                 </th>
-                <th>{t(i18n)`Disc.`}</th>
                 <th>
                   {t(i18n)`Amount`} ({currencySymbol})
                 </th>
@@ -191,14 +189,15 @@ export const InvoicePreview = ({
                         false
                       )}
                     </td>
-                    <td>{item?.discount}</td>
                     <td>{item?.amount}</td>
-                    <td>{item?.tax_rate_value || item?.vat_rate_value}</td>
+                    <td>
+                      {(item?.tax_rate_value || item?.vat_rate_value) / 100}%
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr className="no-items">
-                  <td colSpan={7}>
+                  <td colSpan={6}>
                     <p className="not-set"> {t(i18n)`No items`}</p>
                   </td>
                 </tr>
