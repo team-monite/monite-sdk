@@ -74,12 +74,21 @@ const TagFormModalBase = ({
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
+  const { control, handleSubmit, reset, setError } = useForm<FormFields>({
+    resolver: yupResolver(getValidationSchema(i18n)),
+    defaultValues: { name: tag?.name || '' },
+  });
   const tagCreateMutation = api.tags.postTags.useMutation(
     {},
     {
       onSuccess: () => api.tags.getTags.invalidateQueries(queryClient),
       onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
+        const errorMessage = getAPIErrorMessage(i18n, error);
+        if (errorMessage === 'This tag already exists.') {
+          setError('name', { type: 'custom', message: errorMessage });
+        } else {
+          toast.error(errorMessage);
+        }
       },
     }
   );
@@ -106,11 +115,6 @@ const TagFormModalBase = ({
       },
     }
   );
-
-  const { control, handleSubmit, reset } = useForm<FormFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: { name: tag?.name || '' },
-  });
 
   useEffect(() => {
     reset({
