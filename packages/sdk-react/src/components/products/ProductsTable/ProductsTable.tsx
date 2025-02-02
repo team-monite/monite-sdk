@@ -180,7 +180,7 @@ const ProductsTableBase = ({
     return [
       {
         field: 'name',
-        headerName: t(i18n)`Name, description`,
+        headerName: t(i18n)`Name & description`,
         display: 'flex',
         flex: 3,
         renderCell: (params) => (
@@ -224,7 +224,7 @@ const ProductsTableBase = ({
       },
       {
         field: 'measure_unit_id',
-        headerName: t(i18n)`Units`,
+        headerName: t(i18n)`Unit`,
         flex: 1,
         sortable: false,
         renderCell: (params) => {
@@ -330,9 +330,19 @@ const ProductsTableBase = ({
               isError={isError}
               onCreate={openCreateModal}
               refetch={refetch}
-              entityName={t(i18n)`Products`}
+              filterTitle={t(i18n)`No product or service found`}
+              filterDescription1={t(
+                i18n
+              )`Try adjusting your search or filter criteria`}
+              filterDescription2={null}
+              entityName={t(i18n)`products or services`}
               actionButtonLabel={t(i18n)`Create new`}
               actionOptions={[t(i18n)`Product`]}
+              noDataTitle={t(i18n)`No products or services yet`}
+              noDataDescription1={t(
+                i18n
+              )`You don’t have any products or services yet`}
+              noDataDescription2={t(i18n)`Create your first product or service`}
               type="no-data"
             />
           ),
