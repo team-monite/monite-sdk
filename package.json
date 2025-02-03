@@ -56,9 +56,11 @@
     "micromatch@npm:4.0.2": "4.0.8",
     "vite@npm:5.1.8/rollup": "4.22.4",
     "tsup@npm:8.0.2/rollup": "4.22.4",
+    "path-to-regexp@npm:0.1.10": "0.1.12",
     "cookie@npm:0.5.0": "0.7.2",
     "cookie@npm:^0.5.0": "0.7.2",
     "cookie@npm:0.6.0": "0.7.2",
+    "nanoid@npm:^3.3.6": "3.3.8",
     "ws": "^8.17.1"
   },
   "packageManager": "yarn@4.4.0"
