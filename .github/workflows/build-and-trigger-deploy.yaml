@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Trigger GitLab Pipeline Deploy to Dev
         run: |
-          REPO="${{ vars.GITLAB_REPOSITORY }}"
+          REPO="${{ secrets.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
           GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 
@@ -130,7 +130,7 @@ jobs:
     steps:
       - name: Trigger GitLab Pipeline Storybook build and deploy
         run: |
-          REPO="${{ vars.GITLAB_REPOSITORY }}"
+          REPO="${{ secrets.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
           GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 

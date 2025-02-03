@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Trigger GitLab Pipeline Deploy to Review
         run: |
-          REPO="${{ vars.GITLAB_REPOSITORY }}"
+          REPO="${{ secrets.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
           GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 
