@@ -3,7 +3,7 @@ name: Build Images and Deploy to Review
 on:
   pull_request:
     branches:
-      - DEV-*
+      - DEV**
     types:
       - opened
       - synchronize
