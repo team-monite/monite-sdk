@@ -111,7 +111,7 @@ jobs:
 
           curl --request POST \
             --form token="${GITLAB_TOKEN}" \
-            --form ref="DEV-13628-triggered-deploy" \
+            --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
             --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
@@ -140,7 +140,7 @@ jobs:
 
           curl --request POST \
             --form token="${GITLAB_TOKEN}" \
-            --form ref="DEV-13628-triggered-deploy" \
+            --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[SDK_DEMO]=${SDK_DEMO}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
