@@ -113,7 +113,7 @@ jobs:
           SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
           SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
-          NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
+          NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
 
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
@@ -127,7 +127,7 @@ jobs:
             --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
-            --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=review_deploy" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
