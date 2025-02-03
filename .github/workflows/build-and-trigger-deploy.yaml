@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - DEV-13666-build-images
 
 jobs:
   build-sdk-react:

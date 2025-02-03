@@ -1,6 +1,0 @@
-# Dockerfile.private-registry
-FROM verdaccio/verdaccio:5.29.0
-
-ENV VERDACCIO_STORAGE_PATH=/verdaccio/storage/data
-
-COPY e2e/verdaccio-config.yaml /verdaccio/conf/config.yaml
