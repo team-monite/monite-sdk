@@ -2,8 +2,6 @@ name: Build Images and Deploy to Review
 
 on:
   pull_request:
-    branches:
-      - DEV**
     types:
       - opened
       - synchronize
@@ -12,7 +10,9 @@ on:
 jobs:
   build-sdk-react:
     name: Build and Push sdk-react
+    if: startsWith(github.head_ref, 'DEV-')
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,7 +39,9 @@ jobs:
     
   build-sdk-demo:
     name: Build and Push sdk-demo
+    if: startsWith(github.head_ref, 'DEV-')
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -66,7 +68,9 @@ jobs:
 
   build-sdk-drop-in:
     name: Build and Push sdk-drop-in
+    if: startsWith(github.head_ref, 'DEV-')
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -93,6 +97,7 @@ jobs:
 
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
+    if: startsWith(github.head_ref, 'DEV-')
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo
