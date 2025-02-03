@@ -1,5 +1,25 @@
 # @monite/sdk-react
 
+## 3.20.0
+
+### Minor Changes
+
+- e942b9c: feat(DEV-13306): add financing tab
+- d452d77: feat(DEV-12235): Payment terms create/update/delete
+- f57ac16: feat(DEV-13301): finance an invoice
+- b787793: feat(DEV-13389): Default bank account is selected during counterpart and currency selection
+- 5828ac1: feat(DEV-13304): implement finance banner
+- 3a53ec0: feat(DEV-13398): expose finance components
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+- 069181e: feat(DEV-13346): show confirmation modal for bill cancelation
+- 10974e1: Bump packages for release
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+
+### Patch Changes
+
+- 88691dd: feat(DEV-13428): add wrapper for finance faq
+  - @monite/sdk-api@3.20.0
+
 ## 3.19.1
 
 ### Patch Changes
