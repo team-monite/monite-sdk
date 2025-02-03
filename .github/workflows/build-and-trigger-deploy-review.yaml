@@ -1,9 +1,13 @@
 name: Build Images and Deploy to Review
 
 on:
-  push:
+  pull_request:
     branches:
       - DEV-*
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   build-sdk-react:
