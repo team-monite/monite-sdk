@@ -22,18 +22,17 @@ export const PayablesTableAction = ({
     action: 'pay',
     entityUserId: payable.was_created_by_user_id,
   });
+
   const statusCanBePaid = ['waiting_to_be_paid', 'partially_paid'].includes(
     payable.status
   );
 
+  const hasDueAmount = Number(payable.amount_due) > 0;
+
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
     usePaymentHandler(payable.id, payable.counterpart_id);
 
-  if (!isPayAllowed) {
-    return null;
-  }
-
-  if (isPayAllowed && statusCanBePaid) {
+  if (isPayAllowed && statusCanBePaid && hasDueAmount) {
     return (
       <>
         {isPaymentLinkAvailable ? (
@@ -60,4 +59,5 @@ export const PayablesTableAction = ({
       </>
     );
   }
+  return null;
 };
