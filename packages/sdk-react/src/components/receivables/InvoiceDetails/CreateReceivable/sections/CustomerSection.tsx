@@ -61,6 +61,7 @@ import {
 import { CreateReceivablesFormProps } from '../validation';
 import { BillToSectionProps } from './components/BillToSection';
 import { CreateCounterpartModal } from './components/CreateCounterpartModal';
+import { SectionGeneralProps } from './Section.types';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -94,11 +95,24 @@ function isDividerOption(
   return counterpartOption?.id === COUNTERPART_DIVIDER;
 }
 
+export interface CustomerSectionProps extends SectionGeneralProps {
+  counterpart: components['schemas']['CounterpartResponse'] | undefined;
+  counterpartVats:
+    | {
+        data: components['schemas']['CounterpartVatIDResponse'][];
+      }
+    | undefined;
+  isCounterpartLoading: boolean;
+  isCounterpartVatsLoading: boolean;
+}
+
 export const CustomerSection = ({
+  counterpart,
   counterpartVats,
   disabled,
+  isCounterpartLoading,
   isCounterpartVatsLoading,
-}: BillToSectionProps) => {
+}: CustomerSectionProps) => {
   const { i18n } = useLingui();
   const { control, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
@@ -106,9 +120,6 @@ export const CustomerSection = ({
   const { root } = useRootElements();
 
   const counterpartId = watch('counterpart_id');
-
-  const { data: counterpart, isLoading: isCounterpartLoading } =
-    useCounterpartById(counterpartId);
 
   const { data: contacts } = useCounterpartContactList(counterpartId);
   const defaultContact = contacts?.find((c) => c.is_default);
@@ -152,9 +163,8 @@ export const CustomerSection = ({
 
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
   //const handleEditSubmit = () => console.log;
-  //const isVatErrorShown =
-  // counterpart && !counterpart.tax_id && counterpartVats?.data.length === 0;
 
   return (
     <Stack spacing={2} className={className}>
@@ -246,16 +256,28 @@ export const CustomerSection = ({
                     },
                   }}
                 >
-                  {counterpart?.[counterpart?.type]?.email && (
+                  {isOrganization && counterpart?.organization.email && (
                     <ListItem>
                       <span>{t(i18n)`Email`}</span>{' '}
-                      {counterpart?.[counterpart?.type]?.email}
+                      {counterpart.organization.email}
+                    </ListItem>
+                  )}{' '}
+                  {!isOrganization && counterpart?.individual.email && (
+                    <ListItem>
+                      <span>{t(i18n)`Email`}</span>{' '}
+                      {counterpart.individual.email}
                     </ListItem>
                   )}
-                  {counterpart?.[counterpart?.type]?.phone && (
+                  {isOrganization && counterpart?.organization.phone && (
                     <ListItem>
                       <span>{t(i18n)`Phone Number`}</span>{' '}
-                      {counterpart?.[counterpart?.type]?.phone}
+                      {counterpart.organization.phone}
+                    </ListItem>
+                  )}{' '}
+                  {!isOrganization && counterpart?.individual.phone && (
+                    <ListItem>
+                      <span>{t(i18n)`Phone Number`}</span>{' '}
+                      {counterpart.individual.phone}
                     </ListItem>
                   )}
                   {defaultContact && (

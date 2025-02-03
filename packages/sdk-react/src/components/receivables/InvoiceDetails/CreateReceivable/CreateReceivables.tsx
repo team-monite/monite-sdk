@@ -13,6 +13,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   useCounterpartAddresses,
+  useCounterpartById,
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
@@ -38,10 +39,11 @@ import { format } from 'date-fns';
 
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
-import { BillToSection } from './sections/components/BillToSection';
 import { InvoicePreview } from './sections/components/InvoicePreview';
+import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
+import { VatAndTaxValidator } from './sections/VatAndTaxValidator';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
@@ -167,6 +169,9 @@ const CreateReceivablesBase = ({
 
   const theme = useTheme();
 
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    useCounterpartById(counterpartId);
+
   if (isSettingsLoading || isEntityLoading) {
     return <LoadingPage />;
   }
@@ -277,11 +282,37 @@ const CreateReceivablesBase = ({
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>
-              <BillToSection
-                disabled={createReceivable.isPending}
-                counterpartVats={counterpartVats}
-                isCounterpartVatsLoading={isCounterpartVatsLoading}
-              />
+              <Box>
+                <Typography sx={{ mt: 2, mb: 5 }} variant="h3">{t(
+                  i18n
+                )`Create invoice`}</Typography>
+
+                <VatAndTaxValidator
+                  requiredFields={['vatId', 'taxId']}
+                  vatIds={null}
+                  taxId={entityData?.tax_id}
+                  isEntity
+                  onClick={() => {}}
+                />
+
+                {counterpartId && (
+                  <VatAndTaxValidator
+                    requiredFields={['vatId', 'taxId']}
+                    vatIds={counterpartVats}
+                    taxId={counterpart?.tax_id}
+                    isEntity={false}
+                    onClick={() => {}}
+                  />
+                )}
+                <CustomerSection
+                  disabled={createReceivable.isPending}
+                  counterpart={counterpart}
+                  counterpartVats={counterpartVats}
+                  isCounterpartVatsLoading={isCounterpartVatsLoading}
+                  isCounterpartLoading={isCounterpartLoading}
+                />
+              </Box>
+
               <ItemsSection
                 defaultCurrency={
                   settings?.currency?.default || fallbackCurrency
@@ -337,6 +368,7 @@ const CreateReceivablesBase = ({
       >
         <InvoicePreview
           watch={watch}
+          counterpart={counterpart}
           currency={actualCurrency}
           isNonVatSupported={isNonVatSupported}
           entityData={entityData}

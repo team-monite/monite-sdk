@@ -227,9 +227,12 @@ export const ItemsSection = ({
 
   return (
     <Stack spacing={0} className={className}>
-      <Typography variant="h3" sx={{ marginBottom: 1 }}>{t(
-        i18n
-      )`Items`}</Typography>
+      <Typography
+        variant="h3"
+        fontSize={'1.25em'}
+        fontWeight={500}
+        sx={{ marginBottom: 2 }}
+      >{t(i18n)`Items`}</Typography>
       <Collapse
         in={Boolean(generalError)}
         sx={{

@@ -1,9 +1,12 @@
 import { components } from '@/api';
-import { getCounterpartName } from '@/components/counterparts';
+import {
+  getCounterpartName,
+  isIndividualCounterpart,
+  isOrganizationCounterpart,
+} from '@/components/counterparts/helpers';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -13,6 +16,7 @@ import './InvoicePreview.css';
 
 interface InvoicePreviewProps {
   address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+  counterpart?: components['schemas']['CounterpartResponse'];
   counterpartVats:
     | {
         data: components['schemas']['CounterpartVatIDResponse'][];
@@ -36,6 +40,7 @@ interface InvoicePreviewProps {
 
 export const InvoicePreview = ({
   address,
+  counterpart,
   counterpartVats,
   currency,
   watch,
@@ -52,22 +57,20 @@ export const InvoicePreview = ({
   const items = watch('line_items');
   const memo = watch('memo');
   // const discount = data?.discount?.amount;
-  const { data: counterpart } = useCounterpartById(watch('counterpart_id'));
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
   const selectedPaymentTerm = paymentTerms?.data?.find(
     (term: any) => term.id === watch('payment_terms_id')
   );
 
-  /*  attempt to fix typescript below but didnt help
-
-const sanitizedItems = items.map((item) => ({
+  // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
+  const sanitizedItems = items.map((item) => ({
     ...item,
     smallest_amount: item.smallest_amount ?? undefined,
   }));
- */
+
   const { subtotalPrice, totalPrice, totalTaxes } =
     useCreateInvoiceProductsTable({
-      lineItems: items,
+      lineItems: sanitizedItems,
       formatCurrencyToDisplay,
       isNonVatSupported,
     });
@@ -110,7 +113,14 @@ const sanitizedItems = items.map((item) => ({
             )}
 
             <hr style={{ height: '5pt', visibility: 'hidden' }} />
-            <div>{counterpart?.organization?.email}</div>
+            <div>
+              {counterpart && isOrganizationCounterpart(counterpart)
+                ? counterpart.organization.email
+                : counterpart && isIndividualCounterpart(counterpart)
+                ? counterpart.individual.email
+                : ''}
+            </div>
+
             {counterpart?.tax_id && (
               <div>
                 {t(i18n)`TAX ID`} {counterpart?.tax_id}
@@ -157,24 +167,38 @@ const sanitizedItems = items.map((item) => ({
                     {t(
                       i18n
                     )`Pay in the first ${selectedPaymentTerm.term_1.number_of_days} days`}{' '}
-                    {t(i18n)`${selectedPaymentTerm.term_1.discount}% discount`}
+                    {selectedPaymentTerm.term_1.discount && (
+                      <span>
+                        <br />
+                        {t(
+                          i18n
+                        )`${selectedPaymentTerm.term_1.discount}% discount`}
+                      </span>
+                    )}
                   </p>
                 )}
                 {selectedPaymentTerm?.term_2 && (
-                  <span>
+                  <p>
                     {t(
                       i18n
                     )`Pay in the first ${selectedPaymentTerm.term_2.number_of_days} days`}{' '}
-                    {t(i18n)`${selectedPaymentTerm.term_2.discount}% discount`}
-                  </span>
+                    {selectedPaymentTerm.term_2.discount && (
+                      <span>
+                        <br />
+                        {t(
+                          i18n
+                        )`${selectedPaymentTerm.term_2.discount}%discount`}
+                      </span>
+                    )}
+                  </p>
                 )}
                 {selectedPaymentTerm?.term_final && (
-                  <span>
+                  <p>
                     {t(i18n)`Payment due`}{' '}
                     {t(
                       i18n
                     )`${selectedPaymentTerm.term_final?.number_of_days} days`}
-                  </span>
+                  </p>
                 )}
               </li>
             </ul>
@@ -194,9 +218,6 @@ const sanitizedItems = items.map((item) => ({
                 <th>{t(i18n)`Units`}</th>
                 <th>
                   {t(i18n)`Price`} ({currencySymbol})
-                </th>
-                <th>
-                  {t(i18n)`Amount`} ({currencySymbol})
                 </th>
                 <th>{t(i18n)`Tax`} (%)</th>
               </tr>
@@ -222,7 +243,6 @@ const sanitizedItems = items.map((item) => ({
                         false
                       )}
                     </td>
-                    <td>{item?.amount}</td>
                     <td>
                       {(item?.tax_rate_value ?? item?.vat_rate_value ?? 0) /
                         100}
