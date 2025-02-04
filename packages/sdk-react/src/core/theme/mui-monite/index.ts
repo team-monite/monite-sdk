@@ -453,6 +453,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
+          '& .MuiInput-input.MuiAutocomplete-input': {
+            padding: '0 14px',
+          },
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',

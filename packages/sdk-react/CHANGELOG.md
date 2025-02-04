@@ -1,5 +1,18 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.6
+
+### Minor Changes
+
+- 2c645e2: Fixed style issues
+
+## 4.0.0-alpha.5
+
+### Minor Changes
+
+- d452d77: feat(DEV-12235): Payment terms create/update/delete
+- 5dddf03: New pre-release v4
+
 ## 4.0.0-alpha.4
 
 ### Patch Changes

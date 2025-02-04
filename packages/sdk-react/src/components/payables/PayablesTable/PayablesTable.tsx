@@ -232,8 +232,8 @@ const PayablesTableBase = ({
       {
         field: 'document_id',
         sortable: false,
-        headerName: t(i18n)`Number, status`,
-        width: 100,
+        headerName: t(i18n)`Number`,
+        width: 140,
         display: 'flex',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 5 : 1),
         renderCell: (params) => {
@@ -263,10 +263,19 @@ const PayablesTableBase = ({
               >
                 {payable.document_id}
               </Typography>
-              <PayableStatusChip status={payable.status} size="small" />
             </Stack>
           );
         },
+      },
+      {
+        field: 'status',
+        sortable: false,
+        headerName: t(i18n)`Status`,
+        display: 'flex',
+        width: 70,
+        renderCell: (params) => (
+          <PayableStatusChip status={params.value} size="small" />
+        ),
       },
       {
         field: 'counterpart_id',
@@ -304,7 +313,7 @@ const PayablesTableBase = ({
         field: 'created_at',
         type: 'date',
         headerName: t(i18n)`Invoice date`,
-        width: 140,
+        width: 120,
         display: 'flex',
         renderCell: ({ formattedValue }) => formattedValue,
         valueFormatter: (

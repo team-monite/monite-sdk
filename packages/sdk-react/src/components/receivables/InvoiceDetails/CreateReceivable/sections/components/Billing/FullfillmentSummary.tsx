@@ -16,7 +16,7 @@ import { SectionGeneralProps } from '../../Section.types';
 
 export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, resetField, watch } =
+  const { control, resetField, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
   const { api, locale } = useMoniteContext();
