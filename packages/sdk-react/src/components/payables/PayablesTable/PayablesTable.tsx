@@ -359,6 +359,9 @@ const PayablesTableBase = ({
           return (
             <PayablesTableAction
               payable={payable}
+              onPayableActionComplete={() => {
+                refetch();
+              }}
               onPay={onPay}
               onPayUS={onPayUS}
             />
@@ -366,7 +369,14 @@ const PayablesTableBase = ({
         },
       },
     ];
-  }, [locale.dateFormat, formatCurrencyToDisplay, i18n, onPay, onPayUS]);
+  }, [
+    locale.dateFormat,
+    formatCurrencyToDisplay,
+    i18n,
+    onPay,
+    onPayUS,
+    refetch,
+  ]);
 
   const columns = useMemo<GridColDef[]>(() => {
     return columnsConfig.sort((a, b) => {
