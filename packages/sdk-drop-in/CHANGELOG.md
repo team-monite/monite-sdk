@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.7
+
+### Major Changes
+
+- 646c7ac: Bump Drop-in (v4)
+
 ## 1.8.0-alpha.6
 
 ### Minor Changes
