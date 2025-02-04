@@ -52,7 +52,9 @@ export interface StyledCardProps extends ComponentProps<typeof Card> {
   theme: Theme;
 }
 
-export const SummaryStyledCard = styled(Card)(
+export const SummaryStyledCard = styled(Card, {
+  shouldForwardProp: (prop) => prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
+})(
   ({ selected, isAllItems, theme }: StyledCardProps) => ({
     cursor: 'pointer',
     border: `2px solid ${
