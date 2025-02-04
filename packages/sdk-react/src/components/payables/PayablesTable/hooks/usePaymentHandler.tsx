@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -8,109 +8,58 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Modal, Box, CircularProgress } from '@mui/material';
 
-import { useRetry } from './useRetry';
-
 export const usePaymentHandler = (
   payableId?: components['schemas']['PayableResponseSchema']['id'],
   counterpartId?: components['schemas']['PayableResponseSchema']['counterpart_id'],
-  returnUrl: string = 'https://www.monite.com'
+  onPaymentComplete?: (payableId: string, status: string) => void
 ) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api } = useMoniteContext();
   const { root } = useRootElements();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
+  const [paymentLinkId, setPaymentLinkId] = useState<string | null>(null);
 
   const createPaymentLinkMutation =
     api.paymentLinks.postPaymentLinks.useMutation({});
-  const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
-    undefined,
+
+  const {
+    data: currentPaymentLink,
+    refetch: refetchCurrentPaymentLink,
+    isSuccess: isCurrentPaymentLinkSuccess,
+  } = api.paymentLinks.getPaymentLinksId.useQuery(
     {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-        ]),
-      onError: (error) => {
-        toast.error(error.toString());
-      },
-    }
+      path: { payment_link_id: paymentLinkId ?? '' },
+    },
+    { enabled: !!paymentLinkId }
   );
 
-  const {
-    executeWithRetry: executeWithRetryMarkPaid,
-    isRetrying: isRetryingMarkPaid,
-  } = useRetry({
-    maxAttempts: 5,
-    initialDelayMs: 1000,
-    backoffFactor: 1.5,
-    shouldRetry: () => {
-      if (!payableId) return true;
-      return true;
-    },
-    onRetry: (attempt, error) => {
-      console.log(`Marking as paid attempt ${attempt} failed:`, error);
-    },
-  });
-
-  const {
-    executeWithRetry: executeWithRetryCreateLink,
-    isRetrying: isRetryingCreateLink,
-  } = useRetry({
-    maxAttempts: 5,
-    initialDelayMs: 1000,
-    backoffFactor: 1.5,
-    shouldRetry: () => {
-      if (!payableId) return true;
-      return true;
-    },
-    onRetry: (attempt, error) => {
-      console.log(`Payment link creation attempt ${attempt} failed:`, error);
-    },
-  });
-
-  const markInvoiceAsPaid = async (id?: string) => {
-    if (!id) return;
-
-    try {
-      await executeWithRetryMarkPaid(async () => {
-        if (!id) throw new Error('Payable ID is undefined');
-
-        return payMutation.mutateAsync(
-          {
-            path: { payable_id: id },
-          },
-          {
-            onSuccess: (payable) => {
-              toast.success(
-                t(i18n)`Payable "${payable.document_id}" has been paid`
-              );
-            },
-          }
-        );
-      });
-    } catch (error) {
-      console.error('Failed to mark invoice as paid after retries:', error);
-      toast.error(t(i18n)`Failed to mark invoice as paid. Please try again.`);
+  useEffect(() => {
+    if (
+      isCurrentPaymentLinkSuccess &&
+      currentPaymentLink?.payment_intent?.status === 'processing'
+    ) {
+      onPaymentComplete?.(
+        payableId ?? '',
+        currentPaymentLink?.payment_intent?.status ?? ''
+      );
     }
-  };
+  }, [
+    currentPaymentLink,
+    isCurrentPaymentLinkSuccess,
+    onPaymentComplete,
+    payableId,
+  ]);
 
   const handleCloseModal = async () => {
+    await refetchCurrentPaymentLink();
+
     setModalOpen(false);
     setIframeUrl(null);
-    await markInvoiceAsPaid(payableId);
   };
 
   const handlePay = async () => {
-    if (!returnUrl?.startsWith('https://')) {
-      toast.error(t(i18n)`Return URL must use HTTPS protocol`);
-      return;
-    }
-
     if (!counterpartId) {
       toast.error(
         t(i18n)`Counterpart not found. Please create a counterpart first.`
@@ -121,45 +70,36 @@ export const usePaymentHandler = (
     setModalOpen(true);
 
     try {
-      const paymentLink = await executeWithRetryCreateLink(async () => {
-        if (!payableId) throw new Error('Payable ID is undefined');
-
-        return createPaymentLinkMutation.mutateAsync({
-          recipient: {
-            id: counterpartId,
-            type: 'counterpart',
-          },
-          object: {
-            id: payableId,
-            type: 'payable',
-          },
-          payment_methods: ['sepa_credit'],
-          return_url: returnUrl,
-          expires_at: new Date(
-            Date.now() + 60 * 24 * 3600 * 1000
-          ).toISOString(),
-        });
+      if (!payableId) throw new Error('Payable ID is undefined');
+      const paymentLink = await createPaymentLinkMutation.mutateAsync({
+        recipient: {
+          id: counterpartId,
+          type: 'counterpart',
+        },
+        object: {
+          id: payableId,
+          type: 'payable',
+        },
+        payment_methods: ['sepa_credit'],
+        expires_at: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
       });
 
       if (paymentLink.payment_page_url) {
+        setPaymentLinkId(paymentLink.id);
         setIframeUrl(paymentLink.payment_page_url);
       } else {
+        setPaymentLinkId(null);
+        setIframeUrl(null);
         throw new Error('No payment page URL in response');
       }
     } catch (error) {
       console.error('Payment link creation error:', error);
-      toast.error(t(i18n)`Failed to create payment link. Please try again.`);
+      toast.error(t(i18n)`Failed to a create payment link. Please try again.`);
       setModalOpen(false);
     }
   };
 
   const LoadingMessage = () => {
-    if (isRetryingCreateLink) {
-      return t(i18n)`Creating payment link...`;
-    }
-    if (isRetryingMarkPaid) {
-      return t(i18n)`Marking invoice as paid...`;
-    }
     return t(i18n)`Loading payment page...`;
   };
 

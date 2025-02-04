@@ -250,6 +250,7 @@ export function usePayableDetails({
     data: payable,
     error: payableQueryError,
     isLoading,
+    refetch: refetchPayable,
   } = api.payables.getPayablesId.useQuery(
     { path: { payable_id: payableId ?? '' } },
     {
@@ -259,8 +260,13 @@ export function usePayableDetails({
     }
   );
 
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id);
+    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id, () => {
+      setIsProcessingPayment(true);
+      refetchPayable();
+    });
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -880,6 +886,7 @@ export function usePayableDetails({
     isEdit,
     permissions,
     lineItems,
+    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,
