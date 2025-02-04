@@ -157,8 +157,11 @@ export function usePayableDetails({
     }
   );
 
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
     usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id, () => {
+      setIsProcessingPayment(true);
       refetchPayable();
     });
 
@@ -775,6 +778,7 @@ export function usePayableDetails({
     isEdit,
     permissions,
     lineItems,
+    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,

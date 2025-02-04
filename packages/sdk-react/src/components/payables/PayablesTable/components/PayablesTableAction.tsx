@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { components } from '@/api';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -30,15 +32,23 @@ export const PayablesTableAction = ({
   );
 
   const hasDueAmount = Number(payable.amount_to_pay) > 0;
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
     usePaymentHandler(
       payable.id,
       payable.counterpart_id,
-      onPayableActionComplete
+      (payableId, status) => {
+        setIsProcessingPayment(true);
+        onPayableActionComplete(payableId, status);
+      }
     );
 
   if (isPayAllowed && statusCanBePaid && hasDueAmount) {
+    if (isProcessingPayment) {
+      return t(i18n)`Processing payment...`;
+    }
+
     return (
       <>
         {isPaymentLinkAvailable ? (

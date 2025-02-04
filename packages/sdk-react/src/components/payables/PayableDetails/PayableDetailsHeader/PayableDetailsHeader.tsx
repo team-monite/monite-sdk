@@ -55,6 +55,7 @@ export const PayableDetailsHeader = ({
   payInvoice,
   payableDetailsFormId,
   isPaymentLinkAvailable,
+  isProcessingPayment,
   onClose,
   modalComponent,
 }: PayablesDetailsHeaderProps) => {
@@ -116,7 +117,7 @@ export const PayableDetailsHeader = ({
     pay: {
       variant: 'contained',
       onClick: payInvoice,
-      disabled: !isPaymentLinkAvailable,
+      disabled: !isPaymentLinkAvailable || isProcessingPayment,
       children: t(i18n)`Pay`,
     },
   };

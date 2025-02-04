@@ -58,6 +58,7 @@ const PayableDetailsBase = ({
     lineItems,
     isEdit,
     isLoading,
+    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,
@@ -150,6 +151,7 @@ const PayableDetailsBase = ({
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
           isPaymentLinkAvailable={isPaymentLinkAvailable}
+          isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
         />
         <Divider />
