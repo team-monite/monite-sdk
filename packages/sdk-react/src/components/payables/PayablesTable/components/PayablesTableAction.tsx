@@ -9,12 +9,14 @@ interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
   onPay?: (id: string) => void;
   onPayUS?: (id: string) => void;
+  onPayableActionComplete?: (payableId: string, status: string) => void;
 }
 
 export const PayablesTableAction = ({
   payable,
   onPay,
   onPayUS, // TODO: remove onPayUS prop
+  onPayableActionComplete = () => {},
 }: PayablesTableActionProps) => {
   const { i18n } = useLingui();
   const { data: isPayAllowed } = useIsActionAllowed({
@@ -27,10 +29,14 @@ export const PayablesTableAction = ({
     payable.status
   );
 
-  const hasDueAmount = Number(payable.amount_due) > 0;
+  const hasDueAmount = Number(payable.amount_to_pay) > 0;
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(payable.id, payable.counterpart_id);
+    usePaymentHandler(
+      payable.id,
+      payable.counterpart_id,
+      onPayableActionComplete
+    );
 
   if (isPayAllowed && statusCanBePaid && hasDueAmount) {
     return (

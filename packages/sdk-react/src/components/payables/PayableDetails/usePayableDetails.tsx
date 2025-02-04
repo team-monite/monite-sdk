@@ -147,6 +147,7 @@ export function usePayableDetails({
     data: payable,
     error: payableQueryError,
     isLoading,
+    refetch: refetchPayable,
   } = api.payables.getPayablesId.useQuery(
     { path: { payable_id: payableId ?? '' } },
     {
@@ -157,7 +158,9 @@ export function usePayableDetails({
   );
 
   const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id);
+    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id, () => {
+      refetchPayable();
+    });
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -449,7 +452,7 @@ export function usePayableDetails({
 
       case 'waiting_to_be_paid':
       case 'partially_paid': {
-        if (isPayAvailable) {
+        if (isPayAvailable && Number(payable.amount_to_pay) > 0) {
           setPermissions(['pay']);
         }
 
@@ -476,6 +479,7 @@ export function usePayableDetails({
     isReopenAvailable,
     status,
     payableId,
+    payable?.amount_to_pay,
   ]);
 
   useEffect(() => {
