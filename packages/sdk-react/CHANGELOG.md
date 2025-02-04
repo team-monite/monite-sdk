@@ -1,5 +1,15 @@
 # @monite/sdk-react
 
+## 3.21.0
+
+### Minor Changes
+
+- 3174ba4: Accounts Payable payment flow improvements
+
+### Patch Changes
+
+- @monite/sdk-api@3.21.0
+
 ## 3.20.0
 
 ### Minor Changes
