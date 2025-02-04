@@ -1,0 +1,31 @@
+name: Trigger Stop Review
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  trigger-gitlab-review-destroy:
+    name: Trigger GitLab Review Stop
+    if: startsWith(github.head_ref, 'DEV-')  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger GitLab Pipeline to Stop Review
+        run: |
+          REPO="${{ secrets.GITLAB_REPOSITORY }}"
+          PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
+          GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
+
+          NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
+          echo "NORMALIZED_GITHUB_BRANCH = $NORMALIZED_GITHUB_BRANCH"
+
+          curl --request POST \
+            --form token="${GITLAB_TOKEN}" \
+            --form ref="master" \
+            --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
+            --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
+            --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
+            --form "variables[CI_ACTION]=review_destroy" \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"

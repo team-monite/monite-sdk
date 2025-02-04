@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 1.8.0
+
+### Minor Changes
+
+- 10974e1: Bump packages for release
+
+### Patch Changes
+
+- @monite/sdk-api@3.20.0
+
 ## 1.7.3
 
 ### Patch Changes

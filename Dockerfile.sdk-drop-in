@@ -1,0 +1,22 @@
+#Dockerfile.sdk-drop-in
+FROM cimg/node:20.12.2
+
+# Temporarily switch to root to set up a non-root user
+USER root
+
+RUN groupadd -g 1000 app && \
+    useradd -m -u 1000 -g app -s /bin/bash app
+
+# Set the working directory
+WORKDIR /app
+
+# Copy files and set ownership
+COPY . /app
+RUN chown -R app:app /app
+
+# Switch to non-root user
+USER app
+
+# Install dependencies and build
+RUN yarn install --immutable
+RUN yarn build --filter='@monite/sdk-drop-in'
