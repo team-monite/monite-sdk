@@ -342,7 +342,6 @@ const PayableDetailsFormBase = forwardRef<
 
     const className = 'Monite-PayableDetailsForm';
 
-
     useEffect(() => {
       if (
         counterpartBankAccountQuery.isSuccess &&
@@ -352,7 +351,7 @@ const PayableDetailsFormBase = forwardRef<
           counterpartBankAccountQuery.data.data,
           currentCurrency
         );
-        
+
         // Only reset if the value is different
         const currentValue = methods.getValues('counterpartBankAccount');
         if (currentValue !== defaultBankAccount) {
@@ -362,12 +361,18 @@ const PayableDetailsFormBase = forwardRef<
           });
         }
       }
-    }, [counterpartBankAccountQuery.data, currentCurrency, resetField, methods.getValues]);
+    }, [
+      counterpartBankAccountQuery.data,
+      currentCurrency,
+      resetField,
+      methods.getValues,
+      counterpartBankAccountQuery.isSuccess,
+      methods,
+    ]);
 
     useEffect(() => {
       trigger();
     }, [trigger]);
-
 
     return (
       <>

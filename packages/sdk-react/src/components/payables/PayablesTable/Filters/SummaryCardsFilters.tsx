@@ -53,23 +53,20 @@ export interface StyledCardProps extends ComponentProps<typeof Card> {
 }
 
 export const SummaryStyledCard = styled(Card, {
-  shouldForwardProp: (prop) => prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
-})(
-  ({ selected, isAllItems, theme }: StyledCardProps) => ({
-    cursor: 'pointer',
-    border: `2px solid ${
-      selected ? theme.palette.primary.main : 'transparent'
-    }`,
-    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
-    display: 'flex',
-    padding: '16px 18px',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: 80,
-    minWidth: isAllItems ? '118px' : '180px',
-    flexShrink: 0,
-  })
-);
+  shouldForwardProp: (prop) =>
+    prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
+})(({ selected, isAllItems, theme }: StyledCardProps) => ({
+  cursor: 'pointer',
+  border: `2px solid ${selected ? theme.palette.primary.main : 'transparent'}`,
+  '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+  display: 'flex',
+  padding: '16px 18px',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  height: 80,
+  minWidth: isAllItems ? '118px' : '180px',
+  flexShrink: 0,
+}));
 
 export const summaryCardClassName = 'Monite-SummaryCard';
 

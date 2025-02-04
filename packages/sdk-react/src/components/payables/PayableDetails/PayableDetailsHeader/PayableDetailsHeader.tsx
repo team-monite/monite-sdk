@@ -39,6 +39,7 @@ export interface PayablesDetailsHeaderProps {
   payableDetailsFormId: string;
   onClose?: () => void;
   isPaymentLinkAvailable: boolean;
+  isProcessingPayment: boolean;
   modalComponent: ReactNode;
 }
 
