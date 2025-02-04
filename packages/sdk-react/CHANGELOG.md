@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.7
+
+### Minor Changes
+
+- 548efe1: Payment flow improvements on Accounts payable
+
 ## 4.0.0-alpha.6
 
 ### Minor Changes
