@@ -1,11 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
 import { useMoniteContext } from '@monite/sdk-react';
-import { Box, Stack, Skeleton } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Skeleton,
+  Button,
+  Container,
+  TableHead,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  Link,
+} from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
 import EmptyState from '@/components/EmptyState';
@@ -19,168 +32,87 @@ import {
   IconPresentation,
 } from '@/icons';
 
-import dashboardBalanceUS from './balance.svg';
-import dashboardCashflowUS from './cashflow.svg';
-import dashboardBalanceEU from './dashboard-widgets-1-eur.svg';
-import dashboardBalanceUK from './dashboard-widgets-1-gbp.svg';
-import dashboardCashflowEU from './dashboard-widgets-2-eur.svg';
-import dashboardCashflowUK from './dashboard-widgets-2-gbp.svg';
-import dashboardHeader from './header.svg';
-
 export default function DefaultPage() {
-  const [useMockup, setUseMockup] = useState(true);
+  const { api } = useMoniteContext();
+  const { data: duePayables, isLoading: duePayablesLoading } =
+    api.payables.getPayables.useQuery({
+      query: { status: 'waiting_to_be_paid' },
+    });
 
-  useEffect(() => {
-    const showNewDashboard =
-      localStorage.getItem('showNewDashboard') === 'true';
-
-    setUseMockup(!showNewDashboard);
-  }, []);
+  const { data: overdueInvoices, isLoading: overdueInvoicesLoading } =
+    api.receivables.getReceivables.useQuery({
+      query: { status: 'overdue' },
+    });
 
   return (
-    <Box className="Monite-PageContainer Monite-Dashboard">
-      {useMockup ? <DashboardMockup /> : <Dashboard />}
-    </Box>
+    <Container className="Monite-PageContainer Monite-Dashboard">
+      <Stack direction="column" justifyContent="flex-start" alignItems="center">
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap={true}
+          justifyContent="space-between"
+          alignItems={'center'}
+          sx={{ width: '100%', mb: '24px' }}
+        >
+          <h1>Dashboard</h1>
+          <Button
+            variant={'contained'}
+            size={'medium'}
+            sx={{
+              borderRadius: '8px',
+              height: `40px`,
+              fontSize: `0.9rem`,
+            }}
+          >
+            Quick actions
+          </Button>
+        </Stack>
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap={true}
+          justifyContent="space-between"
+          sx={{ width: '100%' }}
+        >
+          <Box sx={{ flex: 1 }}>
+            <CashCard />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <RecomendedActionsCard />
+          </Box>
+        </Stack>
+        <Box sx={{ width: '100%', mt: 3 }}>
+          <CashFlowCard />
+        </Box>
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap={true}
+          justifyContent="space-between"
+          sx={{ width: '100%', mt: 3 }}
+        >
+          <Box sx={{ flex: 1 }}>
+            {!overdueInvoicesLoading ? (
+              <OutstandingInvoicesCard
+                overdueInvoices={overdueInvoices?.data}
+              />
+            ) : (
+              <Skeleton variant="rounded" width={'100%'} height={200} />
+            )}
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            {!duePayablesLoading ? (
+              <DuePayablesCard duePayables={duePayables?.data} />
+            ) : (
+              <Skeleton variant="rounded" width={'100%'} height={200} />
+            )}
+          </Box>
+        </Stack>
+      </Stack>
+    </Container>
   );
 }
-
-const DashboardMockup = () => {
-  const dashboardBalanceImages: { [key: string]: string } = {
-    US: dashboardBalanceUS, // US
-    GB: dashboardBalanceUK, // UK
-    AT: dashboardBalanceEU, // Austria
-    BE: dashboardBalanceEU, // Belgium
-    CY: dashboardBalanceEU, // Cyprus
-    EE: dashboardBalanceEU, // Estonia
-    FI: dashboardBalanceEU, // Finland
-    FR: dashboardBalanceEU, // France
-    DE: dashboardBalanceEU, // Germany
-    GR: dashboardBalanceEU, // Greece
-    IE: dashboardBalanceEU, // Ireland
-    IT: dashboardBalanceEU, // Italy
-    LV: dashboardBalanceEU, // Latvia
-    LT: dashboardBalanceEU, // Lithuania
-    LU: dashboardBalanceEU, // Luxembourg
-    MT: dashboardBalanceEU, // Malta
-    NL: dashboardBalanceEU, // Netherlands
-    PT: dashboardBalanceEU, // Portugal
-    SK: dashboardBalanceEU, // Slovakia
-    SI: dashboardBalanceEU, // Slovenia
-    ES: dashboardBalanceEU, // Spain
-  };
-  const dashboardCashflowImages: { [key: string]: string } = {
-    US: dashboardCashflowUS, // US
-    GB: dashboardCashflowUK, // UK
-    AT: dashboardCashflowEU, // Austria
-    BE: dashboardCashflowEU, // Belgium
-    CY: dashboardCashflowEU, // Cyprus
-    EE: dashboardCashflowEU, // Estonia
-    FI: dashboardCashflowEU, // Finland
-    FR: dashboardCashflowEU, // France
-    DE: dashboardCashflowEU, // Germany
-    GR: dashboardCashflowEU, // Greece
-    IE: dashboardCashflowEU, // Ireland
-    IT: dashboardCashflowEU, // Italy
-    LV: dashboardCashflowEU, // Latvia
-    LT: dashboardCashflowEU, // Lithuania
-    LU: dashboardCashflowEU, // Luxembourg
-    MT: dashboardCashflowEU, // Malta
-    NL: dashboardCashflowEU, // Netherlands
-    PT: dashboardCashflowEU, // Portugal
-    SK: dashboardCashflowEU, // Slovakia
-    SI: dashboardCashflowEU, // Slovenia
-    ES: dashboardCashflowEU, // Spain
-  };
-
-  const { api } = useMoniteContext();
-  const { data: entity, isLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery();
-  const getDashboardCashFlowImage = (countryCode?: string) =>
-    countryCode && countryCode in dashboardCashflowImages
-      ? dashboardCashflowImages[countryCode]
-      : dashboardCashflowUS;
-
-  const getDashboardBalanceImage = (countryCode?: string) =>
-    countryCode && countryCode in dashboardBalanceImages
-      ? dashboardBalanceImages[countryCode]
-      : dashboardBalanceUS;
-
-  const currentCountry = entity?.address.country;
-
-  return (
-    <Stack direction="column" justifyContent="flex-start" alignItems="center">
-      {isLoading ? (
-        <>
-          <p>
-            <Skeleton variant="rounded" width={1127} height={150} />
-          </p>
-          <p>
-            <Skeleton variant="rounded" width={1127} height={400} />
-          </p>
-          <p>
-            <Skeleton variant="rounded" width={1127} height={150} />
-          </p>
-          <p>
-            <Skeleton variant="rounded" width={1127} height={150} />
-          </p>
-        </>
-      ) : (
-        <>
-          <Image priority src={dashboardHeader} alt="" />
-          <Image
-            priority
-            alt=""
-            src={getDashboardBalanceImage(currentCountry)}
-          />
-          <Image
-            priority
-            src={getDashboardCashFlowImage(currentCountry)}
-            alt=""
-          />
-        </>
-      )}
-    </Stack>
-  );
-};
-
-const Dashboard = () => {
-  return (
-    <Stack direction="column" justifyContent="flex-start" alignItems="center">
-      <Image priority src={dashboardHeader} alt="" />
-      <Stack
-        direction="row"
-        spacing={3}
-        useFlexGap={true}
-        justifyContent="space-between"
-        sx={{ width: '100%' }}
-      >
-        <Box sx={{ flex: 1 }}>
-          <CashCard />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <RecomendedActionsCard />
-        </Box>
-      </Stack>
-      <Box sx={{ width: '100%', mt: 3 }}>
-        <CashFlowCard />
-      </Box>
-      <Stack
-        direction="row"
-        spacing={3}
-        useFlexGap={true}
-        justifyContent="space-between"
-        sx={{ width: '100%', mt: 3 }}
-      >
-        <Box sx={{ flex: 1 }}>
-          <OutstandingInvoicesCard />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <DuePayablesCard />
-        </Box>
-      </Stack>
-    </Stack>
-  );
-};
 
 const CashCard = () => {
   const emptyState = (
@@ -238,12 +170,36 @@ const CashFlowCard = () => {
   );
 };
 
-const OutstandingInvoicesCard = () => {
+const DashboardTable = ({ children }: { children: ReactNode }) => {
+  return (
+    <TableContainer>
+      <Table
+        sx={{
+          minWidth: '100%',
+          '& td, & th': { fontSize: '0.9rem', padding: '4px' },
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell>Invoice #</TableCell>
+            <TableCell>Vendor</TableCell>
+            <TableCell align="right">Due date</TableCell>
+            <TableCell align="right">Amount</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const OutstandingInvoicesCard = ({ overdueInvoices }) => {
   const emptyState = (
     <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
       All looks good! All invoices are collected.
     </EmptyState>
   );
+  const totalOverdueInvoices = overdueInvoices?.length;
 
   return (
     <DashboardCard
@@ -251,17 +207,59 @@ const OutstandingInvoicesCard = () => {
       renderIcon={(props) => <IconReceipt {...props} />}
       iconVariant="success"
     >
-      {emptyState}
+      {totalOverdueInvoices ? (
+        <div>
+          <DashboardTable>
+            {overdueInvoices.slice(0, 3).map((receivable) => {
+              return (
+                <TableRow
+                  key={receivable.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': {
+                      border: 0,
+                    },
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {receivable.document_id}
+                  </TableCell>
+                  <TableCell>{receivable.counterpart_id}</TableCell>
+                  <TableCell align="right">{receivable.due_date}</TableCell>
+                  <TableCell align="right">{receivable.total_amount}</TableCell>
+                </TableRow>
+              );
+            })}
+          </DashboardTable>
+          <Link
+            href={'/receivables'}
+            sx={{
+              borderRadius: '8px',
+              height: `40px`,
+              fontSize: `0.9rem`,
+              mt: 2,
+            }}
+          >
+            See all ({totalOverdueInvoices})
+          </Link>
+        </div>
+      ) : (
+        emptyState
+      )}
     </DashboardCard>
   );
 };
 
-const DuePayablesCard = () => {
+const DuePayablesCard = ({
+  duePayables,
+}: {
+  duePayables: Record<string, any>[] | undefined;
+}) => {
   const emptyState = (
     <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
       All looks good! All bills are paid.
     </EmptyState>
   );
+  const totalDuePayables = duePayables?.length;
 
   return (
     <DashboardCard
@@ -269,7 +267,44 @@ const DuePayablesCard = () => {
       renderIcon={(props) => <IconPayable {...props} />}
       iconVariant="critical"
     >
-      {emptyState}
+      {totalDuePayables ? (
+        <div>
+          <DashboardTable>
+            {duePayables.slice(0, 3).map((payable) => {
+              return (
+                <TableRow
+                  key={payable.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': {
+                      border: 0,
+                    },
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {payable.document_id}
+                  </TableCell>
+                  <TableCell>{payable.counterpart_id}</TableCell>
+                  <TableCell align="right">{payable.due_date}</TableCell>
+                  <TableCell align="right">{payable.amount_to_pay}</TableCell>
+                </TableRow>
+              );
+            })}
+          </DashboardTable>
+          <Link
+            href={'/payables'}
+            sx={{
+              borderRadius: '8px',
+              height: `40px`,
+              fontSize: `0.9rem`,
+              mt: 2,
+            }}
+          >
+            See all ({totalDuePayables})
+          </Link>
+        </div>
+      ) : (
+        emptyState
+      )}
     </DashboardCard>
   );
 };

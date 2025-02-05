@@ -58,7 +58,7 @@ export default function DashboardCard({
   const { icon: iconStyles, wrapper } = getIconStyles(iconVariant || 'info');
 
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardHeader
         title={title}
         titleTypographyProps={{
@@ -66,7 +66,7 @@ export default function DashboardCard({
         }}
         avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
       />
-      <CardContent>{children}</CardContent>
+      <CardContent sx={{ padding: '0 16px 16px' }}>{children}</CardContent>
     </Card>
   );
 }
