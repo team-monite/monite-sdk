@@ -6,7 +6,7 @@
   flex-direction: column;
   min-height: 720px;
   margin: 50px;
-  padding: 50px;
+  padding: 1.5em 5em;
   width: 560px;
   --table-cell-padding-x: 10.1pt;
   --table-cell-padding-y: 12.2pt;

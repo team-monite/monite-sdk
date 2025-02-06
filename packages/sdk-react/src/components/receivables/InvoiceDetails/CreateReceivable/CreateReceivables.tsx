@@ -43,7 +43,7 @@ import { InvoicePreview } from './sections/components/InvoicePreview';
 import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
-import { VatAndTaxValidator } from './sections/VatAndTaxValidator';
+//import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
@@ -276,23 +276,6 @@ const CreateReceivablesBase = ({
                   i18n
                 )`Create invoice`}</Typography>
 
-                <VatAndTaxValidator
-                  requiredFields={['vatId', 'taxId']}
-                  vatIds={null}
-                  taxId={entityData?.tax_id}
-                  isEntity
-                  onClick={() => {}}
-                />
-
-                {counterpartId && (
-                  <VatAndTaxValidator
-                    requiredFields={['vatId', 'taxId']}
-                    vatIds={counterpartVats}
-                    taxId={counterpart?.tax_id}
-                    isEntity={false}
-                    onClick={() => {}}
-                  />
-                )}
                 <CustomerSection
                   disabled={createReceivable.isPending}
                   counterpart={counterpart}
