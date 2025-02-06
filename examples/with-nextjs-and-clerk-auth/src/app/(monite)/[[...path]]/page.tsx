@@ -341,10 +341,12 @@ const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
           <Link
             href={'/receivables'}
             sx={{
+              display: 'inline-block',
               borderRadius: '8px',
               height: `40px`,
               fontSize: `0.9rem`,
-              mt: 4,
+              mt: 0.5,
+              pl: 0.5,
             }}
           >
             See all ({totalOverdueInvoices})
@@ -413,10 +415,12 @@ const DuePayablesCard = ({
           <Link
             href={'/payables'}
             sx={{
+              display: 'inline-block',
               borderRadius: '8px',
               height: `40px`,
               fontSize: `0.9rem`,
-              mt: 4,
+              mt: 0.5,
+              pl: 0.5,
             }}
           >
             See all ({totalDuePayables})

@@ -60,13 +60,14 @@ export default function DashboardCard({
   return (
     <Card sx={{ height: '100%' }}>
       <CardHeader
+        sx={{ padding: '24px 24px 16px' }}
         title={title}
         titleTypographyProps={{
           variant: 'subtitle1',
         }}
         avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
       />
-      <CardContent sx={{ padding: '0 16px 16px' }}>{children}</CardContent>
+      <CardContent sx={{ padding: '0 24px 24px' }}>{children}</CardContent>
     </Card>
   );
 }
