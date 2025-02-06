@@ -201,9 +201,28 @@ const InvoicesTableBase = ({
                 recurrenceId={row.recurrence_id}
               />
             ) : (
-              <InvoiceStatusChip status={row.status} size="small" />
+              <></>
             )}
           </Stack>
+        ),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: false,
+        display: 'flex',
+        width: 80,
+        renderCell: (params) => (
+          <Box
+            sx={{
+              alignItems: 'center',
+              display: 'inline-flex',
+              verticalAlign: 'middle',
+              marginLeft: '4px',
+            }}
+          >
+            <InvoiceStatusChip status={params.value} size="small" />
+          </Box>
         ),
       },
       {

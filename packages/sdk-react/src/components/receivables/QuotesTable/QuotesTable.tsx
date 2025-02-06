@@ -146,10 +146,10 @@ const QuotesTableBase = ({
     return [
       {
         field: 'document_id',
-        headerName: t(i18n)`Number, status`,
+        headerName: t(i18n)`Number`,
         width: 100,
         display: 'flex',
-        renderCell: ({ value, row }) => (
+        renderCell: ({ value }) => (
           <Stack
             direction="column"
             alignItems="flex-start"
@@ -162,8 +162,15 @@ const QuotesTableBase = ({
             >
               {value || t(i18n)`INV-auto`}
             </Typography>
-            <InvoiceStatusChip status={row.status} size="small" />
           </Stack>
+        ),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        width: 140,
+        renderCell: (params) => (
+          <InvoiceStatusChip status={params.value} size="small" />
         ),
       },
       {
