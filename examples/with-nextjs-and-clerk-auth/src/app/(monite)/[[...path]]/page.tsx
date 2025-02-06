@@ -1,8 +1,17 @@
 'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { type ReactNode, useMemo } from 'react';
 
-import Image from 'next/image';
+import { format } from 'date-fns';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { useMoniteContext } from '@monite/sdk-react';
 import {
@@ -44,6 +53,19 @@ export default function DefaultPage() {
       query: { status: 'overdue' },
     });
 
+  // const { data: totalReceived } =
+  //   api.analytics.getAnalyticsReceivables.useQuery({
+  //     query: {
+  //       metric: 'total_amount',
+  //       dimension: 'created_at',
+  //       aggregation_function: 'summary',
+  //       date_dimension_breakdown: 'daily',
+  //       // status: 'paid',
+  //     },
+  //   });
+
+  const totalReceived = { data: [] };
+
   return (
     <Container className="Monite-PageContainer Monite-Dashboard">
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
@@ -83,7 +105,9 @@ export default function DefaultPage() {
           </Box>
         </Stack>
         <Box sx={{ width: '100%', mt: 3 }}>
-          <CashFlowCard />
+          {totalReceived ? (
+            <CashFlowCard totalReceived={totalReceived.data} />
+          ) : null}
         </Box>
         <Stack
           direction="row"
@@ -150,22 +174,60 @@ const RecomendedActionsCard = () => {
   );
 };
 
-const CashFlowCard = () => {
-  const emptyState = (
-    <EmptyState
-      renderIcon={(props) => <IconPresentation {...props} />}
-      vertical
-    >
-      Cash Flow analysis will appear when enough transaction data is available.
-    </EmptyState>
-  );
+const CashFlowCard = ({
+  totalReceived,
+}: {
+  totalReceived: { dimension_value: string | null; metric_value: number }[];
+}) => {
+  const chartData = useMemo(() => {
+    const minItems = 7;
+    const emptyValue = {
+      dimension_value: null,
+      metric_value: 0,
+    };
+
+    return [
+      ...Array(Math.max(0, minItems - totalReceived.length)).fill(emptyValue),
+      ...totalReceived,
+    ];
+  }, [totalReceived]);
 
   return (
     <DashboardCard
-      title="Cash flow"
+      title="Total received"
       renderIcon={(props) => <IconChart {...props} />}
     >
-      {emptyState}
+      <ResponsiveContainer width="100%" height={250}>
+        <AreaChart data={chartData}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="dimension_value"
+            name={'Date'}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            tickFormatter={(value) => {
+              if (!value) return '-';
+              const date = new Date(value);
+              return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+              });
+            }}
+          />
+
+          <Area
+            dataKey="metric_value"
+            name={'Received'}
+            type="bump"
+            stroke="#562BD6"
+            fill="#F4F0FE"
+            fillOpacity={0.03}
+            strokeWidth={2}
+            dot={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </DashboardCard>
   );
 };
@@ -176,12 +238,13 @@ const DashboardTable = ({ children }: { children: ReactNode }) => {
       <Table
         sx={{
           minWidth: '100%',
-          '& td, & th': { fontSize: '0.9rem', padding: '4px' },
+          'thead th': { fontWeight: '500' },
+          '& td, & th': { fontSize: '0.9rem', padding: '4px', border: 0 },
         }}
       >
         <TableHead>
           <TableRow>
-            <TableCell>Invoice #</TableCell>
+            <TableCell>Number</TableCell>
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Due date</TableCell>
             <TableCell align="right">Amount</TableCell>
@@ -193,7 +256,39 @@ const DashboardTable = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const OutstandingInvoicesCard = ({ overdueInvoices }) => {
+const CounterpartCellById = ({
+  counterpart_id,
+}: {
+  counterpart_id: string;
+}) => {
+  const { api } = useMoniteContext();
+  const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpart_id ?? '',
+      },
+    },
+    {
+      enabled: !!counterpart_id,
+    }
+  );
+
+  if (counterpart && counterpart.type === 'individual') {
+    // @ts-ignore
+    const { first_name, last_name } = counterpart.individual;
+    return `${first_name} ${last_name}`;
+  }
+
+  if (counterpart && counterpart.type === 'organization') {
+    // @ts-ignore
+    const { legal_name } = counterpart.organization;
+    return legal_name;
+  }
+
+  return '';
+};
+
+const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
   const emptyState = (
     <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
       All looks good! All invoices are collected.
@@ -210,25 +305,38 @@ const OutstandingInvoicesCard = ({ overdueInvoices }) => {
       {totalOverdueInvoices ? (
         <div>
           <DashboardTable>
-            {overdueInvoices.slice(0, 3).map((receivable) => {
-              return (
-                <TableRow
-                  key={receivable.id}
-                  sx={{
-                    '&:last-child td, &:last-child th': {
-                      border: 0,
-                    },
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {receivable.document_id}
-                  </TableCell>
-                  <TableCell>{receivable.counterpart_id}</TableCell>
-                  <TableCell align="right">{receivable.due_date}</TableCell>
-                  <TableCell align="right">{receivable.total_amount}</TableCell>
-                </TableRow>
-              );
-            })}
+            {overdueInvoices
+              .slice(0, 3)
+              .map((receivable: Record<string, any>) => {
+                return (
+                  <TableRow
+                    key={receivable.id}
+                    sx={{
+                      '&:last-child td, &:last-child th': {
+                        border: 0,
+                      },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {receivable.document_id}
+                    </TableCell>
+                    <TableCell>
+                      <CounterpartCellById
+                        counterpart_id={receivable.counterpart_id}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      {format(new Date(receivable.due_date), 'dd MMM yyyy')}
+                    </TableCell>
+                    <TableCell align="right">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: receivable.currency,
+                      }).format(receivable.total_amount / 100)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </DashboardTable>
           <Link
             href={'/receivables'}
@@ -236,7 +344,7 @@ const OutstandingInvoicesCard = ({ overdueInvoices }) => {
               borderRadius: '8px',
               height: `40px`,
               fontSize: `0.9rem`,
-              mt: 2,
+              mt: 4,
             }}
           >
             See all ({totalOverdueInvoices})
@@ -283,9 +391,21 @@ const DuePayablesCard = ({
                   <TableCell component="th" scope="row">
                     {payable.document_id}
                   </TableCell>
-                  <TableCell>{payable.counterpart_id}</TableCell>
-                  <TableCell align="right">{payable.due_date}</TableCell>
-                  <TableCell align="right">{payable.amount_to_pay}</TableCell>
+                  <TableCell>
+                    <CounterpartCellById
+                      counterpart_id={payable.counterpart_id}
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    {format(new Date(payable.due_date), 'dd MMM yyyy')}
+                  </TableCell>
+                  <TableCell align="right">
+                    {' '}
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: payable.currency,
+                    }).format(payable.total_amount / 100)}
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -296,7 +416,7 @@ const DuePayablesCard = ({
               borderRadius: '8px',
               height: `40px`,
               fontSize: `0.9rem`,
-              mt: 2,
+              mt: 4,
             }}
           >
             See all ({totalDuePayables})

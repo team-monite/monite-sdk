@@ -6,7 +6,7 @@
   "apiVersion": "2024-05-25",
   "scripts": {
     "dev": "next dev --port 3000 & dotenv -e .env.local -- npm run webhook-relay",
-    "build": "next build && yarn build:demo-data-generator",
+    "build": "next build",
     "start": "next start --port 3000",
     "lint": "next lint",
     "test": "jest",
@@ -37,6 +37,7 @@
     "@types/react-dom": "18.3.0",
     "aedes": "~0.50.1",
     "commander": "~11.1.0",
+    "date-fns": "~4.1.0",
     "eslint": "8.57.0",
     "eslint-config-next": "~14.0.3",
     "mqtt": "~5.3.1",
@@ -44,6 +45,7 @@
     "openapi-fetch": "~0.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recharts": "~2.15.1",
     "svix": "~1.13.0",
     "typescript": "~5.5.4"
   },
