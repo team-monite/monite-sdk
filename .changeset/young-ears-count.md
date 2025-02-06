@@ -1,5 +1,5 @@
 ---
-'@monite/sdk-react': major
+'@monite/sdk-react': minor
 ---
 
-invoice preview
+fix(DEV-13777): invoice preview
