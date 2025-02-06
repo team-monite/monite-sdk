@@ -68,6 +68,7 @@ function generatePayable(
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     other_extracted_data: {
+      type: 'invoice',
       total: 290400,
       currency: 'NGN',
       total_paid_amount_raw: 290400,

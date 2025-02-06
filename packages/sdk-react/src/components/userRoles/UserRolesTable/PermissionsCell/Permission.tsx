@@ -14,13 +14,13 @@ interface PermissionProps {
    * @param actions - The actions data for the role to be displayed.
    */
   actions:
-    | components['schemas']['ActionSchema'][]
+    | components['schemas']['package__roles__head__schemas__ActionSchema'][]
     | components['schemas']['PayableActionSchema'][];
 }
 
 const normalizeActions = (
   actions: (
-    | components['schemas']['ActionSchema']
+    | components['schemas']['package__roles__head__schemas__ActionSchema']
     | components['schemas']['PayableActionSchema']
   )[]
 ) => {
@@ -73,7 +73,7 @@ export const Permission = ({ actions }: PermissionProps) => {
 
   const renderAction = (
     action:
-      | components['schemas']['ActionSchema']
+      | components['schemas']['package__roles__head__schemas__ActionSchema']
       | components['schemas']['PayableActionSchema']
       | undefined
   ) => {

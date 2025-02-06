@@ -6,6 +6,8 @@ const schema: {
   draft: 'draft',
   issued: 'issued',
   deleted: 'deleted',
+  issuing: 'issuing',
+  failed: 'failed',
 };
 
 export const CreditNoteStateEnum = Object.values(schema);
