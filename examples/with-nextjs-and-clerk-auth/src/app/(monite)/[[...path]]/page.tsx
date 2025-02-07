@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
 } from 'recharts';
 
 import { useMoniteContext } from '@monite/sdk-react';
@@ -52,7 +51,7 @@ export default function DefaultPage() {
       query: { status: 'overdue' },
     });
 
-  const { data: totalReceived } =
+  const { data: totalReceived, isLoading: totalReceivedLoading } =
     api.analytics.getAnalyticsReceivables.useQuery({
       query: {
         metric: 'total_amount',
@@ -102,9 +101,11 @@ export default function DefaultPage() {
           </Box>
         </Stack>
         <Box sx={{ width: '100%', mt: 3 }}>
-          {totalReceived ? (
+          {!totalReceivedLoading && totalReceived ? (
             <CashFlowCard totalReceived={totalReceived.data} />
-          ) : null}
+          ) : (
+            <Skeleton variant="rounded" width={'100%'} height={354} />
+          )}
         </Box>
         <Stack
           direction="row"
@@ -119,14 +120,14 @@ export default function DefaultPage() {
                 overdueInvoices={overdueInvoices?.data}
               />
             ) : (
-              <Skeleton variant="rounded" width={'100%'} height={200} />
+              <Skeleton variant="rounded" width={'100%'} height={269} />
             )}
           </Box>
           <Box sx={{ flex: 1 }}>
             {!duePayablesLoading ? (
               <DuePayablesCard duePayables={duePayables?.data} />
             ) : (
-              <Skeleton variant="rounded" width={'100%'} height={200} />
+              <Skeleton variant="rounded" width={'100%'} height={269} />
             )}
           </Box>
         </Stack>
@@ -171,7 +172,11 @@ const RecomendedActionsCard = () => {
   );
 };
 
-const CashFlowCard = ({ totalReceived = [] }) => {
+const CashFlowCard = ({
+  totalReceived,
+}: {
+  totalReceived: { dimension_value?: string; metric_value: number }[];
+}) => {
   // Process data for the chart
   const chartData = useMemo(() => {
     const minItems = 7;
