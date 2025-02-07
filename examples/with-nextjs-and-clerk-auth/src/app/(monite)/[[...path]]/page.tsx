@@ -38,7 +38,6 @@ import {
   IconPayable,
   IconChart,
   IconSmilyFace,
-  IconPresentation,
 } from '@/icons';
 
 export default function DefaultPage() {
@@ -53,18 +52,16 @@ export default function DefaultPage() {
       query: { status: 'overdue' },
     });
 
-  // const { data: totalReceived } =
-  //   api.analytics.getAnalyticsReceivables.useQuery({
-  //     query: {
-  //       metric: 'total_amount',
-  //       dimension: 'created_at',
-  //       aggregation_function: 'summary',
-  //       date_dimension_breakdown: 'daily',
-  //       // status: 'paid',
-  //     },
-  //   });
-
-  const totalReceived = { data: [] };
+  const { data: totalReceived } =
+    api.analytics.getAnalyticsReceivables.useQuery({
+      query: {
+        metric: 'total_amount',
+        dimension: 'created_at',
+        aggregation_function: 'summary',
+        date_dimension_breakdown: 'daily',
+        status: 'paid',
+      },
+    });
 
   return (
     <Container className="Monite-PageContainer Monite-Dashboard">
@@ -174,11 +171,8 @@ const RecomendedActionsCard = () => {
   );
 };
 
-const CashFlowCard = ({
-  totalReceived,
-}: {
-  totalReceived: { dimension_value: string | null; metric_value: number }[];
-}) => {
+const CashFlowCard = ({ totalReceived = [] }) => {
+  // Process data for the chart
   const chartData = useMemo(() => {
     const minItems = 7;
     const emptyValue = {
@@ -188,7 +182,7 @@ const CashFlowCard = ({
 
     return [
       ...Array(Math.max(0, minItems - totalReceived.length)).fill(emptyValue),
-      ...totalReceived,
+      ...totalReceived.reverse(),
     ];
   }, [totalReceived]);
 
@@ -199,7 +193,7 @@ const CashFlowCard = ({
     >
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart data={chartData}>
-          <CartesianGrid vertical={false} />
+          <CartesianGrid stroke="#F0F2F4" vertical={false} />
           <XAxis
             dataKey="dimension_value"
             name={'Date'}
@@ -215,7 +209,25 @@ const CashFlowCard = ({
               });
             }}
           />
+          <Tooltip
+            separator={' '}
+            formatter={(value, name, props) => {
+              if (!value) return [``, 'No data'];
 
+              return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              }).format(Number(value) / 100);
+            }}
+            labelFormatter={(value) => {
+              if (!value) return '-';
+              const date = new Date(value);
+              return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+              });
+            }}
+          />
           <Area
             dataKey="metric_value"
             name={'Received'}
