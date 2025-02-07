@@ -23,7 +23,7 @@ export default function DefaultPage() {
     });
 
   return (
-    <Container className="" sx={{ pt: '24px', pb: '24px' }}>
+    <Container className="" sx={{ pb: '24px' }}>
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
         <Stack
           direction="row"
