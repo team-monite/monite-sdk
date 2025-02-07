@@ -5,6 +5,7 @@ const schema: {
 } = {
   upload: 'upload',
   email: 'email',
+  einvoicing: 'einvoicing',
 };
 
 export const PayableOriginEnum = Object.values(schema);

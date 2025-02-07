@@ -395,7 +395,7 @@ export const createRole = (
   };
 };
 
-type CommonSchema = components['schemas']['CommonSchema'];
+type CommonSchema = components['schemas']['CommonSchema-Input'];
 type CreateRoleRequest = components['schemas']['CreateRoleRequest'];
 type RolePaginationResponse = components['schemas']['RolePaginationResponse'];
 type RoleResponse = components['schemas']['RoleResponse'];

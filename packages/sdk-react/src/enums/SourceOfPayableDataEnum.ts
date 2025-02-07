@@ -5,6 +5,7 @@ const schema: {
 } = {
   ocr: 'ocr',
   user_specified: 'user_specified',
+  einvoicing: 'einvoicing',
 };
 
 export const SourceOfPayableDataEnum = Object.values(schema);

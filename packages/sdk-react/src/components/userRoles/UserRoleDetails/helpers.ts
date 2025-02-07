@@ -43,7 +43,7 @@ const transformActionsToComponentFormat = <
   P
 >(
   actions:
-    | components['schemas']['ActionSchema'][]
+    | components['schemas']['package__roles__head__schemas__ActionSchema'][]
     | components['schemas']['PayableActionSchema'][],
   enumType: T[],
   permission: P
@@ -83,7 +83,7 @@ const createInitialPermissionState = <
 };
 
 export const transformPermissionsToComponentFormat = (
-  objects: components['schemas']['RootSchema'][]
+  objects: components['schemas']['RootSchema-Input'][]
 ): PermissionRow[] => {
   return objects
     .map((object) => {
@@ -93,7 +93,7 @@ export const transformPermissionsToComponentFormat = (
         const permission: CommonPermissionRow = { name: object.object_type };
 
         return transformActionsToComponentFormat(
-          object.actions as components['schemas']['ActionSchema'][],
+          object.actions as components['schemas']['package__roles__head__schemas__ActionSchema'][],
           ActionEnum,
           permission
         );

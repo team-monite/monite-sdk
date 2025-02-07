@@ -1,3 +1,4 @@
+/* eslint lingui/no-unlocalized-strings: 0 */
 import { MonitePalette, ThemeConfig } from '@/core/theme/types';
 import { Components } from '@mui/material/styles';
 import type {

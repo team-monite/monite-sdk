@@ -20,6 +20,8 @@ const readableReceivableStatuses: {
   overdue: 'overdue',
   uncollectible: 'uncollectible',
   canceled: 'canceled',
+  issuing: 'issuing',
+  failed: 'failed',
 };
 
 export const ReadableReceivableStatuses = Object.values(

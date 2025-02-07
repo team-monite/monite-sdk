@@ -24,8 +24,8 @@ msgstr "Bill Pay"
 #~ msgstr "Cancel"
 
 #: src/components/NavigationMenu/NavigationList.tsx:67
-msgid "Company"
-msgstr "Company"
+#~ msgid "Company"
+#~ msgstr "Company"
 
 #: src/components/MoniteComponents.tsx:459
 #~ msgid "Continue"
@@ -45,8 +45,8 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: src/components/NavigationMenu/NavigationList.tsx:79
-msgid "Email Templates"
-msgstr "Email Templates"
+#~ msgid "Email Templates"
+#~ msgstr "Email Templates"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:121
 #~ msgid "English"
@@ -57,16 +57,16 @@ msgid "Get Help"
 msgstr "Get Help"
 
 #: src/components/NavigationMenu/NavigationList.tsx:73
-msgid "Integrations"
-msgstr "Integrations"
+#~ msgid "Integrations"
+#~ msgstr "Integrations"
 
 #: src/components/MoniteComponents.tsx:346
 #~ msgid "Invoice {documentId}"
 #~ msgstr "Invoice {documentId}"
 
 #: src/components/NavigationMenu/NavigationList.tsx:76
-msgid "Invoice Design"
-msgstr "Invoice Design"
+#~ msgid "Invoice Design"
+#~ msgstr "Invoice Design"
 
 #: src/components/NavigationMenu/NavigationList.tsx:48
 msgid "Invoicing"
@@ -95,8 +95,8 @@ msgstr "Invoicing"
 #~ msgstr "Monite"
 
 #: src/components/NavigationMenu/NavigationList.tsx:61
-msgid "My Profile"
-msgstr "My Profile"
+#~ msgid "My Profile"
+#~ msgstr "My Profile"
 
 #: src/components/MoniteComponents.tsx:461
 #~ msgid "Pay"
@@ -139,8 +139,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: src/components/NavigationMenu/NavigationList.tsx:64
-msgid "Team"
-msgstr "Team"
+#~ msgid "Team"
+#~ msgstr "Team"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:99
 #~ msgid "Theme"

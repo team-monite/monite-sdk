@@ -15,6 +15,8 @@ const schema: {
   uncollectible: 'uncollectible',
   canceled: 'canceled',
   deleted: 'deleted',
+  issuing: 'issuing',
+  failed: 'failed',
 };
 
 export const ReceivablesStatusEnum = Object.values(schema);
