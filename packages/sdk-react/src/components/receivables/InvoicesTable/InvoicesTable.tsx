@@ -243,7 +243,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Status`,
         sortable: false,
         display: 'flex',
-        width: 40,
+        width: 100,
         renderCell: (params) => (
           <Box
             sx={{

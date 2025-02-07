@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, useMemo } from 'react';
+import React, { type ReactNode, useMemo, useState } from 'react';
 
 import { format } from 'date-fns';
 import {
@@ -26,6 +26,8 @@ import {
   TableCell,
   TableBody,
   Link,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
@@ -64,7 +66,7 @@ export default function DefaultPage() {
     });
 
   return (
-    <Container className="Monite-PageContainer Monite-Dashboard">
+    <Container className="" sx={{ pt: '24px', pb: '24px' }}>
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
         <Stack
           direction="row"
@@ -75,20 +77,20 @@ export default function DefaultPage() {
           sx={{ width: '100%', mb: '24px' }}
         >
           <h1>Dashboard</h1>
-          <Button
-            variant={'contained'}
-            size={'medium'}
-            sx={{
-              '&:hover': {
-                borderRadius: '8px',
-              },
-              borderRadius: '8px',
-              height: `40px`,
-              fontSize: `0.9rem`,
-            }}
-          >
-            Quick actions
-          </Button>
+          {/*<Button*/}
+          {/*  variant={'contained'}*/}
+          {/*  size={'medium'}*/}
+          {/*  sx={{*/}
+          {/*    '&:hover': {*/}
+          {/*      borderRadius: '8px',*/}
+          {/*    },*/}
+          {/*    borderRadius: '8px',*/}
+          {/*    height: `40px`,*/}
+          {/*    fontSize: `0.9rem`,*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  Quick actions*/}
+          {/*</Button>*/}
         </Stack>
         <Stack
           direction="row"
@@ -389,7 +391,7 @@ const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
 
   return (
     <DashboardCard
-      title="Outstanding invoices"
+      title="Overdue invoices"
       renderIcon={(props) => <IconReceipt {...props} />}
       iconVariant="success"
     >
