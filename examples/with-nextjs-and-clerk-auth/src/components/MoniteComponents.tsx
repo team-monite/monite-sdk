@@ -95,6 +95,24 @@ export const MoniteProvider = ({
   return (
     <MoniteProviderBase
       monite={monite}
+      componentSettings={{
+        receivables: {
+          tabs: [
+            {
+              label: 'Invoices',
+              query: {
+                type: 'invoice',
+              },
+            },
+            {
+              label: 'My Financing',
+              query: {
+                type: 'financing',
+              },
+            },
+          ],
+        },
+      }}
       locale={{
         code: i18n.locale,
         messages: {

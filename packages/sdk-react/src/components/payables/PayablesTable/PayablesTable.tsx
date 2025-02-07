@@ -272,7 +272,7 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Status`,
         display: 'flex',
-        width: 70,
+        width: 100,
         renderCell: (params) => (
           <PayableStatusChip status={params.value} size="small" />
         ),
