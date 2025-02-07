@@ -239,7 +239,7 @@ const PayablesTableBase = ({
       {
         field: 'document_id',
         sortable: false,
-        headerName: t(i18n)`Number, status`,
+        headerName: t(i18n)`Number`,
         width: 100,
         display: 'flex',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 5 : 1),
@@ -270,10 +270,19 @@ const PayablesTableBase = ({
               >
                 {payable.document_id}
               </Typography>
-              <PayableStatusChip status={payable.status} size="small" />
             </Stack>
           );
         },
+      },
+      {
+        field: 'status',
+        sortable: false,
+        headerName: t(i18n)`Status`,
+        display: 'flex',
+        width: 80,
+        renderCell: (params) => (
+          <PayableStatusChip status={params.value} size="small" />
+        ),
       },
       {
         field: 'counterpart_id',
