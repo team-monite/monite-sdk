@@ -6,6 +6,7 @@ type IconVariant = 'info' | 'success' | 'critical';
 
 interface DashboardCardProps {
   title: string;
+  action?: ReactNode;
   renderIcon: (props: SvgIconProps) => ReactNode;
   iconVariant?: IconVariant;
   children?: ReactNode;
@@ -54,6 +55,7 @@ export default function DashboardCard({
   renderIcon,
   iconVariant,
   children,
+  action,
 }: DashboardCardProps) {
   const { icon: iconStyles, wrapper } = getIconStyles(iconVariant || 'info');
 
@@ -65,6 +67,7 @@ export default function DashboardCard({
         titleTypographyProps={{
           variant: 'subtitle1',
         }}
+        action={action}
         avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
       />
       <CardContent sx={{ padding: '0 24px 24px' }}>{children}</CardContent>
