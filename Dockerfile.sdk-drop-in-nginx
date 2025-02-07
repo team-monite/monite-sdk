@@ -1,0 +1,18 @@
+# Dockerfile.sdk-drop-in-nginx
+
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as base
+
+FROM nginx:1.25.1
+
+# # Temporarily switch to root to set up a non-root user
+# USER root
+
+# Create a non-root user
+RUN ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the build artifacts from the "base" stage
+COPY --from=base /app/packages/sdk-drop-in/dist /app

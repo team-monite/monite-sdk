@@ -48,6 +48,22 @@
 
 - fda8dd2: refactor(DEV-12144) remove sdk-api package
 
+## 1.8.1
+
+### Patch Changes
+
+- @monite/sdk-api@3.21.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 10974e1: Bump packages for release
+
+### Patch Changes
+
+- @monite/sdk-api@3.20.0
+
 ## 1.7.3
 
 ### Patch Changes
