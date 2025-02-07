@@ -64,7 +64,7 @@ export default function DefaultPage() {
     });
 
   return (
-    <Container className="Monite-PageContainer Monite-Dashboard">
+    <Container className="" sx={{ pb: '24px' }}>
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
         <Stack
           direction="row"
