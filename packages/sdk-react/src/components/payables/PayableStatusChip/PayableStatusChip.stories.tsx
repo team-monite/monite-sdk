@@ -1,5 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { Alert } from '@mui/material';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { PayableStatusChip as PayableStatusChipComponent } from './PayableStatusChip';
@@ -15,40 +14,20 @@ export const PayableStatusChip: Story = {
   args: {
     status: 'paid',
   },
+  decorators: withGlobalStorybookDecorator(() => ({
+    theme: {
+      components: {
+        payableStatusChip: {
+          icon: true,
+          size: 'medium',
+          variant: 'outlined',
+        },
+      },
+    },
+  })),
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MonitePayableStatusChip: {
-              defaultProps: {
-                icon: true,
-              },
-              variants: [
-                {
-                  props: { status: 'paid' },
-                  style: {
-                    border: '2px dashed blue',
-                  },
-                },
-                {
-                  props: { status: 'approve_in_progress' },
-                  style: {
-                    border: '2px dashed orange',
-                  },
-                },
-              ],
-            },
-          },
-        }}
-      >
-        <PayableStatusChipComponent {...args} />
-      </ExtendThemeProvider>
-
-      <Alert sx={{ mt: 2 }}>
-        <code>{'<PayableStatusChip />'}</code> could be customized through MUI
-        theming
-      </Alert>
+      <PayableStatusChipComponent {...args} />
     </div>
   ),
 };

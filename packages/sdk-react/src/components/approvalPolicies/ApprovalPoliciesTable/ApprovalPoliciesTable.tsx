@@ -9,11 +9,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
-import { useDateFormat } from '@/utils/MoniteOptions';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -99,14 +95,14 @@ const ApprovalPoliciesTableBase = ({
   onCreateClick,
 }: ApprovalPoliciesTableProps) => {
   const { i18n } = useLingui();
+  const { api, locale, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.approvalPolicies.pageSizeOptions[0]
   );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
-  const { api } = useMoniteContext();
 
   const {
     data: approvalPolicies,
@@ -133,8 +129,6 @@ const ApprovalPoliciesTableBase = ({
       setCurrentPaginationToken(null);
     }
   }, [currentPaginationToken, approvalPolicies]);
-
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -174,10 +168,9 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
-        renderCell: (params) => {
-          console.log(params.row);
-          return <ApprovalPoliciesRules approvalPolicy={params.row} />;
-        },
+        renderCell: (params) => (
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
+        ),
       },
       {
         field: 'status',
@@ -193,7 +186,7 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Created at`,
         sortable: false,
         flex: 0.7,
-        valueFormatter: (value) => i18n.date(value, dateFormat),
+        valueFormatter: (value) => i18n.date(value, locale.dateFormat),
       },
       {
         field: 'created_by',
@@ -203,7 +196,7 @@ const ApprovalPoliciesTableBase = ({
         renderCell: ({ value }) => <User userId={value} />,
       },
     ];
-  }, [dateFormat, i18n]);
+  }, [locale.dateFormat, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -252,7 +245,6 @@ const ApprovalPoliciesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
@@ -282,6 +274,9 @@ const ApprovalPoliciesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={
+                componentSettings.approvalPolicies.pageSizeOptions
+              }
               nextPage={approvalPolicies?.next_pagination_token}
               prevPage={approvalPolicies?.prev_pagination_token}
               paginationModel={{

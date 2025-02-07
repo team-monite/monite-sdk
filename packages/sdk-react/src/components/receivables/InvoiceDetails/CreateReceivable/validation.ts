@@ -218,7 +218,7 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   tax_rate_value?: number;
   smallest_amount?: number;
   name: string;
-  price?: components['schemas']['Price'];
+  price?: components['schemas']['PriceFloat'];
   measure_unit_id?: string;
 }
 

@@ -23,12 +23,8 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -94,6 +90,7 @@ const InvoicesTableBase = ({
   filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
+  const { locale, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -101,7 +98,7 @@ const InvoicesTableBase = ({
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
@@ -148,7 +145,6 @@ const InvoicesTableBase = ({
   });
 
   const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<
     GridColDef<components['schemas']['ReceivableResponse']>[]
@@ -156,9 +152,9 @@ const InvoicesTableBase = ({
     return [
       {
         field: 'document_id',
-        headerName: t(i18n)`Number, status`,
+        headerName: t(i18n)`Number`,
         sortable: false,
-        width: 100,
+        width: 150,
         display: 'flex',
         renderCell: ({ value, row }) => (
           <Stack
@@ -167,42 +163,78 @@ const InvoicesTableBase = ({
             gap={0.5}
             sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
           >
-            <Typography
-              variant="body1"
-              className="Monite-TextOverflowContainer"
-            >
+            <Box sx={{ display: 'flex' }}>
               {(() => {
                 if (row.status === 'recurring') {
                   return (
                     <Box
                       sx={{
                         alignItems: 'center',
-                        display: 'inline-flex',
+                        display: 'flex',
                         verticalAlign: 'middle',
                         fontSize: 'inherit',
                         gap: 0.5,
                       }}
                     >
-                      <Sync fontSize="small" color="inherit" />
-                      {t(i18n)`Recurring`}
+                      <Typography
+                        variant="body1"
+                        sx={{ display: 'flex' }}
+                        className=""
+                      >
+                        <>
+                          <Sync
+                            fontSize="small"
+                            sx={{ marginRight: '4px' }}
+                            color="inherit"
+                          />
+                          {t(i18n)`Recurring`}
+                        </>
+                      </Typography>
                     </Box>
                   );
                 }
 
                 if (!value) {
-                  return <Box color="text.secondary">{t(i18n)`INV-auto`}</Box>;
+                  return (
+                    <Box
+                      color="text.secondary"
+                      sx={{
+                        alignItems: 'center',
+                        display: 'inline-flex',
+                        verticalAlign: 'middle',
+                        fontSize: 'inherit',
+                        marginRight: '4px',
+                      }}
+                    >
+                      <Typography
+                        variant="body1"
+                        className="Monite-TextOverflowContainer"
+                      >
+                        {t(i18n)`INV-auto`}
+                      </Typography>
+                    </Box>
+                  );
                 }
 
                 return value;
               })()}
-            </Typography>
-            {row.type === 'invoice' && row.recurrence_id ? (
-              <InvoiceRecurrenceStatusChipLoader
-                recurrenceId={row.recurrence_id}
-              />
-            ) : (
-              <></>
-            )}
+              {row.type === 'invoice' && row.recurrence_id ? (
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'inline-flex',
+                    verticalAlign: 'middle',
+                    marginLeft: '4px',
+                  }}
+                >
+                  <InvoiceRecurrenceStatusChipLoader
+                    recurrenceId={row.recurrence_id}
+                  />
+                </Box>
+              ) : (
+                <></>
+              )}
+            </Box>
           </Stack>
         ),
       },
@@ -211,7 +243,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Status`,
         sortable: false,
         display: 'flex',
-        width: 80,
+        width: 40,
         renderCell: (params) => (
           <Box
             sx={{
@@ -240,14 +272,16 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Created on`,
         sortable: false,
         width: 140,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'total_amount',
@@ -267,12 +301,13 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Due date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
         renderCell: (params) => <DueDateCell data={params.row} />,
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
-  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, dateFormat]);
+  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, locale.dateFormat]);
 
   const gridApiRef = useAutosizeGridColumns(
     invoices?.data,
@@ -325,12 +360,13 @@ const InvoicesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
+        paddingTop: 2,
       }}
     >
-      <Box mb={2}>
+      <Box>
         <FinanceBanner />
       </Box>
+
       <ReceivableFilters
         filters={filters}
         onChange={(field, value) => {
@@ -358,6 +394,7 @@ const InvoicesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={invoices?.next_pagination_token}
               prevPage={invoices?.prev_pagination_token}
               paginationModel={{

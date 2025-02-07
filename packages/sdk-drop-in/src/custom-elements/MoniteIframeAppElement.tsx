@@ -7,7 +7,7 @@ import {
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator.ts';
 
 export class MoniteIframeAppElement extends MoniteAppElementBase<
-  'fetch-token' | 'theme' | 'locale'
+  'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private iframeAppRoot: HTMLIFrameElement | undefined;
   private communicator?: MoniteIframeAppCommunicator | undefined;
@@ -15,7 +15,7 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
   /**
    * A record defining the types and allowed attributes that can be set on the element.
    *
-   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies`
+   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies | user-roles`
    * - `app-url`: The URL of the Monite Iframe App. Example: `https://cdn.monite.com/monite-iframe-app` or `https://cdn.sandbox.monite.com/monite-iframe-app`
    *
    * @static
@@ -54,6 +54,19 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
    *     {"fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"}
    *   </script>
    *   ```
+   *   - `component-settings`: A JSON object containing the component settings to use. Example:
+   *   ```
+   *   <script slot="component-settings" type="application/json">
+   *     {
+   *       "general": {
+   *         iconWrapper: {
+   *           icon: <ArrowBackIcon />,
+   *           showCloseIcon: true,
+   *         },
+   *       },
+   *     }
+   *   </script>
+   *   ```
    * - `locale`: A JSON object containing the locale to use. Example:
    *    ```
    *    <script slot="locale" type="application/json">
@@ -65,7 +78,7 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
    *   ```
    */
   protected readonly slotsSchema: Record<
-    'fetch-token' | 'theme' | 'locale',
+    'fetch-token' | 'theme' | 'locale' | 'component-settings',
     SlotConfig
   > = {
     'fetch-token': {
@@ -75,6 +88,9 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
       type: 'json',
     },
     locale: {
+      type: 'json',
+    },
+    'component-settings': {
       type: 'json',
     },
   };

@@ -1,7 +1,5 @@
-import { components } from '@/api';
-
 const schema: {
-  [key in components['schemas']['LogMethodEnum']]: key;
+  [key in 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE']: key;
 } = {
   GET: 'GET',
   POST: 'POST',

@@ -112,7 +112,9 @@ const getInvoiceActionMenuItems = ({
 }: {
   invoice: components['schemas']['InvoiceResponsePayload'];
   actions?: Partial<InvoicesTableRowActionSchema>;
-  receivableActionSchema: components['schemas']['ActionSchema'][] | undefined;
+  receivableActionSchema:
+    | components['schemas']['package__roles__head__schemas__ActionSchema'][]
+    | undefined;
   userIdFromAuthToken: string | undefined;
   i18n: I18n;
 }): InvoicesTableRowActionMenuItem[] => {
@@ -137,7 +139,9 @@ const getInvoiceActionMenuItems = ({
 };
 
 export const filterInvoiceActionMenuAllowedItems = (
-  actionSchema: components['schemas']['ActionSchema'][] | undefined,
+  actionSchema:
+    | components['schemas']['package__roles__head__schemas__ActionSchema'][]
+    | undefined,
   menuItemsToFilter: InvoicesTableRowAction[],
   invoice: components['schemas']['InvoiceResponsePayload'],
   userIdFromAuthToken: string | undefined
@@ -147,7 +151,9 @@ export const filterInvoiceActionMenuAllowedItems = (
   ) =>
     isActionAllowed({
       action,
-      actions: actionSchema as Array<components['schemas']['ActionSchema']>,
+      actions: actionSchema as Array<
+        components['schemas']['package__roles__head__schemas__ActionSchema']
+      >,
       entityUserId: invoice.entity_user_id,
       entityUserIdFromAuthToken: userIdFromAuthToken,
     });
@@ -190,6 +196,8 @@ const DEFAULT_ACTION_LIST: InvoicesTableRowActionSchema = {
   ['declined']: ['view'],
   ['recurring']: ['view'],
   ['deleted']: [],
+  issuing: [],
+  failed: [],
 };
 
 const getInvoiceActionMenuItemLabels = (

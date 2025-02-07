@@ -5,7 +5,6 @@ import {
 } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   fireEvent,
@@ -33,13 +32,13 @@ describe('TagsTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the `limit` set as 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the `limit` set as 15 (by default)', async () => {
       renderWithClient(<TagsTable />);
 
       await waitUntilTableIsLoaded();
 
       const existsTag = screen.findByText('tag 1');
-      const notExists = screen.findByText('tag 11', undefined, {
+      const notExists = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -67,7 +66,7 @@ describe('TagsTable', () => {
       expect(nextDisabled).toBeFalsy();
     });
 
-    test('should fetch next 10 elements when we click on "next" button', async () => {
+    test('should fetch next 15 elements when we click on "next" button', async () => {
       renderWithClient(<TagsTable />);
 
       /** Wait until table is loaded */
@@ -82,7 +81,7 @@ describe('TagsTable', () => {
       const notExists = screen.findByText('tag 1', undefined, {
         timeout: 200,
       });
-      const existsTag = screen.findByText('tag 11', undefined, {
+      const existsTag = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -90,7 +89,7 @@ describe('TagsTable', () => {
       await expect(existsTag).resolves.toBeInTheDocument();
     });
 
-    test('should fetch previous 10 elements when we click on "next" and then on "prev" buttons', async () => {
+    test('should fetch previous 15 elements when we click on "next" and then on "prev" buttons', async () => {
       renderWithClient(<TagsTable />);
 
       /** Wait until table is loaded */
@@ -113,7 +112,7 @@ describe('TagsTable', () => {
       const existsTag = screen.findByText('tag 1', undefined, {
         timeout: 200,
       });
-      const notExists = screen.findByText('tag 11', undefined, {
+      const notExists = screen.findByText('tag 16', undefined, {
         timeout: 200,
       });
 
@@ -141,7 +140,7 @@ describe('TagsTable', () => {
         );
 
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: undefined,
           sort: undefined,
         });
@@ -162,7 +161,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'asc',
           sort: 'created_at',
         });
@@ -186,7 +185,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'desc',
           sort: 'created_at',
         });
@@ -206,7 +205,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'asc',
           sort: 'updated_at',
         });
@@ -228,7 +227,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: 'desc',
           sort: 'updated_at',
         });
@@ -252,7 +251,7 @@ describe('TagsTable', () => {
           api.tags.getTags.schema.url
         );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
+          limit: 15,
           order: undefined,
           sort: undefined,
         });
@@ -384,7 +383,7 @@ describe('TagsTable', () => {
     });
 
     test('support no "update" and no "delete" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -392,7 +391,7 @@ describe('TagsTable', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<TagsTable />, monite);
 
@@ -415,7 +414,7 @@ describe('TagsTable', () => {
     });
 
     test('support "allowed_for_own" access for "update" and "delete" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -423,7 +422,7 @@ describe('TagsTable', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<TagsTable />, monite);
 

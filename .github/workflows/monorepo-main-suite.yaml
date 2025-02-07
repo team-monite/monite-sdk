@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - dev
+      - v4
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
@@ -120,7 +121,6 @@ jobs:
           filters: |
             e2e-npm-tests-dependencies:
               - 'packages/sdk-react/**'
-              - 'packages/sdk-api/**'
               - 'packages/rollup-config/**'
               - 'e2e/**'
               - 'package.json'

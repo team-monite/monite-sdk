@@ -1,5 +1,53 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.7
+
+### Major Changes
+
+- 646c7ac: Bump Drop-in (v4)
+
+## 1.8.0-alpha.6
+
+### Minor Changes
+
+- 2c645e2: Fixed style issues
+
+## 1.8.0-alpha.5
+
+### Minor Changes
+
+- 5dddf03: New pre-release v4
+
+## 1.8.0-alpha.4
+
+### Patch Changes
+
+- 368fe8e: UI minor fixes in invoice creation
+
+## 1.8.0-alpha.3
+
+### Minor Changes
+
+- 00808d4: update sdk dependency
+
+## 1.8.0-alpha.2
+
+### Patch Changes
+
+- 1a0042c: Fix styling issues in Receivables table
+
+## 1.8.0-alpha.1
+
+### Minor Changes
+
+- 331d6d4: feat(proposal): add component settings
+
+## 1.8.0-alpha.0
+
+### Minor Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+
 ## 1.9.0
 
 ### Minor Changes

@@ -1,5 +1,5 @@
 import { Dialog } from '@/components/Dialog';
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -33,35 +33,30 @@ export const DialogDetailsForm: Story = {
     ],
     ...actions,
   },
+  decorators: withGlobalStorybookDecorator(() => ({
+    componentSettings: {
+      payables: {
+        optionalFields: {
+          invoiceDate: false, // Show the invoice date field
+          tags: false, // Show the tags field
+        },
+        ocrRequiredFields: {
+          invoiceNumber: true, // The invoice number is required based on OCR data
+          counterpart: true, // The counterpart is required based on OCR data
+          dueDate: true, // The due date is required based on OCR data
+          currency: true, // The currency is required based on OCR data
+        },
+        ocrMismatchFields: {
+          amount_to_pay: true,
+          counterpart_bank_account_id: true,
+        },
+      },
+    },
+  })),
   render: (args) => {
     return (
       <Dialog alignDialog="right" open={true} onClose={action('onClose')}>
-        <ExtendThemeProvider
-          theme={{
-            components: {
-              MonitePayableDetailsInfo: {
-                defaultProps: {
-                  optionalFields: {
-                    invoiceDate: true, // Show the invoice date field
-                    tags: true, // Show the tags field
-                  },
-                  ocrRequiredFields: {
-                    invoiceNumber: true, // The invoice number is required based on OCR data
-                    counterpart: true, // The counterpart is required based on OCR data
-                    dueDate: true, // The due date is required based on OCR data
-                    currency: true, // The currency is required based on OCR data
-                  },
-                  ocrMismatchFields: {
-                    amount_to_pay: true,
-                    counterpart_bank_account_id: true,
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <PayableDetailsForm {...args} />
-        </ExtendThemeProvider>
+        <PayableDetailsForm {...args} />
       </Dialog>
     );
   },

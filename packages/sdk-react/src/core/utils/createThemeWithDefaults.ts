@@ -1,49 +1,24 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { getTheme } from '@/core/theme/mui-monite';
+import { ThemeConfig } from '@/core/theme/types';
 import {
   createTheme,
   type Theme,
-  type ThemeOptions,
   type Components,
+  type ThemeOptions,
 } from '@mui/material';
-
-import { FINANCING_LABEL } from '../queries/useFinancing';
 
 /**
  * Create a theme with the default component's `defaultProps`
  */
-export const createThemeWithDefaults = (
-  i18n: I18n,
-  theme: Theme | ThemeOptions | undefined
-) =>
-  createTheme(
+export const createThemeWithDefaults = (theme: ThemeConfig = {}) => {
+  const themeOptions = getTheme(theme);
+
+  return createTheme(
+    themeOptions,
     {
-      components: {
-        MoniteReceivablesTable: {
-          defaultProps: {
-            tabs: [
-              {
-                label: t(i18n)`Invoices`,
-                query: { type: 'invoice' },
-              },
-              {
-                label: t(i18n)`Quotes`,
-                query: { type: 'quote' },
-              },
-              {
-                label: t(i18n)`Credit notes`,
-                query: { type: 'credit_note' },
-              },
-              {
-                label: FINANCING_LABEL,
-              },
-            ],
-          },
-        },
-      },
+      components: {},
     } satisfies ThemeOptions,
-    theme ?? {},
     {
       components: {
         ...createComponentsThemeDefaultProps(
@@ -78,6 +53,7 @@ export const createThemeWithDefaults = (
       },
     } satisfies ThemeOptions
   );
+};
 
 /**
  * Create a `defaultProps` for the given MUI component list

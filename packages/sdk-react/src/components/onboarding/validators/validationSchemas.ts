@@ -168,7 +168,7 @@ export const agreementsSchema = (
     .label(t(i18n)`Ownership declaration`),
 });
 
-type BusinessProfile = components['schemas']['BusinessProfile'];
+type BusinessProfile = components['schemas']['BusinessProfile-Input'];
 type CreateEntityBankAccountRequest =
   components['schemas']['CreateEntityBankAccountRequest'];
 type EntityAddressSchema = components['schemas']['EntityAddressSchema'];

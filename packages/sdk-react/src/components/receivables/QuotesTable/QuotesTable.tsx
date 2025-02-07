@@ -8,6 +8,7 @@ import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
@@ -21,12 +22,8 @@ import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -86,13 +83,14 @@ const QuotesTableBase = ({
   filters: filtersProp,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
+  const { locale, componentSettings } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<QuotesTableSortModel>({
@@ -140,7 +138,6 @@ const QuotesTableBase = ({
     !!filters['document_id__contains' as keyof typeof filters];
 
   const areCounterpartsLoading = useAreCounterpartsLoading(quotes?.data);
-  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -177,13 +174,14 @@ const QuotesTableBase = ({
         field: 'created_at',
         headerName: t(i18n)`Created on`,
         width: 140,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueFormatter: (value) =>
+          value ? i18n.date(value, locale.dateFormat) : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue Date`,
         width: 120,
-        valueFormatter: (value) => value && i18n.date(value, dateFormat),
+        valueFormatter: (value) => value && i18n.date(value, locale.dateFormat),
       },
       {
         field: 'counterpart_name',
@@ -200,7 +198,7 @@ const QuotesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Due date`,
         width: 120,
-        valueFormatter: (value) => value && i18n.date(value, dateFormat),
+        valueFormatter: (value) => value && i18n.date(value, locale.dateFormat),
         renderCell: (params) => <DueDateCell data={params.row} />,
       },
       {
@@ -217,7 +215,7 @@ const QuotesTableBase = ({
         },
       },
     ];
-  }, [dateFormat, formatCurrencyToDisplay, i18n]);
+  }, [locale.dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     quotes?.data,
@@ -256,7 +254,7 @@ const QuotesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
+        paddingTop: 2,
       }}
     >
       <ReceivableFilters onChange={onChangeFilter} filters={filters} />
@@ -279,6 +277,7 @@ const QuotesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={quotes?.next_pagination_token}
               prevPage={quotes?.prev_pagination_token}
               paginationModel={{

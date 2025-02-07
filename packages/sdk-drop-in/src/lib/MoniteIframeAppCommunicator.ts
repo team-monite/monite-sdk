@@ -14,7 +14,12 @@ export class MoniteIframeAppCommunicator {
   private slotQueue = new Set<string>();
   private connected = false;
 
-  static allowedSlots = ['locale', 'theme', 'fetch-token'];
+  static allowedSlots = [
+    'locale',
+    'theme',
+    'component-settings',
+    'fetch-token',
+  ];
 
   constructor(iframeElement: HTMLIFrameElement | Window) {
     if (iframeElement instanceof HTMLIFrameElement) {

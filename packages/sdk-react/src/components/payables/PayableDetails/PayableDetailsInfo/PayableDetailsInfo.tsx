@@ -25,7 +25,6 @@ import {
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
@@ -82,35 +81,28 @@ const StyledLabelTableCell = styled(TableCell)<StyledLabelTableCellProps>(
  * This component is responsible for rendering the information about the payable..
  *
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayableDetailsInfo: {
- *       defaultProps: {
- *         optionalFields: {
- *           invoiceDate: true,         // Show the invoice date field
- *           tags: true,                // Show the tags field
- *         },
- *         ocrMismatchFields: {
- *           amount_to_pay: true,       // Show the amount to pay field
- *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
- *         },
- *         ocrRequiredFields: {
- *           invoiceNumber: true,       // The invoice number is required based on OCR data
- *           dueDate: true,             // The due date is required based on OCR data
- *           currency: true,            // The currency is required based on OCR data
- *         },
- *         ocrMismatchFields: {
- *           amount_to_pay: true,       // Show the amount to pay field
- *           counterpart_bank_account_id: true,  // Show the counterpart bank account id field
- *         },
- *         isTagsDisabled: true,        // The tags field is disabled
- *       },
- *     },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   optionalFields: {
+ *     invoiceDate: true,         // Show the invoice date field
+ *     tags: true,                // Show the tags field
  *   },
- * });
- *
+ *   ocrMismatchFields: {
+ *     amount_to_pay: true,       // Show the amount to pay field
+ *     counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *   },
+ *   ocrRequiredFields: {
+ *     invoiceNumber: true,       // The invoice number is required based on OCR data
+ *     dueDate: true,             // The due date is required based on OCR data
+ *     currency: true,            // The currency is required based on OCR data
+ *   },
+ *   isTagsDisabled: true,        // The tags field is disabled
+ * };
+ * ```
  */
+
 export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
   <MoniteScopedProviders>
     <PayableDetailsInfoBase {...props} />
@@ -122,6 +114,7 @@ const PayableDetailsInfoBase = ({
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
   const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
@@ -180,7 +173,6 @@ const PayableDetailsInfoBase = ({
   );
 
   const className = 'Monite-PayableDetailsInfo';
-  const dateFormat = useDateFormat();
   const theme = useTheme();
 
   if (isPayableInOCRProcessing(payable)) {
@@ -301,7 +293,7 @@ const PayableDetailsInfoBase = ({
                     </StyledLabelTableCell>
                     <TableCell>
                       {payable.issued_at
-                        ? i18n.date(payable.issued_at, dateFormat)
+                        ? i18n.date(payable.issued_at, locale.dateFormat)
                         : '—'}
                     </TableCell>
                   </TableRow>
@@ -320,7 +312,7 @@ const PayableDetailsInfoBase = ({
                   </StyledLabelTableCell>
                   <TableCell>
                     {payable.due_date
-                      ? i18n.date(payable.due_date, dateFormat)
+                      ? i18n.date(payable.due_date, locale.dateFormat)
                       : '—'}
                   </TableCell>
                 </TableRow>

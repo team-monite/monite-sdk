@@ -7,6 +7,7 @@ import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/ReceivablesTable/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
@@ -17,12 +18,8 @@ import { useGetFinancedInvoices } from '@/core/queries/useFinancing';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
@@ -79,13 +76,14 @@ const FinancedInvoicesTableBase = ({
   query,
 }: FinancedInvoicesTableProps) => {
   const { i18n } = useLingui();
+  const { locale, componentSettings } = useMoniteContext();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
     undefined
   );
 
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.receivables.pageSizeOptions?.[0] ?? 15
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
@@ -113,7 +111,7 @@ const FinancedInvoicesTableBase = ({
     setPaginationToken(undefined);
   };
 
-  const dateFormat = useDateFormat();
+  const dateFormat = locale.dateFormat;
 
   const columns = useMemo<
     GridColDef<components['schemas']['FinancingInvoice']>[]
@@ -233,7 +231,6 @@ const FinancedInvoicesTableBase = ({
         flexDirection: 'column',
         overflow: 'hidden',
         height: 'inherit',
-        pt: 2,
       }}
     >
       <Typography mb={2} variant="subtitle1">{t(
@@ -250,6 +247,7 @@ const FinancedInvoicesTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.receivables.pageSizeOptions}
               nextPage={invoices?.next_pagination_token}
               prevPage={invoices?.prev_pagination_token}
               paginationModel={{

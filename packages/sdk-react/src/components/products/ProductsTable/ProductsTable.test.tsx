@@ -12,7 +12,6 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   fireEvent,
@@ -33,7 +32,7 @@ describe('ProductsTable', () => {
 
   describe('# UI', () => {
     test('should render access restricted message when user does not have access to products', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -41,7 +40,7 @@ describe('ProductsTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(
         <MoniteProvider monite={monite}>
@@ -55,7 +54,7 @@ describe('ProductsTable', () => {
     });
 
     test('should not render action button on row when user does not have update and delete access to products', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -63,7 +62,7 @@ describe('ProductsTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(<ProductsTable />, monite);
 
@@ -181,7 +180,7 @@ describe('ProductsTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the "limit" set as 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the "limit" set as 15 (by default)', async () => {
       renderWithClient(<ProductsTable />);
 
       await waitUntilTableIsLoaded();
@@ -189,7 +188,7 @@ describe('ProductsTable', () => {
       const items = screen.getAllByRole('row').slice(1);
 
       await waitFor(() => {
-        expect(items.length).toBe(10);
+        expect(items.length).toBe(15);
       });
     });
 
