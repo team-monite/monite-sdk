@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 1.9.0
+
+### Minor Changes
+
+- 9976bc8: Divide merged columns on Payables and Receivables components
+
+### Patch Changes
+
+- @monite/sdk-api@3.22.0
+
 ## 1.8.1
 
 ### Patch Changes
