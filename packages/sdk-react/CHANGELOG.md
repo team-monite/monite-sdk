@@ -67,6 +67,16 @@
 - eb51f82: refactor(DEV-12028): remove deprecated methods for payable details
 - 14a706d: feat(DEV-13343): move date time format to locale
 
+## 3.22.0
+
+### Minor Changes
+
+- 9976bc8: Divide merged columns on Payables and Receivables components
+
+### Patch Changes
+
+- @monite/sdk-api@3.22.0
+
 ## 3.21.0
 
 ### Minor Changes
