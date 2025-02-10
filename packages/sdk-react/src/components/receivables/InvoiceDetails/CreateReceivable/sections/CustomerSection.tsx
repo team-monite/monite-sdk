@@ -21,7 +21,6 @@ import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/Cr
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
-  useCounterpartById,
   useCounterpartContactList,
   useCounterpartList,
 } from '@/core/queries';
@@ -59,7 +58,6 @@ import {
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
-import { BillToSectionProps } from './components/BillToSection';
 import { CreateCounterpartModal } from './components/CreateCounterpartModal';
 import { SectionGeneralProps } from './Section.types';
 
@@ -566,7 +564,7 @@ const CounterpartSelector = ({
   const { i18n } = useLingui();
 
   const { root } = useRootElements();
-  const { control } = useFormContext<CreateReceivablesFormProps>();
+  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
   const handleCreateNewCounterpart = useCallback(() => {
@@ -597,6 +595,22 @@ const CounterpartSelector = ({
     [counterparts]
   );
 
+  const counterpartId = watch('counterpart_id');
+
+  //need to run project and check if this still works after TS/lint fixes
+  useEffect(() => {
+    const selectedCounterpart = counterparts?.data.find(
+      (counterpart) => counterpart.id === counterpartId
+    );
+    if (selectedCounterpart) {
+      setAddress(
+        prepareAddressView({ address: counterpartAddresses?.data[0] })
+      );
+    } else {
+      setAddress('');
+    }
+  }, [counterpartId, counterparts, counterpartAddresses]);
+
   return (
     <Controller
       name="counterpart_id"
@@ -617,16 +631,6 @@ const CounterpartSelector = ({
               label: getCounterpartName(selectedCounterpart),
             }
           : null;
-
-        useEffect(() => {
-          if (selectedCounterpart) {
-            setAddress(
-              prepareAddressView({ address: counterpartAddresses?.data[0] })
-            );
-          } else {
-            setAddress('');
-          }
-        }, [field.value, counterpartAddresses]);
 
         return (
           <>

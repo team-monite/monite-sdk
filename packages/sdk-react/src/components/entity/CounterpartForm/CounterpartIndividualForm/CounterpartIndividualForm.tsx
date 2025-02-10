@@ -3,7 +3,9 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
+import { getIndividualName } from '@/components/counterparts/CounterpartDetails/helpers';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
@@ -31,8 +33,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { getIndividualName } from '../../../helpers';
-import { CounterpartAddressForm } from '../../CounterpartAddressForm';
 import {
   useCounterpartForm,
   CounterpartsFormProps,
@@ -86,6 +86,9 @@ export const CounterpartIndividualForm = ({
   const individualCounterpart = counterpart as
     | components['schemas']['CounterpartIndividualRootResponse']
     | undefined;
+
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const { showCategories, defaultValues } = props;
 
@@ -173,9 +176,6 @@ export const CounterpartIndividualForm = ({
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   return (
     <>

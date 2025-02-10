@@ -45,7 +45,7 @@ export const FullfillmentSummary = ({
   const { control, resetField, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
-  const { api, locale } = useMoniteContext();
+  const { locale } = useMoniteContext();
 
   const { root } = useRootElements();
 

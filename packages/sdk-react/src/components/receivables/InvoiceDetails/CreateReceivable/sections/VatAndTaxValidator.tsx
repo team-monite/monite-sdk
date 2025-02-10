@@ -26,11 +26,11 @@ export const VatAndTaxValidator = ({
   vatIds,
   taxId,
 }: VatAndTaxValidatorProps) => {
-  const vatValues = vatIds ? vatIds.data.map((vat) => vat.value) : [];
   const [isVatMissing, setIsVatMissing] = useState<boolean>(false);
   const [isTaxMissing, setIsTaxMissing] = useState<boolean>(false);
 
   useEffect(() => {
+    const vatValues = vatIds ? vatIds.data.map((vat) => vat.value) : [];
     const checkVatMissing =
       requiredFields.includes('vatId') &&
       (!vatValues || vatValues.length === 0);
@@ -38,7 +38,7 @@ export const VatAndTaxValidator = ({
 
     setIsVatMissing(checkVatMissing);
     setIsTaxMissing(checkTaxMissing);
-  }, [requiredFields, vatValues, taxId]);
+  }, [requiredFields, taxId]);
 
   if (!isVatMissing && !isTaxMissing) {
     return null;

@@ -76,6 +76,9 @@ export const CounterpartIndividualForm = ({
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
 
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
+
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
@@ -173,9 +176,6 @@ export const CounterpartIndividualForm = ({
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   return (
     <>

@@ -187,9 +187,6 @@ export const CounterpartOrganizationForm = (
     return <AccessRestriction />;
   }
 
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
-
   return (
     <>
       {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
