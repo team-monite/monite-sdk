@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.7
+
+### Major Changes
+
+- 646c7ac: Bump Drop-in (v4)
+
 ## 1.8.0-alpha.6
 
 ### Minor Changes
@@ -41,6 +47,32 @@
 ### Minor Changes
 
 - fda8dd2: refactor(DEV-12144) remove sdk-api package
+
+## 1.9.0
+
+### Minor Changes
+
+- 9976bc8: Divide merged columns on Payables and Receivables components
+
+### Patch Changes
+
+- @monite/sdk-api@3.22.0
+
+## 1.8.1
+
+### Patch Changes
+
+- @monite/sdk-api@3.21.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 10974e1: Bump packages for release
+
+### Patch Changes
+
+- @monite/sdk-api@3.20.0
 
 ## 1.7.3
 

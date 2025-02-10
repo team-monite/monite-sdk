@@ -343,23 +343,36 @@ const PayableDetailsFormBase = forwardRef<
     const className = 'Monite-PayableDetailsForm';
 
     useEffect(() => {
-      trigger();
-    }, [trigger]);
-
-    useEffect(() => {
       if (
         counterpartBankAccountQuery.isSuccess &&
         counterpartBankAccountQuery.data?.data
       ) {
-        resetField('counterpartBankAccount', {
-          defaultValue: findDefaultBankAccount(
-            counterpartBankAccountQuery.data.data,
-            currentCurrency
-          ),
-          keepTouched: true,
-        });
+        const defaultBankAccount = findDefaultBankAccount(
+          counterpartBankAccountQuery.data.data,
+          currentCurrency
+        );
+
+        // Only reset if the value is different
+        const currentValue = methods.getValues('counterpartBankAccount');
+        if (currentValue !== defaultBankAccount) {
+          resetField('counterpartBankAccount', {
+            defaultValue: defaultBankAccount,
+            keepTouched: true,
+          });
+        }
       }
-    }, [counterpartBankAccountQuery, currentCurrency, resetField]);
+    }, [
+      counterpartBankAccountQuery.data,
+      currentCurrency,
+      resetField,
+      methods.getValues,
+      counterpartBankAccountQuery.isSuccess,
+      methods,
+    ]);
+
+    useEffect(() => {
+      trigger();
+    }, [trigger]);
 
     return (
       <>
@@ -465,9 +478,7 @@ const PayableDetailsFormBase = forwardRef<
                               labelId={field.name}
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
-                              onChange={(event) => {
-                                field.onChange(event);
-                              }}
+                              onChange={field.onChange}
                             >
                               {counterpartsToSelect(
                                 counterpartQuery?.data?.data

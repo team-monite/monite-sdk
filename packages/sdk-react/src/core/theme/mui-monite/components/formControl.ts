@@ -1,3 +1,4 @@
+/* eslint lingui/no-unlocalized-strings: 0 */
 import { getTheme as getMoniteTheme } from '@/core/theme/monite';
 import type { MonitePalette, ThemeConfig } from '@/core/theme/types';
 

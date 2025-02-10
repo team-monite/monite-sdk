@@ -1,0 +1,19 @@
+project: sdkapp
+configVersion: 1
+---
+image: sdk-demo-with-nextjs-and-clerk-auth
+dockerfile: ./Dockerfile.sdk-demo-with-nextjs-and-clerk-auth
+context: .
+---
+image: sdk-demo
+dockerfile: ./Dockerfile.sdk-demo
+context: .
+---
+image: sdk-demo-nginx
+dockerfile: ./Dockerfile.sdk-demo-nginx
+context: .
+dependencies:
+- image: sdk-demo
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE

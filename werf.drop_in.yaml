@@ -1,0 +1,15 @@
+project: sdkapp
+configVersion: 1
+---
+image: sdk-drop-in
+dockerfile: ./Dockerfile.sdk-drop-in
+context: .
+---
+image: sdk-drop-in-nginx
+dockerfile: ./Dockerfile.sdk-drop-in-nginx
+context: .
+dependencies:
+- image: sdk-drop-in
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE

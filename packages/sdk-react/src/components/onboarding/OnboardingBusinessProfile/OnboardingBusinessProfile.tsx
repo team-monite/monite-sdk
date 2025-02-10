@@ -84,6 +84,6 @@ export const OnboardingBusinessProfile = () => {
   );
 };
 
-type BusinessProfile = components['schemas']['BusinessProfile'];
+type BusinessProfile = components['schemas']['BusinessProfile-Input'];
 type EntityOnboardingDataResponse =
   components['schemas']['EntityOnboardingDataResponse'];
