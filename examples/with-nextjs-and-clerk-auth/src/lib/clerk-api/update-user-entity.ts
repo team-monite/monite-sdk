@@ -1,4 +1,4 @@
-import type { clerkClient as clerkClientType } from '@clerk/nextjs';
+import type { clerkClient as clerkClientType } from '@clerk/nextjs/server';
 
 import { UserEntityData } from '@/lib/clerk-api/get-entity-user-data';
 
@@ -21,7 +21,8 @@ export const updateUserEntity = async (
   // Avoid destructuring of `privateMetadata`, including nested objects,
   // as Clerk does not remove properties when set to `undefined`,
   // only when explicitly set to `null`.
-  await clerkClient.users.updateUserMetadata(userId, {
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(userId, {
     privateMetadata: {
       entities: {
         [entity_id]: entityData,
