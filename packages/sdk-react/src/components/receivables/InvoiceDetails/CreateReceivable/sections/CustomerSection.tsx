@@ -200,8 +200,8 @@ export const CustomerSection = ({
             <Grid item xs={11}>
               <Typography variant="h3">
                 {isEditMode
-                  ? t(i18n)`Edit customer`
-                  : t(i18n)`Edit customer's profile`}
+                  ? t(i18n)`Edit customer's profile`
+                  : t(i18n)`Edit customer`}
               </Typography>
             </Grid>
             <Grid item xs={1}>
