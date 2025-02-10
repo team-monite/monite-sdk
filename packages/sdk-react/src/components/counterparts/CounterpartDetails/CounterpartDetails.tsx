@@ -148,7 +148,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onBankCreate,
     onBankEdit,
     onBankUpdate,
-    onClose,
     onContactCancel,
     onContactCreate,
     onContactEdit,
