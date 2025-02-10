@@ -597,7 +597,6 @@ const CounterpartSelector = ({
 
   const counterpartId = watch('counterpart_id');
 
-  //need to run project and check if this still works after TS/lint fixes
   useEffect(() => {
     const selectedCounterpart = counterparts?.data.find(
       (counterpart) => counterpart.id === counterpartId
