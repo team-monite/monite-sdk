@@ -37,7 +37,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onAddressEdit,
     onAddressUpdate,
     contactId,
-    onClose,
     onContactEdit,
     onContactCreate,
     onContactUpdate,
