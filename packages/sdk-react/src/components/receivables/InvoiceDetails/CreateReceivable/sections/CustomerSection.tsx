@@ -233,7 +233,11 @@ export const CustomerSection = ({
           ) : (
             <>
               <Stack
-                sx={{ padding: '0 2rem', maxHeight: 480, overflowY: 'auto' }}
+                sx={{
+                  padding: '0 2rem',
+                  maxHeight: isLargeScreen ? 480 : 380,
+                  overflowY: 'auto',
+                }}
               >
                 <CounterpartSelector
                   isSimplified
@@ -496,7 +500,6 @@ export const CustomerSection = ({
                 container
                 alignItems="center"
                 p={4}
-                mt={4}
                 borderTop={'solid 1px rgba(0, 0, 0, 0.13) '}
               >
                 <Grid item xs={6}>
