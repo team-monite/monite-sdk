@@ -1,7 +1,6 @@
 import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
-
-import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
+import { CounterpartAddressFormFields } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 
 export interface CounterpartIndividualFields
   extends CounterpartAddressFormFields {
