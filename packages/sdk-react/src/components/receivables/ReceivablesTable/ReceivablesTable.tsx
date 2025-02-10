@@ -141,7 +141,7 @@ export const ReceivablesTable = (props: ReceivablesTableProps) => (
 
 type MoniteReceivablesTab = {
   label: string;
-  query?: ReceivablesTabFilter;
+  query?: ReceivablesTabFilter | { type: 'financing' };
   filters?: Array<keyof ReceivableFilterType>;
 };
 
