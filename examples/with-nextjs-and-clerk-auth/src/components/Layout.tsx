@@ -6,6 +6,7 @@ import { UserButton, OrganizationSwitcher, useUser } from '@clerk/nextjs';
 import { Box, Drawer } from '@mui/material';
 
 import { NavigationList } from '@/components/NavigationMenu';
+import { UserMenu } from '@/components/UserMenu';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { isLoaded } = useUser();
@@ -28,10 +29,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         PaperProps={{ sx: { width: 240 } }}
         variant="permanent"
       >
-        <Box display="flex" flexDirection="row" gap={2} mt={4} mx={3} mb={3}>
-          <UserButton />
-          <OrganizationSwitcher hidePersonal={true} />
-        </Box>
+        <UserMenu />
         <Box
           display="flex"
           flex="1"
