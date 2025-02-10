@@ -222,7 +222,7 @@ export const CounterpartOrganizationForm = (
       <DialogContent
         sx={{
           padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 360,
+          maxHeight: isLargeScreen ? 480 : 380,
           overflowY: 'auto',
         }}
       >
