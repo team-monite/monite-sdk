@@ -38,7 +38,7 @@ export const VatAndTaxValidator = ({
 
     setIsVatMissing(checkVatMissing);
     setIsTaxMissing(checkTaxMissing);
-  }, [requiredFields, taxId]);
+  }, [requiredFields, taxId, vatIds]);
 
   if (!isVatMissing && !isTaxMissing) {
     return null;
