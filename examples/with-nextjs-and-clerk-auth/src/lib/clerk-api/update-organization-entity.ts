@@ -1,4 +1,4 @@
-import type { clerkClient as clerkClientType } from '@clerk/nextjs';
+import type { clerkClient as clerkClientType } from '@clerk/nextjs/server';
 
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
 
@@ -20,7 +20,9 @@ export const updateOrganizationEntity = async (
   { organizationId, entity }: UpdateOrganizationEntityParams,
   clerkClient: typeof clerkClientType
 ) => {
-  return clerkClient.organizations.updateOrganizationMetadata(organizationId, {
+  const client = await clerkClient();
+
+  return client.organizations.updateOrganizationMetadata(organizationId, {
     privateMetadata: entity,
   });
 };

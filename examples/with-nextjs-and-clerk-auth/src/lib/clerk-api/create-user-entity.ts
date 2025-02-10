@@ -1,4 +1,4 @@
-import type { clerkClient as clerkClientType } from '@clerk/nextjs';
+import type { clerkClient as clerkClientType } from '@clerk/nextjs/server';
 
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
 import { updateUserEntity } from '@/lib/clerk-api/update-user-entity';
@@ -43,7 +43,7 @@ export const createUserEntity = async (
     emailAddresses,
     lastName,
     phoneNumbers,
-  } = await clerkClient.users.getUser(userId);
+  } = await (await clerkClient()).users.getUser(userId);
 
   const entityUser =
     (await getEntityUserByLogin({ entity_id, login }, token)) ||
