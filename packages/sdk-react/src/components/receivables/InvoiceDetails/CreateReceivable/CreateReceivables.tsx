@@ -37,6 +37,7 @@ import {
 
 import { format } from 'date-fns';
 
+import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { InvoicePreview } from './sections/components/InvoicePreview';
@@ -155,7 +156,7 @@ const CreateReceivablesBase = ({
         )
       );
     }
-  }, [counterpartAddresses]);
+  }, [counterpartAddresses, getValues]);
 
   const {
     createReminderDialog,
@@ -283,9 +284,13 @@ const CreateReceivablesBase = ({
           >
             <Stack direction="column" spacing={7}>
               <Box>
-                <Typography sx={{ mt: 2, mb: 5 }} variant="h3">{t(
-                  i18n
-                )`Create invoice`}</Typography>
+                <Typography
+                  sx={{ mt: 2, mb: 5 }}
+                  data-testid={
+                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
+                  }
+                  variant="h3"
+                >{t(i18n)`Create invoice`}</Typography>
 
                 <CustomerSection
                   disabled={createReceivable.isPending}

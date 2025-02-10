@@ -3,6 +3,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -31,7 +32,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { CounterpartAddressForm } from '../../CounterpartAddressForm';
 import {
   useCounterpartForm,
   CounterpartsFormProps,
@@ -77,6 +77,9 @@ export const CounterpartOrganizationForm = (
   const organizationCounterpart = counterpart as
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
+
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const methods = useForm({
     resolver: yupResolver(
@@ -183,9 +186,6 @@ export const CounterpartOrganizationForm = (
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   return (
     <>

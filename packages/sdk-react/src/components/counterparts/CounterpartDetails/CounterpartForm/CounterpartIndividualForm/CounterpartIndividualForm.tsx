@@ -3,7 +3,13 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
+import {
+  useCounterpartForm,
+  CounterpartsFormProps,
+} from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+import { getIndividualName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
@@ -31,12 +37,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { getIndividualName } from '../../../helpers';
-import { CounterpartAddressForm } from '../../CounterpartAddressForm';
-import {
-  useCounterpartForm,
-  CounterpartsFormProps,
-} from '../useCounterpartForm';
 import {
   prepareCounterpartIndividual,
   prepareCounterpartIndividualCreate,
@@ -75,6 +75,9 @@ export const CounterpartIndividualForm = ({
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
+
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
@@ -173,9 +176,6 @@ export const CounterpartIndividualForm = ({
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   return (
     <>

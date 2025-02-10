@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 
 import { CounterpartTypeItem } from './CreateCounterpartDialog';
+import { CreateCounterpartModalTestEnum } from './CreateCounterpartModal.types';
 
 interface CreateCounterpartModalProps {
   open: boolean;
@@ -59,7 +60,12 @@ export const CreateCounterpartModal = ({
   }, [onClose]);
 
   return (
-    <Modal open={open} container={root} onClose={handleClose}>
+    <Modal
+      open={open}
+      container={root}
+      data-testid={CreateCounterpartModalTestEnum.DataTestId}
+      onClose={handleClose}
+    >
       <Box
         sx={{
           position: 'relative',

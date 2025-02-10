@@ -373,6 +373,7 @@ const SelectReminderLayout = ({
       </Grid>
       {onUpdate && (
         <Grid
+          item
           xs={2}
           ml={1}
           sx={{

@@ -207,10 +207,12 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     counterpartId,
     counterpartView,
     defaultValues,
+    isInvoiceCreation,
     onCreate,
     onUpdate,
     renderSubResource,
     showCategories,
     showView,
+    props.onClose,
   ]);
 };
