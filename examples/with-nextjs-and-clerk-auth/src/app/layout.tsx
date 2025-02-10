@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ClerkProvider } from '@clerk/nextjs';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
