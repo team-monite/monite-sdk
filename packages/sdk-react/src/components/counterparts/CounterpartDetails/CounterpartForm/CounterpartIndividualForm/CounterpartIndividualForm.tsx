@@ -78,7 +78,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     | components['schemas']['CounterpartIndividualRootResponse']
     | undefined;
 
-  const { showCategories, defaultValues } = props;
+  const { showCategories, defaultValuesOCR, defaultValues } = props;
 
   const methods = useForm({
     resolver: yupResolver(
@@ -87,12 +87,14 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
         : getCreateIndividualValidationSchema(i18n)
     ),
     defaultValues: {
-      tax_id: individualCounterpart?.tax_id ?? '',
-      remindersEnabled: individualCounterpart?.reminders_enabled ?? true,
-      individual: prepareCounterpartIndividual(
-        individualCounterpart?.individual,
-        defaultValues
-      ),
+      tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
+      remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
+      individual: defaultValuesOCR
+        ? defaultValuesOCR
+        : prepareCounterpartIndividual(
+            individualCounterpart?.individual,
+            defaultValues
+          ),
     },
   });
 
@@ -135,12 +137,14 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
   useEffect(() => {
     reset({
-      tax_id: individualCounterpart?.tax_id ?? '',
+      tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
       remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
-      individual: prepareCounterpartIndividual(
-        individualCounterpart?.individual,
-        defaultValues
-      ),
+      individual: defaultValuesOCR
+        ? defaultValuesOCR
+        : prepareCounterpartIndividual(
+            individualCounterpart?.individual,
+            defaultValues
+          ),
     });
   }, [
     defaultValues,
@@ -148,6 +152,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     individualCounterpart?.reminders_enabled,
     individualCounterpart?.tax_id,
     reset,
+    defaultValuesOCR,
   ]);
 
   if (isCreateAllowedLoading) {
@@ -212,6 +217,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                           helperText={error?.message}
                           required
                           {...field}
+                          value={field.value ?? ''}
                         />
                       )}
                     />
@@ -230,6 +236,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                           helperText={error?.message}
                           required
                           {...field}
+                          value={field.value ?? ''}
                         />
                       )}
                     />
@@ -268,7 +275,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                           >
                             <Checkbox
                               edge="start"
-                              checked={field.value}
+                              checked={field.value ?? false}
                               name={t(i18n)`Customer`}
                               disableRipple
                             />
@@ -292,8 +299,8 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                           >
                             <Checkbox
                               edge="start"
-                              checked={field.value}
                               name={t(i18n)`Vendor`}
+                              checked={field.value ?? false}
                               disableRipple
                             />
                             <ListItemText>{t(i18n)`Vendor`}</ListItemText>
@@ -318,6 +325,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                       helperText={error?.message}
                       required
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />
@@ -341,6 +349,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                       error={Boolean(error)}
                       helperText={error?.message}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />
@@ -372,6 +381,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                       error={Boolean(error)}
                       helperText={error?.message}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />

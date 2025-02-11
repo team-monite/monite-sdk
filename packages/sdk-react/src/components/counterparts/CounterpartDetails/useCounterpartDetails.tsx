@@ -4,6 +4,7 @@ import { useLatest } from 'react-use';
 import { components } from '@/api';
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+import { PayableResponseSchema } from '@monite/sdk-api';
 
 type CounterpartId = string;
 type BankAccountId = string;
@@ -29,12 +30,15 @@ interface NewCounterpartDetail
     Pick<CounterpartsFormProps, 'defaultValues'> {
   id?: undefined;
   type: components['schemas']['CounterpartType'];
+  onCreate?: (id: string) => void;
 }
 
 interface CommonCounterpartDetailsProps
   extends Partial<CounterpartShowCategories> {
   /** Should bank accounts data be displayed. By default, set to `true` */
   showBankAccounts?: boolean;
+
+  payable: PayableResponseSchema;
 
   /**
    * Triggers only when the user updated address information

@@ -63,7 +63,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
-  const { showCategories, defaultValues } = props;
+  const { showCategories, defaultValuesOCR, defaultValues } = props;
 
   const organizationCounterpart = counterpart as
     | components['schemas']['CounterpartOrganizationRootResponse']
@@ -77,18 +77,21 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
     ),
     defaultValues: useMemo(
       () => ({
-        tax_id: organizationCounterpart?.tax_id ?? '',
+        tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id,
         remindersEnabled: organizationCounterpart?.reminders_enabled ?? true,
-        organization: prepareCounterpartOrganization(
-          organizationCounterpart?.organization,
-          defaultValues
-        ),
+        organization: defaultValuesOCR
+          ? defaultValuesOCR
+          : prepareCounterpartOrganization(
+              organizationCounterpart?.organization,
+              defaultValues
+            ),
       }),
       [
         organizationCounterpart?.tax_id,
         organizationCounterpart?.reminders_enabled,
         organizationCounterpart?.organization,
         defaultValues,
+        defaultValuesOCR,
       ]
     ),
   });
@@ -129,7 +132,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
               values.organization
             ),
           };
-
+        console.log('payload', payload, values.organization);
         return createCounterpart(payload);
       })(e);
     },
@@ -147,16 +150,21 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
 
   useEffect(() => {
     reset({
-      tax_id: organizationCounterpart?.tax_id ?? '',
-      organization: prepareCounterpartOrganization(
-        organizationCounterpart?.organization,
-        defaultValues
-      ),
+      tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
+      remindersEnabled: organizationCounterpart?.reminders_enabled ?? false,
+      organization: defaultValuesOCR
+        ? defaultValuesOCR
+        : prepareCounterpartOrganization(
+            organizationCounterpart?.organization,
+            defaultValues
+          ),
     });
   }, [
     defaultValues,
+    defaultValuesOCR,
     organizationCounterpart?.organization,
     organizationCounterpart?.tax_id,
+    organizationCounterpart?.reminders_enabled,
     reset,
   ]);
 
@@ -217,6 +225,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                       helperText={error?.message}
                       required
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />
@@ -253,7 +262,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                           >
                             <Checkbox
                               edge="start"
-                              checked={field.value}
+                              checked={field.value ?? false}
                               name={t(i18n)`Customer`}
                               disableRipple
                             />
@@ -277,7 +286,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                           >
                             <Checkbox
                               edge="start"
-                              checked={field.value}
+                              checked={field.value ?? false}
                               disableRipple
                             />
                             <ListItemText>{t(i18n)`Vendor`}</ListItemText>
@@ -302,6 +311,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                       helperText={error?.message}
                       required
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />
@@ -375,6 +385,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                       error={Boolean(error)}
                       helperText={error?.message}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   )}
                 />

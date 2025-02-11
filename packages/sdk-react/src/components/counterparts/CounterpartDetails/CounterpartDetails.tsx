@@ -177,6 +177,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onUpdate={onUpdate}
             showCategories={showCategories}
             defaultValues={defaultValues}
+            defaultValuesOCR={props.defaultValuesOCR}
           />
         );
 
@@ -189,6 +190,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onUpdate={onUpdate}
             showCategories={showCategories}
             defaultValues={defaultValues}
+            defaultValuesOCR={props.defaultValuesOCR}
           />
         );
 
@@ -204,5 +206,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     renderSubResource,
     showCategories,
     showView,
+    props.defaultValuesOCR,
   ]);
 };

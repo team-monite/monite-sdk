@@ -9,6 +9,7 @@ import {
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { CounterpartAutocompleteWithCreate } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartAutocompleteWithCreate';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -23,6 +24,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { OCRResponseInvoiceReceiptData } from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -49,7 +51,6 @@ import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   calculateTotalsForPayable,
-  counterpartsToSelect,
   findDefaultBankAccount,
   isFieldRequired,
   LineItem,
@@ -268,8 +269,7 @@ const PayableDetailsFormBase = forwardRef<
       context: formContext,
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, resetField, trigger } =
-      methods;
+    const { control, handleSubmit, watch, reset, trigger } = methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
     const currentInvoiceDate = watch('invoiceDate');
@@ -320,6 +320,7 @@ const PayableDetailsFormBase = forwardRef<
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
+
     const { ocrRequiredFields, optionalFields } =
       usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
@@ -351,15 +352,24 @@ const PayableDetailsFormBase = forwardRef<
         counterpartBankAccountQuery.isSuccess &&
         counterpartBankAccountQuery.data?.data
       ) {
-        resetField('counterpartBankAccount', {
-          defaultValue: findDefaultBankAccount(
-            counterpartBankAccountQuery.data.data,
-            currentCurrency
-          ),
-          keepTouched: true,
-        });
+        const newDefault = findDefaultBankAccount(
+          counterpartBankAccountQuery.data.data,
+          currentCurrency
+        );
+
+        if (methods.getValues('counterpartBankAccount') !== newDefault) {
+          methods.setValue('counterpartBankAccount', newDefault, {
+            shouldValidate: true,
+            shouldDirty: false,
+          });
+        }
       }
-    }, [counterpartBankAccountQuery, currentCurrency, resetField]);
+    }, [
+      counterpartBankAccountQuery.data,
+      currentCurrency,
+      methods,
+      counterpartBankAccountQuery.isSuccess,
+    ]);
 
     return (
       <>
@@ -437,54 +447,12 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <Controller
+                      <CounterpartAutocompleteWithCreate
+                        disabled={false}
                         name="counterpart"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl
-                            variant="outlined"
-                            fullWidth
-                            error={Boolean(error)}
-                            required={
-                              isFieldRequired(
-                                'counterpart',
-                                ocrRequiredFields
-                              ) ||
-                              isFieldRequiredByValidations(
-                                'counterpart_id',
-                                payablesValidations
-                              )
-                            }
-                          >
-                            <InputLabel htmlFor={field.name}>
-                              {t(i18n)`Vendor`}
-                            </InputLabel>
-                            <Select
-                              {...field}
-                              id={field.name}
-                              labelId={field.name}
-                              label={t(i18n)`Counterpart`}
-                              MenuProps={{ container: root }}
-                              onChange={(event) => {
-                                field.onChange(event);
-                              }}
-                            >
-                              {counterpartsToSelect(
-                                counterpartQuery?.data?.data
-                              ).map((counterpart) => (
-                                <MenuItem
-                                  key={counterpart.value}
-                                  value={counterpart.value}
-                                >
-                                  {counterpart.label}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                            {error && (
-                              <FormHelperText>{error.message}</FormHelperText>
-                            )}
-                          </FormControl>
-                        )}
+                        label="Vendor"
+                        defaultValues={{}}
+                        payable={payable}
                       />
                       <Controller
                         name="counterpartBankAccount"

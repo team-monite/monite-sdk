@@ -1,37 +1,23 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { usePrevious } from 'react-use';
 
 import { components } from '@/api';
-import {
-  getCounterpartName,
-  getIndividualName,
-} from '@/components/counterparts/helpers';
+import { getIndividualName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
-import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
+import { CounterpartAutocompleteWithCreate } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartAutocompleteWithCreate';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
   useCounterpartById,
   useCounterpartContactList,
-  useCounterpartList,
   useCounterpartVatList,
 } from '@/core/queries';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
-  Autocomplete,
   Box,
-  Button,
   CircularProgress,
   Collapse,
   FormControl,
@@ -43,18 +29,10 @@ import {
   Stack,
   TextField,
   Typography,
-  createFilterOptions,
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
 import type { SectionGeneralProps } from './Section.types';
-
-interface CounterpartsAutocompleteOptionProps {
-  id: string;
-  label: string;
-}
-
-const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
 const CounterpartAddressView = ({
   address,
@@ -65,14 +43,6 @@ const CounterpartAddressView = ({
     {address.postal_code}, {address.city}, {address.line1}
   </>
 );
-
-const COUNTERPART_CREATE_NEW_ID = '__create-new__';
-
-function isCreateNewCounterpartOption(
-  counterpartOption: CounterpartsAutocompleteOptionProps | undefined | null
-): boolean {
-  return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
-}
 
 export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
@@ -100,8 +70,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const isCounterpartAddressesLoading =
     counterpartId && _isCounterpartAddressesLoading;
 
-  const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
-    useState<boolean>(false);
   const defaultContactName = counterpartContacts?.find(
     (contact) => contact.is_default
   );
@@ -113,16 +81,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   return (
     <Stack spacing={2} className={className}>
-      <CreateCounterpartDialog
-        open={isCreateCounterpartOpened}
-        onClose={() => {
-          setIsCreateCounterpartOpened(false);
-        }}
-      />
-
-      <BillToSelector
-        setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}
+      <CounterpartAutocompleteWithCreate
         disabled={disabled}
+        name="counterpart_id"
+        label="Customer"
       />
       {counterpartId && (
         <>
@@ -321,141 +283,5 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
         </>
       )}
     </Stack>
-  );
-};
-
-const BillToSelector = ({
-  setIsCreateCounterpartOpened,
-  disabled,
-}: {
-  setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
-  disabled?: boolean;
-}) => {
-  const { i18n } = useLingui();
-
-  const { root } = useRootElements();
-  const { control } = useFormContext<CreateReceivablesFormProps>();
-  const { data: counterparts, isLoading: isCounterpartsLoading } =
-    useCounterpartList();
-  const handleCreateNewCounterpart = useCallback(() => {
-    setIsCreateCounterpartOpened(true);
-  }, [setIsCreateCounterpartOpened]);
-
-  const counterpartsAutocompleteData = useMemo<
-    Array<CounterpartsAutocompleteOptionProps>
-  >(
-    () =>
-      counterparts
-        ? counterparts?.data.map((counterpart) => ({
-            id: counterpart.id,
-            label: getCounterpartName(counterpart),
-          }))
-        : [],
-    [counterparts]
-  );
-
-  return (
-    <Controller
-      name="counterpart_id"
-      control={control}
-      render={({ field, fieldState: { error } }) => {
-        const selectedCounterpart = counterparts?.data.find(
-          (counterpart) => counterpart.id === field.value
-        );
-
-        /**
-         * We have to set `selectedCounterpartOption` to `null`
-         *  if `selectedCounterpart` is `null` because
-         *  `Autocomplete` component doesn't work with `undefined`
-         */
-        const selectedCounterpartOption = selectedCounterpart
-          ? {
-              id: selectedCounterpart.id,
-              label: getCounterpartName(selectedCounterpart),
-            }
-          : null;
-
-        return (
-          <Autocomplete
-            {...field}
-            value={selectedCounterpartOption}
-            onChange={(_, value) => {
-              if (isCreateNewCounterpartOption(value)) {
-                field.onChange(null);
-
-                return;
-              }
-
-              field.onChange(value?.id);
-            }}
-            slotProps={{
-              popper: {
-                container: root,
-              },
-            }}
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-
-              filtered.unshift({
-                id: COUNTERPART_CREATE_NEW_ID,
-                label: t(i18n)`Create new counterpart`,
-              });
-
-              return filtered;
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t(i18n)`Customer`}
-                placeholder={t(i18n)`Select counterpart`}
-                required
-                error={Boolean(error)}
-                helperText={error?.message}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: isCounterpartsLoading ? (
-                    <CircularProgress size={20} />
-                  ) : null,
-                }}
-              />
-            )}
-            loading={isCounterpartsLoading || disabled}
-            options={counterpartsAutocompleteData}
-            getOptionLabel={(counterpartOption) =>
-              isCreateNewCounterpartOption(counterpartOption)
-                ? ''
-                : counterpartOption.label
-            }
-            isOptionEqualToValue={(option, value) => {
-              return option.id === value.id;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            renderOption={(props, counterpartOption) =>
-              isCreateNewCounterpartOption(counterpartOption) ? (
-                <Button
-                  key={counterpartOption.id}
-                  variant="text"
-                  startIcon={<AddIcon />}
-                  fullWidth
-                  sx={{
-                    justifyContent: 'flex-start',
-                    px: 2,
-                  }}
-                  onClick={handleCreateNewCounterpart}
-                >
-                  {counterpartOption.label}
-                </Button>
-              ) : (
-                <li {...props} key={counterpartOption.id}>
-                  {counterpartOption.label}
-                </li>
-              )
-            }
-          />
-        );
-      }}
-    />
   );
 };

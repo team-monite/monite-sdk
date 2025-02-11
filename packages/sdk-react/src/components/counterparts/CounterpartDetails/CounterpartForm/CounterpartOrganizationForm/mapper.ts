@@ -48,6 +48,7 @@ export const prepareCounterpartOrganizationCreate = ({
   phone,
   isCustomer,
   isVendor,
+  tax_id,
   ...address
 }: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationCreatePayload'] => {
   const { postalCode, ...restAddress } = address;

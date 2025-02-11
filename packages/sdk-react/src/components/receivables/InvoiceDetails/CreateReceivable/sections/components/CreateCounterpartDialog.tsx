@@ -6,6 +6,11 @@ import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  PayableResponseSchema,
+  OcrRecognitionResponse,
+  OCRResponseInvoiceReceiptData,
+} from '@monite/sdk-api';
+import {
   Box,
   Button,
   Card,
@@ -22,6 +27,25 @@ import { CreateCounterpartDialogTestEnum } from './CreateCounterpartDialog.types
 interface CreateCounterpartDialogProps {
   open: boolean;
   onClose: () => void;
+  onCreate: (id: string) => void;
+  payable?: PayableResponseSchema;
+}
+
+interface DefaultValuesOCR {
+  tax_id: string;
+  email: string;
+  phone: string;
+  isCustomer: boolean;
+  isVendor: boolean;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  firstName?: string;
+  lastName?: string;
+  companyName?: string;
 }
 
 enum View {
@@ -78,6 +102,8 @@ const CardItem = ({
 export const CreateCounterpartDialog = ({
   open,
   onClose,
+  onCreate,
+  payable,
 }: CreateCounterpartDialogProps) => {
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
@@ -93,6 +119,35 @@ export const CreateCounterpartDialog = ({
     []
   );
 
+  const getCounterpartDefaultValues = ({
+    counterpart_address_object,
+    tax_payer_id,
+    counterpart_name,
+  }: OCRResponseInvoiceReceiptData) => {
+    return {
+      tax_id: tax_payer_id || '',
+      email: '',
+      phone: '',
+      isCustomer: false,
+      isVendor: false,
+      line1: counterpart_address_object?.line1 || '',
+      line2: counterpart_address_object?.line2 || '',
+      city: counterpart_address_object?.city || '',
+      state: counterpart_address_object?.state || '',
+      postalCode: counterpart_address_object?.postal_code || '',
+      country: counterpart_address_object?.country || '',
+      ...(counterpartType === 'individual' && { firstName: counterpart_name }),
+      ...(counterpartType === 'individual' && { lastName: '' }),
+      ...(counterpartType === 'organization' && {
+        companyName: counterpart_name,
+      }),
+    };
+  };
+
+  const defaultValuesOCR = payable?.other_extracted_data
+    ? getCounterpartDefaultValues(payable?.other_extracted_data)
+    : null;
+
   if (viewMode === View.CounterpartCreationMode && counterpartType) {
     return (
       <Dialog
@@ -105,8 +160,10 @@ export const CreateCounterpartDialog = ({
         }}
       >
         <CounterpartDetails
+          defaultValuesOCR={defaultValuesOCR}
           type={counterpartType}
-          onCreate={() => {
+          onCreate={(id: string) => {
+            onCreate(id);
             setViewMode(View.ChooseMode);
             setCounterpartType(undefined);
             onClose();
