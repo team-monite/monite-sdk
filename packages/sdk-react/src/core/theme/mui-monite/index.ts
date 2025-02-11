@@ -605,18 +605,19 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         containedPrimary: {
-          minWidth: '120px',
+          padding: '.75em 1.25em',
           backgroundColor: 'primary.main',
-          borderRadius: moniteTheme.borderRadius,
+          lineHeight: '1.4',
+          borderRadius: moniteTheme.buttonBorderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.60',
-            borderRadius: moniteTheme.borderRadius,
+            borderRadius: moniteTheme.buttonBorderRadius,
             boxShadow: 'none',
           },
           '&:active': {
             backgroundColor: 'primary.dark',
-            borderRadius: moniteTheme.borderRadius,
+            borderRadius: moniteTheme.buttonBorderRadius,
             boxShadow: 'none',
           },
           '&:disabled': {
@@ -627,9 +628,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         outlinedPrimary: {
+          padding: '.75em 1.25em',
           backgroundColor: 'primary.90',
           borderColor: 'primary.90',
-          borderRadius: moniteTheme.borderRadius,
+          borderRadius: moniteTheme.buttonBorderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.80',
@@ -647,6 +649,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             borderColor: 'neutral.90',
             boxShadow: 'none',
           },
+        },
+        textPrimary: {
+          padding: '.75em 1.25em',
         },
       },
     },
