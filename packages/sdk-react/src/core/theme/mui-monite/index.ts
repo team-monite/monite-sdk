@@ -458,63 +458,55 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '& > .Monite-CounterpartSelector': {
             '& > .MuiInputBase-root': {
               '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
-                padding: '16px',
-                paddingRight: '16px',
+                padding: '16px 16px 16px 16px',
                 height: '70px',
                 lineHeight: '70px',
                 backgroundColor: 'transparent',
-                '&:hover': {
-                  '& > .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#dedede',
-                  },
+                '&:hover > .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#dedede',
                 },
-                '&.Mui-focused': {
-                  '& > .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'transparent',
-                  },
+                '&.Mui-focused > .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'transparent',
                 },
+              },
+              '& > .MuiInputAdornment-positionEnd + input:not(:placeholder-shown)':
+                {
+                  opacity: 0,
+                },
+              '& > .MuiInputAdornment-positionEnd + input::placeholder': {
+                color: 'rgba(184, 184, 184, 1)',
+              },
+            },
+            '& > .MuiFormLabel-root': {
+              fontSize: '1.25rem',
+              paddingBottom: '1rem',
+              '& > .MuiInputLabel-asterisk': {
+                display: 'none',
+              },
+            },
+            '&.isSimplified': {
+              marginBottom: '2rem',
+              background: 'transparent',
+              '& > .MuiInputBase-root': {
+                paddingRight: '1rem',
+              },
+              '& > .MuiInputLabel-root': {
+                fontSize: '14px',
+                color: 'rgba(112, 112, 112, 1)',
+                paddingBottom: '0',
+                '&::after': {
+                  content: '"●"',
+                  position: 'relative',
+                  bottom: '2px',
+                  left: '4px',
+                  color: 'rgba(255, 71, 93, 1)',
+                },
+              },
+              '& > .MuiInputLabel-root > .MuiFormLabel-asterisk': {
+                display: 'none',
               },
             },
           },
-          '& > .Monite-CounterpartSelector > .MuiInputBase-root > .MuiInputAdornment-positionEnd + input:not(:placeholder-shown)':
-            {
-              opacity: 0,
-            },
-          '& > .Monite-CounterpartSelector > .MuiInputBase-root > .MuiInputAdornment-positionEnd + input::placeholder':
-            {
-              color: 'rgba(184, 184, 184, 1)',
-            },
-          '& > .Monite-CounterpartSelector > .MuiFormLabel-root': {
-            fontSize: '1.25rem',
-            paddingBottom: '1rem',
-            '& > .MuiInputLabel-asterisk': {
-              display: 'none',
-            },
-          },
-          '& > .Monite-CounterpartSelector.isSimplified': {
-            marginBottom: '2rem',
-            background: 'transparent',
-          },
-          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputBase-root': {
-            paddingRight: '1rem',
-          },
-          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputLabel-root':
-            {
-              fontSize: '14px',
-              color: ' rgba(112, 112, 112, 1)',
-              paddingBottom: '0',
-              '&::after': {
-                content: '"●"',
-                position: 'relative',
-                bottom: '2px',
-                left: '4px',
-                color: ' rgba(255, 71, 93, 1)',
-              },
-            },
-          '& > .Monite-CounterpartSelector.isSimplified > .MuiInputLabel-root > .MuiFormLabel-asterisk':
-            {
-              display: 'none',
-            },
 
           '&.Monite-FilterControl': {
             height: '40px',
