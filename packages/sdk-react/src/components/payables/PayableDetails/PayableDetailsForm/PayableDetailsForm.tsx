@@ -451,8 +451,41 @@ const PayableDetailsFormBase = forwardRef<
                         disabled={false}
                         name="counterpart"
                         label="Vendor"
-                        defaultValues={{}}
-                        payable={payable}
+                        getCounterpartDefaultValues={(
+                          counterpartType?: string
+                        ): any => {
+                          const {
+                            counterpart_address_object = null,
+                            tax_payer_id = '',
+                            counterpart_name = '',
+                          } = (payable?.other_extracted_data as OCRResponseInvoiceReceiptData) ||
+                          {};
+                          return {
+                            tax_id: tax_payer_id || '',
+                            counterpart: {
+                              email: '',
+                              phone: '',
+                              isCustomer: false,
+                              isVendor: false,
+                              line1: counterpart_address_object?.line1 || '',
+                              line2: counterpart_address_object?.line2 || '',
+                              city: counterpart_address_object?.city || '',
+                              state: counterpart_address_object?.state || '',
+                              postalCode:
+                                counterpart_address_object?.postal_code || '',
+                              country: counterpart_address_object?.country,
+                              ...(counterpartType === 'individual' && {
+                                firstName: counterpart_name,
+                              }),
+                              ...(counterpartType === 'individual' && {
+                                lastName: '',
+                              }),
+                              ...(counterpartType === 'organization' && {
+                                companyName: counterpart_name,
+                              }),
+                            },
+                          };
+                        }}
                       />
                       <Controller
                         name="counterpartBankAccount"

@@ -2,14 +2,13 @@ import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
+import {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  PayableResponseSchema,
-  OcrRecognitionResponse,
-  OCRResponseInvoiceReceiptData,
-} from '@monite/sdk-api';
 import {
   Box,
   Button,
@@ -28,24 +27,9 @@ interface CreateCounterpartDialogProps {
   open: boolean;
   onClose: () => void;
   onCreate: (id: string) => void;
-  payable?: PayableResponseSchema;
-}
-
-interface DefaultValuesOCR {
-  tax_id: string;
-  email: string;
-  phone: string;
-  isCustomer: boolean;
-  isVendor: boolean;
-  line1: string;
-  line2: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-  firstName?: string;
-  lastName?: string;
-  companyName?: string;
+  getCounterpartDefaultValues?: (
+    type?: string
+  ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }
 
 enum View {
@@ -103,7 +87,7 @@ export const CreateCounterpartDialog = ({
   open,
   onClose,
   onCreate,
-  payable,
+  getCounterpartDefaultValues,
 }: CreateCounterpartDialogProps) => {
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
@@ -119,34 +103,9 @@ export const CreateCounterpartDialog = ({
     []
   );
 
-  const getCounterpartDefaultValues = ({
-    counterpart_address_object,
-    tax_payer_id,
-    counterpart_name,
-  }: OCRResponseInvoiceReceiptData) => {
-    return {
-      tax_id: tax_payer_id || '',
-      email: '',
-      phone: '',
-      isCustomer: false,
-      isVendor: false,
-      line1: counterpart_address_object?.line1 || '',
-      line2: counterpart_address_object?.line2 || '',
-      city: counterpart_address_object?.city || '',
-      state: counterpart_address_object?.state || '',
-      postalCode: counterpart_address_object?.postal_code || '',
-      country: counterpart_address_object?.country || '',
-      ...(counterpartType === 'individual' && { firstName: counterpart_name }),
-      ...(counterpartType === 'individual' && { lastName: '' }),
-      ...(counterpartType === 'organization' && {
-        companyName: counterpart_name,
-      }),
-    };
-  };
+  const defaultValuesOCR = getCounterpartDefaultValues?.(counterpartType);
 
-  const defaultValuesOCR = payable?.other_extracted_data
-    ? getCounterpartDefaultValues(payable?.other_extracted_data)
-    : null;
+  console.log('defaultValuesOCRdddd', defaultValuesOCR);
 
   if (viewMode === View.CounterpartCreationMode && counterpartType) {
     return (

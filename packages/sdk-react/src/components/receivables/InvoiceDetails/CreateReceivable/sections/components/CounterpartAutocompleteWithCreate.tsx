@@ -1,13 +1,16 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableResponseSchema } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Autocomplete,
@@ -16,8 +19,6 @@ import {
   TextField,
   createFilterOptions,
 } from '@mui/material';
-
-import { CreateReceivablesFormProps } from '../../validation';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -38,15 +39,17 @@ export const CounterpartAutocompleteWithCreate = ({
   disabled,
   name,
   label = 'Customer',
-  payable,
+  getCounterpartDefaultValues,
 }: {
   disabled?: boolean;
   name: string;
   label: string;
-  payable?: PayableResponseSchema;
+  getCounterpartDefaultValues?: (
+    type?: string
+  ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }) => {
   const { i18n } = useLingui();
-  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
+  const { control, setValue } = useFormContext<any>();
 
   const { root } = useRootElements();
 
@@ -89,7 +92,7 @@ export const CounterpartAutocompleteWithCreate = ({
           setIsCreateCounterpartOpened(false);
         }}
         onCreate={setNewCounterpartId}
-        payable={payable}
+        getCounterpartDefaultValues={getCounterpartDefaultValues}
       />
       <Controller
         name={name}

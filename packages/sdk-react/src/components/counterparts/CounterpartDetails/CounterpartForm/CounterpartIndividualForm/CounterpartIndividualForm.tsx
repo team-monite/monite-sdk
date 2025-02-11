@@ -3,6 +3,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import type { DefaultValuesOCRIndividual } from '@/components/counterparts/Counterpart.types';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -31,6 +32,7 @@ import {
 
 import { getIndividualName } from '../../../helpers';
 import { CounterpartAddressForm } from '../../CounterpartAddressForm';
+import { CounterpartIndividualFields } from '../../CounterpartForm';
 import {
   useCounterpartForm,
   CounterpartsFormProps,
@@ -52,7 +54,11 @@ import {
  * If a counterpart is provided, it will be updated,
  *  otherwise new counterpart will be created
  */
-export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
+export const CounterpartIndividualForm = (
+  props: CounterpartsFormProps & {
+    defaultValuesOCR?: DefaultValuesOCRIndividual;
+  }
+) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -90,7 +96,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
       tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
       remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
       individual: defaultValuesOCR
-        ? defaultValuesOCR
+        ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
             defaultValues
@@ -111,7 +117,9 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
             {
               tax_id: values.tax_id ?? '',
               reminders_enabled: values.remindersEnabled,
-              individual: prepareCounterpartIndividualUpdate(values.individual),
+              individual: prepareCounterpartIndividualUpdate(
+                values.individual as CounterpartIndividualFields
+              ),
             };
 
           return updateCounterpart(payload);
@@ -121,7 +129,9 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
           {
             type: 'individual',
             tax_id: values.tax_id ?? '',
-            individual: prepareCounterpartIndividualCreate(values.individual),
+            individual: prepareCounterpartIndividualCreate(
+              values.individual as CounterpartIndividualFields
+            ),
             language:
               LanguageCodeEnum.find(
                 (code) => code === i18n.locale.split('-')[0]
@@ -140,7 +150,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
       tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
       remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
       individual: defaultValuesOCR
-        ? defaultValuesOCR
+        ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
             defaultValues
