@@ -1001,6 +1001,49 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          width: '55px',
+          height: '40px',
+          '& > .MuiButtonBase-root.Mui-checked': {
+            left: '-10px',
+          },
+          '& > .MuiSwitch-track': {
+            height: '20px',
+            position: 'relative',
+            bottom: '3px',
+            width: '40px',
+            left: '-2px',
+            borderRadius: '12px',
+          },
+          '& > .MuiSwitch-switchBase.Mui-checked': {
+            transform: 'translateX(25px)',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: '12px',
+              left: '11px',
+              width: '16px',
+              height: '16px',
+              color: '#fff',
+              backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='${encodeURIComponent(
+                '#fff'
+              )}'><path d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>")`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+            },
+          },
+          '& > .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+            background: 'rgba(203, 203, 254, 1)',
+            opacity: 1,
+          },
+          '& > .MuiSwitch-input': {
+            left: 0,
+          },
+        },
+      },
+    },
     MoniteApprovalRequestStatusChip: {
       defaultProps: {
         icon: moniteTheme.components.approvalRequestStatusChip.icon,
