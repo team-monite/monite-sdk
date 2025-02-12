@@ -143,7 +143,7 @@ export const CreateCounterpartModal = ({
               alignItems="center"
               p={4}
               mt={4}
-              borderTop={'solid 1px rgba(0, 0, 0, 0.13) '}
+              borderTop="solid 1px rgba(0, 0, 0, 0.13) "
               sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}
             >
               <Button variant="text" onClick={handleClose}>
