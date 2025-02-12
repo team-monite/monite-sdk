@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
@@ -35,6 +35,9 @@ interface ProductFormProps {
 
   /** The `<form />` id attribute to submit the form using external button */
   formId: string;
+
+  /** Triggered when form values are changed or set back to defaults */
+  onChanged?: (isDirty: boolean) => void;
 }
 
 /**
@@ -43,7 +46,12 @@ interface ProductFormProps {
  * Renders a form, if `defaultValues` are provided,
  *  the form will be pre-filled with the values.
  */
-export const ProductForm = (props: ProductFormProps) => {
+export const ProductForm = ({
+  defaultValues,
+  formId,
+  onChanged,
+  onSubmit,
+}: ProductFormProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { api } = useMoniteContext();
@@ -52,19 +60,25 @@ export const ProductForm = (props: ProductFormProps) => {
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: useMemo(() => props.defaultValues, [props.defaultValues]),
+    defaultValues: useMemo(() => defaultValues, [defaultValues]),
   });
 
-  const { control, handleSubmit } = methods;
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = methods;
+
+  useEffect(() => onChanged?.(isDirty), [isDirty, onChanged]);
 
   return (
     <FormProvider {...methods}>
       <form
         noValidate
-        id={props.formId}
+        id={formId}
         onSubmit={(event) => {
           event.preventDefault();
-          handleSubmit(props.onSubmit)(event);
+          handleSubmit(onSubmit)(event);
         }}
       >
         <Grid container direction="column" rowSpacing={3}>
@@ -75,6 +89,17 @@ export const ProductForm = (props: ProductFormProps) => {
               control={control}
               fullWidth
               required
+            />
+          </Grid>
+
+          <Grid item>
+            <RHFTextField
+              label={t(i18n)`Description`}
+              name="description"
+              control={control}
+              multiline
+              rows={2}
+              fullWidth
             />
           </Grid>
 
@@ -109,10 +134,10 @@ export const ProductForm = (props: ProductFormProps) => {
                       required
                       disabled={isLoading}
                     >
-                      <InputLabel id={field.name}>{t(i18n)`Units`}</InputLabel>
+                      <InputLabel id={field.name}>{t(i18n)`Unit`}</InputLabel>
                       <Select
                         labelId={field.name}
-                        label={t(i18n)`Units`}
+                        label={t(i18n)`Unit`}
                         MenuProps={{ container: root }}
                         {...field}
                       >
@@ -132,7 +157,7 @@ export const ProductForm = (props: ProductFormProps) => {
 
               <Grid item xs={6}>
                 <RHFTextField
-                  label={t(i18n)`Smallest amount`}
+                  label={t(i18n)`Minimum quantity`}
                   name="smallestAmount"
                   control={control}
                   fullWidth
@@ -158,17 +183,6 @@ export const ProductForm = (props: ProductFormProps) => {
                 <MoniteCurrency name="currency" control={control} required />
               </Grid>
             </Grid>
-          </Grid>
-
-          <Grid item>
-            <RHFTextField
-              label={t(i18n)`Description`}
-              name="description"
-              control={control}
-              multiline
-              rows={4}
-              fullWidth
-            />
           </Grid>
         </Grid>
       </form>

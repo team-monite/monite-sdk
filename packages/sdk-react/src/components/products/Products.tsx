@@ -86,7 +86,7 @@ const ProductsBase = () => {
       <PageHeader
         title={
           <>
-            {t(i18n)`Products`}
+            {t(i18n)`Products & Services`}
             {(isReadAllowedLoading || isCreateAllowedLoading) && (
               <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
             )}
@@ -99,7 +99,7 @@ const ProductsBase = () => {
             disabled={!isCreateAllowed}
             onClick={openCreateModal}
           >
-            {t(i18n)`Create New`}
+            {t(i18n)`Create new`}
           </Button>
         }
       />

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-02-10 11:19+0100\n"
+"POT-Creation-Date: 2025-02-12 15:23+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,11 +12,6 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
-
-#. js-lingui-explicit-id
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:128
-msgid "Product Details"
-msgstr "Product Details"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -246,10 +241,6 @@ msgstr "Actions"
 msgid "Active"
 msgstr "Active"
 
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:203
-msgid "Activity"
-msgstr "Activity"
-
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1172
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:555
@@ -453,8 +444,6 @@ msgid "Algerian Dinar"
 msgstr "Algerian Dinar"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:66
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:68
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:104
 msgid "All"
 msgstr "All"
 
@@ -492,9 +481,14 @@ msgstr "All loans are subject to credit approval. Your terms may vary. Flourish 
 msgid "All statuses"
 msgstr "All statuses"
 
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:68
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:71
 msgid "All types"
 msgstr "All types"
+
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:104
+msgid "All units"
+msgstr "All units"
 
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:209
 msgid "All users from list, one by one"
@@ -840,6 +834,7 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
+#: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:48
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:281
 msgid "Back"
 msgstr "Back"
@@ -1255,8 +1250,8 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:88
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:124
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:199
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:128
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:220
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:38
@@ -1519,6 +1514,10 @@ msgstr "Close document design selection"
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
 msgid "Close invoice details"
 msgstr "Close invoice details"
+
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:103
+msgid "Close new product or service form"
+msgstr "Close new product or service form"
 
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:137
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:138
@@ -1893,7 +1892,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:403
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:133
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:137
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
@@ -1968,7 +1967,8 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:361
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:447
-#: src/components/products/ProductsTable/ProductsTable.tsx:334
+#: src/components/products/Products.tsx:102
+#: src/components/products/ProductsTable/ProductsTable.tsx:339
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:201
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:272
@@ -1979,8 +1979,6 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:67
 #: src/components/counterparts/Counterparts.test.tsx:102
 #: src/components/counterparts/Counterparts.tsx:131
-#: src/components/products/Products.test.tsx:104
-#: src/components/products/Products.tsx:102
 #: src/components/userRoles/UserRoles.tsx:61
 msgid "Create New"
 msgstr "Create New"
@@ -1989,13 +1987,9 @@ msgstr "Create New"
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:93
-msgid "Create New Product"
-msgstr "Create New Product"
-
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:99
-msgid "Create New Product Close"
-msgstr "Create New Product Close"
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:97
+msgid "Create new product or service"
+msgstr "Create new product or service"
 
 #: src/components/tags/Tags.test.tsx:17
 #: src/components/tags/Tags.test.tsx:41
@@ -2032,15 +2026,15 @@ msgstr "Create User Role"
 msgid "Create Vat Id"
 msgstr "Create Vat Id"
 
+#: src/components/products/ProductsTable/ProductsTable.tsx:345
+msgid "Create your first product or service"
+msgstr "Create your first product or service"
+
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:186
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:47
 #: src/components/tags/TagsTable/TagsTable.tsx:142
 msgid "Created at"
 msgstr "Created at"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:209
-msgid "Created at:"
-msgstr "Created at:"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:193
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:80
@@ -2054,6 +2048,7 @@ msgstr "Created by"
 msgid "Created by user"
 msgstr "Created by user"
 
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:209
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:147
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:272
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:175
@@ -2245,9 +2240,9 @@ msgstr "Defaulted"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:502
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:234
-#: src/components/products/Products.test.tsx:174
-#: src/components/products/Products.test.tsx:201
-#: src/components/products/Products.test.tsx:233
+#: src/components/products/Products.test.tsx:176
+#: src/components/products/Products.test.tsx:203
+#: src/components/products/Products.test.tsx:235
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:270
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:73
@@ -2279,6 +2274,10 @@ msgstr "Delete"
 msgid "Delete \"{0}\" tag?"
 msgstr "Delete \"{0}\" tag?"
 
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:70
+msgid "Delete \"{0}\"?"
+msgstr "Delete \"{0}\"?"
+
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:44
 msgid "Delete {type} “{name}“?"
 msgstr "Delete {type} “{name}“?"
@@ -2306,10 +2305,6 @@ msgstr "Delete invoice"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:31
 msgid "Delete payment term?"
 msgstr "Delete payment term?"
-
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:71
-msgid "Delete Product \"{0}\"?"
-msgstr "Delete Product \"{0}\"?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:54
 msgid "Delete receivable \"{0}\"?"
@@ -2355,7 +2350,8 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1048
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:242
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:165
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:97
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
 #: src/components/products/ProductDetails/validation.ts:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:165
 msgid "Description"
@@ -2365,10 +2361,6 @@ msgstr "Description"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:287
 msgid "Description is required"
 msgstr "Description is required"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:171
-msgid "Description:"
-msgstr "Description:"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:431
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
@@ -2628,8 +2620,8 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:485
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:74
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:242
-#: src/components/products/Products.test.tsx:173
-#: src/components/products/Products.test.tsx:270
+#: src/components/products/Products.test.tsx:175
+#: src/components/products/Products.test.tsx:272
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:246
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:385
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
@@ -2647,6 +2639,11 @@ msgstr "Edit"
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
+
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:105
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:182
+msgid "Edit {0}"
+msgstr "Edit {0}"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:622
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:641
@@ -2677,13 +2674,8 @@ msgstr "Edit invoice"
 msgid "Edit payment term"
 msgstr "Edit payment term"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:96
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:173
-msgid "Edit Product"
-msgstr "Edit Product"
-
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:102
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:179
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:111
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:188
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
@@ -2920,6 +2912,10 @@ msgstr "Exterminating Services"
 msgid "Failed to a create payment link. Please try again."
 msgstr "Failed to a create payment link. Please try again."
 
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:66
+msgid "Failed to create"
+msgstr "Failed to create"
+
 #: src/core/queries/useCounterpart.ts:98
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
@@ -2940,10 +2936,6 @@ msgstr "Failed to create payment record: {errorMessage}"
 msgid "Failed to create payment term, please try again."
 msgstr "Failed to create payment term, please try again."
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:62
-msgid "Failed to create product."
-msgstr "Failed to create product."
-
 #: src/core/queries/useReceivables.ts:47
 msgid "Failed to create receivable: {errorMessage}"
 msgstr "Failed to create receivable: {errorMessage}"
@@ -2960,7 +2952,7 @@ msgstr "Failed to delete Bank Account."
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:56
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:55
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
@@ -2972,7 +2964,7 @@ msgstr "Failed to delete VAT."
 msgid "Failed to generate email preview"
 msgstr "Failed to generate email preview"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:93
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:96
 msgid "Failed to Load {entityName}"
 msgstr "Failed to Load {entityName}"
 
@@ -2983,6 +2975,10 @@ msgstr "Failed to load PDF Viewer"
 #: src/core/queries/useReceivables.ts:621
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
+
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:88
+msgid "Failed to update"
+msgstr "Failed to update"
 
 #: src/core/queries/useCounterpart.ts:74
 msgid "Failed to update Address."
@@ -2999,10 +2995,6 @@ msgstr "Failed to update Contact Person."
 #: src/core/queries/useCounterpart.ts:611
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
-
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:79
-msgid "Failed to update product."
-msgstr "Failed to update product."
 
 #: src/core/queries/useReceivables.ts:84
 msgid "Failed to update receivable line items: {errorMessage}"
@@ -3482,6 +3474,7 @@ msgid "Hide"
 msgstr "Hide"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:518
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:203
 msgid "History"
 msgstr "History"
 
@@ -3586,6 +3579,10 @@ msgstr "If the error recurs, contact support."
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:60
 msgid "If this error recurs, contact your admin."
 msgstr "If this error recurs, contact your admin."
+
+#: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:41
+msgid "If you leave this page, you will lose all the changes you have made."
+msgstr "If you leave this page, you will lose all the changes you have made."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:357
 msgid "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
@@ -3880,6 +3877,10 @@ msgstr "It is an entity having legal status as an individual."
 msgid "It looks like the phone number is too short."
 msgstr "It looks like the phone number is too short."
 
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:74
+msgid "It will remain in all the documents where it is added. You can’t undo this action."
+msgstr "It will remain in all the documents where it is added. You can’t undo this action."
+
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
 msgid "It’s required to add any individual who is on the governing board of the company."
 msgstr "It’s required to add any individual who is on the governing board of the company."
@@ -4063,8 +4064,8 @@ msgid "Last name is required"
 msgstr "Last name is required"
 
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:213
-msgid "Last update:"
-msgstr "Last update:"
+msgid "Last update"
+msgstr "Last update"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:580
 msgid "Last updated on"
@@ -4085,6 +4086,10 @@ msgstr "Laundries"
 #: src/components/onboarding/dicts/mccCodes.ts:807
 msgid "Laundry, Cleaning Services"
 msgstr "Laundry, Cleaning Services"
+
+#: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:51
+msgid "Leave page"
+msgstr "Leave page"
 
 #: src/core/utils/currencies.ts:81
 msgid "Lebanese Pound"
@@ -4385,6 +4390,12 @@ msgstr "Micronesia, Federated States Of"
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
 
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:160
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
+#: src/components/products/ProductDetails/validation.ts:36
+msgid "Minimum quantity"
+msgstr "Minimum quantity"
+
 #: src/components/onboarding/dicts/mccCodes.ts:884
 msgid "Miscellaneous Apparel and Accessory Shops"
 msgstr "Miscellaneous Apparel and Accessory Shops"
@@ -4523,7 +4534,8 @@ msgstr "N/A"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:417
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:73
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:87
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:145
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:79
@@ -4542,17 +4554,13 @@ msgstr "Name"
 msgid "Name *"
 msgstr "Name *"
 
+#: src/components/products/ProductsTable/ProductsTable.tsx:183
+msgid "Name & description"
+msgstr "Name & description"
+
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:245
 msgid "Name, country, city"
 msgstr "Name, country, city"
-
-#: src/components/products/ProductsTable/ProductsTable.tsx:183
-msgid "Name, description"
-msgstr "Name, description"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
-msgid "Name:"
-msgstr "Name:"
 
 #: src/core/utils/countries.ts:169
 msgid "Namibia"
@@ -4672,7 +4680,7 @@ msgstr "No"
 msgid "No {0} match your search or filter criteria."
 msgstr "No {0} match your search or filter criteria."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:69
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:72
 msgid "No {entityName}"
 msgstr "No {entityName}"
 
@@ -4748,6 +4756,14 @@ msgstr "No payments yet"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:402
 msgid "no policy"
 msgstr "no policy"
+
+#: src/components/products/ProductsTable/ProductsTable.tsx:333
+msgid "No product or service found"
+msgstr "No product or service found"
+
+#: src/components/products/ProductsTable/ProductsTable.tsx:341
+msgid "No products or services yet"
+msgstr "No products or services yet"
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:231
 msgid "No Quotes"
@@ -5058,7 +5074,7 @@ msgstr "Pay in {0} days"
 msgid "Pay in the first {0} days"
 msgstr "Pay in the first {0} days"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:533
+#: src/components/payables/PayablesTable/PayablesTable.tsx:529
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -5339,7 +5355,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:97
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:100
 msgid "Please try again later."
 msgstr "Please try again later."
 
@@ -5455,15 +5471,12 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:149
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:174
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:189
 #: src/components/products/ProductDetails/validation.ts:41
 #: src/components/products/ProductsTable/ProductsTable.tsx:212
 msgid "Price per unit"
 msgstr "Price per unit"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
-msgid "Price:"
-msgstr "Price:"
 
 #: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:83
 msgid "Privacy"
@@ -5481,20 +5494,20 @@ msgstr "Processing payment..."
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:89
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:114
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
-#: src/components/products/ProductsTable/ProductsTable.tsx:335
+#: src/components/products/ProductsTable/ProductsTable.tsx:340
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:49
 #: src/components/userRoles/consts.ts:39
 msgid "Product"
 msgstr "Product"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:59
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:61
 msgid "Product {0} was created."
 msgstr "Product {0} was created."
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:75
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:82
 msgid "Product {0} was updated."
 msgstr "Product {0} was updated."
 
@@ -5514,19 +5527,25 @@ msgstr "Product not found"
 msgid "Product type is required"
 msgstr "Product type is required"
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:52
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:51
 msgid "Product was deleted."
 msgstr "Product was deleted."
 
-#: src/components/products/Products.tsx:89
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:70
-#: src/components/products/ProductsTable/ProductsTable.tsx:333
 msgid "Products"
 msgstr "Products"
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:66
+#: src/components/products/Products.tsx:89
+msgid "Products & Services"
+msgstr "Products & Services"
+
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:65
 msgid "Products delete confirmation"
 msgstr "Products delete confirmation"
+
+#: src/components/products/ProductsTable/ProductsTable.tsx:338
+msgid "products or services"
+msgstr "products or services"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1118
 msgid "Professional Services"
@@ -5751,7 +5770,7 @@ msgstr "Religious Organizations"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:556
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:98
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:101
 msgid "Reload"
 msgstr "Reload"
 
@@ -6031,7 +6050,6 @@ msgid "Script in Monite Script is required"
 msgstr "Script in Monite Script is required"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:35
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:45
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:43
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:46
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:58
@@ -6040,6 +6058,7 @@ msgid "Search"
 msgstr "Search"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:43
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:45
 msgid "Search by name"
 msgstr "Search by name"
 
@@ -6112,11 +6131,19 @@ msgstr "Serbia and Montenegro"
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:93
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:118
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:23
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:73
 msgid "Service"
 msgstr "Service"
+
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:62
+msgid "Service {0} was created."
+msgstr "Service {0} was created."
+
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:83
+msgid "Service {0} was updated."
+msgstr "Service {0} was updated."
 
 #: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:190
 msgid "Service Fee"
@@ -6236,15 +6263,9 @@ msgstr "Slovenia"
 msgid "Small Appliance Repair"
 msgstr "Small Appliance Repair"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:135
-#: src/components/products/ProductDetails/validation.ts:36
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
 msgid "Smallest amount"
 msgstr "Smallest amount"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:196
-msgid "Smallest amount (units):"
-msgstr "Smallest amount (units):"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1205
 msgid "Snowmobile Dealers"
@@ -6271,7 +6292,7 @@ msgstr "Somalia"
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:118
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:127
 msgid "Something went wrong. Please try again"
 msgstr "Something went wrong. Please try again"
 
@@ -6738,7 +6759,7 @@ msgstr "There is no such counterpart yet, you can create it in respective sectio
 msgid "There may be a mismatch between the OCR data and payable data. Please review the details"
 msgstr "There may be a mismatch between the OCR data and payable data. Please review the details"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:94
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:97
 msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
 
@@ -6748,7 +6769,6 @@ msgstr "There was an issue reading the file."
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:48
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:480
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:128
@@ -6938,11 +6958,11 @@ msgstr "Truck StopIteration"
 msgid "Truck/Utility Trailer Rentals"
 msgstr "Truck/Utility Trailer Rentals"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:516
+#: src/components/products/ProductsTable/ProductsTable.tsx:334
 msgid "Try adjusting your search or filter criteria"
 msgstr "Try adjusting your search or filter criteria"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:57
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:60
 msgid "Try adjusting your search or filter."
 msgstr "Try adjusting your search or filter."
 
@@ -6988,7 +7008,8 @@ msgstr "Tuvalu"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:55
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:58
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:83
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:108
+#: src/components/products/ProductDetails/ExistingProductDetails.tsx:169
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:57
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:60
 #: src/components/products/ProductsTable/ProductsTable.tsx:200
@@ -6996,10 +7017,6 @@ msgstr "Tuvalu"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:63
 msgid "Type"
 msgstr "Type"
-
-#: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
-msgid "Type:"
-msgstr "Type:"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1365
 msgid "Typesetting, Plate Making, and Related Services"
@@ -7049,9 +7066,12 @@ msgstr "Uniforms, Commercial Clothing"
 msgid "Unique Entity Number (Singapore)"
 msgstr "Unique Entity Number (Singapore)"
 
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:137
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:140
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:175
-msgid "Unit:"
-msgstr "Unit:"
+#: src/components/products/ProductsTable/ProductsTable.tsx:227
+msgid "Unit"
+msgstr "Unit"
 
 #: src/core/utils/countries.ts:246
 msgid "United Arab Emirates"
@@ -7077,12 +7097,9 @@ msgstr "United States Dollar"
 msgid "United States Outlying Islands"
 msgstr "United States Outlying Islands"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:112
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:115
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:93
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:96
-#: src/components/products/ProductsTable/ProductsTable.tsx:227
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:257
 msgid "Units"
 msgstr "Units"
@@ -7125,7 +7142,7 @@ msgstr "Unsupported file type"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:403
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:207
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:228
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:185
@@ -7590,7 +7607,7 @@ msgstr "You can change this setting if you wish to forbid sending any payment re
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:76
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:79
 msgid "You can create your first {0}."
 msgstr "You can create your first {0}."
 
@@ -7643,7 +7660,7 @@ msgstr "You can set a different period length and the date of issuance. The star
 msgid "You can set up to 2 early payment discounts per invoice."
 msgstr "You can set up to 2 early payment discounts per invoice."
 
-#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:72
+#: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:75
 msgid "You don’t have any {0} yet."
 msgstr "You don’t have any {0} yet."
 
@@ -7672,6 +7689,10 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
+#: src/components/products/ProductsTable/ProductsTable.tsx:342
+msgid "You don’t have any products or services yet"
+msgstr "You don’t have any products or services yet"
+
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:232
 msgid "You don’t have any quotes yet."
 msgstr "You don’t have any quotes yet."
@@ -7691,6 +7712,11 @@ msgstr "You don't have permission to issue this document. Please, contact your s
 #: src/ui/accessRestriction/AccessRestriction.tsx:23
 msgid "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 msgstr "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
+
+#: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:32
+#: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:37
+msgid "You have unsaved changes"
+msgstr "You have unsaved changes"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:33
 msgid "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."
