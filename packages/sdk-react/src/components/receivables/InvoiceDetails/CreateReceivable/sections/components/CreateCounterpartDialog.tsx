@@ -105,8 +105,6 @@ export const CreateCounterpartDialog = ({
 
   const defaultValuesOCR = getCounterpartDefaultValues?.(counterpartType);
 
-  console.log('defaultValuesOCRdddd', defaultValuesOCR);
-
   if (viewMode === View.CounterpartCreationMode && counterpartType) {
     return (
       <Dialog

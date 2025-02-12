@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Controller, Control, useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -26,7 +25,7 @@ interface AutocompleteCreatedByProps {
   label: string;
 }
 
-interface CounterpartsAutocompleteOptionProps {
+export interface CounterpartsAutocompleteOptionProps {
   id: string;
   label: string;
 }
@@ -87,7 +86,7 @@ export const AutocompleteCounterparts = ({
       const currentValues = getValues(name) || [];
 
       const isAlreadyAdded = currentValues.some(
-        (counterpart: components['schemas']['CounterpartResponse']) =>
+        (counterpart: CounterpartsAutocompleteOptionProps) =>
           counterpart.id === newCounterpartId
       );
 

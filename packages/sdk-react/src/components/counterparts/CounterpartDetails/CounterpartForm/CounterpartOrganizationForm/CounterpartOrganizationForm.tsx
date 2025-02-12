@@ -3,6 +3,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import type { DefaultValuesOCROrganization } from '@/components/counterparts/Counterpart.types';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -30,6 +31,7 @@ import {
 } from '@mui/material';
 
 import { CounterpartAddressForm } from '../../CounterpartAddressForm';
+import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import {
   useCounterpartForm,
   CounterpartsFormProps,
@@ -44,7 +46,11 @@ import {
   getCreateCounterpartValidationSchema,
 } from './validation';
 
-export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
+export const CounterpartOrganizationForm = (
+  props: CounterpartsFormProps & {
+    defaultValuesOCR?: DefaultValuesOCROrganization;
+  }
+) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -80,7 +86,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
         tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id,
         remindersEnabled: organizationCounterpart?.reminders_enabled ?? true,
         organization: defaultValuesOCR
-          ? defaultValuesOCR
+          ? defaultValuesOCR.counterpart
           : prepareCounterpartOrganization(
               organizationCounterpart?.organization,
               defaultValues
@@ -115,7 +121,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
               reminders_enabled: values.remindersEnabled,
               language: counterpart.language ?? language,
               organization: prepareCounterpartOrganizationUpdate(
-                values.organization
+                values.organization as CounterpartOrganizationFields
               ),
             };
 
@@ -129,7 +135,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
             language,
             reminders_enabled: values.remindersEnabled,
             organization: prepareCounterpartOrganizationCreate(
-              values.organization
+              values.organization as CounterpartOrganizationFields
             ),
           };
         console.log('payload', payload, values.organization);
@@ -153,7 +159,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
       remindersEnabled: organizationCounterpart?.reminders_enabled ?? false,
       organization: defaultValuesOCR
-        ? defaultValuesOCR
+        ? defaultValuesOCR.counterpart
         : prepareCounterpartOrganization(
             organizationCounterpart?.organization,
             defaultValues
