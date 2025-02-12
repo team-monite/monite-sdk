@@ -1,4 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs';
+import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
@@ -45,6 +46,7 @@ export const rollupConfig = (
       ),
       plugins: [
         json(),
+        image(),
         peerDepsExternal() as any,
         commonjs(),
         swc(options?.swc ? options.swc : { swcrc: true, sourceMaps: true }),
