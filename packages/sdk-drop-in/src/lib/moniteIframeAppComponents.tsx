@@ -44,4 +44,9 @@ export const moniteIframeAppComponents = {
       default: module.Onboarding,
     }))
   ),
+  'user-roles': lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.UserRoles,
+    }))
+  ),
 } as const;

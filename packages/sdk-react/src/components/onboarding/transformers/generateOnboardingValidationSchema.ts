@@ -65,7 +65,7 @@ export const generateOnboardingValidationSchema = ({
     getSchemaByType(type)(i18n);
 
   return object(
-    Object.entries(fields).reduce((acc, [key, item]) => {
+    Object.entries(fields).reduce((acc: Record<string, any>, [key, item]) => {
       const field = item as OnboardingFieldsType;
       const schemaKey = key as keyof typeof schema;
       const validator =
@@ -91,7 +91,7 @@ export const generateOnboardingValidationSchema = ({
           }),
         },
       };
-    }, {} as ValidationSchema<UnifiedSchemaType>)
+    }, {} as Record<string, any>)
   );
 };
 
@@ -146,7 +146,7 @@ const getValidatorSettings = (
   return validator.required();
 };
 
-type BusinessProfile = components['schemas']['BusinessProfile'];
+type BusinessProfile = components['schemas']['BusinessProfile-Input'];
 type EntityAddressSchema = components['schemas']['EntityAddressSchema'];
 type OptionalIndividualSchema =
   components['schemas']['OptionalIndividualSchema'];

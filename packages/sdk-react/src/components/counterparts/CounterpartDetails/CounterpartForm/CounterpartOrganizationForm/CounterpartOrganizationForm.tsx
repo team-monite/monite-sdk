@@ -224,7 +224,7 @@ export const CounterpartOrganizationForm = (
                     <TextField
                       id={field.name}
                       label={t(i18n)`Company name`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}
@@ -310,7 +310,7 @@ export const CounterpartOrganizationForm = (
                     <TextField
                       id={field.name}
                       label={t(i18n)`Email`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}
@@ -335,7 +335,7 @@ export const CounterpartOrganizationForm = (
                     <TextField
                       id={field.name}
                       label={t(i18n)`Phone number`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}
@@ -385,7 +385,7 @@ export const CounterpartOrganizationForm = (
                     <TextField
                       id={field.name}
                       label={t(i18n)`Tax ID`}
-                      variant="outlined"
+                      variant="standard"
                       fullWidth
                       error={Boolean(error)}
                       helperText={error?.message}

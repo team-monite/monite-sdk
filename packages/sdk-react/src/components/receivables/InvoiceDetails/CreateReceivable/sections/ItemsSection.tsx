@@ -312,7 +312,7 @@ export const ItemsSection = ({
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               required
                               error={Boolean(error)}
@@ -340,7 +340,7 @@ export const ItemsSection = ({
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               required
                               error={Boolean(error)}
@@ -432,9 +432,7 @@ export const ItemsSection = ({
           justifyContent: 'flex-end',
           borderRadius: 0,
           border: 0,
-          borderBottom: '1px solid',
-          borderBottomColor: 'divider',
-          paddingBottom: 6,
+          paddingBottom: 4,
         }}
       >
         <CardContent sx={{ maxWidth: '560px', width: '100%' }}>

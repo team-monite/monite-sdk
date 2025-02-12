@@ -19,7 +19,9 @@ export const ROW_TO_TAG_STATUS_MUI_MAP: Record<
   ChipTypeMap['props']['color']
 > = {
   draft: 'default',
+  issuing: 'default',
   issued: 'primary',
+  failed: 'error',
   accepted: 'success',
   partially_paid: 'info',
   paid: 'success',
@@ -44,7 +46,9 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   typeof SvgIcon
 > = {
   draft: InsertDriveFileOutlinedIcon,
+  issuing: InsertDriveFileOutlinedIcon,
   issued: SendOutlinedIcon,
+  failed: ErrorOutlineOutlinedIcon,
   accepted: CheckOutlinedIcon,
   partially_paid: StarHalfOutlinedIcon,
   paid: PaidOutlinedIcon,

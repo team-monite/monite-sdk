@@ -65,12 +65,12 @@ export type commonPermissionsObjectType =
 export type payablePermissionsObjectType = 'payable';
 
 type CommonOperator = {
-  method: components['schemas']['CommonSchema']['object_type'];
+  method: components['schemas']['CommonSchema-Input']['object_type'];
   action: components['schemas']['ActionEnum'];
 };
 
 type PayableOperator = {
-  method: components['schemas']['PayableSchema']['object_type'];
+  method: components['schemas']['PayableSchema-Input']['object_type'];
   action: components['schemas']['PayableActionEnum'];
 };
 
@@ -82,7 +82,7 @@ type IsActionAllowedType = { entityUserId?: string } & (
 interface PermissionMap
   extends Record<
     CommonOperator['method'],
-    Array<components['schemas']['ActionSchema']>
+    Array<components['schemas']['package__roles__head__schemas__ActionSchema']>
   > {
   payable: Array<components['schemas']['PayableActionSchema']>;
 }
@@ -142,7 +142,7 @@ export function isActionAllowed({
   action: PayableOperator['action'] | CommonOperator['action'];
   actions:
     | Array<
-        | components['schemas']['ActionSchema']
+        | components['schemas']['package__roles__head__schemas__ActionSchema']
         | components['schemas']['PayableActionSchema']
       >
     | undefined;

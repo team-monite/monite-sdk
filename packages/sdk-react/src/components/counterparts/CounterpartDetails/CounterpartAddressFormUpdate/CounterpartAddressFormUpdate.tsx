@@ -65,7 +65,7 @@ export const CounterpartAddressFormUpdate = (
                 <TextField
                   id={field.name}
                   label={t(i18n)`Address line 1`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -81,7 +81,7 @@ export const CounterpartAddressFormUpdate = (
                 <TextField
                   id={field.name}
                   label={t(i18n)`Address line 2`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -96,7 +96,7 @@ export const CounterpartAddressFormUpdate = (
                 <TextField
                   id={field.name}
                   label={t(i18n)`City`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -112,7 +112,7 @@ export const CounterpartAddressFormUpdate = (
                 <TextField
                   id={field.name}
                   label={t(i18n)`ZIP code`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -128,7 +128,7 @@ export const CounterpartAddressFormUpdate = (
                 <TextField
                   id={field.name}
                   label={t(i18n)`State / Area / Province`}
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   error={Boolean(error)}
                   helperText={error?.message}
@@ -142,7 +142,7 @@ export const CounterpartAddressFormUpdate = (
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <FormControl
-                  variant="outlined"
+                  variant="standard"
                   fullWidth
                   required
                   error={Boolean(error)}

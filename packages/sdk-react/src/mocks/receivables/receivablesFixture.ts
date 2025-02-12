@@ -87,6 +87,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
 
   return {
     quantity: faker.number.int({ min: 1, max: 10 }),
+    total_before_vat: faker.number.int({ min: 10, max: 30_000 }),
     product: {
       id: faker.string.uuid(),
       type: 'product',
@@ -297,6 +298,7 @@ function createRandomInvoice(
     payment_reminder_id: paymentReminderListFixture[0].id,
     tags: [],
     vat_mode: 'exclusive',
+    is_einvoice: false,
   };
 }
 

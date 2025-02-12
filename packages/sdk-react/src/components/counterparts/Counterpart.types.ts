@@ -1,4 +1,4 @@
-import type { AllowedCountries } from '@monite/sdk-api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 
 export enum CounterpartDataTestId {
   OrganizationView = 'OrganizationView',
@@ -40,7 +40,7 @@ interface BaseCounterpartOCR {
   city: string;
   state: string;
   postalCode: string;
-  country?: AllowedCountries;
+  country?: typeof AllowedCountries;
 }
 
 export interface DefaultValuesOCR<T extends BaseCounterpartOCR> {

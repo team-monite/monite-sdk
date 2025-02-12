@@ -22,16 +22,13 @@ import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OCRResponseInvoiceReceiptData,
-  AllowedCountries,
-} from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -192,26 +189,26 @@ const getValidationSchema = (i18n: I18n) =>
  * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
  *
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayableDetailsInfo: {
- *       defaultProps: {
- *         optionalFields: {
- *           invoiceDate: true,         // Show the invoice date field
- *           tags: true,                // Show the tags field
- *         },
- *         ocrRequiredFields: {
- *           invoiceNumber: true,       // The invoice number is required based on OCR data
- *           counterpart: true,         // The counterpart is required based on OCR data
- *           dueDate: true,             // The due date is required based on OCR data
- *           currency: true,            // The currency is required based on OCR data
- *         },
- *         isTagsDisabled: true,        // The tags field is disabled
- *       },
- *     },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   optionalFields: {
+ *     invoiceDate: true,         // Show the invoice date field
+ *     tags: true,                // Show the tags field
  *   },
- * });
+ *   ocrMismatchFields: {
+ *     amount_to_pay: true,       // Show the amount to pay field
+ *     counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *   },
+ *   ocrRequiredFields: {
+ *     invoiceNumber: true,       // The invoice number is required based on OCR data
+ *     dueDate: true,             // The due date is required based on OCR data
+ *     currency: true,            // The currency is required based on OCR data
+ *   },
+ *   isTagsDisabled: true,        // The tags field is disabled
+ * };
+ * ```
  *
  * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
  * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
@@ -276,7 +273,8 @@ const PayableDetailsFormBase = forwardRef<
       context: formContext,
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, trigger } = methods;
+    const { control, handleSubmit, watch, reset, trigger, resetField } =
+      methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
     const currentInvoiceDate = watch('invoiceDate');
@@ -351,32 +349,36 @@ const PayableDetailsFormBase = forwardRef<
     const className = 'Monite-PayableDetailsForm';
 
     useEffect(() => {
-      trigger();
-    }, [trigger]);
-
-    useEffect(() => {
       if (
         counterpartBankAccountQuery.isSuccess &&
         counterpartBankAccountQuery.data?.data
       ) {
-        const newDefault = findDefaultBankAccount(
+        const defaultBankAccount = findDefaultBankAccount(
           counterpartBankAccountQuery.data.data,
           currentCurrency
         );
 
-        if (methods.getValues('counterpartBankAccount') !== newDefault) {
-          methods.setValue('counterpartBankAccount', newDefault, {
-            shouldValidate: true,
-            shouldDirty: false,
+        // Only reset if the value is different
+        const currentValue = methods.getValues('counterpartBankAccount');
+        if (currentValue !== defaultBankAccount) {
+          resetField('counterpartBankAccount', {
+            defaultValue: defaultBankAccount,
+            keepTouched: true,
           });
         }
       }
     }, [
       counterpartBankAccountQuery.data,
       currentCurrency,
-      methods,
+      resetField,
+      methods.getValues,
       counterpartBankAccountQuery.isSuccess,
+      methods,
     ]);
+
+    useEffect(() => {
+      trigger();
+    }, [trigger]);
 
     return (
       <>
@@ -443,7 +445,7 @@ const PayableDetailsFormBase = forwardRef<
                             {...field}
                             id={field.name}
                             label={t(i18n)`Number`}
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             helperText={error?.message}
@@ -458,6 +460,13 @@ const PayableDetailsFormBase = forwardRef<
                         disabled={false}
                         name="counterpart"
                         label="Vendor"
+                        required={
+                          isFieldRequired('counterpart', ocrRequiredFields) ||
+                          isFieldRequiredByValidations(
+                            'counterpart_id',
+                            payablesValidations
+                          )
+                        }
                         getCounterpartDefaultValues={(
                           counterpartType?: string
                         ):
@@ -467,7 +476,7 @@ const PayableDetailsFormBase = forwardRef<
                             counterpart_address_object = null,
                             tax_payer_id = '',
                             counterpart_name = '',
-                          } = (payable?.other_extracted_data as OCRResponseInvoiceReceiptData) ||
+                          } = (payable?.other_extracted_data as components['schemas']['OCRResponseInvoiceReceiptData']) ||
                           {};
                           return {
                             tax_id: tax_payer_id || '',
@@ -482,10 +491,9 @@ const PayableDetailsFormBase = forwardRef<
                               state: counterpart_address_object?.state || '',
                               postalCode:
                                 counterpart_address_object?.postal_code || '',
-                              // country: counterpart_address_object?.country,
                               ...(counterpart_address_object?.country && {
                                 country:
-                                  counterpart_address_object?.country as AllowedCountries,
+                                  counterpart_address_object?.country as typeof AllowedCountries,
                               }),
                               ...(counterpartType === 'individual' && {
                                 firstName: counterpart_name,
@@ -505,7 +513,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             required={
@@ -635,7 +643,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               disabled={isTagsDisabled}
                               required={isFieldRequired(
@@ -665,7 +673,7 @@ const PayableDetailsFormBase = forwardRef<
                                   <TextField
                                     {...params}
                                     label={t(i18n)`Tags`}
-                                    variant="outlined"
+                                    variant="standard"
                                     fullWidth
                                     error={Boolean(error)}
                                     helperText={error?.message}

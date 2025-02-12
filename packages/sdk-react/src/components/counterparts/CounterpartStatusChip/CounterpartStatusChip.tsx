@@ -19,34 +19,6 @@ export interface MoniteCounterpartStatusChipProps {
 
 /**
  * Displays the status of a Counterpart.
- * Could be customized through MUI theming.
- *
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MoniteCounterpartStatusChip: {
- *       defaultProps: {
- *         size: 'small', // The size of the chip
- *         variant: 'outlined', // The variant of the chip
- *       },
- *       variants: [
- *         {
- *           props: { status: 'customer' }, // Custom styles for the 'customer' status
- *           style: {
- *             border: '2px dashed lightgreen',
- *           },
- *         },
- *         {
- *           props: { status: 'vendor' }, // Custom styles for the 'vendor' status
- *           style: {
- *             border: '2px dashed red',
- *           },
- *         },
- *       ],
- *     },
- *   },
- * });
  */
 
 export const CounterpartStatusChip = forwardRef<

@@ -11,11 +11,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
-import { useDateFormat } from '@/utils/MoniteOptions';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -53,11 +49,12 @@ const TagsTableBase = ({
   showCreationModal,
 }: TagsTableProps) => {
   const { i18n } = useLingui();
+  const { api, locale, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.tags.pageSizeOptions[0]
   );
   const [selectedTag, setSelectedTag] = useState<
     components['schemas']['TagReadSchema'] | undefined
@@ -82,7 +79,6 @@ const TagsTableBase = ({
   const closeDeleteModal = useCallback(() => {
     setDeleteModalOpened(false);
   }, []);
-  const { api } = useMoniteContext();
 
   const {
     data: tags,
@@ -133,8 +129,6 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
-  const dateFormat = useDateFormat();
-
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -149,7 +143,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['created_at']
-        ) => i18n.date(value, dateFormat),
+        ) => i18n.date(value, locale.dateFormat),
       },
       {
         field: 'updated_at',
@@ -157,7 +151,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['updated_at']
-        ) => i18n.date(value, dateFormat),
+        ) => i18n.date(value, locale.dateFormat),
       },
       {
         field: 'created_by_entity_user_id',
@@ -193,7 +187,7 @@ const TagsTableBase = ({
       },
     ];
   }, [
-    dateFormat,
+    locale.dateFormat,
     i18n,
     isDeleteAllowed,
     isUpdateAllowed,
@@ -228,7 +222,6 @@ const TagsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <DataGrid
@@ -244,6 +237,7 @@ const TagsTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.tags.pageSizeOptions}
               prevPage={tags?.prev_pagination_token}
               nextPage={tags?.next_pagination_token}
               paginationModel={{

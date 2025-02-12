@@ -59,13 +59,13 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { api, monite } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
     isNonCompliantFlow,
   } = useMyEntity();
-
+  const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(
       getCreateInvoiceValidationSchema(
@@ -105,7 +105,7 @@ const CreateReceivablesBase = ({
   const createReceivable = useCreateReceivable();
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const [actualCurrency, setActualCurrency] = useState<
@@ -158,47 +158,52 @@ const CreateReceivablesBase = ({
       (address) => address.id === shippingAddressId
     );
 
-    const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
+    const invoicePayload: Omit<
+      components['schemas']['ReceivableFacadeCreateInvoicePayload'],
+      'is_einvoice'
+    > = {
+      type: values.type,
+      counterpart_id: values.counterpart_id,
+      counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
+      counterpart_billing_address_id: counterpartBillingAddress.id,
+      counterpart_shipping_address_id: counterpartShippingAddress?.id,
+
+      entity_bank_account_id: values.entity_bank_account_id || undefined,
+      payment_terms_id: values.payment_terms_id,
+      line_items: values.line_items.map((item) => ({
+        quantity: item.quantity,
+        product_id: item.product_id,
+        ...(isNonVatSupported
+          ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
+          : { vat_rate_id: item.vat_rate_id }),
+      })),
+      memo: values.memo,
+      vat_exemption_rationale: values.vat_exemption_rationale,
+      ...(!isNonVatSupported && values.entity_vat_id_id
+        ? { entity_vat_id_id: values.entity_vat_id_id }
+        : {}),
+      fulfillment_date: values.fulfillment_date
+        ? /**
+           * We have to change the date as Backend accepts it.
+           * There is no `time` in the request, only year, month and date
+           */
+          format(values.fulfillment_date, 'yyyy-MM-dd')
+        : undefined,
+      purchase_order: values.purchase_order || undefined,
+      currency: actualCurrency,
+      payment_reminder_id: values.payment_reminder_id || undefined,
+      overdue_reminder_id: values.overdue_reminder_id || undefined,
+      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
+    };
+
+    createReceivable.mutate(
+      invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
       {
-        type: values.type,
-        counterpart_id: values.counterpart_id,
-        counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-        counterpart_billing_address_id: counterpartBillingAddress.id,
-        counterpart_shipping_address_id: counterpartShippingAddress?.id,
-
-        entity_bank_account_id: values.entity_bank_account_id || undefined,
-        payment_terms_id: values.payment_terms_id,
-        line_items: values.line_items.map((item) => ({
-          quantity: item.quantity,
-          product_id: item.product_id,
-          ...(isNonVatSupported
-            ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
-            : { vat_rate_id: item.vat_rate_id }),
-        })),
-        memo: values.memo,
-        vat_exemption_rationale: values.vat_exemption_rationale,
-        ...(!isNonVatSupported && values.entity_vat_id_id
-          ? { entity_vat_id_id: values.entity_vat_id_id }
-          : {}),
-        fulfillment_date: values.fulfillment_date
-          ? /**
-             * We have to change the date as Backend accepts it.
-             * There is no `time` in the request, only year, month and date
-             */
-            format(values.fulfillment_date, 'yyyy-MM-dd')
-          : undefined,
-        purchase_order: values.purchase_order || undefined,
-        currency: actualCurrency,
-        payment_reminder_id: values.payment_reminder_id || undefined,
-        overdue_reminder_id: values.overdue_reminder_id || undefined,
-        tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
-      };
-
-    createReceivable.mutate(invoicePayload, {
-      onSuccess: (createdReceivable) => {
-        onCreate?.(createdReceivable.id);
-      },
-    });
+        onSuccess: (createdReceivable) => {
+          onCreate?.(createdReceivable.id);
+        },
+      }
+    );
   };
 
   return (
@@ -236,33 +241,31 @@ const CreateReceivablesBase = ({
             onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
+            <Box>
+              <Typography
+                variant="h1"
+                sx={{ mb: 2 }}
+                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
+              >
+                {t(i18n)`Invoice`}{' '}
+                <Typography component="span" variant="h1" color="textSecondary">
+                  #{INVOICE_DOCUMENT_AUTO_ID}
+                </Typography>
+              </Typography>
+            </Box>
             <Stack direction="column" spacing={7}>
               <BillToSection disabled={createReceivable.isPending} />
-              <Box>
-                <Typography
-                  variant="h1"
-                  sx={{ mb: 2 }}
-                  data-testid={
-                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                  }
-                >
-                  {t(i18n)`Invoice`}{' '}
-                  <Typography
-                    component="span"
-                    variant="h1"
-                    color="textSecondary"
-                  >
-                    #{INVOICE_DOCUMENT_AUTO_ID}
-                  </Typography>
-                </Typography>
-                <EntitySection disabled={createReceivable.isPending} />
-              </Box>
               <ItemsSection
-                defaultCurrency={settings?.currency?.default}
+                defaultCurrency={
+                  settings?.currency?.default || fallbackCurrency
+                }
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
+              <Box>
+                <EntitySection disabled={createReceivable.isPending} />
+              </Box>
               <ReminderSection
                 disabled={createReceivable.isPending}
                 onUpdateOverdueReminder={onEditOverdueReminder}

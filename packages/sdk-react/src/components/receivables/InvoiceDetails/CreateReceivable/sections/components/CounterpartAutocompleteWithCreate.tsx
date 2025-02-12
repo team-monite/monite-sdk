@@ -40,6 +40,7 @@ export const CounterpartAutocompleteWithCreate = ({
   name,
   label = 'Customer',
   getCounterpartDefaultValues,
+  required = true,
 }: {
   disabled?: boolean;
   name: string;
@@ -47,6 +48,7 @@ export const CounterpartAutocompleteWithCreate = ({
   getCounterpartDefaultValues?: (
     type?: string
   ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
+  required?: boolean;
 }) => {
   const { i18n } = useLingui();
   const { control, setValue } = useFormContext<any>();
@@ -147,7 +149,7 @@ export const CounterpartAutocompleteWithCreate = ({
                   {...params}
                   label={t(i18n)`${label}`}
                   placeholder={t(i18n)`Select counterpart`}
-                  required
+                  required={required}
                   error={Boolean(error)}
                   helperText={error?.message}
                   InputProps={{

@@ -38,6 +38,6 @@ export const onboardingBusinessProfileMixedFixture = (): OnboardingTestData<
   };
 };
 
-type BusinessProfile = components['schemas']['BusinessProfile'];
+type BusinessProfile = components['schemas']['BusinessProfile-Input'];
 type OnboardingBusinessProfile =
   components['schemas']['OnboardingBusinessProfile'];

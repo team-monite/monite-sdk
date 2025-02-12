@@ -1,7 +1,9 @@
 import { components } from '@/api';
 
 const schema: {
-  [key in components['schemas']['LogTypeEnum']]: key;
+  [key in (components['schemas'] & {
+    LogTypeEnum: string;
+  })['LogTypeEnum']]: key;
 } = {
   request: 'request',
   response: 'response',

@@ -61,6 +61,7 @@ export const FinanceBanner = () => {
         alignItems: 'center',
         gap: 2,
         justifyContent: 'space-between',
+        marginTop: '2px',
       }}
     >
       <Box

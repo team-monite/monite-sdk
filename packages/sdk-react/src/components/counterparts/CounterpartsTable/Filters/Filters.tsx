@@ -48,7 +48,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
       }
     >
       <FormControl
-        variant="outlined"
+        variant="standard"
         fullWidth
         className="Monite-CounterpartTypeFilter Monite-FilterControl"
       >
@@ -84,7 +84,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
       </FormControl>
       {showCategories && (
         <FormControl
-          variant="outlined"
+          variant="standard"
           fullWidth
           className="Monite-CounterpartCategoryFilter Monite-FilterControl"
         >

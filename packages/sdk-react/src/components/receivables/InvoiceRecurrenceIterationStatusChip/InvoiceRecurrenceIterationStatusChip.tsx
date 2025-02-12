@@ -26,30 +26,6 @@ export interface MoniteInvoiceRecurrenceIterationStatusChipProps {
 
 /**
  * Displays the status of an Invoice Recurrence Iteration.
- * Could be customized through MUI theming.
- *
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MoniteInvoiceRecurrenceIterationStatusChip: {
- *       defaultProps: {
- *         icon: true, // Display status icon?
- *         variant: 'filled', // The variant of the chip
- *         size: 'small', // The size of the chip
- *       },
- *       variants: [
- *         {
- *           props: { status: 'pending' }, // Custom styles for the 'pending' status
- *           style: {
- *             border: '2px dashed orange',
- *           },
- *         },
- *         // Add more custom styles for other statuses if needed
- *       ],
- *     },
- *   },
- * });
  */
 export const InvoiceRecurrenceIterationStatusChip = forwardRef<
   HTMLDivElement,

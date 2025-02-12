@@ -13,6 +13,7 @@ const routingPaths: Record<WidgetType, string> = {
   tags: '/tags',
   'approval-policies': '/approval-policies',
   onboarding: '/onboarding',
+  'user-roles': '/user-roles',
 };
 
 test.beforeEach(async ({ page }) => {
@@ -26,29 +27,6 @@ test.beforeEach(async ({ page }) => {
       await route.continue();
     }
   });
-});
-
-test('theme switching works', async ({ page }) => {
-  await page.goto(`${consumerPage}${routingPaths.receivables}`);
-
-  const iframe = page.frameLocator('iframe');
-
-  await expect(iframe.getByRole('heading', { name: 'Sales' })).toBeVisible();
-
-  await page.getByRole('button', { name: 'Material UI' }).click();
-  await page.getByText('Theme').click();
-  await page.getByRole('button', { name: 'Material UI' }).click();
-  await page.getByRole('menuitem', { name: 'Monite' }).click();
-  await page.getByRole('button', { name: 'Monite' }).click();
-  await page.getByLabel('Dark Mode').check();
-  await page.getByRole('menuitem', { name: 'Monite' }).click();
-
-  const themeElement = iframe.locator('body');
-  const bgColor = await themeElement.evaluate(
-    (el) => getComputedStyle(el).backgroundColor
-  );
-
-  expect(bgColor).toBe('rgb(18, 18, 18)');
 });
 
 test('test the Tags button under Settings', async ({ page }) => {

@@ -7,9 +7,10 @@ import React, {
   FocusEvent,
 } from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
-import { SxProps, useThemeProps } from '@mui/material';
+import { SxProps } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
@@ -23,6 +24,7 @@ interface IconWrapperEvents {
 export interface MoniteIconWrapperProps
   extends IconButtonProps,
     IconWrapperEvents {
+  showCloseIcon?: boolean;
   icon?: ReactNode;
   fallbackIcon?: ReactNode;
   tooltip?: string;
@@ -93,20 +95,18 @@ export const IconWrapper = forwardRef<
     },
     ref
   ) => {
-    const themeProps = useThemeProps({
-      props: { icon, fallbackIcon },
-      name: 'MoniteIconWrapper',
-    });
+    const { componentSettings } = useMoniteContext();
+    const providerProps = componentSettings?.general?.iconWrapper;
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
-      themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
+      providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
     );
 
     useEffect(() => {
       setDisplayIcon(
-        themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
+        providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
       );
-    }, [themeProps.icon, themeProps.fallbackIcon]);
+    }, [providerProps.icon, providerProps.fallbackIcon]);
 
     const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
@@ -117,7 +117,7 @@ export const IconWrapper = forwardRef<
 
     const handleMouseLeave = () => {
       setDisplayIcon(
-        themeProps.icon || themeProps.fallbackIcon || <CloseIcon />
+        providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
       );
     };
 

@@ -1,18 +1,25 @@
 import { ReactNode } from 'react';
 
+import { components } from '@/api';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
+import type { ComponentSettings } from '@/core/componentSettings';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import {
   MoniteAPIProvider,
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
-import { MoniteSDK } from '@monite/sdk-api';
-import { Theme, ThemeOptions } from '@mui/material';
+import { ThemeConfig } from '@/core/theme/types';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
 import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
+
+export interface MoniteSettings {
+  entityId: string;
+  apiUrl?: string;
+  fetchToken: () => Promise<components['schemas']['AccessTokenResponse']>;
+}
 
 export interface MoniteProviderProps {
   children?: ReactNode;
@@ -20,31 +27,38 @@ export interface MoniteProviderProps {
   /**
    * `theme` responsible for global styling of all Widgets provided.
    * If `theme` is not provided, `Monite` uses default theme.
-   *
-   * `Monite` uses `Material UI` for styling. If you want to know
-   *  more how to customize theme, please visit:
-   * @see {@link https://mui.com/customization/default-theme/ Default theme}
    */
-  theme?: ThemeOptions | Theme;
+  theme?: ThemeConfig;
 
-  /** An instance of `MoniteSDK` */
-  monite: MoniteSDK;
+  /** Monite initial settings  */
+  monite: MoniteSettings;
 
   /**
    * `locale` responsible for internationalisation
    *  of all Widgets provided.
    */
   locale?: MoniteLocale;
+
+  /**
+   * Component settings
+   */
+  componentSettings?: Partial<ComponentSettings>;
 }
 
 export const MoniteProvider = ({
   monite,
   theme,
+  componentSettings,
   children,
   locale,
 }: MoniteProviderProps) => {
   return (
-    <MoniteContextProvider monite={monite} locale={locale} theme={theme}>
+    <MoniteContextProvider
+      monite={monite}
+      locale={locale}
+      theme={theme}
+      componentSettings={componentSettings}
+    >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
         <MoniteMuiThemeProvider>
           <ContainerCssBaseline enableColorScheme />

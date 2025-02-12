@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { MoniteSDK } from '@monite/sdk-api';
 import {
   ApprovalPolicies,
   ApprovalPoliciesTable,
@@ -32,16 +31,13 @@ import {
 } from '@monite/sdk-react';
 
 function App() {
-  const [monite] = useState(
-    () =>
-      new MoniteSDK({
-        entityId: '05668b7a-...-...-...-...',
-        apiUrl: 'https://api.dev.monite.com/v1',
-        fetchToken: async () => {
-          return Promise.reject('Not implemented');
-        },
-      })
-  );
+  const [monite] = useState(() => ({
+    entityId: '05668b7a-...-...-...-...',
+    apiUrl: 'https://api.dev.monite.com/v1',
+    fetchToken: async () => {
+      return Promise.reject('Not implemented');
+    },
+  }));
 
   return (
     <div className="components-wrapper">

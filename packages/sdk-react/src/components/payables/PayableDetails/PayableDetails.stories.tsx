@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -21,12 +20,6 @@ const meta: Meta<typeof PayableDetails> = {
 type Story = StoryObj<typeof PayableDetails>;
 
 const actions = {
-  // storybook adds action functions to properties, so we need to reset deprecated ones intentionally
-  onSave: undefined,
-  onCancel: undefined,
-  onSubmit: undefined,
-  onReject: undefined,
-  onApprove: undefined,
   onSaved: action('onSaved'),
   onCanceled: action('onCanceled'),
   onSubmitted: action('onSubmitted'),
@@ -53,8 +46,6 @@ export const DialogDetailsView: Story = {
           action('onClose')();
           setOpen(false);
         }}
-        // onSubmit types are incompatible due to the spread operator
-        onSubmit={() => {}}
         onClosed={action('onClosed')}
       >
         <PayableDetails {...args} />
@@ -78,7 +69,7 @@ export const LowPermissions: Story = {
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -86,7 +77,7 @@ export const LowPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_LOW_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),
@@ -103,7 +94,7 @@ export const EmptyPermissions: Story = {
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
+      const monite = {
         fetchToken: () =>
           Promise.resolve({
             access_token: 'ueaohsueahtsueahs',
@@ -111,7 +102,7 @@ export const EmptyPermissions: Story = {
             expires_in: 3600,
           }),
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-      });
+      };
 
       return { monite };
     }),

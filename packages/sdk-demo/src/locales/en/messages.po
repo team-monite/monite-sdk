@@ -24,14 +24,14 @@ msgid "Counterparts"
 msgstr "Counterparts"
 
 #: src/components/Layout/ThemeSelect.tsx:82
-msgid "Dark Mode"
-msgstr "Dark Mode"
+#~ msgid "Dark Mode"
+#~ msgstr "Dark Mode"
 
 #: src/components/LoginForm/LoginForm.tsx:116
 msgid "Entity User ID"
 msgstr "Entity User ID"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:187
+#: src/apps/SDKDemo/SDKDemo.tsx:171
 msgid "Error: <0>{0}</0>"
 msgstr "Error: <0>{0}</0>"
 
@@ -43,21 +43,21 @@ msgstr "Integrations"
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:155
-#: src/apps/SDKDemo/SDKDemo.tsx:201
+#: src/apps/SDKDemo/SDKDemo.tsx:139
+#: src/apps/SDKDemo/SDKDemo.tsx:185
 msgid "Logout"
 msgstr "Logout"
 
 #: src/components/Layout/ThemeSelect.tsx:27
 #: src/components/Layout/ThemeSelect.tsx:31
 #: src/components/Layout/ThemeSelect.tsx:64
-msgid "Material UI"
-msgstr "Material UI"
+#~ msgid "Material UI"
+#~ msgstr "Material UI"
 
 #: src/components/Layout/ThemeSelect.tsx:29
 #: src/components/Layout/ThemeSelect.tsx:70
-msgid "Monite"
-msgstr "Monite"
+#~ msgid "Monite"
+#~ msgstr "Monite"
 
 #: src/components/Menu/consts.tsx:61
 msgid "Onboard Entity"
@@ -88,8 +88,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: src/components/Layout/ThemeSelect.tsx:57
-msgid "Theme"
-msgstr "Theme"
+#~ msgid "Theme"
+#~ msgstr "Theme"
 
 #: src/components/LoginForm/LoginForm.tsx:61
 msgid "Welcome back"

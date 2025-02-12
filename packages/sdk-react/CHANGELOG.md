@@ -1,5 +1,82 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.7
+
+### Minor Changes
+
+- 548efe1: Payment flow improvements on Accounts payable
+
+## 4.0.0-alpha.6
+
+### Minor Changes
+
+- 2c645e2: Fixed style issues
+
+## 4.0.0-alpha.5
+
+### Minor Changes
+
+- d452d77: feat(DEV-12235): Payment terms create/update/delete
+- 5dddf03: New pre-release v4
+
+## 4.0.0-alpha.4
+
+### Patch Changes
+
+- 368fe8e: UI minor fixes in invoice creation
+
+## 4.0.0-alpha.3
+
+### Minor Changes
+
+- 25d5f60: feat(DEV-13687) Argon changes during invoice creation
+
+## 4.0.0-alpha.2
+
+### Patch Changes
+
+- 1a0042c: Fix styling issues in Receivables table
+
+## 4.0.0-alpha.1
+
+### Minor Changes
+
+- e942b9c: feat(DEV-13306): add financing tab
+- ad63579: feat(DEV-13434): new styles for display components and form controls
+- f57ac16: feat(DEV-13301): finance an invoice
+- b787793: feat(DEV-13389): Default bank account is selected during counterpart and currency selection
+- 5828ac1: feat(DEV-13304): implement finance banner
+- 3a53ec0: feat(DEV-13398): expose finance components
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+- 069181e: feat(DEV-13346): show confirmation modal for bill cancelation
+- a0cec41: feat(DEV-13430): add new styles to search and filters
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+- 2c39324: feat(DEV-13429): add spacing token and update storybook utils to handle theme config
+
+### Patch Changes
+
+- 88691dd: feat(DEV-13428): add wrapper for finance faq
+- b0494f7: Update table styles
+
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+- e2ae09a: feat(DEV-12955): add new styling approach for the SDK
+- eb51f82: refactor(DEV-12028): remove deprecated methods for payable details
+- 14a706d: feat(DEV-13343): move date time format to locale
+
+## 3.22.0
+
+### Minor Changes
+
+- 9976bc8: Divide merged columns on Payables and Receivables components
+
+### Patch Changes
+
+- @monite/sdk-api@3.22.0
+
 ## 3.21.0
 
 ### Minor Changes
