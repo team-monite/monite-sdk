@@ -1,13 +1,18 @@
-import { auth, clerkClient, currentUser } from '@clerk/nextjs';
+'use server';
+
+import { auth, clerkClient, currentUser } from '@clerk/nextjs/server';
 
 import { getEntityUserData } from '@/lib/clerk-api/get-entity-user-data';
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
 
 export const getCurrentUserEntity = async () => {
-  const { orgId } = auth();
+  const { orgId } = await auth();
+
+  const client = await clerkClient();
+
   const organization =
     (orgId &&
-      (await clerkClient.organizations.getOrganization({
+      (await client.organizations.getOrganization({
         organizationId: orgId,
       }))) ||
     undefined;
