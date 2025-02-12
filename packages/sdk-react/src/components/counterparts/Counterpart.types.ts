@@ -40,7 +40,7 @@ interface BaseCounterpartOCR {
   city: string;
   state: string;
   postalCode: string;
-  country?: typeof AllowedCountries;
+  country?: keyof typeof AllowedCountries;
 }
 
 export interface DefaultValuesOCR<T extends BaseCounterpartOCR> {

@@ -493,7 +493,7 @@ const PayableDetailsFormBase = forwardRef<
                                 counterpart_address_object?.postal_code || '',
                               ...(counterpart_address_object?.country && {
                                 country:
-                                  counterpart_address_object?.country as typeof AllowedCountries,
+                                  counterpart_address_object?.country as keyof typeof AllowedCountries,
                               }),
                               ...(counterpartType === 'individual' && {
                                 firstName: counterpart_name,
