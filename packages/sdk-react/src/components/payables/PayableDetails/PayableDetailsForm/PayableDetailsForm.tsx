@@ -9,6 +9,10 @@ import {
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { CounterpartAutocompleteWithCreate } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartAutocompleteWithCreate';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -24,7 +28,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OCRResponseInvoiceReceiptData } from '@monite/sdk-api';
+import {
+  OCRResponseInvoiceReceiptData,
+  AllowedCountries,
+} from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -453,7 +460,9 @@ const PayableDetailsFormBase = forwardRef<
                         label="Vendor"
                         getCounterpartDefaultValues={(
                           counterpartType?: string
-                        ): any => {
+                        ):
+                          | DefaultValuesOCRIndividual
+                          | DefaultValuesOCROrganization => {
                           const {
                             counterpart_address_object = null,
                             tax_payer_id = '',
@@ -473,7 +482,11 @@ const PayableDetailsFormBase = forwardRef<
                               state: counterpart_address_object?.state || '',
                               postalCode:
                                 counterpart_address_object?.postal_code || '',
-                              country: counterpart_address_object?.country,
+                              // country: counterpart_address_object?.country,
+                              ...(counterpart_address_object?.country && {
+                                country:
+                                  counterpart_address_object?.country as AllowedCountries,
+                              }),
                               ...(counterpartType === 'individual' && {
                                 firstName: counterpart_name,
                               }),

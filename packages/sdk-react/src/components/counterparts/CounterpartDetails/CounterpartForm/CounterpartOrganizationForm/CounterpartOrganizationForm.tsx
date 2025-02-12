@@ -138,7 +138,6 @@ export const CounterpartOrganizationForm = (
               values.organization as CounterpartOrganizationFields
             ),
           };
-        console.log('payload', payload, values.organization);
         return createCounterpart(payload);
       })(e);
     },
