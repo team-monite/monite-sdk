@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#: src/components/NavigationMenu/NavigationList.tsx:42
+#: src/components/NavigationMenu/NavigationList.tsx:36
 msgid "AI Assistant"
 msgstr "AI Assistant"
 
-#: src/components/NavigationMenu/NavigationList.tsx:45
+#: src/components/NavigationMenu/NavigationList.tsx:39
 msgid "Bill Pay"
 msgstr "Bill Pay"
 
@@ -31,7 +31,7 @@ msgstr "Bill Pay"
 #~ msgid "Continue"
 #~ msgstr "Continue"
 
-#: src/components/NavigationMenu/NavigationList.tsx:54
+#: src/components/NavigationMenu/NavigationList.tsx:48
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -40,7 +40,7 @@ msgstr "Counterparts"
 #~ msgid "Dark Mode"
 #~ msgstr "Dark Mode"
 
-#: src/components/NavigationMenu/NavigationList.tsx:39
+#: src/components/NavigationMenu/NavigationList.tsx:33
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -52,7 +52,7 @@ msgstr "Dashboard"
 #~ msgid "English"
 #~ msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:98
+#: src/components/NavigationMenu/NavigationList.tsx:74
 msgid "Get Help"
 msgstr "Get Help"
 
@@ -68,7 +68,7 @@ msgstr "Get Help"
 #~ msgid "Invoice Design"
 #~ msgstr "Invoice Design"
 
-#: src/components/NavigationMenu/NavigationList.tsx:48
+#: src/components/NavigationMenu/NavigationList.tsx:42
 msgid "Invoicing"
 msgstr "Invoicing"
 
@@ -110,11 +110,11 @@ msgstr "Invoicing"
 #~ msgid "Payable \"{0}\" has been paid"
 #~ msgstr "Payable \"{0}\" has been paid"
 
-#: src/components/NavigationMenu/NavigationList.tsx:57
+#: src/components/NavigationMenu/NavigationList.tsx:51
 msgid "Products & Services"
 msgstr "Products & Services"
 
-#: src/components/NavigationMenu/NavigationList.tsx:51
+#: src/components/NavigationMenu/NavigationList.tsx:45
 msgid "Projects"
 msgstr "Projects"
 
@@ -122,7 +122,7 @@ msgstr "Projects"
 #~ msgid "Purchases"
 #~ msgstr "Purchases"
 
-#: src/components/NavigationMenu/NavigationList.tsx:70
+#: src/components/NavigationMenu/NavigationList.tsx:55
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
@@ -134,7 +134,7 @@ msgstr "Roles & Approvals"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:82
+#: src/components/NavigationMenu/NavigationList.tsx:58
 msgid "Tags"
 msgstr "Tags"
 
