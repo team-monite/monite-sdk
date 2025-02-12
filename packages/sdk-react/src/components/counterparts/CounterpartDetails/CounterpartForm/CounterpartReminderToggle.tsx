@@ -16,7 +16,7 @@ export const CounterpartReminderToggle = <T extends FieldValues>(
   return (
     <Box display="flex" alignItems="start" justifyContent="space-between">
       <Box>
-        <Typography variant="body2" color=" rgba(0, 0, 0, 0.84)">
+        <Typography variant="body2" color="rgba(0, 0, 0, 0.84)">
           {t(i18n)`Enable email reminders`}
         </Typography>
         <Typography
