@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { DialogContent, Stack, Box } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 
 import { useDocumentTemplatePreviewLoader } from '../../useDocumentTemplatePreviewLoader';
 import { useDocumentTemplatesApi } from '../../useDocumentTemplatesApi';
@@ -43,26 +43,27 @@ const DocumentDesignSelectionBase = () => {
         }
       />
       {!isLoading && (
-        <DialogContent>
-          <Stack direction="row" sx={{ justifyContent: 'space-around' }}>
-            <Box sx={{ maxWidth: 595, width: '100%' }}>
-              {selectedTemplate && (
-                <DocumentDesignTemplatePreview
-                  template={selectedTemplate}
-                  getPreview={getPreview}
-                />
-              )}
-            </Box>
-            <Box sx={{ maxWidth: 420 }}>
-              <DocumentDesignTemplates
-                templates={invoiceTemplates}
-                selectTemplate={(template) => setSelectedTemplate(template)}
-                selectedTemplateId={selectedTemplate?.id}
+        <Stack
+          direction="row"
+          sx={{ mt: '32px', justifyContent: 'space-around' }}
+        >
+          <Box sx={{ maxWidth: 595, width: '100%' }}>
+            {selectedTemplate && (
+              <DocumentDesignTemplatePreview
+                template={selectedTemplate}
                 getPreview={getPreview}
               />
-            </Box>
-          </Stack>
-        </DialogContent>
+            )}
+          </Box>
+          <Box sx={{ maxWidth: 420 }}>
+            <DocumentDesignTemplates
+              templates={invoiceTemplates}
+              selectTemplate={(template) => setSelectedTemplate(template)}
+              selectedTemplateId={selectedTemplate?.id}
+              getPreview={getPreview}
+            />
+          </Box>
+        </Stack>
       )}
     </>
   );

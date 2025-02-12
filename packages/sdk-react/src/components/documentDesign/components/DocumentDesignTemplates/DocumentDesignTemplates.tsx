@@ -24,7 +24,9 @@ export const DocumentDesignTemplates = ({
 
   return (
     <>
-      <Typography variant="h2">{t(i18n)`Document templates`}</Typography>
+      <Typography variant="h3" sx={{ fontSize: '30px', fontWeight: '500' }}>{t(
+        i18n
+      )`Document templates`}</Typography>
       <Typography variant="body1" sx={{ marginTop: 2 }}>{t(
         i18n
       )`The template you set as the default will apply to all documents you issue in the future.`}</Typography>
