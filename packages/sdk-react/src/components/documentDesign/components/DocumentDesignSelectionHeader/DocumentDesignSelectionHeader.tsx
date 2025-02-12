@@ -1,9 +1,7 @@
-import { useDialog } from '@/components/Dialog';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { PageHeader } from '@/components';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
-import { DialogTitle, Toolbar, Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 export interface DocumentDesignSelectionHeaderProps {
   canSetDefault?: boolean;
@@ -15,23 +13,12 @@ export const DocumentDesignSelectionHeader = ({
   setDefault,
 }: DocumentDesignSelectionHeaderProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
 
   return (
-    <DialogTitle>
-      <Toolbar>
-        {dialogContext?.isDialogContent && (
-          <IconWrapper
-            onClick={dialogContext.onClose}
-            ariaLabelOverride={t(i18n)`Close document design selection`}
-            tooltip={t(i18n)`Close document design selection`}
-            sx={{ marginRight: 3 }}
-          >
-            <CloseIcon />
-          </IconWrapper>
-        )}
-
-        <Typography variant="h3">{t(i18n)`Document design`}</Typography>
+    <PageHeader
+      className={'-Header'}
+      title={<>{t(i18n)`Document design`}</>}
+      extra={
         <Button
           disabled={!canSetDefault}
           variant="contained"
@@ -40,7 +27,7 @@ export const DocumentDesignSelectionHeader = ({
         >
           {t(i18n)`Set as default`}
         </Button>
-      </Toolbar>
-    </DialogTitle>
+      }
+    />
   );
 };
