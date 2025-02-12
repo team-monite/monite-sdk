@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-02-07 21:42+0100\n"
+"POT-Creation-Date: 2025-02-10 11:19+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -133,6 +133,10 @@ msgstr "{issueDate}"
 #: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:151
 msgid "{item}"
 msgstr "{item}"
+
+#: src/components/documentDesign/useDocumentTemplatesApi.ts:49
+msgid "{name} document template has been set as the default."
+msgstr "{name} document template has been set as the default."
 
 #: src/ui/DueDateCell/DueDateCell.tsx:45
 msgid "{overdueDays} {0} overdue"
@@ -1506,6 +1510,11 @@ msgstr "Close"
 msgid "Close approval policy details"
 msgstr "Close approval policy details"
 
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:26
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:27
+msgid "Close document design selection"
+msgstr "Close document design selection"
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:180
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
 msgid "Close invoice details"
@@ -2209,6 +2218,10 @@ msgstr "Declined"
 msgid "default"
 msgstr "default"
 
+#: src/components/documentDesign/components/DocumentDesignTemplate/DocumentDesignTemplate.tsx:73
+msgid "Default"
+msgstr "Default"
+
 #: src/components/receivables/getCommonStatusLabel.ts:39
 msgid "Defaulted"
 msgstr "Defaulted"
@@ -2454,6 +2467,15 @@ msgstr "Djiboutian Franc"
 #: src/components/onboarding/dicts/mccCodes.ts:510
 msgid "Doctors"
 msgstr "Doctors"
+
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:34
+#: src/components/documentDesign/DocumentDesign.tsx:22
+msgid "Document design"
+msgstr "Document design"
+
+#: src/components/documentDesign/components/DocumentDesignTemplates/DocumentDesignTemplates.tsx:27
+msgid "Document templates"
+msgstr "Document templates"
 
 #: src/core/utils/countries.ts:79
 msgid "Dominica"
@@ -6061,6 +6083,10 @@ msgstr "Select invoices you would like to finance and send them for review."
 msgid "Select someone"
 msgstr "Select someone"
 
+#: src/components/documentDesign/DocumentDesign.tsx:51
+msgid "Select template"
+msgstr "Select template"
+
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:210
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
@@ -6108,6 +6134,10 @@ msgstr "Services"
 msgid "Set a recurrence period to issue invoices automatically"
 msgstr "Set a recurrence period to issue invoices automatically"
 
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:41
+msgid "Set as default"
+msgstr "Set as default"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:99
 msgid "Set by payment term"
 msgstr "Set by payment term"
@@ -6124,6 +6154,10 @@ msgstr "Set reminders"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:231
 msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
+
+#: src/components/documentDesign/DocumentDesign.tsx:41
+msgid "Set your document style"
+msgstr "Set your document style"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:140
 msgid "Settings"
@@ -6650,6 +6684,10 @@ msgstr "The review for the persons has been completed. You can proceed to the ne
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:394
 msgid "The start date for the recurrence shouldn't be in the past"
 msgstr "The start date for the recurrence shouldn't be in the past"
+
+#: src/components/documentDesign/components/DocumentDesignTemplates/DocumentDesignTemplates.tsx:28
+msgid "The template you set as the default will apply to all documents you issue in the future."
+msgstr "The template you set as the default will apply to all documents you issue in the future."
 
 #: src/components/onboarding/dicts/mccCodes.ts:1310
 msgid "Theatrical Ticket Agencies"
@@ -7297,6 +7335,10 @@ msgstr "Vanuatu Vatu"
 #: src/components/onboarding/dicts/mccCodes.ts:1395
 msgid "Variety Stores"
 msgstr "Variety Stores"
+
+#: src/components/documentDesign/DocumentDesign.tsx:44
+msgid "Various templates for your documents"
+msgstr "Various templates for your documents"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:261
