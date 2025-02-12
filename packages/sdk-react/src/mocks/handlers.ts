@@ -10,6 +10,7 @@ import {
   counterpartsAddressesHandlers,
 } from './counterparts';
 import { currenciesHandlers } from './currencies';
+import { documentTemplateHandlers } from './documentTemplates';
 import { entitiesHandlers } from './entities';
 import { entityOnboardingDataHandlers } from './entitiyOnboardingData';
 import { entityUsersHandlers } from './entityUsers';
@@ -61,4 +62,5 @@ export const handlers = [
   ...measureUnitsHandlers,
   ...rolesHandlers,
   ...filesHandlers,
+  ...documentTemplateHandlers,
 ];

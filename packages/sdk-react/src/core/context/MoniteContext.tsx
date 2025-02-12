@@ -35,6 +35,12 @@ interface MoniteContextBaseValue {
   dateFnsLocale: DateFnsLocale;
 }
 
+export type FetchToken = () => Promise<{
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+}>;
+
 export interface MoniteContextValue
   extends MoniteContextBaseValue,
     CreateMoniteAPIClientResult {
@@ -45,11 +51,7 @@ export interface MoniteContextValue
   apiUrl: string;
   theme: Theme;
   componentSettings: ComponentSettings;
-  fetchToken: () => Promise<{
-    access_token: string;
-    expires_in: number;
-    token_type: string;
-  }>;
+  fetchToken: FetchToken;
 }
 
 /**

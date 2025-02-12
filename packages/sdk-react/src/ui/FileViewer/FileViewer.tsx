@@ -12,10 +12,25 @@ interface FileViewerProps {
   url: string;
   mimetype: string;
   name?: string;
+  pdfHeight?: number | string;
+  showPdfToolbar?: number;
 }
 
-export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
-  if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
+export const FileViewer = ({
+  url,
+  mimetype,
+  name,
+  showPdfToolbar,
+  pdfHeight,
+}: FileViewerProps) => {
+  if (mimetype === 'application/pdf')
+    return (
+      <PdfFileViewer
+        url={url}
+        showToolbar={showPdfToolbar}
+        height={pdfHeight}
+      />
+    );
 
   return (
     <img
@@ -28,7 +43,15 @@ export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
   );
 };
 
-const PdfFileViewer = ({ url }: { url: string }) => {
+const PdfFileViewer = ({
+  url,
+  height,
+  showToolbar,
+}: {
+  url: string;
+  height?: number | string;
+  showToolbar?: number;
+}) => {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,19 +62,19 @@ const PdfFileViewer = ({ url }: { url: string }) => {
       pdfOpenParams: {
         scrollBar: 0,
         statusBar: 0,
-        toolbar: 1,
+        toolbar: showToolbar ?? 1,
         navpanes: 0,
         pagemode: 'none',
         messages: 0,
       },
     });
-  }, [url]);
+  }, [url, showToolbar]);
 
   return (
     <div
       className="Monite-PdfFileViewer"
       ref={pdfRef}
-      style={{ width: '100%', minHeight: '100%', border: 'none' }}
+      style={{ width: '100%', minHeight: '100%', border: 'none', height }}
     />
   );
 };
