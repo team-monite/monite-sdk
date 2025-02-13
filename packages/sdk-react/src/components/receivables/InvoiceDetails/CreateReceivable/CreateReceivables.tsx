@@ -1,410 +1,830 @@
-import { useEffect, useId, useMemo, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
-import { showErrorToast } from '@/components/onboarding/utils';
-import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
-import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
-import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  CounterpartIndividualForm,
+  CounterpartOrganizationForm,
+} from '@/components/counterparts/CounterpartDetails/CounterpartForm';
+import {
+  getCounterpartName,
+  isOrganizationCounterpart,
+} from '@/components/counterparts/helpers';
+import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
-  useCounterpartById,
-  useCounterpartVatList,
-  useMyEntity,
+  useCounterpartContactList,
+  useCounterpartList,
 } from '@/core/queries';
-import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { IconWrapper } from '@/ui/iconWrapper';
-import { LoadingPage } from '@/ui/loadingPage';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { KeyboardArrowDown } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from '@mui/icons-material/Close';
 import {
+  Autocomplete,
   Box,
   Button,
-  DialogContent,
-  DialogTitle,
+  CircularProgress,
+  Collapse,
+  Divider,
+  FormControl,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  List,
+  ListItem,
+  MenuItem,
+  Modal,
+  Select,
   Stack,
-  Toolbar,
+  TextField,
   Typography,
+  createFilterOptions,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 
-import { format } from 'date-fns';
+import { CreateReceivablesFormProps } from '../validation';
+import { CreateCounterpartModal } from './components/CreateCounterpartModal';
+import { SectionGeneralProps } from './Section.types';
 
-import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
-import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
-import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
-import { InvoicePreview } from './sections/components/InvoicePreview';
-import { CustomerSection } from './sections/CustomerSection';
-import { EntitySection } from './sections/EntitySection';
-import { ItemsSection } from './sections/ItemsSection';
-//import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
-import {
-  getCreateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-} from './validation';
+interface CounterpartsAutocompleteOptionProps {
+  id: string;
+  label: string;
+}
 
-/**
- * A component for creating a new Receivable
- * Supported only `invoice` type
- */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
-  <MoniteScopedProviders>
-    <CreateReceivablesBase {...props} />
-  </MoniteScopedProviders>
-);
+const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
-const CreateReceivablesBase = ({
-  type,
-  onCreate,
-}: InvoiceDetailsCreateProps) => {
+function prepareAddressView({
+  address,
+}: {
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+}) {
+  if (address)
+    return `${address.postal_code}, ${address.city}, ${address.line1}`;
+  return '';
+}
+
+const COUNTERPART_CREATE_NEW_ID = '__create-new__';
+const COUNTERPART_DIVIDER = '__divider__';
+
+function isCreateNewCounterpartOption(
+  counterpartOption: CounterpartsAutocompleteOptionProps | undefined | null
+): boolean {
+  return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
+}
+
+function isDividerOption(
+  counterpartOption: CounterpartsAutocompleteOptionProps | undefined | null
+): boolean {
+  return counterpartOption?.id === COUNTERPART_DIVIDER;
+}
+
+export interface CustomerSectionProps extends SectionGeneralProps {
+  counterpart: components['schemas']['CounterpartResponse'] | undefined;
+  counterpartVats:
+    | {
+        data: components['schemas']['CounterpartVatIDResponse'][];
+      }
+    | undefined;
+  isCounterpartLoading: boolean;
+  isCounterpartVatsLoading: boolean;
+}
+
+export const CustomerSection = ({
+  counterpart,
+  counterpartVats,
+  disabled,
+  isCounterpartLoading,
+  isCounterpartVatsLoading,
+}: CustomerSectionProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
-  const { api, entityId } = useMoniteContext();
-  const {
-    data: paymentTerms,
-    isLoading: isPaymentTermsLoading,
-    refetch: refetchPaymentTerms,
-  } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
-    api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: entityId },
-    });
-  const {
-    isNonVatSupported,
-    isLoading: isEntityLoading,
-    isNonCompliantFlow,
-    data: entityData,
-  } = useMyEntity();
-  const fallbackCurrency = 'USD';
-  const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(
-      getCreateInvoiceValidationSchema(
-        i18n,
-        isNonVatSupported,
-        isNonCompliantFlow
-      )
-    ),
-    defaultValues: useMemo(
-      () => ({
-        type,
-        counterpart_id: '',
-        counterpart_contact: '',
-        counterpart_vat_id_id: '',
-        payment_terms_id: '',
-        default_shipping_address_id: '',
-        default_billing_address_id: '',
-        fulfillment_date: null,
-        purchase_order: '',
-        entity_vat_id_id: '',
-        line_items: [],
-        entity_bank_account_id: '',
-        overdue_reminder_id: '',
-        payment_reminder_id: '',
-        memo: '',
-      }),
-      [type]
-    ),
-  });
+  const { control, watch, setValue } =
+    useFormContext<CreateReceivablesFormProps>();
 
-  const { handleSubmit, watch, getValues, setValue } = methods;
+  const { root } = useRootElements();
 
   const counterpartId = watch('counterpart_id');
 
-  const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
-  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
-    useCounterpartVatList(counterpartId);
+  const { data: contacts } = useCounterpartContactList(counterpartId);
+  const defaultContact = contacts?.find((c) => c.is_default);
+  const {
+    data: counterpartAddresses,
+    isLoading: _isCounterpartAddressesLoading,
+  } = useCounterpartAddresses(counterpartId);
+  // _isCounterpartAddressesLoading will be true if counterpartId isn't set
+  const isCounterpartAddressesLoading =
+    counterpartId && _isCounterpartAddressesLoading;
+  const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
+    useState<boolean>(false);
+  const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
+    useState<boolean>(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
-  const createReceivable = useCreateReceivable();
-  const { data: settings, isLoading: isSettingsLoading } =
-    api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: entityId },
-    });
-
-  const [actualCurrency, setActualCurrency] = useState<
-    components['schemas']['CurrencyEnum'] | undefined
-  >(settings?.currency?.default);
-  const [counterpartBillingAddress, setCounterpartBillingAddress] =
-    useState<any>(null);
-  const [counterpartShippingAddress, setCounterpartShippingAddress] =
-    useState<any>(null);
-
-  const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+  const className = 'Monite-CreateReceivable-CustomerSection';
+  const isHiddenForUS =
+    !_isCounterpartAddressesLoading &&
+    Array.isArray(counterpartAddresses?.data) &&
+    counterpartAddresses.data.length > 0 &&
+    counterpartAddresses.data[0]?.country === 'US';
+  const isAddressFormDisabled =
+    isCounterpartAddressesLoading ||
+    !counterpartId ||
+    disabled ||
+    counterpartAddresses?.data.length === 1;
 
   useEffect(() => {
-    const values = getValues();
-    const billingAddressId = values.default_billing_address_id;
-    if (billingAddressId) {
-      setCounterpartBillingAddress(
-        counterpartAddresses?.data?.find(
-          (address) => address.id === billingAddressId
-        )
-      );
+    if (counterpartAddresses && counterpartAddresses.data.length === 1) {
+      setValue('default_shipping_address_id', counterpartAddresses.data[0].id);
+      setValue('default_billing_address_id', counterpartAddresses.data[0].id);
     }
+  }, [counterpartAddresses, setValue]);
 
-    const shippingAddressId = values.default_shipping_address_id;
-    if (shippingAddressId) {
-      setCounterpartShippingAddress(
-        counterpartAddresses?.data?.find(
-          (address) => address.id === shippingAddressId
-        )
-      );
+  useEffect(() => {
+    if (counterpartVats && counterpartVats.data.length === 1) {
+      setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
     }
-  }, [counterpartAddresses, getValues]);
-
-  const {
-    createReminderDialog,
-    editReminderDialog,
-    onCreateReminder,
-    onEditOverdueReminder,
-    onEditPaymentReminder,
-    closeCreateReminderDialog,
-    closeUpdateReminderDialog,
-  } = useInvoiceReminderDialogs({ getValues });
+  }, [counterpartVats, setValue]);
 
   const theme = useTheme();
-
-  const { data: counterpart, isLoading: isCounterpartLoading } =
-    useCounterpartById(counterpartId);
-
-  if (isSettingsLoading || isEntityLoading) {
-    return <LoadingPage />;
-  }
-
-  const className = 'Monite-CreateReceivable';
-  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
-    if (values.type !== 'invoice') {
-      showErrorToast(new Error('`type` except `invoice` is not supported yet'));
-      return;
-    }
-
-    if (!actualCurrency) {
-      showErrorToast(new Error('`actualCurrency` is not defined'));
-      return;
-    }
-
-    if (!counterpartBillingAddress) {
-      showErrorToast(new Error('`Billing address` is not provided'));
-      return;
-    }
-
-    const invoicePayload: Omit<
-      components['schemas']['ReceivableFacadeCreateInvoicePayload'],
-      'is_einvoice'
-    > = {
-      type: values.type,
-      counterpart_id: values.counterpart_id,
-      counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: counterpartBillingAddress.id,
-      counterpart_shipping_address_id: counterpartShippingAddress?.id,
-      entity_bank_account_id: values.entity_bank_account_id || undefined,
-      payment_terms_id: values.payment_terms_id,
-      line_items: values.line_items.map((item) => ({
-        quantity: item.quantity,
-        product_id: item.product_id,
-        ...(isNonVatSupported
-          ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
-          : { vat_rate_id: item.vat_rate_id }),
-      })),
-      memo: values.memo,
-      vat_exemption_rationale: values.vat_exemption_rationale,
-      ...(!isNonVatSupported && values.entity_vat_id_id
-        ? { entity_vat_id_id: values.entity_vat_id_id }
-        : {}),
-      fulfillment_date: values.fulfillment_date
-        ? /**
-           * We have to change the date as Backend accepts it.
-           * There is no `time` in the request, only year, month and date
-           */
-          format(values.fulfillment_date, 'yyyy-MM-dd')
-        : undefined,
-      purchase_order: values.purchase_order || undefined,
-      currency: actualCurrency,
-      payment_reminder_id: values.payment_reminder_id || undefined,
-      overdue_reminder_id: values.overdue_reminder_id || undefined,
-      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
-    };
-
-        entity_bank_account_id: values.entity_bank_account_id || undefined,
-        payment_terms_id: values.payment_terms_id,
-        line_items: values.line_items.map((item) => ({
-          quantity: item.quantity,
-          product_id: item.product_id,
-          ...(isNonVatSupported
-            ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
-            : { vat_rate_id: item.vat_rate_id }),
-        })),
-        memo: values.memo,
-        vat_exemption_rationale: values.vat_exemption_rationale,
-        ...(!isNonVatSupported && values.entity_vat_id_id
-          ? { entity_vat_id_id: values.entity_vat_id_id }
-          : {}),
-        fulfillment_date: values.fulfillment_date
-          ? /**
-             * We have to change the date as Backend accepts it.
-             * There is no `time` in the request, only year, month and date
-             */
-            format(values.fulfillment_date, 'yyyy-MM-dd')
-          : undefined,
-        purchase_order: values.purchase_order || undefined,
-        currency: actualCurrency,
-        payment_reminder_id: values.payment_reminder_id || undefined,
-        overdue_reminder_id: values.overdue_reminder_id || undefined,
-        tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
-      };
-
-    createReceivable.mutate(invoicePayload, {
-      onSuccess: (createdReceivable) => {
-        onCreate?.(createdReceivable.id);
-      },
-    });
-  };
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
+  //const handleEditSubmit = () => console.log;
 
   return (
-    <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
-      <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
-        <DialogTitle className={className + '-Title'}>
-          <Toolbar sx={{ padding: 0 }}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                edge="start"
-                color="inherit"
-                onClick={dialogContext?.onClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-            <Box sx={{ marginLeft: 'auto' }}>
-              <Button
-                variant="contained"
-                key="next"
-                color="primary"
-                type="submit"
-                form={formName}
-                disabled={createReceivable.isPending}
-              >{t(i18n)`Next page`}</Button>
-            </Box>
-          </Toolbar>
-        </DialogTitle>
-        <FormProvider {...methods}>
-          <form
-            id={formName}
-            noValidate
-            onSubmit={handleSubmit(handleCreateReceivable)}
-            style={{ marginBottom: theme.spacing(7) }}
-          >
-            <Stack direction="column" spacing={7}>
-              <Box>
-                <Typography
-                  sx={{ mt: 2, mb: 5 }}
-                  data-testid={
-                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                  }
-                  variant="h3"
-                >{t(i18n)`Create invoice`}</Typography>
-
-                <CustomerSection
-                  disabled={createReceivable.isPending}
-                  counterpart={counterpart}
-                  counterpartVats={counterpartVats}
-                  isCounterpartVatsLoading={isCounterpartVatsLoading}
-                  isCounterpartLoading={isCounterpartLoading}
-                />
-              </Box>
-
-              <ItemsSection
-                defaultCurrency={
-                  settings?.currency?.default || fallbackCurrency
-                }
-                actualCurrency={actualCurrency}
-                onCurrencyChanged={setActualCurrency}
-                isNonVatSupported={isNonVatSupported}
-              />
-
-              <Box
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <Box sx={{ mb: 2 }}>
-                  <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
-                    i18n
-                  )`Details`}</Typography>
-                  <YourVatDetailsForm
-                    isEntityVatIdsLoading={isEntityVatIdsLoading}
-                    entityVatIds={entityVatIds}
-                    disabled={createReceivable.isPending}
-                  />
-                </Box>
-                <FullfillmentSummary
-                  paymentTerms={paymentTerms}
-                  isPaymentTermsLoading={isPaymentTermsLoading}
-                  refetch={refetchPaymentTerms}
-                  disabled={createReceivable.isPending}
-                />
-              </Box>
-              <Box>
-                <EntitySection disabled={createReceivable.isPending} />
-              </Box>
-              <ReminderSection
-                disabled={createReceivable.isPending}
-                onUpdateOverdueReminder={onEditOverdueReminder}
-                onUpdatePaymentReminder={onEditPaymentReminder}
-                onCreateReminder={onCreateReminder}
-              />
-            </Stack>
-          </form>
-        </FormProvider>
-      </DialogContent>
-      <Box
-        width="50%"
-        sx={{
-          background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
-          height: '100vh',
+    <Stack spacing={2} className={className}>
+      <CreateCounterpartModal
+        open={isCreateCounterpartOpened}
+        onClose={() => {
+          setIsCreateCounterpartOpened(false);
         }}
-      >
-        <InvoicePreview
-          watch={watch}
-          counterpart={counterpart}
-          currency={actualCurrency}
-          isNonVatSupported={isNonVatSupported}
-          entityData={entityData}
-          address={counterpartBillingAddress}
-          paymentTerms={paymentTerms}
-          entityVatIds={entityVatIds}
-          counterpartVats={counterpartVats}
-        />
-      </Box>
-      <CreateInvoiceReminderDialog
-        open={createReminderDialog.open}
-        reminderType={createReminderDialog.reminderType}
-        onClose={closeCreateReminderDialog}
-        onCreate={({ reminderId, reminderType }) => {
-          if (reminderType === 'payment') {
-            setValue('payment_reminder_id', reminderId);
-          } else if (reminderType === 'overdue') {
-            setValue('overdue_reminder_id', reminderId);
-          }
+        onCreate={(newCounterpartId: string) => {
+          setValue('counterpart_id', newCounterpartId);
         }}
       />
 
-      {editReminderDialog.reminderId && (
-        <EditInvoiceReminderDialog
-          open={editReminderDialog.open}
-          reminderId={editReminderDialog.reminderId}
-          reminderType={editReminderDialog.reminderType}
-          onClose={closeUpdateReminderDialog}
-        />
-      )}
+      <CounterpartSelector
+        setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}
+        setIsEditCounterpartOpened={setIsEditCounterpartOpened}
+        disabled={disabled}
+        counterpartAddresses={counterpartAddresses}
+      />
+
+      <Modal open={isEditCounterpartOpened} container={root}>
+        <Box
+          sx={{
+            position: 'relative',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: isLargeScreen ? 600 : 480,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            borderRadius: 8,
+          }}
+        >
+          <Grid container alignItems="center" p={4}>
+            <Grid item xs={11}>
+              <Typography variant="h3">
+                {isEditMode
+                  ? t(i18n)`Edit customer's profile`
+                  : t(i18n)`Edit customer`}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <IconWrapper
+                aria-label={t(i18n)`Edit Customer Close`}
+                onClick={() => setIsEditCounterpartOpened(false)}
+                color="inherit"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            </Grid>
+          </Grid>
+          {isEditMode ? (
+            counterpart && isOrganizationCounterpart(counterpart) ? (
+              <CounterpartOrganizationForm
+                id={counterpartId}
+                onCancel={() => setIsEditMode(false)}
+                isInvoiceCreation={true}
+                showCategories={false}
+              />
+            ) : (
+              <CounterpartIndividualForm
+                id={counterpartId}
+                onCancel={() => setIsEditMode(false)}
+                isInvoiceCreation={true}
+                showCategories={false}
+              />
+            )
+          ) : (
+            <>
+              <Stack
+                sx={{
+                  padding: '0 2rem',
+                  maxHeight: isLargeScreen ? 480 : 380,
+                  overflowY: 'auto',
+                }}
+              >
+                <CounterpartSelector
+                  isSimplified
+                  disabled={disabled}
+                  counterpartAddresses={counterpartAddresses}
+                />
+                <List
+                  sx={{
+                    marginBottom: '2rem',
+                    '& .MuiListItem-root': {
+                      padding: '.25rem .5rem .25rem 0',
+                      fontWeight: '400',
+                      '& span': {
+                        color: 'rgba(112, 112, 112, 1)',
+                        minWidth: '144px',
+                        paddingRight: '1rem',
+                      },
+                    },
+                  }}
+                >
+                  {isOrganization && counterpart?.organization.email && (
+                    <ListItem>
+                      <span>{t(i18n)`Email`}</span>{' '}
+                      {counterpart.organization.email}
+                    </ListItem>
+                  )}{' '}
+                  {!isOrganization && counterpart?.individual.email && (
+                    <ListItem>
+                      <span>{t(i18n)`Email`}</span>{' '}
+                      {counterpart.individual.email}
+                    </ListItem>
+                  )}
+                  {isOrganization && counterpart?.organization.phone && (
+                    <ListItem>
+                      <span>{t(i18n)`Phone Number`}</span>{' '}
+                      {counterpart.organization.phone}
+                    </ListItem>
+                  )}{' '}
+                  {!isOrganization && counterpart?.individual.phone && (
+                    <ListItem>
+                      <span>{t(i18n)`Phone Number`}</span>{' '}
+                      {counterpart.individual.phone}
+                    </ListItem>
+                  )}
+                  {defaultContact && (
+                    <ListItem>
+                      <span>{t(i18n)`Contact person`}</span>{' '}
+                      {defaultContact?.first_name} {defaultContact?.last_name}
+                    </ListItem>
+                  )}
+                  {counterpart?.tax_id && (
+                    <ListItem>
+                      <span>{t(i18n)`TAX ID`}</span> {counterpart?.tax_id}
+                    </ListItem>
+                  )}
+                  {counterpartVats?.data[0]?.value && (
+                    <ListItem>
+                      <span>{t(i18n)`VAT ID`}</span>{' '}
+                      {counterpartVats.data[0].value}
+                    </ListItem>
+                  )}
+                </List>
+
+                <Controller
+                  name="default_billing_address_id"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginBottom: '1rem' }}
+                      fullWidth
+                      required
+                      error={Boolean(error)}
+                      disabled={isAddressFormDisabled}
+                    >
+                      <InputLabel id={field.name}>{t(
+                        i18n
+                      )`Billing address`}</InputLabel>
+                      <Select
+                        {...field}
+                        labelId={field.name}
+                        label={t(i18n)`Billing address`}
+                        IconComponent={() => (
+                          <KeyboardArrowDown fontSize="small" />
+                        )}
+                        MenuProps={{ container: root }}
+                        startAdornment={
+                          isCounterpartAddressesLoading ? (
+                            <CircularProgress size={20} />
+                          ) : null
+                        }
+                      >
+                        {counterpartAddresses?.data.map((address) => (
+                          <MenuItem key={address.id} value={address.id}>
+                            {prepareAddressView({ address })}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                  )}
+                />
+                <Controller
+                  name="default_shipping_address_id"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginBottom: '1rem' }}
+                      fullWidth
+                      error={Boolean(error)}
+                      disabled={isAddressFormDisabled}
+                    >
+                      <InputLabel htmlFor={field.name}>{t(
+                        i18n
+                      )`Shipping address`}</InputLabel>
+                      <Select
+                        {...field}
+                        id={field.name}
+                        labelId={field.name}
+                        MenuProps={{ container: root }}
+                        label={t(i18n)`Shipping address`}
+                        IconComponent={() => (
+                          <KeyboardArrowDown fontSize="small" />
+                        )}
+                        startAdornment={
+                          isCounterpartAddressesLoading ? (
+                            <CircularProgress size={20} />
+                          ) : null
+                        }
+                        endAdornment={
+                          counterpartAddresses &&
+                          counterpartAddresses?.data.length > 1 && (
+                            <IconButton
+                              sx={{
+                                visibility: field.value ? 'visible' : 'hidden ',
+                                mr: 2,
+                              }}
+                              size="small"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setValue('default_shipping_address_id', '');
+                              }}
+                            >
+                              <ClearIcon fontSize="small" />
+                            </IconButton>
+                          )
+                        }
+                      >
+                        {counterpartAddresses?.data.map((address) => (
+                          <MenuItem key={address.id} value={address.id}>
+                            {prepareAddressView({ address })}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+                {isEditMode && (
+                  <>
+                    <Controller
+                      name="counterpart_vat_id_id"
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl
+                          variant="standard"
+                          sx={{ marginBottom: '1rem' }}
+                          fullWidth
+                          disabled={
+                            isCounterpartVatsLoading ||
+                            !counterpartVats?.data ||
+                            counterpartVats?.data.length < 2 ||
+                            disabled
+                          }
+                          hidden={isHiddenForUS}
+                          error={Boolean(error)}
+                        >
+                          <InputLabel htmlFor={field.name}>{t(
+                            i18n
+                          )`VAT ID`}</InputLabel>
+                          <Select
+                            {...field}
+                            labelId={field.name}
+                            label={t(i18n)`VAT ID`}
+                            IconComponent={() => (
+                              <KeyboardArrowDown fontSize="small" />
+                            )}
+                            MenuProps={{ container: root }}
+                            startAdornment={
+                              isCounterpartVatsLoading ? (
+                                <CircularProgress size={20} />
+                              ) : null
+                            }
+                          >
+                            {counterpartVats?.data?.map(
+                              ({ id, country, value }) => (
+                                <MenuItem key={id} value={id}>
+                                  {country && (
+                                    <CountryInvoiceOption code={country} />
+                                  )}
+                                  {value}
+                                </MenuItem>
+                              )
+                            )}
+                          </Select>
+                          {error && (
+                            <FormHelperText>{error.message}</FormHelperText>
+                          )}
+                        </FormControl>
+                      )}
+                    />
+                    <Box mb={isHiddenForUS ? 0 : 1}>
+                      <TextField
+                        disabled
+                        fullWidth
+                        variant="standard"
+                        label={t(i18n)`TAX ID`}
+                        value={counterpart?.tax_id ?? ''}
+                        hidden={isHiddenForUS}
+                        InputProps={{
+                          startAdornment: isCounterpartLoading ? (
+                            <CircularProgress size={20} />
+                          ) : (
+                            <>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{
+                                  whiteSpace: 'nowrap',
+                                  mr: 1,
+                                  ml: '14px',
+                                }}
+                              >
+                                {t(i18n)`TAX ID`}
+                              </Typography>
+                            </>
+                          ),
+                        }}
+                      />
+                      {!isHiddenForUS && (
+                        <Collapse
+                          in={
+                            counterpart &&
+                            !counterpart.tax_id &&
+                            !isCounterpartLoading
+                          }
+                        >
+                          <FormHelperText>{t(
+                            i18n
+                          )`No TAX ID available`}</FormHelperText>
+                        </Collapse>
+                      )}
+                    </Box>
+                  </>
+                )}
+              </Stack>
+              <Grid
+                container
+                alignItems="center"
+                p={4}
+                borderTop="solid 1px rgba(0, 0, 0, 0.13) "
+              >
+                <Grid item xs={6}>
+                  {!isEditMode && (
+                    <Button
+                      variant="outlined"
+                      onClick={() => setIsEditMode(true)}
+                    >{t(i18n)`Edit profile`}</Button>
+                  )}
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: '1rem',
+                  }}
+                  xs={6}
+                >
+                  <Button
+                    variant="text"
+                    onClick={() => setIsEditCounterpartOpened(false)}
+                  >
+                    {t(i18n)`Cancel`}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsEditMode(false)}
+                  >
+                    {t(i18n)`Save`}
+                  </Button>
+                </Grid>
+              </Grid>
+            </>
+          )}
+        </Box>
+      </Modal>
     </Stack>
+  );
+};
+
+type CounterpartSelectorProps = {
+  disabled?: boolean;
+  counterpartAddresses: any;
+} & (
+  | {
+      isSimplified: true;
+      setIsCreateCounterpartOpened?: never;
+      setIsEditCounterpartOpened?: never;
+    }
+  | {
+      isSimplified?: false;
+      setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+      setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+    }
+);
+
+const CounterpartSelector = ({
+  setIsCreateCounterpartOpened,
+  setIsEditCounterpartOpened,
+  isSimplified = false,
+  disabled,
+  counterpartAddresses,
+}: CounterpartSelectorProps) => {
+  const { i18n } = useLingui();
+
+  const { root } = useRootElements();
+  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
+  const { data: counterparts, isLoading: isCounterpartsLoading } =
+    useCounterpartList();
+  const handleCreateNewCounterpart = useCallback(() => {
+    if (!isSimplified && setIsCreateCounterpartOpened) {
+      setIsCreateCounterpartOpened(true);
+    }
+  }, [isSimplified, setIsCreateCounterpartOpened]);
+
+  const handleEditCounterpart = useCallback(() => {
+    if (!isSimplified && setIsEditCounterpartOpened) {
+      setIsEditCounterpartOpened(true);
+    }
+  }, [isSimplified, setIsEditCounterpartOpened]);
+  const [address, setAddress] = useState('');
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  const counterpartsAutocompleteData = useMemo<
+    Array<CounterpartsAutocompleteOptionProps>
+  >(
+    () =>
+      counterparts
+        ? counterparts?.data.map((counterpart) => ({
+            id: counterpart.id,
+            label: getCounterpartName(counterpart),
+          }))
+        : [],
+    [counterparts]
+  );
+
+  const counterpartId = watch('counterpart_id');
+
+  useEffect(() => {
+    const selectedCounterpart = counterparts?.data.find(
+      (counterpart) => counterpart.id === counterpartId
+    );
+    if (selectedCounterpart) {
+      setAddress(
+        prepareAddressView({ address: counterpartAddresses?.data[0] })
+      );
+    } else {
+      setAddress('');
+    }
+  }, [counterpartId, counterparts, counterpartAddresses]);
+
+  return (
+    <Controller
+      name="counterpart_id"
+      control={control}
+      render={({ field, fieldState: { error } }) => {
+        const selectedCounterpart = counterparts?.data.find(
+          (counterpart) => counterpart.id === field.value
+        );
+
+        /**
+         * We have to set `selectedCounterpartOption` to `null`
+         *  if `selectedCounterpart` is `null` because
+         *  `Autocomplete` component doesn't work with `undefined`
+         */
+        const selectedCounterpartOption = selectedCounterpart
+          ? {
+              id: selectedCounterpart.id,
+              label: getCounterpartName(selectedCounterpart),
+            }
+          : null;
+
+        return (
+          <>
+            <Autocomplete
+              {...field}
+              value={selectedCounterpartOption}
+              onChange={(_, value) => {
+                if (
+                  isCreateNewCounterpartOption(value) ||
+                  isDividerOption(value)
+                ) {
+                  field.onChange(null);
+
+                  return;
+                }
+                field.onChange(value?.id);
+              }}
+              slotProps={{
+                popper: {
+                  container: root,
+                },
+              }}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+                const reverseFiltered = options.filter(
+                  (option) =>
+                    !filtered.some(
+                      (filteredOption) => filteredOption.id === option.id
+                    )
+                );
+
+                !isSimplified &&
+                  filtered.unshift({
+                    id: COUNTERPART_CREATE_NEW_ID,
+                    label: t(i18n)`Create new counterpart`,
+                  });
+
+                if (!isSimplified && params.inputValue.length) {
+                  filtered.push({
+                    id: COUNTERPART_DIVIDER,
+                    label: '-',
+                  });
+                }
+                return [...filtered, ...reverseFiltered];
+              }}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    {...params}
+                    label={t(i18n)`Customer`}
+                    placeholder={t(i18n)`Select customer`}
+                    required
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    className={`Monite-CounterpartSelector ${
+                      isSimplified ? 'isSimplified' : ''
+                    }`}
+                    InputProps={{
+                      ...params.InputProps,
+                      value: params.inputProps.value,
+                      onFocus: () => setIsFocused(true),
+                      onBlur: () => setIsFocused(false),
+                      startAdornment: isCounterpartsLoading ? (
+                        <CircularProgress size={20} />
+                      ) : (
+                        !isSimplified && (
+                          <>
+                            <InputAdornment
+                              sx={{
+                                width: '44px',
+                                height: '44px',
+                                maxHeight: '44px',
+                                justifyContent: 'center',
+                                backgroundColor: selectedCounterpartOption
+                                  ? 'rgba(203, 203, 254, 1)'
+                                  : 'rgba(235, 235, 255, 1)',
+                                borderRadius: '50%',
+                              }}
+                              position="start"
+                            >
+                              <Typography variant="caption">
+                                {selectedCounterpartOption
+                                  ? Array.from(
+                                      selectedCounterpartOption.label
+                                    )[0].toUpperCase()
+                                  : '+'}
+                              </Typography>
+                            </InputAdornment>
+                            {!isFocused && (
+                              <InputAdornment
+                                position="end"
+                                sx={{
+                                  flexDirection: 'column',
+                                  alignItems: 'baseline',
+                                  height: 'auto',
+                                }}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  color="rgba(41, 41, 41, 1)"
+                                  fontWeight="bold"
+                                >
+                                  {params.inputProps.value}
+                                </Typography>
+                                <Typography variant="body2">
+                                  {address}
+                                </Typography>
+                              </InputAdornment>
+                            )}
+                          </>
+                        )
+                      ),
+                      endAdornment: (() => {
+                        if (
+                          !isSimplified &&
+                          selectedCounterpartOption &&
+                          !params.inputProps['aria-expanded']
+                        ) {
+                          return (
+                            <Button onClick={handleEditCounterpart}>
+                              {t(i18n)`Edit`}
+                            </Button>
+                          );
+                        }
+                        if (
+                          isSimplified &&
+                          !params.inputProps['aria-expanded']
+                        ) {
+                          return <KeyboardArrowDown fontSize="small" />;
+                        }
+                        if (
+                          selectedCounterpartOption &&
+                          params.inputProps['aria-expanded']
+                        ) {
+                          return (
+                            <IconButton onClick={() => field.onChange(null)}>
+                              <ClearIcon
+                                sx={{ width: '1rem', height: '1rem' }}
+                              />
+                            </IconButton>
+                          );
+                        }
+                        return null;
+                      })(),
+                    }}
+                  />
+                );
+              }}
+              loading={isCounterpartsLoading || disabled}
+              options={counterpartsAutocompleteData}
+              getOptionLabel={(counterpartOption) =>
+                isCreateNewCounterpartOption(counterpartOption) ||
+                isDividerOption(counterpartOption)
+                  ? ''
+                  : counterpartOption.label
+              }
+              isOptionEqualToValue={(option, value) => {
+                return option.id === value.id;
+              }}
+              selectOnFocus
+              clearOnBlur
+              handleHomeEndKeys
+              renderOption={(props, counterpartOption) =>
+                isCreateNewCounterpartOption(counterpartOption) ? (
+                  <Button
+                    key={counterpartOption.id}
+                    variant="text"
+                    startIcon={<AddIcon />}
+                    fullWidth
+                    sx={{
+                      justifyContent: 'flex-start',
+                      px: 2,
+                    }}
+                    onClick={handleCreateNewCounterpart}
+                  >
+                    {counterpartOption.label}
+                  </Button>
+                ) : counterpartOption.id === COUNTERPART_DIVIDER ? (
+                  <Divider
+                    key={counterpartOption.id}
+                    sx={{ padding: '.5rem', marginBottom: '1rem' }}
+                  />
+                ) : (
+                  <li {...props} key={counterpartOption.id}>
+                    {counterpartOption.label}
+                  </li>
+                )
+              }
+            />
+          </>
+        );
+      }}
+    />
   );
 };
