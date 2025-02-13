@@ -4,6 +4,7 @@ import React from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import BrushIcon from '@mui/icons-material/Brush';
 import { Box } from '@mui/material';
 import { List } from '@mui/material';
 
@@ -56,6 +57,9 @@ export const NavigationList = () => {
           </NavigationListItem>
           <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
             {t(i18n)`Tags`}
+          </NavigationListItem>
+          <NavigationListItem href="/invoice-design" icon={<BrushIcon />}>
+            {t(i18n)`Document Design`}
           </NavigationListItem>
         </NavigationListCollapse>
       </List>

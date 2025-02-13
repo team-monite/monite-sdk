@@ -12,11 +12,14 @@ const isPublicRoute = createRouteMatcher([
   '/public',
 ]);
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
+export default clerkMiddleware(
+  async (auth, request) => {
+    if (!isPublicRoute(request)) {
+      await auth.protect();
+    }
+  },
+  { publishableKey: process.env.CLERK_PUBLISHABLE_KEY }
+);
 
 export const config = {
   matcher: [
