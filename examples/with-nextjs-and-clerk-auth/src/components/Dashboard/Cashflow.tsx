@@ -182,7 +182,6 @@ export const CashFlowCard = () => {
           />
 
           <YAxis
-            // stroke="#562BD6"
             tickLine={false}
             axisLine={false}
             tickFormatter={(value) => {
