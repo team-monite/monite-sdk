@@ -42,7 +42,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          label={t(i18n)`Search by name`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -65,7 +65,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
           }}
         >
           {[
-            { label: t(i18n)`All`, value: 'all' },
+            { label: t(i18n)`All types`, value: 'all' },
             {
               label: t(i18n)`Products`,
               value: 'product',
@@ -101,7 +101,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
           }}
         >
           {[
-            { id: 'all', name: t(i18n)`All` },
+            { id: 'all', name: t(i18n)`All units` },
             ...(measureUnits?.data ?? []),
           ].map(({ id, name }) => (
             <MenuItem key={id} value={id}>

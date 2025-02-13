@@ -78,7 +78,7 @@ describe('ProductsTable', () => {
 
       renderWithClient(<ProductsTable onFilterChanged={onChangeFilterMock} />);
 
-      const search = await screen.findByLabelText('Search');
+      const search = await screen.findByLabelText('Search by name');
 
       const searchValue = 'Some search value';
 
@@ -140,7 +140,7 @@ describe('ProductsTable', () => {
       await waitUntilTableIsLoaded();
 
       const dropdownButton = await screen.findByRole('combobox', {
-        name: /units/i,
+        name: /Units/i,
       });
 
       await waitFor(() => {
@@ -148,7 +148,7 @@ describe('ProductsTable', () => {
       });
 
       const measureUnit = measureUnitsListFixture.data[0];
-      await selectAsyncDropdownOption(/units/i, measureUnit.name);
+      await selectAsyncDropdownOption(/Units/i, measureUnit.name);
       await waitFor(() => {
         expect(onChangeFilterMock).toHaveBeenCalledWith({
           field: 'units',
@@ -166,7 +166,7 @@ describe('ProductsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const nameButton = screen.getByText('Name, description');
+      const nameButton = screen.getByText('Name & description');
 
       fireEvent.click(nameButton);
 
@@ -307,7 +307,7 @@ describe('ProductsTable', () => {
 
         await waitUntilTableIsLoaded();
 
-        const search = screen.getByLabelText('Search');
+        const search = screen.getByLabelText('Search by name');
 
         const searchValue = 'Some search value';
 
@@ -361,12 +361,12 @@ describe('ProductsTable', () => {
 
         fireEvent.mouseDown(
           screen.getByRole('combobox', {
-            name: /units/i,
+            name: /Units/i,
           })
         );
 
         const dropdownButton = await screen.findByRole('combobox', {
-          name: /units/i,
+          name: /Units/i,
         });
 
         await waitFor(() => {
@@ -374,7 +374,7 @@ describe('ProductsTable', () => {
         });
 
         const unit = measureUnitsListFixture.data[0];
-        await selectAsyncDropdownOption(/units/i, unit.name);
+        await selectAsyncDropdownOption(/Units/i, unit.name);
 
         await waitFor(() => {
           expect(
@@ -390,7 +390,7 @@ describe('ProductsTable', () => {
 
         await waitUntilTableIsLoaded();
 
-        const nameButton = screen.getByText('Name, description');
+        const nameButton = screen.getByText('Name & description');
 
         fireEvent.click(nameButton);
 
@@ -407,7 +407,7 @@ describe('ProductsTable', () => {
       test('should send correct request when we sort a table by "name" field in descending order and when we click on that field twice', async () => {
         renderWithClient(<ProductsTable />);
 
-        const nameButton = screen.findByText('Name, description');
+        const nameButton = screen.findByText('Name & description');
 
         fireEvent.click(await nameButton);
 
@@ -431,7 +431,7 @@ describe('ProductsTable', () => {
 
         await waitUntilTableIsLoaded();
 
-        const nameButton = screen.getByText('Name, description');
+        const nameButton = screen.getByText('Name & description');
 
         fireEvent.click(nameButton);
         fireEvent.click(nameButton);

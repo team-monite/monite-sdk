@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   Skeleton,
 } from '@mui/material';
 
@@ -68,20 +67,21 @@ export const ProductDeleteModal = ({
       fullWidth
     >
       <DialogTitle variant="h3">
-        {!product ? <Skeleton /> : t(i18n)`Delete Product "${product.name}"?`}
+        {!product ? <Skeleton /> : t(i18n)`Delete "${product.name}"?`}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {t(i18n)`This action can't be undone.`}
+        <DialogContentText variant="body1">
+          {t(
+            i18n
+          )`It will remain in all the documents where it is added. You can’t undo this action.`}
         </DialogContentText>
       </DialogContent>
-      <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit">
+        <Button variant="text" onClick={onClose} color="primary">
           {t(i18n)`Cancel`}
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
           color="error"
           disabled={deleteProductMutation.isPending || isLoading}
           onClick={() => {

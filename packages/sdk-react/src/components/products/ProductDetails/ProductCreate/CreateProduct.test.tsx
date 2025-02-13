@@ -47,12 +47,12 @@ describe('CreateProduct', () => {
     renderWithClient(<CreateProduct onCreated={onCreateMock} />);
 
     triggerChangeInput(/name/i, 'test name');
-    triggerChangeInput(/smallest amount/i, '1');
+    triggerChangeInput(/minimum quantity/i, '1');
     triggerChangeInput(/price per unit/i, '100');
     triggerChangeInput(/description/i, 'test description');
 
     const dropdownButton = await screen.findByRole('combobox', {
-      name: /units/i,
+      name: /unit/i,
     });
 
     await waitFor(() => {
@@ -60,7 +60,7 @@ describe('CreateProduct', () => {
     });
 
     const measureUnit = measureUnitsListFixture.data[0].name;
-    await selectAsyncDropdownOption(/units/i, measureUnit);
+    await selectAsyncDropdownOption(/unit/i, measureUnit);
 
     await selectAutoCompleteOption(/currency/i, /Armenian/i);
 

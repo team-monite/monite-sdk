@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-import { DemoDataGenerationProgress } from '@/components/DemoDataGenerationProgress';
 import { Layout } from '@/components/Layout';
 import { MoniteProvider } from '@/components/MoniteComponents';
 import { NoAccountEntity } from '@/components/NoAccountEntity';
@@ -16,17 +15,20 @@ export default async function MoniteLayout({
 
   if (typeof entity_user_id !== 'string' || typeof entity_id !== 'string') {
     return (
-      <NoAccountEntity
-        /**
-         * We have to use a key here to force a re-render of the component
-         * when in the background the user gets assigned an entity.
-         * Clerk Organization Membership probably could be already loaded,
-         * but we need a fresh list.
-         */
-        key={entity_user_id}
-        entity_user_id={entity_user_id}
-        entity_id={entity_id}
-      />
+      <Layout>
+        <p>No organization found</p>
+      </Layout>
+      // <NoAccountEntity
+      //   /**
+      //    * We have to use a key here to force a re-render of the component
+      //    * when in the background the user gets assigned an entity.
+      //    * Clerk Organization Membership probably could be already loaded,
+      //    * but we need a fresh list.
+      //    */
+      //   key={entity_user_id}
+      //   entity_user_id={entity_user_id}
+      //   entity_id={entity_id}
+      // />
     );
   }
 
@@ -41,7 +43,6 @@ export default async function MoniteLayout({
         entityId={entity_id}
         apiUrl={getMoniteApiUrl()}
       >
-        <DemoDataGenerationProgress key={entity_id} />
         {children}
       </MoniteProvider>
     </Layout>
