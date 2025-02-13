@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Button } from '@mui/material';
 
-import invoiceBg from '@/app/(monite)/[[...path]]/invoice-bg.svg';
 import DashboardCard from '@/components/DashboardCard';
 import { IconReceipt } from '@/icons';
 
@@ -37,7 +36,7 @@ export const CreateInvoiceCard = () => {
           padding: '24px 24px 64px',
           background: '#FAFAFA',
           borderRadius: '12px',
-          backgroundImage: `url(${(invoiceBg as { src: string }).src})`,
+          backgroundImage: `url('/invoice-bg.svg')`,
           backgroundRepeat: `no-repeat`,
           backgroundPosition: `bottom 0 right 80px`,
         }}
