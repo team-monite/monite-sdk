@@ -1,7 +1,6 @@
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import { productsListFixture } from '@/mocks/products';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { ExistingProductDetails } from './ExistingProductDetails';
@@ -12,12 +11,13 @@ describe('Product Details', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getByText('Product Details')).toBeInTheDocument();
-    expect(screen.getByText(productsListFixture[0].name)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: productsListFixture[0].name })
+    ).toBeInTheDocument();
   });
 
   test('should render "Access Restricted" message when user does not have access to products', async () => {
-    const monite = new MoniteSDK({
+    const monite = {
       entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
       fetchToken: () =>
         Promise.resolve({
@@ -25,7 +25,7 @@ describe('Product Details', () => {
           token_type: 'Bearer',
           expires_in: 10_000,
         }),
-    });
+    };
 
     renderWithClient(
       <ExistingProductDetails id={productsListFixture[0].id} />,

@@ -1,0 +1,42 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@team-monite/e2e": "1.0.1",
+    "sdk-demo-with-nextjs-and-clerk-auth": "0.1.0",
+    "@team-monite/eslint-plugin": "2.0.3",
+    "@team-monite/rollup-config": "1.2.0",
+    "@team-monite/sdk-demo": "1.10.0",
+    "@monite/sdk-drop-in": "1.7.2",
+    "@monite/sdk-react": "3.19.0"
+  },
+  "changesets": [
+    "afraid-hornets-knock",
+    "beige-birds-type",
+    "beige-ladybugs-remain",
+    "chilled-schools-admire",
+    "early-jokes-wash",
+    "eighty-pandas-buy",
+    "eighty-phones-worry",
+    "flat-walls-reflect",
+    "forty-onions-join",
+    "healthy-roses-travel",
+    "heavy-stingrays-provide",
+    "hungry-snakes-provide",
+    "kind-impalas-give",
+    "large-mirrors-protect",
+    "lucky-pumas-punch",
+    "new-bottles-tap",
+    "popular-planes-travel",
+    "rare-bees-itch",
+    "real-moose-rest",
+    "red-horses-camp",
+    "rotten-teachers-cross",
+    "shy-otters-perform",
+    "shy-windows-kick",
+    "stale-masks-enjoy",
+    "sweet-horses-hug",
+    "swift-zebras-obey",
+    "tricky-coins-try"
+  ]
+}

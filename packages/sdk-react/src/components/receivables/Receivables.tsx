@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
 import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -22,12 +23,13 @@ export const Receivables = () => (
 
 const ReceivablesBase = () => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
   const [invoiceId, setInvoiceId] = useState<string>('');
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ReceivablesTableTabEnum>(
-    ReceivablesTableTabEnum.Invoices
+    componentSettings.receivables.tab ?? ReceivablesTableTabEnum.Invoices
   );
 
   const openInvoiceModal = (id: string) => {

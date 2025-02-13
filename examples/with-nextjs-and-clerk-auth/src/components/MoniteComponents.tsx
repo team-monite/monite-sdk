@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 
 import { useLingui } from '@lingui/react';
-import { MoniteSDK } from '@monite/sdk-api';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
   Counterparts as CounterpartsBase,
@@ -24,10 +23,10 @@ import {
   toast,
   useCounterpartById,
   useCurrencies,
-  useDateFormat,
   useMoniteContext,
   useRootElements,
   UserRoles as UserRolesBase,
+  DocumentDesign as DocumentDesignBase,
 } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
@@ -50,7 +49,6 @@ import {
   TableCell,
   TableRow,
   Typography,
-  useTheme,
 } from '@mui/material';
 
 /* eslint-disable */
@@ -66,7 +64,6 @@ export const MoniteProvider = ({
   entityUserId: string;
   children: ReactNode;
 }) => {
-  const theme = useTheme();
   const { i18n } = useLingui();
 
   const fetchToken = useCallback(async () => {
@@ -88,19 +85,35 @@ export const MoniteProvider = ({
   }, [entityUserId]);
 
   const monite = useMemo(
-    () =>
-      new MoniteSDK({
-        apiUrl,
-        entityId,
-        fetchToken,
-      }),
+    () => ({
+      apiUrl,
+      entityId,
+      fetchToken,
+    }),
     [apiUrl, entityId, fetchToken]
   );
 
   return (
     <MoniteProviderBase
       monite={monite}
-      theme={theme}
+      componentSettings={{
+        receivables: {
+          tabs: [
+            {
+              label: 'Invoices',
+              query: {
+                type: 'invoice',
+              },
+            },
+            {
+              label: 'My Financing',
+              query: {
+                type: 'financing',
+              },
+            },
+          ],
+        },
+      }}
       locale={{
         code: i18n.locale,
         messages: {
@@ -221,7 +234,7 @@ const ChooseBankAccountPage = () => {
 
 const TransferTypePage = () => {
   const { i18n } = useLingui();
-  const dateTimeFormat = useDateFormat();
+  const { locale } = useMoniteContext();
   const [selectedValue, setSelectedValue] = useState('option1');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -275,7 +288,7 @@ const TransferTypePage = () => {
                       $1 fee, take 2-3 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 3),
-                        dateTimeFormat
+                        locale.dateTimeFormat
                       )}
                     </Typography>
                   </Box>
@@ -292,7 +305,7 @@ const TransferTypePage = () => {
                       $5 fee, take 5-7 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 7),
-                        dateTimeFormat
+                        locale.dateTimeFormat
                       )}
                     </Typography>
                   </Box>
@@ -555,6 +568,10 @@ export const UserRoles = () => {
 
 export const RolesAndPolicies = () => {
   return <RolesAndApprovalPoliciesBase />;
+};
+
+export const InvoiceDesign = () => {
+  return <DocumentDesignBase />;
 };
 
 const amexIcon =

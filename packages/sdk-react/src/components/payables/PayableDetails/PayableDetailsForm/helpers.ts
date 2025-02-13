@@ -11,8 +11,8 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
-import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';
 
@@ -304,11 +304,22 @@ export interface MonitePayableDetailsInfoProps {
 
 export const usePayableDetailsThemeProps = (
   inProps?: Partial<MonitePayableDetailsInfoProps>
-) =>
-  useThemeProps({
-    props: inProps,
-    name: 'MonitePayableDetailsInfo',
-  });
+) => {
+  const { componentSettings } = useMoniteContext();
+
+  return {
+    optionalFields:
+      inProps?.optionalFields ?? componentSettings?.payables?.optionalFields,
+    ocrRequiredFields:
+      inProps?.ocrRequiredFields ??
+      componentSettings?.payables?.ocrRequiredFields,
+    ocrMismatchFields:
+      inProps?.ocrMismatchFields ??
+      componentSettings?.payables?.ocrMismatchFields,
+    isTagsDisabled:
+      inProps?.isTagsDisabled ?? componentSettings?.payables?.isTagsDisabled,
+  };
+};
 
 export const findDefaultBankAccount = (
   accounts: components['schemas']['CounterpartBankAccountResponse'][],

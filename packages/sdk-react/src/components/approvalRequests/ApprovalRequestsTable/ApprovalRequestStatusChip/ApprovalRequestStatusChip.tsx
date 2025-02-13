@@ -26,28 +26,6 @@ export interface MoniteApprovalRequestStatusChipProps {
 
 /**
  * Displays the status of an Approval Request.
- * Could be customized through MUI theming.
- *
- * @example MUI theming
- * // You can configure the component through MUI theming like this:
- * createTheme(myTheme, {
- *   components: {
- *     MoniteApprovalRequestStatusChip: {
- *       defaultProps: {
- *         icon: true, // Display status icon?
- *         variant: 'outlined', // The variant of the chip
- *       },
- *       variants: [
- *         {
- *           props: { status: 'rejected' }, // Custom styles for the 'Rejected' status
- *           style: {
- *             border: '2px dashed lightgreen',
- *           },
- *         },
- *       ],
- *     },
- *   },
- * });
  */
 
 export const ApprovalRequestStatusChip = forwardRef<
@@ -56,7 +34,6 @@ export const ApprovalRequestStatusChip = forwardRef<
 >((inProps, ref) => {
   const { status, icon, size, variant } = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteApprovalRequestStatusChip',
   });
 

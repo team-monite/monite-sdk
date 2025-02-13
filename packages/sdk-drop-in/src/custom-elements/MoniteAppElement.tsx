@@ -10,7 +10,7 @@ import {
 } from '@/custom-elements/MoniteAppElementBase.tsx';
 
 export class MoniteAppElement extends MoniteAppElementBase<
-  'fetch-token' | 'theme' | 'locale'
+  'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private reactAppRoot: Root | undefined;
 
@@ -20,7 +20,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
    * - `router`: Allowed values are `memory | browser | hash`
    * - `basename`: Indicates the base path of your page.
    *   For example, if your app is served from `https://example.com/my-app/`, set `basename` to `/my-app` to properly resolve relative URLs.
-   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies`
+   * - `component`: The component to render. Allowed values are `payables | receivables | counterparts | products | tags | approval-policies | user-roles`
    * - `entity-id`: The ID of the entity to fetch data for.
    * - `api-url`: The URL of the API to fetch data from. Example: `https://api.snadbox.monite.com/v1`
    *
@@ -66,6 +66,19 @@ export class MoniteAppElement extends MoniteAppElementBase<
    *     {"fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"}
    *   </script>
    *   ```
+   * - `component-settings`: A JSON object containing the component settings to use. Example:
+   *   ```
+   *   <script slot="component-settings" type="application/json">
+   *     {
+   *       "general": {
+   *         iconWrapper: {
+   *           icon: <ArrowBackIcon />,
+   *           showCloseIcon: true,
+   *         },
+   *       },
+   *     }
+   *   </script>
+   *   ```
    * - `locale`: A JSON object containing the locale to use. Example:
    *    ```
    *    <script slot="locale" type="application/json">
@@ -77,7 +90,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
    *   ```
    */
   protected readonly slotsSchema: Record<
-    'fetch-token' | 'theme' | 'locale',
+    'fetch-token' | 'theme' | 'locale' | 'component-settings',
     SlotConfig
   > = {
     'fetch-token': {
@@ -87,6 +100,9 @@ export class MoniteAppElement extends MoniteAppElementBase<
       type: 'json',
     },
     locale: {
+      type: 'json',
+    },
+    'component-settings': {
       type: 'json',
     },
   };

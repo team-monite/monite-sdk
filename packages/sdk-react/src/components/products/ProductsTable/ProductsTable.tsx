@@ -13,10 +13,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
-import {
-  TablePagination,
-  useTablePaginationThemeDefaultPageSize,
-} from '@/ui/table/TablePagination';
+import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -32,9 +29,6 @@ import {
   FILTER_TYPE_UNITS,
 } from './consts';
 import { Filters as FilterType, FilterValue } from './types';
-
-/** @deprecated Use `ProductTableProps` instead */
-export type IProductTableProps = ProductTableProps;
 
 export interface ProductTableProps {
   /**
@@ -111,11 +105,12 @@ const ProductsTableBase = ({
   openCreateModal,
 }: ProductTableProps) => {
   const { i18n } = useLingui();
+  const { api, componentSettings } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [pageSize, setPageSize] = useState<number>(
-    useTablePaginationThemeDefaultPageSize()
+    componentSettings.products.pageSizeOptions[0]
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<
@@ -146,8 +141,6 @@ const ProductsTableBase = ({
     action: 'delete',
     entityUserId: user?.id,
   });
-
-  const { api } = useMoniteContext();
 
   const {
     data: products,
@@ -187,7 +180,7 @@ const ProductsTableBase = ({
     return [
       {
         field: 'name',
-        headerName: t(i18n)`Name, description`,
+        headerName: t(i18n)`Name & description`,
         display: 'flex',
         flex: 3,
         renderCell: (params) => (
@@ -231,7 +224,7 @@ const ProductsTableBase = ({
       },
       {
         field: 'measure_unit_id',
-        headerName: t(i18n)`Units`,
+        headerName: t(i18n)`Unit`,
         flex: 1,
         sortable: false,
         renderCell: (params) => {
@@ -292,7 +285,6 @@ const ProductsTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pt: 2,
       }}
     >
       <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
@@ -316,6 +308,7 @@ const ProductsTableBase = ({
         slots={{
           pagination: () => (
             <TablePagination
+              pageSizeOptions={componentSettings.products.pageSizeOptions}
               prevPage={products?.prev_pagination_token}
               nextPage={products?.next_pagination_token}
               paginationModel={{
@@ -337,9 +330,19 @@ const ProductsTableBase = ({
               isError={isError}
               onCreate={openCreateModal}
               refetch={refetch}
-              entityName={t(i18n)`Products`}
+              filterTitle={t(i18n)`No product or service found`}
+              filterDescription1={t(
+                i18n
+              )`Try adjusting your search or filter criteria`}
+              filterDescription2={null}
+              entityName={t(i18n)`products or services`}
               actionButtonLabel={t(i18n)`Create new`}
               actionOptions={[t(i18n)`Product`]}
+              noDataTitle={t(i18n)`No products or services yet`}
+              noDataDescription1={t(
+                i18n
+              )`You don’t have any products or services yet`}
+              noDataDescription2={t(i18n)`Create your first product or service`}
               type="no-data"
             />
           ),

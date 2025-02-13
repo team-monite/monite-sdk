@@ -97,24 +97,25 @@ describe('useInvoiceRowActionMenuCell', () => {
       [key in InvoicesTableRowAction]: true;
     }) as InvoicesTableRowAction[];
 
-    const fullPermissions: components['schemas']['ActionSchema'][] = [
-      {
-        action_name: 'create',
-        permission: 'allowed',
-      },
-      {
-        action_name: 'read',
-        permission: 'allowed',
-      },
-      {
-        action_name: 'update',
-        permission: 'allowed',
-      },
-      {
-        action_name: 'delete',
-        permission: 'allowed',
-      },
-    ];
+    const fullPermissions: components['schemas']['package__roles__head__schemas__ActionSchema'][] =
+      [
+        {
+          action_name: 'create',
+          permission: 'allowed',
+        },
+        {
+          action_name: 'read',
+          permission: 'allowed',
+        },
+        {
+          action_name: 'update',
+          permission: 'allowed',
+        },
+        {
+          action_name: 'delete',
+          permission: 'allowed',
+        },
+      ];
 
     test('allows each menu item if has permissions', () => {
       expect(

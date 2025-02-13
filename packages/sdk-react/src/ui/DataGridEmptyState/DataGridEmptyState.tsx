@@ -98,14 +98,14 @@ export const DataGridEmptyState = ({
           <Box className={`${className}-Icon`}>{defaultIcon}</Box>
         )}
         <Stack alignItems="center" spacing={1}>
-          <Typography variant="h5" className={`${className}-Title`}>
+          <Typography variant="h3" className={`${className}-Title`}>
             {title}
           </Typography>
-          <Typography className={`${className}-Description`}>
+          <Typography variant="body1" className={`${className}-Description`}>
             {descriptionLine1}
           </Typography>
           {descriptionLine2 && (
-            <Typography className={`${className}-Description`}>
+            <Typography variant="body1" className={`${className}-Description`}>
               {descriptionLine2}
             </Typography>
           )}

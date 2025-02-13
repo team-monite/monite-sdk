@@ -53,6 +53,7 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
           onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
         }}
         slotProps={{
+          textField: { variant: 'standard' },
           popper: {
             container: root,
           },

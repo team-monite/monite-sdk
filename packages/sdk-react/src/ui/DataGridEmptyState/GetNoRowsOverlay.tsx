@@ -16,7 +16,7 @@ interface EmptyStateProps extends BaseProps {
   noDataDescription2?: string;
   filterTitle?: string;
   filterDescription1?: string;
-  filterDescription2?: string;
+  filterDescription2?: string | null;
   filterType?: string;
 }
 
@@ -54,7 +54,10 @@ export const GetNoRowsOverlay = ({
           )`No ${entityName.toLowerCase()} match your search or filter criteria.`
         }
         descriptionLine2={
-          filterDescription2 || t(i18n)`Try adjusting your search or filter.`
+          filterDescription2 === null
+            ? undefined
+            : filterDescription2 ||
+              t(i18n)`Try adjusting your search or filter.`
         }
         type="no-filter"
         onAction={onAction}

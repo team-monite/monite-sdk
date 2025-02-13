@@ -184,26 +184,26 @@ const getValidationSchema = (i18n: I18n) =>
  * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
  *
  * @component
- * @example MUI theming
- * const theme = createTheme({
- *   components: {
- *     MonitePayableDetailsInfo: {
- *       defaultProps: {
- *         optionalFields: {
- *           invoiceDate: true,         // Show the invoice date field
- *           tags: true,                // Show the tags field
- *         },
- *         ocrRequiredFields: {
- *           invoiceNumber: true,       // The invoice number is required based on OCR data
- *           counterpart: true,         // The counterpart is required based on OCR data
- *           dueDate: true,             // The due date is required based on OCR data
- *           currency: true,            // The currency is required based on OCR data
- *         },
- *         isTagsDisabled: true,        // The tags field is disabled
- *       },
- *     },
+ * @example Monite Provider customisation
+ * ```ts
+ * // You can configure the component through Monite Provider property `componentSettings` like this:
+ * const componentSettings = {
+ *   optionalFields: {
+ *     invoiceDate: true,         // Show the invoice date field
+ *     tags: true,                // Show the tags field
  *   },
- * });
+ *   ocrMismatchFields: {
+ *     amount_to_pay: true,       // Show the amount to pay field
+ *     counterpart_bank_account_id: true,  // Show the counterpart bank account id field
+ *   },
+ *   ocrRequiredFields: {
+ *     invoiceNumber: true,       // The invoice number is required based on OCR data
+ *     dueDate: true,             // The due date is required based on OCR data
+ *     currency: true,            // The currency is required based on OCR data
+ *   },
+ *   isTagsDisabled: true,        // The tags field is disabled
+ * };
+ * ```
  *
  * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
  * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
@@ -343,23 +343,36 @@ const PayableDetailsFormBase = forwardRef<
     const className = 'Monite-PayableDetailsForm';
 
     useEffect(() => {
-      trigger();
-    }, [trigger]);
-
-    useEffect(() => {
       if (
         counterpartBankAccountQuery.isSuccess &&
         counterpartBankAccountQuery.data?.data
       ) {
-        resetField('counterpartBankAccount', {
-          defaultValue: findDefaultBankAccount(
-            counterpartBankAccountQuery.data.data,
-            currentCurrency
-          ),
-          keepTouched: true,
-        });
+        const defaultBankAccount = findDefaultBankAccount(
+          counterpartBankAccountQuery.data.data,
+          currentCurrency
+        );
+
+        // Only reset if the value is different
+        const currentValue = methods.getValues('counterpartBankAccount');
+        if (currentValue !== defaultBankAccount) {
+          resetField('counterpartBankAccount', {
+            defaultValue: defaultBankAccount,
+            keepTouched: true,
+          });
+        }
       }
-    }, [counterpartBankAccountQuery, currentCurrency, resetField]);
+    }, [
+      counterpartBankAccountQuery.data,
+      currentCurrency,
+      resetField,
+      methods.getValues,
+      counterpartBankAccountQuery.isSuccess,
+      methods,
+    ]);
+
+    useEffect(() => {
+      trigger();
+    }, [trigger]);
 
     return (
       <>
@@ -426,7 +439,7 @@ const PayableDetailsFormBase = forwardRef<
                             {...field}
                             id={field.name}
                             label={t(i18n)`Number`}
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             helperText={error?.message}
@@ -442,7 +455,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             required={
@@ -465,9 +478,7 @@ const PayableDetailsFormBase = forwardRef<
                               labelId={field.name}
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
-                              onChange={(event) => {
-                                field.onChange(event);
-                              }}
+                              onChange={field.onChange}
                             >
                               {counterpartsToSelect(
                                 counterpartQuery?.data?.data
@@ -491,7 +502,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            variant="outlined"
+                            variant="standard"
                             fullWidth
                             error={Boolean(error)}
                             required={
@@ -621,7 +632,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              variant="outlined"
+                              variant="standard"
                               fullWidth
                               disabled={isTagsDisabled}
                               required={isFieldRequired(
@@ -651,7 +662,7 @@ const PayableDetailsFormBase = forwardRef<
                                   <TextField
                                     {...params}
                                     label={t(i18n)`Tags`}
-                                    variant="outlined"
+                                    variant="standard"
                                     fullWidth
                                     error={Boolean(error)}
                                     helperText={error?.message}

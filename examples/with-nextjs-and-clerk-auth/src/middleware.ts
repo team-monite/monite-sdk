@@ -1,36 +1,31 @@
-import { NextMiddleware, NextResponse } from 'next/server';
-
-import { authMiddleware as createAuthMiddleware } from '@clerk/nextjs';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
+// See https://clerk.com/docs/references/nextjs/clerk-middleware#protect-all-routes for more information about configuring your middleware
 
-const authMiddleware = createAuthMiddleware({
-  publicRoutes: ['/api/in/clerk', '/api/healthcheck', '/public'],
-  publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-});
+const isPublicRoute = createRouteMatcher([
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/in/clerk',
+  '/api/healthcheck',
+  '/public',
+]);
 
-const authMiddlewareNo401Response: NextMiddleware = async (request, event) => {
-  const response = await authMiddleware(request, event);
-
-  if (
-    response?.status === 401 &&
-    process.env.UNSTABLE_CLERK_401_RESPONSE_FIX?.toLowerCase() === 'true'
-  ) {
-    return NextResponse.next({
-      headers: response?.headers,
-      status: 200,
-      statusText: response?.statusText,
-      request,
-    });
-  }
-
-  return response;
-};
-
-export default authMiddlewareNo401Response;
+export default clerkMiddleware(
+  async (auth, request) => {
+    if (!isPublicRoute(request)) {
+      await auth.protect();
+    }
+  },
+  { publishableKey: process.env.CLERK_PUBLISHABLE_KEY }
+);
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

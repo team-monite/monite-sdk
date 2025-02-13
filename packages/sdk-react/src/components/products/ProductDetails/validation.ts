@@ -33,7 +33,7 @@ export const getValidationSchema = (i18n: I18n) =>
     smallestAmount: yup
       .number()
       .min(0)
-      .label(t(i18n)`Smallest amount`)
+      .label(t(i18n)`Minimum quantity`)
       .required(),
     pricePerUnit: yup
       .number()

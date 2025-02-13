@@ -80,6 +80,7 @@ export const AutocompleteCreatedBy = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          variant="standard"
           label={t(i18n)`Added by`}
           className="Monite-ApprovalAddedByFilter Monite-FilterControl"
           InputProps={{

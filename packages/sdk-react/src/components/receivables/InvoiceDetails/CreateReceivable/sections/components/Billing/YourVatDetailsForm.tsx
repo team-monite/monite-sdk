@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
@@ -21,14 +22,14 @@ import {
 
 export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
   const { i18n } = useLingui();
-  const { control } = useFormContext<CreateReceivablesFormProps>();
+  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
-  const { api, monite } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
   const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
     api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const {
@@ -46,6 +47,15 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
       entityVatIds.data.length === 0
     );
 
+  const isHiddenForUS =
+    entity?.address.country && entity?.address.country === 'US';
+
+  useEffect(() => {
+    if (entityVatIds && entityVatIds.data.length === 1) {
+      setValue('entity_vat_id_id', entityVatIds.data[0].id);
+    }
+  }, [entityVatIds, setValue]);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {showEntityVatIdField && (
@@ -54,10 +64,15 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <FormControl
-              variant="outlined"
+              variant="standard"
               fullWidth
-              required={!isNonCompliantFlow}
-              disabled={isEntityVatIdsLoading || disabled}
+              required={!isNonCompliantFlow && !isHiddenForUS}
+              hidden={isHiddenForUS}
+              disabled={
+                isEntityVatIdsLoading ||
+                disabled ||
+                entityVatIds?.data.length === 1
+              }
               error={Boolean(error)}
             >
               <InputLabel id={field.name}>{t(i18n)`Your VAT ID`}</InputLabel>
@@ -88,7 +103,8 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
       <TextField
         disabled
         fullWidth
-        variant="outlined"
+        hidden={isHiddenForUS}
+        variant="standard"
         label={t(i18n)`Your Tax ID`}
         value={entity?.tax_id ?? ''}
         InputProps={{
@@ -99,9 +115,11 @@ export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
           ) : null,
         }}
       />
-      <Collapse in={Boolean(!entity?.tax_id) && !isEntityLoading}>
-        <FormHelperText>{t(i18n)`No Tax ID available`}</FormHelperText>
-      </Collapse>
+      {!isHiddenForUS && (
+        <Collapse in={Boolean(!entity?.tax_id) && !isEntityLoading}>
+          <FormHelperText>{t(i18n)`No Tax ID available`}</FormHelperText>
+        </Collapse>
+      )}
     </Box>
   );
 };

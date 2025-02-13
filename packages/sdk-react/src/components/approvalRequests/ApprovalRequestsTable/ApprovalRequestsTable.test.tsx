@@ -3,7 +3,6 @@ import {
   approvalRequestsListFixture,
 } from '@/mocks';
 import { renderWithClient } from '@/utils/test-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
@@ -11,7 +10,7 @@ import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 describe('ApprovalRequestTable', () => {
   describe('# Permissions', () => {
     test('should render access restricted message when user does not have access to approval requests', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -19,7 +18,7 @@ describe('ApprovalRequestTable', () => {
             token_type: 'Bearer',
             expires_in: 10_000,
           }),
-      });
+      };
 
       renderWithClient(<ApprovalRequestsTable />, monite);
 
@@ -28,14 +27,14 @@ describe('ApprovalRequestTable', () => {
   });
 
   describe('# Pagination', () => {
-    test('should fetch only first 10 elements when the page limit is 10 (by default)', async () => {
+    test('should fetch only first 15 elements when the page limit is 15 (by default)', async () => {
       renderWithClient(<ApprovalRequestsTable />);
 
       await waitFor(() => {
         // remove the header row
         const items = screen.getAllByRole('row').slice(1);
 
-        expect(items.length).toBe(10);
+        expect(items.length).toBe(15);
       });
     });
 

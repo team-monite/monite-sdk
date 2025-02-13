@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useDateFormat } from '@/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -26,9 +26,10 @@ type Props = {
 
 export const FinanceDetails = ({ invoice, offers, financedInvoice }: Props) => {
   const { i18n } = useLingui();
+  const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
   const theme = useTheme();
-  const dateFormat = useDateFormat();
+  const dateFormat = locale.dateFormat;
   const issueDate = financedInvoice
     ? i18n.date(financedInvoice.issue_date, dateFormat)
     : '—';

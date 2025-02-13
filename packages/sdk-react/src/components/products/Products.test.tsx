@@ -12,7 +12,6 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK } from '@monite/sdk-api';
 import {
   act,
   fireEvent,
@@ -45,7 +44,7 @@ describe('Products', () => {
       await waitUntilTableIsLoaded();
 
       const createProductButtons = await screen.findAllByRole('button', {
-        name: /Create New/i,
+        name: /create new/i,
       });
       expect(createProductButtons[0]).toBeInTheDocument();
 
@@ -58,7 +57,7 @@ describe('Products', () => {
     });
 
     test('support empty permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -66,14 +65,14 @@ describe('Products', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<Products />, monite);
 
       await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
 
       const createProductButton = screen.findByRole('button', {
-        name: /Create New/i,
+        name: /create new/i,
       });
       await expect(createProductButton).resolves.toBeInTheDocument();
       await expect(createProductButton).resolves.toBeDisabled();
@@ -84,7 +83,7 @@ describe('Products', () => {
     });
 
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
-      const monite = new MoniteSDK({
+      const monite = {
         entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
@@ -92,7 +91,7 @@ describe('Products', () => {
             token_type: 'Bearer',
             expires_in: 3600,
           }),
-      });
+      };
 
       renderWithClient(<Products />, monite);
 
@@ -102,7 +101,9 @@ describe('Products', () => {
       /** Wait until table loader disappears */
       await waitUntilTableIsLoaded();
 
-      const createProductButton = screen.findByText(t`Create New`);
+      const createProductButton = screen.findByRole('button', {
+        name: /create new/i,
+      });
 
       await expect(createProductButton).resolves.toBeInTheDocument();
       await expect(createProductButton).resolves.not.toBeDisabled();
@@ -127,7 +128,7 @@ describe('Products', () => {
 
       fireEvent.click(firstProductRow);
 
-      const detailsTitle = /product details/i;
+      const detailsTitle = /history/i;
       const detailsTitleElement = await screen.findByText(detailsTitle);
 
       expect(detailsTitleElement).toBeInTheDocument();
@@ -149,7 +150,7 @@ describe('Products', () => {
       fireEvent.click(createButton);
 
       const createTitleElements = await screen.findAllByRole('heading', {
-        name: /create new product/i,
+        name: /create new product or service/i,
       });
 
       expect(createTitleElements[0]).toBeInTheDocument();
@@ -273,7 +274,7 @@ describe('Products', () => {
 
       fireEvent.click(editButton);
 
-      const editTitle = await screen.findByText(/edit product/i);
+      const editTitle = await screen.findByText(/edit product|edit service/i);
       const updateModalButton = screen.getByRole('button', {
         name: /update/i,
       });

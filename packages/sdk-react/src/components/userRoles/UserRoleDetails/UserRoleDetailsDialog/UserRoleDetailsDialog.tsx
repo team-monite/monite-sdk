@@ -63,7 +63,7 @@ interface UserRoleFormValues {
 
 interface UserRoleRequest {
   name: string;
-  permissions: components['schemas']['BizObjectsSchema'];
+  permissions: components['schemas']['BizObjectsSchema-Input'];
 }
 
 const StyledDialogContainer = styled(DialogContent)`

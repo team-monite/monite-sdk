@@ -42,11 +42,6 @@ const PayableDetailsBase = ({
   id,
   optionalFields,
   onClose,
-  onSave,
-  onCancel,
-  onSubmit,
-  onReject,
-  onApprove,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -64,6 +59,7 @@ const PayableDetailsBase = ({
     lineItems,
     isEdit,
     isLoading,
+    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,
@@ -80,11 +76,6 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
-    onSave,
-    onCancel,
-    onSubmit,
-    onReject,
-    onApprove,
     onSaved,
     onCanceled,
     onSubmitted,
@@ -164,6 +155,7 @@ const PayableDetailsBase = ({
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
           isPaymentLinkAvailable={isPaymentLinkAvailable}
+          isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
         />
         <Divider />

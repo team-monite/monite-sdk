@@ -1,7 +1,5 @@
-import { components } from '@/api';
-
 const schema: {
-  [key in components['schemas']['EInvoicingProviderEnum']]: key;
+  [key in 'avalara']: key;
 } = {
   avalara: 'avalara',
 };

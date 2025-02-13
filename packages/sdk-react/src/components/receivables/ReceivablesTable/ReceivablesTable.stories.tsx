@@ -1,4 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -26,68 +26,66 @@ export const WithCustomTabs: Story = {
   args: {
     onRowClick: action('onRowClick'),
   },
-  render: (args) => (
-    <div style={{ padding: 20 }}>
-      <ExtendThemeProvider
-        theme={{
-          components: {
-            MoniteReceivablesTable: {
-              defaultProps: {
-                tabs: [
-                  {
-                    label: 'Draft Invoices',
-                    query: {
-                      type: 'invoice',
-                      sort: 'created_at',
-                      order: 'desc',
-                      status__in: ['draft'],
-                    },
-                    filters: [
-                      'document_id__contains',
-                      'counterpart_id',
-                      'due_date__lte',
-                    ],
-                  },
-                  {
-                    label: 'Recurring invoices',
-                    query: {
-                      type: 'invoice',
-                      status__in: ['recurring'],
-                    },
-                    filters: ['document_id__contains', 'counterpart_id'],
-                  },
-                  {
-                    label: 'Other Invoices',
-                    query: {
-                      type: 'invoice',
-                      sort: 'created_at',
-                      order: 'desc',
-                      status__in: [
-                        'issued',
-                        'overdue',
-                        'partially_paid',
-                        'paid',
-                        'uncollectible',
-                        'canceled',
-                      ],
-                    },
-                  },
-                  {
-                    label: 'Credit notes',
-                    query: {
-                      type: 'credit_note',
-                    },
-                  },
-                ],
-              },
+  decorators: withGlobalStorybookDecorator(() => ({
+    componentSettings: {
+      receivables: {
+        tab: 1,
+        tabs: [
+          {
+            label: 'Draft Invoices',
+            query: {
+              type: 'invoice',
+              sort: 'created_at',
+              order: 'desc',
+              status__in: ['draft'],
+            },
+            filters: [
+              'document_id__contains',
+              'counterpart_id',
+              'due_date__lte',
+            ],
+          },
+          {
+            label: 'Recurring invoices',
+            query: {
+              type: 'invoice',
+              status__in: ['recurring'],
+            },
+            filters: ['document_id__contains', 'counterpart_id'],
+          },
+          {
+            label: 'Other Invoices',
+            query: {
+              type: 'invoice',
+              sort: 'created_at',
+              order: 'desc',
+              status__in: [
+                'issued',
+                'overdue',
+                'partially_paid',
+                'paid',
+                'uncollectible',
+                'canceled',
+              ],
             },
           },
-        }}
-      >
-        <ReceivablesTable {...args} onTabChange={undefined} tab={undefined} />
-      </ExtendThemeProvider>
-    </div>
-  ),
+          {
+            label: 'Credit notes',
+            query: {
+              type: 'credit_note',
+            },
+          },
+        ],
+      },
+    },
+  })),
+  render: (args) => {
+    return (
+      <div style={{ padding: 20 }}>
+        <ReceivablesTable {...args} onTabChange={undefined} />
+      </div>
+    );
+  },
 };
 
 export default meta;

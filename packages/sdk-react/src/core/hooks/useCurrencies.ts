@@ -96,7 +96,7 @@ export const useCurrencies = () => {
   /**
    * Returns a price which should be displayed
    *  based on `amount`, currency` and user `currencyLocale`
-   *  that customer provided in `MoniteSDK` on initialization
+   *  that customer provided in Monite settings on initialization
    *
    * !!! Note !!!
    * Accepts minor units on enter! See example for more information

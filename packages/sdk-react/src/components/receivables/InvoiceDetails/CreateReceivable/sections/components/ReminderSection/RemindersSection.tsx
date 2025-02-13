@@ -85,11 +85,11 @@ const ReminderSectionContent = ({
     action: 'create',
   });
 
-  const { monite } = useMoniteContext();
+  const { entityId } = useMoniteContext();
 
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: monite.entityId },
+      path: { entity_id: entityId },
     });
 
   const { control, watch, resetField } =

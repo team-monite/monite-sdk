@@ -1,5 +1,31 @@
 # @monite/sdk-drop-in
 
+## 1.11.0-alpha.1
+
+### Minor Changes
+
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+- 66e853a: feat(DEV-13399): add integrations page and finance application card
+
+## 1.11.0-alpha.0
+
+### Minor Changes
+
+- fda8dd2: refactor(DEV-12144) remove sdk-api package
+- e2ae09a: feat(DEV-12955): add new styling approach for the SDK
+
+## 1.11.2
+
+### Patch Changes
+
+- @monite/sdk-api@3.22.0
+
+## 1.11.1
+
+### Patch Changes
+
+- @monite/sdk-api@3.21.0
+
 ## 1.11.0
 
 ### Minor Changes
