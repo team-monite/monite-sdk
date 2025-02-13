@@ -37,7 +37,7 @@ export const CreateInvoiceCard = () => {
           padding: '24px 24px 64px',
           background: '#FAFAFA',
           borderRadius: '12px',
-          backgroundImage: `url(${invoiceBg.src})`,
+          backgroundImage: `url(${(invoiceBg as { src: string }).src})`,
           backgroundRepeat: `no-repeat`,
           backgroundPosition: `bottom 0 right 80px`,
         }}
