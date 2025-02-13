@@ -1507,8 +1507,8 @@ msgstr "Close approval policy details"
 
 #: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:26
 #: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:27
-msgid "Close document design selection"
-msgstr "Close document design selection"
+#~ msgid "Close document design selection"
+#~ msgstr "Close document design selection"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:180
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
@@ -2460,8 +2460,7 @@ msgstr "Djiboutian Franc"
 msgid "Doctors"
 msgstr "Doctors"
 
-#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:34
-#: src/components/documentDesign/DocumentDesign.tsx:22
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:20
 msgid "Document design"
 msgstr "Document design"
 
@@ -6103,8 +6102,8 @@ msgid "Select someone"
 msgstr "Select someone"
 
 #: src/components/documentDesign/DocumentDesign.tsx:51
-msgid "Select template"
-msgstr "Select template"
+#~ msgid "Select template"
+#~ msgstr "Select template"
 
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:210
 msgctxt "InvoicesTableRowActionMenu"
@@ -6161,7 +6160,7 @@ msgstr "Services"
 msgid "Set a recurrence period to issue invoices automatically"
 msgstr "Set a recurrence period to issue invoices automatically"
 
-#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:41
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:28
 msgid "Set as default"
 msgstr "Set as default"
 
@@ -6183,8 +6182,8 @@ msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
 
 #: src/components/documentDesign/DocumentDesign.tsx:41
-msgid "Set your document style"
-msgstr "Set your document style"
+#~ msgid "Set your document style"
+#~ msgstr "Set your document style"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:140
 msgid "Settings"
@@ -6706,7 +6705,7 @@ msgstr "The review for the persons has been completed. You can proceed to the ne
 msgid "The start date for the recurrence shouldn't be in the past"
 msgstr "The start date for the recurrence shouldn't be in the past"
 
-#: src/components/documentDesign/components/DocumentDesignTemplates/DocumentDesignTemplates.tsx:28
+#: src/components/documentDesign/components/DocumentDesignTemplates/DocumentDesignTemplates.tsx:30
 msgid "The template you set as the default will apply to all documents you issue in the future."
 msgstr "The template you set as the default will apply to all documents you issue in the future."
 
@@ -7354,8 +7353,8 @@ msgid "Variety Stores"
 msgstr "Variety Stores"
 
 #: src/components/documentDesign/DocumentDesign.tsx:44
-msgid "Various templates for your documents"
-msgstr "Various templates for your documents"
+#~ msgid "Various templates for your documents"
+#~ msgstr "Various templates for your documents"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:261
