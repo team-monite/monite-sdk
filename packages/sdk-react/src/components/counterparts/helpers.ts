@@ -79,3 +79,13 @@ export const isOrganizationEntity = (
   counterpart: EntityResponse | undefined
 ): counterpart is components['schemas']['EntityOrganizationResponse'] =>
   counterpart?.type === 'organization';
+
+export function prepareAddressView({
+  address,
+}: {
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+}) {
+  if (address)
+    return `${address.postal_code}, ${address.city}, ${address.line1}`;
+  return '';
+}
