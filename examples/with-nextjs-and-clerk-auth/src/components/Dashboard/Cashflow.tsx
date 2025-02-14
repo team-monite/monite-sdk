@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
+  YAxis,
 } from 'recharts';
 
 import { useMoniteContext } from '@monite/sdk-react';
@@ -177,6 +178,19 @@ export const CashFlowCard = () => {
                 month: 'short',
                 day: 'numeric',
               });
+            }}
+          />
+
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={(value) => {
+              return new Intl.NumberFormat('en-US', {
+                notation: 'compact',
+                compactDisplay: 'short',
+                style: 'currency',
+                currency: 'USD',
+              }).format(Number(value) / 100);
             }}
           />
 
