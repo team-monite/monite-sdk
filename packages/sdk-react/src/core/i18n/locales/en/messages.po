@@ -156,10 +156,8 @@ msgid "+ Add reminder"
 msgstr "+ Add reminder"
 
 #. Counterpart Organization create form Business address Section description.
-#. Counterpart Organization create form Business address Section description.
 #. js-lingui-explicit-id
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:370
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:370
 msgid "CounterpartDetails--CounterpartOrganizationForm--businessAddressSection--caption"
 msgstr "🚫"
 
@@ -378,7 +376,6 @@ msgstr "Added on"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:384
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:188
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:241
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:384
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:152
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:75
 msgid "Address"
@@ -1026,8 +1023,8 @@ msgstr "Bill to"
 msgid "Billiard/Pool Establishments"
 msgstr "Billiard/Pool Establishments"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:316
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:322
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:315
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:321
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:134
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:187
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:83
@@ -1146,7 +1143,6 @@ msgid "Bus Lines"
 msgstr "Bus Lines"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:367
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:367
 msgid "Business address"
 msgstr "Business address"
 
@@ -1254,8 +1250,6 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:105
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:493
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:433
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:434
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:86
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
@@ -1270,7 +1264,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:459
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:526
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:525
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:175
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:62
@@ -1608,14 +1602,11 @@ msgstr "Company details"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:243
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:65
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:243
 msgid "Company name"
 msgstr "Company name"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:24
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:56
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:24
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:56
 msgid "Company name is required"
 msgstr "Company name is required"
 
@@ -1700,7 +1691,7 @@ msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:261
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:287
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:286
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
 msgstr "Contact person"
@@ -1829,8 +1820,6 @@ msgstr "Counterpart bank account"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:203
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:210
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:188
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:203
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:210
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:103
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
@@ -1913,11 +1902,6 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:442
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:443
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:442
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:443
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:133
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:403
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:137
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
@@ -1943,8 +1927,8 @@ msgstr "Create “Overdue” reminder"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:225
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:247
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:292
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:314
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:294
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:316
 msgid "Create a reminder preset"
 msgstr "Create a reminder preset"
 
@@ -1967,12 +1951,10 @@ msgid "Create counterpart"
 msgstr "Create counterpart"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:197
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:197
 msgid "Create Counterpart - Individual"
 msgstr "Create Counterpart - Individual"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:204
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:204
 msgid "Create Counterpart – Company"
 msgstr "Create Counterpart – Company"
 
@@ -1983,8 +1965,6 @@ msgstr "Create Credit Note"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:191
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:201
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:191
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:201
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:97
 msgid "Create customer"
 msgstr "Create customer"
@@ -1994,7 +1974,7 @@ msgstr "Create customer"
 msgid "Create from mail"
 msgstr "Create from mail"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:286
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:282
 msgid "Create invoice"
 msgstr "Create invoice"
 
@@ -2027,7 +2007,7 @@ msgstr "Create new"
 msgid "Create New"
 msgstr "Create New"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:670
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:669
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
@@ -2162,14 +2142,10 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:72
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:303
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:306
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:287
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:290
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:160
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:143
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:98
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:685
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:684
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:140
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:262
@@ -2413,7 +2389,7 @@ msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:431
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:314
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:43
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -2476,7 +2452,6 @@ msgid "Director"
 msgstr "Director"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle.tsx:27
-#: src/components/entity/CounterpartForm/CounterpartReminderToggle.tsx:27
 msgid "Disabling reminders prevents sending any payment reminders to this counterpart."
 msgstr "Disabling reminders prevents sending any payment reminders to this counterpart."
 
@@ -2677,8 +2652,8 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:175
 #: src/components/products/Products.test.tsx:272
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:246
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:396
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:756
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:399
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:755
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
 #: src/components/TableActions/TableActions.tsx:50
 #: src/components/tags/TagsTable/TagsTable.test.tsx:376
@@ -2695,14 +2670,14 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:71
-msgid "Edit {0} profile"
-msgstr "Edit {0} profile"
-
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:105
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:182
 msgid "Edit {0}"
 msgstr "Edit {0}"
+
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:71
+msgid "Edit {0} profile"
+msgstr "Edit {0} profile"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:622
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:641
@@ -2721,15 +2696,15 @@ msgstr "Edit Condition"
 #~ msgid "Edit counterpart's profile"
 #~ msgstr "Edit counterpart's profile"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:204
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:203
 msgid "Edit customer"
 msgstr "Edit customer"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:208
 msgid "Edit Customer Close"
 msgstr "Edit Customer Close"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:203
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:202
 msgid "Edit customer's profile"
 msgstr "Edit customer's profile"
 
@@ -2758,7 +2733,7 @@ msgstr "Edit payment term"
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:510
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:509
 msgid "Edit profile"
 msgstr "Edit profile"
 
@@ -2836,10 +2811,8 @@ msgstr "Elementary, Secondary Schools"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:206
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:56
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:82
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:345
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:328
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:263
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:269
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:262
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:268
 msgid "Email"
 msgstr "Email"
 
@@ -2856,10 +2829,6 @@ msgstr "Email address"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:65
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:28
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:60
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:30
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:64
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:28
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:60
 msgid "Email is required"
 msgstr "Email is required"
 
@@ -2868,10 +2837,6 @@ msgstr "Email is required"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:64
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:27
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/validation.tsx:59
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:29
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:63
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:27
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/validation.tsx:59
 msgid "Email must be a valid email"
 msgstr "Email must be a valid email"
 
@@ -2885,8 +2850,6 @@ msgstr "Employment/Temp Agencies"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle.tsx:20
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle.tsx:39
-#: src/components/entity/CounterpartForm/CounterpartReminderToggle.tsx:20
-#: src/components/entity/CounterpartForm/CounterpartReminderToggle.tsx:39
 msgid "Enable email reminders"
 msgstr "Enable email reminders"
 
@@ -3195,7 +3158,6 @@ msgstr "First day of the month"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:83
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:239
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:239
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:31
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:94
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:55
@@ -3207,8 +3169,6 @@ msgstr "First name"
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/validation.tsx:10
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:26
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:60
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:25
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:59
 msgid "First name is required"
 msgstr "First name is required"
 
@@ -4153,7 +4113,6 @@ msgstr "Last day of the month"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:101
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:257
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:257
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:40
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:103
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:56
@@ -4165,8 +4124,6 @@ msgstr "Last name"
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/validation.tsx:11
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:27
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/validation.tsx:61
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:26
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/validation.tsx:60
 msgid "Last name is required"
 msgstr "Last name is required"
 
@@ -4748,7 +4705,7 @@ msgstr "next on {0}"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:87
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:91
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:267
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:263
 #: src/ui/table/TablePagination.tsx:110
 #: src/ui/table/TablePagination.tsx:123
 msgid "Next page"
@@ -4856,7 +4813,7 @@ msgstr "No logo"
 msgid "No more than 3 reminders are allowed"
 msgstr "No more than 3 reminders are allowed"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:297
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:299
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
@@ -4869,7 +4826,6 @@ msgstr "No overdue reminders available"
 #~ msgstr "No payment link found for this payable. Please, create a payment link first."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:230
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:227
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
 
@@ -4923,7 +4879,7 @@ msgstr "No tags found"
 msgid "No Tax ID available"
 msgstr "No Tax ID available"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:490
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:489
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
 
@@ -5090,7 +5046,7 @@ msgstr "Overdue reminder"
 msgid "Overdue reminder error"
 msgstr "Overdue reminder error"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:290
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:292
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
 
@@ -5398,8 +5354,6 @@ msgstr "Philippines"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:202
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:52
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:78
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:369
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:352
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:39
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:229
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:62
@@ -5407,8 +5361,8 @@ msgstr "Philippines"
 msgid "Phone number"
 msgstr "Phone number"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:275
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:281
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:274
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:280
 msgid "Phone Number"
 msgstr "Phone Number"
 
@@ -5971,7 +5925,7 @@ msgstr "Reminder not found"
 #~ msgid "Reminders"
 #~ msgstr "Reminders"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:192
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:194
 msgid "Reminders are disabled for this Counterpart."
 msgstr "Reminders are disabled for this Counterpart."
 
@@ -6169,8 +6123,6 @@ msgstr "Saudi Riyal"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1191
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:442
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:443
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:442
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:443
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:88
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:109
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
@@ -6178,7 +6130,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:161
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:532
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:531
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:150
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:155
@@ -6253,7 +6205,7 @@ msgstr "See all"
 #~ msgid "Select counterpart"
 #~ msgstr "Select counterpart"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:686
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:685
 msgid "Select customer"
 msgstr "Select customer"
 
@@ -6332,11 +6284,11 @@ msgstr "Set a {0} for this customer to issue invoice"
 msgid "Set a recurrence period to issue invoices automatically"
 msgstr "Set a recurrence period to issue invoices automatically"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:119
+#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:28
 msgid "Set as default"
 msgstr "Set as default"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:99
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:119
 msgid "Set by payment term"
 msgstr "Set by payment term"
 
@@ -6348,14 +6300,12 @@ msgstr "Set by payment term"
 msgid "Set on issuance"
 msgstr "Set on issuance"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:425
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:428
 msgid "Set reminders"
 msgstr "Set reminders"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:277
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:261
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:277
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:261
 msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
 
@@ -6367,12 +6317,13 @@ msgstr ""
 "Set up bank account to add payment info\n"
 "and set a QR code"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:59
-msgid "Set your entity's {0} to issue invoice"
-msgstr "Set your entity's {0} to issue invoice"
 #: src/components/documentDesign/DocumentDesign.tsx:41
 #~ msgid "Set your document style"
 #~ msgstr "Set your document style"
+
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:59
+msgid "Set your entity's {0} to issue invoice"
+msgstr "Set your entity's {0} to issue invoice"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:140
 msgid "Settings"
@@ -6395,8 +6346,8 @@ msgstr "Seychelles"
 msgid "Seychellois Rupee"
 msgstr "Seychellois Rupee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:356
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:364
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:355
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:363
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:189
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:88
@@ -6450,9 +6401,7 @@ msgstr "Slovenia"
 msgid "Small Appliance Repair"
 msgstr "Small Appliance Repair"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:135
-#: src/components/products/ProductDetails/validation.ts:36
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:101
 msgid "Smallest amount"
 msgstr "Smallest amount"
 
@@ -6747,21 +6696,17 @@ msgstr "Tax"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:400
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:402
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:369
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:372
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:60
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:86
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:400
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:402
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:50
 msgid "Tax ID"
 msgstr "Tax ID"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:317
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:293
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:459
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:476
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:292
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:458
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:475
 msgid "TAX ID"
 msgstr "TAX ID"
 
@@ -6812,7 +6757,6 @@ msgstr "Tax Registration Number (UAE)"
 #~ msgstr "Taxes"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:454
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:447
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -7317,10 +7261,8 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:93
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:96
-#: src/components/products/ProductsTable/ProductsTable.tsx:227
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:218
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:264
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:257
 msgid "Units"
 msgstr "Units"
 
@@ -7616,9 +7558,9 @@ msgstr "Vat ID"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:131
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:322
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:298
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:420
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:426
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:297
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:419
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:425
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:49
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:121
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:124
@@ -7680,9 +7622,6 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:48
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:74
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:74
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:327
-#: src/components/entity/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:330
-#: src/components/entity/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:313
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:473
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:247
 #: src/components/payables/PayablesTable/PayablesTable.tsx:283

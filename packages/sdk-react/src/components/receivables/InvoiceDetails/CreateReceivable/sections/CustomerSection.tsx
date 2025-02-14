@@ -162,7 +162,6 @@ export const CustomerSection = ({
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
-  //const handleEditSubmit = () => console.log;
 
   return (
     <Stack spacing={2} className={className}>
@@ -500,7 +499,7 @@ export const CustomerSection = ({
                 container
                 alignItems="center"
                 p={4}
-                borderTop="solid 1px rgba(0, 0, 0, 0.13) "
+                borderTop="solid 1px rgba(0, 0, 0, 0.13)"
               >
                 <Grid item xs={6}>
                   {!isEditMode && (
@@ -732,7 +731,7 @@ const CounterpartSelector = ({
                               >
                                 <Typography
                                   variant="body2"
-                                  color="rgba(41, 41, 41, 1)"
+                                  sx={{ color: 'rgba(41, 41, 41, 1)' }}
                                   fontWeight="bold"
                                 >
                                   {params.inputProps.value}

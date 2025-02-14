@@ -132,8 +132,6 @@ const CreateReceivablesBase = ({
   >(settings?.currency?.default);
   const [counterpartBillingAddress, setCounterpartBillingAddress] =
     useState<any>(null);
-  const [counterpartShippingAddress, setCounterpartShippingAddress] =
-    useState<any>(null);
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
@@ -144,15 +142,6 @@ const CreateReceivablesBase = ({
       setCounterpartBillingAddress(
         counterpartAddresses?.data?.find(
           (address) => address.id === billingAddressId
-        )
-      );
-    }
-
-    const shippingAddressId = values.default_shipping_address_id;
-    if (shippingAddressId) {
-      setCounterpartShippingAddress(
-        counterpartAddresses?.data?.find(
-          (address) => address.id === shippingAddressId
         )
       );
     }
