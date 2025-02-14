@@ -208,7 +208,7 @@ const ReminderSectionContent = ({
           {t(i18n)`Reminders are disabled for this Entity.`}
         </Alert>
       )}
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <SelectReminderLayout
           reminder={paymentReminder}
           isReminderLoading={isPaymentReminderLoading}
@@ -262,9 +262,11 @@ const ReminderSectionContent = ({
                         alignItems: 'center',
                         color: 'primary.main',
                         whiteSpace: 'unset',
+                        paddingLeft: '0',
                       }
                     : {
                         whiteSpace: 'unset',
+                        paddingLeft: '0',
                       }
                 }
               >
@@ -328,9 +330,11 @@ const ReminderSectionContent = ({
                         alignItems: 'center',
                         color: 'primary.main',
                         whiteSpace: 'unset',
+                        paddingLeft: '0',
                       }
                     : {
                         whiteSpace: 'unset',
+                        paddingLeft: '0',
                       }
                 }
               >
@@ -367,15 +371,14 @@ const SelectReminderLayout = ({
 
   return (
     // Use bottom alignment to correctly align editors with buttons
-    <Grid container alignItems="bottom" spacing={1} p={1}>
-      <Grid item xs={9}>
+    <Grid container alignItems="bottom" spacing={1} p={1} pl={0}>
+      <Grid item xs={8}>
         {children}
       </Grid>
       {onUpdate && (
         <Grid
           item
           xs={2}
-          ml={1}
           sx={{
             display: 'flex',
             alignItems: 'flex-end',

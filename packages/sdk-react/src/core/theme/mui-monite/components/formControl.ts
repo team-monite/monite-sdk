@@ -22,7 +22,7 @@ export const getFormControlStyles = (
         '& .MuiInputBase-root': {
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],
-          //  border: `1px solid transparent`, //is it ok to change this for all inputs?
+          //border: `1px solid transparent`, //is it ok to change this for all inputs?
           borderRadius: moniteTheme.borderRadius * 2,
 
           '.MuiSelect-icon': {
@@ -54,7 +54,6 @@ export const getFormControlStyles = (
         },
         '&:not(.Monite-FilterControl):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-            backgroundColor: 'transparent',
             border: `1px solid ${palette.primary.main}`,
           },
 
@@ -66,18 +65,20 @@ export const getFormControlStyles = (
           },
         },
 
-        '&:not(.Monite-CounterpartSelector) .MuiFormLabel-root': {
-          fontSize: '14px',
-          color: ' rgba(112, 112, 112, 1)',
-          paddingBottom: '0',
-          backgroundColor: 'transparent',
-          '&:hover, &.Mui-focused': {
+        '&:not(.Monite-CounterpartSelector):not(.Monite-FilterControl) .MuiFormLabel-root':
+          {
+            fontSize: '14px',
+            color: ' rgba(112, 112, 112, 1)',
             backgroundColor: 'transparent',
+
             '&:hover, &.Mui-focused': {
               backgroundColor: 'transparent',
               '& > .MuiOutlinedInput-notchedOutline': {
                 backgroundColor: 'transparent',
               },
+            },
+            '&.Mui-required > .MuiFormLabel-asterisk': {
+              display: 'none',
             },
             '&.Mui-required::after': {
               content: '"●"',
@@ -95,133 +96,140 @@ export const getFormControlStyles = (
               backgroundColor: 'transparent',
               border: `1px solid ${palette.primary.main}`,
             },
-          },
-        '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
-          {
-            display: 'none',
-          },
-        '& .MuiOutlinedInput-notchedOutline': {
-          top: 0,
-        },
-        // Hide border cutout
-        '& .MuiOutlinedInput-notchedOutline legend': {
-          display: 'none',
-        },
-        '& .MuiOutlinedInput-root': {
-          left: 0,
-          top: 0,
-        },
 
-        // Monite Filter Control styles
-        '&.Monite-FilterControl': {
-          height: '40px',
-          minHeight: '40px',
-          maxHeight: '40px',
-          maxWidth: filterControlWidth,
-          width: '100%',
-
-          '& .MuiInputBase-root': {
-            marginTop: 0,
-            height: '40px',
-            minHeight: '40px',
-            maxHeight: '40px',
-            borderRadius: moniteTheme.borderRadius * 2,
-            color: palette.text.primary,
-            fontWeight: 500,
-            backgroundColor: palette.neutral['95'],
-            padding: '0 6px',
-
-            '&.Mui-focused': {
-              backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
-            },
-          },
-
-          '&:hover': {
-            '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-              border: 'none',
-            },
-
-            '.MuiFormLabel-root.MuiFormLabel-filled': {
-              opacity: 0,
-
-              '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-                backgroundColor: chroma(palette.primary.main).alpha(0.12).hex(),
+            '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
+              {
+                display: 'none',
               },
+            '& .MuiOutlinedInput-notchedOutline': {
+              top: 0,
             },
-          },
-
-          '& .MuiSelect-select': {
-            fontSize: '14px',
-
-            '&:focus': {
-              backgroundColor: 'transparent',
+            // Hide border cutout
+            '& .MuiOutlinedInput-notchedOutline legend': {
+              display: 'none',
             },
-          },
+            '& .MuiOutlinedInput-root': {
+              left: 0,
+              top: 0,
+            },
 
-          '& .MuiFormLabel-root': {
-            position: 'absolute',
-            zIndex: 1,
-            left: '45px',
-            top: '10px',
-            fontSize: '14px',
-            maxWidth: 'calc(100% - 52px)',
-            textOverflow: 'ellipsis',
-            pointerEvents: 'none',
+            // Monite Filter Control styles
+            '&.Monite-FilterControl': {
+              height: '40px',
+              minHeight: '40px',
+              maxHeight: '40px',
+              maxWidth: filterControlWidth,
+              width: '100%',
 
-            '&.MuiFormLabel-filled': {
-              opacity: 0,
+              '& .MuiInputBase-root': {
+                marginTop: 0,
+                height: '40px',
+                minHeight: '40px',
+                maxHeight: '40px',
+                borderRadius: moniteTheme.borderRadius * 2,
+                color: palette.text.primary,
+                fontWeight: 500,
+                backgroundColor: palette.neutral['95'],
+                padding: '0 6px',
 
-              '+ .MuiInputBase-root': {
-                color: palette.primary.main,
-                backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
+                '&.Mui-focused': {
+                  backgroundColor: chroma(palette.primary.main)
+                    .alpha(0.05)
+                    .hex(),
+                },
+              },
 
-                '.MuiSelect-icon, .MuiSvgIcon-root, .MuiSvgIcon-root>*': {
-                  color: palette.primary.main,
+              '&:hover': {
+                '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+                  border: 'none',
+                },
+
+                '.MuiFormLabel-root.MuiFormLabel-filled': {
+                  opacity: 0,
+
+                  '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+                    backgroundColor: chroma(palette.primary.main)
+                      .alpha(0.12)
+                      .hex(),
+                  },
+                },
+              },
+
+              '& .MuiSelect-select': {
+                fontSize: '14px',
+
+                '&:focus': {
+                  backgroundColor: 'transparent',
+                },
+              },
+
+              '& .MuiFormLabel-root': {
+                position: 'absolute',
+                zIndex: 1,
+                left: '45px',
+                top: '10px',
+                fontSize: '14px',
+                maxWidth: 'calc(100% - 52px)',
+                textOverflow: 'ellipsis',
+                pointerEvents: 'none',
+
+                '&.MuiFormLabel-filled': {
+                  opacity: 0,
+
+                  '+ .MuiInputBase-root': {
+                    color: palette.primary.main,
+                    backgroundColor: chroma(palette.primary.main)
+                      .alpha(0.05)
+                      .hex(),
+
+                    '.MuiSelect-icon, .MuiSvgIcon-root, .MuiSvgIcon-root>*': {
+                      color: palette.primary.main,
+                    },
+                  },
+                },
+              },
+
+              '& .MuiInputLabel-root': {
+                fontWeight: 500,
+                color: palette.text.secondary,
+              },
+
+              '& .MuiIconButton-root': {
+                marginRight: '-6px',
+              },
+              '& .MuiInputAdornment-positionEnd .MuiSvgIcon-root, & .MuiIconButton-root .MuiSvgIcon-root':
+                {
+                  width: '20px',
+                  height: '20px',
+                  '> *': {
+                    color: palette.text.primary,
+                  },
+                },
+
+              '&.Monite-DateFilterControl': {
+                'input::placeholder': {
+                  opacity: 0,
+                },
+              },
+
+              '& .MuiInputBase-input:not(.MuiSelect-select)': {
+                padding: '0 0 0 8px',
+                fontSize: '14px',
+                textOverflow: 'ellipsis',
+
+                '& + .MuiInputAdornment-root': {
+                  marginLeft: 0,
                 },
               },
             },
-          },
-
-          '& .MuiInputLabel-root': {
-            fontWeight: 500,
-            color: palette.text.secondary,
-          },
-
-          '& .MuiIconButton-root': {
-            marginRight: '-6px',
-          },
-          '& .MuiInputAdornment-positionEnd .MuiSvgIcon-root, & .MuiIconButton-root .MuiSvgIcon-root':
-            {
-              width: '20px',
-              height: '20px',
-              '> *': {
-                color: palette.text.primary,
+            '&.Monite-SearchField': {
+              maxWidth: '400px',
+              width: '100%',
+              '& label': {
+                color: 'secondary.main',
               },
             },
-
-          '&.Monite-DateFilterControl': {
-            'input::placeholder': {
-              opacity: 0,
-            },
           },
-
-          '& .MuiInputBase-input:not(.MuiSelect-select)': {
-            padding: '0 0 0 8px',
-            fontSize: '14px',
-            textOverflow: 'ellipsis',
-
-            '& + .MuiInputAdornment-root': {
-              marginLeft: 0,
-            },
-          },
-        },
-        '&.Monite-SearchField': {
-          maxWidth: '400px',
-          width: '100%',
-          '& label': {
-            color: 'secondary.main',
-          },
-        },
       },
     },
   };

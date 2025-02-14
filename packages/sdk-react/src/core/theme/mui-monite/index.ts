@@ -455,9 +455,73 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
-          '& .MuiInput-input.MuiAutocomplete-input': {
-            padding: '0 14px',
+          '& > .Monite-CounterpartSelector': {
+            '& > .MuiInputBase-root': {
+              border: '1px solid transparent',
+              '& > .MuiInputAdornment-root': {
+                '&.MuiInputAdornment-positionStart': {
+                  marginRight: '16px',
+                },
+                '&.MuiInputAdornment-positionEnd': {
+                  marginLeft: '0',
+                  '& + input:not(:placeholder-shown)': {
+                    opacity: 0,
+                  },
+                  '& + input::placeholder': {
+                    color: 'rgba(184, 184, 184, 1)',
+                  },
+                },
+              },
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '16px 16px 16px 16px',
+                height: '70px',
+                lineHeight: '70px',
+                backgroundColor: 'transparent',
+                '& > .MuiOutlinedInput-notchedOutline': {
+                  top: 0,
+                  '> legend': {
+                    display: 'none',
+                  },
+                },
+                '&:hover > .MuiOutlinedInput-notchedOutline': {
+                  //borderColor: '#dedede',
+                },
+                '&.Mui-focused > .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'transparent',
+                },
+              },
+            },
+            '& > .MuiFormLabel-root': {
+              fontSize: '1.25rem',
+              paddingBottom: '1rem',
+              '& > .MuiInputLabel-asterisk': {
+                display: 'none',
+              },
+            },
+            '&.isSimplified': {
+              marginBottom: '2rem',
+              background: 'transparent',
+              '& > .MuiInputBase-root': {
+                paddingRight: '1rem',
+              },
+              '& > .MuiInputLabel-root': {
+                fontSize: '14px',
+                color: 'rgba(112, 112, 112, 1)',
+                paddingBottom: '0',
+                '&::after': {
+                  content: '"●"',
+                  position: 'relative',
+                  bottom: '2px',
+                  left: '4px',
+                  color: 'rgba(255, 71, 93, 1)',
+                },
+              },
+              '& > .MuiInputLabel-root > .MuiFormLabel-asterisk': {
+                display: 'none',
+              },
+            },
           },
+
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',
