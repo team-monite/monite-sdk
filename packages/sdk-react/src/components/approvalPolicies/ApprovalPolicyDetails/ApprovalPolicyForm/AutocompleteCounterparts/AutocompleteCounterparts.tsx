@@ -30,6 +30,8 @@ export interface CounterpartsAutocompleteOptionProps {
   label: string;
 }
 
+const COUNTERPART_CREATE_NEW_ID = '__create-new__';
+
 export const AutocompleteCounterparts = ({
   control,
   name,
@@ -48,6 +50,10 @@ export const AutocompleteCounterparts = ({
     setIsCreateCounterpartOpened(true);
   }, [setIsCreateCounterpartOpened]);
 
+  const handleCloseCreateCounterpart = useCallback(() => {
+    setIsCreateCounterpartOpened(false);
+  }, [setIsCreateCounterpartOpened]);
+
   const {
     data: counterparts,
     isLoading: isCounterpartsLoading,
@@ -62,18 +68,14 @@ export const AutocompleteCounterparts = ({
     Array<CounterpartsAutocompleteOptionProps>
   >(
     () =>
-      counterparts
-        ? counterparts?.data.map((counterpart) => ({
-            id: counterpart.id,
-            label: getCounterpartName(counterpart),
-          }))
-        : [],
+      counterparts?.data.map((counterpart) => ({
+        id: counterpart.id,
+        label: getCounterpartName(counterpart),
+      })) ?? [],
     [counterparts]
   );
 
   const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
-
-  const COUNTERPART_CREATE_NEW_ID = '__create-new__';
 
   function isCreateNewCounterpartOption(
     counterpartOption: CounterpartsAutocompleteOptionProps | undefined | null
@@ -117,9 +119,7 @@ export const AutocompleteCounterparts = ({
     <>
       <CreateCounterpartDialog
         open={isCreateCounterpartOpened}
-        onClose={() => {
-          setIsCreateCounterpartOpened(false);
-        }}
+        onClose={handleCloseCreateCounterpart}
         onCreate={setNewCounterpartId}
       />
       <Controller

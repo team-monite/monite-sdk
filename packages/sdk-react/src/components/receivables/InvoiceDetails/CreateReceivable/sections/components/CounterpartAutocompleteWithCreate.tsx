@@ -1,5 +1,11 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  useFormContext,
+  FieldValues,
+  FieldPath,
+  PathValue,
+} from 'react-hook-form';
 
 import {
   DefaultValuesOCRIndividual,
@@ -35,15 +41,17 @@ function isCreateNewCounterpartOption(
   return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
 }
 
-export const CounterpartAutocompleteWithCreate = ({
+export const CounterpartAutocompleteWithCreate = <
+  TFieldValues extends FieldValues
+>({
   disabled,
   name,
-  label = 'Customer',
+  label,
   getCounterpartDefaultValues,
   required = true,
 }: {
   disabled?: boolean;
-  name: string;
+  name: FieldPath<TFieldValues>;
   label: string;
   getCounterpartDefaultValues?: (
     type?: string
@@ -51,7 +59,7 @@ export const CounterpartAutocompleteWithCreate = ({
   required?: boolean;
 }) => {
   const { i18n } = useLingui();
-  const { control, setValue } = useFormContext<any>();
+  const { control, setValue } = useFormContext<TFieldValues>();
 
   const { root } = useRootElements();
 
@@ -82,7 +90,10 @@ export const CounterpartAutocompleteWithCreate = ({
 
   useEffect(() => {
     if (newCounterpartId) {
-      setValue(name, newCounterpartId);
+      setValue(
+        name,
+        newCounterpartId as PathValue<TFieldValues, FieldPath<TFieldValues>>
+      );
     }
   }, [newCounterpartId, setValue, name]);
 
@@ -147,7 +158,7 @@ export const CounterpartAutocompleteWithCreate = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t(i18n)`${label}`}
+                  label={label ? t(i18n)`${label}` : t(i18n)`Customer`}
                   placeholder={t(i18n)`Select counterpart`}
                   required={required}
                   error={Boolean(error)}
@@ -167,9 +178,7 @@ export const CounterpartAutocompleteWithCreate = ({
                   ? ''
                   : counterpartOption.label
               }
-              isOptionEqualToValue={(option, value) => {
-                return option.id === value.id;
-              }}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               selectOnFocus
               clearOnBlur
               handleHomeEndKeys

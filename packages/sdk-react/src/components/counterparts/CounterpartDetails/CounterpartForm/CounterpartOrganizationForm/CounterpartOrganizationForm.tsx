@@ -155,7 +155,7 @@ export const CounterpartOrganizationForm = (
 
   useEffect(() => {
     reset({
-      tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
+      tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id,
       remindersEnabled: organizationCounterpart?.reminders_enabled ?? false,
       organization: defaultValuesOCR
         ? defaultValuesOCR.counterpart

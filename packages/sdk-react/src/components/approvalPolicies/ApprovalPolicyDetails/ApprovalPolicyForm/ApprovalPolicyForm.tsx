@@ -362,10 +362,7 @@ export const ApprovalPolicyForm = ({
         setValue('triggers.tags', tagsForTriggers?.data);
       }
 
-      if (
-        counterpartsForTriggers?.data &&
-        counterpartsForTriggers?.data.length > 0
-      ) {
+      if ((counterpartsForTriggers?.data?.length ?? 0) > 0) {
         setValue(
           'triggers.counterpart_id',
           counterpartsForTriggers?.data.map((counterpart) => ({

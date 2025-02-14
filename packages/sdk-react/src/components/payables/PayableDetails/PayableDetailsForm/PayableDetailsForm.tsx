@@ -459,7 +459,7 @@ const PayableDetailsFormBase = forwardRef<
                       <CounterpartAutocompleteWithCreate
                         disabled={false}
                         name="counterpart"
-                        label="Vendor"
+                        label={t(i18n)`Vendor`}
                         required={
                           isFieldRequired('counterpart', ocrRequiredFields) ||
                           isFieldRequiredByValidations(

@@ -97,7 +97,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       <CounterpartAutocompleteWithCreate
         disabled={disabled}
         name="counterpart_id"
-        label="Customer"
+        label={t(i18n)`Customer`}
       />
       {counterpartId && (
         <>
