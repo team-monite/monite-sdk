@@ -272,7 +272,7 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Status`,
         display: 'flex',
-        width: 70,
+        width: 100,
         renderCell: (params) => (
           <PayableStatusChip status={params.value} size="small" />
         ),
@@ -513,10 +513,6 @@ const PayablesTableBase = ({
               noDataDescription1={t(i18n)`You don’t have any bills yet`}
               noDataDescription2={t(i18n)`Add your first bill`}
               filterTitle={t(i18n)`No bills found`}
-              filterDescription1={t(
-                i18n
-              )`Try adjusting your search or filter criteria`}
-              filterDescription2={' '}
               isLoading={isLoading}
               isFiltering={isFiltering}
               isSearching={isSearching}

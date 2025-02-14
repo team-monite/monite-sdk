@@ -11,8 +11,9 @@ describe('Product Details', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getByText('Product Details')).toBeInTheDocument();
-    expect(screen.getByText(productsListFixture[0].name)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: productsListFixture[0].name })
+    ).toBeInTheDocument();
   });
 
   test('should render "Access Restricted" message when user does not have access to products', async () => {

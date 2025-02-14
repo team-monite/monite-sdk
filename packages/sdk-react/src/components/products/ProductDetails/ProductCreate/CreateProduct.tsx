@@ -56,10 +56,14 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       onSuccess: async (product) => {
         props.onCreated?.(product);
         await api.products.getProducts.invalidateQueries(queryClient);
-        toast.success(t(i18n)`Product ${product.name} was created.`);
+        toast.success(
+          product.type === 'product'
+            ? t(i18n)`Product ${product.name} was created.`
+            : t(i18n)`Service ${product.name} was created.`
+        );
       },
       onError: () => {
-        toast.error(t(i18n)`Failed to create product.`);
+        toast.error(t(i18n)`Failed to create`);
       },
     });
 
@@ -90,13 +94,13 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
-            {t(i18n)`Create New Product`}
+            {t(i18n)`Create new product or service`}
           </Typography>
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
             <IconWrapper
-              aria-label={t(i18n)`Create New Product Close`}
+              aria-label={t(i18n)`Close new product or service form`}
               onClick={dialogContext.onClose}
               color="inherit"
             >
@@ -117,15 +121,15 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       <DialogActions>
         {dialogContext && (
           <Button
-            variant="outlined"
-            color="inherit"
+            variant="text"
+            color="primary"
             onClick={dialogContext.onClose}
           >
             {t(i18n)`Cancel`}
           </Button>
         )}
         <Button
-          variant="outlined"
+          variant="contained"
           type="submit"
           form={productFormId}
           disabled={isPending}

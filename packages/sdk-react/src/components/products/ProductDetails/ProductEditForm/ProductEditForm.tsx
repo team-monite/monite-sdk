@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -25,6 +25,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { ProductCancelEditModal } from '../../ProductCancelEditModal';
 import { ProductForm } from '../components/ProductForm';
 import { IProductFormSubmitValues } from '../validation';
 
@@ -52,6 +53,10 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   const { api, queryClient } = useMoniteContext();
 
+  const [cancelEditModalOpened, setCancelEditModalOpened] =
+    useState<boolean>(false);
+  const [isFormDirty, setIsFormDirty] = useState<boolean>(false);
+
   const {
     data: product,
     error: productQueryError,
@@ -72,11 +77,15 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           },
           queryClient
         );
-        toast.success(t(i18n)`Product ${product.name} was updated.`);
+        toast.success(
+          product.type === 'product'
+            ? t(i18n)`Product ${product.name} was updated.`
+            : t(i18n)`Service ${product.name} was updated.`
+        );
       },
 
       onError: () => {
-        toast.error(t(i18n)`Failed to update product.`);
+        toast.error(t(i18n)`Failed to update`);
       },
     }
   );
@@ -93,7 +102,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         <Grid container alignItems="center">
           <Grid item xs={11}>
             <Typography variant="h3" sx={{ padding: 3 }}>
-              {t(i18n)`Edit Product`}
+              {t(i18n)`Edit ${product?.type}`}
             </Typography>
           </Grid>
           <Grid item xs={1}>
@@ -170,7 +179,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
-            {t(i18n)`Edit Product`}
+            {t(i18n)`Edit ${product?.type}`}
           </Typography>
         </Grid>
         <Grid item xs={1}>
@@ -187,19 +196,31 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       </Grid>
       <Divider />
       <DialogContent>
+        <ProductCancelEditModal
+          open={cancelEditModalOpened}
+          onClose={() => setCancelEditModalOpened(false)}
+          onBack={props.onCanceled}
+        />
         <ProductForm
           formId={productFormId}
           onSubmit={handleSubmit}
           defaultValues={defaultValues}
+          onChanged={setIsFormDirty}
         />
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" color="inherit" onClick={props.onCanceled}>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() =>
+            isFormDirty ? setCancelEditModalOpened(true) : props.onCanceled()
+          }
+        >
           {t(i18n)`Cancel`}
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
           type="submit"
           form={productFormId}
           disabled={productUpdateMutation.isPending || isMeasureUnitsLoading}

@@ -26,6 +26,7 @@ import {
   useMoniteContext,
   useRootElements,
   UserRoles as UserRolesBase,
+  DocumentDesign as DocumentDesignBase,
 } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
@@ -95,6 +96,24 @@ export const MoniteProvider = ({
   return (
     <MoniteProviderBase
       monite={monite}
+      componentSettings={{
+        receivables: {
+          tabs: [
+            {
+              label: 'Invoices',
+              query: {
+                type: 'invoice',
+              },
+            },
+            {
+              label: 'My Financing',
+              query: {
+                type: 'financing',
+              },
+            },
+          ],
+        },
+      }}
       locale={{
         code: i18n.locale,
         messages: {
@@ -549,6 +568,10 @@ export const UserRoles = () => {
 
 export const RolesAndPolicies = () => {
   return <RolesAndApprovalPoliciesBase />;
+};
+
+export const InvoiceDesign = () => {
+  return <DocumentDesignBase />;
 };
 
 const amexIcon =
