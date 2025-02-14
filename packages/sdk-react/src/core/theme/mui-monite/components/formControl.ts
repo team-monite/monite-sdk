@@ -22,7 +22,6 @@ export const getFormControlStyles = (
         '& .MuiInputBase-root': {
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],
-          //border: `1px solid transparent`, //is it ok to change this for all inputs?
           borderRadius: moniteTheme.borderRadius * 2,
 
           '.MuiSelect-icon': {
@@ -51,6 +50,19 @@ export const getFormControlStyles = (
 
         'label+.MuiInputBase-root': {
           marginTop: 0,
+        },
+        '&:hover': {
+          '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+            backgroundColor: palette.neutral['90'],
+            border: `1px solid ${palette.primary.main}`,
+          },
+
+          '& .MuiFormLabel-root.MuiFormLabel-filled': {
+            '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+              backgroundColor: 'transparent',
+              border: `1px solid ${palette.primary.main}`,
+            },
+          },
         },
         '&:not(.Monite-FilterControl):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
