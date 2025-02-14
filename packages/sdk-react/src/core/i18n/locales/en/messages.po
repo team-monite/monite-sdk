@@ -1023,8 +1023,8 @@ msgstr "Bill to"
 msgid "Billiard/Pool Establishments"
 msgstr "Billiard/Pool Establishments"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:272
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:278
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:243
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:249
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:134
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:187
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:83
@@ -1260,11 +1260,11 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:154
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:448
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:459
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:482
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:175
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:62
@@ -1691,7 +1691,7 @@ msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:261
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:243
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:214
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
 msgstr "Contact person"
@@ -2696,15 +2696,15 @@ msgstr "Edit Condition"
 #~ msgid "Edit counterpart's profile"
 #~ msgstr "Edit counterpart's profile"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:160
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:132
 msgid "Edit customer"
 msgstr "Edit customer"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:165
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:137
 msgid "Edit Customer Close"
 msgstr "Edit Customer Close"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:159
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:131
 msgid "Edit customer's profile"
 msgstr "Edit customer's profile"
 
@@ -2733,7 +2733,7 @@ msgstr "Edit payment term"
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:466
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:435
 msgid "Edit profile"
 msgstr "Edit profile"
 
@@ -2811,8 +2811,8 @@ msgstr "Elementary, Secondary Schools"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:206
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:56
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:82
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:219
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:225
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:191
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:197
 msgid "Email"
 msgstr "Email"
 
@@ -4879,7 +4879,7 @@ msgstr "No tags found"
 msgid "No Tax ID available"
 msgstr "No Tax ID available"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:446
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:415
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
 
@@ -5361,8 +5361,8 @@ msgstr "Philippines"
 msgid "Phone number"
 msgstr "Phone number"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:231
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:237
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:202
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:208
 msgid "Phone Number"
 msgstr "Phone Number"
 
@@ -6129,8 +6129,8 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:165
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:454
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:488
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:150
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:155
@@ -6346,8 +6346,8 @@ msgstr "Seychelles"
 msgid "Seychellois Rupee"
 msgstr "Seychellois Rupee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:312
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:320
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:281
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:289
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:189
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:88
@@ -6702,11 +6702,11 @@ msgstr "Tax"
 msgid "Tax ID"
 msgstr "Tax ID"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:220
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:384
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:401
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:317
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:249
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:415
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:432
 msgid "TAX ID"
 msgstr "TAX ID"
 
@@ -7556,11 +7556,11 @@ msgstr "VAT has been deleted."
 msgid "Vat ID"
 msgstr "Vat ID"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:225
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:345
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:351
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:131
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:322
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:254
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:376
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:382
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:49
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:121
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:124
