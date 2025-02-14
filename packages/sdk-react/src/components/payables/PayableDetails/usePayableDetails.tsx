@@ -487,7 +487,7 @@ export function usePayableDetails({
       }
 
       case 'rejected': {
-        if (isDeleteAvailable) {
+        if (isReopenAvailable) {
           setPermissions(['reopen']);
         }
         break;
