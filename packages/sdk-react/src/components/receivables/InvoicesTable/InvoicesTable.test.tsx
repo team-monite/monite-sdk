@@ -1,5 +1,5 @@
 import { InvoicesTable } from '@/components';
-import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { CREATE_INVOICE } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { renderWithClient } from '@/utils/test-utils';
@@ -27,7 +27,7 @@ describe('InvoicesTable', () => {
     renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: new RegExp(INVOICE_DOCUMENT_AUTO_ID),
+      name: new RegExp(CREATE_INVOICE),
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -64,7 +64,7 @@ describe('InvoicesTable', () => {
     );
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: new RegExp(INVOICE_DOCUMENT_AUTO_ID),
+      name: new RegExp(CREATE_INVOICE),
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);

@@ -499,7 +499,7 @@ export const CustomerSection = ({
                 container
                 alignItems="center"
                 p={4}
-                borderTop="solid 1px rgba(0, 0, 0, 0.13)"
+                sx={{ borderTop: 'solid 1px rgba(0, 0, 0, 0.13)' }}
               >
                 <Grid item xs={6}>
                   {!isEditMode && (
