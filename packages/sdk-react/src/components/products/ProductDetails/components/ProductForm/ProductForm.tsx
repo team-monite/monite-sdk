@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Button,
   FormControl,
   FormHelperText,
   Grid,
@@ -38,6 +39,12 @@ interface ProductFormProps {
 
   /** Triggered when form values are changed or set back to defaults */
   onChanged?: (isDirty: boolean) => void;
+
+  /**
+   * Opens a form where users can manage measurement units.
+   * Allows creating, editing, and deleting units.
+   */
+  onManageMeasureUnits: () => void;
 }
 
 /**
@@ -70,6 +77,12 @@ export const ProductForm = ({
   } = methods;
 
   useEffect(() => onChanged?.(isDirty), [isDirty, onChanged]);
+
+  const MANAGE_MEASURE_UNITS_ID = '__manage_measure_units__';
+
+  function isManageMeasureUnits(option): boolean {
+    return option?.id === MANAGE_MEASURE_UNITS_ID;
+  }
 
   return (
     <FormProvider {...methods}>
@@ -120,6 +133,7 @@ export const ProductForm = ({
               ]}
             />
           </Grid>
+
           <Grid item>
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -140,8 +154,27 @@ export const ProductForm = ({
                         label={t(i18n)`Unit`}
                         MenuProps={{ container: root }}
                         {...field}
+                        onChange={(event) => {
+                          const value = event.target.value;
+
+                          if (isManageMeasureUnits(value)) {
+                            field.onChange(null);
+                            return;
+                          }
+
+                          field.onChange(value);
+                        }}
                       >
-                        {[...(measureUnits?.data ?? [])].map(({ id, name }) => (
+                        <MenuItem
+                          key={MANAGE_MEASURE_UNITS_ID}
+                          value=""
+                          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+                          onClick={onManageMeasureUnits}
+                        >
+                          {t(i18n)`Manage measure units `}
+                        </MenuItem>
+
+                        {measureUnits?.data?.map(({ id, name }) => (
                           <MenuItem key={id} value={id}>
                             {name}
                           </MenuItem>

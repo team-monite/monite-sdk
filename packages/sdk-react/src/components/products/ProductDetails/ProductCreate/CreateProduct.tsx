@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -12,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import {
+  Breadcrumbs,
   Button,
   DialogActions,
   DialogContent,
@@ -20,6 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
 import { IProductFormSubmitValues, ProductFormValues } from '../validation';
 
@@ -43,6 +45,8 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
+
+  const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(true);
 
   const defaultValues = useMemo(
     () => ({ ...initialValues, ...props.defaultValues }),
@@ -93,9 +97,25 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
     <>
       <Grid container alignItems="center">
         <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {t(i18n)`Create new product or service`}
-          </Typography>
+          {manageMeasureUnits ? (
+            <Breadcrumbs separator="›" aria-label="breadcrumb">
+              <Typography
+                sx={{ cursor: 'pointer', p: 3, pr: 0 }}
+                onClick={() => setManageMeasureUnits(false)}
+              >
+                {t(i18n)`Create new product or service`}
+              </Typography>
+              {manageMeasureUnits && (
+                <Typography color="text.primary">{t(
+                  i18n
+                )`Manage measure units`}</Typography>
+              )}
+            </Breadcrumbs>
+          ) : (
+            <Typography sx={{ p: 3 }}>
+              {t(i18n)`Create new product or service`}
+            </Typography>
+          )}
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
@@ -111,11 +131,16 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       </Grid>
       <Divider />
       <DialogContent>
-        <ProductForm
-          formId={productFormId}
-          onSubmit={handleSubmit}
-          defaultValues={defaultValues}
-        />
+        {manageMeasureUnits ? (
+          <ManageMeasureUnitsForm />
+        ) : (
+          <ProductForm
+            formId={productFormId}
+            onSubmit={handleSubmit}
+            defaultValues={defaultValues}
+            onManageMeasureUnits={() => setManageMeasureUnits(true)}
+          />
+        )}
       </DialogContent>
       <Divider />
       <DialogActions>
