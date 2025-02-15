@@ -70,7 +70,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
-  console.log(newCounterpartId, 'newCounterpartId');
+
   const handleCreateNewCounterpart = useCallback(() => {
     setIsCreateCounterpartOpened(true);
   }, [setIsCreateCounterpartOpened]);
@@ -93,6 +93,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     [counterparts]
   );
 
+  const newCounterpartDefaultLabel = t(i18n)`New counterpart`;
+
   useEffect(() => {
     if (newCounterpartId) {
       const currentValues = getValues(name);
@@ -111,7 +113,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
             id: newCounterpartId,
             label: existingCounterpart
               ? existingCounterpart.label
-              : 'New Counterpart',
+              : newCounterpartDefaultLabel,
           };
 
           setValue(name, [
@@ -133,6 +135,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     getValues,
     counterpartsAutocompleteData,
     multiple,
+    newCounterpartDefaultLabel,
   ]);
 
   return (

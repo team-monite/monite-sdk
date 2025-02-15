@@ -2,7 +2,7 @@ import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { Receivables } from '@/components';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
-import { CreateCounterpartDialogTestEnum } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.types';
+import { CreateCounterpartDialogTestEnum } from '@/components/counterparts/CreateCounterpartDialog/CreateCounterpartDialog.types';
 import { entityIds, entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
