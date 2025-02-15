@@ -16,6 +16,10 @@ import {
   ApprovalPoliciesOperator,
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import {
+  CounterpartAutocomplete,
+  CounterpartsAutocompleteOptionProps,
+} from '@/components/counterparts/CounterpartAutocomplete';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -45,10 +49,6 @@ import * as yup from 'yup';
 
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
-import {
-  AutocompleteCounterparts,
-  CounterpartsAutocompleteOptionProps,
-} from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 
@@ -919,10 +919,11 @@ export const ApprovalPolicyForm = ({
               {(triggerInEdit === 'counterpart_id' ||
                 (isAddingTrigger &&
                   currentTriggerType === 'counterpart_id')) && (
-                <AutocompleteCounterparts
+                <CounterpartAutocomplete
                   control={control}
                   name="triggers.counterpart_id"
                   label={t(i18n)`Counterparts`}
+                  multiple
                 />
               )}
               {(triggerInEdit === 'amount' ||

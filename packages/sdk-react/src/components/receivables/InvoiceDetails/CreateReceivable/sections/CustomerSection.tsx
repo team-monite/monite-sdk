@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
+import { CounterpartAutocomplete } from '@/components/counterparts/CounterpartAutocomplete';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
-import { CounterpartAutocompleteWithCreate } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartAutocompleteWithCreate';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -94,7 +94,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   return (
     <Stack spacing={2} className={className}>
-      <CounterpartAutocompleteWithCreate
+      <CounterpartAutocomplete
+        control={control}
         disabled={disabled}
         name="counterpart_id"
         label={t(i18n)`Customer`}

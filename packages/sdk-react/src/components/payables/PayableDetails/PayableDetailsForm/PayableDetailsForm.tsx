@@ -13,7 +13,7 @@ import {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/Counterpart.types';
-import { CounterpartAutocompleteWithCreate } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartAutocompleteWithCreate';
+import { CounterpartAutocomplete } from '@/components/counterparts/CounterpartAutocomplete';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -286,7 +286,7 @@ const PayableDetailsFormBase = forwardRef<
 
     useEffect(() => {
       methods.reset();
-    }, [payablesValidations, methods]);
+    }, [payablesValidations, methods.reset, methods]);
 
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
@@ -456,7 +456,8 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <CounterpartAutocompleteWithCreate
+                      <CounterpartAutocomplete
+                        control={control}
                         disabled={false}
                         name="counterpart"
                         label={t(i18n)`Vendor`}
