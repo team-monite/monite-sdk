@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
+import { calculateDueDate } from '@/components/counterparts/helpers';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -59,6 +60,8 @@ export const FullfillmentSummary = ({
     (term) => term.id === paymentTermsId
   );
 
+  const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
+
   const handlePaymentTermsChange = async (newId: string = '') => {
     await refetch();
     setValue('payment_terms_id', newId);
@@ -70,10 +73,11 @@ export const FullfillmentSummary = ({
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}
+        >
           <Typography
             variant="body2"
             color="textSecondary"
@@ -96,7 +100,9 @@ export const FullfillmentSummary = ({
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}
+        >
           <Typography
             variant="body2"
             color="textSecondary"
@@ -107,7 +113,8 @@ export const FullfillmentSummary = ({
           </Typography>
           <Box>
             <Typography variant="body2" color="textSecondary">
-              {t(i18n)`${selectedPaymentTerm?.name ?? 'Not selected'}`}
+              {t(i18n)`${selectedPaymentTerm?.name ? 'Not selected' : ''}`}
+              {dueDate ? i18n.date(dueDate, locale.dateTimeFormat) : ''}
             </Typography>
 
             <Typography
@@ -116,6 +123,7 @@ export const FullfillmentSummary = ({
               sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
             >
               <LockOutlined sx={{ color: 'divider', width: '16px' }} />
+
               {t(i18n)`Set by payment term`}
             </Typography>
           </Box>

@@ -1,6 +1,8 @@
 import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 
+import { addDays } from 'date-fns';
+
 export const isIndividualCounterpart = (
   counterpart: CounterpartResponse
 ): counterpart is components['schemas']['CounterpartIndividualRootResponse'] =>
@@ -88,4 +90,12 @@ export function prepareAddressView({
   if (address)
     return `${address.postal_code}, ${address.city}, ${address.line1}`;
   return '';
+}
+
+export function calculateDueDate(
+  selectedPaymentTerm: components['schemas']['PaymentTermsResponse']
+) {
+  return selectedPaymentTerm?.term_final?.number_of_days
+    ? addDays(new Date(), selectedPaymentTerm.term_final.number_of_days)
+    : null;
 }

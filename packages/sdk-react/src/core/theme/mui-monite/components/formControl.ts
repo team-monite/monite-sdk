@@ -23,6 +23,12 @@ export const getFormControlStyles = (
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],
           borderRadius: moniteTheme.borderRadius * 2,
+          '& > .MuiOutlinedInput-notchedOutline': {
+            top: 0,
+            '> legend': {
+              display: 'none',
+            },
+          },
 
           '.MuiSelect-icon': {
             color: palette.text.primary,

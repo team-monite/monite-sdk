@@ -329,6 +329,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           fontWeight: 400,
           borderRadius: moniteTheme.borderRadius * 2.67,
           minHeight: '40px',
+          border: '1px solid transparent',
           '&:before, &:after': {
             display: 'none',
             content: 'none',
@@ -477,17 +478,17 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 height: '70px',
                 lineHeight: '70px',
                 backgroundColor: 'transparent',
-                '& > .MuiOutlinedInput-notchedOutline': {
-                  top: 0,
-                  '> legend': {
-                    display: 'none',
-                  },
-                },
-                '&:hover > .MuiOutlinedInput-notchedOutline': {
-                  //borderColor: '#dedede',
-                },
                 '&.Mui-focused > .MuiOutlinedInput-notchedOutline': {
                   borderColor: 'transparent',
+                },
+              },
+              '&:hover > .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#dedede',
+              },
+              '& > .MuiOutlinedInput-notchedOutline': {
+                top: 0,
+                '> legend': {
+                  display: 'none',
                 },
               },
             },

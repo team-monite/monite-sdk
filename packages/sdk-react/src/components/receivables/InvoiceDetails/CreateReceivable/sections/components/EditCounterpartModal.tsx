@@ -147,6 +147,7 @@ export const EditCounterpartModal = ({
             <CounterpartOrganizationForm
               id={counterpartId}
               onCancel={() => setIsEditMode(false)}
+              onUpdate={onClose}
               isInvoiceCreation={true}
               showCategories={false} //when to show or hide categories?
             />
@@ -154,6 +155,7 @@ export const EditCounterpartModal = ({
             <CounterpartIndividualForm
               id={counterpartId}
               onCancel={() => setIsEditMode(false)}
+              onUpdate={onClose}
               isInvoiceCreation={true}
               showCategories={false} //when to show or hide categories?
             />

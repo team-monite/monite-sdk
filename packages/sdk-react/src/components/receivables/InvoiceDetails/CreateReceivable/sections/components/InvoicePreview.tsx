@@ -1,5 +1,6 @@
 import { components } from '@/api';
 import {
+  calculateDueDate,
   getCounterpartName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
@@ -56,11 +57,15 @@ export const InvoicePreview = ({
   const fulfillmentDate = watch('fulfillment_date');
   const items = watch('line_items');
   const memo = watch('memo');
-  // const discount = data?.discount?.amount;
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
+
+  const dateTime = i18n.date(new Date(), locale.dateFormat);
+
+  const paymentTermsId = watch('payment_terms_id');
   const selectedPaymentTerm = paymentTerms?.data?.find(
-    (term: any) => term.id === watch('payment_terms_id')
+    (term) => term.id === paymentTermsId
   );
+  const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
   // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
   const sanitizedItems = items.map((item) => ({
@@ -74,7 +79,6 @@ export const InvoicePreview = ({
       formatCurrencyToDisplay,
       isNonVatSupported,
     });
-  const dateTime = i18n.date(new Date(), locale.dateFormat);
 
   return (
     <div className="invoice-preview">
@@ -142,15 +146,18 @@ export const InvoicePreview = ({
               <li>
                 <span>{t(i18n)`Due date`}: </span>{' '}
                 <span>
-                  {fulfillmentDate ? (
-                    i18n.date(fulfillmentDate, locale.dateFormat)
-                  ) : (
-                    <span className="not-set">{t(i18n)`Not set`}</span>
-                  )}
+                  {dueDate ? i18n.date(dueDate, locale.dateFormat) : ''}
                 </span>
               </li>
+
+              {fulfillmentDate && (
+                <li>
+                  <span>{t(i18n)`Fulfillment date`}: </span>{' '}
+                  <span>{i18n.date(fulfillmentDate, locale.dateFormat)}</span>
+                </li>
+              )}
             </ul>
-            <ul>
+            <ul className="payment-terms">
               <li>
                 <span>
                   <b>{t(i18n)`Payment terms`}</b>
@@ -330,12 +337,10 @@ export const InvoicePreview = ({
             <aside>
               <div>
                 <div>
-                  <span>
-                    <b>{t(i18n)`Payment Details`}:</b>
-                  </span>
+                  <span>{t(i18n)`Payment Details`}:</span>
                 </div>
                 <div>
-                  <span>
+                  <span className="not-set">
                     {t(i18n)`Set up bank account to add payment info
                   and set a QR code`}{' '}
                   </span>

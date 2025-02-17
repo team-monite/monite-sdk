@@ -4,10 +4,11 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  min-height: 720px;
-  margin: 50px;
+  min-height: 620px;
+  height: 95vh;
+  margin: 50px 10%;
   padding: 1.5em 5em;
-  width: 560px;
+  width: 80%;
   --table-cell-padding-x: 10.1pt;
   --table-cell-padding-y: 12.2pt;
   --totals-table-cell-padding-y: 5.6pt;
@@ -235,7 +236,7 @@ th.line-items-table__fixed-item {
 
 .invoice-preview .footer-aside__start {
   flex-flow: column;
-  width: 350px;
+  width: 250px;
 }
 
 .invoice-preview .footer-aside__end {
@@ -252,7 +253,6 @@ th.line-items-table__fixed-item {
 
 .invoice-preview .footer-aside__end > aside:first-child {
   flex-grow: 1;
-  text-align: right;
 }
 
 .invoice-preview footer .qr-code-data {
@@ -281,6 +281,7 @@ th.line-items-table__fixed-item {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  padding-top: 15px;
 }
 
 .invoice-preview .header--flex-end-aside {
@@ -347,6 +348,10 @@ th.line-items-table__fixed-item {
 
 .invoice-preview .block-receivable-date li span:first-child {
   margin-right: auto;
+}
+
+.invoice-preview .block-receivable-date .payment-terms li {
+  display: block;
 }
 
 .invoice-preview .payment-description {
