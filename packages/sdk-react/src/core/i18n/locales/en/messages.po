@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -6092,7 +6098,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:109
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:163
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:461
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
