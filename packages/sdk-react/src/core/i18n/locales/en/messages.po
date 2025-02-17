@@ -1,17 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-02-12 15:23+0100\n"
+"POT-Creation-Date: 2025-02-17 17:03+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -1259,7 +1253,7 @@ msgstr "Canadian Dollar"
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:220
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:172
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:154
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:152
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:455
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:80
@@ -1453,12 +1447,8 @@ msgstr "Chiropodists, Podiatrists"
 msgid "Chiropractors"
 msgstr "Chiropractors"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:422
-#~ msgid "Choose a preset to send the reminders before and/or after the due date of this invoice"
-#~ msgstr "Choose a preset to send the reminders before and/or after the due date of this invoice"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:141
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:110
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:108
 msgid "Choose counterpart type:"
 msgstr "Choose counterpart type:"
 
@@ -1512,11 +1502,6 @@ msgstr "Close"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:74
 msgid "Close approval policy details"
 msgstr "Close approval policy details"
-
-#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:26
-#: src/components/documentDesign/components/DocumentDesignSelectionHeader/DocumentDesignSelectionHeader.tsx:27
-#~ msgid "Close document design selection"
-#~ msgstr "Close document design selection"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:180
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
@@ -1820,7 +1805,7 @@ msgstr "Counterpart bank account"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:203
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:210
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:188
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:103
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:101
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
@@ -1941,10 +1926,6 @@ msgstr "Create an item with this currency to add it"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:642
 msgid "Create Approval Policy"
 msgstr "Create Approval Policy"
-
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:144
-#~ msgid "Create bill manually"
-#~ msgstr "Create bill manually"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:136
 msgid "Create counterpart"
@@ -2692,10 +2673,6 @@ msgstr "Edit bill"
 msgid "Edit Condition"
 msgstr "Edit Condition"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/BillingModal.tsx:78
-#~ msgid "Edit counterpart's profile"
-#~ msgstr "Edit counterpart's profile"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:137
 msgid "Edit customer"
 msgstr "Edit customer"
@@ -2707,10 +2684,6 @@ msgstr "Edit Customer Close"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:136
 msgid "Edit customer's profile"
 msgstr "Edit customer's profile"
-
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/BillingModal.tsx:44
-#~ msgid "Edit details"
-#~ msgstr "Edit details"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:90
 msgid "Edit documents for person"
@@ -3680,7 +3653,7 @@ msgid "Individual"
 msgstr "Individual"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:152
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:121
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:119
 msgid "Individual person"
 msgstr "Individual person"
 
@@ -3929,12 +3902,12 @@ msgid "Issued on"
 msgstr "Issued on"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:161
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:131
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:129
 msgid "It is a non-human legal entity, i.e. an organisation recognised by law as a legal person."
 msgstr "It is a non-human legal entity, i.e. an organisation recognised by law as a legal person."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:153
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:122
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:120
 msgid "It is an entity having legal status as an individual."
 msgstr "It is an entity having legal status as an individual."
 
@@ -4817,14 +4790,6 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:436
-#~ msgid "No Payables"
-#~ msgstr "No Payables"
-
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:42
-#~ msgid "No payment link found for this payable. Please, create a payment link first."
-#~ msgstr "No payment link found for this payable. Please, create a payment link first."
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:230
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
@@ -4926,10 +4891,6 @@ msgstr "Norwegian Krone"
 msgid "NOT allowed"
 msgstr "NOT allowed"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:71
-#~ msgid "Not selected"
-#~ msgstr "Not selected"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:106
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:151
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:170
@@ -5014,7 +4975,7 @@ msgstr "Or add bill manually"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:439
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:448
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:160
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:130
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:128
 msgid "Organization"
 msgstr "Organization"
 
@@ -5921,10 +5882,6 @@ msgstr "Reminder has been updated"
 msgid "Reminder not found"
 msgstr "Reminder not found"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:423
-#~ msgid "Reminders"
-#~ msgstr "Reminders"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:194
 msgid "Reminders are disabled for this Counterpart."
 msgstr "Reminders are disabled for this Counterpart."
@@ -6128,7 +6085,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:165
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:163
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:461
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
@@ -6205,10 +6162,6 @@ msgstr "Security number"
 msgid "See all"
 msgstr "See all"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:400
-#~ msgid "Select counterpart"
-#~ msgstr "Select counterpart"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:200
 msgid "Select customer"
 msgstr "Select customer"
@@ -6224,10 +6177,6 @@ msgstr "Select invoices you would like to finance and send them for review."
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:122
 msgid "Select someone"
 msgstr "Select someone"
-
-#: src/components/documentDesign/DocumentDesign.tsx:51
-#~ msgid "Select template"
-#~ msgstr "Select template"
 
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:210
 msgctxt "InvoicesTableRowActionMenu"
@@ -6296,10 +6245,6 @@ msgstr "Set as default"
 msgid "Set by payment term"
 msgstr "Set by payment term"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:75
-#~ msgid "Set by payment terms"
-#~ msgstr "Set by payment terms"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:99
 msgid "Set on issuance"
 msgstr "Set on issuance"
@@ -6320,10 +6265,6 @@ msgid ""
 msgstr ""
 "Set up bank account to add payment info\n"
 "and set a QR code"
-
-#: src/components/documentDesign/DocumentDesign.tsx:41
-#~ msgid "Set your document style"
-#~ msgstr "Set your document style"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:59
 msgid "Set your entity's {0} to issue invoice"
@@ -6691,13 +6632,6 @@ msgstr "Tanzanian Shilling"
 msgid "Tax"
 msgstr "Tax"
 
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:261
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:57
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:65
-#~ msgid "TAX"
-#~ msgstr "TAX"
-
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:400
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:402
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:60
@@ -6754,11 +6688,6 @@ msgstr "Tax Preparation Services"
 #: src/core/utils/useVatTypes.ts:27
 msgid "Tax Registration Number (UAE)"
 msgstr "Tax Registration Number (UAE)"
-
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:690
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:480
-#~ msgid "Taxes"
-#~ msgstr "Taxes"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:454
 msgid "Taxes total"
@@ -7517,10 +7446,6 @@ msgstr "Vanuatu Vatu"
 msgid "Variety Stores"
 msgstr "Variety Stores"
 
-#: src/components/documentDesign/DocumentDesign.tsx:44
-#~ msgid "Various templates for your documents"
-#~ msgstr "Various templates for your documents"
-
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:268
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:53
@@ -7774,10 +7699,6 @@ msgstr "Yemeni Rial"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:296
 msgid "Yes"
 msgstr "Yes"
-
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle.tsx:34
-#~ msgid "You can change this setting if you wish to forbid sending any payment reminders to this counterpart."
-#~ msgstr "You can change this setting if you wish to forbid sending any payment reminders to this counterpart."
 
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:89
 msgid "You can continue to the next step"

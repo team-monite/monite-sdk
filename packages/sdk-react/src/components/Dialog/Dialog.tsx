@@ -68,7 +68,6 @@ export const DialogBase = (props: MoniteDialogProps) => {
       <MuiDialog
         {...otherProps}
         open={props.open}
-        sx={{ overflow: 'hidden' }}
         container={root}
         TransitionComponent={Transition}
         TransitionProps={{
