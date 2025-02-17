@@ -94,9 +94,7 @@ export const CreateCounterpartModal = ({
           <>
             <Grid container alignItems="center" p={4}>
               <Grid item xs={11} mb={4}>
-                <Typography variant="h3" sx={{ fontWeight: 500 }}>{t(
-                  i18n
-                )`Create customer`}</Typography>
+                <Typography variant="h3">{t(i18n)`Create customer`}</Typography>
               </Grid>
               <Grid item xs={1} mb={4}>
                 <IconWrapper
