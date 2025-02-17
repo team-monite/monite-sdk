@@ -122,7 +122,7 @@ export const PayableDetailsHeader = ({
       color: 'error',
       onClick: () => {
         deleteInvoice();
-        onClose && onClose();
+        onClose?.();
       },
       children: t(i18n)`Delete bill`,
     },
