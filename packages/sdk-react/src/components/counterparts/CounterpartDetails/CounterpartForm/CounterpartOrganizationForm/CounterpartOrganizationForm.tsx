@@ -196,7 +196,7 @@ export const CounterpartOrganizationForm = (
           data-testid={CounterpartDataTestId.OrganizationForm}
         >
           <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
+            <Typography variant="h3" sx={{ padding: 3 }}>
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
                 : isUpdateMode
