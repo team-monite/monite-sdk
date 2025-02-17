@@ -146,7 +146,9 @@ export const InvoicePreview = ({
               <li>
                 <span>{t(i18n)`Due date`}: </span>{' '}
                 <span>
-                  {dueDate ? i18n.date(dueDate, locale.dateFormat) : ''}
+                  {dueDate
+                    ? i18n.date(dueDate, locale.dateFormat)
+                    : t(i18n)`Not set`}
                 </span>
               </li>
 

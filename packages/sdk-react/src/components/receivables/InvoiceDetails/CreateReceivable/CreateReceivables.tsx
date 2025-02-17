@@ -240,8 +240,8 @@ const CreateReceivablesBase = ({
   return (
     <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
       <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
-        <DialogTitle className={className + '-Title'}>
-          <Toolbar sx={{ padding: 0 }}>
+        <DialogTitle className={className + '-Title Invoice-Preview'}>
+          <Toolbar>
             {dialogContext?.isDialogContent && (
               <IconWrapper
                 edge="start"

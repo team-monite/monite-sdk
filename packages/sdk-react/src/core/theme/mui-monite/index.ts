@@ -1044,6 +1044,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '& + .MuiDivider-root': {
             display: 'none',
           },
+          '&.Monite-CreateReceivable-Title': {
+            padding: '0',
+          },
         },
       },
     },
