@@ -113,7 +113,7 @@ export const FullfillmentSummary = ({
           </Typography>
           <Box>
             <Typography variant="body2" color="textSecondary">
-              {t(i18n)`${selectedPaymentTerm?.name ? 'Not selected' : ''}`}
+              {t(i18n)`${selectedPaymentTerm?.name ? '' : 'Not selected'}`}
               {dueDate ? i18n.date(dueDate, locale.dateTimeFormat) : ''}
             </Typography>
 
