@@ -106,6 +106,11 @@ export const EditCounterpartModal = ({
     counterpartVats,
   });
 
+  const handleUpdate = () => {
+    onClose();
+    setIsEditMode(false);
+  };
+
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
@@ -147,7 +152,7 @@ export const EditCounterpartModal = ({
             <CounterpartOrganizationForm
               id={counterpartId}
               onCancel={() => setIsEditMode(false)}
-              onUpdate={onClose}
+              onUpdate={handleUpdate}
               isInvoiceCreation={true}
               showCategories={false} //when to show or hide categories?
             />
@@ -155,7 +160,7 @@ export const EditCounterpartModal = ({
             <CounterpartIndividualForm
               id={counterpartId}
               onCancel={() => setIsEditMode(false)}
-              onUpdate={onClose}
+              onUpdate={handleUpdate}
               isInvoiceCreation={true}
               showCategories={false} //when to show or hide categories?
             />
