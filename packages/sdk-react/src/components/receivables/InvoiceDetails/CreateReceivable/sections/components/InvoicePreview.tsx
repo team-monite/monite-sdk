@@ -11,6 +11,8 @@ import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
+import { isValid } from 'date-fns';
+
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import { CreateReceivablesFormProps } from '../../validation';
 import './InvoicePreview.css';
@@ -145,14 +147,14 @@ export const InvoicePreview = ({
               </li>
               <li>
                 <span>{t(i18n)`Due date`}: </span>{' '}
-                <span>
-                  {dueDate
-                    ? i18n.date(dueDate, locale.dateFormat)
-                    : t(i18n)`Not set`}
-                </span>
+                {dueDate ? (
+                  <span>{i18n.date(dueDate, locale.dateFormat)}</span>
+                ) : (
+                  <span className="not-set">{t(i18n)`Not set`}</span>
+                )}
               </li>
 
-              {fulfillmentDate && (
+              {fulfillmentDate && isValid(fulfillmentDate) && (
                 <li>
                   <span>{t(i18n)`Fulfillment date`}: </span>{' '}
                   <span>{i18n.date(fulfillmentDate, locale.dateFormat)}</span>
@@ -253,8 +255,9 @@ export const InvoicePreview = ({
                       )}
                     </td>
                     <td>
-                      {(item?.tax_rate_value ?? item?.vat_rate_value ?? 0) /
-                        100}
+                      {((item.price.currency === 'EUR'
+                        ? item.vat_rate_value
+                        : item.tax_rate_value) || 0) / 100}
                       %
                     </td>
                   </tr>

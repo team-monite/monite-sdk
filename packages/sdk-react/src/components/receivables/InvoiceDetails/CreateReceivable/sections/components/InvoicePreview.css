@@ -269,7 +269,7 @@ th.line-items-table__fixed-item {
 
 .invoice-preview .header {
   display: grid;
-  grid-auto-columns: 1fr minmax(min-content, 50mm);
+  grid-auto-columns: 1fr minmax(min-content, 50%);
   grid-auto-rows: min-content;
   gap: 5mm 10mm;
   grid-template-areas:
@@ -339,7 +339,7 @@ th.line-items-table__fixed-item {
 .invoice-preview .block-receivable-date li {
   display: flex;
   font-size: 10px;
-  width: 130px;
+  min-width: 160px;
 }
 
 .invoice-preview .block-memo {
