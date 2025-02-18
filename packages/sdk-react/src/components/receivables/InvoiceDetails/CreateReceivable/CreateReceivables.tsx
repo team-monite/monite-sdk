@@ -274,7 +274,7 @@ const CreateReceivablesBase = ({
             <Stack direction="column" spacing={7}>
               <Box>
                 <Typography
-                  sx={{ mt: 2, mb: 5 }}
+                  sx={{ mt: 8, mb: 5 }}
                   data-testid={
                     ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
                   }

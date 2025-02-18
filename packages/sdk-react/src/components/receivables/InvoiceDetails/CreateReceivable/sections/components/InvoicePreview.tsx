@@ -105,7 +105,7 @@ export const InvoicePreview = ({
             </div>
             <div>
               {!counterpartName && (
-                <p className="not-set">{t(i18n)`Not set`}</p>
+                <span className="not-set">{t(i18n)`Not set`}</span>
               )}
             </div>
             <div>{counterpartName}</div>
