@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { Dialog } from '@/components';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   Typography,
   DialogTitle,
@@ -32,6 +33,7 @@ export const PaymentTermsDialog = ({
   selectedTerm,
 }: PaymentTermsDialogProps) => {
   const formName = `Monite-Form-paymentTerms-${useId()}`;
+  const { i18n } = useLingui();
 
   const submitButtonText = selectedTerm ? t(i18n)`Save` : t(i18n)`Create`;
   const titleText = selectedTerm
