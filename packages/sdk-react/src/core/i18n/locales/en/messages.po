@@ -683,7 +683,7 @@ msgstr "approvals required"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:438
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:112
 #: src/components/userRoles/consts.ts:74
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:223
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:214
 msgid "Approve"
 msgstr "Approve"
 
@@ -1259,7 +1259,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:38
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:80
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:81
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:459
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:176
@@ -1274,8 +1274,8 @@ msgstr "Canadian Dollar"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:102
 #: src/components/tags/TagFormModal/TagFormModal.tsx:208
 #: src/components/userRoles/consts.ts:77
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:231
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:455
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:222
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:436
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1531,7 +1531,7 @@ msgstr "Close recurrence details"
 msgid "Close reminder's creation"
 msgstr "Close reminder's creation"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:371
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:362
 msgid "Close role details"
 msgstr "Close role details"
 
@@ -1892,7 +1892,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:403
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:137
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:37
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:21
@@ -1901,8 +1901,8 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.tsx:218
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:71
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:207
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:467
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:198
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:448
 msgid "Create"
 msgstr "Create"
 
@@ -1949,7 +1949,7 @@ msgid "Create Credit Note"
 msgstr "Create Credit Note"
 
 #: src/components/userRoles/consts.ts:76
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:239
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:230
 msgid "Create from mail"
 msgstr "Create from mail"
 
@@ -2003,7 +2003,7 @@ msgstr "Create new tag"
 msgid "Create New Tag"
 msgstr "Create New Tag"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:39
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:40
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:87
 msgid "Create payment term"
 msgstr "Create payment term"
@@ -2017,7 +2017,7 @@ msgstr "Create product or service"
 msgid "Create Quote"
 msgstr "Create Quote"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:364
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:355
 msgid "Create User Role"
 msgstr "Create User Role"
 
@@ -2245,7 +2245,7 @@ msgstr "Defaulted"
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:270
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:73
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:77
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:78
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:75
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:274
@@ -2260,7 +2260,7 @@ msgstr "Defaulted"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:442
 #: src/components/tags/TagsTable/TagsTable.tsx:184
 #: src/components/userRoles/consts.ts:72
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:215
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:206
 msgid "Delete"
 msgstr "Delete"
 
@@ -2633,7 +2633,7 @@ msgstr "Ecuador"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:438
 #: src/components/tags/TagsTable/TagsTable.tsx:175
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:36
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:449
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:430
 msgid "Edit"
 msgstr "Edit"
 
@@ -2672,7 +2672,7 @@ msgstr "Edit individual"
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:39
 msgid "Edit payment term"
 msgstr "Edit payment term"
 
@@ -2705,7 +2705,7 @@ msgstr "Edit tag ”{0}”"
 msgid "Edit term"
 msgstr "Edit term"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:363
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:354
 msgid "Edit User Role"
 msgstr "Edit User Role"
 
@@ -3319,7 +3319,6 @@ msgstr "Glassware, Crystal Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:245
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:110
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:155
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:409
 msgid "Go to Docs"
 msgstr "Go to Docs"
 
@@ -4549,7 +4548,7 @@ msgstr "N/A"
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:29
 #: src/components/tags/TagFormModal/TagFormModal.tsx:195
 #: src/components/tags/TagsTable/TagsTable.tsx:136
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:394
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:385
 #: src/components/userRoles/UserRoleDetails/validation.ts:10
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:151
 msgid "Name"
@@ -5058,7 +5057,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:133
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:69
 #: src/components/userRoles/consts.ts:75
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:227
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:218
 msgid "Pay"
 msgstr "Pay"
 
@@ -5221,7 +5220,7 @@ msgstr "Period ends on"
 msgid "Period starts on"
 msgstr "Period starts on"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:402
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:393
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:157
 msgid "Permissions"
 msgstr "Permissions"
@@ -5638,7 +5637,7 @@ msgid "Railroads"
 msgstr "Railroads"
 
 #: src/components/userRoles/consts.ts:69
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:203
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:194
 msgid "Read"
 msgstr "Read"
 
@@ -5671,7 +5670,7 @@ msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:159
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:180
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:187
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
@@ -5843,7 +5842,7 @@ msgstr "Removing an executive role from this person is not allowed"
 
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:107
 #: src/components/userRoles/consts.ts:78
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:235
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:226
 msgid "Reopen"
 msgstr "Reopen"
 
@@ -5882,7 +5881,7 @@ msgstr "Requested on"
 msgid "Required"
 msgstr "Required"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:199
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:190
 msgid "Resource name"
 msgstr "Resource name"
 
@@ -5896,11 +5895,11 @@ msgstr "Reunion"
 msgid "Role"
 msgstr "Role"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:248
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:239
 msgid "Role {0} was created"
 msgstr "Role {0} was created"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:265
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:256
 msgid "Role {0} was updated"
 msgstr "Role {0} was updated"
 
@@ -6026,7 +6025,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:36
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:37
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:150
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:155
@@ -6428,7 +6427,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:396
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:95
 #: src/components/userRoles/consts.ts:73
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:219
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:210
 msgid "Submit"
 msgstr "Submit"
 
@@ -7153,8 +7152,8 @@ msgstr "Unsupported file type"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:148
 #: src/components/userRoles/consts.ts:71
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:47
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:211
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:467
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:202
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:448
 msgid "Update"
 msgstr "Update"
 
