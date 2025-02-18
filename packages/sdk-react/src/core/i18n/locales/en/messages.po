@@ -2095,7 +2095,7 @@ msgstr "Cuba"
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:58
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:137
-#: src/components/products/ProductDetails/validation.ts:46
+#: src/components/products/ProductDetails/validation.ts:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
 #: src/ui/Currency/MoniteCurrency.tsx:51
@@ -2355,7 +2355,7 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
-#: src/components/products/ProductDetails/validation.ts:48
+#: src/components/products/ProductDetails/validation.ts:53
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:165
 msgid "Description"
 msgstr "Description"
@@ -4394,9 +4394,13 @@ msgstr "Minimum number of approvals required"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:160
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
-#: src/components/products/ProductDetails/validation.ts:36
+#: src/components/products/ProductDetails/validation.ts:37
 msgid "Minimum quantity"
 msgstr "Minimum quantity"
+
+#: src/components/products/ProductDetails/validation.ts:36
+msgid "Minimum quantity must be 0 or greater"
+msgstr "Minimum quantity must be 0 or greater"
 
 #: src/components/onboarding/dicts/mccCodes.ts:884
 msgid "Miscellaneous Apparel and Accessory Shops"
@@ -5315,6 +5319,11 @@ msgstr "Please add any individual who owns 25% or more of your business."
 msgid "Please correct the errors in persons information."
 msgstr "Please correct the errors in persons information."
 
+#: src/components/products/ProductDetails/validation.ts:35
+#: src/components/products/ProductDetails/validation.ts:41
+msgid "Please enter a number"
+msgstr "Please enter a number"
+
 #: src/components/onboarding/validators/validators.ts:139
 msgid "Please enter a phone number."
 msgstr "Please enter a phone number."
@@ -5475,7 +5484,7 @@ msgstr "Price"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:174
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:189
-#: src/components/products/ProductDetails/validation.ts:41
+#: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:212
 msgid "Price per unit"
 msgstr "Price per unit"
