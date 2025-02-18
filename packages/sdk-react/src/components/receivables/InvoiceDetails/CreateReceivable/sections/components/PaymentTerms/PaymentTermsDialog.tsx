@@ -2,7 +2,6 @@ import { useId, useState } from 'react';
 
 import { components } from '@/api';
 import { Dialog } from '@/components';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
