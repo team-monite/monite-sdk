@@ -1046,7 +1046,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
           '&.Monite-CreateReceivable-Title': {
             position: 'fixed',
-            width: 'calc(50% - 20px)',
+            width: `calc(50% - ${20}px)`,
             background: 'white',
             zIndex: 9,
             padding: '20px 20px 20px 0',
