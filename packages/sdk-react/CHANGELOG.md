@@ -1,5 +1,19 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.8
+
+### Minor Changes
+
+- d9aa339: Updated copies on Products & Services page.
+- 94f9497: Adds option to delete canceled payables
+- fdb71ad: Added DocumentDesign component
+
+### Patch Changes
+
+- a8b6f84: Re-create translation files
+- 18df891: Improve error messages in Products&Services component
+- 4140560: Removed Go to docs from user-roles modal
+
 ## 4.0.0-alpha.7
 
 ### Minor Changes

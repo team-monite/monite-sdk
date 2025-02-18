@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.8
+
+### Patch Changes
+
+- a8b6f84: Re-create translation files
+- 18df891: Improve error messages in Products&Services component
+
 ## 2.0.0-alpha.7
 
 ### Major Changes
