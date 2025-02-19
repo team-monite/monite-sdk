@@ -282,7 +282,7 @@ export const InvoicePreview = ({
                 </tr>
                 <tr>
                   <td colSpan={4}>
-                    <span>{t(i18n)`Total Tax`} (0%)</span>
+                    <span>{t(i18n)`Total Tax`} (%)</span>
                   </td>
                   <td>
                     {totalTaxes?.toString()} {currency}
