@@ -54,7 +54,8 @@ jobs:
     
   build-sdk-demo:
     name: Build and Push sdk-demo
-    if: ${{ github.event.label.name == 'pullpreview' }}
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -83,7 +84,8 @@ jobs:
 
   build-sdk-drop-in:
     name: Build and Push sdk-drop-in
-    if: ${{ github.event.label.name == 'pullpreview' }}
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -112,11 +114,12 @@ jobs:
 
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
-    if: ${{ github.event.label.name == 'pullpreview' }}
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo
       - build-sdk-drop-in
+      - check-label
 
     steps:
       - name: Trigger GitLab Pipeline Deploy to Review
