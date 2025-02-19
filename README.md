@@ -1,6 +1,6 @@
 # Monite SDK
 Use Monite SDK to embed invoicing and payables powered by [Monite](https://monite.com/) into your products
-The SDK provides React UI components for displaying and managing data served via the Monite API, as well as a standalone JavaScript API client for those whose prefer to build a UI from scratch.
+The SDK provides React UI components for displaying and managing data served via the Monite API, as well as a standalone JavaScript API client for those whose prefer to build a UI from scratch
 
 ## Packages
 This repository is a monorepo that contains several npm packages. The packages can be installed individually, so you can use only what you need. For the usage examples, see the READMEs of the individual packages (linked below):
