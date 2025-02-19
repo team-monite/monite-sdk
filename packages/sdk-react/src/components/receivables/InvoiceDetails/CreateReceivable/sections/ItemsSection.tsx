@@ -58,12 +58,14 @@ const VatRateController = ({
   highestVatRate,
 }: VatRateControllerProps) => {
   const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
+  const { root } = useRootElements();
+
   useEffect(() => {
     if (highestVatRate) {
       setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
     }
-  }, [highestVatRate, index]);
+  }, [highestVatRate, index, setValue]);
 
   return (
     <Controller
@@ -80,6 +82,7 @@ const VatRateController = ({
             {...field}
             id={field.name}
             labelId={field.name}
+            MenuProps={{ container: root }}
             size="small"
             onChange={(e) => {
               const vatRate = vatRates?.data.find(
@@ -234,8 +237,6 @@ export const ItemsSection = ({
     },
     [onCurrencyChanged]
   );
-
-  const { root } = useRootElements();
 
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);

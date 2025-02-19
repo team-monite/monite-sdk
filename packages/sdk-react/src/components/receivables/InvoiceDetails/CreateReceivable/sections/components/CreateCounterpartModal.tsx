@@ -9,7 +9,6 @@ import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
-  Button,
   Grid,
   Modal,
   Typography,
@@ -26,20 +25,6 @@ interface CreateCounterpartModalProps {
   onCreate: (newCounterpartId: string) => void;
 }
 
-enum View {
-  /**
-   * Mode, when the user has to select
-   *  which counterpart type they want to create
-   */
-  ChooseMode = 'choose-mode',
-
-  /**
-   * Mode, when the user has to fill
-   *  in the details of the counterpart
-   */
-  CounterpartCreationMode = 'counterpart-creation-mode',
-}
-
 export const CreateCounterpartModal = ({
   open,
   onClose,
@@ -49,13 +34,11 @@ export const CreateCounterpartModal = ({
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
   const { root } = useRootElements();
-  const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
   const [counterpartType, setCounterpartType] = useState<
     components['schemas']['CounterpartType'] | undefined
   >(undefined);
   const handleClose = useCallback(() => {
     setCounterpartType(undefined);
-    setViewMode(View.ChooseMode);
     onClose();
   }, [onClose]);
 
