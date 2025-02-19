@@ -8,7 +8,7 @@ on:
 jobs:
   trigger-gitlab-review-destroy:
     name: Trigger GitLab Review Stop
-    if: ${{ github.event.label.name == 'review' }}  
+    if: ${{ github.event.label.name == 'pullpreview' }}  
     runs-on: ubuntu-latest
 
     steps:
