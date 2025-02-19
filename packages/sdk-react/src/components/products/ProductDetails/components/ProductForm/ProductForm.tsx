@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Button,
   FormControl,
   FormHelperText,
   Grid,
@@ -58,6 +57,7 @@ export const ProductForm = ({
   formId,
   onChanged,
   onSubmit,
+  onManageMeasureUnits,
 }: ProductFormProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();

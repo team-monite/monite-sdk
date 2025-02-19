@@ -46,7 +46,7 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
 
-  const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(true);
+  const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(false);
 
   const defaultValues = useMemo(
     () => ({ ...initialValues, ...props.defaultValues }),
@@ -144,23 +144,34 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        {dialogContext && (
+        {manageMeasureUnits ? (
           <Button
-            variant="text"
-            color="primary"
-            onClick={dialogContext.onClose}
+            variant="contained"
+            onClick={() => setManageMeasureUnits(false)}
           >
-            {t(i18n)`Cancel`}
+            {t(i18n)`Done`}
           </Button>
+        ) : (
+          <>
+            {dialogContext && (
+              <Button
+                variant="text"
+                color="primary"
+                onClick={dialogContext.onClose}
+              >
+                {t(i18n)`Cancel`}
+              </Button>
+            )}
+            <Button
+              variant="contained"
+              type="submit"
+              form={productFormId}
+              disabled={isPending}
+            >
+              {t(i18n)`Create`}
+            </Button>
+          </>
         )}
-        <Button
-          variant="contained"
-          type="submit"
-          form={productFormId}
-          disabled={isPending}
-        >
-          {t(i18n)`Create`}
-        </Button>
       </DialogActions>
     </>
   );
