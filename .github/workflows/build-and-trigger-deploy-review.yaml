@@ -7,9 +7,29 @@ on:
       - synchronize
 
 jobs:
+  check-label:
+    name: Check if 'pullpreview' label exists
+    runs-on: ubuntu-latest
+    outputs:
+      has_label: ${{ steps.check.outputs.has_label }}
+    steps:
+      - name: Get PR Labels
+        id: check
+        run: |
+          labels=$(jq -r '.pull_request.labels | map(.name) | join(",")' "$GITHUB_EVENT_PATH")
+          echo "Labels on PR: $labels"
+          if [[ "$labels" == *"pullpreview"* ]]; then
+            echo "has_label=true" >> $GITHUB_ENV
+            echo "::set-output name=has_label::true"
+          else
+            echo "has_label=false" >> $GITHUB_ENV
+            echo "::set-output name=has_label::false"
+          fi
+
   build-sdk-react:
     name: Build and Push sdk-react
-    if: ${{ github.event.label.name == 'pullpreview' }}
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
