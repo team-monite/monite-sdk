@@ -114,7 +114,6 @@ jobs:
 
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
-    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo
