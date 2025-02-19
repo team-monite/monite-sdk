@@ -5,6 +5,7 @@ on:
     types:
       - labeled
       - synchronize
+      - reopened
 
 jobs:
   check-label:
