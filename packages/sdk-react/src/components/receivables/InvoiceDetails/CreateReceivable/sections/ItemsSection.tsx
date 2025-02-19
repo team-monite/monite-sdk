@@ -59,7 +59,6 @@ const VatRateController = ({
 }: VatRateControllerProps) => {
   const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
   useEffect(() => {
-    console.log(highestVatRate, index);
     if (highestVatRate) {
       setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
