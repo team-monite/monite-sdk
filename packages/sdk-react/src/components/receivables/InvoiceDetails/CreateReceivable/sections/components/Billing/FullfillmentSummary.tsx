@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
+import { calculateDueDate } from '@/components/counterparts/helpers';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -10,22 +12,41 @@ import { LockOutlined } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import { PaymentSection } from '../../PaymentSection';
 import { SectionGeneralProps } from '../../Section.types';
 
-export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
+interface FullfillmentSummaryProps extends SectionGeneralProps {
+  paymentTerms:
+    | {
+        data?: components['schemas']['PaymentTermsResponse'][];
+      }
+    | undefined;
+  isPaymentTermsLoading: boolean;
+  refetch: (options?: RefetchOptions) => Promise<
+    QueryObserverResult<
+      {
+        data?: components['schemas']['PaymentTermsResponse'][];
+      },
+      | Error
+      | { error: components['schemas']['ErrorSchema'] }
+      | { detail?: { loc: (string | number)[]; msg: string; type: string }[] }
+    >
+  >;
+}
+
+export const FullfillmentSummary = ({
+  disabled,
+  paymentTerms,
+  isPaymentTermsLoading,
+  refetch,
+}: FullfillmentSummaryProps) => {
   const { i18n } = useLingui();
   const { control, resetField, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
-  const { api, locale } = useMoniteContext();
-
-  const {
-    data: paymentTerms,
-    isLoading: isPaymentTermsLoading,
-    refetch,
-  } = api.paymentTerms.getPaymentTerms.useQuery();
+  const { locale } = useMoniteContext();
 
   const { root } = useRootElements();
 
@@ -39,6 +60,8 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
     (term) => term.id === paymentTermsId
   );
 
+  const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
+
   const handlePaymentTermsChange = async (newId: string = '') => {
     await refetch();
     setValue('payment_terms_id', newId);
@@ -50,10 +73,11 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}
+        >
           <Typography
             variant="body2"
             color="textSecondary"
@@ -76,7 +100,9 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}
+        >
           <Typography
             variant="body2"
             color="textSecondary"
@@ -87,7 +113,8 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
           </Typography>
           <Box>
             <Typography variant="body2" color="textSecondary">
-              {t(i18n)`${selectedPaymentTerm?.name ?? 'Not selected'}`}
+              {t(i18n)`${selectedPaymentTerm?.name ? '' : 'Not selected'}`}
+              {dueDate ? i18n.date(dueDate, locale.dateTimeFormat) : ''}
             </Typography>
 
             <Typography
@@ -96,6 +123,7 @@ export const FullfillmentSummary = ({ disabled }: SectionGeneralProps) => {
               sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
             >
               <LockOutlined sx={{ color: 'divider', width: '16px' }} />
+
               {t(i18n)`Set by payment term`}
             </Typography>
           </Box>

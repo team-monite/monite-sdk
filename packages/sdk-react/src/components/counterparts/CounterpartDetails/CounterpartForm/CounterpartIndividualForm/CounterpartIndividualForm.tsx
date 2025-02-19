@@ -3,7 +3,13 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
+import {
+  useCounterpartForm,
+  CounterpartsFormProps,
+} from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+import { getIndividualName } from '@/components/counterparts/helpers';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
@@ -27,14 +33,10 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 
-import { getIndividualName } from '../../../helpers';
-import { CounterpartAddressForm } from '../../CounterpartAddressForm';
-import {
-  useCounterpartForm,
-  CounterpartsFormProps,
-} from '../useCounterpartForm';
 import {
   prepareCounterpartIndividual,
   prepareCounterpartIndividualCreate,
@@ -45,6 +47,10 @@ import {
   getCreateIndividualValidationSchema,
 } from './validation';
 
+interface CounterpartIndividualFormProps extends CounterpartsFormProps {
+  isInvoiceCreation?: boolean;
+}
+
 /**
  * Counterpart Individual Form may be used to create or update counterpart
  *  for the type = individual
@@ -52,7 +58,10 @@ import {
  * If a counterpart is provided, it will be updated,
  *  otherwise new counterpart will be created
  */
-export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
+export const CounterpartIndividualForm = ({
+  ...props
+}: CounterpartIndividualFormProps) => {
+  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -66,6 +75,9 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
+
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
@@ -150,7 +162,14 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     reset,
   ]);
 
-  if (isCreateAllowedLoading) {
+  if (isCreateAllowedLoading || isLoading) {
+    if (isInvoiceCreation) {
+      return (
+        <Grid pb={4}>
+          <LoadingPage />
+        </Grid>
+      );
+    }
     return <LoadingPage />;
   }
 
@@ -160,42 +179,54 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
   return (
     <>
-      <Grid
-        container
-        alignItems="center"
-        data-testid={CounterpartDataTestId.IndividualForm}
+      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+        <Grid
+          container
+          alignItems="center"
+          data-testid={CounterpartDataTestId.IndividualForm}
+        >
+          <Grid item xs={11}>
+            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
+              {isInvoiceCreation
+                ? t(i18n)`Create customer`
+                : isUpdateMode
+                ? getIndividualName(
+                    watch('individual.firstName'),
+                    watch('individual.lastName')
+                  )
+                : t(i18n)`Create Counterpart - Individual`}
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            {dialogContext?.isDialogContent && (
+              <IconWrapper
+                aria-label={t(i18n)`Counterpart Close`}
+                onClick={props.onClose || dialogContext.onClose}
+                color="inherit"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            )}
+          </Grid>
+        </Grid>
+      )}
+
+      {!isInvoiceCreation && <Divider />}
+
+      <DialogContent
+        sx={{
+          padding: '0 2rem',
+          maxHeight: isLargeScreen ? 480 : 380,
+          overflowY: 'auto',
+        }}
       >
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {isUpdateMode
-              ? getIndividualName(
-                  watch('individual.firstName'),
-                  watch('individual.lastName')
-                )
-              : t(i18n)`Create Counterpart - Individual`}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
-      <DialogContent>
         <FormProvider {...methods}>
           <form
             id="counterpartIndividualForm"
             ref={formRef}
             onSubmit={handleSubmitWithoutPropagation}
           >
-            <Grid container direction="column" rowSpacing={3}>
+            <Grid container direction="column" rowSpacing={3} pb={4}>
               <Grid item>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
@@ -381,18 +412,34 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
         </FormProvider>
       </DialogContent>
       <Divider />
-      <DialogActions>
+
+      <DialogActions
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '1em',
+          padding: 4,
+        }}
+      >
         {(isUpdateMode || dialogContext) && (
           <Button
-            variant="outlined"
-            color="inherit"
-            onClick={isUpdateMode ? props.onCancel : dialogContext?.onClose}
+            variant="text"
+            onClick={
+              isUpdateMode
+                ? props.onCancel
+                : props.onClose || dialogContext?.onClose
+            }
           >
             {t(i18n)`Cancel`}
           </Button>
         )}
-        <Button variant="outlined" onClick={submitForm} disabled={isLoading}>
-          {isUpdateMode ? t(i18n)`Update` : t(i18n)`Create`}
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+          onClick={submitForm}
+        >
+          {isUpdateMode ? t(i18n)`Save` : t(i18n)`Create`}
         </Button>
       </DialogActions>
     </>

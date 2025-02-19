@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -11,7 +11,12 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
+import {
+  useCounterpartAddresses,
+  useCounterpartById,
+  useCounterpartVatList,
+  useMyEntity,
+} from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -24,7 +29,6 @@ import {
   Button,
   DialogContent,
   DialogTitle,
-  Divider,
   Stack,
   Toolbar,
   Typography,
@@ -33,11 +37,14 @@ import {
 
 import { format } from 'date-fns';
 
-import { INVOICE_DOCUMENT_AUTO_ID } from '../../consts';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
-import { BillToSection } from './sections/components/BillToSection';
+import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
+import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
+import { InvoicePreview } from './sections/components/InvoicePreview';
+import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
+//import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
@@ -61,9 +68,19 @@ const CreateReceivablesBase = ({
   const dialogContext = useDialog();
   const { api, entityId } = useMoniteContext();
   const {
+    data: paymentTerms,
+    isLoading: isPaymentTermsLoading,
+    refetch: refetchPaymentTerms,
+  } = api.paymentTerms.getPaymentTerms.useQuery();
+  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
+    api.entities.getEntitiesIdVatIds.useQuery({
+      path: { entity_id: entityId },
+    });
+  const {
     isNonVatSupported,
     isLoading: isEntityLoading,
     isNonCompliantFlow,
+    data: entityData,
   } = useMyEntity();
   const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
@@ -101,6 +118,8 @@ const CreateReceivablesBase = ({
   const counterpartId = watch('counterpart_id');
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
+  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
+    useCounterpartVatList(counterpartId);
 
   const createReceivable = useCreateReceivable();
   const { data: settings, isLoading: isSettingsLoading } =
@@ -111,8 +130,22 @@ const CreateReceivablesBase = ({
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
+  const [counterpartBillingAddress, setCounterpartBillingAddress] =
+    useState<any>(null);
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  useEffect(() => {
+    const values = getValues();
+    const billingAddressId = values.default_billing_address_id;
+    if (billingAddressId) {
+      setCounterpartBillingAddress(
+        counterpartAddresses?.data?.find(
+          (address) => address.id === billingAddressId
+        )
+      );
+    }
+  }, [counterpartAddresses, getValues]);
 
   const {
     createReminderDialog,
@@ -125,6 +158,9 @@ const CreateReceivablesBase = ({
   } = useInvoiceReminderDialogs({ getValues });
 
   const theme = useTheme();
+
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    useCounterpartById(counterpartId);
 
   if (isSettingsLoading || isEntityLoading) {
     return <LoadingPage />;
@@ -141,11 +177,6 @@ const CreateReceivablesBase = ({
       showErrorToast(new Error('`actualCurrency` is not defined'));
       return;
     }
-
-    const billingAddressId = values.default_billing_address_id;
-    const counterpartBillingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === billingAddressId
-    );
 
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
@@ -207,33 +238,32 @@ const CreateReceivablesBase = ({
   };
 
   return (
-    <>
-      <DialogTitle className={className + '-Title'}>
-        <Toolbar>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext?.onClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-          <Box sx={{ marginLeft: 'auto' }}>
-            <Button
-              variant="contained"
-              key="next"
-              color="primary"
-              type="submit"
-              form={formName}
-              disabled={createReceivable.isPending}
-            >{t(i18n)`Next page`}</Button>
-          </Box>
-        </Toolbar>
-      </DialogTitle>
-      <Divider className={className + '-Divider'} />
-      <DialogContent className={className + '-Content'}>
+    <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
+      <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
+        <DialogTitle className={className + '-Title Invoice-Preview'}>
+          <Toolbar>
+            {dialogContext?.isDialogContent && (
+              <IconWrapper
+                edge="start"
+                color="inherit"
+                onClick={dialogContext?.onClose}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            )}
+            <Box sx={{ marginLeft: 'auto' }}>
+              <Button
+                variant="contained"
+                key="next"
+                color="primary"
+                type="submit"
+                form={formName}
+                disabled={createReceivable.isPending}
+              >{t(i18n)`Save and continue`}</Button>
+            </Box>
+          </Toolbar>
+        </DialogTitle>
         <FormProvider {...methods}>
           <form
             id={formName}
@@ -241,20 +271,25 @@ const CreateReceivablesBase = ({
             onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
-            <Box>
-              <Typography
-                variant="h1"
-                sx={{ mb: 2 }}
-                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
-              >
-                {t(i18n)`Invoice`}{' '}
-                <Typography component="span" variant="h1" color="textSecondary">
-                  #{INVOICE_DOCUMENT_AUTO_ID}
-                </Typography>
-              </Typography>
-            </Box>
             <Stack direction="column" spacing={7}>
-              <BillToSection disabled={createReceivable.isPending} />
+              <Box>
+                <Typography
+                  sx={{ mt: 8, mb: 5 }}
+                  data-testid={
+                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
+                  }
+                  variant="h3"
+                >{t(i18n)`Create invoice`}</Typography>
+
+                <CustomerSection
+                  disabled={createReceivable.isPending}
+                  counterpart={counterpart}
+                  counterpartVats={counterpartVats}
+                  isCounterpartVatsLoading={isCounterpartVatsLoading}
+                  isCounterpartLoading={isCounterpartLoading}
+                />
+              </Box>
+
               <ItemsSection
                 defaultCurrency={
                   settings?.currency?.default || fallbackCurrency
@@ -263,6 +298,31 @@ const CreateReceivablesBase = ({
                 onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
+
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Box sx={{ mb: 2 }}>
+                  <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
+                    i18n
+                  )`Details`}</Typography>
+                  <YourVatDetailsForm
+                    isEntityVatIdsLoading={isEntityVatIdsLoading}
+                    entityVatIds={entityVatIds}
+                    disabled={createReceivable.isPending}
+                  />
+                </Box>
+                <FullfillmentSummary
+                  paymentTerms={paymentTerms}
+                  isPaymentTermsLoading={isPaymentTermsLoading}
+                  refetch={refetchPaymentTerms}
+                  disabled={createReceivable.isPending}
+                />
+              </Box>
               <Box>
                 <EntitySection disabled={createReceivable.isPending} />
               </Box>
@@ -276,7 +336,25 @@ const CreateReceivablesBase = ({
           </form>
         </FormProvider>
       </DialogContent>
-
+      <Box
+        width="50%"
+        sx={{
+          background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
+          height: '100vh',
+        }}
+      >
+        <InvoicePreview
+          watch={watch}
+          counterpart={counterpart}
+          currency={actualCurrency}
+          isNonVatSupported={isNonVatSupported}
+          entityData={entityData}
+          address={counterpartBillingAddress}
+          paymentTerms={paymentTerms}
+          entityVatIds={entityVatIds}
+          counterpartVats={counterpartVats}
+        />
+      </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
         reminderType={createReminderDialog.reminderType}
@@ -298,6 +376,6 @@ const CreateReceivablesBase = ({
           onClose={closeUpdateReminderDialog}
         />
       )}
-    </>
+    </Stack>
   );
 };

@@ -81,7 +81,8 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
         price: yup
           .object({
             currency: yup
-              .string()
+              .mixed<(typeof CurrencyEnum)[number]>()
+              .oneOf(CurrencyEnum)
               .label(t(i18n)`Currency`)
               .required(),
             value: yup

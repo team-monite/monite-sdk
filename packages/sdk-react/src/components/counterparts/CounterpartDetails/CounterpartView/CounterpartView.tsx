@@ -174,7 +174,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
       />
     );
   }
-
   return (
     <>
       <Grid container alignItems="center">
