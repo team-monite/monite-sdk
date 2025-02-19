@@ -121,6 +121,7 @@ export const getDefaultComponentSettings = (
         label: FINANCING_LABEL,
       },
     ],
+    onCreate: componentSettings?.receivables?.onCreate,
   },
   tags: {
     pageSizeOptions:
