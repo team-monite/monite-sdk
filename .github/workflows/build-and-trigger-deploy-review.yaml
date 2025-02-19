@@ -18,7 +18,7 @@ jobs:
         run: |
           labels=$(jq -r '.pull_request.labels | map(.name) | join(",")' "$GITHUB_EVENT_PATH")
           echo "Labels on PR: $labels"
-          if [[ "$labels" == *"pullpreview"* ]]; then
+          if [[ "$labels" == *"bubub"* ]]; then
             echo "has_label=true" >> $GITHUB_ENV
             echo "::set-output name=has_label::true"
           else
