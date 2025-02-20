@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -243,6 +249,7 @@ msgstr "Active"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1172
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:555
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:133
 msgid "Add"
@@ -472,6 +479,10 @@ msgstr "All invoices"
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:85
 msgid "All items"
 msgstr "All items"
+
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:45
+msgid "All items with this measure unit will get deleted, too."
+msgstr "All items with this measure unit will get deleted, too."
 
 #: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:69
 msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
@@ -1253,8 +1264,9 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:128
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:220
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:55
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:162
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartModal.tsx:152
@@ -1512,7 +1524,7 @@ msgstr "Close approval policy details"
 msgid "Close invoice details"
 msgstr "Close invoice details"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:103
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:123
 msgid "Close new product or service form"
 msgstr "Close new product or service form"
 
@@ -1891,7 +1903,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:442
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:443
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:137
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:171
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:37
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
@@ -1976,7 +1988,7 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:361
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:447
-#: src/components/products/Products.tsx:102
+#: src/components/products/Products.tsx:114
 #: src/components/products/ProductsTable/ProductsTable.tsx:339
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:201
@@ -1996,7 +2008,8 @@ msgstr "Create New"
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:97
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:106
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:116
 msgid "Create new product or service"
 msgstr "Create new product or service"
 
@@ -2249,6 +2262,7 @@ msgstr "Defaulted"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:370
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:502
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:63
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:234
 #: src/components/products/Products.test.tsx:176
 #: src/components/products/Products.test.tsx:203
@@ -2288,6 +2302,10 @@ msgstr "Delete \"{0}\" tag?"
 msgid "Delete \"{0}\"?"
 msgstr "Delete \"{0}\"?"
 
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:41
+msgid "Delete \"{name}\" unit and associated items?"
+msgstr "Delete \"{name}\" unit and associated items?"
+
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:44
 msgid "Delete {type} “{name}“?"
 msgstr "Delete {type} “{name}“?"
@@ -2304,6 +2322,7 @@ msgstr "Delete bill"
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:39
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:12
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:461
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:36
 #: src/core/context/MoniteI18nProvider.test.tsx:36
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
@@ -2364,12 +2383,16 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1048
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:242
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:97
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:110
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
 #: src/components/products/ProductDetails/validation.ts:53
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:165
 msgid "Description"
 msgstr "Description"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:161
+msgid "Description (optional)"
+msgstr "Description (optional)"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:42
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:287
@@ -2501,6 +2524,12 @@ msgstr "Dominican Republic"
 #: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:160
 msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:32
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:152
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:243
+msgid "Done"
+msgstr "Done"
 
 #: src/components/onboarding/hooks/useOnboardingActions.ts:140
 msgid "Done, continue"
@@ -2659,8 +2688,9 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:105
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:182
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:109
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:191
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:201
 msgid "Edit {0}"
 msgstr "Edit {0}"
 
@@ -2709,8 +2739,8 @@ msgstr "Edit invoice"
 msgid "Edit payment term"
 msgstr "Edit payment term"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:111
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:188
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:115
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:208
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
@@ -2953,7 +2983,7 @@ msgstr "Exterminating Services"
 msgid "Failed to a create payment link. Please try again."
 msgstr "Failed to a create payment link. Please try again."
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:66
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:70
 msgid "Failed to create"
 msgstr "Failed to create"
 
@@ -2997,6 +3027,10 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:61
+msgid "Failed to delete Unit."
+msgstr "Failed to delete Unit."
+
 #: src/core/queries/useCounterpart.ts:295
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
@@ -3017,7 +3051,7 @@ msgstr "Failed to load PDF Viewer"
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:88
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:92
 msgid "Failed to update"
 msgstr "Failed to update"
 
@@ -4306,6 +4340,14 @@ msgstr "Mali"
 msgid "Malta"
 msgstr "Malta"
 
+#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:22
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:174
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:109
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:194
+#: src/components/products/Products.tsx:106
+msgid "Manage measure units"
+msgstr "Manage measure units"
+
 #: src/components/onboarding/validators/validators.ts:117
 msgid "Managers and owners must be at least 18 years old to use this service."
 msgstr "Managers and owners must be at least 18 years old to use this service."
@@ -4435,7 +4477,7 @@ msgstr "Micronesia, Federated States Of"
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:160
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:193
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
 #: src/components/products/ProductDetails/validation.ts:37
 msgid "Minimum quantity"
@@ -4583,7 +4625,7 @@ msgstr "N/A"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:417
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:87
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:100
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:145
@@ -5428,6 +5470,10 @@ msgstr "Please provide information about your business."
 msgid "Please provide the following documents for the person"
 msgstr "Please provide the following documents for the person"
 
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:48
+msgid "Please replace the measure units in the products and services you want to keep."
+msgstr "Please replace the measure units in the products and services you want to keep."
+
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:179
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:184
 msgid "Please review the terms and conditions and accept them to continue."
@@ -5550,7 +5596,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:174
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:207
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:189
 #: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:212
@@ -5573,7 +5619,7 @@ msgstr "Processing payment..."
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:114
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:127
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
 #: src/components/products/ProductsTable/ProductsTable.tsx:340
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
@@ -5583,11 +5629,11 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:61
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:65
 msgid "Product {0} was created."
 msgstr "Product {0} was created."
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:82
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:86
 msgid "Product {0} was updated."
 msgstr "Product {0} was updated."
 
@@ -5615,7 +5661,7 @@ msgstr "Product was deleted."
 msgid "Products"
 msgstr "Products"
 
-#: src/components/products/Products.tsx:89
+#: src/components/products/Products.tsx:92
 msgid "Products & Services"
 msgstr "Products & Services"
 
@@ -6219,17 +6265,17 @@ msgstr "Serbia and Montenegro"
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:118
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:131
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:23
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:73
 msgid "Service"
 msgstr "Service"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:62
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:66
 msgid "Service {0} was created."
 msgstr "Service {0} was created."
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:83
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:87
 msgid "Service {0} was updated."
 msgstr "Service {0} was updated."
 
@@ -6391,7 +6437,7 @@ msgstr "Somalia"
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:127
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:131
 msgid "Something went wrong. Please try again"
 msgstr "Something went wrong. Please try again"
 
@@ -7118,7 +7164,7 @@ msgstr "Tuvalu"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:55
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:58
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:108
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:121
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:169
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:57
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:60
@@ -7176,12 +7222,32 @@ msgstr "Uniforms, Commercial Clothing"
 msgid "Unique Entity Number (Singapore)"
 msgstr "Unique Entity Number (Singapore)"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:137
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:140
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:151
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:154
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:175
 #: src/components/products/ProductsTable/ProductsTable.tsx:227
 msgid "Unit"
 msgstr "Unit"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:68
+msgid "Unit {0} was added to the list"
+msgstr "Unit {0} was added to the list"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:98
+msgid "Unit {0} was updated"
+msgstr "Unit {0} was updated"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:57
+msgid "Unit {name} was deleted from the list."
+msgstr "Unit {name} was deleted from the list."
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:160
+msgid "Unit label"
+msgstr "Unit label"
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:53
+msgid "Unit label is required"
+msgstr "Unit label is required"
 
 #: src/core/utils/countries.ts:246
 msgid "United Arab Emirates"
@@ -7251,7 +7317,7 @@ msgstr "Unsupported file type"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1172
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:185
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:228
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:266
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:184
