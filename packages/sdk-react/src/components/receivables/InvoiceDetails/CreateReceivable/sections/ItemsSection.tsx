@@ -328,11 +328,9 @@ export const ItemsSection = ({
             <Table stickyHeader>
               <TableHead>
                 <TableRow className={tableRowClassName}>
-                  <TableCell>{t(i18n)`Item`}</TableCell>
+                  <TableCell>{t(i18n)`Item name`}</TableCell>
                   <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell>{t(i18n)`Units`}</TableCell>
                   <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Amount`}</TableCell>
                   <TableCell>
                     {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
                   </TableCell>
@@ -360,26 +358,18 @@ export const ItemsSection = ({
                           </FormControl>
                         )}
                       />
-                    </StyledTableCell>
-                    <TableCell>
                       {field.measure_unit_id ? (
                         <MeasureUnit unitId={field.measure_unit_id} />
                       ) : (
                         '—'
                       )}
-                    </TableCell>
+                    </StyledTableCell>
                     <TableCell align="right">
                       {field.price &&
                         formatCurrencyToDisplay(
                           field.price.value,
                           field.price.currency
                         )}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TotalCell
-                        item={watchedLineItems[index]}
-                        formatCurrencyToDisplay={formatCurrencyToDisplay}
-                      />
                     </TableCell>
                     <TableCell>
                       {isNonVatSupported ? (
