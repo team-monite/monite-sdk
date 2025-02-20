@@ -46,13 +46,7 @@ import {
   getCreateCounterpartValidationSchema,
 } from './validation';
 
-interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
-  isInvoiceCreation?: boolean;
-}
-
-export const CounterpartOrganizationForm = (
-  props: CounterpartOrganizationFormProps
-) => {
+export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -422,6 +416,13 @@ export const CounterpartOrganizationForm = (
           padding: 4,
         }}
       >
+        {isInvoiceCreation && (
+          <Button
+            variant="outlined"
+            sx={{ marginRight: 'auto' }}
+            onClick={props.onReturn}
+          >{t(i18n)`Back`}</Button>
+        )}
         {(isUpdateMode || dialogContext) && (
           <Button
             variant="text"

@@ -67,6 +67,7 @@ export const CreateCounterpartModal = ({
               type={counterpartType}
               isInvoiceCreation={true}
               onClose={handleClose}
+              onReturn={() => setCounterpartType(undefined)}
               onCreate={(counterpartId) => {
                 onCreate(counterpartId);
                 onClose();
