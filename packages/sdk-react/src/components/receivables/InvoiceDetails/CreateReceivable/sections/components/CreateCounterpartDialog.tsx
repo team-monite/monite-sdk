@@ -38,14 +38,16 @@ enum View {
   CounterpartCreationMode = 'counterpart-creation-mode',
 }
 
-const CardItem = ({
-  title,
+export const CounterpartTypeItem = ({
   description,
+  isTypeSelected,
+  title,
   type,
   onClick,
 }: {
-  title: string;
   description: string;
+  isTypeSelected?: boolean;
+  title: string;
   type: components['schemas']['CounterpartType'];
   onClick: (type: components['schemas']['CounterpartType']) => void;
 }) => {
@@ -58,11 +60,19 @@ const CardItem = ({
       variant="outlined"
       sx={{
         cursor: 'pointer',
+        border: 'none',
       }}
       onClick={handleClick}
     >
       <CardActionArea
-        sx={{ height: '100%', display: 'flex', alignItems: 'start' }}
+        sx={{
+          display: 'flex',
+          alignItems: 'start',
+          bgcolor: isTypeSelected
+            ? 'rgba(0, 0, 0, 0.04)'
+            : 'rgba(0, 0, 0, 0.02)',
+          borderColor: 'transparent',
+        }}
       >
         <CardContent>
           <Typography variant="body1" sx={{ fontWeight: 500, mb: 1 }}>
@@ -138,7 +148,7 @@ export const CreateCounterpartDialog = ({
             gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
           }}
         >
-          <CardItem
+          <CounterpartTypeItem
             title={t(i18n)`Individual person`}
             description={t(
               i18n
@@ -146,7 +156,7 @@ export const CreateCounterpartDialog = ({
             onClick={handleCreateCounterpart}
             type={'individual'}
           />
-          <CardItem
+          <CounterpartTypeItem
             title={t(i18n)`Organization`}
             description={t(
               i18n

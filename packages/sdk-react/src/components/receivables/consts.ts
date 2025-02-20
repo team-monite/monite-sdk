@@ -70,4 +70,6 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
 // eslint-disable-next-line lingui/no-unlocalized-strings
 export const INVOICE_DOCUMENT_AUTO_ID = 'INV-auto';
 
+export const CREATE_INVOICE = 'Create invoice';
+
 export const FILTER_TYPE_SEARCH = 'search' as const;

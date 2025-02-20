@@ -43,6 +43,13 @@ export interface MoniteReceivablesTableProps {
    * By default, the component will display tabs for Invoices, Quotes, and Credit Notes.
    */
   tabs?: Array<MoniteReceivablesTab>;
+
+  /**
+   * The event handler for the creation of a new invoice
+   *
+    @param {string} receivableId - The ID of the receivable that was created.
+   */
+  onCreate?: (receivableId: string) => void;
 }
 
 export enum ReceivablesTableTabEnum {

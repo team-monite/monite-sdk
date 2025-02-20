@@ -19,10 +19,7 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Close as CloseIcon,
-  OpenInNew as OpenInNewIcon,
-} from '@mui/icons-material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -30,7 +27,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  Link,
   Stack,
   styled,
   Table,
@@ -74,11 +70,6 @@ const StyledDialogContainer = styled(DialogContent)`
 const StyledTableTitle = styled(Typography)`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-`;
-
-const StyledDocLink = styled(Link)`
-  display: flex;
   align-items: center;
 `;
 
@@ -400,16 +391,6 @@ export const UserRoleDetailsDialog = ({
               )}
               <StyledTableTitle variant="subtitle2" mt={4} mb={1}>
                 {t(i18n)`Permissions`}
-                <StyledDocLink
-                  underline="none"
-                  rel="noopener noreferrer"
-                  href="https://docs.monite.com/docs/monite-account-structure#connect-entity-users"
-                  target="_blank"
-                >
-                  {t(i18n)`Go to Docs`}
-                  &nbsp;
-                  <OpenInNewIcon />
-                </StyledDocLink>
               </StyledTableTitle>
               <StyledTableContainer>
                 <Table stickyHeader>

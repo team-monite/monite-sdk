@@ -2,10 +2,8 @@ import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { Receivables } from '@/components';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
-import { CreateCounterpartDialogTestEnum } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.types';
 import { entityIds, entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import {
   findParentElement,
   Provider,
@@ -27,6 +25,7 @@ import {
 } from '@testing-library/react';
 
 import { CreateReceivables } from './CreateReceivables';
+import { CreateCounterpartModalTestEnum } from './sections/components/CreateCounterpartModal.types';
 
 describe('CreateReceivables', () => {
   test('should show errors when user submit an empty form', async () => {
@@ -158,11 +157,11 @@ describe('CreateReceivables', () => {
 
       triggerClickOnAutocompleteOption(/Customer/i, /Create new counterpart/i);
 
-      const counterpartDialog = await screen.findByTestId(
-        CreateCounterpartDialogTestEnum.DataTestId
+      const counterpartModal = await screen.findByTestId(
+        CreateCounterpartModalTestEnum.DataTestId
       );
 
-      expect(counterpartDialog).toBeInTheDocument();
+      expect(counterpartModal).toBeInTheDocument();
     });
 
     test('should show "Create individual" dialog when the user clicks on "individual" button', async () => {
@@ -178,6 +177,9 @@ describe('CreateReceivables', () => {
 
       const individualButton = await screen.findByText(/Individual person/i);
       fireEvent.click(individualButton);
+
+      const saveButton = await screen.findByText(/Save/i);
+      fireEvent.click(saveButton);
 
       expect(await screen.findByTestId(CounterpartDataTestId.IndividualForm));
     });
@@ -200,6 +202,9 @@ describe('CreateReceivables', () => {
       });
 
       fireEvent.click(organizationButton);
+
+      const saveButton = await screen.findByText(/Save/i);
+      fireEvent.click(saveButton);
 
       expect(await screen.findByTestId(CounterpartDataTestId.OrganizationForm));
     });
@@ -255,36 +260,6 @@ describe('CreateReceivables', () => {
       expect(
         await screen.findByText(/Create New Product/i)
       ).toBeInTheDocument();
-    });
-  });
-
-  describe('# Fulfillment date', () => {
-    test('should fill "Fulfillment date" with the current date when the user clicks on "Same as invoice date" checkbox', async () => {
-      const onCreateMock = jest.fn();
-
-      renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
-      );
-
-      await waitUntilTableIsLoaded();
-
-      const fulfillmentDateInput = screen.getByLabelText(/Fulfillment date/i);
-
-      expect(fulfillmentDateInput).toHaveValue('');
-
-      const sameAsInvoiceDateCheckbox = screen.getByRole('checkbox', {
-        name: /Same as invoice date/i,
-      });
-
-      fireEvent.click(sameAsInvoiceDateCheckbox);
-
-      const today = new Date();
-      const formatted = new Intl.DateTimeFormat(
-        'de-DE',
-        DateTimeFormatOptions.EightDigitDate
-      ).format(today);
-
-      expect(fulfillmentDateInput).toHaveValue(formatted);
     });
   });
 

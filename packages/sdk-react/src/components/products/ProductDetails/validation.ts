@@ -32,11 +32,13 @@ export const getValidationSchema = (i18n: I18n) =>
       .required(),
     smallestAmount: yup
       .number()
-      .min(0)
+      .typeError(t(i18n)`Please enter a number`)
+      .min(0, t(i18n)`Minimum quantity must be 0 or greater`)
       .label(t(i18n)`Minimum quantity`)
       .required(),
     pricePerUnit: yup
       .number()
+      .typeError(t(i18n)`Please enter a number`)
       .min(0)
       .label(t(i18n)`Price per unit`)
       .required(),
@@ -45,7 +47,10 @@ export const getValidationSchema = (i18n: I18n) =>
       .oneOf(currenciesToStringArray(getCurrencies(i18n)))
       .label(t(i18n)`Currency`)
       .required(),
-    description: yup.string().label(t(i18n)`Description`),
+    description: yup
+      .string()
+      .max(255)
+      .label(t(i18n)`Description`),
   });
 
 export type IProductFormSubmitValues = yup.InferType<
