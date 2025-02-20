@@ -214,5 +214,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     showCategories,
     showView,
     props.onClose,
+    props.onReturn,
   ]);
 };
