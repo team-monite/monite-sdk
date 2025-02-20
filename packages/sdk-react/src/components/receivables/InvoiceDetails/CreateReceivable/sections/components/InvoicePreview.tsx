@@ -335,7 +335,7 @@ export const InvoicePreview = ({
                     </td>
                     <td>
                       {currency &&
-                        formatCurrencyToDisplay(tax.totalTax, currency, false)}
+                        formatCurrencyToDisplay(tax.totalTax, currency, true)}
                     </td>
                   </tr>
                 ))}
@@ -344,10 +344,7 @@ export const InvoicePreview = ({
                     <span>{t(i18n)`Total`}</span>
                   </td>
                   <td>
-                    <span>
-                      {totalPrice?.toString()}
-                      {currency}
-                    </span>
+                    <span>{totalPrice?.toString()}</span>
                   </td>
                 </tr>
               </tbody>
