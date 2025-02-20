@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ConfirmDeleteMeasureUnitDialogue } from '@/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue';
 import { TableActions } from '@/components/TableActions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -24,17 +25,13 @@ import {
 
 import { MeasureUnitsFormRow } from './components/MeasureUnitsFormRow';
 
-interface MeasureUnitsForm {
-  id?: string;
-  name: string;
-  description?: string;
-}
+type UnitResponse = components['schemas']['UnitResponse'];
 
 export const ManageMeasureUnitsForm = () => {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const [editingUnit, setEditingUnit] = useState<MeasureUnitsForm | null>(null);
+  const [editingUnit, setEditingUnit] = useState<UnitResponse | null>(null);
 
   const [search, setSearch] = useState<string>('');
 
@@ -52,9 +49,11 @@ export const ManageMeasureUnitsForm = () => {
   const deleteUnitMutation = api.measureUnits.deleteMeasureUnitsId.useMutation(
     undefined,
     {
-      onSuccess: async (_, { name }) => {
+      onSuccess: async () => {
         await api.measureUnits.getMeasureUnits.invalidateQueries(queryClient);
-        toast.success(t(i18n)`Unit ${name} was deleted from the list.`);
+        toast.success(
+          t(i18n)`Unit ${editingUnit.name} was deleted from the list.`
+        );
       },
       onError: (error) => {
         console.error(error);
@@ -65,7 +64,7 @@ export const ManageMeasureUnitsForm = () => {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
-  const handleOpenDeleteDialog = useCallback((unit) => {
+  const handleOpenDeleteDialog = useCallback((unit: UnitResponse) => {
     setShowDeleteDialog(true);
     setEditingUnit(unit);
   }, []);
@@ -81,16 +80,9 @@ export const ManageMeasureUnitsForm = () => {
     }
 
     deleteUnitMutation.mutate(
+      { path: { unit_id: editingUnit.id } },
       {
-        path: {
-          unit_id: editingUnit.id,
-        },
-        name: editingUnit.name,
-      },
-      {
-        onSuccess: () => {
-          handleCloseDeleteDialog();
-        },
+        onSuccess: () => handleCloseDeleteDialog(),
       }
     );
   }, [deleteUnitMutation, editingUnit, handleCloseDeleteDialog]);
@@ -123,32 +115,19 @@ export const ManageMeasureUnitsForm = () => {
         <>
           <TextField
             variant="outlined"
-            placeholder="Search"
+            placeholder={t(i18n)`Search`}
             fullWidth
             onChange={(e) => setSearch(e.target.value)}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon style={{ color: '#666' }} />
+                <InputAdornment position="end">
+                  <SearchIcon fontSize="medium" />
                 </InputAdornment>
               ),
-              sx: {
-                borderRadius: '20px',
-                background: 'white',
-              },
             }}
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: '20px',
-                '& fieldset': {
-                  borderColor: '#ccc',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#aaa',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#666',
-                },
               },
             }}
           />
@@ -157,9 +136,13 @@ export const ManageMeasureUnitsForm = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t(i18n)`Unit label`}</TableCell>
-                  <TableCell>{t(i18n)`Description (optional)`}</TableCell>
-                  <TableCell />
+                  <TableCell sx={{ width: '30%' }}>{t(
+                    i18n
+                  )`Unit label`}</TableCell>
+                  <TableCell sx={{ width: '60%' }}>{t(
+                    i18n
+                  )`Description (optional)`}</TableCell>
+                  <TableCell sx={{ width: '10%' }} />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -182,12 +165,12 @@ export const ManageMeasureUnitsForm = () => {
                         '&.MuiTableRow-root': { cursor: 'pointer' },
                       }}
                     >
-                      <TableCell>
+                      <TableCell sx={{ width: '30%' }}>
                         <Typography variant="body1" fontWeight={400}>
                           {unit.name}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell sx={{ width: '60%' }}>
                         <Typography
                           variant="body1"
                           color="secondary"
@@ -196,7 +179,7 @@ export const ManageMeasureUnitsForm = () => {
                           {unit.description || '—'}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell sx={{ width: '10%' }}>
                         <TableActions
                           permissions={{
                             isUpdateAllowed: true,

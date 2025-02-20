@@ -37,10 +37,10 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
       fullWidth
       maxWidth="sm"
     >
-      <DialogTitle variant="h3">
+      <DialogTitle variant="h3" sx={{ padding: '32px' }}>
         {t(i18n)`Delete "${name}" unit and associated items?`}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ paddingBottom: 0 }}>
         <DialogContentText>
           {t(i18n)`All items with this measure unit will get deleted, too.`}
         </DialogContentText>
@@ -50,15 +50,20 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
           )`Please replace the measure units in the products and services you want to keep.`}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <Button color="inherit" onClick={onClose} variant="text">
+      <DialogActions sx={{ padding: '32px' }}>
+        <Button
+          color="primary"
+          onClick={onClose}
+          variant="text"
+          sx={{ borderRadius: '8px' }}
+        >
           {t(i18n)`Cancel`}
         </Button>
         <Button
-          color="error"
           onClick={onDelete}
           disabled={isLoading}
           variant="contained"
+          sx={{ borderRadius: '8px', backgroundColor: '#FF475D' }}
         >
           {t(i18n)`Delete`}
         </Button>

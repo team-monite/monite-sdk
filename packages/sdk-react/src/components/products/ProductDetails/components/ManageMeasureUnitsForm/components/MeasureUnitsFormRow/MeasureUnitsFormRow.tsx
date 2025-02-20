@@ -39,6 +39,13 @@ interface MeasureUnitFormRowProps {
   id?: string;
 }
 
+const buttonStyle = {
+  '&:hover': { borderRadius: '8px', background: '#F8F8FF' },
+  background: '#EBEBFF',
+  color: '#3737FF',
+  borderRadius: '8px',
+  height: '32px',
+};
 export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
   id,
   isEditMode,
@@ -121,6 +128,8 @@ export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
     createMutation.mutate(getValues());
   };
 
+  const isSubmitting = createMutation.isPending || updateMutation.isPending;
+
   return (
     <TableRow>
       <TableCell colSpan={3} sx={{ width: '100%' }}>
@@ -129,25 +138,28 @@ export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
           spacing={1}
           sx={{
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-start',
           }}
         >
           <Controller
             name="name"
             control={control}
-            render={({ field, fieldState }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                disabled={createMutation.isPending || updateMutation.isPending}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
+                disabled={isSubmitting}
+                error={Boolean(error)}
+                helperText={error?.message}
+                sx={{ width: '30%' }}
                 InputProps={{
                   sx: {
                     borderRadius: '8px',
                     height: '32px',
                     minHeight: '32px!important',
-                    width: '100%',
                   },
+                }}
+                FormHelperTextProps={{
+                  sx: { margin: '4px' },
                 }}
               />
             )}
@@ -159,16 +171,16 @@ export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
               <TextField
                 {...field}
                 id={field.name}
-                disabled={createMutation.isPending || updateMutation.isPending}
+                disabled={isSubmitting}
                 error={Boolean(error)}
                 helperText={error?.message}
                 size="small"
+                sx={{ width: '60%' }}
                 InputProps={{
                   sx: {
                     borderRadius: '8px',
                     height: '32px',
                     minHeight: '32px!important',
-                    width: '100%',
                   },
                 }}
               />
@@ -183,35 +195,13 @@ export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
             >
               <IconButton
                 color="primary"
-                sx={{
-                  '&:hover': {
-                    borderRadius: '8px',
-                    background: '#F8F8FF',
-                  },
-                  background: '#EBEBFF',
-                  color: '#3737FF',
-                  borderRadius: '8px',
-                  height: '32px',
-                }}
+                sx={buttonStyle}
                 disabled={updateMutation.isPending}
                 onClick={handleSubmit(handleEdit)}
               >
                 <CheckIcon sx={{ fontSize: '16px' }} />
               </IconButton>
-              <IconButton
-                color="primary"
-                sx={{
-                  '&:hover': {
-                    borderRadius: '8px',
-                    background: '#F8F8FF',
-                  },
-                  background: '#EBEBFF',
-                  color: '#3737FF',
-                  borderRadius: '8px',
-                  height: '32px',
-                }}
-                onClick={onCancel}
-              >
+              <IconButton color="primary" sx={buttonStyle} onClick={onCancel}>
                 <CloseIcon sx={{ fontSize: '16px' }} />
               </IconButton>
             </Box>
@@ -220,16 +210,7 @@ export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
               color="primary"
               variant="outlined"
               size="small"
-              sx={{
-                '&:hover': {
-                  borderRadius: '8px',
-                  background: '#F8F8FF',
-                },
-                background: '#EBEBFF',
-                color: '#3737FF',
-                borderRadius: '8px',
-              }}
-              loading={createMutation.isPending}
+              sx={buttonStyle}
               onClick={handleSubmit(handleCreate)}
             >
               {t(i18n)`Add`}
