@@ -73,7 +73,7 @@ const VatRateController = ({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl
-          variant="standard"
+          variant="outlined"
           fullWidth
           required
           error={Boolean(error)}
@@ -287,11 +287,6 @@ export const ItemsSection = ({
 
   const StyledTableCell = styled(TableCell)`
     max-width: 100px;
-
-    fieldset.MuiOutlinedInput-notchedOutline,
-    .MuiOutlinedInput-root:hover fieldset.MuiOutlinedInput-notchedOutline {
-      border-color: transparent;
-    }
   `;
 
   return (
@@ -322,135 +317,167 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ marginBottom: 2 }}>
-        <CardContent>
-          <TableContainer sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow className={tableRowClassName}>
-                  <TableCell>{t(i18n)`Item name`}</TableCell>
-                  <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                  <TableCell>
-                    {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
+      <Box>
+        <TableContainer sx={{ maxHeight: 400 }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow className={tableRowClassName}>
+                <TableCell sx={{ paddingLeft: 0 }}>{t(
+                  i18n
+                )`Item name`}</TableCell>
+                <TableCell>{t(i18n)`Quantity`}</TableCell>
+                <TableCell align="right">{t(i18n)`Price`}</TableCell>
+                <TableCell>
+                  {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {fields.map((field, index) => (
+                <TableRow className={tableRowClassName} key={field.id}>
+                  <TableCell>{field.name}</TableCell>
+                  <StyledTableCell>
+                    <Controller
+                      name={`line_items.${index}.quantity`}
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl>
+                          <TextField
+                            {...field}
+                            type="number"
+                            inputProps={{ min: 1 }}
+                            size="small"
+                            fullWidth={false}
+                            error={Boolean(error)}
+                          />
+                        </FormControl>
+                      )}
+                    />
+                    {field.measure_unit_id ? (
+                      <MeasureUnit unitId={field.measure_unit_id} />
+                    ) : (
+                      '—'
+                    )}
+                  </StyledTableCell>
+                  <TableCell align="right">
+                    {field.price &&
+                      formatCurrencyToDisplay(
+                        field.price.value,
+                        field.price.currency
+                      )}
+                    <Controller
+                      name={`line_items.${index}.price`}
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl
+                          variant="standard"
+                          fullWidth
+                          required
+                          error={Boolean(error)}
+                        >
+                          <TextField
+                            {...field}
+                            id={field.name}
+                            type="number"
+                            size="small"
+                            fullWidth={false}
+                            error={Boolean(error)}
+                            helperText={error?.message}
+                            InputProps={{ startAdornment: '$' }}
+                            sx={{ minWidth: 100 }}
+                          />
+                        </FormControl>
+                      )}
+                    />
                   </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fields.map((field, index) => (
-                  <TableRow className={tableRowClassName} key={field.id}>
-                    <TableCell>{field.name}</TableCell>
-                    <StyledTableCell>
+                  <TableCell>
+                    {isNonVatSupported ? (
                       <Controller
-                        name={`line_items.${index}.quantity`}
+                        name={`line_items.${index}.tax_rate_value`}
                         control={control}
                         render={({ field, fieldState: { error } }) => (
-                          <FormControl>
+                          <FormControl
+                            variant="standard"
+                            fullWidth
+                            required
+                            error={Boolean(error)}
+                          >
                             <TextField
                               {...field}
+                              id={field.name}
                               type="number"
-                              inputProps={{ min: 1 }}
+                              inputProps={{ min: 1, max: 100 }}
                               size="small"
                               fullWidth={false}
                               error={Boolean(error)}
+                              helperText={error?.message}
+                              InputProps={{ endAdornment: '%' }}
+                              sx={{ minWidth: 100 }}
                             />
                           </FormControl>
                         )}
                       />
-                      {field.measure_unit_id ? (
-                        <MeasureUnit unitId={field.measure_unit_id} />
-                      ) : (
-                        '—'
-                      )}
-                    </StyledTableCell>
-                    <TableCell align="right">
-                      {field.price &&
-                        formatCurrencyToDisplay(
-                          field.price.value,
-                          field.price.currency
-                        )}
-                    </TableCell>
-                    <TableCell>
-                      {isNonVatSupported ? (
-                        <Controller
-                          name={`line_items.${index}.tax_rate_value`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
-                              <TextField
-                                {...field}
-                                id={field.name}
-                                type="number"
-                                inputProps={{ min: 1, max: 100 }}
-                                size="small"
-                                fullWidth={false}
-                                error={Boolean(error)}
-                                helperText={error?.message}
-                                InputProps={{ endAdornment: '%' }}
-                                sx={{ minWidth: 100 }}
-                              />
-                            </FormControl>
-                          )}
-                        />
-                      ) : (
-                        <VatRateController
-                          index={index}
-                          vatRates={vatRates}
-                          highestVatRate={highestVatRate}
-                        />
-                      )}
-                    </TableCell>
+                    ) : (
+                      <VatRateController
+                        index={index}
+                        vatRates={vatRates}
+                        highestVatRate={highestVatRate}
+                      />
+                    )}
+                  </TableCell>
 
-                    <TableCell>
-                      <IconButton
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Button
-                      startIcon={<AddIcon />}
-                      onClick={handleOpenProductsTable}
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        remove(index);
+                      }}
                     >
-                      {t(i18n)`Add item`}
-                    </Button>
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Collapse in={shouldShowVatExemptRationale}>
-            <Box sx={{ m: 2 }}>
-              <Controller
-                name="vat_exemption_rationale"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    label={t(i18n)`VAT Exempt Rationale`}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    error={Boolean(error)}
-                  />
-                )}
-              />
-            </Box>
-          </Collapse>
-        </CardContent>
-      </Card>
+              ))}
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <Button
+                    startIcon={<AddIcon />}
+                    onClick={handleOpenProductsTable}
+                  >
+                    {t(i18n)`Add item`}
+                  </Button>
+                  <Button
+                    startIcon={<AddIcon />}
+                    variant="outlined"
+                    onClick={handleOpenProductsTable}
+                  >
+                    {t(i18n)`Row`}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Collapse in={shouldShowVatExemptRationale}>
+          <Box sx={{ m: 2 }}>
+            <Controller
+              name="vat_exemption_rationale"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label={t(i18n)`VAT Exempt Rationale`}
+                  multiline
+                  rows={4}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              )}
+            />
+          </Box>
+        </Collapse>
+      </Box>
+
       <Card
         className={className + '-Totals'}
         variant="outlined"
