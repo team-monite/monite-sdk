@@ -6,6 +6,7 @@ import type {
 } from '@/components/counterparts/Counterpart.types';
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { CircularProgress } from '@mui/material';
 
 import { CounterpartAddressFormUpdate } from './CounterpartAddressFormUpdate';
 import { CounterpartBankForm } from './CounterpartBankForm';
@@ -28,13 +29,14 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
 );
 
 const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
+  const isInvoiceCreation = props.isInvoiceCreation ?? false;
   const {
+    addressId,
     counterpartId,
     counterpartView,
     onCreate,
     onUpdate,
     onEdit,
-    addressId,
     onAddressCancel,
     onAddressEdit,
     onAddressUpdate,
@@ -64,7 +66,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const defaultValues = props.type ? props.defaultValues : undefined;
 
   const renderSubResource = useCallback(() => {
-    if (!counterpartId) return null;
+    if (!counterpartId) return <CircularProgress color="inherit" size={20} />;
 
     switch (counterpartView) {
       case COUNTERPART_VIEW.view:
@@ -177,8 +179,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
           <CounterpartIndividualForm
             id={counterpartId}
             onCancel={showView}
+            onClose={props.onClose}
             onCreate={onCreate}
             onUpdate={onUpdate}
+            isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
@@ -192,8 +196,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
           <CounterpartOrganizationForm
             id={counterpartId}
             onCancel={showView}
+            onClose={props.onClose}
             onCreate={onCreate}
             onUpdate={onUpdate}
+            isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
@@ -209,11 +215,13 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     counterpartId,
     counterpartView,
     defaultValues,
+    isInvoiceCreation,
     onCreate,
     onUpdate,
     renderSubResource,
     showCategories,
     showView,
     props.defaultValuesOCR,
+    props.onClose,
   ]);
 };

@@ -201,7 +201,7 @@ describe('CounterpartDetails', () => {
           fireEvent.click(editButton);
 
           const updateButton = screen.getByRole('button', {
-            name: /Update/i,
+            name: /Save/i,
           });
           fireEvent.click(updateButton);
 
@@ -235,7 +235,7 @@ describe('CounterpartDetails', () => {
           });
 
           const updateButton = screen.getByRole('button', {
-            name: /Update/i,
+            name: /Save/i,
           });
 
           fireEvent.click(updateButton);

@@ -217,7 +217,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius: moniteTheme.borderRadius,
+          borderRadius: '.5em',
 
           '&.MuiAlert-colorInfo': {
             backgroundColor: chroma(palette.info.main).alpha(0.05).hex(),
@@ -329,6 +329,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           fontWeight: 400,
           borderRadius: moniteTheme.borderRadius * 2.67,
           minHeight: '40px',
+          border: '1px solid transparent',
           '&:before, &:after': {
             display: 'none',
             content: 'none',
@@ -340,6 +341,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             padding: '0 14px', // Adjust padding if needed
             boxSizing: 'border-box',
           },
+
           '& .MuiInputBase-inputAdornedStart': {
             display: 'flex',
             alignItems: 'center',
@@ -454,9 +456,73 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
-          '& .MuiInput-input.MuiAutocomplete-input': {
-            padding: '0 14px',
+          '& > .Monite-CounterpartSelector': {
+            '& > .MuiInputBase-root': {
+              border: '1px solid transparent',
+              '& > .MuiInputAdornment-root': {
+                '&.MuiInputAdornment-positionStart': {
+                  marginRight: '16px',
+                },
+                '&.MuiInputAdornment-positionEnd': {
+                  marginLeft: '0',
+                  '& + input:not(:placeholder-shown)': {
+                    opacity: 0,
+                  },
+                  '& + input::placeholder': {
+                    color: 'rgba(184, 184, 184, 1)',
+                  },
+                },
+              },
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '16px 16px 16px 16px',
+                height: '70px',
+                lineHeight: '70px',
+                backgroundColor: 'transparent',
+                '&.Mui-focused > .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'transparent',
+                },
+              },
+              '&:hover > .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#dedede',
+              },
+              '& > .MuiOutlinedInput-notchedOutline': {
+                top: 0,
+                '> legend': {
+                  display: 'none',
+                },
+              },
+            },
+            '& > .MuiFormLabel-root': {
+              fontSize: '1.25rem',
+              paddingBottom: '1rem',
+              '& > .MuiInputLabel-asterisk': {
+                display: 'none',
+              },
+            },
+            '&.isSimplified': {
+              marginBottom: '2rem',
+              background: 'transparent',
+              '& > .MuiInputBase-root': {
+                paddingRight: '1rem',
+              },
+              '& > .MuiInputLabel-root': {
+                fontSize: '14px',
+                color: 'rgba(112, 112, 112, 1)',
+                paddingBottom: '0',
+                '&::after': {
+                  content: '"●"',
+                  position: 'relative',
+                  bottom: '2px',
+                  left: '4px',
+                  color: 'rgba(255, 71, 93, 1)',
+                },
+              },
+              '& > .MuiInputLabel-root > .MuiFormLabel-asterisk': {
+                display: 'none',
+              },
+            },
           },
+
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',
@@ -465,8 +531,12 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             width: '100%',
           },
         },
+        popper: {
+          paddingTop: '0.5rem',
+        },
       },
     },
+
     MuiTextField: {
       defaultProps: {
         InputLabelProps: {
@@ -600,18 +670,19 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         containedPrimary: {
-          minWidth: '120px',
+          padding: '.75em 1.25em',
           backgroundColor: 'primary.main',
-          borderRadius: moniteTheme.borderRadius,
+          lineHeight: '1.4',
+          borderRadius: moniteTheme.buttonBorderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.60',
-            borderRadius: moniteTheme.borderRadius,
+            borderRadius: moniteTheme.buttonBorderRadius,
             boxShadow: 'none',
           },
           '&:active': {
             backgroundColor: 'primary.dark',
-            borderRadius: moniteTheme.borderRadius,
+            borderRadius: moniteTheme.buttonBorderRadius,
             boxShadow: 'none',
           },
           '&:disabled': {
@@ -622,9 +693,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         outlinedPrimary: {
+          padding: '.75em 1.25em',
           backgroundColor: 'primary.90',
           borderColor: 'primary.90',
-          borderRadius: moniteTheme.borderRadius,
+          borderRadius: moniteTheme.buttonBorderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.80',
@@ -642,6 +714,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             borderColor: 'neutral.90',
             boxShadow: 'none',
           },
+        },
+        textPrimary: {
+          padding: '.75em 1.25em',
         },
       },
     },
@@ -963,11 +1038,20 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.MuiTypography-h6': {
             padding: '12px 24px',
             '.MuiToolbar-root': {
-              padding: '0 8px 0 24px',
+              padding: '0 0 0 16px',
             },
           },
           '& + .MuiDivider-root': {
             display: 'none',
+          },
+          '&.Monite-CreateReceivable-Title': {
+            position: 'fixed',
+            width: `calc(50% - ${20}px)`,
+            background: 'white',
+            zIndex: 9,
+            padding: '20px 20px 20px 0',
+            top: 0,
+            left: 0,
           },
         },
       },
@@ -988,6 +1072,49 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           fontSize: '12px',
+        },
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          width: '55px',
+          height: '40px',
+          '& > .MuiButtonBase-root.Mui-checked': {
+            left: '-10px',
+          },
+          '& > .MuiSwitch-track': {
+            height: '20px',
+            position: 'relative',
+            bottom: '3px',
+            width: '40px',
+            left: '-2px',
+            borderRadius: '12px',
+          },
+          '& > .MuiSwitch-switchBase.Mui-checked': {
+            transform: 'translateX(25px)',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: '12px',
+              left: '11px',
+              width: '16px',
+              height: '16px',
+              color: '#fff',
+              backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='${encodeURIComponent(
+                '#fff'
+              )}'><path d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>")`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+            },
+          },
+          '& > .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+            background: 'rgba(203, 203, 254, 1)',
+            opacity: 1,
+          },
+          '& > .MuiSwitch-input': {
+            left: 0,
+          },
         },
       },
     },

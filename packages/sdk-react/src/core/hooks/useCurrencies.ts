@@ -117,15 +117,18 @@ export const useCurrencies = () => {
   const formatCurrencyToDisplay = useCallback(
     (
       amountInMinorUnits: string | number,
-      currency: CurrencyEnum | string
+      currency: CurrencyEnum | string,
+      isCurrencyDisplayed: boolean = true
     ): string | null => {
-      const currencyData = currencyList && currencyList[currency];
-      const amountFromMinorUnits = formatFromMinorUnits(
-        Number(amountInMinorUnits),
-        currency
-      );
+      const amount = Number(amountInMinorUnits);
 
-      if (currencyData && amountFromMinorUnits !== null) {
+      const amountFromMinorUnits = formatFromMinorUnits(amount, currency);
+
+      if (amountFromMinorUnits === null) {
+        return null;
+      }
+
+      if (isCurrencyDisplayed && currencyList && currencyList[currency]) {
         const formatter = new Intl.NumberFormat(
           locale.currencyNumberFormat.localeCode,
           {
@@ -138,7 +141,16 @@ export const useCurrencies = () => {
         return formatter.format(amountFromMinorUnits);
       }
 
-      return null;
+      const formatter = new Intl.NumberFormat(
+        locale.currencyNumberFormat.localeCode,
+        {
+          style: 'decimal',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }
+      );
+
+      return formatter.format(amountFromMinorUnits);
     },
     [
       currencyList,
@@ -147,7 +159,6 @@ export const useCurrencies = () => {
       locale.currencyNumberFormat.localeCode,
     ]
   );
-
   return {
     currencyList,
     getSymbolFromCurrency,

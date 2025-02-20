@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -20,17 +20,25 @@ import {
   Box,
 } from '@mui/material';
 
-export const YourVatDetailsForm = ({ disabled }: { disabled: boolean }) => {
+interface YourVatDetailsFormProps {
+  disabled: boolean;
+  entityVatIds:
+    | {
+        data: components['schemas']['EntityVatIDResponse'][];
+      }
+    | undefined;
+  isEntityVatIdsLoading: boolean;
+}
+
+export const YourVatDetailsForm = ({
+  disabled,
+  entityVatIds,
+  isEntityVatIdsLoading,
+}: YourVatDetailsFormProps) => {
   const { i18n } = useLingui();
   const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
-
-  const { api, entityId } = useMoniteContext();
-  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
-    api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: entityId },
-    });
 
   const {
     data: entity,

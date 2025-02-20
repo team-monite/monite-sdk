@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Controller,
   type FieldValues,
@@ -15,25 +14,19 @@ export const CounterpartReminderToggle = <T extends FieldValues>(
   const { i18n } = useLingui();
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      padding={2}
-      sx={{
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-      }}
-    >
+    <Box display="flex" alignItems="start" justifyContent="space-between">
       <Box>
-        <Typography variant="subtitle1">
+        <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.84)' }}>
           {t(i18n)`Enable email reminders`}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ maxWidth: '70%' }}
+        >
           {t(
             i18n
-          )`You can change this setting if you wish to forbid sending any payment reminders to this counterpart.`}
+          )`Disabling reminders prevents sending any payment reminders to this counterpart.`}
         </Typography>
       </Box>
       <Controller

@@ -24,6 +24,8 @@ export type CounterpartViewProps = {
 
   onAddressEdit?: (id: string) => void;
 
+  onClose?: () => void;
+
   onContactCreate?: () => void;
   onContactEdit?: (id: string) => void;
   onContactDelete?: (id: string) => void;

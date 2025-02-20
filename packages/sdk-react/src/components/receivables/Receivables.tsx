@@ -122,6 +122,7 @@ const ReceivablesBase = () => {
             setIsCreateInvoiceDialogOpen(false);
             setActiveTab(ReceivablesTableTabEnum.Invoices);
             openInvoiceModal(receivableId);
+            componentSettings?.receivables?.onCreate?.(receivableId);
           }}
         />
       </Dialog>

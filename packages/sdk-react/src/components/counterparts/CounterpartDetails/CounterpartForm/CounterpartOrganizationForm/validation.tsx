@@ -1,10 +1,9 @@
+import { getAddressValidationSchema } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/validation';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
 import * as yup from 'yup';
 import type { SchemaOf } from 'yup';
-
-import { getAddressValidationSchema } from '../../CounterpartAddressForm/validation';
 
 export const getUpdateCounterpartValidationSchema = (
   i18n: I18n

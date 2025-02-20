@@ -4,6 +4,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import type { DefaultValuesOCROrganization } from '@/components/counterparts/Counterpart.types';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -28,9 +29,10 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
-import { CounterpartAddressForm } from '../../CounterpartAddressForm';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import {
   useCounterpartForm,
@@ -46,11 +48,15 @@ import {
   getCreateCounterpartValidationSchema,
 } from './validation';
 
+interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
+  isInvoiceCreation?: boolean;
+  defaultValuesOCR?: DefaultValuesOCROrganization;
+}
+
 export const CounterpartOrganizationForm = (
-  props: CounterpartsFormProps & {
-    defaultValuesOCR?: DefaultValuesOCROrganization;
-  }
+  props: CounterpartOrganizationFormProps
 ) => {
+  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const {
@@ -74,6 +80,9 @@ export const CounterpartOrganizationForm = (
   const organizationCounterpart = counterpart as
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
+
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const methods = useForm({
     resolver: yupResolver(
@@ -174,6 +183,13 @@ export const CounterpartOrganizationForm = (
   ]);
 
   if (isCreateAllowedLoading || isLoading) {
+    if (isInvoiceCreation) {
+      return (
+        <Grid pb={4}>
+          <LoadingPage />
+        </Grid>
+      );
+    }
     return <LoadingPage />;
   }
 
@@ -183,39 +199,50 @@ export const CounterpartOrganizationForm = (
 
   return (
     <>
-      <Grid
-        container
-        alignItems="center"
-        data-testid={CounterpartDataTestId.OrganizationForm}
+      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+        <Grid
+          container
+          alignItems="center"
+          data-testid={CounterpartDataTestId.OrganizationForm}
+        >
+          <Grid item xs={11}>
+            <Typography variant="h3" sx={{ padding: 3 }}>
+              {isInvoiceCreation
+                ? t(i18n)`Create customer`
+                : isUpdateMode
+                ? watch('organization.companyName')
+                : t(i18n)`Create Counterpart – Company`}
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            {dialogContext?.isDialogContent && (
+              <IconWrapper
+                aria-label={t(i18n)`Counterpart Close`}
+                onClick={props.onClose || dialogContext.onClose}
+                color="inherit"
+              >
+                <CloseIcon />
+              </IconWrapper>
+            )}
+          </Grid>
+        </Grid>
+      )}
+
+      {!isInvoiceCreation && <Divider />}
+      <DialogContent
+        sx={{
+          padding: '0 2rem',
+          maxHeight: isLargeScreen ? 480 : 380,
+          overflowY: 'auto',
+        }}
       >
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {isUpdateMode
-              ? watch('organization.companyName')
-              : t(i18n)`Create Counterpart – Company`}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
-      <DialogContent>
         <FormProvider {...methods}>
           <form
             id="counterpartOrganizationForm"
             ref={formRef}
             onSubmit={handleSubmitWithoutPropagation}
           >
-            <Grid container direction="column" rowSpacing={3}>
+            <Grid container direction="column" rowSpacing={3} pb={4}>
               <Grid item>
                 <Controller
                   name="organization.companyName"
@@ -400,23 +427,33 @@ export const CounterpartOrganizationForm = (
         </FormProvider>
       </DialogContent>
       <Divider />
-      <DialogActions>
+      <DialogActions
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '1em',
+          padding: 4,
+        }}
+      >
         {(isUpdateMode || dialogContext) && (
           <Button
-            variant="outlined"
-            color="inherit"
-            onClick={isUpdateMode ? props.onCancel : dialogContext?.onClose}
+            variant="text"
+            onClick={
+              isUpdateMode
+                ? props.onCancel
+                : props.onClose || dialogContext?.onClose
+            }
           >
             {t(i18n)`Cancel`}
           </Button>
         )}
         <Button
-          variant="outlined"
+          variant="contained"
           color="primary"
           disabled={isLoading}
           onClick={submitForm}
         >
-          {isUpdateMode ? t(i18n)`Update` : t(i18n)`Create`}
+          {isUpdateMode ? t(i18n)`Save` : t(i18n)`Create`}
         </Button>
       </DialogActions>
     </>
