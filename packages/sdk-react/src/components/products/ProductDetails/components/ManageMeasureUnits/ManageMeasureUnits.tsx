@@ -1,5 +1,3 @@
-import { useId, useMemo, useState } from 'react';
-
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -13,7 +11,13 @@ import {
 
 import { ManageMeasureUnitsForm } from '../ManageMeasureUnitsForm';
 
-export const ManageMeasureUnits = ({ handleClose }) => {
+interface ManageMeasureUnitsProps {
+  handleClose: () => void;
+}
+
+export const ManageMeasureUnits = ({
+  handleClose,
+}: ManageMeasureUnitsProps) => {
   const { i18n } = useLingui();
   return (
     <>
