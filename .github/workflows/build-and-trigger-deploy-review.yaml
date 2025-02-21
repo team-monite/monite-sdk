@@ -169,15 +169,8 @@ jobs:
         with:
           message: |
             🚀 **Preview URLs are now available!** 🚀            
-            - [SDK Demo](https://sdk-demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
-            - [SDK Drop in](https://cdn-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
-            - [SDK with NextJS](https://demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+            - [SDK Demo](https://sdk-demo-${env.NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+            - [SDK Drop in](https://cdn-${env.NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+            - [SDK with NextJS](https://demo-${env.NORMALIZED_GITHUB_BRANCH}.review.monite.com)
           comment-tag: preview-comment
           mode: upsert
-
-      - name: debug
-        env: 
-          NORMALIZED_GITHUB_BRANCH: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
-        run: |
-          echo "$NORMALIZED_GITHUB_BRANCH"
-          echo "${NORMALIZED_GITHUB_BRANCH}"
