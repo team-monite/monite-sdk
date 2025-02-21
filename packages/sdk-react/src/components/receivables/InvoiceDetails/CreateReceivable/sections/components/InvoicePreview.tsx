@@ -6,6 +6,7 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
+import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
@@ -75,12 +76,57 @@ export const InvoicePreview = ({
     smallest_amount: item.smallest_amount ?? undefined,
   }));
 
-  const { subtotalPrice, totalPrice, totalTaxes } =
-    useCreateInvoiceProductsTable({
-      lineItems: sanitizedItems,
-      formatCurrencyToDisplay,
-      isNonVatSupported,
+  const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
+    lineItems: sanitizedItems,
+    formatCurrencyToDisplay,
+    isNonVatSupported,
+  });
+
+  const getApplicableTaxRate = (
+    item: CreateReceivablesFormBeforeValidationLineItemProps
+  ): number => {
+    if (item.price?.currency === 'EUR') {
+      return item.vat_rate_value || 0;
+    }
+    return item.tax_rate_value || 0;
+  };
+
+  const groupItemsByTaxRate = (
+    items: Array<CreateReceivablesFormBeforeValidationLineItemProps>
+  ): Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]> => {
+    return items.reduce((acc, item) => {
+      const taxRate = getApplicableTaxRate(item);
+      if (taxRate === 0) {
+        return acc;
+      }
+      if (!acc[taxRate]) {
+        acc[taxRate] = [];
+      }
+      acc[taxRate].push(item);
+      return acc;
+    }, {} as Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]>);
+  };
+
+  const calculateTotalTaxesByRate = (
+    groupedItems: Record<
+      number,
+      CreateReceivablesFormBeforeValidationLineItemProps[]
+    >
+  ): Array<{ taxRate: number; totalTax: number }> => {
+    return Object.keys(groupedItems).map((taxRateKey) => {
+      const taxRate = Number(taxRateKey);
+      const items = groupedItems[taxRate];
+      const totalTax = items.reduce((sum, item) => {
+        const itemPrice = item.price?.value || 0;
+        const itemTax = (itemPrice * item.quantity * taxRate) / 10000;
+        return sum + itemTax;
+      }, 0);
+      return { taxRate: taxRate / 100, totalTax };
     });
+  };
+
+  const groupedItems = groupItemsByTaxRate(sanitizedItems);
+  const totalTaxesByRate = calculateTotalTaxesByRate(groupedItems);
 
   return (
     <div className="invoice-preview">
@@ -280,23 +326,25 @@ export const InvoicePreview = ({
                   </td>
                   <td>{subtotalPrice?.toString()}</td>
                 </tr>
-                <tr>
-                  <td colSpan={4}>
-                    <span>{t(i18n)`Total Tax`} (0%)</span>
-                  </td>
-                  <td>
-                    {totalTaxes?.toString()} {currency}
-                  </td>
-                </tr>
+                {totalTaxesByRate.map((tax, index) => (
+                  <tr key={index}>
+                    <td colSpan={4}>
+                      <span>
+                        {t(i18n)`Total Tax`} ({tax.taxRate}%)
+                      </span>
+                    </td>
+                    <td>
+                      {currency &&
+                        formatCurrencyToDisplay(tax.totalTax, currency, true)}
+                    </td>
+                  </tr>
+                ))}
                 <tr className="total">
                   <td colSpan={4}>
                     <span>{t(i18n)`Total`}</span>
                   </td>
                   <td>
-                    <span>
-                      {totalPrice?.toString()}
-                      {currency}
-                    </span>
+                    <span>{totalPrice?.toString()}</span>
                   </td>
                 </tr>
               </tbody>

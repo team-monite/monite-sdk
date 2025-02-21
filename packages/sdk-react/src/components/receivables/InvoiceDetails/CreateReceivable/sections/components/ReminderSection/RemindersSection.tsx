@@ -247,7 +247,12 @@ const ReminderSectionContent = ({
                 return t(i18n)`Create a reminder preset`;
               return option.label || '—';
             }}
-            sx={{ flexWrap: 'nowrap' }}
+            sx={{
+              flexWrap: 'nowrap',
+              minWidth: '150px',
+              flexBasis: '70%',
+              marginLeft: '5px',
+            }}
             renderOption={(props, option) => (
               <MenuItem
                 {...props}
@@ -316,6 +321,7 @@ const ReminderSectionContent = ({
                 return t(i18n)`Create a reminder preset`;
               return option.label || '—';
             }}
+            sx={{ minWidth: '150px', flexBasis: '70%' }}
             renderOption={(props, option) => (
               <MenuItem
                 {...props}
@@ -370,36 +376,38 @@ const SelectReminderLayout = ({
   const { i18n } = useLingui();
 
   return (
-    // Use bottom alignment to correctly align editors with buttons
-    <Grid container alignItems="bottom" spacing={1} p={1} pl={0}>
-      <Grid item xs={8}>
+    <Grid gridAutoFlow="row" spacing={1} p={1} pl={0} sx={{ flexBasis: '45%' }}>
+      <Grid item sx={{ display: 'flex', alignItems: 'start' }}>
         {children}
-      </Grid>
-      {onUpdate && (
-        <Grid
-          item
-          xs={2}
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            maxWidth: '33%',
-            flexBasis: '33%',
-          }}
-        >
-          <Button
-            variant="outlined"
-            disabled={updateDisabled}
-            onClick={(event) => {
-              event.preventDefault();
-              onUpdate();
+
+        {onUpdate && (
+          <Grid
+            item
+            xs={2}
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              maxWidth: '33%',
+              flexBasis: '33%',
+              marginTop: '28px',
             }}
-            fullWidth
-            size="large"
           >
-            {t(i18n)`Edit`}
-          </Button>
-        </Grid>
-      )}
+            <Button
+              variant="outlined"
+              disabled={updateDisabled}
+              onClick={(event) => {
+                event.preventDefault();
+                onUpdate();
+              }}
+              fullWidth
+              size="large"
+              sx={{ marginLeft: '.5em' }}
+            >
+              {t(i18n)`Edit`}
+            </Button>
+          </Grid>
+        )}
+      </Grid>
       {(isReminderLoading || reminder) && (
         <Grid item xs={12}>
           {isReminderLoading ? (

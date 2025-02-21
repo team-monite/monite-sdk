@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -9,6 +9,7 @@ import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceD
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
+  CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -43,6 +44,68 @@ import {
   Collapse,
   CardContent,
 } from '@mui/material';
+import { styled } from '@mui/material';
+
+interface VatRateControllerProps {
+  index: number;
+  vatRates?: VatRateListResponse;
+  highestVatRate: VatRateListResponse['data'][number] | undefined;
+}
+
+const VatRateController = ({
+  index,
+  vatRates,
+  highestVatRate,
+}: VatRateControllerProps) => {
+  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
+  const { root } = useRootElements();
+
+  useEffect(() => {
+    if (highestVatRate) {
+      setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
+      setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
+    }
+  }, [highestVatRate, index, setValue]);
+
+  return (
+    <Controller
+      name={`line_items.${index}.vat_rate_id`}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <FormControl
+          variant="standard"
+          fullWidth
+          required
+          error={Boolean(error)}
+        >
+          <Select
+            {...field}
+            id={field.name}
+            labelId={field.name}
+            MenuProps={{ container: root }}
+            size="small"
+            onChange={(e) => {
+              const vatRate = vatRates?.data.find(
+                (rate) => rate.id === e.target.value
+              );
+              if (!vatRate) {
+                throw new Error('Vat rate not found');
+              }
+              setValue(`line_items.${index}.vat_rate_value`, vatRate.value);
+              field.onChange(e);
+            }}
+          >
+            {vatRates?.data.map((vatRate) => (
+              <MenuItem key={vatRate.id} value={vatRate.id}>
+                {vatRate.value / 100}%
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+    />
+  );
+};
 
 interface CardTableItemProps {
   label: string | ReactNode;
@@ -156,7 +219,6 @@ export const ItemsSection = ({
   const {
     control,
     formState: { errors },
-    setValue,
     watch,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
@@ -175,8 +237,6 @@ export const ItemsSection = ({
     },
     [onCurrencyChanged]
   );
-
-  const { root } = useRootElements();
 
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);
@@ -223,7 +283,16 @@ export const ItemsSection = ({
   const highestVatRate = vatRates?.data?.reduce(
     (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
     vatRates?.data[0]
-  )?.id;
+  );
+
+  const StyledTableCell = styled(TableCell)`
+    max-width: 100px;
+
+    fieldset.MuiOutlinedInput-notchedOutline,
+    .MuiOutlinedInput-root:hover fieldset.MuiOutlinedInput-notchedOutline {
+      border-color: transparent;
+    }
+  `;
 
   return (
     <Stack spacing={0} className={className}>
@@ -274,7 +343,7 @@ export const ItemsSection = ({
                 {fields.map((field, index) => (
                   <TableRow className={tableRowClassName} key={field.id}>
                     <TableCell>{field.name}</TableCell>
-                    <TableCell>
+                    <StyledTableCell>
                       <Controller
                         name={`line_items.${index}.quantity`}
                         control={control}
@@ -291,7 +360,7 @@ export const ItemsSection = ({
                           </FormControl>
                         )}
                       />
-                    </TableCell>
+                    </StyledTableCell>
                     <TableCell>
                       {field.measure_unit_id ? (
                         <MeasureUnit unitId={field.measure_unit_id} />
@@ -333,60 +402,21 @@ export const ItemsSection = ({
                                 fullWidth={false}
                                 error={Boolean(error)}
                                 helperText={error?.message}
-                                InputProps={{
-                                  endAdornment: '%',
-                                }}
+                                InputProps={{ endAdornment: '%' }}
                                 sx={{ minWidth: 100 }}
                               />
                             </FormControl>
                           )}
                         />
                       ) : (
-                        <Controller
-                          name={`line_items.${index}.vat_rate_id`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
-                              <Select
-                                {...field}
-                                id={field.name}
-                                labelId={field.name}
-                                size="small"
-                                defaultValue={highestVatRate || ''}
-                                MenuProps={{ container: root }}
-                                onChange={(e) => {
-                                  const vatRate = vatRates?.data.find(
-                                    (vatRate) => vatRate.id === e.target.value
-                                  );
-
-                                  if (!vatRate) {
-                                    throw new Error('Vat rate not found');
-                                  }
-
-                                  setValue(
-                                    `line_items.${index}.vat_rate_value`,
-                                    vatRate.value
-                                  );
-
-                                  field.onChange(e);
-                                }}
-                              >
-                                {vatRates?.data.map((vatRate) => (
-                                  <MenuItem key={vatRate.id} value={vatRate.id}>
-                                    {vatRate.value / 100}%
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-                          )}
+                        <VatRateController
+                          index={index}
+                          vatRates={vatRates}
+                          highestVatRate={highestVatRate}
                         />
                       )}
                     </TableCell>
+
                     <TableCell>
                       <IconButton
                         onClick={() => {
