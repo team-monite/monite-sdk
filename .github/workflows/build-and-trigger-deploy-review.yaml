@@ -118,9 +118,6 @@ jobs:
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
     runs-on: ubuntu-latest
-    id: trigger-pipeline
-    outputs:
-      normalized_branch_name: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
     needs: 
       - build-sdk-demo
       - build-sdk-drop-in
@@ -128,6 +125,7 @@ jobs:
 
     steps:
       - name: Trigger GitLab Pipeline Deploy to Review
+        id: trigger-pipeline
         run: |
           REPO="${{ secrets.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
