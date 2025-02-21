@@ -50,10 +50,12 @@ export const ManageMeasureUnitsForm = () => {
     undefined,
     {
       onSuccess: async () => {
-        await api.measureUnits.getMeasureUnits.invalidateQueries(queryClient);
-        toast.success(
-          t(i18n)`Unit ${editingUnit.name} was deleted from the list.`
-        );
+        if (editingUnit) {
+          await api.measureUnits.getMeasureUnits.invalidateQueries(queryClient);
+          toast.success(
+            t(i18n)`Unit ${editingUnit.name} was deleted from the list.`
+          );
+        }
       },
       onError: (error) => {
         console.error(error);

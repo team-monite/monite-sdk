@@ -249,7 +249,7 @@ msgstr "Active"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1172
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:235
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:216
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:555
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:133
 msgid "Add"
@@ -1264,7 +1264,7 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:55
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:60
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:162
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
@@ -2262,7 +2262,7 @@ msgstr "Defaulted"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:370
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:502
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:63
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:68
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:234
 #: src/components/products/Products.test.tsx:176
 #: src/components/products/Products.test.tsx:203
@@ -2390,7 +2390,7 @@ msgstr "Department Stores"
 msgid "Description"
 msgstr "Description"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:161
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:144
 msgid "Description (optional)"
 msgstr "Description (optional)"
 
@@ -2525,7 +2525,7 @@ msgstr "Dominican Republic"
 msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:32
+#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:36
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:152
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:243
 msgid "Done"
@@ -3027,7 +3027,7 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:61
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:62
 msgid "Failed to delete Unit."
 msgstr "Failed to delete Unit."
 
@@ -4340,8 +4340,8 @@ msgstr "Mali"
 msgid "Malta"
 msgstr "Malta"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:22
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:174
+#: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:26
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:172
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:109
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:194
 #: src/components/products/Products.tsx:106
@@ -4477,7 +4477,7 @@ msgstr "Micronesia, Federated States Of"
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:193
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:191
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
 #: src/components/products/ProductDetails/validation.ts:37
 msgid "Minimum quantity"
@@ -5596,7 +5596,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:207
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:205
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:189
 #: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:212
@@ -6188,6 +6188,7 @@ msgid "Script in Monite Script is required"
 msgstr "Script in Monite Script is required"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:35
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:120
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:43
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:46
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:58
@@ -7229,23 +7230,27 @@ msgstr "Unique Entity Number (Singapore)"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:68
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:75
 msgid "Unit {0} was added to the list"
 msgstr "Unit {0} was added to the list"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:98
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:56
+msgid "Unit {0} was deleted from the list."
+msgstr "Unit {0} was deleted from the list."
+
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:105
 msgid "Unit {0} was updated"
 msgstr "Unit {0} was updated"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:57
-msgid "Unit {name} was deleted from the list."
-msgstr "Unit {name} was deleted from the list."
+#~ msgid "Unit {name} was deleted from the list."
+#~ msgstr "Unit {name} was deleted from the list."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:160
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:141
 msgid "Unit label"
 msgstr "Unit label"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:53
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:60
 msgid "Unit label is required"
 msgstr "Unit label is required"
 

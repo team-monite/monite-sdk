@@ -80,8 +80,8 @@ export const ProductForm = ({
 
   const MANAGE_MEASURE_UNITS_ID = '__manage_measure_units__';
 
-  function isManageMeasureUnits(option): boolean {
-    return option?.id === MANAGE_MEASURE_UNITS_ID;
+  function isManageMeasureUnits(option: string): boolean {
+    return option === MANAGE_MEASURE_UNITS_ID;
   }
 
   return (
@@ -156,18 +156,16 @@ export const ProductForm = ({
                         {...field}
                         onChange={(event) => {
                           const value = event.target.value;
-
                           if (isManageMeasureUnits(value)) {
                             field.onChange(null);
                             return;
                           }
-
                           field.onChange(value);
                         }}
                       >
                         <MenuItem
                           key={MANAGE_MEASURE_UNITS_ID}
-                          value=""
+                          value={MANAGE_MEASURE_UNITS_ID}
                           sx={{ color: 'primary.main', fontWeight: 'bold' }}
                           onClick={onManageMeasureUnits}
                         >
