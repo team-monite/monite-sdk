@@ -154,6 +154,10 @@ jobs:
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline")
 
           echo "GitLab API response code: $RESPONSE"
+          if [[ "$RESPONSE" -ne 201 ]]; then
+            echo "GitLab pipeline trigger failed with response code $RESPONSE"
+            exit 1
+          fi
 
       - name: Comment on PR with Preview URLs
         uses: thollander/actions-comment-pull-request@v3
@@ -163,5 +167,5 @@ jobs:
             - [SDK Demo](https://sdk-demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
             - [SDK Drop in](https://cdn-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
             - [SDK with NextJS](https://demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
-          comment_tag: preview-comment
+          comment-tag: preview-comment
           mode: upsert
