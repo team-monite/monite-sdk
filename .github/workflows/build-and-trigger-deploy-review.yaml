@@ -118,6 +118,9 @@ jobs:
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
     runs-on: ubuntu-latest
+    id: trigger-pipeline
+    outputs:
+      normalized_branch_name: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
     needs: 
       - build-sdk-demo
       - build-sdk-drop-in
@@ -134,6 +137,7 @@ jobs:
           SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
           NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
+          echo "normalized_branch_name=$NORMALIZED_GITHUB_BRANCH" >> "$GITHUB_OUTPUT"
 
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
@@ -161,6 +165,8 @@ jobs:
 
       - name: Comment on PR with Preview URLs
         uses: thollander/actions-comment-pull-request@v3
+        env: 
+          NORMALIZED_GITHUB_BRANCH: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
         with:
           message: |
             🚀 **Preview URLs are now available!** 🚀            
