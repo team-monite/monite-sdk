@@ -156,7 +156,7 @@ jobs:
           echo "GitLab API response code: $RESPONSE"
 
       - name: Comment on PR with Preview URLs
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             🚀 **Preview URLs are now available!** 🚀            
