@@ -342,19 +342,7 @@ const CreateReceivablesBase = ({
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
           height: '100vh',
         }}
-      >
-        <InvoicePreview
-          watch={watch}
-          counterpart={counterpart}
-          currency={actualCurrency}
-          isNonVatSupported={isNonVatSupported}
-          entityData={entityData}
-          address={counterpartBillingAddress}
-          paymentTerms={paymentTerms}
-          entityVatIds={entityVatIds}
-          counterpartVats={counterpartVats}
-        />
-      </Box>
+      ></Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
         reminderType={createReminderDialog.reminderType}

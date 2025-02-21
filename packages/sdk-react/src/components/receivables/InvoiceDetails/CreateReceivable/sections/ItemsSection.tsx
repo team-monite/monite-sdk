@@ -46,6 +46,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material';
 
+import { ItemSelector } from './ItemSelector';
+
 interface VatRateControllerProps {
   index: number;
   vatRates?: VatRateListResponse;
@@ -226,6 +228,7 @@ export const ItemsSection = ({
     control,
     name: 'line_items',
   });
+  const rows = 2;
   const watchedLineItems = watch('line_items');
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
@@ -244,6 +247,7 @@ export const ItemsSection = ({
   const handleCloseProductsTable = useCallback(() => {
     setProductsTableOpen(false);
   }, []);
+  console.log({ watchedLineItems });
 
   const {
     subtotalPrice,
@@ -284,6 +288,8 @@ export const ItemsSection = ({
     (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
     vatRates?.data[0]
   );
+
+  const { getSymbolFromCurrency } = useCurrencies();
 
   const StyledTableCell = styled(TableCell)`
     max-width: 100px;
@@ -334,6 +340,136 @@ export const ItemsSection = ({
               </TableRow>
             </TableHead>
             <TableBody>
+              {Array.from({ length: rows }).map((_, index) => (
+                <TableRow className={tableRowClassName}>
+                  <TableCell sx={{ minWidth: '200px' }}>
+                    <ItemSelector />
+                  </TableCell>
+                  <StyledTableCell>
+                    <Controller
+                      name={`line_items.${index}.quantity`}
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl>
+                          <TextField
+                            {...field}
+                            type="number"
+                            inputProps={{ min: 1 }}
+                            size="small"
+                            fullWidth={false}
+                            error={Boolean(error)}
+                          />
+                          {`line_items.${index}.measure_unit_id` ? (
+                            <MeasureUnit
+                              unitId={`line_items.${index}.measure_unit_id`}
+                            />
+                          ) : (
+                            'notloaded'
+                          )}
+                        </FormControl>
+                      )}
+                    />
+                  </StyledTableCell>
+                  <TableCell align="right">
+                    <Controller
+                      name={`line_items.${index}.price`}
+                      control={control}
+                      render={({
+                        field: controllerField,
+                        fieldState: { error },
+                      }) => {
+                        const formattedValue = formatCurrencyToDisplay(
+                          controllerField.value?.value || 0,
+                          controllerField.value?.currency || 'USD',
+                          false
+                        );
+                        return (
+                          <FormControl
+                            variant="standard"
+                            fullWidth
+                            required
+                            error={Boolean(error)}
+                          >
+                            <TextField
+                              {...controllerField}
+                              id={controllerField.name}
+                              type="text"
+                              size="small"
+                              fullWidth={false}
+                              error={Boolean(error)}
+                              helperText={error?.message}
+                              InputProps={{
+                                startAdornment: getSymbolFromCurrency(
+                                  controllerField.value?.currency || 'USD'
+                                ),
+                                readOnly: true,
+                              }}
+                              sx={{ minWidth: 100 }}
+                              value={formattedValue || ''}
+                              onChange={(e) => {
+                                const newValue = parseFloat(
+                                  e.target.value.replace(/[^0-9.]/g, '')
+                                );
+                                if (!isNaN(newValue)) {
+                                  controllerField.onChange({
+                                    ...controllerField.value,
+                                    value: newValue,
+                                  });
+                                }
+                              }}
+                            />
+                          </FormControl>
+                        );
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {isNonVatSupported ? (
+                      <Controller
+                        name={`line_items.${index}.tax_rate_value`}
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                          <FormControl
+                            variant="standard"
+                            fullWidth
+                            required
+                            error={Boolean(error)}
+                          >
+                            <TextField
+                              {...field}
+                              id={field.name}
+                              type="number"
+                              inputProps={{ min: 1, max: 100 }}
+                              size="small"
+                              fullWidth={false}
+                              error={Boolean(error)}
+                              helperText={error?.message}
+                              InputProps={{ endAdornment: '%' }}
+                              sx={{ minWidth: 100 }}
+                            />
+                          </FormControl>
+                        )}
+                      />
+                    ) : (
+                      <VatRateController
+                        index={index}
+                        vatRates={vatRates}
+                        highestVatRate={highestVatRate}
+                      />
+                    )}
+                  </TableCell>
+
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        remove(index);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
               {fields.map((field, index) => (
                 <TableRow className={tableRowClassName} key={field.id}>
                   <TableCell>{field.name}</TableCell>
@@ -361,34 +497,57 @@ export const ItemsSection = ({
                     )}
                   </StyledTableCell>
                   <TableCell align="right">
-                    {field.price &&
-                      formatCurrencyToDisplay(
-                        field.price.value,
-                        field.price.currency
-                      )}
                     <Controller
                       name={`line_items.${index}.price`}
                       control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl
-                          variant="standard"
-                          fullWidth
-                          required
-                          error={Boolean(error)}
-                        >
-                          <TextField
-                            {...field}
-                            id={field.name}
-                            type="number"
-                            size="small"
-                            fullWidth={false}
+                      defaultValue={field.price}
+                      render={({
+                        field: controllerField,
+                        fieldState: { error },
+                      }) => {
+                        const formattedValue = formatCurrencyToDisplay(
+                          controllerField.value?.value || 0,
+                          controllerField.value?.currency || 'USD',
+                          false
+                        );
+                        return (
+                          <FormControl
+                            variant="standard"
+                            fullWidth
+                            required
                             error={Boolean(error)}
-                            helperText={error?.message}
-                            InputProps={{ startAdornment: '$' }}
-                            sx={{ minWidth: 100 }}
-                          />
-                        </FormControl>
-                      )}
+                          >
+                            <TextField
+                              {...controllerField}
+                              id={controllerField.name}
+                              type="text"
+                              size="small"
+                              fullWidth={false}
+                              error={Boolean(error)}
+                              helperText={error?.message}
+                              InputProps={{
+                                startAdornment: getSymbolFromCurrency(
+                                  controllerField.value?.currency || 'USD'
+                                ),
+                                readOnly: true,
+                              }}
+                              sx={{ minWidth: 100 }}
+                              value={formattedValue || ''}
+                              onChange={(e) => {
+                                const newValue = parseFloat(
+                                  e.target.value.replace(/[^0-9.]/g, '')
+                                );
+                                if (!isNaN(newValue)) {
+                                  controllerField.onChange({
+                                    ...controllerField.value,
+                                    value: newValue,
+                                  });
+                                }
+                              }}
+                            />
+                          </FormControl>
+                        );
+                      }}
                     />
                   </TableCell>
                   <TableCell>
