@@ -19,8 +19,10 @@ jobs:
           labels=$(jq -r '.pull_request.labels | map(.name) | join(",")' "$GITHUB_EVENT_PATH")
           if [[ "$labels" == *"pullpreview"* ]]; then
             echo "has_label=true" >> "$GITHUB_OUTPUT"
+            echo "pullpreview label found, proceeding with build and deploy"
           else
             echo "has_label=false" >> "$GITHUB_OUTPUT"
+            echo "pullpreview label not found, skipping build and deploy"
           fi
 
   build-sdk-react:
@@ -137,7 +139,7 @@ jobs:
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
 
-          curl --request POST \
+          RESPONSE=$(curl --request POST \
             --form token="${GITLAB_TOKEN}" \
             --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
@@ -148,4 +150,18 @@ jobs:
             --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=review_deploy" \
-            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
+            --write-out "%{http_code}" --silent --output /dev/null \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline")
+
+          echo "GitLab API response code: $RESPONSE"
+
+      - name: Comment on PR with Preview URLs
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 **Preview URLs are now available!** 🚀            
+            - [SDK Demo](https://sdk-demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+            - [SDK Drop in](https://cdn-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+            - [SDK with NextJS](https://demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
+          comment_tag: preview-comment
+          mode: upsert
