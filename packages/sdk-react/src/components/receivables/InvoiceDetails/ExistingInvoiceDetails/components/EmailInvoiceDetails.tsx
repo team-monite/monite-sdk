@@ -318,7 +318,7 @@ export const EmailInvoiceDetailsBase = ({
                   form={formName}
                   disabled={isDisabled || isLoading}
                   data-testid="issue-and-send-button"
-                >{t(i18n)`Issue and send`}</Button>
+                >{t(i18n)`Send`}</Button>
               </Stack>
             </Grid>
           </Grid>
