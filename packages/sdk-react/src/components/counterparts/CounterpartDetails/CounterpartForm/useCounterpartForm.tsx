@@ -17,10 +17,12 @@ export type CounterpartsFormProps = {
    * If `id` is NOT provided, then counterparts form works in `create` mode
    */
   id?: string;
+  isInvoiceCreation?: boolean;
   onCancel?: () => void;
   onClose?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  onReturn?: () => void;
   /**
    * Default values for the form fields
    */

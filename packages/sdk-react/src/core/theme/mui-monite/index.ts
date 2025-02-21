@@ -456,9 +456,20 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             paddingTop: 0,
             paddingBottom: 0,
           },
+          '& .MuiInput-root .MuiInput-input, & .MuiInput-root.MuiInputBase-sizeSmall':
+            {
+              padding: '0 14px',
+            },
           '& > .Monite-CounterpartSelector': {
             '& > .MuiInputBase-root': {
               border: '1px solid transparent',
+              '&:hover': {
+                '&:not(.Mui-disabled):not(.Mui-focused)': {
+                  boxShadow: `0 0 0 4px ${chroma(palette.primary.main)
+                    .alpha(0.24)
+                    .hex()}`,
+                },
+              },
               '& > .MuiInputAdornment-root': {
                 '&.MuiInputAdornment-positionStart': {
                   marginRight: '16px',

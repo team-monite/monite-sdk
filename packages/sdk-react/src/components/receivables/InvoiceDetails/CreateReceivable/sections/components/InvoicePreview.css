@@ -95,6 +95,17 @@
   text-transform: uppercase;
 }
 
+/* 2 rules below improve the balance of the table while discount row isn't present */
+.invoice-preview .line-items-table th:last-child,
+.invoice-preview .line-items-table td:last-child {
+  text-align: right;
+}
+
+.invoice-preview .line-items-table th:nth-child(3),
+.invoice-preview .line-items-table td:nth-child(3) {
+  text-align: center;
+}
+
 .invoice-preview .line-items-table td {
   padding: 12px;
   vertical-align: top;
