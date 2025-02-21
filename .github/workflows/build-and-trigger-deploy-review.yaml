@@ -140,6 +140,7 @@ jobs:
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
+          echo "$NORMALIZED_GITHUB_BRANCH"
 
           RESPONSE=$(curl --request POST \
             --form token="${GITLAB_TOKEN}" \
@@ -173,3 +174,10 @@ jobs:
             - [SDK with NextJS](https://demo-${NORMALIZED_GITHUB_BRANCH}.review.monite.com)
           comment-tag: preview-comment
           mode: upsert
+
+      - name: debug
+        env: 
+          NORMALIZED_GITHUB_BRANCH: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
+        run: |
+          echo "$NORMALIZED_GITHUB_BRANCH"
+          echo "${NORMALIZED_GITHUB_BRANCH}"
