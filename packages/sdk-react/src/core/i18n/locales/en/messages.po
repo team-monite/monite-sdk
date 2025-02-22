@@ -480,7 +480,7 @@ msgstr "All invoices"
 msgid "All items"
 msgstr "All items"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:45
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:71
 msgid "All items with this measure unit will get deleted, too."
 msgstr "All items with this measure unit will get deleted, too."
 
@@ -1264,7 +1264,7 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:60
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:117
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:162
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
@@ -2262,7 +2262,7 @@ msgstr "Defaulted"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:370
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:502
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:68
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:125
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:234
 #: src/components/products/Products.test.tsx:176
 #: src/components/products/Products.test.tsx:203
@@ -2302,7 +2302,7 @@ msgstr "Delete \"{0}\" tag?"
 msgid "Delete \"{0}\"?"
 msgstr "Delete \"{0}\"?"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:41
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:65
 msgid "Delete \"{name}\" unit and associated items?"
 msgstr "Delete \"{name}\" unit and associated items?"
 
@@ -2322,7 +2322,7 @@ msgstr "Delete bill"
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:39
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:12
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:461
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:36
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:60
 #: src/core/context/MoniteI18nProvider.test.tsx:36
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
@@ -2390,7 +2390,7 @@ msgstr "Department Stores"
 msgid "Description"
 msgstr "Description"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:144
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:140
 msgid "Description (optional)"
 msgstr "Description (optional)"
 
@@ -3027,7 +3027,7 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:62
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:63
 msgid "Failed to delete Unit."
 msgstr "Failed to delete Unit."
 
@@ -5471,8 +5471,8 @@ msgid "Please provide the following documents for the person"
 msgstr "Please provide the following documents for the person"
 
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:48
-msgid "Please replace the measure units in the products and services you want to keep."
-msgstr "Please replace the measure units in the products and services you want to keep."
+#~ msgid "Please replace the measure units in the products and services you want to keep."
+#~ msgstr "Please replace the measure units in the products and services you want to keep."
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:179
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:184
@@ -5506,6 +5506,10 @@ msgid ""
 msgstr ""
 "Please, check the details of your payment record.\n"
 "You won't be able to change or delete it after."
+
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:74
+msgid "Please, check the list of products and services that will get deleted:"
+msgstr "Please, check the list of products and services that will get deleted:"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1098
 msgid "Plumbing, Heating Equipment, and Supplies"
@@ -6188,7 +6192,7 @@ msgid "Script in Monite Script is required"
 msgstr "Script in Monite Script is required"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:35
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:120
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:116
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:43
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:46
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:58
@@ -7234,7 +7238,7 @@ msgstr "Unit"
 msgid "Unit {0} was added to the list"
 msgstr "Unit {0} was added to the list"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:56
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:57
 msgid "Unit {0} was deleted from the list."
 msgstr "Unit {0} was deleted from the list."
 
@@ -7246,7 +7250,7 @@ msgstr "Unit {0} was updated"
 #~ msgid "Unit {name} was deleted from the list."
 #~ msgstr "Unit {name} was deleted from the list."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:141
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:137
 msgid "Unit label"
 msgstr "Unit label"
 
