@@ -32,7 +32,8 @@ export const ManageMeasureUnitsForm = () => {
   const { i18n } = useLingui();
 
   const [editingUnit, setEditingUnit] = useState<UnitResponse | null>(null);
-
+  const [deletingUnit, setDeletingUnit] = useState<UnitResponse | null>(null);
+  const showDeleteDialog = !!deletingUnit;
   const [search, setSearch] = useState<string>('');
 
   const { data: measureUnits, isLoading: measureUnitsLoading } =
@@ -50,10 +51,10 @@ export const ManageMeasureUnitsForm = () => {
     undefined,
     {
       onSuccess: async () => {
-        if (editingUnit) {
+        if (deletingUnit) {
           await api.measureUnits.getMeasureUnits.invalidateQueries(queryClient);
           toast.success(
-            t(i18n)`Unit ${editingUnit.name} was deleted from the list.`
+            t(i18n)`Unit ${deletingUnit.name} was deleted from the list.`
           );
         }
       },
@@ -64,30 +65,25 @@ export const ManageMeasureUnitsForm = () => {
     }
   );
 
-  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-
   const handleOpenDeleteDialog = useCallback((unit: UnitResponse) => {
-    setShowDeleteDialog(true);
-    setEditingUnit(unit);
+    setDeletingUnit(unit);
   }, []);
 
   const handleCloseDeleteDialog = useCallback(() => {
-    setShowDeleteDialog(false);
-    setEditingUnit(null);
+    setDeletingUnit(null);
   }, []);
 
   const deleteUnit = useCallback(() => {
-    if (!editingUnit) {
+    if (!deletingUnit) {
       return;
     }
-
     deleteUnitMutation.mutate(
-      { path: { unit_id: editingUnit.id } },
+      { path: { unit_id: deletingUnit.id } },
       {
         onSuccess: () => handleCloseDeleteDialog(),
       }
     );
-  }, [deleteUnitMutation, editingUnit, handleCloseDeleteDialog]);
+  }, [deleteUnitMutation, deletingUnit, handleCloseDeleteDialog]);
 
   const isDeleteLoading = deleteUnitMutation.isPending;
 
@@ -202,7 +198,8 @@ export const ManageMeasureUnitsForm = () => {
 
       <ConfirmDeleteMeasureUnitDialogue
         open={showDeleteDialog}
-        name={editingUnit?.name || ''}
+        id={deletingUnit?.id}
+        name={deletingUnit?.name || ''}
         isLoading={isDeleteLoading}
         onClose={handleCloseDeleteDialog}
         onDelete={deleteUnit}
