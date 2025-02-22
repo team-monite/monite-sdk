@@ -1,5 +1,12 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.10
+
+### Minor Changes
+
+- 08fa299: improvements requested after invoice preview merge
+- 86b7490: fix(DEV-13777): invoice preview
+
 ## 4.0.0-alpha.9
 
 ### Patch Changes
