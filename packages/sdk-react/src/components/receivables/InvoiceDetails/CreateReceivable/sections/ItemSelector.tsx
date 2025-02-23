@@ -213,6 +213,23 @@ export const ItemSelector = ({
                   container: root,
                 },
               }}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+
+                !isSimplified &&
+                  filtered.unshift({
+                    id: CREATE_NEW_ID,
+                    label: t(i18n)`Create new counterpart`,
+                  });
+
+                if (!isSimplified && params.inputValue.length) {
+                  filtered.push({
+                    id: DIVIDER,
+                    label: '-',
+                  });
+                }
+                return [...filtered];
+              }}
               renderInput={(params) => {
                 return (
                   <TextField
