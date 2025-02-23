@@ -96,6 +96,9 @@ export const InvoicePreview = ({
   ): Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]> => {
     return items.reduce((acc, item) => {
       const taxRate = getApplicableTaxRate(item);
+      if (taxRate === 0) {
+        return acc;
+      }
       if (!acc[taxRate]) {
         acc[taxRate] = [];
       }
@@ -331,7 +334,8 @@ export const InvoicePreview = ({
                       </span>
                     </td>
                     <td>
-                      {formatCurrencyToDisplay(tax.totalTax, currency, false)}
+                      {currency &&
+                        formatCurrencyToDisplay(tax.totalTax, currency, true)}
                     </td>
                   </tr>
                 ))}
@@ -340,10 +344,7 @@ export const InvoicePreview = ({
                     <span>{t(i18n)`Total`}</span>
                   </td>
                   <td>
-                    <span>
-                      {totalPrice?.toString()}
-                      {currency}
-                    </span>
+                    <span>{totalPrice?.toString()}</span>
                   </td>
                 </tr>
               </tbody>

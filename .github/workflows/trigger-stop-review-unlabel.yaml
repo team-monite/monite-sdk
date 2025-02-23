@@ -1,13 +1,14 @@
-name: Trigger Stop Review
+name: Trigger Stop Review Unlabel
 
 on:
   pull_request:
     types:
-      - closed
+      - unlabeled
 
 jobs:
   trigger-gitlab-review-destroy:
     name: Trigger GitLab Review Stop
+    if: ${{ github.event.label.name == 'pullpreview' }}  
     runs-on: ubuntu-latest
 
     steps:
