@@ -308,6 +308,18 @@ export const ItemsSection = ({
     max-width: 100px;
   `;
 
+  const handleUpdate = useCallback(
+    (index: number, item: any) => {
+      if (item) {
+        setValue(`line_items.${index}.name`, item.label);
+        setValue(`line_items.${index}.price.value`, item.price?.value || 0);
+        setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
+        setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+      }
+    },
+    [setValue]
+  );
+
   const { root } = useRootElements();
 
   const VatRateController = ({ index }: { index: number }) => {
@@ -412,6 +424,10 @@ export const ItemsSection = ({
                       {isLocal ? (
                         <ItemSelector
                           setIsCreateItemOpened={setProductsTableOpen}
+                          onUpdate={(item) => handleUpdate(index, item)}
+                          index={index}
+                          actualCurrency={actualCurrency}
+                          defaultCurrency={defaultCurrency}
                         />
                       ) : (
                         field.name
@@ -449,7 +465,34 @@ export const ItemsSection = ({
                           field: controllerField,
                           fieldState: { error },
                         }) => {
-                          const rawValue = controllerField.value ?? 0;
+                          const [isTyping, setIsTyping] = useState(false);
+                          const [rawValue, setRawValue] = useState('');
+
+                          const handleBlur = (e) => {
+                            const numericValue = parseFloat(
+                              rawValue.replace(/[^0-9.]/g, '')
+                            );
+
+                            if (!isNaN(numericValue)) {
+                              const valueInCents = Math.round(
+                                //should apply only if . or , not already present
+                                numericValue * 100
+                              );
+                              //at this point should also format it to show formatted to the user when they click again
+                              setRawValue(String(valueInCents));
+                            }
+                            setIsTyping(false);
+                            controllerField.onBlur();
+                          };
+
+                          const formattedValue = controllerField.value
+                            ? formatCurrencyToDisplay(
+                                controllerField.value,
+                                actualCurrency || 'USD',
+                                false
+                              )
+                            : '';
+
                           return (
                             <FormControl
                               variant="standard"
@@ -460,9 +503,11 @@ export const ItemsSection = ({
                               <TextField
                                 size="small"
                                 type="text"
+                                value={isTyping ? rawValue : formattedValue}
                                 sx={{ minWidth: 100 }}
                                 placeholder={'0'}
-                                onBlur={controllerField.onBlur}
+                                onBlur={handleBlur}
+                                onFocus={() => setIsTyping(true)}
                                 name={controllerField.name}
                                 inputRef={controllerField.ref}
                                 InputProps={{
@@ -471,11 +516,7 @@ export const ItemsSection = ({
                                   ),
                                 }}
                                 onChange={(e) => {
-                                  const formatted = formatCurrencyToDisplay(
-                                    rawValue * 1000,
-                                    actualCurrency || 'USD',
-                                    false
-                                  );
+                                  setRawValue(e.target.value);
                                   const newValue = parseFloat(
                                     e.target.value.replace(/[^0-9.]/g, '')
                                   );

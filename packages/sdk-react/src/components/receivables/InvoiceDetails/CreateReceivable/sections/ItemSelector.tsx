@@ -79,15 +79,14 @@ function isDividerOption(
 
 export const ItemSelector = ({
   setIsCreateItemOpened,
-  //setIsEditCounterpartOpened,
   isSimplified = false,
   disabled,
   index = 0,
   actualCurrency = 'EUR',
   defaultCurrency = 'EUR',
+  onUpdate,
 }: any) => {
   const { i18n } = useLingui();
-
   const { root } = useRootElements();
   const { control, watch } = useForm<CreateReceivablesProductsFormProps>({
     resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
@@ -113,8 +112,6 @@ export const ItemSelector = ({
       query: {
         limit: 20,
         currency,
-        //   type: currentFilter[FILTER_TYPE_TYPE] || undefined,
-        //   name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       },
     },
     {
@@ -184,30 +181,32 @@ export const ItemSelector = ({
           (item) => item.id === field.value
         );
 
-        /**
-         * We have to set `selectedCounterpartOption` to `null`
-         *  if `selectedCounterpart` is `null` because
-         *  `Autocomplete` component doesn't work with `undefined`
-         */
         const selectedItemOption = selectedItem
           ? {
               id: selectedItem.id,
               label: selectedItem.name,
             }
           : null;
+
+        const handleItemChange = (value: any) => {
+          if (isCreateNewItemOption(value) || isDividerOption(value)) {
+            field.onChange(null);
+            return;
+          }
+
+          field.onChange(value?.id);
+
+          if (value && onUpdate) {
+            onUpdate(value);
+          }
+        };
+
         return (
           <>
             <Autocomplete
               {...field}
               value={selectedItemOption}
-              onChange={(_, value) => {
-                if (isCreateNewItemOption(value) || isDividerOption(value)) {
-                  field.onChange(null);
-
-                  return;
-                }
-                field.onChange(value?.id);
-              }}
+              onChange={(_, value) => handleItemChange(value)}
               slotProps={{
                 popper: {
                   container: root,
