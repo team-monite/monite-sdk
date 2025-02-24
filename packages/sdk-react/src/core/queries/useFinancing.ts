@@ -50,7 +50,8 @@ export const useGetFinanceOffers = () => {
   return api.financingOffers.getFinancingOffers.useQuery();
 };
 
-const KANMON_CONNECT_SCRIPT_URL = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
+const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
+const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
 
 type startFinanceSessionOptions = {
   sessionToken?: string;
@@ -76,13 +77,21 @@ declare global {
 }
 
 export const useFinancing = () => {
+  const { apiUrl } = useMoniteContext();
   const [displayButtonMessage, setDisplayButtonMessage] = useState('');
   const [actionRequired, setActionRequired] = useState(false);
   const getConnectToken = useGetFinancingConnectToken();
   const { isUSEntity, isLoading: isUSEntityLoading } = useMyEntity();
 
+  const isProduction =
+    !apiUrl.includes('//api.dev.monite.com') &&
+    !apiUrl.includes('//api.sandbox.monite.com');
+  const kanmonConnectScriptUrl = isProduction
+    ? KANMON_CONNECT_SCRIPT_URL_PRODUCTION
+    : KANMON_CONNECT_SCRIPT_URL_SANDBOX;
+
   const [scriptLoading] = useScript({
-    src: KANMON_CONNECT_SCRIPT_URL,
+    src: kanmonConnectScriptUrl,
   });
   const [isInitializing, setIsInitializing] = useState(false);
   const [isFetchingConnectToken, setIsFetchingConnectToken] = useState(true);
