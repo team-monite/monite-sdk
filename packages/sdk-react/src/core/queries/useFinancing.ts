@@ -83,9 +83,18 @@ export const useFinancing = () => {
   const getConnectToken = useGetFinancingConnectToken();
   const { isUSEntity, isLoading: isUSEntityLoading } = useMyEntity();
 
-  const isProduction =
-    !apiUrl.includes('//api.dev.monite.com') &&
-    !apiUrl.includes('//api.sandbox.monite.com');
+  const isProduction = (() => {
+    try {
+      const url = new URL(apiUrl);
+      return !['api.dev.monite.com', 'api.sandbox.monite.com'].includes(
+        url.hostname
+      );
+    } catch {
+      // If URL parsing fails, default to production for safety
+      return true;
+    }
+  })();
+
   const kanmonConnectScriptUrl = isProduction
     ? KANMON_CONNECT_SCRIPT_URL_PRODUCTION
     : KANMON_CONNECT_SCRIPT_URL_SANDBOX;
