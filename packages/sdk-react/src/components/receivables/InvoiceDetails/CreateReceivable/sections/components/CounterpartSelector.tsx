@@ -201,7 +201,7 @@ export const CounterpartSelector = ({
                     required
                     error={Boolean(error)}
                     helperText={error?.message}
-                    className={`Monite-CounterpartSelector ${
+                    className={`Monite-Selector ${
                       isSimplified ? 'isSimplified' : ''
                     }`}
                     InputProps={{

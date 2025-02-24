@@ -460,7 +460,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             {
               padding: '0 14px',
             },
-          '& > .Monite-CounterpartSelector': {
+          '& > .Monite-Selector': {
             '& > .MuiInputBase-root': {
               border: '1px solid transparent',
               '&:hover': {
@@ -485,7 +485,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 },
               },
               '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
-                padding: '16px 16px 16px 16px',
+                padding: '16px',
                 height: '70px',
                 lineHeight: '70px',
                 backgroundColor: 'transparent',
@@ -501,6 +501,14 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 '> legend': {
                   display: 'none',
                 },
+              },
+            },
+            '&.Item-Selector > .MuiInputBase-root': {
+              paddingRight: '1em',
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '8px 12px',
+                height: '40px',
+                lineHeight: '40px',
               },
             },
             '& > .MuiFormLabel-root': {

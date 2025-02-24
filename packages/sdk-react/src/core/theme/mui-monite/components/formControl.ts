@@ -83,7 +83,7 @@ export const getFormControlStyles = (
           },
         },
 
-        '&:not(.Monite-CounterpartSelector):not(.Monite-FilterControl) .MuiFormLabel-root':
+        '&:not(.Monite-Selector):not(.Monite-FilterControl) .MuiFormLabel-root':
           {
             fontSize: '14px',
             color: ' rgba(112, 112, 112, 1)',
@@ -115,7 +115,7 @@ export const getFormControlStyles = (
               border: `1px solid ${palette.primary.main}`,
             },
 
-            '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
+            '&:not(.Monite-Selector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
               {
                 display: 'none',
               },

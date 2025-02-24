@@ -88,6 +88,8 @@ export interface ProductsTableProps {
    *  when the user tries to change currency, it will lead to data loss
    */
   hasProducts: boolean;
+  open: boolean;
+  setOpen: (arg0: boolean) => void;
 }
 
 const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
@@ -134,6 +136,8 @@ const getTableHeadCells = (i18n: I18n) => [
 export const ProductsTable = ({
   hasProducts,
   onAdd,
+  open,
+  setOpen,
   defaultCurrency,
   actualCurrency,
 }: ProductsTableProps) => {
@@ -165,7 +169,6 @@ export const ProductsTable = ({
     keyName: '_id',
   });
   const currency = watch('currency');
-  const dialogContent = useDialog();
   const { api } = useMoniteContext();
 
   const {
@@ -249,7 +252,7 @@ export const ProductsTable = ({
     []
   );
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(true);
   const handleCreateNewProduct = useCallback(() => {
     setIsCreateModalOpen(true);
   }, []);
@@ -288,274 +291,23 @@ export const ProductsTable = ({
   );
 
   return (
-    <>
-      <Dialog
-        open={isCreateModalOpen}
-        alignDialog="right"
-        onClose={() => {
-          setIsCreateModalOpen(false);
+    <Dialog
+      open={open}
+      alignDialog="right"
+      onClose={() => {
+        setOpen(false);
+      }}
+      data-testid={ProductsTableDataTestId.DialogTestId}
+    >
+      <ProductDetails
+        onCreated={() => {
+          setOpen(false);
         }}
-        data-testid={ProductsTableDataTestId.DialogTestId}
-      >
-        <ProductDetails
-          onCreated={() => {
-            setIsCreateModalOpen(false);
-          }}
-          defaultValues={{
-            currency: currency,
-          }}
-        />
-      </Dialog>
-      <Grid container alignItems="center">
-        <Grid item xs={9}>
-          <Typography variant="h3" sx={{ p: 4 }}>{t(
-            i18n
-          )`Add item`}</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Button
-            variant="text"
-            startIcon={<AddIcon />}
-            onClick={handleCreateNewProduct}
-          >{t(i18n)`Create new`}</Button>
-        </Grid>
-      </Grid>
-      <Divider />
-      <DialogContent>
-        <form
-          id={formName}
-          noValidate
-          onSubmit={handleSubmitWithoutPropagation}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>{t(
-            i18n
-          )`Select invoice currency`}</Typography>
-          <Typography variant="body2">{t(
-            i18n
-          )`And add items created with it.`}</Typography>
-          <Typography variant="body2" sx={{ mb: 2 }}>{t(
-            i18n
-          )`An invoice can only contain items in the selected currency.`}</Typography>
-          <Box sx={{ mb: 4 }}>
-            <MoniteCurrency
-              size="small"
-              name="currency"
-              control={control}
-              onChange={() => {
-                if (fields.length > 0 || hasProducts) {
-                  setOpenChangeCurrencyInfo(true);
-                  replace([]);
-                }
-              }}
-            />
-            <Collapse in={openChangeCurrencyInfo}>
-              <Alert severity="warning" sx={{ mt: 2 }}>{t(
-                i18n
-              )`If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones.`}</Alert>
-            </Collapse>
-          </Box>
-          {currency && (
-            <>
-              <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
-                i18n
-              )`Available items`}</Typography>
-              <Controller
-                name="items"
-                control={control}
-                render={({ fieldState: { error } }) => {
-                  if (!error) {
-                    return <></>;
-                  }
-
-                  return (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                      {error.message}
-                    </Alert>
-                  );
-                }}
-              />
-              <ProductsTableFilters
-                onChangeFilter={onChangeFilter}
-                sx={{ mb: 2 }}
-              />
-              <Paper
-                variant="outlined"
-                style={{ height: '100%' }}
-                sx={{
-                  '& .MuiListItem-root': {
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                  },
-                }}
-              >
-                <TableVirtuoso
-                  data={flattenProducts}
-                  context={{
-                    empty:
-                      isLoading ||
-                      !flattenProducts ||
-                      flattenProducts.length === 0,
-                  }}
-                  components={{
-                    ...VirtuosoTableComponents,
-                    TableRow: ({ item, ...props }) => (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={item.id}
-                        selected={isSelected(item).selected}
-                        onClick={() => {
-                          handleUpdateProducts(item);
-                        }}
-                        sx={{ cursor: 'pointer', height: 0 }}
-                        {...props}
-                      />
-                    ),
-                    EmptyPlaceholder: () => {
-                      if (isLoading) {
-                        return (
-                          <TableBody>
-                            <TableRow>
-                              <TableCell colSpan={3}>
-                                <CenteredContentBox>
-                                  <CircularProgress />
-                                </CenteredContentBox>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        );
-                      }
-
-                      return (
-                        <TableBody>
-                          <TableRow>
-                            <TableCell colSpan={3}>
-                              <CenteredContentBox>
-                                <Stack alignItems="center" sx={{ p: 4 }}>
-                                  <FileIcon color="primary" sx={{ mb: 2 }} />
-                                  <Typography
-                                    variant="body1"
-                                    sx={{ mb: 0.5 }}
-                                  >{t(i18n)`No items yet`}</Typography>
-                                  <Typography variant="body2" sx={{ mb: 2 }}>{t(
-                                    i18n
-                                  )`Create an item with this currency to add it`}</Typography>
-                                  <Button
-                                    variant="contained"
-                                    onClick={handleCreateNewProduct}
-                                    size="small"
-                                  >{t(i18n)`Create product or service`}</Button>
-                                </Stack>
-                              </CenteredContentBox>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      );
-                    },
-                  }}
-                  fixedHeaderContent={() => {
-                    if (isLoading) {
-                      return null;
-                    }
-
-                    if (!flattenProducts || flattenProducts.length === 0) {
-                      return null;
-                    }
-
-                    return (
-                      <>
-                        <TableRow>
-                          {tableHeadCells.map((headCell) => (
-                            <TableCell
-                              key={headCell.id}
-                              width={headCell.width}
-                              align={headCell.align}
-                              variant="head"
-                              padding="normal"
-                            >
-                              <Typography
-                                variant="body1"
-                                color="secondary"
-                                sx={{
-                                  fontWeight: 500,
-                                }}
-                              >
-                                {headCell.label}
-                              </Typography>
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      </>
-                    );
-                  }}
-                  fixedFooterContent={() => {
-                    if (!isLoading) {
-                      return null;
-                    }
-
-                    if (!flattenProducts || flattenProducts.length === 0) {
-                      return null;
-                    }
-
-                    if (!hasNextPage) {
-                      return null;
-                    }
-
-                    return (
-                      <TableRow>
-                        <TableCell colSpan={3}>
-                          <Box
-                            sx={{
-                              p: 2,
-                              display: 'flex',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <CircularProgress size={30} />
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }}
-                  itemContent={(_index, row) => (
-                    <>
-                      <TableCell>
-                        <Checkbox checked={isSelected(row).selected} />
-                      </TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell align="right">
-                        {row.price
-                          ? formatCurrencyToDisplay(
-                              row.price.value,
-                              row.price.currency
-                            )
-                          : ''}
-                      </TableCell>
-                    </>
-                  )}
-                  endReached={() => hasNextPage && fetchNextPage()}
-                />
-              </Paper>
-            </>
-          )}
-        </form>
-      </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button variant="outlined" onClick={dialogContent?.onClose}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button variant="contained" type="submit" form={formName}>
-          {openChangeCurrencyInfo ? t(i18n)`Replace items` : t(i18n)`Add`}
-        </Button>
-      </DialogActions>
-    </>
+        defaultValues={{
+          currency: currency,
+        }}
+      />
+    </Dialog>
   );
 };
 
