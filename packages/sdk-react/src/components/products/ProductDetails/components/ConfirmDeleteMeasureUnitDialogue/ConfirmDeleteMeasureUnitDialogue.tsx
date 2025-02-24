@@ -52,6 +52,8 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
       }
     );
 
+  const isEmpty = products?.data.length === 0;
+
   return (
     <Dialog
       open={open}
@@ -62,50 +64,65 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
       maxWidth="sm"
     >
       <DialogTitle variant="h3" sx={{ padding: '32px' }}>
-        {t(i18n)`Delete "${name}" unit and associated items?`}
+        {isEmpty
+          ? t(i18n)`Delete "${name}" unit?`
+          : t(i18n)`Delete "${name}" unit and associated items?`}
       </DialogTitle>
       <DialogContent
         sx={{ paddingBottom: 0, display: 'flex', flexDirection: 'column' }}
       >
-        <DialogContentText>
-          {t(i18n)`All items with this measure unit will get deleted, too.`}
-        </DialogContentText>
-        <DialogContentText sx={{ fontWeight: 400, mb: 2 }}>
-          {t(
-            i18n
-          )`Please, check the list of products and services that will get deleted:`}
-        </DialogContentText>
-        {isLoadingProducts && <CircularProgress sx={{ margin: 'auto' }} />}
-        {!isLoadingProducts && (
-          <Table>
-            <TableBody>
-              {products?.data.map((p) => {
-                return (
-                  <TableRow key={p.id}>
-                    <TableCell sx={{ p: 1, pl: 0 }}>
-                      <Typography variant="body1">{p.name}</Typography>
-                    </TableCell>
-                    <TableCell sx={{ p: 1, pr: 0 }} align="right">
-                      <Typography variant="body1">
-                        {p.price &&
-                          formatCurrencyToDisplay(
-                            p.price?.value,
-                            p.price?.currency
-                          )}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+        {isEmpty ? (
+          <>
+            <DialogContentText>
+              {t(i18n)`There are no items created with this measure unit.`}
+            </DialogContentText>
+            <DialogContentText sx={{ fontWeight: 400, mb: 2 }}>
+              {t(i18n)`Deleting it won’t affect your items.`}
+            </DialogContentText>
+          </>
+        ) : (
+          <>
+            <DialogContentText>
+              {t(i18n)`All items with this measure unit will get deleted, too.`}
+            </DialogContentText>
+            <DialogContentText sx={{ fontWeight: 400, mb: 2 }}>
+              {t(
+                i18n
+              )`Please, check the list of products and services that will get deleted:`}
+            </DialogContentText>
+            {isLoadingProducts && <CircularProgress sx={{ margin: 'auto' }} />}
+            {!isLoadingProducts && (
+              <Table>
+                <TableBody>
+                  {products?.data.map((p) => {
+                    return (
+                      <TableRow key={p.id}>
+                        <TableCell sx={{ p: 1, pl: 0 }}>
+                          <Typography variant="body1">{p.name}</Typography>
+                        </TableCell>
+                        <TableCell sx={{ p: 1, pr: 0 }} align="right">
+                          <Typography variant="body1">
+                            {p.price &&
+                              formatCurrencyToDisplay(
+                                p.price?.value,
+                                p.price?.currency
+                              )}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            ></div>
+          </>
         )}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        ></div>
       </DialogContent>
       <DialogActions sx={{ padding: '32px' }}>
         <Button
