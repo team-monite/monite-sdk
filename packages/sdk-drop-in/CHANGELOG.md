@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.11
+
+### Patch Changes
+
+- 3f6cd29: Load styles on invoice preview properly
+
 ## 2.0.0-alpha.10
 
 ### Minor Changes
