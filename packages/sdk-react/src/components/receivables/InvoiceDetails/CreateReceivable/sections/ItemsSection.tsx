@@ -314,6 +314,8 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.name`, item.label);
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
         setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
+        setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
+        setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
       }
     },
@@ -329,7 +331,7 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
         setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       }
-    }, [highestVatRate, index, setValue, getValues]);
+    }, []);
 
     return (
       <Controller
@@ -344,6 +346,18 @@ export const ItemsSection = ({
             <Select
               {...field}
               MenuProps={{ container: root }}
+              onChange={(e) => {
+                field.onChange(e);
+                const selectedVatRate = vatRates?.data.find(
+                  (vatRate) => vatRate.id === e.target.value
+                );
+                if (selectedVatRate) {
+                  setValue(
+                    `line_items.${index}.vat_rate_value`,
+                    selectedVatRate.value
+                  );
+                }
+              }}
               sx={{
                 borderColor: 'divider',
                 borderWidth: '1px',
@@ -404,7 +418,7 @@ export const ItemsSection = ({
                   i18n
                 )`Item name`}</TableCell>
                 <TableCell>{t(i18n)`Quantity`}</TableCell>
-                <TableCell align="right">{t(i18n)`Price`}</TableCell>
+                <TableCell>{t(i18n)`Price`}</TableCell>
                 <TableCell>
                   {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
                 </TableCell>
@@ -424,7 +438,7 @@ export const ItemsSection = ({
                       {isLocal ? (
                         <ItemSelector
                           setIsCreateItemOpened={setProductsTableOpen}
-                          onUpdate={(item) => handleUpdate(index, item)}
+                          onUpdate={(item: any) => handleUpdate(index, item)}
                           index={index}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
@@ -459,39 +473,49 @@ export const ItemsSection = ({
                       )}
                     </TableCell>
                     <TableCell align="right">
-                      <Controller
+                      {/* There is a price field in payables which look very different from this one, i could consult if using it is better*/}
+                      <Controller // this one is working correctly, except there is no cents separator during focused state. seemed minor to me and was taking a long time so postponed for now
                         name={`line_items.${index}.price.value`}
                         render={({
                           field: controllerField,
                           fieldState: { error },
                         }) => {
                           const [isTyping, setIsTyping] = useState(false);
-                          const [rawValue, setRawValue] = useState('');
+                          const [rawValue, setRawValue] = useState<
+                            string | number
+                          >('');
 
                           const handleBlur = (e) => {
                             const numericValue = parseFloat(
-                              rawValue.replace(/[^0-9.]/g, '')
+                              String(rawValue).replace(/[^0-9.]/g, '')
                             );
 
                             if (!isNaN(numericValue)) {
-                              const valueInCents = Math.round(
-                                //should apply only if . or , not already present
-                                numericValue * 100
-                              );
-                              //at this point should also format it to show formatted to the user when they click again
-                              setRawValue(String(valueInCents));
+                              let valueInCents = numericValue;
+                              console.log(controllerField.value);
+                              /*  
+                                const hasDecimalSeparator = /[.,]/.test(
+                              String(rawValue)
+                            );
+                              if (!hasDecimalSeparator) {
+                                valueInCents = Math.round(numericValue * 100);
+                                console.log('no decimal found', valueInCents);
+                              } */
+                              const newValue =
+                                formatCurrencyToDisplay(
+                                  valueInCents,
+                                  actualCurrency || 'USD',
+                                  false
+                                ) || 0;
+                              console.log({ newValue });
+
+                              controllerField.onChange(valueInCents);
+                              setRawValue(newValue);
                             }
+
                             setIsTyping(false);
                             controllerField.onBlur();
                           };
-
-                          const formattedValue = controllerField.value
-                            ? formatCurrencyToDisplay(
-                                controllerField.value,
-                                actualCurrency || 'USD',
-                                false
-                              )
-                            : '';
 
                           return (
                             <FormControl
@@ -502,12 +526,23 @@ export const ItemsSection = ({
                             >
                               <TextField
                                 size="small"
-                                type="text"
-                                value={isTyping ? rawValue : formattedValue}
+                                type="text" //type number does not allow typing dots or commmas
+                                value={
+                                  isTyping
+                                    ? rawValue
+                                    : formatCurrencyToDisplay(
+                                        controllerField.value,
+                                        actualCurrency || 'USD',
+                                        false
+                                      )
+                                }
                                 sx={{ minWidth: 100 }}
                                 placeholder={'0'}
                                 onBlur={handleBlur}
-                                onFocus={() => setIsTyping(true)}
+                                onFocus={() => {
+                                  setIsTyping(true);
+                                  setRawValue(controllerField.value);
+                                }}
                                 name={controllerField.name}
                                 inputRef={controllerField.ref}
                                 InputProps={{
@@ -517,12 +552,6 @@ export const ItemsSection = ({
                                 }}
                                 onChange={(e) => {
                                   setRawValue(e.target.value);
-                                  const newValue = parseFloat(
-                                    e.target.value.replace(/[^0-9.]/g, '')
-                                  );
-                                  if (!isNaN(newValue)) {
-                                    controllerField.onChange(newValue);
-                                  }
                                 }}
                               />
                             </FormControl>
@@ -530,7 +559,6 @@ export const ItemsSection = ({
                         }}
                       />
                     </TableCell>
-
                     <TableCell>
                       {isNonVatSupported ? (
                         <Controller
