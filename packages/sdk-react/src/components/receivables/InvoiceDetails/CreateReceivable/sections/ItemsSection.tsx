@@ -50,7 +50,6 @@ import {
   CardContent,
 } from '@mui/material';
 import { styled } from '@mui/material';
-import { FOCUSABLE_SELECTOR } from '@testing-library/user-event/dist/types/utils';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -324,13 +323,29 @@ export const ItemsSection = ({
       <Controller
         name={`line_items.${index}.vat_rate_id`}
         render={({ field }) => (
-          <Select {...field} MenuProps={{ container: root }} size="small">
-            {vatRates?.data.map((vatRate) => (
-              <MenuItem key={vatRate.id} value={vatRate.id}>
-                {vatRate.value / 100}%
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl
+            variant="standard"
+            fullWidth
+            required
+            error={Boolean(error)}
+          >
+            <Select
+              {...field}
+              MenuProps={{ container: root }}
+              sx={{
+                borderColor: 'divider',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+              }}
+              size="small"
+            >
+              {vatRates?.data.map((vatRate) => (
+                <MenuItem key={vatRate.id} value={vatRate.id}>
+                  {vatRate.value / 100}%
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         )}
       />
     );
@@ -389,9 +404,18 @@ export const ItemsSection = ({
               {fields.map((field, index) => {
                 const isLocal = !!field.isLocal;
                 return (
-                  <TableRow key={field.tempId || field.id}>
+                  <TableRow
+                    key={field.tempId || field.id}
+                    className={tableRowClassName}
+                  >
                     <TableCell sx={{ minWidth: 160 }}>
-                      {isLocal ? <ItemSelector /> : field.name}
+                      {isLocal ? (
+                        <ItemSelector
+                          setIsCreateItemOpened={setProductsTableOpen}
+                        />
+                      ) : (
+                        field.name
+                      )}
                     </TableCell>
 
                     <TableCell>
@@ -437,11 +461,6 @@ export const ItemsSection = ({
                                 size="small"
                                 type="text"
                                 sx={{ minWidth: 100 }}
-                                value={formatCurrencyToDisplay(
-                                  rawValue * 1000,
-                                  actualCurrency || 'USD',
-                                  false
-                                )}
                                 placeholder={'0'}
                                 onBlur={controllerField.onBlur}
                                 name={controllerField.name}
@@ -452,6 +471,11 @@ export const ItemsSection = ({
                                   ),
                                 }}
                                 onChange={(e) => {
+                                  const formatted = formatCurrencyToDisplay(
+                                    rawValue * 1000,
+                                    actualCurrency || 'USD',
+                                    false
+                                  );
                                   const newValue = parseFloat(
                                     e.target.value.replace(/[^0-9.]/g, '')
                                   );
@@ -496,12 +520,6 @@ export const ItemsSection = ({
               })}
               <TableRow>
                 <TableCell colSpan={7}>
-                  <Button
-                    startIcon={<AddIcon />}
-                    onClick={handleOpenProductsTable}
-                  >
-                    {t(i18n)`Add item`}
-                  </Button>
                   <Button
                     startIcon={<AddIcon />}
                     variant="outlined"
