@@ -26,6 +26,7 @@ export type PayableDetailsPermissions =
   | 'reject'
   | 'approve'
   | 'reopen'
+  | 'delete'
   | 'pay';
 
 export type UsePayableDetailsProps = {
@@ -142,6 +143,14 @@ export type UsePayableDetailsProps = {
    */
   onReopened?: (id: string) => void;
 
+  /** Callback function that is called when the payable is deleted
+   *
+   * @param {string} id - The ID of the payable
+   *
+   * @returns {void}
+   */
+  onDeleted?: (id: string) => void;
+
   /**
    * Callback function that is called when the user press the Pay button
    *
@@ -174,6 +183,7 @@ export function usePayableDetails({
   onRejected,
   onApproved,
   onReopened,
+  onDeleted,
   onPay,
   onPayUS,
 }: UsePayableDetailsProps) {
@@ -310,6 +320,11 @@ export function usePayableDetails({
   const { data: isReopenAvailable } = useIsActionAllowed({
     method: 'payable',
     action: 'reopen',
+    entityUserId: payable?.was_created_by_user_id,
+  });
+  const { data: isDeleteAvailable } = useIsActionAllowed({
+    method: 'payable',
+    action: 'delete',
     entityUserId: payable?.was_created_by_user_id,
   });
 
@@ -471,6 +486,14 @@ export function usePayableDetails({
     }
   );
 
+  const deleteMutation = api.payables.deletePayablesId.useMutation(undefined, {
+    onSuccess: () =>
+      Promise.all([api.payables.getPayables.invalidateQueries(queryClient)]),
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
+
   const status = payable?.status;
 
   useEffect(() => {
@@ -571,6 +594,13 @@ export function usePayableDetails({
         }
         break;
       }
+
+      case 'canceled': {
+        if (isDeleteAvailable) {
+          setPermissions(['delete']);
+        }
+        break;
+      }
     }
 
     setIsPermissionsLoading(false);
@@ -583,6 +613,7 @@ export function usePayableDetails({
     isSubmitAvailable,
     isUpdatesAvailable,
     isReopenAvailable,
+    isDeleteAvailable,
     status,
     payableId,
   ]);
@@ -864,6 +895,21 @@ export function usePayableDetails({
     }
   };
 
+  const deleteInvoice = async () => {
+    if (payableId) {
+      await deleteMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+        },
+        {
+          onSuccess: () => {
+            onDeleted?.(payableId);
+          },
+        }
+      );
+    }
+  };
+
   const payInvoice = useCallback(() => {
     if (payable) {
       // TODO: remove onPayUS prop
@@ -896,6 +942,7 @@ export function usePayableDetails({
       approveInvoice,
       reopenInvoice,
       cancelInvoice,
+      deleteInvoice,
       payInvoice,
       handlePay,
       modalComponent,
