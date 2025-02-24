@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.11
+
+### Minor Changes
+
+- 575e2a6: Fix Kanmon SDK env URL
+
 ## 4.0.0-alpha.10
 
 ### Minor Changes
