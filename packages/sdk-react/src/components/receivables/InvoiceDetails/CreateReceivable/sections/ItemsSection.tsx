@@ -5,6 +5,7 @@ import {
   FieldError,
   useFieldArray,
   useFormContext,
+  useWatch,
 } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -48,6 +49,7 @@ import {
   Box,
   Collapse,
   CardContent,
+  CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material';
 
@@ -297,6 +299,9 @@ export const ItemsSection = ({
     append(createEmptyRow());
   };
 
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
+  console.log({ measureUnits });
   useEffect(() => {
     if (!mounted.current) {
       append(createEmptyRow());
@@ -442,6 +447,7 @@ export const ItemsSection = ({
                           index={index}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
+                          measureUnits={measureUnits}
                         />
                       ) : (
                         field.name
@@ -451,26 +457,40 @@ export const ItemsSection = ({
                     <TableCell>
                       <Controller
                         name={`line_items.${index}.quantity`}
-                        render={({ field }) => (
-                          <FormControl
-                            variant="standard"
-                            fullWidth
-                            required
-                            error={Boolean(error)}
-                          >
-                            <TextField
-                              {...field}
-                              type="number"
-                              inputProps={{ min: 1 }}
-                              size="small"
-                              disabled={!isLocal}
-                            />
-                          </FormControl>
-                        )}
+                        render={({ field }) => {
+                          const measureUnitId = useWatch({
+                            control,
+                            name: `line_items.${index}.measure_unit_id`,
+                          });
+                          return (
+                            <FormControl
+                              variant="standard"
+                              fullWidth
+                              required
+                              error={Boolean(error)}
+                            >
+                              <TextField
+                                {...field}
+                                InputProps={{
+                                  endAdornment: measureUnitId ? (
+                                    <MeasureUnit unitId={measureUnitId} />
+                                  ) : measureUnits?.data?.length ? (
+                                    measureUnits.data.map((unit: any) => (
+                                      <p key={unit.id}>{unit.name}</p>
+                                    ))
+                                  ) : (
+                                    <CircularProgress size={20} />
+                                  ),
+                                }}
+                                type="number"
+                                inputProps={{ min: 1 }}
+                                size="small"
+                                disabled={!isLocal}
+                              />
+                            </FormControl>
+                          );
+                        }}
                       />
-                      {field.measure_unit_id && (
-                        <MeasureUnit unitId={field.measure_unit_id} />
-                      )}
                     </TableCell>
                     <TableCell align="right">
                       {/* There is a price field in payables which look very different from this one, i could consult if using it is better*/}
