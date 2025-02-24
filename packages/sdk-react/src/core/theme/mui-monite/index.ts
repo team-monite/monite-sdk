@@ -924,7 +924,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&:last-child .MuiTableCell-body': {
             borderBottom: 'none',
           },
-          '&.Monite-CreateReceivable-ItemsSection-Table > .MuiTableCell-root > .MuiFormControl-root .MuiInputBase-root':
+          '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root .MuiFormControl-root .MuiInputBase-root':
             {
               backgroundColor: '#fff',
             },
