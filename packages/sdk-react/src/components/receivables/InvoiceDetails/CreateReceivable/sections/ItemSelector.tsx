@@ -211,15 +211,36 @@ export const ItemSelector = ({
               slotProps={{
                 popper: {
                   container: root,
+                  sx: {
+                    width: 'calc(50% - 80px) !important',
+                    left: '40px !important',
+                  },
                 },
               }}
               filterOptions={(options, params) => {
-                const filtered = filter(options, params);
+                const { filtered, reverseFiltered } = options.reduce<{
+                  filtered: Array<{ id: string; label: string }>;
+                  reverseFiltered: Array<{ id: string; label: string }>;
+                }>(
+                  (acc, option) => {
+                    if (
+                      option.label
+                        .toLowerCase()
+                        .includes(params.inputValue.toLowerCase())
+                    ) {
+                      acc.filtered.push(option);
+                    } else {
+                      acc.reverseFiltered.push(option);
+                    }
+                    return acc;
+                  },
+                  { filtered: [], reverseFiltered: [] }
+                );
 
                 !isSimplified &&
                   filtered.unshift({
                     id: CREATE_NEW_ID,
-                    label: t(i18n)`Create new counterpart`,
+                    label: t(i18n)`Create new item`,
                   });
 
                 if (!isSimplified && params.inputValue.length) {
@@ -228,7 +249,7 @@ export const ItemSelector = ({
                     label: '-',
                   });
                 }
-                return [...filtered];
+                return [...filtered, ...reverseFiltered];
               }}
               renderInput={(params) => {
                 return (
@@ -239,7 +260,7 @@ export const ItemSelector = ({
                     required
                     error={Boolean(error)}
                     helperText={error?.message}
-                    className={`Monite-CounterpartSelector ${
+                    className={`Monite-Selector Item-Selector ${
                       isSimplified ? 'isSimplified' : ''
                     }`}
                     InputProps={{
@@ -247,31 +268,8 @@ export const ItemSelector = ({
                       value: params.inputProps.value,
                       onFocus: () => setIsFocused(true),
                       onBlur: () => setIsFocused(false),
-                      startAdornment: isLoading ? (
+                      startAdornment: isLoading && (
                         <CircularProgress size={20} />
-                      ) : (
-                        !isSimplified && (
-                          <>
-                            {!isFocused && (
-                              <InputAdornment
-                                position="end"
-                                sx={{
-                                  flexDirection: 'column',
-                                  alignItems: 'baseline',
-                                  height: 'auto',
-                                }}
-                              >
-                                <Typography
-                                  variant="body2"
-                                  sx={{ color: 'rgba(41, 41, 41, 1)' }}
-                                  fontWeight="bold"
-                                >
-                                  {params.inputProps.value}
-                                </Typography>
-                              </InputAdornment>
-                            )}
-                          </>
-                        )
                       ),
                       endAdornment: (() => {
                         if (
@@ -343,7 +341,7 @@ export const ItemSelector = ({
                     {itemOption.label}
                     <span style={{ marginLeft: 'auto' }}>
                       {itemOption.smallestAmount}{' '}
-                      {itemOption.measureUnit.description} /{' '}
+                      {itemOption?.measureUnit?.description} /{' '}
                       {itemOption.price &&
                         formatCurrencyToDisplay(
                           itemOption.price.value,
