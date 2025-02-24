@@ -84,6 +84,7 @@ export const ItemSelector = ({
   index = 0,
   actualCurrency = 'EUR',
   defaultCurrency = 'EUR',
+  measureUnits,
   onUpdate,
 }: any) => {
   const { i18n } = useLingui();
@@ -139,8 +140,6 @@ export const ItemSelector = ({
         : [],
     [productsInfinity]
   );
-
-  const { data: measureUnits } = api.measureUnits.getMeasureUnits.useQuery();
 
   const itemsAutocompleteData = useMemo<
     CounterpartsAutocompleteOptionProps[]
