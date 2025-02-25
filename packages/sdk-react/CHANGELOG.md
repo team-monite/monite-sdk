@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.13
+
+### Patch Changes
+
+- 2f0f481: Fix invoice preview styles
+
 ## 4.0.0-alpha.12
 
 ### Patch Changes
