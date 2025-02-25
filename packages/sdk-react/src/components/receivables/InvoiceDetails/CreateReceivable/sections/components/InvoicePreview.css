@@ -4,11 +4,10 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  min-height: 620px;
-  height: 95vh;
+  min-height: 300px;
   margin: 50px 10%;
+  min-height: 85vh;
   padding: 1.5em 5em;
-  width: 80%;
   --table-cell-padding-x: 10.1pt;
   --table-cell-padding-y: 12.2pt;
   --totals-table-cell-padding-y: 5.6pt;
@@ -96,13 +95,13 @@
 }
 
 /* 2 rules below improve the balance of the table while discount row isn't present */
-.invoice-preview .line-items-table th:last-child,
-.invoice-preview .line-items-table td:last-child {
+.invoice-preview .line-items-table th:last-of-type,
+.invoice-preview .line-items-table td:last-of-type {
   text-align: right;
 }
 
-.invoice-preview .line-items-table th:nth-child(3),
-.invoice-preview .line-items-table td:nth-child(3) {
+.invoice-preview .line-items-table th:nth-of-type(3),
+.invoice-preview .line-items-table td:nth-of-type(3) {
   text-align: center;
 }
 
@@ -112,8 +111,8 @@
   padding-left: 0;
 }
 
-.line-items-table th:last-child,
-.line-items-table td:last-child {
+.line-items-table th:last-of-type,
+.line-items-table td:last-of-type {
   padding-right: var(--table-cell-outer-padding-x, var(--table-cell-padding-x));
 }
 
@@ -262,7 +261,7 @@ th.line-items-table__fixed-item {
   flex-flow: column;
 }
 
-.invoice-preview .footer-aside__end > aside:first-child {
+.invoice-preview .footer-aside__end > aside:first-of-type {
   flex-grow: 1;
 }
 
@@ -357,7 +356,7 @@ th.line-items-table__fixed-item {
   font-size: 10px;
 }
 
-.invoice-preview .block-receivable-date li span:first-child {
+.invoice-preview .block-receivable-date li span:first-of-type {
   margin-right: auto;
 }
 
