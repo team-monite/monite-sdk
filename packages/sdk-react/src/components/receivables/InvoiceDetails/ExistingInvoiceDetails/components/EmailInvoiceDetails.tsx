@@ -324,7 +324,7 @@ const EmailInvoiceDetailsBase = ({
                   type="submit"
                   form={formName}
                   disabled={isDisabled || isLoading}
-                >{t(i18n)`Issue and send`}</Button>
+                >{t(i18n)`Send`}</Button>
               </Stack>
             </Grid>
           </Grid>
