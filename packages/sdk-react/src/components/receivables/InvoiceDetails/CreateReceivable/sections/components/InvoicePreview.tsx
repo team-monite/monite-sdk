@@ -97,10 +97,11 @@ export const InvoicePreview = ({
   const getApplicableTaxRate = (
     item: CreateReceivablesFormBeforeValidationLineItemProps
   ): number => {
-    if (item.price?.currency === 'EUR') {
-      return item.vat_rate_value || 0;
+    if (isNonVatSupported) {
+      return item.tax_rate_value || 0;
     }
-    return item.tax_rate_value || 0;
+
+    return item.vat_rate_value || 0;
   };
 
   const groupItemsByTaxRate = (
@@ -314,9 +315,9 @@ export const InvoicePreview = ({
                         )}
                       </td>
                       <td>
-                        {((item.price.currency === 'EUR'
-                          ? item.vat_rate_value
-                          : item.tax_rate_value) || 0) / 100}
+                        {((isNonVatSupported
+                          ? item.tax_rate_value
+                          : item.vat_rate_value) || 0) / 100}
                         %
                       </td>
                     </tr>
