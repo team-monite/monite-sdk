@@ -63,7 +63,7 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
  */
 export const CounterpartIndividualForm = ({
   ...props
-}: CounterpartsFormProps) => {
+}: CounterpartIndividualFormProps) => {
   const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
