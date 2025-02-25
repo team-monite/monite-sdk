@@ -1,5 +1,24 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.12
+
+### Patch Changes
+
+- 3f6cd29: Load styles on invoice preview properly
+
+## 4.0.0-alpha.11
+
+### Minor Changes
+
+- 575e2a6: Fix Kanmon SDK env URL
+
+## 4.0.0-alpha.10
+
+### Minor Changes
+
+- 08fa299: improvements requested after invoice preview merge
+- 86b7490: fix(DEV-13777): invoice preview
+
 ## 4.0.0-alpha.9
 
 ### Patch Changes

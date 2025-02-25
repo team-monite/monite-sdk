@@ -435,6 +435,13 @@ export const CounterpartOrganizationForm = (
           padding: 4,
         }}
       >
+        {isInvoiceCreation && (
+          <Button
+            variant="outlined"
+            sx={{ marginRight: 'auto' }}
+            onClick={props.onReturn}
+          >{t(i18n)`Back`}</Button>
+        )}
         {(isUpdateMode || dialogContext) && (
           <Button
             variant="text"

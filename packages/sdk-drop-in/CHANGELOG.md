@@ -1,5 +1,18 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.11
+
+### Patch Changes
+
+- 3f6cd29: Load styles on invoice preview properly
+
+## 2.0.0-alpha.10
+
+### Minor Changes
+
+- 575e2a6: Fix Kanmon SDK env URL
+- 9462a2f: Invoice creation redesign
+
 ## 2.0.0-alpha.9
 
 ### Patch Changes
