@@ -17,7 +17,7 @@ import { isValid } from 'date-fns';
 
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import { CreateReceivablesFormProps } from '../../validation';
-// @ts-ignore
+// @ts-expect-error
 import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {
