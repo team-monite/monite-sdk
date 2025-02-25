@@ -158,7 +158,7 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(3);
       });
 
-      test('should show "Canceled" tag and no buttons for payable in "Canceled" status', async () => {
+      test('should show "Canceled" tag and "Delete" button for payable in "Canceled" status', async () => {
         fixture.status = 'canceled';
         renderWithClient(<PayableDetails id={payableId} />);
 
@@ -169,9 +169,13 @@ describe('PayableDetails', () => {
           PayableDataTestId.PayableDetailsActions
         );
         const buttons = within(actionsSection).queryAllByRole('button');
+        const deleteButton = within(actionsSection).queryByRole('button', {
+          name: t`Delete bill`,
+        });
 
         expect(canceledStatus).toBeInTheDocument();
-        expect(buttons).toHaveLength(0);
+        expect(buttons).toHaveLength(1);
+        expect(deleteButton).toBeInTheDocument();
       });
 
       test('should show "In Approval" tag, "Reject" and "Approve" button for payable in "In Approval" status', async () => {
