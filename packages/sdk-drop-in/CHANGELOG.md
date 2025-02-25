@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.14
+
+### Minor Changes
+
+- 4fed228: Bump dropin to latest version
+
 ## 2.0.0-alpha.13
 
 ### Patch Changes
