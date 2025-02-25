@@ -1,5 +1,16 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.14
+
+### Minor Changes
+
+- 77d926e: Added keywords and category to tags table
+
+### Patch Changes
+
+- 23c29de: Update Kanmon live URL
+- 25e34f4: Improve aspect ratio in Invoice preview
+
 ## 4.0.0-alpha.13
 
 ### Patch Changes
