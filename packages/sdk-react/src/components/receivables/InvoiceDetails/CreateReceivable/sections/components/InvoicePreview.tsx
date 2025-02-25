@@ -50,6 +50,7 @@ const StyledInvoicePreview = styled.div`
   align-items: center;
   width: 100%;
   height: fit-content;
+  min-height: 100%;
   min-width: fit-content;
   ${invoicePreviewStyles}
 `;
