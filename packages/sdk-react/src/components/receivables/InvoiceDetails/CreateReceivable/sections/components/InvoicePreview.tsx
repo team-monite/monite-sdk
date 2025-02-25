@@ -104,11 +104,22 @@ export const InvoicePreview = ({
     return item.vat_rate_value || 0;
   };
 
+  const formatTaxRate = (
+    item: CreateReceivablesFormBeforeValidationLineItemProps
+  ): number => {
+    const taxRate = getApplicableTaxRate(item);
+    if (taxRate < 100) {
+      //when the tax value is 19, it should be displayed as 19
+      return taxRate;
+    }
+    return taxRate / 100; //when the tax value is 1900 it should be displayed as 19
+  };
+
   const groupItemsByTaxRate = (
     items: Array<CreateReceivablesFormBeforeValidationLineItemProps>
   ): Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]> => {
     return items.reduce((acc, item) => {
-      const taxRate = getApplicableTaxRate(item);
+      const taxRate = formatTaxRate(item);
       if (taxRate === 0) {
         return acc;
       }
@@ -131,10 +142,10 @@ export const InvoicePreview = ({
       const items = groupedItems[taxRate];
       const totalTax = items.reduce((sum, item) => {
         const itemPrice = item.price?.value || 0;
-        const itemTax = (itemPrice * item.quantity * taxRate) / 10000;
+        const itemTax = (itemPrice * item.quantity * taxRate) / 100;
         return sum + itemTax;
       }, 0);
-      return { taxRate: taxRate / 100, totalTax };
+      return { taxRate, totalTax };
     });
   };
 
@@ -297,8 +308,8 @@ export const InvoicePreview = ({
                 </tr>
               </thead>
               <tbody className="products">
-                {items.length > 0 ? (
-                  items.map((item) => (
+                {sanitizedItems.length > 0 ? (
+                  sanitizedItems.map((item) => (
                     <tr>
                       <td style={{ maxWidth: '120px' }}>{item?.name}</td>
                       <td>{item?.quantity}</td>
@@ -314,12 +325,7 @@ export const InvoicePreview = ({
                           false
                         )}
                       </td>
-                      <td>
-                        {((isNonVatSupported
-                          ? item.tax_rate_value
-                          : item.vat_rate_value) || 0) / 100}
-                        %
-                      </td>
+                      <td>{formatTaxRate(item)}%</td>
                     </tr>
                   ))
                 ) : (
