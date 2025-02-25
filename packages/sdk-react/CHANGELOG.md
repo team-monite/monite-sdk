@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.15
+
+### Minor Changes
+
+- b3fc060: bugfix invoice previeww: tax rate showing always as zero, sometimes divided by 100 unnecessarily
+
 ## 4.0.0-alpha.14
 
 ### Minor Changes
