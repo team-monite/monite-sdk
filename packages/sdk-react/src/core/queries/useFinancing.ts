@@ -51,7 +51,7 @@ export const useGetFinanceOffers = () => {
 };
 
 const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
-const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
+const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.kanmon.dev/scripts/v2/kanmon-connect.js`;
 
 type startFinanceSessionOptions = {
   sessionToken?: string;
