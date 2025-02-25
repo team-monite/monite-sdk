@@ -866,7 +866,6 @@ export function usePayableDetails({
 
   const payInvoice = useCallback(() => {
     if (payable) {
-      // TODO: remove onPayUS prop
       if (onPayUS && payable.currency === 'USD') {
         onPayUS(payable.id);
       } else {
