@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.16
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
 ## 4.0.0-alpha.15
 
 ### Minor Changes
