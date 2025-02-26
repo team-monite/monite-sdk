@@ -26,13 +26,26 @@ interface RHFAutocompleteBaseProps<
   label: string;
 }
 
+interface RenderInputParams {
+  error?: FieldError;
+  label: string;
+  required?: boolean;
+}
+
+type RenderInputFunction = ((
+  params: AutocompleteRenderInputParams,
+  renderParams: RenderInputParams
+) => React.ReactNode) &
+  ((params: AutocompleteRenderInputParams) => React.ReactNode);
+
 export type RHFAutocompleteProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
   TOption
 > = RHFAutocompleteBaseProps<TFieldValues, TName> &
-  Optional<CustomAutocompleteProps<TOption>, 'renderInput'> &
-  TextFieldProps;
+  Optional<CustomAutocompleteProps<TOption>, 'renderInput'> & {
+    renderInput?: RenderInputFunction;
+  } & TextFieldProps;
 
 interface CustomAutocompleteProps<TOption>
   extends AutocompleteProps<
@@ -74,7 +87,14 @@ export const RHFAutocomplete = <
   ...other
 }: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
   const getRenderInput = (error?: FieldError) => {
-    if (renderInput) return renderInput;
+    if (renderInput) {
+      return (params: AutocompleteRenderInputParams) =>
+        renderInput(params, {
+          error,
+          label,
+          required,
+        });
+    }
 
     return (params: AutocompleteRenderInputParams) => (
       <TextField
