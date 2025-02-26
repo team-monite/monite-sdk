@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.15
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
 ## 2.0.0-alpha.14
 
 ### Minor Changes
