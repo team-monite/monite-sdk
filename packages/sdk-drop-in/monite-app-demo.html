@@ -9,12 +9,15 @@
       html {
         margin: 0;
         padding: 0;
+        height: 100%;
+        width: 100%;
       }
     </style>
     <title>Monite App Widget Label</title>
   </head>
   <body>
     <monite-app
+      style="height: 100%; width: 100%"
       disabled
       entity-id="defer"
       api-url="defer"
@@ -48,9 +51,9 @@
 
     <script type="module">
       import { createAPIClient } from '@monite/sdk-react';
+      import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
 
       import { getConfig } from './src/lib/ConfigLoader.tsx';
-      import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
 
       window.fetchToken = fetchTokenDev;
@@ -72,7 +75,7 @@
               const moniteAppNode = document.querySelector('monite-app');
               moniteAppNode.setAttribute(
                 'component',
-                location.pathname.split('/')[2] ?? 'payables'
+                location.pathname.split('/')[2] ?? 'receivables'
               );
               moniteAppNode.setAttribute('api-url', apiUrl);
               moniteAppNode.setAttribute('entity-id', id);
