@@ -1,3 +1,5 @@
+import { AllowedCountries } from '@/enums/AllowedCountries';
+
 export enum CounterpartDataTestId {
   OrganizationView = 'OrganizationView',
   OrganizationForm = 'OrganizationForm',
@@ -27,3 +29,29 @@ export type CounterpartShowCategories = {
    */
   showCategories: boolean;
 };
+
+interface BaseCounterpartOCR {
+  email: string;
+  phone?: string;
+  isCustomer: boolean;
+  isVendor: boolean;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country?: keyof typeof AllowedCountries;
+}
+
+export interface DefaultValuesOCR<T extends BaseCounterpartOCR> {
+  tax_id: string;
+  counterpart: T;
+}
+
+export type DefaultValuesOCRIndividual = DefaultValuesOCR<
+  BaseCounterpartOCR & { firstName?: string; lastName?: string }
+>;
+
+export type DefaultValuesOCROrganization = DefaultValuesOCR<
+  BaseCounterpartOCR & { companyName: string }
+>;

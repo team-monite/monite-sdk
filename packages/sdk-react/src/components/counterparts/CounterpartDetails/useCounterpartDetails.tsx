@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useLatest } from 'react-use';
 
 import { components } from '@/api';
-import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
+import {
+  CounterpartShowCategories,
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 
 type CounterpartId = string;
@@ -17,6 +21,7 @@ type VatId = string;
 interface ExistingCounterpartDetail extends CommonCounterpartDetailsProps {
   id: CounterpartId;
   type?: undefined;
+  defaultValuesOCR?: DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }
 
 /**
@@ -29,6 +34,8 @@ interface NewCounterpartDetail
     Pick<CounterpartsFormProps, 'defaultValues'> {
   id?: undefined;
   type: components['schemas']['CounterpartType'];
+  onCreate?: (id: string) => void;
+  defaultValuesOCR?: DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }
 
 interface CommonCounterpartDetailsProps

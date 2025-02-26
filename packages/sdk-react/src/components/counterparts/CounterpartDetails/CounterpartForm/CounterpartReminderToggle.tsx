@@ -33,7 +33,7 @@ export const CounterpartReminderToggle = <T extends FieldValues>(
         {...props}
         render={({ field }) => (
           <Switch
-            checked={field.value}
+            checked={field.value ?? false}
             onChange={(event) => field.onChange(event.target.checked)}
             color="primary"
             aria-label={t(i18n)`Enable email reminders`}

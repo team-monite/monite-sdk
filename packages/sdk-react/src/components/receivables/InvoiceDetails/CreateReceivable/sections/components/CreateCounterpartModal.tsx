@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
+import { CounterpartTypeItem } from '@/components/counterparts/CreateCounterpartDialog/CreateCounterpartDialog';
 import { useRootElements } from '@/core/context/RootElementsProvider/RootElementsProvider';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
@@ -16,7 +17,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { CounterpartTypeItem } from './CreateCounterpartDialog';
 import { CreateCounterpartModalTestEnum } from './CreateCounterpartModal.types';
 
 interface CreateCounterpartModalProps {
