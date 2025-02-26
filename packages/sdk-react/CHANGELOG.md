@@ -1,5 +1,47 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.15
+
+### Minor Changes
+
+- b3fc060: bugfix invoice previeww: tax rate showing always as zero, sometimes divided by 100 unnecessarily
+
+## 4.0.0-alpha.14
+
+### Minor Changes
+
+- 77d926e: Added keywords and category to tags table
+
+### Patch Changes
+
+- 23c29de: Update Kanmon live URL
+- 25e34f4: Improve aspect ratio in Invoice preview
+
+## 4.0.0-alpha.13
+
+### Patch Changes
+
+- 2f0f481: Fix invoice preview styles
+
+## 4.0.0-alpha.12
+
+### Patch Changes
+
+- 3f6cd29: Load styles on invoice preview properly
+
+## 4.0.0-alpha.11
+
+### Minor Changes
+
+- 575e2a6: Fix Kanmon SDK env URL
+
+## 4.0.0-alpha.10
+
+### Minor Changes
+
+- 08fa299: improvements requested after invoice preview merge
+- 86b7490: fix(DEV-13777): invoice preview
+
 ## 4.0.0-alpha.9
 
 ### Patch Changes

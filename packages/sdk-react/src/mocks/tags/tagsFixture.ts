@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { tagCategories } from '@/components/tags/TagFormModal/TagFormModal';
 import {
   entityUser2,
   entityUser3,
@@ -7,6 +8,7 @@ import {
   entityUser6,
   entityUserByIdFixture,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
+import { getRandomNumber } from '@/utils/storybook-utils';
 
 export const tagListFixture: components['schemas']['TagReadSchema'][] = [
   {
@@ -121,4 +123,9 @@ export const tagListFixture: components['schemas']['TagReadSchema'][] = [
     updated_at: '2023-11-21T16:35:18.484507+00:00',
     created_by_entity_user_id: entityUserByIdFixture.id,
   },
-];
+].map((tag) => ({
+  ...tag,
+  category: tagCategories[
+    getRandomNumber(0, tagCategories.length - 1)
+  ] as components['schemas']['ReceivableTagCategory'],
+}));

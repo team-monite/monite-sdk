@@ -13,6 +13,13 @@ function getEntitySettings(): MergedSettingsResponse {
     receivable_edit_flow: 'compliant',
     generate_paid_invoice_pdf: false,
     quote_signature_required: false,
+    payables_ocr_auto_tagging: [
+      {
+        tag_id: 'tag-1',
+        enabled: true,
+        keywords: ['apple', 'banana'],
+      },
+    ],
     vat_mode: 'exclusive',
     currency: {
       default: 'EUR',
