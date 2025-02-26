@@ -40,6 +40,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
@@ -323,7 +324,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     variant="outlined"
                     color="primary"
                     onClick={callbacks.handleDownloadPDF}
-                    disabled={loading}
+                    disabled={buttons.isDownloadPDFButtonDisabled}
+                    startIcon={
+                      buttons.isDownloadPDFButtonDisabled ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : null
+                    }
                   >{t(i18n)`Download PDF`}</Button>
                 )}
                 <RecordManualPaymentModal invoice={receivable}>

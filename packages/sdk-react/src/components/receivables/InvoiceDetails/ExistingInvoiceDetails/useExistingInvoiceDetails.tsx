@@ -10,14 +10,32 @@ import {
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
 
+type ReceivableResponse = components['schemas']['ReceivableResponse'];
+type ReceivablesStatusEnum = ReceivableResponse['status'];
+
+const ALLOWED_DOWNLOAD_STATUSES: ReceivablesStatusEnum[] = [
+  'issued',
+  'partially_paid',
+  'paid',
+  'overdue',
+  'canceled',
+  'recurring',
+  'uncollectible',
+];
+
+const isAllowedDownloadStatus = (
+  status: ReceivablesStatusEnum | undefined
+): status is ReceivablesStatusEnum =>
+  Boolean(status && ALLOWED_DOWNLOAD_STATUSES.includes(status));
+
 export enum DeliveryMethod {
   Email = 'email',
   Download = 'download',
 }
 
 interface UseExistingInvoiceDetailsProps {
-  receivableId: components['schemas']['ReceivableResponse']['id'];
-  receivable?: components['schemas']['ReceivableResponse'];
+  receivableId: ReceivableResponse['id'];
+  receivable?: ReceivableResponse;
   deliveryMethod: DeliveryMethod;
 }
 
@@ -99,26 +117,26 @@ export function useExistingInvoiceDetails({
   const handleDownloadPDF = useCallback(async () => {
     await pdfQuery.refetch();
 
-    if (pdfQuery.data) {
+    if (pdfQuery.data?.file_url) {
       window.open(pdfQuery.data.file_url, '_blank');
     }
   }, [pdfQuery]);
 
+  const isPdfReady = useMemo(
+    () => Boolean(pdfQuery.data?.file_url),
+    [pdfQuery.data?.file_url]
+  );
+
   const isDownloadPDFButtonVisible = useMemo(() => {
-    switch (receivable?.status) {
-      case 'issued':
-      case 'partially_paid':
-      case 'paid':
-      case 'overdue':
-      case 'canceled':
-      case 'recurring':
-      case 'uncollectible': {
-        return true;
-      }
-      default:
-        return false;
-    }
-  }, [receivable?.status]);
+    const isStatusAllowsDownload = isAllowedDownloadStatus(receivable?.status);
+
+    return isStatusAllowsDownload && isPdfReady;
+  }, [receivable?.status, isPdfReady]);
+
+  const isDownloadPDFButtonDisabled = useMemo(
+    () => pdfQuery.isLoading || !isPdfReady || mutationInProgress,
+    [pdfQuery.isLoading, isPdfReady, mutationInProgress]
+  );
 
   const isMoreButtonVisible = useMemo(() => {
     switch (receivable?.status) {
@@ -180,6 +198,7 @@ export function useExistingInvoiceDetails({
     loading: mutationInProgress,
     buttons: {
       isDownloadPDFButtonVisible,
+      isDownloadPDFButtonDisabled,
       isMoreButtonVisible,
       isDeleteButtonDisabled,
       isDeleteButtonVisible,
