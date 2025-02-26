@@ -50,6 +50,7 @@ import {
   Collapse,
   CardContent,
   CircularProgress,
+  InputAdornment,
 } from '@mui/material';
 import { styled } from '@mui/material';
 
@@ -462,6 +463,7 @@ export const ItemsSection = ({
                             control,
                             name: `line_items.${index}.measure_unit_id`,
                           });
+
                           return (
                             <FormControl
                               variant="standard"
@@ -472,15 +474,39 @@ export const ItemsSection = ({
                               <TextField
                                 {...field}
                                 InputProps={{
-                                  endAdornment: measureUnitId ? (
-                                    <MeasureUnit unitId={measureUnitId} />
-                                  ) : measureUnits?.data?.length ? (
-                                    measureUnits.data.map((unit: any) => (
-                                      <p key={unit.id}>{unit.name}</p>
-                                    ))
-                                  ) : (
-                                    <CircularProgress size={20} />
-                                  ),
+                                  endAdornment:
+                                    measureUnitId && !isLocal ? (
+                                      <MeasureUnit unitId={measureUnitId} />
+                                    ) : measureUnits?.data?.length ? (
+                                      <InputAdornment position="end">
+                                        <Select
+                                          value={''}
+                                          onChange={(e) => {
+                                            const selectedUnitId =
+                                              e.target.value;
+                                            setValue(
+                                              `line_items.${index}.measure_unit_id`,
+                                              selectedUnitId
+                                            );
+                                          }}
+                                          size="small"
+                                        >
+                                          {measureUnits.data.map(
+                                            (unit, index) => (
+                                              <MenuItem
+                                                key={unit.id}
+                                                value={unit.id}
+                                                defaultChecked={index === 0}
+                                              >
+                                                {unit.name}
+                                              </MenuItem>
+                                            )
+                                          )}
+                                        </Select>
+                                      </InputAdornment>
+                                    ) : (
+                                      <CircularProgress size={20} />
+                                    ),
                                 }}
                                 type="number"
                                 inputProps={{ min: 1 }}
@@ -493,8 +519,7 @@ export const ItemsSection = ({
                       />
                     </TableCell>
                     <TableCell align="right">
-                      {/* There is a price field in payables which look very different from this one, i could consult if using it is better*/}
-                      <Controller // this one is working correctly, except there is no cents separator during focused state. seemed minor to me and was taking a long time so postponed for now
+                      <Controller
                         name={`line_items.${index}.price.value`}
                         render={({
                           field: controllerField,
@@ -506,28 +531,32 @@ export const ItemsSection = ({
                           >('');
 
                           const handleBlur = (e) => {
+                            const inputValue = String(rawValue).trim();
                             const numericValue = parseFloat(
-                              String(rawValue).replace(/[^0-9.]/g, '')
+                              inputValue.replace(/[^0-9.]/g, '')
                             );
 
-                            if (!isNaN(numericValue)) {
-                              let valueInCents = numericValue;
-                              console.log(controllerField.value);
-                              /*  
-                                const hasDecimalSeparator = /[.,]/.test(
-                              String(rawValue)
-                            );
-                              if (!hasDecimalSeparator) {
-                                valueInCents = Math.round(numericValue * 100);
-                                console.log('no decimal found', valueInCents);
-                              } */
+                            if (inputValue === '' || isNaN(numericValue)) {
+                              controllerField.onChange(0);
+                              setRawValue(
+                                formatCurrencyToDisplay(
+                                  0,
+                                  actualCurrency || 'USD',
+                                  false
+                                )
+                              );
+                            } else {
+                              const isAlreadyInCents =
+                                controllerField.value === numericValue * 100;
+                              let valueInCents = isAlreadyInCents
+                                ? controllerField.value
+                                : numericValue * 100;
                               const newValue =
                                 formatCurrencyToDisplay(
                                   valueInCents,
                                   actualCurrency || 'USD',
                                   false
                                 ) || 0;
-                              console.log({ newValue });
 
                               controllerField.onChange(valueInCents);
                               setRawValue(newValue);
@@ -546,7 +575,7 @@ export const ItemsSection = ({
                             >
                               <TextField
                                 size="small"
-                                type="text" //type number does not allow typing dots or commmas
+                                type="text"
                                 value={
                                   isTyping
                                     ? rawValue
@@ -561,7 +590,6 @@ export const ItemsSection = ({
                                 onBlur={handleBlur}
                                 onFocus={() => {
                                   setIsTyping(true);
-                                  setRawValue(controllerField.value);
                                 }}
                                 name={controllerField.name}
                                 inputRef={controllerField.ref}
