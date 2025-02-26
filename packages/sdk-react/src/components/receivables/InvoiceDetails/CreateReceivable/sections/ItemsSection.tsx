@@ -1,8 +1,14 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import {
+  Controller,
+  ControllerRenderProps,
+  FieldError,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 
 import { components } from '@/api';
-import { Dialog } from '@/components';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
@@ -43,69 +49,14 @@ import {
   Box,
   Collapse,
   CardContent,
+  CircularProgress,
+  InputAdornment,
 } from '@mui/material';
 import { styled } from '@mui/material';
 
-interface VatRateControllerProps {
-  index: number;
-  vatRates?: VatRateListResponse;
-  highestVatRate: VatRateListResponse['data'][number] | undefined;
-}
+import { v4 as uuidv4 } from 'uuid';
 
-const VatRateController = ({
-  index,
-  vatRates,
-  highestVatRate,
-}: VatRateControllerProps) => {
-  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
-  const { root } = useRootElements();
-
-  useEffect(() => {
-    if (highestVatRate) {
-      setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
-      setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
-    }
-  }, [highestVatRate, index, setValue]);
-
-  return (
-    <Controller
-      name={`line_items.${index}.vat_rate_id`}
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <FormControl
-          variant="standard"
-          fullWidth
-          required
-          error={Boolean(error)}
-        >
-          <Select
-            {...field}
-            id={field.name}
-            labelId={field.name}
-            MenuProps={{ container: root }}
-            size="small"
-            onChange={(e) => {
-              const vatRate = vatRates?.data.find(
-                (rate) => rate.id === e.target.value
-              );
-              if (!vatRate) {
-                throw new Error('Vat rate not found');
-              }
-              setValue(`line_items.${index}.vat_rate_value`, vatRate.value);
-              field.onChange(e);
-            }}
-          >
-            {vatRates?.data.map((vatRate) => (
-              <MenuItem key={vatRate.id} value={vatRate.id}>
-                {vatRate.value / 100}%
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-    />
-  );
-};
+import { ItemSelector } from './ItemSelector';
 
 interface CardTableItemProps {
   label: string | ReactNode;
@@ -209,6 +160,16 @@ interface CreateInvoiceProductsTableProps {
   isNonVatSupported: boolean;
 }
 
+interface RowItem {
+  quantity: number;
+  price: { value: undefined | number; currency: string };
+  measure_unit_id?: string;
+  name?: string;
+  vat_rate_id?: string;
+  vat_rate_value?: number;
+  tax_rate_value?: number;
+}
+
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
@@ -220,16 +181,31 @@ export const ItemsSection = ({
     control,
     formState: { errors },
     watch,
+    setValue,
+    getValues,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'line_items',
+    keyName: 'tempId',
   });
+  const mounted = useRef(false);
+  const [rows, setRows] = useState<RowItem[]>([
+    {
+      quantity: 1,
+      price: { value: undefined, currency: 'USD' },
+      measure_unit_id: undefined,
+      name: '',
+      vat_rate_id: undefined,
+      vat_rate_value: undefined,
+      tax_rate_value: undefined,
+    },
+  ]);
   const watchedLineItems = watch('line_items');
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
-  const { formatCurrencyToDisplay } = useCurrencies();
+  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(
     (currency: CurrencyEnum) => {
@@ -237,6 +213,22 @@ export const ItemsSection = ({
     },
     [onCurrencyChanged]
   );
+  const handleAddRow = () => {
+    if (rows.length < 5) {
+      setRows((prevRows) => [
+        ...prevRows,
+        {
+          quantity: 1,
+          price: { value: undefined, currency: 'USD' },
+          measure_unit_id: undefined,
+          name: '',
+          vat_rate_id: undefined,
+          vat_rate_value: undefined,
+          tax_rate_value: undefined,
+        },
+      ]);
+    }
+  };
 
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);
@@ -244,6 +236,7 @@ export const ItemsSection = ({
   const handleCloseProductsTable = useCallback(() => {
     setProductsTableOpen(false);
   }, []);
+  console.log({ watchedLineItems });
 
   const {
     subtotalPrice,
@@ -280,19 +273,115 @@ export const ItemsSection = ({
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
-  const highestVatRate = vatRates?.data?.reduce(
-    (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
-    vatRates?.data[0]
+  const highestVatRate = useMemo(
+    () =>
+      vatRates?.data?.reduce(
+        (max, rate) => (rate.value > max.value ? rate : max),
+        vatRates.data[0]
+      ),
+    [vatRates]
   );
+
+  const createEmptyRow = useCallback(
+    () => ({
+      tempId: uuidv4(),
+      isLocal: true,
+      product_id: '',
+      quantity: 1,
+      price: { value: 0, currency: actualCurrency || 'USD' },
+      name: '',
+      vat_rate_id: highestVatRate?.id,
+      vat_rate_value: highestVatRate?.value,
+    }),
+    [actualCurrency, highestVatRate?.id, highestVatRate?.value]
+  );
+
+  const handleAddLocalRow = () => {
+    append(createEmptyRow());
+  };
+
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
+  console.log({ measureUnits });
+  useEffect(() => {
+    if (!mounted.current) {
+      append(createEmptyRow());
+      mounted.current = true;
+    }
+  }, [append, createEmptyRow]);
 
   const StyledTableCell = styled(TableCell)`
     max-width: 100px;
-
-    fieldset.MuiOutlinedInput-notchedOutline,
-    .MuiOutlinedInput-root:hover fieldset.MuiOutlinedInput-notchedOutline {
-      border-color: transparent;
-    }
   `;
+
+  const handleUpdate = useCallback(
+    (index: number, item: any) => {
+      if (item) {
+        setValue(`line_items.${index}.name`, item.label);
+        setValue(`line_items.${index}.price.value`, item.price?.value || 0);
+        setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
+        setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
+        setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
+        setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+      }
+    },
+    [setValue]
+  );
+
+  const { root } = useRootElements();
+
+  const VatRateController = ({ index }: { index: number }) => {
+    useEffect(() => {
+      const currentVatId = getValues(`line_items.${index}.vat_rate_id`);
+      if (!currentVatId && highestVatRate) {
+        setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
+        setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
+      }
+    }, []);
+
+    return (
+      <Controller
+        name={`line_items.${index}.vat_rate_id`}
+        render={({ field }) => (
+          <FormControl
+            variant="standard"
+            fullWidth
+            required
+            error={Boolean(error)}
+          >
+            <Select
+              {...field}
+              MenuProps={{ container: root }}
+              onChange={(e) => {
+                field.onChange(e);
+                const selectedVatRate = vatRates?.data.find(
+                  (vatRate) => vatRate.id === e.target.value
+                );
+                if (selectedVatRate) {
+                  setValue(
+                    `line_items.${index}.vat_rate_value`,
+                    selectedVatRate.value
+                  );
+                }
+              }}
+              sx={{
+                borderColor: 'divider',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+              }}
+              size="small"
+            >
+              {vatRates?.data.map((vatRate) => (
+                <MenuItem key={vatRate.id} value={vatRate.id}>
+                  {vatRate.value / 100}%
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+      />
+    );
+  };
 
   return (
     <Stack spacing={0} className={className}>
@@ -301,7 +390,10 @@ export const ItemsSection = ({
         fontSize={'1.25em'}
         fontWeight={500}
         sx={{ marginBottom: 2 }}
-      >{t(i18n)`Items`}</Typography>
+      >
+        {t(i18n)`Items`}
+      </Typography>
+
       <Collapse
         in={Boolean(generalError)}
         sx={{
@@ -322,71 +414,57 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ marginBottom: 2 }}>
-        <CardContent>
-          <TableContainer sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow className={tableRowClassName}>
-                  <TableCell>{t(i18n)`Item`}</TableCell>
-                  <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell>{t(i18n)`Units`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                  <TableCell>
-                    {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fields.map((field, index) => (
-                  <TableRow className={tableRowClassName} key={field.id}>
-                    <TableCell>{field.name}</TableCell>
-                    <StyledTableCell>
-                      <Controller
-                        name={`line_items.${index}.quantity`}
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              type="number"
-                              inputProps={{ min: 1 }}
-                              size="small"
-                              fullWidth={false}
-                              error={Boolean(error)}
-                            />
-                          </FormControl>
-                        )}
-                      />
-                    </StyledTableCell>
-                    <TableCell>
-                      {field.measure_unit_id ? (
-                        <MeasureUnit unitId={field.measure_unit_id} />
+
+      <Box>
+        <TableContainer sx={{ maxHeight: 400 }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow className={tableRowClassName}>
+                <TableCell sx={{ paddingLeft: 0 }}>{t(
+                  i18n
+                )`Item name`}</TableCell>
+                <TableCell>{t(i18n)`Quantity`}</TableCell>
+                <TableCell>{t(i18n)`Price`}</TableCell>
+                <TableCell>
+                  {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {fields.map((field, index) => {
+                const isLocal = !!field.isLocal;
+                return (
+                  <TableRow
+                    key={field.tempId || field.id}
+                    className={tableRowClassName}
+                  >
+                    <TableCell sx={{ minWidth: 160 }}>
+                      {isLocal ? (
+                        <ItemSelector
+                          setIsCreateItemOpened={setProductsTableOpen}
+                          onUpdate={(item: any) => handleUpdate(index, item)}
+                          index={index}
+                          actualCurrency={actualCurrency}
+                          defaultCurrency={defaultCurrency}
+                          measureUnits={measureUnits}
+                        />
                       ) : (
-                        '—'
+                        field.name
                       )}
                     </TableCell>
-                    <TableCell align="right">
-                      {field.price &&
-                        formatCurrencyToDisplay(
-                          field.price.value,
-                          field.price.currency
-                        )}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TotalCell
-                        item={watchedLineItems[index]}
-                        formatCurrencyToDisplay={formatCurrencyToDisplay}
-                      />
-                    </TableCell>
+
                     <TableCell>
-                      {isNonVatSupported ? (
-                        <Controller
-                          name={`line_items.${index}.tax_rate_value`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
+                      <Controller
+                        name={`line_items.${index}.quantity`}
+                        render={({ field }) => {
+                          const measureUnitId = useWatch({
+                            control,
+                            name: `line_items.${index}.measure_unit_id`,
+                          });
+
+                          return (
                             <FormControl
                               variant="standard"
                               fullWidth
@@ -395,72 +473,203 @@ export const ItemsSection = ({
                             >
                               <TextField
                                 {...field}
-                                id={field.name}
+                                InputProps={{
+                                  endAdornment:
+                                    measureUnitId && !isLocal ? (
+                                      <MeasureUnit unitId={measureUnitId} />
+                                    ) : measureUnits?.data?.length ? (
+                                      <InputAdornment position="end">
+                                        <Select
+                                          value={''}
+                                          onChange={(e) => {
+                                            const selectedUnitId =
+                                              e.target.value;
+                                            setValue(
+                                              `line_items.${index}.measure_unit_id`,
+                                              selectedUnitId
+                                            );
+                                          }}
+                                          size="small"
+                                        >
+                                          {measureUnits.data.map(
+                                            (unit, index) => (
+                                              <MenuItem
+                                                key={unit.id}
+                                                value={unit.id}
+                                                defaultChecked={index === 0}
+                                              >
+                                                {unit.name}
+                                              </MenuItem>
+                                            )
+                                          )}
+                                        </Select>
+                                      </InputAdornment>
+                                    ) : (
+                                      <CircularProgress size={20} />
+                                    ),
+                                }}
                                 type="number"
-                                inputProps={{ min: 1, max: 100 }}
+                                inputProps={{ min: 1 }}
                                 size="small"
-                                fullWidth={false}
-                                error={Boolean(error)}
-                                helperText={error?.message}
-                                InputProps={{ endAdornment: '%' }}
-                                sx={{ minWidth: 100 }}
+                                disabled={!isLocal}
                               />
                             </FormControl>
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <Controller
+                        name={`line_items.${index}.price.value`}
+                        render={({
+                          field: controllerField,
+                          fieldState: { error },
+                        }) => {
+                          const [isTyping, setIsTyping] = useState(false);
+                          const [rawValue, setRawValue] = useState<
+                            string | number
+                          >('');
+
+                          const handleBlur = (e) => {
+                            const inputValue = String(rawValue).trim();
+                            const numericValue = parseFloat(
+                              inputValue.replace(/[^0-9.]/g, '')
+                            );
+
+                            if (inputValue === '' || isNaN(numericValue)) {
+                              controllerField.onChange(0);
+                              setRawValue(
+                                formatCurrencyToDisplay(
+                                  0,
+                                  actualCurrency || 'USD',
+                                  false
+                                )
+                              );
+                            } else {
+                              const isAlreadyInCents =
+                                controllerField.value === numericValue * 100;
+                              let valueInCents = isAlreadyInCents
+                                ? controllerField.value
+                                : numericValue * 100;
+                              const newValue =
+                                formatCurrencyToDisplay(
+                                  valueInCents,
+                                  actualCurrency || 'USD',
+                                  false
+                                ) || 0;
+
+                              controllerField.onChange(valueInCents);
+                              setRawValue(newValue);
+                            }
+
+                            setIsTyping(false);
+                            controllerField.onBlur();
+                          };
+
+                          return (
+                            <FormControl
+                              variant="standard"
+                              fullWidth
+                              required
+                              error={Boolean(error)}
+                            >
+                              <TextField
+                                size="small"
+                                type="text"
+                                value={
+                                  isTyping
+                                    ? rawValue
+                                    : formatCurrencyToDisplay(
+                                        controllerField.value,
+                                        actualCurrency || 'USD',
+                                        false
+                                      )
+                                }
+                                sx={{ minWidth: 100 }}
+                                placeholder={'0'}
+                                onBlur={handleBlur}
+                                onFocus={() => {
+                                  setIsTyping(true);
+                                }}
+                                name={controllerField.name}
+                                inputRef={controllerField.ref}
+                                InputProps={{
+                                  startAdornment: getSymbolFromCurrency(
+                                    actualCurrency || 'USD'
+                                  ),
+                                }}
+                                onChange={(e) => {
+                                  setRawValue(e.target.value);
+                                }}
+                              />
+                            </FormControl>
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {isNonVatSupported ? (
+                        <Controller
+                          name={`line_items.${index}.tax_rate_value`}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              type="number"
+                              size="small"
+                              InputProps={{ endAdornment: '%' }}
+                              disabled={!isLocal}
+                            />
                           )}
                         />
                       ) : (
-                        <VatRateController
-                          index={index}
-                          vatRates={vatRates}
-                          highestVatRate={highestVatRate}
-                        />
+                        <VatRateController index={index} />
                       )}
                     </TableCell>
 
+                    {/* Delete Button */}
                     <TableCell>
-                      <IconButton
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      >
+                      <IconButton onClick={() => remove(index)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Button
-                      startIcon={<AddIcon />}
-                      onClick={handleOpenProductsTable}
-                    >
-                      {t(i18n)`Add item`}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Collapse in={shouldShowVatExemptRationale}>
-            <Box sx={{ m: 2 }}>
-              <Controller
-                name="vat_exemption_rationale"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    label={t(i18n)`VAT Exempt Rationale`}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    error={Boolean(error)}
-                  />
-                )}
-              />
-            </Box>
-          </Collapse>
-        </CardContent>
-      </Card>
+                );
+              })}
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <Button
+                    startIcon={<AddIcon />}
+                    variant="outlined"
+                    onClick={handleAddLocalRow}
+                  >
+                    {t(i18n)`Row`}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Collapse in={shouldShowVatExemptRationale}>
+          <Box sx={{ m: 2 }}>
+            <Controller
+              name="vat_exemption_rationale"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label={t(i18n)`VAT Exempt Rationale`}
+                  multiline
+                  rows={4}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              )}
+            />
+          </Box>
+        </Collapse>
+      </Box>
+
       <Card
         className={className + '-Totals'}
         variant="outlined"
@@ -497,37 +706,32 @@ export const ItemsSection = ({
           </Stack>
         </CardContent>
       </Card>
-      <Dialog
-        className={className + '-Dialog-ProductsTable'}
+
+      <ProductsTable
+        defaultCurrency={defaultCurrency}
+        actualCurrency={actualCurrency}
         open={productsTableOpen}
-        onClose={handleCloseProductsTable}
-        alignDialog="right"
-      >
-        <ProductsTable
-          defaultCurrency={defaultCurrency}
-          actualCurrency={actualCurrency}
-          hasProducts={fields.length > 0}
-          onAdd={({ items, currency }) => {
-            handleCloseProductsTable();
-            if (actualCurrency !== currency) {
-              replace(
-                items.map((product) => {
-                  return prepareLineItem(product, vatRates);
-                })
-              );
-              handleSetActualCurrency(currency);
-
-              return;
-            }
-
-            const productItemsMapped = items.map((product) => {
-              return prepareLineItem(product, vatRates);
-            });
-            append(productItemsMapped);
+        setOpen={setProductsTableOpen}
+        hasProducts={fields.length > 0}
+        onAdd={({ items, currency }) => {
+          handleCloseProductsTable();
+          if (actualCurrency !== currency) {
+            replace(
+              items.map((product) => {
+                return prepareLineItem(product, vatRates);
+              })
+            );
             handleSetActualCurrency(currency);
-          }}
-        />
-      </Dialog>
+            return;
+          }
+
+          const productItemsMapped = items.map((product) => {
+            return prepareLineItem(product, vatRates);
+          });
+          append(productItemsMapped);
+          handleSetActualCurrency(currency);
+        }}
+      />
     </Stack>
   );
 };
