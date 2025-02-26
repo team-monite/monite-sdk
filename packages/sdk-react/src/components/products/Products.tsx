@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
+import { ManageMeasureUnits } from '@/components/products/ProductDetails/components/ManageMeasureUnits';
 import {
   ProductDetails,
   ProductDetailsView,
@@ -51,6 +52,8 @@ const ProductsBase = () => {
   const [detailsViewMode, setDetailsViewMode] = useState<ProductDetailsView>(
     ProductDetailsView.Read
   );
+  const [measureUnitsModalOpened, setMeasureUnitsModalOpened] =
+    useState<boolean>(false);
 
   const onRowClick = useCallback((product: ProductServiceResponse) => {
     setSelectedProductId(product.id);
@@ -93,14 +96,24 @@ const ProductsBase = () => {
           </>
         }
         extra={
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!isCreateAllowed}
-            onClick={openCreateModal}
-          >
-            {t(i18n)`Create new`}
-          </Button>
+          <>
+            <Button
+              variant="text"
+              color="primary"
+              onClick={() => setMeasureUnitsModalOpened(true)}
+              sx={{ mr: 2 }}
+            >
+              {t(i18n)`Manage measure units`}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={!isCreateAllowed}
+              onClick={openCreateModal}
+            >
+              {t(i18n)`Create new`}
+            </Button>
+          </>
         }
       />
       {!isReadAllowedLoading && !isReadAllowed && <AccessRestriction />}
@@ -129,6 +142,16 @@ const ProductsBase = () => {
         onClosed={closedModal}
       >
         <ProductDetails id={selectedProductId} initialView={detailsViewMode} />
+      </Dialog>
+      <Dialog
+        open={measureUnitsModalOpened}
+        alignDialog="right"
+        container={root}
+        onClose={() => setMeasureUnitsModalOpened(false)}
+      >
+        <ManageMeasureUnits
+          handleClose={() => setMeasureUnitsModalOpened(false)}
+        />
       </Dialog>
     </>
   );
