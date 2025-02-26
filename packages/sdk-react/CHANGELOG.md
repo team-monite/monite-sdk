@@ -1,5 +1,12 @@
 # @monite/sdk-react
 
+## 3.22.1
+
+### Patch Changes
+
+- 634b44a: Added option to delete canceled payables
+  - @monite/sdk-api@3.22.1
+
 ## 3.22.0
 
 ### Minor Changes
