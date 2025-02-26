@@ -27,6 +27,7 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import { TagFormModal } from '../TagFormModal';
+import { useTags } from '../useTags';
 
 interface TagsTableProps {
   onChangeSort?: (params: TagsTableSortModel) => void;
@@ -65,6 +66,7 @@ const TagsTableBase = ({
   });
   const [editModalOpened, setEditModalOpened] = useState<boolean>(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
+  const { tagsWithKeywords } = useTags({});
 
   const openEditModal = useCallback(() => {
     setEditModalOpened(true);
@@ -129,11 +131,28 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
+  const tagsList = (tags?.data ?? []).map((tag) => ({
+    ...tag,
+    keywords: tagsWithKeywords[tag.id]?.join(', '),
+  }));
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'name',
         headerName: t(i18n)`Name`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'category',
+        headerName: t(i18n)`Category`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'keywords',
+        headerName: t(i18n)`Keywords`,
         sortable: false,
         flex: 1,
       },
@@ -267,7 +286,7 @@ const TagsTableBase = ({
           ),
         }}
         columns={columns}
-        rows={tags?.data ?? []}
+        rows={tagsList}
       />
       <TagFormModal
         tag={selectedTag}

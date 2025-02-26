@@ -79,6 +79,7 @@ interface CommonCounterpartDetailsProps
 
 export type CounterpartsDetailsProps = {
   isInvoiceCreation?: boolean;
+  onReturn?: () => void;
 } & (ExistingCounterpartDetail | NewCounterpartDetail);
 
 export enum COUNTERPART_VIEW {

@@ -177,6 +177,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={showView}
             onClose={props.onClose}
             onCreate={onCreate}
+            onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
@@ -191,6 +192,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={showView}
             onClose={props.onClose}
             onCreate={onCreate}
+            onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
@@ -212,5 +214,6 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     showCategories,
     showView,
     props.onClose,
+    props.onReturn,
   ]);
 };
