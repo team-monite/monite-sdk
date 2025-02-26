@@ -6,10 +6,10 @@ name: Version Packages
 on:
   push:
     branches:
-      - main
+      - v3
 
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
+  group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
@@ -39,6 +39,6 @@ jobs:
         uses: changesets/action@v1.4.7
         with:
           version: yarn exec .changeset/version.sh
-          title: "chore: Version Packages"
+          title: 'chore: Version Packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -7,12 +7,12 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
+  group: '${{ github.workflow }}-${{ github.ref }}'
   # Do not cancel ✖︎ in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: false
 
 env:
-  RELEASE_BRANCH: "main"
+  RELEASE_BRANCH: 'v3'
 
 jobs:
   npm-publish:
@@ -60,7 +60,7 @@ jobs:
           yarn config set 'npmScopes["team-monite"]' --home --json '{"npmAlwaysAuth":true,"npmAuthToken":"${NPM_TOKEN}"}'
         env:
           # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
-          NPM_TOKEN: ""
+          NPM_TOKEN: ''
 
       - name: Publish to NPM
         id: changesets
@@ -77,7 +77,7 @@ jobs:
         run: yarn sentry-cli sourcemaps upload --release="$(node -p 'require("@monite/sdk-api/package.json").version')" packages/sdk-react/dist
         env:
           # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
-          NPM_TOKEN: ""
+          NPM_TOKEN: ''
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
