@@ -345,7 +345,19 @@ const CreateReceivablesBase = ({
           height: '100vh',
           overflow: 'auto',
         }}
-      ></Box>
+      >
+        <InvoicePreview
+          watch={watch}
+          counterpart={counterpart}
+          currency={actualCurrency}
+          isNonVatSupported={isNonVatSupported}
+          entityData={entityData}
+          address={counterpartBillingAddress}
+          paymentTerms={paymentTerms}
+          entityVatIds={entityVatIds}
+          counterpartVats={counterpartVats}
+        />
+      </Box>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
         reminderType={createReminderDialog.reminderType}
