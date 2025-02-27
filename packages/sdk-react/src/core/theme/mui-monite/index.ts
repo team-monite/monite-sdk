@@ -503,14 +503,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 },
               },
             },
-            '&.Item-Selector > .MuiInputBase-root': {
-              paddingRight: '1em',
-              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
-                padding: '8px 12px',
-                height: '40px',
-                lineHeight: '40px',
-              },
-            },
+
             '& > .MuiFormLabel-root': {
               fontSize: '1.25rem',
               paddingBottom: '1rem',
@@ -541,7 +534,15 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               },
             },
           },
-
+          '& > .Item-Selector > .MuiInputBase-root.MuiInputBase-formControl.MuiAutocomplete-inputRoot':
+            {
+              paddingRight: '1em',
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '8px 12px',
+                height: '40px',
+                lineHeight: '40px',
+              },
+            },
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',

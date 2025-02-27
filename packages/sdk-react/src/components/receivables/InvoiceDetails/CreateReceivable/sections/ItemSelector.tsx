@@ -49,20 +49,9 @@ interface CounterpartsAutocompleteOptionProps {
 type CounterpartSelectorProps = {
   disabled?: boolean;
   counterpartAddresses: any;
-} & (
-  | {
-      isSimplified: true;
-      setIsCreateCounterpartOpened?: never;
-      setIsEditCounterpartOpened?: never;
-    }
-  | {
-      isSimplified?: false;
-      setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
-      setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
-    }
-);
-
-//const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
+  setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+  setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+};
 
 const CREATE_NEW_ID = '__create-new__';
 const DIVIDER = '__divider__';
@@ -79,7 +68,6 @@ function isDividerOption(
 
 export const ItemSelector = ({
   setIsCreateItemOpened,
-  isSimplified = false,
   disabled,
   index = 0,
   actualCurrency = 'EUR',
@@ -164,10 +152,8 @@ export const ItemSelector = ({
   }, [flattenProducts, measureUnits]);
 
   const handleCreateNewItem = useCallback(() => {
-    if (!isSimplified && setIsCreateItemOpened) {
-      setIsCreateItemOpened(true);
-    }
-  }, [isSimplified, setIsCreateItemOpened]);
+    setIsCreateItemOpened(true);
+  }, [setIsCreateItemOpened]);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -235,13 +221,12 @@ export const ItemSelector = ({
                   { filtered: [], reverseFiltered: [] }
                 );
 
-                !isSimplified &&
-                  filtered.unshift({
-                    id: CREATE_NEW_ID,
-                    label: t(i18n)`Create new item`,
-                  });
+                filtered.unshift({
+                  id: CREATE_NEW_ID,
+                  label: t(i18n)`Create new item`,
+                });
 
-                if (!isSimplified && params.inputValue.length) {
+                if (params.inputValue.length) {
                   filtered.push({
                     id: DIVIDER,
                     label: '-',
@@ -258,9 +243,7 @@ export const ItemSelector = ({
                     required
                     error={Boolean(error)}
                     helperText={error?.message}
-                    className={`Monite-Selector Item-Selector ${
-                      isSimplified ? 'isSimplified' : ''
-                    }`}
+                    className="Item-Selector"
                     InputProps={{
                       ...params.InputProps,
                       value: params.inputProps.value,
@@ -270,12 +253,6 @@ export const ItemSelector = ({
                         <CircularProgress size={20} />
                       ),
                       endAdornment: (() => {
-                        if (
-                          isSimplified &&
-                          !params.inputProps['aria-expanded']
-                        ) {
-                          return <KeyboardArrowDown fontSize="small" />;
-                        }
                         if (
                           selectedItemOption &&
                           params.inputProps['aria-expanded']
