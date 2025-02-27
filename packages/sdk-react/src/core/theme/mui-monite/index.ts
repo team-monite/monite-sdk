@@ -921,10 +921,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.Monite-CreateReceivable-ItemsSection-Table': {
             '.MuiTableCell-root': {
               borderBottom: 'none',
-              padding: '8px 12px',
-              '&:first-child': {
-                paddingLeft: 0,
-              },
+              padding: '8px 12px 8px 0',
               '& .MuiFormControl-root .MuiInputBase-root': {
                 backgroundColor: '#fff',
               },

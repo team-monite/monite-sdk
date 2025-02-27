@@ -283,7 +283,8 @@ export const ItemsSection = ({
     }
   };
 
-  const { data: measureUnits } = api.measureUnits.getMeasureUnits.useQuery();
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
 
   useEffect(() => {
     if (!mounted.current) {
@@ -302,6 +303,7 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
         setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+        handleAddLocalRow();
       }
     },
     [setValue]
@@ -412,287 +414,292 @@ export const ItemsSection = ({
             </TableHead>
 
             <TableBody>
-              {fields.map((field, index) => {
-                const isLocal = !!field.isLocal;
-                return (
-                  <TableRow
-                    key={field.tempId || field.id}
-                    className={tableRowClassName}
-                  >
-                    <TableCell sx={{ width: '40%' }}>
-                      {isLocal ? (
-                        <ItemSelector
-                          setIsCreateItemOpened={setProductsTableOpen}
-                          onUpdate={(item: any) => handleUpdate(index, item)}
-                          index={index}
-                          actualCurrency={actualCurrency}
-                          defaultCurrency={defaultCurrency}
-                          measureUnits={measureUnits}
-                        />
-                      ) : (
-                        field.name
-                      )}
-                    </TableCell>
+              {isMeasureUnitsLoading ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '8px',
+                  }}
+                >
+                  <CircularProgress size={20} />
+                </Box>
+              ) : (
+                fields.map((field, index) => {
+                  const isLocal = !!field.isLocal;
+                  return (
+                    <TableRow
+                      key={field.tempId || field.id}
+                      className={tableRowClassName}
+                    >
+                      <TableCell sx={{ width: '40%' }}>
+                        {isLocal ? (
+                          <ItemSelector
+                            setIsCreateItemOpened={setProductsTableOpen}
+                            onUpdate={(item: any) => handleUpdate(index, item)}
+                            index={index}
+                            actualCurrency={actualCurrency}
+                            defaultCurrency={defaultCurrency}
+                            measureUnits={measureUnits}
+                          />
+                        ) : (
+                          field.name
+                        )}
+                      </TableCell>
 
-                    <TableCell sx={{ width: '20%' }}>
-                      <Controller
-                        name={`line_items.${index}.quantity`}
-                        render={({ field }) => {
-                          const measureUnitId = useWatch({
-                            control,
-                            name: `line_items.${index}.measure_unit_id`,
-                          });
+                      <TableCell sx={{ width: '20%' }}>
+                        <Controller
+                          name={`line_items.${index}.quantity`}
+                          render={({ field }) => {
+                            const measureUnitId = useWatch({
+                              control,
+                              name: `line_items.${index}.measure_unit_id`,
+                            });
 
-                          return (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
-                              <TextField
-                                {...field}
-                                InputProps={{
-                                  endAdornment:
-                                    measureUnitId && !isLocal ? (
-                                      <MeasureUnit unitId={measureUnitId} />
-                                    ) : measureUnits?.data?.length ? (
-                                      <InputAdornment position="end">
-                                        <Controller
-                                          name={`line_items.${index}.measure_unit_id`}
-                                          control={control}
-                                          defaultValue={
-                                            measureUnits.data[0]?.id
-                                          }
-                                          render={({ field }) => (
-                                            <Select
-                                              {...field}
-                                              onChange={(e) => {
-                                                const selectedUnitId =
-                                                  e.target.value;
-                                                setValue(
-                                                  `line_items.${index}.measure_unit_id`,
-                                                  selectedUnitId
-                                                );
-                                              }}
-                                              sx={{
-                                                background: 'transparent',
-                                                minHeight:
-                                                  'fit-content !important',
-                                                '.MuiSelect-select.MuiSelect-outlined':
-                                                  {
-                                                    paddingLeft: 0,
-                                                  },
-                                                '&:hover': {
-                                                  boxShadow: 'none !important',
-                                                  borderColor:
-                                                    'transparent !important',
+                            return (
+                              <FormControl
+                                variant="standard"
+                                fullWidth
+                                required
+                                error={Boolean(error)}
+                              >
+                                <TextField
+                                  {...field}
+                                  InputProps={{
+                                    endAdornment:
+                                      measureUnitId && !isLocal ? (
+                                        <MeasureUnit unitId={measureUnitId} />
+                                      ) : measureUnits?.data?.length ? (
+                                        <InputAdornment position="end">
+                                          <Controller
+                                            name={`line_items.${index}.measure_unit_id`}
+                                            control={control}
+                                            defaultValue={
+                                              measureUnits.data[0]?.id
+                                            }
+                                            render={({ field }) => (
+                                              <Select
+                                                {...field}
+                                                onChange={(e) => {
+                                                  const selectedUnitId =
+                                                    e.target.value;
+                                                  setValue(
+                                                    `line_items.${index}.measure_unit_id`,
+                                                    selectedUnitId
+                                                  );
+                                                }}
+                                                sx={{
                                                   background: 'transparent',
-                                                },
-                                                '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
-                                                  { paddingLeft: 0 },
-                                                '&.Mui-focused.MuiInputBase-root':
-                                                  {
+                                                  minHeight:
+                                                    'fit-content !important',
+                                                  '.MuiSelect-select.MuiSelect-outlined':
+                                                    {
+                                                      paddingLeft: 0,
+                                                    },
+                                                  '&:hover': {
                                                     boxShadow:
                                                       'none !important',
+                                                    borderColor:
+                                                      'transparent !important',
                                                     background: 'transparent',
                                                   },
-                                                '& .MuiOutlinedInput-notchedOutline':
-                                                  {
-                                                    border: 'none !important',
-                                                    background: 'transparent',
-                                                  },
-                                                '&:hover .MuiOutlinedInput-notchedOutline':
-                                                  {
-                                                    border: 'none !important',
-                                                    background: 'transparent',
-                                                  },
-                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                                  {
-                                                    background: 'transparent',
-                                                  },
-                                              }}
-                                              size="small"
-                                            >
-                                              {measureUnits.data.map((unit) => (
-                                                <MenuItem
-                                                  key={unit.id}
-                                                  value={unit.id}
-                                                >
-                                                  {unit.name}
-                                                </MenuItem>
-                                              ))}
-                                            </Select>
-                                          )}
-                                        />
-                                      </InputAdornment>
-                                    ) : (
-                                      <Box
-                                        sx={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          marginRight: '8px',
-                                        }}
-                                      >
-                                        <CircularProgress size={20} />
-                                      </Box>
-                                    ),
-                                }}
-                                type="number"
-                                inputProps={{ min: 1 }}
-                                size="small"
-                                disabled={
-                                  measureUnits?.data?.length === 0 &&
-                                  !measureUnitId
-                                }
-                                sx={{
-                                  '& .MuiInputBase-root': {
-                                    paddingRight: '0 !important',
-                                    '.MuiInputBase-input': {
-                                      paddingRight: 0,
-                                    },
-                                    '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
-                                      {
-                                        borderColor: 'transparent',
+                                                  '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
+                                                    { paddingLeft: 0 },
+                                                  '&.Mui-focused.MuiInputBase-root':
+                                                    {
+                                                      boxShadow:
+                                                        'none !important',
+                                                      background: 'transparent',
+                                                    },
+                                                  '& .MuiOutlinedInput-notchedOutline':
+                                                    {
+                                                      border: 'none !important',
+                                                      background: 'transparent',
+                                                    },
+                                                  '&:hover .MuiOutlinedInput-notchedOutline':
+                                                    {
+                                                      border: 'none !important',
+                                                      background: 'transparent',
+                                                    },
+                                                  '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                                    {
+                                                      background: 'transparent',
+                                                    },
+                                                }}
+                                                size="small"
+                                              >
+                                                {measureUnits.data.map(
+                                                  (unit) => (
+                                                    <MenuItem
+                                                      key={unit.id}
+                                                      value={unit.id}
+                                                    >
+                                                      {unit.name}
+                                                    </MenuItem>
+                                                  )
+                                                )}
+                                              </Select>
+                                            )}
+                                          />
+                                        </InputAdornment>
+                                      ) : null,
+                                  }}
+                                  type="number"
+                                  inputProps={{ min: 1 }}
+                                  size="small"
+                                  disabled={
+                                    measureUnits?.data?.length === 0 &&
+                                    !measureUnitId
+                                  }
+                                  sx={{
+                                    '& .MuiInputBase-root': {
+                                      paddingRight: '0 !important',
+                                      '.MuiInputBase-input': {
+                                        paddingRight: 0,
                                       },
-                                  },
-                                }}
-                              />
-                            </FormControl>
-                          );
-                        }}
-                      />
-                    </TableCell>
-
-                    <TableCell sx={{ width: '20%' }} align="right">
-                      <Controller
-                        name={`line_items.${index}.price.value`}
-                        render={({
-                          field: controllerField,
-                          fieldState: { error },
-                        }) => {
-                          const [isTyping, setIsTyping] = useState(false);
-                          const [rawValue, setRawValue] = useState<
-                            string | number
-                          >(controllerField.value);
-
-                          useEffect(() => {
-                            if (!isTyping) {
-                              setRawValue(
-                                formatCurrencyToDisplay(
-                                  controllerField.value,
-                                  actualCurrency || 'USD',
-                                  false
-                                ) || ''
-                              );
-                            }
-                          }, [controllerField.value]);
-
-                          const handleBlur = (e) => {
-                            const inputValue = String(rawValue).trim();
-                            const numericValue = parseFloat(
-                              inputValue.replace(/[^0-9.]/g, '')
+                                      '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
+                                        {
+                                          borderColor: 'transparent',
+                                        },
+                                    },
+                                  }}
+                                />
+                              </FormControl>
                             );
-
-                            if (inputValue === '' || isNaN(numericValue)) {
-                              controllerField.onChange(0);
-                              setRawValue(
-                                formatCurrencyToDisplay(
-                                  0,
-                                  actualCurrency || 'USD',
-                                  false
-                                )
-                              );
-                            } else {
-                              const isAlreadyInCents =
-                                controllerField.value === numericValue * 100;
-                              let valueInCents = isAlreadyInCents
-                                ? controllerField.value
-                                : numericValue * 100;
-                              const newValue =
-                                formatCurrencyToDisplay(
-                                  valueInCents,
-                                  actualCurrency || 'USD',
-                                  false
-                                ) || 0;
-
-                              controllerField.onChange(valueInCents);
-                              setRawValue(newValue);
-                            }
-
-                            setIsTyping(false);
-                            controllerField.onBlur();
-                          };
-
-                          return (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
-                              <TextField
-                                size="small"
-                                type="text"
-                                value={
-                                  isTyping
-                                    ? rawValue
-                                    : formatCurrencyToDisplay(
-                                        controllerField.value,
-                                        actualCurrency || 'USD',
-                                        false
-                                      )
-                                }
-                                sx={{ minWidth: 100 }}
-                                placeholder={'0'}
-                                onBlur={handleBlur}
-                                onFocus={() => {
-                                  setIsTyping(true);
-                                }}
-                                name={controllerField.name}
-                                inputRef={controllerField.ref}
-                                InputProps={{
-                                  startAdornment: getSymbolFromCurrency(
-                                    actualCurrency || 'USD'
-                                  ),
-                                }}
-                                onChange={(e) => {
-                                  setRawValue(e.target.value);
-                                }}
-                              />
-                            </FormControl>
-                          );
-                        }}
-                      />
-                    </TableCell>
-
-                    <TableCell sx={{ width: '10%' }}>
-                      {isNonVatSupported ? (
-                        <Controller
-                          name={`line_items.${index}.tax_rate_value`}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              type="number"
-                              size="small"
-                              InputProps={{ endAdornment: '%' }}
-                              disabled={!isLocal}
-                            />
-                          )}
+                          }}
                         />
-                      ) : (
-                        <VatRateController index={index} />
-                      )}
-                    </TableCell>
+                      </TableCell>
 
-                    <TableCell>
-                      <IconButton onClick={() => remove(index)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      <TableCell sx={{ width: '20%' }} align="right">
+                        <Controller
+                          name={`line_items.${index}.price.value`}
+                          render={({
+                            field: controllerField,
+                            fieldState: { error },
+                          }) => {
+                            const [isTyping, setIsTyping] = useState(false);
+                            const [rawValue, setRawValue] = useState<
+                              string | number
+                            >(controllerField.value);
+
+                            useEffect(() => {
+                              if (!isTyping) {
+                                setRawValue(
+                                  formatCurrencyToDisplay(
+                                    controllerField.value,
+                                    actualCurrency || 'USD',
+                                    false
+                                  ) || ''
+                                );
+                              }
+                            }, [controllerField.value]);
+
+                            const handleBlur = (e) => {
+                              const inputValue = String(rawValue).trim();
+                              const numericValue = parseFloat(
+                                inputValue.replace(/[^0-9.]/g, '')
+                              );
+
+                              if (inputValue === '' || isNaN(numericValue)) {
+                                controllerField.onChange(0);
+                                setRawValue(
+                                  formatCurrencyToDisplay(
+                                    0,
+                                    actualCurrency || 'USD',
+                                    false
+                                  )
+                                );
+                              } else {
+                                const isAlreadyInCents =
+                                  controllerField.value === numericValue * 100;
+                                let valueInCents = isAlreadyInCents
+                                  ? controllerField.value
+                                  : numericValue * 100;
+                                const newValue =
+                                  formatCurrencyToDisplay(
+                                    valueInCents,
+                                    actualCurrency || 'USD',
+                                    false
+                                  ) || 0;
+
+                                controllerField.onChange(valueInCents);
+                                setRawValue(newValue);
+                              }
+
+                              setIsTyping(false);
+                              controllerField.onBlur();
+                            };
+
+                            return (
+                              <FormControl
+                                variant="standard"
+                                fullWidth
+                                required
+                                error={Boolean(error)}
+                              >
+                                <TextField
+                                  size="small"
+                                  type="text"
+                                  value={
+                                    isTyping
+                                      ? rawValue
+                                      : formatCurrencyToDisplay(
+                                          controllerField.value,
+                                          actualCurrency || 'USD',
+                                          false
+                                        )
+                                  }
+                                  sx={{ minWidth: 100 }}
+                                  placeholder={'0'}
+                                  onBlur={handleBlur}
+                                  onFocus={() => {
+                                    setIsTyping(true);
+                                  }}
+                                  name={controllerField.name}
+                                  inputRef={controllerField.ref}
+                                  InputProps={{
+                                    startAdornment: getSymbolFromCurrency(
+                                      actualCurrency || 'USD'
+                                    ),
+                                  }}
+                                  onChange={(e) => {
+                                    setRawValue(e.target.value);
+                                  }}
+                                />
+                              </FormControl>
+                            );
+                          }}
+                        />
+                      </TableCell>
+
+                      <TableCell sx={{ width: '10%' }}>
+                        {isNonVatSupported ? (
+                          <Controller
+                            name={`line_items.${index}.tax_rate_value`}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                type="number"
+                                size="small"
+                                InputProps={{ endAdornment: '%' }}
+                                disabled={!isLocal}
+                              />
+                            )}
+                          />
+                        ) : (
+                          <VatRateController index={index} />
+                        )}
+                      </TableCell>
+
+                      <TableCell>
+                        <IconButton onClick={() => remove(index)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
               <TableRow>
                 <TableCell colSpan={7}>
                   <Button
