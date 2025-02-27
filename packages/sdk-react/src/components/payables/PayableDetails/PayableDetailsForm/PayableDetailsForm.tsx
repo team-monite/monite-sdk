@@ -9,6 +9,11 @@ import {
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
+import { CounterpartAutocomplete } from '@/components/counterparts/CounterpartAutocomplete';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -17,6 +22,7 @@ import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -49,7 +55,6 @@ import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   calculateTotalsForPayable,
-  counterpartsToSelect,
   findDefaultBankAccount,
   isFieldRequired,
   LineItem,
@@ -268,7 +273,7 @@ const PayableDetailsFormBase = forwardRef<
       context: formContext,
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, resetField, trigger } =
+    const { control, handleSubmit, watch, reset, trigger, resetField } =
       methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
@@ -281,7 +286,7 @@ const PayableDetailsFormBase = forwardRef<
 
     useEffect(() => {
       methods.reset();
-    }, [payablesValidations, methods]);
+    }, [payablesValidations, methods.reset, methods]);
 
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
@@ -320,6 +325,7 @@ const PayableDetailsFormBase = forwardRef<
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
+
     const { ocrRequiredFields, optionalFields } =
       usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
@@ -450,52 +456,58 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <Controller
-                        name="counterpart"
+                      <CounterpartAutocomplete
                         control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl
-                            variant="standard"
-                            fullWidth
-                            error={Boolean(error)}
-                            required={
-                              isFieldRequired(
-                                'counterpart',
-                                ocrRequiredFields
-                              ) ||
-                              isFieldRequiredByValidations(
-                                'counterpart_id',
-                                payablesValidations
-                              )
-                            }
-                          >
-                            <InputLabel htmlFor={field.name}>
-                              {t(i18n)`Vendor`}
-                            </InputLabel>
-                            <Select
-                              {...field}
-                              id={field.name}
-                              labelId={field.name}
-                              label={t(i18n)`Counterpart`}
-                              MenuProps={{ container: root }}
-                              onChange={field.onChange}
-                            >
-                              {counterpartsToSelect(
-                                counterpartQuery?.data?.data
-                              ).map((counterpart) => (
-                                <MenuItem
-                                  key={counterpart.value}
-                                  value={counterpart.value}
-                                >
-                                  {counterpart.label}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                            {error && (
-                              <FormHelperText>{error.message}</FormHelperText>
-                            )}
-                          </FormControl>
-                        )}
+                        disabled={false}
+                        name="counterpart"
+                        label={t(i18n)`Vendor`}
+                        required={
+                          isFieldRequired('counterpart', ocrRequiredFields) ||
+                          isFieldRequiredByValidations(
+                            'counterpart_id',
+                            payablesValidations
+                          )
+                        }
+                        getCounterpartDefaultValues={(
+                          counterpartType?: string
+                        ):
+                          | DefaultValuesOCRIndividual
+                          | DefaultValuesOCROrganization => {
+                          const {
+                            counterpart_address_object = null,
+                            tax_payer_id = '',
+                            counterpart_name = '',
+                          } = (payable?.other_extracted_data as components['schemas']['OCRResponseInvoiceReceiptData']) ||
+                          {};
+                          return {
+                            tax_id: tax_payer_id || '',
+                            counterpart: {
+                              email: '',
+                              phone: '',
+                              isCustomer: false,
+                              isVendor: false,
+                              line1: counterpart_address_object?.line1 || '',
+                              line2: counterpart_address_object?.line2 || '',
+                              city: counterpart_address_object?.city || '',
+                              state: counterpart_address_object?.state || '',
+                              postalCode:
+                                counterpart_address_object?.postal_code || '',
+                              ...(counterpart_address_object?.country && {
+                                country:
+                                  counterpart_address_object?.country as keyof typeof AllowedCountries,
+                              }),
+                              ...(counterpartType === 'individual' && {
+                                firstName: counterpart_name,
+                              }),
+                              ...(counterpartType === 'individual' && {
+                                lastName: '',
+                              }),
+                              ...(counterpartType === 'organization' && {
+                                companyName: counterpart_name,
+                              }),
+                            },
+                          };
+                        }}
                       />
                       <Controller
                         name="counterpartBankAccount"

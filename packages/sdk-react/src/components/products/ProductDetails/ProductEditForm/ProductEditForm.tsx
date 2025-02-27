@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import {
   Box,
+  Breadcrumbs,
   Button,
   DialogActions,
   DialogContent,
@@ -26,6 +27,7 @@ import {
 } from '@mui/material';
 
 import { ProductCancelEditModal } from '../../ProductCancelEditModal';
+import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
 import { IProductFormSubmitValues } from '../validation';
 
@@ -55,6 +57,8 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   const [cancelEditModalOpened, setCancelEditModalOpened] =
     useState<boolean>(false);
+  const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(false);
+
   const [isFormDirty, setIsFormDirty] = useState<boolean>(false);
 
   const {
@@ -178,9 +182,25 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
     <>
       <Grid container alignItems="center">
         <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {t(i18n)`Edit ${product?.type}`}
-          </Typography>
+          {manageMeasureUnits ? (
+            <Breadcrumbs separator="›" aria-label="breadcrumb">
+              <Typography
+                sx={{ padding: 3, cursor: 'pointer', pr: 0 }}
+                onClick={() => setManageMeasureUnits(false)}
+              >
+                {t(i18n)`Edit ${product?.type}`}
+              </Typography>
+              {manageMeasureUnits && (
+                <Typography color="text.primary">{t(
+                  i18n
+                )`Manage measure units`}</Typography>
+              )}
+            </Breadcrumbs>
+          ) : (
+            <Typography sx={{ padding: 3 }}>
+              {t(i18n)`Edit ${product?.type}`}
+            </Typography>
+          )}
         </Grid>
         <Grid item xs={1}>
           {dialogContext?.isDialogContent && (
@@ -201,32 +221,52 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           onClose={() => setCancelEditModalOpened(false)}
           onBack={props.onCanceled}
         />
-        <ProductForm
-          formId={productFormId}
-          onSubmit={handleSubmit}
-          defaultValues={defaultValues}
-          onChanged={setIsFormDirty}
-        />
+        {manageMeasureUnits ? (
+          <ManageMeasureUnitsForm />
+        ) : (
+          <ProductForm
+            formId={productFormId}
+            onSubmit={handleSubmit}
+            defaultValues={defaultValues}
+            onChanged={setIsFormDirty}
+            onManageMeasureUnits={() => setManageMeasureUnits(true)}
+          />
+        )}
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={() =>
-            isFormDirty ? setCancelEditModalOpened(true) : props.onCanceled()
-          }
-        >
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          variant="contained"
-          type="submit"
-          form={productFormId}
-          disabled={productUpdateMutation.isPending || isMeasureUnitsLoading}
-        >
-          {t(i18n)`Update`}
-        </Button>
+        {manageMeasureUnits ? (
+          <Button
+            variant="contained"
+            onClick={() => setManageMeasureUnits(false)}
+          >
+            {t(i18n)`Done`}
+          </Button>
+        ) : (
+          <>
+            <Button
+              variant="text"
+              color="primary"
+              onClick={() =>
+                isFormDirty
+                  ? setCancelEditModalOpened(true)
+                  : props.onCanceled()
+              }
+            >
+              {t(i18n)`Cancel`}
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              form={productFormId}
+              disabled={
+                productUpdateMutation.isPending || isMeasureUnitsLoading
+              }
+            >
+              {t(i18n)`Update`}
+            </Button>
+          </>
+        )}
       </DialogActions>
     </>
   );
