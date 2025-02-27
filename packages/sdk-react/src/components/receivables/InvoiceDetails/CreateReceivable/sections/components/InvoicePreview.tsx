@@ -83,11 +83,12 @@ export const InvoicePreview = ({
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
-  // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
-  const sanitizedItems = items.map((item) => ({
-    ...item,
-    smallest_amount: item.smallest_amount ?? undefined,
-  }));
+  const sanitizedItems = items
+    .filter((item) => item.name !== '')
+    .map((item) => ({
+      ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
+      smallest_amount: item.smallest_amount ?? undefined,
+    }));
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
     lineItems: sanitizedItems,
