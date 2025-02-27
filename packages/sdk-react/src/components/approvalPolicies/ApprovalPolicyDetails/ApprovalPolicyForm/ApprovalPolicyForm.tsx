@@ -16,6 +16,11 @@ import {
   ApprovalPoliciesOperator,
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import {
+  CounterpartAutocomplete,
+  CounterpartsAutocompleteOptionProps,
+} from '@/components/counterparts/CounterpartAutocomplete';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -44,7 +49,6 @@ import * as yup from 'yup';
 
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
-import { AutocompleteCounterparts } from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 
@@ -70,7 +74,7 @@ export interface FormValues {
   triggers: {
     was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
     tags?: components['schemas']['TagReadSchema'][];
-    counterpart_id?: components['schemas']['CounterpartResponse'][];
+    counterpart_id?: CounterpartsAutocompleteOptionProps[];
     amount?: {
       currency: components['schemas']['CurrencyEnum'];
       value: AmountTuple[];
@@ -358,11 +362,14 @@ export const ApprovalPolicyForm = ({
         setValue('triggers.tags', tagsForTriggers?.data);
       }
 
-      if (
-        counterpartsForTriggers?.data &&
-        counterpartsForTriggers?.data.length > 0
-      ) {
-        setValue('triggers.counterpart_id', counterpartsForTriggers?.data);
+      if ((counterpartsForTriggers?.data?.length ?? 0) > 0) {
+        setValue(
+          'triggers.counterpart_id',
+          counterpartsForTriggers?.data.map((counterpart) => ({
+            id: counterpart.id,
+            label: getCounterpartName(counterpart),
+          }))
+        );
       }
 
       if (triggers.amount && triggers.amount?.value?.length > 0) {
@@ -912,10 +919,11 @@ export const ApprovalPolicyForm = ({
               {(triggerInEdit === 'counterpart_id' ||
                 (isAddingTrigger &&
                   currentTriggerType === 'counterpart_id')) && (
-                <AutocompleteCounterparts
+                <CounterpartAutocomplete
                   control={control}
                   name="triggers.counterpart_id"
                   label={t(i18n)`Counterparts`}
+                  multiple
                 />
               )}
               {(triggerInEdit === 'amount' ||

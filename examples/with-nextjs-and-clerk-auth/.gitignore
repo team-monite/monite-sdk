@@ -66,3 +66,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# clerk configuration (can include secrets)
+/.clerk/

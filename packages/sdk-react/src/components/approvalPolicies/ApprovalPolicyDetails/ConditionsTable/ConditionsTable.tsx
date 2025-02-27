@@ -1,7 +1,6 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
-import { getCounterpartName } from '@/components/counterparts/helpers';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -69,12 +68,11 @@ export const ConditionsTable = ({
           case 'counterpart_id':
             triggerValue = (
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {triggers.counterpart_id?.map((counterpart) => (
-                  <Chip
-                    key={counterpart.id}
-                    label={getCounterpartName(counterpart)}
-                  />
-                ))}
+                {triggers.counterpart_id?.map((counterpart) => {
+                  return (
+                    <Chip key={counterpart.id} label={counterpart.label} />
+                  );
+                })}
               </Stack>
             );
             break;

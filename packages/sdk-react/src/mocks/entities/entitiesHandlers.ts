@@ -133,12 +133,36 @@ export const entitiesHandlers = [
       }
     );
   }),
+
+  http.patch<
+    { entityId: string },
+    PatchSettingsPayload,
+    SettingsResponse | ErrorSchemaResponse
+  >('*/entities/:entityId/settings', async ({ params, request }) => {
+    const { entityId } = params;
+
+    const data = await request.json();
+
+    await delay();
+
+    return HttpResponse.json(
+      {
+        ...data,
+        id: entityId,
+      } as SettingsResponse,
+      {
+        status: 200,
+      }
+    );
+  }),
 ];
 
 type EntityResponse = components['schemas']['EntityResponse'];
 type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
 type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];
+type PatchSettingsPayload = components['schemas']['PatchSettingsPayload'];
+type SettingsResponse = components['schemas']['SettingsResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type OnboardingPaymentMethodsResponse =
   components['schemas']['OnboardingPaymentMethodsResponse'];
