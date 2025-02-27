@@ -257,9 +257,7 @@ export const ItemsSection = ({
 
   const createEmptyRow = useCallback(
     () => ({
-      tempId: uuidv4(),
-      isLocal: true,
-      product_id: '',
+      product_id: uuidv4(),
       quantity: 1,
       price: { value: 0, currency: actualCurrency || 'USD' },
       name: '',
@@ -297,7 +295,7 @@ export const ItemsSection = ({
     (index: number, item: any) => {
       if (item) {
         setValue(`line_items.${index}.name`, item.label);
-        setValue(`line_items.${index}.product_id`, item.id);
+        //  setValue(`line_items.${index}.product_id`, item.id);
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
         setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
@@ -426,25 +424,20 @@ export const ItemsSection = ({
                 </Box>
               ) : (
                 fields.map((field, index) => {
-                  const isLocal = !!field.isLocal;
                   return (
                     <TableRow
                       key={field.tempId || field.id}
                       className={tableRowClassName}
                     >
                       <TableCell sx={{ width: '40%' }}>
-                        {isLocal ? (
-                          <ItemSelector
-                            setIsCreateItemOpened={setProductsTableOpen}
-                            onUpdate={(item: any) => handleUpdate(index, item)}
-                            index={index}
-                            actualCurrency={actualCurrency}
-                            defaultCurrency={defaultCurrency}
-                            measureUnits={measureUnits}
-                          />
-                        ) : (
-                          field.name
-                        )}
+                        <ItemSelector
+                          setIsCreateItemOpened={setProductsTableOpen}
+                          onUpdate={(item: any) => handleUpdate(index, item)}
+                          index={index}
+                          actualCurrency={actualCurrency}
+                          defaultCurrency={defaultCurrency}
+                          measureUnits={measureUnits}
+                        />
                       </TableCell>
 
                       <TableCell sx={{ width: '20%' }}>
@@ -466,83 +459,78 @@ export const ItemsSection = ({
                                 <TextField
                                   {...field}
                                   InputProps={{
-                                    endAdornment:
-                                      measureUnitId && !isLocal ? (
-                                        <MeasureUnit unitId={measureUnitId} />
-                                      ) : measureUnits?.data?.length ? (
-                                        <InputAdornment position="end">
-                                          <Controller
-                                            name={`line_items.${index}.measure_unit_id`}
-                                            control={control}
-                                            defaultValue={
-                                              measureUnits.data[0]?.id
-                                            }
-                                            render={({ field }) => (
-                                              <Select
-                                                {...field}
-                                                onChange={(e) => {
-                                                  const selectedUnitId =
-                                                    e.target.value;
-                                                  setValue(
-                                                    `line_items.${index}.measure_unit_id`,
-                                                    selectedUnitId
-                                                  );
-                                                }}
-                                                sx={{
+                                    endAdornment: measureUnits?.data
+                                      ?.length && (
+                                      <InputAdornment position="end">
+                                        <Controller
+                                          name={`line_items.${index}.measure_unit_id`}
+                                          control={control}
+                                          defaultValue={
+                                            measureUnits.data[0]?.id
+                                          }
+                                          render={({ field }) => (
+                                            <Select
+                                              {...field}
+                                              onChange={(e) => {
+                                                const selectedUnitId =
+                                                  e.target.value;
+                                                setValue(
+                                                  `line_items.${index}.measure_unit_id`,
+                                                  selectedUnitId
+                                                );
+                                              }}
+                                              sx={{
+                                                background: 'transparent',
+                                                minHeight:
+                                                  'fit-content !important',
+                                                '.MuiSelect-select.MuiSelect-outlined':
+                                                  {
+                                                    paddingLeft: 0,
+                                                  },
+                                                '&:hover': {
+                                                  boxShadow: 'none !important',
+                                                  borderColor:
+                                                    'transparent !important',
                                                   background: 'transparent',
-                                                  minHeight:
-                                                    'fit-content !important',
-                                                  '.MuiSelect-select.MuiSelect-outlined':
-                                                    {
-                                                      paddingLeft: 0,
-                                                    },
-                                                  '&:hover': {
+                                                },
+                                                '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
+                                                  { paddingLeft: 0 },
+                                                '&.Mui-focused.MuiInputBase-root':
+                                                  {
                                                     boxShadow:
                                                       'none !important',
-                                                    borderColor:
-                                                      'transparent !important',
                                                     background: 'transparent',
                                                   },
-                                                  '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
-                                                    { paddingLeft: 0 },
-                                                  '&.Mui-focused.MuiInputBase-root':
-                                                    {
-                                                      boxShadow:
-                                                        'none !important',
-                                                      background: 'transparent',
-                                                    },
-                                                  '& .MuiOutlinedInput-notchedOutline':
-                                                    {
-                                                      border: 'none !important',
-                                                      background: 'transparent',
-                                                    },
-                                                  '&:hover .MuiOutlinedInput-notchedOutline':
-                                                    {
-                                                      border: 'none !important',
-                                                      background: 'transparent',
-                                                    },
-                                                  '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                                    {
-                                                      background: 'transparent',
-                                                    },
-                                                }}
-                                                size="small"
-                                              >
-                                                {measureUnits.data.map(
-                                                  (unit) => (
-                                                    <MenuItem
-                                                      key={unit.id}
-                                                      value={unit.id}
-                                                    >
-                                                      {unit.name}
-                                                    </MenuItem>
-                                                  )
-                                                )}
-                                              </Select>
-                                            )}
-                                          />
-                                        </InputAdornment>
-                                      ) : null,
+                                                '& .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&:hover .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    background: 'transparent',
+                                                  },
+                                              }}
+                                              size="small"
+                                            >
+                                              {measureUnits.data.map((unit) => (
+                                                <MenuItem
+                                                  key={unit.id}
+                                                  value={unit.id}
+                                                >
+                                                  {unit.name}
+                                                </MenuItem>
+                                              ))}
+                                            </Select>
+                                          )}
+                                        />
+                                      </InputAdornment>
+                                    ),
                                   }}
                                   type="number"
                                   inputProps={{ min: 1 }}
@@ -682,7 +670,6 @@ export const ItemsSection = ({
                                 type="number"
                                 size="small"
                                 InputProps={{ endAdornment: '%' }}
-                                disabled={!isLocal}
                               />
                             )}
                           />
