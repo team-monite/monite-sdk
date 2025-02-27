@@ -918,17 +918,24 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             {
               borderColor: 'neutral.80',
             },
-          '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
-            borderBottom: 'none',
-            padding: '8px 12px',
+          '&.Monite-CreateReceivable-ItemsSection-Table': {
+            '.MuiTableCell-root': {
+              borderBottom: 'none',
+              padding: '8px 12px',
+              '&:first-child': {
+                paddingLeft: 0,
+              },
+              '& .MuiFormControl-root .MuiInputBase-root': {
+                backgroundColor: '#fff',
+              },
+            },
+            '+ .MuiTableRow-root .MuiTableCell-root': {
+              paddingLeft: 0,
+            },
           },
           '&:last-child .MuiTableCell-body': {
             borderBottom: 'none',
           },
-          '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root .MuiFormControl-root .MuiInputBase-root':
-            {
-              backgroundColor: '#fff',
-            },
         },
       },
     },

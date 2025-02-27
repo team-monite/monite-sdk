@@ -401,9 +401,7 @@ export const ItemsSection = ({
           <Table stickyHeader>
             <TableHead>
               <TableRow className={tableRowClassName}>
-                <TableCell sx={{ paddingLeft: 0 }}>{t(
-                  i18n
-                )`Item name`}</TableCell>
+                <TableCell>{t(i18n)`Item name`}</TableCell>
                 <TableCell>{t(i18n)`Quantity`}</TableCell>
                 <TableCell>{t(i18n)`Price`}</TableCell>
                 <TableCell>
