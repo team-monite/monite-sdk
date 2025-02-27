@@ -29,7 +29,7 @@ const initialValues: ProductFormValues = {
   name: '',
   type: 'product',
   units: '',
-  smallestAmount: undefined,
+  smallestAmount: 0,
   pricePerUnit: undefined,
   currency: undefined,
   description: undefined,
@@ -47,13 +47,33 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const { formatToMinorUnits } = useCurrencies();
 
   const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(false);
+  const { api, queryClient, entityId } = useMoniteContext();
 
-  const defaultValues = useMemo(
-    () => ({ ...initialValues, ...props.defaultValues }),
-    [props.defaultValues]
-  );
+  const { data: measureUnits, isLoading: isLoadingUnits } =
+    api.measureUnits.getMeasureUnits.useQuery();
+  const { data: entitySettings, isLoading: isLoadingSettings } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: entityId },
+    });
 
-  const { api, queryClient } = useMoniteContext();
+  const defaultValues = useMemo<ProductFormValues>(() => {
+    if (isLoadingUnits || isLoadingSettings) {
+      return initialValues;
+    }
+
+    return {
+      ...initialValues,
+      units: measureUnits?.data?.[0]?.id,
+      currency: entitySettings?.currency?.default,
+      ...props.defaultValues,
+    };
+  }, [
+    measureUnits?.data,
+    entitySettings?.currency?.default,
+    props.defaultValues,
+    isLoadingUnits,
+    isLoadingSettings,
+  ]);
 
   const { mutate: createProduct, isPending } =
     api.products.postProducts.useMutation(undefined, {

@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
@@ -62,18 +62,20 @@ export const ProductForm = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { api } = useMoniteContext();
-  const { data: measureUnits, isLoading } =
+
+  const { data: measureUnits, isLoading: isLoadingUnits } =
     api.measureUnits.getMeasureUnits.useQuery();
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: useMemo(() => defaultValues, [defaultValues]),
+    defaultValues,
   });
 
   const {
     control,
     handleSubmit,
     formState: { isDirty },
+    reset,
   } = methods;
 
   useEffect(() => onChanged?.(isDirty), [isDirty, onChanged]);
@@ -83,6 +85,10 @@ export const ProductForm = ({
   function isManageMeasureUnits(option: string): boolean {
     return option === MANAGE_MEASURE_UNITS_ID;
   }
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [reset, defaultValues]);
 
   return (
     <FormProvider {...methods}>
@@ -146,7 +152,7 @@ export const ProductForm = ({
                       fullWidth
                       error={Boolean(error)}
                       required
-                      disabled={isLoading}
+                      disabled={isLoadingUnits}
                     >
                       <InputLabel id={field.name}>{t(i18n)`Unit`}</InputLabel>
                       <Select
