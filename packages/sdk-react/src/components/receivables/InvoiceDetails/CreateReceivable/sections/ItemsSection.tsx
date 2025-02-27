@@ -209,7 +209,6 @@ export const ItemsSection = ({
   const handleCloseProductsTable = useCallback(() => {
     setProductsTableOpen(false);
   }, []);
-  console.log({ watchedLineItems });
 
   const {
     subtotalPrice,
@@ -297,6 +296,7 @@ export const ItemsSection = ({
     (index: number, item: any) => {
       if (item) {
         setValue(`line_items.${index}.name`, item.label);
+        setValue(`line_items.${index}.product_id`, item.id);
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
         setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
@@ -317,6 +317,8 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       }
     }, []);
+
+    console.log({ watchedLineItems, error });
 
     return (
       <Controller
@@ -419,7 +421,7 @@ export const ItemsSection = ({
                     key={field.tempId || field.id}
                     className={tableRowClassName}
                   >
-                    <TableCell sx={{ minWidth: 160 }}>
+                    <TableCell sx={{ width: '40%' }}>
                       {isLocal ? (
                         <ItemSelector
                           setIsCreateItemOpened={setProductsTableOpen}
@@ -434,7 +436,7 @@ export const ItemsSection = ({
                       )}
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell sx={{ width: '20%' }}>
                       <Controller
                         name={`line_items.${index}.quantity`}
                         render={({ field }) => {
@@ -479,12 +481,18 @@ export const ItemsSection = ({
                                                 background: 'transparent',
                                                 minHeight:
                                                   'fit-content !important',
+                                                '.MuiSelect-select.MuiSelect-outlined':
+                                                  {
+                                                    paddingLeft: 0,
+                                                  },
                                                 '&:hover': {
                                                   boxShadow: 'none !important',
                                                   borderColor:
                                                     'transparent !important',
                                                   background: 'transparent',
                                                 },
+                                                '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
+                                                  { paddingLeft: 0 },
                                                 '&.Mui-focused.MuiInputBase-root':
                                                   {
                                                     boxShadow:
@@ -521,16 +529,30 @@ export const ItemsSection = ({
                                         />
                                       </InputAdornment>
                                     ) : (
-                                      <CircularProgress size={20} />
+                                      <Box
+                                        sx={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          marginRight: '8px',
+                                        }}
+                                      >
+                                        <CircularProgress size={20} />
+                                      </Box>
                                     ),
                                 }}
                                 type="number"
                                 inputProps={{ min: 1 }}
                                 size="small"
-                                disabled={!isLocal}
+                                disabled={
+                                  measureUnits?.data?.length === 0 &&
+                                  !measureUnitId
+                                }
                                 sx={{
                                   '& .MuiInputBase-root': {
                                     paddingRight: '0 !important',
+                                    '.MuiInputBase-input': {
+                                      paddingRight: 0,
+                                    },
                                     '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
                                       {
                                         borderColor: 'transparent',
@@ -543,7 +565,8 @@ export const ItemsSection = ({
                         }}
                       />
                     </TableCell>
-                    <TableCell align="right">
+
+                    <TableCell sx={{ width: '20%' }} align="right">
                       <Controller
                         name={`line_items.${index}.price.value`}
                         render={({
@@ -632,7 +655,8 @@ export const ItemsSection = ({
                         }}
                       />
                     </TableCell>
-                    <TableCell>
+
+                    <TableCell sx={{ width: '10%' }}>
                       {isNonVatSupported ? (
                         <Controller
                           name={`line_items.${index}.tax_rate_value`}
@@ -651,7 +675,6 @@ export const ItemsSection = ({
                       )}
                     </TableCell>
 
-                    {/* Delete Button */}
                     <TableCell>
                       <IconButton onClick={() => remove(index)}>
                         <DeleteIcon />
