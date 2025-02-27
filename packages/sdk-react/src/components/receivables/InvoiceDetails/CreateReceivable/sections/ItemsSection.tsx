@@ -574,7 +574,19 @@ export const ItemsSection = ({
                           const [isTyping, setIsTyping] = useState(false);
                           const [rawValue, setRawValue] = useState<
                             string | number
-                          >('');
+                          >(controllerField.value);
+
+                          useEffect(() => {
+                            if (!isTyping) {
+                              setRawValue(
+                                formatCurrencyToDisplay(
+                                  controllerField.value,
+                                  actualCurrency || 'USD',
+                                  false
+                                ) || ''
+                              );
+                            }
+                          }, [controllerField.value]);
 
                           const handleBlur = (e) => {
                             const inputValue = String(rawValue).trim();
