@@ -169,6 +169,8 @@ const ContextProvider = ({
     return () => queryClient.unmount();
   }, [queryClient]);
 
+  console.log('[MoniteContextProvider] Component settings:', componentSettings);
+
   return (
     <MoniteContext.Provider
       value={{

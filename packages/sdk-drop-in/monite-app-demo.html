@@ -10,6 +10,166 @@
         margin: 0;
         padding: 0;
       }
+      
+      #event-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-left: 4px solid #0d6efd;
+        border-radius: 4px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 350px;
+        display: none;
+      }
+      
+      #event-log {
+        position: fixed;
+        bottom: 440px;
+        right: 0;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px 0 0 4px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 350px;
+        max-height: 300px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+      }
+      
+      #event-log.collapsed {
+        transform: translateX(calc(100% - 40px));
+      }
+      
+      #event-log-toggle {
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #0d6efd;
+      }
+      
+      #event-log h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        padding-left: 25px;
+        display: inline-block;
+      }
+      
+      #event-log-content {
+        clear: both;
+        margin-top: 10px;
+        max-height: 220px;
+        overflow-y: auto;
+      }
+      
+      .event-item {
+        margin-bottom: 10px;
+        padding: 8px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      
+      .event-type {
+        font-weight: bold;
+        color: #0d6efd;
+      }
+      
+      .event-payload {
+        font-family: monospace;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      
+      .event-time {
+        font-size: 11px;
+        color: #6c757d;
+        margin-top: 5px;
+      }
+
+      .event-log-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+        gap: 10px;
+      }
+
+      .event-log-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+      
+      #event-config {
+        position: fixed;
+        bottom: 20px;
+        right: 0;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px 0 0 4px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 350px;
+        transition: transform 0.3s ease;
+      }
+      
+      #event-config.collapsed {
+        transform: translateX(calc(100% - 40px));
+      }
+      
+      #event-config-toggle {
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #0d6efd;
+      }
+      
+      #event-config h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        padding-left: 25px;
+      }
+      
+      .event-checkbox {
+        margin-bottom: 8px;
+      }
+      
+      .apply-button {
+        padding: 5px 10px;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .apply-button:hover {
+        background-color: #0b5ed7;
+      }
+      
+      .panel-icon {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+      
+      .collapsed .panel-icon {
+        transform: rotate(180deg);
+      }
     </style>
     <title>Monite App Widget Label</title>
   </head>
@@ -19,7 +179,7 @@
       entity-id="defer"
       api-url="defer"
       basename="/"
-      component="defer"
+      component="receivables"
     >
       <script slot="fetch-token">
         async function fetchDropInToken() {
@@ -44,7 +204,95 @@
           }
         }
       </script>
+
+      <!-- Using the event configuration system -->
+      <script slot="component-settings" type="application/json" id="component-settings-script">
+        {
+          "events": {
+            "enabled": true,
+            "types": [
+              "invoice.created",
+              "invoice.updated",
+              "invoice.deleted",
+              "payment.received",
+              "counterpart.created",
+              "counterpart.updated",
+              "counterpart.deleted",
+              "payable.saved",
+              "payable.updated",
+              "payable.deleted"
+            ]
+          }
+        }
+      </script>
     </monite-app>
+    
+    <!-- Event configuration panel -->
+    <div id="event-config">
+      <button id="event-config-toggle" title="Toggle Configuration Panel">
+        <span class="panel-icon">▶</span>
+      </button>
+      <h3>Event Configuration</h3>
+      <div>
+        <label class="event-checkbox">
+          <input type="checkbox" id="events-enabled" checked> Enable Events
+        </label>
+      </div>
+      <div>
+        <h4>Event Types:</h4>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="invoice.created" checked> Invoice Created
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="invoice.updated" checked> Invoice Updated
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="invoice.deleted" checked> Invoice Deleted
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="payment.received" checked> Payment Received
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="counterpart.created" checked> Counterpart Created
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="counterpart.updated" checked> Counterpart Updated
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="counterpart.deleted" checked> Counterpart Deleted
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="payable.created" checked> Payable Created
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="payable.updated" checked> Payable Updated
+        </label>
+        <label class="event-checkbox">
+          <input type="checkbox" name="event-type" value="payable.deleted" checked> Payable Deleted
+        </label>
+      </div>
+      <button id="apply-config" class="apply-button">Apply Configuration</button>
+    </div>
+    
+    <!-- Event notification element -->
+    <div id="event-notification">
+      <div id="event-notification-content"></div>
+    </div>
+    
+    <!-- Event log element -->
+    <div id="event-log">
+      <button id="event-log-toggle" title="Toggle Event Log">
+        <span class="panel-icon">▶</span>
+      </button>
+      <div class="event-log-header">
+        <h3>Event Log</h3>
+        <div class="event-log-buttons">
+          <button id="clear-event-log" class="apply-button">Clear Log</button>
+          <button id="test-event-button" class="apply-button">Test Event</button>
+        </div>
+      </div>
+      <div id="event-log-content"></div>
+    </div>
 
     <script type="module">
       import { createAPIClient } from '@monite/sdk-react';
@@ -52,37 +300,176 @@
       import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
+      import { 
+        addMoniteEventListener, 
+        MoniteEventTypes, 
+        emitMoniteEvent,
+        isSpecificEventEnabled
+      } from './src/lib/MoniteEvents';
 
       window.fetchToken = fetchTokenDev;
+      let moniteAppNode;
+      
+      document.getElementById('event-config-toggle').addEventListener('click', () => {
+        document.getElementById('event-config').classList.toggle('collapsed');
+      });
+      
+      document.getElementById('event-log-toggle').addEventListener('click', () => {
+        document.getElementById('event-log').classList.toggle('collapsed');
+      });
 
-      getConfig()
-        .then(({ api_url }) => {
-          const apiUrl = `${api_url}/v1`;
+      document.getElementById('event-config').classList.add('collapsed');
+      document.getElementById('event-log').classList.add('collapsed');
+      
+      document.getElementById('clear-event-log').addEventListener('click', () => {
+        document.getElementById('event-log-content').innerHTML = '';
+      });
+      
+      addMoniteEventListener((event) => {
+        const { type, payload } = event.detail;
+        console.log('[Event Listener] Received Monite event:', type, payload);
+        
+        document.getElementById('event-log').classList.remove('collapsed');
+        
+        const eventElement = document.createElement('div');
+        eventElement.className = 'event-item';
+        eventElement.innerHTML = `
+          <div class="event-header">
+            <strong>${type}</strong>
+            <span class="event-time">${new Date().toLocaleTimeString()}</span>
+          </div>
+          <pre class="event-payload">${JSON.stringify(payload, null, 2)}</pre>
+        `;
+        document.getElementById('event-log-content').appendChild(eventElement);
+      });
+      
+      function updateComponentSettings() {
+        console.log('[Settings] Updating component settings...');
+        
+        const currentSettings = JSON.parse(document.querySelector('#component-settings-script').textContent);
+        console.log('[Settings] Current settings:', currentSettings);
+        
+        const enableEvents = document.getElementById('events-enabled').checked;
+        
+        const eventTypes = Array.from(document.querySelectorAll('input[name="event-type"]:checked'))
+          .map(checkbox => checkbox.value);
+        
+        console.log('[Settings] Event configuration:', {
+          enableEvents,
+          eventTypes
+        });
+        
+        const componentSettings = {
+          events: {
+            enabled: enableEvents,
+            types: eventTypes
+          }
+        };
+        
+        const componentSettingsScript = document.querySelector('#component-settings-script');
+        if (componentSettingsScript) {
+          componentSettingsScript.textContent = JSON.stringify(componentSettings, null, 2);
+          
+          const moniteApp = document.querySelector('monite-app');
+          if (moniteApp) {
+            console.log('[Settings] Refreshing component settings...');
+            const refreshEvent = new CustomEvent('monite:refresh-settings');
+            moniteApp.dispatchEvent(refreshEvent);
+          }
+        }
+      }
+      
+      document.getElementById('apply-config').addEventListener('click', updateComponentSettings);
+      
+      document.getElementById('test-event-button').addEventListener('click', () => {
+        const selectedEventType = document.querySelector('input[name="event-type"]:checked').value;
+        
+        let payload;
+        switch (selectedEventType) {
+          case MoniteEventTypes.INVOICE_CREATED:
+          case MoniteEventTypes.INVOICE_UPDATED:
+            payload = { 
+              id: `test-invoice-${Date.now()}`,
+              invoice: { 
+                id: `test-invoice-${Date.now()}`,
+                status: 'draft',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              }
+            };
+            break;
+          case MoniteEventTypes.INVOICE_DELETED:
+            payload = { 
+              id: `test-invoice-${Date.now()}`
+            };
+            break;
+          case MoniteEventTypes.PAYMENT_RECEIVED:
+            payload = { 
+              id: `test-payment-${Date.now()}`,
+              payment: { 
+                id: `test-payment-${Date.now()}`,
+                status: 'succeeded',
+                amount: 100,
+                currency: 'USD',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              }
+            };
+            break;
+          case MoniteEventTypes.COUNTERPART_CREATED:
+          case MoniteEventTypes.COUNTERPART_UPDATED:
+            payload = { 
+              id: `test-counterpart-${Date.now()}`,
+              counterpart: { 
+                id: `test-counterpart-${Date.now()}`,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                type: 'organization'
+              }
+            };
+            break;
+          case MoniteEventTypes.COUNTERPART_DELETED:
+            payload = { 
+              id: `test-counterpart-${Date.now()}`
+            };
+            break;
+          default:
+            payload = { id: `test-${Date.now()}` };
+        }
+        
+        emitMoniteEvent(selectedEventType, payload);
+      });
+      
+      async function initApp() {
+        try {
+          const config = await getConfig();
+          const apiUrl = `${config.api_url}/v1`;
           const { api } = createAPIClient();
 
-          return api.entityUsers
-            .getEntityUsersMyEntity(
-              {
-                parameters: {},
-                baseUrl: apiUrl,
-              },
-              createEntityUsersMyEntityRequestFn(fetchTokenDev)
-            )
-            .then(({ id }) => {
-              const moniteAppNode = document.querySelector('monite-app');
-              moniteAppNode.setAttribute(
-                'component',
-                location.pathname.split('/')[2] ?? 'payables'
-              );
-              moniteAppNode.setAttribute('api-url', apiUrl);
-              moniteAppNode.setAttribute('entity-id', id);
-              moniteAppNode.removeAttribute('disabled');
-            });
-        })
-        .catch((error) => {
-          console.error(error);
+          const { id } = await api.entityUsers.getEntityUsersMyEntity(
+            {
+              parameters: {},
+              baseUrl: apiUrl,
+            },
+            createEntityUsersMyEntityRequestFn(fetchTokenDev)
+          );
+
+          const moniteApp = document.querySelector('monite-app');
+          if (moniteApp) {
+            moniteApp.removeAttribute('disabled');
+            moniteApp.setAttribute('component', location.pathname.split('/')[2] ?? 'receivables');
+            moniteApp.setAttribute('api-url', apiUrl);
+            moniteApp.setAttribute('entity-id', id);
+            
+            updateComponentSettings();
+          }
+        } catch (error) {
+          console.error('Error while fetching credentials:', error);
           throw new Error('Error while fetching credentials');
-        });
+        }
+      }
+      
+      initApp();
     </script>
 
     <script type="module" src="/src/custom-elements/monite-app.ts"></script>

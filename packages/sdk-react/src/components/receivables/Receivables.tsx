@@ -119,9 +119,17 @@ const ReceivablesBase = () => {
         <InvoiceDetails
           type={'invoice'}
           onCreate={(receivableId: string) => {
+            console.log(
+              '[Receivables] Invoice created, handling onCreate:',
+              receivableId
+            );
             setIsCreateInvoiceDialogOpen(false);
             setActiveTab(ReceivablesTableTabEnum.Invoices);
             openInvoiceModal(receivableId);
+            console.log(
+              '[Receivables] Calling componentSettings.receivables.onCreate with ID:',
+              receivableId
+            );
             componentSettings?.receivables?.onCreate?.(receivableId);
           }}
         />

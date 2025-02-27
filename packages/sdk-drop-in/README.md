@@ -100,9 +100,125 @@ e.g., [`localhost:5174/monite-app-demo/counterparts`](http://localhost:5174/moni
     }
   </script>
 </monite-app>
+
+<!-- Listen for Monite events -->
+<script>
+  document.querySelector('monite-app').addEventListener('monite:event', (event) => {
+    const { type, payload } = event.detail;
+    console.log('Received Monite event:', type, payload);
+    
+    // Example: Track invoice creation in Google Analytics
+    if (type === 'invoice.created') {
+      // Send event to Google Analytics
+      if (window.gtag) {
+        window.gtag('event', 'invoice_created', {
+          'invoice_id': payload.id
+        });
+      }
+    }
+  });
+</script>
 ```
 
 Note: `basename` is the pathname of the page where the Monite Drop-in is embedded.
+
+### Event System
+
+The Drop-in component now supports a custom event system that allows you to listen for and handle events that occur within the SDK. Events are dispatched as custom DOM events and can be listened for using standard event listeners.
+
+#### Basic Usage
+
+```typescript
+import { MoniteEventTypes } from '@monite/sdk-drop-in';
+
+// Add an event listener to the monite-app element
+document.querySelector('monite-app').addEventListener('monite:event', (event) => {
+  const { type, payload, id } = event.detail;
+  
+  // Handle different event types
+  switch (type) {
+    case MoniteEventTypes.INVOICE_CREATED:
+      console.log('Invoice created:', payload.invoice);
+      break;
+    case MoniteEventTypes.PAYABLE_SAVED:
+      console.log('Payable saved:', payload.id);
+      break;
+  }
+});
+```
+
+#### Available Events
+
+| Event Type | Description | Payload Type |
+|------------|-------------|--------------|
+| `invoice.created` | New invoice created | `InvoiceEventPayload` |
+| `invoice.updated` | Invoice updated | `InvoiceEventPayload` |
+| `invoice.deleted` | Invoice deleted | `{ id: string }` |
+| `payable.saved` | Payable saved as draft | `PaymentEventPayload` |
+| `payable.submitted` | Payable submitted for approval | `PaymentEventPayload` |
+| `payable.approved` | Payable approved | `PaymentEventPayload` |
+| `payable.rejected` | Payable rejected | `PaymentEventPayload` |
+| `payable.reopened` | Payable reopened | `PaymentEventPayload` |
+| `payable.deleted` | Payable deleted | `{ id: string }` |
+| `payable.pay` | Payment initiated | `PaymentEventPayload` |
+| `payable.pay_us` | US-specific payment initiated | `PaymentEventPayload` |
+| `counterpart.created` | New counterpart created | `CounterpartEventPayload` |
+| `counterpart.updated` | Counterpart updated | `CounterpartEventPayload` |
+| `counterpart.deleted` | Counterpart deleted | `{ id: string }` |
+
+#### Event Payload Types
+
+```typescript
+interface InvoiceEventPayload {
+  id: string;
+  invoice?: {
+    status: string;
+    total_amount?: number;
+    currency?: string;
+  };
+}
+
+interface PaymentEventPayload {
+  id: string;
+  status?: string;
+  amount?: number;
+  currency?: string;
+}
+
+interface CounterpartEventPayload {
+  id: string;
+  type?: string;
+  status?: string;
+}
+
+interface MoniteEvent<T = EventPayload> {
+  type: MoniteEventTypes;
+  payload: T;
+  timestamp: number;
+}
+```
+
+#### Event Configuration
+
+Events can be configured when initializing the Monite Drop-in component:
+
+```typescript
+<monite-app
+  entity-id="your_entity_id"
+  api-url="your_api_url"
+  settings='{
+    "events": {
+      "enabled": true,
+      "types": [
+        "invoice.created",
+        "payable.submitted",
+        "counterpart.created"
+      ]
+    }
+  }'
+>
+</monite-app>
+```
 
 ## Monite Iframe App
 

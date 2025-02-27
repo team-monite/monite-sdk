@@ -8,6 +8,7 @@ import {
   AuthCredentialsProviderForwardProps,
 } from '@/components/AuthCredentialsProvider';
 import { EntityIdLoader } from '@/components/EntityIdLoader';
+import { EventListener } from '@/components/EventListener';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
@@ -120,6 +121,7 @@ const SDKDemoComponent = ({
                     >
                       <Base />
                     </DefaultLayout>
+                    <EventListener />
                   </BrowserRouter>
                 </AppMoniteProvider>
               </SDKDemoAPIProvider>
