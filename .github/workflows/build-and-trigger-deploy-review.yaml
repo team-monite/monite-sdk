@@ -3,14 +3,32 @@ name: Build Images and Deploy to Review
 on:
   pull_request:
     types:
-      - opened
+      - labeled
       - synchronize
       - reopened
 
 jobs:
+  check-label:
+    runs-on: ubuntu-latest
+    outputs:
+      has_label: ${{ steps.label-check.outputs.has_label }}
+    steps:
+      - name: Check for 'pullpreview' label
+        id: label-check
+        run: |
+          labels=$(jq -r '.pull_request.labels | map(.name) | join(",")' "$GITHUB_EVENT_PATH")
+          if [[ "$labels" == *"pullpreview"* ]]; then
+            echo "has_label=true" >> "$GITHUB_OUTPUT"
+            echo "pullpreview label found, proceeding with build and deploy"
+          else
+            echo "has_label=false" >> "$GITHUB_OUTPUT"
+            echo "pullpreview label not found, skipping build and deploy"
+          fi
+
   build-sdk-react:
     name: Build and Push sdk-react
-    if: startsWith(github.head_ref, 'DEV-')
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -39,7 +57,8 @@ jobs:
     
   build-sdk-demo:
     name: Build and Push sdk-demo
-    if: startsWith(github.head_ref, 'DEV-')
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +87,8 @@ jobs:
 
   build-sdk-drop-in:
     name: Build and Push sdk-drop-in
-    if: startsWith(github.head_ref, 'DEV-')
+    needs: check-label
+    if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -97,14 +117,15 @@ jobs:
 
   trigger-gitlab-deploy:
     name: Trigger GitLab Deployment to Review
-    if: startsWith(github.head_ref, 'DEV-')
     runs-on: ubuntu-latest
     needs: 
       - build-sdk-demo
       - build-sdk-drop-in
+      - check-label
 
     steps:
       - name: Trigger GitLab Pipeline Deploy to Review
+        id: trigger-pipeline
         run: |
           REPO="${{ secrets.GITLAB_REPOSITORY }}"
           PROJECT_ID="${{ secrets.GITLAB_GROUP_ID }}"
@@ -114,12 +135,14 @@ jobs:
           SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
           NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
+          echo "normalized_branch_name=$NORMALIZED_GITHUB_BRANCH" >> "$GITHUB_OUTPUT"
 
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
+          echo "$NORMALIZED_GITHUB_BRANCH"
 
-          curl --request POST \
+          RESPONSE=$(curl --request POST \
             --form token="${GITLAB_TOKEN}" \
             --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
@@ -130,4 +153,24 @@ jobs:
             --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=review_deploy" \
-            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline"
+            --write-out "%{http_code}" --silent --output /dev/null \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline")
+
+          echo "GitLab API response code: $RESPONSE"
+          if [[ "$RESPONSE" -ne 201 ]]; then
+            echo "GitLab pipeline trigger failed with response code $RESPONSE"
+            exit 1
+          fi
+
+      - name: Comment on PR with Preview URLs
+        uses: thollander/actions-comment-pull-request@v3
+        env: 
+          NORMALIZED_GITHUB_BRANCH: ${{ steps.trigger-pipeline.outputs.normalized_branch_name }}
+        with:
+          message: |
+            🚀 **Preview URLs are now available!** 🚀            
+            - [SDK Demo](https://sdk-demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
+            - [SDK Drop in](https://cdn-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
+            - [SDK with NextJS](https://demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
+          comment-tag: preview-comment
+          mode: upsert

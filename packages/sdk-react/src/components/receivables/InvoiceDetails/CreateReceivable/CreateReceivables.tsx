@@ -341,6 +341,7 @@ const CreateReceivablesBase = ({
         sx={{
           background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
           height: '100vh',
+          overflow: 'auto',
         }}
       >
         <InvoicePreview
