@@ -191,17 +191,6 @@ export const ItemsSection = ({
     keyName: 'tempId',
   });
   const mounted = useRef(false);
-  const [rows, setRows] = useState<RowItem[]>([
-    {
-      quantity: 1,
-      price: { value: undefined, currency: 'USD' },
-      measure_unit_id: undefined,
-      name: '',
-      vat_rate_id: undefined,
-      vat_rate_value: undefined,
-      tax_rate_value: undefined,
-    },
-  ]);
   const watchedLineItems = watch('line_items');
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
@@ -213,22 +202,6 @@ export const ItemsSection = ({
     },
     [onCurrencyChanged]
   );
-  const handleAddRow = () => {
-    if (rows.length < 5) {
-      setRows((prevRows) => [
-        ...prevRows,
-        {
-          quantity: 1,
-          price: { value: undefined, currency: 'USD' },
-          measure_unit_id: undefined,
-          name: '',
-          vat_rate_id: undefined,
-          vat_rate_value: undefined,
-          tax_rate_value: undefined,
-        },
-      ]);
-    }
-  };
 
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);
@@ -273,6 +246,7 @@ export const ItemsSection = ({
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
+
   const highestVatRate = useMemo(
     () =>
       vatRates?.data?.reduce(
@@ -296,23 +270,28 @@ export const ItemsSection = ({
     [actualCurrency, highestVatRate?.id, highestVatRate?.value]
   );
 
+  const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
+
   const handleAddLocalRow = () => {
-    append(createEmptyRow());
+    const areFieldsEmpty = watchedLineItems.filter(
+      (field) => field.name === ''
+    );
+    if (areFieldsEmpty.length > 4) {
+      setTooManyEmptyRows(true);
+    } else {
+      setTooManyEmptyRows(false);
+      append(createEmptyRow());
+    }
   };
 
-  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
-    api.measureUnits.getMeasureUnits.useQuery();
-  console.log({ measureUnits });
+  const { data: measureUnits } = api.measureUnits.getMeasureUnits.useQuery();
+
   useEffect(() => {
     if (!mounted.current) {
       append(createEmptyRow());
       mounted.current = true;
     }
   }, [append, createEmptyRow]);
-
-  const StyledTableCell = styled(TableCell)`
-    max-width: 100px;
-  `;
 
   const handleUpdate = useCallback(
     (index: number, item: any) => {
@@ -479,30 +458,67 @@ export const ItemsSection = ({
                                       <MeasureUnit unitId={measureUnitId} />
                                     ) : measureUnits?.data?.length ? (
                                       <InputAdornment position="end">
-                                        <Select
-                                          value={''}
-                                          onChange={(e) => {
-                                            const selectedUnitId =
-                                              e.target.value;
-                                            setValue(
-                                              `line_items.${index}.measure_unit_id`,
-                                              selectedUnitId
-                                            );
-                                          }}
-                                          size="small"
-                                        >
-                                          {measureUnits.data.map(
-                                            (unit, index) => (
-                                              <MenuItem
-                                                key={unit.id}
-                                                value={unit.id}
-                                                defaultChecked={index === 0}
-                                              >
-                                                {unit.name}
-                                              </MenuItem>
-                                            )
+                                        <Controller
+                                          name={`line_items.${index}.measure_unit_id`}
+                                          control={control}
+                                          defaultValue={
+                                            measureUnits.data[0]?.id
+                                          }
+                                          render={({ field }) => (
+                                            <Select
+                                              {...field}
+                                              onChange={(e) => {
+                                                const selectedUnitId =
+                                                  e.target.value;
+                                                setValue(
+                                                  `line_items.${index}.measure_unit_id`,
+                                                  selectedUnitId
+                                                );
+                                              }}
+                                              sx={{
+                                                background: 'transparent',
+                                                minHeight:
+                                                  'fit-content !important',
+                                                '&:hover': {
+                                                  boxShadow: 'none !important',
+                                                  borderColor:
+                                                    'transparent !important',
+                                                  background: 'transparent',
+                                                },
+                                                '&.Mui-focused.MuiInputBase-root':
+                                                  {
+                                                    boxShadow:
+                                                      'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '& .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&:hover .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    background: 'transparent',
+                                                  },
+                                              }}
+                                              size="small"
+                                            >
+                                              {measureUnits.data.map((unit) => (
+                                                <MenuItem
+                                                  key={unit.id}
+                                                  value={unit.id}
+                                                >
+                                                  {unit.name}
+                                                </MenuItem>
+                                              ))}
+                                            </Select>
                                           )}
-                                        </Select>
+                                        />
                                       </InputAdornment>
                                     ) : (
                                       <CircularProgress size={20} />
@@ -512,6 +528,15 @@ export const ItemsSection = ({
                                 inputProps={{ min: 1 }}
                                 size="small"
                                 disabled={!isLocal}
+                                sx={{
+                                  '& .MuiInputBase-root': {
+                                    paddingRight: '0 !important',
+                                    '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
+                                      {
+                                        borderColor: 'transparent',
+                                      },
+                                  },
+                                }}
                               />
                             </FormControl>
                           );
@@ -641,6 +666,7 @@ export const ItemsSection = ({
                     startIcon={<AddIcon />}
                     variant="outlined"
                     onClick={handleAddLocalRow}
+                    disabled={tooManyEmptyRows}
                   >
                     {t(i18n)`Row`}
                   </Button>
