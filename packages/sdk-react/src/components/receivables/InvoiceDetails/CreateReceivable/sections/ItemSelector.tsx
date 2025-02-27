@@ -156,6 +156,13 @@ export const ItemSelector = ({
   }, [setIsCreateItemOpened]);
 
   const [isFocused, setIsFocused] = useState(false);
+  const [customName, setCustomName] = useState('');
+
+  const handleCustomNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCustomName(event.target.value);
+  };
 
   return !flattenProducts || flattenProducts.length === 0 ? null : (
     <Controller
@@ -186,12 +193,25 @@ export const ItemSelector = ({
           }
         };
 
+        const isCustomName = !itemsAutocompleteData.some(
+          (item) => item.label === customName
+        );
+
+        const handleBlur = () => {
+          setIsFocused(false);
+
+          if (isCustomName && customName.trim() !== '') {
+            onUpdate({ id: 'custom', label: customName });
+          }
+        };
+
         return (
           <>
             <Autocomplete
               {...field}
               value={selectedItemOption}
               onChange={(_, value) => handleItemChange(value)}
+              onBlur={handleBlur}
               slotProps={{
                 popper: {
                   container: root,
@@ -248,7 +268,6 @@ export const ItemSelector = ({
                       ...params.InputProps,
                       value: params.inputProps.value,
                       onFocus: () => setIsFocused(true),
-                      onBlur: () => setIsFocused(false),
                       startAdornment: isLoading && (
                         <CircularProgress size={20} />
                       ),
@@ -268,6 +287,7 @@ export const ItemSelector = ({
                         return null;
                       })(),
                     }}
+                    onChange={handleCustomNameChange}
                   />
                 );
               }}
