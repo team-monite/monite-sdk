@@ -90,7 +90,7 @@ export const EventListener = () => {
       const handler = ((event: CustomEvent) => {
         handleNewEvent(type, event);
       }) as EventListener;
-      
+
       eventHandlers.set(type, handler);
       document.addEventListener(`monite.event:${type}`, handler);
     });
