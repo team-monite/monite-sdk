@@ -4,10 +4,21 @@ import { useLatest } from 'react-use';
 import { useLingui } from '@lingui/react';
 import { MoniteProvider, MoniteSettings } from '@monite/sdk-react';
 
+import {
+  ExtendedComponentSettings,
+  enhanceComponentSettings,
+} from '../../../sdk-drop-in/src/lib/MoniteEvents';
+
 type AppMoniteProvider = {
   sdkConfig: MoniteSettings;
   children: ReactNode;
 } & Pick<ComponentProps<typeof MoniteProvider>, 'locale' | 'theme'>;
+
+const defaultComponentSettings: ExtendedComponentSettings = {
+  events: {
+    enabled: true,
+  },
+};
 
 const AppMoniteProvider = ({
   children,
@@ -27,6 +38,13 @@ const AppMoniteProvider = ({
 
   const { i18n } = useLingui();
 
+  const enhancedComponentSettings = useMemo(() => {
+    console.log('[AppMoniteProvider] Enhancing component settings...');
+    const enhanced = enhanceComponentSettings(defaultComponentSettings);
+    console.log('[AppMoniteProvider] Enhanced settings:', enhanced);
+    return enhanced;
+  }, []);
+
   return (
     <MoniteProvider
       monite={monite}
@@ -35,6 +53,8 @@ const AppMoniteProvider = ({
         messages: i18n.messages[i18n.locale],
       }}
       theme={theme}
+      /* @ts-expect-error - Update componentSettings types */
+      componentSettings={enhancedComponentSettings}
     >
       {children}
     </MoniteProvider>
