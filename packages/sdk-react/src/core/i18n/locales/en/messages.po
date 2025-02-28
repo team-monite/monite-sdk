@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -1262,7 +1268,7 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:134
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:162
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:182
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:552
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:455
@@ -1486,7 +1492,7 @@ msgstr "Cigar Stores and Stands"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:30
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:83
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:29
-#: src/components/onboarding/validators/validationSchemas.ts:150
+#: src/components/onboarding/validators/validationSchemas.ts:154
 msgid "City"
 msgstr "City"
 
@@ -1521,7 +1527,7 @@ msgstr "Close approval policy details"
 msgid "Close invoice details"
 msgstr "Close invoice details"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:123
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:143
 msgid "Close new product or service form"
 msgstr "Close new product or service form"
 
@@ -1864,7 +1870,7 @@ msgstr "Counterparts"
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:76
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
 #: src/components/onboarding/validators/validationSchemas.ts:115
-#: src/components/onboarding/validators/validationSchemas.ts:147
+#: src/components/onboarding/validators/validationSchemas.ts:151
 msgid "Country"
 msgstr "Country"
 
@@ -1899,7 +1905,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:466
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:463
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:171
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:191
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:37
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
@@ -2005,8 +2011,8 @@ msgstr "Create New"
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:106
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:116
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:126
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:136
 msgid "Create new product or service"
 msgstr "Create new product or service"
 
@@ -2385,7 +2391,7 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1056
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:242
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:110
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:116
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
 #: src/components/products/ProductDetails/validation.ts:53
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:165
@@ -2528,7 +2534,7 @@ msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:36
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:152
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:172
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:243
 msgid "Done"
 msgstr "Done"
@@ -2985,7 +2991,7 @@ msgstr "Exterminating Services"
 msgid "Failed to a create payment link. Please try again."
 msgstr "Failed to a create payment link. Please try again."
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:70
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:90
 msgid "Failed to create"
 msgstr "Failed to create"
 
@@ -3766,6 +3772,10 @@ msgstr "Invalid IBAN"
 msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
+#: src/components/onboarding/validators/validationSchemas.ts:131
+msgid "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:213
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:215
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:283
@@ -4052,7 +4062,7 @@ msgstr "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:49
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:210
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:58
-#: src/components/onboarding/validators/validationSchemas.ts:136
+#: src/components/onboarding/validators/validationSchemas.ts:140
 msgid "Job title"
 msgstr "Job title"
 
@@ -4248,13 +4258,13 @@ msgstr "Liechtenstein"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:65
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:27
-#: src/components/onboarding/validators/validationSchemas.ts:148
+#: src/components/onboarding/validators/validationSchemas.ts:152
 msgid "Line 1"
 msgstr "Line 1"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:74
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:28
-#: src/components/onboarding/validators/validationSchemas.ts:149
+#: src/components/onboarding/validators/validationSchemas.ts:153
 msgid "Line 2"
 msgstr "Line 2"
 
@@ -4356,8 +4366,8 @@ msgid "Malta"
 msgstr "Malta"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:26
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:172
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:109
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:178
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:129
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:194
 #: src/components/products/Products.tsx:106
 msgid "Manage measure units"
@@ -4492,7 +4502,7 @@ msgstr "Micronesia, Federated States Of"
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:191
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:197
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:185
 #: src/components/products/ProductDetails/validation.ts:37
 msgid "Minimum quantity"
@@ -4640,7 +4650,7 @@ msgstr "N/A"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:417
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:100
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:106
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:145
@@ -5092,7 +5102,7 @@ msgstr "Overview"
 msgid "Owner"
 msgstr "Owner"
 
-#: src/components/onboarding/validators/validationSchemas.ts:168
+#: src/components/onboarding/validators/validationSchemas.ts:172
 msgid "Ownership declaration"
 msgstr "Ownership declaration"
 
@@ -5333,7 +5343,7 @@ msgstr "Pending"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:219
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:68
-#: src/components/onboarding/validators/validationSchemas.ts:137
+#: src/components/onboarding/validators/validationSchemas.ts:141
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
@@ -5428,11 +5438,11 @@ msgstr "Pitcairn"
 msgid "Platform/Monite"
 msgstr "Platform/Monite"
 
-#: src/components/onboarding/validators/validationSchemas.ts:167
+#: src/components/onboarding/validators/validationSchemas.ts:171
 msgid "Please accept Ownership Declaration to proceed."
 msgstr "Please accept Ownership Declaration to proceed."
 
-#: src/components/onboarding/validators/validationSchemas.ts:164
+#: src/components/onboarding/validators/validationSchemas.ts:168
 msgid "Please accept Service Agreement to proceed."
 msgstr "Please accept Service Agreement to proceed."
 
@@ -5570,7 +5580,7 @@ msgstr "Portugal"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:102
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:31
-#: src/components/onboarding/validators/validationSchemas.ts:152
+#: src/components/onboarding/validators/validationSchemas.ts:156
 msgid "Postal code"
 msgstr "Postal code"
 
@@ -5616,7 +5626,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:205
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:211
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:189
 #: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:212
@@ -5639,7 +5649,7 @@ msgstr "Processing payment..."
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:127
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:133
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
 #: src/components/products/ProductsTable/ProductsTable.tsx:340
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
@@ -5649,7 +5659,7 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:65
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:85
 msgid "Product {0} was created."
 msgstr "Product {0} was created."
 
@@ -6285,13 +6295,13 @@ msgstr "Serbia and Montenegro"
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:131
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:137
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:23
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:73
 msgid "Service"
 msgstr "Service"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:66
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:86
 msgid "Service {0} was created."
 msgstr "Service {0} was created."
 
@@ -6536,7 +6546,7 @@ msgstr "Start date"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:38
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:92
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:30
-#: src/components/onboarding/validators/validationSchemas.ts:151
+#: src/components/onboarding/validators/validationSchemas.ts:155
 msgid "State"
 msgstr "State"
 
@@ -6820,7 +6830,7 @@ msgstr "Terms"
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
 
-#: src/components/onboarding/validators/validationSchemas.ts:165
+#: src/components/onboarding/validators/validationSchemas.ts:169
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -7192,7 +7202,7 @@ msgstr "Tuvalu"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:55
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:58
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:121
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:127
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:169
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:57
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:60
@@ -7250,8 +7260,8 @@ msgstr "Uniforms, Commercial Clothing"
 msgid "Unique Entity Number (Singapore)"
 msgstr "Unique Entity Number (Singapore)"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:151
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:154
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:157
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:160
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:175
 #: src/components/products/ProductsTable/ProductsTable.tsx:227
 msgid "Unit"
