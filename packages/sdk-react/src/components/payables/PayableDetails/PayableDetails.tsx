@@ -76,10 +76,7 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
-    onSaved: (payableId) => {
-      console.log('[PayableDetails] Calling onSaved with ID:', payableId);
-      onSaved?.(payableId);
-    },
+    onSaved,
     onCanceled,
     onSubmitted,
     onRejected,

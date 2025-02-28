@@ -73,10 +73,6 @@ export const InvoiceDeleteModal = ({
           onClick={() => {
             deleteMutation.mutate(undefined, {
               onSuccess: () => {
-                console.log(
-                  '[InvoiceDeleteModal] Invoice deleted, handling callbacks:',
-                  id
-                );
                 onDelete?.(id);
                 onClose();
               },

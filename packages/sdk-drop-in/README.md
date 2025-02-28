@@ -100,67 +100,42 @@ e.g., [`localhost:5174/monite-app-demo/counterparts`](http://localhost:5174/moni
     }
   </script>
 </monite-app>
-
-<!-- Listen for Monite events -->
-<script>
-  document.querySelector('monite-app').addEventListener('monite:event', (event) => {
-    const { type, payload } = event.detail;
-    console.log('Received Monite event:', type, payload);
-    
-    // Example: Track invoice creation in Google Analytics
-    if (type === 'invoice.created') {
-      // Send event to Google Analytics
-      if (window.gtag) {
-        window.gtag('event', 'invoice_created', {
-          'invoice_id': payload.id
-        });
-      }
-    }
-  });
-</script>
 ```
 
 Note: `basename` is the pathname of the page where the Monite Drop-in is embedded.
 
 ### Event System
 
-The Drop-in component supports a custom event system that allows you to listen for and handle events that occur within the SDK. Events are dispatched as custom DOM events in the format `monite.event:${type}` and can be listened for using standard event listeners.
+The SDK provides a built-in event system that allows you to listen for various Monite events:
 
-#### Basic Usage
+```html
+<script type="module">
+  import { addMoniteEventListener, MoniteEventTypes } from '@monite/sdk-drop-in';
 
-```typescript
-import { MoniteEventTypes } from '@monite/sdk-drop-in';
+  addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice created event:', { type, payload, id });
+  });
 
-// Add event listeners for specific event types
-document.addEventListener('monite.event:invoice.created', (event) => {
-  const { type, payload, id } = event.detail;
-  console.log('Invoice created:', payload);
-});
+  addMoniteEventListener(MoniteEventTypes.INVOICE_UPDATED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice updated event:', { type, payload, id });
+  });
 
-document.addEventListener('monite.event:payable.submitted', (event) => {
-  const { type, payload, id } = event.detail;
-  console.log('Payable submitted:', payload);
-});
+  addMoniteEventListener(MoniteEventTypes.INVOICE_DELETED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice deleted event:', { type, payload, id });
+  });
+</script>
 ```
 
 #### Available Events
 
-| Event Type | Description | Payload Type |
-|------------|-------------|--------------|
-| `invoice.created` | New invoice created | `InvoiceEventPayload` |
-| `invoice.updated` | Invoice updated | `InvoiceEventPayload` |
-| `invoice.deleted` | Invoice deleted | `{ id: string }` |
-| `payable.saved` | Payable saved as draft | `PaymentEventPayload` |
-| `payable.submitted` | Payable submitted for approval | `PaymentEventPayload` |
-| `payable.approved` | Payable approved | `PaymentEventPayload` |
-| `payable.rejected` | Payable rejected | `PaymentEventPayload` |
-| `payable.reopened` | Payable reopened | `PaymentEventPayload` |
-| `payable.deleted` | Payable deleted | `{ id: string }` |
-| `payable.pay` | Payment initiated | `PaymentEventPayload` |
-| `payable.pay_us` | US-specific payment initiated | `PaymentEventPayload` |
-| `counterpart.created` | New counterpart created | `CounterpartEventPayload` |
-| `counterpart.updated` | Counterpart updated | `CounterpartEventPayload` |
-| `counterpart.deleted` | Counterpart deleted | `{ id: string }` |
+| Event Type | Description | Payload |
+|------------|-------------|---------|
+| `invoice.created` | Triggered when a new invoice is created | `{ type, payload: { id }, id }` |
+| `invoice.updated` | Triggered when an invoice is updated | `{ type, payload: { id, invoice }, id }` |
+| `invoice.deleted` | Triggered when an invoice is deleted | `{ type, payload: { id }, id }` |
 
 #### Event Payload Types
 
@@ -168,23 +143,9 @@ document.addEventListener('monite.event:payable.submitted', (event) => {
 interface InvoiceEventPayload {
   id: string;
   invoice?: {
-    status: string;
-    total_amount?: number;
-    currency?: string;
+    // Full invoice response payload from the API
+    // See API documentation for complete type definition
   };
-}
-
-interface PaymentEventPayload {
-  id: string;
-  status?: string;
-  amount?: number;
-  currency?: string;
-}
-
-interface CounterpartEventPayload {
-  id: string;
-  type?: string;
-  status?: string;
 }
 
 interface MoniteEvent<T = EventPayload> {
@@ -192,23 +153,6 @@ interface MoniteEvent<T = EventPayload> {
   payload: T;
   id: string;
 }
-```
-
-#### Event Configuration
-
-Events can be enabled or disabled when initializing the Monite Drop-in component:
-
-```typescript
-<monite-app
-  entity-id="your_entity_id"
-  api-url="your_api_url"
-  settings='{
-    "events": {
-      "enabled": true
-    }
-  }'
->
-</monite-app>
 ```
 
 ## Monite Iframe App

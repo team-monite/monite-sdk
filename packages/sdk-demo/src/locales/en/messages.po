@@ -31,7 +31,7 @@ msgstr "Counterparts"
 msgid "Entity User ID"
 msgstr "Entity User ID"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:173
+#: src/apps/SDKDemo/SDKDemo.tsx:171
 msgid "Error: <0>{0}</0>"
 msgstr "Error: <0>{0}</0>"
 
@@ -43,8 +43,8 @@ msgstr "Integrations"
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:141
-#: src/apps/SDKDemo/SDKDemo.tsx:187
+#: src/apps/SDKDemo/SDKDemo.tsx:139
+#: src/apps/SDKDemo/SDKDemo.tsx:185
 msgid "Logout"
 msgstr "Logout"
 

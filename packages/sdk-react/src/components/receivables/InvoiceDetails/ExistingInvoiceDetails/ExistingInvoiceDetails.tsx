@@ -13,7 +13,6 @@ import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingI
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
@@ -109,7 +108,6 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
-  const { componentSettings } = useMoniteContext();
 
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
@@ -176,10 +174,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         invoice={receivable}
         onUpdated={(updatedReceivable) => {
           startViewChange(callbacks.handleChangeViewInvoice);
-          console.log(
-            '[ExistingInvoiceDetailsView] Invoice updated, handling callbacks:',
-            updatedReceivable
-          );
           props.onUpdate?.(updatedReceivable.id, updatedReceivable);
         }}
         onCancel={() => startViewChange(callbacks.handleChangeViewInvoice)}
@@ -210,11 +204,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         onClose={() => {
           setDeleteModalOpened(false);
         }}
-        onDelete={(id) => {
-          console.log('[ExistingInvoiceDetails] Handling delete:', id);
-          props.onDelete?.(id);
-          componentSettings?.receivables?.onDelete?.(id);
-        }}
+        onDelete={props.onDelete}
       />
 
       <InvoiceCancelModal

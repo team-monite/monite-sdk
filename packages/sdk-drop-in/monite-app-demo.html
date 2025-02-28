@@ -4,150 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-      }
-
-      #event-log {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        width: 400px;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-      }
-
-      #event-log.collapsed {
-        transform: translateX(calc(100% - 30px));
-      }
-
-      #event-log-toggle {
-        position: absolute;
-        left: 0;
-        left: -32px;
-        padding: 8px;
-        cursor: pointer;
-        outline: none;
-        height: 32px;
-        border: none;
-        background-color: transparent;
-      }
-
-      .event-log-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .event-log-header h3 {
-        margin: 0;
-        font-size: 16px;
-      }
-
-      .event-log-buttons {
-        display: flex;
-        gap: 8px;
-      }
-
-      #event-log-content {
-        max-height: 600px;
-        overflow-y: auto;
-        padding: 10px;
-      }
-
-      .event-item {
-        margin-bottom: 10px;
-        padding: 10px;
-        background: #f5f5f5;
-        border-radius: 4px;
-      }
-
-      .event-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-      }
-
-      .event-time {
-        color: #666;
-        font-size: 0.9em;
-      }
-
-      .event-payload {
-        margin: 0;
-        white-space: pre-wrap;
-        font-size: 0.9em;
-        color: #333;
-      }
-
-      .apply-button {
-        padding: 6px 12px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-      }
-
-      .apply-button:hover {
-        background: #0056b3;
-      }
-
-      #test-event-type {
-        padding: 6px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background: white;
-        font-size: 14px;
-      }
-
-      #event-notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1001;
-      }
-
-      .notification {
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 10px 15px;
-        margin-bottom: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        animation: slideIn 0.3s ease-out;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      .panel-icon {
-        display: inline-block;
-        transition: transform 0.3s ease;
-      }
-
-      .collapsed .panel-icon {
-        transform: rotate(180deg);
-      }
-    </style>
-    <title>Monite App Widget Label</title>
+    <title>Monite App Drop-In Component Demo</title>
   </head>
   <body>
     <monite-app
@@ -155,7 +12,7 @@
       entity-id="defer"
       api-url="defer"
       basename="/"
-      component="receivables"
+      component="defer"
     >
       <script slot="fetch-token">
         async function fetchDropInToken() {
@@ -180,158 +37,39 @@
           }
         }
       </script>
-
-      <!-- Using the event configuration system -->
-      <script slot="component-settings" type="application/json" id="component-settings-script">
-        {
-          "events": {
-            "enabled": true
-          }
-        }
-      </script>
     </monite-app>
-    
-    <!-- Event notification element -->
-    <div id="event-notification">
-      <div id="event-notification-content"></div>
-    </div>
-    
-    <!-- Event log element -->
-    <div id="event-log">
-      <button id="event-log-toggle" title="Toggle Event Log">
-        <span class="panel-icon">▶</span>
-      </button>
-      <div class="event-log-header">
-        <h3>Event Log</h3>
-        <div class="event-log-buttons">
-          <button id="clear-event-log" class="apply-button">Clear Log</button>
-          <button id="test-event-button" class="apply-button">Test Event</button>
-          <select id="test-event-type">
-            <option value="invoice.created">Invoice Created</option>
-            <option value="invoice.updated">Invoice Updated</option>
-            <option value="invoice.deleted">Invoice Deleted</option>
-            <option value="payment.received">Payment Received</option>
-            <option value="counterpart.created">Counterpart Created</option>
-            <option value="counterpart.updated">Counterpart Updated</option>
-            <option value="counterpart.deleted">Counterpart Deleted</option>
-            <option value="payable.created">Payable Created</option>
-            <option value="payable.updated">Payable Updated</option>
-            <option value="payable.deleted">Payable Deleted</option>
-          </select>
-        </div>
-      </div>
-      <div id="event-log-content"></div>
-    </div>
 
     <script type="module">
       import { createAPIClient } from '@monite/sdk-react';
-
       import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
-      import { 
-        MoniteEventTypes, 
-        emitMoniteEvent,
-        areEventsEnabled
-      } from './src/lib/MoniteEvents';
+      import { MoniteEventTypes, addMoniteEventListener } from './src/lib/MoniteEvents';
 
       window.fetchToken = fetchTokenDev;
       let moniteAppNode;
-      
-      document.getElementById('event-log-toggle').addEventListener('click', () => {
-        document.getElementById('event-log').classList.toggle('collapsed');
+
+      addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
+        const { type, payload, id } = event.detail;
+        console.log('[Event Listener] Received invoice created event:', { type, payload, id });
       });
 
-      document.getElementById('event-log').classList.add('collapsed');
-      
-      document.getElementById('clear-event-log').addEventListener('click', () => {
-        document.getElementById('event-log-content').innerHTML = '';
+      addMoniteEventListener(MoniteEventTypes.INVOICE_UPDATED, (event) => {
+        const { type, payload, id } = event.detail;
+        console.log('[Event Listener] Received invoice updated event:', { type, payload, id });
       });
-      
-      // Listen for all Monite events by type
-      Object.values(MoniteEventTypes).forEach((eventType) => {
-        document.addEventListener(`monite.event:${eventType}`, (event) => {
-          const { type, payload, id } = event.detail;
-          console.log('[Event Listener] Received Monite event:', { type, payload, id });
-          
-          document.getElementById('event-log').classList.remove('collapsed');
-          
-          const eventElement = document.createElement('div');
-          eventElement.className = 'event-item';
-          eventElement.innerHTML = `
-            <div class="event-header">
-              <strong>${type}</strong>
-              <span class="event-time">${new Date().toLocaleTimeString()}</span>
-            </div>
-            <pre class="event-payload">${JSON.stringify({ id, payload }, null, 2)}</pre>
-          `;
-          document.getElementById('event-log-content').appendChild(eventElement);
-        });
+
+      addMoniteEventListener(MoniteEventTypes.INVOICE_DELETED, (event) => {
+        const { type, payload, id } = event.detail;
+        console.log('[Event Listener] Received invoice deleted event:', { type, payload, id });
       });
-      
-      document.getElementById('test-event-button').addEventListener('click', () => {
-        const selectedEventType = document.getElementById('test-event-type').value;
-        
-        let payload;
-        switch (selectedEventType) {
-          case MoniteEventTypes.INVOICE_CREATED:
-          case MoniteEventTypes.INVOICE_UPDATED:
-            payload = { 
-              id: `test-invoice-${Date.now()}`,
-              invoice: { 
-                id: `test-invoice-${Date.now()}`,
-                status: 'draft',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-              }
-            };
-            break;
-          case MoniteEventTypes.INVOICE_DELETED:
-            payload = { 
-              id: `test-invoice-${Date.now()}`
-            };
-            break;
-          case MoniteEventTypes.PAYMENT_RECEIVED:
-            payload = { 
-              id: `test-payment-${Date.now()}`,
-              payment: { 
-                id: `test-payment-${Date.now()}`,
-                status: 'succeeded',
-                amount: 100,
-                currency: 'USD',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-              }
-            };
-            break;
-          case MoniteEventTypes.COUNTERPART_CREATED:
-          case MoniteEventTypes.COUNTERPART_UPDATED:
-            payload = { 
-              id: `test-counterpart-${Date.now()}`,
-              counterpart: { 
-                id: `test-counterpart-${Date.now()}`,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                type: 'organization'
-              }
-            };
-            break;
-          case MoniteEventTypes.COUNTERPART_DELETED:
-            payload = { 
-              id: `test-counterpart-${Date.now()}`
-            };
-            break;
-          default:
-            payload = { id: `test-${Date.now()}` };
-        }
-        
-        emitMoniteEvent(selectedEventType, payload);
-      });
-      
+
       async function initApp() {
+        let entityId;
+        let apiUrl;
         try {
           const config = await getConfig();
-          const apiUrl = `${config.api_url}/v1`;
+          apiUrl = `${config.api_url}/v1`;
           const { api } = createAPIClient();
 
           const { id } = await api.entityUsers.getEntityUsersMyEntity(
@@ -341,20 +79,23 @@
             },
             createEntityUsersMyEntityRequestFn(fetchTokenDev)
           );
-
-          const moniteApp = document.querySelector('monite-app');
-          if (moniteApp) {
-            moniteApp.removeAttribute('disabled');
-            moniteApp.setAttribute('component', location.pathname.split('/')[2] ?? 'receivables');
-            moniteApp.setAttribute('api-url', apiUrl);
-            moniteApp.setAttribute('entity-id', id);
-          }
+          entityId = id;
         } catch (error) {
           console.error('Error while fetching credentials:', error);
           throw new Error('Error while fetching credentials');
         }
+
+        const moniteApp = document.querySelector('monite-app');
+        if (moniteApp) {
+          moniteApp.setAttribute('component', location.pathname.split('/')[2] ?? 'receivables');
+          moniteApp.setAttribute('api-url', apiUrl);
+          moniteApp.setAttribute('entity-id', entityId);
+          moniteApp.removeAttribute('disabled');
+        } else {
+          console.warn('Could not find <monite-app> element in the DOM. Make sure it is properly included in your HTML.');
+        }
       }
-      
+
       initApp();
     </script>
 

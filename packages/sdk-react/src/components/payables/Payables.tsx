@@ -53,10 +53,7 @@ const PayablesBase = ({
   onPayUS,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient, componentSettings } = useMoniteContext();
-
-  console.log('[Payables] Component settings:', componentSettings);
-  console.log('[Payables] onSaved:', onSaved);
+  const { api, queryClient } = useMoniteContext();
 
   const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
     invoiceId: string | undefined;
@@ -213,14 +210,7 @@ const PayablesBase = ({
       >
         <PayableDetails
           onClose={() => setIsCreateInvoiceDialogOpen(false)}
-          onSaved={(payableId) => {
-            console.log(
-              '[Payables] PayableDetails onSaved called with ID:',
-              payableId
-            );
-
-            onSaved?.(payableId);
-          }}
+          onSaved={onSaved}
         />
       </Dialog>
     </>

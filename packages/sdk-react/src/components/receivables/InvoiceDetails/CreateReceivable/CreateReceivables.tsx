@@ -168,10 +168,6 @@ const CreateReceivablesBase = ({
 
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
-    console.log(
-      '[CreateReceivables] Starting invoice creation with values:',
-      values
-    );
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
       return;
@@ -235,14 +231,6 @@ const CreateReceivablesBase = ({
       invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
       {
         onSuccess: (createdReceivable) => {
-          console.log(
-            '[CreateReceivables] Invoice created successfully:',
-            createdReceivable
-          );
-          console.log(
-            '[CreateReceivables] Calling onCreate with ID:',
-            createdReceivable.id
-          );
           onCreate?.(createdReceivable.id);
         },
       }

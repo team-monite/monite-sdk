@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
@@ -32,17 +33,56 @@ const ReceivablesBase = () => {
     componentSettings.receivables.tab ?? ReceivablesTableTabEnum.Invoices
   );
 
-  const openInvoiceModal = (id: string) => {
+  const receivableCallbacks = useMemo(
+    () => ({
+      onUpdate: componentSettings?.receivables?.onUpdate,
+      onDelete: componentSettings?.receivables?.onDelete,
+      onCreate: componentSettings?.receivables?.onCreate,
+    }),
+    [componentSettings?.receivables]
+  );
+
+  const openInvoiceModal = useCallback((id: string) => {
     setInvoiceId(id);
-  };
+  }, []);
 
-  const onRowClick = (id: string) => {
-    openInvoiceModal(id);
-  };
+  const onRowClick = useCallback(
+    (id: string) => {
+      openInvoiceModal(id);
+    },
+    [openInvoiceModal]
+  );
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setInvoiceId('');
-  };
+  }, []);
+
+  const handleUpdate = useCallback(
+    (
+      receivableId: string,
+      invoice?: components['schemas']['InvoiceResponsePayload']
+    ) => {
+      receivableCallbacks.onUpdate?.(receivableId, invoice);
+    },
+    [receivableCallbacks]
+  );
+
+  const handleDelete = useCallback(
+    (receivableId: string) => {
+      receivableCallbacks.onDelete?.(receivableId);
+    },
+    [receivableCallbacks]
+  );
+
+  const handleCreate = useCallback(
+    (receivableId: string) => {
+      setIsCreateInvoiceDialogOpen(false);
+      setActiveTab(ReceivablesTableTabEnum.Invoices);
+      openInvoiceModal(receivableId);
+      receivableCallbacks.onCreate?.(receivableId);
+    },
+    [receivableCallbacks, openInvoiceModal, setActiveTab]
+  );
 
   const { root } = useRootElements();
 
@@ -105,7 +145,11 @@ const ReceivablesBase = () => {
         container={root}
         onClose={closeModal}
       >
-        <InvoiceDetails id={invoiceId} />
+        <InvoiceDetails
+          id={invoiceId}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
       </Dialog>
       <Dialog
         className={className + '-Dialog-CreateReceivable'}
@@ -116,23 +160,7 @@ const ReceivablesBase = () => {
           setIsCreateInvoiceDialogOpen(false);
         }}
       >
-        <InvoiceDetails
-          type={'invoice'}
-          onCreate={(receivableId: string) => {
-            console.log(
-              '[Receivables] Invoice created, handling onCreate:',
-              receivableId
-            );
-            setIsCreateInvoiceDialogOpen(false);
-            setActiveTab(ReceivablesTableTabEnum.Invoices);
-            openInvoiceModal(receivableId);
-            console.log(
-              '[Receivables] Calling componentSettings.receivables.onCreate with ID:',
-              receivableId
-            );
-            componentSettings?.receivables?.onCreate?.(receivableId);
-          }}
-        />
+        <InvoiceDetails type={'invoice'} onCreate={handleCreate} />
       </Dialog>
     </>
   );

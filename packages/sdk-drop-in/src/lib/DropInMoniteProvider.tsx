@@ -3,11 +3,7 @@ import { useLatest } from 'react-use';
 
 import { MoniteProvider, MoniteSettings } from '@monite/sdk-react';
 
-import {
-  areEventsEnabled,
-  enhanceComponentSettings,
-  ExtendedComponentSettings,
-} from './MoniteEvents';
+import { enhanceComponentSettings } from './MoniteEvents';
 
 type DropInMoniteProvider = {
   sdkConfig: MoniteSettings;
@@ -36,24 +32,7 @@ export const DropInMoniteProvider = ({
   );
 
   const enhancedComponentSettings = useMemo(() => {
-    if (!componentSettings) return componentSettings;
-
-    console.log('[DropInMoniteProvider] Processing component settings...');
-
-    if (!areEventsEnabled(componentSettings as ExtendedComponentSettings)) {
-      console.log('[DropInMoniteProvider] Events are disabled');
-      return componentSettings;
-    }
-
-    console.log(
-      '[DropInMoniteProvider] Enhancing component settings with events...'
-    );
-    const enhanced = enhanceComponentSettings(
-      componentSettings as ExtendedComponentSettings
-    );
-    console.log('[DropInMoniteProvider] Enhanced settings:', enhanced);
-
-    return enhanced as typeof componentSettings;
+    return enhanceComponentSettings(componentSettings);
   }, [componentSettings]);
 
   return (
