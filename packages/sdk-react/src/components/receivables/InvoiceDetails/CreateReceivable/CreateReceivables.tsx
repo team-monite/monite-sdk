@@ -18,17 +18,23 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { MoniteCurrency } from '@/ui/Currency';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
   Box,
   Button,
+  Card,
   DialogContent,
   DialogTitle,
+  Menu,
+  MenuItem,
+  Popper,
   Stack,
   Toolbar,
   Typography,
@@ -48,6 +54,8 @@ import { ItemsSection } from './sections/ItemsSection';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
+  CreateReceivablesProductsFormProps,
+  getCreateInvoiceProductsValidationSchema,
 } from './validation';
 
 /**
@@ -169,6 +177,7 @@ const CreateReceivablesBase = ({
 
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    console.log('reaching');
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
       return;
@@ -183,6 +192,11 @@ const CreateReceivablesBase = ({
       showErrorToast(new Error('`Billing address` is not provided'));
       return;
     }
+
+    const filteredLineItems = values.line_items.filter((item) => {
+      console.log(item);
+      return item.name?.trim() !== '';
+    });
 
     const shippingAddressId = values.default_shipping_address_id;
 
@@ -202,7 +216,7 @@ const CreateReceivablesBase = ({
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
-      line_items: values.line_items.map((item) => ({
+      line_items: filteredLineItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.product_id,
         ...(isNonVatSupported
@@ -238,6 +252,27 @@ const CreateReceivablesBase = ({
     );
   };
 
+  const { control } = useForm<CreateReceivablesProductsFormProps>({
+    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    defaultValues: useMemo(
+      () => ({
+        items: [],
+        currency: actualCurrency ?? fallbackCurrency,
+      }),
+      [actualCurrency]
+    ),
+  });
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleSettings = (event: any) => {
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
   return (
     <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
       <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
@@ -254,6 +289,51 @@ const CreateReceivablesBase = ({
               </IconWrapper>
             )}
             <Box sx={{ marginLeft: 'auto' }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                type="submit"
+                sx={{ marginRight: '.5em' }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleSettings(event);
+                }}
+                form={formName}
+                disabled={createReceivable.isPending}
+              >
+                <SettingsOutlinedIcon />
+              </Button>
+              <Popper
+                anchorEl={anchorEl}
+                keepMounted
+                placement="bottom-end"
+                open={
+                  //  true
+                  Boolean(anchorEl)
+                }
+              >
+                <Card
+                  sx={{
+                    padding: '1em',
+                    marginTop: '.5em',
+                    boxShadow: '0px 4px 16px 0px #0F0F0F29',
+                  }}
+                >
+                  <MoniteCurrency
+                    size="small"
+                    name="currency"
+                    isSingleLineDisplay
+                    control={control}
+                    /*   onChange={() => {
+                  if (fields.length > 0 || hasProducts) {
+                    setOpenChangeCurrencyInfo(true);
+                    replace([]);
+                  }
+                }} */
+                  />
+                </Card>
+              </Popper>
+
               <Button
                 variant="contained"
                 key="next"
