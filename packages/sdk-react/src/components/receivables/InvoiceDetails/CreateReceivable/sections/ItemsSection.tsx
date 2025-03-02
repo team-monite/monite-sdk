@@ -297,14 +297,17 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.name`, item.label);
         //  setValue(`line_items.${index}.product_id`, item.id);
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
-        setValue(`line_items.${index}.measure_unit_id`, item.measureUnit?.id);
+        setValue(
+          `line_items.${index}.measure_unit_id`,
+          item.measureUnit?.id || measureUnits?.data[0].id
+        );
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
         setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
         handleAddLocalRow();
       }
     },
-    [setValue]
+    [setValue, measureUnits]
   );
 
   const { root } = useRootElements();
@@ -318,7 +321,7 @@ export const ItemsSection = ({
       }
     }, []);
 
-    console.log({ watchedLineItems, error });
+    //  console.log({ watchedLineItems, error });
 
     return (
       <Controller
@@ -397,7 +400,9 @@ export const ItemsSection = ({
       </Collapse>
 
       <Box>
-        <TableContainer sx={{ maxHeight: 400 }}>
+        <TableContainer
+          sx={{ maxHeight: 400, overflowX: 'visible', overflowY: 'auto' }}
+        >
           <Table stickyHeader>
             <TableHead>
               <TableRow className={tableRowClassName}>
@@ -687,28 +692,25 @@ export const ItemsSection = ({
                   );
                 })
               )}
-              <TableRow>
-                <TableCell colSpan={7}>
-                  <Button
-                    startIcon={<AddIcon />}
-                    variant="outlined"
-                    onClick={handleAddLocalRow}
-                    disabled={tooManyEmptyRows}
-                  >
-                    {t(i18n)`Row`}
-                  </Button>
-                </TableCell>
-                {tooManyEmptyRows && (
-                  <TableCell colSpan={7}>
-                    <Typography>{t(
-                      i18n
-                    )`Please fulfill some of the rows before adding new ones.`}</Typography>
-                  </TableCell>
-                )}
-              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Box mt={2}>
+          <Button
+            startIcon={<AddIcon />}
+            variant="outlined"
+            onClick={handleAddLocalRow}
+            disabled={tooManyEmptyRows}
+          >
+            {t(i18n)`Row`}
+          </Button>
+          {tooManyEmptyRows && (
+            <Typography mt={2} variant="body2" color="warning">{t(
+              i18n
+            )`Please use some of the rows before adding new ones.`}</Typography>
+          )}
+        </Box>
 
         <Collapse in={shouldShowVatExemptRationale}>
           <Box sx={{ m: 2 }}>
