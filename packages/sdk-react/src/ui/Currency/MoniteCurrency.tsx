@@ -5,6 +5,7 @@ import {
   RHFAutocompleteProps,
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
+import { RHFSelect } from '@/components/RHF/RHFSelect';
 import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -70,13 +71,25 @@ export const MoniteCurrency = <
     />
   );
 
+  if (isSingleLineDisplay) {
+    return (
+      <RHFSelect
+        {...props}
+        required={required}
+        label={currencyLabel}
+        options={getCurrenciesArray(i18n).map((currency) => ({
+          value: currency.code,
+          label: displayCode ? currency.code : currency.label,
+        }))}
+      />
+    );
+  }
+
   return (
     <RHFAutocomplete
       {...props}
       required={required}
-      className={`Monite-Currency ${
-        isSingleLineDisplay && 'Currency-SingleLine'
-      }`}
+      className="Monite-Currency"
       label={currencyLabel}
       options={getCurrenciesArray(i18n)}
       optionKey="code"

@@ -308,7 +308,7 @@ const CreateReceivablesBase = ({
                 keepMounted
                 placement="bottom-end"
                 open={
-                  //  true
+                  // true
                   Boolean(anchorEl)
                 }
               >
@@ -317,6 +317,7 @@ const CreateReceivablesBase = ({
                     padding: '1em',
                     marginTop: '.5em',
                     boxShadow: '0px 4px 16px 0px #0F0F0F29',
+                    width: '240px',
                   }}
                 >
                   <MoniteCurrency
