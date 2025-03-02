@@ -178,6 +178,8 @@ export const ItemSelector = ({
               id: selectedItem.id,
               label: selectedItem.name,
             }
+          : customName
+          ? { id: 'custom', label: customName }
           : null;
 
         const handleItemChange = (value: any) => {
@@ -186,7 +188,12 @@ export const ItemSelector = ({
             return;
           }
 
-          field.onChange(value?.id);
+          if (value && value.id === 'custom') {
+            field.onChange(value.label);
+            setCustomName(value.label);
+          } else {
+            field.onChange(value?.id);
+          }
 
           if (value && onUpdate) {
             onUpdate(value);
@@ -277,7 +284,12 @@ export const ItemSelector = ({
                           params.inputProps['aria-expanded']
                         ) {
                           return (
-                            <IconButton onClick={() => field.onChange(null)}>
+                            <IconButton
+                              onClick={() => {
+                                field.onChange(null);
+                                setCustomName('');
+                              }}
+                            >
                               <ClearIcon
                                 sx={{ width: '1rem', height: '1rem' }}
                               />

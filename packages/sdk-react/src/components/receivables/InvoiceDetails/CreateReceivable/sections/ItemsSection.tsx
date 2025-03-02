@@ -698,6 +698,13 @@ export const ItemsSection = ({
                     {t(i18n)`Row`}
                   </Button>
                 </TableCell>
+                {tooManyEmptyRows && (
+                  <TableCell colSpan={7}>
+                    <Typography>{t(
+                      i18n
+                    )`Please fulfill some of the rows before adding new ones.`}</Typography>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

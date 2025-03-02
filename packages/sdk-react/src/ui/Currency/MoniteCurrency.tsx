@@ -8,7 +8,13 @@ import {
 import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TextFieldProps } from '@mui/material';
+import {
+  Box,
+  MenuItem,
+  Select,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import type { AutocompleteRenderInputParams } from '@mui/material';
 
 import { CurrencyInput } from './CurrencyInput';
@@ -31,6 +37,7 @@ export interface MoniteCurrencyProps<
     CurrencyType
   >['multiple'];
   displayCode?: boolean;
+  isSingleLineDisplay?: boolean;
 }
 
 /**
@@ -43,6 +50,7 @@ export const MoniteCurrency = <
   TName extends FieldPath<TFieldValues>
 >({
   displayCode,
+  isSingleLineDisplay = false,
   required,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
@@ -66,7 +74,9 @@ export const MoniteCurrency = <
     <RHFAutocomplete
       {...props}
       required={required}
-      className="Monite-Currency"
+      className={`Monite-Currency ${
+        isSingleLineDisplay && 'Currency-SingleLine'
+      }`}
       label={currencyLabel}
       options={getCurrenciesArray(i18n)}
       optionKey="code"
