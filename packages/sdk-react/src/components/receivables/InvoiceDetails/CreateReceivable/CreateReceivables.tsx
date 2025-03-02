@@ -178,7 +178,6 @@ const CreateReceivablesBase = ({
 
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
-    console.log('reaching');
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
       return;
@@ -195,7 +194,6 @@ const CreateReceivablesBase = ({
     }
 
     const filteredLineItems = values.line_items.filter((item) => {
-      console.log(item);
       return item.name?.trim() !== '';
     });
 
@@ -264,8 +262,6 @@ const CreateReceivablesBase = ({
     ),
   });
 
-  console.log(actualCurrency);
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSettings = (event: any) => {
@@ -329,7 +325,6 @@ const CreateReceivablesBase = ({
                     isSingleLineDisplay
                     control={control}
                     onChange={(val) => {
-                      console.log({ val });
                       setActualCurrency(val);
 
                       // if (fields.length > 0 || hasProducts) {
