@@ -138,6 +138,7 @@ const CreateReceivablesBase = ({
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
+
   const [counterpartBillingAddress, setCounterpartBillingAddress] =
     useState<any>(null);
 
@@ -262,6 +263,8 @@ const CreateReceivablesBase = ({
     ),
   });
 
+  console.log(actualCurrency);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSettings = (event: any) => {
@@ -324,12 +327,15 @@ const CreateReceivablesBase = ({
                     name="currency"
                     isSingleLineDisplay
                     control={control}
-                    /*   onChange={() => {
-                  if (fields.length > 0 || hasProducts) {
-                    setOpenChangeCurrencyInfo(true);
-                    replace([]);
-                  }
-                }} */
+                    onChange={(val) => {
+                      console.log({ val });
+                      setActualCurrency(val);
+
+                      // if (fields.length > 0 || hasProducts) {
+                      //   setOpenChangeCurrencyInfo(true);
+                      //   replace([]);
+                      // }
+                    }}
                   />
                 </Card>
               </Popper>
@@ -376,7 +382,6 @@ const CreateReceivablesBase = ({
                   settings?.currency?.default || fallbackCurrency
                 }
                 actualCurrency={actualCurrency}
-                onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
 

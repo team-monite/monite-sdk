@@ -10,6 +10,7 @@ interface RHFSelectProps<
   label: string;
   required?: boolean;
   options: { value: string; label: string }[];
+  onChange?: (value: any) => void;
 }
 
 export const RHFSelect = <
@@ -25,6 +26,7 @@ export const RHFSelect = <
   disabled,
   defaultValue,
   required,
+  onChange,
 }: RHFSelectProps<TFieldValues, TName>) => {
   return (
     <Controller
@@ -45,7 +47,10 @@ export const RHFSelect = <
           <Select
             {...field}
             value={field.value || ''}
-            onChange={(event) => field.onChange(event.target.value)}
+            onChange={(event) => {
+              field.onChange(event.target.value);
+              onChange?.(event.target.value);
+            }}
             label={label}
             required={required}
             renderValue={(selectedValue) => {

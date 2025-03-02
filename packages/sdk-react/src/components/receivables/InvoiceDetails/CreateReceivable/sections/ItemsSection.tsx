@@ -156,7 +156,6 @@ const TotalCell = ({
 interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
-  onCurrencyChanged: (currency: CurrencyEnum) => void;
   isNonVatSupported: boolean;
 }
 
@@ -173,7 +172,6 @@ interface RowItem {
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
-  onCurrencyChanged,
   isNonVatSupported,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
@@ -192,17 +190,11 @@ export const ItemsSection = ({
   });
   const mounted = useRef(false);
   const watchedLineItems = watch('line_items');
+  const [prevCurrency, setPrevCurrency] = useState(actualCurrency);
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
-  const handleSetActualCurrency = useCallback(
-    (currency: CurrencyEnum) => {
-      onCurrencyChanged(currency);
-    },
-    [onCurrencyChanged]
-  );
-
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);
   }, []);
@@ -259,7 +251,7 @@ export const ItemsSection = ({
     () => ({
       product_id: uuidv4(),
       quantity: 1,
-      price: { value: 0, currency: actualCurrency || 'USD' },
+      price: { value: 0, currency: actualCurrency || defaultCurrency || 'USD' },
       name: '',
       vat_rate_id: highestVatRate?.id,
       vat_rate_value: highestVatRate?.value,
@@ -291,12 +283,24 @@ export const ItemsSection = ({
     }
   }, [append, createEmptyRow]);
 
+  useEffect(() => {
+    if (mounted.current && actualCurrency !== prevCurrency) {
+      replace([]);
+      append(createEmptyRow());
+      setPrevCurrency(actualCurrency);
+    }
+  }, [actualCurrency, replace]);
+
   const handleUpdate = useCallback(
     (index: number, item: any) => {
       if (item) {
         setValue(`line_items.${index}.name`, item.label);
         //  setValue(`line_items.${index}.product_id`, item.id);
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
+        setValue(
+          `line_items.${index}.price.currency`,
+          actualCurrency || defaultCurrency || 'USD'
+        );
         setValue(
           `line_items.${index}.measure_unit_id`,
           item.measureUnit?.id || measureUnits?.data[0].id
@@ -401,7 +405,11 @@ export const ItemsSection = ({
 
       <Box>
         <TableContainer
-          sx={{ maxHeight: 400, overflowX: 'visible', overflowY: 'auto' }}
+          sx={{
+            maxHeight: 400,
+            overflow: 'visible', // this should help display the box shadow effect during focus state, but it isnt working despite being applied
+            overflowY: 'auto',
+          }}
         >
           <Table stickyHeader>
             <TableHead>
@@ -580,7 +588,7 @@ export const ItemsSection = ({
                                 setRawValue(
                                   formatCurrencyToDisplay(
                                     controllerField.value,
-                                    actualCurrency || 'USD',
+                                    actualCurrency || defaultCurrency || 'USD',
                                     false
                                   ) || ''
                                 );
@@ -598,7 +606,7 @@ export const ItemsSection = ({
                                 setRawValue(
                                   formatCurrencyToDisplay(
                                     0,
-                                    actualCurrency || 'USD',
+                                    actualCurrency || defaultCurrency || 'USD',
                                     false
                                   )
                                 );
@@ -611,7 +619,7 @@ export const ItemsSection = ({
                                 const newValue =
                                   formatCurrencyToDisplay(
                                     valueInCents,
-                                    actualCurrency || 'USD',
+                                    actualCurrency || defaultCurrency || 'USD',
                                     false
                                   ) || 0;
 
@@ -638,7 +646,9 @@ export const ItemsSection = ({
                                       ? rawValue
                                       : formatCurrencyToDisplay(
                                           controllerField.value,
-                                          actualCurrency || 'USD',
+                                          actualCurrency ||
+                                            defaultCurrency ||
+                                            'USD',
                                           false
                                         )
                                   }
@@ -652,7 +662,7 @@ export const ItemsSection = ({
                                   inputRef={controllerField.ref}
                                   InputProps={{
                                     startAdornment: getSymbolFromCurrency(
-                                      actualCurrency || 'USD'
+                                      actualCurrency || defaultCurrency || 'USD'
                                     ),
                                   }}
                                   onChange={(e) => {

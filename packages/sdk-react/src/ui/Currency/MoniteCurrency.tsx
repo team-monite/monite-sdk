@@ -74,7 +74,9 @@ export const MoniteCurrency = <
   if (isSingleLineDisplay) {
     return (
       <RHFSelect
-        {...props}
+        name={props.name}
+        control={props.control}
+        onChange={props.onChange}
         required={required}
         label={currencyLabel}
         options={getCurrenciesArray(i18n).map((currency) => ({

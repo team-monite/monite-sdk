@@ -164,7 +164,7 @@ export const ItemSelector = ({
     setCustomName(event.target.value);
   };
 
-  return !flattenProducts || flattenProducts.length === 0 ? null : (
+  return (
     <Controller
       name={`items.${index}`}
       control={control}

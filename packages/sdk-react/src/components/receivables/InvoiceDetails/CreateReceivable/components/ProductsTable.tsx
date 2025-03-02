@@ -79,11 +79,6 @@ export interface ProductsTableProps {
   actualCurrency?: CurrencyEnum;
 
   /**
-   * Callback `onAdd` is called when the user clicks on the `Add` button
-   */
-  onAdd: (options: OnAddOptions) => void;
-
-  /**
    * `true` if CreateReceivables component contains products and
    *  when the user tries to change currency, it will lead to data loss
    */
@@ -134,7 +129,6 @@ const getTableHeadCells = (i18n: I18n) => [
 ];
 
 export const ProductsTable = ({
-  hasProducts,
   onAdd,
   open,
   setOpen,
