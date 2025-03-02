@@ -550,9 +550,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             maxWidth: filterControlWidth,
             width: '100%',
           },
-          '&.Currency-SingleLine > .MuiFormControl-root': {
-            flexDirection: 'row',
-          },
         },
         popper: {
           paddingTop: '0.5rem',
