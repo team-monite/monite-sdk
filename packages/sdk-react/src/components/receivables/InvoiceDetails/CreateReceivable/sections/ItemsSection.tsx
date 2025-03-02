@@ -17,6 +17,7 @@ import {
   CreateReceivablesFormBeforeValidationLineItemProps,
   CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
@@ -57,6 +58,7 @@ import { styled } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ItemSelector } from './ItemSelector';
+import { PriceField } from './PriceField';
 
 interface CardTableItemProps {
   label: string | ReactNode;
@@ -193,7 +195,7 @@ export const ItemsSection = ({
   const [prevCurrency, setPrevCurrency] = useState(actualCurrency);
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
-  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleOpenProductsTable = useCallback(() => {
     setProductsTableOpen(true);
@@ -407,7 +409,7 @@ export const ItemsSection = ({
         <TableContainer
           sx={{
             maxHeight: 400,
-            overflow: 'visible', // this should help display the box shadow effect during focus state, but it isnt working despite being applied
+            overflow: 'visible',
             overflowY: 'auto',
           }}
         >
@@ -572,106 +574,9 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell sx={{ width: '20%' }} align="right">
-                        <Controller
-                          name={`line_items.${index}.price.value`}
-                          render={({
-                            field: controllerField,
-                            fieldState: { error },
-                          }) => {
-                            const [isTyping, setIsTyping] = useState(false);
-                            const [rawValue, setRawValue] = useState<
-                              string | number
-                            >(controllerField.value);
-
-                            useEffect(() => {
-                              if (!isTyping) {
-                                setRawValue(
-                                  formatCurrencyToDisplay(
-                                    controllerField.value,
-                                    actualCurrency || defaultCurrency || 'USD',
-                                    false
-                                  ) || ''
-                                );
-                              }
-                            }, [controllerField.value]);
-
-                            const handleBlur = (e) => {
-                              const inputValue = String(rawValue).trim();
-                              const numericValue = parseFloat(
-                                inputValue.replace(/[^0-9.]/g, '')
-                              );
-
-                              if (inputValue === '' || isNaN(numericValue)) {
-                                controllerField.onChange(0);
-                                setRawValue(
-                                  formatCurrencyToDisplay(
-                                    0,
-                                    actualCurrency || defaultCurrency || 'USD',
-                                    false
-                                  )
-                                );
-                              } else {
-                                const isAlreadyInCents =
-                                  controllerField.value === numericValue * 100;
-                                let valueInCents = isAlreadyInCents
-                                  ? controllerField.value
-                                  : numericValue * 100;
-                                const newValue =
-                                  formatCurrencyToDisplay(
-                                    valueInCents,
-                                    actualCurrency || defaultCurrency || 'USD',
-                                    false
-                                  ) || 0;
-
-                                controllerField.onChange(valueInCents);
-                                setRawValue(newValue);
-                              }
-
-                              setIsTyping(false);
-                              controllerField.onBlur();
-                            };
-
-                            return (
-                              <FormControl
-                                variant="standard"
-                                fullWidth
-                                required
-                                error={Boolean(error)}
-                              >
-                                <TextField
-                                  size="small"
-                                  type="text"
-                                  value={
-                                    isTyping
-                                      ? rawValue
-                                      : formatCurrencyToDisplay(
-                                          controllerField.value,
-                                          actualCurrency ||
-                                            defaultCurrency ||
-                                            'USD',
-                                          false
-                                        )
-                                  }
-                                  sx={{ minWidth: 100 }}
-                                  placeholder={'0'}
-                                  onBlur={handleBlur}
-                                  onFocus={() => {
-                                    setIsTyping(true);
-                                  }}
-                                  name={controllerField.name}
-                                  inputRef={controllerField.ref}
-                                  InputProps={{
-                                    startAdornment: getSymbolFromCurrency(
-                                      actualCurrency || defaultCurrency || 'USD'
-                                    ),
-                                  }}
-                                  onChange={(e) => {
-                                    setRawValue(e.target.value);
-                                  }}
-                                />
-                              </FormControl>
-                            );
-                          }}
+                        <PriceField
+                          index={index}
+                          currency={actualCurrency || defaultCurrency || 'USD'}
                         />
                       </TableCell>
 

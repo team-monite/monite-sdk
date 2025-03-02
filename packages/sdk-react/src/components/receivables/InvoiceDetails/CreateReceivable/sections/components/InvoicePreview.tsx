@@ -321,11 +321,12 @@ export const InvoicePreview = ({
                         )}
                       </td>
                       <td>
-                        {formatCurrencyToDisplay(
-                          item.price.value,
-                          item.price.currency,
-                          false
-                        )}
+                        {item.price &&
+                          formatCurrencyToDisplay(
+                            item.price.value,
+                            item.price.currency,
+                            false
+                          )}
                       </td>
                       <td>{formatTaxRate(item)}%</td>
                     </tr>

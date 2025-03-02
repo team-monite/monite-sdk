@@ -138,7 +138,7 @@ export const ItemSelector = ({
 
     return flattenProducts.map((item) => {
       const unit = measureUnits
-        ? measureUnits.data.find((u) => u.id === item.measure_unit_id)
+        ? measureUnits.data.find((u: any) => u.id === item.measure_unit_id)
         : undefined;
 
       return {
@@ -155,7 +155,6 @@ export const ItemSelector = ({
     setIsCreateItemOpened(true);
   }, [setIsCreateItemOpened]);
 
-  const [isFocused, setIsFocused] = useState(false);
   const [customName, setCustomName] = useState('');
 
   const handleCustomNameChange = (
@@ -170,7 +169,7 @@ export const ItemSelector = ({
       control={control}
       render={({ field, fieldState: { error } }) => {
         const selectedItem = flattenProducts?.find(
-          (item) => item.id === field.value
+          (item) => item?.id === field?.value
         );
 
         const selectedItemOption = selectedItem
@@ -205,8 +204,6 @@ export const ItemSelector = ({
         );
 
         const handleBlur = () => {
-          setIsFocused(false);
-
           if (isCustomName && customName.trim() !== '') {
             onUpdate({ id: 'custom', label: customName });
           }
@@ -274,7 +271,6 @@ export const ItemSelector = ({
                     InputProps={{
                       ...params.InputProps,
                       value: params.inputProps.value,
-                      onFocus: () => setIsFocused(true),
                       startAdornment: isLoading && (
                         <CircularProgress size={20} />
                       ),
@@ -345,14 +341,14 @@ export const ItemSelector = ({
                     style={{ display: 'flex' }}
                     key={itemOption.id}
                   >
-                    {itemOption.label}
+                    {itemOption?.label}
                     <span style={{ marginLeft: 'auto' }}>
-                      {itemOption.smallestAmount}{' '}
+                      {itemOption?.smallestAmount}{' '}
                       {itemOption?.measureUnit?.description} /{' '}
-                      {itemOption.price &&
+                      {itemOption?.price &&
                         formatCurrencyToDisplay(
-                          itemOption.price.value,
-                          itemOption.price.currency
+                          itemOption?.price?.value,
+                          itemOption?.price?.currency
                         )}
                     </span>
                   </li>
