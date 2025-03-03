@@ -38,6 +38,7 @@ import {
   Modal,
   Popper,
   Stack,
+  Switch,
   Toolbar,
   Typography,
   useTheme,
@@ -272,6 +273,7 @@ const CreateReceivablesBase = ({
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
+  const [isFulfillmentDateShown, setIsFulfillmentDateShown] = useState(false);
 
   const handleCloseCurrencyModal = () => {
     setIsCurrencyModalOpen(false);
@@ -449,13 +451,39 @@ const CreateReceivablesBase = ({
                       <Grid container alignItems="center" p={4}>
                         <Grid item width="100%">
                           <Typography variant="h3" mb={3.5}>
-                            {t(i18n)`Fulfillment date`}
+                            {t(i18n)`Enable more fields`}
                           </Typography>
-                          <Typography variant="body2" mb={1}>
-                            {t(
-                              i18n
-                            )`Add a date when the product will be delivered or the service provided`}
-                          </Typography>
+                          <Box
+                            display="flex"
+                            alignItems="start"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                              >
+                                {t(i18n)`Fulfillment date`}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                sx={{ maxWidth: '70%' }}
+                              >
+                                {t(
+                                  i18n
+                                )`Add a date when the product will be delivered or the service provided`}
+                              </Typography>
+                            </Box>
+                            <Switch
+                              checked={isFulfillmentDateShown}
+                              onChange={(e) =>
+                                setIsFulfillmentDateShown(e.target.checked)
+                              }
+                              color="primary"
+                              aria-label={t(i18n)`Fulfillment date`}
+                            />
+                          </Box>
                         </Grid>
                         <Grid
                           item
@@ -554,6 +582,7 @@ const CreateReceivablesBase = ({
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
                   isPaymentTermsLoading={isPaymentTermsLoading}
+                  isFieldShown={isFulfillmentDateShown}
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />
