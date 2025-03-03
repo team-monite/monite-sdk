@@ -1,5 +1,16 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.15
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+
 ## 2.0.0-alpha.14
 
 ### Minor Changes
