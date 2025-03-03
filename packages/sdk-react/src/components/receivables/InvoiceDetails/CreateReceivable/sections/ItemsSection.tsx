@@ -258,7 +258,7 @@ export const ItemsSection = ({
       vat_rate_id: highestVatRate?.id,
       vat_rate_value: highestVatRate?.value,
     }),
-    [actualCurrency, highestVatRate?.id, highestVatRate?.value]
+    [actualCurrency, defaultCurrency, highestVatRate?.id, highestVatRate?.value]
   );
 
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
@@ -288,10 +288,10 @@ export const ItemsSection = ({
   useEffect(() => {
     if (mounted.current && actualCurrency !== prevCurrency) {
       replace([]);
-      append(createEmptyRow());
+      handleAddLocalRow();
       setPrevCurrency(actualCurrency);
     }
-  }, [actualCurrency, replace]);
+  }, [actualCurrency, replace, append, createEmptyRow, prevCurrency]);
 
   const handleUpdate = useCallback(
     (index: number, item: any) => {
@@ -439,6 +439,7 @@ export const ItemsSection = ({
                 </Box>
               ) : (
                 fields.map((field, index) => {
+                  console.log(fields);
                   return (
                     <TableRow
                       key={field.tempId || field.id}

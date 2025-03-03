@@ -4,12 +4,11 @@ import { Controller } from 'react-hook-form';
 import { useCurrencies } from '@/core/hooks';
 import { FormControl, TextField } from '@mui/material';
 
-// USD, EUR, etc
 // works well for currencies such as USD and EUR except for awkward instances
 // where e.g. current price is 215,61, if user types an invalid third cent making it e.g.
 // 215,618, it will round the value to 215,62 which is unlikely to be the users intention
 
-// worst problem happens with currencies with more units e.g. Japanese Yen
+// there are also some NaN instances that I still need to find and fix
 export const PriceField = ({ index, currency }: any) => {
   const {
     formatCurrencyToDisplay,
