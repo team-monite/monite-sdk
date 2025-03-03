@@ -19,14 +19,6 @@ export const getFormControlStyles = (
           visibility: 'hidden',
           opacity: 0,
         },
-        '&.Monite-Currency-SingleLine': {
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          '> .MuiInputBase-root': {
-            maxWidth: '50%',
-          },
-        },
         '& .MuiInputBase-root': {
           minHeight: '48px',
           backgroundColor: palette.neutral['95'],

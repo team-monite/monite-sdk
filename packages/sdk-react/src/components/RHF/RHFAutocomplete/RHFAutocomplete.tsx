@@ -84,6 +84,7 @@ export const RHFAutocomplete = <
   disabled,
   defaultValue,
   onChange,
+  hiddenLabel,
   ...other
 }: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
   const getRenderInput = (error?: FieldError) => {
