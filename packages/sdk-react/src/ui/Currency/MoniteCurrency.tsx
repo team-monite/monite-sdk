@@ -38,7 +38,7 @@ export interface MoniteCurrencyProps<
     CurrencyType
   >['multiple'];
   displayCode?: boolean;
-  isSingleLineDisplay?: boolean;
+  hideLabel?: boolean;
 }
 
 /**
@@ -51,7 +51,7 @@ export const MoniteCurrency = <
   TName extends FieldPath<TFieldValues>
 >({
   displayCode,
-  isSingleLineDisplay = false,
+  hideLabel = false,
   required,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
@@ -71,27 +71,11 @@ export const MoniteCurrency = <
     />
   );
 
-  if (isSingleLineDisplay) {
-    return (
-      <RHFSelect
-        name={props.name}
-        control={props.control}
-        onChange={props.onChange}
-        required={required}
-        label={currencyLabel}
-        options={getCurrenciesArray(i18n).map((currency) => ({
-          value: currency.code,
-          label: displayCode ? currency.code : currency.label,
-        }))}
-      />
-    );
-  }
-
   return (
     <RHFAutocomplete
       {...props}
       required={required}
-      className="Monite-Currency"
+      className={`Monite-Currency ${hideLabel && 'Monite-Label-Hidden'}`}
       label={currencyLabel}
       options={getCurrenciesArray(i18n)}
       optionKey="code"

@@ -11,6 +11,7 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -32,6 +33,9 @@ import {
   Card,
   DialogContent,
   DialogTitle,
+  Grid,
+  MenuItem,
+  Modal,
   Popper,
   Stack,
   Toolbar,
@@ -137,6 +141,10 @@ const CreateReceivablesBase = ({
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
+
+  const [tempCurrency, setTempCurrency] = useState<
+    components['schemas']['CurrencyEnum'] | undefined
+  >(undefined);
 
   const [counterpartBillingAddress, setCounterpartBillingAddress] =
     useState<any>(null);
@@ -260,6 +268,22 @@ const CreateReceivablesBase = ({
     ),
   });
 
+  const { root } = useRootElements();
+
+  const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+
+  const handleCloseCurrencyModal = () => {
+    setIsCurrencyModalOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleCurrencySubmit = () => {
+    console.log(tempCurrency, actualCurrency);
+    if (tempCurrency !== actualCurrency) {
+      setActualCurrency(tempCurrency);
+    }
+    handleCloseCurrencyModal();
+  };
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSettings = (event: any) => {
@@ -302,12 +326,10 @@ const CreateReceivablesBase = ({
               </Button>
               <Popper
                 anchorEl={anchorEl}
+                container={root}
                 keepMounted
                 placement="bottom-end"
-                open={
-                  // true
-                  Boolean(anchorEl)
-                }
+                open={Boolean(anchorEl)}
               >
                 <Card
                   sx={{
@@ -317,20 +339,80 @@ const CreateReceivablesBase = ({
                     width: '240px',
                   }}
                 >
-                  <MoniteCurrency
-                    size="small"
-                    name="currency"
-                    isSingleLineDisplay
-                    control={control}
-                    onChange={(val) => {
-                      setActualCurrency(val);
-
-                      // if (fields.length > 0 || hasProducts) {
-                      //   setOpenChangeCurrencyInfo(true);
-                      //   replace([]);
-                      // }
-                    }}
-                  />
+                  <MenuItem
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    onClick={() => setIsCurrencyModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Currency`}</Typography>
+                    <Typography>{actualCurrency}</Typography>
+                  </MenuItem>
+                  <Modal
+                    open={isCurrencyModalOpen}
+                    container={root}
+                    onClose={handleCloseCurrencyModal}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        maxWidth: 600,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Grid container alignItems="center" p={4}>
+                        <Grid item width="100%">
+                          <Typography variant="h3" mb={3.5}>
+                            {t(i18n)`Change document currency`}
+                          </Typography>
+                          <Typography variant="body2" mb={1}>
+                            {t(
+                              i18n
+                            )`Invoice will be issued with items in the selected currency`}
+                          </Typography>
+                          <MoniteCurrency
+                            size="small"
+                            name="currency"
+                            control={control}
+                            hideLabel
+                            onChange={(_event, value) => {
+                              if (value) {
+                                setTempCurrency(value.code);
+                              }
+                            }}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            justifySelf: 'flex-end',
+                            marginLeft: 'auto',
+                            gap: '1rem',
+                            minHeight: 96,
+                          }}
+                        >
+                          <Button
+                            variant="text"
+                            onClick={handleCloseCurrencyModal}
+                          >
+                            {t(i18n)`Cancel`}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleCurrencySubmit}
+                          >
+                            {t(i18n)`Save`}
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Modal>
                 </Card>
               </Popper>
 

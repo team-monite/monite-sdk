@@ -550,6 +550,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             maxWidth: filterControlWidth,
             width: '100%',
           },
+          '&.Monite-Label-Hidden .MuiInputLabel-root.MuiFormLabel-root': {
+            display: 'none',
+          },
         },
         popper: {
           paddingTop: '0.5rem',
