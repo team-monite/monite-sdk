@@ -24,12 +24,16 @@ interface InvoiceDeleteModalProps {
 
   /** Callback which fires when the user decided to close the modal or deletion was sucsessful */
   onClose: () => void;
+
+  /** Callback to be called when the invoice is deleted */
+  onDelete?: (id: string) => void;
 }
 
 export const InvoiceDeleteModal = ({
   id,
   open,
   onClose,
+  onDelete,
 }: InvoiceDeleteModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -68,7 +72,10 @@ export const InvoiceDeleteModal = ({
           disabled={deleteMutation.isPending || isReceivableLoading}
           onClick={() => {
             deleteMutation.mutate(undefined, {
-              onSuccess: onClose,
+              onSuccess: () => {
+                onDelete?.(id);
+                onClose();
+              },
             });
           }}
           autoFocus
