@@ -38,7 +38,6 @@ export const CounterpartAddressForm = ({
     if (parentField) return `${parentField}.${path}` as FieldPath<Form>;
     return path as FieldPath<Form>;
   };
-
   return (
     <Paper variant="outlined" sx={{ padding: 2, borderRadius: 3 }}>
       <Stack spacing={2}>
@@ -55,6 +54,7 @@ export const CounterpartAddressForm = ({
               helperText={error?.message}
               required
               {...field}
+              value={field.value ?? ''}
             />
           )}
         />
@@ -70,6 +70,7 @@ export const CounterpartAddressForm = ({
               error={Boolean(error)}
               helperText={error?.message}
               {...field}
+              value={field.value ?? ''}
             />
           )}
         />
@@ -86,6 +87,7 @@ export const CounterpartAddressForm = ({
               error={Boolean(error)}
               helperText={error?.message}
               {...field}
+              value={field.value ?? ''}
             />
           )}
         />
@@ -102,6 +104,7 @@ export const CounterpartAddressForm = ({
               error={Boolean(error)}
               helperText={error?.message}
               {...field}
+              value={field.value ?? ''}
             />
           )}
         />
@@ -118,6 +121,7 @@ export const CounterpartAddressForm = ({
               error={Boolean(error)}
               helperText={error?.message}
               {...field}
+              value={field.value ?? ''}
             />
           )}
         />
@@ -138,6 +142,7 @@ export const CounterpartAddressForm = ({
                 label={t(i18n)`Country`}
                 MenuProps={{ container: root }}
                 {...field}
+                value={field.value ?? ''}
               >
                 {countriesToSelect(getCountries(i18n)).map((country) => (
                   <MenuItem key={country.value} value={country.value}>

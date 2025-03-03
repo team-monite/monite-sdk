@@ -24,6 +24,14 @@ export abstract class MoniteAppElementBase<
         <style>
           :host {
             display: block;
+            height: 100%;
+            width: 100%;
+          }
+          #monite-app-root {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
           }
         </style>
       </div>

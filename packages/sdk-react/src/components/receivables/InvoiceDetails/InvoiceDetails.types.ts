@@ -19,6 +19,19 @@ export interface ExistingReceivableDetailsProps {
   onDelete?: (invoiceId: string) => void;
 
   /**
+   * Indicates that the invoice has been updated.
+   *
+   * @param {string} invoiceId Invoice ID
+   * @param {components['schemas']['InvoiceResponsePayload']} invoice Updated invoice object
+   *
+   * @returns {void}
+   */
+  onUpdate?: (
+    invoiceId: string,
+    invoice?: components['schemas']['InvoiceResponsePayload']
+  ) => void;
+
+  /**
    * Indicates that the invoice has been finalized
    *  and issued to a counterpart. Issued invoices
    *  cannot be edited or deleted, just canceled.

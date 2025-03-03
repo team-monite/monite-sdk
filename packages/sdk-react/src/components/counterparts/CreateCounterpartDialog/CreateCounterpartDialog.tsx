@@ -2,6 +2,10 @@ import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
+import {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -22,6 +26,10 @@ import { CreateCounterpartDialogTestEnum } from './CreateCounterpartDialog.types
 interface CreateCounterpartDialogProps {
   open: boolean;
   onClose: () => void;
+  onCreate: (id: string) => void;
+  getCounterpartDefaultValues?: (
+    type?: string
+  ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }
 
 enum View {
@@ -88,6 +96,8 @@ export const CounterpartTypeItem = ({
 export const CreateCounterpartDialog = ({
   open,
   onClose,
+  onCreate,
+  getCounterpartDefaultValues,
 }: CreateCounterpartDialogProps) => {
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
@@ -103,6 +113,8 @@ export const CreateCounterpartDialog = ({
     []
   );
 
+  const defaultValuesOCR = getCounterpartDefaultValues?.(counterpartType);
+
   if (viewMode === View.CounterpartCreationMode && counterpartType) {
     return (
       <Dialog
@@ -115,8 +127,10 @@ export const CreateCounterpartDialog = ({
         }}
       >
         <CounterpartDetails
+          defaultValuesOCR={defaultValuesOCR}
           type={counterpartType}
-          onCreate={() => {
+          onCreate={(id: string) => {
+            onCreate(id);
             setViewMode(View.ChooseMode);
             setCounterpartType(undefined);
             onClose();

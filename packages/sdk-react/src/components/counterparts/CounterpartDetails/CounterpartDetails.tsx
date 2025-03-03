@@ -1,5 +1,9 @@
 import { useCallback, useMemo } from 'react';
 
+import type {
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/Counterpart.types';
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CircularProgress } from '@mui/material';
@@ -182,6 +186,9 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
+            defaultValuesOCR={
+              props.defaultValuesOCR as DefaultValuesOCRIndividual
+            }
           />
         );
 
@@ -197,6 +204,9 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             isInvoiceCreation={isInvoiceCreation}
             showCategories={showCategories}
             defaultValues={defaultValues}
+            defaultValuesOCR={
+              props.defaultValuesOCR as DefaultValuesOCROrganization
+            }
           />
         );
 
@@ -213,6 +223,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     renderSubResource,
     showCategories,
     showView,
+    props.defaultValuesOCR,
     props.onClose,
     props.onReturn,
   ]);
