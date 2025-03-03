@@ -129,6 +129,59 @@ The SDK provides a built-in event system that allows you to listen for various M
 </script>
 ```
 
+#### Event Constants
+
+The SDK exports two important constants for working with events:
+
+1. **`MONITE_EVENT_PREFIX`**: A string constant (`'monite.event'`) used as a prefix for all Monite events. When using the manual approach with DOM event listeners, this prefix is combined with the event type to create the full event name.
+
+2. **`MoniteEventTypes`**: An enum that contains all available event types. Currently supported event types are:
+   ```typescript
+   enum MoniteEventTypes {
+     INVOICE_CREATED = 'invoice.created',
+     INVOICE_UPDATED = 'invoice.updated',
+     INVOICE_DELETED = 'invoice.deleted',
+   }
+   ```
+
+When using the manual approach with DOM event listeners, the full event name is constructed by combining the prefix and the event type: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.EVENT_TYPE}`.
+
+#### Event Handling
+
+There are two ways to handle Monite events:
+
+1. **Recommended approach**: Use the `addMoniteEventListener` function, which encapsulates the listener creation logic:
+
+```javascript
+import { addMoniteEventListener, MoniteEventTypes } from '@monite/sdk-drop-in';
+
+// Add event listener and store the cleanup function
+const cleanup = addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
+  console.log('Invoice created:', event.detail);
+});
+
+// When the listener is no longer needed, call the cleanup function
+cleanup();
+```
+
+2. **Manual approach**: Use the standard DOM event listeners directly:
+
+```javascript
+import { MONITE_EVENT_PREFIX, MoniteEventTypes } from '@monite/sdk-drop-in';
+
+// Create the event name by combining the prefix and event type
+const eventName = `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`;
+
+// Add event listener
+const handleEvent = (event) => {
+  console.log('Invoice created:', event.detail);
+};
+document.addEventListener(eventName, handleEvent);
+
+// When the listener is no longer needed, you must manually remove it
+document.removeEventListener(eventName, handleEvent);
+```
+
 #### Available Events
 
 | Event Type | Description | Payload |
@@ -262,4 +315,3 @@ Integration example:
   </script>
 </monite-iframe-app>
 ```
-

@@ -4,8 +4,10 @@
  * This module provides a centralized way to define, emit, and handle Monite events.
  */
 import { APISchema } from '@monite/sdk-react';
-import type { MoniteReceivablesTableProps } from '@monite/sdk-react/src/components/receivables/ReceivablesTable/ReceivablesTable';
-import type { ComponentSettings } from '@monite/sdk-react/src/core/componentSettings';
+import type {
+  ComponentSettings,
+  MoniteReceivablesTableProps,
+} from '@monite/sdk-react';
 
 type ReceivableResponseType =
   | APISchema.components['schemas']['InvoiceResponsePayload']
@@ -39,6 +41,8 @@ export type EventPayloadCreator<T extends BaseEventPayload, D = unknown> = (
   data?: D
 ) => T;
 
+export const MONITE_EVENT_PREFIX = 'monite.event';
+
 function generateEventId(): string {
   if (
     typeof crypto !== 'undefined' &&
@@ -66,16 +70,19 @@ export function emitMoniteEvent<T extends EventPayload>(
   payload: T,
   target?: Element
 ): boolean {
-  const event = new CustomEvent<MoniteEvent<T>>(`monite.event:${type}`, {
-    detail: {
-      id: generateEventId(),
-      type,
-      payload,
-    },
-    bubbles: true,
-    composed: true,
-    cancelable: true,
-  });
+  const event = new CustomEvent<MoniteEvent<T>>(
+    `${MONITE_EVENT_PREFIX}:${type}`,
+    {
+      detail: {
+        id: generateEventId(),
+        type,
+        payload,
+      },
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+    }
+  );
 
   const targetElement = target ?? document;
   return targetElement.dispatchEvent(event);
@@ -140,22 +147,8 @@ export function enhanceReceivablesSettings(
  * @returns Enhanced component settings with event handlers
  */
 export function enhanceComponentSettings(
-  settings?: Partial<ComponentSettings>
+  settings: Partial<ComponentSettings> = {}
 ): Partial<ComponentSettings> {
-  if (!settings) {
-    return {
-      general: { iconWrapper: {} },
-      approvalPolicies: { pageSizeOptions: [] },
-      approvalRequests: { pageSizeOptions: [] },
-      counterparts: { pageSizeOptions: [] },
-      payables: {},
-      products: { pageSizeOptions: [] },
-      receivables: enhanceReceivablesSettings(),
-      tags: { pageSizeOptions: [] },
-      userRoles: { pageSizeOptions: [] },
-    };
-  }
-
   return {
     ...settings,
     receivables: enhanceReceivablesSettings(settings.receivables),
@@ -175,7 +168,7 @@ export function addMoniteEventListener<T extends EventPayload>(
   callback: (event: CustomEvent<MoniteEvent<T>>) => void,
   target: Element | Document = document
 ): () => void {
-  const eventName = `monite.event:${eventType}`;
+  const eventName = `${MONITE_EVENT_PREFIX}:${eventType}`;
 
   target.addEventListener(eventName, callback as EventListener);
 
