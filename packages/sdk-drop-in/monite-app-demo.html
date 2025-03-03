@@ -4,10 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monite App Drop-In Component Demo</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <title>Monite App Widget Label</title>
   </head>
   <body>
     <monite-app
+      style="height: 100%; width: 100%"
       disabled
       entity-id="defer"
       api-url="defer"
@@ -41,53 +51,70 @@
 
     <script type="module">
       import { createAPIClient } from '@monite/sdk-react';
-      import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
+
+      import { MONITE_APP_ELEMENT_NAME } from './src/custom-elements/monite-app';
+      import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
-      import { 
-        MoniteEventTypes, 
-        addMoniteEventListener, 
+      import {
+        MoniteEventTypes,
+        addMoniteEventListener,
         MONITE_EVENT_PREFIX,
         getMoniteAppElement,
-        getMoniteAppEventTarget
+        getMoniteAppEventTarget,
       } from './src/lib/MoniteEvents';
-      import { MONITE_APP_ELEMENT_NAME } from './src/custom-elements/monite-app';
 
       window.fetchToken = fetchTokenDev;
-      
+
       /**
        * Initialize event listeners using the recommended approach with addMoniteEventListener
        * @returns {Function} A function to clean up all event listeners
        */
       function initRecommendedEventListeners() {
-        console.log('[Event System] Initializing with recommended approach (addMoniteEventListener)');
-        
+        console.log(
+          '[Event System] Initializing with recommended approach (addMoniteEventListener)'
+        );
+
         const cleanupFunctions = [];
 
         cleanupFunctions.push(
           addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
             const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice created event:', { type, payload, id });
+            console.log('[Event Listener] Received invoice created event:', {
+              type,
+              payload,
+              id,
+            });
           })
         );
 
         cleanupFunctions.push(
           addMoniteEventListener(MoniteEventTypes.INVOICE_UPDATED, (event) => {
             const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice updated event:', { type, payload, id });
+            console.log('[Event Listener] Received invoice updated event:', {
+              type,
+              payload,
+              id,
+            });
           })
         );
 
         cleanupFunctions.push(
           addMoniteEventListener(MoniteEventTypes.INVOICE_DELETED, (event) => {
             const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice deleted event:', { type, payload, id });
+            console.log('[Event Listener] Received invoice deleted event:', {
+              type,
+              payload,
+              id,
+            });
           })
         );
 
         return function cleanupAllEventListeners() {
-          cleanupFunctions.forEach(cleanup => cleanup());
-          console.log('[Event Listeners] All event listeners have been removed');
+          cleanupFunctions.forEach((cleanup) => cleanup());
+          console.log(
+            '[Event Listeners] All event listeners have been removed'
+          );
         };
       }
 
@@ -96,41 +123,54 @@
        * @returns {Function} A function to clean up all event listeners
        */
       function initManualEventListeners() {
-        console.log('[Event System] Initializing with manual approach (standard DOM API)');
-        
+        console.log(
+          '[Event System] Initializing with manual approach (standard DOM API)'
+        );
+
         const targetElement = getMoniteAppEventTarget();
         console.log('[Event System] Using target element:', targetElement);
-        
+
         const handlers = [
           {
             eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`,
             handler: (event) => {
-              console.log('[Manual Event Listener] Received invoice created event:', event.detail);
-            }
+              console.log(
+                '[Manual Event Listener] Received invoice created event:',
+                event.detail
+              );
+            },
           },
           {
             eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_UPDATED}`,
             handler: (event) => {
-              console.log('[Manual Event Listener] Received invoice updated event:', event.detail);
-            }
+              console.log(
+                '[Manual Event Listener] Received invoice updated event:',
+                event.detail
+              );
+            },
           },
           {
             eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_DELETED}`,
             handler: (event) => {
-              console.log('[Manual Event Listener] Received invoice deleted event:', event.detail);
-            }
-          }
+              console.log(
+                '[Manual Event Listener] Received invoice deleted event:',
+                event.detail
+              );
+            },
+          },
         ];
-        
+
         handlers.forEach(({ eventName, handler }) => {
           targetElement.addEventListener(eventName, handler);
         });
-        
+
         return function cleanupManualEventListeners() {
           handlers.forEach(({ eventName, handler }) => {
             targetElement.removeEventListener(eventName, handler);
           });
-          console.log('[Manual Event Listeners] All event listeners have been removed');
+          console.log(
+            '[Manual Event Listeners] All event listeners have been removed'
+          );
         };
       }
 
@@ -143,7 +183,7 @@
       // or when the user navigates away from the page
       // Uncomment the line below to test cleanup
       // setTimeout(cleanup, 30000); // Clean up after 30 seconds
-      
+
       // Ensure cleanup is called when the page is unloaded
       window.addEventListener('beforeunload', () => {
         cleanup();
@@ -172,12 +212,17 @@
 
         const moniteApp = getMoniteAppElement();
         if (moniteApp) {
-          moniteApp.setAttribute('component', location.pathname.split('/')[2] ?? 'receivables');
+          moniteApp.setAttribute(
+            'component',
+            location.pathname.split('/')[2] ?? 'receivables'
+          );
           moniteApp.setAttribute('api-url', apiUrl);
           moniteApp.setAttribute('entity-id', entityId);
           moniteApp.removeAttribute('disabled');
         } else {
-          console.warn(`Could not find <${MONITE_APP_ELEMENT_NAME}> element in the DOM. Make sure it is properly included in your HTML.`);
+          console.warn(
+            `Could not find <${MONITE_APP_ELEMENT_NAME}> element in the DOM. Make sure it is properly included in your HTML.`
+          );
         }
       }
 
