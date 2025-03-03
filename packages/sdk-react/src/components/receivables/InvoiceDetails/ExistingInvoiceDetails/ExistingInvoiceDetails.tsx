@@ -172,7 +172,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     return (
       <EditInvoiceDetails
         invoice={receivable}
-        onUpdated={() => startViewChange(callbacks.handleChangeViewInvoice)}
+        onUpdated={(updatedReceivable) => {
+          startViewChange(callbacks.handleChangeViewInvoice);
+          props.onUpdate?.(updatedReceivable.id, updatedReceivable);
+        }}
         onCancel={() => startViewChange(callbacks.handleChangeViewInvoice)}
       />
     );
@@ -201,6 +204,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         onClose={() => {
           setDeleteModalOpened(false);
         }}
+        onDelete={props.onDelete}
       />
 
       <InvoiceCancelModal
