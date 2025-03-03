@@ -167,7 +167,10 @@ cleanup();
 2. **Manual approach**: Use the standard DOM event listeners directly:
 
 ```javascript
-import { MONITE_EVENT_PREFIX, MoniteEventTypes } from '@monite/sdk-drop-in';
+import { MONITE_EVENT_PREFIX, MoniteEventTypes, getMoniteAppEventTarget } from '@monite/sdk-drop-in';
+
+// Get the best target for events (Monite app element or document)
+const targetElement = getMoniteAppEventTarget();
 
 // Create the event name by combining the prefix and event type
 const eventName = `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`;
@@ -176,11 +179,27 @@ const eventName = `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`;
 const handleEvent = (event) => {
   console.log('Invoice created:', event.detail);
 };
-document.addEventListener(eventName, handleEvent);
+targetElement.addEventListener(eventName, handleEvent);
 
 // When the listener is no longer needed, you must manually remove it
-document.removeEventListener(eventName, handleEvent);
+targetElement.removeEventListener(eventName, handleEvent);
 ```
+
+The `addMoniteEventListener` function returns a cleanup function that can be called when the listener is no longer needed. This is particularly useful in frameworks like React to clean up event listeners in useEffect hooks.
+
+#### Event Targeting
+
+The event system now automatically determines the best target for events. When you call `addMoniteEventListener`, it will:
+
+1. Look for the Monite app element in the DOM (using `getMoniteAppElement()`)
+2. If found, attach the event listener to that element
+3. If not found, fall back to the `document` object
+
+This automatic target selection ensures that events are properly captured regardless of when the Monite app element is initialized, and simplifies the API by removing the need to manually specify a target.
+
+Similarly, when events are emitted, the system automatically determines the best target using the same logic, ensuring that events are dispatched to the most appropriate element.
+
+> **Note on Event Target Limitations**: The current implementation only supports predefined target elements (`<monite-app>` element and `document`). This is because the component settings callbacks and event listener logic are intentionally decoupled for better separation of concerns. Supporting custom event targets would require significant changes to how settings work throughout the SDK. Future versions may introduce support for custom event targets, but this would involve architectural changes to maintain consistency between component settings and the event system.
 
 #### Available Events
 

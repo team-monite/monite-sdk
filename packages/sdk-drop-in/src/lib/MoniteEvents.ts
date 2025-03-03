@@ -9,6 +9,8 @@ import type {
   MoniteReceivablesTableProps,
 } from '@monite/sdk-react';
 
+import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
+
 type ReceivableResponseType =
   | APISchema.components['schemas']['InvoiceResponsePayload']
   | undefined;
@@ -43,33 +45,19 @@ export type EventPayloadCreator<T extends BaseEventPayload, D = unknown> = (
 
 export const MONITE_EVENT_PREFIX = 'monite.event';
 
-function generateEventId(): string {
-  if (
-    typeof crypto !== 'undefined' &&
-    typeof crypto.randomUUID === 'function'
-  ) {
-    return crypto.randomUUID();
-  }
-
-  // Fallback to timestamp + random number
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-}
-
-export { generateEventId };
-
 /**
- * Emits a Monite event
+ * Emits a Monite event on the specified target
  *
  * @param type The type of event to emit
  * @param payload The payload to include with the event
- * @param target Optional target element to emit the event from (defaults to document)
+ * @param target Optional target element to emit the event from (defaults to auto-detected target)
  * @returns Whether the event was successfully emitted
  */
 export function emitMoniteEvent<T extends EventPayload>(
   type: MoniteEventTypes,
-  payload: T,
-  target?: Element
+  payload: T
 ): boolean {
+  const target = getMoniteAppEventTarget();
   const event = new CustomEvent<MoniteEvent<T>>(
     `${MONITE_EVENT_PREFIX}:${type}`,
     {
@@ -84,8 +72,7 @@ export function emitMoniteEvent<T extends EventPayload>(
     }
   );
 
-  const targetElement = target ?? document;
-  return targetElement.dispatchEvent(event);
+  return target.dispatchEvent(event);
 }
 
 /**
@@ -160,19 +147,68 @@ export function enhanceComponentSettings(
  *
  * @param eventType The type of event to listen for
  * @param callback The callback function to execute when the event occurs
- * @param target Optional target element to attach the listener to (defaults to document)
  * @returns A cleanup function to remove the event listener
  */
 export function addMoniteEventListener<T extends EventPayload>(
   eventType: MoniteEventTypes,
-  callback: (event: CustomEvent<MoniteEvent<T>>) => void,
-  target: Element | Document = document
+  callback: (event: CustomEvent<MoniteEvent<T>>) => void
 ): () => void {
   const eventName = `${MONITE_EVENT_PREFIX}:${eventType}`;
+  const wrappedCallback = callback as EventListener;
+  const target = getMoniteAppEventTarget();
 
-  target.addEventListener(eventName, callback as EventListener);
+  target.addEventListener(eventName, wrappedCallback);
 
   return () => {
-    target.removeEventListener(eventName, callback as EventListener);
+    target.removeEventListener(eventName, wrappedCallback);
   };
 }
+
+/**
+ * Helper function to get the Monite app element from the document
+ *
+ * @returns The Monite app element or null if not found
+ */
+export function getMoniteAppElement(): Element | null {
+  return document.querySelector(MONITE_APP_ELEMENT_NAME);
+}
+
+/**
+ * Gets the most appropriate target for Monite events.
+ * This function tries to find the Monite app element in the DOM.
+ * If found and properly initialized, it returns that element.
+ * Otherwise, it falls back to the document object.
+ *
+ * Note: The current implementation only supports predefined target elements
+ * (the Monite app element and document). This is because the component settings
+ * callbacks and event listener logic are intentionally decoupled for better
+ * separation of concerns. Supporting custom event targets would require
+ * significant changes to how settings work throughout the SDK.
+ *
+ * Future versions may introduce support for custom event targets, but this would
+ * involve architectural changes to maintain consistency between component settings
+ * and the event system.
+ *
+ * @returns The most appropriate target for Monite events
+ */
+export function getMoniteAppEventTarget(): Element | Document {
+  const moniteApp = getMoniteAppElement();
+  if (moniteApp && moniteApp.hasAttribute('component')) {
+    return moniteApp;
+  }
+
+  return document;
+}
+
+function generateEventId(): string {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+}
+
+export { generateEventId };

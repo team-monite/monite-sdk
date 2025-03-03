@@ -44,7 +44,14 @@
       import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
-      import { MoniteEventTypes, addMoniteEventListener, MONITE_EVENT_PREFIX } from './src/lib/MoniteEvents';
+      import { 
+        MoniteEventTypes, 
+        addMoniteEventListener, 
+        MONITE_EVENT_PREFIX,
+        getMoniteAppElement,
+        getMoniteAppEventTarget
+      } from './src/lib/MoniteEvents';
+      import { MONITE_APP_ELEMENT_NAME } from './src/custom-elements/monite-app';
 
       window.fetchToken = fetchTokenDev;
       
@@ -91,6 +98,9 @@
       function initManualEventListeners() {
         console.log('[Event System] Initializing with manual approach (standard DOM API)');
         
+        const targetElement = getMoniteAppEventTarget();
+        console.log('[Event System] Using target element:', targetElement);
+        
         const handlers = [
           {
             eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`,
@@ -113,12 +123,12 @@
         ];
         
         handlers.forEach(({ eventName, handler }) => {
-          document.addEventListener(eventName, handler);
+          targetElement.addEventListener(eventName, handler);
         });
         
         return function cleanupManualEventListeners() {
           handlers.forEach(({ eventName, handler }) => {
-            document.removeEventListener(eventName, handler);
+            targetElement.removeEventListener(eventName, handler);
           });
           console.log('[Manual Event Listeners] All event listeners have been removed');
         };
@@ -160,14 +170,14 @@
           throw new Error('Error while fetching credentials');
         }
 
-        const moniteApp = document.querySelector('monite-app');
+        const moniteApp = getMoniteAppElement();
         if (moniteApp) {
           moniteApp.setAttribute('component', location.pathname.split('/')[2] ?? 'receivables');
           moniteApp.setAttribute('api-url', apiUrl);
           moniteApp.setAttribute('entity-id', entityId);
           moniteApp.removeAttribute('disabled');
         } else {
-          console.warn('Could not find <monite-app> element in the DOM. Make sure it is properly included in your HTML.');
+          console.warn(`Could not find <${MONITE_APP_ELEMENT_NAME}> element in the DOM. Make sure it is properly included in your HTML.`);
         }
       }
 
