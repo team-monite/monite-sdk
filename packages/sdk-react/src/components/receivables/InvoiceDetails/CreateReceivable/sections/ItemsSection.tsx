@@ -287,11 +287,10 @@ export const ItemsSection = ({
 
   useEffect(() => {
     if (mounted.current && actualCurrency !== prevCurrency) {
-      replace([]);
-      handleAddLocalRow();
+      replace([createEmptyRow()]);
       setPrevCurrency(actualCurrency);
     }
-  }, [actualCurrency, replace, append, createEmptyRow, prevCurrency]);
+  }, [actualCurrency, replace, createEmptyRow, prevCurrency]);
 
   const handleUpdate = useCallback(
     (index: number, item: any) => {

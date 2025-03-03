@@ -270,9 +270,15 @@ const CreateReceivablesBase = ({
   const { root } = useRootElements();
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+  const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
 
   const handleCloseCurrencyModal = () => {
     setIsCurrencyModalOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleCloseEnableFieldsModal = () => {
+    setIsEnableFieldsModalOpen(false);
     setAnchorEl(null);
   };
 
@@ -283,6 +289,7 @@ const CreateReceivablesBase = ({
     }
     handleCloseCurrencyModal();
   };
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSettings = (event: any) => {
@@ -338,6 +345,9 @@ const CreateReceivablesBase = ({
                     width: '240px',
                   }}
                 >
+                  <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
+                    <Typography>{t(i18n)`Enable more fields`}</Typography>
+                  </MenuItem>
                   <MenuItem
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                     onClick={() => setIsCurrencyModalOpen(true)}
@@ -377,8 +387,13 @@ const CreateReceivablesBase = ({
                             name="currency"
                             control={control}
                             hideLabel
-                            onChange={(_event, value) => {
-                              if (value) {
+                            // @ts-expect-error
+                            onChange={(event, value, reason, details) => {
+                              if (
+                                value &&
+                                !Array.isArray(value) &&
+                                typeof value !== 'string'
+                              ) {
                                 setTempCurrency(value.code);
                               }
                             }}
@@ -399,6 +414,63 @@ const CreateReceivablesBase = ({
                           <Button
                             variant="text"
                             onClick={handleCloseCurrencyModal}
+                          >
+                            {t(i18n)`Cancel`}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleCurrencySubmit}
+                          >
+                            {t(i18n)`Save`}
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Modal>
+
+                  <Modal
+                    open={isEnableFieldsModalOpen}
+                    container={root}
+                    onClose={handleCloseEnableFieldsModal}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        maxWidth: 600,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Grid container alignItems="center" p={4}>
+                        <Grid item width="100%">
+                          <Typography variant="h3" mb={3.5}>
+                            {t(i18n)`Fulfillment date`}
+                          </Typography>
+                          <Typography variant="body2" mb={1}>
+                            {t(
+                              i18n
+                            )`Add a date when the product will be delivered or the service provided`}
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            justifySelf: 'flex-end',
+                            marginLeft: 'auto',
+                            gap: '1rem',
+                            minHeight: 96,
+                          }}
+                        >
+                          <Button
+                            variant="text"
+                            onClick={handleCloseEnableFieldsModal}
                           >
                             {t(i18n)`Cancel`}
                           </Button>
