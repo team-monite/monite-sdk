@@ -697,6 +697,28 @@ export function usePayableDetails({
     onSaved?.(id);
   };
 
+  const updateTags = async (
+    id: string,
+    tags: components['schemas']['TagReadSchema'][]
+  ) => {
+    const tagIds = tags.map((tag) => tag.id);
+
+    await updateMutation.mutateAsync(
+      {
+        path: { payable_id: id },
+        body: { tag_ids: tagIds },
+      },
+      {
+        onSuccess: (payable) => {
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          );
+        },
+      }
+    );
+  };
+
   const cancelInvoice = async () => {
     if (payableId) {
       await cancelMutation.mutateAsync(
@@ -838,6 +860,7 @@ export function usePayableDetails({
       deleteInvoice,
       payInvoice,
       handlePay,
+      updateTags,
       modalComponent,
       isPaymentLinkAvailable,
     },
