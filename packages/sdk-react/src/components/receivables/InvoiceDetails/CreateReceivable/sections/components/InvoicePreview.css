@@ -4,8 +4,10 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  margin: 50px 10%;
-  min-height: 85vh;
+  margin: 25px;
+  height: auto;
+  min-height: auto;
+  aspect-ratio: 0.7071;
   padding: 1.5em 5em;
   --table-cell-padding-x: 10.1pt;
   --table-cell-padding-y: 12.2pt;

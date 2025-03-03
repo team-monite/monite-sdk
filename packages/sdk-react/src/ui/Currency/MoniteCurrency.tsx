@@ -1,14 +1,18 @@
 import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
+import type { FieldError } from 'react-hook-form';
 
 import {
   RHFAutocompleteProps,
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
-import { useCurrencies } from '@/core/hooks';
 import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { MenuItem, TextFieldProps } from '@mui/material';
+import { TextFieldProps } from '@mui/material';
+import type { AutocompleteRenderInputParams } from '@mui/material';
+
+import { CurrencyInput } from './CurrencyInput';
+import { CurrencyOption } from './CurrencyOption';
 
 export interface MoniteCurrencyProps<
   TFieldValues extends FieldValues,
@@ -39,24 +43,42 @@ export const MoniteCurrency = <
   TName extends FieldPath<TFieldValues>
 >({
   displayCode,
+  required,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
-  const { getSymbolFromCurrency } = useCurrencies();
+  const currencyLabel = t(i18n)`Currency`;
+
+  const renderInput = (
+    params: AutocompleteRenderInputParams,
+    renderParams?: { error?: FieldError; label: string; required?: boolean }
+  ) => (
+    <CurrencyInput
+      displayCode={displayCode}
+      error={renderParams?.error}
+      required={renderParams?.required ?? required}
+      label={renderParams?.label ?? currencyLabel}
+      {...params}
+    />
+  );
 
   return (
     <RHFAutocomplete
       {...props}
+      required={required}
       className="Monite-Currency"
-      label={t(i18n)`Currency`}
+      label={currencyLabel}
       options={getCurrenciesArray(i18n)}
       optionKey="code"
       labelKey={displayCode ? 'code' : 'label'}
+      renderInput={renderInput}
       renderOption={(props, option) => (
-        <MenuItem {...props} key={option.code} value={option.label}>
-          {displayCode ? option.code : option.label},{' '}
-          {getSymbolFromCurrency(option.code)}
-        </MenuItem>
+        <CurrencyOption
+          key={option.code}
+          props={props}
+          option={option}
+          displayCode={displayCode}
+        />
       )}
     />
   );

@@ -1,5 +1,18 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.14
+
+### Minor Changes
+
+- 4fed228: Bump dropin to latest version
+
+## 2.0.0-alpha.13
+
+### Patch Changes
+
+- 23c29de: Update Kanmon live URL
+- 25e34f4: Improve aspect ratio in Invoice preview
+
 ## 2.0.0-alpha.12
 
 ### Patch Changes
