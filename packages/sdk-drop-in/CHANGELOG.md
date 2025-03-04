@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.16
+
+### Patch Changes
+
+- 923df35: Fix counterpart creation form styles
+
 ## 2.0.0-alpha.15
 
 ### Minor Changes
