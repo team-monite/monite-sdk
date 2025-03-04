@@ -188,11 +188,8 @@ export const ItemsSection = ({
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'line_items',
-    keyName: 'tempId',
   });
   const mounted = useRef(false);
-  const watchedLineItems = watch('line_items');
-  const [prevCurrency, setPrevCurrency] = useState(actualCurrency);
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -210,7 +207,7 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: [...watchedLineItems],
+    lineItems: [...fields],
     formatCurrencyToDisplay,
     isNonVatSupported: isNonVatSupported,
   });
@@ -264,9 +261,7 @@ export const ItemsSection = ({
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
   const handleAddLocalRow = () => {
-    const areFieldsEmpty = watchedLineItems.filter(
-      (field) => field.name === ''
-    );
+    const areFieldsEmpty = fields.filter((field) => field.name === '');
     if (areFieldsEmpty.length > 4) {
       setTooManyEmptyRows(true);
     } else {
@@ -284,13 +279,6 @@ export const ItemsSection = ({
       mounted.current = true;
     }
   }, [append, createEmptyRow]);
-
-  useEffect(() => {
-    if (mounted.current && actualCurrency !== prevCurrency) {
-      replace([createEmptyRow()]);
-      setPrevCurrency(actualCurrency);
-    }
-  }, [actualCurrency, replace, createEmptyRow, prevCurrency]);
 
   const handleUpdate = useCallback(
     (index: number, item: any) => {
@@ -312,7 +300,7 @@ export const ItemsSection = ({
         handleAddLocalRow();
       }
     },
-    [setValue, measureUnits]
+    [actualCurrency, defaultCurrency, setValue, measureUnits]
   );
 
   const { root } = useRootElements();
@@ -325,8 +313,6 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       }
     }, []);
-
-    //  console.log({ watchedLineItems, error });
 
     return (
       <Controller
@@ -438,10 +424,9 @@ export const ItemsSection = ({
                 </Box>
               ) : (
                 fields.map((field, index) => {
-                  console.log(fields);
                   return (
                     <TableRow
-                      key={field.tempId || field.id}
+                      key={field.product_id}
                       className={tableRowClassName}
                     >
                       <TableCell sx={{ width: '40%' }}>
@@ -690,24 +675,6 @@ export const ItemsSection = ({
         open={productsTableOpen}
         setOpen={setProductsTableOpen}
         hasProducts={fields.length > 0}
-        onAdd={({ items, currency }) => {
-          handleCloseProductsTable();
-          if (actualCurrency !== currency) {
-            replace(
-              items.map((product) => {
-                return prepareLineItem(product, vatRates);
-              })
-            );
-            handleSetActualCurrency(currency);
-            return;
-          }
-
-          const productItemsMapped = items.map((product) => {
-            return prepareLineItem(product, vatRates);
-          });
-          append(productItemsMapped);
-          handleSetActualCurrency(currency);
-        }}
       />
     </Stack>
   );

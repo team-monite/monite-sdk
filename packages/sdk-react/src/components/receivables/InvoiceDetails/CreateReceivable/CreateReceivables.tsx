@@ -28,6 +28,7 @@ import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -285,12 +286,28 @@ const CreateReceivablesBase = ({
     setAnchorEl(null);
   };
 
+  const lineItems = watch('line_items');
+
+  const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
+
   const handleCurrencySubmit = () => {
-    console.log(tempCurrency, actualCurrency);
     if (tempCurrency !== actualCurrency) {
-      setActualCurrency(tempCurrency);
+      const validLineItems = lineItems.filter((item) => {
+        return item.name?.trim() !== '';
+      });
+
+      if (validLineItems.length) {
+        setRemoveItemsWarning(true);
+      } else {
+        setRemoveItemsWarning(false);
+        setActualCurrency(tempCurrency);
+        handleCloseCurrencyModal();
+      }
+    } else {
+      setRemoveItemsWarning(false);
+      setTempCurrency(actualCurrency);
+      handleCloseCurrencyModal();
     }
-    handleCloseCurrencyModal();
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -348,15 +365,15 @@ const CreateReceivablesBase = ({
                     width: '240px',
                   }}
                 >
-                  <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
-                    <Typography>{t(i18n)`Enable more fields`}</Typography>
-                  </MenuItem>
                   <MenuItem
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                     onClick={() => setIsCurrencyModalOpen(true)}
                   >
                     <Typography>{t(i18n)`Currency`}</Typography>
                     <Typography>{actualCurrency}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
+                    <Typography>{t(i18n)`Enable more fields`}</Typography>
                   </MenuItem>
                   <Modal
                     open={isCurrencyModalOpen}
@@ -380,7 +397,7 @@ const CreateReceivablesBase = ({
                           <Typography variant="h3" mb={3.5}>
                             {t(i18n)`Change document currency`}
                           </Typography>
-                          <Typography variant="body2" mb={1}>
+                          <Typography variant="body2" color="black" mb={1}>
                             {t(
                               i18n
                             )`Invoice will be issued with items in the selected currency`}
@@ -401,6 +418,13 @@ const CreateReceivablesBase = ({
                               }
                             }}
                           />
+                          <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
+                            <Typography variant="inherit">
+                              {t(
+                                i18n
+                              )`All items in the invoice must be in this currency. Remove items that don’t match it.`}
+                            </Typography>
+                          </Alert>
                         </Grid>
                         <Grid
                           item
