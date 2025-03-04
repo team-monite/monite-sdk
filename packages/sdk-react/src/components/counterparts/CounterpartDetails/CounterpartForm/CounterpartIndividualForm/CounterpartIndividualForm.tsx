@@ -34,8 +34,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
@@ -78,9 +76,6 @@ export const CounterpartIndividualForm = ({
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
@@ -225,13 +220,7 @@ export const CounterpartIndividualForm = ({
 
       {!isInvoiceCreation && <Divider />}
 
-      <DialogContent
-        sx={{
-          padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 380,
-          overflowY: 'auto',
-        }}
-      >
+      <DialogContent sx={{ padding: '2rem' }}>
         <FormProvider {...methods}>
           <form
             id="counterpartIndividualForm"
