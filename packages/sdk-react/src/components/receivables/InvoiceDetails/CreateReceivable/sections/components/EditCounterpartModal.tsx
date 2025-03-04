@@ -166,12 +166,7 @@ export const EditCounterpartModal = ({
           )
         ) : (
           <>
-            <Stack
-              sx={{
-                padding: '2rem',
-                overflowY: 'auto',
-              }}
-            >
+            <Stack sx={{ padding: '2rem' }}>
               <CounterpartSelector
                 isSimplified
                 disabled={disabled}

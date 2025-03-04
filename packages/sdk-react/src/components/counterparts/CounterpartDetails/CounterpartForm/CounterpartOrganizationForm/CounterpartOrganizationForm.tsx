@@ -82,7 +82,6 @@ export const CounterpartOrganizationForm = (
     | undefined;
 
   const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const methods = useForm({
     resolver: yupResolver(
@@ -229,12 +228,7 @@ export const CounterpartOrganizationForm = (
       )}
 
       {!isInvoiceCreation && <Divider />}
-      <DialogContent
-        sx={{
-          padding: '2rem',
-          overflowY: 'auto',
-        }}
-      >
+      <DialogContent sx={{ padding: '2rem' }}>
         <FormProvider {...methods}>
           <form
             id="counterpartOrganizationForm"

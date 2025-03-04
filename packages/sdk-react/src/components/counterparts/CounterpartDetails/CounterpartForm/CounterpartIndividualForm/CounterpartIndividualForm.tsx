@@ -80,7 +80,6 @@ export const CounterpartIndividualForm = ({
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
 
   const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
@@ -225,12 +224,7 @@ export const CounterpartIndividualForm = ({
 
       {!isInvoiceCreation && <Divider />}
 
-      <DialogContent
-        sx={{
-          padding: '2rem',
-          overflowY: 'auto',
-        }}
-      >
+      <DialogContent sx={{ padding: '2rem' }}>
         <FormProvider {...methods}>
           <form
             id="counterpartIndividualForm"
