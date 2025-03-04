@@ -24,6 +24,7 @@ interface FullfillmentSummaryProps extends SectionGeneralProps {
       }
     | undefined;
   isPaymentTermsLoading: boolean;
+  isFieldShown: boolean;
   refetch: (options?: RefetchOptions) => Promise<
     QueryObserverResult<
       {
@@ -40,6 +41,7 @@ export const FullfillmentSummary = ({
   disabled,
   paymentTerms,
   isPaymentTermsLoading,
+  isFieldShown,
   refetch,
 }: FullfillmentSummaryProps) => {
   const { i18n } = useLingui();
@@ -51,8 +53,6 @@ export const FullfillmentSummary = ({
   const { root } = useRootElements();
 
   const dateTime = i18n.date(new Date(), locale.dateTimeFormat);
-
-  const [isFieldShown, setIsFieldShown] = useState<boolean>(false);
 
   const paymentTermsId = watch('payment_terms_id');
 
@@ -139,11 +139,6 @@ export const FullfillmentSummary = ({
             onPaymentTermsChange={handlePaymentTermsChange}
           />
         </Box>
-        {!isFieldShown && (
-          <Button startIcon={<AddIcon />} onClick={() => setIsFieldShown(true)}>
-            {t(i18n)`Fulfillment date`}
-          </Button>
-        )}
         {isFieldShown && (
           <Controller
             name="fulfillment_date"

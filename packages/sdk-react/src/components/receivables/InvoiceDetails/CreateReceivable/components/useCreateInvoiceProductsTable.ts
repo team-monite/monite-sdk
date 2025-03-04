@@ -63,11 +63,11 @@ export const useCreateInvoiceProductsTable = ({
       if (!taxRate) {
         return acc;
       }
-
       const tax = (subtotalPrice * taxRate) / 10_000;
 
       return acc + tax;
     }, 0);
+
     const currencyItem = lineItems.find((field) =>
       Boolean(field.price?.currency)
     );

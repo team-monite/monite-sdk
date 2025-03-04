@@ -11,6 +11,7 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -18,18 +19,27 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { MoniteCurrency } from '@/ui/Currency';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
+  Alert,
   Box,
   Button,
+  Card,
   DialogContent,
   DialogTitle,
+  Grid,
+  MenuItem,
+  Modal,
+  Popper,
   Stack,
+  Switch,
   Toolbar,
   Typography,
   useTheme,
@@ -48,6 +58,8 @@ import { ItemsSection } from './sections/ItemsSection';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
+  CreateReceivablesProductsFormProps,
+  getCreateInvoiceProductsValidationSchema,
 } from './validation';
 
 /**
@@ -130,6 +142,11 @@ const CreateReceivablesBase = ({
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
+
+  const [tempCurrency, setTempCurrency] = useState<
+    components['schemas']['CurrencyEnum'] | undefined
+  >(undefined);
+
   const [counterpartBillingAddress, setCounterpartBillingAddress] =
     useState<any>(null);
 
@@ -183,6 +200,10 @@ const CreateReceivablesBase = ({
       return;
     }
 
+    const filteredLineItems = values.line_items.filter((item) => {
+      return item.name?.trim() !== '';
+    });
+
     const shippingAddressId = values.default_shipping_address_id;
 
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
@@ -201,7 +222,7 @@ const CreateReceivablesBase = ({
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
-      line_items: values.line_items.map((item) => ({
+      line_items: filteredLineItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.product_id,
         ...(isNonVatSupported
@@ -237,6 +258,67 @@ const CreateReceivablesBase = ({
     );
   };
 
+  const { control } = useForm<CreateReceivablesProductsFormProps>({
+    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    defaultValues: useMemo(
+      () => ({
+        items: [],
+        currency: actualCurrency ?? fallbackCurrency,
+      }),
+      [actualCurrency]
+    ),
+  });
+
+  const { root } = useRootElements();
+
+  const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+  const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
+  const [isFulfillmentDateShown, setIsFulfillmentDateShown] = useState(false);
+
+  const handleCloseCurrencyModal = () => {
+    setIsCurrencyModalOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleCloseEnableFieldsModal = () => {
+    setIsEnableFieldsModalOpen(false);
+    setAnchorEl(null);
+  };
+
+  const lineItems = watch('line_items');
+
+  const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
+
+  const handleCurrencySubmit = () => {
+    if (tempCurrency !== actualCurrency) {
+      const validLineItems = lineItems.filter((item) => {
+        return item.name?.trim() !== '';
+      });
+
+      if (validLineItems.length) {
+        setRemoveItemsWarning(true);
+      } else {
+        setRemoveItemsWarning(false);
+        setActualCurrency(tempCurrency);
+        handleCloseCurrencyModal();
+      }
+    } else {
+      setRemoveItemsWarning(false);
+      setTempCurrency(actualCurrency);
+      handleCloseCurrencyModal();
+    }
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleSettings = (event: any) => {
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
   return (
     <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
       <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
@@ -253,6 +335,210 @@ const CreateReceivablesBase = ({
               </IconWrapper>
             )}
             <Box sx={{ marginLeft: 'auto' }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                type="submit"
+                sx={{ marginRight: '.5em' }}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleSettings(event);
+                }}
+                form={formName}
+                disabled={createReceivable.isPending}
+              >
+                <SettingsOutlinedIcon />
+              </Button>
+              <Popper
+                anchorEl={anchorEl}
+                container={root}
+                keepMounted
+                placement="bottom-end"
+                open={Boolean(anchorEl)}
+              >
+                <Card
+                  sx={{
+                    padding: '1em',
+                    marginTop: '.5em',
+                    boxShadow: '0px 4px 16px 0px #0F0F0F29',
+                    width: '240px',
+                  }}
+                >
+                  <MenuItem
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    onClick={() => setIsCurrencyModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Currency`}</Typography>
+                    <Typography>{actualCurrency}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
+                    <Typography>{t(i18n)`Enable more fields`}</Typography>
+                  </MenuItem>
+                  <Modal
+                    open={isCurrencyModalOpen}
+                    container={root}
+                    onClose={handleCloseCurrencyModal}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        maxWidth: 600,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Grid container alignItems="center" p={4}>
+                        <Grid item width="100%">
+                          <Typography variant="h3" mb={3.5}>
+                            {t(i18n)`Change document currency`}
+                          </Typography>
+                          <Typography variant="body2" color="black" mb={1}>
+                            {t(
+                              i18n
+                            )`Invoice will be issued with items in the selected currency`}
+                          </Typography>
+                          <MoniteCurrency
+                            size="small"
+                            name="currency"
+                            control={control}
+                            hideLabel
+                            // @ts-expect-error
+                            onChange={(event, value, reason, details) => {
+                              if (
+                                value &&
+                                !Array.isArray(value) &&
+                                typeof value !== 'string'
+                              ) {
+                                setTempCurrency(value.code);
+                              }
+                            }}
+                          />
+                          <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
+                            <Typography variant="inherit">
+                              {t(
+                                i18n
+                              )`All items in the invoice must be in this currency. Remove items that don’t match it.`}
+                            </Typography>
+                          </Alert>
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            justifySelf: 'flex-end',
+                            marginLeft: 'auto',
+                            gap: '1rem',
+                            minHeight: 96,
+                          }}
+                        >
+                          <Button
+                            variant="text"
+                            onClick={handleCloseCurrencyModal}
+                          >
+                            {t(i18n)`Cancel`}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleCurrencySubmit}
+                          >
+                            {t(i18n)`Save`}
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Modal>
+
+                  <Modal
+                    open={isEnableFieldsModalOpen}
+                    container={root}
+                    onClose={handleCloseEnableFieldsModal}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        maxWidth: 600,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Grid container alignItems="center" p={4}>
+                        <Grid item width="100%">
+                          <Typography variant="h3" mb={3.5}>
+                            {t(i18n)`Enable more fields`}
+                          </Typography>
+                          <Box
+                            display="flex"
+                            alignItems="start"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                              >
+                                {t(i18n)`Fulfillment date`}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                sx={{ maxWidth: '70%' }}
+                              >
+                                {t(
+                                  i18n
+                                )`Add a date when the product will be delivered or the service provided`}
+                              </Typography>
+                            </Box>
+                            <Switch
+                              checked={isFulfillmentDateShown}
+                              onChange={(e) =>
+                                setIsFulfillmentDateShown(e.target.checked)
+                              }
+                              color="primary"
+                              aria-label={t(i18n)`Fulfillment date`}
+                            />
+                          </Box>
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            justifySelf: 'flex-end',
+                            marginLeft: 'auto',
+                            gap: '1rem',
+                            minHeight: 96,
+                          }}
+                        >
+                          <Button
+                            variant="text"
+                            onClick={handleCloseEnableFieldsModal}
+                          >
+                            {t(i18n)`Cancel`}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleCurrencySubmit}
+                          >
+                            {t(i18n)`Save`}
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Modal>
+                </Card>
+              </Popper>
+
               <Button
                 variant="contained"
                 key="next"
@@ -295,7 +581,6 @@ const CreateReceivablesBase = ({
                   settings?.currency?.default || fallbackCurrency
                 }
                 actualCurrency={actualCurrency}
-                onCurrencyChanged={setActualCurrency}
                 isNonVatSupported={isNonVatSupported}
               />
 
@@ -319,6 +604,7 @@ const CreateReceivablesBase = ({
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
                   isPaymentTermsLoading={isPaymentTermsLoading}
+                  isFieldShown={isFulfillmentDateShown}
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />

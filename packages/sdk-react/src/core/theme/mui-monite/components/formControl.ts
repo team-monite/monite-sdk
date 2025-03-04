@@ -30,6 +30,10 @@ export const getFormControlStyles = (
             },
           },
 
+          '&:hover fieldset.MuiOutlinedInput-notchedOutline': {
+            borderColor: 'transparent',
+          },
+
           '.MuiSelect-icon': {
             color: palette.text.primary,
           },
@@ -58,7 +62,7 @@ export const getFormControlStyles = (
           marginTop: 0,
         },
         '&:hover': {
-          '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+          '&.MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             backgroundColor: palette.neutral['90'],
             border: `1px solid ${palette.primary.main}`,
           },
@@ -70,10 +74,15 @@ export const getFormControlStyles = (
             },
           },
         },
-        '&:not(.Monite-FilterControl):hover': {
+        '&:not(.Monite-FilterControl):not(.Monite-Selector):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             border: `1px solid ${palette.primary.main}`,
           },
+
+          '& .MuiInputAdornment-root .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
+            {
+              borderColor: 'transparent',
+            },
 
           '& .MuiFormLabel-root': {
             '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
@@ -83,7 +92,7 @@ export const getFormControlStyles = (
           },
         },
 
-        '&:not(.Monite-CounterpartSelector):not(.Monite-FilterControl) .MuiFormLabel-root':
+        '&:not(.Monite-Selector):not(.Monite-FilterControl) .MuiFormLabel-root':
           {
             fontSize: '14px',
             color: ' rgba(112, 112, 112, 1)',
@@ -115,7 +124,7 @@ export const getFormControlStyles = (
               border: `1px solid ${palette.primary.main}`,
             },
 
-            '&:not(.Monite-CounterpartSelector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
+            '&:not(.Monite-Selector) > .MuiInputLabel-root > .MuiFormLabel-asterisk':
               {
                 display: 'none',
               },
@@ -129,6 +138,9 @@ export const getFormControlStyles = (
             '& .MuiOutlinedInput-root': {
               left: 0,
               top: 0,
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'transparent',
+              },
             },
 
             // Monite Filter Control styles

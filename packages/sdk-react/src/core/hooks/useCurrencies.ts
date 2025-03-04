@@ -84,6 +84,7 @@ export const useCurrencies = () => {
     ): number | null => {
       const currencyData = currencyList && currencyList[currency];
 
+      console.log(currencyData);
       if (currencyData) {
         return Number(amount) * Math.pow(10, currencyData.minor_units);
       }
