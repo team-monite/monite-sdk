@@ -2416,7 +2416,7 @@ msgid "Description is required"
 msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:437
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:221
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:43
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
@@ -2625,7 +2625,7 @@ msgstr "Due date"
 msgid "Due Date"
 msgstr "Due Date"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:193
+#: src/components/payables/PayableDetails/PayableDetails.tsx:192
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -5268,7 +5268,7 @@ msgstr "Payable \"{0}\" has been updated"
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:119
+#: src/components/payables/PayableDetails/PayableDetails.tsx:118
 msgid "Payable not found"
 msgstr "Payable not found"
 
@@ -6944,7 +6944,7 @@ msgstr "There is no counterpart by provided id: {0}"
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:120
+#: src/components/payables/PayableDetails/PayableDetails.tsx:119
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
