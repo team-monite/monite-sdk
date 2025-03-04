@@ -112,7 +112,6 @@ export const EditCounterpartModal = ({
   };
 
   const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
 
   return (
