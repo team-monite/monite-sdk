@@ -1,5 +1,18 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.16
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- b50d841: Product creation default values
+- 802f5c4: Custom currency dropdown renderer
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+
 ## 4.0.0-alpha.15
 
 ### Minor Changes
