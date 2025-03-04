@@ -9,9 +9,7 @@ import { MoniteAppElement } from './MoniteAppElement';
 
 const MONITE_APP_ELEMENT_NAME = 'monite-app';
 
-export const registerMoniteAppElement = () => {
-  customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
-};
+customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
 
 export {
   /** Custom element class for Monite App */
