@@ -34,8 +34,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
@@ -78,8 +76,6 @@ export const CounterpartIndividualForm = ({
 
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-
-  const theme = useTheme();
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({

@@ -29,8 +29,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
@@ -80,8 +78,6 @@ export const CounterpartOrganizationForm = (
   const organizationCounterpart = counterpart as
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
-
-  const theme = useTheme();
 
   const methods = useForm({
     resolver: yupResolver(

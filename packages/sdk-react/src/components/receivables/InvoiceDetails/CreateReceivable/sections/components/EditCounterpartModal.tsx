@@ -41,8 +41,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../../validation';
@@ -111,7 +109,6 @@ export const EditCounterpartModal = ({
     setIsEditMode(false);
   };
 
-  const theme = useTheme();
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
 
   return (
