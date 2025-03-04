@@ -227,8 +227,7 @@ export const CounterpartIndividualForm = ({
 
       <DialogContent
         sx={{
-          padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 380,
+          padding: '2rem',
           overflowY: 'auto',
         }}
       >
