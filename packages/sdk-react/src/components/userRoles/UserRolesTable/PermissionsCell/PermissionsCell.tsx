@@ -12,13 +12,9 @@ interface PermissionsCellProps {
    * @param permissions - The permissions data for the role to be displayed.
    */
   permissions: components['schemas']['BizObjectsSchema-Input'];
-  onCLickSeeAll: () => void;
 }
 
-export const PermissionsCell = ({
-  permissions,
-  onCLickSeeAll,
-}: PermissionsCellProps) => {
+export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
   if (!permissions.objects) {
@@ -27,10 +23,7 @@ export const PermissionsCell = ({
 
   return (
     <Grid container>
-      {permissions.objects
-        .slice(0, 10)
-        .filter((object) => !!object.object_type)
-        .map((object) => (
+      {filteredPermissionsObjects.map((object) => (
           <Grid item container key={object.object_type}>
             <Grid item xs={6}>
               {
@@ -46,11 +39,6 @@ export const PermissionsCell = ({
             </Grid>
           </Grid>
         ))}
-      {permissions.objects && permissions.objects.length > 10 && (
-        <Link component="button" variant="body1" onClick={onCLickSeeAll}>
-          {t(i18n)`See all`}
-        </Link>
-      )}
     </Grid>
   );
 };
