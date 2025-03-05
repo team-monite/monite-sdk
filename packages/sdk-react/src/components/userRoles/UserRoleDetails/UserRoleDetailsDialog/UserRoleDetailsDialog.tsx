@@ -187,11 +187,11 @@ export const UserRoleDetailsDialog = ({
   }[] = [
     {
       id: 'name',
-      headerName: t(i18n)`Resource name`,
+      headerName: t(i18n)`Permission`,
     },
     {
       id: 'read',
-      headerName: t(i18n)`Read`,
+      headerName: t(i18n)`View`,
     },
     {
       id: 'create',
@@ -199,7 +199,7 @@ export const UserRoleDetailsDialog = ({
     },
     {
       id: 'update',
-      headerName: t(i18n)`Update`,
+      headerName: t(i18n)`Edit`,
     },
     {
       id: 'delete',
@@ -227,7 +227,7 @@ export const UserRoleDetailsDialog = ({
     },
     {
       id: 'create_from_mail',
-      headerName: t(i18n)`Create from mail`,
+      headerName: t(i18n)`Create from email`,
     },
   ];
 

@@ -66,14 +66,14 @@ export const ACTION_TO_LATTER_MAP = {
 };
 
 export const getActionToLabelMap = (i18n: I18n) => ({
-  read: t(i18n)`Read`,
+  read: t(i18n)`View`,
   create: t(i18n)`Create`,
-  update: t(i18n)`Update`,
+  update: t(i18n)`Edit`,
   delete: t(i18n)`Delete`,
   submit: t(i18n)`Submit`,
   approve: t(i18n)`Approve`,
   pay: t(i18n)`Pay`,
-  create_from_mail: t(i18n)`Create from mail`,
+  create_from_mail: t(i18n)`Create from email`,
   cancel: t(i18n)`Cancel`,
   reopen: t(i18n)`Reopen`,
 });
