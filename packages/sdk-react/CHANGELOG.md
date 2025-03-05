@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.17
+
+### Patch Changes
+
+- 2604834: Display VAT id error message from API
+- 923df35: Fix counterpart creation form styles
+- 7a518b8: PDF download button is disabled until the url is defined
+
 ## 4.0.0-alpha.16
 
 ### Minor Changes

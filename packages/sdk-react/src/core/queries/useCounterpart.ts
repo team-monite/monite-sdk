@@ -213,9 +213,10 @@ export const useCreateCounterpartVat = () => {
       );
       toast.success(t(i18n)`Vat “${vatId.value}” has been created.`);
     },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to create VAT.`);
+    onError: (error) => {
+      toast.error(
+        getAPIErrorMessage(i18n, error, t(i18n)`Failed to create VAT.`)
+      );
     },
   });
 };
