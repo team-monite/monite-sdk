@@ -44,7 +44,7 @@ export const Filters = ({ onChangeFilter, sx }: FiltersProps) => {
             return;
           }
 
-          if (value instanceof Date) {
+          if (value instanceof Date || value === null) {
             onChangeFilter(FILTER_TYPE_CREATED_AT, value);
           }
         }}
