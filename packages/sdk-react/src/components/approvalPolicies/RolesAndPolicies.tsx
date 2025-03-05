@@ -11,13 +11,25 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Button, CircularProgress, Tab, Tabs } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Menu,
+  MenuItem,
+  Tab,
+  Tabs,
+} from '@mui/material';
 
 /**
  * ApprovalPolicies component
@@ -41,6 +53,9 @@ const RolesAndApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
 
   const [activeTab, setActiveTab] = useState<PageTabEnum>(PageTabEnum.Roles);
+
+  const { open, menuProps, buttonProps } = useMenuButton();
+  const { root } = useRootElements();
 
   const [selectedApprovalPolicyId, setSelectedApprovalPolicyId] = useState<
     string | undefined
@@ -134,15 +149,46 @@ const RolesAndApprovalPoliciesBase = () => {
           </>
         }
         extra={
-          <Box>
+          <Box className={className + '-Actions'}>
             <Button
-              id="create"
+              {...buttonProps}
+              className={className + '-Actions-CreateNew'}
               variant="contained"
-              disabled={
-                isRolesTab ? !isCreateRoleAllowed : !isCreatePolicyAllowed
+              endIcon={
+                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
               }
-              onClick={isRolesTab ? onCreateRoleClick : onCreatePolicyClick}
-            >{t(i18n)`Create`}</Button>
+            >
+              {t(i18n)`Create New`}
+            </Button>
+            <Menu
+              {...menuProps}
+              className={className + '-Actions-Menu'}
+              container={root}
+              MenuListProps={{
+                'aria-labelledby': 'actions',
+              }}
+            >
+              <MenuItem
+                className={className + '-Actions-CreateNew-Role'}
+                disabled={!isCreateRoleAllowed}
+                onClick={() => {
+                  setActiveTab(PageTabEnum.Roles);
+                  onCreateRoleClick();
+                }}
+              >
+                {t(i18n)`User role`}
+              </MenuItem>
+              <MenuItem
+                className={className + '-Actions-CreateNew-Policy'}
+                disabled={!isCreatePolicyAllowed}
+                onClick={() => {
+                  setActiveTab(PageTabEnum.Policies);
+                  onCreatePolicyClick();
+                }}
+              >
+                {t(i18n)`Approval policy`}
+              </MenuItem>
+            </Menu>
           </Box>
         }
       />
