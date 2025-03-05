@@ -389,7 +389,7 @@ export const UserRoleDetailsDialog = ({
                   required
                 />
               )}
-              <StyledTableTitle variant="subtitle2" mt={4} mb={1}>
+              <StyledTableTitle variant="subtitle2" mt={2} mb={1}>
                 {t(i18n)`Permissions`}
               </StyledTableTitle>
               <StyledTableContainer>
