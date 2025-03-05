@@ -8,9 +8,7 @@ import { GenericCounterpartContact } from '@/core/queries';
 type CounterpartOrganizationRootResponse =
   components['schemas']['CounterpartOrganizationRootResponse'];
 
-export type Contact = GenericCounterpartContact & {
-  isOrganization?: boolean;
-};
+type Contact = GenericCounterpartContact;
 
 export const getOrganizationEmail = (
   counterpart: CounterpartOrganizationRootResponse | undefined
@@ -46,7 +44,6 @@ export const getDefaultContact = (
     last_name: '',
     is_customer: counterpart.organization.is_customer,
     is_vendor: counterpart.organization.is_vendor,
-    isOrganization: true,
   };
 };
 
