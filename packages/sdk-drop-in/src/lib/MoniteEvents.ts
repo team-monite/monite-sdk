@@ -19,6 +19,9 @@ export enum MoniteEventTypes {
   INVOICE_CREATED = 'invoice.created',
   INVOICE_UPDATED = 'invoice.updated',
   INVOICE_DELETED = 'invoice.deleted',
+  PAYMENTS_ONBOARDING_COMPLETED = 'payments.onboarding.completed',
+  WORKING_CAPITAL_ONBOARDING_COMPLETED = 'working_capital.onboarding.completed',
+  FIRST_INVOICE_SENT = 'invoice.first_sent',
 }
 
 export interface BaseEventPayload {
@@ -29,7 +32,26 @@ export type InvoiceEventPayload = BaseEventPayload & {
   invoice?: ReceivableResponseType;
 };
 
-export type EventPayload = InvoiceEventPayload;
+export type PaymentsOnboardingEventPayload = BaseEventPayload & {
+  entityId: string;
+  timestamp: string;
+};
+
+export type WorkingCapitalOnboardingEventPayload = BaseEventPayload & {
+  entityId: string;
+  timestamp: string;
+};
+
+export type FirstInvoiceSentEventPayload = BaseEventPayload & {
+  invoice: ReceivableResponseType;
+  timestamp: string;
+};
+
+export type EventPayload =
+  | InvoiceEventPayload
+  | PaymentsOnboardingEventPayload
+  | WorkingCapitalOnboardingEventPayload
+  | FirstInvoiceSentEventPayload;
 
 export interface MoniteEvent<T extends EventPayload = EventPayload> {
   id: string;
@@ -105,7 +127,8 @@ export function enhanceReceivablesSettings(
   settings: ComponentSettings['receivables'] &
     Partial<MoniteReceivablesTableProps> = {}
 ): ComponentSettings['receivables'] {
-  const { onCreate, onUpdate, onDelete, ...rest } = settings;
+  const { onCreate, onUpdate, onDelete, onFirstInvoiceSent, ...rest } =
+    settings;
 
   return {
     ...rest,
@@ -124,7 +147,42 @@ export function enhanceReceivablesSettings(
       MoniteEventTypes.INVOICE_DELETED,
       (id) => ({ id })
     ),
+    onFirstInvoiceSent: createEventHandler(
+      onFirstInvoiceSent,
+      MoniteEventTypes.FIRST_INVOICE_SENT,
+      (id) => ({ id })
+    ),
   } as ComponentSettings['receivables'];
+}
+
+/**
+ * Enhances onboarding settings with event handlers
+ *
+ * @param settings The original onboarding settings
+ * @returns Enhanced onboarding settings with event handlers
+ */
+export function enhanceOnboardingSettings(
+  settings: ComponentSettings['onboarding'] = {}
+): ComponentSettings['onboarding'] {
+  const {
+    onPaymentOnboardingCompleted,
+    onWorkingCapitalOnboardingCompleted,
+    ...rest
+  } = settings;
+
+  return {
+    ...rest,
+    onPaymentOnboardingCompleted: createEventHandler(
+      onPaymentOnboardingCompleted,
+      MoniteEventTypes.PAYMENTS_ONBOARDING_COMPLETED,
+      (id) => ({ id })
+    ),
+    onWorkingCapitalOnboardingCompleted: createEventHandler(
+      onWorkingCapitalOnboardingCompleted,
+      MoniteEventTypes.WORKING_CAPITAL_ONBOARDING_COMPLETED,
+      (id) => ({ id })
+    ),
+  } as ComponentSettings['onboarding'];
 }
 
 /**
@@ -139,6 +197,7 @@ export function enhanceComponentSettings(
   return {
     ...settings,
     receivables: enhanceReceivablesSettings(settings.receivables),
+    onboarding: enhanceOnboardingSettings(settings.onboarding),
   };
 }
 
