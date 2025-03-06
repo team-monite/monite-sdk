@@ -40,9 +40,10 @@ const UserRoleDetailsBase = ({
 }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
+
   const {
-    isLoading,
-    isPending,
+    isLoading: isLoadingRole,
+    isPending: isPendingRole,
     data: role,
     error: roleQueryError,
   } = api.roles.getRolesId.useQuery(
@@ -50,7 +51,19 @@ const UserRoleDetailsBase = ({
     { enabled: !!id }
   );
 
-  if (id && (isLoading || isPending)) {
+  const {
+    isLoading: isLoadingUsers,
+    isPending: isPendingUsers,
+    data: users,
+  } = api.entityUsers.getEntityUsers.useQuery(
+    { query: { role_id: id ?? '' } },
+    { enabled: !!role }
+  );
+
+  if (
+    id &&
+    (isLoadingRole || isPendingRole || isLoadingUsers || isPendingUsers)
+  ) {
     return <LoadingPage />;
   }
 
@@ -66,6 +79,7 @@ const UserRoleDetailsBase = ({
   return (
     <UserRoleDetailsDialog
       role={role}
+      users={users?.data}
       onUpdated={onUpdated}
       onCreated={onCreated}
     />

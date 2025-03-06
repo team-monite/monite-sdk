@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import {
   transformPermissionsToComponentFormat,
   isCommonPermissionObjectType,
@@ -27,6 +28,9 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  List,
+  ListItem,
+  Paper,
   Stack,
   styled,
   Table,
@@ -106,12 +110,14 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 interface UserRoleDetailsDialogProps {
   role?: components['schemas']['RoleResponse'];
+  users?: components['schemas']['EntityUserResponse'][];
   onCreated?: (role: components['schemas']['RoleResponse']) => void;
   onUpdated?: (role: components['schemas']['RoleResponse']) => void;
 }
 
 export const UserRoleDetailsDialog = ({
   role,
+  users,
   onCreated,
   onUpdated,
 }: UserRoleDetailsDialogProps) => {
@@ -389,7 +395,7 @@ export const UserRoleDetailsDialog = ({
                   required
                 />
               )}
-              <StyledTableTitle variant="subtitle2" mt={2} mb={1}>
+              <StyledTableTitle variant="subtitle2" my={1}>
                 {t(i18n)`Permissions`}
               </StyledTableTitle>
               <StyledTableContainer>
@@ -419,6 +425,36 @@ export const UserRoleDetailsDialog = ({
             </Stack>
           </form>
         </FormProvider>
+        {view === UserRoleDetailsView.Read && (
+          <Stack mt={2}>
+            <Typography variant="subtitle2" my={1}>
+              {t(i18n)`Users`}
+            </Typography>
+            <Paper variant="outlined">
+              <Stack
+                p={2}
+                direction="row"
+                alignItems="start"
+                justifyContent={'space-between'}
+              >
+                <Box flexShrink={0} pr={2}>{t(i18n)`Users with this role`}</Box>
+                <Box flexGrow={1} overflow={'scroll'}>
+                  {users && users.length > 0 ? (
+                    <List disablePadding>
+                      {users.map((user) => (
+                        <ListItem key={user.id}>
+                          <UserCell id={user.id} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    t(i18n)`None`
+                  )}
+                </Box>
+              </Stack>
+            </Paper>
+          </Stack>
+        )}
       </StyledDialogContainer>
       <Divider />
       <DialogActions>
