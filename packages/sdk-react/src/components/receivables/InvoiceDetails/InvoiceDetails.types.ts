@@ -74,6 +74,16 @@ export interface ExistingReceivableDetailsProps {
    * @returns {void}
    */
   onMarkAsUncollectible?: (invoiceId: string) => void;
+
+  /**
+   * Indicates that an invoice email has been sent to the counterpart.
+   *
+   * @param {string} invoiceId - Invoice ID
+   * @param {boolean} isFirstInvoice - Whether this is the first invoice sent by the entity
+   *
+   * @returns {void}
+   */
+  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
 }
 
 export interface InvoiceDetailsCreateProps {

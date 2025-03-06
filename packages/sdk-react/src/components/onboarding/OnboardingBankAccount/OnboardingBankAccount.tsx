@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
+import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
+import { useWorkingCapitalOnboarding } from '@/components/receivables/Financing/hooks/useWorkingCapitalOnboarding';
 import {
   CountryOption,
   RHFAutocomplete,
@@ -14,8 +16,21 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-export const OnboardingBankAccount = () => {
+type EntityBankAccountResponse =
+  components['schemas']['EntityBankAccountResponse'];
+
+export interface OnboardingBankAccountProps {
+  onOnboardingBankAccountSubmit?: (response: EntityBankAccountResponse) => void;
+  onWorkingCapitalOnboardingComplete?: () => void;
+}
+
+export const OnboardingBankAccount = ({
+  onOnboardingBankAccountSubmit,
+  onWorkingCapitalOnboardingComplete,
+}: OnboardingBankAccountProps = {}) => {
   const { i18n } = useLingui();
+
+  useWorkingCapitalOnboarding(onWorkingCapitalOnboardingComplete);
 
   const {
     isLoading,
@@ -44,11 +59,19 @@ export const OnboardingBankAccount = () => {
     }
   }, [countries, resetField, getValues]);
 
+  const handleFormSubmit = handleSubmit(async (data) => {
+    const result = await primaryAction(data);
+
+    onOnboardingBankAccountSubmit?.(result);
+
+    return result;
+  });
+
   if (isLoading) return null;
 
   return (
     <OnboardingForm
-      onSubmit={handleSubmit(primaryAction)}
+      onSubmit={handleFormSubmit}
       actions={<OnboardingFormActions isLoading={isPending} />}
     >
       <OnboardingStepContent>

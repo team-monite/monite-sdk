@@ -1,8 +1,8 @@
-// import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 
 import { components } from '@/api';
 import { FinanceOverviewCard } from '@/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard';
+import { useWorkingCapitalOnboarding } from '@/components/receivables/Financing/hooks/useWorkingCapitalOnboarding';
 import { FinanceCardStack } from '@/components/receivables/Financing/infographics/FinanceCardStack';
 import {
   useFinanceAnInvoice,
@@ -10,7 +10,6 @@ import {
   useGetFinancedInvoices,
   useGetFinanceOffers,
 } from '@/core/queries/useFinancing';
-// import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -24,11 +23,15 @@ import {
 
 const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
 
+interface FinanceInvoiceProps {
+  invoice: components['schemas']['InvoiceResponsePayload'];
+  onWorkingCapitalOnboardingComplete?: () => void;
+}
+
 export const FinanceInvoice = ({
   invoice,
-}: {
-  invoice: components['schemas']['InvoiceResponsePayload'];
-}) => {
+  onWorkingCapitalOnboardingComplete,
+}: FinanceInvoiceProps) => {
   const { i18n } = useLingui();
   const [isFinancingAnInvoice, setIsFinancingAnInvoice] = useState(false);
 
@@ -44,11 +47,17 @@ export const FinanceInvoice = ({
     isInitializing,
     startFinanceSession,
   } = useFinancing();
+
   const { isLoading: isLoadingFinanceOffers, data: financeOffersData } =
     useGetFinanceOffers();
 
+  const { isOnboarded } = useWorkingCapitalOnboarding(
+    onWorkingCapitalOnboardingComplete
+  );
+
   const isLoading =
-    isLoadingFinanceOffers || isLoadingFinanceSdk || isLoadingFinancedInvoices;
+    isLoadingFinanceSdk || isLoadingFinancedInvoices || isLoadingFinanceOffers;
+
   const financeInvoiceMutation = useFinanceAnInvoice();
 
   const invoiceStatusIsValid = ['issued', 'partially_paid'].includes(
@@ -78,7 +87,6 @@ export const FinanceInvoice = ({
         {
           onError: () => {
             setIsFinancingAnInvoice(false);
-            // toast.error(getAPIErrorMessage(i18n, error));
           },
           onSuccess: ({ session_token }) => {
             startFinanceSession({
@@ -93,8 +101,6 @@ export const FinanceInvoice = ({
       setIsFinancingAnInvoice(false);
     }
   };
-
-  const isOnboarded = financeOffersData?.business_status === 'ONBOARDED';
 
   if (isLoading) {
     return <CircularProgress color="inherit" size={20} />;

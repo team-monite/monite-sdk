@@ -48,7 +48,9 @@ import { getDefaultContact } from './helpers/contacts';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
+  isFirstInvoice: boolean;
   onClose: () => void;
+  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
 }
 
 interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
@@ -119,7 +121,9 @@ export const EmailInvoiceDetailsBase = ({
   body,
   to,
   isLoading,
+  isFirstInvoice,
   onClose,
+  onSendEmail,
 }: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
@@ -199,39 +203,31 @@ export const EmailInvoiceDetailsBase = ({
            * @see {@link https://docs.monite.com/docs/payment-links#22-payment-link-for-a-receivable}
            */
           await createPaymentLink({
-            recipient: {
-              id: entityId,
-              type: 'entity',
-            },
+            recipient: { id: entityId, type: 'entity' },
             payment_methods: availablePaymentMethods.map(
-              (method) => method.type
+              (method) => method.type as PaymentMethod
             ),
-            object: {
-              id: invoiceId,
-              type: 'receivable',
-            },
+            object: { id: invoiceId, type: 'receivable' },
           });
         }
+
+        const emailParams = {
+          body_text: values.body,
+          subject_text: values.subject,
+          recipients: values.to ? { to: [values.to] } : undefined,
+        };
 
         // TODO: provide support for multiple recipients, cc and bcc fields
         /**
          * If `payment methods` available, we should create a payment link.
          * If not, we should send the email without a payment link.
          */
-        sendEmail(
-          {
-            body_text: values.body,
-            subject_text: values.subject,
-            recipients: values.to
-              ? {
-                  to: [values.to],
-                }
-              : undefined,
+        sendEmail(emailParams, {
+          onSuccess: () => {
+            onSendEmail?.(invoiceId, isFirstInvoice);
+            onClose();
           },
-          {
-            onSuccess: onClose,
-          }
-        );
+        });
       })(e);
     },
     [
@@ -242,8 +238,10 @@ export const EmailInvoiceDetailsBase = ({
       invoiceId,
       entityId,
       onClose,
+      onSendEmail,
       paymentMethods,
       sendMutation.mutate,
+      isFirstInvoice,
     ]
   );
 

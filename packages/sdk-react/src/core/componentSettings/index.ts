@@ -17,6 +17,15 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   ) => void;
   /** Callback to be called when an invoice is deleted */
   onDelete?: (receivableId: string) => void;
+  /** Callback to be called when a first invoice is sent */
+  onFirstInvoiceSent?: () => void;
+}
+
+interface OnboardingSettings {
+  /** Callback to be called when payment onboarding is completed */
+  onPaymentOnboardingCompleted?: () => void;
+  /** Callback to be called when a working capital onboarding is completed */
+  onWorkingCapitalOnboardingCompleted?: () => void;
 }
 
 interface PayableSettings
@@ -49,6 +58,7 @@ export interface ComponentSettings {
   userRoles: {
     pageSizeOptions: number[];
   };
+  onboarding: Partial<OnboardingSettings>;
 }
 
 const defaultPageSizeOptions = [15, 30, 100];

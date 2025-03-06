@@ -45,7 +45,13 @@ export type OnboardingBankAccountReturnType = {
   >;
 };
 
-export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
+export type OnboardingBankAccountProps = {
+  onBankAccountComplete?: () => void;
+};
+
+export function useOnboardingBankAccount({
+  onBankAccountComplete,
+}: OnboardingBankAccountProps = {}): OnboardingBankAccountReturnType {
   const { data: onboarding, isLoading: isOnboardingDataLoading } =
     useOnboardingRequirementsData();
 
@@ -171,6 +177,8 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
         },
       });
 
+      onBankAccountComplete?.();
+
       return response;
     },
     [
@@ -179,6 +187,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       currentBankAccount,
       patchOnboardingRequirements,
       fields,
+      onBankAccountComplete,
     ]
   );
 
