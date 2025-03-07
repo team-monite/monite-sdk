@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.18
+
+### Patch Changes
+
+- 665c8e6: When sending an invoice, we use the organization's email address as a fallback if there is no contact person defined.
+
 ## 4.0.0-alpha.17
 
 ### Patch Changes
