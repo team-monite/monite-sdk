@@ -169,7 +169,7 @@ msgstr "1st discount period"
 msgid "2nd discount period"
 msgstr "2nd discount period"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:651
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:687
 msgid "A counterpart with this name exists but has not been specified in the document."
 msgstr "A counterpart with this name exists but has not been specified in the document."
 
@@ -363,12 +363,12 @@ msgstr "Add your first bill"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:236
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:84
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:531
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:561
 #: src/components/payables/PayablesTable/PayablesTable.tsx:341
 msgid "Added by"
 msgstr "Added by"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:562
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:592
 msgid "Added on"
 msgstr "Added on"
 
@@ -618,7 +618,7 @@ msgstr "Any user that has user role"
 msgid "Any user with role"
 msgstr "Any user with role"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:398
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:428
 msgid "Applied policy"
 msgstr "Applied policy"
 
@@ -915,7 +915,7 @@ msgstr "Bangladeshi Taka"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:101
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:532
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:279
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:289
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:118
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:171
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:26
@@ -1290,6 +1290,7 @@ msgstr "Canadian Dollar"
 #: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:222
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:436
+#: src/ui/tagsModal/tagsModal.tsx:46
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1314,7 +1315,7 @@ msgstr "Cancel bill?"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:319
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:320
 msgid "Cancel Invoice"
 msgstr "Cancel Invoice"
 
@@ -1327,7 +1328,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:150
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:373
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:379
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1621,7 +1622,7 @@ msgstr "Completed"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:282
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:353
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:359
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1693,7 +1694,7 @@ msgstr "Consulting, Public Relations"
 msgid "Contact information"
 msgstr "Contact information"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:261
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:271
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:211
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
@@ -1704,15 +1705,15 @@ msgstr "Contact person"
 msgid "Contact Person"
 msgstr "Contact Person"
 
-#: src/core/queries/useCounterpart.ts:438
+#: src/core/queries/useCounterpart.ts:439
 msgid "Contact Person “{0}” has been created."
 msgstr "Contact Person “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:499
+#: src/core/queries/useCounterpart.ts:500
 msgid "Contact Person “{0}” has been updated."
 msgstr "Contact Person “{0}” has been updated."
 
-#: src/core/queries/useCounterpart.ts:531
+#: src/core/queries/useCounterpart.ts:532
 msgid "Contact Person has been deleted."
 msgstr "Contact Person has been deleted."
 
@@ -1808,11 +1809,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:556
+#: src/core/queries/useCounterpart.ts:557
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:604
+#: src/core/queries/useCounterpart.ts:605
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
 
@@ -1827,7 +1828,7 @@ msgstr "Counterpart bank account"
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
-#: src/core/queries/useCounterpart.ts:624
+#: src/core/queries/useCounterpart.ts:625
 msgid "Counterpart has been deleted."
 msgstr "Counterpart has been deleted."
 
@@ -2273,7 +2274,7 @@ msgstr "Defaulted"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:78
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:82
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:278
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:279
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:279
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2408,7 +2409,7 @@ msgid "Description is required"
 msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:437
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:221
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:43
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
@@ -2547,7 +2548,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:331
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:337
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2593,7 +2594,7 @@ msgstr "Dry Cleaners"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:207
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:137
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:625
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:311
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:321
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:81
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:112
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:221
@@ -2616,7 +2617,7 @@ msgstr "Due date"
 msgid "Due Date"
 msgstr "Due Date"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:192
+#: src/components/payables/PayableDetails/PayableDetails.tsx:193
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -2739,7 +2740,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:289
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:290
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2775,6 +2776,11 @@ msgstr "Edit tag"
 #: src/components/tags/TagFormModal/TagFormModal.tsx:159
 msgid "Edit tag ”{0}”"
 msgstr "Edit tag ”{0}”"
+
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:410
+#: src/ui/tagsModal/tagsModal.tsx:41
+msgid "Edit tags"
+msgstr "Edit tags"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:48
 msgid "Edit term"
@@ -2967,7 +2973,7 @@ msgstr "Every last day of the month"
 msgid "Example: NET 30, –2%/10 days, –1%/20 days"
 msgstr "Example: NET 30, –2%/10 days, –1%/20 days"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:446
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:476
 msgid "excl. Tax"
 msgstr "excl. Tax"
 
@@ -2999,11 +3005,11 @@ msgstr "Failed to create"
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
 
-#: src/core/queries/useCounterpart.ts:446
+#: src/core/queries/useCounterpart.ts:447
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:563
+#: src/core/queries/useCounterpart.ts:564
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -3027,7 +3033,7 @@ msgstr "Failed to create VAT."
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:627
+#: src/core/queries/useCounterpart.ts:628
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -3039,7 +3045,7 @@ msgstr "Failed to delete product."
 msgid "Failed to delete Unit."
 msgstr "Failed to delete Unit."
 
-#: src/core/queries/useCounterpart.ts:295
+#: src/core/queries/useCounterpart.ts:296
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
@@ -3071,11 +3077,11 @@ msgstr "Failed to update Address."
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
 
-#: src/core/queries/useCounterpart.ts:507
+#: src/core/queries/useCounterpart.ts:508
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:611
+#: src/core/queries/useCounterpart.ts:612
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -3087,7 +3093,7 @@ msgstr "Failed to update receivable line items: {errorMessage}"
 msgid "Failed to update receivable: {errorMessage}"
 msgstr "Failed to update receivable: {errorMessage}"
 
-#: src/core/queries/useCounterpart.ts:273
+#: src/core/queries/useCounterpart.ts:274
 msgid "Failed to update VAT."
 msgstr "Failed to update VAT."
 
@@ -3127,7 +3133,7 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:191
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:201
 msgid "File is being processed..."
 msgstr "File is being processed..."
 
@@ -3556,7 +3562,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Hide"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:518
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:548
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:203
 msgid "History"
 msgstr "History"
@@ -3565,7 +3571,7 @@ msgstr "History"
 msgid "Hobby, Toy, and Game Shops"
 msgstr "Hobby, Toy, and Game Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:194
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:204
 msgid "Hold on, we’re processing the file you’ve uploaded."
 msgstr "Hold on, we’re processing the file you’ve uploaded."
 
@@ -3801,7 +3807,7 @@ msgstr "Invoice {0}"
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:257
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:258
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -3834,7 +3840,7 @@ msgstr "Invoice from {entityName}"
 msgid "Invoice has been marked as paid"
 msgstr "Invoice has been marked as paid"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:154
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:155
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:144
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -3894,7 +3900,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:361
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:367
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:284
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:289
 msgid "Issue"
@@ -3917,7 +3923,7 @@ msgstr "Issue at"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:197
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:594
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:292
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:302
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:154
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:87
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:218
@@ -4027,7 +4033,7 @@ msgid "items"
 msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:701
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:411
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:111
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:304
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:90
@@ -4171,7 +4177,7 @@ msgstr "Last name is required"
 msgid "Last update"
 msgstr "Last update"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:580
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:610
 msgid "Last updated on"
 msgstr "Last updated on"
 
@@ -4588,7 +4594,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:300
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:301
 msgid "More"
 msgstr "More"
 
@@ -4648,7 +4654,7 @@ msgstr "Myanmar"
 msgid "N/A"
 msgstr "N/A"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:417
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:447
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:106
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
@@ -4880,7 +4886,7 @@ msgstr "No payment reminders available"
 msgid "No payments yet"
 msgstr "No payments yet"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:402
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:432
 msgid "no policy"
 msgstr "no policy"
 
@@ -4973,6 +4979,7 @@ msgstr "Norwegian Krone"
 msgid "NOT allowed"
 msgstr "NOT allowed"
 
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:405
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:180
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:225
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:244
@@ -4981,7 +4988,7 @@ msgid "Not set"
 msgstr "Not set"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:447
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:236
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:246
 #: src/components/payables/PayablesTable/PayablesTable.tsx:235
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:125
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:122
@@ -5216,11 +5223,11 @@ msgstr "Pay in the first {0} days"
 msgid "Payable"
 msgstr "Payable"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:764
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:786
 msgid "Payable \"{0}\" has been approved"
 msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:709
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:731
 msgid "Payable \"{0}\" has been canceled"
 msgstr "Payable \"{0}\" has been canceled"
 
@@ -5228,15 +5235,15 @@ msgstr "Payable \"{0}\" has been canceled"
 msgid "Payable \"{0}\" has been created"
 msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:746
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:768
 msgid "Payable \"{0}\" has been rejected"
 msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:782
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:804
 msgid "Payable \"{0}\" has been reopened"
 msgstr "Payable \"{0}\" has been reopened"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:727
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:749
 msgid "Payable \"{0}\" has been submitted"
 msgstr "Payable \"{0}\" has been submitted"
 
@@ -5248,7 +5255,7 @@ msgstr "Payable \"{0}\" has been updated"
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:118
+#: src/components/payables/PayableDetails/PayableDetails.tsx:119
 msgid "Payable not found"
 msgstr "Payable not found"
 
@@ -5614,7 +5621,7 @@ msgstr "Preview email"
 msgid "Previous page"
 msgstr "Previous page"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:419
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:449
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:303
@@ -5757,7 +5764,7 @@ msgstr "Qatari Rial"
 msgid "Qty"
 msgstr "Qty"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:418
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:448
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:62
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:332
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:33
@@ -5811,11 +5818,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:164
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:165
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:163
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:164
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -5837,7 +5844,7 @@ msgid "Reconciliation"
 msgstr "Reconciliation"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:340
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:346
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -5887,7 +5894,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:245
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:246
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
@@ -6279,7 +6286,7 @@ msgstr "Send"
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:308
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:309
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -6609,7 +6616,7 @@ msgid "Submit invoice"
 msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:711
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:467
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:497
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:346
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:478
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
@@ -6691,7 +6698,7 @@ msgstr "Tag “{0}” was updated”"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:916
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:69
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:676
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:370
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:380
 #: src/components/tags/Tags.tsx:52
 #: src/components/tags/TagsTable/TagsTable.tsx:281
 msgid "Tags"
@@ -6915,11 +6922,11 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:155
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:156
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:119
+#: src/components/payables/PayableDetails/PayableDetails.tsx:120
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
@@ -6940,11 +6947,11 @@ msgstr "There is no reminder by provided id: {reminderId}"
 msgid "There is no role by provided id: {id}"
 msgstr "There is no role by provided id: {id}"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:654
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:690
 msgid "There is no such counterpart yet, you can create it in respective section."
 msgstr "There is no such counterpart yet, you can create it in respective section."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:144
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:152
 msgid "There may be a mismatch between the OCR data and payable data. Please review the details"
 msgstr "There may be a mismatch between the OCR data and payable data. Please review the details"
 
@@ -7065,8 +7072,8 @@ msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:740
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:326
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:494
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:336
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:524
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:365
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:491
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
@@ -7098,7 +7105,7 @@ msgstr "Total Tax"
 msgid "Total taxes"
 msgstr "Total taxes"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:420
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:450
 msgid "Total, tax"
 msgstr "Total, tax"
 
@@ -7322,7 +7329,7 @@ msgstr "Units"
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:77
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:106
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:99
-#: src/core/utils/getAPIErrorMessage.ts:16
+#: src/core/utils/getAPIErrorMessage.ts:18
 #: src/core/utils/useVatTypes.ts:16
 #: src/core/utils/useVatTypes.ts:18
 #: src/core/utils/useVatTypes.ts:211
@@ -7365,6 +7372,7 @@ msgstr "Unsupported file type"
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:47
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:202
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:448
+#: src/ui/tagsModal/tagsModal.tsx:49
 msgid "Update"
 msgstr "Update"
 
@@ -7486,7 +7494,7 @@ msgstr "Users from the list - Any"
 msgid "Users or Roles"
 msgstr "Users or Roles"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:197
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:207
 msgid "Usually it takes no more than 1–2 minutes."
 msgstr "Usually it takes no more than 1–2 minutes."
 
@@ -7580,7 +7588,7 @@ msgstr "VAT"
 msgid "Vat “{0}” has been created."
 msgstr "Vat “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:269
+#: src/core/queries/useCounterpart.ts:270
 msgid "Vat “{0}” has been updated."
 msgstr "Vat “{0}” has been updated."
 
@@ -7597,7 +7605,7 @@ msgstr "VAT Exempt Rationale"
 msgid "VAT exemption rationale"
 msgstr "VAT exemption rationale"
 
-#: src/core/queries/useCounterpart.ts:291
+#: src/core/queries/useCounterpart.ts:292
 msgid "VAT has been deleted."
 msgstr "VAT has been deleted."
 
@@ -7643,7 +7651,7 @@ msgstr "VAT information"
 msgid "VAT total"
 msgstr "VAT total"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:480
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:510
 msgid "VAT Total"
 msgstr "VAT Total"
 
@@ -7672,7 +7680,7 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:74
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:74
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:463
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:247
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:257
 #: src/components/payables/PayablesTable/PayablesTable.tsx:283
 msgid "Vendor"
 msgstr "Vendor"
@@ -7922,7 +7930,7 @@ msgstr "You don’t have any roles yet."
 msgid "You don’t have any tags yet."
 msgstr "You don’t have any tags yet."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:397
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:403
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 

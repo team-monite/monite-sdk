@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -24,10 +24,15 @@ import {
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
+import { TagsModal } from '@/ui/tagsModal';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
+import {
+  CachedOutlined,
+  InfoOutlined,
+  Edit as EditIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Chip,
@@ -42,6 +47,7 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
@@ -53,6 +59,7 @@ import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
   payable: components['schemas']['PayableResponseSchema'];
+  updateTags?: (tags: components['schemas']['TagReadSchema'][]) => void;
 }
 
 const DetailsWrapper = styled(Box)(() => ({
@@ -111,6 +118,7 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 
 const PayableDetailsInfoBase = ({
   payable,
+  updateTags,
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
@@ -174,6 +182,8 @@ const PayableDetailsInfoBase = ({
 
   const className = 'Monite-PayableDetailsInfo';
   const theme = useTheme();
+
+  const [showTagsModal, setShowTagsModal] = useState(false);
 
   if (isPayableInOCRProcessing(payable)) {
     return (
@@ -356,34 +366,54 @@ const PayableDetailsInfoBase = ({
                     </Box>
                   </TableCell>
                 </TableRow>
-                {showTags && payable.tags && payable.tags.length > 0 && (
+                {showTags && (
                   <TableRow>
                     <StyledLabelTableCell
                       isRequired={
                         isFieldRequired(
                           'tags',
                           ocrRequiredFields,
-                          payable.tags?.[0].id
+                          payable.tags?.[0]?.id
                         ) && payable?.ocr_status === null
                       }
                     >
                       {t(i18n)`Tags`}
                     </StyledLabelTableCell>
                     <TableCell>
-                      <Stack
-                        spacing={1}
-                        direction="row"
-                        useFlexGap
-                        flexWrap="wrap"
-                      >
-                        {payable.tags.map((tag) => (
-                          <Chip
-                            key={tag.id}
-                            label={tag.name}
-                            color="primary"
-                            sx={{ maxWidth: 200 }}
-                          />
-                        ))}
+                      <Stack direction="row" gap={1}>
+                        <Box sx={{ width: '100%' }}>
+                          {payable.tags?.length ? (
+                            <Stack
+                              spacing={1}
+                              direction="row"
+                              useFlexGap
+                              flexWrap="wrap"
+                            >
+                              {payable.tags.map((tag) => (
+                                <Chip
+                                  key={tag.id}
+                                  label={tag.name}
+                                  color="primary"
+                                  sx={{ maxWidth: 200 }}
+                                />
+                              ))}
+                            </Stack>
+                          ) : (
+                            <Typography
+                              variant="body2"
+                              sx={{ marginTop: 1 }}
+                            >{t(i18n)`Not set`}</Typography>
+                          )}
+                        </Box>
+                        <Box>
+                          <IconButton
+                            aria-label={t(i18n)`Edit tags`}
+                            size="small"
+                            onClick={() => setShowTagsModal(true)}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Box>
                       </Stack>
                     </TableCell>
                   </TableRow>
@@ -429,7 +459,7 @@ const PayableDetailsInfoBase = ({
                       {item.subtotal &&
                         item.quantity &&
                         formatFromMinorUnits(
-                          item.subtotal / item.quantity ?? 0,
+                          item.subtotal / item.quantity,
                           payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
@@ -593,6 +623,12 @@ const PayableDetailsInfoBase = ({
           </Paper>
         </Grid>
       </Grid>
+      <TagsModal
+        opened={showTagsModal}
+        value={payable.tags || []}
+        updateTags={updateTags}
+        onClose={() => setShowTagsModal(false)}
+      />
     </DetailsWrapper>
   );
 };
