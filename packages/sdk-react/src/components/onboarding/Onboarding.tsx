@@ -6,21 +6,22 @@ import { LinearProgress } from '@mui/material';
 
 import { OnboardingContextProvider } from './context';
 import { OnboardingContent } from './OnboardingContent';
+import type { OnboardingProps } from './types';
 
 /**
  * Onboarding component
  * @alpha
  * @description Onboarding component has not yet been released.
  */
-export function Onboarding() {
+export const Onboarding = function (props: OnboardingProps) {
   return (
     <MoniteScopedProviders>
-      <OnboardingComponent />
+      <OnboardingComponent {...props} />
     </MoniteScopedProviders>
   );
-}
+};
 
-function OnboardingComponent() {
+function OnboardingComponent(props: OnboardingProps) {
   const { isLoading, error } = useOnboardingRequirementsData();
   const { i18n } = useLingui();
 
@@ -34,7 +35,7 @@ function OnboardingComponent() {
 
   return (
     <OnboardingContextProvider>
-      <OnboardingContent />
+      <OnboardingContent {...props} />
     </OnboardingContextProvider>
   );
 }
