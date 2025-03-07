@@ -1,17 +1,27 @@
 import { ComponentProps, useCallback, useEffect, useState } from 'react';
 
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
-import { MoniteProvider, type APISchema } from '@monite/sdk-react';
+import { type APISchema, type MoniteProvider } from '@monite/sdk-react';
 
-export const useMoniteIframeAppSlots = () => {
-  const [slots, setSlots] = useState<
-    Partial<
-      Pick<
-        ComponentProps<typeof MoniteProvider>,
-        'locale' | 'theme' | 'componentSettings'
-      >
-    >
-  >({});
+type MoniteProviderSlots = {
+  locale?: ComponentProps<typeof MoniteProvider>['locale'];
+  theme?: ComponentProps<typeof MoniteProvider>['theme'];
+  componentSettings?: ComponentProps<
+    typeof MoniteProvider
+  >['componentSettings'];
+};
+
+export const useMoniteIframeAppSlots = (): {
+  locale?: ComponentProps<typeof MoniteProvider>['locale'];
+  theme?: ComponentProps<typeof MoniteProvider>['theme'];
+  componentSettings?: ComponentProps<
+    typeof MoniteProvider
+  >['componentSettings'];
+  fetchToken: () => Promise<
+    APISchema.components['schemas']['AccessTokenResponse']
+  >;
+} => {
+  const [slots, setSlots] = useState<Partial<MoniteProviderSlots>>({});
 
   const [iframeCommunicator] = useState(
     () => new MoniteIframeAppCommunicator(window.parent)
