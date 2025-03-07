@@ -3,20 +3,18 @@ import { ComponentProps, useCallback, useEffect, useState } from 'react';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { type APISchema, type MoniteProvider } from '@monite/sdk-react';
 
+type MoniteProviderProps = ComponentProps<typeof MoniteProvider>;
+
 type MoniteProviderSlots = {
-  locale?: ComponentProps<typeof MoniteProvider>['locale'];
-  theme?: ComponentProps<typeof MoniteProvider>['theme'];
-  componentSettings?: ComponentProps<
-    typeof MoniteProvider
-  >['componentSettings'];
+  locale?: MoniteProviderProps['locale'];
+  theme?: MoniteProviderProps['theme'];
+  componentSettings?: MoniteProviderProps['componentSettings'];
 };
 
 export const useMoniteIframeAppSlots = (): {
-  locale?: ComponentProps<typeof MoniteProvider>['locale'];
-  theme?: ComponentProps<typeof MoniteProvider>['theme'];
-  componentSettings?: ComponentProps<
-    typeof MoniteProvider
-  >['componentSettings'];
+  locale?: MoniteProviderProps['locale'];
+  theme?: MoniteProviderProps['theme'];
+  componentSettings?: MoniteProviderProps['componentSettings'];
   fetchToken: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
