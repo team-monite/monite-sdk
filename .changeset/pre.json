@@ -11,6 +11,7 @@
     "@monite/sdk-react": "3.19.0"
   },
   "changesets": [
+    "afraid-crews-live",
     "afraid-hornets-knock",
     "beige-apples-wait",
     "beige-ladybugs-remain",
@@ -53,6 +54,7 @@
     "tricky-coins-try",
     "weak-feet-try",
     "weak-knives-pull",
+    "witty-fans-hide",
     "young-bananas-sin",
     "young-ears-count"
   ]

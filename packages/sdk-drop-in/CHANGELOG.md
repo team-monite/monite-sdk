@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.17
+
+### Minor Changes
+
+- 60a0972: New Dropin syntax
+
 ## 2.0.0-alpha.16
 
 ### Minor Changes
