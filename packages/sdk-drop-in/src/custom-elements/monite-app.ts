@@ -33,9 +33,9 @@ interface MoniteAppElementConfig {
    * Function to fetch the access token
    * @returns {Promise<APISchema.components['schemas']['AccessTokenResponse']>}
    */
-  fetchToken:
-    | string
-    | (() => Promise<APISchema.components['schemas']['AccessTokenResponse']>);
+  fetchToken: () => Promise<
+    APISchema.components['schemas']['AccessTokenResponse']
+  >;
 
   /**
    * Locale overrides
@@ -59,7 +59,7 @@ interface MoniteAppElementConfig {
 }
 
 class MoniteDropin {
-  private moniteAppElement: HTMLElement;
+  private moniteAppElement: MoniteAppElement;
   private config: MoniteAppElementConfig;
   private events: Partial<Record<MoniteEventTypes, () => void>> = {};
 
@@ -67,7 +67,7 @@ class MoniteDropin {
     this.config = config;
     this.moniteAppElement = document.createElement(
       MONITE_APP_ELEMENT_NAME
-    ) as HTMLElement;
+    ) as MoniteAppElement;
   }
 
   public create(component: WidgetType) {
@@ -77,11 +77,7 @@ class MoniteDropin {
     this.moniteAppElement.setAttribute('basename', '/');
 
     // Add fetch-token script
-    const fetchTokenScript = document.createElement('script');
-    fetchTokenScript.setAttribute('slot', 'fetch-token');
-    fetchTokenScript.setAttribute('type', 'application/javascript');
-    fetchTokenScript.textContent = this.config.fetchToken.toString();
-    this.moniteAppElement.appendChild(fetchTokenScript);
+    this.moniteAppElement.fetchToken = this.config.fetchToken;
 
     // Add locale script
     const localeScript = document.createElement('script');
