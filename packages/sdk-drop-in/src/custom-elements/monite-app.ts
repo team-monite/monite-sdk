@@ -33,9 +33,9 @@ interface MoniteAppElementConfig {
    * Function to fetch the access token
    * @returns {Promise<APISchema.components['schemas']['AccessTokenResponse']>}
    */
-  fetchToken: () =>
-    | Promise<APISchema.components['schemas']['AccessTokenResponse']>
-    | string;
+  fetchToken:
+    | string
+    | (() => Promise<APISchema.components['schemas']['AccessTokenResponse']>);
 
   /**
    * Locale overrides
@@ -61,6 +61,7 @@ interface MoniteAppElementConfig {
 class MoniteDropin {
   private moniteAppElement: HTMLElement;
   private config: MoniteAppElementConfig;
+  private events: Partial<Record<MoniteEventTypes, () => void>> = {};
 
   constructor(config: MoniteAppElementConfig) {
     this.config = config;
@@ -110,6 +111,20 @@ class MoniteDropin {
 
   public mount(container: HTMLElement) {
     container.appendChild(this.moniteAppElement);
+    return this;
+  }
+
+  public on(event: MoniteEventTypes, callback: (event: CustomEvent) => void) {
+    this.events[event] = addMoniteEventListener(
+      event,
+      callback,
+      this.moniteAppElement
+    );
+    return this;
+  }
+
+  public off(event: MoniteEventTypes) {
+    this.events[event]?.();
     return this;
   }
 }
