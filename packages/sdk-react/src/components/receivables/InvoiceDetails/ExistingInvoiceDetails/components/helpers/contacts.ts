@@ -1,14 +1,11 @@
-import { components } from '@/api';
 import {
   isOrganizationCounterpart,
   getCounterpartName,
 } from '@/components/counterparts/helpers';
-import { GenericCounterpartContact } from '@/core/queries';
-
-type CounterpartOrganizationRootResponse =
-  components['schemas']['CounterpartOrganizationRootResponse'];
-
-type Contact = GenericCounterpartContact;
+import type {
+  CounterpartOrganizationRootResponse,
+  Contact,
+} from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 
 export const getOrganizationEmail = (
   counterpart: CounterpartOrganizationRootResponse | undefined

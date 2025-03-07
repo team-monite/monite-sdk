@@ -14,8 +14,8 @@ import {
 } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -61,9 +61,6 @@ import {
 import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
 import { getDefaultContact, getContactList } from './helpers/contacts';
 
-type CounterpartOrganizationRootResponse =
-  | components['schemas']['CounterpartOrganizationRootResponse'];
-
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
@@ -89,8 +86,6 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
     contacts,
     counterpart as CounterpartOrganizationRootResponse
   );
-
-  const contactList = getContactList(contacts, defaultContact);
 
   const to = defaultContact?.email ?? '';
 
@@ -396,8 +391,6 @@ const RecipientSelector = ({
     counterpart as CounterpartOrganizationRootResponse
   );
 
-  const contactList = getContactList(contacts, defaultContact);
-
   return (
     <Controller
       name="to"
@@ -414,7 +407,7 @@ const RecipientSelector = ({
             className="Monite-NakedField Monite-RecipientSelector"
             {...field}
           >
-            {contactList.map((contact) => (
+            {getContactList(contacts, defaultContact).map((contact) => (
               <MenuItem key={contact.id} value={contact.email}>
                 <DefaultEmail
                   email={contact.email ?? ''}
