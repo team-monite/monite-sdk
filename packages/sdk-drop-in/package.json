@@ -12,11 +12,6 @@
       "require": "./dist/monite-app.cjs",
       "types": "./dist/types/src/custom-elements/monite-app.d.ts"
     },
-    "./monite-app-custom-element": {
-      "import": "./dist/monite-app-auto.js",
-      "require": "./dist/monite-app-auto.cjs",
-      "types": "./dist/types/src/custom-elements/monite-app-auto.d.ts"
-    },
     "./monite-iframe-app": {
       "import": "./dist/monite-iframe-app.js",
       "require": "./dist/monite-iframe-app.cjs",

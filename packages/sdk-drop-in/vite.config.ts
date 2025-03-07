@@ -33,10 +33,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
           ),
           'monite-app-demo.html': resolve(__dirname, 'monite-app-demo.html'),
           'monite-app': resolve(__dirname, 'src/custom-elements/monite-app.ts'),
-          'monite-app-auto': resolve(
-            __dirname,
-            'src/custom-elements/monite-app.ts'
-          ),
           'monite-iframe-app': resolve(
             __dirname,
             'src/custom-elements/monite-iframe-app.ts'
