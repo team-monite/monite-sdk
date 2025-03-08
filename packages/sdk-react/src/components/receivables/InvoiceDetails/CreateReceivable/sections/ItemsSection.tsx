@@ -1,21 +1,23 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  ReactNode,
+} from 'react';
 import {
   Controller,
-  ControllerRenderProps,
-  FieldError,
   useFieldArray,
   useFormContext,
   useWatch,
 } from 'react-hook-form';
 
 import { components } from '@/api';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
-import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
-  CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -53,10 +55,10 @@ import {
   CircularProgress,
   InputAdornment,
 } from '@mui/material';
-import { styled } from '@mui/material';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { CreateProductDialog } from '../components/CreateProductDialog';
 import { ItemSelector } from './ItemSelector';
 import { PriceField } from './PriceField';
 
@@ -192,13 +194,7 @@ export const ItemsSection = ({
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
-  const handleOpenProductsTable = useCallback(() => {
-    setProductsTableOpen(true);
-  }, []);
-  const handleCloseProductsTable = useCallback(() => {
-    setProductsTableOpen(false);
-  }, []);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
 
   const {
     subtotalPrice,
@@ -431,8 +427,8 @@ export const ItemsSection = ({
                     >
                       <TableCell sx={{ width: '40%' }}>
                         <ItemSelector
-                          setIsCreateItemOpened={setProductsTableOpen}
-                          onUpdate={(item: any) => handleUpdate(index, item)}
+                          setIsCreateItemOpened={setIsCreateDialogOpen}
+                          onUpdate={(item) => handleUpdate(index, item)}
                           fieldName={field.name}
                           index={index}
                           actualCurrency={actualCurrency}
@@ -670,12 +666,11 @@ export const ItemsSection = ({
         </CardContent>
       </Card>
 
-      <ProductsTable
-        defaultCurrency={defaultCurrency}
+      <CreateProductDialog
         actualCurrency={actualCurrency}
-        open={productsTableOpen}
-        setOpen={setProductsTableOpen}
-        hasProducts={fields.length > 0}
+        defaultCurrency={defaultCurrency}
+        open={isCreateDialogOpen}
+        handleClose={() => setIsCreateDialogOpen(false)}
       />
     </Stack>
   );
