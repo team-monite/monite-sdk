@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   getCounterpartName,
   prepareAddressView,
@@ -40,7 +41,7 @@ interface CounterpartsAutocompleteOptionProps {
 
 type CounterpartSelectorProps = {
   disabled?: boolean;
-  counterpartAddresses: any;
+  counterpartAddresses: components['schemas']['package__receivables__v2024_05_25__receivables__ReceivablesRepresentationOfCounterpartAddress'][];
 } & (
   | {
       isSimplified: true;

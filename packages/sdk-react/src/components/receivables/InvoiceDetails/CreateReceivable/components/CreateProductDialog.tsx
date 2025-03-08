@@ -16,7 +16,7 @@ export const CreateProductDialog = ({
   open,
   handleClose,
 }: CreateProductDialogProps) => {
-  const currency = actualCurrency ?? defaultCurrency;
+  const currency = actualCurrency || defaultCurrency;
 
   return (
     <Dialog

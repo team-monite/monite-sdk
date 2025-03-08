@@ -19,7 +19,6 @@ import { useCurrencies } from '@/core/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { KeyboardArrowDown } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
@@ -45,24 +44,24 @@ interface ItemSelectorOptionProps {
   currency?: CurrencyEnum;
 }
 
+type MeasureUnit =
+  components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+
 type ItemSelectorProps = {
-  setIsCreateItemOpened: () => void;
-  onUpdate: () => void;
+  setIsCreateItemOpened: Dispatch<SetStateAction<boolean>>;
+  onUpdate: (arg0: ItemSelectorOptionProps) => void;
   disabled?: boolean;
-  counterpartAddresses: any;
-  setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
-  setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
   fieldName?: string;
   index: number;
-  measureUnits?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'][];
+  measureUnits?: { data: MeasureUnit[] };
 };
 
 const CREATE_NEW_ID = '__create-new__';
 const DIVIDER = '__divider__';
 
-function isCreateNewItemOption(itemOption: any): boolean {
+function isCreateNewItemOption(itemOption: ItemSelectorOptionProps): boolean {
   return itemOption?.id === CREATE_NEW_ID;
 }
 
@@ -86,8 +85,7 @@ export const ItemSelector = ({
   const { root } = useRootElements();
   const currency = actualCurrency ?? defaultCurrency;
 
-  console.log({ actualCurrency, defaultCurrency, currency });
-  const { control, watch } = useForm<CreateReceivablesProductsFormProps>({
+  const { control } = useForm<CreateReceivablesProductsFormProps>({
     resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
@@ -101,35 +99,31 @@ export const ItemSelector = ({
   const { api } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
 
-  const {
-    data: productsInfinity,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-  } = api.products.getProducts.useInfiniteQuery(
-    {
-      query: {
-        limit: 20,
-        currency,
-      },
-    },
-    {
-      initialPageParam: {
+  const { data: productsInfinity, isLoading } =
+    api.products.getProducts.useInfiniteQuery(
+      {
         query: {
-          pagination_token: undefined,
+          limit: 20,
+          currency,
         },
       },
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.next_pagination_token) return;
-        return {
+      {
+        initialPageParam: {
           query: {
-            pagination_token: lastPage.next_pagination_token,
+            pagination_token: undefined,
           },
-        };
-      },
-      enabled: !!currency,
-    }
-  );
+        },
+        getNextPageParam: (lastPage) => {
+          if (!lastPage.next_pagination_token) return;
+          return {
+            query: {
+              pagination_token: lastPage.next_pagination_token,
+            },
+          };
+        },
+        enabled: !!currency,
+      }
+    );
 
   const flattenProducts = useMemo(
     () =>
@@ -139,16 +133,16 @@ export const ItemSelector = ({
     [productsInfinity]
   );
 
-  const itemsAutocompleteData = useMemo<
-    CounterpartsAutocompleteOptionProps[]
-  >(() => {
+  const itemsAutocompleteData = useMemo<ItemSelectorOptionProps[]>(() => {
     if (!flattenProducts || flattenProducts.length === 0) {
       return [];
     }
 
     return flattenProducts.map((item) => {
       const unit = measureUnits
-        ? measureUnits.data.find((u: any) => u.id === item.measure_unit_id)
+        ? measureUnits.data.find(
+            (u: MeasureUnit) => u.id === item.measure_unit_id
+          )
         : undefined;
 
       return {
@@ -198,8 +192,12 @@ export const ItemSelector = ({
           ? { id: 'custom', label: customName }
           : null;
 
-        const handleItemChange = (value: any) => {
-          if (isCreateNewItemOption(value) || isDividerOption(value)) {
+        const handleItemChange = (value: ItemSelectorOptionProps | null) => {
+          if (
+            !value ||
+            isCreateNewItemOption(value) ||
+            isDividerOption(value)
+          ) {
             field.onChange(null);
             return;
           }
@@ -329,10 +327,7 @@ export const ItemSelector = ({
               selectOnFocus
               clearOnBlur
               handleHomeEndKeys
-              renderOption={(
-                props,
-                itemOption: CounterpartsAutocompleteOptionProps
-              ) =>
+              renderOption={(props, itemOption: ItemSelectorOptionProps) =>
                 isCreateNewItemOption(itemOption) ? (
                   <Button
                     key={itemOption.id}

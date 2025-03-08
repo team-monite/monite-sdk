@@ -1,21 +1,15 @@
 import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 import type { FieldError } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   RHFAutocompleteProps,
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
-import { RHFSelect } from '@/components/RHF/RHFSelect';
 import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Box,
-  MenuItem,
-  Select,
-  TextFieldProps,
-  Typography,
-} from '@mui/material';
+import { TextFieldProps } from '@mui/material';
 import type { AutocompleteRenderInputParams } from '@mui/material';
 
 import { CurrencyInput } from './CurrencyInput';
@@ -39,6 +33,7 @@ export interface MoniteCurrencyProps<
   >['multiple'];
   displayCode?: boolean;
   hideLabel?: boolean;
+  actualCurrency?: components['schemas']['CurrencyEnum'];
 }
 
 /**
@@ -53,6 +48,7 @@ export const MoniteCurrency = <
   displayCode,
   hideLabel = false,
   required,
+  actualCurrency,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
@@ -65,6 +61,7 @@ export const MoniteCurrency = <
     <CurrencyInput
       displayCode={displayCode}
       error={renderParams?.error}
+      defaultValue={actualCurrency}
       required={renderParams?.required ?? required}
       label={renderParams?.label ?? currencyLabel}
       {...params}
