@@ -28,10 +28,7 @@ import {
   CircularProgress,
   Divider,
   IconButton,
-  InputAdornment,
   TextField,
-  Typography,
-  createFilterOptions,
 } from '@mui/material';
 
 interface CounterpartsAutocompleteOptionProps {
@@ -43,6 +40,7 @@ interface CounterpartsAutocompleteOptionProps {
   };
   smallestAmount?: number;
   measureUnit?: any;
+  fieldName?: string;
   currency?: any;
 }
 
@@ -68,6 +66,7 @@ function isDividerOption(
 
 export const ItemSelector = ({
   setIsCreateItemOpened,
+  fieldName,
   disabled,
   index = 0,
   actualCurrency = 'EUR',
@@ -77,16 +76,17 @@ export const ItemSelector = ({
 }: any) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { control, watch } = useForm<CreateReceivablesProductsFormProps>({
-    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        items: [],
-        currency: actualCurrency ?? defaultCurrency,
-      }),
-      [actualCurrency, defaultCurrency]
-    ),
-  });
+  const { control, watch, setValue } =
+    useForm<CreateReceivablesProductsFormProps>({
+      resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+      defaultValues: useMemo(
+        () => ({
+          items: [],
+          currency: actualCurrency ?? defaultCurrency,
+        }),
+        [actualCurrency, defaultCurrency]
+      ),
+    });
 
   const { api } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -147,6 +147,7 @@ export const ItemSelector = ({
         price: item.price,
         smallestAmount: item.smallest_amount,
         measureUnit: unit,
+        fieldName: fieldName ?? '',
       };
     });
   }, [flattenProducts, measureUnits]);
@@ -168,9 +169,15 @@ export const ItemSelector = ({
       name={`items.${index}`}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        const selectedItem = flattenProducts?.find(
+        let selectedItem = flattenProducts?.find(
           (item) => item?.id === field?.value
         );
+
+        if (fieldName && !selectedItem) {
+          selectedItem = flattenProducts?.find(
+            (item) => item?.name === fieldName
+          );
+        }
 
         const selectedItemOption = selectedItem
           ? {
