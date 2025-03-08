@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
@@ -10,7 +11,7 @@ interface UseCreateInvoiceProductsTable {
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
-  actualCurrency: string | undefined;
+  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
 }
 
 interface UseCreateInvoiceProductsTableProps {
