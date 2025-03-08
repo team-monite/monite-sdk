@@ -31,7 +31,9 @@ import {
   TextField,
 } from '@mui/material';
 
-interface CounterpartsAutocompleteOptionProps {
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+
+interface ItemSelectorOptionProps {
   id: string;
   label: string;
   price?: {
@@ -39,16 +41,22 @@ interface CounterpartsAutocompleteOptionProps {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: any;
-  fieldName?: string;
-  currency?: any;
+  measureUnit?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  currency?: CurrencyEnum;
 }
 
-type CounterpartSelectorProps = {
+type ItemSelectorProps = {
+  setIsCreateItemOpened: () => void;
+  onUpdate: () => void;
   disabled?: boolean;
   counterpartAddresses: any;
   setIsCreateCounterpartOpened: Dispatch<SetStateAction<boolean>>;
   setIsEditCounterpartOpened: Dispatch<SetStateAction<boolean>>;
+  actualCurrency?: CurrencyEnum;
+  defaultCurrency?: CurrencyEnum;
+  fieldName?: string;
+  index: number;
+  measureUnits?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'][];
 };
 
 const CREATE_NEW_ID = '__create-new__';
@@ -59,7 +67,7 @@ function isCreateNewItemOption(itemOption: any): boolean {
 }
 
 function isDividerOption(
-  itemOption: CounterpartsAutocompleteOptionProps | undefined | null
+  itemOption: ItemSelectorOptionProps | undefined | null
 ): boolean {
   return itemOption?.id === DIVIDER;
 }
@@ -73,7 +81,7 @@ export const ItemSelector = ({
   defaultCurrency,
   measureUnits,
   onUpdate,
-}: any) => {
+}: ItemSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const currency = actualCurrency ?? defaultCurrency;
