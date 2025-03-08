@@ -9,7 +9,6 @@ import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateR
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -494,13 +493,15 @@ const CreateReceivablesBase = ({
                               }
                             }}
                           />
-                          <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
-                            <Typography variant="inherit">
-                              {t(
-                                i18n
-                              )`All items in the invoice must be in this currency. Remove items that don’t match it.`}
-                            </Typography>
-                          </Alert>
+                          {removeItemsWarning && (
+                            <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
+                              <Typography variant="inherit">
+                                {t(
+                                  i18n
+                                )`All items in the invoice must be in this currency. Remove items that don’t match it.`}
+                              </Typography>
+                            </Alert>
+                          )}
                         </Grid>
                         <Grid
                           item

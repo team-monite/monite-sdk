@@ -10,6 +10,7 @@ interface UseCreateInvoiceProductsTable {
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
+  actualCurrency: string | undefined;
 }
 
 interface UseCreateInvoiceProductsTableProps {
@@ -27,6 +28,7 @@ export const useCreateInvoiceProductsTable = ({
   lineItems,
   formatCurrencyToDisplay,
   isNonVatSupported,
+  actualCurrency,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
@@ -35,20 +37,22 @@ export const useCreateInvoiceProductsTable = ({
 
       return acc + price * quantity;
     }, 0);
-    const currencyItem = lineItems.find((field) =>
-      Boolean(field.price?.currency)
-    );
 
-    if (!currencyItem || !currencyItem.price) {
-      return;
+    const currency =
+      actualCurrency ||
+      lineItems.find((field) => Boolean(field.price?.currency))?.price
+        ?.currency;
+
+    if (!currency) {
+      return undefined;
     }
 
     return new Price({
       value: price,
-      currency: currencyItem.price.currency,
+      currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay]);
+  }, [lineItems, formatCurrencyToDisplay, actualCurrency]);
 
   const totalTaxes = useMemo(() => {
     const taxes = lineItems.reduce((acc, field) => {
@@ -68,24 +72,25 @@ export const useCreateInvoiceProductsTable = ({
       return acc + tax;
     }, 0);
 
-    const currencyItem = lineItems.find((field) =>
-      Boolean(field.price?.currency)
-    );
+    const currency =
+      actualCurrency ||
+      lineItems.find((field) => Boolean(field.price?.currency))?.price
+        ?.currency;
 
-    if (!currencyItem || !currencyItem.price) {
-      return;
+    if (!currency) {
+      return undefined;
     }
 
     return new Price({
       value: taxes,
-      currency: currencyItem.price.currency,
+      currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay, isNonVatSupported]);
+  }, [lineItems, formatCurrencyToDisplay, isNonVatSupported, actualCurrency]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
-      return;
+      return undefined;
     }
 
     return subtotalPrice.add(totalTaxes);
