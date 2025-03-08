@@ -41,7 +41,7 @@ interface CounterpartsAutocompleteOptionProps {
 
 type CounterpartSelectorProps = {
   disabled?: boolean;
-  counterpartAddresses: components['schemas']['package__receivables__v2024_05_25__receivables__ReceivablesRepresentationOfCounterpartAddress'][];
+  counterpartAddresses?: components['schemas']['CounterpartAddressResourceList'];
 } & (
   | {
       isSimplified: true;
@@ -119,7 +119,7 @@ export const CounterpartSelector = ({
     const selectedCounterpart = counterparts?.data.find(
       (counterpart) => counterpart.id === counterpartId
     );
-    if (selectedCounterpart) {
+    if (selectedCounterpart && counterpartAddresses?.data[0]) {
       setAddress(
         prepareAddressView({ address: counterpartAddresses?.data[0] })
       );

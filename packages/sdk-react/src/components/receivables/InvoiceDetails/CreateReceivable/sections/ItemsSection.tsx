@@ -15,16 +15,13 @@ import {
 
 import { components } from '@/api';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
-import {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { classNames } from '@/utils/css-utils';
+import { faker } from '@faker-js/faker';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -56,8 +53,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import { v4 as uuidv4 } from 'uuid';
-
 import { CreateProductDialog } from '../components/CreateProductDialog';
 import { ItemSelector } from './ItemSelector';
 import { PriceField } from './PriceField';
@@ -68,33 +63,6 @@ interface CardTableItemProps {
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
   className?: string;
-}
-
-/**
- * Prepares line item for the form
- *
- * @param product Product which we want to add to the form
- * @param vatRates List of available VAT rates
- */
-function prepareLineItem(
-  product: ProductServiceResponse,
-  vatRates: VatRateListResponse | undefined
-): CreateReceivablesFormBeforeValidationLineItemProps {
-  return {
-    product_id: product.id,
-    /**
-     * The quantity can't be less than `smallest_amount`
-     *  so we have to set `quantity` accordingly
-     */
-    quantity: product.smallest_amount ?? 1,
-    price: product.price,
-    name: product.name,
-    measure_unit_id: product.measure_unit_id,
-    vat_rate_id: vatRates?.data[0].id,
-    vat_rate_value: vatRates?.data[0].value,
-    tax_rate_value: 0,
-    smallest_amount: product.smallest_amount,
-  };
 }
 
 const CardTableItem = ({
@@ -134,43 +102,10 @@ const CardTableItem = ({
   );
 };
 
-const TotalCell = ({
-  item,
-  formatCurrencyToDisplay,
-}: {
-  item: CreateReceivablesFormBeforeValidationLineItemProps;
-  formatCurrencyToDisplay: ReturnType<
-    typeof useCurrencies
-  >['formatCurrencyToDisplay'];
-}) => {
-  if (!item.price) {
-    return null;
-  }
-
-  return (
-    <>
-      {formatCurrencyToDisplay(
-        item.price.value * item.quantity,
-        item.price.currency
-      )}
-    </>
-  );
-};
-
 interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
   isNonVatSupported: boolean;
-}
-
-interface RowItem {
-  quantity: number;
-  price: { value: undefined | number; currency: string };
-  measure_unit_id?: string;
-  name?: string;
-  vat_rate_id?: string;
-  vat_rate_value?: number;
-  tax_rate_value?: number;
 }
 
 export const ItemsSection = ({
@@ -186,7 +121,7 @@ export const ItemsSection = ({
     getValues,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'line_items',
   });
@@ -244,7 +179,7 @@ export const ItemsSection = ({
 
   const createEmptyRow = useCallback(
     () => ({
-      product_id: uuidv4(),
+      product_id: faker.string.uuid(),
       quantity: 1,
       price: { value: 0, currency: actualCurrency || defaultCurrency || 'USD' },
       name: '',
@@ -276,11 +211,16 @@ export const ItemsSection = ({
     }
   }, [append, createEmptyRow]);
 
+  const [disabledFieldsControl, setDisabledFieldsControl] = useState<any[]>([]);
+
   const handleUpdate = useCallback(
-    (index: number, item: any) => {
+    (index: number, item: any, disableFields?: boolean) => {
       if (item) {
         setValue(`line_items.${index}.name`, item.label);
-        //  setValue(`line_items.${index}.product_id`, item.id);
+        setValue(
+          `line_items.${index}.product_id`,
+          item.id === 'custom' ? faker.string.uuid() : item.id
+        );
         setValue(`line_items.${index}.price.value`, item.price?.value || 0);
         setValue(
           `line_items.${index}.price.currency`,
@@ -293,10 +233,19 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
         setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+        const updatedDisabledFields = [...disabledFieldsControl];
+        updatedDisabledFields[index] = disableFields;
+        setDisabledFieldsControl(updatedDisabledFields);
         handleAddLocalRow();
       }
     },
-    [actualCurrency, defaultCurrency, setValue, measureUnits]
+    [
+      actualCurrency,
+      defaultCurrency,
+      setValue,
+      measureUnits,
+      disabledFieldsControl,
+    ]
   );
 
   const { root } = useRootElements();
@@ -428,7 +377,9 @@ export const ItemsSection = ({
                       <TableCell sx={{ width: '40%' }}>
                         <ItemSelector
                           setIsCreateItemOpened={setIsCreateDialogOpen}
-                          onUpdate={(item) => handleUpdate(index, item)}
+                          onUpdate={(item, disableFields) =>
+                            handleUpdate(index, item, disableFields)
+                          }
                           fieldName={field.name}
                           index={index}
                           actualCurrency={actualCurrency}
@@ -467,7 +418,11 @@ export const ItemsSection = ({
                                           }
                                           render={({ field }) => (
                                             <Select
+                                              MenuProps={{ container: root }}
                                               {...field}
+                                              disabled={
+                                                disabledFieldsControl[index]
+                                              }
                                               onChange={(e) => {
                                                 const selectedUnitId =
                                                   e.target.value;
@@ -532,10 +487,6 @@ export const ItemsSection = ({
                                   type="number"
                                   inputProps={{ min: 1 }}
                                   size="small"
-                                  disabled={
-                                    measureUnits?.data?.length === 0 &&
-                                    !measureUnitId
-                                  }
                                   sx={{
                                     '& .MuiInputBase-root': {
                                       paddingRight: '0 !important',
@@ -559,6 +510,7 @@ export const ItemsSection = ({
                         <PriceField
                           index={index}
                           currency={actualCurrency || defaultCurrency || 'USD'}
+                          disabled={disabledFieldsControl[index]}
                         />
                       </TableCell>
 
