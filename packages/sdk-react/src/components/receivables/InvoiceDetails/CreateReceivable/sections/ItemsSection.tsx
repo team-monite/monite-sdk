@@ -1,21 +1,27 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  ReactNode,
+} from 'react';
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 
 import { components } from '@/api';
-import { Dialog } from '@/components';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
-import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
-import {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-  CreateReceivablesFormProps,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { classNames } from '@/utils/css-utils';
+import { faker } from '@faker-js/faker';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -43,69 +49,13 @@ import {
   Box,
   Collapse,
   CardContent,
+  CircularProgress,
+  InputAdornment,
 } from '@mui/material';
-import { styled } from '@mui/material';
 
-interface VatRateControllerProps {
-  index: number;
-  vatRates?: VatRateListResponse;
-  highestVatRate: VatRateListResponse['data'][number] | undefined;
-}
-
-const VatRateController = ({
-  index,
-  vatRates,
-  highestVatRate,
-}: VatRateControllerProps) => {
-  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
-  const { root } = useRootElements();
-
-  useEffect(() => {
-    if (highestVatRate) {
-      setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
-      setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
-    }
-  }, [highestVatRate, index, setValue]);
-
-  return (
-    <Controller
-      name={`line_items.${index}.vat_rate_id`}
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <FormControl
-          variant="standard"
-          fullWidth
-          required
-          error={Boolean(error)}
-        >
-          <Select
-            {...field}
-            id={field.name}
-            labelId={field.name}
-            MenuProps={{ container: root }}
-            size="small"
-            onChange={(e) => {
-              const vatRate = vatRates?.data.find(
-                (rate) => rate.id === e.target.value
-              );
-              if (!vatRate) {
-                throw new Error('Vat rate not found');
-              }
-              setValue(`line_items.${index}.vat_rate_value`, vatRate.value);
-              field.onChange(e);
-            }}
-          >
-            {vatRates?.data.map((vatRate) => (
-              <MenuItem key={vatRate.id} value={vatRate.id}>
-                {vatRate.value / 100}%
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-    />
-  );
-};
+import { CreateProductDialog } from '../components/CreateProductDialog';
+import { ItemSelector } from './ItemSelector';
+import { PriceField } from './PriceField';
 
 interface CardTableItemProps {
   label: string | ReactNode;
@@ -113,33 +63,6 @@ interface CardTableItemProps {
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
   className?: string;
-}
-
-/**
- * Prepares line item for the form
- *
- * @param product Product which we want to add to the form
- * @param vatRates List of available VAT rates
- */
-function prepareLineItem(
-  product: ProductServiceResponse,
-  vatRates: VatRateListResponse | undefined
-): CreateReceivablesFormBeforeValidationLineItemProps {
-  return {
-    product_id: product.id,
-    /**
-     * The quantity can't be less than `smallest_amount`
-     *  so we have to set `quantity` accordingly
-     */
-    quantity: product.smallest_amount ?? 1,
-    price: product.price,
-    name: product.name,
-    measure_unit_id: product.measure_unit_id,
-    vat_rate_id: vatRates?.data[0].id,
-    vat_rate_value: vatRates?.data[0].value,
-    tax_rate_value: 0,
-    smallest_amount: product.smallest_amount,
-  };
 }
 
 const CardTableItem = ({
@@ -179,71 +102,34 @@ const CardTableItem = ({
   );
 };
 
-const TotalCell = ({
-  item,
-  formatCurrencyToDisplay,
-}: {
-  item: CreateReceivablesFormBeforeValidationLineItemProps;
-  formatCurrencyToDisplay: ReturnType<
-    typeof useCurrencies
-  >['formatCurrencyToDisplay'];
-}) => {
-  if (!item.price) {
-    return null;
-  }
-
-  return (
-    <>
-      {formatCurrencyToDisplay(
-        item.price.value * item.quantity,
-        item.price.currency
-      )}
-    </>
-  );
-};
-
 interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
-  onCurrencyChanged: (currency: CurrencyEnum) => void;
   isNonVatSupported: boolean;
 }
 
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
-  onCurrencyChanged,
   isNonVatSupported,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const {
     control,
     formState: { errors },
-    watch,
+    setValue,
+    getValues,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'line_items',
   });
-  const watchedLineItems = watch('line_items');
+  const mounted = useRef(false);
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
-  const handleSetActualCurrency = useCallback(
-    (currency: CurrencyEnum) => {
-      onCurrencyChanged(currency);
-    },
-    [onCurrencyChanged]
-  );
-
-  const handleOpenProductsTable = useCallback(() => {
-    setProductsTableOpen(true);
-  }, []);
-  const handleCloseProductsTable = useCallback(() => {
-    setProductsTableOpen(false);
-  }, []);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
 
   const {
     subtotalPrice,
@@ -251,9 +137,10 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: [...watchedLineItems],
+    lineItems: [...fields],
     formatCurrencyToDisplay,
     isNonVatSupported: isNonVatSupported,
+    actualCurrency,
   });
 
   const generalError = useMemo(() => {
@@ -280,19 +167,141 @@ export const ItemsSection = ({
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
-  const highestVatRate = vatRates?.data?.reduce(
-    (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
-    vatRates?.data[0]
+
+  const highestVatRate = useMemo(
+    () =>
+      vatRates?.data?.reduce(
+        (max, rate) => (rate.value > max.value ? rate : max),
+        vatRates.data[0]
+      ),
+    [vatRates]
   );
 
-  const StyledTableCell = styled(TableCell)`
-    max-width: 100px;
+  const createEmptyRow = useCallback(
+    () => ({
+      product_id: faker.string.uuid(),
+      quantity: 1,
+      price: { value: 0, currency: actualCurrency || defaultCurrency || 'USD' },
+      name: '',
+      vat_rate_id: highestVatRate?.id,
+      vat_rate_value: highestVatRate?.value,
+    }),
+    [actualCurrency, defaultCurrency, highestVatRate?.id, highestVatRate?.value]
+  );
 
-    fieldset.MuiOutlinedInput-notchedOutline,
-    .MuiOutlinedInput-root:hover fieldset.MuiOutlinedInput-notchedOutline {
-      border-color: transparent;
+  const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
+
+  const handleAddLocalRow = () => {
+    const areFieldsEmpty = fields.filter((field) => field.name === '');
+    if (areFieldsEmpty.length > 4) {
+      setTooManyEmptyRows(true);
+    } else {
+      setTooManyEmptyRows(false);
+      append(createEmptyRow());
     }
-  `;
+  };
+
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
+
+  useEffect(() => {
+    if (!mounted.current) {
+      append(createEmptyRow());
+      mounted.current = true;
+    }
+  }, [append, createEmptyRow]);
+
+  const [disabledFieldsControl, setDisabledFieldsControl] = useState<any[]>([]);
+
+  const handleUpdate = useCallback(
+    (index: number, item: any, disableFields?: boolean) => {
+      if (item) {
+        setValue(`line_items.${index}.name`, item.label);
+        setValue(
+          `line_items.${index}.product_id`,
+          item.id === 'custom' ? faker.string.uuid() : item.id
+        );
+        setValue(`line_items.${index}.price.value`, item.price?.value || 0);
+        setValue(
+          `line_items.${index}.price.currency`,
+          actualCurrency || defaultCurrency || 'USD'
+        );
+        setValue(
+          `line_items.${index}.measure_unit_id`,
+          item.measureUnit?.id || measureUnits?.data[0].id
+        );
+        setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
+        setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
+        setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+        const updatedDisabledFields = [...disabledFieldsControl];
+        updatedDisabledFields[index] = disableFields;
+        setDisabledFieldsControl(updatedDisabledFields);
+        handleAddLocalRow();
+      }
+    },
+    [
+      actualCurrency,
+      defaultCurrency,
+      setValue,
+      measureUnits,
+      disabledFieldsControl,
+    ]
+  );
+
+  const { root } = useRootElements();
+
+  const VatRateController = ({ index }: { index: number }) => {
+    useEffect(() => {
+      const currentVatId = getValues(`line_items.${index}.vat_rate_id`);
+      if (!currentVatId && highestVatRate) {
+        setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
+        setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
+      }
+    }, []);
+
+    return (
+      <Controller
+        name={`line_items.${index}.vat_rate_id`}
+        render={({ field }) => (
+          <FormControl
+            variant="standard"
+            fullWidth
+            required
+            error={Boolean(error)}
+          >
+            <Select
+              {...field}
+              MenuProps={{ container: root }}
+              onChange={(e) => {
+                field.onChange(e);
+                const selectedVatRate = vatRates?.data.find(
+                  (vatRate) => vatRate.id === e.target.value
+                );
+                if (selectedVatRate) {
+                  setValue(
+                    `line_items.${index}.vat_rate_value`,
+                    selectedVatRate.value
+                  );
+                }
+              }}
+              sx={{
+                borderColor: 'divider',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+              }}
+              size="small"
+            >
+              {vatRates?.data.map((vatRate) => (
+                <MenuItem key={vatRate.id} value={vatRate.id}>
+                  {vatRate.value / 100}%
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+      />
+    );
+  };
 
   return (
     <Stack spacing={0} className={className}>
@@ -301,7 +310,10 @@ export const ItemsSection = ({
         fontSize={'1.25em'}
         fontWeight={500}
         sx={{ marginBottom: 2 }}
-      >{t(i18n)`Items`}</Typography>
+      >
+        {t(i18n)`Items`}
+      </Typography>
+
       <Collapse
         in={Boolean(generalError)}
         sx={{
@@ -322,145 +334,253 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ marginBottom: 2 }}>
-        <CardContent>
-          <TableContainer sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow className={tableRowClassName}>
-                  <TableCell>{t(i18n)`Item`}</TableCell>
-                  <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell>{t(i18n)`Units`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                  <TableCell>
-                    {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fields.map((field, index) => (
-                  <TableRow className={tableRowClassName} key={field.id}>
-                    <TableCell>{field.name}</TableCell>
-                    <StyledTableCell>
-                      <Controller
-                        name={`line_items.${index}.quantity`}
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              type="number"
-                              inputProps={{ min: 1 }}
-                              size="small"
-                              fullWidth={false}
-                              error={Boolean(error)}
-                            />
-                          </FormControl>
-                        )}
-                      />
-                    </StyledTableCell>
-                    <TableCell>
-                      {field.measure_unit_id ? (
-                        <MeasureUnit unitId={field.measure_unit_id} />
-                      ) : (
-                        '—'
-                      )}
-                    </TableCell>
-                    <TableCell align="right">
-                      {field.price &&
-                        formatCurrencyToDisplay(
-                          field.price.value,
-                          field.price.currency
-                        )}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TotalCell
-                        item={watchedLineItems[index]}
-                        formatCurrencyToDisplay={formatCurrencyToDisplay}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {isNonVatSupported ? (
+
+      <Box>
+        <TableContainer
+          sx={{
+            maxHeight: 400,
+            overflow: 'visible',
+            overflowY: 'auto',
+          }}
+        >
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow className={tableRowClassName}>
+                <TableCell>{t(i18n)`Item name`}</TableCell>
+                <TableCell>{t(i18n)`Quantity`}</TableCell>
+                <TableCell>{t(i18n)`Price`}</TableCell>
+                <TableCell>
+                  {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {isMeasureUnitsLoading ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '8px',
+                  }}
+                >
+                  <CircularProgress size={20} />
+                </Box>
+              ) : (
+                fields.map((field, index) => {
+                  return (
+                    <TableRow
+                      key={field.product_id}
+                      className={tableRowClassName}
+                    >
+                      <TableCell sx={{ width: '40%' }}>
+                        <ItemSelector
+                          setIsCreateItemOpened={setIsCreateDialogOpen}
+                          onUpdate={(item, disableFields) =>
+                            handleUpdate(index, item, disableFields)
+                          }
+                          fieldName={field.name}
+                          index={index}
+                          actualCurrency={actualCurrency}
+                          defaultCurrency={defaultCurrency}
+                          measureUnits={measureUnits}
+                        />
+                      </TableCell>
+
+                      <TableCell sx={{ width: '20%' }}>
                         <Controller
-                          name={`line_items.${index}.tax_rate_value`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
+                          name={`line_items.${index}.quantity`}
+                          render={({ field }) => {
+                            const measureUnitId = useWatch({
+                              control,
+                              name: `line_items.${index}.measure_unit_id`,
+                            });
+
+                            return (
+                              <FormControl
+                                variant="standard"
+                                fullWidth
+                                required
+                                error={Boolean(error)}
+                              >
+                                <TextField
+                                  {...field}
+                                  InputProps={{
+                                    endAdornment: measureUnits?.data
+                                      ?.length && (
+                                      <InputAdornment position="end">
+                                        <Controller
+                                          name={`line_items.${index}.measure_unit_id`}
+                                          control={control}
+                                          defaultValue={
+                                            measureUnits.data[0]?.id
+                                          }
+                                          render={({ field }) => (
+                                            <Select
+                                              MenuProps={{ container: root }}
+                                              {...field}
+                                              disabled={
+                                                disabledFieldsControl[index]
+                                              }
+                                              onChange={(e) => {
+                                                const selectedUnitId =
+                                                  e.target.value;
+                                                setValue(
+                                                  `line_items.${index}.measure_unit_id`,
+                                                  selectedUnitId
+                                                );
+                                              }}
+                                              sx={{
+                                                background: 'transparent',
+                                                minHeight:
+                                                  'fit-content !important',
+                                                '.MuiSelect-select.MuiSelect-outlined':
+                                                  {
+                                                    paddingLeft: 0,
+                                                  },
+                                                '&:hover': {
+                                                  boxShadow: 'none !important',
+                                                  borderColor:
+                                                    'transparent !important',
+                                                  background: 'transparent',
+                                                },
+                                                '&.MuiInputBase-root .MuiInputBase-inputSizeSmall':
+                                                  { paddingLeft: 0 },
+                                                '&.Mui-focused.MuiInputBase-root':
+                                                  {
+                                                    boxShadow:
+                                                      'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '& .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&:hover .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    border: 'none !important',
+                                                    background: 'transparent',
+                                                  },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                                  {
+                                                    background: 'transparent',
+                                                  },
+                                              }}
+                                              size="small"
+                                            >
+                                              {measureUnits.data.map((unit) => (
+                                                <MenuItem
+                                                  key={unit.id}
+                                                  value={unit.id}
+                                                >
+                                                  {unit.name}
+                                                </MenuItem>
+                                              ))}
+                                            </Select>
+                                          )}
+                                        />
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  type="number"
+                                  inputProps={{ min: 1 }}
+                                  size="small"
+                                  sx={{
+                                    '& .MuiInputBase-root': {
+                                      paddingRight: '0 !important',
+                                      '.MuiInputBase-input': {
+                                        paddingRight: 0,
+                                      },
+                                      '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
+                                        {
+                                          borderColor: 'transparent',
+                                        },
+                                    },
+                                  }}
+                                />
+                              </FormControl>
+                            );
+                          }}
+                        />
+                      </TableCell>
+
+                      <TableCell sx={{ width: '20%' }} align="right">
+                        <PriceField
+                          index={index}
+                          currency={actualCurrency || defaultCurrency || 'USD'}
+                          disabled={disabledFieldsControl[index]}
+                        />
+                      </TableCell>
+
+                      <TableCell sx={{ width: '10%' }}>
+                        {isNonVatSupported ? (
+                          <Controller
+                            name={`line_items.${index}.tax_rate_value`}
+                            render={({ field }) => (
                               <TextField
                                 {...field}
-                                id={field.name}
                                 type="number"
-                                inputProps={{ min: 1, max: 100 }}
                                 size="small"
-                                fullWidth={false}
-                                error={Boolean(error)}
-                                helperText={error?.message}
                                 InputProps={{ endAdornment: '%' }}
-                                sx={{ minWidth: 100 }}
                               />
-                            </FormControl>
-                          )}
-                        />
-                      ) : (
-                        <VatRateController
-                          index={index}
-                          vatRates={vatRates}
-                          highestVatRate={highestVatRate}
-                        />
-                      )}
-                    </TableCell>
+                            )}
+                          />
+                        ) : (
+                          <VatRateController index={index} />
+                        )}
+                      </TableCell>
 
-                    <TableCell>
-                      <IconButton
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Button
-                      startIcon={<AddIcon />}
-                      onClick={handleOpenProductsTable}
-                    >
-                      {t(i18n)`Add item`}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Collapse in={shouldShowVatExemptRationale}>
-            <Box sx={{ m: 2 }}>
-              <Controller
-                name="vat_exemption_rationale"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    label={t(i18n)`VAT Exempt Rationale`}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    error={Boolean(error)}
-                  />
-                )}
-              />
-            </Box>
-          </Collapse>
-        </CardContent>
-      </Card>
+                      <TableCell>
+                        <IconButton onClick={() => remove(index)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Box mt={2}>
+          <Button
+            startIcon={<AddIcon />}
+            variant="outlined"
+            onClick={handleAddLocalRow}
+            disabled={tooManyEmptyRows}
+          >
+            {t(i18n)`Row`}
+          </Button>
+          {tooManyEmptyRows && (
+            <Typography mt={2} variant="body2" color="warning">{t(
+              i18n
+            )`Please use some of the rows before adding new ones.`}</Typography>
+          )}
+        </Box>
+
+        <Collapse in={shouldShowVatExemptRationale}>
+          <Box sx={{ m: 2 }}>
+            <Controller
+              name="vat_exemption_rationale"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label={t(i18n)`VAT Exempt Rationale`}
+                  multiline
+                  rows={4}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              )}
+            />
+          </Box>
+        </Collapse>
+      </Box>
+
       <Card
         className={className + '-Totals'}
         variant="outlined"
@@ -497,37 +617,13 @@ export const ItemsSection = ({
           </Stack>
         </CardContent>
       </Card>
-      <Dialog
-        className={className + '-Dialog-ProductsTable'}
-        open={productsTableOpen}
-        onClose={handleCloseProductsTable}
-        alignDialog="right"
-      >
-        <ProductsTable
-          defaultCurrency={defaultCurrency}
-          actualCurrency={actualCurrency}
-          hasProducts={fields.length > 0}
-          onAdd={({ items, currency }) => {
-            handleCloseProductsTable();
-            if (actualCurrency !== currency) {
-              replace(
-                items.map((product) => {
-                  return prepareLineItem(product, vatRates);
-                })
-              );
-              handleSetActualCurrency(currency);
 
-              return;
-            }
-
-            const productItemsMapped = items.map((product) => {
-              return prepareLineItem(product, vatRates);
-            });
-            append(productItemsMapped);
-            handleSetActualCurrency(currency);
-          }}
-        />
-      </Dialog>
+      <CreateProductDialog
+        actualCurrency={actualCurrency}
+        defaultCurrency={defaultCurrency}
+        open={isCreateDialogOpen}
+        handleClose={() => setIsCreateDialogOpen(false)}
+      />
     </Stack>
   );
 };

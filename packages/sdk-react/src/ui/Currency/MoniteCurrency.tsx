@@ -1,6 +1,7 @@
 import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 import type { FieldError } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   RHFAutocompleteProps,
   RHFAutocomplete,
@@ -31,6 +32,8 @@ export interface MoniteCurrencyProps<
     CurrencyType
   >['multiple'];
   displayCode?: boolean;
+  hideLabel?: boolean;
+  actualCurrency?: components['schemas']['CurrencyEnum'];
 }
 
 /**
@@ -43,7 +46,9 @@ export const MoniteCurrency = <
   TName extends FieldPath<TFieldValues>
 >({
   displayCode,
+  hideLabel = false,
   required,
+  actualCurrency,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
@@ -56,6 +61,7 @@ export const MoniteCurrency = <
     <CurrencyInput
       displayCode={displayCode}
       error={renderParams?.error}
+      defaultValue={actualCurrency}
       required={renderParams?.required ?? required}
       label={renderParams?.label ?? currencyLabel}
       {...params}
@@ -66,7 +72,7 @@ export const MoniteCurrency = <
     <RHFAutocomplete
       {...props}
       required={required}
-      className="Monite-Currency"
+      className={`Monite-Currency ${hideLabel && 'Monite-Label-Hidden'}`}
       label={currencyLabel}
       options={getCurrenciesArray(i18n)}
       optionKey="code"
