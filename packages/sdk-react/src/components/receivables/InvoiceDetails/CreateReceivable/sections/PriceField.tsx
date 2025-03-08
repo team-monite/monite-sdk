@@ -7,19 +7,14 @@ import { FormControl, TextField } from '@mui/material';
 // works well for currencies such as USD and EUR except for awkward instances
 // where e.g. current price is 215,61, if user types an invalid third cent making it e.g.
 // 215,618, it will round the value to 215,62 which is unlikely to be the users intention
-
-// there are also some NaN instances that I still need to find and fix
-export const PriceField = ({ index, currency }: any) => {
-  const {
-    formatCurrencyToDisplay,
-    formatFromMinorUnits,
-    formatToMinorUnits,
-    getSymbolFromCurrency,
-  } = useCurrencies();
+export const PriceField = ({ index, currency, disabled }: any) => {
+  const { formatCurrencyToDisplay, formatToMinorUnits, getSymbolFromCurrency } =
+    useCurrencies();
 
   return (
     <Controller
       name={`line_items.${index}.price.value`}
+      disabled={disabled}
       render={({ field: controllerField, fieldState: { error } }) => {
         const [isTyping, setIsTyping] = useState(false);
         const [rawValue, setRawValue] = useState<string | number>(
@@ -35,7 +30,7 @@ export const PriceField = ({ index, currency }: any) => {
           }
         }, [controllerField.value]);
 
-        const handleBlur = (e) => {
+        const handleBlur = () => {
           let inputValue = String(rawValue).trim();
           const lastCommaIndex = inputValue.lastIndexOf(',');
           const lastDotIndex = inputValue.lastIndexOf('.');
@@ -58,7 +53,6 @@ export const PriceField = ({ index, currency }: any) => {
             inputValue,
             currency
           );
-          console.log({ inputValue });
 
           if (
             inputValue === '' ||
@@ -66,15 +60,13 @@ export const PriceField = ({ index, currency }: any) => {
             (formattedToMinorUnits && isNaN(formattedToMinorUnits))
           ) {
             controllerField.onChange(0);
-            setRawValue(formatCurrencyToDisplay(0, currency, false));
+            setRawValue(formatCurrencyToDisplay(0, currency, false) || '');
           } else {
-            console.log({ formattedToMinorUnits });
             const newValue = formatCurrencyToDisplay(
               formattedToMinorUnits || 0,
               currency,
               false
             );
-            console.log({ newValue });
             controllerField.onChange(formattedToMinorUnits);
             setRawValue(newValue || 0); //cannot use inputValue directly due to e.g. 02.02 euro
           }
@@ -89,10 +81,12 @@ export const PriceField = ({ index, currency }: any) => {
             fullWidth
             required
             error={Boolean(error)}
+            disabled={disabled}
           >
             <TextField
               size="small"
               type="text"
+              disabled={disabled}
               value={
                 isTyping
                   ? rawValue

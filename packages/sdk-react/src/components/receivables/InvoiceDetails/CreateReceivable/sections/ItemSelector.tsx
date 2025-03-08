@@ -2,7 +2,6 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -49,7 +48,7 @@ type MeasureUnit =
 
 type ItemSelectorProps = {
   setIsCreateItemOpened: Dispatch<SetStateAction<boolean>>;
-  onUpdate: (arg0: ItemSelectorOptionProps) => void;
+  onUpdate: (arg0: ItemSelectorOptionProps, arg1?: boolean) => void;
   disabled?: boolean;
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
@@ -92,7 +91,7 @@ export const ItemSelector = ({
         items: [],
         currency,
       }),
-      [actualCurrency, defaultCurrency]
+      [currency]
     ),
   });
 
@@ -154,7 +153,7 @@ export const ItemSelector = ({
         fieldName: fieldName ?? '',
       };
     });
-  }, [flattenProducts, measureUnits]);
+  }, [flattenProducts, measureUnits, fieldName]);
 
   const handleCreateNewItem = useCallback(() => {
     setIsCreateItemOpened(true);
@@ -205,12 +204,14 @@ export const ItemSelector = ({
           if (value && value.id === 'custom') {
             field.onChange(value.label);
             setCustomName(value.label);
+            if (onUpdate) {
+              onUpdate(value, false);
+            }
           } else {
-            field.onChange(value?.id);
-          }
-
-          if (value && onUpdate) {
-            onUpdate(value);
+            field.onChange(value.id);
+            if (onUpdate) {
+              onUpdate(value, true);
+            }
           }
         };
 
@@ -220,7 +221,7 @@ export const ItemSelector = ({
 
         const handleBlur = () => {
           if (isCustomName && customName.trim() !== '') {
-            onUpdate({ id: 'custom', label: customName });
+            onUpdate({ id: 'custom', label: customName }, false);
           }
         };
 

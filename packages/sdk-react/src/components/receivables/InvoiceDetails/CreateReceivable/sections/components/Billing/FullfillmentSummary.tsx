@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -9,8 +8,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LockOutlined } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 

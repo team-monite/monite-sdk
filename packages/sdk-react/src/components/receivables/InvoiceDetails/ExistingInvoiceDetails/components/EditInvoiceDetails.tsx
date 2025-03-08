@@ -265,7 +265,6 @@ const EditInvoiceDetailsContent = ({
               <ItemsSection
                 isNonVatSupported={isNonVatSupported}
                 actualCurrency={actualCurrency}
-                onCurrencyChanged={setActualCurrency}
               />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ReminderSection

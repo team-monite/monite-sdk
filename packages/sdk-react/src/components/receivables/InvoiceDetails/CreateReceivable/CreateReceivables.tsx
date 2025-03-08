@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
@@ -161,6 +161,7 @@ const CreateReceivablesBase = ({
   const initialFields = {
     isFulfillmentDateShown: false,
     isPurchaseOrderShown: false,
+    isTermsAndConditionsShown: false,
   };
 
   const [fields, setFields] = useState(initialFields);
@@ -215,12 +216,9 @@ const CreateReceivablesBase = ({
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
 
-  if (isSettingsLoading || isEntityLoading) {
-    return <LoadingPage />;
-  }
-
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    console.log('got here');
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
       return;
@@ -235,10 +233,6 @@ const CreateReceivablesBase = ({
       showErrorToast(new Error('`Billing address` is not provided'));
       return;
     }
-
-    const filteredLineItems = values.line_items.filter((item) => {
-      return item.name?.trim() !== '';
-    });
 
     const shippingAddressId = values.default_shipping_address_id;
 
@@ -258,7 +252,7 @@ const CreateReceivablesBase = ({
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
-      line_items: filteredLineItems.map((item) => ({
+      line_items: values.line_items.map((item) => ({
         quantity: item.quantity,
         product_id: item.product_id,
         ...(isNonVatSupported
@@ -314,7 +308,7 @@ const CreateReceivablesBase = ({
     try {
       return window.localStorage.getItem('areFieldsAlwaysSelected') === 'true';
     } catch (error) {
-      console.warn('`areFieldsAlwaysSelected` not found:', error);
+      console.warn('areFieldsAlwaysSelected not found:', error);
       return false;
     }
   });
@@ -328,10 +322,12 @@ const CreateReceivablesBase = ({
     }
   }, [areFieldsAlwaysSelected]);
 
-  const handleFieldsAlwaysSelectedChange = (e) => {
+  const handleFieldsAlwaysSelectedChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const isChecked = e.target.checked;
     setAreFieldsAlwaysSelected(isChecked);
-    window.localStorage.setItem('areFieldsAlwaysSelected', isChecked);
+    window.localStorage.setItem('areFieldsAlwaysSelected', String(isChecked));
 
     if (isChecked) {
       saveFieldsToLocalStorage(fields);
@@ -340,7 +336,7 @@ const CreateReceivablesBase = ({
     }
   };
 
-  const handleFieldChange = (fieldName, value) => {
+  const handleFieldChange = (fieldName: string, value: boolean) => {
     const updatedFields = { ...fields, [fieldName]: value };
     setFields(updatedFields);
 
@@ -360,7 +356,6 @@ const CreateReceivablesBase = ({
   };
 
   const lineItems = watch('line_items');
-
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
   const handleCurrencySubmit = () => {
@@ -392,6 +387,10 @@ const CreateReceivablesBase = ({
       setAnchorEl(event.currentTarget);
     }
   };
+
+  if (isSettingsLoading || isEntityLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
@@ -555,10 +554,14 @@ const CreateReceivablesBase = ({
                           <Typography variant="h3" mb={3.5}>
                             {t(i18n)`Enable more fields`}
                           </Typography>
+                          {/* fulfillment date */}
                           <Box
                             display="flex"
                             alignItems="start"
                             justifyContent="space-between"
+                            sx={{
+                              pb: 4,
+                            }}
                           >
                             <Box>
                               <Typography
@@ -585,10 +588,16 @@ const CreateReceivablesBase = ({
                               aria-label={t(i18n)`Fulfillment date`}
                             />
                           </Box>
+                          {/* purchase order */}
                           <Box
                             display="flex"
                             alignItems="start"
                             justifyContent="space-between"
+                            sx={{
+                              pb: 4,
+                              pt: 4,
+                              borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                            }}
                           >
                             <Box>
                               <Typography
@@ -615,6 +624,43 @@ const CreateReceivablesBase = ({
                               aria-label={t(i18n)`Purchase order`}
                             />
                           </Box>
+                          {/* terms and conditions */}
+                          <Box
+                            display="flex"
+                            alignItems="start"
+                            justifyContent="space-between"
+                            sx={{
+                              pb: 4,
+                              pt: 4,
+                              borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                              >
+                                {t(i18n)`Terms and conditions`}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                {t(
+                                  i18n
+                                )`You can include details about the warranty, insurance, liability, late payment fees and any other important notes`}
+                              </Typography>
+                            </Box>
+                            <Switch
+                              checked={fields.isTermsAndConditionsShown}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  'isTermsAndConditionsShown',
+                                  e.target.checked
+                                )
+                              }
+                              color="primary"
+                              aria-label={t(i18n)`Terms and conditions`}
+                            />
+                          </Box>
+                          {/* always show */}
                           <Box
                             sx={{
                               marginTop: 4,

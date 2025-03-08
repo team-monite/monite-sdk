@@ -30,9 +30,10 @@ export const getFormControlStyles = (
             },
           },
 
-          '&:hover fieldset.MuiOutlinedInput-notchedOutline': {
-            borderColor: 'transparent',
-          },
+          '&:not(.Mui-disabled):hover fieldset.MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: 'transparent',
+            },
 
           '.MuiSelect-icon': {
             color: palette.text.primary,
@@ -85,7 +86,7 @@ export const getFormControlStyles = (
             },
 
           '& .MuiFormLabel-root': {
-            '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
+            '+ .MuiInputBase-root:not(.Mui-focused)': {
               backgroundColor: 'transparent',
               border: `1px solid ${palette.primary.main}`,
             },
