@@ -240,6 +240,10 @@ const CreateReceivablesBase = ({
       (address) => address.id === shippingAddressId
     );
 
+    const filteredLineItems = values.line_items.filter((item) => {
+      return item.name?.trim() !== '';
+    });
+
     const invoicePayload: Omit<
       components['schemas']['ReceivableFacadeCreateInvoicePayload'],
       'is_einvoice'
@@ -252,7 +256,7 @@ const CreateReceivablesBase = ({
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
-      line_items: values.line_items.map((item) => ({
+      line_items: filteredLineItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.product_id,
         ...(isNonVatSupported
