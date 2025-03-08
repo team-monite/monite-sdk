@@ -209,6 +209,7 @@ export const ItemsSection = ({
     lineItems: [...fields],
     formatCurrencyToDisplay,
     isNonVatSupported: isNonVatSupported,
+    actualCurrency,
   });
 
   const generalError = useMemo(() => {

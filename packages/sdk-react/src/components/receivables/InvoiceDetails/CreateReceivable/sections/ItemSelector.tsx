@@ -69,28 +69,30 @@ export const ItemSelector = ({
   fieldName,
   disabled,
   index = 0,
-  actualCurrency = 'EUR',
-  defaultCurrency = 'EUR',
+  actualCurrency,
+  defaultCurrency,
   measureUnits,
   onUpdate,
 }: any) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { control, watch, setValue } =
-    useForm<CreateReceivablesProductsFormProps>({
-      resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
-      defaultValues: useMemo(
-        () => ({
-          items: [],
-          currency: actualCurrency ?? defaultCurrency,
-        }),
-        [actualCurrency, defaultCurrency]
-      ),
-    });
+  const currency = actualCurrency ?? defaultCurrency;
+
+  console.log({ actualCurrency, defaultCurrency, currency });
+  const { control, watch } = useForm<CreateReceivablesProductsFormProps>({
+    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    defaultValues: useMemo(
+      () => ({
+        items: [],
+        currency,
+      }),
+      [actualCurrency, defaultCurrency]
+    ),
+  });
 
   const { api } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const currency = watch('currency');
+
   const {
     data: productsInfinity,
     isLoading,
