@@ -15,6 +15,7 @@ import {
 import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -23,6 +24,7 @@ import {
   useMyEntity,
   useReceivableById,
   useReceivableContacts,
+  useCounterpartById,
 } from '@/core/queries';
 import {
   useIssueReceivableById,
@@ -57,6 +59,7 @@ import {
 } from '@mui/material';
 
 import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
+import { getDefaultContact, getContactList } from './helpers/contacts';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
@@ -77,11 +80,12 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
   const { data: contacts, isLoading: isLoadingContacts } =
     useReceivableContacts(props.invoiceId);
   const { entityName, isLoading: isLoadingEntity } = useMyEntity();
+  const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
 
-  const defaultContact =
-    contacts && contacts.length
-      ? contacts?.find((c) => c.is_default) || contacts?.[0]
-      : undefined;
+  const defaultContact = getDefaultContact(
+    contacts,
+    counterpart as CounterpartOrganizationRootResponse
+  );
 
   const to = defaultContact?.email ?? '';
 
@@ -93,7 +97,10 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
 
           Kind Regards,
           ${me.first_name}`
-      : '';
+      : t(i18n)`Please find the invoice attached as discussed.
+
+          Kind Regards,
+          ${me?.first_name ?? ''}`;
 
   const subject =
     receivable && entityName
@@ -372,10 +379,17 @@ const RecipientSelector = ({
   control: Control<FormProps>;
 }) => {
   const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
+  const { data: receivable } = useReceivableById(invoiceId);
+  const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
 
   const { root } = useRootElements();
 
   if (isLoading) return <CircularProgress />;
+
+  const defaultContact = getDefaultContact(
+    contacts,
+    counterpart as CounterpartOrganizationRootResponse
+  );
 
   return (
     <Controller
@@ -393,7 +407,7 @@ const RecipientSelector = ({
             className="Monite-NakedField Monite-RecipientSelector"
             {...field}
           >
-            {contacts?.map((contact) => (
+            {getContactList(contacts, defaultContact).map((contact) => (
               <MenuItem key={contact.id} value={contact.email}>
                 <DefaultEmail
                   email={contact.email ?? ''}

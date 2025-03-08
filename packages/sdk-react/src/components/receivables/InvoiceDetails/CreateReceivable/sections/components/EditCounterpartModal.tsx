@@ -41,8 +41,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../../validation';
@@ -111,8 +109,6 @@ export const EditCounterpartModal = ({
     setIsEditMode(false);
   };
 
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
 
   return (
@@ -167,13 +163,7 @@ export const EditCounterpartModal = ({
           )
         ) : (
           <>
-            <Stack
-              sx={{
-                padding: '0 2rem',
-                maxHeight: isLargeScreen ? 480 : 380,
-                overflowY: 'auto',
-              }}
-            >
+            <Stack sx={{ padding: '2rem' }}>
               <CounterpartSelector
                 isSimplified
                 disabled={disabled}

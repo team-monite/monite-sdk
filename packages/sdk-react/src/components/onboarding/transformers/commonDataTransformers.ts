@@ -48,6 +48,10 @@ export const generateValuesByFields = <
 >(
   fields: OnboardingFieldsType
 ): TOutput => {
+  const defaultValues: { [key: string]: string } = {
+    url: 'https://',
+  };
+
   return Object.entries(fields).reduce((acc, [key, item]) => {
     const field: OnboardingFieldsType = item;
 
@@ -61,7 +65,7 @@ export const generateValuesByFields = <
     if (isOnboardingField(field)) {
       return {
         ...acc,
-        [key]: mapValueToForm(key, field.value),
+        [key]: mapValueToForm(key, field.value ?? defaultValues[key]),
       };
     }
 

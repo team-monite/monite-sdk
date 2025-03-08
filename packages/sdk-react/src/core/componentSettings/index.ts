@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
@@ -9,6 +10,13 @@ import { t } from '@lingui/macro';
 
 interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
+  /** Callback to be called when an invoice is updated */
+  onUpdate?: (
+    receivableId: string,
+    invoice?: components['schemas']['InvoiceResponsePayload']
+  ) => void;
+  /** Callback to be called when an invoice is deleted */
+  onDelete?: (receivableId: string) => void;
 }
 
 interface PayableSettings
@@ -122,6 +130,8 @@ export const getDefaultComponentSettings = (
       },
     ],
     onCreate: componentSettings?.receivables?.onCreate,
+    onUpdate: componentSettings?.receivables?.onUpdate,
+    onDelete: componentSettings?.receivables?.onDelete,
   },
   tags: {
     pageSizeOptions:

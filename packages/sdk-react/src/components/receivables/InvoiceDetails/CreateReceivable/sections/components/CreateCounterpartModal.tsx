@@ -62,7 +62,13 @@ export const CreateCounterpartModal = ({
         }}
       >
         {counterpartType ? (
-          <Grid sx={{ maxHeight: isLargeScreen ? 920 : 720 }}>
+          <Grid
+            sx={{
+              maxHeight: isLargeScreen ? 920 : 720,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             <CounterpartDetails
               type={counterpartType}
               isInvoiceCreation={true}

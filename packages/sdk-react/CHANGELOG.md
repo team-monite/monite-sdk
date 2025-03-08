@@ -1,5 +1,32 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.18
+
+### Patch Changes
+
+- 665c8e6: When sending an invoice, we use the organization's email address as a fallback if there is no contact person defined.
+
+## 4.0.0-alpha.17
+
+### Patch Changes
+
+- 2604834: Display VAT id error message from API
+- 923df35: Fix counterpart creation form styles
+- 7a518b8: PDF download button is disabled until the url is defined
+
+## 4.0.0-alpha.16
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- b50d841: Product creation default values
+- 802f5c4: Custom currency dropdown renderer
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+
 ## 4.0.0-alpha.15
 
 ### Minor Changes

@@ -29,8 +29,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
@@ -80,9 +78,6 @@ export const CounterpartOrganizationForm = (
   const organizationCounterpart = counterpart as
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
-
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
 
   const methods = useForm({
     resolver: yupResolver(
@@ -229,13 +224,7 @@ export const CounterpartOrganizationForm = (
       )}
 
       {!isInvoiceCreation && <Divider />}
-      <DialogContent
-        sx={{
-          padding: '0 2rem',
-          maxHeight: isLargeScreen ? 480 : 380,
-          overflowY: 'auto',
-        }}
-      >
+      <DialogContent sx={{ padding: '2rem' }}>
         <FormProvider {...methods}>
           <form
             id="counterpartOrganizationForm"

@@ -17,7 +17,7 @@ import { isValid } from 'date-fns';
 
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import { CreateReceivablesFormProps } from '../../validation';
-// @ts-expect-error
+// @ts-expect-error Importing css file from a different package is not supported
 import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {

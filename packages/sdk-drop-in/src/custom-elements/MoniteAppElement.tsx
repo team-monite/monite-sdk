@@ -8,6 +8,7 @@ import {
   parseElementAttribute,
   SlotConfig,
 } from '@/custom-elements/MoniteAppElementBase.tsx';
+import { APISchema } from '@monite/sdk-react';
 
 export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale' | 'component-settings'
@@ -113,6 +114,10 @@ export class MoniteAppElement extends MoniteAppElementBase<
     ) as (keyof (typeof MoniteAppElement)['attributesSchema'])[];
   }
 
+  public fetchToken:
+    | (() => Promise<APISchema.components['schemas']['AccessTokenResponse']>)
+    | null = null;
+
   render() {
     if (!this.isMounted) return;
 
@@ -155,6 +160,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
     );
 
     const props = {
+      fetchToken: this.fetchToken,
       ...attributesProperties,
       ...slotProperties,
     } as Omit<ComponentProps<typeof MoniteApp>, 'rootElements'>;

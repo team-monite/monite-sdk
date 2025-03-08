@@ -1,5 +1,32 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.17
+
+### Minor Changes
+
+- 60a0972: New Dropin syntax
+
+## 2.0.0-alpha.16
+
+### Minor Changes
+
+- bee7fab: Change Dropin exports
+
+### Patch Changes
+
+- 923df35: Fix counterpart creation form styles
+
+## 2.0.0-alpha.15
+
+### Minor Changes
+
+- c5d39e5: Line item units management added
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+
 ## 2.0.0-alpha.14
 
 ### Minor Changes

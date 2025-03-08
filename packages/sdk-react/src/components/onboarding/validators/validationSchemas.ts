@@ -127,7 +127,11 @@ export const businessProfileSchema = (
   mcc: stringValidator().label(t(i18n)`Industry`),
   url: stringValidator()
     .label(t(i18n)`Business website`)
-    .url(),
+    .url(
+      t(
+        i18n
+      )`Invalid website URL. Please ensure it starts with 'http://' or 'https://'.`
+    ),
 });
 
 export const relationshipSchema = (

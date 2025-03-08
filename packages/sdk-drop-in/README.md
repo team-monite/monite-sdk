@@ -104,6 +104,129 @@ e.g., [`localhost:5174/monite-app-demo/counterparts`](http://localhost:5174/moni
 
 Note: `basename` is the pathname of the page where the Monite Drop-in is embedded.
 
+### Event System
+
+The SDK provides a built-in event system that allows you to listen for various Monite events:
+
+```html
+<script type="module">
+  import { addMoniteEventListener, MoniteEventTypes } from '@monite/sdk-drop-in';
+
+  addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice created event:', { type, payload, id });
+  });
+
+  addMoniteEventListener(MoniteEventTypes.INVOICE_UPDATED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice updated event:', { type, payload, id });
+  });
+
+  addMoniteEventListener(MoniteEventTypes.INVOICE_DELETED, (event) => {
+    const { type, payload, id } = event.detail;
+    console.log('[Event Listener] Received invoice deleted event:', { type, payload, id });
+  });
+</script>
+```
+
+#### Event Constants
+
+The SDK exports two important constants for working with events:
+
+1. **`MONITE_EVENT_PREFIX`**: A string constant (`'monite.event'`) used as a prefix for all Monite events. When using the manual approach with DOM event listeners, this prefix is combined with the event type to create the full event name.
+
+2. **`MoniteEventTypes`**: An enum that contains all available event types. Currently supported event types are:
+   ```typescript
+   enum MoniteEventTypes {
+     INVOICE_CREATED = 'invoice.created',
+     INVOICE_UPDATED = 'invoice.updated',
+     INVOICE_DELETED = 'invoice.deleted',
+   }
+   ```
+
+When using the manual approach with DOM event listeners, the full event name is constructed by combining the prefix and the event type: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.EVENT_TYPE}`.
+
+#### Event Handling
+
+There are two ways to handle Monite events:
+
+1. **Recommended approach**: Use the `addMoniteEventListener` function, which encapsulates the listener creation logic:
+
+```javascript
+import { addMoniteEventListener, MoniteEventTypes } from '@monite/sdk-drop-in';
+
+// Add event listener and store the cleanup function
+const cleanup = addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
+  console.log('Invoice created:', event.detail);
+});
+
+// When the listener is no longer needed, call the cleanup function
+cleanup();
+```
+
+2. **Manual approach**: Use the standard DOM event listeners directly:
+
+```javascript
+import { MONITE_EVENT_PREFIX, MoniteEventTypes, getMoniteAppEventTarget } from '@monite/sdk-drop-in';
+
+// Get the best target for events (Monite app element or document)
+const targetElement = getMoniteAppEventTarget();
+
+// Create the event name by combining the prefix and event type
+const eventName = `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.INVOICE_CREATED}`;
+
+// Add event listener
+const handleEvent = (event) => {
+  console.log('Invoice created:', event.detail);
+};
+targetElement.addEventListener(eventName, handleEvent);
+
+// When the listener is no longer needed, you must manually remove it
+targetElement.removeEventListener(eventName, handleEvent);
+```
+
+The `addMoniteEventListener` function returns a cleanup function that can be called when the listener is no longer needed. This is particularly useful in frameworks like React to clean up event listeners in useEffect hooks.
+
+#### Event Targeting
+
+The event system now automatically determines the best target for events. When you call `addMoniteEventListener`, it will:
+
+1. Look for the Monite app element in the DOM (using `getMoniteAppElement()`)
+2. If found, attach the event listener to that element
+3. If not found, fall back to the `document` object
+
+This automatic target selection ensures that events are properly captured regardless of when the Monite app element is initialized, and simplifies the API by removing the need to manually specify a target.
+
+Similarly, when events are emitted, the system automatically determines the best target using the same logic, ensuring that events are dispatched to the most appropriate element.
+
+> **Note on Event Target Limitations**: The current implementation only supports predefined target elements (`<monite-app>` element and `document`). This is because the component settings callbacks and event listener logic are intentionally decoupled for better separation of concerns. Supporting custom event targets would require significant changes to how settings work throughout the SDK. Future versions may introduce support for custom event targets, but this would involve architectural changes to maintain consistency between component settings and the event system.
+
+#### Available Events
+
+| Event Type | Description | Payload |
+|------------|-------------|---------|
+| `invoice.created` | Triggered when a new invoice is created | `{ type, payload: { id }, id }` |
+| `invoice.updated` | Triggered when an invoice is updated | `{ type, payload: { id, invoice }, id }` |
+| `invoice.deleted` | Triggered when an invoice is deleted | `{ type, payload: { id }, id }` |
+
+#### Event Payload Types
+
+```typescript
+interface InvoiceEventPayload {
+  id: string;
+  invoice?: {
+    // Full invoice response payload from the API
+    // See API documentation for complete type definition
+  };
+}
+
+interface MoniteEvent<T = EventPayload> {
+  type: MoniteEventTypes;
+  payload: T;
+  id: string;
+}
+```
+
 ## Monite Iframe App
 
 Monite Iframe App provides components that can be embedded into your web application using an iframe.
@@ -211,4 +334,3 @@ Integration example:
   </script>
 </monite-iframe-app>
 ```
-
