@@ -9,6 +9,7 @@ import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateR
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
+import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -32,8 +33,10 @@ import {
   Box,
   Button,
   Card,
+  Checkbox,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Grid,
   MenuItem,
   Modal,
@@ -71,6 +74,32 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
     <CreateReceivablesBase {...props} />
   </MoniteScopedProviders>
 );
+
+const saveFieldsToLocalStorage = (fields) => {
+  try {
+    window.localStorage.setItem('formFields', JSON.stringify(fields));
+  } catch (error) {
+    console.error('Failed to save fields to local storage:', error);
+  }
+};
+
+const clearFieldsFromLocalStorage = () => {
+  try {
+    window.localStorage.removeItem('formFields');
+  } catch (error) {
+    console.error('Failed to clear fields from local storage:', error);
+  }
+};
+
+const loadFieldsFromLocalStorage = () => {
+  try {
+    const storedFields = window.localStorage.getItem('formFields');
+    return storedFields ? JSON.parse(storedFields) : null;
+  } catch (error) {
+    console.error('Failed to load fields from local storage:', error);
+    return null;
+  }
+};
 
 const CreateReceivablesBase = ({
   type,
@@ -129,6 +158,13 @@ const CreateReceivablesBase = ({
   const { handleSubmit, watch, getValues, setValue } = methods;
 
   const counterpartId = watch('counterpart_id');
+
+  const initialFields = {
+    isFulfillmentDateShown: false,
+    isPurchaseOrderShown: false,
+  };
+
+  const [fields, setFields] = useState(initialFields);
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
@@ -274,7 +310,45 @@ const CreateReceivablesBase = ({
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
-  const [isFulfillmentDateShown, setIsFulfillmentDateShown] = useState(false);
+
+  const [areFieldsAlwaysSelected, setAreFieldsAlwaysSelected] = useState(() => {
+    try {
+      return window.localStorage.getItem('areFieldsAlwaysSelected') === 'true';
+    } catch (error) {
+      console.warn('`areFieldsAlwaysSelected` not found:', error);
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (areFieldsAlwaysSelected) {
+      const storedFields = loadFieldsFromLocalStorage();
+      if (storedFields) {
+        setFields(storedFields);
+      }
+    }
+  }, [areFieldsAlwaysSelected]);
+
+  const handleFieldsAlwaysSelectedChange = (e) => {
+    const isChecked = e.target.checked;
+    setAreFieldsAlwaysSelected(isChecked);
+    window.localStorage.setItem('areFieldsAlwaysSelected', isChecked);
+
+    if (isChecked) {
+      saveFieldsToLocalStorage(fields);
+    } else {
+      clearFieldsFromLocalStorage();
+    }
+  };
+
+  const handleFieldChange = (fieldName, value) => {
+    const updatedFields = { ...fields, [fieldName]: value };
+    setFields(updatedFields);
+
+    if (areFieldsAlwaysSelected) {
+      saveFieldsToLocalStorage(updatedFields);
+    }
+  };
 
   const handleCloseCurrencyModal = () => {
     setIsCurrencyModalOpen(false);
@@ -375,6 +449,8 @@ const CreateReceivablesBase = ({
                   <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
                     <Typography>{t(i18n)`Enable more fields`}</Typography>
                   </MenuItem>
+
+                  {/* Currency Modal */}
                   <Modal
                     open={isCurrencyModalOpen}
                     container={root}
@@ -455,6 +531,7 @@ const CreateReceivablesBase = ({
                     </Box>
                   </Modal>
 
+                  {/* Enable Fields Modal */}
                   <Modal
                     open={isEnableFieldsModalOpen}
                     container={root}
@@ -489,23 +566,73 @@ const CreateReceivablesBase = ({
                               >
                                 {t(i18n)`Fulfillment date`}
                               </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                sx={{ maxWidth: '70%' }}
-                              >
+                              <Typography variant="body2" color="textSecondary">
                                 {t(
                                   i18n
                                 )`Add a date when the product will be delivered or the service provided`}
                               </Typography>
                             </Box>
                             <Switch
-                              checked={isFulfillmentDateShown}
+                              checked={fields.isFulfillmentDateShown}
                               onChange={(e) =>
-                                setIsFulfillmentDateShown(e.target.checked)
+                                handleFieldChange(
+                                  'isFulfillmentDateShown',
+                                  e.target.checked
+                                )
                               }
                               color="primary"
                               aria-label={t(i18n)`Fulfillment date`}
+                            />
+                          </Box>
+                          <Box
+                            display="flex"
+                            alignItems="start"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                              >
+                                {t(i18n)`Purchase order`}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                {t(
+                                  i18n
+                                )`You can add a document number to have it in the PDF`}
+                              </Typography>
+                            </Box>
+                            <Switch
+                              checked={fields.isPurchaseOrderShown}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  'isPurchaseOrderShown',
+                                  e.target.checked
+                                )
+                              }
+                              color="primary"
+                              aria-label={t(i18n)`Purchase order`}
+                            />
+                          </Box>
+                          <Box
+                            sx={{
+                              marginTop: 4,
+                              paddingTop: 1,
+                            }}
+                          >
+                            <FormControlLabel
+                              sx={{ ml: 0 }} //reset mui style
+                              control={
+                                <Checkbox
+                                  edge="start"
+                                  checked={areFieldsAlwaysSelected}
+                                  onChange={handleFieldsAlwaysSelectedChange}
+                                  disableRipple
+                                />
+                              }
+                              label={t(
+                                i18n
+                              )`Always display selected fields on the form (where available)`}
                             />
                           </Box>
                         </Grid>
@@ -529,7 +656,7 @@ const CreateReceivablesBase = ({
                           </Button>
                           <Button
                             variant="contained"
-                            onClick={handleCurrencySubmit}
+                            onClick={handleCloseEnableFieldsModal}
                           >
                             {t(i18n)`Save`}
                           </Button>
@@ -606,7 +733,7 @@ const CreateReceivablesBase = ({
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
                   isPaymentTermsLoading={isPaymentTermsLoading}
-                  isFieldShown={isFulfillmentDateShown}
+                  isFieldShown={fields.isFulfillmentDateShown}
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />

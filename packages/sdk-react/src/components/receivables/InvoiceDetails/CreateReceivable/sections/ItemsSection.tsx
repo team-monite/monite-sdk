@@ -180,7 +180,6 @@ export const ItemsSection = ({
   const {
     control,
     formState: { errors },
-    watch,
     setValue,
     getValues,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
@@ -433,6 +432,7 @@ export const ItemsSection = ({
                         <ItemSelector
                           setIsCreateItemOpened={setProductsTableOpen}
                           onUpdate={(item: any) => handleUpdate(index, item)}
+                          fieldName={field.name}
                           index={index}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
