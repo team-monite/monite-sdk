@@ -97,6 +97,7 @@ export const ProductForm = ({
         id={formId}
         onSubmit={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           handleSubmit(onSubmit)(event);
         }}
       >
