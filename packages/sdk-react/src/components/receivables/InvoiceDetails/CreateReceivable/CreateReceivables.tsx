@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useState } from 'react';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
@@ -336,7 +336,7 @@ const CreateReceivablesBase = ({
     window.localStorage.setItem('areFieldsAlwaysSelected', String(isChecked));
 
     if (isChecked) {
-      saveFieldsToLocalStorage(fields);
+      saveFieldsToLocalStorage(visibleSettingsFields);
     } else {
       clearFieldsFromLocalStorage();
     }
@@ -487,8 +487,11 @@ const CreateReceivablesBase = ({
                             name="currency"
                             control={control}
                             hideLabel
-                            // @ts-expect-error
-                            onChange={(event, value, reason, details) => {
+                            // @ts-expect-error -> i dont understand why this onChange asks for 4 parameters. only the 2nd is needed
+                            onChange={(
+                              event, // eslint-disable-line
+                              value
+                            ) => {
                               if (
                                 value &&
                                 !Array.isArray(value) &&

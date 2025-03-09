@@ -191,10 +191,12 @@ export const ItemsSection = ({
 
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
-  const handleAddLocalRow = () => {
+  const handleAddRow = () => {
     const areFieldsEmpty = fields.filter((field) => field.name === '');
     if (areFieldsEmpty.length > 4) {
       setTooManyEmptyRows(true);
+    } else if (areFieldsEmpty.length > 1) {
+      setTooManyEmptyRows(false);
     } else {
       setTooManyEmptyRows(false);
       append(createEmptyRow());
@@ -236,7 +238,7 @@ export const ItemsSection = ({
         const updatedDisabledFields = [...disabledFieldsControl];
         updatedDisabledFields[index] = disableFields;
         setDisabledFieldsControl(updatedDisabledFields);
-        handleAddLocalRow();
+        handleAddRow();
       }
     },
     [
@@ -564,7 +566,7 @@ export const ItemsSection = ({
           <Button
             startIcon={<AddIcon />}
             variant="outlined"
-            onClick={handleAddLocalRow}
+            onClick={handleAddRow}
             disabled={tooManyEmptyRows}
           >
             {t(i18n)`Row`}
