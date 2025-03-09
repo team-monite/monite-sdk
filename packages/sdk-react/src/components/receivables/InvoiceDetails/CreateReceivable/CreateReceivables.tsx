@@ -313,7 +313,7 @@ const CreateReceivablesBase = ({
     try {
       return window.localStorage.getItem('areFieldsAlwaysSelected') === 'true';
     } catch (error) {
-      console.warn('areFieldsAlwaysSelected not found:', error);
+      console.warn(error);
       return false;
     }
   });
