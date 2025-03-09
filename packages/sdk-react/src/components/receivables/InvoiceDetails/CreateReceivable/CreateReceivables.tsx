@@ -157,13 +157,15 @@ const CreateReceivablesBase = ({
 
   const counterpartId = watch('counterpart_id');
 
-  const initialFields = {
+  const initialSettingsFields = {
     isFulfillmentDateShown: false,
     isPurchaseOrderShown: false,
     isTermsAndConditionsShown: false,
   };
 
-  const [fields, setFields] = useState(initialFields);
+  const [visibleSettingsFields, setVisibleSettingsFields] = useState(
+    initialSettingsFields
+  );
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
@@ -320,7 +322,7 @@ const CreateReceivablesBase = ({
     if (areFieldsAlwaysSelected) {
       const storedFields = loadFieldsFromLocalStorage();
       if (storedFields) {
-        setFields(storedFields);
+        setVisibleSettingsFields(storedFields);
       }
     }
   }, [areFieldsAlwaysSelected]);
@@ -340,8 +342,8 @@ const CreateReceivablesBase = ({
   };
 
   const handleFieldChange = (fieldName: string, value: boolean) => {
-    const updatedFields = { ...fields, [fieldName]: value };
-    setFields(updatedFields);
+    const updatedFields = { ...visibleSettingsFields, [fieldName]: value };
+    setVisibleSettingsFields(updatedFields);
 
     if (areFieldsAlwaysSelected) {
       saveFieldsToLocalStorage(updatedFields);
@@ -580,7 +582,9 @@ const CreateReceivablesBase = ({
                               </Typography>
                             </Box>
                             <Switch
-                              checked={fields.isFulfillmentDateShown}
+                              checked={
+                                visibleSettingsFields.isFulfillmentDateShown
+                              }
                               onChange={(e) =>
                                 handleFieldChange(
                                   'isFulfillmentDateShown',
@@ -616,7 +620,9 @@ const CreateReceivablesBase = ({
                               </Typography>
                             </Box>
                             <Switch
-                              checked={fields.isPurchaseOrderShown}
+                              checked={
+                                visibleSettingsFields.isPurchaseOrderShown
+                              }
                               onChange={(e) =>
                                 handleFieldChange(
                                   'isPurchaseOrderShown',
@@ -652,7 +658,9 @@ const CreateReceivablesBase = ({
                               </Typography>
                             </Box>
                             <Switch
-                              checked={fields.isTermsAndConditionsShown}
+                              checked={
+                                visibleSettingsFields.isTermsAndConditionsShown
+                              }
                               onChange={(e) =>
                                 handleFieldChange(
                                   'isTermsAndConditionsShown',
@@ -782,13 +790,16 @@ const CreateReceivablesBase = ({
                 <FullfillmentSummary
                   paymentTerms={paymentTerms}
                   isPaymentTermsLoading={isPaymentTermsLoading}
-                  isFieldShown={fields.isFulfillmentDateShown}
+                  isFieldShown={visibleSettingsFields.isFulfillmentDateShown}
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />
               </Box>
               <Box>
-                <EntitySection disabled={createReceivable.isPending} />
+                <EntitySection
+                  visibleFields={visibleSettingsFields}
+                  disabled={createReceivable.isPending}
+                />
               </Box>
               <ReminderSection
                 disabled={createReceivable.isPending}

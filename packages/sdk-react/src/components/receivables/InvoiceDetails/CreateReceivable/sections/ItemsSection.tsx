@@ -533,7 +533,22 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell>
-                        <IconButton onClick={() => remove(index)}>
+                        <IconButton
+                          onClick={() => {
+                            console.log(disabledFieldsControl);
+                            const newDisabledFieldsControl = [
+                              ...disabledFieldsControl,
+                            ];
+                            newDisabledFieldsControl[index] = undefined;
+                            setDisabledFieldsControl(newDisabledFieldsControl);
+
+                            console.log(
+                              disabledFieldsControl,
+                              newDisabledFieldsControl
+                            );
+                            remove(index);
+                          }}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
