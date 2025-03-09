@@ -220,7 +220,6 @@ const CreateReceivablesBase = ({
 
   const className = 'Monite-CreateReceivable';
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
-    console.log('got here');
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
       return;

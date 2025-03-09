@@ -32,6 +32,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@faker-js/faker": "~8.0.2",
     "@hookform/resolvers": "~2.9.3",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
@@ -67,7 +68,6 @@
     "@emotion/cache": "~11.11.0",
     "@emotion/react": "~11.11.1",
     "@emotion/styled": "~11.11.0",
-    "@faker-js/faker": "~8.0.2",
     "@fontsource/roboto": "~5.0.8",
     "@hookform/devtools": "~4.3.1",
     "@lingui/cli": "~4.7.0",
@@ -89,6 +89,7 @@
     "@types/deep-eql": "~4.0.2",
     "@types/identity-obj-proxy": "^3",
     "@types/jest": "~29.5.11",
+    "@types/lodash": "~4.17.16",
     "@types/pdfobject": "~2.2.5",
     "babel-plugin-macros": "~3.1.0",
     "cross-env": "^7.0.3",

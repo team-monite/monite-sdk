@@ -116,7 +116,7 @@ const EditInvoiceDetailsContent = ({
     },
   });
 
-  const [actualCurrency, setActualCurrency] = useState(invoice.currency);
+  const actualCurrency = invoice.currency;
 
   const {
     handleSubmit,
