@@ -129,6 +129,7 @@ export const getCreateInvoiceValidationSchema = (
       .label(t(i18n)`Fulfillment date`)
       .nullable(),
     purchase_order: yup.string().label(t(i18n)`Purchase order`),
+    terms_and_conditions: yup.string().label(t(i18n)`Terms and Conditions`),
     default_billing_address_id: yup
       .string()
       .label(t(i18n)`Billing address`)
