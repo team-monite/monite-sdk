@@ -131,7 +131,7 @@ export const ItemSelector = ({
       productsInfinity
         ? productsInfinity.pages.flatMap((page) => page.data)
         : [],
-    [productsInfinity?.pages]
+    [productsInfinity]
   );
 
   const itemsAutocompleteData = useMemo<ItemSelectorOptionProps[]>(() => {
@@ -155,7 +155,7 @@ export const ItemSelector = ({
         fieldName: fieldName ?? '',
       };
     });
-  }, [flattenProducts, measureUnits?.data, fieldName]);
+  }, [flattenProducts, measureUnits, fieldName]);
 
   const handleCreateNewItem = useCallback(() => {
     setIsCreateItemOpened(true);
@@ -165,11 +165,26 @@ export const ItemSelector = ({
   const [isTyping, setIsTyping] = useState(false);
 
   const handleCustomNameChange = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (
+      //could try readding debounce
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
       setCustomName(event.target.value);
     },
     300
   );
+
+  const handleFocus = useCallback(() => setIsTyping(true), []);
+  const handleBlur = useCallback(() => {
+    setIsTyping(false);
+    const isCustomName = !itemsAutocompleteData.some(
+      (item) => item.label === customName
+    );
+
+    if (isCustomName && customName.trim() !== '') {
+      onUpdate({ id: 'custom', label: customName }, false);
+    }
+  }, [customName, itemsAutocompleteData, onUpdate]);
 
   return (
     <Controller
@@ -181,7 +196,13 @@ export const ItemSelector = ({
         );
 
         //fieldName will be inherit after value is saved (blur on create invoice or starting point edit invoice)
-        if (!isTyping && fieldName && fieldName.length > 0 && !selectedItem) {
+        if (
+          !isTyping &&
+          fieldName &&
+          fieldName.length > 0 &&
+          !customName.length &&
+          !selectedItem
+        ) {
           const searchMatch = flattenProducts?.find(
             (item) => item?.name === fieldName
           );
@@ -203,47 +224,30 @@ export const ItemSelector = ({
           ? { id: 'custom', label: customName }
           : null;
 
-        //will trigger only for existing items in catalogue
+        //will trigger only for existing items in catalogue so it is pointless to check custom scenario
         const handleItemChange = (value: ItemSelectorOptionProps | null) => {
           if (
             !value ||
             isCreateNewItemOption(value) ||
             isDividerOption(value)
           ) {
+            setCustomName('');
             field.onChange(null);
             return;
-          } else if (value && value.id === 'custom') {
+          } else if (value) {
             field.onChange(value.id);
-            if (onUpdate) {
-              onUpdate(value, false);
-            }
-          } else {
-            field.onChange(value.id);
+            setCustomName('');
             if (onUpdate) {
               onUpdate(value, true);
             }
           }
         };
 
-        const isCustomName = !itemsAutocompleteData.some(
-          (item) => item.label === customName
-        );
-
-        const handleFocus = useCallback(() => setIsTyping(true), []);
-        const handleBlur = useCallback(() => {
-          if (isCustomName && customName.trim() !== '') {
-            field.onChange('');
-            onUpdate({ id: 'custom', label: customName }, false);
-          }
-          setIsTyping(false);
-        }, [setIsTyping, customName]);
-
         return (
           <Autocomplete
             {...field}
             value={selectedItemOption}
             onChange={(_, value) => handleItemChange(value)}
-            onBlur={handleBlur}
             slotProps={{
               popper: {
                 container: root,

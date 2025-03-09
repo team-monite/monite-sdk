@@ -6,12 +6,7 @@ import {
   useMemo,
   ReactNode,
 } from 'react';
-import {
-  Controller,
-  useFieldArray,
-  useFormContext,
-  useWatch,
-} from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
@@ -191,17 +186,34 @@ export const ItemsSection = ({
 
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
-  const handleAddRow = () => {
-    const areFieldsEmpty = fields.filter((field) => field.name === '');
-    if (areFieldsEmpty.length > 4) {
-      setTooManyEmptyRows(true);
-    } else if (areFieldsEmpty.length > 1) {
-      setTooManyEmptyRows(false);
-    } else {
-      setTooManyEmptyRows(false);
-      append(createEmptyRow());
-    }
+  const countEmptyRows = (fields: any[]) => {
+    return fields.reduce(
+      (count, field) => (field.name === '' ? count + 1 : count),
+      0
+    );
   };
+
+  const handleAddRow = useCallback(() => {
+    const emptyRowCount = countEmptyRows(fields);
+
+    if (emptyRowCount > 4) {
+      setTooManyEmptyRows(true);
+      return;
+    }
+
+    setTooManyEmptyRows(false);
+    append(createEmptyRow());
+  }, [fields, append, createEmptyRow]);
+
+  const handleAutoAddRow = useCallback(() => {
+    const emptyRowCount = countEmptyRows(fields);
+
+    if (emptyRowCount > 1) {
+      return;
+    }
+
+    append(createEmptyRow());
+  }, [fields, append, createEmptyRow]);
 
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
@@ -238,7 +250,7 @@ export const ItemsSection = ({
         const updatedDisabledFields = [...disabledFieldsControl];
         updatedDisabledFields[index] = disableFields;
         setDisabledFieldsControl(updatedDisabledFields);
-        handleAddRow();
+        handleAutoAddRow();
       }
     },
     [
@@ -246,6 +258,7 @@ export const ItemsSection = ({
       defaultCurrency,
       setValue,
       measureUnits,
+      handleAutoAddRow,
       disabledFieldsControl,
     ]
   );
@@ -259,7 +272,7 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
         setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
       }
-    }, []);
+    }, [index]);
 
     return (
       <Controller
@@ -394,11 +407,6 @@ export const ItemsSection = ({
                         <Controller
                           name={`line_items.${index}.quantity`}
                           render={({ field }) => {
-                            const measureUnitId = useWatch({
-                              control,
-                              name: `line_items.${index}.measure_unit_id`,
-                            });
-
                             return (
                               <FormControl
                                 variant="standard"
@@ -537,17 +545,12 @@ export const ItemsSection = ({
                       <TableCell>
                         <IconButton
                           onClick={() => {
-                            console.log(disabledFieldsControl);
                             const newDisabledFieldsControl = [
                               ...disabledFieldsControl,
                             ];
                             newDisabledFieldsControl[index] = undefined;
                             setDisabledFieldsControl(newDisabledFieldsControl);
 
-                            console.log(
-                              disabledFieldsControl,
-                              newDisabledFieldsControl
-                            );
                             remove(index);
                           }}
                         >
@@ -645,6 +648,4 @@ export const ItemsSection = ({
   );
 };
 
-type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type VatRateListResponse = components['schemas']['VatRateListResponse'];
