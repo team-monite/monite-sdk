@@ -34,17 +34,14 @@ export type InvoiceEventPayload = BaseEventPayload & {
 
 export type PaymentsOnboardingEventPayload = BaseEventPayload & {
   entityId: string;
-  timestamp: string;
 };
 
 export type WorkingCapitalOnboardingEventPayload = BaseEventPayload & {
   entityId: string;
-  timestamp: string;
 };
 
 export type FirstInvoiceSentEventPayload = BaseEventPayload & {
   invoice: ReceivableResponseType;
-  timestamp: string;
 };
 
 export type EventPayload =
