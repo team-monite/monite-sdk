@@ -3,14 +3,14 @@ import { FULL_PERMISSION_ROLE_ID } from '@/mocks/roles/rolesFixtures';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { UserRoleDetails } from './UserRoleDetails';
+import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 
-const meta: Meta<typeof UserRoleDetails> = {
+const meta: Meta<typeof UserRoleDetailsDialog> = {
   title: 'User Roles/User Roles — Details View',
-  component: UserRoleDetails,
+  component: UserRoleDetailsDialog,
 };
 
-type Story = StoryObj<typeof UserRoleDetails>;
+type Story = StoryObj<typeof UserRoleDetailsDialog>;
 
 export const DialogDetailsView: Story = {
   args: {
@@ -18,7 +18,7 @@ export const DialogDetailsView: Story = {
   },
   render: (args) => (
     <Dialog open={true} alignDialog="right" onClose={action('onClose')}>
-      <UserRoleDetails {...args} />
+      <UserRoleDetailsDialog {...args} />
     </Dialog>
   ),
 };

@@ -3,7 +3,8 @@ import { useCallback, useId, useState } from 'react';
 import { components } from '@/api';
 import {
   ApprovalPolicyDetails,
-  UserRoleDetails,
+  UserRoleDetailsDialog,
+  UserRoleEditDialog,
   UserRolesTable,
 } from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
@@ -111,6 +112,8 @@ const RolesAndApprovalPoliciesBase = () => {
       entityUserId: user?.id,
     });
 
+  const [isRoleEditDialogOpened, setIsRoleEditDialogOpened] = useState(false);
+
   const onRoleRowClick = (id: string) => {
     setIsRoleDetailsDialogOpened(true);
     setSelectedUserRoleID(id);
@@ -118,7 +121,7 @@ const RolesAndApprovalPoliciesBase = () => {
 
   const onCreateRoleClick = () => {
     setSelectedUserRoleID(undefined);
-    setIsRoleDetailsDialogOpened(true);
+    setIsRoleEditDialogOpened(true);
   };
 
   const isRolesTab = activeTab == PageTabEnum.Roles;
@@ -157,6 +160,7 @@ const RolesAndApprovalPoliciesBase = () => {
               endIcon={
                 open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
               }
+              disabled={!isCreateRoleAllowed && !isCreatePolicyAllowed}
             >
               {t(i18n)`Create New`}
             </Button>
@@ -251,9 +255,21 @@ const RolesAndApprovalPoliciesBase = () => {
         alignDialog="right"
         onClose={() => setIsRoleDetailsDialogOpened(false)}
       >
-        <UserRoleDetails
+        <UserRoleDetailsDialog
           id={selectedUserRoleId}
-          onCreated={(role) => setSelectedUserRoleID(role.id)}
+          onClickEditRole={() => setIsRoleEditDialogOpened(true)}
+        />
+      </Dialog>
+
+      <Dialog
+        fullScreen
+        open={isRoleEditDialogOpened}
+        onClose={() => setIsRoleEditDialogOpened(false)}
+      >
+        <UserRoleEditDialog
+          id={selectedUserRoleId}
+          onCreated={() => setIsRoleEditDialogOpened(false)}
+          onUpdated={() => setIsRoleEditDialogOpened(false)}
         />
       </Dialog>
     </>
