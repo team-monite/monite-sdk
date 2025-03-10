@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   getCounterpartName,
   prepareAddressView,
@@ -40,7 +41,7 @@ interface CounterpartsAutocompleteOptionProps {
 
 type CounterpartSelectorProps = {
   disabled?: boolean;
-  counterpartAddresses: any;
+  counterpartAddresses?: components['schemas']['CounterpartAddressResourceList'];
 } & (
   | {
       isSimplified: true;
@@ -118,7 +119,7 @@ export const CounterpartSelector = ({
     const selectedCounterpart = counterparts?.data.find(
       (counterpart) => counterpart.id === counterpartId
     );
-    if (selectedCounterpart) {
+    if (selectedCounterpart && counterpartAddresses?.data[0]) {
       setAddress(
         prepareAddressView({ address: counterpartAddresses?.data[0] })
       );
@@ -201,7 +202,7 @@ export const CounterpartSelector = ({
                     required
                     error={Boolean(error)}
                     helperText={error?.message}
-                    className={`Monite-CounterpartSelector ${
+                    className={`Monite-Selector ${
                       isSimplified ? 'isSimplified' : ''
                     }`}
                     InputProps={{
