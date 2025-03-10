@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useCallback, useEffect, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -138,9 +138,32 @@ export const UserRoleEditDialog = ({
         : createInitialPermissionsState(),
     },
   });
-  const { control, handleSubmit, formState } = methods;
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = methods;
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-UserRoles-${useId()}`;
+
+  const onBeforeUnload = useCallback(
+    (event: BeforeUnloadEvent) => {
+      if (isDirty) {
+        event.preventDefault();
+        // eslint-disable-next-line lingui/no-unlocalized-strings
+        event.returnValue = 'Dirty state. Save changes before exiting.';
+      }
+    },
+    [isDirty]
+  );
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+  }, [onBeforeUnload]);
 
   const roleCreateMutation = api.roles.postRoles.useMutation(
     {},
@@ -317,20 +340,20 @@ export const UserRoleEditDialog = ({
     }
 
     return createRole(formattedData);
-    };
+  };
 
-    if (id && (isLoadingRole || isPendingRole)) {
-      return <LoadingPage />;
-    }
+  if (id && (isLoadingRole || isPendingRole)) {
+    return <LoadingPage />;
+  }
 
-    if (roleQueryError) {
-      return (
-        <NotFound
-          title={t(i18n)`Role not found`}
-          description={t(i18n)`There is no role by provided id: ${id}`}
-        />
-      );
-    }
+  if (roleQueryError) {
+    return (
+      <NotFound
+        title={t(i18n)`Role not found`}
+        description={t(i18n)`There is no role by provided id: ${id}`}
+      />
+    );
+  }
 
   return (
     <>
@@ -357,7 +380,7 @@ export const UserRoleEditDialog = ({
               disabled={
                 roleUpdateMutation.isPending ||
                 roleCreateMutation.isPending ||
-                (role && (!formState.isDirty || !isUpdateAllowed))
+                (role && (!isDirty || !isUpdateAllowed))
               }
               autoFocus
               color="primary"
