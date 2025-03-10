@@ -18,7 +18,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
       lib: {
         formats: ['cjs', 'es'], // order is important, cjs first, es second
         entry: {
-          index: resolve(__dirname, 'src/index.ts'),
           'monite-iframe-app.html': resolve(
             __dirname,
             'monite-iframe-app.html'
