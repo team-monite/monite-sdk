@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.19
+
+### Patch Changes
+
+- f1b62b9: Filter forbidden fields in update person payloads
+
 ## 4.0.0-alpha.18
 
 ### Patch Changes
