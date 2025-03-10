@@ -312,6 +312,13 @@ export const UserRoleEditDialog = ({
       },
     };
 
+    if (role?.id) {
+      return updateRole(role.id, formattedData);
+    }
+
+    return createRole(formattedData);
+    };
+
     if (id && (isLoadingRole || isPendingRole)) {
       return <LoadingPage />;
     }
@@ -324,13 +331,6 @@ export const UserRoleEditDialog = ({
         />
       );
     }
-
-    if (role?.id) {
-      return updateRole(role.id, formattedData);
-    }
-
-    return createRole(formattedData);
-  };
 
   return (
     <>
