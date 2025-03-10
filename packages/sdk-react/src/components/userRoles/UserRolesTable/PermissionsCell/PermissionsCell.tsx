@@ -4,6 +4,10 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Grid } from '@mui/material';
 
+import {
+  isCommonPermissionObjectType,
+  isPayablePermissionObjectType,
+} from '../../UserRoleDetails/helpers';
 import { Permission } from './Permission';
 
 interface PermissionsCellProps {
@@ -21,9 +25,20 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
     ?.filter((object) => !!object.object_type)
     .filter(
       (object) =>
+        isCommonPermissionObjectType(object.object_type) ||
+        isPayablePermissionObjectType(object.object_type)
+    )
+    .filter(
+      (object) =>
         object.actions &&
         !object.actions.every((action) => action.permission == 'not_allowed')
-    );
+    )
+    .sort((a, b) => {
+      if (a.object_type && b.object_type) {
+        return a.object_type.localeCompare(b.object_type);
+      }
+      return 0;
+    });
 
   if (!filteredPermissionsObjects?.length) {
     return <Box>{t(i18n)`None`}</Box>;

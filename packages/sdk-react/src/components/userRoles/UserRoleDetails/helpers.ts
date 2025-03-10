@@ -114,7 +114,13 @@ export const transformPermissionsToComponentFormat = (
     .filter(
       (permission): permission is CommonPermissionRow | PayablePermissionRow =>
         permission !== null
-    );
+    )
+    .sort((a, b) => {
+      if (a.name && b.name) {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
 };
 
 export const createInitialPermissionsState = (): PermissionRow[] => {
@@ -125,5 +131,10 @@ export const createInitialPermissionsState = (): PermissionRow[] => {
     ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) =>
       createInitialPermissionState(objectType, ActionEnum)
     ),
-  ];
+  ].sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name.localeCompare(b.name);
+    }
+    return 0;
+  });
 };
