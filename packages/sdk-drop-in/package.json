@@ -1,28 +1,33 @@
 {
   "name": "@monite/sdk-drop-in",
-  "version": "2.0.0-alpha.16",
+  "version": "2.0.0-alpha.17",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
+  "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/monite-app.js",
-      "require": "./dist/monite-app.cjs"
+      "require": "./dist/monite-app.cjs",
+      "types": "./dist/types/src/custom-elements/monite-app.d.ts"
     },
     "./monite-iframe-app": {
       "import": "./dist/monite-iframe-app.js",
-      "require": "./dist/monite-iframe-app.cjs"
+      "require": "./dist/monite-iframe-app.cjs",
+      "types": "./dist/types/src/monite-iframe-app.d.ts"
     },
     "./monite-iframe-app-communicator": {
       "import": "./dist/monite-iframe-app-communicator.js",
-      "require": "./dist/monite-iframe-app-communicator.cjs"
+      "require": "./dist/monite-iframe-app-communicator.cjs",
+      "types": "./dist/types/src/monite-iframe-app-communicator.d.ts"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
     "dev": "vite --config vite.config.dev.ts --port 5174",
-    "build": "vite build",
+    "build": "vite build && npm run build:types",
+    "build:types": "tsc --emitDeclarationOnly --declaration --noEmit false --declarationDir dist/types",
     "preview": "vite preview",
     "clean": "rimraf dist/",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
@@ -61,6 +66,7 @@
     "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "@vitejs/plugin-react": "~4.3.4",
     "@vitejs/plugin-react-swc": "~3.7.1",
     "eslint": "~8.57.0",
     "playwright": "~1.45.0",
