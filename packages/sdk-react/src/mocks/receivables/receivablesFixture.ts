@@ -25,15 +25,24 @@ import {
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 
+type Schemas = components['schemas'];
+type InvoiceResponsePayload = Schemas['InvoiceResponsePayload'];
+
 export type ReceivablesListFixture = {
-  quote: Array<components['schemas']['QuoteResponsePayload']>;
-  invoice: Array<components['schemas']['InvoiceResponsePayload']>;
-  credit_note: Array<components['schemas']['CreditNoteResponsePayload']>;
+  quote: Array<Schemas['QuoteResponsePayload']>;
+  invoice: Array<InvoiceResponsePayload>;
+  credit_note: Array<Schemas['CreditNoteResponsePayload']>;
 };
 
+
+export type EmailInvoiceContact = Schemas['CounterpartContactResponse'];
+export type EmailInvoicePreview = { html: string };
+export type EmailInvoice = InvoiceResponsePayload;
+export type IssuedInvoiceStatus = Extract<InvoiceResponsePayload['status'], 'issued' | 'partially_paid' | 'paid' | 'overdue'>;
+
 function createRandomEntity():
-  | components['schemas']['ReceivableEntityOrganization']
-  | components['schemas']['ReceivableEntityIndividual'] {
+  | Schemas['ReceivableEntityOrganization']
+  | Schemas['ReceivableEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
@@ -55,8 +64,8 @@ function createRandomEntity():
 }
 
 function createRandomInvoiceEntity():
-  | components['schemas']['ReceivableEntityOrganization']
-  | components['schemas']['ReceivableEntityIndividual'] {
+  | Schemas['ReceivableEntityOrganization']
+  | Schemas['ReceivableEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
@@ -82,7 +91,7 @@ function createRandomInvoiceEntity():
   }
 }
 
-function createRandomLineItem(): components['schemas']['ResponseItem'] {
+function createRandomLineItem(): Schemas['ResponseItem'] {
   const productVatId = getRandomItemFromArray(vatRatesFixture.data);
 
   return {
@@ -115,7 +124,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
   };
 }
 
-function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
+function createRandomQuote(): Schemas['QuoteResponsePayload'] {
   return {
     type: 'quote',
     id: faker.string.uuid(),
@@ -158,7 +167,7 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
 
 function createRandomInvoice(
   index: number
-): components['schemas']['InvoiceResponsePayload'] {
+): InvoiceResponsePayload {
   const randomExistingCounterpart = getRandomItemFromArray(
     counterpartListFixture
   );
@@ -167,7 +176,7 @@ function createRandomInvoice(
     throw new Error('No counterpart found');
   }
 
-  const status: components['schemas']['ReceivablesStatusEnum'] =
+  const status: Schemas['ReceivablesStatusEnum'] =
     index === 0
       ? 'draft'
       : index === 1
@@ -175,7 +184,7 @@ function createRandomInvoice(
       : getRandomItemFromArray(ReceivablesStatusEnum);
 
   const counterpart_type = getRandomItemFromArray<
-    components['schemas']['CounterpartType']
+    Schemas['CounterpartType']
   >(['individual', 'organization']);
 
   const lineItems = new Array(getRandomNumber(1, 15))
@@ -302,7 +311,7 @@ function createRandomInvoice(
   };
 }
 
-function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayload'] {
+function createRandomCreditNote(): Schemas['CreditNoteResponsePayload'] {
   return {
     type: 'credit_note',
     id: faker.string.uuid(),

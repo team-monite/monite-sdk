@@ -45,6 +45,7 @@ import {
   FormContent,
 } from './EmailInvoiceDetails.form.components';
 import { getDefaultContact } from './helpers/contacts';
+import { isInvoiceIssued } from './helpers/invoiceStatus';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
@@ -58,6 +59,7 @@ interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
   body: string;
   to: string;
   isLoading: boolean;
+  isIssued?: boolean;
 }
 
 export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
@@ -110,6 +112,7 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
         body={body}
         subject={subject}
         isLoading={isLoading}
+        isIssued={isInvoiceIssued(receivable?.status)}
       />
     </MoniteScopedProviders>
   );
@@ -121,6 +124,7 @@ export const EmailInvoiceDetailsBase = ({
   body,
   to,
   isLoading,
+  isIssued,
   isFirstInvoice,
   onClose,
   onSendEmail,
@@ -318,7 +322,9 @@ export const EmailInvoiceDetailsBase = ({
                   form={formName}
                   disabled={isDisabled || isLoading}
                   data-testid="issue-and-send-button"
-                >{t(i18n)`Send`}</Button>
+                >
+                  {isIssued ? t(i18n)`Send` : t(i18n)`Issue and Send`}
+                </Button>
               </Stack>
             </Grid>
           </Grid>
