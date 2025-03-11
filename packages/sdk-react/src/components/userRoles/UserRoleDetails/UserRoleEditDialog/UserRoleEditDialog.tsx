@@ -372,23 +372,20 @@ export const UserRoleEditDialog = ({
           <Typography variant="h3" flex={1} ml={2}>
             {role ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
           </Typography>
-          <Stack direction="row" spacing={2}>
-            {role && <Button color="error">{t(i18n)`Delete`}</Button>}
-            <Button
-              type="submit"
-              form={formName}
-              disabled={
-                roleUpdateMutation.isPending ||
-                roleCreateMutation.isPending ||
-                (role && (!isDirty || !isUpdateAllowed))
-              }
-              autoFocus
-              color="primary"
-              variant="contained"
-            >
-              {t(i18n)`Save`}
-            </Button>
-          </Stack>
+          <Button
+            type="submit"
+            form={formName}
+            disabled={
+              roleUpdateMutation.isPending ||
+              roleCreateMutation.isPending ||
+              (role && (!isDirty || !isUpdateAllowed))
+            }
+            autoFocus
+            color="primary"
+            variant="contained"
+          >
+            {t(i18n)`Save`}
+          </Button>
         </Toolbar>
       </AppBar>
 

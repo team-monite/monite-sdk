@@ -291,12 +291,9 @@ export const UserRoleDetailsDialog = ({
         <>
           <Divider />
           <DialogActions>
-            <Stack direction="row" spacing={2}>
-              <Button color="error">{t(i18n)`Delete`}</Button>
-              <Button variant="outlined" onClick={onClickEditRole}>{t(
-                i18n
-              )`Edit`}</Button>
-            </Stack>
+            <Button variant="outlined" onClick={onClickEditRole}>{t(
+              i18n
+            )`Edit`}</Button>
           </DialogActions>
         </>
       )}
