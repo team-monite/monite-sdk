@@ -11,6 +11,7 @@
     "@monite/sdk-react": "3.19.0"
   },
   "changesets": [
+    "afraid-crews-live",
     "afraid-hornets-knock",
     "beige-apples-wait",
     "beige-ladybugs-remain",
@@ -20,6 +21,7 @@
     "dry-masks-sleep",
     "early-jokes-wash",
     "eighty-phones-worry",
+    "five-brooms-sparkle",
     "five-moons-rush",
     "friendly-shrimps-approve",
     "giant-insects-drum",
@@ -30,6 +32,7 @@
     "moody-ravens-do",
     "new-bottles-tap",
     "plenty-donuts-kneel",
+    "polite-bananas-rest",
     "polite-dryers-bake",
     "popular-planes-travel",
     "quiet-sheep-lie",
@@ -53,6 +56,7 @@
     "tricky-coins-try",
     "weak-feet-try",
     "weak-knives-pull",
+    "witty-fans-hide",
     "young-bananas-sin",
     "young-ears-count"
   ]

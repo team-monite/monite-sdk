@@ -151,11 +151,11 @@ export function enhanceComponentSettings(
  */
 export function addMoniteEventListener<T extends EventPayload>(
   eventType: MoniteEventTypes,
-  callback: (event: CustomEvent<MoniteEvent<T>>) => void
+  callback: (event: CustomEvent<MoniteEvent<T>>) => void,
+  target: Element | Document = getMoniteAppEventTarget()
 ): () => void {
   const eventName = `${MONITE_EVENT_PREFIX}:${eventType}`;
   const wrappedCallback = callback as EventListener;
-  const target = getMoniteAppEventTarget();
 
   target.addEventListener(eventName, wrappedCallback);
 
