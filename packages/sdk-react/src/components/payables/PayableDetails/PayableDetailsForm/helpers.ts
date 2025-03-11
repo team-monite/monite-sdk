@@ -214,7 +214,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total: discount && discount > 0 ? total - discount : total,
+    total: total - (discount ?? 0),
   };
 };
 

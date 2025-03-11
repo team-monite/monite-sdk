@@ -149,7 +149,7 @@ const getValidationSchema = (i18n: I18n) =>
             ? schema.required()
             : schema
         ),
-      discount: yup.number().nullable().positive().min(0),
+      discount: yup.number().nullable().min(0),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
