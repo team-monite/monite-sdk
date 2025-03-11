@@ -74,7 +74,7 @@ describe('PermissionsCell', () => {
       );
     });
 
-    const tooltipElement = await screen.findByText(/Read/);
+    const tooltipElement = await screen.findByText(/View/);
 
     expect(tooltipElement).toBeInTheDocument();
   });

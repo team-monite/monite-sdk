@@ -3,7 +3,7 @@ import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
+import { useDialog } from '@/components/Dialog';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
   transformPermissionsToComponentFormat,

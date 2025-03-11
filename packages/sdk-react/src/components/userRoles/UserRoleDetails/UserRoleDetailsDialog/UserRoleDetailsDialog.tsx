@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { useDialog } from '@/components';
+import { useDialog } from '@/components/Dialog';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import {
   transformPermissionsToComponentFormat,
