@@ -429,7 +429,7 @@ const PayableDetailsInfoBase = ({
                       {item.subtotal &&
                         item.quantity &&
                         formatFromMinorUnits(
-                          item.subtotal / item.quantity ?? 0,
+                          item.subtotal / item.quantity,
                           payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
@@ -476,6 +476,17 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
+                {Boolean(payable.discount) && payable.currency && (
+                  <TableRow>
+                    <TableCell>{t(i18n)`Discount`}</TableCell>
+                    <TableCell align="right">
+                      {formatCurrencyToDisplay(
+                        payable.discount ?? 0,
+                        payable.currency
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <TableCell>{t(i18n)`VAT Total`}</TableCell>
                   <TableCell align="right">

@@ -35,6 +35,7 @@ export interface PayableDetailsFormFields {
   currency: components['schemas']['CurrencyEnum'];
   tags: Option[];
   lineItems: LineItem[];
+  discount?: number | null;
 }
 
 export interface SubmitPayload extends PayableDetailsFormFields {
@@ -97,6 +98,7 @@ export const prepareDefaultValues = (
       dueDate: undefined,
       currency: 'EUR',
       tags: [],
+      discount: null,
       lineItems: [
         {
           id: '',
@@ -117,6 +119,7 @@ export const prepareDefaultValues = (
     due_date,
     currency,
     tags,
+    discount,
   } = payable;
 
   return {
@@ -127,6 +130,7 @@ export const prepareDefaultValues = (
     dueDate: due_date ? new Date(due_date) : undefined,
     currency: currency ?? 'EUR',
     tags: tagsToSelect(tags),
+    discount: discount || null,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -143,6 +147,7 @@ export const prepareDefaultValues = (
 };
 
 export const prepareSubmit = ({
+  discount,
   invoiceNumber,
   counterpart,
   counterpartBankAccount,
@@ -153,6 +158,7 @@ export const prepareSubmit = ({
   counterpartAddressId,
 }: SubmitPayload): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
+  discount: discount ?? 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
@@ -185,7 +191,8 @@ export const calculateTotalPriceForLineItem = (lineItem: LineItem): number => {
 };
 
 export const calculateTotalsForPayable = (
-  currentLineItems: LineItem[]
+  currentLineItems: LineItem[],
+  discount?: number | null
 ): { subtotal: number; taxes: number; total: number } => {
   const { subtotal, taxes, total } = currentLineItems.reduce(
     (result, lineItem) => {
@@ -207,7 +214,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total,
+    total: total - (discount ?? 0),
   };
 };
 
