@@ -84,10 +84,10 @@ export const InvoicePreview = ({
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
   const sanitizedItems = items
-    .filter((item) => item.name !== '')
+    .filter((item) => item.product.name !== '')
     .map((item) => ({
       ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
-      smallest_amount: item.smallest_amount ?? undefined,
+      smallest_amount: item.product.smallest_amount ?? undefined,
     }));
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
@@ -143,7 +143,7 @@ export const InvoicePreview = ({
       const taxRate = Number(taxRateKey);
       const items = groupedItems[taxRate];
       const totalTax = items.reduce((sum, item) => {
-        const itemPrice = item.price?.value || 0;
+        const itemPrice = item.product?.price?.value || 0;
         const itemTax = (itemPrice * item.quantity * taxRate) / 100;
         return sum + itemTax;
       }, 0);
@@ -313,18 +313,20 @@ export const InvoicePreview = ({
                 {sanitizedItems.length > 0 ? (
                   sanitizedItems.map((item) => (
                     <tr>
-                      <td style={{ maxWidth: '120px' }}>{item?.name}</td>
+                      <td style={{ maxWidth: '120px' }}>
+                        {item?.product.name}
+                      </td>
                       <td>{item?.quantity}</td>
                       <td>
-                        {item?.measure_unit_id && (
-                          <MeasureUnit unitId={item.measure_unit_id} />
+                        {item?.product.measure_unit_id && (
+                          <MeasureUnit unitId={item.product.measure_unit_id} />
                         )}
                       </td>
                       <td>
-                        {item.price &&
+                        {item.product.price &&
                           formatCurrencyToDisplay(
-                            item.price.value,
-                            item.price.currency,
+                            item.product.price.value,
+                            item.product.price.currency,
                             false
                           )}
                       </td>

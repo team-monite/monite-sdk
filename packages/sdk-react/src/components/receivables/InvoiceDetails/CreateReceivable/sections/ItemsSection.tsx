@@ -174,10 +174,14 @@ export const ItemsSection = ({
 
   const createEmptyRow = useCallback(
     () => ({
-      product_id: faker.string.uuid(),
+      product: {
+        price: {
+          value: 0,
+          currency: actualCurrency || defaultCurrency || 'USD',
+        },
+        name: '',
+      },
       quantity: 1,
-      price: { value: 0, currency: actualCurrency || defaultCurrency || 'USD' },
-      name: '',
       vat_rate_id: highestVatRate?.id,
       vat_rate_value: highestVatRate?.value,
     }),
@@ -188,7 +192,7 @@ export const ItemsSection = ({
 
   const countEmptyRows = (fields: any[]) => {
     return fields.reduce(
-      (count, field) => (field.name === '' ? count + 1 : count),
+      (count, field) => (field.product?.name === '' ? count + 1 : count),
       0
     );
   };
@@ -204,6 +208,8 @@ export const ItemsSection = ({
     setTooManyEmptyRows(false);
     append(createEmptyRow());
   }, [fields, append, createEmptyRow]);
+
+  console.log(fields);
 
   const handleAutoAddRow = useCallback(() => {
     const emptyRowCount = countEmptyRows(fields);
@@ -230,23 +236,23 @@ export const ItemsSection = ({
   const handleUpdate = useCallback(
     (index: number, item: any, disableFields?: boolean) => {
       if (item) {
-        setValue(`line_items.${index}.name`, item.label);
+        setValue(`line_items.${index}.product.name`, item.label);
         setValue(
-          `line_items.${index}.product_id`,
-          item.id === 'custom' ? faker.string.uuid() : item.id
+          `line_items.${index}.product.price.value`,
+          item.price?.value || 0
         );
-        setValue(`line_items.${index}.price.value`, item.price?.value || 0);
         setValue(
-          `line_items.${index}.price.currency`,
+          `line_items.${index}.product.price.currency`,
           actualCurrency || defaultCurrency || 'USD'
         );
         setValue(
-          `line_items.${index}.measure_unit_id`,
+          `line_items.${index}.product.measure_unit_id`,
           item.measureUnit?.id || measureUnits?.data[0].id
         );
         setValue(`line_items.${index}.vat_rate_id`, item.vat_rate_id);
         setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
+        setValue(`line_items.${index}.product.type`, 'product');
         const updatedDisabledFields = [...disabledFieldsControl];
         updatedDisabledFields[index] = disableFields;
         setDisabledFieldsControl(updatedDisabledFields);
@@ -386,7 +392,7 @@ export const ItemsSection = ({
                 fields.map((field, index) => {
                   return (
                     <TableRow
-                      key={field.product_id}
+                      key={faker.string.uuid()}
                       className={tableRowClassName}
                     >
                       <TableCell sx={{ width: '40%' }}>
@@ -395,7 +401,7 @@ export const ItemsSection = ({
                           onUpdate={(item, disableFields) =>
                             handleUpdate(index, item, disableFields)
                           }
-                          fieldName={field.name}
+                          fieldName={field.product?.name}
                           index={index}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
@@ -421,7 +427,7 @@ export const ItemsSection = ({
                                       ?.length && (
                                       <InputAdornment position="end">
                                         <Controller
-                                          name={`line_items.${index}.measure_unit_id`}
+                                          name={`line_items.${index}.product.measure_unit_id`}
                                           control={control}
                                           defaultValue={
                                             measureUnits.data[0]?.id
@@ -437,7 +443,7 @@ export const ItemsSection = ({
                                                 const selectedUnitId =
                                                   e.target.value;
                                                 setValue(
-                                                  `line_items.${index}.measure_unit_id`,
+                                                  `line_items.${index}.product.measure_unit_id`,
                                                   selectedUnitId
                                                 );
                                               }}

@@ -33,7 +33,7 @@ export const useCreateInvoiceProductsTable = ({
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
-      const price = field.price?.value ?? 0;
+      const price = field.product?.price?.value ?? 0;
       const quantity = field.quantity;
 
       return acc + price * quantity;
@@ -41,8 +41,8 @@ export const useCreateInvoiceProductsTable = ({
 
     const currency =
       actualCurrency ||
-      lineItems.find((field) => Boolean(field.price?.currency))?.price
-        ?.currency;
+      lineItems.find((field) => Boolean(field.product?.price?.currency))
+        ?.product?.price?.currency;
 
     if (!currency) {
       return undefined;
@@ -57,7 +57,7 @@ export const useCreateInvoiceProductsTable = ({
 
   const totalTaxes = useMemo(() => {
     const taxes = lineItems.reduce((acc, field) => {
-      const price = field.price?.value ?? 0;
+      const price = field.product?.price?.value ?? 0;
       const quantity = field.quantity;
       const subtotalPrice = price * quantity;
 
@@ -75,8 +75,8 @@ export const useCreateInvoiceProductsTable = ({
 
     const currency =
       actualCurrency ||
-      lineItems.find((field) => Boolean(field.price?.currency))?.price
-        ?.currency;
+      lineItems.find((field) => Boolean(field.product?.price?.currency))
+        ?.product?.price?.currency;
 
     if (!currency) {
       return undefined;

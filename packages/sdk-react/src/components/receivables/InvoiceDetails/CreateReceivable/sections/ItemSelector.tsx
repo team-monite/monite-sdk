@@ -165,10 +165,7 @@ export const ItemSelector = ({
   const [isTyping, setIsTyping] = useState(false);
 
   const handleCustomNameChange = debounce(
-    (
-      //could try readding debounce
-      event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       setCustomName(event.target.value);
     },
     300
