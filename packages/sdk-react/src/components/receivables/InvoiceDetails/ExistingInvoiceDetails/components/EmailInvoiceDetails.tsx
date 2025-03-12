@@ -1,5 +1,5 @@
+import React, { FC } from 'react';
 import {
-  BaseSyntheticEvent,
   useCallback,
   useEffect,
   useId,
@@ -7,18 +7,14 @@ import {
   useState,
 } from 'react';
 import {
-  Control,
-  Controller,
   useForm,
   UseFormGetValues,
 } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useMe,
   useMyEntity,
@@ -42,29 +38,31 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Button,
-  Card,
-  CardContent,
   CircularProgress,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   Grid,
-  MenuItem,
-  Select,
   Stack,
-  TextField,
   Toolbar,
   Typography,
+  Box,
 } from '@mui/material';
 
-import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
-import { getDefaultContact, getContactList } from './helpers/contacts';
+import { 
+  getEmailInvoiceDetailsSchema,
+} from './EmailInvoiceDetails.form';
+import {
+  type ControlProps,
+  Form,
+  FormContent,
+} from './EmailInvoiceDetails.form.components';
+import { getDefaultContact } from './helpers/contacts';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
 }
+
 interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
   subject: string;
   body: string;
@@ -72,7 +70,7 @@ interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
   isLoading: boolean;
 }
 
-export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
+export const EmailInvoiceDetails: FC<EmailInvoiceDetailsProps> = (props) => {
   const { i18n } = useLingui();
   const { data: me, isLoading: isLoadingUser } = useMe();
   const { data: receivable, isLoading: isLoadingReceivable } =
@@ -127,14 +125,14 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
   );
 };
 
-const EmailInvoiceDetailsBase = ({
+const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
   invoiceId,
   subject,
   body,
   to,
   isLoading,
   onClose,
-}: EmailInvoiceFormProps) => {
+}) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
 
@@ -145,7 +143,6 @@ const EmailInvoiceDetailsBase = ({
         subject,
         body,
         to,
-        // TODO: add support for multiple recipients, cc and bcc fields
       }),
       [subject, body, to]
     ),
@@ -155,9 +152,6 @@ const EmailInvoiceDetailsBase = ({
     reset({ subject, body, to });
   }, [body, reset, subject, to]);
 
-  // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
-  // TODO: Form persistance disabled as requested by Joao on Sep 5
-  // useFormPersist(`Monite-EmailInvoiceDetails-FormState`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
 
@@ -176,7 +170,7 @@ const EmailInvoiceDetailsBase = ({
   const formName = `Monite-Form-emailInvoiceDetails-${useId()}`;
 
   const handleIssueAndSend = useCallback(
-    (e: BaseSyntheticEvent) => {
+    (e: React.FormEvent) => {
       e.preventDefault();
       const createPaymentLink = createPaymentLinkMutation.mutateAsync;
       const issue = issueMutation.mutateAsync;
@@ -190,10 +184,6 @@ const EmailInvoiceDetailsBase = ({
             )
           : [];
 
-        /**
-         * We can't create a payment link if no payment methods are available.
-         * As an MVP approach, we should show a message to the user and prevent the email from being sent.
-         */
         if (availablePaymentMethods.length === 0) {
           toast.error(
             t(
@@ -203,16 +193,6 @@ const EmailInvoiceDetailsBase = ({
         } else {
           await issue(undefined);
 
-          /**
-           * We need to create a payment link for the invoice before sending the email.
-           * Otherwise, the recipient won't be able to pay the invoice.
-           *
-           * The link will be automatically attached to the email because we provide `object` field
-           *  with the invoice id and type
-           *
-           * For more information, you could check Monite API documentation:
-           * @see {@link https://docs.monite.com/docs/payment-links#22-payment-link-for-a-receivable}
-           */
           await createPaymentLink({
             recipient: {
               id: entityId,
@@ -228,11 +208,6 @@ const EmailInvoiceDetailsBase = ({
           });
         }
 
-        // TODO: provide support for multiple recipients, cc and bcc fields
-        /**
-         * If `payment methods` available, we should create a payment link.
-         * If not, we should send the email without a payment link.
-         */
         sendEmail(
           {
             body_text: values.body,
@@ -342,184 +317,51 @@ const EmailInvoiceDetailsBase = ({
         sx={{
           mt: isPreview ? 0 : 4,
           p: isPreview ? 0 : '0 32px 32px 32px',
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {isLoading ? (
-          <CenteredContentBox className="Monite-LoadingPage">
-            <CircularProgress />
-          </CenteredContentBox>
-        ) : (
-          presentation == FormPresentation.Edit && (
-            <Form
-              invoiceId={invoiceId}
-              formName={formName}
-              handleIssueAndSend={handleIssueAndSend}
-              control={control}
-              isDisabled={isDisabled}
-            />
-          )
-        )}
-        {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
+        <Form
+          formName={formName}
+          handleIssueAndSend={handleIssueAndSend}
+          style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            minHeight: 0,
+            width: '100%',
+          }}
+        >
+          {isLoading ? (
+            <CenteredContentBox className="Monite-LoadingPage">
+              <CircularProgress />
+            </CenteredContentBox>
+          ) : (
+            presentation == FormPresentation.Edit && (
+              <FormContent
+                invoiceId={invoiceId}
+                control={control}
+                isDisabled={isDisabled}
+              />
+            )
+          )}
+          {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
+        </Form>
       </DialogContent>
     </>
   );
 };
 
-interface FormProps {
-  subject: string;
-  body: string;
-  to: string;
+interface PreviewProps {
+  invoiceId: string;
+  getValues: UseFormGetValues<ControlProps>;
 }
 
-const RecipientSelector = ({
-  invoiceId,
-  control,
-}: {
-  invoiceId: string;
-  control: Control<FormProps>;
-}) => {
-  const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
-  const { data: receivable } = useReceivableById(invoiceId);
-  const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
-
-  const { root } = useRootElements();
-
-  if (isLoading) return <CircularProgress />;
-
-  const defaultContact = getDefaultContact(
-    contacts,
-    counterpart as CounterpartOrganizationRootResponse
-  );
-
-  return (
-    <Controller
-      name="to"
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <FormControl
-          variant="standard"
-          required
-          fullWidth
-          error={Boolean(error)}
-        >
-          <Select
-            MenuProps={{ container: root }}
-            className="Monite-NakedField Monite-RecipientSelector"
-            {...field}
-          >
-            {getContactList(contacts, defaultContact).map((contact) => (
-              <MenuItem key={contact.id} value={contact.email}>
-                <DefaultEmail
-                  email={contact.email ?? ''}
-                  isDefault={contact.is_default}
-                />
-              </MenuItem>
-            ))}
-          </Select>
-          {error && <FormHelperText>{error.message}</FormHelperText>}
-        </FormControl>
-      )}
-    />
-  );
-};
-
-const Form = ({
-  invoiceId,
-  formName,
-  handleIssueAndSend,
-  control,
-  isDisabled,
-}: {
-  invoiceId: string;
-  formName: string;
-  handleIssueAndSend: (e: BaseSyntheticEvent) => void;
-  control: Control<FormProps>;
-  isDisabled: boolean;
-}) => {
-  const { i18n } = useLingui();
-
-  return (
-    <form id={formName} noValidate onSubmit={handleIssueAndSend}>
-      <Card sx={{ mb: 3 }}>
-        <CardContent
-          sx={{
-            px: 3,
-            pt: 1,
-            pb: 1,
-            '&:last-child': { pb: 1 }, // last-child is necessary to override default style of the MUI theme
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Typography variant="body2" sx={{ minWidth: '52px' }}>{t(
-              i18n
-            )`To`}</Typography>
-            <RecipientSelector invoiceId={invoiceId} control={control} />
-          </Stack>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent
-          sx={{
-            px: 3,
-            py: 1,
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: 'divider',
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Typography variant="body2">{t(i18n)`Subject`}</Typography>
-            <Controller
-              name="subject"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  variant="standard"
-                  className="Monite-NakedField"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  required
-                  {...field}
-                  disabled={isDisabled}
-                />
-              )}
-            />
-          </Stack>
-        </CardContent>
-        <CardContent sx={{ pl: 3, pr: 3, pb: 3, pt: 1 }}>
-          <Controller
-            name="body"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                id={field.name}
-                variant="standard"
-                className="Monite-NakedField"
-                fullWidth
-                error={Boolean(error)}
-                helperText={error?.message}
-                required
-                multiline
-                rows={8}
-                {...field}
-                disabled={isDisabled}
-              />
-            )}
-          />
-        </CardContent>
-      </Card>
-    </form>
-  );
-};
-
-const Preview = ({
+const Preview: FC<PreviewProps> = ({
   invoiceId,
   getValues,
-}: {
-  invoiceId: string;
-  getValues: UseFormGetValues<FormProps>;
 }) => {
   const { i18n } = useLingui();
   const { subject, body } = getValues();
@@ -530,7 +372,13 @@ const Preview = ({
   );
 
   return (
-    <>
+    <Box sx={{ 
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: 0,
+      overflow: 'hidden'
+    }}>
       {isLoading && (
         <CenteredContentBox className="Monite-LoadingPage">
           <CircularProgress />
@@ -542,8 +390,8 @@ const Preview = ({
           style={{
             width: '100%',
             height: '100%',
-            marginBottom: '-16px', // Margin is necessary to avoid vertical scrollbar on the iframe container element. It's not clear why, but it helps.
             border: 0,
+            flex: 1,
           }}
         ></iframe>
       )}
@@ -572,7 +420,7 @@ const Preview = ({
           </Stack>
         </CenteredContentBox>
       )}
-    </>
+    </Box>
   );
 };
 
