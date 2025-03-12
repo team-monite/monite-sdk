@@ -242,7 +242,7 @@ const CreateReceivablesBase = ({
     );
 
     const filteredLineItems = values.line_items.filter((item) => {
-      return item.name?.trim() !== '';
+      return item.product?.name?.trim() !== '';
     });
 
     const invoicePayload: Omit<
@@ -259,7 +259,14 @@ const CreateReceivablesBase = ({
       payment_terms_id: values.payment_terms_id,
       line_items: filteredLineItems.map((item) => ({
         quantity: item.quantity,
-        product_id: item.product_id,
+        product: {
+          name: item.product.name,
+          price: {
+            currency: item.product.price.currency,
+            value: item.product.price.value,
+          },
+          type: 'product',
+        },
         ...(isNonVatSupported
           ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
           : { vat_rate_id: item.vat_rate_id }),
@@ -282,6 +289,8 @@ const CreateReceivablesBase = ({
       overdue_reminder_id: values.overdue_reminder_id || undefined,
       tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
     };
+
+    console.log({ invoicePayload });
 
     createReceivable.mutate(
       invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
@@ -366,7 +375,7 @@ const CreateReceivablesBase = ({
   const handleCurrencySubmit = () => {
     if (tempCurrency !== actualCurrency) {
       const validLineItems = lineItems.filter((item) => {
-        return item.name?.trim() !== '';
+        return item.product?.name?.trim() !== '';
       });
 
       if (validLineItems.length) {
@@ -638,7 +647,7 @@ const CreateReceivablesBase = ({
                           </Box>
                           {/* terms and conditions */}
                           <Box
-                            display="flex"
+                            display="none" //change to flex when backend is ready
                             alignItems="start"
                             justifyContent="space-between"
                             sx={{

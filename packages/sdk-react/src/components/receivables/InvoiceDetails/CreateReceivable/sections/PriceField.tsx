@@ -13,7 +13,7 @@ export const PriceField = ({ index, currency, disabled, control }: any) => {
 
   const fieldValue = useWatch({
     control,
-    name: `line_items.${index}.price.value`,
+    name: `line_items.${index}.product.price.value`,
   });
 
   const [isTyping, setIsTyping] = useState(false);
@@ -74,7 +74,7 @@ export const PriceField = ({ index, currency, disabled, control }: any) => {
 
   return (
     <Controller
-      name={`line_items.${index}.price.value`}
+      name={`line_items.${index}.product.price.value`}
       control={control}
       disabled={disabled}
       render={({ field: controllerField, fieldState: { error } }) => (

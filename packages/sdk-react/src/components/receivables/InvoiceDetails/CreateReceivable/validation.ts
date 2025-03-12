@@ -32,6 +32,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
           .min(0.1)
           .label(t(i18n)`Quantity`)
           .when('smallest_amount', (smallestAmount, schema) => {
+            // should be product.smallest_amount?
             if (!smallestAmount) {
               return schema;
             }
@@ -43,10 +44,6 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
               )`Quantity must be greater than or equal to the smallest amount`
             );
           })
-          .required(),
-        product_id: yup
-          .string()
-          .label(t(i18n)`Product`)
           .required(),
         ...(isNonVatSupported
           ? {
@@ -74,31 +71,41 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
                 .label(t(i18n)`VAT`)
                 .required(),
             }),
-        name: yup
-          .string()
-          .label(t(i18n)`Name`)
-          .required(),
-        price: yup
+        product: yup
           .object({
-            currency: yup
-              .mixed<(typeof CurrencyEnum)[number]>()
-              .oneOf(CurrencyEnum)
-              .label(t(i18n)`Currency`)
+            name: yup
+              .string()
+              .label(t(i18n)`Name`)
               .required(),
-            value: yup
+            price: yup
+              .object({
+                currency: yup
+                  .mixed<(typeof CurrencyEnum)[number]>()
+                  .oneOf(CurrencyEnum)
+                  .label(t(i18n)`Currency`)
+                  .required(),
+                value: yup
+                  .number()
+                  .label(t(i18n)`Price`)
+                  .required(),
+              })
+              .label(t(i18n)`Price`),
+            measure_unit_id: yup
+              .string()
+              .label(t(i18n)`Measure unit`)
+              .required(),
+            smallest_amount: yup
               .number()
-              .label(t(i18n)`Price`)
+              .nullable()
+              .label(t(i18n)`Smallest amount`),
+            type: yup
+              .string()
+              .oneOf(['product', 'service'])
+              .label(t(i18n)`Type`)
               .required(),
           })
-          .label(t(i18n)`Price`),
-        measure_unit_id: yup
-          .string()
-          .label(t(i18n)`Measure unit`)
+          .label(t(i18n)`Product`)
           .required(),
-        smallest_amount: yup
-          .number()
-          .nullable()
-          .label(t(i18n)`Smallest amount`),
       })
     )
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
@@ -214,14 +221,17 @@ export const getUpdateInvoiceValidationSchema = (
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
   quantity: number;
-  product_id: string;
+  product_id?: string;
+  product?: {
+    name: string;
+    price?: components['schemas']['PriceFloat'];
+    measure_unit_id?: string;
+    type: string;
+  };
   vat_rate_id?: string;
   vat_rate_value?: number;
   tax_rate_value?: number;
   smallest_amount?: number;
-  name: string;
-  price?: components['schemas']['PriceFloat'];
-  measure_unit_id?: string;
 }
 
 export interface CreateReceivablesFormBeforeValidationProps {
