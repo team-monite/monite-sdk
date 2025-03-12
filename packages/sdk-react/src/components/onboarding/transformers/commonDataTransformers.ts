@@ -196,6 +196,46 @@ export const prepareValuesToSubmit = <
   }, {} as TOutput);
 };
 
+export const EXCLUDED_REQUEST_FIELDS = ['id'] as const;
+
+/**
+ * Filters out fields that should not be included in API request bodies
+ * This is useful for preparing data for update requests where the response data
+ * includes fields that should not be sent back to the API
+ *
+ * @param payload The request payload to filter
+ * @returns A new object with excluded fields removed
+ */
+export const filterRequestBody = <T extends OnboardingOutputValuesType>(
+  payload: T
+): Omit<T, (typeof EXCLUDED_REQUEST_FIELDS)[number]> => {
+  if (!payload) {
+    return {} as Omit<T, (typeof EXCLUDED_REQUEST_FIELDS)[number]>;
+  }
+
+  return Object.entries(payload).reduce((filteredPayload, [key, value]) => {
+    if (
+      EXCLUDED_REQUEST_FIELDS.includes(
+        key as (typeof EXCLUDED_REQUEST_FIELDS)[number]
+      )
+    ) {
+      return filteredPayload;
+    }
+
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      return {
+        ...filteredPayload,
+        [key]: filterRequestBody(value as OnboardingOutputValuesType),
+      };
+    }
+
+    return {
+      ...filteredPayload,
+      [key]: value,
+    };
+  }, {} as Omit<T, (typeof EXCLUDED_REQUEST_FIELDS)[number]>);
+};
+
 type GenerateFieldsByValuesParams = OnboardingOptionalParams & {
   values: OnboardingOutputValuesType;
 };
