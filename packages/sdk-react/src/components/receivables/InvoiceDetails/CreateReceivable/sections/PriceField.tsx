@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Controller, useWatch } from 'react-hook-form';
+import {
+  Controller,
+  ControllerRenderProps,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 
 import { useCurrencies } from '@/core/hooks';
 import { FormControl, TextField } from '@mui/material';
 
-// works well for currencies such as USD and EUR except for awkward instances
-// where e.g. current price is 215,61, if user types an invalid third cent making it e.g.
-// 215,618, it will round the value to 215,62 which is unlikely to be the users intention
-export const PriceField = ({ index, currency, disabled, control }: any) => {
-  const { formatCurrencyToDisplay, formatToMinorUnits, getSymbolFromCurrency } =
-    useCurrencies();
+import { CreateReceivablesFormBeforeValidationProps } from '../validation';
+import { usePriceHelper } from './helpers';
 
+export const PriceField = ({ index, currency }: any) => {
+  const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
+  const { sanitizeAndFormatValue } = usePriceHelper();
+
+  const { control } =
+    useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const fieldValue = useWatch({
     control,
     name: `line_items.${index}.product.price.value`,
@@ -30,72 +37,55 @@ export const PriceField = ({ index, currency, disabled, control }: any) => {
     }
   }, [fieldValue, currency, formatCurrencyToDisplay, isTyping]);
 
-  const handleBlur = (controllerField: any) => {
-    let inputValue = String(rawValue).trim();
-    const lastCommaIndex = inputValue.lastIndexOf(',');
-    const lastDotIndex = inputValue.lastIndexOf('.');
+  const handleBlur = (
+    controllerField: ControllerRenderProps<
+      CreateReceivablesFormBeforeValidationProps,
+      `line_items.${any}.product.price.value`
+    >
+  ) => {
+    const { displayValue, minorUnitsValue } = sanitizeAndFormatValue(
+      String(rawValue).trim(),
+      currency,
+      false
+    );
 
-    // Handle comma and dot formatting for decimals
-    if (
-      lastCommaIndex > -1 &&
-      (lastDotIndex === -1 || lastCommaIndex > lastDotIndex) &&
-      inputValue.slice(lastCommaIndex + 1).length === 2 &&
-      !inputValue.slice(lastCommaIndex + 1).includes(',')
-    ) {
-      inputValue =
-        inputValue.slice(0, lastCommaIndex) +
-        '.' +
-        inputValue.slice(lastCommaIndex + 1);
-    }
-
-    const parsedValue = parseFloat(inputValue.replace(/[^0-9.-]/g, ''));
-    const formattedToMinorUnits = formatToMinorUnits(inputValue, currency);
-
-    if (
-      inputValue === '' ||
-      isNaN(parsedValue) ||
-      (formattedToMinorUnits && isNaN(formattedToMinorUnits))
-    ) {
-      controllerField.onChange(0);
-      setRawValue(formatCurrencyToDisplay(0, currency, false) || '');
-    } else {
-      const newValue = formatCurrencyToDisplay(
-        formattedToMinorUnits || 0,
-        currency,
-        false
-      );
-      controllerField.onChange(formattedToMinorUnits);
-      setRawValue(newValue || 0); // Use formatted value to avoid issues like "02.02"
+    if (minorUnitsValue !== null) {
+      controllerField.onChange(minorUnitsValue);
+      setRawValue(displayValue);
     }
 
     setIsTyping(false);
     controllerField.onBlur();
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const { displayValue } = sanitizeAndFormatValue(inputValue, currency, true);
+    setRawValue(displayValue);
+  };
+
   return (
     <Controller
       name={`line_items.${index}.product.price.value`}
       control={control}
-      disabled={disabled}
       render={({ field: controllerField, fieldState: { error } }) => (
         <FormControl
           variant="standard"
           fullWidth
           required
           error={Boolean(error)}
-          disabled={disabled}
         >
           <TextField
             size="small"
             type="text"
-            disabled={disabled}
+            error={Boolean(error)}
             value={
               isTyping
                 ? rawValue
                 : formatCurrencyToDisplay(fieldValue, currency, false)
             }
             sx={{ minWidth: 100 }}
-            placeholder={'0'}
+            placeholder="0"
             onBlur={() => handleBlur(controllerField)}
             onFocus={() => setIsTyping(true)}
             name={controllerField.name}
@@ -103,7 +93,7 @@ export const PriceField = ({ index, currency, disabled, control }: any) => {
             InputProps={{
               startAdornment: getSymbolFromCurrency(currency),
             }}
-            onChange={(e) => setRawValue(e.target.value)}
+            onChange={handleChange}
           />
         </FormControl>
       )}

@@ -180,6 +180,7 @@ export const ItemsSection = ({
           currency: actualCurrency || defaultCurrency || 'USD',
         },
         name: '',
+        type: 'product',
       },
       quantity: 1,
       vat_rate_id: highestVatRate?.id,
@@ -231,16 +232,19 @@ export const ItemsSection = ({
     }
   }, [append, createEmptyRow]);
 
-  const [disabledFieldsControl, setDisabledFieldsControl] = useState<any[]>([]);
-
   const handleUpdate = useCallback(
     (index: number, item: any, disableFields?: boolean) => {
       if (item) {
         setValue(`line_items.${index}.product.name`, item.label);
-        setValue(
-          `line_items.${index}.product.price.value`,
-          item.price?.value || 0
+        const currentPrice = getValues(
+          `line_items.${index}.product.price.value`
         );
+        if (!currentPrice || currentPrice === 0) {
+          setValue(
+            `line_items.${index}.product.price.value`,
+            item.price?.value || 0
+          );
+        }
         setValue(
           `line_items.${index}.product.price.currency`,
           actualCurrency || defaultCurrency || 'USD'
@@ -253,20 +257,10 @@ export const ItemsSection = ({
         setValue(`line_items.${index}.vat_rate_value`, item.vat_rate_value);
         setValue(`line_items.${index}.quantity`, item.smallestAmount || 1);
         setValue(`line_items.${index}.product.type`, 'product');
-        const updatedDisabledFields = [...disabledFieldsControl];
-        updatedDisabledFields[index] = disableFields;
-        setDisabledFieldsControl(updatedDisabledFields);
         handleAutoAddRow();
       }
     },
-    [
-      actualCurrency,
-      defaultCurrency,
-      setValue,
-      measureUnits,
-      handleAutoAddRow,
-      disabledFieldsControl,
-    ]
+    [actualCurrency, defaultCurrency, setValue, measureUnits, handleAutoAddRow]
   );
 
   const { root } = useRootElements();
@@ -436,9 +430,6 @@ export const ItemsSection = ({
                                             <Select
                                               MenuProps={{ container: root }}
                                               {...field}
-                                              disabled={
-                                                disabledFieldsControl[index]
-                                              }
                                               onChange={(e) => {
                                                 const selectedUnitId =
                                                   e.target.value;
@@ -525,8 +516,8 @@ export const ItemsSection = ({
                       <TableCell sx={{ width: '20%' }} align="right">
                         <PriceField
                           index={index}
+                          error={Boolean(error)}
                           currency={actualCurrency || defaultCurrency || 'USD'}
-                          disabled={disabledFieldsControl[index]}
                         />
                       </TableCell>
 
@@ -534,9 +525,10 @@ export const ItemsSection = ({
                         {isNonVatSupported ? (
                           <Controller
                             name={`line_items.${index}.tax_rate_value`}
-                            render={({ field }) => (
+                            render={({ field, fieldState: { error } }) => (
                               <TextField
                                 {...field}
+                                error={Boolean(error)}
                                 type="number"
                                 size="small"
                                 InputProps={{ endAdornment: '%' }}
@@ -549,17 +541,7 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell>
-                        <IconButton
-                          onClick={() => {
-                            const newDisabledFieldsControl = [
-                              ...disabledFieldsControl,
-                            ];
-                            newDisabledFieldsControl[index] = undefined;
-                            setDisabledFieldsControl(newDisabledFieldsControl);
-
-                            remove(index);
-                          }}
-                        >
+                        <IconButton onClick={() => remove(index)}>
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>

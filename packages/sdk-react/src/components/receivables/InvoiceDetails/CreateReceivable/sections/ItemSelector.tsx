@@ -29,7 +29,7 @@ import {
   TextField,
 } from '@mui/material';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
 
