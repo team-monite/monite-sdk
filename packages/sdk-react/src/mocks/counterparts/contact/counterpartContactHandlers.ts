@@ -11,8 +11,10 @@ type UpdateCounterpartContactParams = CreateCounterpartContactParams & {
   contactAccountId: string;
 };
 
-const contactAccountPath = `*/counterparts/:counterpartId/contacts`;
-const contactAccountIdPath = `${contactAccountPath}/:contactAccountId`;
+const COUNTERPARTS_ENDPOINT = 'counterparts';
+
+const contactAccountPath = `*/${COUNTERPARTS_ENDPOINT}/:counterpartId/contacts`;
+const contactAccountIdPath = `${contactAccountPath}/:contactId`;
 
 export const counterpartContactHandlers = [
   // read list

@@ -1,5 +1,10 @@
 import { components } from '@/api';
-import { receivableListFixture, ReceivablesListFixture } from '@/mocks';
+import {
+  receivableListFixture,
+  ReceivablesListFixture,
+  receivableContactsFixture,
+  receivablePreviewFixture,
+} from '@/mocks';
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
@@ -15,6 +20,8 @@ const receivableIssuePath = `${receivableDetailPath}/issue`;
 const receivableCancelPath = `${receivableDetailPath}/cancel`;
 const receivableUncollectiblePath = `${receivableDetailPath}/mark_as_uncollectible`;
 const receivableSendPath = `${receivableDetailPath}/send`;
+const receivablePreviewPath = `${receivableDetailPath}/preview`;
+const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
 const createInvoiceValidationSchema = yup.object({
   type: yup.string().required(),
@@ -545,5 +552,46 @@ export const receivableHandlers = [
         status: 200,
       }
     );
+  }),
+
+  /** Preview email */
+  http.post<
+    { id: string },
+    components['schemas']['ReceivablePreviewRequest'],
+    | components['schemas']['ReceivablePreviewResponse']
+    | components['schemas']['ErrorSchemaResponse']
+  >(receivablePreviewPath, async ({ request, params }) => {
+    const body = await request.json();
+    if (!body.body_text || !body.subject_text) {
+      await delay();
+
+      return HttpResponse.json(
+        { error: { message: 'Missing required fields.' } },
+        { status: 400 }
+      );
+    }
+
+    await delay();
+
+    const preview = receivablePreviewFixture[params.id] || {
+      body_preview: `<html><body>${body.body_text}</body></html>`,
+      subject_preview: body.subject_text,
+    };
+
+    return HttpResponse.json(preview);
+  }),
+
+  /** Get receivable contacts */
+  http.get<
+    { receivableId: string },
+    undefined,
+    components['schemas']['CounterpartContactsResourceList']
+  >(receivableContactsPath, async ({ params }) => {
+    const { receivableId } = params;
+    await delay();
+
+    return HttpResponse.json({
+      data: receivableContactsFixture[receivableId] || [],
+    });
   }),
 ];
