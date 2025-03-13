@@ -233,10 +233,11 @@ export const ItemsSection = ({
   }, [append, createEmptyRow]);
 
   const handleUpdate = useCallback(
-    (index: number, item: any, disableFields?: boolean) => {
+    (index: number, item: any) => {
       if (item) {
         setValue(`line_items.${index}.product.name`, item.label);
         const currentPrice = getValues(
+          //if user manually typed a price it is unlikely they want the price of the catalogue to overwrite it
           `line_items.${index}.product.price.value`
         );
         if (!currentPrice || currentPrice === 0) {
@@ -260,7 +261,14 @@ export const ItemsSection = ({
         handleAutoAddRow();
       }
     },
-    [actualCurrency, defaultCurrency, setValue, measureUnits, handleAutoAddRow]
+    [
+      actualCurrency,
+      defaultCurrency,
+      setValue,
+      getValues,
+      measureUnits,
+      handleAutoAddRow,
+    ]
   );
 
   const { root } = useRootElements();
@@ -392,9 +400,7 @@ export const ItemsSection = ({
                       <TableCell sx={{ width: { xs: '30%', xl: '40%' } }}>
                         <ItemSelector
                           setIsCreateItemOpened={setIsCreateDialogOpen}
-                          onUpdate={(item, disableFields) =>
-                            handleUpdate(index, item, disableFields)
-                          }
+                          onUpdate={(item) => handleUpdate(index, item)}
                           fieldName={field.product?.name}
                           index={index}
                           actualCurrency={actualCurrency}

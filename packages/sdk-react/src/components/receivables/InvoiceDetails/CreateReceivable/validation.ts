@@ -32,7 +32,6 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
           .min(0.1)
           .label(t(i18n)`Quantity`)
           .when('smallest_amount', (smallestAmount, schema) => {
-            // should be product.smallest_amount?
             if (!smallestAmount) {
               return schema;
             }
@@ -71,6 +70,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
                 .label(t(i18n)`VAT`)
                 .required(),
             }),
+        product_id: yup.string().label(t(i18n)`Product`),
         product: yup
           .object({
             name: yup
