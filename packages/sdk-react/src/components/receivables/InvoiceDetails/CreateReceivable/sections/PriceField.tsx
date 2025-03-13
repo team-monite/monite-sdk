@@ -18,10 +18,22 @@ export const PriceField = ({ index, currency }: any) => {
 
   const { control } =
     useFormContext<CreateReceivablesFormBeforeValidationProps>();
-  const fieldValue = useWatch({
-    control,
-    name: `line_items.${index}.product.price.value`,
-  });
+
+  const getFieldValue = () => {
+    const productPrice = useWatch({
+      control,
+      name: `line_items.${index}.product.price.value`,
+    });
+
+    const price = useWatch({
+      control,
+      name: `line_items.${index}.price.value`,
+    });
+
+    return productPrice !== undefined ? productPrice : price;
+  };
+
+  const fieldValue = getFieldValue();
 
   const [isTyping, setIsTyping] = useState(false);
   const [rawValue, setRawValue] = useState<string | number>('');

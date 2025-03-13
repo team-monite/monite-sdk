@@ -56,7 +56,7 @@ import { InvoicePreview } from './sections/components/InvoicePreview';
 import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
-//import { VatAndTaxValidator } from './sections/VatAndTaxValidator'; BE is pending
+//import { VatAndTaxValidator } from './sections/VatAndTaxValidator';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
@@ -286,8 +286,6 @@ const CreateReceivablesBase = ({
       tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
     };
 
-    console.log({ invoicePayload });
-
     createReceivable.mutate(
       invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
       {
@@ -296,19 +294,6 @@ const CreateReceivablesBase = ({
         },
       }
     );
-  };
-
-  const handleFilterBeforeSubmit = (values: CreateReceivablesFormProps) => {
-    const filteredLineItems = values.line_items.filter((item) => {
-      return item.product?.name?.trim() !== '';
-    });
-
-    const updatedValues = {
-      ...values,
-      line_items: filteredLineItems,
-    };
-
-    handleCreateReceivable(updatedValues);
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
@@ -656,12 +641,12 @@ const CreateReceivablesBase = ({
                           </Box>
                           {/* terms and conditions */}
                           <Box
-                            display="none" //change to flex when backend is ready
-                            alignItems="start"
-                            justifyContent="space-between"
                             sx={{
+                              display: 'none', //change to flex when backend is ready
                               pb: 4,
                               pt: 4,
+                              alignItems: 'start',
+                              justifyContent: 'space-between',
                               borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
                             }}
                           >
@@ -761,7 +746,9 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit(handleFilterBeforeSubmit)}
+            onSubmit={handleSubmit((values) => {
+              handleCreateReceivable(values);
+            })}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>

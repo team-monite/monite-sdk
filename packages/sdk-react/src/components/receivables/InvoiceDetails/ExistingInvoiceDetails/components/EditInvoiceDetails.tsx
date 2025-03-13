@@ -196,6 +196,7 @@ const EditInvoiceDetailsContent = ({
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
                   product_id: lineItem.product_id,
+                  product: lineItem.product,
                   vat_rate_id: lineItem.vat_rate_id,
                 })),
               };

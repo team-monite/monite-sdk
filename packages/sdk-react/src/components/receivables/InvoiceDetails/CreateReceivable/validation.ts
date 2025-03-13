@@ -94,10 +94,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
               .string()
               .label(t(i18n)`Measure unit`)
               .required(),
-            smallest_amount: yup
-              .number()
-              .nullable()
-              .label(t(i18n)`Smallest amount`),
+            smallest_amount: yup.number().label(t(i18n)`Smallest amount`),
             type: yup
               .string()
               .oneOf(['product', 'service'])
@@ -222,11 +219,14 @@ export const getUpdateInvoiceValidationSchema = (
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
   quantity: number;
   product_id?: string;
+  name?: string;
+  price?: components['schemas']['PriceFloat'];
+  measure_unit_id?: string;
   product?: {
     name: string;
     price?: components['schemas']['PriceFloat'];
     measure_unit_id?: string;
-    type: string;
+    type: 'product' | 'service';
   };
   vat_rate_id?: string;
   vat_rate_value?: number;

@@ -88,6 +88,10 @@ export const InvoicePreview = ({
     .map((item) => ({
       ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
       smallest_amount: item.product.smallest_amount ?? undefined,
+      product: {
+        ...item.product,
+        type: item.product.type as 'product' | 'service',
+      },
     }));
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
