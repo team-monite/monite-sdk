@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -13,7 +15,7 @@ import type { OnboardingProps } from './types';
  * @alpha
  * @description Onboarding component has not yet been released.
  */
-export const Onboarding = function (props: OnboardingProps) {
+export const Onboarding: FC<OnboardingProps> = (props) => {
   return (
     <MoniteScopedProviders>
       <OnboardingComponent {...props} />
@@ -21,7 +23,7 @@ export const Onboarding = function (props: OnboardingProps) {
   );
 };
 
-function OnboardingComponent(props: OnboardingProps) {
+const OnboardingComponent: FC<OnboardingProps> = (props) => {
   const { isLoading, error } = useOnboardingRequirementsData();
   const { i18n } = useLingui();
 
@@ -38,4 +40,4 @@ function OnboardingComponent(props: OnboardingProps) {
       <OnboardingContent {...props} />
     </OnboardingContextProvider>
   );
-}
+};

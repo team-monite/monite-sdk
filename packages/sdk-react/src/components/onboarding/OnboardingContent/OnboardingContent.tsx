@@ -105,27 +105,18 @@ const getTitle = (
   }
 
   if (isEditingPerson(personId)) return t(i18n)`Edit individual`;
-
-  const titleMap = new Map<boolean, string>([
-    [isEntity(requirement), t(i18n)`Company details`],
-    [
-      isRepresentative(requirement),
-      t(i18n)`Verify you represent this business`,
-    ],
-    [isOwners(requirement), t(i18n)`Business owners`],
-    [isDirectors(requirement), t(i18n)`Business directors`],
-    [isExecutives(requirement), t(i18n)`Business executives`],
-    [isBankAccount(requirement), t(i18n)`Bank account`],
-    [isBusinessProfile(requirement), t(i18n)`Business details`],
-    [isPersons(requirement), t(i18n)`Persons review`],
-    [isTosAcceptance(requirement), t(i18n)`Terms and conditions`],
-    [isOwnershipDeclaration(requirement), t(i18n)`Terms and conditions`],
-    [isEntityDocuments(requirement), t(i18n)`Entity documents`],
-  ]);
-
-  for (const [condition, title] of titleMap) {
-    if (condition) return title;
-  }
+  if (isEntity(requirement)) return t(i18n)`Company details`;
+  if (isRepresentative(requirement))
+    return t(i18n)`Verify you represent this business`;
+  if (isOwners(requirement)) return t(i18n)`Business owners`;
+  if (isDirectors(requirement)) return t(i18n)`Business directors`;
+  if (isExecutives(requirement)) return t(i18n)`Business executives`;
+  if (isBankAccount(requirement)) return t(i18n)`Bank account`;
+  if (isBusinessProfile(requirement)) return t(i18n)`Business details`;
+  if (isPersons(requirement)) return t(i18n)`Persons review`;
+  if (isTosAcceptance(requirement)) return t(i18n)`Terms and conditions`;
+  if (isOwnershipDeclaration(requirement)) return t(i18n)`Terms and conditions`;
+  if (isEntityDocuments(requirement)) return t(i18n)`Entity documents`;
 
   throw new Error(`Unknown step title ${JSON.stringify(requirement)}`);
 };
