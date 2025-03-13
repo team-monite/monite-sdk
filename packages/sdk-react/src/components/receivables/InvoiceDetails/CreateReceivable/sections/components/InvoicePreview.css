@@ -303,7 +303,7 @@ th.line-items-table__fixed-item {
   text-align: right;
 }
 
-.invoice-preview .header .block-entity-logo {
+.invoice-preview .header .block-entity-logo span {
   background: rgba(222, 222, 222, 1);
   width: 85px;
   height: 85px;
