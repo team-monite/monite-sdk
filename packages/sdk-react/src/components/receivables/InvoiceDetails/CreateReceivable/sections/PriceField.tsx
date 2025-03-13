@@ -45,8 +45,7 @@ export const PriceField = ({ index, currency }: any) => {
   ) => {
     const { displayValue, minorUnitsValue } = sanitizeAndFormatValue(
       String(rawValue).trim(),
-      currency,
-      false
+      currency
     );
 
     if (minorUnitsValue !== null) {
@@ -60,7 +59,7 @@ export const PriceField = ({ index, currency }: any) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    const { displayValue } = sanitizeAndFormatValue(inputValue, currency, true);
+    const { displayValue } = sanitizeAndFormatValue(inputValue, currency);
     setRawValue(displayValue);
   };
 

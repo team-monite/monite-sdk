@@ -240,10 +240,6 @@ const CreateReceivablesBase = ({
       (address) => address.id === shippingAddressId
     );
 
-    const filteredLineItems = values.line_items.filter((item) => {
-      return item.product?.name?.trim() !== '';
-    });
-
     const invoicePayload: Omit<
       components['schemas']['ReceivableFacadeCreateInvoicePayload'],
       'is_einvoice'
@@ -256,7 +252,7 @@ const CreateReceivablesBase = ({
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
-      line_items: filteredLineItems.map((item) => ({
+      line_items: values.line_items.map((item) => ({
         quantity: item.quantity,
         product: {
           name: item.product.name,
@@ -299,6 +295,19 @@ const CreateReceivablesBase = ({
         },
       }
     );
+  };
+
+  const handleFilterBeforeSubmit = (values: CreateReceivablesFormProps) => {
+    const filteredLineItems = values.line_items.filter((item) => {
+      return item.product?.name?.trim() !== '';
+    });
+
+    const updatedValues = {
+      ...values,
+      line_items: filteredLineItems,
+    };
+
+    handleCreateReceivable(updatedValues);
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
@@ -751,7 +760,7 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit(handleCreateReceivable)}
+            onSubmit={handleSubmit(handleFilterBeforeSubmit)}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>

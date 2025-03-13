@@ -303,14 +303,17 @@ th.line-items-table__fixed-item {
   text-align: right;
 }
 
-.invoice-preview .header .block-entity-logo span {
-  background: rgba(222, 222, 222, 1);
+.invoice-preview .header .block-entity-logo {
   width: 85px;
   height: 85px;
   border-radius: 50%;
   max-width: 21mm;
   max-height: 21mm;
   object-fit: contain;
+}
+
+.invoice-preview .header .block-entity-logo span {
+  background: rgba(222, 222, 222, 1);
 }
 
 .invoice-preview .block-counterpart-info {

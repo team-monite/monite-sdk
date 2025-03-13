@@ -146,18 +146,51 @@ export const ItemsSection = ({
     return error.message;
   }, [error]);
 
-  const quantityError = useMemo(() => {
+  const getErrorMessage = (key: string) => {
     if (!error || !Array.isArray(error)) {
       return;
     }
 
-    const quantityErr = error.find((item) => item?.quantity);
+    const keys = key.split('.');
 
-    if (!quantityErr) {
+    const specificError = error.find((item) => {
+      let current: any = item;
+      for (const k of keys) {
+        if (current && typeof current === 'object' && k in current) {
+          current = current[k];
+        } else {
+          return false;
+        }
+      }
+      return current && typeof current === 'object' && 'message' in current;
+    });
+
+    if (!specificError) {
       return;
     }
 
-    return quantityErr.quantity.message;
+    let result: any = specificError;
+    for (const k of keys) {
+      result = result?.[k];
+    }
+
+    return result?.message;
+  };
+
+  const quantityError = useMemo(() => getErrorMessage('quantity'), [error]);
+  const nameError = useMemo(() => getErrorMessage('product.name'), [error]);
+  const priceError = useMemo(() => {
+    return (
+      getErrorMessage('product.price.value') ||
+      getErrorMessage('product.price.currency')
+    );
+  }, [error]);
+  const taxError = useMemo(() => {
+    return (
+      getErrorMessage('vat_rate_id') ||
+      getErrorMessage('vat_rate_value') ||
+      getErrorMessage('tax_rate_value')
+    );
   }, [error]);
 
   const className = 'Monite-CreateReceivable-ItemsSection';
@@ -209,8 +242,6 @@ export const ItemsSection = ({
     setTooManyEmptyRows(false);
     append(createEmptyRow());
   }, [fields, append, createEmptyRow]);
-
-  console.log(fields);
 
   const handleAutoAddRow = useCallback(() => {
     const emptyRowCount = countEmptyRows(fields);
@@ -290,7 +321,7 @@ export const ItemsSection = ({
             variant="standard"
             fullWidth
             required
-            error={Boolean(error)}
+            error={Boolean(taxError)}
           >
             <Select
               {...field}
@@ -337,6 +368,7 @@ export const ItemsSection = ({
         {t(i18n)`Items`}
       </Typography>
 
+      {/* no items error */}
       <Collapse
         in={Boolean(generalError)}
         sx={{
@@ -347,6 +379,8 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{generalError}</Alert>
       </Collapse>
+
+      {/* quantity error */}
       <Collapse
         in={Boolean(quantityError)}
         sx={{
@@ -356,6 +390,18 @@ export const ItemsSection = ({
         }}
       >
         <Alert severity="error">{quantityError}</Alert>
+      </Collapse>
+
+      {/* name error */}
+      <Collapse
+        in={Boolean(nameError)}
+        sx={{
+          ':not(.MuiCollapse-hidden)': {
+            marginBottom: 1,
+          },
+        }}
+      >
+        <Alert severity="error">{nameError}</Alert>
       </Collapse>
 
       <Box>
@@ -403,6 +449,7 @@ export const ItemsSection = ({
                           onUpdate={(item) => handleUpdate(index, item)}
                           fieldName={field.product?.name}
                           index={index}
+                          error={Boolean(!field.product?.name && nameError)}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
                           measureUnits={measureUnits}
@@ -418,7 +465,7 @@ export const ItemsSection = ({
                                 variant="standard"
                                 fullWidth
                                 required
-                                error={Boolean(error)}
+                                error={Boolean(quantityError)}
                               >
                                 <TextField
                                   {...field}
@@ -522,7 +569,7 @@ export const ItemsSection = ({
                       <TableCell sx={{ width: '20%' }} align="right">
                         <PriceField
                           index={index}
-                          error={Boolean(error)}
+                          error={Boolean(priceError)}
                           currency={actualCurrency || defaultCurrency || 'USD'}
                         />
                       </TableCell>
@@ -534,7 +581,7 @@ export const ItemsSection = ({
                             render={({ field, fieldState: { error } }) => (
                               <TextField
                                 {...field}
-                                error={Boolean(error)}
+                                error={Boolean(taxError)}
                                 type="number"
                                 size="small"
                                 InputProps={{ endAdornment: '%' }}
