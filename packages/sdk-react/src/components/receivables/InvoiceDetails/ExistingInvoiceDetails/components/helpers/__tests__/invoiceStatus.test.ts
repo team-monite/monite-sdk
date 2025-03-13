@@ -1,35 +1,35 @@
+import { components } from '@/api';
+
 import { isInvoiceIssued } from '../invoiceStatus';
+
+type InvoiceStatus = components['schemas']['InvoiceResponsePayload']['status'];
 
 describe('invoiceStatus helpers', () => {
   describe('isInvoiceIssued', () => {
-    test('returns true for issued status', () => {
+    test('returns true for statuses that allow sending', () => {
       expect(isInvoiceIssued('issued')).toBe(true);
-    });
-
-    test('returns true for partially_paid status', () => {
       expect(isInvoiceIssued('partially_paid')).toBe(true);
-    });
-
-    test('returns true for paid status', () => {
-      expect(isInvoiceIssued('paid')).toBe(true);
-    });
-
-    test('returns true for overdue status', () => {
       expect(isInvoiceIssued('overdue')).toBe(true);
     });
 
-    test('returns false for draft status', () => {
-      expect(isInvoiceIssued('draft')).toBe(false);
-    });
-
     test('returns false for other statuses', () => {
+      expect(isInvoiceIssued('paid')).toBe(false);
+      expect(isInvoiceIssued('draft')).toBe(false);
       expect(isInvoiceIssued('canceled')).toBe(false);
       expect(isInvoiceIssued('declined')).toBe(false);
       expect(isInvoiceIssued('expired')).toBe(false);
+      expect(isInvoiceIssued('uncollectible')).toBe(false);
+      expect(isInvoiceIssued('accepted')).toBe(false);
+      expect(isInvoiceIssued('recurring')).toBe(false);
+      expect(isInvoiceIssued('deleted')).toBe(false);
+      expect(isInvoiceIssued('issuing')).toBe(false);
+      expect(isInvoiceIssued('failed')).toBe(false);
     });
 
     test('returns false for undefined status', () => {
-      expect(isInvoiceIssued(undefined)).toBe(false);
+      expect(isInvoiceIssued(undefined as unknown as InvoiceStatus)).toBe(
+        false
+      );
     });
   });
 });
