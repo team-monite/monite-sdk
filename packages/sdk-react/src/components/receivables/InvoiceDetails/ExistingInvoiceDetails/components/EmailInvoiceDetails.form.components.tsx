@@ -1,5 +1,4 @@
 import type {
-  FC,
   PropsWithChildren,
   CSSProperties,
   ReactNode,
@@ -39,12 +38,12 @@ export interface FormProps {
   handleIssueAndSend: (e: FormEvent) => void;
 }
 
-export const Form: FC<PropsWithChildren<FormProps>> = ({
+export const Form = ({
   formName,
   style,
   children,
   handleIssueAndSend,
-}) => {
+}: PropsWithChildren<FormProps>) => {
   return (
     <form id={formName} noValidate onSubmit={handleIssueAndSend} style={style}>
       {children}
@@ -63,10 +62,7 @@ interface RecipientSelectorProps {
   control: Control<ControlProps>;
 }
 
-const RecipientSelector: FC<RecipientSelectorProps> = ({
-  invoiceId,
-  control,
-}) => {
+const RecipientSelector = ({ invoiceId, control }: RecipientSelectorProps) => {
   const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
   const { data: receivable } = useReceivableById(invoiceId);
   const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
@@ -119,11 +115,11 @@ interface FormContentProps {
   isDisabled: boolean;
 }
 
-export const FormContent: FC<FormContentProps> = ({
+export const FormContent = ({
   invoiceId,
   control,
   isDisabled,
-}) => {
+}: FormContentProps) => {
   const { i18n } = useLingui();
 
   return (

@@ -1,11 +1,4 @@
-import {
-  type FC,
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { useForm, type UseFormGetValues } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -65,7 +58,7 @@ interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
   isLoading: boolean;
 }
 
-export const EmailInvoiceDetails: FC<EmailInvoiceDetailsProps> = (props) => {
+export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { data: me, isLoading: isLoadingUser } = useMe();
   const { data: receivable, isLoading: isLoadingReceivable } =
@@ -120,14 +113,14 @@ export const EmailInvoiceDetails: FC<EmailInvoiceDetailsProps> = (props) => {
   );
 };
 
-const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
+export const EmailInvoiceDetailsBase = ({
   invoiceId,
   subject,
   body,
   to,
   isLoading,
   onClose,
-}) => {
+}: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
 
@@ -147,6 +140,9 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
     reset({ subject, body, to });
   }, [body, reset, subject, to]);
 
+  // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
+  // TODO: Form persistance disabled as requested by Joao on Sep 5
+  // useFormPersist(`Monite-EmailInvoiceDetails-FormState`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
 
@@ -179,6 +175,10 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
             )
           : [];
 
+        /**
+         * We can't create a payment link if no payment methods are available.
+         * As an MVP approach, we should show a message to the user and prevent the email from being sent.
+         */
         if (availablePaymentMethods.length === 0) {
           toast.error(
             t(
@@ -188,6 +188,16 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
         } else {
           await issue(undefined);
 
+          /**
+           * We need to create a payment link for the invoice before sending the email.
+           * Otherwise, the recipient won't be able to pay the invoice.
+           *
+           * The link will be automatically attached to the email because we provide `object` field
+           *  with the invoice id and type
+           *
+           * For more information, you could check Monite API documentation:
+           * @see {@link https://docs.monite.com/docs/payment-links#22-payment-link-for-a-receivable}
+           */
           await createPaymentLink({
             recipient: {
               id: entityId,
@@ -203,6 +213,11 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
           });
         }
 
+        // TODO: provide support for multiple recipients, cc and bcc fields
+        /**
+         * If `payment methods` available, we should create a payment link.
+         * If not, we should send the email without a payment link.
+         */
         sendEmail(
           {
             body_text: values.body,
@@ -357,7 +372,7 @@ interface PreviewProps {
   getValues: UseFormGetValues<ControlProps>;
 }
 
-const Preview: FC<PreviewProps> = ({ invoiceId, getValues }) => {
+const Preview = ({ invoiceId, getValues }: PreviewProps) => {
   const { i18n } = useLingui();
   const { subject, body } = getValues();
   const { isLoading, preview, error, refresh } = useReceivableEmailPreview(
@@ -387,6 +402,7 @@ const Preview: FC<PreviewProps> = ({ invoiceId, getValues }) => {
           style={{
             width: '100%',
             height: '100%',
+            marginBottom: '-16px', // Margin is necessary to avoid vertical scrollbar on the iframe container element. It's not clear why, but it helps.
             border: 0,
             flex: 1,
           }}
