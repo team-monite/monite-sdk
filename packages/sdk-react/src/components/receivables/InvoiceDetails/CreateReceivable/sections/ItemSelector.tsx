@@ -52,6 +52,7 @@ type ItemSelectorProps = {
   setIsCreateItemOpened: Dispatch<SetStateAction<boolean>>;
   onUpdate: (arg0: ItemSelectorOptionProps, arg1?: boolean) => void;
   disabled?: boolean;
+  error?: boolean;
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
   fieldName?: string;
@@ -75,6 +76,7 @@ function isDividerOption(
 export const ItemSelector = ({
   setIsCreateItemOpened,
   fieldName,
+  error,
   disabled,
   index = 0,
   actualCurrency,
@@ -187,12 +189,13 @@ export const ItemSelector = ({
     <Controller
       name={`items.${index}`}
       control={control}
-      render={({ field, fieldState: { error } }) => {
+      render={({ field }) => {
         let selectedItem = flattenProducts?.find(
           (item) => item?.id === field?.value
         );
 
-        //fieldName will be inherit after value is saved (blur on create invoice or starting point edit invoice)
+        //fieldName will be inherited after value is saved. some possible scenarios:
+        //(Create invoice: name typed followed by onblur . Edit invoice: name loaded.)
         if (
           !isTyping &&
           fieldName &&
@@ -204,7 +207,7 @@ export const ItemSelector = ({
             (item) => item?.name === fieldName // potentially item?.product.name, double check
           );
           if (searchMatch) {
-            // inherited value found in catalogue
+            // inherited value was found in catalogue
             selectedItem = searchMatch;
           } else {
             // not found in catalogue, display name as is
@@ -252,6 +255,7 @@ export const ItemSelector = ({
                   width: 'calc(50% - 80px) !important',
                   maxWidth: 'min(940px, 100%)',
                   left: '40px !important',
+                  marginLeft: '4px',
                 },
               },
             }}
@@ -295,8 +299,7 @@ export const ItemSelector = ({
                   label={``}
                   placeholder={t(i18n)`Line item`}
                   required
-                  error={Boolean(error)}
-                  helperText={error?.message}
+                  error={error}
                   className="Item-Selector"
                   InputProps={{
                     ...params.InputProps,
