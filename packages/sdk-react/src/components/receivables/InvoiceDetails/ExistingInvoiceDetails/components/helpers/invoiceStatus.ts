@@ -25,6 +25,6 @@ const SEND_ALLOWED: SendAllowanceSchema = {
  * @param status - The status of the invoice
  * @returns boolean indicating if the invoice is considered issued
  */
-export const isInvoiceIssued = (status: InvoiceStatus): boolean => {
-  return Boolean(SEND_ALLOWED[status]);
+export const isInvoiceIssued = (status?: InvoiceStatus): boolean => {
+  return Boolean(status && SEND_ALLOWED[status]);
 };

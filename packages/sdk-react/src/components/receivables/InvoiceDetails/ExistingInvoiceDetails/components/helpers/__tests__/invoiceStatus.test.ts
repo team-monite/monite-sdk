@@ -1,8 +1,4 @@
-import { components } from '@/api';
-
 import { isInvoiceIssued } from '../invoiceStatus';
-
-type InvoiceStatus = components['schemas']['InvoiceResponsePayload']['status'];
 
 describe('invoiceStatus helpers', () => {
   describe('isInvoiceIssued', () => {
@@ -27,9 +23,7 @@ describe('invoiceStatus helpers', () => {
     });
 
     test('returns false for undefined status', () => {
-      expect(isInvoiceIssued(undefined as unknown as InvoiceStatus)).toBe(
-        false
-      );
+      expect(isInvoiceIssued(undefined)).toBe(false);
     });
   });
 });
