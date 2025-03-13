@@ -213,7 +213,7 @@ export const ItemsSection = ({
           currency: actualCurrency || defaultCurrency || 'USD',
         },
         name: '',
-        type: 'product',
+        type: 'product' as const, //since those are not saved in catalogue i am presuming type does not matter
       },
       quantity: 1,
       vat_rate_id: highestVatRate?.id,
@@ -303,6 +303,7 @@ export const ItemsSection = ({
   );
 
   const { root } = useRootElements();
+  console.log(fields);
 
   const VatRateController = ({ index }: { index: number }) => {
     useEffect(() => {
@@ -447,9 +448,11 @@ export const ItemsSection = ({
                         <ItemSelector
                           setIsCreateItemOpened={setIsCreateDialogOpen}
                           onUpdate={(item) => handleUpdate(index, item)}
-                          fieldName={field.product?.name}
+                          fieldName={field.product?.name || field.name}
                           index={index}
-                          error={Boolean(!field.product?.name && nameError)}
+                          error={Boolean(
+                            !field.product?.name && !field.name && nameError
+                          )}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
                           measureUnits={measureUnits}
