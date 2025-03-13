@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { FinanceOverviewCard } from '@/components/receivables/Financing/FinanceInvoice/FinanceOverviewCard';
 import { useWorkingCapitalOnboarding } from '@/components/receivables/Financing/hooks/useWorkingCapitalOnboarding';
 import { FinanceCardStack } from '@/components/receivables/Financing/infographics/FinanceCardStack';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useFinanceAnInvoice,
   useFinancing,
@@ -25,7 +26,7 @@ const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
 
 interface FinanceInvoiceProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
-  onWorkingCapitalOnboardingComplete?: () => void;
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 export const FinanceInvoice = ({
@@ -33,6 +34,7 @@ export const FinanceInvoice = ({
   onWorkingCapitalOnboardingComplete,
 }: FinanceInvoiceProps) => {
   const { i18n } = useLingui();
+  const { entityId } = useMoniteContext();
   const [isFinancingAnInvoice, setIsFinancingAnInvoice] = useState(false);
 
   const { isLoading: isLoadingFinancedInvoices, data: financedInvoices } =
@@ -51,8 +53,8 @@ export const FinanceInvoice = ({
   const { isLoading: isLoadingFinanceOffers, data: financeOffersData } =
     useGetFinanceOffers();
 
-  const { isOnboarded } = useWorkingCapitalOnboarding(
-    onWorkingCapitalOnboardingComplete
+  const { isOnboarded } = useWorkingCapitalOnboarding(() =>
+    onWorkingCapitalOnboardingComplete?.(entityId)
   );
 
   const isLoading =

@@ -139,7 +139,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
-    receivable: receivable,
+    receivable,
     deliveryMethod,
   });
 
@@ -416,7 +416,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview {...receivable} />
+              <Overview
+                invoice={receivable}
+                onWorkingCapitalOnboardingComplete={
+                  props.onWorkingCapitalOnboardingComplete
+                }
+              />
             </Stack>
           </Grid>
         </Grid>

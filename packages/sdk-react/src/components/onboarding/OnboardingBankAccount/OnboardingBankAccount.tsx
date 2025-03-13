@@ -9,6 +9,7 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
@@ -20,15 +21,19 @@ type EntityBankAccountResponse =
   components['schemas']['EntityBankAccountResponse'];
 
 export interface OnboardingBankAccountProps {
-  onOnboardingBankAccountSubmit?: (response: EntityBankAccountResponse) => void;
-  onWorkingCapitalOnboardingComplete?: () => void;
+  onPaymentOnboardingComplete?: (
+    entityId: string,
+    response?: EntityBankAccountResponse
+  ) => void;
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 export const OnboardingBankAccount = ({
-  onOnboardingBankAccountSubmit,
+  onPaymentOnboardingComplete,
   onWorkingCapitalOnboardingComplete,
 }: OnboardingBankAccountProps = {}) => {
   const { i18n } = useLingui();
+  const { entityId } = useMoniteContext();
 
   useWorkingCapitalOnboarding(onWorkingCapitalOnboardingComplete);
 
@@ -62,7 +67,7 @@ export const OnboardingBankAccount = ({
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
 
-    onOnboardingBankAccountSubmit?.(result);
+    onPaymentOnboardingComplete?.(entityId, result);
 
     return result;
   });

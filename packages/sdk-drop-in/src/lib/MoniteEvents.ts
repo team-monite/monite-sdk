@@ -28,27 +28,15 @@ export interface BaseEventPayload {
   id: string;
 }
 
-export type InvoiceEventPayload = BaseEventPayload & {
+export interface InvoiceEventPayload extends BaseEventPayload {
   invoice?: ReceivableResponseType;
-};
+}
 
-export type PaymentsOnboardingEventPayload = BaseEventPayload & {
-  entityId: string;
-};
+export interface ReceivableEventPayload extends BaseEventPayload {
+  response?: APISchema.components['schemas']['EntityBankAccountResponse'];
+}
 
-export type WorkingCapitalOnboardingEventPayload = BaseEventPayload & {
-  entityId: string;
-};
-
-export type FirstInvoiceSentEventPayload = BaseEventPayload & {
-  invoice: ReceivableResponseType;
-};
-
-export type EventPayload =
-  | InvoiceEventPayload
-  | PaymentsOnboardingEventPayload
-  | WorkingCapitalOnboardingEventPayload
-  | FirstInvoiceSentEventPayload;
+export type EventPayload = InvoiceEventPayload | ReceivableEventPayload;
 
 export interface MoniteEvent<T extends EventPayload = EventPayload> {
   id: string;
@@ -162,20 +150,20 @@ export function enhanceOnboardingSettings(
   settings: ComponentSettings['onboarding'] = {}
 ): ComponentSettings['onboarding'] {
   const {
-    onPaymentOnboardingCompleted,
-    onWorkingCapitalOnboardingCompleted,
+    onPaymentOnboardingComplete,
+    onWorkingCapitalOnboardingComplete,
     ...rest
   } = settings;
 
   return {
     ...rest,
-    onPaymentOnboardingCompleted: createEventHandler(
-      onPaymentOnboardingCompleted,
+    onPaymentOnboardingComplete: createEventHandler(
+      onPaymentOnboardingComplete,
       MoniteEventTypes.PAYMENTS_ONBOARDING_COMPLETED,
-      (id) => ({ id })
+      (id, response) => ({ id, response })
     ),
-    onWorkingCapitalOnboardingCompleted: createEventHandler(
-      onWorkingCapitalOnboardingCompleted,
+    onWorkingCapitalOnboardingComplete: createEventHandler(
+      onWorkingCapitalOnboardingComplete,
       MoniteEventTypes.WORKING_CAPITAL_ONBOARDING_COMPLETED,
       (id) => ({ id })
     ),

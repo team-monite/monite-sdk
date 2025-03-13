@@ -41,7 +41,7 @@ import type { OnboardingPersonId, OnboardingProps } from '../types';
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 
 export function OnboardingContent({
-  onBankAccountComplete,
+  onPaymentOnboardingComplete,
   onWorkingCapitalOnboardingComplete,
   onComplete,
 }: OnboardingProps = {}) {
@@ -60,7 +60,7 @@ export function OnboardingContent({
 
   const Step = getComponent(currentRequirement, personId);
   const props = getProps(currentRequirement, {
-    onBankAccountComplete,
+    onPaymentOnboardingComplete,
     onWorkingCapitalOnboardingComplete,
   });
 
@@ -236,7 +236,7 @@ const getProps = (
 ) => {
   if (isBankAccount(requirement)) {
     return {
-      onOnboardingBankAccountSubmit: callbacks.onBankAccountComplete,
+      onPaymentOnboardingComplete: callbacks.onPaymentOnboardingComplete,
       onWorkingCapitalOnboardingComplete:
         callbacks.onWorkingCapitalOnboardingComplete,
     };

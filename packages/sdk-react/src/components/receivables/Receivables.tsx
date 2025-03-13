@@ -86,9 +86,9 @@ const ReceivablesBase = () => {
   );
 
   const handleSendEmail = useCallback(
-    (_invoiceId: string, isFirstInvoice: boolean) => {
+    (invoiceId: string, isFirstInvoice: boolean) => {
       if (isFirstInvoice) {
-        receivableCallbacks.onFirstInvoiceSent?.();
+        receivableCallbacks.onFirstInvoiceSent?.(invoiceId);
       }
     },
     [receivableCallbacks]

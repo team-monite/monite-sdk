@@ -1,5 +1,4 @@
-import type { FC } from 'react';
-
+import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -8,14 +7,39 @@ import { LinearProgress } from '@mui/material';
 
 import { OnboardingContextProvider } from './context';
 import { OnboardingContent } from './OnboardingContent';
-import type { OnboardingProps } from './types';
+
+export interface OnboardingProps {
+  /**
+   * Called when bank account setup is completed.
+   *
+   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
+   * @returns {void}
+   */
+  onBankAccountComplete?: (
+    response: components['schemas']['EntityBankAccountResponse']
+  ) => void;
+  /**
+   * Called when working capital onboarding is completed.
+   * This happens when the business status transitions to 'ONBOARDED'.
+   *
+   * @returns {void}
+   */
+  onWorkingCapitalOnboardingComplete?: () => void;
+
+  /**
+   * Called when the onboarding process is completed.
+   *
+   * @returns {void}
+   */
+  onComplete?: () => void;
+}
 
 /**
  * Onboarding component
  * @alpha
  * @description Onboarding component has not yet been released.
  */
-export const Onboarding: FC<OnboardingProps> = (props) => {
+export const Onboarding = (props: OnboardingProps) => {
   return (
     <MoniteScopedProviders>
       <OnboardingComponent {...props} />
@@ -23,7 +47,7 @@ export const Onboarding: FC<OnboardingProps> = (props) => {
   );
 };
 
-const OnboardingComponent: FC<OnboardingProps> = (props) => {
+const OnboardingComponent = (props: OnboardingProps) => {
   const { isLoading, error } = useOnboardingRequirementsData();
   const { i18n } = useLingui();
 
