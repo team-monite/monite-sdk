@@ -255,7 +255,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:192
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:183
 msgid "Add a bank to receive transfers of funds to your business."
 msgstr "Add a bank to receive transfers of funds to your business."
 
@@ -925,7 +925,7 @@ msgstr "Bangladesh"
 msgid "Bangladeshi Taka"
 msgstr "Bangladeshi Taka"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:114
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:544
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:279
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:118
@@ -1169,15 +1169,15 @@ msgstr "Bus Lines"
 msgid "Business address"
 msgstr "Business address"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:119
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:115
 msgid "Business details"
 msgstr "Business details"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:112
 msgid "Business directors"
 msgstr "Business directors"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:117
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:113
 msgid "Business executives"
 msgstr "Business executives"
 
@@ -1189,7 +1189,7 @@ msgstr "Business Identification Number (Liechtenstein)"
 msgid "Business Number (Canada)"
 msgstr "Business Number (Canada)"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:115
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:111
 msgid "Business owners"
 msgstr "Business owners"
 
@@ -1612,7 +1612,7 @@ msgstr "Comoros"
 msgid "Companies"
 msgstr "Companies"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:110
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:108
 msgid "Company details"
 msgstr "Company details"
 
@@ -2637,11 +2637,11 @@ msgstr "Due Date"
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:182
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:173
 msgid "Due to regulations, we’re required to collect information about a company’s directors."
 msgstr "Due to regulations, we’re required to collect information about a company’s directors."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:177
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:168
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 msgstr "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 
@@ -2906,7 +2906,7 @@ msgstr "Entity"
 msgid "Entity bank account"
 msgstr "Entity bank account"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:123
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:119
 msgid "Entity documents"
 msgstr "Entity documents"
 
@@ -3989,11 +3989,11 @@ msgstr "It looks like the phone number is too short."
 msgid "It will remain in all the documents where it is added. You can’t undo this action."
 msgstr "It will remain in all the documents where it is added. You can’t undo this action."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:140
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:131
 msgid "It’s required to add any individual who is on the governing board of the company."
 msgstr "It’s required to add any individual who is on the governing board of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:155
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:146
 msgid "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 msgstr "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 
@@ -5381,7 +5381,7 @@ msgstr "Permissions"
 msgid "Person"
 msgstr "Person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:120
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
 msgid "Persons review"
 msgstr "Persons review"
 
@@ -5467,11 +5467,11 @@ msgstr "Please accept Service Agreement to proceed."
 msgid "Please add any individual who owns 25% or more of the company."
 msgstr "Please add any individual who owns 25% or more of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:146
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:137
 msgid "Please add any individual who owns 25% or more of your business."
 msgstr "Please add any individual who owns 25% or more of your business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:198
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:189
 msgid "Please correct the errors in persons information."
 msgstr "Please correct the errors in persons information."
 
@@ -5515,11 +5515,11 @@ msgstr "Please list all individuals who are members of the governing board of th
 msgid "Please provide a valid date."
 msgstr "Please provide a valid date."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:151
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:142
 msgid "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 msgstr "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:195
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:186
 msgid "Please provide information about your business."
 msgstr "Please provide information about your business."
 
@@ -5527,8 +5527,8 @@ msgstr "Please provide information about your business."
 msgid "Please provide the following documents for the person"
 msgstr "Please provide the following documents for the person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:201
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:206
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:192
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:197
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
@@ -5541,9 +5541,9 @@ msgstr "Please try again later."
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:162
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:164
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:211
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:153
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:155
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:202
 msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
@@ -6840,7 +6840,7 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:169
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:160
 msgid "Tell us more about your business"
 msgstr "Tell us more about your business"
 
@@ -6852,8 +6852,8 @@ msgstr "Tent and Awning Shops"
 msgid "Terms"
 msgstr "Terms"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:121
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:122
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:117
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
 
@@ -6992,7 +6992,7 @@ msgstr "There was an issue reading the file."
 msgid "This action can't be undone."
 msgstr "This action can't be undone."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:172
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:163
 msgid "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 msgstr "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 
@@ -7717,7 +7717,7 @@ msgstr "Venezuela"
 msgid "Verify identity"
 msgstr "Verify identity"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:113
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:110
 msgid "Verify you represent this business"
 msgstr "Verify you represent this business"
 
@@ -7774,7 +7774,7 @@ msgstr "Wallis And Futuna"
 msgid "Watch/Jewelry Repair"
 msgstr "Watch/Jewelry Repair"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:187
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:178
 msgid "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 msgstr "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
