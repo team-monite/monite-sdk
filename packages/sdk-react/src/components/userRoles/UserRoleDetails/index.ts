@@ -1,1 +1,0 @@
-export { UserRoleDetails } from './UserRoleDetails';

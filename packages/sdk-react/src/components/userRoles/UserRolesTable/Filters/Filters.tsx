@@ -29,7 +29,7 @@ export const Filters = ({ onChangeFilter, sx }: FiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          label={t(i18n)`Search by name`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -44,7 +44,7 @@ export const Filters = ({ onChangeFilter, sx }: FiltersProps) => {
             return;
           }
 
-          if (value instanceof Date) {
+          if (value instanceof Date || value === null) {
             onChangeFilter(FILTER_TYPE_CREATED_AT, value);
           }
         }}

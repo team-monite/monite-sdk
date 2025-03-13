@@ -9,7 +9,6 @@ const NOT_ALLOWED_PERMISSION = '-';
 
 describe('PermissionsCell', () => {
   test("should render 'R' for allowed read permission and '-' for not allowed create permission", () => {
-    const onClickSeeAllMock = jest.fn();
     const actions: components['schemas']['package__roles__head__schemas__ActionSchema'][] =
       [
         {
@@ -31,12 +30,7 @@ describe('PermissionsCell', () => {
       ],
     };
 
-    renderWithClient(
-      <PermissionsCell
-        permissions={permissions}
-        onCLickSeeAll={onClickSeeAllMock}
-      />
-    );
+    renderWithClient(<PermissionsCell permissions={permissions} />);
 
     const allowedPermissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
     expect(allowedPermissionElement).toBeInTheDocument();
@@ -46,7 +40,6 @@ describe('PermissionsCell', () => {
   });
 
   test('tooltip should contain action names when a permission letter is hovered over', async () => {
-    const onClickSeeAllMock = jest.fn();
     const actions: components['schemas']['package__roles__head__schemas__ActionSchema'][] =
       [
         {
@@ -68,12 +61,7 @@ describe('PermissionsCell', () => {
       ],
     };
 
-    renderWithClient(
-      <PermissionsCell
-        permissions={permissions}
-        onCLickSeeAll={onClickSeeAllMock}
-      />
-    );
+    renderWithClient(<PermissionsCell permissions={permissions} />);
 
     const permissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
 
@@ -86,7 +74,7 @@ describe('PermissionsCell', () => {
       );
     });
 
-    const tooltipElement = await screen.findByText(/Read/);
+    const tooltipElement = await screen.findByText(/View/);
 
     expect(tooltipElement).toBeInTheDocument();
   });
