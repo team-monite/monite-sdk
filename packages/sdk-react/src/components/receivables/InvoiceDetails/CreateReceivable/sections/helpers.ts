@@ -3,11 +3,7 @@ import { useCurrencies } from '@/core/hooks';
 export const usePriceHelper = () => {
   const { formatCurrencyToDisplay, formatToMinorUnits } = useCurrencies();
 
-  const sanitizeAndFormatValue = (
-    inputValue: string,
-    currency: string,
-    isTyping: boolean
-  ) => {
+  const sanitizeAndFormatValue = (inputValue: string, currency: string) => {
     let sanitizedValue = inputValue.replace(/[^0-9.,]/g, '');
 
     // Handle comma and dot formatting for decimals
