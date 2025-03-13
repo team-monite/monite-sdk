@@ -11,10 +11,6 @@ import { http, HttpResponse, delay } from 'msw';
 import * as yup from 'yup';
 
 import { getMockPagination } from '../utils';
-import {
-  createEmailInvoiceContact,
-  createEmailInvoicePreview,
-} from './receivablesFixture';
 
 const RECEIVABLES_ENDPOINT = 'receivables';
 
@@ -26,9 +22,6 @@ const receivableUncollectiblePath = `${receivableDetailPath}/mark_as_uncollectib
 const receivableSendPath = `${receivableDetailPath}/send`;
 const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
-
-const receivableContactsPath = `${receivableDetailPath}/contacts`;
-const receivablePreviewEmailPath = `${receivableDetailPath}/preview_email`;
 
 const createInvoiceValidationSchema = yup.object({
   type: yup.string().required(),
@@ -51,101 +44,13 @@ interface IReceivableByIdParams {
   id: string;
 }
 
-type Schemas = components['schemas'];
-type ErrorResponse = Schemas['ErrorSchemaResponse'];
-type LineItemsResponse = Schemas['LineItemsResponse'];
-type ReceivableResponse = Schemas['ReceivableResponse'];
-
-function createMissingIdError(id: string | undefined, idType: string) {
-  if (!id) {
-    return HttpResponse.json<ErrorResponse>(
-      { error: { message: `Missing ${idType} ID` } },
-      { status: 400 }
-    );
-  }
-  return undefined;
-}
-
-function createNotFoundError(itemType: string, id: string) {
-  return HttpResponse.json<ErrorResponse>(
-    { error: { message: `There is no ${itemType} by provided id: ${id}` } },
-    { status: 404 }
-  );
-}
-
-/**
- * Utility function to find a receivable by ID across all types
- * @param id The receivable ID to find
- * @returns The found receivable or undefined
- */
-function findReceivableById(id: string) {
-  const quoteFixture = receivableListFixture.quote.find(
-    (item) => item.id === id
-  );
-  const invoiceFixture = receivableListFixture.invoice.find(
-    (item) => item.id === id
-  );
-  const creditNoteFixture = receivableListFixture.credit_note.find(
-    (item) => item.id === id
-  );
-  return quoteFixture || invoiceFixture || creditNoteFixture;
-}
-
-export function createEmailInvoiceDetailsHandlers(
-  status: Schemas['InvoiceResponsePayload']['status']
-) {
-  return [
-    http.get<IReceivableByIdParams>(
-      receivableContactsPath,
-      async ({ params }) => {
-        const missingIdError = createMissingIdError(params.id, 'receivable');
-        if (missingIdError) return missingIdError;
-
-        await delay();
-        return HttpResponse.json({
-          data: [createEmailInvoiceContact()],
-        });
-      }
-    ),
-
-    http.get<IReceivableByIdParams>(
-      receivablePreviewEmailPath,
-      async ({ params }) => {
-        const missingIdError = createMissingIdError(params.id, 'receivable');
-        if (missingIdError) return missingIdError;
-
-        await delay();
-        return HttpResponse.json(createEmailInvoicePreview());
-      }
-    ),
-
-    http.get<{ id: string }>(receivableDetailPath, async ({ params }) => {
-      const missingIdError = createMissingIdError(params.id, 'receivable');
-      if (missingIdError) return missingIdError;
-
-      const fixture = findReceivableById(params.id);
-      if (!fixture) {
-        await delay();
-        return createNotFoundError('receivable', params.id);
-      }
-
-      const receivable = {
-        ...fixture,
-        status,
-      };
-
-      await delay();
-      return HttpResponse.json(receivable);
-    }),
-  ];
-}
-
 export const receivableHandlers = [
   // read list
   http.get<
     {},
     undefined,
-    Schemas['ReceivablePaginationResponse'] | Schemas['ErrorSchemaResponse']
+    | components['schemas']['ReceivablePaginationResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivablePath, async ({ request }) => {
     const url = new URL(request.url);
     const type = url.searchParams.get('type') as
@@ -194,8 +99,9 @@ export const receivableHandlers = [
   // create
   http.post<
     {},
-    Schemas['ReceivableFacadeCreatePayload'],
-    Schemas['ReceivableResponse'] | Schemas['ErrorSchemaResponse']
+    components['schemas']['ReceivableFacadeCreatePayload'],
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivablePath, async ({ request }) => {
     const jsonBody = await request.json();
     try {
@@ -220,22 +126,32 @@ export const receivableHandlers = [
   // Update receivable line items
   http.put<
     { id: string },
-    Schemas['UpdateLineItems'],
-    LineItemsResponse | ErrorResponse
+    components['schemas']['UpdateLineItems'],
+    | components['schemas']['LineItemsResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${receivableDetailPath}/line_items`, async ({ params }) => {
-    const missingIdError = createMissingIdError(params.id, 'receivable');
-    if (missingIdError) return missingIdError;
-
     const invoiceLineItemsResponse = receivableListFixture.invoice.find(
       (invoice) => invoice.id === params.id
     );
 
     if (!invoiceLineItemsResponse) {
       await delay();
-      return createNotFoundError('receivable', params.id!);
+
+      return HttpResponse.json(
+        {
+          error: {
+            message: `There is no receivable by provided id: ${params.id}`,
+          },
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
-    return HttpResponse.json<LineItemsResponse>({
+    await delay();
+
+    return HttpResponse.json({
       data: invoiceLineItemsResponse.line_items,
     });
   }),
@@ -243,8 +159,9 @@ export const receivableHandlers = [
   // update
   http.patch<
     { id: string },
-    Schemas['ReceivableUpdatePayload'],
-    Schemas['ReceivableResponse'] | Schemas['ErrorSchemaResponse']
+    components['schemas']['ReceivableUpdatePayload'],
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivableDetailPath, async ({ request, params }) => {
     const jsonBody = await request.json();
 
@@ -348,7 +265,8 @@ export const receivableHandlers = [
   http.get<
     { id: string },
     undefined,
-    Schemas['ReceivableResponse'] | Schemas['ErrorSchemaResponse']
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivableDetailPath, async ({ params }) => {
     if (!params.id) {
       await delay();
@@ -378,7 +296,17 @@ export const receivableHandlers = [
 
     if (!fixture) {
       await delay();
-      return createNotFoundError('receivable', params.id);
+
+      return HttpResponse.json(
+        {
+          error: {
+            message: `There is no receivable by provided id: ${params.id}`,
+          },
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
     return HttpResponse.json(fixture);
@@ -388,25 +316,45 @@ export const receivableHandlers = [
   http.post<
     IReceivableByIdParams,
     undefined,
-    ReceivableResponse | ErrorResponse
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivableIssuePath, async ({ params }) => {
-    const missingIdError = createMissingIdError(params.id, 'receivable');
-    if (missingIdError) return missingIdError;
-
-    const fixture = findReceivableById(params.id);
+    const quoteFixture = receivableListFixture.quote.find(
+      (item) => item.id === params.id
+    );
+    const invoiceFixture = receivableListFixture.invoice.find(
+      (item) => item.id === params.id
+    );
+    const creditNoteFixture = receivableListFixture.credit_note.find(
+      (item) => item.id === params.id
+    );
+    const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
     if (!fixture) {
       await delay();
-      return createNotFoundError('receivable', params.id);
+
+      return HttpResponse.json(
+        {
+          error: {
+            message: `There is no receivable by provided id: ${params.id}`,
+          },
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
-    const receivable = {
-      ...(fixture as Schemas['InvoiceResponsePayload']),
-      status: 'issued' as const,
-    } as ReceivableResponse;
+    fixture.status = 'issued';
+
+    const receivable: components['schemas']['InvoiceResponsePayload'] = {
+      ...(fixture as components['schemas']['InvoiceResponsePayload']),
+      status: 'issued',
+    };
 
     await delay();
-    return HttpResponse.json<ReceivableResponse>(receivable);
+
+    return HttpResponse.json(receivable);
   }),
 
   /** Delete receivable */
@@ -485,7 +433,8 @@ export const receivableHandlers = [
   http.post<
     IReceivableByIdParams,
     undefined,
-    Schemas['ReceivableResponse'] | Schemas['ErrorSchemaResponse']
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivableUncollectiblePath, async ({ params }) => {
     const quoteFixture = receivableListFixture.quote.find(
       (item) => item.id === params.id
@@ -513,8 +462,8 @@ export const receivableHandlers = [
       );
     }
 
-    const receivable: Schemas['InvoiceResponsePayload'] = {
-      ...(fixture as Schemas['InvoiceResponsePayload']),
+    const receivable: components['schemas']['InvoiceResponsePayload'] = {
+      ...(fixture as components['schemas']['InvoiceResponsePayload']),
       status: 'uncollectible',
       id: 'uncollectible',
     };
@@ -528,7 +477,8 @@ export const receivableHandlers = [
   http.post<
     IReceivableByIdParams,
     undefined,
-    Schemas['ReceivableResponse'] | Schemas['ErrorSchemaResponse']
+    | components['schemas']['ReceivableResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(receivableSendPath, async ({ params }) => {
     const quoteFixture = receivableListFixture.quote.find(
       (item) => item.id === params.id
@@ -567,7 +517,8 @@ export const receivableHandlers = [
   http.get<
     IReceivableByIdParams,
     undefined,
-    Schemas['ReceivableFileUrl'] | Schemas['ErrorSchemaResponse']
+    | components['schemas']['ReceivableFileUrl']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${receivableDetailPath}/pdf_link`, async () => {
     await delay();
 
