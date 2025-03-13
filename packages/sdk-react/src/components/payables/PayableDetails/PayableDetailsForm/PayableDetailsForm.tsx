@@ -29,12 +29,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   Autocomplete,
   Box,
+  Button,
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -145,6 +149,7 @@ const getValidationSchema = (i18n: I18n) =>
             ? schema.required()
             : schema
         ),
+      discount: yup.number().nullable().min(0),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
@@ -251,6 +256,7 @@ const PayableDetailsFormBase = forwardRef<
       formatFromMinorUnits,
       formatToMinorUnits,
       formatCurrencyToDisplay,
+      getSymbolFromCurrency,
     } = useCurrencies();
 
     const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
@@ -281,8 +287,14 @@ const PayableDetailsFormBase = forwardRef<
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
     const currentLineItems = watch('lineItems');
+    const currentDiscount = watch('discount');
 
-    const totals = calculateTotalsForPayable(currentLineItems);
+    const totals = calculateTotalsForPayable(
+      currentLineItems,
+      currentDiscount
+        ? formatFromMinorUnits(currentDiscount, currentCurrency)
+        : null
+    );
 
     useEffect(() => {
       methods.reset();
@@ -710,17 +722,85 @@ const PayableDetailsFormBase = forwardRef<
                         <TableRow className={className + '-Totals-Subtotal'}>
                           <TableCell>{t(i18n)`Subtotal`}</TableCell>
                           <TableCell align="right">
-                            {totals.subtotal && currentCurrency
-                              ? formatCurrencyToDisplay(
-                                  formatToMinorUnits(
-                                    totals.subtotal,
+                            <Box
+                              gap={0.5}
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              display="flex"
+                            >
+                              {currentDiscount === null && (
+                                <Button
+                                  startIcon={<AddIcon />}
+                                  size="small"
+                                  sx={{ pl: 1.25, pr: 2, py: 0 }}
+                                  onClick={() => {
+                                    const setValue = methods.setValue;
+                                    setValue('discount', 0);
+                                  }}
+                                >
+                                  {t(i18n)`Add Discount`}
+                                </Button>
+                              )}
+                              {totals.subtotal && currentCurrency
+                                ? formatCurrencyToDisplay(
+                                    formatToMinorUnits(
+                                      totals.subtotal,
+                                      currentCurrency
+                                    ) || 0,
                                     currentCurrency
-                                  ) || 0,
-                                  currentCurrency
-                                )
-                              : '—'}
+                                  )
+                                : '—'}
+                            </Box>
                           </TableCell>
                         </TableRow>
+                        {currentDiscount !== null && (
+                          <TableRow className={className + '-Totals-Discount'}>
+                            <TableCell>{t(i18n)`Discount`}</TableCell>
+                            <TableCell align="right">
+                              <Box
+                                gap={0.5}
+                                alignItems="center"
+                                justifyContent="flex-end"
+                                display="flex"
+                              >
+                                <IconButton
+                                  aria-label="delete"
+                                  onClick={() => {
+                                    const setValue = methods.setValue;
+                                    setValue('discount', null);
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+
+                                <Controller
+                                  name="discount"
+                                  control={control}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <TextField
+                                      {...field}
+                                      id={field.name}
+                                      variant="standard"
+                                      type="number"
+                                      inputProps={{ min: 0 }}
+                                      error={Boolean(error)}
+                                      sx={{ width: 100 }}
+                                      InputProps={{
+                                        endAdornment:
+                                          getSymbolFromCurrency(
+                                            currentCurrency
+                                          ),
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )}
                         <TableRow className={className + '-Totals-Taxes'}>
                           <TableCell>{t(i18n)`VAT total`}</TableCell>
                           <TableCell align="right">

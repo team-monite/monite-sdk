@@ -9,7 +9,7 @@ import {
 
 import { useOnboardingRequirementsContext } from '../context';
 import { isRepresentative } from '../helpers';
-import { enrichFieldsByValues } from '../transformers';
+import { enrichFieldsByValues, filterRequestBody } from '../transformers';
 import { showErrorToast } from '../utils';
 import { useOnboardingActions } from './useOnboardingActions';
 import { useOnboardingEntity } from './useOnboardingEntity';
@@ -155,7 +155,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     async (personId: string, payload: OptionalPersonRequest) => {
       const response = await updatePersonMutation({
         path: { person_id: personId },
-        body: payload,
+        body: filterRequestBody(payload),
       });
 
       patchOnboardingRequirements({
@@ -184,7 +184,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     async (personId: string, payload: OptionalPersonRequest) => {
       const response = await updatePersonMutation({
         path: { person_id: personId },
-        body: payload,
+        body: filterRequestBody(payload),
       });
 
       patchOnboardingRequirements({

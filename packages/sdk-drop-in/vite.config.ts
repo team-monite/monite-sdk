@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 
 import { resolve } from 'node:path';
 import { defineConfig, ConfigEnv } from 'vite';
@@ -11,7 +11,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
-        plugins: [['@swc/plugin-emotion', {}]],
       }),
     ],
     build: {
@@ -33,10 +32,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
           ),
           'monite-app-demo.html': resolve(__dirname, 'monite-app-demo.html'),
           'monite-app': resolve(__dirname, 'src/custom-elements/monite-app.ts'),
-          'monite-app-auto': resolve(
-            __dirname,
-            'src/custom-elements/monite-app.ts'
-          ),
           'monite-iframe-app': resolve(
             __dirname,
             'src/custom-elements/monite-iframe-app.ts'
@@ -47,6 +42,12 @@ export default async function viteConfig({ mode }: ConfigEnv) {
           ),
         },
         name: 'Monite Drop-in',
+      },
+      rollupOptions: {
+        external: [],
+        output: {
+          globals: {},
+        },
       },
     },
     resolve: { alias: { '@': resolve(__dirname, './src') } },

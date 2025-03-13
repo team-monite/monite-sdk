@@ -506,6 +506,17 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
+                {Boolean(payable.discount) && payable.currency && (
+                  <TableRow>
+                    <TableCell>{t(i18n)`Discount`}</TableCell>
+                    <TableCell align="right">
+                      {formatCurrencyToDisplay(
+                        payable.discount ?? 0,
+                        payable.currency
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <TableCell>{t(i18n)`VAT Total`}</TableCell>
                   <TableCell align="right">
