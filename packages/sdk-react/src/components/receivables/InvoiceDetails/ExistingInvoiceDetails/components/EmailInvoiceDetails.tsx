@@ -1,15 +1,12 @@
-import React, { FC } from 'react';
 import {
+  type FC,
   useCallback,
   useEffect,
   useId,
   useMemo,
   useState,
 } from 'react';
-import {
-  useForm,
-  UseFormGetValues,
-} from 'react-hook-form';
+import { useForm, type UseFormGetValues } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
@@ -48,9 +45,7 @@ import {
   Box,
 } from '@mui/material';
 
-import { 
-  getEmailInvoiceDetailsSchema,
-} from './EmailInvoiceDetails.form';
+import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
 import {
   type ControlProps,
   Form,
@@ -260,6 +255,7 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
                       onClick={onClose}
                       startIcon={<ArrowBackIcon />}
                       disabled={isDisabled}
+                      data-testid="back-button"
                     >{t(i18n)`Back`}</Button>
                     <Typography variant="h3">{t(
                       i18n
@@ -273,7 +269,8 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
                     onClick={() => {
                       setPresentation(FormPresentation.Edit);
                     }}
-                    aria-label="close"
+                    aria-label={t(i18n)`Back to edit`}
+                    data-testid="close-preview-button"
                   >
                     <CloseIcon />
                   </IconWrapper>
@@ -298,6 +295,7 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
                       const isValid = await trigger();
                       if (isValid) setPresentation(FormPresentation.Preview);
                     }}
+                    data-testid="preview-button"
                   >{t(i18n)`Preview email`}</Button>
                 )}
                 <Button
@@ -306,6 +304,7 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
                   type="submit"
                   form={formName}
                   disabled={isDisabled || isLoading}
+                  data-testid="issue-and-send-button"
                 >{t(i18n)`Issue and send`}</Button>
               </Stack>
             </Grid>
@@ -326,7 +325,7 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
         <Form
           formName={formName}
           handleIssueAndSend={handleIssueAndSend}
-          style={{ 
+          style={{
             display: 'flex',
             flexDirection: 'column',
             flex: 1,
@@ -353,16 +352,12 @@ const EmailInvoiceDetailsBase: FC<EmailInvoiceFormProps> = ({
     </>
   );
 };
-
 interface PreviewProps {
   invoiceId: string;
   getValues: UseFormGetValues<ControlProps>;
 }
 
-const Preview: FC<PreviewProps> = ({
-  invoiceId,
-  getValues,
-}) => {
+const Preview: FC<PreviewProps> = ({ invoiceId, getValues }) => {
   const { i18n } = useLingui();
   const { subject, body } = getValues();
   const { isLoading, preview, error, refresh } = useReceivableEmailPreview(
@@ -372,13 +367,15 @@ const Preview: FC<PreviewProps> = ({
   );
 
   return (
-    <Box sx={{ 
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: 0,
-      overflow: 'hidden'
-    }}>
+    <Box
+      sx={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0,
+        overflow: 'hidden',
+      }}
+    >
       {isLoading && (
         <CenteredContentBox className="Monite-LoadingPage">
           <CircularProgress />
@@ -415,6 +412,7 @@ const Preview: FC<PreviewProps> = ({
                 variant="text"
                 onClick={refresh}
                 startIcon={<RefreshIcon />}
+                data-testid="reload-preview-button"
               >{t(i18n)`Reload`}</Button>
             </Stack>
           </Stack>

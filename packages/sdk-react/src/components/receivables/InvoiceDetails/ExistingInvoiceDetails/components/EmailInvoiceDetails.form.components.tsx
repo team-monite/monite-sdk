@@ -1,4 +1,10 @@
-import React, { FC, PropsWithChildren} from 'react';
+import type {
+  FC,
+  PropsWithChildren,
+  CSSProperties,
+  ReactNode,
+  FormEvent,
+} from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
@@ -28,9 +34,9 @@ import { getDefaultContact, getContactList } from './helpers/contacts';
 
 export interface FormProps {
   formName: string;
-  style?: React.CSSProperties;
-  children: React.ReactNode;
-  handleIssueAndSend: (e: React.FormEvent) => void;
+  style?: CSSProperties;
+  children: ReactNode;
+  handleIssueAndSend: (e: FormEvent) => void;
 }
 
 export const Form: FC<PropsWithChildren<FormProps>> = ({
@@ -88,6 +94,7 @@ const RecipientSelector: FC<RecipientSelectorProps> = ({
           <Select
             MenuProps={{ container: root }}
             className="Monite-NakedField Monite-RecipientSelector"
+            data-testid={`${field.name}-select`}
             {...field}
           >
             {getContactList(contacts, defaultContact).map((contact) => (
@@ -156,6 +163,7 @@ export const FormContent: FC<FormContentProps> = ({
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   id={field.name}
+                  data-testid={`${field.name}-input`}
                   variant="standard"
                   className="Monite-NakedField"
                   fullWidth
@@ -176,6 +184,7 @@ export const FormContent: FC<FormContentProps> = ({
             render={({ field, fieldState: { error } }) => (
               <TextField
                 id={field.name}
+                data-testid={`${field.name}-input`}
                 variant="standard"
                 className="Monite-NakedField"
                 fullWidth
