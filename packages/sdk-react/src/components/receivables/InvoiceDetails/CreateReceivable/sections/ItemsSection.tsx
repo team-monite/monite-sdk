@@ -389,7 +389,7 @@ export const ItemsSection = ({
                       key={faker.string.uuid()}
                       className={tableRowClassName}
                     >
-                      <TableCell sx={{ width: '40%' }}>
+                      <TableCell sx={{ width: { xs: '30%', xl: '40%' } }}>
                         <ItemSelector
                           setIsCreateItemOpened={setIsCreateDialogOpen}
                           onUpdate={(item, disableFields) =>
@@ -403,7 +403,7 @@ export const ItemsSection = ({
                         />
                       </TableCell>
 
-                      <TableCell sx={{ width: '20%' }}>
+                      <TableCell sx={{ width: { xs: '30%', xl: '20%' } }}>
                         <Controller
                           name={`line_items.${index}.quantity`}
                           render={({ field }) => {
@@ -521,7 +521,7 @@ export const ItemsSection = ({
                         />
                       </TableCell>
 
-                      <TableCell sx={{ width: '10%' }}>
+                      <TableCell sx={{ width: 'fit-content' }}>
                         {isNonVatSupported ? (
                           <Controller
                             name={`line_items.${index}.tax_rate_value`}

@@ -201,7 +201,7 @@ export const ItemSelector = ({
           !selectedItem
         ) {
           const searchMatch = flattenProducts?.find(
-            (item) => item?.name === fieldName
+            (item) => item?.name === fieldName // potentially item?.product.name, double check
           );
           if (searchMatch) {
             // inherited value found in catalogue
@@ -250,6 +250,7 @@ export const ItemSelector = ({
                 container: root,
                 sx: {
                   width: 'calc(50% - 80px) !important',
+                  maxWidth: 'min(940px, 100%)',
                   left: '40px !important',
                 },
               },
