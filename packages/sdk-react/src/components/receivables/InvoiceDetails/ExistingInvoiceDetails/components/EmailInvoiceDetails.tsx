@@ -48,7 +48,7 @@ import { getDefaultContact } from './helpers/contacts';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
-  isFirstInvoice: boolean;
+  isFirstInvoice?: boolean;
   onClose: () => void;
   onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
 }
@@ -205,7 +205,7 @@ export const EmailInvoiceDetailsBase = ({
           await createPaymentLink({
             recipient: { id: entityId, type: 'entity' },
             payment_methods: availablePaymentMethods.map(
-              (method) => method.type as PaymentMethod
+              (method) => method.type
             ),
             object: { id: invoiceId, type: 'receivable' },
           });
@@ -224,7 +224,7 @@ export const EmailInvoiceDetailsBase = ({
          */
         sendEmail(emailParams, {
           onSuccess: () => {
-            onSendEmail?.(invoiceId, isFirstInvoice);
+            onSendEmail?.(invoiceId, Boolean(isFirstInvoice));
             onClose();
           },
         });

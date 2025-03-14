@@ -166,4 +166,5 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
+  onboarding: componentSettings?.onboarding ?? {},
 });

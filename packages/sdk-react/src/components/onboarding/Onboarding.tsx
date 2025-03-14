@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -7,32 +6,7 @@ import { LinearProgress } from '@mui/material';
 
 import { OnboardingContextProvider } from './context';
 import { OnboardingContent } from './OnboardingContent';
-
-export interface OnboardingProps {
-  /**
-   * Called when bank account setup is completed.
-   *
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
-   * @returns {void}
-   */
-  onBankAccountComplete?: (
-    response: components['schemas']['EntityBankAccountResponse']
-  ) => void;
-  /**
-   * Called when working capital onboarding is completed.
-   * This happens when the business status transitions to 'ONBOARDED'.
-   *
-   * @returns {void}
-   */
-  onWorkingCapitalOnboardingComplete?: () => void;
-
-  /**
-   * Called when the onboarding process is completed.
-   *
-   * @returns {void}
-   */
-  onComplete?: () => void;
-}
+import { OnboardingProps } from './types';
 
 /**
  * Onboarding component
