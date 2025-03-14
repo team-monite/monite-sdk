@@ -1,6 +1,6 @@
 {
   "mode": "pre",
-  "tag": "alpha",
+  "tag": "beta",
   "initialVersions": {
     "@team-monite/e2e": "1.0.1",
     "sdk-demo-with-nextjs-and-clerk-auth": "0.1.0",
