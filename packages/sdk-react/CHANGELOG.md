@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-alpha.20
+
+### Minor Changes
+
+- 010861f: Added discounts for payables
+
 ## 4.0.0-alpha.19
 
 ### Patch Changes

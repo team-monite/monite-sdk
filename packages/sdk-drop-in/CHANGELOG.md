@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.19
+
+### Minor Changes
+
+- 010861f: Added discounts for payables
+
 ## 2.0.0-alpha.18
 
 ### Minor Changes
