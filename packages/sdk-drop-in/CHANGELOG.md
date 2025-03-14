@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-alpha.19
+
+### Minor Changes
+
+- 010861f: Added discounts for payables
+
+### Patch Changes
+
+- d068bbf: Added onboarding and sent invoice email events to the SDK and Drop-in component
+
 ## 2.0.0-alpha.18
 
 ### Minor Changes
