@@ -11,8 +11,6 @@ import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
-import { Dialog } from '@/components/Dialog';
-import { ProductDetails } from '@/components/products';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
@@ -21,7 +19,6 @@ import {
   Filters as FilterType,
   FilterValue,
 } from '@/components/products/ProductsTable/types';
-import { ProductsTableDataTestId } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.types';
 import { ProductsTableFilters } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters';
 import {
   getCreateInvoiceProductsValidationSchema,
@@ -59,6 +56,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
+
+import { CreateProductDialog } from './CreateProductDialog';
 
 interface OnAddOptions {
   items: Array<ProductServiceResponse>;
@@ -249,9 +248,9 @@ export const ProductsTable = ({
     []
   );
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const handleCreateNewProduct = useCallback(() => {
-    setIsCreateModalOpen(true);
+    setIsCreateDialogOpen(true);
   }, []);
 
   const isSelected = useCallback(
@@ -267,6 +266,7 @@ export const ProductsTable = ({
     },
     [fields]
   );
+
   const handleUpdateProducts = useCallback(
     (newItem: ProductServiceResponse) => {
       if (!flattenProducts) {
@@ -289,23 +289,12 @@ export const ProductsTable = ({
 
   return (
     <>
-      <Dialog
-        open={isCreateModalOpen}
-        alignDialog="right"
-        onClose={() => {
-          setIsCreateModalOpen(false);
-        }}
-        data-testid={ProductsTableDataTestId.DialogTestId}
-      >
-        <ProductDetails
-          onCreated={() => {
-            setIsCreateModalOpen(false);
-          }}
-          defaultValues={{
-            currency: currency,
-          }}
-        />
-      </Dialog>
+      <CreateProductDialog
+        open={isCreateDialogOpen}
+        handleClose={() => setIsCreateDialogOpen(false)}
+        actualCurrency={actualCurrency}
+        defaultCurrency={defaultCurrency}
+      />
       <Grid container alignItems="center">
         <Grid item xs={9}>
           <Typography variant="h3" sx={{ p: 4 }}>{t(

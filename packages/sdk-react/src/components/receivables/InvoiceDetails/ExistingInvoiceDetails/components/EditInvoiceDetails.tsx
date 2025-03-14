@@ -116,7 +116,7 @@ const EditInvoiceDetailsContent = ({
     },
   });
 
-  const [actualCurrency, setActualCurrency] = useState(invoice.currency);
+  const actualCurrency = invoice.currency;
 
   const {
     handleSubmit,
@@ -196,6 +196,10 @@ const EditInvoiceDetailsContent = ({
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
                   product_id: lineItem.product_id,
+                  product: {
+                    ...lineItem.product,
+                    type: lineItem.product.type as 'product' | 'service',
+                  },
                   vat_rate_id: lineItem.vat_rate_id,
                 })),
               };
@@ -265,7 +269,6 @@ const EditInvoiceDetailsContent = ({
               <ItemsSection
                 isNonVatSupported={isNonVatSupported}
                 actualCurrency={actualCurrency}
-                onCurrencyChanged={setActualCurrency}
               />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ReminderSection

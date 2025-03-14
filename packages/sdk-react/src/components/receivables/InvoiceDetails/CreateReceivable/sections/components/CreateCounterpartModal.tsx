@@ -64,7 +64,7 @@ export const CreateCounterpartModal = ({
         {counterpartType ? (
           <Grid
             sx={{
-              maxHeight: isLargeScreen ? 920 : 720,
+              maxHeight: isLargeScreen ? 920 : 720, //too much for a laptop, attach screenshot to PR
               display: 'flex',
               flexDirection: 'column',
             }}

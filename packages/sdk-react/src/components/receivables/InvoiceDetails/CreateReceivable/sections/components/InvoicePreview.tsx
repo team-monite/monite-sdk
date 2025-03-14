@@ -83,11 +83,16 @@ export const InvoicePreview = ({
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
-  // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
-  const sanitizedItems = items.map((item) => ({
-    ...item,
-    smallest_amount: item.smallest_amount ?? undefined,
-  }));
+  const sanitizedItems = items
+    .filter((item) => item.product.name !== '')
+    .map((item) => ({
+      ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
+      smallest_amount: item.product.smallest_amount ?? undefined,
+      product: {
+        ...item.product,
+        type: item.product.type as 'product' | 'service',
+      },
+    }));
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
     lineItems: sanitizedItems,
@@ -142,7 +147,7 @@ export const InvoicePreview = ({
       const taxRate = Number(taxRateKey);
       const items = groupedItems[taxRate];
       const totalTax = items.reduce((sum, item) => {
-        const itemPrice = item.price?.value || 0;
+        const itemPrice = item.product?.price?.value || 0;
         const itemTax = (itemPrice * item.quantity * taxRate) / 100;
         return sum + itemTax;
       }, 0);
@@ -312,19 +317,22 @@ export const InvoicePreview = ({
                 {sanitizedItems.length > 0 ? (
                   sanitizedItems.map((item) => (
                     <tr>
-                      <td style={{ maxWidth: '120px' }}>{item?.name}</td>
+                      <td style={{ maxWidth: '120px' }}>
+                        {item?.product.name}
+                      </td>
                       <td>{item?.quantity}</td>
                       <td>
-                        {item?.measure_unit_id && (
-                          <MeasureUnit unitId={item.measure_unit_id} />
+                        {item?.product.measure_unit_id && (
+                          <MeasureUnit unitId={item.product.measure_unit_id} />
                         )}
                       </td>
                       <td>
-                        {formatCurrencyToDisplay(
-                          item.price.value,
-                          item.price.currency,
-                          false
-                        )}
+                        {item.product.price &&
+                          formatCurrencyToDisplay(
+                            item.product.price.value,
+                            item.product.price.currency,
+                            false
+                          )}
                       </td>
                       <td>{formatTaxRate(item)}%</td>
                     </tr>
@@ -338,7 +346,7 @@ export const InvoicePreview = ({
                 )}
               </tbody>
             </table>
-            {items?.length > 1 && (
+            {sanitizedItems?.length > 1 && (
               <table cellPadding={0} cellSpacing={0} className="totals-table">
                 <tbody>
                   <tr className="subtotal">

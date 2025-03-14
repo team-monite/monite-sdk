@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
@@ -10,6 +11,7 @@ interface UseCreateInvoiceProductsTable {
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
+  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
 }
 
 interface UseCreateInvoiceProductsTableProps {
@@ -27,65 +29,73 @@ export const useCreateInvoiceProductsTable = ({
   lineItems,
   formatCurrencyToDisplay,
   isNonVatSupported,
+  actualCurrency,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
-      const price = field.price?.value ?? 0;
+      const price = field.product?.price?.value ?? field.price?.value ?? 0;
       const quantity = field.quantity;
 
       return acc + price * quantity;
     }, 0);
-    const currencyItem = lineItems.find((field) =>
-      Boolean(field.price?.currency)
-    );
 
-    if (!currencyItem || !currencyItem.price) {
-      return;
+    const currency =
+      actualCurrency ||
+      lineItems.find((field) => Boolean(field.product?.price?.currency))
+        ?.product?.price?.currency ||
+      lineItems.find((field) => Boolean(field.price?.currency))?.price
+        ?.currency;
+
+    if (!currency) {
+      return undefined;
     }
 
     return new Price({
       value: price,
-      currency: currencyItem.price.currency,
+      currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay]);
+  }, [lineItems, formatCurrencyToDisplay, actualCurrency]);
+
+  const taxes = lineItems.reduce((acc, field) => {
+    const price = field.product?.price?.value ?? field.price?.value ?? 0;
+    const quantity = field.quantity;
+    const subtotalPrice = price * quantity;
+
+    const taxRate = isNonVatSupported
+      ? (field?.tax_rate_value ?? 0) * 100
+      : field.vat_rate_value;
+
+    if (!taxRate) {
+      return acc;
+    }
+    const tax = (subtotalPrice * taxRate) / 10_000;
+
+    return acc + tax;
+  }, 0);
 
   const totalTaxes = useMemo(() => {
-    const taxes = lineItems.reduce((acc, field) => {
-      const price = field.price?.value ?? 0;
-      const quantity = field.quantity;
-      const subtotalPrice = price * quantity;
+    const currency =
+      actualCurrency ||
+      lineItems.find((field) => Boolean(field.product?.price?.currency))
+        ?.product?.price?.currency ||
+      lineItems.find((field) => Boolean(field.price?.currency))?.price
+        ?.currency;
 
-      const taxRate = isNonVatSupported
-        ? (field?.tax_rate_value ?? 0) * 100
-        : field.vat_rate_value;
-
-      if (!taxRate) {
-        return acc;
-      }
-
-      const tax = (subtotalPrice * taxRate) / 10_000;
-
-      return acc + tax;
-    }, 0);
-    const currencyItem = lineItems.find((field) =>
-      Boolean(field.price?.currency)
-    );
-
-    if (!currencyItem || !currencyItem.price) {
-      return;
+    if (!currency) {
+      return undefined;
     }
 
     return new Price({
       value: taxes,
-      currency: currencyItem.price.currency,
+      currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay, isNonVatSupported]);
+  }, [lineItems, taxes, formatCurrencyToDisplay, actualCurrency]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
-      return;
+      return undefined;
     }
 
     return subtotalPrice.add(totalTaxes);

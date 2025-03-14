@@ -97,6 +97,7 @@ export const ProductForm = ({
         id={formId}
         onSubmit={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           handleSubmit(onSubmit)(event);
         }}
       >
@@ -217,7 +218,12 @@ export const ProductForm = ({
               </Grid>
 
               <Grid item xs={6}>
-                <MoniteCurrency name="currency" control={control} required />
+                <MoniteCurrency
+                  name="currency"
+                  control={control}
+                  actualCurrency={defaultValues.currency}
+                  required
+                />
               </Grid>
             </Grid>
           </Grid>
