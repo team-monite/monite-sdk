@@ -146,36 +146,39 @@ export const ItemsSection = ({
     return error.message;
   }, [error]);
 
-  const getErrorMessage = (key: string) => {
-    if (!error || !Array.isArray(error)) {
-      return;
-    }
-
-    const keys = key.split('.');
-
-    const specificError = error.find((item) => {
-      let current: any = item;
-      for (const k of keys) {
-        if (current && typeof current === 'object' && k in current) {
-          current = current[k];
-        } else {
-          return false;
-        }
+  const getErrorMessage = useCallback(
+    (key: string) => {
+      if (!error || !Array.isArray(error)) {
+        return;
       }
-      return current && typeof current === 'object' && 'message' in current;
-    });
 
-    if (!specificError) {
-      return;
-    }
+      const keys = key.split('.');
 
-    let result: any = specificError;
-    for (const k of keys) {
-      result = result?.[k];
-    }
+      const specificError = error.find((item) => {
+        let current: any = item;
+        for (const k of keys) {
+          if (current && typeof current === 'object' && k in current) {
+            current = current[k];
+          } else {
+            return false;
+          }
+        }
+        return current && typeof current === 'object' && 'message' in current;
+      });
 
-    return result?.message;
-  };
+      if (!specificError) {
+        return;
+      }
+
+      let result: any = specificError;
+      for (const k of keys) {
+        result = result?.[k];
+      }
+
+      return result?.message;
+    },
+    [error]
+  );
 
   const quantityError = useMemo(
     () => getErrorMessage('quantity'),
