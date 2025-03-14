@@ -1,5 +1,42 @@
 # @monite/sdk-drop-in
 
+## 2.0.0
+
+### Major Changes
+
+- 646c7ac: Bump Drop-in (v4)
+
+### Minor Changes
+
+- 60a0972: New Dropin syntax
+- 166b0d8: refactor(DEV-12144) remove sdk-api package
+- c5d39e5: Line item units management added
+- 5dddf03: New pre-release v4
+- 575e2a6: Fix Kanmon SDK env URL
+- 3583a16: Bump Drop-in
+- 2c645e2: Fixed style issues
+- 00808d4: update sdk dependency
+- 010861f: Added discounts for payables
+- 9462a2f: Invoice creation redesign
+- 4fed228: Bump dropin to latest version
+- 331d6d4: feat(proposal): add component settings
+- bee7fab: Change Dropin exports
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- 23c29de: Update Kanmon live URL
+- cb63d74: onCreate receivable event added
+- 923df35: Fix counterpart creation form styles
+- a8b6f84: Re-create translation files
+- 2f0f481: Fix invoice preview styles
+- 368fe8e: UI minor fixes in invoice creation
+- 1a0042c: Fix styling issues in Receivables table
+- 18df891: Improve error messages in Products&Services component
+- 3f6cd29: Load styles on invoice preview properly
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+- 25e34f4: Improve aspect ratio in Invoice preview
+
 ## 2.0.0-alpha.19
 
 ### Minor Changes

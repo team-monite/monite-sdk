@@ -1,5 +1,57 @@
 # @monite/sdk-react
 
+## 4.0.0
+
+### Major Changes
+
+- 166b0d8: refactor(DEV-12144) remove sdk-api package
+- 8d0ea89: feat(DEV-12955): add new styling approach for the SDK
+- 1cb86af: refactor(DEV-12028): remove deprecated methods for payable details
+- 377e6ad: feat(DEV-13343): move date time format to locale
+
+### Minor Changes
+
+- d9aa339: Updated copies on Products & Services page.
+- c5d39e5: Line item units management added
+- 08fa299: improvements requested after invoice preview merge
+- ad63579: feat(DEV-13434): new styles for display components and form controls
+- b3fc060: bugfix invoice previeww: tax rate showing always as zero, sometimes divided by 100 unnecessarily
+- 5dddf03: New pre-release v4
+- 575e2a6: Fix Kanmon SDK env URL
+- 25d5f60: feat(DEV-13687) Argon changes during invoice creation
+- 2c645e2: Fixed style issues
+- a0cec41: feat(DEV-13430): add new styles to search and filters
+- 010861f: Added discounts for payables
+- 548efe1: Payment flow improvements on Accounts payable
+- 77d926e: Added keywords and category to tags table
+- 2c39324: feat(DEV-13429): add spacing token and update storybook utils to handle theme config
+- 94f9497: Adds option to delete canceled payables
+- fdb71ad: Added DocumentDesign component
+- 86b7490: fix(DEV-13777): invoice preview
+
+### Patch Changes
+
+- 6a68134: Prepend https in empty Onboarding URL field
+- 2604834: Display VAT id error message from API
+- f1b62b9: Filter forbidden fields in update person payloads
+- 23c29de: Update Kanmon live URL
+- cb63d74: onCreate receivable event added
+- b50d841: Product creation default values
+- 923df35: Fix counterpart creation form styles
+- a8b6f84: Re-create translation files
+- 802f5c4: Custom currency dropdown renderer
+- 2f0f481: Fix invoice preview styles
+- 368fe8e: UI minor fixes in invoice creation
+- 1a0042c: Fix styling issues in Receivables table
+- 18df891: Improve error messages in Products&Services component
+- b0494f7: Update table styles
+- 3f6cd29: Load styles on invoice preview properly
+- 4140560: Removed Go to docs from user-roles modal
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+- 25e34f4: Improve aspect ratio in Invoice preview
+- 7a518b8: PDF download button is disabled until the url is defined
+- 665c8e6: When sending an invoice, we use the organization's email address as a fallback if there is no contact person defined.
+
 ## 4.0.0-alpha.20
 
 ### Minor Changes
