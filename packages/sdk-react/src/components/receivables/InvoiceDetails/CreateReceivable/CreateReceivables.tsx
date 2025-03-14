@@ -74,6 +74,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
   </MoniteScopedProviders>
 );
 
+// TODO: save this logic into a hook
 const saveFieldsToLocalStorage = (fields: any) => {
   try {
     window.localStorage.setItem('formFields', JSON.stringify(fields));

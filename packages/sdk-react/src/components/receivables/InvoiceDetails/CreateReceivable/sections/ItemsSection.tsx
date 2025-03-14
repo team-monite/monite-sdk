@@ -177,21 +177,27 @@ export const ItemsSection = ({
     return result?.message;
   };
 
-  const quantityError = useMemo(() => getErrorMessage('quantity'), [error]);
-  const nameError = useMemo(() => getErrorMessage('product.name'), [error]);
+  const quantityError = useMemo(
+    () => getErrorMessage('quantity'),
+    [getErrorMessage]
+  );
+  const nameError = useMemo(
+    () => getErrorMessage('product.name'),
+    [getErrorMessage]
+  );
   const priceError = useMemo(() => {
     return (
       getErrorMessage('product.price.value') ||
       getErrorMessage('product.price.currency')
     );
-  }, [error]);
+  }, [getErrorMessage]);
   const taxError = useMemo(() => {
     return (
       getErrorMessage('vat_rate_id') ||
       getErrorMessage('vat_rate_value') ||
       getErrorMessage('tax_rate_value')
     );
-  }, [error]);
+  }, [getErrorMessage]);
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
@@ -581,7 +587,7 @@ export const ItemsSection = ({
                         {isNonVatSupported ? (
                           <Controller
                             name={`line_items.${index}.tax_rate_value`}
-                            render={({ field, fieldState: { error } }) => (
+                            render={({ field }) => (
                               <TextField
                                 {...field}
                                 error={Boolean(taxError)}

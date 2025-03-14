@@ -57,24 +57,24 @@ export const useCreateInvoiceProductsTable = ({
     });
   }, [lineItems, formatCurrencyToDisplay, actualCurrency]);
 
+  const taxes = lineItems.reduce((acc, field) => {
+    const price = field.product?.price?.value ?? field.price?.value ?? 0;
+    const quantity = field.quantity;
+    const subtotalPrice = price * quantity;
+
+    const taxRate = isNonVatSupported
+      ? (field?.tax_rate_value ?? 0) * 100
+      : field.vat_rate_value;
+
+    if (!taxRate) {
+      return acc;
+    }
+    const tax = (subtotalPrice * taxRate) / 10_000;
+
+    return acc + tax;
+  }, 0);
+
   const totalTaxes = useMemo(() => {
-    const taxes = lineItems.reduce((acc, field) => {
-      const price = field.product?.price?.value ?? field.price?.value ?? 0;
-      const quantity = field.quantity;
-      const subtotalPrice = price * quantity;
-
-      const taxRate = isNonVatSupported
-        ? (field?.tax_rate_value ?? 0) * 100
-        : field.vat_rate_value;
-
-      if (!taxRate) {
-        return acc;
-      }
-      const tax = (subtotalPrice * taxRate) / 10_000;
-
-      return acc + tax;
-    }, 0);
-
     const currency =
       actualCurrency ||
       lineItems.find((field) => Boolean(field.product?.price?.currency))
@@ -91,7 +91,13 @@ export const useCreateInvoiceProductsTable = ({
       currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay, isNonVatSupported, actualCurrency]);
+  }, [
+    lineItems,
+    taxes,
+    formatCurrencyToDisplay,
+    isNonVatSupported,
+    actualCurrency,
+  ]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
