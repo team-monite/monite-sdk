@@ -139,7 +139,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
-    receivable: receivable,
+    receivable,
     deliveryMethod,
   });
 
@@ -182,15 +182,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
+  const isFirstInvoice = !receivable.document_id;
   const documentId = receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID;
 
   if (presentation === InvoiceDetailsPresentation.Email) {
     return (
       <EmailInvoiceDetails
         invoiceId={props.id}
+        isFirstInvoice={isFirstInvoice}
         onClose={() => {
           setPresentation(InvoiceDetailsPresentation.Overview);
         }}
+        onSendEmail={props.onSendEmail}
       />
     );
   }
@@ -413,7 +416,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview {...receivable} />
+              <Overview
+                invoice={receivable}
+                onWorkingCapitalOnboardingComplete={
+                  props.onWorkingCapitalOnboardingComplete
+                }
+              />
             </Stack>
           </Grid>
         </Grid>

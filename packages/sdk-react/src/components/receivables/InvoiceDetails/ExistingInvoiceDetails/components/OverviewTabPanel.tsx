@@ -42,8 +42,9 @@ import { FinanceInvoice } from '../../../Financing/FinanceInvoice/FinanceInvoice
 
 interface OverviewTabPanelProps
   extends Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'> {
-  onSetView: (view: 'recurrence') => void;
   invoice: components['schemas']['InvoiceResponsePayload'];
+  onSetView: (view: 'recurrence') => void;
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 interface TransformCreditNotes {
@@ -55,6 +56,7 @@ interface TransformCreditNotes {
 export const OverviewTabPanel = ({
   invoice,
   onSetView,
+  onWorkingCapitalOnboardingComplete,
   ...restProps
 }: OverviewTabPanelProps) => {
   const { i18n } = useLingui();
@@ -125,7 +127,10 @@ export const OverviewTabPanel = ({
 
   return (
     <>
-      <FinanceInvoice invoice={invoice} />
+      <FinanceInvoice
+        invoice={invoice}
+        onWorkingCapitalOnboardingComplete={onWorkingCapitalOnboardingComplete}
+      />
       <Box
         sx={{
           '& > * + *': {
