@@ -36,21 +36,33 @@ import { OnboardingPersonDocumentList } from '../OnboardingPersonDocumentList';
 import { OnboardingPersonDocuments } from '../OnboardingPersonDocuments';
 import { OnboardingPersonList } from '../OnboardingPersonList';
 import { OnboardingPersonsReview } from '../OnboardingPersonsReview';
-import type { OnboardingPersonIndex } from '../types';
+import type { OnboardingPersonId, OnboardingProps } from '../types';
 
-export function OnboardingContent() {
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+
+export function OnboardingContent({
+  onPaymentOnboardingComplete,
+  onWorkingCapitalOnboardingComplete,
+  onComplete,
+}: OnboardingProps = {}) {
   const { i18n } = useLingui();
   const { currentRequirement, personId, onboardingCompleted } =
     useOnboardingRequirementsContext();
   const { isLoading, error } = useOnboardingRequirementsData();
 
-  if (onboardingCompleted) return <OnboardingCompleted />;
+  if (onboardingCompleted) {
+    return <OnboardingCompleted onComplete={onComplete} />;
+  }
 
   if (isLoading || !currentRequirement) {
     return <LinearProgress />;
   }
 
   const Step = getComponent(currentRequirement, personId);
+  const props = getProps(currentRequirement, {
+    onPaymentOnboardingComplete,
+    onWorkingCapitalOnboardingComplete,
+  });
 
   if (!Step) return null;
 
@@ -68,7 +80,7 @@ export function OnboardingContent() {
             {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
-          <Step />
+          <Step {...props} />
         )
       }
     />
@@ -77,13 +89,14 @@ export function OnboardingContent() {
 
 const getTitle = (
   requirement: OnboardingRequirement,
-  personId: OnboardingPersonIndex,
+  personId: OnboardingPersonId,
   i18n: I18n
 ) => {
   if (isCreatingPerson(personId)) {
     if (isDirectors(requirement)) return t(i18n)`Add a director`;
     if (isOwners(requirement)) return t(i18n)`Add an owner`;
     if (isExecutives(requirement)) return t(i18n)`Add an executive`;
+    return t(i18n)`Add a person`;
   }
 
   if (isPersonsDocuments(requirement)) {
@@ -110,7 +123,7 @@ const getTitle = (
 
 const getDescription = (
   requirement: OnboardingRequirement,
-  personId: OnboardingPersonIndex,
+  personId: OnboardingPersonId,
   i18n: I18n
 ) => {
   if (isCreatingPerson(personId)) {
@@ -193,7 +206,7 @@ const getDescription = (
 
 const getComponent = (
   requirement: OnboardingRequirement,
-  personId: OnboardingPersonIndex
+  personId: OnboardingPersonId
 ) => {
   if (isEntity(requirement)) return OnboardingEntity;
   if (isBusinessProfile(requirement)) return OnboardingBusinessProfile;
@@ -217,4 +230,17 @@ const getComponent = (
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
 };
 
-type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+const getProps = (
+  requirement: OnboardingRequirement,
+  callbacks: OnboardingProps
+) => {
+  if (isBankAccount(requirement)) {
+    return {
+      onPaymentOnboardingComplete: callbacks.onPaymentOnboardingComplete,
+      onWorkingCapitalOnboardingComplete:
+        callbacks.onWorkingCapitalOnboardingComplete,
+    };
+  }
+
+  return {};
+};

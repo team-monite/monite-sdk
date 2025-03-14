@@ -45,10 +45,13 @@ import {
   FormContent,
 } from './EmailInvoiceDetails.form.components';
 import { getDefaultContact } from './helpers/contacts';
+import { isInvoiceIssued } from './helpers/invoiceStatus';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
+  isFirstInvoice?: boolean;
   onClose: () => void;
+  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
 }
 
 interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
@@ -56,6 +59,7 @@ interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
   body: string;
   to: string;
   isLoading: boolean;
+  isIssued?: boolean;
 }
 
 export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
@@ -108,6 +112,7 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
         body={body}
         subject={subject}
         isLoading={isLoading}
+        isIssued={isInvoiceIssued(receivable?.status)}
       />
     </MoniteScopedProviders>
   );
@@ -119,7 +124,10 @@ export const EmailInvoiceDetailsBase = ({
   body,
   to,
   isLoading,
+  isIssued,
+  isFirstInvoice,
   onClose,
+  onSendEmail,
 }: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
@@ -199,39 +207,31 @@ export const EmailInvoiceDetailsBase = ({
            * @see {@link https://docs.monite.com/docs/payment-links#22-payment-link-for-a-receivable}
            */
           await createPaymentLink({
-            recipient: {
-              id: entityId,
-              type: 'entity',
-            },
+            recipient: { id: entityId, type: 'entity' },
             payment_methods: availablePaymentMethods.map(
               (method) => method.type
             ),
-            object: {
-              id: invoiceId,
-              type: 'receivable',
-            },
+            object: { id: invoiceId, type: 'receivable' },
           });
         }
+
+        const emailParams = {
+          body_text: values.body,
+          subject_text: values.subject,
+          recipients: values.to ? { to: [values.to] } : undefined,
+        };
 
         // TODO: provide support for multiple recipients, cc and bcc fields
         /**
          * If `payment methods` available, we should create a payment link.
          * If not, we should send the email without a payment link.
          */
-        sendEmail(
-          {
-            body_text: values.body,
-            subject_text: values.subject,
-            recipients: values.to
-              ? {
-                  to: [values.to],
-                }
-              : undefined,
+        sendEmail(emailParams, {
+          onSuccess: () => {
+            onSendEmail?.(invoiceId, Boolean(isFirstInvoice));
+            onClose();
           },
-          {
-            onSuccess: onClose,
-          }
-        );
+        });
       })(e);
     },
     [
@@ -242,8 +242,10 @@ export const EmailInvoiceDetailsBase = ({
       invoiceId,
       entityId,
       onClose,
+      onSendEmail,
       paymentMethods,
       sendMutation.mutate,
+      isFirstInvoice,
     ]
   );
 
@@ -320,7 +322,9 @@ export const EmailInvoiceDetailsBase = ({
                   form={formName}
                   disabled={isDisabled || isLoading}
                   data-testid="issue-and-send-button"
-                >{t(i18n)`Issue and send`}</Button>
+                >
+                  {isIssued ? t(i18n)`Send` : t(i18n)`Issue and Send`}
+                </Button>
               </Stack>
             </Grid>
           </Grid>

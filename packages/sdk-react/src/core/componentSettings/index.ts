@@ -17,6 +17,30 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   ) => void;
   /** Callback to be called when an invoice is deleted */
   onDelete?: (receivableId: string) => void;
+  /** Callback to be called when a first invoice is sent */
+  onFirstInvoiceSent?: (invoiceId: string) => void;
+}
+
+export interface OnboardingSettings {
+  /**
+   * Called when bank account setup is completed.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
+   * @returns {void}
+   */
+  onPaymentOnboardingComplete?: (
+    entityId: string,
+    response?: components['schemas']['EntityBankAccountResponse']
+  ) => void;
+  /**
+   * Called when working capital onboarding is completed.
+   * This happens when the business status transitions to 'ONBOARDED'.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @returns {void}
+   */
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 interface PayableSettings
@@ -49,6 +73,7 @@ export interface ComponentSettings {
   userRoles: {
     pageSizeOptions: number[];
   };
+  onboarding: Partial<OnboardingSettings>;
 }
 
 const defaultPageSizeOptions = [15, 30, 100];
@@ -141,4 +166,5 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
+  onboarding: componentSettings?.onboarding ?? {},
 });

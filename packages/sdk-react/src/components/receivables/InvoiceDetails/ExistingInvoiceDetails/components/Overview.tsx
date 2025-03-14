@@ -14,9 +14,15 @@ import { PreviewItemsSection } from './sections/PreviewItemsSection';
 import { PreviewPaymentDetailsSection } from './sections/PreviewPaymentDetailsSection';
 import { PaymentTabPanel } from './TabPanels/PaymentTabPanel/PaymentTabPanel';
 
-export const Overview = (
-  invoice: components['schemas']['InvoiceResponsePayload']
-) => {
+interface OverviewProps {
+  invoice: components['schemas']['InvoiceResponsePayload'];
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
+}
+
+export const Overview = ({
+  invoice,
+  onWorkingCapitalOnboardingComplete,
+}: OverviewProps) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<
     'overview' | 'details' | 'recurrence' | 'payments'
@@ -69,6 +75,9 @@ export const Overview = (
           id={`${tabsBaseId}-overview-tabpanel`}
           aria-labelledby={`${tabsBaseId}-overview-tab`}
           onSetView={setView}
+          onWorkingCapitalOnboardingComplete={
+            onWorkingCapitalOnboardingComplete
+          }
         />
       )}
 

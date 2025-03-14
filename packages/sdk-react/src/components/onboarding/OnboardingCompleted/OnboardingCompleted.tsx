@@ -1,11 +1,23 @@
+import { useEffect } from 'react';
+
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import { OnboardingLayout, OnboardingTitle } from '../OnboardingLayout';
 
-export const OnboardingCompleted = () => {
+interface OnboardingCompletedProps {
+  onComplete?: () => void;
+}
+
+export const OnboardingCompleted = ({
+  onComplete,
+}: OnboardingCompletedProps = {}) => {
   const { i18n } = useLingui();
+
+  useEffect(() => {
+    onComplete?.();
+  }, [onComplete]);
 
   return (
     <OnboardingLayout

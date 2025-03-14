@@ -19,17 +19,24 @@ export enum MoniteEventTypes {
   INVOICE_CREATED = 'invoice.created',
   INVOICE_UPDATED = 'invoice.updated',
   INVOICE_DELETED = 'invoice.deleted',
+  PAYMENTS_ONBOARDING_COMPLETED = 'payments.onboarding.completed',
+  WORKING_CAPITAL_ONBOARDING_COMPLETED = 'working_capital.onboarding.completed',
+  FIRST_INVOICE_SENT = 'invoice.first_sent',
 }
 
 export interface BaseEventPayload {
   id: string;
 }
 
-export type InvoiceEventPayload = BaseEventPayload & {
+export interface InvoiceEventPayload extends BaseEventPayload {
   invoice?: ReceivableResponseType;
-};
+}
 
-export type EventPayload = InvoiceEventPayload;
+export interface ReceivableEventPayload extends BaseEventPayload {
+  response?: APISchema.components['schemas']['EntityBankAccountResponse'];
+}
+
+export type EventPayload = InvoiceEventPayload | ReceivableEventPayload;
 
 export interface MoniteEvent<T extends EventPayload = EventPayload> {
   id: string;
@@ -105,7 +112,8 @@ export function enhanceReceivablesSettings(
   settings: ComponentSettings['receivables'] &
     Partial<MoniteReceivablesTableProps> = {}
 ): ComponentSettings['receivables'] {
-  const { onCreate, onUpdate, onDelete, ...rest } = settings;
+  const { onCreate, onUpdate, onDelete, onFirstInvoiceSent, ...rest } =
+    settings;
 
   return {
     ...rest,
@@ -124,7 +132,42 @@ export function enhanceReceivablesSettings(
       MoniteEventTypes.INVOICE_DELETED,
       (id) => ({ id })
     ),
+    onFirstInvoiceSent: createEventHandler(
+      onFirstInvoiceSent,
+      MoniteEventTypes.FIRST_INVOICE_SENT,
+      (id) => ({ id })
+    ),
   } as ComponentSettings['receivables'];
+}
+
+/**
+ * Enhances onboarding settings with event handlers
+ *
+ * @param settings The original onboarding settings
+ * @returns Enhanced onboarding settings with event handlers
+ */
+export function enhanceOnboardingSettings(
+  settings: ComponentSettings['onboarding'] = {}
+): ComponentSettings['onboarding'] {
+  const {
+    onPaymentOnboardingComplete,
+    onWorkingCapitalOnboardingComplete,
+    ...rest
+  } = settings;
+
+  return {
+    ...rest,
+    onPaymentOnboardingComplete: createEventHandler(
+      onPaymentOnboardingComplete,
+      MoniteEventTypes.PAYMENTS_ONBOARDING_COMPLETED,
+      (id, response) => ({ id, response })
+    ),
+    onWorkingCapitalOnboardingComplete: createEventHandler(
+      onWorkingCapitalOnboardingComplete,
+      MoniteEventTypes.WORKING_CAPITAL_ONBOARDING_COMPLETED,
+      (id) => ({ id })
+    ),
+  } as ComponentSettings['onboarding'];
 }
 
 /**
@@ -139,6 +182,7 @@ export function enhanceComponentSettings(
   return {
     ...settings,
     receivables: enhanceReceivablesSettings(settings.receivables),
+    onboarding: enhanceOnboardingSettings(settings.onboarding),
   };
 }
 
