@@ -91,13 +91,7 @@ export const useCreateInvoiceProductsTable = ({
       currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [
-    lineItems,
-    taxes,
-    formatCurrencyToDisplay,
-    isNonVatSupported,
-    actualCurrency,
-  ]);
+  }, [lineItems, taxes, formatCurrencyToDisplay, actualCurrency]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
