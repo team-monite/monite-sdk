@@ -746,9 +746,7 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit((values) => {
-              handleCreateReceivable(values);
-            })}
+            onSubmit={handleSubmit(handleCreateReceivable)}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>

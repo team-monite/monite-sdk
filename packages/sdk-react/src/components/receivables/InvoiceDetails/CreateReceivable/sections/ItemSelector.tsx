@@ -255,7 +255,6 @@ export const ItemSelector = ({
                   width: 'calc(50% - 80px) !important',
                   maxWidth: 'min(940px, 100%)',
                   left: '40px !important',
-                  marginLeft: '4px',
                 },
               },
             }}
@@ -301,6 +300,9 @@ export const ItemSelector = ({
                   required
                   error={error}
                   className="Item-Selector"
+                  sx={{
+                    marginLeft: '4px', //to avoid box-shadow from being cut by container
+                  }}
                   InputProps={{
                     ...params.InputProps,
                     value: params.inputProps.value,
