@@ -2,7 +2,7 @@ import { components } from '@/api';
 
 import type {
   EntityOrganizationRelationshipCode,
-  OnboardingPersonIndex,
+  OnboardingPersonId,
   OnboardingRequirementMask,
 } from './types';
 
@@ -233,12 +233,12 @@ export const PERSON_CREATION = '';
 /**
  * Checks if person mode is enabled, i.e., the personId is not null or undefined.
  *
- * @param {OnboardingPersonIndex} personId - The personId of the person.
+ * @param {OnboardingPersonId} personId - The personId of the person.
  *
  * @returns {boolean} - Returns true if person mode is enabled, false otherwise.
  */
 export const isPersonEditingEnabled = (
-  personId?: OnboardingPersonIndex
+  personId?: OnboardingPersonId
 ): personId is string => {
   return personId !== null && personId !== undefined;
 };
@@ -246,12 +246,12 @@ export const isPersonEditingEnabled = (
 /**
  * Checks if person is being created.
  *
- * @param {OnboardingPersonIndex} personId - The id of the person.
+ * @param {OnboardingPersonId} personId - The id of the person.
  *
  * @returns {boolean} - Returns true if person mode is enabled and the index equals PERSON_CREATION, false otherwise.
  */
 export const isCreatingPerson = (
-  personId?: OnboardingPersonIndex
+  personId?: OnboardingPersonId
 ): personId is string => {
   return isPersonEditingEnabled(personId) && personId === PERSON_CREATION;
 };
@@ -259,12 +259,12 @@ export const isCreatingPerson = (
 /**
  * Checks if person is being edited.
  *
- * @param {OnboardingPersonIndex} personId - The id of the person.
+ * @param {OnboardingPersonId} personId - The id of the person.
  *
  * @returns {boolean} - Returns true if person mode is enabled and the index is greater than PERSON_CREATION, false otherwise.
  */
 export const isEditingPerson = (
-  personId?: OnboardingPersonIndex
+  personId?: OnboardingPersonId
 ): personId is string => {
   return isPersonEditingEnabled(personId) && personId !== PERSON_CREATION;
 };

@@ -347,3 +347,49 @@ export const receivableListFixture: ReceivablesListFixture = {
   invoice: Array.from(Array(30).keys()).map(createRandomInvoice),
   credit_note: Array.from(Array(30).keys()).map(createRandomCreditNote),
 };
+
+
+function createRandomContact(): components['schemas']['CounterpartContactResponse'] {
+  return {
+    id: faker.string.uuid(),
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    email: faker.internet.email(),
+    phone: faker.phone.number(),
+    is_default: faker.datatype.boolean(),
+    counterpart_id: faker.string.uuid(),
+    address: {
+      country: getRandomItemFromArray(AllowedCountries),
+      city: faker.location.city(),
+      postal_code: faker.location.zipCode(),
+      state: faker.location.state(),
+      line1: faker.location.streetAddress(),
+      line2: faker.location.secondaryAddress(),
+    }
+  };
+}
+
+function createRandomPreview(): components['schemas']['ReceivablePreviewResponse'] {
+  return {
+    body_preview: `<html>
+      <body>
+        <h1>${faker.company.name()}</h1>
+        <p>${faker.lorem.paragraphs(2)}</p>
+        <p>Best regards,<br/>${faker.person.fullName()}</p>
+      </body>
+    </html>`,
+    subject_preview: `Invoice ${faker.string.alphanumeric(8)} from ${faker.company.name()}`,
+  };
+}
+
+export const receivableContactsFixture: Record<string, Array<components['schemas']['CounterpartContactResponse']>> = 
+  receivableListFixture.invoice.reduce((acc, invoice) => ({
+    ...acc,
+    [invoice.id]: Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => createRandomContact())
+  }), {});
+
+export const receivablePreviewFixture: Record<string, components['schemas']['ReceivablePreviewResponse']> = 
+  receivableListFixture.invoice.reduce((acc, invoice) => ({
+    ...acc,
+    [invoice.id]: createRandomPreview()
+  }), {});
