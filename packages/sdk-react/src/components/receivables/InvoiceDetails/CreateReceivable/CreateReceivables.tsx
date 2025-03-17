@@ -46,6 +46,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { eventFromMessage } from '@sentry/react';
 
 import { format } from 'date-fns';
 
@@ -420,7 +421,6 @@ const CreateReceivablesBase = ({
               <Button
                 variant="outlined"
                 color="primary"
-                type="submit"
                 sx={{ marginRight: '.5em' }}
                 onClick={(event) => {
                   event.preventDefault();
@@ -747,7 +747,10 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit(handleCreateReceivable)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(handleCreateReceivable);
+            }}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>
