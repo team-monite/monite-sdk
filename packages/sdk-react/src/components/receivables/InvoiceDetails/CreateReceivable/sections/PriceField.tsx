@@ -85,7 +85,16 @@ export const PriceField = ({ index, currency }: any) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    setRawValue(inputValue);
+    const decimalParts = inputValue.split('.');
+    if (decimalParts.length > 1 && decimalParts[1].length > 2) {
+      const truncatedValue = `${decimalParts[0]}.${decimalParts[1].slice(
+        0,
+        2
+      )}`;
+      setRawValue(truncatedValue);
+    } else {
+      setRawValue(inputValue);
+    }
   };
 
   return (
