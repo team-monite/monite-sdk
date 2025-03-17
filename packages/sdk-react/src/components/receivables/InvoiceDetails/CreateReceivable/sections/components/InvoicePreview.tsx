@@ -346,7 +346,7 @@ export const InvoicePreview = ({
                 )}
               </tbody>
             </table>
-            {sanitizedItems?.length > 1 && (
+            {sanitizedItems?.length > 0 && (
               <table cellPadding={0} cellSpacing={0} className="totals-table">
                 <tbody>
                   <tr className="subtotal">

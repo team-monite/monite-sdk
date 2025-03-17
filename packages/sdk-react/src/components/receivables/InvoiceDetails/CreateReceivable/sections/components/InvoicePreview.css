@@ -165,6 +165,7 @@ th.line-items-table__fixed-item {
 .line-items-table .no-items td {
   padding: 0;
   border-bottom-style: solid;
+  text-align: left !important;
   padding-left: 0;
 }
 

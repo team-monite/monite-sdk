@@ -181,7 +181,7 @@ const CreateReceivablesBase = ({
 
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
-  >(settings?.currency?.default);
+  >(settings?.currency?.default || fallbackCurrency);
 
   const [tempCurrency, setTempCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined
