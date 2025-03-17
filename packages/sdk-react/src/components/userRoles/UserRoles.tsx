@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   Dialog,
   PageHeader,
+  UserRoleDeleteDialog,
   UserRoleDetailsDialog,
   UserRoleEditDialog,
 } from '@/components';
@@ -26,6 +27,7 @@ const UserRolesBase = () => {
   const { i18n } = useLingui();
   const [isDetailsDialogOpened, setIsDetailsDialogOpened] = useState(false);
   const [isEditDialogOpened, setIsEditDialogOpened] = useState(false);
+  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
   const [selectedUserRoleId, setSelectedUserRoleID] = useState<
     string | undefined
   >(undefined);
@@ -85,6 +87,7 @@ const UserRolesBase = () => {
         <UserRoleDetailsDialog
           id={selectedUserRoleId}
           onClickEditRole={() => setIsEditDialogOpened(true)}
+          onClickDeleteRole={() => setIsDeleteDialogOpened(true)}
         />
       </Dialog>
 
@@ -97,7 +100,17 @@ const UserRolesBase = () => {
           id={selectedUserRoleId}
           onCreated={() => setIsEditDialogOpened(false)}
           onUpdated={() => setIsEditDialogOpened(false)}
+          onClickDeleteRole={() => setIsDeleteDialogOpened(true)}
         />
+      </Dialog>
+
+      <Dialog
+        open={isDeleteDialogOpened}
+        onClose={() => setIsDeleteDialogOpened(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <UserRoleDeleteDialog id={selectedUserRoleId} />
       </Dialog>
     </>
   );

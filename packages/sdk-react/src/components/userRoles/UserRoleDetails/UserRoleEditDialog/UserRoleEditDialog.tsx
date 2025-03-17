@@ -101,12 +101,14 @@ interface UserRoleEditDialogProps {
   id?: string;
   onCreated?: (role: components['schemas']['RoleResponse']) => void;
   onUpdated?: (role: components['schemas']['RoleResponse']) => void;
+  onClickDeleteRole: () => void;
 }
 
 export const UserRoleEditDialog = ({
   id,
   onCreated,
   onUpdated,
+  onClickDeleteRole,
 }: UserRoleEditDialogProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -116,6 +118,12 @@ export const UserRoleEditDialog = ({
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
     action: 'update',
+    entityUserId: user?.id,
+  });
+
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'role',
+    action: 'delete',
     entityUserId: user?.id,
   });
 
@@ -372,20 +380,29 @@ export const UserRoleEditDialog = ({
           <Typography variant="h3" flex={1} ml={2}>
             {role ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
           </Typography>
-          <Button
-            type="submit"
-            form={formName}
-            disabled={
-              roleUpdateMutation.isPending ||
-              roleCreateMutation.isPending ||
-              (role && (!isDirty || !isUpdateAllowed))
-            }
-            autoFocus
-            color="primary"
-            variant="contained"
-          >
-            {t(i18n)`Save`}
-          </Button>
+          <Stack direction="row" spacing={2}>
+            {role && (
+              <Button
+                color="error"
+                onClick={onClickDeleteRole}
+                disabled={roleUpdateMutation.isPending || !isDeleteAllowed}
+              >{t(i18n)`Delete`}</Button>
+            )}
+            <Button
+              type="submit"
+              form={formName}
+              disabled={
+                roleUpdateMutation.isPending ||
+                roleCreateMutation.isPending ||
+                (role && (!isDirty || !isUpdateAllowed))
+              }
+              autoFocus
+              color="primary"
+              variant="contained"
+            >
+              {t(i18n)`Save`}
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
 

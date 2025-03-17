@@ -3,6 +3,7 @@ import { useCallback, useId, useState } from 'react';
 import { components } from '@/api';
 import {
   ApprovalPolicyDetails,
+  UserRoleDeleteDialog,
   UserRoleDetailsDialog,
   UserRoleEditDialog,
   UserRolesTable,
@@ -114,6 +115,9 @@ const RolesAndApprovalPoliciesBase = () => {
 
   const [isRoleEditDialogOpened, setIsRoleEditDialogOpened] = useState(false);
 
+  const [isRoleDeleteDialogOpened, setIsRoleDeleteDialogOpened] =
+    useState(false);
+
   const onRoleRowClick = (id: string) => {
     setIsRoleDetailsDialogOpened(true);
     setSelectedUserRoleID(id);
@@ -122,6 +126,13 @@ const RolesAndApprovalPoliciesBase = () => {
   const onCreateRoleClick = () => {
     setSelectedUserRoleID(undefined);
     setIsRoleEditDialogOpened(true);
+  };
+
+  const onDeleteRoleClick = () => {
+    setSelectedUserRoleID(undefined);
+    setIsRoleDeleteDialogOpened(false);
+    setIsRoleEditDialogOpened(false);
+    setIsRoleDetailsDialogOpened(false);
   };
 
   const isRolesTab = activeTab == PageTabEnum.Roles;
@@ -258,6 +269,7 @@ const RolesAndApprovalPoliciesBase = () => {
         <UserRoleDetailsDialog
           id={selectedUserRoleId}
           onClickEditRole={() => setIsRoleEditDialogOpened(true)}
+          onClickDeleteRole={() => setIsRoleDeleteDialogOpened(true)}
         />
       </Dialog>
 
@@ -270,7 +282,17 @@ const RolesAndApprovalPoliciesBase = () => {
           id={selectedUserRoleId}
           onCreated={() => setIsRoleEditDialogOpened(false)}
           onUpdated={() => setIsRoleEditDialogOpened(false)}
+          onClickDeleteRole={() => setIsRoleDeleteDialogOpened(true)}
         />
+      </Dialog>
+
+      <Dialog
+        open={isRoleDeleteDialogOpened}
+        onClose={onDeleteRoleClick}
+        fullWidth
+        maxWidth="sm"
+      >
+        <UserRoleDeleteDialog id={selectedUserRoleId} />
       </Dialog>
     </>
   );
