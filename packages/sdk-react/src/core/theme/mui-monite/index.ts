@@ -929,6 +929,11 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 backgroundColor: '#fff',
               },
             },
+
+            'th.MuiTableCell-root': {
+              padding: '0 12px 0 0',
+            },
+
             '+ .MuiTableRow-root .MuiTableCell-root': {
               paddingLeft: 0,
             },
