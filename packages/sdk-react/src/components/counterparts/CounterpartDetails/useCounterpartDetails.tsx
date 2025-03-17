@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLatest } from 'react-use';
 
 import { components } from '@/api';
+import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 import {
   CounterpartShowCategories,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+  CustomerType,
+} from '@/components/counterparts/types';
 
 type CounterpartId = string;
 type BankAccountId = string;
@@ -85,6 +86,14 @@ interface CommonCounterpartDetailsProps
 }
 
 export type CounterpartsDetailsProps = {
+  /**
+   * Array of available customer types, an array that should contain either customer, vendor, or both.
+   * This array can't be empty and if only one option is passed, the customer type section will be hidden
+   * and the default customer type will be the one passed.
+   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
+   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
+   */
+  customerTypes?: CustomerType[];
   isInvoiceCreation?: boolean;
   onReturn?: () => void;
 } & (ExistingCounterpartDetail | NewCounterpartDetail);
@@ -113,16 +122,17 @@ export enum COUNTERPART_VIEW {
 }
 
 export function useCounterpartDetails(props: CounterpartsDetailsProps) {
-  const [counterpartView, setCounterpartView] =
-    useState<COUNTERPART_VIEW | null>(null);
+  const [counterpartView, setCounterpartView] = useState<COUNTERPART_VIEW>(
+    props.id
+      ? COUNTERPART_VIEW.view
+      : props.type === 'individual'
+      ? COUNTERPART_VIEW.individualForm
+      : COUNTERPART_VIEW.organizationForm
+  );
 
   const [counterpartId, setCounterpartId] = useState<CounterpartId | undefined>(
     props.id
   );
-
-  useEffect(() => {
-    setCounterpartId(props.id);
-  }, [props.id]);
 
   const [addressId, setAddressId] = useState<string | undefined>();
 
@@ -144,20 +154,6 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
       setCounterpartView(COUNTERPART_VIEW.bankAccountForm),
     showVatForm: () => setCounterpartView(COUNTERPART_VIEW.vatForm),
   }));
-
-  useEffect(() => {
-    if (props.id) {
-      return actions.showView();
-    }
-
-    if (props.type === 'individual') {
-      return actions.showIndividualForm();
-    }
-
-    if (props.type === 'organization') {
-      return actions.showOrganizationForm();
-    }
-  }, [actions, props.id, props.type]);
 
   const onClose = useLatest(props.onClose);
   const onCreateImmutable = useLatest(props.onCreate);

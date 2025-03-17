@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
+import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CustomerType } from '@/components/counterparts/types';
 import { CounterpartSelector } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector';
 import { useCounterpartAddresses } from '@/core/queries';
 import { Stack } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
-import { CreateCounterpartModal } from './components/CreateCounterpartModal';
 import { EditCounterpartModal } from './components/EditCounterpartModal';
 import { useDefaultCounterpartValues } from './components/useDefaultCounterpartValues';
 import { SectionGeneralProps } from './Section.types';
@@ -21,6 +22,7 @@ export interface CustomerSectionProps extends SectionGeneralProps {
     | undefined;
   isCounterpartLoading: boolean;
   isCounterpartVatsLoading: boolean;
+  customerTypes?: CustomerType[];
 }
 
 export const CustomerSection = ({
@@ -29,6 +31,7 @@ export const CustomerSection = ({
   disabled,
   isCounterpartLoading,
   isCounterpartVatsLoading,
+  customerTypes,
 }: CustomerSectionProps) => {
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
 
@@ -65,6 +68,8 @@ export const CustomerSection = ({
         onCreate={(newCounterpartId: string) => {
           setValue('counterpart_id', newCounterpartId);
         }}
+        customerTypes={customerTypes}
+        isInvoiceCreation
       />
 
       <EditCounterpartModal

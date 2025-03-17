@@ -3,7 +3,7 @@ import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
-import { ConfirmDeleteDialogue } from './ConfirmDeleteDialogue';
+import { ConfirmDeleteDialog } from './ConfirmDeleteDialog';
 
 describe('CounterpartConfirmDeleteModal', () => {
   test('should trigger "onDelete" callback when we click on "delete" button', async () => {
@@ -11,7 +11,7 @@ describe('CounterpartConfirmDeleteModal', () => {
 
     renderWithClient(
       <MoniteScopedProviders>
-        <ConfirmDeleteDialogue
+        <ConfirmDeleteDialog
           open
           type="individual"
           name="individual"
@@ -39,7 +39,7 @@ describe('CounterpartConfirmDeleteModal', () => {
 
     renderWithClient(
       <MoniteScopedProviders>
-        <ConfirmDeleteDialogue
+        <ConfirmDeleteDialog
           open
           type="individual"
           name="individual"

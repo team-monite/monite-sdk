@@ -1,4 +1,5 @@
 import { InvoiceDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
@@ -7,17 +8,24 @@ import { useLingui } from '@lingui/react';
 import { CreateReceivables } from './CreateReceivable';
 import { ExistingReceivableDetails } from './ExistingInvoiceDetails';
 
-export const InvoiceDetails = (props: InvoiceDetailsProps) => (
+export const InvoiceDetails = ({
+  customerTypes,
+  ...rest
+}: InvoiceDetailsProps) => (
   <MoniteScopedProviders>
-    <InvoiceDetailsBase {...props} />
+    <InvoiceDetailsBase {...rest} customerTypes={customerTypes} />
   </MoniteScopedProviders>
 );
 
-const InvoiceDetailsBase = (props: InvoiceDetailsProps) => {
+const InvoiceDetailsBase = ({
+  customerTypes,
+  ...rest
+}: InvoiceDetailsProps) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
-  if (props.type) {
-    if (props.type !== 'invoice') {
+  if (rest.type) {
+    if (rest.type !== 'invoice') {
       return (
         <AccessRestriction
           description={t(
@@ -27,8 +35,15 @@ const InvoiceDetailsBase = (props: InvoiceDetailsProps) => {
       );
     }
 
-    return <CreateReceivables {...props} />;
+    return (
+      <CreateReceivables
+        {...rest}
+        customerTypes={
+          customerTypes || componentSettings?.counterparts?.customerTypes
+        }
+      />
+    );
   }
 
-  return <ExistingReceivableDetails {...props} />;
+  return <ExistingReceivableDetails {...rest} />;
 };

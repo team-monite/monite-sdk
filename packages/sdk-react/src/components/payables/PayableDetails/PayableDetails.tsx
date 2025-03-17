@@ -1,10 +1,12 @@
 import { useId } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { CustomerType } from '@/components/counterparts/types';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetails/PayableDetailsNoAttachedFile';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -30,6 +32,14 @@ import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
   optionalFields?: OptionalFields;
+  /**
+   * Array of available customer types, an array that should contain either customer, vendor, or both.
+   * This array can't be empty and if only one option is passed, the customer type section will be hidden
+   * and the default customer type will be the one passed.
+   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
+   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
+   */
+  customerTypes?: CustomerType[];
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -51,6 +61,7 @@ const PayableDetailsBase = ({
   onDeleted,
   onPay,
   onPayUS,
+  customerTypes,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -87,6 +98,7 @@ const PayableDetailsBase = ({
     onPayUS,
   });
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
@@ -203,6 +215,10 @@ const PayableDetailsBase = ({
                   optionalFields={optionalFields}
                   lineItems={lineItems}
                   payableDetailsFormId={payableDetailsFormId}
+                  customerTypes={
+                    customerTypes ||
+                    componentSettings?.counterparts?.customerTypes
+                  }
                 />
               ) : (
                 payable && (

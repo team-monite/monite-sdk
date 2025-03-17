@@ -83,7 +83,7 @@ export const CounterpartSelector = ({
   const { root } = useRootElements();
   const { control, watch } = useFormContext<CreateReceivablesFormProps>();
   const { data: counterparts, isLoading: isCounterpartsLoading } =
-    useCounterpartList();
+    useCounterpartList({ query: { is_customer: true } });
   const handleCreateNewCounterpart = useCallback(() => {
     if (!isSimplified && setIsCreateCounterpartOpened) {
       setIsCreateCounterpartOpened(true);

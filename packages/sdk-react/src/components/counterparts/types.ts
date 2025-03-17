@@ -55,3 +55,5 @@ export type DefaultValuesOCRIndividual = DefaultValuesOCR<
 export type DefaultValuesOCROrganization = DefaultValuesOCR<
   BaseCounterpartOCR & { companyName: string }
 >;
+
+export type CustomerType = 'customer' | 'vendor';

@@ -11,7 +11,7 @@ import {
   Divider,
 } from '@mui/material';
 
-type ConfirmDeleteDialogueProps = {
+type ConfirmDeleteDialogProps = {
   open: boolean;
   type: string;
   name: string;
@@ -20,14 +20,14 @@ type ConfirmDeleteDialogueProps = {
   onDelete: () => void;
 };
 
-export const ConfirmDeleteDialogue = ({
+export const ConfirmDeleteDialog = ({
   onClose,
   onDelete,
   type,
   name,
   isLoading,
   open,
-}: ConfirmDeleteDialogueProps) => {
+}: ConfirmDeleteDialogProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 

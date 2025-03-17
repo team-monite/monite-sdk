@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Controller,
   Control,
@@ -8,12 +8,14 @@ import {
   PathValue,
 } from 'react-hook-form';
 
+import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
+  CustomerType,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CreateCounterpartDialog } from '@/components/counterparts/CreateCounterpartDialog';
-import { getCounterpartName } from '@/components/counterparts/helpers';
+} from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -53,6 +55,14 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
     type?: string
   ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
   multiple?: boolean;
+  /**
+   * Array of available customer types, an array that should contain either customer, vendor, or both.
+   * This array can't be empty and if only one option is passed, the customer type section will be hidden
+   * and the default customer type will be the one passed.
+   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
+   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
+   */
+  customerTypes?: CustomerType[];
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -63,24 +73,18 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   getCounterpartDefaultValues,
   multiple = false,
   disabled = false,
+  customerTypes,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { componentSettings } = useMoniteContext();
   const { setValue, getValues } = useFormContext<TFieldValues>();
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
-  const handleCreateNewCounterpart = useCallback(() => {
-    setIsCreateCounterpartOpened(true);
-  }, [setIsCreateCounterpartOpened]);
-
-  const handleCloseCreateCounterpart = useCallback(() => {
-    setIsCreateCounterpartOpened(false);
-  }, [setIsCreateCounterpartOpened]);
-
   const { data: counterparts, isLoading: isCounterpartsLoading } =
-    useCounterpartList();
+    useCounterpartList({ query: { is_vendor: true } });
 
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
@@ -92,8 +96,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       })) ?? [],
     [counterparts]
   );
-
-  const newCounterpartDefaultLabel = t(i18n)`New counterpart`;
 
   useEffect(() => {
     if (newCounterpartId) {
@@ -113,7 +115,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
             id: newCounterpartId,
             label: existingCounterpart
               ? existingCounterpart.label
-              : newCounterpartDefaultLabel,
+              : t(i18n)`New counterpart`,
           };
 
           setValue(name, [
@@ -135,17 +137,21 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     getValues,
     counterpartsAutocompleteData,
     multiple,
-    newCounterpartDefaultLabel,
+    i18n,
   ]);
 
   return (
     <>
-      <CreateCounterpartDialog
+      <CreateCounterpartModal
         open={isCreateCounterpartOpened}
-        onClose={handleCloseCreateCounterpart}
+        onClose={() => setIsCreateCounterpartOpened(false)}
         onCreate={setNewCounterpartId}
         getCounterpartDefaultValues={getCounterpartDefaultValues}
+        customerTypes={
+          customerTypes || componentSettings?.counterparts?.customerTypes
+        }
       />
+
       <Controller
         control={control}
         name={name}
@@ -174,7 +180,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     ? Array.isArray(field.value)
                       ? field.value
                       : []
-                    : selectedCounterpartOption || null
+                    : selectedCounterpartOption
                 }
                 id={field.name}
                 multiple={multiple}
@@ -251,7 +257,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         justifyContent: 'flex-start',
                         px: 2,
                       }}
-                      onClick={handleCreateNewCounterpart}
+                      onClick={() => setIsCreateCounterpartOpened(true)}
                     >
                       {counterpartOption.label}
                     </Button>

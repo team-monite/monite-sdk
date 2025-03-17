@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
+import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import type {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
+} from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CircularProgress } from '@mui/material';
 
@@ -29,6 +30,7 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
 );
 
 const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
+  const { componentSettings } = useMoniteContext();
   const isInvoiceCreation = props.isInvoiceCreation ?? false;
   const {
     addressId,
@@ -62,18 +64,25 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     throw new Error('CounterpartDetails: `id` or `type` is required');
   }
 
-  const { showCategories = true, showBankAccounts = true } = props;
+  const { showBankAccounts = true, customerTypes } = props;
   const defaultValues = props.type ? props.defaultValues : undefined;
 
   const renderSubResource = useCallback(() => {
-    if (!counterpartId) return <CircularProgress color="inherit" size={20} />;
+    if (!counterpartView || !counterpartId) {
+      return <CircularProgress color="inherit" size={20} />;
+    }
 
     switch (counterpartView) {
       case COUNTERPART_VIEW.view:
         return (
           <CounterpartView
             id={counterpartId}
-            showCategories={showCategories}
+            showCategories={Boolean(
+              (customerTypes && customerTypes?.length > 1) ||
+                (!customerTypes &&
+                  componentSettings?.counterparts?.customerTypes &&
+                  componentSettings?.counterparts?.customerTypes?.length > 1)
+            )}
             showBankAccounts={showBankAccounts}
             onEdit={onEdit}
             onDelete={props.onDelete}
@@ -166,10 +175,11 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     props.onVatDelete,
     showBankAccountForm,
     showBankAccounts,
-    showCategories,
+    customerTypes,
     showContactForm,
     showVatForm,
     vatId,
+    componentSettings,
   ]);
 
   return useMemo(() => {
@@ -184,7 +194,12 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={showCategories}
+            showCategories={Boolean(
+              (customerTypes && customerTypes?.length > 1) ||
+                (!customerTypes &&
+                  componentSettings?.counterparts?.customerTypes &&
+                  componentSettings?.counterparts?.customerTypes?.length > 1)
+            )}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCRIndividual
@@ -202,7 +217,12 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={showCategories}
+            showCategories={Boolean(
+              (customerTypes && customerTypes?.length > 1) ||
+                (!customerTypes &&
+                  componentSettings?.counterparts?.customerTypes &&
+                  componentSettings?.counterparts?.customerTypes?.length > 1)
+            )}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCROrganization
@@ -221,10 +241,11 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onCreate,
     onUpdate,
     renderSubResource,
-    showCategories,
+    customerTypes,
     showView,
     props.defaultValuesOCR,
     props.onClose,
     props.onReturn,
+    componentSettings,
   ]);
 };

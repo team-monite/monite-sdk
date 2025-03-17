@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
+import { CustomerType } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
@@ -16,13 +17,24 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 
-export const Receivables = () => (
+type ReceivablesProps = {
+  /**
+   * Array of available customer types, an array that should contain either customer, vendor, or both.
+   * This array can't be empty and if only one option is passed, the customer type section will be hidden
+   * and the default customer type will be the one passed.
+   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
+   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
+   */
+  customerTypes?: CustomerType[];
+};
+
+export const Receivables = (props: ReceivablesProps) => (
   <MoniteScopedProviders>
-    <ReceivablesBase />
+    <ReceivablesBase {...props} />
   </MoniteScopedProviders>
 );
 
-const ReceivablesBase = () => {
+const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
 
@@ -149,6 +161,9 @@ const ReceivablesBase = () => {
           id={invoiceId}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
         />
       </Dialog>
       <Dialog
@@ -160,7 +175,13 @@ const ReceivablesBase = () => {
           setIsCreateInvoiceDialogOpen(false);
         }}
       >
-        <InvoiceDetails type={'invoice'} onCreate={handleCreate} />
+        <InvoiceDetails
+          type="invoice"
+          onCreate={handleCreate}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
       </Dialog>
     </>
   );

@@ -1,4 +1,4 @@
-import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartDataTestId } from '@/components/counterparts/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,

@@ -22,7 +22,7 @@ describe('Receivables', () => {
         },
       });
 
-      render(<Receivables />, {
+      render(<Receivables customerTypes={['customer', 'vendor']} />, {
         wrapper: ({ children }) => (
           <Provider client={queryClient} children={children} />
         ),

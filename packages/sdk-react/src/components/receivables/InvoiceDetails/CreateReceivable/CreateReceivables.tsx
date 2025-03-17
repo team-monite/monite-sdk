@@ -63,6 +63,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
 const CreateReceivablesBase = ({
   type,
   onCreate,
+  customerTypes,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -287,6 +288,7 @@ const CreateReceivablesBase = ({
                   counterpartVats={counterpartVats}
                   isCounterpartVatsLoading={isCounterpartVatsLoading}
                   isCounterpartLoading={isCounterpartLoading}
+                  customerTypes={customerTypes}
                 />
               </Box>
 

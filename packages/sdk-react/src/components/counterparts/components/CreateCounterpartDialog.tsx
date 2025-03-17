@@ -2,26 +2,23 @@ import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
+import { CounterpartTypeItem } from '@/components/counterparts/components';
 import {
+  CustomerType,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
+} from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardContent,
   DialogActions,
   DialogContent,
   Divider,
   Typography,
 } from '@mui/material';
-
-import { CreateCounterpartDialogTestEnum } from './CreateCounterpartDialog.types';
 
 interface CreateCounterpartDialogProps {
   open: boolean;
@@ -30,6 +27,7 @@ interface CreateCounterpartDialogProps {
   getCounterpartDefaultValues?: (
     type?: string
   ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
+  customerTypes?: CustomerType[];
 }
 
 enum View {
@@ -46,58 +44,12 @@ enum View {
   CounterpartCreationMode = 'counterpart-creation-mode',
 }
 
-export const CounterpartTypeItem = ({
-  description,
-  isTypeSelected,
-  title,
-  type,
-  onClick,
-}: {
-  description: string;
-  isTypeSelected?: boolean;
-  title: string;
-  type: components['schemas']['CounterpartType'];
-  onClick: (type: components['schemas']['CounterpartType']) => void;
-}) => {
-  const handleClick = useCallback(() => {
-    onClick(type);
-  }, [onClick, type]);
-
-  return (
-    <Card
-      variant="outlined"
-      sx={{
-        cursor: 'pointer',
-        border: 'none',
-      }}
-      onClick={handleClick}
-    >
-      <CardActionArea
-        sx={{
-          display: 'flex',
-          alignItems: 'start',
-          bgcolor: isTypeSelected
-            ? 'rgba(0, 0, 0, 0.04)'
-            : 'rgba(0, 0, 0, 0.02)',
-          borderColor: 'transparent',
-        }}
-      >
-        <CardContent>
-          <Typography variant="body1" sx={{ fontWeight: 500, mb: 1 }}>
-            {title}
-          </Typography>
-          <Typography variant="body2">{description}</Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
-  );
-};
-
 export const CreateCounterpartDialog = ({
   open,
   onClose,
   onCreate,
   getCounterpartDefaultValues,
+  customerTypes,
 }: CreateCounterpartDialogProps) => {
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
@@ -135,6 +87,7 @@ export const CreateCounterpartDialog = ({
             setCounterpartType(undefined);
             onClose();
           }}
+          customerTypes={customerTypes}
         />
       </Dialog>
     );
@@ -145,7 +98,7 @@ export const CreateCounterpartDialog = ({
       alignDialog="right"
       open={open}
       onClose={onClose}
-      data-testid={CreateCounterpartDialogTestEnum.DataTestId}
+      data-testid="create-counterpart-dialog"
     >
       <Typography variant="h3" sx={{ p: 4 }}>{t(
         i18n
