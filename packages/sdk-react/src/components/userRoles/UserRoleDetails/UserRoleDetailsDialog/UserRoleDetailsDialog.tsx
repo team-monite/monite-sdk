@@ -36,6 +36,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useUserRoleQuery } from '../../useUserRoles';
 import { UserRoleRow, UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
 
 const StyledDialogContainer = styled(DialogContent)`
@@ -106,15 +107,10 @@ export const UserRoleDetailsDialog = ({
     entityUserId: user?.id,
   });
 
-  const {
-    isLoading: isLoadingRole,
-    isPending: isPendingRole,
-    data: role,
-    error: roleQueryError,
-  } = api.roles.getRolesId.useQuery(
-    { path: { role_id: id ?? '' } },
-    { enabled: !!id }
-  );
+  const { isLoadingRole, isPendingRole, roleData, roleQueryError } =
+    useUserRoleQuery({
+      id,
+    });
 
   const {
     isLoading: isLoadingUsers,
@@ -125,8 +121,8 @@ export const UserRoleDetailsDialog = ({
     { enabled: !!id }
   );
 
-  const rows = role?.permissions.objects
-    ? transformPermissionsToComponentFormat(role?.permissions.objects)
+  const rows = roleData?.permissions.objects
+    ? transformPermissionsToComponentFormat(roleData?.permissions.objects)
     : createInitialPermissionsState();
 
   const columns: {
@@ -190,7 +186,7 @@ export const UserRoleDetailsDialog = ({
     return <LoadingPage />;
   }
 
-  if (roleQueryError || !role) {
+  if (roleQueryError || !roleData) {
     return (
       <NotFound
         title={t(i18n)`Role not found`}
@@ -209,7 +205,7 @@ export const UserRoleDetailsDialog = ({
           gap={2}
         >
           <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-            {role.name}
+            {roleData.name}
           </Typography>
           {dialogContext?.isDialogContent && (
             <IconWrapper

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
@@ -14,7 +13,6 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,6 +37,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useUserRoleMutations, useUserRoleQuery } from '../../useUserRoles';
 import { PermissionRow } from '../types';
 import { UserRoleRow } from '../UserRoleRow';
 import { UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
@@ -109,9 +108,18 @@ export const UserRoleEditDialog = ({
   onUpdated,
 }: UserRoleEditDialogProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
   const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
+
+  const { isLoadingRole, isPendingRole, roleData, roleQueryError } =
+    useUserRoleQuery({
+      id,
+    });
+  const { createRole, updateRole, isCreating, isUpdating } =
+    useUserRoleMutations({
+      onCreated,
+      onUpdated,
+    });
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
@@ -119,22 +127,12 @@ export const UserRoleEditDialog = ({
     entityUserId: user?.id,
   });
 
-  const {
-    isLoading: isLoadingRole,
-    isPending: isPendingRole,
-    data: role,
-    error: roleQueryError,
-  } = api.roles.getRolesId.useQuery(
-    { path: { role_id: id ?? '' } },
-    { enabled: !!id }
-  );
-
   const methods = useForm<UserRoleFormValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: {
-      name: role?.name || '',
-      permissions: role?.permissions.objects
-        ? transformPermissionsToComponentFormat(role?.permissions.objects)
+      name: roleData?.name || '',
+      permissions: roleData?.permissions.objects
+        ? transformPermissionsToComponentFormat(roleData?.permissions.objects)
         : createInitialPermissionsState(),
     },
   });
@@ -165,38 +163,8 @@ export const UserRoleEditDialog = ({
     };
   }, [onBeforeUnload]);
 
-  const roleCreateMutation = api.roles.postRoles.useMutation(
-    {},
-    {
-      onSuccess: (role) =>
-        Promise.all([
-          api.roles.getRoles.invalidateQueries(queryClient),
-          api.roles.getRolesId.invalidateQueries(
-            { parameters: { path: { role_id: role.id } } },
-            queryClient
-          ),
-        ]),
-      onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
-      },
-    }
-  );
-  const roleUpdateMutation = api.roles.patchRolesId.useMutation(undefined, {
-    onSuccess: (role) =>
-      Promise.all([
-        api.roles.getRoles.invalidateQueries(queryClient),
-        api.roles.getRolesId.invalidateQueries(
-          { parameters: { path: { role_id: role.id } } },
-          queryClient
-        ),
-      ]),
-    onError: (error) => {
-      toast.error(getAPIErrorMessage(i18n, error));
-    },
-  });
-
-  const rows = role?.permissions.objects
-    ? transformPermissionsToComponentFormat(role?.permissions.objects)
+  const rows = roleData?.permissions.objects
+    ? transformPermissionsToComponentFormat(roleData?.permissions.objects)
     : createInitialPermissionsState();
 
   const columns: {
@@ -252,35 +220,6 @@ export const UserRoleEditDialog = ({
       headerName: t(i18n)`Create from email`,
     },
   ];
-
-  const createRole = (role: components['schemas']['CreateRoleRequest']) => {
-    roleCreateMutation.mutate(
-      { ...role },
-      {
-        onSuccess: (role) => {
-          toast.success(t(i18n)`Role ${role.name} was created`);
-
-          onCreated?.(role);
-        },
-      }
-    );
-  };
-
-  const updateRole = (
-    roleId: string,
-    req: components['schemas']['UpdateRoleRequest']
-  ) => {
-    roleUpdateMutation.mutate(
-      { path: { role_id: roleId }, body: req },
-      {
-        onSuccess: (role) => {
-          toast.success(t(i18n)`Role ${role.name} was updated`);
-
-          onUpdated?.(role);
-        },
-      }
-    );
-  };
 
   const handleRoleFormSubmission: SubmitHandler<UserRoleFormValues> = (
     data
@@ -370,15 +309,15 @@ export const UserRoleEditDialog = ({
             </IconButton>
           )}
           <Typography variant="h3" flex={1} ml={2}>
-            {role ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
+            {roleData ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
           </Typography>
           <Button
             type="submit"
             form={formName}
             disabled={
-              roleUpdateMutation.isPending ||
-              roleCreateMutation.isPending ||
-              (role && (!isDirty || !isUpdateAllowed))
+              isUpdating ||
+              isCreating ||
+              (roleData && (!isDirty || !isUpdateAllowed))
             }
             autoFocus
             color="primary"
