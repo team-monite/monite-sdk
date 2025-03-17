@@ -132,7 +132,7 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: [...fields],
+    lineItems: fields,
     formatCurrencyToDisplay,
     isNonVatSupported: isNonVatSupported,
     actualCurrency,
@@ -255,6 +255,10 @@ export const ItemsSection = ({
   const handleAutoAddRow = useCallback(() => {
     const emptyRowCount = countEmptyRows(fields);
 
+    if (emptyRowCount < 5) {
+      setTooManyEmptyRows(false);
+    }
+
     if (emptyRowCount > 1) {
       return;
     }
@@ -312,7 +316,6 @@ export const ItemsSection = ({
   );
 
   const { root } = useRootElements();
-  console.log(fields);
 
   const VatRateController = ({ index }: { index: number }) => {
     useEffect(() => {
@@ -604,7 +607,7 @@ export const ItemsSection = ({
                         )}
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell sx={{ paddingLeft: 0 }}>
                         <IconButton
                           onClick={() => {
                             remove(index);
@@ -612,7 +615,6 @@ export const ItemsSection = ({
 
                             if (emptyRowCount < 5) {
                               setTooManyEmptyRows(false);
-                              return;
                             }
                           }}
                         >
@@ -683,6 +685,7 @@ export const ItemsSection = ({
             />
             <Divider sx={{ my: 1.5 }} />
             <CardTableItem
+              key={`totalTaxes-${totalTaxes}`}
               label={t(i18n)`Taxes total`}
               value={totalTaxes}
               className="Monite-TaxesTotal"
