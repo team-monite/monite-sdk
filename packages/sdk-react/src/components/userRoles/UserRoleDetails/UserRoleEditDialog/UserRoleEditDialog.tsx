@@ -6,11 +6,9 @@ import { useDialog } from '@/components/Dialog';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
   transformPermissionsToComponentFormat,
-  isCommonPermissionObjectType,
-  isPayablePermissionObjectType,
   createInitialPermissionsState,
+  transformPermissionsToRequestFormat,
 } from '@/components/userRoles/UserRoleDetails/helpers';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -226,56 +224,11 @@ export const UserRoleEditDialog = ({
   ) => {
     const formattedData: UserRoleRequest = {
       name: data.name,
-      permissions: {
-        objects: data.permissions
-          .map((permission) => {
-            const objectType = permission.name;
-
-            if (!objectType) return null;
-
-            if (isCommonPermissionObjectType(objectType)) {
-              return {
-                object_type: objectType,
-                actions: Object.entries(permission)
-                  .filter(([key]) => key !== 'name')
-                  .map(([action, permission]) => {
-                    return {
-                      action_name:
-                        action as components['schemas']['ActionEnum'],
-                      permission: (permission
-                        ? 'allowed'
-                        : 'not_allowed') as components['schemas']['PermissionEnum'],
-                    };
-                  }),
-              };
-            }
-
-            if (isPayablePermissionObjectType(objectType)) {
-              return {
-                object_type: objectType,
-                actions: Object.entries(permission)
-                  .filter(([key]) => key !== 'name')
-                  .map(([action, permission]) => {
-                    return {
-                      action_name:
-                        action as components['schemas']['PayableActionEnum'],
-                      permission: (permission
-                        ? 'allowed'
-                        : 'not_allowed') as components['schemas']['PermissionEnum'],
-                    };
-                  }),
-              };
-            }
-          })
-          .filter(
-            <T,>(value: T | null | undefined): value is T =>
-              value !== null && value !== undefined
-          ),
-      },
+      permissions: transformPermissionsToRequestFormat(data.permissions),
     };
 
-    if (role?.id) {
-      return updateRole(role.id, formattedData);
+    if (roleData?.id) {
+      return updateRole(roleData.id, formattedData);
     }
 
     return createRole(formattedData);
