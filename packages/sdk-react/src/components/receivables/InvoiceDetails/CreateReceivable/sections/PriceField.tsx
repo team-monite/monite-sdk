@@ -32,18 +32,29 @@ export const PriceField = ({ index, currency }: any) => {
   const fieldValue = productPrice !== undefined ? productPrice : price;
 
   const [isTyping, setIsTyping] = useState(false);
-  const [rawValue, setRawValue] = useState<string | number>('');
+  const [rawValue, setRawValue] = useState<string>('');
 
-  useEffect(() => {
-    if (!isTyping) {
-      const formattedValue = formatCurrencyToDisplay(
-        fieldValue,
-        currency,
-        false
-      );
-      setRawValue(formattedValue || '');
+  const cleanValue = (inputValue: string): string => {
+    // remove all non-digit characters except the first decimal point
+    let cleanedValue = inputValue.replace(/[^\d.,]/g, '');
+
+    // replace commas with nothing (e.g., "20,000" -> "20000")
+    // this is to avoid NaN, if it seems safe you can try removing
+    cleanedValue = cleanedValue.replace(/,/g, '');
+
+    // ensure only one decimal point exists
+    const decimalParts = cleanedValue.split('.');
+    if (decimalParts.length > 1) {
+      cleanedValue = `${decimalParts[0]}.${decimalParts.slice(1).join('')}`;
     }
-  }, [fieldValue, currency, formatCurrencyToDisplay, isTyping]);
+
+    // ff the value is empty or invalid, default to "0"
+    if (!cleanedValue || isNaN(Number(cleanedValue))) {
+      return '0';
+    }
+
+    return cleanedValue;
+  };
 
   const handleBlur = (
     controllerField: ControllerRenderProps<
@@ -51,14 +62,21 @@ export const PriceField = ({ index, currency }: any) => {
       `line_items.${any}.product.price.value`
     >
   ) => {
+    const cleanedValue = cleanValue(rawValue.trim());
+
+    // format the cleaned value
     const { displayValue, minorUnitsValue } = sanitizeAndFormatValue(
-      String(rawValue).trim(),
+      cleanedValue,
       currency
     );
 
     if (minorUnitsValue !== null) {
-      controllerField.onChange(minorUnitsValue);
-      setRawValue(displayValue);
+      controllerField.onChange(minorUnitsValue); // update form value
+      setRawValue(displayValue); // update displayed value
+    } else {
+      // if the input is invalid or empty, reset to 0.00
+      controllerField.onChange(0);
+      setRawValue(formatCurrencyToDisplay(0, currency, false) || '');
     }
 
     setIsTyping(false);
@@ -67,8 +85,7 @@ export const PriceField = ({ index, currency }: any) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    const { displayValue } = sanitizeAndFormatValue(inputValue, currency);
-    setRawValue(displayValue);
+    setRawValue(inputValue);
   };
 
   return (
@@ -94,7 +111,12 @@ export const PriceField = ({ index, currency }: any) => {
             sx={{ minWidth: 100 }}
             placeholder="0"
             onBlur={() => handleBlur(controllerField)}
-            onFocus={() => setIsTyping(true)}
+            onFocus={() => {
+              setIsTyping(true);
+              setRawValue(
+                formatCurrencyToDisplay(fieldValue, currency, false) || ''
+              );
+            }}
             name={controllerField.name}
             inputRef={controllerField.ref}
             InputProps={{
