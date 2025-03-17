@@ -643,7 +643,7 @@ export const ItemsSection = ({
                   {...field}
                   label={t(i18n)`VAT Exempt Rationale`}
                   multiline
-                  rows={4}
+                  rows={2}
                   fullWidth
                   error={Boolean(error)}
                 />
