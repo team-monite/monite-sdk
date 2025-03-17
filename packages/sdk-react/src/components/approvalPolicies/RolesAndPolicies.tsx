@@ -1,6 +1,5 @@
-import { useCallback, useId, useState } from 'react';
+import { useId, useReducer, useState } from 'react';
 
-import { components } from '@/api';
 import {
   ApprovalPolicyDetails,
   UserRoleDetailsDialog,
@@ -50,32 +49,93 @@ enum PageTabEnum {
   Policies,
 }
 
+type RoleAction = {
+  type:
+    | 'OPEN_ROLE_DETAILS'
+    | 'CLOSE_ROLE_DETAILS'
+    | 'OPEN_ROLE_EDIT'
+    | 'CLOSE_ROLE_EDIT'
+    | 'OPEN_ROLE_CREATE';
+  payload?: string;
+};
+
+type PolicyAction = {
+  type:
+    | 'OPEN_POLICY_DETAILS'
+    | 'CLOSE_POLICY_DETAILS'
+    | 'OPEN_POLICY_EDIT'
+    | 'CLOSE_POLICY_EDIT'
+    | 'OPEN_POLICY_CREATE';
+  payload?: string;
+};
+
+type RolesPoliciesState = {
+  isRoleDetailsDialogOpened: boolean;
+  isRoleEditDialogOpened: boolean;
+  selectedUserRoleId?: string;
+  isPolicyDetailsDialogOpened: boolean;
+  selectedApprovalPolicyId?: string;
+};
+
+const initialState: RolesPoliciesState = {
+  isRoleDetailsDialogOpened: false,
+  isRoleEditDialogOpened: false,
+  selectedUserRoleId: undefined,
+  isPolicyDetailsDialogOpened: false,
+  selectedApprovalPolicyId: undefined,
+};
+
+const rolesPoliciesReducer = (
+  state: RolesPoliciesState,
+  action: RoleAction | PolicyAction
+): RolesPoliciesState => {
+  switch (action.type) {
+    case 'OPEN_ROLE_DETAILS':
+      return {
+        ...state,
+        selectedUserRoleId: action.payload,
+        isRoleDetailsDialogOpened: true,
+      };
+    case 'CLOSE_ROLE_DETAILS':
+      return { ...state, isRoleDetailsDialogOpened: false };
+    case 'OPEN_ROLE_EDIT':
+      return { ...state, isRoleEditDialogOpened: true };
+    case 'CLOSE_ROLE_EDIT':
+      return { ...state, isRoleEditDialogOpened: false };
+    case 'OPEN_ROLE_CREATE':
+      return {
+        ...state,
+        selectedUserRoleId: undefined,
+        isRoleEditDialogOpened: true,
+      };
+    case 'OPEN_POLICY_DETAILS':
+      return {
+        ...state,
+        selectedApprovalPolicyId: action.payload,
+        isPolicyDetailsDialogOpened: true,
+      };
+    case 'CLOSE_POLICY_DETAILS':
+      return { ...state, isPolicyDetailsDialogOpened: false };
+    case 'OPEN_POLICY_CREATE':
+      return {
+        ...state,
+        selectedApprovalPolicyId: undefined,
+        isPolicyDetailsDialogOpened: true,
+      };
+    default:
+      return state;
+  }
+};
+
 const RolesAndApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
 
   const [activeTab, setActiveTab] = useState<PageTabEnum>(PageTabEnum.Roles);
 
   const { open, menuProps, buttonProps } = useMenuButton();
+
+  const [state, dispatch] = useReducer(rolesPoliciesReducer, initialState);
   const { root } = useRootElements();
-
-  const [selectedApprovalPolicyId, setSelectedApprovalPolicyId] = useState<
-    string | undefined
-  >(undefined);
-  const [isCreatePolicyDialogOpened, setIsCreatePolicyDialogOpened] =
-    useState<boolean>(false);
-
-  const onPolicyRowClick = useCallback(
-    (approvalPolicy: components['schemas']['ApprovalPolicyResource']) => {
-      setSelectedApprovalPolicyId(approvalPolicy.id);
-      setIsCreatePolicyDialogOpened(true);
-    },
-    []
-  );
-
-  const onCreatePolicyClick = useCallback(() => {
-    setIsCreatePolicyDialogOpened(true);
-    setSelectedApprovalPolicyId(undefined);
-  }, []);
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadPolicyAllowed, isLoading: isReadPolicyAllowedLoading } =
@@ -93,11 +153,6 @@ const RolesAndApprovalPoliciesBase = () => {
     entityUserId: user?.id,
   });
 
-  const [isRoleDetailsDialogOpened, setIsRoleDetailsDialogOpened] =
-    useState(false);
-  const [selectedUserRoleId, setSelectedUserRoleID] = useState<
-    string | undefined
-  >(undefined);
   // The following code duplicates state found in UserRoles.tsx and ApprovalPolicies.tsx
   const { data: isReadRoleAllowed, isLoading: isReadRoleAllowedLoading } =
     useIsActionAllowed({
@@ -111,18 +166,6 @@ const RolesAndApprovalPoliciesBase = () => {
       action: 'create',
       entityUserId: user?.id,
     });
-
-  const [isRoleEditDialogOpened, setIsRoleEditDialogOpened] = useState(false);
-
-  const onRoleRowClick = (id: string) => {
-    setIsRoleDetailsDialogOpened(true);
-    setSelectedUserRoleID(id);
-  };
-
-  const onCreateRoleClick = () => {
-    setSelectedUserRoleID(undefined);
-    setIsRoleEditDialogOpened(true);
-  };
 
   const isRolesTab = activeTab == PageTabEnum.Roles;
   const isLoadingPermissions =
@@ -177,7 +220,7 @@ const RolesAndApprovalPoliciesBase = () => {
                 disabled={!isCreateRoleAllowed}
                 onClick={() => {
                   setActiveTab(PageTabEnum.Roles);
-                  onCreateRoleClick();
+                  dispatch({ type: 'OPEN_ROLE_CREATE' });
                 }}
               >
                 {t(i18n)`User role`}
@@ -187,7 +230,7 @@ const RolesAndApprovalPoliciesBase = () => {
                 disabled={!isCreatePolicyAllowed}
                 onClick={() => {
                   setActiveTab(PageTabEnum.Policies);
-                  onCreatePolicyClick();
+                  dispatch({ type: 'OPEN_POLICY_CREATE' });
                 }}
               >
                 {t(i18n)`Approval policy`}
@@ -228,48 +271,52 @@ const RolesAndApprovalPoliciesBase = () => {
       {isAccessRestricted && <AccessRestriction />}
       {!isRolesTab && isReadPolicyAllowed && (
         <ApprovalPoliciesTable
-          onRowClick={onPolicyRowClick}
-          onCreateClick={onCreatePolicyClick}
+          onRowClick={(approvalPolicy) =>
+            dispatch({
+              type: 'OPEN_POLICY_DETAILS',
+              payload: approvalPolicy.id,
+            })
+          }
+          onCreateClick={() => dispatch({ type: 'OPEN_POLICY_CREATE' })}
         />
       )}
       {isRolesTab && isReadRoleAllowed && (
         <UserRolesTable
-          onRowClick={onRoleRowClick}
-          handleCreateNew={onCreateRoleClick}
+          onRowClick={(id: string) =>
+            dispatch({ type: 'OPEN_ROLE_DETAILS', payload: id })
+          }
+          handleCreateNew={() => dispatch({ type: 'OPEN_ROLE_CREATE' })}
         />
       )}
 
       <Dialog
-        open={isCreatePolicyDialogOpened}
+        open={state.isPolicyDetailsDialogOpened}
         alignDialog="right"
-        onClose={() => setIsCreatePolicyDialogOpened(false)}
+        onClose={() => dispatch({ type: 'CLOSE_POLICY_DETAILS' })}
       >
-        <ApprovalPolicyDetails
-          id={selectedApprovalPolicyId}
-          onCreated={(id) => setSelectedApprovalPolicyId(id)}
-        />
+        <ApprovalPolicyDetails id={state.selectedApprovalPolicyId} />
       </Dialog>
 
       <Dialog
-        open={isRoleDetailsDialogOpened}
+        open={state.isRoleDetailsDialogOpened}
         alignDialog="right"
-        onClose={() => setIsRoleDetailsDialogOpened(false)}
+        onClose={() => dispatch({ type: 'CLOSE_ROLE_DETAILS' })}
       >
         <UserRoleDetailsDialog
-          id={selectedUserRoleId}
-          onClickEditRole={() => setIsRoleEditDialogOpened(true)}
+          id={state.selectedUserRoleId}
+          onClickEditRole={() => dispatch({ type: 'OPEN_ROLE_EDIT' })}
         />
       </Dialog>
 
       <Dialog
         fullScreen
-        open={isRoleEditDialogOpened}
-        onClose={() => setIsRoleEditDialogOpened(false)}
+        open={state.isRoleEditDialogOpened}
+        onClose={() => dispatch({ type: 'CLOSE_ROLE_EDIT' })}
       >
         <UserRoleEditDialog
-          id={selectedUserRoleId}
-          onCreated={() => setIsRoleEditDialogOpened(false)}
-          onUpdated={() => setIsRoleEditDialogOpened(false)}
+          id={state.selectedUserRoleId}
+          onCreated={() => dispatch({ type: 'CLOSE_ROLE_EDIT' })}
+          onUpdated={() => dispatch({ type: 'CLOSE_ROLE_EDIT' })}
         />
       </Dialog>
     </>

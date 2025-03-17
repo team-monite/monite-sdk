@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 
 import {
   Dialog,
@@ -22,13 +22,60 @@ export const UserRoles = () => (
   </MoniteScopedProviders>
 );
 
+type UserRolesAction = {
+  type:
+    | 'OPEN_DETAILS'
+    | 'CLOSE_DETAILS'
+    | 'OPEN_EDIT'
+    | 'CLOSE_EDIT'
+    | 'OPEN_CREATE';
+  payload?: string;
+};
+
+type UserRolesState = {
+  isDetailsDialogOpened: boolean;
+  isEditDialogOpened: boolean;
+  selectedUserRoleId?: string;
+};
+
+const initialState: UserRolesState = {
+  isDetailsDialogOpened: false,
+  isEditDialogOpened: false,
+  selectedUserRoleId: undefined,
+};
+
+const userRolesReducer = (
+  state: UserRolesState,
+  action: UserRolesAction
+): UserRolesState => {
+  switch (action.type) {
+    case 'OPEN_DETAILS':
+      return {
+        ...state,
+        selectedUserRoleId: action.payload,
+        isDetailsDialogOpened: true,
+      };
+    case 'CLOSE_DETAILS':
+      return { ...state, isDetailsDialogOpened: false };
+    case 'OPEN_EDIT':
+      return { ...state, isEditDialogOpened: true };
+    case 'CLOSE_EDIT':
+      return { ...state, isEditDialogOpened: false };
+    case 'OPEN_CREATE':
+      return {
+        ...state,
+        selectedUserRoleId: undefined,
+        isEditDialogOpened: true,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const UserRolesBase = () => {
   const { i18n } = useLingui();
-  const [isDetailsDialogOpened, setIsDetailsDialogOpened] = useState(false);
-  const [isEditDialogOpened, setIsEditDialogOpened] = useState(false);
-  const [selectedUserRoleId, setSelectedUserRoleID] = useState<
-    string | undefined
-  >(undefined);
+  const [state, dispatch] = useReducer(userRolesReducer, initialState);
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
@@ -43,16 +90,6 @@ const UserRolesBase = () => {
       entityUserId: user?.id,
     });
 
-  const onRowClick = (id: string) => {
-    setIsDetailsDialogOpened(true);
-    setSelectedUserRoleID(id);
-  };
-
-  const handleCreateNew = () => {
-    setSelectedUserRoleID(undefined);
-    setIsEditDialogOpened(true);
-  };
-
   return (
     <>
       <PageHeader
@@ -62,7 +99,7 @@ const UserRolesBase = () => {
             variant="contained"
             color="primary"
             disabled={isCreateAllowedLoading || !isCreateAllowed}
-            onClick={handleCreateNew}
+            onClick={() => dispatch({ type: 'OPEN_CREATE' })}
           >
             {t(i18n)`Create New`}
           </Button>
@@ -72,31 +109,36 @@ const UserRolesBase = () => {
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
         <UserRolesTable
-          onRowClick={onRowClick}
-          handleCreateNew={handleCreateNew}
+          onRowClick={(id: string) =>
+            dispatch({
+              type: 'OPEN_DETAILS',
+              payload: id,
+            })
+          }
+          handleCreateNew={() => dispatch({ type: 'OPEN_CREATE' })}
         />
       )}
 
       <Dialog
-        open={isDetailsDialogOpened}
+        open={state.isDetailsDialogOpened}
         alignDialog="right"
-        onClose={() => setIsDetailsDialogOpened(false)}
+        onClose={() => dispatch({ type: 'CLOSE_DETAILS' })}
       >
         <UserRoleDetailsDialog
-          id={selectedUserRoleId}
-          onClickEditRole={() => setIsEditDialogOpened(true)}
+          id={state.selectedUserRoleId}
+          onClickEditRole={() => dispatch({ type: 'OPEN_EDIT' })}
         />
       </Dialog>
 
       <Dialog
         fullScreen
-        open={isEditDialogOpened}
-        onClose={() => setIsEditDialogOpened(false)}
+        open={state.isEditDialogOpened}
+        onClose={() => dispatch({ type: 'CLOSE_EDIT' })}
       >
         <UserRoleEditDialog
-          id={selectedUserRoleId}
-          onCreated={() => setIsEditDialogOpened(false)}
-          onUpdated={() => setIsEditDialogOpened(false)}
+          id={state.selectedUserRoleId}
+          onCreated={() => dispatch({ type: 'CLOSE_EDIT' })}
+          onUpdated={() => dispatch({ type: 'CLOSE_EDIT' })}
         />
       </Dialog>
     </>
