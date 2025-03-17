@@ -471,6 +471,7 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell sx={{ width: { xs: '30%', xl: '20%' } }}>
+                        {/* TODO: quantity field in its own separate file so it can be reused with measure units? */}
                         <Controller
                           name={`line_items.${index}.quantity`}
                           render={({ field }) => {
