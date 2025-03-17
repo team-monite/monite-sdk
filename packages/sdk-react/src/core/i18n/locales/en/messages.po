@@ -7788,14 +7788,14 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/userRoles/consts.ts:69
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:142
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:182
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:206
+msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:206
-msgctxt "InvoicesTableRowActionMenu"
+#: src/components/userRoles/consts.ts:69
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:142
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:182
 msgid "View"
 msgstr "View"
 
