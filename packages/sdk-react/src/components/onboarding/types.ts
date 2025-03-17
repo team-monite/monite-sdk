@@ -105,3 +105,32 @@ export type OnboardingRequirementMask = Extract<
   components['schemas']['OnboardingRequirement'],
   'representative' | 'directors' | 'executives' | 'owners'
 >;
+
+export interface OnboardingProps {
+  /**
+   * Called when bank account setup is completed.
+   *
+   * @param entityId The entity id
+   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
+   * @returns {void}
+   */
+  onPaymentOnboardingComplete?: (
+    entityId: string,
+    response?: components['schemas']['EntityBankAccountResponse']
+  ) => void;
+  /**
+   * Called when working capital onboarding is completed.
+   * This happens when the business status transitions to 'ONBOARDED'.
+   *
+   * @param entityId The entity id
+   * @returns {void}
+   */
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
+
+  /**
+   * Called when the onboarding process is completed.
+   *
+   * @returns {void}
+   */
+  onComplete?: () => void;
+}

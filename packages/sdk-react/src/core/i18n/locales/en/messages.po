@@ -38,7 +38,7 @@ msgstr "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice 
 msgid "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:109
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
 #: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:58
 #: src/components/receivables/Financing/FinanceFaq/FinanceFaqDetails.tsx:62
@@ -169,7 +169,7 @@ msgstr "1st discount period"
 msgid "2nd discount period"
 msgstr "2nd discount period"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:651
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:662
 msgid "A counterpart with this name exists but has not been specified in the document."
 msgstr "A counterpart with this name exists but has not been specified in the document."
 
@@ -205,7 +205,7 @@ msgstr "Access Restricted"
 msgid "Account holder name"
 msgstr "Account holder name"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:106
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:134
 msgid "Account Holder Name"
 msgstr "Account Holder Name"
 
@@ -220,7 +220,7 @@ msgstr "Account name"
 msgid "Account number"
 msgstr "Account number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:115
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:143
 msgid "Account Number"
 msgstr "Account Number"
 
@@ -255,7 +255,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:170
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:183
 msgid "Add a bank to receive transfers of funds to your business."
 msgstr "Add a bank to receive transfers of funds to your business."
 
@@ -267,16 +267,20 @@ msgstr "Add a business executive"
 msgid "Add a business owner"
 msgstr "Add a business owner"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:84
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:96
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:176
 msgid "Add a director"
 msgstr "Add a director"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:86
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:99
+msgid "Add a person"
+msgstr "Add a person"
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:98
 msgid "Add an executive"
 msgstr "Add an executive"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:85
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:97
 msgid "Add an owner"
 msgstr "Add an owner"
 
@@ -321,6 +325,10 @@ msgstr "Add contact person"
 msgid "Add discount"
 msgstr "Add discount"
 
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:741
+msgid "Add Discount"
+msgstr "Add Discount"
+
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:311
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:437
@@ -363,12 +371,12 @@ msgstr "Add your first bill"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:236
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:84
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:531
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:542
 #: src/components/payables/PayablesTable/PayablesTable.tsx:341
 msgid "Added by"
 msgstr "Added by"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:562
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:573
 msgid "Added on"
 msgstr "Added on"
 
@@ -848,7 +856,7 @@ msgstr "Azerbaijani Manat"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:427
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:424
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:48
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:288
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:276
 msgid "Back"
 msgstr "Back"
 
@@ -876,6 +884,10 @@ msgstr "Back of your identify document"
 #: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:128
 msgid "Back of your identity document"
 msgstr "Back of your identity document"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:289
+msgid "Back to edit"
+msgstr "Back to edit"
 
 #: src/core/utils/countries.ts:35
 msgid "Bahamas"
@@ -1157,15 +1169,15 @@ msgstr "Bus Lines"
 msgid "Business address"
 msgstr "Business address"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:102
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:115
 msgid "Business details"
 msgstr "Business details"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:99
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:112
 msgid "Business directors"
 msgstr "Business directors"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:100
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:113
 msgid "Business executives"
 msgstr "Business executives"
 
@@ -1177,7 +1189,7 @@ msgstr "Business Identification Number (Liechtenstein)"
 msgid "Business Number (Canada)"
 msgstr "Business Number (Canada)"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:98
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:111
 msgid "Business owners"
 msgstr "Business owners"
 
@@ -1207,7 +1219,7 @@ msgstr "Business/Secretarial Schools"
 msgid "Buying/Shopping Services"
 msgstr "Buying/Shopping Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:381
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:386
 msgid "by"
 msgstr "by"
 
@@ -1314,7 +1326,7 @@ msgstr "Cancel bill?"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:320
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:323
 msgid "Cancel Invoice"
 msgstr "Cancel Invoice"
 
@@ -1327,7 +1339,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:150
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:379
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:382
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1600,7 +1612,7 @@ msgstr "Comoros"
 msgid "Companies"
 msgstr "Companies"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:95
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:108
 msgid "Company details"
 msgstr "Company details"
 
@@ -1867,7 +1879,7 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:44
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:76
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:104
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
 #: src/components/onboarding/validators/validationSchemas.ts:115
 #: src/components/onboarding/validators/validationSchemas.ts:151
@@ -2115,7 +2127,7 @@ msgstr "Cuba"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:20
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:114
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:58
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:86
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:151
 #: src/components/products/ProductDetails/validation.ts:48
@@ -2129,7 +2141,7 @@ msgstr "Currency"
 msgid "Current offer"
 msgstr "Current offer"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:153
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:158
 msgid "Current status"
 msgstr "Current status"
 
@@ -2144,7 +2156,7 @@ msgstr "Current status"
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:143
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:176
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:140
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:145
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:262
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:189
@@ -2273,7 +2285,7 @@ msgstr "Defaulted"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:78
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:82
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:279
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:282
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:279
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2475,6 +2487,11 @@ msgstr "Director"
 msgid "Disabling reminders prevents sending any payment reminders to this counterpart."
 msgstr "Disabling reminders prevents sending any payment reminders to this counterpart."
 
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:758
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:481
+msgid "Discount"
+msgstr "Discount"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:60
 msgid "Discount {0}"
 msgstr "Discount {0}"
@@ -2529,7 +2546,7 @@ msgstr "Dominican Peso"
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:160
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:168
 msgid "Don't wait for the payment"
 msgstr "Don't wait for the payment"
 
@@ -2547,7 +2564,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:337
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:340
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2620,11 +2637,11 @@ msgstr "Due Date"
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:160
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:173
 msgid "Due to regulations, we’re required to collect information about a company’s directors."
 msgstr "Due to regulations, we’re required to collect information about a company’s directors."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:155
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:168
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 msgstr "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 
@@ -2731,15 +2748,15 @@ msgstr "Edit Customer Close"
 msgid "Edit customer's profile"
 msgstr "Edit customer's profile"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:90
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:103
 msgid "Edit documents for person"
 msgstr "Edit documents for person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:94
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:107
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:290
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:293
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2889,7 +2906,7 @@ msgstr "Entity"
 msgid "Entity bank account"
 msgstr "Entity bank account"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:106
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:119
 msgid "Entity documents"
 msgstr "Entity documents"
 
@@ -3043,7 +3060,7 @@ msgstr "Failed to delete Unit."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:555
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:420
 msgid "Failed to generate email preview"
 msgstr "Failed to generate email preview"
 
@@ -3365,7 +3382,7 @@ msgstr "Germany"
 msgid "Get a small business loan plan to manage finances more efficiently."
 msgstr "Get a small business loan plan to manage finances more efficiently."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:191
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:199
 msgid "Get paid now"
 msgstr "Get paid now"
 
@@ -3540,7 +3557,7 @@ msgstr "Heating, Plumbing, A/C"
 msgid "here."
 msgstr "here."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:94
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:84
 msgid ""
 "Hi {0},\n"
 "Please find the invoice attached as discussed.\n"
@@ -3556,7 +3573,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Hide"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:518
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:529
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:203
 msgid "History"
 msgstr "History"
@@ -3632,7 +3649,7 @@ msgstr "I own 25% or more of the company."
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:130
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:8
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:97
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:125
 #: src/components/onboarding/validators/validationSchemas.ts:120
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:31
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:45
@@ -3651,7 +3668,7 @@ msgstr "Icelandic Króna"
 msgid "If amount is"
 msgstr "If amount is"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:562
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:427
 msgid "If the error recurs, contact support, please."
 msgstr "If the error recurs, contact support, please."
 
@@ -3797,11 +3814,11 @@ msgstr "Invoice"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:108
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:98
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:258
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:261
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -3826,7 +3843,7 @@ msgstr "Invoice delete confirmation"
 msgid "Invoice financing"
 msgstr "Invoice financing"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:109
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:99
 msgid "Invoice from {entityName}"
 msgstr "Invoice from {entityName}"
 
@@ -3860,7 +3877,7 @@ msgstr "Invoice Reminder type is not provided"
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:165
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:170
 msgid "Invoice total"
 msgstr "Invoice total"
 
@@ -3894,7 +3911,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:367
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:370
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:284
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:289
 msgid "Issue"
@@ -3905,10 +3922,13 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:334
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice.tsx:119
 msgid "Issue and send"
 msgstr "Issue and send"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:326
+msgid "Issue and Send"
+msgstr "Issue and Send"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:400
@@ -3945,12 +3965,12 @@ msgstr "Issue only"
 msgid "Issued"
 msgstr "Issued"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:51
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:57
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:65
 msgid "Issued documents"
 msgstr "Issued documents"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:381
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:386
 msgid "Issued on"
 msgstr "Issued on"
 
@@ -3972,11 +3992,11 @@ msgstr "It looks like the phone number is too short."
 msgid "It will remain in all the documents where it is added. You can’t undo this action."
 msgstr "It will remain in all the documents where it is added. You can’t undo this action."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:131
 msgid "It’s required to add any individual who is on the governing board of the company."
 msgstr "It’s required to add any individual who is on the governing board of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:133
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:146
 msgid "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 msgstr "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 
@@ -4171,7 +4191,7 @@ msgstr "Last name is required"
 msgid "Last update"
 msgstr "Last update"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:580
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:591
 msgid "Last updated on"
 msgstr "Last updated on"
 
@@ -4268,7 +4288,7 @@ msgstr "Line 1"
 msgid "Line 2"
 msgstr "Line 2"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:184
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:189
 msgid "Linked documents"
 msgstr "Linked documents"
 
@@ -4281,7 +4301,7 @@ msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:115
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:190
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:198
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -4588,7 +4608,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:301
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:304
 msgid "More"
 msgstr "More"
 
@@ -4807,7 +4827,7 @@ msgstr "No {entityName}"
 msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:199
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:192
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
@@ -5028,7 +5048,7 @@ msgstr "Omani Rial"
 msgid "Onboarding"
 msgstr "Onboarding"
 
-#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:19
+#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:31
 msgid "Onboarding Completed"
 msgstr "Onboarding Completed"
 
@@ -5089,7 +5109,7 @@ msgstr "Overdue reminder error"
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:37
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:43
 msgid "Overview"
 msgstr "Overview"
 
@@ -5328,7 +5348,7 @@ msgstr "Payment term updated"
 msgid "Payment terms"
 msgstr "Payment terms"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:58
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:64
 msgid "Payments"
 msgstr "Payments"
 
@@ -5359,7 +5379,7 @@ msgstr "Permissions"
 msgid "Person"
 msgstr "Person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:103
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
 msgid "Persons review"
 msgstr "Persons review"
 
@@ -5445,11 +5465,11 @@ msgstr "Please accept Service Agreement to proceed."
 msgid "Please add any individual who owns 25% or more of the company."
 msgstr "Please add any individual who owns 25% or more of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:124
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:137
 msgid "Please add any individual who owns 25% or more of your business."
 msgstr "Please add any individual who owns 25% or more of your business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:176
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:189
 msgid "Please correct the errors in persons information."
 msgstr "Please correct the errors in persons information."
 
@@ -5470,7 +5490,7 @@ msgstr "Please enter a valid phone number."
 msgid "Please enter your IBAN number."
 msgstr "Please enter your IBAN number."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:100
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:90
 msgid ""
 "Please find the invoice attached as discussed.\n"
 "Kind Regards,\n"
@@ -5493,11 +5513,11 @@ msgstr "Please list all individuals who are members of the governing board of th
 msgid "Please provide a valid date."
 msgstr "Please provide a valid date."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:129
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:142
 msgid "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 msgstr "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:173
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:186
 msgid "Please provide information about your business."
 msgstr "Please provide information about your business."
 
@@ -5505,8 +5525,8 @@ msgstr "Please provide information about your business."
 msgid "Please provide the following documents for the person"
 msgstr "Please provide the following documents for the person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:179
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:184
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:192
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:197
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
@@ -5514,14 +5534,14 @@ msgstr "Please review the terms and conditions and accept them to continue."
 msgid "Please try again later."
 msgstr "Please try again later."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:559
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:424
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:70
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:140
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:142
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:189
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:153
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:155
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:202
 msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
@@ -5611,7 +5631,7 @@ msgstr "Preset name"
 msgid "Preset Name"
 msgstr "Preset Name"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:326
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:316
 msgid "Preview email"
 msgstr "Preview email"
 
@@ -5720,7 +5740,7 @@ msgstr "Project"
 msgid "Provide documents"
 msgstr "Provide documents"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:91
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:104
 msgid "Provide documents for persons"
 msgstr "Provide documents for persons"
 
@@ -5842,7 +5862,7 @@ msgid "Reconciliation"
 msgstr "Reconciliation"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:346
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:349
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -5892,7 +5912,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:246
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:249
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
@@ -5933,7 +5953,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:570
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:436
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
 #: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:101
 msgid "Reload"
@@ -5956,7 +5976,7 @@ msgstr "Remind"
 msgid "Reminder {0}"
 msgstr "Reminder {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:234
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:239
 msgid "Reminder emails"
 msgstr "Reminder emails"
 
@@ -5965,7 +5985,7 @@ msgstr "Reminder emails"
 msgid "Reminder has been created"
 msgstr "Reminder has been created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:303
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:308
 msgid "Reminder has been deleted"
 msgstr "Reminder has been deleted"
 
@@ -6098,7 +6118,7 @@ msgstr "Roofing/Siding, Sheet Metal"
 msgid "Routing number"
 msgstr "Routing number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:124
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:152
 msgid "Routing Number"
 msgstr "Routing Number"
 
@@ -6275,6 +6295,10 @@ msgstr "Select invoices you would like to finance and send them for review."
 msgid "Select someone"
 msgstr "Select someone"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:326
+msgid "Send"
+msgstr "Send"
+
 #: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:210
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
@@ -6284,7 +6308,7 @@ msgstr "Send"
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:309
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:312
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -6483,7 +6507,7 @@ msgstr "Something went wrong. Please try again"
 msgid "Sort code"
 msgstr "Sort code"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:133
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:161
 msgid "Sort Code"
 msgstr "Sort Code"
 
@@ -6595,8 +6619,8 @@ msgstr "Status"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:238
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:17
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:64
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.components.tsx:155
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:471
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:402
 msgid "Subject"
 msgstr "Subject"
@@ -6818,7 +6842,7 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:147
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:160
 msgid "Tell us more about your business"
 msgstr "Tell us more about your business"
 
@@ -6830,8 +6854,8 @@ msgstr "Tent and Awning Shops"
 msgid "Terms"
 msgstr "Terms"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:104
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:105
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:117
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
 
@@ -6851,7 +6875,7 @@ msgstr "Thai Baht"
 msgid "Thailand"
 msgstr "Thailand"
 
-#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:20
+#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:32
 msgid "Thank you for completing onboarding for payments services. We will now review the information submitted."
 msgstr "Thank you for completing onboarding for payments services. We will now review the information submitted."
 
@@ -6875,7 +6899,7 @@ msgstr "The following fields are required:"
 msgid "The IBAN should correspond to the chosen country - {country}."
 msgstr "The IBAN should correspond to the chosen country - {country}."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:167
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:175
 msgid "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 msgstr "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 
@@ -6945,7 +6969,7 @@ msgstr "There is no reminder by provided id: {reminderId}"
 msgid "There is no role by provided id: {id}"
 msgstr "There is no role by provided id: {id}"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:654
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:665
 msgid "There is no such counterpart yet, you can create it in respective section."
 msgstr "There is no such counterpart yet, you can create it in respective section."
 
@@ -6970,11 +6994,11 @@ msgstr "There was an issue reading the file."
 msgid "This action can't be undone."
 msgstr "This action can't be undone."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:150
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:163
 msgid "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 msgstr "This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue."
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:164
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:172
 msgid "This invoice can be financed"
 msgstr "This invoice can be financed"
 
@@ -7016,8 +7040,8 @@ msgstr "Tire Retreading and Repair"
 msgid "Title"
 msgstr "Title"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.components.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:453
 #: src/components/receivables/InvoiceDetails/InvoiceTo/InvoiceTo.tsx:29
 msgid "To"
 msgstr "To"
@@ -7071,7 +7095,7 @@ msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:751
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:326
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:494
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:505
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:365
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:491
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
@@ -7334,7 +7358,7 @@ msgstr "Units"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:370
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:375
 msgid "Unknown date"
 msgstr "Unknown date"
 
@@ -7648,7 +7672,7 @@ msgstr "VAT information"
 msgid "VAT total"
 msgstr "VAT total"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:480
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:491
 msgid "VAT Total"
 msgstr "VAT Total"
 
@@ -7695,7 +7719,7 @@ msgstr "Venezuela"
 msgid "Verify identity"
 msgstr "Verify identity"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:97
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:110
 msgid "Verify you represent this business"
 msgstr "Verify you represent this business"
 
@@ -7728,7 +7752,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:207
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:212
 msgid "View all"
 msgstr "View all"
 
@@ -7752,7 +7776,7 @@ msgstr "Wallis And Futuna"
 msgid "Watch/Jewelry Repair"
 msgstr "Watch/Jewelry Repair"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:165
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:178
 msgid "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 msgstr "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
@@ -7784,7 +7808,7 @@ msgstr "Who needs to approve the document and how:"
 msgid "Wholesale Clubs"
 msgstr "Wholesale Clubs"
 
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:175
+#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:183
 msgid "Why?"
 msgstr "Why?"
 
@@ -7927,7 +7951,7 @@ msgstr "You don’t have any roles yet."
 msgid "You don’t have any tags yet."
 msgstr "You don’t have any tags yet."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:403
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:406
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 

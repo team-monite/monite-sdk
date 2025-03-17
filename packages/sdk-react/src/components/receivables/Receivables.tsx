@@ -50,6 +50,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       onUpdate: componentSettings?.receivables?.onUpdate,
       onDelete: componentSettings?.receivables?.onDelete,
       onCreate: componentSettings?.receivables?.onCreate,
+      onFirstInvoiceSent: componentSettings?.receivables?.onFirstInvoiceSent,
     }),
     [componentSettings?.receivables]
   );
@@ -94,6 +95,15 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       receivableCallbacks.onCreate?.(receivableId);
     },
     [receivableCallbacks, openInvoiceModal, setActiveTab]
+  );
+
+  const handleSendEmail = useCallback(
+    (invoiceId: string, isFirstInvoice: boolean) => {
+      if (isFirstInvoice) {
+        receivableCallbacks.onFirstInvoiceSent?.(invoiceId);
+      }
+    },
+    [receivableCallbacks]
   );
 
   const { root } = useRootElements();
@@ -164,6 +174,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
+          onSendEmail={handleSendEmail}
         />
       </Dialog>
       <Dialog
