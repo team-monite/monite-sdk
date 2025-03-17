@@ -120,8 +120,10 @@ export const PriceField = ({ index, currency }: any) => {
             sx={{ minWidth: 100 }}
             placeholder="0"
             onBlur={() => handleBlur(controllerField)}
-            onFocus={() => {
+            onFocus={(event) => {
               setIsTyping(true);
+              event.target.select();
+
               setRawValue(
                 formatCurrencyToDisplay(fieldValue, currency, false) || ''
               );
