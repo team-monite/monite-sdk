@@ -60,12 +60,7 @@ type RoleAction = {
 };
 
 type PolicyAction = {
-  type:
-    | 'OPEN_POLICY_DETAILS'
-    | 'CLOSE_POLICY_DETAILS'
-    | 'OPEN_POLICY_EDIT'
-    | 'CLOSE_POLICY_EDIT'
-    | 'OPEN_POLICY_CREATE';
+  type: 'OPEN_POLICY_DETAILS' | 'CLOSE_POLICY_DETAILS' | 'OPEN_POLICY_CREATE';
   payload?: string;
 };
 
