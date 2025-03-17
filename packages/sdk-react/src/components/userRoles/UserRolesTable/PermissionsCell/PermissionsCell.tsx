@@ -22,16 +22,12 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
   const filteredPermissionsObjects = permissions.objects
-    ?.filter((object) => !!object.object_type)
-    .filter(
+    ?.filter(
       (object) =>
-        isCommonPermissionObjectType(object.object_type) ||
-        isPayablePermissionObjectType(object.object_type)
-    )
-    .filter(
-      (object) =>
-        object.actions &&
-        !object.actions.every((action) => action.permission == 'not_allowed')
+        object.object_type &&
+        (isCommonPermissionObjectType(object.object_type) ||
+          isPayablePermissionObjectType(object.object_type)) &&
+        object.actions?.some((action) => action.permission !== 'not_allowed')
     )
     .sort((a, b) => {
       if (a.object_type && b.object_type) {
