@@ -605,7 +605,17 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell>
-                        <IconButton onClick={() => remove(index)}>
+                        <IconButton
+                          onClick={() => {
+                            remove(index);
+                            const emptyRowCount = countEmptyRows(fields);
+
+                            if (emptyRowCount < 5) {
+                              setTooManyEmptyRows(false);
+                              return;
+                            }
+                          }}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
