@@ -417,7 +417,6 @@ export const ItemsSection = ({
       <Box>
         <TableContainer
           sx={{
-            maxHeight: 400,
             overflow: 'visible',
             overflowY: 'auto',
           }}
