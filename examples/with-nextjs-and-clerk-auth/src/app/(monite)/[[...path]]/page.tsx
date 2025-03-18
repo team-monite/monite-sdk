@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { useUser } from '@clerk/nextjs';
 import { useMoniteContext } from '@monite/sdk-react';
 import { Box, Stack, Skeleton, Container } from '@mui/material';
 
@@ -12,6 +13,7 @@ import { OutstandingInvoicesCard } from '@/components/Dashboard/OutstandingInvoi
 
 export default function DefaultPage() {
   const { api } = useMoniteContext();
+  const { user } = useUser();
   const { data: duePayables, isLoading: duePayablesLoading } =
     api.payables.getPayables.useQuery({
       query: { status: 'waiting_to_be_paid' },
@@ -33,7 +35,7 @@ export default function DefaultPage() {
           alignItems={'center'}
           sx={{ width: '100%', mb: '24px' }}
         >
-          <h1>Dashboard</h1>
+          <h1>Welcome, {user?.firstName}</h1>
         </Stack>
         <Stack
           direction="row"

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
+import { ArrowForward, ArrowRight } from '@mui/icons-material';
 import { Link, TableCell, TableRow } from '@mui/material';
 
 import { CounterpartCellById } from '@/components/Dashboard/CounterpartCellById';
@@ -22,7 +23,23 @@ export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
     <DashboardCard
       title="Overdue invoices"
       renderIcon={(props) => <IconReceipt {...props} />}
-      iconVariant="success"
+      action={
+        <Link
+          href={'/receivables'}
+          sx={{
+            textDecoration: 'none',
+            borderRadius: '8px',
+            fontSize: `0.9rem`,
+            display: 'flex',
+            alignItems: 'center',
+            mt: 0.5,
+            pl: 0.5,
+          }}
+        >
+          See all ({totalOverdueInvoices}){' '}
+          <ArrowForward sx={{ fontSize: '1rem' }} />
+        </Link>
+      }
     >
       {totalOverdueInvoices ? (
         <div>
@@ -60,19 +77,6 @@ export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
                 );
               })}
           </DashboardTable>
-          <Link
-            href={'/receivables'}
-            sx={{
-              display: 'inline-block',
-              borderRadius: '8px',
-              height: `40px`,
-              fontSize: `0.9rem`,
-              mt: 0.5,
-              pl: 0.5,
-            }}
-          >
-            See all ({totalOverdueInvoices})
-          </Link>
         </div>
       ) : (
         emptyState

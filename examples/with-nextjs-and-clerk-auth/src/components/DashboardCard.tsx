@@ -10,6 +10,7 @@ interface DashboardCardProps {
   renderIcon: (props: SvgIconProps) => ReactNode;
   iconVariant?: IconVariant;
   children?: ReactNode;
+  sx?: CSSProperties;
 }
 
 const iconWrapperStyles: CSSProperties = {
@@ -26,27 +27,15 @@ const iconStyles: CSSProperties = {
   height: 20,
 } as const;
 
-const iconVariantStyles: Record<IconVariant, CSSProperties> = {
-  info: {
-    backgroundColor: '#f4f4fe',
-    fill: '#3737ff',
-  },
-  success: {
-    backgroundColor: '#eefbf9',
-    fill: '#0daa8e',
-  },
-  critical: {
-    backgroundColor: '#fff8f9',
-    fill: '#ff475d',
-  },
-} as const;
-
 const getIconStyles = (variant: IconVariant) => {
-  const { fill, backgroundColor } = iconVariantStyles[variant];
+  const { fill, backgroundColor } = {
+    backgroundColor: '#2B436D',
+    fill: '#fff',
+  };
 
   return {
     icon: { ...iconStyles, fill },
-    wrapper: { ...iconWrapperStyles, backgroundColor },
+    wrapper: { ...iconWrapperStyles, backgroundColor, borderRadius: '100%' },
   };
 };
 
@@ -56,16 +45,25 @@ export default function DashboardCard({
   iconVariant,
   children,
   action,
+  sx = {},
 }: DashboardCardProps) {
   const { icon: iconStyles, wrapper } = getIconStyles(iconVariant || 'info');
 
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card
+      sx={{
+        height: '100%',
+        backgroundColor: '#F9F9FA',
+        boxShadow: 'none',
+        ...sx,
+      }}
+    >
       <CardHeader
         sx={{ padding: '24px 24px 16px' }}
         title={title}
         titleTypographyProps={{
           variant: 'subtitle1',
+          fontWeight: 400,
         }}
         action={action}
         avatar={<div style={wrapper}>{renderIcon({ style: iconStyles })}</div>}
