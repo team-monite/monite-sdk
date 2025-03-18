@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
 import {
@@ -13,6 +14,7 @@ import {
   MenuItem,
   Select,
   SelectProps,
+  Typography,
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
@@ -91,6 +93,7 @@ export const TablePagination = <T,>({
       >
         <Box>
           <IconButton
+            className="Monite-TablePagination-PreviousPageButton"
             aria-label={t(i18n)`Previous page`}
             disabled={!prevPage}
             onClick={(event) => {
@@ -104,9 +107,10 @@ export const TablePagination = <T,>({
               });
             }}
           >
-            <ArrowLeft fontSize="small" />
+            <ChevronLeft fontSize="small" aria-label={t(i18n)`Previous page`} />
           </IconButton>
           <IconButton
+            className="Monite-TablePagination-NextPageButton"
             aria-label={t(i18n)`Next page`}
             disabled={!nextPage}
             onClick={(event) => {
@@ -120,33 +124,38 @@ export const TablePagination = <T,>({
               });
             }}
           >
-            <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
+            <ChevronRight fontSize="small" aria-label={t(i18n)`Next page`} />
           </IconButton>
         </Box>
         {hasPageSizeSelect && (
-          <Box>
-            <StyledSelect
-              className="Monite-RowsPerPageSelector Monite-NakedField"
-              {...slotProps?.pageSizeSelect}
-              aria-label={t(i18n)`Rows per page`}
-              MenuProps={{
-                ...slotProps?.pageSizeSelect?.MenuProps,
-                container: root,
-              }}
-              value={pageSize.toString()}
-              onChange={(event) =>
-                void onPaginationModelChange({
-                  page: null,
-                  pageSize: parseInt(event.target.value, DEFAULT_PAGE_SIZE),
-                })
-              }
-            >
-              {pageSizeOptions?.map((menuItem) => (
-                <MenuItem key={menuItem} value={menuItem.toString()}>
-                  {menuItem}
-                </MenuItem>
-              ))}
-            </StyledSelect>
+          <Box display="flex" alignItems="center" gap={1}>
+            <Typography variant="body2" color="text.secondary">
+              {t(i18n)`Results per page`}
+            </Typography>
+            <Box>
+              <StyledSelect
+                className="Monite-RowsPerPageSelector"
+                {...slotProps?.pageSizeSelect}
+                aria-label={t(i18n)`Rows per page`}
+                MenuProps={{
+                  ...slotProps?.pageSizeSelect?.MenuProps,
+                  container: root,
+                }}
+                value={pageSize.toString()}
+                onChange={(event) =>
+                  void onPaginationModelChange({
+                    page: null,
+                    pageSize: parseInt(event.target.value, DEFAULT_PAGE_SIZE),
+                  })
+                }
+              >
+                {pageSizeOptions?.map((menuItem) => (
+                  <MenuItem key={menuItem} value={menuItem.toString()}>
+                    {menuItem}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+            </Box>
           </Box>
         )}
       </Grid>

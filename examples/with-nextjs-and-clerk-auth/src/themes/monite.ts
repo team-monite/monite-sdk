@@ -189,7 +189,7 @@ const defaultMoniteTypography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
   fontFamily:
-    '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
   fontSize: 16,
   fontWeightMedium: 400,
   fontWeightBold: 500,
@@ -261,42 +261,42 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiTypography: {
     styleOverrides: {
-      root: {
-        '&.Monite-SummaryCard-StatusTypography': {
-          fontSize: 14,
-        },
-        '&.Monite-SummaryCard-StatusTypography-draft': {
-          color: statusBackgroundColors.draft,
-        },
-        '&.Monite-SummaryCard-StatusTypography-new': {
-          color: statusBackgroundColors.new,
-        },
-        '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
-          color: statusBackgroundColors.approve_in_progress,
-        },
-        '&.Monite-SummaryCard-StatusTypography-paid': {
-          color: statusBackgroundColors.paid,
-        },
-        '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
-          color: statusBackgroundColors.waiting_to_be_paid,
-        },
-        '&.Monite-SummaryCard-StatusTypography-rejected': {
-          color: statusBackgroundColors.rejected,
-        },
-        '&.Monite-SummaryCard-StatusTypography-partially_paid': {
-          color: statusBackgroundColors.partially_paid,
-        },
-        '&.Monite-SummaryCard-StatusTypography-canceled': {
-          color: statusBackgroundColors.canceled,
-        },
-        '&.Monite-SummaryCard-StatusTypography-all': {
-          color: statusBackgroundColors.all,
-        },
-        '&.Monite-SummaryCard-AmountTypography': {
-          fontSize: 20,
-          marginTop: 4,
-        },
-      },
+      // root: {
+      //   '&.Monite-SummaryCard-StatusTypography': {
+      //     fontSize: 14,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-draft': {
+      //     color: statusBackgroundColors.draft,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-new': {
+      //     color: statusBackgroundColors.new,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
+      //     color: statusBackgroundColors.approve_in_progress,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-paid': {
+      //     color: statusBackgroundColors.paid,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
+      //     color: statusBackgroundColors.waiting_to_be_paid,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-rejected': {
+      //     color: statusBackgroundColors.rejected,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-partially_paid': {
+      //     color: statusBackgroundColors.partially_paid,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-canceled': {
+      //     color: statusBackgroundColors.canceled,
+      //   },
+      //   '&.Monite-SummaryCard-StatusTypography-all': {
+      //     color: statusBackgroundColors.all,
+      //   },
+      //   '&.Monite-SummaryCard-AmountTypography': {
+      //     fontSize: 20,
+      //     marginTop: 4,
+      //   },
+      // },
     },
   },
   MuiFormLabel: {
@@ -901,61 +901,43 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiTableRow: {
-    styleOverrides: {
-      root: {
-        '&:not(.Monite-CreateReceivable-ItemsSection-Table) .MuiTableCell-root':
-          {
-            borderColor: 'neutral.80',
-          },
-        '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
-          borderBottom: 'none',
-          padding: '8px 12px',
-        },
-        '&:last-child .MuiTableCell-body': {
-          borderBottom: 'none',
-        },
-      },
-    },
-  },
-  MuiTabs: {
-    styleOverrides: {
-      root: {
-        '& .MuiTab-root': {
-          padding: '16px',
-        },
-        '& .MuiTab-root.Mui-selected': {
-          backgroundColor: 'transparent',
-          color: 'secondary.dark',
-          borderRadius: 0,
-        },
-      },
-      indicator: {
-        borderRadius: 0,
-        backgroundColor: 'secondary.dark',
-        height: '4px',
-      },
-    },
-  },
-  MuiCard: {
-    styleOverrides: {
-      root: {
-        '&.Monite-SummaryCard': {
-          display: 'flex',
-          borderRadius: '3px',
-          backgroundColor: '#ffffff',
-          boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
-        },
-        '&.Monite-SummaryCard-selected': {
-          border: '2px solid #3737FF',
-        },
-        '&.Monite-SummaryCard-all': {
-          minWidth: '118px',
-          backgroundColor: '#F4F4FE',
-        },
-      },
-    },
-  },
+  // MuiTableRow: {
+  //   styleOverrides: {
+  //     root: {
+  //       '&:not(.Monite-CreateReceivable-ItemsSection-Table) .MuiTableCell-root':
+  //         {
+  //           borderColor: 'neutral.80',
+  //         },
+  //       '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
+  //         borderBottom: 'none',
+  //         padding: '8px 12px',
+  //       },
+  //       '&:last-child .MuiTableCell-body': {
+  //         borderBottom: 'none',
+  //       },
+  //     },
+  //   },
+  // },
+  // MuiTabs: {
+  //   styleOverrides: {
+  //     root: {
+  //       '& .MuiTab-root': {
+  //         padding: '16px',
+  //       },
+  //       '& .MuiTab-root.Mui-selected': {
+  //         backgroundColor: 'transparent',
+  //         color: 'secondary.dark',
+  //         borderRadius: 0,
+  //       },
+  //     },
+  //     indicator: {
+  //       borderRadius: 0,
+  //       backgroundColor: 'secondary.dark',
+  //       height: '4px',
+  //     },
+  //   },
+  // },
+
   MuiCardContent: {
     styleOverrides: {
       root: {
@@ -1113,51 +1095,7 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     ],
   },
-  MonitePayableStatusChip: {
-    defaultProps: {
-      icon: false,
-      size: 'small',
-    },
-    styleOverrides: {
-      root: {
-        fontSize: '13px',
-      },
-    },
-    variants: [
-      {
-        props: { status: 'draft' },
-        style: statusColors.black,
-      },
-      {
-        props: { status: 'new' },
-        style: statusColors.blue,
-      },
-      {
-        props: { status: 'approve_in_progress' },
-        style: statusColors.orange,
-      },
-      {
-        props: { status: 'waiting_to_be_paid' },
-        style: statusColors.blue,
-      },
-      {
-        props: { status: 'partially_paid' },
-        style: statusColors.violet,
-      },
-      {
-        props: { status: 'paid' },
-        style: statusColors.green,
-      },
-      {
-        props: { status: 'canceled' },
-        style: statusColors.orange,
-      },
-      {
-        props: { status: 'rejected' },
-        style: statusColors.red,
-      },
-    ],
-  },
+
   MoniteCounterpartStatusChip: {
     defaultProps: {
       size: 'small',

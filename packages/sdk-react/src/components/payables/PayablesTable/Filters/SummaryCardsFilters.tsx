@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useState, useEffect, useRef } from 'react';
 
 import { components } from '@/api';
 import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
@@ -10,6 +10,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Circle } from '@mui/icons-material';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -20,6 +22,8 @@ import {
   SxProps,
   Theme,
   Typography,
+  Popover,
+  Button,
 } from '@mui/material';
 import { lighten, styled, useTheme } from '@mui/material/styles';
 
@@ -57,14 +61,12 @@ export const SummaryStyledCard = styled(Card, {
     prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
 })(({ selected, isAllItems, theme }: StyledCardProps) => ({
   cursor: 'pointer',
-  border: `2px solid ${selected ? theme.palette.primary.main : 'transparent'}`,
-  '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
   display: 'flex',
-  padding: '16px 18px',
+  padding: '12px 16px',
   flexDirection: 'column',
   justifyContent: 'center',
   height: 80,
-  minWidth: isAllItems ? '118px' : '180px',
+  minWidth: isAllItems ? '118px' : '230px',
   flexShrink: 0,
 }));
 
@@ -86,6 +88,18 @@ const SummaryCard = ({
     : getRowToStatusTextMap(i18n)[
         status as components['schemas']['PayableStateEnum']
       ];
+
+  const formatAmount = (amount: number) => {
+    const dividedAmount = amount / 100;
+    return dividedAmount.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+    });
+  };
+
+  const formattedAmount = amount != null ? formatAmount(amount) : '';
+  const [integerPart, decimalPart] = formattedAmount.includes('.')
+    ? formattedAmount.split('.')
+    : ['0', '00'];
 
   const getColor = (theme: Palette, colorName: string) => {
     const [colorGroup, colorShade] = colorName.split('.') as [
@@ -139,8 +153,8 @@ const SummaryCard = ({
             >
               <Typography
                 variant="h6"
-                fontWeight={700}
-                sx={{ fontSize: 16 }}
+                fontWeight={500}
+                sx={{ fontSize: 14 }}
                 className={classNames(
                   summaryCardClassName,
                   `${summaryCardClassName}-title-${status}`
@@ -151,7 +165,7 @@ const SummaryCard = ({
               <Typography
                 variant="body2"
                 color="text.secondary"
-                fontWeight={700}
+                fontWeight={400}
                 fontSize="small"
                 sx={{ mt: 0.5 }}
               >
@@ -159,21 +173,46 @@ const SummaryCard = ({
               </Typography>
             </Box>
           ) : (
-            <>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="row"
+              width="100%"
+            >
               <Typography
                 variant="h6"
-                fontWeight={700}
+                fontWeight={500}
                 fontSize="small"
                 className={classNames(
                   `${summaryCardClassName}-StatusTypography`,
                   `${summaryCardClassName}-StatusTypography-${status}`,
                   `${summaryCardClassName}-StatusTypography-${status}-${selected}`
                 )}
-                color={colorValue}
+                color={'body.primary'}
               >
+                <Circle
+                  sx={{
+                    color: lighten(colorValue, 0.4),
+                    fontSize: 10,
+                    background: lighten(colorValue, 0.82),
+                    borderRadius: '100%',
+                    border: `2px solid ${lighten(colorValue, 0.82)}`,
+                    mr: 1,
+                  }}
+                />
                 {statusText}
               </Typography>
-            </>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontWeight={400}
+                fontSize="small"
+                sx={{}}
+              >
+                {count}
+              </Typography>
+            </Box>
           )}
         </Box>
         {status !== 'all' && (
@@ -187,18 +226,23 @@ const SummaryCard = ({
             <Typography
               variant="body2"
               color="text.secondary"
-              fontWeight={700}
+              fontWeight={400}
               fontSize="small"
-              sx={{
-                mt: 1,
-                color: colorValue,
-                borderRadius: 2,
-                paddingLeft: '4px',
-                paddingRight: '4px',
-                backgroundColor: lighten(colorValue, 0.8),
-              }}
+              className={classNames(
+                `${summaryCardClassName}-AmountTypography`,
+                `${summaryCardClassName}-AmountTypography-${status}`,
+                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
+              )}
             >
-              {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
+              ${integerPart}.
+              <Typography
+                component="span"
+                fontWeight={700}
+                fontSize="small"
+                sx={{}}
+              >
+                {decimalPart}
+              </Typography>
             </Typography>
           </Box>
         )}
@@ -213,7 +257,13 @@ export const SummaryCardsFilters = ({
   sx,
 }: SummaryCardsFiltersProps) => {
   const { data: summaryData } = usePayablesTableSummaryData();
-
+  const { api, entityId } = useMoniteContext();
+  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: entityId },
+  });
+  const currency = entitySettings?.currency;
+  console.log(currency);
+  console.log(entitySettings);
   const {
     containerRef,
     handleMouseDown,
@@ -221,6 +271,34 @@ export const SummaryCardsFilters = ({
     handleMouseUp,
     handleMouseMove,
   } = useDragScroll();
+
+  // New state variables for the dropdown functionality
+  const [visibleCardsCount, setVisibleCardsCount] = useState(0);
+  const [openMoreDropdown, setOpenMoreDropdown] = useState(false);
+  const moreButtonRef = useRef(null);
+
+  // Calculate visible cards based on container width
+  useEffect(() => {
+    if (containerRef.current && summaryData?.data) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const firstCardWidth = 118 + 8; // "All items" card width + gap
+      const otherCardWidth = 230 + 8; // Regular card width + gap
+      const buttonWidth = 30; // Width for the "More" button
+
+      // Calculate how many regular cards can fit after the first card
+      const availableWidthForOtherCards =
+        containerWidth - firstCardWidth - buttonWidth;
+      const maxRegularCards = Math.floor(
+        availableWidthForOtherCards / otherCardWidth
+      );
+
+      // Total number of cards: first card + regular cards
+      const totalVisibleCards = 1 + maxRegularCards;
+
+      // Ensure we show at least the first card
+      setVisibleCardsCount(Math.max(1, totalVisibleCards));
+    }
+  }, [containerRef.current?.offsetWidth, summaryData?.data?.length]);
 
   if (!summaryData) {
     return (
@@ -259,14 +337,15 @@ export const SummaryCardsFilters = ({
     <Box
       ref={containerRef}
       display="flex"
-      gap={2}
+      gap={1}
       onMouseDown={handleMouseDown}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       sx={{
-        overflowX: 'auto',
+        overflowX: 'hidden',
         whiteSpace: 'nowrap',
+        padding: '3px',
         paddingBottom: 1,
         width: '100%',
         justifyContent: 'flex-start',
@@ -278,10 +357,11 @@ export const SummaryCardsFilters = ({
         },
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
+        position: 'relative',
         ...sx,
       }}
     >
-      {sortedData.map((item) => (
+      {sortedData.slice(0, visibleCardsCount).map((item) => (
         <SummaryCard
           key={item.status}
           status={item.status}
@@ -291,6 +371,68 @@ export const SummaryCardsFilters = ({
           selected={selectedStatus === item.status}
         />
       ))}
+
+      {sortedData.length > visibleCardsCount && (
+        <>
+          <Button
+            ref={moreButtonRef}
+            variant="outlined"
+            color="secondary"
+            size="small"
+            onClick={() => setOpenMoreDropdown(true)}
+            sx={{
+              minWidth: 'auto',
+              padding: '12px 0',
+              height: '80px',
+              maxHeight: '100%',
+              marginBottom: '5px',
+            }}
+          >
+            <KeyboardArrowDown />
+          </Button>
+
+          <Popover
+            id="summary-cards-more-popover"
+            open={openMoreDropdown}
+            anchorEl={moreButtonRef.current}
+            disablePortal={true}
+            onClose={() => setOpenMoreDropdown(false)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            slotProps={{
+              paper: {
+                sx: {
+                  maxHeight: 'calc(100vh - 100px)',
+                  overflowY: 'auto',
+                  borderRadius: 1,
+                },
+              },
+            }}
+          >
+            <Box sx={{ p: 1 }}>
+              {sortedData.slice(visibleCardsCount).map((item) => (
+                <SummaryCard
+                  key={item.status}
+                  status={item.status}
+                  count={item.count}
+                  amount={item.sum_total_amount}
+                  onClick={() => {
+                    handleSelectStatus(item.status);
+                    setOpenMoreDropdown(false);
+                  }}
+                  selected={selectedStatus === item.status}
+                />
+              ))}
+            </Box>
+          </Popover>
+        </>
+      )}
     </Box>
   );
 };

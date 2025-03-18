@@ -35,25 +35,6 @@ export const UserCell = ({ userId }: { userId: string }) => {
       spacing={1.5}
       sx={{ maxWidth: '100%' }}
     >
-      {isLoading ? (
-        <Skeleton
-          animation="wave"
-          variant="circular"
-          width={40}
-          height={40}
-          sx={{ flexShrink: 0 }}
-        />
-      ) : (
-        <Avatar
-          className={
-            'MuiAvatar-colored MuiAvatar-' +
-            calculateAvatarColorIndex(avatarLetters)
-          }
-        >
-          {avatarLetters}
-        </Avatar>
-      )}
-
       {isLoading || !name ? (
         <Skeleton
           animation="wave"

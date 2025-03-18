@@ -7,6 +7,7 @@ import {
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/payables/consts';
 import { useLingui } from '@lingui/react';
+import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
@@ -42,7 +43,13 @@ export const PayableStatusChip = forwardRef<
       className="Monite-PayableStatusChip"
       ref={ref}
       color={ROW_TO_STATUS_MUI_MAP[status]}
-      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      icon={
+        icon && Icon ? (
+          <Icon fontSize="small" />
+        ) : (
+          <Circle sx={{ fontSize: '10px !important' }} />
+        )
+      }
       label={getRowToStatusTextMap(i18n)[status]}
       size={size}
       status={status}

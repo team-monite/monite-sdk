@@ -108,14 +108,11 @@ export const CounterpartCellById = ({
   counterpartId,
 }: CounterpartCellProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-  const { data: address } = useCounterpartAddresses(counterpartId);
   const name = counterpart ? getCounterpartName(counterpart) : '';
-  return (
-    <CounterPartCellByName
-      name={name}
-      country={address?.data[0]?.country}
-      city={address?.data[0]?.city}
-      isLoading={isLoading}
-    />
-  );
+
+  if (isLoading) {
+    return <Skeleton animation="wave" height={26} width="100%" />;
+  }
+
+  return <span>{name}</span>;
 };

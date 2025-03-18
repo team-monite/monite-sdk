@@ -31,16 +31,17 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
     >
       <Typography
         variant="body2"
-        color={overdueDays > 0 ? 'error' : 'text.primary'}
+        color={overdueDays > 0 ? 'error' : 'text.secondary'}
       >
         {formattedDate}
       </Typography>
       {overdueDays > 0 && (
         <Typography
+          className="Monite-DueDateCell-OverdueDays"
           variant="caption"
           color="error"
           fontWeight="bold"
-          fontSize="small"
+          sx={{ fontSize: '10px' }}
         >
           {t(i18n)`${overdueDays} ${createDayPluralForm(
             i18n,

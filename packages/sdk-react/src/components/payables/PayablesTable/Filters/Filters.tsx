@@ -39,7 +39,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search by number or vendor`}
+          placeholder={t(i18n)`Search by number or vendor`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -50,7 +50,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
         variant="standard"
         className="Monite-PayableStatusFilter Monite-FilterControl"
       >
-        <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
         <Select
           labelId="status"
           label={t(i18n)`Status`}
@@ -64,7 +63,7 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
           }}
         >
           {[
-            { label: t(i18n)`All invoices`, value: 'all' },
+            { label: t(i18n)`All statuses`, value: 'all' },
             ...Object.values(PayableStateEnum).map((status) => ({
               label: getRowToStatusTextMap(i18n)[status],
               value: status,
@@ -78,7 +77,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
       </FormControl>
       <DatePicker
         className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
-        label={t(i18n)`Due date`}
         onChange={(value, error) => {
           if (error.validationError) {
             return;
@@ -87,7 +85,22 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
           onChangeFilter(FILTER_TYPE_DUE_DATE, value as string);
         }}
         slotProps={{
-          textField: { variant: 'standard' },
+          textField: {
+            variant: 'standard',
+            placeholder: 'Due date',
+            InputProps: {
+              sx: {
+                '&::placeholder': {
+                  opacity: 1,
+                  color: 'text.primary',
+                },
+                '& input::placeholder': {
+                  opacity: 1,
+                  color: 'text.primary',
+                },
+              },
+            },
+          },
           popper: {
             container: root,
           },
