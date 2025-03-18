@@ -124,11 +124,11 @@ const paletteLight: MonitePaletteOptions = {
     dark: 'rgb(39, 39, 44)',
   },
   background: {
-    default: 'rgba(250, 250, 250, 1)',
+    default: 'white',
     paper: '#ffffff',
   },
   menu: {
-    background: 'rgba(250, 250, 250, 1)',
+    background: 'white',
   },
   neutral: {
     '10': '#111111',
@@ -138,7 +138,7 @@ const paletteLight: MonitePaletteOptions = {
     '90': 'rgb(242, 242, 242)',
     '95': '#f9f9f9',
   },
-  divider: '#DDDDDD',
+  divider: '#F0F2F4',
   text: {
     primary: 'rgba(0,0,0,0.84)',
     secondary: 'rgba(0,0,0,0.68)',
@@ -626,7 +626,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           backgroundColor: 'menu.background',
           '& .MuiPaper-root': {
             backgroundColor: 'menu.background',
-            borderRight: 0,
           },
         },
       },
@@ -649,8 +648,8 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           },
 
           '.MuiListItemButton-root': {
-            borderRadius: 6,
-            padding: '8px 12px',
+            borderRadius: '8px',
+            padding: '4px 12px',
           },
 
           '.MuiListItemIcon-root': {

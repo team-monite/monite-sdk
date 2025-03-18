@@ -2,18 +2,15 @@
 
 import React, { ReactNode } from 'react';
 
-import { UserButton, OrganizationSwitcher, useUser } from '@clerk/nextjs';
 import { Box, Drawer } from '@mui/material';
 
 import { NavigationList } from '@/components/NavigationMenu';
 import { UserMenu } from '@/components/UserMenu';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { isLoaded } = useUser();
-
   return (
     <Box
-      bgcolor="background.default"
+      bgcolor="white"
       display="flex"
       sx={{
         width: '100vw',
@@ -24,9 +21,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         anchor="left"
         className="LayoutNavigationDrawer"
         sx={{
-          width: 240,
+          width: 260,
+          borderRight: '1px solid #F0F2F4',
+          borderColor: '#F0F2F4',
         }}
-        PaperProps={{ sx: { width: 240 } }}
+        PaperProps={{ sx: { width: 260 } }}
         variant="permanent"
       >
         <UserMenu />
@@ -34,9 +33,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           display="flex"
           flex="1"
           flexDirection="column"
-          mt={1}
+          pt={2}
           mb={3}
           mx={0}
+          sx={{ borderTop: '1px solid #F0F2F4' }}
         >
           <NavigationList />
         </Box>
