@@ -808,6 +808,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       },
       styleOverrides: {
         root: {
+          color: palette.text.primary,
           backgroundColor: palette.background.default,
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
@@ -850,19 +851,19 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             borderLeftWidth: '0px',
             borderLeftColor: 'divider',
           },
+          '&.Monite-Cell-Highlight': {
+            color: 'neutral.10',
+          },
 
           '.MuiDataGrid-cellOffsetLeft + &': {
             borderLeftStyle: 'none',
             borderLeftWidth: '0',
           },
 
-          padding: '0 15.5px',
+          padding: '0 12px',
           fontWeight: 400,
-          fontSize: '14px',
-          '& span': {
-            fontWeight: 400,
-            fontSize: '14px',
-          },
+          fontSize: '15px',
+
           '& span.Monite-DueDateCell-OverdueDays': {
             fontSize: '12px',
           },

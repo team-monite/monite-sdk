@@ -154,16 +154,20 @@ const InvoicesTableBase = ({
         field: 'document_id',
         headerName: t(i18n)`Number`,
         sortable: false,
+        cellClassName: 'Monite-Cell-Highlight',
         width: 150,
         display: 'flex',
         renderCell: ({ value, row }) => (
-          <Stack
-            direction="column"
-            alignItems="flex-start"
-            gap={0.5}
-            sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 0.5,
+              maxWidth: '100%',
+            }}
           >
-            <Box sx={{ display: 'flex' }}>
+            <div style={{ display: 'flex', maxWidth: '100%' }}>
               {(() => {
                 if (row.status === 'recurring') {
                   return (
@@ -195,30 +199,12 @@ const InvoicesTableBase = ({
                 }
 
                 if (!value) {
-                  return (
-                    <Box
-                      color="text.secondary"
-                      sx={{
-                        alignItems: 'center',
-                        display: 'inline-flex',
-                        verticalAlign: 'middle',
-                        fontSize: 'inherit',
-                        marginRight: '4px',
-                      }}
-                    >
-                      <Typography
-                        variant="body1"
-                        className="Monite-TextOverflowContainer"
-                      >
-                        {t(i18n)`INV-auto`}
-                      </Typography>
-                    </Box>
-                  );
+                  return t(i18n)`INV-auto`;
                 }
 
                 return value;
               })()}
-              {row.type === 'invoice' && row.recurrence_id ? (
+              {row.type === 'invoice' && row.recurrence_id && (
                 <Box
                   sx={{
                     alignItems: 'center',
@@ -231,11 +217,9 @@ const InvoicesTableBase = ({
                     recurrenceId={row.recurrence_id}
                   />
                 </Box>
-              ) : (
-                <></>
               )}
-            </Box>
-          </Stack>
+            </div>
+          </div>
         ),
       },
       {
@@ -288,6 +272,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Amount`,
         headerAlign: 'right',
         align: 'right',
+        className: 'Monite-Cell-Highlight',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
