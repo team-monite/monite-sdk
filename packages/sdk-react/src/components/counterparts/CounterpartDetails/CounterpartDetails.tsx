@@ -68,11 +68,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const defaultValues = props.type ? props.defaultValues : undefined;
 
   const shouldShowCategories = Boolean(
-    (customerTypes && customerTypes?.length > 1) ||
+    (customerTypes?.length ?? 0) > 1 ||
       (!customerTypes &&
-        componentSettings?.counterparts?.customerTypes &&
-        componentSettings?.counterparts?.customerTypes?.length > 1)
-  )
+        (componentSettings?.counterparts?.customerTypes?.length ?? 0) > 1)
+  );
 
   const renderSubResource = useCallback(() => {
     if (!counterpartView || !counterpartId) {
