@@ -10,8 +10,17 @@ import {
 } from '@mui/icons-material';
 import { TableRow } from '@mui/material';
 
-import { CommonActions, PayableActions, PermissionRow } from '../../types';
-import { UserRoleDetailsView, StyledTableCell } from '../UserRoleDetailsDialog';
+import { CommonActions, PayableActions, PermissionRow } from '../types';
+import { StyledTableCell } from '../UserRoleDetailsDialog/UserRoleDetailsDialog';
+
+/** View mode of the user role */
+export enum UserRoleViewMode {
+  /** Read mode - the user is only viewing the role details */
+  Read = 'read',
+
+  /** Mutate mode - the user is adding or editing the role */
+  Mutate = 'mutate',
+}
 
 interface UserRoleRowProps {
   /** The row data to be displayed */
@@ -26,16 +35,30 @@ interface UserRoleRowProps {
       | components['schemas']['PayableActionEnum'];
   }[];
   /** The view of the user role details */
-  view: UserRoleDetailsView;
+  view: UserRoleViewMode;
 }
 
 interface ActionPermissionCellProps {
-  view: UserRoleDetailsView;
+  view: UserRoleViewMode;
   rowIndex: number;
   rowName?: string;
   action: keyof CommonActions | keyof PayableActions;
   actionPermissionValue: boolean | undefined;
 }
+
+interface ActionPermissionCellCheckboxProps {
+  name: string;
+  label: string;
+}
+
+const ActionPermissionCellCheckbox = ({
+  name,
+  label,
+}: ActionPermissionCellCheckboxProps) => {
+  const { control } = useFormContext();
+
+  return <RHFCheckbox control={control} name={name} aria-label={label} />;
+};
 
 const ActionPermissionCell = ({
   view,
@@ -44,16 +67,13 @@ const ActionPermissionCell = ({
   action,
   actionPermissionValue,
 }: ActionPermissionCellProps) => {
-  const { control } = useFormContext();
-
   if (typeof actionPermissionValue !== 'boolean') return null;
 
-  if (view === UserRoleDetailsView.Mutate) {
+  if (view === UserRoleViewMode.Mutate) {
     return (
-      <RHFCheckbox
-        control={control}
+      <ActionPermissionCellCheckbox
         name={`permissions[${rowIndex}][${action}]`}
-        aria-label={`${rowName} ${action}`}
+        label={`${rowName} ${action}`}
       />
     );
   }

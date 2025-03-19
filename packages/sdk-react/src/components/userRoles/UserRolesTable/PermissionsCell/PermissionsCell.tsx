@@ -2,8 +2,12 @@ import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Grid, Link } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
+import {
+  isCommonPermissionObjectType,
+  isPayablePermissionObjectType,
+} from '../../UserRoleDetails/helpers';
 import { Permission } from './Permission';
 
 interface PermissionsCellProps {
@@ -12,45 +16,48 @@ interface PermissionsCellProps {
    * @param permissions - The permissions data for the role to be displayed.
    */
   permissions: components['schemas']['BizObjectsSchema-Input'];
-  onCLickSeeAll: () => void;
 }
 
-export const PermissionsCell = ({
-  permissions,
-  onCLickSeeAll,
-}: PermissionsCellProps) => {
+export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
-  if (!permissions.objects) {
-    return null;
+  const filteredPermissionsObjects = permissions.objects
+    ?.filter(
+      (object) =>
+        object.object_type &&
+        (isCommonPermissionObjectType(object.object_type) ||
+          isPayablePermissionObjectType(object.object_type)) &&
+        object.actions?.some((action) => action.permission !== 'not_allowed')
+    )
+    .sort((a, b) => {
+      if (a.object_type && b.object_type) {
+        return a.object_type.localeCompare(b.object_type);
+      }
+      return 0;
+    });
+
+  if (!filteredPermissionsObjects?.length) {
+    return <Box>{t(i18n)`None`}</Box>;
   }
 
   return (
     <Grid container>
-      {permissions.objects
-        .slice(0, 10)
-        .filter((object) => !!object.object_type)
-        .map((object) => (
-          <Grid item container key={object.object_type}>
-            <Grid item xs={6}>
-              {
-                getPermissionToLabelMap(i18n)[
-                  object.object_type as keyof ReturnType<
-                    typeof getPermissionToLabelMap
-                  >
-                ]
-              }
-            </Grid>
-            <Grid item xs={6}>
-              {object.actions && <Permission actions={object.actions} />}
-            </Grid>
+      {filteredPermissionsObjects.map((object) => (
+        <Grid item container key={object.object_type}>
+          <Grid item xs={6}>
+            {
+              getPermissionToLabelMap(i18n)[
+                object.object_type as keyof ReturnType<
+                  typeof getPermissionToLabelMap
+                >
+              ]
+            }
           </Grid>
-        ))}
-      {permissions.objects && permissions.objects.length > 10 && (
-        <Link component="button" variant="body1" onClick={onCLickSeeAll}>
-          {t(i18n)`See all`}
-        </Link>
-      )}
+          <Grid item xs={6}>
+            {object.actions && <Permission actions={object.actions} />}
+          </Grid>
+        </Grid>
+      ))}
     </Grid>
   );
 };
