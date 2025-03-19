@@ -147,7 +147,7 @@ export const CashFlowCard = () => {
     >
       <ResponsiveContainer width="100%" height={250}>
         <ComposedChart data={chartData}>
-          <CartesianGrid stroke="#F0F2F4" vertical={false} />
+          <CartesianGrid stroke="#EAEAEA" vertical={false} />
           <XAxis
             dataKey="dimension_value"
             name={'Date'}
@@ -179,6 +179,9 @@ export const CashFlowCard = () => {
                 day: 'numeric',
               });
             }}
+            contentStyle={{ color: 'rgba(0, 0, 0, 0.74)' }}
+            itemStyle={{ color: 'rgba(0, 0, 0, 0.74)' }}
+            labelStyle={{ color: 'rgba(0, 0, 0, 0.74)', fontWeight: 600 }}
           />
 
           <YAxis
@@ -195,9 +198,15 @@ export const CashFlowCard = () => {
           />
 
           <ReferenceLine y={0} stroke="#eee" />
-          <Bar dataKey="paid" fill="#ece2f4" />
-          <Bar dataKey="received" fill="#d2f2ec" />
-          <Line type="linear" dataKey="trend" stroke="#562BD6" />
+          <Bar dataKey="paid" fill="transparent" />
+          <Bar dataKey="received" fill="transparent" />
+          <Line
+            type="bump"
+            dataKey="trend"
+            dot={{ stroke: '#111', strokeWidth: 2, r: 3, fill: '#fff' }}
+            strokeWidth={2}
+            stroke="#5E77FF"
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </DashboardCard>

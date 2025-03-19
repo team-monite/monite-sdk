@@ -67,10 +67,10 @@ export const DuePayablesCard = ({
                       counterpart_id={payable.counterpart_id}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell>
                     {format(new Date(payable.due_date), 'dd MMM yyyy')}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={{ color: '#CC394B' }}>
                     {' '}
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',

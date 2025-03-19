@@ -64,10 +64,10 @@ export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
                         counterpart_id={receivable.counterpart_id}
                       />
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell>
                       {format(new Date(receivable.due_date), 'dd MMM yyyy')}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" sx={{ color: '#CC394B' }}>
                       {new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: receivable.currency,
