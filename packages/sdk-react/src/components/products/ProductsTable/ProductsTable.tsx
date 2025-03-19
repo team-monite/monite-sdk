@@ -184,15 +184,7 @@ const ProductsTableBase = ({
         display: 'flex',
         flex: 3,
         renderCell: (params) => (
-          <Stack spacing={0} width="100%">
-            <Typography variant="body1">{params.row.name}</Typography>
-            <Typography
-              variant="body2"
-              className="Monite-TextOverflowContainer"
-            >
-              {params.row.description}
-            </Typography>
-          </Stack>
+          <Typography variant="body1">{params.row.name}</Typography>
         ),
       },
       {
@@ -205,6 +197,15 @@ const ProductsTableBase = ({
           return params.row.type ? (
             <ProductType type={params.row.type} />
           ) : null;
+        },
+      },
+      {
+        field: 'measure_unit_id',
+        headerName: t(i18n)`Unit`,
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return <MeasureUnit unitId={params.value} />;
         },
       },
       {
@@ -222,36 +223,27 @@ const ProductsTableBase = ({
             : '';
         },
       },
-      {
-        field: 'measure_unit_id',
-        headerName: t(i18n)`Unit`,
-        flex: 1,
-        sortable: false,
-        renderCell: (params) => {
-          return <MeasureUnit unitId={params.value} />;
-        },
-      },
-      {
-        field: 'actions',
-        sortable: false,
-        headerName: '',
-        width: 70,
-        renderCell: (params) => (
-          <TableActions
-            permissions={{
-              isUpdateAllowed: isUpdateSupported,
-              isDeleteAllowed: isDeleteSupported,
-            }}
-            onEdit={() => onEdit?.(params.row)}
-            onDelete={() => {
-              setIsDeleteDialogOpen({
-                id: params.row.id,
-                open: true,
-              });
-            }}
-          />
-        ),
-      },
+      // {
+      //   field: 'actions',
+      //   sortable: false,
+      //   headerName: '',
+      //   width: 70,
+      //   renderCell: (params) => (
+      //     <TableActions
+      //       permissions={{
+      //         isUpdateAllowed: isUpdateSupported,
+      //         isDeleteAllowed: isDeleteSupported,
+      //       }}
+      //       onEdit={() => onEdit?.(params.row)}
+      //       onDelete={() => {
+      //         setIsDeleteDialogOpen({
+      //           id: params.row.id,
+      //           open: true,
+      //         });
+      //       }}
+      //     />
+      //   ),
+      // },
     ];
   }, [
     formatCurrencyToDisplay,

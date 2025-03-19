@@ -42,7 +42,7 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search by name`}
+          placeholder={t(i18n)`Search by name`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -54,7 +54,6 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
         fullWidth
         className="Monite-ProductTypeFilter Monite-FilterControl"
       >
-        <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
         <Select
           labelId="type"
           label={t(i18n)`Type`}
@@ -90,7 +89,6 @@ export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
         disabled={isMeasureUnitsLoading}
         className="Monite-ProductUnitFilter Monite-FilterControl"
       >
-        <InputLabel id="units">{t(i18n)`Units`}</InputLabel>
         <Select
           labelId="units"
           label={t(i18n)`Units`}
