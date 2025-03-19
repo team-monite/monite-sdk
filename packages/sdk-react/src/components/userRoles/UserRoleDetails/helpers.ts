@@ -114,7 +114,13 @@ export const transformPermissionsToComponentFormat = (
     .filter(
       (permission): permission is CommonPermissionRow | PayablePermissionRow =>
         permission !== null
-    );
+    )
+    .sort((a, b) => {
+      if (a.name && b.name) {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
 };
 
 export const createInitialPermissionsState = (): PermissionRow[] => {
@@ -125,5 +131,56 @@ export const createInitialPermissionsState = (): PermissionRow[] => {
     ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) =>
       createInitialPermissionState(objectType, ActionEnum)
     ),
-  ];
+  ].sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name.localeCompare(b.name);
+    }
+    return 0;
+  });
+};
+
+export const transformPermissionsToRequestFormat = (
+  permissions: PermissionRow[]
+): components['schemas']['BizObjectsSchema-Input'] => {
+  return {
+    objects: permissions
+      .map((permission) => {
+        const objectType = permission.name;
+
+        if (!objectType) return null;
+
+        if (isCommonPermissionObjectType(objectType)) {
+          return {
+            object_type: objectType,
+            actions: Object.entries(permission)
+              .filter(([key]) => key !== 'name')
+              .map(([action, permission]) => ({
+                action_name: action as components['schemas']['ActionEnum'],
+                permission: (permission
+                  ? 'allowed'
+                  : 'not_allowed') as components['schemas']['PermissionEnum'],
+              })),
+          };
+        }
+
+        if (isPayablePermissionObjectType(objectType)) {
+          return {
+            object_type: objectType,
+            actions: Object.entries(permission)
+              .filter(([key]) => key !== 'name')
+              .map(([action, permission]) => ({
+                action_name:
+                  action as components['schemas']['PayableActionEnum'],
+                permission: (permission
+                  ? 'allowed'
+                  : 'not_allowed') as components['schemas']['PermissionEnum'],
+              })),
+          };
+        }
+      })
+      .filter(
+        (value): value is NonNullable<typeof value> =>
+          value !== null && value !== undefined
+      ),
+  };
 };

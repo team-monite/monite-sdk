@@ -27,14 +27,14 @@ describe('UserRolesTable', () => {
     expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
   });
 
-  test('should trigger "onFilterChangedMock" with "field: search" when the user is filtering roles', async () => {
+  test('should trigger "onFilterChangedMock" with "field: search by name" when the user is filtering roles', async () => {
     const onFilterChangedMock = jest.fn();
 
     renderWithClient(<UserRolesTable onFilterChanged={onFilterChangedMock} />);
 
     await waitUntilTableIsLoaded();
 
-    const search = await screen.findByLabelText('Search');
+    const search = await screen.findByLabelText('Search by name');
 
     const searchValue = 'Acme';
     fireEvent.change(search, {
