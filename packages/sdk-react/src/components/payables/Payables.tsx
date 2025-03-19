@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { CustomerType } from '@/components/counterparts/types';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { PayableDetails } from '@/components/payables/PayableDetails';
@@ -22,14 +22,8 @@ import { CircularProgress } from '@mui/material';
 import { CreatePayableMenu } from './CreatePayableMenu';
 
 export type PayablesProps = {
-  /**
-   * Array of available customer types, an array that should contain either customer, vendor, or both.
-   * This array can't be empty and if only one option is passed, the customer type section will be hidden
-   * and the default customer type will be the one passed.
-   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
-   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
-   */
-  customerTypes?: CustomerType[];
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 } & Pick<
   UsePayableDetailsProps,
   | 'onSaved'

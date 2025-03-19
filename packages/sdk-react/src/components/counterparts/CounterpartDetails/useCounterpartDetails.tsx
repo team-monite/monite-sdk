@@ -7,7 +7,7 @@ import {
   CounterpartShowCategories,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-  CustomerType,
+  CustomerTypes,
 } from '@/components/counterparts/types';
 
 type CounterpartId = string;
@@ -86,14 +86,8 @@ interface CommonCounterpartDetailsProps
 }
 
 export type CounterpartsDetailsProps = {
-  /**
-   * Array of available customer types, an array that should contain either customer, vendor, or both.
-   * This array can't be empty and if only one option is passed, the customer type section will be hidden
-   * and the default customer type will be the one passed.
-   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
-   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
-   */
-  customerTypes?: CustomerType[];
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
   isInvoiceCreation?: boolean;
   onReturn?: () => void;
 } & (ExistingCounterpartDetail | NewCounterpartDetail);

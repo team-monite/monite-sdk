@@ -4,7 +4,7 @@ import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
 import { CounterpartTypeItem } from '@/components/counterparts/components';
 import {
-  CustomerType,
+  CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
@@ -27,7 +27,7 @@ interface CreateCounterpartDialogProps {
   getCounterpartDefaultValues?: (
     type?: string
   ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
-  customerTypes?: CustomerType[];
+  customerTypes?: CustomerTypes;
 }
 
 enum View {

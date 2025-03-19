@@ -1,7 +1,7 @@
 import { useId } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { CustomerType } from '@/components/counterparts/types';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
@@ -32,14 +32,8 @@ import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
   optionalFields?: OptionalFields;
-  /**
-   * Array of available customer types, an array that should contain either customer, vendor, or both.
-   * This array can't be empty and if only one option is passed, the customer type section will be hidden
-   * and the default customer type will be the one passed.
-   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
-   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
-   */
-  customerTypes?: CustomerType[];
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (

@@ -11,7 +11,7 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import {
-  CustomerType,
+  CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
@@ -86,14 +86,8 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   ) => void;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
-  /**
-   * Array of available customer types, an array that should contain either customer, vendor, or both.
-   * This array can't be empty and if only one option is passed, the customer type section will be hidden
-   * and the default customer type will be the one passed.
-   * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
-   * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor'] through componentSettings
-   */
-  customerTypes?: CustomerType[];
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
 export const isFieldRequiredByValidations = (

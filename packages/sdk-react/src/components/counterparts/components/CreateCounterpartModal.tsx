@@ -4,7 +4,7 @@ import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
 import { CounterpartTypeItem } from '@/components/counterparts/components';
 import {
-  CustomerType,
+  CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
@@ -19,7 +19,7 @@ interface CreateCounterpartModalProps {
   open: boolean;
   onClose: () => void;
   onCreate: (newCounterpartId: string) => void;
-  customerTypes?: CustomerType[];
+  customerTypes?: CustomerTypes;
   isInvoiceCreation?: boolean;
   getCounterpartDefaultValues?: (
     type?: string

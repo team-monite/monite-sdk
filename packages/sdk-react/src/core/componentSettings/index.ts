@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { CustomerType } from '@/components/counterparts/types';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
@@ -62,13 +62,12 @@ export interface ComponentSettings {
   };
   counterparts: {
     pageSizeOptions: number[];
+
     /**
-     * Array of available customer types, an array that contains either customer, vendor, or both.
-     * This array can't be empty and if only one option is passed, the customer type section will be hidden
-     * and the default customer type will be the one passed.
+     * @see {@link CustomerTypes}
      * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor']
      */
-    customerTypes?: CustomerType[];
+    customerTypes?: CustomerTypes;
   };
   payables: Partial<PayableSettings>;
   products: {
