@@ -67,6 +67,13 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const { showBankAccounts = true, customerTypes } = props;
   const defaultValues = props.type ? props.defaultValues : undefined;
 
+  const shouldShowCategories = Boolean(
+    (customerTypes && customerTypes?.length > 1) ||
+      (!customerTypes &&
+        componentSettings?.counterparts?.customerTypes &&
+        componentSettings?.counterparts?.customerTypes?.length > 1)
+  )
+
   const renderSubResource = useCallback(() => {
     if (!counterpartView || !counterpartId) {
       return <CircularProgress color="inherit" size={20} />;
@@ -77,12 +84,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
         return (
           <CounterpartView
             id={counterpartId}
-            showCategories={Boolean(
-              (customerTypes && customerTypes?.length > 1) ||
-                (!customerTypes &&
-                  componentSettings?.counterparts?.customerTypes &&
-                  componentSettings?.counterparts?.customerTypes?.length > 1)
-            )}
+            showCategories={shouldShowCategories}
             showBankAccounts={showBankAccounts}
             onEdit={onEdit}
             onDelete={props.onDelete}
@@ -175,11 +177,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     props.onVatDelete,
     showBankAccountForm,
     showBankAccounts,
-    customerTypes,
+    shouldShowCategories,
     showContactForm,
     showVatForm,
     vatId,
-    componentSettings,
   ]);
 
   return useMemo(() => {
@@ -194,12 +195,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={Boolean(
-              (customerTypes && customerTypes?.length > 1) ||
-                (!customerTypes &&
-                  componentSettings?.counterparts?.customerTypes &&
-                  componentSettings?.counterparts?.customerTypes?.length > 1)
-            )}
+            showCategories={shouldShowCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCRIndividual
@@ -217,12 +213,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={Boolean(
-              (customerTypes && customerTypes?.length > 1) ||
-                (!customerTypes &&
-                  componentSettings?.counterparts?.customerTypes &&
-                  componentSettings?.counterparts?.customerTypes?.length > 1)
-            )}
+            showCategories={shouldShowCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCROrganization
@@ -241,11 +232,10 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onCreate,
     onUpdate,
     renderSubResource,
-    customerTypes,
+    shouldShowCategories,
     showView,
     props.defaultValuesOCR,
     props.onClose,
     props.onReturn,
-    componentSettings,
   ]);
 };
