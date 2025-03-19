@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -75,9 +75,6 @@ export const CounterpartIndividualForm = ({
     updateCounterpart,
     isLoading,
   } = useCounterpartForm(props);
-
-  /** Returns `true` if the form works for `update` but not `create` flow */
-  const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
 
   const { data: isCreateAllowed } = useIsActionAllowed({
     method: 'counterpart',
@@ -176,7 +173,7 @@ export const CounterpartIndividualForm = ({
 
   return (
     <>
-      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
         <Grid
           container
           alignItems="center"
@@ -186,7 +183,7 @@ export const CounterpartIndividualForm = ({
             <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
-                : isUpdateMode
+                : props?.id
                 ? getIndividualName(
                     watch('individual.firstName'),
                     watch('individual.lastName')
@@ -426,11 +423,11 @@ export const CounterpartIndividualForm = ({
             onClick={props.onReturn}
           >{t(i18n)`Back`}</Button>
         )}
-        {(isUpdateMode || dialogContext) && (
+        {(props?.id || dialogContext) && (
           <Button
             variant="text"
             onClick={
-              isUpdateMode
+              props?.id
                 ? props.onCancel
                 : props.onClose || dialogContext?.onClose
             }
@@ -446,7 +443,7 @@ export const CounterpartIndividualForm = ({
         >
           {isLoading ? (
             <CircularProgress color="primary" />
-          ) : isUpdateMode ? (
+          ) : props?.id ? (
             t(i18n)`Save`
           ) : (
             t(i18n)`Create`

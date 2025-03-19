@@ -155,9 +155,6 @@ export const CounterpartOrganizationForm = (
     ]
   );
 
-  /** Returns `true` if the form works for `update` but not `create` flow */
-  const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-
   useEffect(() => {
     reset({
       tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id,
@@ -184,7 +181,7 @@ export const CounterpartOrganizationForm = (
 
   return (
     <>
-      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
         <Grid
           container
           alignItems="center"
@@ -194,7 +191,7 @@ export const CounterpartOrganizationForm = (
             <Typography variant="h3" sx={{ padding: 3 }}>
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
-                : isUpdateMode
+                : props?.id
                 ? watch('organization.companyName')
                 : t(i18n)`Create Counterpart – Company`}
             </Typography>
@@ -423,11 +420,11 @@ export const CounterpartOrganizationForm = (
             onClick={props.onReturn}
           >{t(i18n)`Back`}</Button>
         )}
-        {(isUpdateMode || dialogContext) && (
+        {(props?.id || dialogContext) && (
           <Button
             variant="text"
             onClick={
-              isUpdateMode
+              props?.id
                 ? props.onCancel
                 : props.onClose || dialogContext?.onClose
             }
@@ -443,7 +440,7 @@ export const CounterpartOrganizationForm = (
         >
           {isLoading ? (
             <CircularProgress color="primary" />
-          ) : isUpdateMode ? (
+          ) : props?.id ? (
             t(i18n)`Save`
           ) : (
             t(i18n)`Create`
