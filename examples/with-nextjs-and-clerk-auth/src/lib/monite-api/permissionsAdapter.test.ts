@@ -24,6 +24,6 @@ describe('permissionsAdapter()', () => {
           ],
         },
       ],
-    } satisfies components['schemas']['BizObjectsSchema']);
+    } satisfies components['schemas']['BizObjectsSchema-Input']);
   });
 });
