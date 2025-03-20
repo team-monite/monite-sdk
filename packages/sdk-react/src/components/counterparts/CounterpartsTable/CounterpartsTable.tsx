@@ -250,7 +250,7 @@ const CounterpartsTableBase = ({
       {
         field: 'category',
         sortable: false,
-        headerName: t(i18n)`Category`,
+        headerName: t(i18n)`Type`,
         display: 'flex',
         flex: 0.6,
         renderCell: (params) => {
@@ -274,31 +274,16 @@ const CounterpartsTableBase = ({
         sortable: false,
         flex: 1,
         display: 'flex',
-        headerName: t(i18n)`Contact information`,
+        headerName: t(i18n)`Email`,
         renderCell: (params) => {
           const counterpart = params.row;
 
-          const { email, phone } =
+          const { email } =
             'organization' in counterpart
               ? counterpart.organization
               : counterpart.individual;
 
-          return (
-            <Stack spacing={0.5} direction="column">
-              {email && (
-                <Styled.MuiColContacts>
-                  <EmailIcon />
-                  <Typography variant="body2">{email}</Typography>
-                </Styled.MuiColContacts>
-              )}
-              {phone && (
-                <Styled.MuiColContacts>
-                  <PhoneIcon />
-                  <Typography variant="body2">{phone}</Typography>
-                </Styled.MuiColContacts>
-              )}
-            </Stack>
-          );
+          return <span>{email}</span>;
         },
       },
       {

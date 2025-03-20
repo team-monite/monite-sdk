@@ -1287,8 +1287,8 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
     MoniteCounterpartStatusChip: {
       defaultProps: {
-        size: moniteTheme.components.counterpartStatusChip.size,
-        variant: moniteTheme.components.counterpartStatusChip.variant,
+        // size: moniteTheme.components.counterpartStatusChip.size,
+        // variant: moniteTheme.components.counterpartStatusChip.variant,
       },
       styleOverrides: {
         root: {

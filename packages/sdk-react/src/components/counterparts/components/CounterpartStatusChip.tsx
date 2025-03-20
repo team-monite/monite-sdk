@@ -4,8 +4,10 @@ import { CustomerType } from '@/components/counterparts/types';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
-import { styled, useThemeProps } from '@mui/material/styles';
+import { lighten } from '@mui/material/styles';
+import { styled, useTheme, useThemeProps } from '@mui/material/styles';
 
 export interface MoniteCounterpartStatusChipProps {
   /** The status of the invoice. */
@@ -28,7 +30,7 @@ export const CounterpartStatusChip = forwardRef<
     props: inProps,
     name: 'MoniteCounterpartStatusChip',
   });
-
+  const theme = useTheme();
   const { i18n } = useLingui();
 
   return (
@@ -38,7 +40,13 @@ export const CounterpartStatusChip = forwardRef<
       label={getLabel(i18n, status)}
       status={status}
       size={size ?? 'small'}
+      icon={<Circle sx={{ '&.MuiChip-icon': { fontSize: 10 } }} />}
       variant={variant ?? 'outlined'}
+      sx={{
+        background: lighten(theme.palette.text.primary, 0.9),
+        color: theme.palette.text.primary,
+        border: 'none',
+      }}
     />
   );
 });

@@ -650,6 +650,9 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           '.MuiListItemButton-root': {
             borderRadius: '8px',
             padding: '4px 12px',
+            '&.Mui-selected': {
+              backgroundColor: '#EEF8FD',
+            },
           },
 
           '.MuiListItemIcon-root': {
@@ -1093,21 +1096,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         style: statusColors.black,
       },
     ],
-  },
-
-  MoniteCounterpartStatusChip: {
-    defaultProps: {
-      size: 'small',
-    },
-    styleOverrides: {
-      root: {
-        height: '24px',
-        padding: '7px 8px',
-        backgroundColor: 'transparent',
-        color: 'text.primary',
-        borderColor: 'neutral.80',
-      },
-    },
   },
 };
 
