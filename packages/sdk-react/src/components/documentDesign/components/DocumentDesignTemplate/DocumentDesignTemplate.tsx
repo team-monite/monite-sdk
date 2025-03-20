@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-
 import { components } from '@/api';
-import { FileViewer } from '@/ui/FileViewer';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -33,25 +30,14 @@ export interface DocumentDesignTemplateProps {
   template: DocumentTemplate;
   onSelect: () => void;
   isSelected: boolean;
-  getPreview: (id: string) => Promise<string>;
 }
 
 export const DocumentDesignTemplate = ({
   template,
   onSelect,
   isSelected,
-  getPreview,
 }: DocumentDesignTemplateProps) => {
   const { i18n } = useLingui();
-  const [preview, setPreview] = useState<string>();
-
-  useEffect(() => {
-    const waitForPreview = async () => {
-      setPreview(await getPreview(template.id));
-    };
-
-    waitForPreview();
-  }, [template, getPreview]);
 
   return (
     <StyledLabel data-testId={`documentTemplate-${template.name}`}>
@@ -80,30 +66,22 @@ export const DocumentDesignTemplate = ({
             }}
           />
         )}
-        {!preview && (
+        {!template && (
           <Skeleton
             variant="rectangular"
             sx={{ width: '100%', height: '100%' }}
           />
         )}
-        {preview && (
-          <FileViewer
-            mimetype="application/pdf"
-            url={preview}
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            pdfHeight="calc(100% + 1px)"
-            showPdfToolbar={0}
+        {template && (
+          <img
+            src={template?.preview?.url}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: '1px solid  #E1E5EA',
+            }}
           />
         )}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            right: '0',
-            bottom: '0',
-          }}
-        />
       </Box>
       <Typography
         variant="body2"
