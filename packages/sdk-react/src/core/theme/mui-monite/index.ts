@@ -735,7 +735,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         paper: {
           border: 'none',
-          borderRadius: moniteTheme.borderRadius * 5.33,
           width: 240,
         },
       },
@@ -1033,7 +1032,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         rounded: {
-          borderRadius: moniteTheme.borderRadius * 5.33,
           '&.Monite-PayableDetailsForm-Items': {
             // Align delete button with the editor
             'button[aria-label="delete"]': {
