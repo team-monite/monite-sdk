@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
-import { CounterpartStatusChip } from '@/components/counterparts/CounterpartStatusChip';
+import { CounterpartStatusChip } from '@/components/counterparts/components';
+import type { CounterpartShowCategories } from '@/components/counterparts/types';
 import { TableActions } from '@/components/TableActions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -96,11 +96,7 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
     value: FilterValue;
   }) => void;
 
-  /**
-   * Callback function that is called when the type is changed for action button no data state.
-   * @param type - The type to filter with.
-   */
-  setType?: (type: components['schemas']['CounterpartType']) => void;
+  openModal?: (open: boolean) => void;
 };
 
 export const CounterpartsTable = (props: CounterpartsTableProps) => (
@@ -116,7 +112,7 @@ const CounterpartsTableBase = ({
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
   showCategories = true,
-  setType,
+  openModal,
 }: CounterpartsTableProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
@@ -357,15 +353,10 @@ const CounterpartsTableBase = ({
         title={t(i18n)`No Counterparts`}
         descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
         descriptionLine2={t(i18n)`You can create your first counterpart.`}
-        actionOptions={[t(i18n)`Organization`, t(i18n)`Individual`]}
         actionButtonLabel={t(i18n)`Create new`}
-        onAction={(action) => {
-          if (!setType) return;
-          if (action === t(i18n)`Organization`) {
-            setType('organization');
-          } else if (action === t(i18n)`Individual`) {
-            setType('individual');
-          }
+        onAction={() => {
+          if (!openModal) return;
+          openModal(true);
         }}
         type="no-data"
       />
@@ -434,18 +425,13 @@ const CounterpartsTableBase = ({
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
-              onCreate={(action) => {
-                if (!setType) return;
-                if (action === t(i18n)`Organization`) {
-                  setType('organization');
-                } else if (action === t(i18n)`Individual`) {
-                  setType('individual');
-                }
+              onCreate={() => {
+                if (!openModal) return;
+                openModal(true);
               }}
               refetch={refetch}
               entityName={t(i18n)`Counterpart`}
               actionButtonLabel={t(i18n)`Create new`}
-              actionOptions={[t(i18n)`Organization`, t(i18n)`Individual`]}
               type="no-data"
             />
           ),

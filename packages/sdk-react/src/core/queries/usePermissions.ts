@@ -6,61 +6,61 @@ import {
 } from './useEntityUsers';
 
 export const COMMON_PERMISSIONS_OBJECTS_TYPES = [
-  'person',
-  'onboarding',
-  'comment',
+  'approval_policy',
+  'approval_request',
+  // 'comment',
   'counterpart',
-  'entity_user',
-  'entity',
-  'entity_vat_ids',
-  'counterpart_vat_id',
-  'entity_bank_account',
-  'export',
-  'payables_purchase_order',
-  'payment_reminder',
+  // 'counterpart_vat_id',
+  // 'entity',
+  // 'entity_bank_account',
+  // 'entity_user',
+  // 'entity_vat_ids',
+  // 'export',
+  // 'onboarding',
   'overdue_reminder',
+  // 'payables_purchase_order',
+  'payment_record',
+  'payment_reminder',
+  // 'person',
   'product',
   'receivable',
-  'reconciliation',
+  // 'reconciliation',
   'role',
   'tag',
-  'todo_task',
-  'todo_task_mute',
-  'transaction',
-  'workflow',
-  'approval_request',
-  'approval_policy',
-  'payment_record',
+  // 'todo_task_mute',
+  // 'todo_task',
+  // 'transaction',
+  // 'workflow',
 ] as const;
 
 export const PAYABLE_PERMISSIONS_OBJECTS_TYPES = ['payable'] as const;
 
 export type commonPermissionsObjectType =
-  | 'person'
-  | 'onboarding'
-  | 'comment'
+  | 'approval_policy'
+  | 'approval_request'
+  // | 'comment'
   | 'counterpart'
-  | 'entity_user'
-  | 'entity'
-  | 'entity_vat_ids'
-  | 'counterpart_vat_id'
-  | 'entity_bank_account'
-  | 'export'
-  | 'payables_purchase_order'
-  | 'payment_reminder'
+  // | 'counterpart_vat_id'
+  // | 'entity'
+  // | 'entity_bank_account'
+  // | 'entity_user'
+  // | 'entity_vat_ids'
+  // | 'export'
+  // | 'onboarding'
   | 'overdue_reminder'
+  // | 'payables_purchase_order'
+  | 'payment_record'
+  | 'payment_reminder'
+  // | 'person'
   | 'product'
   | 'receivable'
-  | 'reconciliation'
+  // | 'reconciliation'
   | 'role'
-  | 'tag'
-  | 'todo_task'
-  | 'todo_task_mute'
-  | 'transaction'
-  | 'workflow'
-  | 'approval_request'
-  | 'approval_policy'
-  | 'payment_record';
+  | 'tag';
+// | 'todo_task_mute'
+// | 'todo_task'
+// | 'transaction'
+// | 'workflow'
 
 export type payablePermissionsObjectType = 'payable';
 

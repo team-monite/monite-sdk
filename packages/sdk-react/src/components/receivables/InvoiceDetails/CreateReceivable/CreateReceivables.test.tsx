@@ -1,7 +1,7 @@
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { Receivables } from '@/components';
-import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartDataTestId } from '@/components/counterparts/types';
 import { entityIds, entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import {
@@ -25,11 +25,15 @@ import {
 } from '@testing-library/react';
 
 import { CreateReceivables } from './CreateReceivables';
-import { CreateCounterpartModalTestEnum } from './sections/components/CreateCounterpartModal.types';
 
 describe('CreateReceivables', () => {
   test('should show errors when user submit an empty form', async () => {
-    renderWithClient(<CreateReceivables type={'invoice'} />);
+    renderWithClient(
+      <CreateReceivables
+        type={'invoice'}
+        customerTypes={['customer', 'vendor']}
+      />
+    );
 
     await waitUntilTableIsLoaded();
 
@@ -43,7 +47,12 @@ describe('CreateReceivables', () => {
   });
 
   test('should show "items is empty" error when user submit an empty form', async () => {
-    renderWithClient(<CreateReceivables type={'invoice'} />);
+    renderWithClient(
+      <CreateReceivables
+        type={'invoice'}
+        customerTypes={['customer', 'vendor']}
+      />
+    );
 
     await waitUntilTableIsLoaded();
 
@@ -64,7 +73,7 @@ describe('CreateReceivables', () => {
       },
     });
 
-    render(<Receivables />, {
+    render(<Receivables customerTypes={['customer', 'vendor']} />, {
       wrapper: ({ children }) => (
         <VirtuosoMockContext.Provider
           value={{ viewportHeight: 1000, itemHeight: 50 }}
@@ -150,7 +159,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -158,7 +171,7 @@ describe('CreateReceivables', () => {
       triggerClickOnAutocompleteOption(/Customer/i, /Create new counterpart/i);
 
       const counterpartModal = await screen.findByTestId(
-        CreateCounterpartModalTestEnum.DataTestId
+        'create-counterpart-modal'
       );
 
       expect(counterpartModal).toBeInTheDocument();
@@ -168,7 +181,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -188,7 +205,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -215,7 +236,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -229,7 +254,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -244,7 +273,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -268,7 +301,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();
@@ -295,7 +332,11 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
+        <CreateReceivables
+          type={'invoice'}
+          onCreate={onCreateMock}
+          customerTypes={['customer', 'vendor']}
+        />
       );
 
       await waitUntilTableIsLoaded();

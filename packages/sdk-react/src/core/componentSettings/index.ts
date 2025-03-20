@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
@@ -62,6 +63,12 @@ export interface ComponentSettings {
   };
   counterparts: {
     pageSizeOptions: number[];
+
+    /**
+     * @see {@link CustomerTypes}
+     * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor']
+     */
+    customerTypes?: CustomerTypes;
   };
   payables: Partial<PayableSettings>;
   products: {
@@ -105,6 +112,10 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.counterparts?.pageSizeOptions ||
       defaultPageSizeOptions,
+    customerTypes: componentSettings?.counterparts?.customerTypes || [
+      'customer',
+      'vendor',
+    ],
   },
   payables: {
     pageSizeOptions:

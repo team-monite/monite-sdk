@@ -9,11 +9,12 @@ import {
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import {
+  CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CounterpartAutocomplete } from '@/components/counterparts/CounterpartAutocomplete';
+} from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -85,6 +86,8 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   ) => void;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
 export const isFieldRequiredByValidations = (
@@ -245,6 +248,7 @@ const PayableDetailsFormBase = forwardRef<
       createPayable,
       lineItems,
       payableDetailsFormId,
+      customerTypes,
       ...inProps
     },
     ref
@@ -473,6 +477,7 @@ const PayableDetailsFormBase = forwardRef<
                         disabled={false}
                         name="counterpart"
                         label={t(i18n)`Vendor`}
+                        customerTypes={customerTypes}
                         required={
                           isFieldRequired('counterpart', ocrRequiredFields) ||
                           isFieldRequiredByValidations(

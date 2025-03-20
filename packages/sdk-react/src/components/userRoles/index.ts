@@ -1,3 +1,4 @@
 export { UserRoles } from './UserRoles';
 export { UserRolesTable } from './UserRolesTable';
-export { UserRoleDetails } from './UserRoleDetails';
+export { UserRoleEditDialog } from './UserRoleDetails/UserRoleEditDialog';
+export { UserRoleDetailsDialog } from './UserRoleDetails/UserRoleDetailsDialog';

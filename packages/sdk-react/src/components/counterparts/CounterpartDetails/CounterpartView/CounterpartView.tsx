@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
+import { CounterpartDataTestId } from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -24,8 +26,6 @@ import {
   Box,
 } from '@mui/material';
 
-import { ConfirmDeleteDialogue } from '../../ConfirmDeleteDialogue';
-import { CounterpartDataTestId } from '../../Counterpart.types';
 import {
   getCounterpartName,
   isIndividualCounterpart,
@@ -197,7 +197,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
       <Divider />
       <DialogContent>
         <Stack direction="column" spacing={4}>
-          <ConfirmDeleteDialogue
+          <ConfirmDeleteDialog
             open={showDeleteCounterpart}
             type={t(i18n)`Counterpart`}
             name={getCounterpartName(counterpart)}

@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { components } from '@/api';
+import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
@@ -13,46 +15,40 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 
-export const Counterparts = () => (
+type CounterPartProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+};
+
+export const Counterparts = (props: CounterPartProps) => (
   <MoniteScopedProviders>
-    <CounterpartsBase />
+    <CounterpartsBase {...props} />
   </MoniteScopedProviders>
 );
 
-const CounterpartsBase = () => {
+const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
-  const { open, menuProps, buttonProps } = useMenuButton();
+  const { buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
-  const [counterpartType, setType] = useState<
-    components['schemas']['CounterpartType'] | undefined
-  >(undefined);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!counterpartId && !counterpartType) {
-      setOpenDetails(false);
-
-      return;
-    }
-
-    if (counterpartId || counterpartType) {
-      setOpenDetails(true);
-    }
-  }, [counterpartId, counterpartType]);
+  const handleRowAction = useCallback((id: string) => {
+    setOpenDetails(true);
+    setId(id);
+  }, []);
 
   const closeModal = useCallback(() => {
     setOpenDetails(false);
   }, []);
 
-  const closedModal = useCallback(() => {
+  const handleOnClosedModal = useCallback(() => {
     setId(undefined);
-    setType(undefined);
   }, []);
 
   const { data: user } = useEntityUserByAuthToken();
@@ -76,33 +72,25 @@ const CounterpartsBase = () => {
   const className = 'Monite-Counterparts';
 
   const counterpartDetails = (() => {
-    if (counterpartId) {
-      return (
-        <Dialog
-          alignDialog="right"
-          open={openDetails}
-          container={root}
-          onClose={closeModal}
-          onClosed={closedModal}
-        >
-          <CounterpartDetails id={counterpartId} onDelete={closeModal} />
-        </Dialog>
-      );
-    } else if (counterpartType) {
-      return (
-        <Dialog
-          alignDialog="right"
-          open={openDetails}
-          container={root}
-          onClose={closeModal}
-          onClosed={closedModal}
-        >
-          <CounterpartDetails type={counterpartType} onDelete={closeModal} />
-        </Dialog>
-      );
-    } else {
-      return null;
-    }
+    if (!counterpartId) return null;
+
+    return (
+      <Dialog
+        alignDialog="right"
+        open={openDetails}
+        container={root}
+        onClose={closeModal}
+        onClosed={handleOnClosedModal}
+      >
+        <CounterpartDetails
+          id={counterpartId}
+          onDelete={closeModal}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
+      </Dialog>
+    );
   })();
 
   return (
@@ -121,49 +109,40 @@ const CounterpartsBase = () => {
           <Box className={className + '-Actions'}>
             <Button
               {...buttonProps}
+              onClick={() => setOpenModal(true)}
               className={className + '-Actions-CreateNew'}
               variant="contained"
               disabled={!isCreateAllowed}
-              endIcon={
-                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-              }
             >
               {t(i18n)`Create New`}
             </Button>
-            <Menu
-              {...menuProps}
-              className={className + '-Actions-Menu'}
-              container={root}
-              MenuListProps={{
-                'aria-labelledby': 'actions',
-              }}
-            >
-              <MenuItem
-                className={className + '-Actions-CreateNew-Organization'}
-                onClick={() => {
-                  setType('organization');
-                }}
-              >
-                {t(i18n)`Organization`}
-              </MenuItem>
-              <MenuItem
-                className={className + '-Actions-CreateNew-Individual'}
-                onClick={() => {
-                  setType('individual');
-                }}
-              >
-                {t(i18n)`Individual`}
-              </MenuItem>
-            </Menu>
           </Box>
         }
       />
+
+      {openModal && (
+        <CreateCounterpartModal
+          open={openModal}
+          onClose={() => {
+            setOpenModal(false);
+          }}
+          onCreate={(newCounterpartId: string) => {
+            setId(newCounterpartId);
+            setOpenModal(false);
+            setOpenDetails(true);
+          }}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
+      )}
+
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
         <CounterpartsTable
-          onRowClick={setId}
-          onEdit={setId}
-          setType={setType}
+          onRowClick={handleRowAction}
+          onEdit={handleRowAction}
+          openModal={setOpenModal}
         />
       )}
       {counterpartDetails}

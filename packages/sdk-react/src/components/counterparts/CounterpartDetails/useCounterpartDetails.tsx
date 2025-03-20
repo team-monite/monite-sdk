@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLatest } from 'react-use';
 
 import { components } from '@/api';
+import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 import {
   CounterpartShowCategories,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
+  CustomerTypes,
+} from '@/components/counterparts/types';
 
 type CounterpartId = string;
 type BankAccountId = string;
@@ -85,6 +86,8 @@ interface CommonCounterpartDetailsProps
 }
 
 export type CounterpartsDetailsProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
   isInvoiceCreation?: boolean;
   onReturn?: () => void;
 } & (ExistingCounterpartDetail | NewCounterpartDetail);
@@ -113,16 +116,17 @@ export enum COUNTERPART_VIEW {
 }
 
 export function useCounterpartDetails(props: CounterpartsDetailsProps) {
-  const [counterpartView, setCounterpartView] =
-    useState<COUNTERPART_VIEW | null>(null);
+  const [counterpartView, setCounterpartView] = useState<COUNTERPART_VIEW>(
+    props.id
+      ? COUNTERPART_VIEW.view
+      : props.type === 'individual'
+      ? COUNTERPART_VIEW.individualForm
+      : COUNTERPART_VIEW.organizationForm
+  );
 
   const [counterpartId, setCounterpartId] = useState<CounterpartId | undefined>(
     props.id
   );
-
-  useEffect(() => {
-    setCounterpartId(props.id);
-  }, [props.id]);
 
   const [addressId, setAddressId] = useState<string | undefined>();
 
@@ -144,20 +148,6 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
       setCounterpartView(COUNTERPART_VIEW.bankAccountForm),
     showVatForm: () => setCounterpartView(COUNTERPART_VIEW.vatForm),
   }));
-
-  useEffect(() => {
-    if (props.id) {
-      return actions.showView();
-    }
-
-    if (props.type === 'individual') {
-      return actions.showIndividualForm();
-    }
-
-    if (props.type === 'organization') {
-      return actions.showOrganizationForm();
-    }
-  }, [actions, props.id, props.type]);
 
   const onClose = useLatest(props.onClose);
   const onCreateImmutable = useLatest(props.onCreate);

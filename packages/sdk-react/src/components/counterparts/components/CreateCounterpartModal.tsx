@@ -2,41 +2,46 @@ import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
-import { CounterpartTypeItem } from '@/components/counterparts/CreateCounterpartDialog/CreateCounterpartDialog';
+import { CounterpartTypeItem } from '@/components/counterparts/components';
+import {
+  CustomerTypes,
+  DefaultValuesOCRIndividual,
+  DefaultValuesOCROrganization,
+} from '@/components/counterparts/types';
 import { useRootElements } from '@/core/context/RootElementsProvider/RootElementsProvider';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Box,
-  Grid,
-  Modal,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-
-import { CreateCounterpartModalTestEnum } from './CreateCounterpartModal.types';
+import { Box, Grid, Modal, Typography } from '@mui/material';
 
 interface CreateCounterpartModalProps {
   open: boolean;
   onClose: () => void;
   onCreate: (newCounterpartId: string) => void;
+  customerTypes?: CustomerTypes;
+  isInvoiceCreation?: boolean;
+  getCounterpartDefaultValues?: (
+    type?: string
+  ) => DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
 }
 
 export const CreateCounterpartModal = ({
   open,
   onClose,
   onCreate,
+  customerTypes,
+  isInvoiceCreation,
+  getCounterpartDefaultValues,
 }: CreateCounterpartModalProps) => {
   const { i18n } = useLingui();
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
   const { root } = useRootElements();
   const [counterpartType, setCounterpartType] = useState<
     components['schemas']['CounterpartType'] | undefined
   >(undefined);
+
+  const defaultValuesOCR = getCounterpartDefaultValues?.(counterpartType);
+
   const handleClose = useCallback(() => {
     setCounterpartType(undefined);
     onClose();
@@ -46,7 +51,7 @@ export const CreateCounterpartModal = ({
     <Modal
       open={open}
       container={root}
-      data-testid={CreateCounterpartModalTestEnum.DataTestId}
+      data-testid="create-counterpart-modal"
       onClose={handleClose}
     >
       <Box
@@ -59,31 +64,32 @@ export const CreateCounterpartModal = ({
           bgcolor: 'background.paper',
           boxShadow: 24,
           borderRadius: 8,
+          maxHeight: '90%',
         }}
       >
         {counterpartType ? (
-          <Grid
-            sx={{
-              maxHeight: isLargeScreen ? 920 : 720,
-              display: 'flex',
-              flexDirection: 'column',
+          <CounterpartDetails
+            type={counterpartType}
+            customerTypes={customerTypes}
+            isInvoiceCreation={isInvoiceCreation}
+            onClose={handleClose}
+            onReturn={() => setCounterpartType(undefined)}
+            onCreate={(counterpartId) => {
+              onCreate(counterpartId);
+              onClose();
             }}
-          >
-            <CounterpartDetails
-              type={counterpartType}
-              isInvoiceCreation={true}
-              onClose={handleClose}
-              onReturn={() => setCounterpartType(undefined)}
-              onCreate={(counterpartId) => {
-                onCreate(counterpartId);
-                onClose();
-              }}
-            />
-          </Grid>
+            defaultValuesOCR={defaultValuesOCR}
+            defaultValues={{
+              isCustomer: customerTypes?.includes('customer'),
+              isVendor: customerTypes?.includes('vendor'),
+            }}
+          />
         ) : (
           <Grid container alignItems="center" p={4}>
             <Grid item xs={11} mb={4}>
-              <Typography variant="h3">{t(i18n)`Create customer`}</Typography>
+              <Typography variant="h3">{t(
+                i18n
+              )`Create counterpart`}</Typography>
             </Grid>
             <Grid item xs={1} mb={4}>
               <IconWrapper
@@ -110,7 +116,7 @@ export const CreateCounterpartModal = ({
                   i18n
                 )`It is an entity having legal status as an individual.`}
                 onClick={() => setCounterpartType('individual')}
-                type={'individual'}
+                type="individual"
                 isTypeSelected={counterpartType === 'individual'}
               />
               <CounterpartTypeItem
@@ -119,7 +125,7 @@ export const CreateCounterpartModal = ({
                   i18n
                 )`It is a non-human legal entity, i.e. an organisation recognised by law as a legal person.`}
                 onClick={() => setCounterpartType('organization')}
-                type={'organization'}
+                type="organization"
                 isTypeSelected={counterpartType === 'organization'}
               />
             </Box>

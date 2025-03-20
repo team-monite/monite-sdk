@@ -348,7 +348,6 @@ export const receivableListFixture: ReceivablesListFixture = {
   credit_note: Array.from(Array(30).keys()).map(createRandomCreditNote),
 };
 
-
 function createRandomContact(): components['schemas']['CounterpartContactResponse'] {
   return {
     id: faker.string.uuid(),
@@ -365,7 +364,7 @@ function createRandomContact(): components['schemas']['CounterpartContactRespons
       state: faker.location.state(),
       line1: faker.location.streetAddress(),
       line2: faker.location.secondaryAddress(),
-    }
+    },
   };
 }
 
@@ -378,18 +377,33 @@ function createRandomPreview(): components['schemas']['ReceivablePreviewResponse
         <p>Best regards,<br/>${faker.person.fullName()}</p>
       </body>
     </html>`,
-    subject_preview: `Invoice ${faker.string.alphanumeric(8)} from ${faker.company.name()}`,
+    subject_preview: `Invoice ${faker.string.alphanumeric(
+      8
+    )} from ${faker.company.name()}`,
   };
 }
 
-export const receivableContactsFixture: Record<string, Array<components['schemas']['CounterpartContactResponse']>> = 
-  receivableListFixture.invoice.reduce((acc, invoice) => ({
+export const receivableContactsFixture: Record<
+  string,
+  Array<components['schemas']['CounterpartContactResponse']>
+> = receivableListFixture.invoice.reduce(
+  (acc, invoice) => ({
     ...acc,
-    [invoice.id]: Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => createRandomContact())
-  }), {});
+    [invoice.id]: Array.from(
+      { length: faker.number.int({ min: 1, max: 3 }) },
+      () => createRandomContact()
+    ),
+  }),
+  {}
+);
 
-export const receivablePreviewFixture: Record<string, components['schemas']['ReceivablePreviewResponse']> = 
-  receivableListFixture.invoice.reduce((acc, invoice) => ({
+export const receivablePreviewFixture: Record<
+  string,
+  components['schemas']['ReceivablePreviewResponse']
+> = receivableListFixture.invoice.reduce(
+  (acc, invoice) => ({
     ...acc,
-    [invoice.id]: createRandomPreview()
-  }), {});
+    [invoice.id]: createRandomPreview(),
+  }),
+  {}
+);
