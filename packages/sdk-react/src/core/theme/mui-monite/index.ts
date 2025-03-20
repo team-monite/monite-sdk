@@ -79,13 +79,13 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const moniteTheme = getMoniteTheme(theme);
 
   const statusBackgroundColors = {
-    draft: '#000000D6',
-    new: moniteTheme.colors.primary,
-    approve_in_progress: '#E75300',
-    paid: '#13705F',
-    waiting_to_be_paid: moniteTheme.colors.primary,
-    rejected: '#FF475D',
-    partially_paid: '#A06DC8',
+    draft: '#000',
+    new: '#3737FF',
+    approve_in_progress: '#3737FF',
+    paid: '#007F33',
+    waiting_to_be_paid: '#3737FF',
+    rejected: '#CC394B',
+    partially_paid: '#9033D9',
     canceled: '#E75300',
     all: '#F4F4FE',
   };
@@ -106,7 +106,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
 
     text: getTextColors(moniteTheme.colors.text),
-
+    status: statusBackgroundColors,
     divider: getNeutralColors(moniteTheme.colors.neutral)['80'],
   };
 
@@ -118,7 +118,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       backgroundColor: '#F2F2F2',
     },
     blue: {
-      color: moniteTheme.colors.primary,
+      color: '#3737FF',
       backgroundColor: '#F4F4FE',
     },
     violet: {

@@ -5,9 +5,9 @@
   --demo-padding-4: calc(var(--demo-padding) * 4);
   --demo-padding-5: calc(var(--demo-padding) * 5);
   --demo-padding-6: calc(var(--demo-padding) * 6);
-  --demo-button-blue: #3737FF;
+  --demo-button-blue: #3737ff;
   --demo-light-gray: #f9f9f9;
-  --demo-divider: #DDDDDD;
+  --demo-divider: #dddddd;
   --demo-form-header: 88px;
 }
 
@@ -22,7 +22,8 @@ html {
   height: inherit;
 
   > .Monite-PageContainer {
-    padding: var(--demo-padding-4) var(--demo-padding-4) var(--demo-padding-4) var(--demo-padding-4);
+    padding: var(--demo-padding-4) var(--demo-padding-4) var(--demo-padding-4)
+      var(--demo-padding-4);
     height: inherit;
 
     display: flex;
@@ -33,20 +34,9 @@ html {
   }
 }
 
-
 .Monite-Dashboard {
-  overflow-y: auto !important;
-  background-color: var(--demo-light-gray) !important;
-
-
-  img {
-    max-width: 100%;
-    height: auto;
-
-    &:last-child {
-      margin-bottom: var(--demo-padding-3);
-    }
-  }
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .Monite-Projects-Header {
