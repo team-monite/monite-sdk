@@ -290,6 +290,24 @@ export const roles_default_permissions: {
       update: 'allowed',
       delete: 'allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
   },
   basic_member: {
     payable: {
@@ -460,6 +478,24 @@ export const roles_default_permissions: {
       update: 'allowed_for_own',
       delete: 'allowed_for_own',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
   },
   guest_member: {
     payable: {
@@ -625,6 +661,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'not_allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -800,6 +854,24 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
   payables_employee_member: {
     payable: {
@@ -965,6 +1037,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -1140,6 +1230,24 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
   approver_member: {
     payable: {
@@ -1310,6 +1418,24 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
   payer_member: {
     payable: {
@@ -1475,6 +1601,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',
