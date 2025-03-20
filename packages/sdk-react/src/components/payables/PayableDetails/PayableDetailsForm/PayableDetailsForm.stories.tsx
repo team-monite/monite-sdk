@@ -29,6 +29,7 @@ export const DialogDetailsForm: Story = {
         name: 'Service B',
         quantity: 2,
         tax: 20,
+        ocr_set_quantity_to_one: false,
       },
     ],
     ...actions,
