@@ -58,6 +58,7 @@ type ItemSelectorProps = {
   fieldName?: string;
   index: number;
   measureUnits?: { data: MeasureUnit[] };
+  marginLeft?: string | number;
 };
 
 const CREATE_NEW_ID = '__create-new__';
@@ -83,6 +84,7 @@ export const ItemSelector = ({
   defaultCurrency,
   measureUnits,
   onUpdate,
+  marginLeft = '4px',
 }: ItemSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -237,9 +239,7 @@ export const ItemSelector = ({
           } else if (value) {
             field.onChange(value.id);
             setCustomName('');
-            if (onUpdate) {
-              onUpdate(value, true);
-            }
+            onUpdate(value, true);
           }
         };
 
@@ -301,7 +301,8 @@ export const ItemSelector = ({
                   error={error}
                   className="Item-Selector"
                   sx={{
-                    marginLeft: '4px', //to avoid box-shadow from being cut by container
+                    width: '100%',
+                    marginLeft,
                   }}
                   InputProps={{
                     ...params.InputProps,

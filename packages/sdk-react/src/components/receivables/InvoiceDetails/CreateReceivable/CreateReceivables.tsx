@@ -4,14 +4,10 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
-import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
-import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
-import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useLocalStorageFields } from '@/core/hooks/useLocalStorageFields';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -46,24 +42,29 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { eventFromMessage } from '@sentry/react';
 
 import { format } from 'date-fns';
 
+import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
+import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
+import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
 import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { InvoicePreview } from './sections/components/InvoicePreview';
+import { ReminderSection } from './sections/components/ReminderSection/RemindersSection';
 import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
-//import { VatAndTaxValidator } from './sections/VatAndTaxValidator';
 import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
   CreateReceivablesProductsFormProps,
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
+
+type Schemas = components['schemas'];
 
 /**
  * A component for creating a new Receivable
@@ -74,33 +75,6 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
     <CreateReceivablesBase {...props} />
   </MoniteScopedProviders>
 );
-
-// TODO: save this logic into a hook
-const saveFieldsToLocalStorage = (fields: any) => {
-  try {
-    window.localStorage.setItem('formFields', JSON.stringify(fields));
-  } catch (error) {
-    console.error('Failed to save fields to local storage:', error);
-  }
-};
-
-const clearFieldsFromLocalStorage = () => {
-  try {
-    window.localStorage.removeItem('formFields');
-  } catch (error) {
-    console.error('Failed to clear fields from local storage:', error);
-  }
-};
-
-const loadFieldsFromLocalStorage = () => {
-  try {
-    const storedFields = window.localStorage.getItem('formFields');
-    return storedFields ? JSON.parse(storedFields) : null;
-  } catch (error) {
-    console.error('Failed to load fields from local storage:', error);
-    return null;
-  }
-};
 
 const CreateReceivablesBase = ({
   type,
@@ -166,7 +140,14 @@ const CreateReceivablesBase = ({
     isTermsAndConditionsShown: false,
   };
 
-  const [visibleSettingsFields, setVisibleSettingsFields] = useState(
+  const [
+    visibleSettingsFields,
+    setVisibleSettingsFields,
+    areFieldsAlwaysSelected,
+    setAreFieldsAlwaysSelected,
+  ] = useLocalStorageFields(
+    'MoniteCreateReceivables',
+    'formFields',
     initialSettingsFields
   );
 
@@ -181,26 +162,28 @@ const CreateReceivablesBase = ({
     });
 
   const [actualCurrency, setActualCurrency] = useState<
-    components['schemas']['CurrencyEnum'] | undefined
+    Schemas['CurrencyEnum'] | undefined
   >(settings?.currency?.default || fallbackCurrency);
 
   const [tempCurrency, setTempCurrency] = useState<
-    components['schemas']['CurrencyEnum'] | undefined
+    Schemas['CurrencyEnum'] | undefined
   >(undefined);
 
-  const [counterpartBillingAddress, setCounterpartBillingAddress] =
-    useState<any>(null);
+  const [counterpartBillingAddress, setCounterpartBillingAddress] = useState<
+    Schemas['CounterpartAddressResponseWithCounterpartID'] | null
+  >(null);
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
   useEffect(() => {
     const values = getValues();
     const billingAddressId = values.default_billing_address_id;
+
     if (billingAddressId) {
       setCounterpartBillingAddress(
         counterpartAddresses?.data?.find(
           (address) => address.id === billingAddressId
-        )
+        ) ?? null
       );
     }
   }, [counterpartAddresses, getValues]);
@@ -221,6 +204,10 @@ const CreateReceivablesBase = ({
     useCounterpartById(counterpartId);
 
   const className = 'Monite-CreateReceivable';
+
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
+
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
@@ -244,7 +231,7 @@ const CreateReceivablesBase = ({
     );
 
     const invoicePayload: Omit<
-      components['schemas']['ReceivableFacadeCreateInvoicePayload'],
+      Schemas['ReceivableFacadeCreateInvoicePayload'],
       'is_einvoice'
     > = {
       type: values.type,
@@ -263,6 +250,14 @@ const CreateReceivablesBase = ({
             currency: item.product.price.currency,
             value: item.product.price.value,
           },
+          measure_unit: item.product.measure_unit_id
+            ? {
+                name:
+                  measureUnits?.data?.find(
+                    (unit) => unit.id === item.product.measure_unit_id
+                  )?.name || '',
+              }
+            : undefined,
           type: 'product',
         },
         ...(isNonVatSupported
@@ -289,7 +284,7 @@ const CreateReceivablesBase = ({
     };
 
     createReceivable.mutate(
-      invoicePayload as components['schemas']['ReceivableFacadeCreateInvoicePayload'],
+      invoicePayload as Schemas['ReceivableFacadeCreateInvoicePayload'],
       {
         onSuccess: (createdReceivable) => {
           onCreate?.(createdReceivable.id);
@@ -314,45 +309,14 @@ const CreateReceivablesBase = ({
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
 
-  const [areFieldsAlwaysSelected, setAreFieldsAlwaysSelected] = useState(() => {
-    try {
-      return window.localStorage.getItem('areFieldsAlwaysSelected') === 'true';
-    } catch (error) {
-      console.warn(error);
-      return false;
-    }
-  });
-
-  useEffect(() => {
-    if (areFieldsAlwaysSelected) {
-      const storedFields = loadFieldsFromLocalStorage();
-      if (storedFields) {
-        setVisibleSettingsFields(storedFields);
-      }
-    }
-  }, [areFieldsAlwaysSelected]);
+  const handleFieldChange = (fieldName: string, value: boolean) => {
+    setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
+  };
 
   const handleFieldsAlwaysSelectedChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const isChecked = e.target.checked;
-    setAreFieldsAlwaysSelected(isChecked);
-    window.localStorage.setItem('areFieldsAlwaysSelected', String(isChecked));
-
-    if (isChecked) {
-      saveFieldsToLocalStorage(visibleSettingsFields);
-    } else {
-      clearFieldsFromLocalStorage();
-    }
-  };
-
-  const handleFieldChange = (fieldName: string, value: boolean) => {
-    const updatedFields = { ...visibleSettingsFields, [fieldName]: value };
-    setVisibleSettingsFields(updatedFields);
-
-    if (areFieldsAlwaysSelected) {
-      saveFieldsToLocalStorage(updatedFields);
-    }
+    setAreFieldsAlwaysSelected(e.target.checked);
   };
 
   const handleCloseCurrencyModal = () => {
@@ -398,7 +362,7 @@ const CreateReceivablesBase = ({
     }
   };
 
-  if (isSettingsLoading || isEntityLoading) {
+  if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
     return <LoadingPage />;
   }
 
@@ -748,8 +712,7 @@ const CreateReceivablesBase = ({
             id={formName}
             noValidate
             onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit(handleCreateReceivable);
+              handleSubmit(handleCreateReceivable)(e);
             }}
             style={{ marginBottom: theme.spacing(7) }}
           >

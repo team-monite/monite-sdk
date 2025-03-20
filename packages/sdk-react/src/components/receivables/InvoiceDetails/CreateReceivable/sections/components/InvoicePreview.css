@@ -165,8 +165,11 @@ th.line-items-table__fixed-item {
 .line-items-table .no-items td {
   padding: 0;
   border-bottom-style: solid;
-  text-align: left !important;
   padding-left: 0;
+}
+
+.invoice-preview .line-items-table .no-items td {
+  text-align: left;
 }
 
 .line-items-table tr:last-child td {
@@ -313,20 +316,17 @@ th.line-items-table__fixed-item {
   object-fit: contain;
 }
 
-.invoice-preview .header .block-entity-logo span {
+.invoice-preview .header .block-entity-logo .no-logo-placeholder {
   background: rgba(222, 222, 222, 1);
-}
-
-.invoice-preview .block-counterpart-info {
-  font-size: 10px;
-}
-
-.invoice-preview .header .block-entity-logo span {
   font-size: 13px;
   color: white;
   position: relative;
   left: -15px;
   top: 28px;
+}
+
+.invoice-preview .block-counterpart-info {
+  font-size: 10px;
 }
 
 .invoice-preview .payment-details h3 {

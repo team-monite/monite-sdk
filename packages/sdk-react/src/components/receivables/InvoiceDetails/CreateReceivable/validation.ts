@@ -5,8 +5,8 @@ import { t } from '@lingui/macro';
 
 import * as yup from 'yup';
 
-export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
-  yup.object({
+export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) => {
+  return yup.object({
     currency: yup
       .mixed<(typeof CurrencyEnum)[number]>()
       .oneOf(CurrencyEnum)
@@ -17,13 +17,14 @@ export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
       .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
       .required(),
   });
+};
 
 export type CreateReceivablesProductsFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceProductsValidationSchema>
 >;
 
-const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
-  yup
+const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
+  return yup
     .array()
     .of(
       yup.object({
@@ -107,6 +108,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
     )
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
     .required();
+};
 
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
@@ -217,6 +219,7 @@ export const getUpdateInvoiceValidationSchema = (
   });
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
+  id: string;
   quantity: number;
   product_id?: string;
   name?: string;
