@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { GenericCounterpartContact } from '@/core/queries';
 
 export interface ExistingReceivableDetailsProps {
@@ -101,11 +102,14 @@ export interface InvoiceDetailsCreateProps {
    * @returns {void}
    */
   onCreate?: (receivableId: string) => void;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
-export type InvoiceDetailsProps =
-  | ExistingReceivableDetailsProps
-  | InvoiceDetailsCreateProps;
+export type InvoiceDetailsProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+} & (ExistingReceivableDetailsProps | InvoiceDetailsCreateProps);
 
 export type CounterpartOrganizationRootResponse =
   components['schemas']['CounterpartOrganizationRootResponse'];

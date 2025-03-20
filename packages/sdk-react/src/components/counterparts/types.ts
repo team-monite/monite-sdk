@@ -55,3 +55,16 @@ export type DefaultValuesOCRIndividual = DefaultValuesOCR<
 export type DefaultValuesOCROrganization = DefaultValuesOCR<
   BaseCounterpartOCR & { companyName: string }
 >;
+
+/**
+ * Represents the type of a counterpart in the system.
+ */
+export type CustomerType = 'customer' | 'vendor';
+
+/**
+ * Array of available customer types, an array that should contain either customer, vendor, or both.
+ * This array can't be empty and if only one option is passed, the customer type section will be hidden
+ * and the default customer type will be the one passed.
+ * It is set to undefined at component level but defaults to ['customer', 'vendor'] through componentSettings
+ */
+export type CustomerTypes = CustomerType[];

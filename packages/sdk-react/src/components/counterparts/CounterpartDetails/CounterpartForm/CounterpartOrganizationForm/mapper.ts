@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import type { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
+import type { CounterpartDefaultValues } from '@/components/counterparts/types';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 

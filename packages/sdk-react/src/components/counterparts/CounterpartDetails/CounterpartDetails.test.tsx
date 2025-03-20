@@ -22,7 +22,7 @@ import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CounterpartDataTestId } from '../Counterpart.types';
+import { CounterpartDataTestId } from '../types';
 import { CounterpartDetails } from './CounterpartDetails';
 import {
   getActionButtonInAddressSection,

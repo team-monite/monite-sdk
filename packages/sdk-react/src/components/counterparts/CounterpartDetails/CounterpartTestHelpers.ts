@@ -3,7 +3,7 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { screen, waitFor, within } from '@testing-library/react';
 
-import { CounterpartDataTestId } from '../Counterpart.types';
+import { CounterpartDataTestId } from '../types';
 
 export async function getActionButtonInDeleteModal(
   action: 'cancel' | 'delete',

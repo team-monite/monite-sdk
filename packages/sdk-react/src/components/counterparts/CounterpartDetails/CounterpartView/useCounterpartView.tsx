@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
-import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
+import type { CounterpartShowCategories } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useCounterpartAddresses,

@@ -1,10 +1,12 @@
 import { useId } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetails/PayableDetailsNoAttachedFile';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -30,6 +32,8 @@ import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
   optionalFields?: OptionalFields;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -51,6 +55,7 @@ const PayableDetailsBase = ({
   onDeleted,
   onPay,
   onPayUS,
+  customerTypes,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -87,6 +92,7 @@ const PayableDetailsBase = ({
     onPayUS,
   });
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
@@ -203,6 +209,10 @@ const PayableDetailsBase = ({
                   optionalFields={optionalFields}
                   lineItems={lineItems}
                   payableDetailsFormId={payableDetailsFormId}
+                  customerTypes={
+                    customerTypes ||
+                    componentSettings?.counterparts?.customerTypes
+                  }
                 />
               ) : (
                 payable && (

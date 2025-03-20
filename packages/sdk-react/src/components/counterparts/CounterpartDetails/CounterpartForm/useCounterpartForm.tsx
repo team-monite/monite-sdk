@@ -4,7 +4,7 @@ import { components } from '@/api';
 import type {
   CounterpartDefaultValues,
   CounterpartShowCategories,
-} from '@/components/counterparts/Counterpart.types';
+} from '@/components/counterparts/types';
 import {
   useCounterpartById,
   useCreateCounterpart,

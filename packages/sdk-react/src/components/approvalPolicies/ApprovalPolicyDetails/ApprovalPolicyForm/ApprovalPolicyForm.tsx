@@ -19,7 +19,7 @@ import {
 import {
   CounterpartAutocomplete,
   CounterpartsAutocompleteOptionProps,
-} from '@/components/counterparts/CounterpartAutocomplete';
+} from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';

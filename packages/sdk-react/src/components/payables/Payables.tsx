@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
+import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { PayableDetails } from '@/components/payables/PayableDetails';
@@ -20,7 +21,10 @@ import { CircularProgress } from '@mui/material';
 
 import { CreatePayableMenu } from './CreatePayableMenu';
 
-export type PayablesProps = Pick<
+export type PayablesProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+} & Pick<
   UsePayableDetailsProps,
   | 'onSaved'
   | 'onCanceled'
@@ -51,9 +55,10 @@ const PayablesBase = ({
   onDeleted,
   onPay,
   onPayUS,
+  customerTypes,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api, queryClient, componentSettings } = useMoniteContext();
 
   const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
     invoiceId: string | undefined;
@@ -198,6 +203,9 @@ const PayablesBase = ({
           }}
           onPay={onPay}
           onPayUS={onPayUS}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
         />
       </Dialog>
 
@@ -211,6 +219,9 @@ const PayablesBase = ({
         <PayableDetails
           onClose={() => setIsCreateInvoiceDialogOpen(false)}
           onSaved={onSaved}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
         />
       </Dialog>
     </>
