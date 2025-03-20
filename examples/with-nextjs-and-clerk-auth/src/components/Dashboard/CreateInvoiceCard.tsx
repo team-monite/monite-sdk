@@ -8,38 +8,43 @@ import { IconReceipt } from '@/icons';
 
 export const CreateInvoiceCard = () => {
   return (
-    <DashboardCard
-      title="Create an invoice"
-      renderIcon={(props) => <IconReceipt {...props} />}
-      sx={{
-        backgroundImage: `url('/invoice-bg.svg')`,
-        backgroundRepeat: `no-repeat`,
-        backgroundPosition: `bottom 0 right 80px`,
-      }}
+    <div
+      style={{ background: 'linear-gradient(180deg, #F9F9FA 0%, #FFF 100%)' }}
     >
-      <Box
+      <DashboardCard
+        title="Create an invoice"
+        renderIcon={(props) => <IconReceipt {...props} />}
         sx={{
-          padding: '24px 24px 0',
+          backgroundColor: 'transparent',
+          backgroundImage: `url('/invoice-bg.svg')`,
+          backgroundRepeat: `no-repeat`,
+          backgroundPosition: `bottom 0 right 80px`,
         }}
       >
-        <Link
-          href={'/receivables'}
+        <Box
           sx={{
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            color: '#3737FF',
-            textDecoration: 'none',
-            fontSize: `0.9rem`,
+            padding: '24px 24px 0',
           }}
         >
-          Set your style and create invoice{' '}
-          <ArrowForward sx={{ fontSize: '1rem' }} />
-        </Link>
-      </Box>
-    </DashboardCard>
+          <Link
+            href={'/receivables'}
+            sx={{
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              color: '#3737FF',
+              textDecoration: 'none',
+              fontSize: `0.9rem`,
+            }}
+          >
+            Set your style and create invoice{' '}
+            <ArrowForward sx={{ fontSize: '1rem' }} />
+          </Link>
+        </Box>
+      </DashboardCard>
+    </div>
   );
 };

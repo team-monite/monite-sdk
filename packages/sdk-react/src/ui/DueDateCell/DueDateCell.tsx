@@ -17,7 +17,7 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
   const { locale } = useMoniteContext();
   const { palette } = useTheme();
 
-  if (!data.due_date) return null;
+  if (!data.due_date) return <span style={{ opacity: 0.4 }}>-</span>;
 
   const formattedDate = i18n.date(new Date(data.due_date), locale.dateFormat);
   const overdueDays = getInvoiceOverdueDays(data);

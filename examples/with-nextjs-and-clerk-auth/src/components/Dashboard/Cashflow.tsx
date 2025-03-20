@@ -144,6 +144,9 @@ export const CashFlowCard = () => {
     <DashboardCard
       title="Total received"
       renderIcon={(props) => <IconChart {...props} />}
+      sx={{
+        background: 'linear-gradient(180deg, #F9F9FA 0%, #FFF 100%)',
+      }}
     >
       <ResponsiveContainer width="100%" height={250}>
         <ComposedChart data={chartData}>

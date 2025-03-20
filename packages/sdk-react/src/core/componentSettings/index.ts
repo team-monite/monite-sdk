@@ -1,5 +1,6 @@
 import { components } from '@/api';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
@@ -76,15 +77,7 @@ export interface ComponentSettings {
   onboarding: Partial<OnboardingSettings>;
 }
 
-const defaultPageSizeOptions = [15, 30, 100];
-const defaultPayableFieldOrder: FieldValueTypes[] = [
-  'document_id',
-  'counterpart_id',
-  'due_date',
-  'amount',
-  'was_created_by_user_id',
-  'pay',
-];
+const defaultPageSizeOptions = [20, 50, 100];
 
 export const getDefaultComponentSettings = (
   i18n: I18n,

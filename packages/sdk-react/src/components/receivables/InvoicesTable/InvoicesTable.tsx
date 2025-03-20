@@ -256,16 +256,24 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Created on`,
         sortable: false,
         width: 140,
-        valueFormatter: (value) =>
-          value ? i18n.date(value, locale.dateFormat) : '—',
+        renderCell: (params) => {
+          if (!params.value) {
+            return <span style={{ opacity: 0.4 }}>-</span>;
+          }
+          return i18n.date(params.value, locale.dateFormat);
+        },
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) =>
-          value ? i18n.date(value, locale.dateFormat) : '—',
+        renderCell: (params) => {
+          if (!params.value) {
+            return <span style={{ opacity: 0.4 }}>-</span>;
+          }
+          return i18n.date(params.value, locale.dateFormat);
+        },
       },
       {
         field: 'total_amount',

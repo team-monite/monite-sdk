@@ -11,6 +11,7 @@ interface DashboardCardProps {
   iconVariant?: IconVariant;
   children?: ReactNode;
   sx?: CSSProperties;
+  backgroundColor?: string;
 }
 
 const iconWrapperStyles: CSSProperties = {
@@ -29,7 +30,7 @@ const iconStyles: CSSProperties = {
 
 const getIconStyles = (variant: IconVariant) => {
   const { fill, backgroundColor } = {
-    backgroundColor: '#2B436D',
+    backgroundColor: '#000000',
     fill: '#fff',
   };
 
@@ -53,7 +54,8 @@ export default function DashboardCard({
     <Card
       sx={{
         height: '100%',
-        backgroundColor: '#F9F9FA',
+        borderRadius: '12px',
+        border: '1px solid #EEE',
         boxShadow: 'none',
         ...sx,
       }}

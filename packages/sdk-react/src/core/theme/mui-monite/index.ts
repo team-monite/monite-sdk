@@ -1315,6 +1315,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     spacing: moniteTheme.spacing,
     palette: {
       ...palette,
+      status: statusBackgroundColors,
     },
     shape: {
       borderRadius: moniteTheme.borderRadius,

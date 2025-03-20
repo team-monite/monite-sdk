@@ -11,7 +11,6 @@ import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
-import { KeyboardArrowDown } from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -22,8 +21,6 @@ import {
   SxProps,
   Theme,
   Typography,
-  Popover,
-  Button,
 } from '@mui/material';
 import { lighten, styled, useTheme } from '@mui/material/styles';
 
@@ -40,6 +37,7 @@ interface SummaryCardProps {
   status: ExtendedPayableStateEnum;
   count: number;
   amount?: number;
+  currency: string;
   onClick: () => void;
   selected: boolean;
 }
@@ -78,6 +76,7 @@ const SummaryCard = ({
   amount,
   onClick,
   selected,
+  currency,
 }: SummaryCardProps) => {
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
@@ -89,32 +88,25 @@ const SummaryCard = ({
         status as components['schemas']['PayableStateEnum']
       ];
 
-  const formatAmount = (amount: number) => {
+  const formatAmount = (amount: number, currency: string) => {
     const dividedAmount = amount / 100;
     return dividedAmount.toLocaleString(undefined, {
       minimumFractionDigits: 2,
+      style: 'currency',
+      currency: currency,
     });
   };
 
-  const formattedAmount = amount != null ? formatAmount(amount) : '';
+  const formattedAmount = amount != null ? formatAmount(amount, currency) : '';
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
     : ['0', '00'];
 
-  const getColor = (theme: Palette, colorName: string) => {
-    const [colorGroup, colorShade] = colorName.split('.') as [
-      keyof Palette,
-      string
-    ];
-
-    const paletteGroup = theme[colorGroup] as PaletteColor | undefined;
-
-    return (
-      paletteGroup?.[colorShade as keyof PaletteColor] || theme.text.primary
-    );
+  const getColor = (palette: Palette, status: string) => {
+    return palette.status?.[status] ?? palette.grey[300];
   };
 
-  const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
+  const colorValue = getColor(theme.palette, status);
 
   return (
     <SummaryStyledCard
@@ -127,6 +119,11 @@ const SummaryCard = ({
         `${summaryCardClassName}-${status}`,
         selected ? `${summaryCardClassName}-selected` : ''
       )}
+      sx={{
+        '&.Monite-SummaryCard': {
+          background: lighten(colorValue, 0.92),
+        },
+      }}
     >
       <CardContent
         sx={{
@@ -205,7 +202,7 @@ const SummaryCard = ({
               </Typography>
               <Typography
                 variant="body2"
-                color="text.secondary"
+                color="text.primary"
                 fontWeight={400}
                 fontSize="small"
                 sx={{}}
@@ -225,7 +222,7 @@ const SummaryCard = ({
             {/* TODO: Enable amount calculations with analytics endpoint */}
             <Typography
               variant="body2"
-              color="text.secondary"
+              color="#000"
               fontWeight={400}
               fontSize="small"
               className={classNames(
@@ -234,9 +231,10 @@ const SummaryCard = ({
                 `${summaryCardClassName}-AmountTypography-${status}-${selected}`
               )}
             >
-              ${integerPart}.
+              {integerPart}.
               <Typography
                 component="span"
+                color="#000"
                 fontWeight={700}
                 fontSize="small"
                 sx={{}}
@@ -261,9 +259,8 @@ export const SummaryCardsFilters = ({
   const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: entityId },
   });
-  const currency = entitySettings?.currency;
-  console.log(currency);
-  console.log(entitySettings);
+  const currency: string = entitySettings?.currency?.default ?? 'USD';
+
   const {
     containerRef,
     handleMouseDown,
@@ -271,34 +268,6 @@ export const SummaryCardsFilters = ({
     handleMouseUp,
     handleMouseMove,
   } = useDragScroll();
-
-  // New state variables for the dropdown functionality
-  const [visibleCardsCount, setVisibleCardsCount] = useState(0);
-  const [openMoreDropdown, setOpenMoreDropdown] = useState(false);
-  const moreButtonRef = useRef(null);
-
-  // Calculate visible cards based on container width
-  useEffect(() => {
-    if (containerRef.current && summaryData?.data) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const firstCardWidth = 118 + 8; // "All items" card width + gap
-      const otherCardWidth = 230 + 8; // Regular card width + gap
-      const buttonWidth = 30; // Width for the "More" button
-
-      // Calculate how many regular cards can fit after the first card
-      const availableWidthForOtherCards =
-        containerWidth - firstCardWidth - buttonWidth;
-      const maxRegularCards = Math.floor(
-        availableWidthForOtherCards / otherCardWidth
-      );
-
-      // Total number of cards: first card + regular cards
-      const totalVisibleCards = 1 + maxRegularCards;
-
-      // Ensure we show at least the first card
-      setVisibleCardsCount(Math.max(1, totalVisibleCards));
-    }
-  }, [containerRef.current?.offsetWidth, summaryData?.data?.length]);
 
   if (!summaryData) {
     return (
@@ -343,7 +312,7 @@ export const SummaryCardsFilters = ({
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       sx={{
-        overflowX: 'hidden',
+        overflowX: 'auto',
         whiteSpace: 'nowrap',
         padding: '3px',
         paddingBottom: 1,
@@ -351,88 +320,23 @@ export const SummaryCardsFilters = ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         userSelect: 'none',
-        cursor: 'grab',
-        '&::-webkit-scrollbar': {
-          display: 'none',
-        },
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
-        position: 'relative',
+        cursor: 'grab',
         ...sx,
       }}
     >
-      {sortedData.slice(0, visibleCardsCount).map((item) => (
+      {sortedData.map((item) => (
         <SummaryCard
           key={item.status}
           status={item.status}
           count={item.count}
           amount={item.sum_total_amount}
+          currency={currency}
           onClick={() => handleSelectStatus(item.status)}
           selected={selectedStatus === item.status}
         />
       ))}
-
-      {sortedData.length > visibleCardsCount && (
-        <>
-          <Button
-            ref={moreButtonRef}
-            variant="outlined"
-            color="secondary"
-            size="small"
-            onClick={() => setOpenMoreDropdown(true)}
-            sx={{
-              minWidth: 'auto',
-              padding: '12px 0',
-              height: '80px',
-              maxHeight: '100%',
-              marginBottom: '5px',
-            }}
-          >
-            <KeyboardArrowDown />
-          </Button>
-
-          <Popover
-            id="summary-cards-more-popover"
-            open={openMoreDropdown}
-            anchorEl={moreButtonRef.current}
-            disablePortal={true}
-            onClose={() => setOpenMoreDropdown(false)}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            slotProps={{
-              paper: {
-                sx: {
-                  maxHeight: 'calc(100vh - 100px)',
-                  overflowY: 'auto',
-                  borderRadius: 1,
-                },
-              },
-            }}
-          >
-            <Box sx={{ p: 1 }}>
-              {sortedData.slice(visibleCardsCount).map((item) => (
-                <SummaryCard
-                  key={item.status}
-                  status={item.status}
-                  count={item.count}
-                  amount={item.sum_total_amount}
-                  onClick={() => {
-                    handleSelectStatus(item.status);
-                    setOpenMoreDropdown(false);
-                  }}
-                  selected={selectedStatus === item.status}
-                />
-              ))}
-            </Box>
-          </Popover>
-        </>
-      )}
     </Box>
   );
 };

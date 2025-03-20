@@ -101,6 +101,17 @@ export type MonitePalette = {
     disabled: string;
   };
   divider: string;
+  status: {
+    draft: string;
+    new: string;
+    approve_in_progress: string;
+    paid: string;
+    waiting_to_be_paid: string;
+    rejected: string;
+    partially_paid: string;
+    canceled: string;
+    all: string;
+  };
 };
 
 interface BaseChipProps {

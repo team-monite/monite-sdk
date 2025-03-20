@@ -114,5 +114,9 @@ export const CounterpartCellById = ({
     return <Skeleton animation="wave" height={26} width="100%" />;
   }
 
+  if (!name) {
+    return <span style={{ opacity: 0.4 }}>-</span>;
+  }
+
   return <span>{name}</span>;
 };
