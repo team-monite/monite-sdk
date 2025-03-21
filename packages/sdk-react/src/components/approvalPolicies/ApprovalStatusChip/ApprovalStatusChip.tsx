@@ -7,7 +7,8 @@ import {
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/approvalPolicies/consts';
 import { useLingui } from '@lingui/react';
-import { Chip, ChipProps } from '@mui/material';
+import { Circle } from '@mui/icons-material';
+import { Chip, ChipProps, CircularProgress } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 export interface MoniteApprovalStatusChipProps {
@@ -42,7 +43,13 @@ export const ApprovalStatusChip = forwardRef<
       className="Monite-ApprovalStatusChip"
       ref={ref}
       color={ROW_TO_STATUS_MUI_MAP[status]}
-      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      icon={
+        icon && Icon ? (
+          <Icon fontSize="small" />
+        ) : (
+          <Circle sx={{ fontSize: '10px' }} />
+        )
+      }
       label={getRowToStatusTextMap(i18n)[status]}
       size={size}
       status={status}

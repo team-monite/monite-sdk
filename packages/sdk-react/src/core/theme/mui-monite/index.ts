@@ -1323,13 +1323,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MoniteApprovalStatusChip: {
-      defaultProps: {
-        icon: moniteTheme.components.approvalStatusChip.icon,
-        size: moniteTheme.components.approvalStatusChip.size,
-        variant: moniteTheme.components.approvalStatusChip.variant,
-      },
-    },
   };
 
   const components = renderColors(defaultMoniteComponents, palette);
