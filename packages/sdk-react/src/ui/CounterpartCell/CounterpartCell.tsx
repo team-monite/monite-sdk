@@ -1,6 +1,6 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { useCounterpartAddresses, useCounterpartById } from '@/core/queries';
+import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Avatar, Skeleton, Stack, Typography } from '@mui/material';
@@ -108,14 +108,15 @@ export const CounterpartCellById = ({
   counterpartId,
 }: CounterpartCellProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-  const { data: address } = useCounterpartAddresses(counterpartId);
   const name = counterpart ? getCounterpartName(counterpart) : '';
-  return (
-    <CounterPartCellByName
-      name={name}
-      country={address?.data[0]?.country}
-      city={address?.data[0]?.city}
-      isLoading={isLoading}
-    />
-  );
+
+  if (isLoading) {
+    return <Skeleton animation="wave" height={26} width="100%" />;
+  }
+
+  if (!name) {
+    return <span style={{ opacity: 0.4 }}>-</span>;
+  }
+
+  return <span>{name}</span>;
 };

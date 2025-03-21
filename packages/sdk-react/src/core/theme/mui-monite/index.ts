@@ -79,13 +79,13 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const moniteTheme = getMoniteTheme(theme);
 
   const statusBackgroundColors = {
-    draft: '#000000D6',
-    new: moniteTheme.colors.primary,
-    approve_in_progress: '#E75300',
-    paid: '#13705F',
-    waiting_to_be_paid: moniteTheme.colors.primary,
-    rejected: '#FF475D',
-    partially_paid: '#A06DC8',
+    draft: '#000',
+    new: '#3737FF',
+    approve_in_progress: '#3737FF',
+    paid: '#007F33',
+    waiting_to_be_paid: '#3737FF',
+    rejected: '#CC394B',
+    partially_paid: '#9033D9',
     canceled: '#E75300',
     all: '#F4F4FE',
   };
@@ -106,8 +106,8 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     },
 
     text: getTextColors(moniteTheme.colors.text),
-
-    divider: '#DDDDDD',
+    status: statusBackgroundColors,
+    divider: getNeutralColors(moniteTheme.colors.neutral)['80'],
   };
 
   const statusColors: {
@@ -118,7 +118,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       backgroundColor: '#F2F2F2',
     },
     blue: {
-      color: moniteTheme.colors.primary,
+      color: '#3737FF',
       backgroundColor: '#F4F4FE',
     },
     violet: {
@@ -256,33 +256,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         root: {
           '&.Monite-SummaryCard-StatusTypography': {
             fontSize: 14,
-          },
-          '&.Monite-SummaryCard-StatusTypography-draft': {
-            color: statusBackgroundColors.draft,
-          },
-          '&.Monite-SummaryCard-StatusTypography-new': {
-            color: statusBackgroundColors.new,
-          },
-          '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
-            color: statusBackgroundColors.approve_in_progress,
-          },
-          '&.Monite-SummaryCard-StatusTypography-paid': {
-            color: statusBackgroundColors.paid,
-          },
-          '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
-            color: statusBackgroundColors.waiting_to_be_paid,
-          },
-          '&.Monite-SummaryCard-StatusTypography-rejected': {
-            color: statusBackgroundColors.rejected,
-          },
-          '&.Monite-SummaryCard-StatusTypography-partially_paid': {
-            color: statusBackgroundColors.partially_paid,
-          },
-          '&.Monite-SummaryCard-StatusTypography-canceled': {
-            color: statusBackgroundColors.canceled,
-          },
-          '&.Monite-SummaryCard-StatusTypography-all': {
-            color: statusBackgroundColors.all,
           },
           '&.Monite-SummaryCard-AmountTypography': {
             fontSize: 20,
@@ -747,7 +720,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         paper: {
           border: 'none',
-          borderRadius: moniteTheme.borderRadius * 5.33,
           width: 240,
         },
       },
@@ -815,11 +787,12 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiDataGrid: {
       defaultProps: {
         columnHeaderHeight: 55,
-        rowHeight: 72,
+        rowHeight: 48,
         density: 'standard',
       },
       styleOverrides: {
         root: {
+          color: palette.text.primary,
           backgroundColor: palette.background.default,
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
@@ -862,18 +835,21 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             borderLeftWidth: '0px',
             borderLeftColor: 'divider',
           },
+          '&.Monite-Cell-Highlight': {
+            color: 'neutral.10',
+          },
 
           '.MuiDataGrid-cellOffsetLeft + &': {
             borderLeftStyle: 'none',
             borderLeftWidth: '0',
           },
 
-          padding: '0 15.5px',
+          padding: '0 12px',
           fontWeight: 400,
-          fontSize: '14px',
-          '& span': {
-            fontWeight: 400,
-            fontSize: '14px',
+          fontSize: '15px',
+
+          '& span.Monite-DueDateCell-OverdueDays': {
+            fontSize: '12px',
           },
           // Align counterpart avatar with the cell header
           '&[data-field="counterpart_id"], &[data-field="counterpart_name"], &[data-field="was_created_by_user_id"]':
@@ -894,11 +870,31 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&:focus': {
             outline: 'none',
           },
+          '& .MuiChip-label': {
+            fontWeight: 600,
+            fontSize: '13px',
+            letterSpacing: '0.098px',
+          },
         },
         footerContainer: {
-          margin: '0 16px',
+          padding: '8px 0',
           '& .Monite-RowsPerPageSelector div[role="combobox"]': {
             lineHeight: '40px',
+            fontSize: '13px',
+            color: 'text.secondary',
+          },
+          '& .Monite-TablePagination-PreviousPageButton': {
+            padding: '8px',
+            border: '1px solid',
+            borderColor: 'neutral.80',
+            borderRadius: '4px',
+            marginRight: '6px',
+          },
+          '& .Monite-TablePagination-NextPageButton': {
+            padding: '8px',
+            border: '1px solid',
+            borderColor: 'neutral.80',
+            borderRadius: '4px',
           },
         },
       },
@@ -947,47 +943,40 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiTabs: {
       styleOverrides: {
         root: {
+          borderBottom: '1px solid',
+          borderColor: 'neutral.80',
+          minHeight: 'unset',
           '& .MuiTab-root': {
-            color: palette.neutral[50],
+            backgroundColor: 'transparent',
+            color: 'text.primary',
             padding: '16px',
+            minHeight: 'unset',
             boxSizing: 'border-box',
+            textTransform: 'none',
 
             '&:hover': {
-              '&:after': {
-                content: '""',
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                height: 4,
-                backgroundColor: palette.neutral[50],
-                borderRadius: 10,
-              },
+              backgroundColor: 'transparent',
             },
 
             '&:active': {
-              backgroundColor: palette.neutral[90],
-              borderTopLeftRadius: moniteTheme.borderRadius * 2,
-              borderTopRightRadius: moniteTheme.borderRadius * 2,
+              backgroundColor: 'transparent',
             },
           },
           '& .MuiTab-root.Mui-selected': {
-            backgroundColor: chroma(palette.primary.main).alpha(0.05).hex(),
-            color: palette.primary.main,
-            borderTopLeftRadius: moniteTheme.borderRadius * 2,
-            borderTopRightRadius: moniteTheme.borderRadius * 2,
+            backgroundColor: 'transparent',
+            color: 'text.primary',
 
             '&:hover': {
-              backgroundColor: chroma(palette.primary.main).alpha(0.12).hex(),
+              backgroundColor: 'transparent',
             },
 
             '&:active': {
-              backgroundColor: chroma(palette.primary.main).alpha(0.24).hex(),
+              backgroundColor: 'transparent',
             },
           },
         },
         indicator: {
-          borderRadius: 6,
+          borderRadius: 10,
           backgroundColor: palette.primary.main,
           height: '4px',
         },
@@ -998,16 +987,25 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         root: {
           '&.Monite-SummaryCard': {
             display: 'flex',
-            borderRadius: moniteTheme.borderRadius,
-            backgroundColor: '#ffffff',
-            boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+            borderRadius: moniteTheme.borderRadius * 1.67, //10px
+            backgroundColor: palette.background.default,
+            outline: '3px solid',
+            outlineColor: 'transparent',
+            border: '1px solid',
+            borderColor: palette.neutral['90'],
+            transition:
+              'border-color 0.1s ease-in-out, outline-color 0.2s ease-in-out',
+
+            boxShadow: 'none',
           },
-          '&.Monite-SummaryCard-selected': {
-            border: '2px solid #3737FF',
-          },
+          '&.Monite-SummaryCard-selected, &.Monite-SummaryCard:hover, &.Monite-SummaryCard:active, &.Monite-SummaryCard:focus':
+            {
+              borderColor: palette.primary.main,
+              borderWidth: '1px',
+              outlineColor: palette.primary['80'],
+            },
           '&.Monite-SummaryCard-all': {
             minWidth: '118px',
-            backgroundColor: '#F4F4FE',
           },
         },
       },
@@ -1032,7 +1030,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           },
         },
         rounded: {
-          borderRadius: moniteTheme.borderRadius * 5.33,
           '&.Monite-PayableDetailsForm-Items': {
             // Align delete button with the editor
             'button[aria-label="delete"]': {
@@ -1285,10 +1282,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       ],
     },
     MoniteCounterpartStatusChip: {
-      defaultProps: {
-        size: moniteTheme.components.counterpartStatusChip.size,
-        variant: moniteTheme.components.counterpartStatusChip.variant,
-      },
+      defaultProps: {},
       styleOverrides: {
         root: {
           height: '24px',
@@ -1299,13 +1293,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
-    MoniteApprovalStatusChip: {
-      defaultProps: {
-        icon: moniteTheme.components.approvalStatusChip.icon,
-        size: moniteTheme.components.approvalStatusChip.size,
-        variant: moniteTheme.components.approvalStatusChip.variant,
-      },
-    },
   };
 
   const components = renderColors(defaultMoniteComponents, palette);
@@ -1314,6 +1301,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     spacing: moniteTheme.spacing,
     palette: {
       ...palette,
+      status: statusBackgroundColors,
     },
     shape: {
       borderRadius: moniteTheme.borderRadius,

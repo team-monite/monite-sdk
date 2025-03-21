@@ -11,14 +11,12 @@ export interface DocumentDesignTemplatesProps {
   templates: DocumentTemplate[];
   selectTemplate: (template: DocumentTemplate) => void;
   selectedTemplateId?: DocumentTemplate['id'];
-  getPreview: (id: string) => Promise<string>;
 }
 
 export const DocumentDesignTemplates = ({
   templates,
   selectTemplate,
   selectedTemplateId,
-  getPreview,
 }: DocumentDesignTemplatesProps) => {
   const { i18n } = useLingui();
 
@@ -37,7 +35,6 @@ export const DocumentDesignTemplates = ({
               template={template}
               onSelect={() => selectTemplate(template)}
               isSelected={template.id === selectedTemplateId}
-              getPreview={getPreview}
             />
           </Grid>
         ))}

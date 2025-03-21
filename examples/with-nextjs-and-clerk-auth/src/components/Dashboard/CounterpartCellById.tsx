@@ -29,5 +29,5 @@ export const CounterpartCellById = ({
     return legal_name;
   }
 
-  return '';
+  return <span style={{ color: '#999' }}>-</span>;
 };

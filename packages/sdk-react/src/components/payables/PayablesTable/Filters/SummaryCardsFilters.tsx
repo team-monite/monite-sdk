@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react';
 
 import { components } from '@/api';
-import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
@@ -10,12 +9,12 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Circle } from '@mui/icons-material';
 import {
   Box,
   Card,
   CardContent,
   Palette,
-  PaletteColor,
   Skeleton,
   SxProps,
   Theme,
@@ -36,6 +35,7 @@ interface SummaryCardProps {
   status: ExtendedPayableStateEnum;
   count: number;
   amount?: number;
+  currency: string;
   onClick: () => void;
   selected: boolean;
 }
@@ -55,16 +55,14 @@ export interface StyledCardProps extends ComponentProps<typeof Card> {
 export const SummaryStyledCard = styled(Card, {
   shouldForwardProp: (prop) =>
     prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
-})(({ selected, isAllItems, theme }: StyledCardProps) => ({
+})(({ isAllItems }: StyledCardProps) => ({
   cursor: 'pointer',
-  border: `2px solid ${selected ? theme.palette.primary.main : 'transparent'}`,
-  '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
   display: 'flex',
-  padding: '16px 18px',
+  padding: '12px 16px',
   flexDirection: 'column',
   justifyContent: 'center',
   height: 80,
-  minWidth: isAllItems ? '118px' : '180px',
+  minWidth: isAllItems ? '118px' : '230px',
   flexShrink: 0,
 }));
 
@@ -76,6 +74,7 @@ const SummaryCard = ({
   amount,
   onClick,
   selected,
+  currency,
 }: SummaryCardProps) => {
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
@@ -87,20 +86,25 @@ const SummaryCard = ({
         status as components['schemas']['PayableStateEnum']
       ];
 
-  const getColor = (theme: Palette, colorName: string) => {
-    const [colorGroup, colorShade] = colorName.split('.') as [
-      keyof Palette,
-      string
-    ];
-
-    const paletteGroup = theme[colorGroup] as PaletteColor | undefined;
-
-    return (
-      paletteGroup?.[colorShade as keyof PaletteColor] || theme.text.primary
-    );
+  const formatAmount = (amount: number, currency: string) => {
+    const dividedAmount = amount / 100;
+    return dividedAmount.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      style: 'currency',
+      currency: currency,
+    });
   };
 
-  const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
+  const formattedAmount = amount != null ? formatAmount(amount, currency) : '';
+  const [integerPart, decimalPart] = formattedAmount.includes('.')
+    ? formattedAmount.split('.')
+    : ['0', '00'];
+
+  const getColor = (palette: Palette, status: string) => {
+    return palette.status?.[status] ?? palette.grey[300];
+  };
+
+  const colorValue = getColor(theme.palette, status);
 
   return (
     <SummaryStyledCard
@@ -113,6 +117,11 @@ const SummaryCard = ({
         `${summaryCardClassName}-${status}`,
         selected ? `${summaryCardClassName}-selected` : ''
       )}
+      sx={{
+        '&.Monite-SummaryCard': {
+          background: lighten(colorValue, 0.92),
+        },
+      }}
     >
       <CardContent
         sx={{
@@ -139,8 +148,8 @@ const SummaryCard = ({
             >
               <Typography
                 variant="h6"
-                fontWeight={700}
-                sx={{ fontSize: 16 }}
+                fontWeight={500}
+                sx={{ fontSize: 14 }}
                 className={classNames(
                   summaryCardClassName,
                   `${summaryCardClassName}-title-${status}`
@@ -151,7 +160,7 @@ const SummaryCard = ({
               <Typography
                 variant="body2"
                 color="text.secondary"
-                fontWeight={700}
+                fontWeight={400}
                 fontSize="small"
                 sx={{ mt: 0.5 }}
               >
@@ -159,21 +168,46 @@ const SummaryCard = ({
               </Typography>
             </Box>
           ) : (
-            <>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="row"
+              width="100%"
+            >
               <Typography
                 variant="h6"
-                fontWeight={700}
+                fontWeight={500}
                 fontSize="small"
                 className={classNames(
                   `${summaryCardClassName}-StatusTypography`,
                   `${summaryCardClassName}-StatusTypography-${status}`,
                   `${summaryCardClassName}-StatusTypography-${status}-${selected}`
                 )}
-                color={colorValue}
+                color={'body.primary'}
               >
+                <Circle
+                  sx={{
+                    color: lighten(colorValue, 0.4),
+                    fontSize: 10,
+                    background: lighten(colorValue, 0.82),
+                    borderRadius: '100%',
+                    border: `2px solid ${lighten(colorValue, 0.82)}`,
+                    mr: 1,
+                  }}
+                />
                 {statusText}
               </Typography>
-            </>
+              <Typography
+                variant="body2"
+                color="text.primary"
+                fontWeight={400}
+                fontSize="small"
+                sx={{}}
+              >
+                {count}
+              </Typography>
+            </Box>
           )}
         </Box>
         {status !== 'all' && (
@@ -186,19 +220,25 @@ const SummaryCard = ({
             {/* TODO: Enable amount calculations with analytics endpoint */}
             <Typography
               variant="body2"
-              color="text.secondary"
-              fontWeight={700}
+              color="#000"
+              fontWeight={400}
               fontSize="small"
-              sx={{
-                mt: 1,
-                color: colorValue,
-                borderRadius: 2,
-                paddingLeft: '4px',
-                paddingRight: '4px',
-                backgroundColor: lighten(colorValue, 0.8),
-              }}
+              className={classNames(
+                `${summaryCardClassName}-AmountTypography`,
+                `${summaryCardClassName}-AmountTypography-${status}`,
+                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
+              )}
             >
-              {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
+              {integerPart}.
+              <Typography
+                component="span"
+                color="#000"
+                fontWeight={700}
+                fontSize="small"
+                sx={{}}
+              >
+                {decimalPart}
+              </Typography>
             </Typography>
           </Box>
         )}
@@ -213,6 +253,11 @@ export const SummaryCardsFilters = ({
   sx,
 }: SummaryCardsFiltersProps) => {
   const { data: summaryData } = usePayablesTableSummaryData();
+  const { api, entityId } = useMoniteContext();
+  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: entityId },
+  });
+  const currency: string = entitySettings?.currency?.default ?? 'USD';
 
   const {
     containerRef,
@@ -259,7 +304,7 @@ export const SummaryCardsFilters = ({
     <Box
       ref={containerRef}
       display="flex"
-      gap={2}
+      gap={1}
       onMouseDown={handleMouseDown}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
@@ -267,17 +312,15 @@ export const SummaryCardsFilters = ({
       sx={{
         overflowX: 'auto',
         whiteSpace: 'nowrap',
+        padding: '3px',
         paddingBottom: 1,
         width: '100%',
         justifyContent: 'flex-start',
         alignItems: 'center',
         userSelect: 'none',
-        cursor: 'grab',
-        '&::-webkit-scrollbar': {
-          display: 'none',
-        },
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
+        cursor: 'grab',
         ...sx,
       }}
     >
@@ -287,6 +330,7 @@ export const SummaryCardsFilters = ({
           status={item.status}
           count={item.count}
           amount={item.sum_total_amount}
+          currency={currency}
           onClick={() => handleSelectStatus(item.status)}
           selected={selectedStatus === item.status}
         />

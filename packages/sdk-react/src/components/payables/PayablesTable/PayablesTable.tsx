@@ -23,12 +23,11 @@ import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import { TablePagination } from '@/ui/table/TablePagination';
-import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -235,6 +234,7 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Number`,
         width: 140,
         display: 'flex',
+        cellClassName: 'Monite-Cell-Highlight',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 5 : 1),
         renderCell: (params) => {
           const payable = params.row;
@@ -251,31 +251,11 @@ const PayablesTableBase = ({
           }
 
           return (
-            <Stack
-              direction="column"
-              alignItems="flex-start"
-              gap={0.5}
-              sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
-            >
-              <Typography
-                variant="body1"
-                className="Monite-TextOverflowContainer"
-              >
-                {payable.document_id}
-              </Typography>
-            </Stack>
+            <span className="Monite-TextOverflowContainer">
+              {payable.document_id}
+            </span>
           );
         },
-      },
-      {
-        field: 'status',
-        sortable: false,
-        headerName: t(i18n)`Status`,
-        display: 'flex',
-        width: 100,
-        renderCell: (params) => (
-          <PayableStatusChip status={params.value} size="small" />
-        ),
       },
       {
         field: 'counterpart_id',
@@ -286,28 +266,6 @@ const PayablesTableBase = ({
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.value} />
         ),
-      },
-      {
-        field: 'amount',
-        sortable: false,
-        headerAlign: 'right',
-        align: 'right',
-        headerName: t(i18n)({
-          id: 'Total',
-          message: 'Total',
-          comment: 'Payables Table "Total" heading title',
-        }),
-        width: 120,
-        valueGetter: (_, payable) => {
-          const amount =
-            payable.status === 'paid'
-              ? payable.total_amount
-              : payable.amount_to_pay;
-
-          return amount && payable.currency
-            ? formatCurrencyToDisplay(amount, payable.currency)
-            : '';
-        },
       },
       {
         field: 'created_at',
@@ -336,19 +294,97 @@ const PayablesTableBase = ({
         ) => value && i18n.date(value, locale.dateFormat),
       },
       {
-        field: 'was_created_by_user_id',
+        field: 'status',
         sortable: false,
-        headerName: t(i18n)`Added by`,
+        headerName: t(i18n)`Status`,
         display: 'flex',
-        width: 240,
-        minWidth: 200,
+        width: 100,
         renderCell: (params) => (
-          <UserCell userId={params.row.was_created_by_user_id} />
+          <PayableStatusChip status={params.value} size="small" />
         ),
       },
       {
+        field: 'amount',
+        sortable: false,
+        headerAlign: 'right',
+        align: 'right',
+        headerName: t(i18n)({
+          id: 'Total',
+          message: 'Total',
+          comment: 'Payables Table "Total" heading title',
+        }),
+        width: 120,
+        valueGetter: (_, payable) => {
+          const amount =
+            payable.status === 'paid'
+              ? payable.total_amount
+              : payable.amount_to_pay;
+
+          return amount && payable.currency
+            ? formatCurrencyToDisplay(amount, payable.currency)
+            : '';
+        },
+        renderCell: (params) => {
+          if (!params.value) {
+            return <span style={{ opacity: 0.4 }}>-</span>;
+          }
+          return params.value;
+        },
+      },
+      {
+        field: 'paid',
+        sortable: false,
+        headerAlign: 'right',
+        align: 'right',
+        headerName: t(i18n)({
+          id: 'Paid',
+          message: 'Paid',
+          comment: 'Payables Table "Paid" heading title',
+        }),
+        width: 120,
+        valueGetter: (_, payable) => {
+          return payable.paid_amount && payable.currency
+            ? formatCurrencyToDisplay(payable.paid_amount, payable.currency)
+            : null;
+        },
+        renderCell: (params) => {
+          const statusCanBePaid = [
+            'waiting_to_be_paid',
+            'partially_paid',
+          ].includes(params.row.status);
+
+          if (params.row.status === 'paid') {
+            return formatCurrencyToDisplay(
+              params.row.total_amount,
+              params.row.currency
+            );
+          }
+
+          if (statusCanBePaid) {
+            return params.value ? (
+              params.value
+            ) : (
+              <span style={{ opacity: 0.4 }}>0.00</span>
+            );
+          }
+
+          return <span style={{ opacity: 0.4 }}>-</span>;
+        },
+      },
+      // {
+      //   field: 'was_created_by_user_id',
+      //   sortable: false,
+      //   headerName: t(i18n)`Added by`,
+      //   display: 'flex',
+      //   width: 240,
+      //   minWidth: 200,
+      //   renderCell: (params) => (
+      //     <UserCell userId={params.row.was_created_by_user_id} />
+      //   ),
+      // },
+      {
         field: 'pay',
-        headerName: t(i18n)`Actions`,
+        headerName: t(i18n)`Payment`,
         sortable: false,
         display: 'flex',
         minWidth: 80,

@@ -54,7 +54,12 @@ export const PayablesTableAction = ({
         {isPaymentLinkAvailable ? (
           <Button
             variant="outlined"
+            color="primary"
             size="small"
+            sx={{
+              padding: '0',
+              borderRadius: '8px',
+            }}
             onClick={(e) => {
               e.stopPropagation();
 

@@ -34,6 +34,9 @@ export type FieldValueTypes =
   | 'amount'
   | 'due_date'
   | 'was_created_by_user_id'
+  | 'created_at'
+  | 'paid_amount'
+  | 'status'
   | 'pay';
 
 export interface MonitePayableTableProps {
