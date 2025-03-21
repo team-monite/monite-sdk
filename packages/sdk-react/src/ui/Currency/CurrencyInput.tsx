@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { FieldError } from 'react-hook-form';
 
+import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
 import { getCurrenciesArray } from '@/core/utils';
 import { useLingui } from '@lingui/react';
@@ -18,6 +19,7 @@ interface CurrencyInputProps extends AutocompleteRenderInputParams {
   error?: FieldError;
   required?: boolean;
   label?: string;
+  defaultValue?: components['schemas']['CurrencyEnum'] | null;
 }
 
 export const CurrencyInput = ({
@@ -25,6 +27,7 @@ export const CurrencyInput = ({
   error,
   required,
   label,
+  defaultValue = null,
   ...params
 }: CurrencyInputProps) => {
   const { i18n } = useLingui();
@@ -58,6 +61,7 @@ export const CurrencyInput = ({
       label={label}
       error={!!error?.message}
       helperText={error?.message}
+      defaultValue={defaultValue}
       InputProps={{
         ...params.InputProps,
         sx: {

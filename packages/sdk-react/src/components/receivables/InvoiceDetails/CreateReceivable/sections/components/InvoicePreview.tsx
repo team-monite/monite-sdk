@@ -9,6 +9,7 @@ import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { generateUniqueId } from '@/utils/uuid';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -21,7 +22,9 @@ import { CreateReceivablesFormProps } from '../../validation';
 import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {
-  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+  address:
+    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
+    | null;
   counterpart?: components['schemas']['CounterpartResponse'];
   counterpartVats:
     | {
@@ -83,16 +86,23 @@ export const InvoicePreview = ({
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
-  // the below is currently used to fix TS error "Types of property 'smallest_amount' are incompatible."
-  const sanitizedItems = items.map((item) => ({
-    ...item,
-    smallest_amount: item.smallest_amount ?? undefined,
-  }));
+  const sanitizedItems = items
+    .filter((item) => item.product.name !== '')
+    .map((item) => ({
+      ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
+      id: item.product_id || generateUniqueId(),
+      smallest_amount: item.product.smallest_amount ?? undefined,
+      product: {
+        ...item.product,
+        type: item.product.type as 'product' | 'service',
+      },
+    }));
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
     lineItems: sanitizedItems,
     formatCurrencyToDisplay,
     isNonVatSupported,
+    actualCurrency: currency,
   });
 
   const getApplicableTaxRate = (
@@ -120,7 +130,7 @@ export const InvoicePreview = ({
     items: Array<CreateReceivablesFormBeforeValidationLineItemProps>
   ): Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]> => {
     return items.reduce((acc, item) => {
-      const taxRate = formatTaxRate(item);
+      const taxRate = formatTaxRate(item); // This is already converted to percentage
       if (taxRate === 0) {
         return acc;
       }
@@ -132,6 +142,7 @@ export const InvoicePreview = ({
     }, {} as Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]>);
   };
 
+  // This function calculates the tax amount based on the percentage and item values
   const calculateTotalTaxesByRate = (
     groupedItems: Record<
       number,
@@ -139,11 +150,14 @@ export const InvoicePreview = ({
     >
   ): Array<{ taxRate: number; totalTax: number }> => {
     return Object.keys(groupedItems).map((taxRateKey) => {
-      const taxRate = Number(taxRateKey);
+      const taxRate = Number(taxRateKey); // This is already a percentage (e.g., 0.19 for 0.19%)
       const items = groupedItems[taxRate];
       const totalTax = items.reduce((sum, item) => {
-        const itemPrice = item.price?.value || 0;
+        const itemPrice = item.product?.price?.value || 0;
+        // taxRate is already a percentage (e.g., 0.19 for 0.19%),
+        // so we need to multiply by itemPrice * quantity and divide by 100
         const itemTax = (itemPrice * item.quantity * taxRate) / 100;
+
         return sum + itemTax;
       }, 0);
       return { taxRate, totalTax };
@@ -166,7 +180,7 @@ export const InvoicePreview = ({
               {entityData?.logo?.url ? (
                 <img src={entityData.logo.url} />
               ) : (
-                <span>{t(i18n)`No logo`}</span>
+                <div className="no-logo-placeholder">{t(i18n)`No logo`}</div>
               )}
             </div>
           </aside>
@@ -312,19 +326,22 @@ export const InvoicePreview = ({
                 {sanitizedItems.length > 0 ? (
                   sanitizedItems.map((item) => (
                     <tr>
-                      <td style={{ maxWidth: '120px' }}>{item?.name}</td>
+                      <td style={{ maxWidth: '120px' }}>
+                        {item?.product.name}
+                      </td>
                       <td>{item?.quantity}</td>
                       <td>
-                        {item?.measure_unit_id && (
-                          <MeasureUnit unitId={item.measure_unit_id} />
+                        {item?.product.measure_unit_id && (
+                          <MeasureUnit unitId={item.product.measure_unit_id} />
                         )}
                       </td>
                       <td>
-                        {formatCurrencyToDisplay(
-                          item.price.value,
-                          item.price.currency,
-                          false
-                        )}
+                        {item.product.price &&
+                          formatCurrencyToDisplay(
+                            item.product.price.value,
+                            item.product.price.currency,
+                            false
+                          )}
                       </td>
                       <td>{formatTaxRate(item)}%</td>
                     </tr>
@@ -338,7 +355,7 @@ export const InvoicePreview = ({
                 )}
               </tbody>
             </table>
-            {items?.length > 1 && (
+            {sanitizedItems?.length > 0 && (
               <table cellPadding={0} cellSpacing={0} className="totals-table">
                 <tbody>
                   <tr className="subtotal">

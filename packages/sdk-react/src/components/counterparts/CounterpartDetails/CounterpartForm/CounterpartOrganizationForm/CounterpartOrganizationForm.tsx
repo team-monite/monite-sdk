@@ -417,7 +417,7 @@ export const CounterpartOrganizationForm = (
           <Button
             variant="outlined"
             sx={{ marginRight: 'auto' }}
-            onClick={props.onReturn}
+            onClick={props.onCancel}
           >{t(i18n)`Back`}</Button>
         )}
         {(props?.id || dialogContext) && (

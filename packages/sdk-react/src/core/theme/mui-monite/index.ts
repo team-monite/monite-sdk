@@ -460,7 +460,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             {
               padding: '0 14px',
             },
-          '& > .Monite-CounterpartSelector': {
+          '& > .Monite-Selector': {
             '& > .MuiInputBase-root': {
               border: '1px solid transparent',
               '&:hover': {
@@ -485,7 +485,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 },
               },
               '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
-                padding: '16px 16px 16px 16px',
+                padding: '16px',
                 height: '70px',
                 lineHeight: '70px',
                 backgroundColor: 'transparent',
@@ -503,6 +503,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
                 },
               },
             },
+
             '& > .MuiFormLabel-root': {
               fontSize: '1.25rem',
               paddingBottom: '1rem',
@@ -533,13 +534,24 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               },
             },
           },
-
+          '& > .Item-Selector > .MuiInputBase-root.MuiInputBase-formControl.MuiAutocomplete-inputRoot':
+            {
+              paddingRight: '1em',
+              '&.MuiInputBase-adornedStart.MuiInputBase-formControl': {
+                padding: '8px 12px',
+                height: '40px',
+                lineHeight: '40px',
+              },
+            },
           '&.Monite-FilterControl': {
             height: '40px',
             minHeight: '40px',
             maxHeight: '40px',
             maxWidth: filterControlWidth,
             width: '100%',
+          },
+          '&.Monite-Label-Hidden .MuiInputLabel-root.MuiFormLabel-root': {
+            display: 'none',
           },
         },
         popper: {
@@ -909,9 +921,22 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             {
               borderColor: 'neutral.80',
             },
-          '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
-            borderBottom: 'none',
-            padding: '8px 12px',
+          '&.Monite-CreateReceivable-ItemsSection-Table': {
+            '.MuiTableCell-root': {
+              borderBottom: 'none',
+              padding: '8px 12px 8px 0',
+              '& .MuiFormControl-root .MuiInputBase-root': {
+                backgroundColor: '#fff',
+              },
+            },
+
+            'th.MuiTableCell-root': {
+              padding: '0 12px 0 0',
+            },
+
+            '+ .MuiTableRow-root .MuiTableCell-root': {
+              paddingLeft: 0,
+            },
           },
           '&:last-child .MuiTableCell-body': {
             borderBottom: 'none',
