@@ -4,17 +4,14 @@ import React from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import BrushIcon from '@mui/icons-material/Brush';
-import { Box } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { List } from '@mui/material';
 
-import { NavigationListCollapse } from '@/components/NavigationMenu/NavigationListCollapse';
 import { NavigationListItem } from '@/components/NavigationMenu/NavigationListItem';
 import {
   IconApps,
   IconBag,
   IconBox,
-  IconCog,
   IconFilesLandscapes,
   IconPostcard,
   IconQuestionCircle,
@@ -22,6 +19,7 @@ import {
   IconUniversity,
   IconUsdCircle,
   IconBolt,
+  IconBrush,
 } from '@/icons';
 
 export const NavigationList = () => {
@@ -33,14 +31,14 @@ export const NavigationList = () => {
         <NavigationListItem href="/" icon={<IconApps />}>
           {t(i18n)`Dashboard`}
         </NavigationListItem>
-        <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
-          {t(i18n)`AI Assistant`}
-        </NavigationListItem>
         <NavigationListItem href="/payables" icon={<IconUsdCircle />}>
           {t(i18n)`Bill Pay`}
         </NavigationListItem>
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
           {t(i18n)`Invoicing`}
+        </NavigationListItem>
+        <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
+          {t(i18n)`AI Assistant`}
         </NavigationListItem>
         <NavigationListItem href="/projects" icon={<IconBag />}>
           {t(i18n)`Projects`}
@@ -51,17 +49,32 @@ export const NavigationList = () => {
         <NavigationListItem href="/products" icon={<IconBox />}>
           {t(i18n)`Products & Services`}
         </NavigationListItem>
-        <NavigationListCollapse icon={<IconCog />} label="Settings">
-          <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
-            {t(i18n)`Roles & Approvals`}
-          </NavigationListItem>
-          <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
-            {t(i18n)`Tags`}
-          </NavigationListItem>
-          <NavigationListItem href="/invoice-design" icon={<BrushIcon />}>
-            {t(i18n)`Document Design`}
-          </NavigationListItem>
-        </NavigationListCollapse>
+      </List>
+
+      <Typography
+        variant="h6"
+        className="NavigationListTitle"
+        sx={{
+          fontSize: '12px',
+          fontWeight: 'bold',
+          color: '#3E424A',
+          margin: '16px 0 8px 0',
+          padding: '8px 16px 0 16px',
+        }}
+      >
+        {t(i18n)`Settings`}
+      </Typography>
+
+      <List className="NavigationList" disablePadding>
+        <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
+          {t(i18n)`Roles & Approvals`}
+        </NavigationListItem>
+        <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
+          {t(i18n)`Tags`}
+        </NavigationListItem>
+        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
+          {t(i18n)`Document Design`}
+        </NavigationListItem>
       </List>
       <Box
         display="flex"

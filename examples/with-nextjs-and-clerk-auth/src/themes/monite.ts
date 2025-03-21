@@ -647,6 +647,14 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
+          '& .MuiTypography-root': {
+            fontSize: '13px',
+            fontStyle: 'normal',
+            fontWeight: 500,
+            lineHeight: '20px',
+            letterSpacing: '0.078px',
+          },
+
           '.MuiListItemButton-root': {
             borderRadius: '8px',
             padding: '4px 12px',
