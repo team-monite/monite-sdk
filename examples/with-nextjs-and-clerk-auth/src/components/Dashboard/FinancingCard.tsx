@@ -12,7 +12,7 @@ export const FinancingCard = () => {
       style={{ background: 'linear-gradient(180deg, #F9F9FA 0%, #FFF 100%)' }}
     >
       <DashboardCard
-        title="Create an invoice"
+        title="Set up financing & get paid now"
         renderIcon={() => (
           <IconCard sx={{ width: '20px', height: '20px', color: 'black' }} />
         )}
