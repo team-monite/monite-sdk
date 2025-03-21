@@ -257,33 +257,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.Monite-SummaryCard-StatusTypography': {
             fontSize: 14,
           },
-          // '&.Monite-SummaryCard-StatusTypography-draft': {
-          //   color: statusBackgroundColors.draft,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-new': {
-          //   color: statusBackgroundColors.new,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
-          //   color: statusBackgroundColors.approve_in_progress,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-paid': {
-          //   color: statusBackgroundColors.paid,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
-          //   color: statusBackgroundColors.waiting_to_be_paid,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-rejected': {
-          //   color: statusBackgroundColors.rejected,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-partially_paid': {
-          //   color: statusBackgroundColors.partially_paid,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-canceled': {
-          //   color: statusBackgroundColors.canceled,
-          // },
-          // '&.Monite-SummaryCard-StatusTypography-all': {
-          //   color: statusBackgroundColors.all,
-          // },
           '&.Monite-SummaryCard-AmountTypography': {
             fontSize: 20,
             marginTop: 4,
@@ -1309,10 +1282,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       ],
     },
     MoniteCounterpartStatusChip: {
-      defaultProps: {
-        // size: moniteTheme.components.counterpartStatusChip.size,
-        // variant: moniteTheme.components.counterpartStatusChip.variant,
-      },
+      defaultProps: {},
       styleOverrides: {
         root: {
           height: '24px',

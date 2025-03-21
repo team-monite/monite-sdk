@@ -36,7 +36,7 @@ export default function DefaultPage() {
           alignItems={'center'}
           sx={{ width: '100%', mb: '24px' }}
         >
-          <h1>Welcome, {user?.firstName}</h1>
+          <h1>Welcome{user?.firstName ? `, ${user?.firstName}` : ''}</h1>
         </Stack>
         <Stack
           direction="column"
