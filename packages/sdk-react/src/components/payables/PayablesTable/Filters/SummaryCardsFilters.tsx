@@ -1,7 +1,6 @@
-import { ComponentProps, useState, useEffect, useRef } from 'react';
+import { ComponentProps } from 'react';
 
 import { components } from '@/api';
-import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';

@@ -4,19 +4,21 @@ import { ArrowForward } from '@mui/icons-material';
 import { Box, Link } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
-import { IconReceipt } from '@/icons';
+import { IconCard } from '@/icons';
 
-export const CreateInvoiceCard = () => {
+export const FinancingCard = () => {
   return (
     <div
       style={{ background: 'linear-gradient(180deg, #F9F9FA 0%, #FFF 100%)' }}
     >
       <DashboardCard
         title="Create an invoice"
-        renderIcon={(props) => <IconReceipt {...props} />}
+        renderIcon={(props) => (
+          <IconCard sx={{ width: '20px', height: '20px', color: 'black' }} />
+        )}
         sx={{
           backgroundColor: 'transparent',
-          backgroundImage: `url('/invoice-bg.svg')`,
+          backgroundImage: `url('/financing-bg.svg')`,
           backgroundRepeat: `no-repeat`,
           backgroundPosition: `bottom 0 right 80px`,
         }}
@@ -40,7 +42,7 @@ export const CreateInvoiceCard = () => {
               fontSize: `0.9rem`,
             }}
           >
-            Set your style and create invoice{' '}
+            Get approved for invoice financing{' '}
             <ArrowForward sx={{ fontSize: '1rem' }} />
           </Link>
         </Box>

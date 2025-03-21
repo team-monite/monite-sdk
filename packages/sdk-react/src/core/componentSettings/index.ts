@@ -3,7 +3,6 @@ import { CustomerTypes } from '@/components/counterparts/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
-import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';

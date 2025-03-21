@@ -4,7 +4,7 @@ import { createDayPluralForm } from '@/components/receivables/InvoiceDetails/Exi
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 interface DueDateCellProps {
   data:

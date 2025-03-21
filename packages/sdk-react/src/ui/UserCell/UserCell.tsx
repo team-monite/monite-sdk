@@ -15,18 +15,6 @@ export const UserCell = ({ userId }: { userId: string }) => {
 
   const name = `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim();
 
-  // Split name into parts by ' ' and take first letters from the first and last parts of the name
-  // For example, Mike Borough -> MB
-  // Ambercombie -> A
-  const avatarLetters = (
-    user.first_name &&
-    user.first_name.length > 1 &&
-    user.last_name &&
-    user.last_name.length > 1
-      ? user.first_name[0] + user.last_name[0]
-      : (user.first_name ?? user.last_name ?? 'A')[0] || ''
-  ).toUpperCase();
-
   return (
     <Stack
       className="Monite-UserCell"

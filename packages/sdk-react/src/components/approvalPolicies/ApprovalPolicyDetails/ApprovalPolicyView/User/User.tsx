@@ -1,6 +1,5 @@
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
-import { Chip, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 
 interface UserProps {
   userId: string;

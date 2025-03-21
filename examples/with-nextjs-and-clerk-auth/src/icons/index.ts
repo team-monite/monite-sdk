@@ -25,3 +25,4 @@ export { IconPayable } from './IconPayable';
 export { IconSmilyFace } from './IconSmilyFace';
 export { IconPresentation } from './IconPresentation';
 export { IconBrush } from './IconBrush';
+export { IconCard } from './IconCard';

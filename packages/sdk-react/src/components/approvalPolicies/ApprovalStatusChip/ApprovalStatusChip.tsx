@@ -8,7 +8,7 @@ import {
 } from '@/components/approvalPolicies/consts';
 import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
-import { Chip, ChipProps, CircularProgress } from '@mui/material';
+import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 export interface MoniteApprovalStatusChipProps {

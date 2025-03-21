@@ -29,7 +29,7 @@ import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Sync } from '@mui/icons-material';
-import { Box, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,

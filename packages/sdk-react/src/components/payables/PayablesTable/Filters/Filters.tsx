@@ -4,13 +4,7 @@ import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import { FormControl, MenuItem, Select, SxProps } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { Theme } from 'mui-styles';

@@ -4,8 +4,6 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
-import ArrowRight from '@mui/icons-material/ArrowForwardIos';
 import {
   Box,
   Grid,

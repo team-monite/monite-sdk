@@ -28,7 +28,7 @@ export const PayableStatusChip = forwardRef<
   HTMLDivElement,
   MonitePayableStatusChipProps
 >((inProps, ref) => {
-  const { status, icon, size, variant } = useThemeProps({
+  const { status, icon, size } = useThemeProps({
     props: inProps,
     name: 'MonitePayableStatusChip',
   });

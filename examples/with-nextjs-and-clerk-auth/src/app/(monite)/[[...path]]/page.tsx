@@ -9,6 +9,7 @@ import { Box, Stack, Skeleton, Container } from '@mui/material';
 import { CashFlowCard } from '@/components/Dashboard/Cashflow';
 import { CreateInvoiceCard } from '@/components/Dashboard/CreateInvoiceCard';
 import { DuePayablesCard } from '@/components/Dashboard/DuePayables';
+import { FinancingCard } from '@/components/Dashboard/FinancingCard';
 import { OutstandingInvoicesCard } from '@/components/Dashboard/OutstandingInvoices';
 
 export default function DefaultPage() {
@@ -38,7 +39,7 @@ export default function DefaultPage() {
           <h1>Welcome, {user?.firstName}</h1>
         </Stack>
         <Stack
-          direction="row"
+          direction="column"
           spacing={3}
           useFlexGap={true}
           justifyContent="space-between"
@@ -46,6 +47,9 @@ export default function DefaultPage() {
         >
           <Box sx={{ flex: 1 }}>
             <CreateInvoiceCard />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <FinancingCard />
           </Box>
         </Stack>
         <Box sx={{ width: '100%', mt: 3 }}>

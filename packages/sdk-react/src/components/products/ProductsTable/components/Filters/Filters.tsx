@@ -6,13 +6,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import { FormControl, MenuItem, Select, SxProps } from '@mui/material';
 
 import { Theme } from 'mui-styles';
 

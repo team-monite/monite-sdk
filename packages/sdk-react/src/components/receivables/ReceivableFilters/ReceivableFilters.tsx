@@ -9,12 +9,7 @@ import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CalendarToday } from '@mui/icons-material';
-import {
-  FormControl as MuiFormControl,
-  InputLabel as MuiInputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import { FormControl as MuiFormControl, MenuItem, Select } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { formatISO } from 'date-fns';

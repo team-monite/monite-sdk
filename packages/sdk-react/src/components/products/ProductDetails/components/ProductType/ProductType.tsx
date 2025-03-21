@@ -2,7 +2,7 @@ import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Stack, Typography, Chip } from '@mui/material';
+import { Stack, Chip } from '@mui/material';
 
 import { UBox } from '../../../ProductsTable/components/icons/UBox';
 import { UBusiness } from '../../../ProductsTable/components/icons/UBusiness';
