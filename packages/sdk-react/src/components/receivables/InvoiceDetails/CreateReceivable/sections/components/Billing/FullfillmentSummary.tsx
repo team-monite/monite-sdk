@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -9,8 +8,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { LockOutlined } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
@@ -24,6 +22,7 @@ interface FullfillmentSummaryProps extends SectionGeneralProps {
       }
     | undefined;
   isPaymentTermsLoading: boolean;
+  isFieldShown: boolean;
   refetch: (options?: RefetchOptions) => Promise<
     QueryObserverResult<
       {
@@ -40,6 +39,7 @@ export const FullfillmentSummary = ({
   disabled,
   paymentTerms,
   isPaymentTermsLoading,
+  isFieldShown,
   refetch,
 }: FullfillmentSummaryProps) => {
   const { i18n } = useLingui();
@@ -51,8 +51,6 @@ export const FullfillmentSummary = ({
   const { root } = useRootElements();
 
   const dateTime = i18n.date(new Date(), locale.dateTimeFormat);
-
-  const [isFieldShown, setIsFieldShown] = useState<boolean>(false);
 
   const paymentTermsId = watch('payment_terms_id');
 
@@ -139,11 +137,6 @@ export const FullfillmentSummary = ({
             onPaymentTermsChange={handlePaymentTermsChange}
           />
         </Box>
-        {!isFieldShown && (
-          <Button startIcon={<AddIcon />} onClick={() => setIsFieldShown(true)}>
-            {t(i18n)`Fulfillment date`}
-          </Button>
-        )}
         {isFieldShown && (
           <Controller
             name="fulfillment_date"

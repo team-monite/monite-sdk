@@ -5,3 +5,7 @@ export interface SectionGeneralProps {
    */
   disabled: boolean;
 }
+
+export interface ValidationErrorItem {
+  [key: string]: ValidationErrorItem | { message: string } | undefined;
+}

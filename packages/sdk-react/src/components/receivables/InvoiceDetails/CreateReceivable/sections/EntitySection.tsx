@@ -14,9 +14,16 @@ interface EntitySectionProps extends SectionGeneralProps {
    *   and we want to hide it. But for [CREATE] request it should be sent)
    */
   hidden?: ['purchase_order'];
+  visibleFields?: {
+    isPurchaseOrderShown: boolean;
+    isTermsAndConditionsShown: boolean;
+  };
 }
 
-export const EntitySection = ({ disabled }: EntitySectionProps) => {
+export const EntitySection = ({
+  disabled,
+  visibleFields,
+}: EntitySectionProps) => {
   const { i18n } = useLingui();
   const { control } = useFormContext<CreateReceivablesFormProps>();
 
@@ -41,6 +48,7 @@ export const EntitySection = ({ disabled }: EntitySectionProps) => {
             fullWidth
             required
             disabled={disabled}
+            sx={{ mb: 2 }}
             error={Boolean(error)}
           >
             <TextField
@@ -56,6 +64,71 @@ export const EntitySection = ({ disabled }: EntitySectionProps) => {
           </FormControl>
         )}
       />
+      {visibleFields && visibleFields.isPurchaseOrderShown && (
+        <>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            sx={{ lineHeight: 2 }}
+          >
+            {t(i18n)`Purchase order`}
+          </Typography>
+          <Controller
+            name="purchase_order"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl
+                variant="standard"
+                fullWidth
+                required
+                disabled={disabled}
+                sx={{ mb: 2 }}
+                error={Boolean(error)}
+              >
+                <TextField
+                  {...field}
+                  placeholder={t(i18n)`Add number`}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              </FormControl>
+            )}
+          />
+        </>
+      )}
+      {visibleFields && visibleFields.isTermsAndConditionsShown && (
+        <>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            sx={{ lineHeight: 2 }}
+          >
+            {t(i18n)`Terms and conditions`}
+          </Typography>
+          <Controller
+            name="terms_and_conditions"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl
+                variant="standard"
+                fullWidth
+                required
+                disabled={disabled}
+                error={Boolean(error)}
+              >
+                <TextField
+                  {...field}
+                  placeholder={t(i18n)`Add text`}
+                  multiline
+                  minRows={2}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              </FormControl>
+            )}
+          />
+        </>
+      )}
     </Box>
   );
 };
