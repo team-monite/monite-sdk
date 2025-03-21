@@ -27,7 +27,6 @@ import { useLingui } from '@lingui/react';
 import {
   Box,
   Button,
-  createSvgIcon,
   Dialog,
   DialogActions,
   DialogContent,

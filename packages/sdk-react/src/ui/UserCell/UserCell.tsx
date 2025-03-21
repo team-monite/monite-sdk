@@ -1,8 +1,7 @@
 import { useEntityUserById } from '@/core/queries';
-import { calculateAvatarColorIndex } from '@/ui/CounterpartCell/CounterpartCell';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Avatar, Skeleton, Stack } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 
 export const UserCell = ({ userId }: { userId: string }) => {
   const { data: entityUser, isLoading } = useEntityUserById(userId);

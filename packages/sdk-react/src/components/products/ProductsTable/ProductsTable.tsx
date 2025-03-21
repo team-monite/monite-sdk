@@ -16,7 +16,7 @@ import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -99,7 +99,7 @@ const ProductsTableBase = ({
   onFilterChanged: onChangeFilterCallback,
   onSortChanged: onChangeSortCallback,
   onRowClick,
-  onEdit,
+
   onDeleted,
   openCreateModal,
 }: ProductTableProps) => {
@@ -130,16 +130,6 @@ const ProductsTableBase = ({
       action: 'read',
       entityUserId: user?.id,
     });
-  const { data: isUpdateSupported } = useIsActionAllowed({
-    method: 'product',
-    action: 'update',
-    entityUserId: user?.id,
-  });
-  const { data: isDeleteSupported } = useIsActionAllowed({
-    method: 'product',
-    action: 'delete',
-    entityUserId: user?.id,
-  });
 
   const {
     data: products,
@@ -244,13 +234,7 @@ const ProductsTableBase = ({
       //   ),
       // },
     ];
-  }, [
-    formatCurrencyToDisplay,
-    i18n,
-    isDeleteSupported,
-    isUpdateSupported,
-    onEdit,
-  ]);
+  }, [formatCurrencyToDisplay, i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

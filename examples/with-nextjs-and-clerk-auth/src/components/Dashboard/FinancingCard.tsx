@@ -13,7 +13,7 @@ export const FinancingCard = () => {
     >
       <DashboardCard
         title="Create an invoice"
-        renderIcon={(props) => (
+        renderIcon={() => (
           <IconCard sx={{ width: '20px', height: '20px', color: 'black' }} />
         )}
         sx={{

@@ -15,7 +15,6 @@ import {
   Card,
   CardContent,
   Palette,
-  PaletteColor,
   Skeleton,
   SxProps,
   Theme,
@@ -56,7 +55,7 @@ export interface StyledCardProps extends ComponentProps<typeof Card> {
 export const SummaryStyledCard = styled(Card, {
   shouldForwardProp: (prop) =>
     prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
-})(({ selected, isAllItems, theme }: StyledCardProps) => ({
+})(({ isAllItems }: StyledCardProps) => ({
   cursor: 'pointer',
   display: 'flex',
   padding: '12px 16px',
