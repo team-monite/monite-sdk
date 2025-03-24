@@ -555,7 +555,7 @@ msgstr "American Samoa"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:76
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:13
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:35
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:280
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:283
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:206
 msgid "Amount"
 msgstr "Amount"
@@ -2022,8 +2022,8 @@ msgstr "Create invoice"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:89
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:128
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:333
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:413
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:336
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:416
 #: src/components/receivables/Receivables.test.tsx:34
 #: src/components/receivables/Receivables.test.tsx:75
 #: src/components/receivables/Receivables.test.tsx:112
@@ -2120,7 +2120,7 @@ msgstr "Created by user"
 
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:209
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:147
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:256
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:259
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:175
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:51
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:164
@@ -2195,7 +2195,7 @@ msgstr "Current status"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:190
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:145
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:246
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:249
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:189
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:104
 msgid "Customer"
@@ -2251,7 +2251,7 @@ msgstr "Date of birth"
 msgid "Dating/Escort Services"
 msgstr "Dating/Escort Services"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:87
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:88
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:160
 msgid "days"
 msgstr "days"
@@ -2317,7 +2317,7 @@ msgstr "Defaulted"
 #: src/components/products/Products.test.tsx:235
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:270
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:46
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:73
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:74
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:78
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:82
@@ -2529,7 +2529,7 @@ msgstr "Disabling reminders prevents sending any payment reminders to this count
 msgid "Discount"
 msgstr "Discount"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:60
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:61
 msgid "Discount {0}"
 msgstr "Discount {0}"
 
@@ -2653,7 +2653,7 @@ msgstr "Dry Cleaners"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:294
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:297
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:199
 msgid "Due date"
 msgstr "Due date"
@@ -3814,7 +3814,7 @@ msgstr "Intra-Company Purchases"
 
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:139
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:133
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:202
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:205
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:160
 msgid "INV-auto"
 msgstr "INV-auto"
@@ -3843,9 +3843,9 @@ msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:272
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:175
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:341
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:334
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:336
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:414
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:337
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:339
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:417
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:235
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:237
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:303
@@ -3930,7 +3930,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:271
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:412
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:415
 #: src/core/componentSettings/index.ts:145
 msgid "Invoices"
 msgstr "Invoices"
@@ -3989,7 +3989,7 @@ msgstr "Issue at"
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:154
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:85
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:232
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:268
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:271
 msgid "Issue date"
 msgstr "Issue date"
 
@@ -4968,7 +4968,7 @@ msgid "No Quotes"
 msgstr "No Quotes"
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:125
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:330
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:333
 msgid "No Receivables"
 msgstr "No Receivables"
 
@@ -5274,7 +5274,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:79
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:80
 msgid "Pay in"
 msgstr "Pay in"
 
@@ -5985,7 +5985,7 @@ msgid "Recurrence was completed, all invoices were issued"
 msgstr "Recurrence was completed, all invoices were issued"
 
 #: src/components/receivables/getCommonStatusLabel.ts:23
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:194
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:197
 msgid "Recurring"
 msgstr "Recurring"
 
@@ -6700,7 +6700,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:163
 #: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:156
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:57
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:227
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:230
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:167
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:74
 msgid "Status"
@@ -7163,7 +7163,7 @@ msgstr "To add a discount you need to fill out all the fields"
 msgid "To create a preset you need to fill out all the required fields"
 msgstr "To create a preset you need to fill out all the required fields"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:90
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:91
 msgid "to get discount"
 msgstr "to get discount"
 
@@ -7990,7 +7990,7 @@ msgid "You can create your first credit note."
 msgstr "You can create your first credit note."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:127
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:332
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:335
 msgid "You can create your first invoice."
 msgstr "You can create your first invoice."
 
@@ -8051,7 +8051,7 @@ msgid "You don’t have any credit notes yet."
 msgstr "You don’t have any credit notes yet."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:126
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:331
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:334
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
