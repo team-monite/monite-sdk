@@ -35,8 +35,20 @@ html {
 }
 
 .Monite-Dashboard {
+  &.Monite-PageContainer {
+    overflow: auto;
+    padding-bottom: 40px;
+  }
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.Monite-Dashboard,
+.Monite-AiAssistant {
+  &.Monite-PageContainer {
+    overflow: auto;
+    padding-bottom: 40px;
+  }
 }
 
 .Monite-Projects-Header {
