@@ -100,10 +100,10 @@ export function permissionsAdapter(actions: {
             action_name,
             permission,
           })
-        ) as unknown as components['schemas']['BizObjectsSchema']['objects'],
+        ) as unknown as components['schemas']['BizObjectsSchema-Input']['objects'],
       };
     }),
-  } as Required<components['schemas']['BizObjectsSchema']>;
+  } as Required<components['schemas']['BizObjectsSchema-Input']>;
 }
 
 type DefaultRoleName =
@@ -1483,11 +1483,13 @@ export const roles_default_permissions: {
   },
 };
 
-type BizObjectType = NonNullable<BizObjects['object_type']>;
+type BizObjectType = NonNullable<
+  components['schemas']['BizObjectsSchema-Input']['objects']
+>[number]['object_type'];
 
-type BizObjects = Required<
-  NonNullable<components['schemas']['BizObjectsSchema']['objects']>[number]
->;
+type BizObjects = NonNullable<
+  components['schemas']['BizObjectsSchema-Input']['objects']
+>[number];
 
 type BizObject<
   T extends BizObjectType,
