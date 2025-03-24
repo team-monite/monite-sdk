@@ -75,6 +75,8 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
             quote_signature_required: entitySettings!.quote_signature_required,
             receivable_edit_flow: entitySettings!.receivable_edit_flow,
             generate_paid_invoice_pdf: auto_update_pdf,
+            payables_skip_approval_flow:
+              entitySettings!.payables_skip_approval_flow,
           });
 
           closeModal();
