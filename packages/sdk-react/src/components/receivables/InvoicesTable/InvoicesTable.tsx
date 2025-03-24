@@ -191,7 +191,6 @@ const InvoicesTableBase = ({
                       >
                         <>
                           <Sync
-                            fontSize="small"
                             sx={{ marginRight: 0.5, fontSize: 'inherit' }}
                             color="inherit"
                           />
