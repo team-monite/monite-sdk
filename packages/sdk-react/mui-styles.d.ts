@@ -12,21 +12,30 @@ import {
   ComponentsPropsList,
   ComponentsVariants,
   Theme as MuiTheme,
+  Palette,
+  PaletteOptions,
 } from '@mui/material/styles';
 
-type Theme = Omit<MuiTheme, 'components'>;
-
-/**
- * Extends theme `components` with Monite components,
- * allowing to configure default props, style overrides, and variants.
- */
-interface ComponentType<T extends keyof ComponentsPropsList> {
-  defaultProps?: ComponentsPropsList[T];
-  styleOverrides?: ComponentsOverrides<Theme>[T];
-  variants?: ComponentsVariants[T];
-}
+type Theme = Omit<MuiTheme, 'components'> & {
+  palette: Palette & {
+    status: {
+      [key: string]: string;
+    };
+  };
+};
 
 declare module '@mui/material/styles' {
+  interface Palette {
+    status: {
+      [key: string]: string;
+    };
+  }
+  interface PaletteOptions {
+    status?: {
+      [key: string]: string;
+    };
+  }
+
   /**
    * Extends `styleOverrides` of the component theme configuration
    * with slots from the component.
@@ -66,4 +75,14 @@ declare module '@mui/material/styles' {
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
   }
+}
+
+/**
+ * Extends theme `components` with Monite components,
+ * allowing to configure default props, style overrides, and variants.
+ */
+interface ComponentType<T extends keyof ComponentsPropsList> {
+  defaultProps?: ComponentsPropsList[T];
+  styleOverrides?: ComponentsOverrides<Theme>[T];
+  variants?: ComponentsVariants[T];
 }
