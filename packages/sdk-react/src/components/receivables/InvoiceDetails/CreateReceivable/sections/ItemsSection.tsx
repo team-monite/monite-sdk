@@ -174,7 +174,7 @@ export const ItemsSection = ({
   } = useCreateInvoiceProductsTable({
     lineItems: currentLineItems || fields,
     formatCurrencyToDisplay,
-    isNonVatSupported: isNonVatSupported,
+    isNonVatSupported,
     actualCurrency,
   });
 
@@ -273,20 +273,28 @@ export const ItemsSection = ({
           type: template?.product?.type || 'product',
         };
 
+      // Preserve VAT rates correctly based on region
+      // For non-VAT regions, use tax_rate_value, otherwise preserve vat_rate_id and vat_rate_value
       return {
-        id: template?.id || generateUniqueId(),
+        id: template?.id ?? generateUniqueId(),
         product_id: template?.product_id || '',
         product,
-        quantity: template?.quantity || 1,
-        vat_rate_value: template?.vat_rate_value || 0,
-        tax_rate_value: template?.tax_rate_value || 0,
+        quantity: template?.quantity ?? 1,
+        // Preserve VAT values or set defaults based on region
+        vat_rate_id: isNonVatSupported ? undefined : template?.vat_rate_id,
+        vat_rate_value: isNonVatSupported
+          ? undefined
+          : template?.vat_rate_value,
+        tax_rate_value: isNonVatSupported
+          ? template?.tax_rate_value ?? 0
+          : undefined,
         // Preserve measure_unit for custom units
         ...(template?.measure_unit
           ? { measure_unit: template.measure_unit }
           : {}),
       };
     },
-    [actualCurrency, defaultCurrency]
+    [actualCurrency, defaultCurrency, isNonVatSupported]
   );
 
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
@@ -386,7 +394,7 @@ export const ItemsSection = ({
         if (!currentPrice || currentPrice === 0) {
           setValueWithValidationLocal(
             `line_items.${index}.product.price.value`,
-            item.price?.value || 0
+            item.price?.value ?? 0
           );
         }
 
@@ -439,18 +447,27 @@ export const ItemsSection = ({
           );
         }
 
-        // VAT/Tax rates affect calculations - validation needed
-        setValueWithValidationLocal(
-          `line_items.${index}.vat_rate_id`,
-          item.vat_rate_id
-        );
-        setValueWithValidationLocal(
-          `line_items.${index}.vat_rate_value`,
-          item.vat_rate_value
-        );
+        // Only set VAT rates from catalog item when selecting from catalog, not for manual entries
+        if (item.id !== 'custom') {
+          // VAT/Tax rates from catalog have priority over existing values
+          if (item.vat_rate_id !== undefined) {
+            setValueWithValidationLocal(
+              `line_items.${index}.vat_rate_id`,
+              item.vat_rate_id
+            );
+          }
+
+          if (item.vat_rate_value !== undefined) {
+            setValueWithValidationLocal(
+              `line_items.${index}.vat_rate_value`,
+              item.vat_rate_value
+            );
+          }
+        }
+
         setValueWithValidationLocal(
           `line_items.${index}.quantity`,
-          item.smallestAmount || 1
+          item.smallestAmount ?? 1
         );
         setValueWithValidationLocal(
           `line_items.${index}.product.type`,
@@ -705,7 +722,7 @@ export const ItemsSection = ({
                           />
                         ) : (
                           <FormControl
-                            variant="standard"
+                            variant="outlined"
                             fullWidth
                             required
                             error={Boolean(taxError)}

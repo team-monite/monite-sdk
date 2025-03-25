@@ -4,7 +4,6 @@ import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
-import { rateMajorToMinor } from '@/core/utils/vatUtils';
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
@@ -60,9 +59,7 @@ export const useCreateInvoiceProductsTable = ({
 
   const getVatRateValue = useCallback(
     (field: CreateReceivablesFormBeforeValidationLineItemProps) => {
-      return isNonVatSupported
-        ? rateMajorToMinor(field?.tax_rate_value ?? 0)
-        : field.vat_rate_value;
+      return isNonVatSupported ? field.tax_rate_value : field.vat_rate_value;
     },
     [isNonVatSupported]
   );
@@ -76,7 +73,10 @@ export const useCreateInvoiceProductsTable = ({
     if (!taxRate) {
       return acc;
     }
-    const tax = (subtotalPrice * taxRate) / 10_000;
+
+    const tax = isNonVatSupported
+      ? (subtotalPrice * taxRate) / 100
+      : (subtotalPrice * taxRate) / 10_000;
 
     return acc + tax;
   }, 0);

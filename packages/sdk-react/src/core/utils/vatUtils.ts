@@ -36,3 +36,15 @@ export const getRateValueForDisplay = (
   }
   return rateMinorToMajor(vatRateMinor);
 };
+
+/**
+ * Format a VAT rate for display as a percentage string
+ * Takes a rate in minor units (e.g., 700 for 7%) and returns a formatted string (e.g., "7.00%")
+ * toLocaleString with style: 'percent' expects values in range 0-1, where 0.07 represents 7%
+ */
+export const formatVatRateForDisplay = (rateValue: number): string => {
+  return (rateMinorToMajor(rateValue) / 100).toLocaleString(undefined, {
+    style: 'percent',
+    minimumFractionDigits: 2,
+  });
+};
