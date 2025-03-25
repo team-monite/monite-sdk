@@ -110,6 +110,19 @@ class MoniteDropin {
     return this;
   }
 
+  public unmount() {
+    // Remove all event listeners
+    const events = Object.keys(this.events);
+    events.forEach((event) => {
+      this.off(event as MoniteEventTypes);
+    });
+
+    // Remove the element from the DOM
+    this.moniteAppElement.remove();
+
+    return this;
+  }
+
   public on(event: MoniteEventTypes, callback: (event: CustomEvent) => void) {
     this.events[event] = addMoniteEventListener(
       event,
