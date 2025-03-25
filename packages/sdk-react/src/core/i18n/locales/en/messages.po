@@ -463,7 +463,7 @@ msgstr "Albanian Lek"
 msgid "Algeria"
 msgstr "Algeria"
 
-#: src/core/utils/currencies.ts:48
+#: src/core/utils/currencies.ts:50
 msgid "Algerian Dinar"
 msgstr "Algerian Dinar"
 
@@ -530,7 +530,7 @@ msgstr "All users from list, one by one"
 msgid "Allowed"
 msgstr "Allowed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:108
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:110
 msgid "Already updated PDFs can't be reverted to the default view"
 msgstr "Already updated PDFs can't be reverted to the default view"
 
@@ -746,7 +746,7 @@ msgstr "Architectural/Surveying Services"
 msgid "Are you sure you want to cancel this recurring invoice?"
 msgstr "Are you sure you want to cancel this recurring invoice?"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:112
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:114
 msgid "Are you sure you want to regenerate this PDF file to contain the amount paid and amount due sums?"
 msgstr "Are you sure you want to regenerate this PDF file to contain the amount paid and amount due sums?"
 
@@ -842,7 +842,7 @@ msgstr "Automated Cash Disburse"
 msgid "Automated Fuel Dispensers"
 msgstr "Automated Fuel Dispensers"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:128
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:130
 msgid "Automatically update all future PDF files"
 msgstr "Automatically update all future PDF files"
 
@@ -911,7 +911,7 @@ msgstr "Back to edit"
 msgid "Bahamas"
 msgstr "Bahamas"
 
-#: src/core/utils/currencies.ts:32
+#: src/core/utils/currencies.ts:33
 msgid "Bahamian Dollar"
 msgstr "Bahamian Dollar"
 
@@ -1005,7 +1005,7 @@ msgstr "Before due date"
 msgid "Belarus"
 msgstr "Belarus"
 
-#: src/core/utils/currencies.ts:34
+#: src/core/utils/currencies.ts:36
 msgid "Belarusian Ruble"
 msgstr "Belarusian Ruble"
 
@@ -1017,7 +1017,7 @@ msgstr "Belgium"
 msgid "Belize"
 msgstr "Belize"
 
-#: src/core/utils/currencies.ts:35
+#: src/core/utils/currencies.ts:37
 msgid "Belize Dollar"
 msgstr "Belize Dollar"
 
@@ -1029,6 +1029,10 @@ msgstr "Benin"
 msgid "Bermuda"
 msgstr "Bermuda"
 
+#: src/core/utils/currencies.ts:29
+msgid "Bermudian Dollar"
+msgstr "Bermudian Dollar"
+
 #: src/components/onboarding/dicts/mccCodes.ts:149
 msgid "Betting/Casino Gambling"
 msgstr "Betting/Casino Gambling"
@@ -1036,6 +1040,10 @@ msgstr "Betting/Casino Gambling"
 #: src/core/utils/countries.ts:44
 msgid "Bhutan"
 msgstr "Bhutan"
+
+#: src/core/utils/currencies.ts:34
+msgid "Bhutanese Ngultrum"
+msgstr "Bhutanese Ngultrum"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:190
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:36
@@ -1095,7 +1103,7 @@ msgstr "Body"
 msgid "Bolivia"
 msgstr "Bolivia"
 
-#: src/core/utils/currencies.ts:30
+#: src/core/utils/currencies.ts:31
 msgid "Bolivian Boliviano"
 msgstr "Bolivian Boliviano"
 
@@ -1119,7 +1127,7 @@ msgstr "Bosnia and Herzegovina Convertible Mark"
 msgid "Botswana"
 msgstr "Botswana"
 
-#: src/core/utils/currencies.ts:33
+#: src/core/utils/currencies.ts:35
 msgid "Botswana Pula"
 msgstr "Botswana Pula"
 
@@ -1135,7 +1143,7 @@ msgstr "Bowling Alleys"
 msgid "Brazil"
 msgstr "Brazil"
 
-#: src/core/utils/currencies.ts:31
+#: src/core/utils/currencies.ts:32
 msgid "Brazilian Real"
 msgstr "Brazilian Real"
 
@@ -1143,7 +1151,7 @@ msgstr "Brazilian Real"
 msgid "British Indian Ocean Territory"
 msgstr "British Indian Ocean Territory"
 
-#: src/core/utils/currencies.ts:53
+#: src/core/utils/currencies.ts:56
 msgid "British Pound Sterling"
 msgstr "British Pound Sterling"
 
@@ -1151,7 +1159,7 @@ msgstr "British Pound Sterling"
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: src/core/utils/currencies.ts:29
+#: src/core/utils/currencies.ts:30
 msgid "Brunei Dollar"
 msgstr "Brunei Dollar"
 
@@ -1167,7 +1175,7 @@ msgstr "Bulgarian Lev"
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: src/core/utils/currencies.ts:89
+#: src/core/utils/currencies.ts:94
 msgid "Burmese Kyat"
 msgstr "Burmese Kyat"
 
@@ -1249,7 +1257,7 @@ msgstr "Cable, Satellite, and Other Pay Television and Radio"
 msgid "Cambodia"
 msgstr "Cambodia"
 
-#: src/core/utils/currencies.ts:74
+#: src/core/utils/currencies.ts:78
 msgid "Cambodian Riel"
 msgstr "Cambodian Riel"
 
@@ -1273,7 +1281,7 @@ msgstr "Can't be more than the amount due"
 msgid "Canada"
 msgstr "Canada"
 
-#: src/core/utils/currencies.ts:36
+#: src/core/utils/currencies.ts:38
 msgid "Canadian Dollar"
 msgstr "Canadian Dollar"
 
@@ -1314,7 +1322,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:340
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:141
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:143
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:138
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:140
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:268
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:102
@@ -1392,7 +1400,7 @@ msgstr "Candy, Nut, and Confectionery Stores"
 msgid "Cape Verde"
 msgstr "Cape Verde"
 
-#: src/core/utils/currencies.ts:43
+#: src/core/utils/currencies.ts:45
 msgid "Cape Verdean Escudo"
 msgstr "Cape Verdean Escudo"
 
@@ -1437,11 +1445,11 @@ msgstr "Caterers"
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
 
-#: src/core/utils/currencies.ts:78
+#: src/core/utils/currencies.ts:82
 msgid "Cayman Islands Dollar"
 msgstr "Cayman Islands Dollar"
 
-#: src/core/utils/currencies.ts:142
+#: src/core/utils/currencies.ts:151
 msgid "Central African CFA Franc"
 msgstr "Central African CFA Franc"
 
@@ -1449,7 +1457,7 @@ msgstr "Central African CFA Franc"
 msgid "Central African Republic"
 msgstr "Central African Republic"
 
-#: src/core/utils/currencies.ts:145
+#: src/core/utils/currencies.ts:154
 msgid "CFP Franc"
 msgstr "CFP Franc"
 
@@ -1481,7 +1489,7 @@ msgstr "Childrens and Infants Wear Stores"
 msgid "Chile"
 msgstr "Chile"
 
-#: src/core/utils/currencies.ts:39
+#: src/core/utils/currencies.ts:41
 msgid "Chilean Peso"
 msgstr "Chilean Peso"
 
@@ -1489,7 +1497,7 @@ msgstr "Chilean Peso"
 msgid "China"
 msgstr "China"
 
-#: src/core/utils/currencies.ts:40
+#: src/core/utils/currencies.ts:42
 msgid "Chinese Yuan"
 msgstr "Chinese Yuan"
 
@@ -1603,7 +1611,7 @@ msgstr "Colleges, Universities"
 msgid "Colombia"
 msgstr "Colombia"
 
-#: src/core/utils/currencies.ts:41
+#: src/core/utils/currencies.ts:43
 msgid "Colombian Peso"
 msgstr "Colombian Peso"
 
@@ -1627,7 +1635,7 @@ msgstr "Commercial Photography, Art and Graphics"
 msgid "Commuter Transport, Ferries"
 msgstr "Commuter Transport, Ferries"
 
-#: src/core/utils/currencies.ts:75
+#: src/core/utils/currencies.ts:79
 msgid "Comorian Franc"
 msgstr "Comorian Franc"
 
@@ -1716,7 +1724,7 @@ msgstr "Congo"
 msgid "Congo, Democratic Republic"
 msgstr "Congo, Democratic Republic"
 
-#: src/core/utils/currencies.ts:37
+#: src/core/utils/currencies.ts:39
 msgid "Congolese Franc"
 msgstr "Congolese Franc"
 
@@ -1825,7 +1833,7 @@ msgstr "Cosmetic Stores"
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: src/core/utils/currencies.ts:42
+#: src/core/utils/currencies.ts:44
 msgid "Costa Rican Colón"
 msgstr "Costa Rican Colón"
 
@@ -2150,8 +2158,8 @@ msgid "Croatia"
 msgstr "Croatia"
 
 #: src/core/utils/currencies.ts:62
-msgid "Croatian Kuna"
-msgstr "Croatian Kuna"
+#~ msgid "Croatian Kuna"
+#~ msgstr "Croatian Kuna"
 
 #: src/components/onboarding/dicts/mccCodes.ts:410
 msgid "Cruise Lines"
@@ -2213,7 +2221,7 @@ msgstr "Customers & Vendors"
 msgid "Cyprus"
 msgstr "Cyprus"
 
-#: src/core/utils/currencies.ts:44
+#: src/core/utils/currencies.ts:46
 msgid "Czech Koruna"
 msgstr "Czech Koruna"
 
@@ -2229,7 +2237,7 @@ msgstr "Dairy Products Stores"
 msgid "Dance Hall, Studios, Schools"
 msgstr "Dance Hall, Studios, Schools"
 
-#: src/core/utils/currencies.ts:46
+#: src/core/utils/currencies.ts:48
 msgid "Danish Krone"
 msgstr "Danish Krone"
 
@@ -2555,7 +2563,7 @@ msgstr "Discounted subtotal"
 msgid "Djibouti"
 msgstr "Djibouti"
 
-#: src/core/utils/currencies.ts:45
+#: src/core/utils/currencies.ts:47
 msgid "Djiboutian Franc"
 msgstr "Djiboutian Franc"
 
@@ -2575,7 +2583,7 @@ msgstr "Document templates"
 msgid "Dominica"
 msgstr "Dominica"
 
-#: src/core/utils/currencies.ts:47
+#: src/core/utils/currencies.ts:49
 msgid "Dominican Peso"
 msgstr "Dominican Peso"
 
@@ -2692,7 +2700,7 @@ msgstr "Duty Free Stores"
 msgid "Early payment discounts"
 msgstr "Early payment discounts"
 
-#: src/core/utils/currencies.ts:143
+#: src/core/utils/currencies.ts:152
 msgid "East Caribbean Dollar"
 msgstr "East Caribbean Dollar"
 
@@ -2846,7 +2854,7 @@ msgstr "Educational Services"
 msgid "Egypt"
 msgstr "Egypt"
 
-#: src/core/utils/currencies.ts:49
+#: src/core/utils/currencies.ts:51
 msgid "Egyptian Pound"
 msgstr "Egyptian Pound"
 
@@ -3007,11 +3015,11 @@ msgstr "Estonia"
 msgid "Ethiopia"
 msgstr "Ethiopia"
 
-#: src/core/utils/currencies.ts:50
+#: src/core/utils/currencies.ts:52
 msgid "Ethiopian Birr"
 msgstr "Ethiopian Birr"
 
-#: src/core/utils/currencies.ts:51
+#: src/core/utils/currencies.ts:53
 msgid "Euro"
 msgstr "Euro"
 
@@ -3155,6 +3163,10 @@ msgstr "Failed to update VAT."
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
 
+#: src/core/utils/currencies.ts:55
+msgid "Falkland Islands Pound"
+msgstr "Falkland Islands Pound"
+
 #: src/components/onboarding/dicts/mccCodes.ts:610
 msgid "Family Clothing Stores"
 msgstr "Family Clothing Stores"
@@ -3183,7 +3195,7 @@ msgstr "Federal Taxpayers Registry (Mexico)"
 msgid "Fiji"
 msgstr "Fiji"
 
-#: src/core/utils/currencies.ts:52
+#: src/core/utils/currencies.ts:54
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
@@ -3402,7 +3414,7 @@ msgstr "Gabon"
 msgid "Gambia"
 msgstr "Gambia"
 
-#: src/core/utils/currencies.ts:56
+#: src/core/utils/currencies.ts:60
 msgid "Gambian Dalasi"
 msgstr "Gambian Dalasi"
 
@@ -3414,7 +3426,7 @@ msgstr "General Services"
 msgid "Georgia"
 msgstr "Georgia"
 
-#: src/core/utils/currencies.ts:54
+#: src/core/utils/currencies.ts:57
 msgid "Georgian Lari"
 msgstr "Georgian Lari"
 
@@ -3438,11 +3450,15 @@ msgstr "Get your business moving and accelerate growth with quick and easy acces
 msgid "Ghana"
 msgstr "Ghana"
 
+#: src/core/utils/currencies.ts:58
+msgid "Ghanaian Cedi"
+msgstr "Ghanaian Cedi"
+
 #: src/core/utils/countries.ts:101
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
-#: src/core/utils/currencies.ts:55
+#: src/core/utils/currencies.ts:59
 msgid "Gibraltar Pound"
 msgstr "Gibraltar Pound"
 
@@ -3533,7 +3549,7 @@ msgstr "Guam"
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: src/core/utils/currencies.ts:58
+#: src/core/utils/currencies.ts:62
 msgid "Guatemalan Quetzal"
 msgstr "Guatemalan Quetzal"
 
@@ -3549,7 +3565,7 @@ msgstr "Guinea"
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
 
-#: src/core/utils/currencies.ts:57
+#: src/core/utils/currencies.ts:61
 msgid "Guinean Franc"
 msgstr "Guinean Franc"
 
@@ -3557,7 +3573,7 @@ msgstr "Guinean Franc"
 msgid "Guyana"
 msgstr "Guyana"
 
-#: src/core/utils/currencies.ts:59
+#: src/core/utils/currencies.ts:63
 msgid "Guyanese Dollar"
 msgstr "Guyanese Dollar"
 
@@ -3565,7 +3581,7 @@ msgstr "Guyanese Dollar"
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/core/utils/currencies.ts:63
+#: src/core/utils/currencies.ts:66
 msgid "Haitian Gourde"
 msgstr "Haitian Gourde"
 
@@ -3642,7 +3658,7 @@ msgstr "Home address"
 msgid "Home Supply Warehouse Stores"
 msgstr "Home Supply Warehouse Stores"
 
-#: src/core/utils/currencies.ts:61
+#: src/core/utils/currencies.ts:65
 msgid "Honduran Lempira"
 msgstr "Honduran Lempira"
 
@@ -3654,7 +3670,7 @@ msgstr "Honduras"
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
-#: src/core/utils/currencies.ts:60
+#: src/core/utils/currencies.ts:64
 msgid "Hong Kong Dollar"
 msgstr "Hong Kong Dollar"
 
@@ -3670,7 +3686,7 @@ msgstr "Hotels, Motels, and Resorts"
 msgid "Household Appliance Stores"
 msgstr "Household Appliance Stores"
 
-#: src/core/utils/currencies.ts:64
+#: src/core/utils/currencies.ts:67
 msgid "Hungarian Forint"
 msgstr "Hungarian Forint"
 
@@ -3704,7 +3720,7 @@ msgstr "IBAN"
 msgid "Iceland"
 msgstr "Iceland"
 
-#: src/core/utils/currencies.ts:68
+#: src/core/utils/currencies.ts:72
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
@@ -3750,7 +3766,7 @@ msgstr "Income Tax Number (Malaysia)"
 msgid "India"
 msgstr "India"
 
-#: src/core/utils/currencies.ts:67
+#: src/core/utils/currencies.ts:70
 msgid "Indian Rupee"
 msgstr "Indian Rupee"
 
@@ -3775,7 +3791,7 @@ msgstr "Individuals"
 msgid "Indonesia"
 msgstr "Indonesia"
 
-#: src/core/utils/currencies.ts:65
+#: src/core/utils/currencies.ts:68
 msgid "Indonesian Rupiah"
 msgstr "Indonesian Rupiah"
 
@@ -3943,6 +3959,10 @@ msgstr "Iran, Islamic Republic Of"
 msgid "Iraq"
 msgstr "Iraq"
 
+#: src/core/utils/currencies.ts:71
+msgid "Iraqi Dinar"
+msgstr "Iraqi Dinar"
+
 #: src/core/utils/countries.ts:123
 msgid "Ireland"
 msgstr "Ireland"
@@ -3955,7 +3975,7 @@ msgstr "Isle Of Man"
 msgid "Israel"
 msgstr "Israel"
 
-#: src/core/utils/currencies.ts:66
+#: src/core/utils/currencies.ts:69
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
@@ -4106,7 +4126,7 @@ msgstr "Items"
 msgid "Jamaica"
 msgstr "Jamaica"
 
-#: src/core/utils/currencies.ts:69
+#: src/core/utils/currencies.ts:73
 msgid "Jamaican Dollar"
 msgstr "Jamaican Dollar"
 
@@ -4114,7 +4134,7 @@ msgstr "Jamaican Dollar"
 msgid "Japan"
 msgstr "Japan"
 
-#: src/core/utils/currencies.ts:71
+#: src/core/utils/currencies.ts:75
 msgid "Japanese Yen"
 msgstr "Japanese Yen"
 
@@ -4137,7 +4157,7 @@ msgstr "Job title"
 msgid "Jordan"
 msgstr "Jordan"
 
-#: src/core/utils/currencies.ts:70
+#: src/core/utils/currencies.ts:74
 msgid "Jordanian Dinar"
 msgstr "Jordanian Dinar"
 
@@ -4145,7 +4165,7 @@ msgstr "Jordanian Dinar"
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: src/core/utils/currencies.ts:79
+#: src/core/utils/currencies.ts:83
 msgid "Kazakhstani Tenge"
 msgstr "Kazakhstani Tenge"
 
@@ -4153,7 +4173,7 @@ msgstr "Kazakhstani Tenge"
 msgid "Kenya"
 msgstr "Kenya"
 
-#: src/core/utils/currencies.ts:72
+#: src/core/utils/currencies.ts:76
 msgid "Kenyan Shilling"
 msgstr "Kenyan Shilling"
 
@@ -4182,11 +4202,11 @@ msgstr "Korea"
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: src/core/utils/currencies.ts:77
+#: src/core/utils/currencies.ts:81
 msgid "Kuwaiti Dinar"
 msgstr "Kuwaiti Dinar"
 
-#: src/core/utils/currencies.ts:73
+#: src/core/utils/currencies.ts:77
 msgid "Kyrgystani Som"
 msgstr "Kyrgystani Som"
 
@@ -4202,7 +4222,7 @@ msgstr "Landscaping Services"
 msgid "Lao People\"s Democratic Republic"
 msgstr "Lao People\"s Democratic Republic"
 
-#: src/core/utils/currencies.ts:80
+#: src/core/utils/currencies.ts:84
 msgid "Laotian Kip"
 msgstr "Laotian Kip"
 
@@ -4262,7 +4282,7 @@ msgstr "Laundry, Cleaning Services"
 msgid "Leave page"
 msgstr "Leave page"
 
-#: src/core/utils/currencies.ts:81
+#: src/core/utils/currencies.ts:85
 msgid "Lebanese Pound"
 msgstr "Lebanese Pound"
 
@@ -4287,7 +4307,7 @@ msgstr "Legal Services, Attorneys"
 msgid "Lesotho"
 msgstr "Lesotho"
 
-#: src/core/utils/currencies.ts:84
+#: src/core/utils/currencies.ts:88
 msgid "Lesotho Loti"
 msgstr "Lesotho Loti"
 
@@ -4311,13 +4331,17 @@ msgstr "Less than or equal to {formattedValue}"
 msgid "Liberia"
 msgstr "Liberia"
 
-#: src/core/utils/currencies.ts:83
+#: src/core/utils/currencies.ts:87
 msgid "Liberian Dollar"
 msgstr "Liberian Dollar"
 
 #: src/core/utils/countries.ts:143
 msgid "Libyan Arab Jamahiriya"
 msgstr "Libyan Arab Jamahiriya"
+
+#: src/core/utils/currencies.ts:89
+msgid "Libyan Dinar"
+msgstr "Libyan Dinar"
 
 #: src/core/utils/countries.ts:144
 msgid "Liechtenstein"
@@ -4372,7 +4396,7 @@ msgstr "Lumber, Building Materials Stores"
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: src/core/utils/currencies.ts:91
+#: src/core/utils/currencies.ts:96
 msgid "Macanese Pataca"
 msgstr "Macanese Pataca"
 
@@ -4384,7 +4408,7 @@ msgstr "Macao"
 msgid "Macedonia"
 msgstr "Macedonia"
 
-#: src/core/utils/currencies.ts:88
+#: src/core/utils/currencies.ts:93
 msgid "Macedonian Denar"
 msgstr "Macedonian Denar"
 
@@ -4400,7 +4424,7 @@ msgstr "Mailbox"
 msgid "Make default"
 msgstr "Make default"
 
-#: src/core/utils/currencies.ts:87
+#: src/core/utils/currencies.ts:92
 msgid "Malagasy Ariary"
 msgstr "Malagasy Ariary"
 
@@ -4408,7 +4432,7 @@ msgstr "Malagasy Ariary"
 msgid "Malawi"
 msgstr "Malawi"
 
-#: src/core/utils/currencies.ts:94
+#: src/core/utils/currencies.ts:99
 msgid "Malawian Kwacha"
 msgstr "Malawian Kwacha"
 
@@ -4416,7 +4440,7 @@ msgstr "Malawian Kwacha"
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: src/core/utils/currencies.ts:96
+#: src/core/utils/currencies.ts:101
 msgid "Malaysian Ringgit"
 msgstr "Malaysian Ringgit"
 
@@ -4424,7 +4448,7 @@ msgstr "Malaysian Ringgit"
 msgid "Maldives"
 msgstr "Maldives"
 
-#: src/core/utils/currencies.ts:93
+#: src/core/utils/currencies.ts:98
 msgid "Maldivian Rufiyaa"
 msgstr "Maldivian Rufiyaa"
 
@@ -4502,7 +4526,7 @@ msgstr "Massage Parlors"
 msgid "Mauritania"
 msgstr "Mauritania"
 
-#: src/core/utils/currencies.ts:92
+#: src/core/utils/currencies.ts:97
 msgid "Mauritian Rupee"
 msgstr "Mauritian Rupee"
 
@@ -4556,7 +4580,7 @@ msgstr "Message"
 msgid "Metal Service Centers"
 msgstr "Metal Service Centers"
 
-#: src/core/utils/currencies.ts:95
+#: src/core/utils/currencies.ts:100
 msgid "Mexican Peso"
 msgstr "Mexican Peso"
 
@@ -4635,7 +4659,7 @@ msgstr "Mobile Home Dealers"
 msgid "Moldova"
 msgstr "Moldova"
 
-#: src/core/utils/currencies.ts:86
+#: src/core/utils/currencies.ts:91
 msgid "Moldovan Leu"
 msgstr "Moldovan Leu"
 
@@ -4647,7 +4671,7 @@ msgstr "Monaco"
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: src/core/utils/currencies.ts:90
+#: src/core/utils/currencies.ts:95
 msgid "Mongolian Tugrik"
 msgstr "Mongolian Tugrik"
 
@@ -4663,7 +4687,7 @@ msgstr "Montserrat"
 msgid "More"
 msgstr "More"
 
-#: src/core/utils/currencies.ts:85
+#: src/core/utils/currencies.ts:90
 msgid "Moroccan Dirham"
 msgstr "Moroccan Dirham"
 
@@ -4695,7 +4719,7 @@ msgstr "Motorcycle Shops and Dealers"
 msgid "Motorcycle Shops, Dealers"
 msgstr "Motorcycle Shops, Dealers"
 
-#: src/core/utils/currencies.ts:97
+#: src/core/utils/currencies.ts:102
 msgid "Mozambican Metical"
 msgstr "Mozambican Metical"
 
@@ -4753,7 +4777,7 @@ msgstr "Name, country, city"
 msgid "Namibia"
 msgstr "Namibia"
 
-#: src/core/utils/currencies.ts:98
+#: src/core/utils/currencies.ts:103
 msgid "Namibian Dollar"
 msgstr "Namibian Dollar"
 
@@ -4773,7 +4797,7 @@ msgstr "Nauru"
 msgid "Nepal"
 msgstr "Nepal"
 
-#: src/core/utils/currencies.ts:102
+#: src/core/utils/currencies.ts:107
 msgid "Nepalese Rupee"
 msgstr "Nepalese Rupee"
 
@@ -4810,7 +4834,7 @@ msgstr "New incoming invoice"
 msgid "New tag “{0}” created"
 msgstr "New tag “{0}” created"
 
-#: src/core/utils/currencies.ts:132
+#: src/core/utils/currencies.ts:141
 msgid "New Taiwan Dollar"
 msgstr "New Taiwan Dollar"
 
@@ -4818,7 +4842,7 @@ msgstr "New Taiwan Dollar"
 msgid "New Zealand"
 msgstr "New Zealand"
 
-#: src/core/utils/currencies.ts:103
+#: src/core/utils/currencies.ts:108
 msgid "New Zealand Dollar"
 msgstr "New Zealand Dollar"
 
@@ -4841,7 +4865,7 @@ msgstr "Next page"
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-#: src/core/utils/currencies.ts:100
+#: src/core/utils/currencies.ts:105
 msgid "Nicaraguan Córdoba"
 msgstr "Nicaraguan Córdoba"
 
@@ -4853,7 +4877,7 @@ msgstr "Niger"
 msgid "Nigeria"
 msgstr "Nigeria"
 
-#: src/core/utils/currencies.ts:99
+#: src/core/utils/currencies.ts:104
 msgid "Nigerian Naira"
 msgstr "Nigerian Naira"
 
@@ -5041,7 +5065,7 @@ msgstr "Northern Mariana Islands"
 msgid "Norway"
 msgstr "Norway"
 
-#: src/core/utils/currencies.ts:101
+#: src/core/utils/currencies.ts:106
 msgid "Norwegian Krone"
 msgstr "Norwegian Krone"
 
@@ -5096,7 +5120,7 @@ msgstr "Office and Commercial Furniture"
 msgid "Oman"
 msgstr "Oman"
 
-#: src/core/utils/currencies.ts:104
+#: src/core/utils/currencies.ts:109
 msgid "Omani Rial"
 msgstr "Omani Rial"
 
@@ -5202,7 +5226,7 @@ msgstr "Paints, Varnishes, and Supplies"
 msgid "Pakistan"
 msgstr "Pakistan"
 
-#: src/core/utils/currencies.ts:109
+#: src/core/utils/currencies.ts:114
 msgid "Pakistani Rupee"
 msgstr "Pakistani Rupee"
 
@@ -5218,7 +5242,7 @@ msgstr "Palestinian Territory, Occupied"
 msgid "Panama"
 msgstr "Panama"
 
-#: src/core/utils/currencies.ts:105
+#: src/core/utils/currencies.ts:110
 msgid "Panamanian Balboa"
 msgstr "Panamanian Balboa"
 
@@ -5226,7 +5250,7 @@ msgstr "Panamanian Balboa"
 msgid "Papua New Guinea"
 msgstr "Papua New Guinea"
 
-#: src/core/utils/currencies.ts:107
+#: src/core/utils/currencies.ts:112
 msgid "Papua New Guinean Kina"
 msgstr "Papua New Guinean Kina"
 
@@ -5234,7 +5258,7 @@ msgstr "Papua New Guinean Kina"
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: src/core/utils/currencies.ts:111
+#: src/core/utils/currencies.ts:116
 msgid "Paraguayan Guarani"
 msgstr "Paraguayan Guarani"
 
@@ -5460,7 +5484,7 @@ msgstr "Persons review"
 msgid "Peru"
 msgstr "Peru"
 
-#: src/core/utils/currencies.ts:106
+#: src/core/utils/currencies.ts:111
 msgid "Peruvian Sol"
 msgstr "Peruvian Sol"
 
@@ -5472,7 +5496,7 @@ msgstr "Pet Shops, Pet Food, and Supplies"
 msgid "Petroleum and Petroleum Products"
 msgstr "Petroleum and Petroleum Products"
 
-#: src/core/utils/currencies.ts:108
+#: src/core/utils/currencies.ts:113
 msgid "Philippine Peso"
 msgstr "Philippine Peso"
 
@@ -5668,7 +5692,7 @@ msgstr "Policy name is required"
 msgid "Policy will be applied if document matches <0>ALL</0> of the following conditions:"
 msgstr "Policy will be applied if document matches <0>ALL</0> of the following conditions:"
 
-#: src/core/utils/currencies.ts:110
+#: src/core/utils/currencies.ts:115
 msgid "Polish Złoty"
 msgstr "Polish Złoty"
 
@@ -5856,7 +5880,7 @@ msgstr "Purchase order"
 msgid "Qatar"
 msgstr "Qatar"
 
-#: src/core/utils/currencies.ts:112
+#: src/core/utils/currencies.ts:117
 msgid "Qatari Rial"
 msgstr "Qatari Rial"
 
@@ -6191,7 +6215,7 @@ msgstr "Roles from the list"
 msgid "Romania"
 msgstr "Romania"
 
-#: src/core/utils/currencies.ts:113
+#: src/core/utils/currencies.ts:119
 msgid "Romanian Leu"
 msgstr "Romanian Leu"
 
@@ -6222,7 +6246,7 @@ msgstr "Rows per page"
 msgid "Russian Federation"
 msgstr "Russian Federation"
 
-#: src/core/utils/currencies.ts:115
+#: src/core/utils/currencies.ts:121
 msgid "Russian Ruble"
 msgstr "Russian Ruble"
 
@@ -6230,13 +6254,17 @@ msgstr "Russian Ruble"
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: src/core/utils/currencies.ts:116
+#: src/core/utils/currencies.ts:122
 msgid "Rwandan Franc"
 msgstr "Rwandan Franc"
 
 #: src/core/utils/countries.ts:201
 msgid "Saint Helena"
 msgstr "Saint Helena"
+
+#: src/core/utils/currencies.ts:128
+msgid "Saint Helena Pound"
+msgstr "Saint Helena Pound"
 
 #: src/core/utils/countries.ts:202
 msgid "Saint Kitts And Nevis"
@@ -6262,11 +6290,15 @@ msgstr "Sales"
 msgid "Sales and Service Tax (Malaysia)"
 msgstr "Sales and Service Tax (Malaysia)"
 
+#: src/core/utils/currencies.ts:133
+msgid "Salvadoran Colón"
+msgstr "Salvadoran Colón"
+
 #: src/core/utils/countries.ts:206
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/core/utils/currencies.ts:141
+#: src/core/utils/currencies.ts:150
 msgid "Samoan Tala"
 msgstr "Samoan Tala"
 
@@ -6282,7 +6314,7 @@ msgstr "Sao Tome And Principe"
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
-#: src/core/utils/currencies.ts:117
+#: src/core/utils/currencies.ts:123
 msgid "Saudi Riyal"
 msgstr "Saudi Riyal"
 
@@ -6415,7 +6447,7 @@ msgstr "Senegal"
 msgid "Serbia and Montenegro"
 msgstr "Serbia and Montenegro"
 
-#: src/core/utils/currencies.ts:114
+#: src/core/utils/currencies.ts:120
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
@@ -6503,7 +6535,7 @@ msgstr "Sewing, Needlework, Fabric, and Piece Goods Stores"
 msgid "Seychelles"
 msgstr "Seychelles"
 
-#: src/core/utils/currencies.ts:119
+#: src/core/utils/currencies.ts:125
 msgid "Seychellois Rupee"
 msgstr "Seychellois Rupee"
 
@@ -6527,7 +6559,7 @@ msgstr "Shoe Stores"
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
-#: src/core/utils/currencies.ts:122
+#: src/core/utils/currencies.ts:129
 msgid "Sierra Leonean Leone"
 msgstr "Sierra Leonean Leone"
 
@@ -6539,7 +6571,7 @@ msgstr "Simplified, fast funding for your growing business"
 msgid "Singapore"
 msgstr "Singapore"
 
-#: src/core/utils/currencies.ts:121
+#: src/core/utils/currencies.ts:127
 msgid "Singapore Dollar"
 msgstr "Singapore Dollar"
 
@@ -6574,11 +6606,11 @@ msgstr "Snowmobile Dealers"
 msgid "Solomon Islands"
 msgstr "Solomon Islands"
 
-#: src/core/utils/currencies.ts:118
+#: src/core/utils/currencies.ts:124
 msgid "Solomon Islands Dollar"
 msgstr "Solomon Islands Dollar"
 
-#: src/core/utils/currencies.ts:123
+#: src/core/utils/currencies.ts:130
 msgid "Somali Shilling"
 msgstr "Somali Shilling"
 
@@ -6610,7 +6642,7 @@ msgstr "Sort Code"
 msgid "South Africa"
 msgstr "South Africa"
 
-#: src/core/utils/currencies.ts:147
+#: src/core/utils/currencies.ts:156
 msgid "South African Rand"
 msgstr "South African Rand"
 
@@ -6618,9 +6650,13 @@ msgstr "South African Rand"
 msgid "South Georgia And Sandwich Isl."
 msgstr "South Georgia And Sandwich Isl."
 
-#: src/core/utils/currencies.ts:76
+#: src/core/utils/currencies.ts:80
 msgid "South Korean Won"
 msgstr "South Korean Won"
+
+#: src/core/utils/currencies.ts:132
+msgid "South Sudanese Pound"
+msgstr "South Sudanese Pound"
 
 #: src/core/utils/countries.ts:221
 msgid "Spain"
@@ -6654,7 +6690,7 @@ msgstr "Sports Clubs/Fields"
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
-#: src/core/utils/currencies.ts:82
+#: src/core/utils/currencies.ts:86
 msgid "Sri Lankan Rupee"
 msgstr "Sri Lankan Rupee"
 
@@ -6748,7 +6784,7 @@ msgstr "Sudan"
 msgid "Suriname"
 msgstr "Suriname"
 
-#: src/core/utils/currencies.ts:124
+#: src/core/utils/currencies.ts:131
 msgid "Surinamese Dollar"
 msgstr "Surinamese Dollar"
 
@@ -6756,7 +6792,7 @@ msgstr "Surinamese Dollar"
 msgid "Svalbard And Jan Mayen"
 msgstr "Svalbard And Jan Mayen"
 
-#: src/core/utils/currencies.ts:125
+#: src/core/utils/currencies.ts:134
 msgid "Swazi Lilangeni"
 msgstr "Swazi Lilangeni"
 
@@ -6768,7 +6804,7 @@ msgstr "Swaziland"
 msgid "Sweden"
 msgstr "Sweden"
 
-#: src/core/utils/currencies.ts:120
+#: src/core/utils/currencies.ts:126
 msgid "Swedish Krona"
 msgstr "Swedish Krona"
 
@@ -6780,7 +6816,7 @@ msgstr "SWIFT/BIC code"
 msgid "Swimming Pools Sales"
 msgstr "Swimming Pools Sales"
 
-#: src/core/utils/currencies.ts:38
+#: src/core/utils/currencies.ts:40
 msgid "Swiss Franc"
 msgstr "Swiss Franc"
 
@@ -6832,7 +6868,7 @@ msgstr "Taiwan"
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
-#: src/core/utils/currencies.ts:127
+#: src/core/utils/currencies.ts:136
 msgid "Tajikistani Somoni"
 msgstr "Tajikistani Somoni"
 
@@ -6840,7 +6876,7 @@ msgstr "Tajikistani Somoni"
 msgid "Tanzania"
 msgstr "Tanzania"
 
-#: src/core/utils/currencies.ts:133
+#: src/core/utils/currencies.ts:142
 msgid "Tanzanian Shilling"
 msgstr "Tanzanian Shilling"
 
@@ -6968,7 +7004,7 @@ msgstr "Terms of Service"
 msgid "Testing Laboratories"
 msgstr "Testing Laboratories"
 
-#: src/core/utils/currencies.ts:126
+#: src/core/utils/currencies.ts:135
 msgid "Thai Baht"
 msgstr "Thai Baht"
 
@@ -7191,7 +7227,7 @@ msgstr "Tolls/Bridge Fees"
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/core/utils/currencies.ts:129
+#: src/core/utils/currencies.ts:138
 msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
@@ -7271,7 +7307,7 @@ msgstr "Trigger in Monite Script is required"
 msgid "Trinidad And Tobago"
 msgstr "Trinidad And Tobago"
 
-#: src/core/utils/currencies.ts:131
+#: src/core/utils/currencies.ts:140
 msgid "Trinidad and Tobago Dollar"
 msgstr "Trinidad and Tobago Dollar"
 
@@ -7307,7 +7343,7 @@ msgstr "TUI Travel - Germany"
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: src/core/utils/currencies.ts:128
+#: src/core/utils/currencies.ts:137
 msgid "Tunisian Dinar"
 msgstr "Tunisian Dinar"
 
@@ -7315,13 +7351,17 @@ msgstr "Tunisian Dinar"
 msgid "Turkey"
 msgstr "Turkey"
 
-#: src/core/utils/currencies.ts:130
+#: src/core/utils/currencies.ts:139
 msgid "Turkish Lira"
 msgstr "Turkish Lira"
 
 #: src/core/utils/countries.ts:241
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
+
+#: src/core/utils/currencies.ts:118
+msgid "Turkmenistan Manat"
+msgstr "Turkmenistan Manat"
 
 #: src/core/utils/countries.ts:242
 msgid "Turks And Caicos Islands"
@@ -7360,7 +7400,7 @@ msgstr "U.S. Federal Government Agencies or Departments"
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/core/utils/currencies.ts:135
+#: src/core/utils/currencies.ts:144
 msgid "Ugandan Shilling"
 msgstr "Ugandan Shilling"
 
@@ -7368,7 +7408,7 @@ msgstr "Ugandan Shilling"
 msgid "Ukraine"
 msgstr "Ukraine"
 
-#: src/core/utils/currencies.ts:134
+#: src/core/utils/currencies.ts:143
 msgid "Ukrainian Hryvnia"
 msgstr "Ukrainian Hryvnia"
 
@@ -7435,7 +7475,7 @@ msgstr "United Kingdom"
 msgid "United States"
 msgstr "United States"
 
-#: src/core/utils/currencies.ts:136
+#: src/core/utils/currencies.ts:145
 msgid "United States Dollar"
 msgstr "United States Dollar"
 
@@ -7489,8 +7529,8 @@ msgstr "Unsupported file type"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:212
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:89
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:148
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:91
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:150
 msgid "Update"
 msgstr "Update"
 
@@ -7518,7 +7558,7 @@ msgstr "Update bank account"
 msgid "Update contact"
 msgstr "Update contact"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:103
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:105
 msgid "Update PDF File"
 msgstr "Update PDF File"
 
@@ -7563,7 +7603,7 @@ msgstr "Uploading {0}"
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: src/core/utils/currencies.ts:137
+#: src/core/utils/currencies.ts:146
 msgid "Uruguayan Peso"
 msgstr "Uruguayan Peso"
 
@@ -7633,7 +7673,7 @@ msgstr "Utilities"
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-#: src/core/utils/currencies.ts:138
+#: src/core/utils/currencies.ts:147
 msgid "Uzbekistan Som"
 msgstr "Uzbekistan Som"
 
@@ -7693,7 +7733,7 @@ msgstr "Value must be at most '255' characters"
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/core/utils/currencies.ts:140
+#: src/core/utils/currencies.ts:149
 msgid "Vanuatu Vatu"
 msgstr "Vanuatu Vatu"
 
@@ -7849,7 +7889,7 @@ msgstr "Video Tape Rental Stores"
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/core/utils/currencies.ts:139
+#: src/core/utils/currencies.ts:148
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
@@ -7896,7 +7936,7 @@ msgstr "We’re required to collect information about any executives or senior m
 msgid "Welding Repair"
 msgstr "Welding Repair"
 
-#: src/core/utils/currencies.ts:144
+#: src/core/utils/currencies.ts:153
 msgid "West African CFA Franc"
 msgstr "West African CFA Franc"
 
@@ -7952,7 +7992,7 @@ msgstr "Wrecking and Salvage Yards"
 msgid "Yemen"
 msgstr "Yemen"
 
-#: src/core/utils/currencies.ts:146
+#: src/core/utils/currencies.ts:155
 msgid "Yemeni Rial"
 msgstr "Yemeni Rial"
 
@@ -8006,7 +8046,7 @@ msgstr "You can create your first role."
 msgid "You can create your first tag."
 msgstr "You can create your first tag."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:131
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:133
 msgid "You can disable it later in the PDF settings"
 msgstr "You can disable it later in the PDF settings"
 
@@ -8109,7 +8149,7 @@ msgstr "Your VAT ID"
 msgid "Zambia"
 msgstr "Zambia"
 
-#: src/core/utils/currencies.ts:148
+#: src/core/utils/currencies.ts:157
 msgid "Zambian Kwacha"
 msgstr "Zambian Kwacha"
 

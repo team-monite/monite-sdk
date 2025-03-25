@@ -85,9 +85,14 @@ function createRandomInvoiceEntity():
 function createRandomLineItem(): components['schemas']['ResponseItem'] {
   const productVatId = getRandomItemFromArray(vatRatesFixture.data);
 
+  const quantity = faker.number.int({ min: 1, max: 10 });
+  const totalBeforeVat = faker.number.int({ min: 10, max: 30_000 });
+  const vatRateValue = productVatId.value / 100;
+
   return {
-    quantity: faker.number.int({ min: 1, max: 10 }),
-    total_before_vat: faker.number.int({ min: 10, max: 30_000 }),
+    quantity,
+    total_before_vat: totalBeforeVat,
+    total_after_vat: totalBeforeVat + totalBeforeVat * vatRateValue,
     product: {
       id: faker.string.uuid(),
       type: 'product',
@@ -102,7 +107,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
       },
       vat_rate: {
         id: productVatId.id,
-        value: productVatId.value,
+        value: vatRateValue,
         country: productVatId.country,
       },
       measure_unit: {

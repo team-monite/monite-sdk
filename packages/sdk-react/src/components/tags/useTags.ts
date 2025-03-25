@@ -104,6 +104,7 @@ export const useTags = ({
             settings!.allow_purchase_order_autolinking,
           generate_paid_invoice_pdf: settings!.generate_paid_invoice_pdf,
           payables_ocr_auto_tagging: autoTagging,
+          payables_skip_approval_flow: settings!.payables_skip_approval_flow,
         });
       }
     },
