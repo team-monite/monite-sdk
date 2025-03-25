@@ -1,8 +1,6 @@
-import { useEffect, useMemo } from 'react';
-
+import { useDebounceCallback } from '@/core/hooks/useDebounce';
 import SearchIcon from '@mui/icons-material/Search';
 import { FormControl, InputAdornment, InputLabel, Input } from '@mui/material';
-import { debounce } from '@mui/material/utils';
 
 /**
  * The delay in milliseconds before a search request is sent after the user stops typing.
@@ -43,20 +41,14 @@ interface SearchFieldProps {
 
 export const SearchField = ({
   label,
+  value,
   placeholder,
   onChange,
-  value,
 }: SearchFieldProps) => {
-  const debouncedOnChange = useMemo(
-    () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
-    [onChange]
+  const debouncedOnChange = useDebounceCallback(
+    (value: string | null) => onChange(value),
+    DEBOUNCE_SEARCH_TIMEOUT
   );
-
-  useEffect(() => {
-    return () => {
-      debouncedOnChange.clear();
-    };
-  }, [debouncedOnChange]);
 
   return (
     <FormControl
@@ -74,8 +66,8 @@ export const SearchField = ({
         aria-label="search-by-name"
         placeholder={placeholder}
         value={value}
-        onChange={(search) => {
-          debouncedOnChange(search.target.value || null);
+        onChange={(searchEvent) => {
+          debouncedOnChange(searchEvent.target.value || null);
         }}
         startAdornment={
           <InputAdornment position="end">

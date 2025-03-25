@@ -21,6 +21,7 @@ interface MeasureUnitControllerProps {
   errors: FieldErrors<CreateReceivablesFormBeforeValidationProps>;
   fieldError: FieldError | undefined;
   measureUnits: components['schemas']['UnitResponse'][] | undefined;
+  skipDefaultAssignment?: boolean;
   getValues: UseFormGetValues<CreateReceivablesFormBeforeValidationProps>;
   setValue: UseFormSetValue<CreateReceivablesFormBeforeValidationProps>;
 }
@@ -28,10 +29,11 @@ interface MeasureUnitControllerProps {
 export const MeasureUnitController = ({
   control,
   index,
-  fieldError,
+  fieldError: externalFieldError,
   measureUnits,
   getValues,
   setValue,
+  skipDefaultAssignment = false,
 }: MeasureUnitControllerProps) => {
   const { root } = useRootElements();
   const name = `line_items.${index}.product.measure_unit_id` as const;
@@ -43,10 +45,15 @@ export const MeasureUnitController = ({
 
   // Set a default measure unit if none is set and measure units are available
   useEffect(() => {
+    if (skipDefaultAssignment) {
+      return;
+    }
+
     if (
       !currentMeasureUnitId &&
       firstAvailableMeasureUnit &&
-      !hasSetDefaultMeasureUnit
+      !hasSetDefaultMeasureUnit &&
+      currentMeasureUnitId !== '' // Don't set default if explicitly initialized with empty string
     ) {
       setValue(name, firstAvailableMeasureUnit, { shouldValidate: true });
       setHasSetDefaultMeasureUnit(true);
@@ -58,15 +65,19 @@ export const MeasureUnitController = ({
     index,
     name,
     setValue,
+    skipDefaultAssignment,
   ]);
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: measureUnitField }) => {
-        // Get current value to ensure we have the latest
+      render={({
+        field: measureUnitField,
+        fieldState: { error: internalFieldError },
+      }) => {
         const measureUnitId = getValues(name);
+        const hasError = Boolean(externalFieldError || internalFieldError);
 
         return (
           <Select
@@ -110,7 +121,8 @@ export const MeasureUnitController = ({
               },
             }}
             size="small"
-            error={Boolean(fieldError)}
+            error={hasError}
+            displayEmpty
           >
             {measureUnits?.map((unit) => (
               <MenuItem key={unit.id} value={unit.id}>
