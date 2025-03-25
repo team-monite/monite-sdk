@@ -2,7 +2,7 @@ import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Chip } from '@mui/material';
 
 import { UBox } from '../../../ProductsTable/components/icons/UBox';
 import { UBusiness } from '../../../ProductsTable/components/icons/UBusiness';
@@ -12,15 +12,29 @@ const getTypeComponent = (type: ProductServiceTypeEnum, i18n: I18n) => {
     case 'product':
       return (
         <>
-          <UBox width={16} />
-          <Typography ml={1}>{t(i18n)`Product`}</Typography>
+          <Chip
+            icon={<UBox width={16} />}
+            label={t(i18n)`Product`}
+            size="small"
+            sx={{
+              backgroundColor: '#F5F5F5',
+              color: '#707070',
+            }}
+          />
         </>
       );
     case 'service':
       return (
         <>
-          <UBusiness width={18} />
-          <Typography ml={1}>{t(i18n)`Service`}</Typography>
+          <Chip
+            icon={<UBusiness width={16} />}
+            label={t(i18n)`Service`}
+            size="small"
+            sx={{
+              backgroundColor: '#F5F5F5',
+              color: '#707070',
+            }}
+          />
         </>
       );
   }

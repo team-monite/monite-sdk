@@ -1,7 +1,8 @@
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
-import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
@@ -17,6 +18,30 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   ) => void;
   /** Callback to be called when an invoice is deleted */
   onDelete?: (receivableId: string) => void;
+  /** Callback to be called when a first invoice is sent */
+  onFirstInvoiceSent?: (invoiceId: string) => void;
+}
+
+export interface OnboardingSettings {
+  /**
+   * Called when bank account setup is completed.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
+   * @returns {void}
+   */
+  onPaymentOnboardingComplete?: (
+    entityId: string,
+    response?: components['schemas']['EntityBankAccountResponse']
+  ) => void;
+  /**
+   * Called when working capital onboarding is completed.
+   * This happens when the business status transitions to 'ONBOARDED'.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @returns {void}
+   */
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 interface PayableSettings
@@ -37,6 +62,12 @@ export interface ComponentSettings {
   };
   counterparts: {
     pageSizeOptions: number[];
+
+    /**
+     * @see {@link CustomerTypes}
+     * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor']
+     */
+    customerTypes?: CustomerTypes;
   };
   payables: Partial<PayableSettings>;
   products: {
@@ -49,17 +80,10 @@ export interface ComponentSettings {
   userRoles: {
     pageSizeOptions: number[];
   };
+  onboarding: Partial<OnboardingSettings>;
 }
 
-const defaultPageSizeOptions = [15, 30, 100];
-const defaultPayableFieldOrder: FieldValueTypes[] = [
-  'document_id',
-  'counterpart_id',
-  'due_date',
-  'amount',
-  'was_created_by_user_id',
-  'pay',
-];
+const defaultPageSizeOptions = [20, 50, 100];
 
 export const getDefaultComponentSettings = (
   i18n: I18n,
@@ -87,6 +111,10 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.counterparts?.pageSizeOptions ||
       defaultPageSizeOptions,
+    customerTypes: componentSettings?.counterparts?.customerTypes || [
+      'customer',
+      'vendor',
+    ],
   },
   payables: {
     pageSizeOptions:
@@ -141,4 +169,5 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
+  onboarding: componentSettings?.onboarding ?? {},
 });

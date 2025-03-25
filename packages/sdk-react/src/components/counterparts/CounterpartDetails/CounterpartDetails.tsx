@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
+import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import type {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
-} from '@/components/counterparts/Counterpart.types';
-import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
+} from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CircularProgress } from '@mui/material';
 
@@ -29,6 +30,7 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
 );
 
 const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
+  const { componentSettings } = useMoniteContext();
   const isInvoiceCreation = props.isInvoiceCreation ?? false;
   const {
     addressId,
@@ -62,18 +64,26 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     throw new Error('CounterpartDetails: `id` or `type` is required');
   }
 
-  const { showCategories = true, showBankAccounts = true } = props;
+  const { showBankAccounts = true, customerTypes } = props;
   const defaultValues = props.type ? props.defaultValues : undefined;
 
+  const shouldShowCategories = Boolean(
+    (customerTypes?.length ?? 0) > 1 ||
+      (!customerTypes &&
+        (componentSettings?.counterparts?.customerTypes?.length ?? 0) > 1)
+  );
+
   const renderSubResource = useCallback(() => {
-    if (!counterpartId) return <CircularProgress color="inherit" size={20} />;
+    if (!counterpartView || !counterpartId) {
+      return <CircularProgress color="inherit" size={20} />;
+    }
 
     switch (counterpartView) {
       case COUNTERPART_VIEW.view:
         return (
           <CounterpartView
             id={counterpartId}
-            showCategories={showCategories}
+            showCategories={shouldShowCategories}
             showBankAccounts={showBankAccounts}
             onEdit={onEdit}
             onDelete={props.onDelete}
@@ -166,7 +176,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     props.onVatDelete,
     showBankAccountForm,
     showBankAccounts,
-    showCategories,
+    shouldShowCategories,
     showContactForm,
     showVatForm,
     vatId,
@@ -184,7 +194,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={showCategories}
+            showCategories={shouldShowCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCRIndividual
@@ -202,7 +212,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onReturn={props.onReturn}
             onUpdate={onUpdate}
             isInvoiceCreation={isInvoiceCreation}
-            showCategories={showCategories}
+            showCategories={shouldShowCategories}
             defaultValues={defaultValues}
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCROrganization
@@ -221,7 +231,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     onCreate,
     onUpdate,
     renderSubResource,
-    showCategories,
+    shouldShowCategories,
     showView,
     props.defaultValuesOCR,
     props.onClose,

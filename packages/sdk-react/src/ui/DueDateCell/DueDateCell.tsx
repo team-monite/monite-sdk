@@ -4,7 +4,7 @@ import { createDayPluralForm } from '@/components/receivables/InvoiceDetails/Exi
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 interface DueDateCellProps {
   data:
@@ -15,39 +15,47 @@ interface DueDateCellProps {
 export const DueDateCell = ({ data }: DueDateCellProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
+  const { palette } = useTheme();
 
-  if (!data.due_date) return null;
+  if (!data.due_date) return <span style={{ opacity: 0.4 }}>-</span>;
 
   const formattedDate = i18n.date(new Date(data.due_date), locale.dateFormat);
   const overdueDays = getInvoiceOverdueDays(data);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="start"
-      height="inherit"
-      justifyContent="center"
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'center',
+        gap: '4px',
+      }}
     >
-      <Typography
-        variant="body2"
-        color={overdueDays > 0 ? 'error' : 'text.primary'}
+      <span
+        style={{
+          lineHeight: 1,
+          ...(overdueDays > 0 ? { color: palette.error.main } : {}),
+        }}
       >
         {formattedDate}
-      </Typography>
+      </span>
       {overdueDays > 0 && (
-        <Typography
-          variant="caption"
-          color="error"
-          fontWeight="bold"
-          fontSize="small"
+        <span
+          className="Monite-DueDateCell-OverdueDays"
+          style={{
+            color: palette.error.main,
+            fontWeight: 'bold',
+            fontSize: '10px',
+            lineHeight: 1,
+          }}
         >
           {t(i18n)`${overdueDays} ${createDayPluralForm(
             i18n,
             overdueDays
           )} overdue`}
-        </Typography>
+        </span>
       )}
-    </Box>
+    </div>
   );
 };

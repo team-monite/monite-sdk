@@ -5,8 +5,8 @@ import { t } from '@lingui/macro';
 
 import * as yup from 'yup';
 
-export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
-  yup.object({
+export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) => {
+  return yup.object({
     currency: yup
       .mixed<(typeof CurrencyEnum)[number]>()
       .oneOf(CurrencyEnum)
@@ -17,13 +17,14 @@ export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
       .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
       .required(),
   });
+};
 
 export type CreateReceivablesProductsFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceProductsValidationSchema>
 >;
 
-const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
-  yup
+const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
+  return yup
     .array()
     .of(
       yup.object({
@@ -43,10 +44,6 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
               )`Quantity must be greater than or equal to the smallest amount`
             );
           })
-          .required(),
-        product_id: yup
-          .string()
-          .label(t(i18n)`Product`)
           .required(),
         ...(isNonVatSupported
           ? {
@@ -74,35 +71,44 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
                 .label(t(i18n)`VAT`)
                 .required(),
             }),
-        name: yup
-          .string()
-          .label(t(i18n)`Name`)
-          .required(),
-        price: yup
+        product_id: yup.string().label(t(i18n)`Product`),
+        product: yup
           .object({
-            currency: yup
-              .mixed<(typeof CurrencyEnum)[number]>()
-              .oneOf(CurrencyEnum)
-              .label(t(i18n)`Currency`)
+            name: yup
+              .string()
+              .label(t(i18n)`Name`)
               .required(),
-            value: yup
-              .number()
-              .label(t(i18n)`Price`)
+            price: yup
+              .object({
+                currency: yup
+                  .mixed<(typeof CurrencyEnum)[number]>()
+                  .oneOf(CurrencyEnum)
+                  .label(t(i18n)`Currency`)
+                  .required(),
+                value: yup
+                  .number()
+                  .label(t(i18n)`Price`)
+                  .required(),
+              })
+              .label(t(i18n)`Price`),
+            measure_unit_id: yup
+              .string()
+              .label(t(i18n)`Measure unit`)
+              .required(),
+            smallest_amount: yup.number().label(t(i18n)`Smallest amount`),
+            type: yup
+              .string()
+              .oneOf(['product', 'service'])
+              .label(t(i18n)`Type`)
               .required(),
           })
-          .label(t(i18n)`Price`),
-        measure_unit_id: yup
-          .string()
-          .label(t(i18n)`Measure unit`)
+          .label(t(i18n)`Product`)
           .required(),
-        smallest_amount: yup
-          .number()
-          .nullable()
-          .label(t(i18n)`Smallest amount`),
       })
     )
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
     .required();
+};
 
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
@@ -129,6 +135,7 @@ export const getCreateInvoiceValidationSchema = (
       .label(t(i18n)`Fulfillment date`)
       .nullable(),
     purchase_order: yup.string().label(t(i18n)`Purchase order`),
+    terms_and_conditions: yup.string().label(t(i18n)`Terms and Conditions`),
     default_billing_address_id: yup
       .string()
       .label(t(i18n)`Billing address`)
@@ -212,15 +219,22 @@ export const getUpdateInvoiceValidationSchema = (
   });
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
+  id: string;
   quantity: number;
-  product_id: string;
+  product_id?: string;
+  name?: string;
+  price?: components['schemas']['PriceFloat'];
+  measure_unit_id?: string;
+  product?: {
+    name: string;
+    price?: components['schemas']['PriceFloat'];
+    measure_unit_id?: string;
+    type: 'product' | 'service';
+  };
   vat_rate_id?: string;
   vat_rate_value?: number;
   tax_rate_value?: number;
   smallest_amount?: number;
-  name: string;
-  price?: components['schemas']['PriceFloat'];
-  measure_unit_id?: string;
 }
 
 export interface CreateReceivablesFormBeforeValidationProps {

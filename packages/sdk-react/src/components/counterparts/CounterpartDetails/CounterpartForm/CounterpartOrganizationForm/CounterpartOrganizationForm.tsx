@@ -2,16 +2,17 @@ import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
-import type { DefaultValuesOCROrganization } from '@/components/counterparts/Counterpart.types';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
+import {
+  CounterpartDataTestId,
+  type DefaultValuesOCROrganization,
+} from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { IconWrapper } from '@/ui/iconWrapper';
-import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -29,6 +30,7 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
+  CircularProgress,
 } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
@@ -66,12 +68,11 @@ export const CounterpartOrganizationForm = (
     isLoading,
   } = useCounterpartForm(props);
 
-  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
-    useIsActionAllowed({
-      method: 'counterpart',
-      action: 'create',
-      entityUserId: counterpart?.created_by_entity_user_id,
-    });
+  const { data: isCreateAllowed } = useIsActionAllowed({
+    method: 'counterpart',
+    action: 'create',
+    entityUserId: counterpart?.created_by_entity_user_id,
+  });
 
   const { showCategories, defaultValuesOCR, defaultValues } = props;
 
@@ -154,9 +155,6 @@ export const CounterpartOrganizationForm = (
     ]
   );
 
-  /** Returns `true` if the form works for `update` but not `create` flow */
-  const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
-
   useEffect(() => {
     reset({
       tax_id: organizationCounterpart?.tax_id ?? defaultValuesOCR?.tax_id,
@@ -177,24 +175,13 @@ export const CounterpartOrganizationForm = (
     reset,
   ]);
 
-  if (isCreateAllowedLoading || isLoading) {
-    if (isInvoiceCreation) {
-      return (
-        <Grid pb={4}>
-          <LoadingPage />
-        </Grid>
-      );
-    }
-    return <LoadingPage />;
-  }
-
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
 
   return (
     <>
-      {((isInvoiceCreation && !isUpdateMode) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
         <Grid
           container
           alignItems="center"
@@ -204,7 +191,7 @@ export const CounterpartOrganizationForm = (
             <Typography variant="h3" sx={{ padding: 3 }}>
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
-                : isUpdateMode
+                : props?.id
                 ? watch('organization.companyName')
                 : t(i18n)`Create Counterpart – Company`}
             </Typography>
@@ -224,7 +211,9 @@ export const CounterpartOrganizationForm = (
       )}
 
       {!isInvoiceCreation && <Divider />}
-      <DialogContent sx={{ padding: '2rem' }}>
+      <DialogContent
+        sx={{ padding: '2rem', overflowY: 'auto', height: '450px' }}
+      >
         <FormProvider {...methods}>
           <form
             id="counterpartOrganizationForm"
@@ -428,14 +417,14 @@ export const CounterpartOrganizationForm = (
           <Button
             variant="outlined"
             sx={{ marginRight: 'auto' }}
-            onClick={props.onReturn}
+            onClick={props.onCancel}
           >{t(i18n)`Back`}</Button>
         )}
-        {(isUpdateMode || dialogContext) && (
+        {(props?.id || dialogContext) && (
           <Button
             variant="text"
             onClick={
-              isUpdateMode
+              props?.id
                 ? props.onCancel
                 : props.onClose || dialogContext?.onClose
             }
@@ -449,7 +438,13 @@ export const CounterpartOrganizationForm = (
           disabled={isLoading}
           onClick={submitForm}
         >
-          {isUpdateMode ? t(i18n)`Save` : t(i18n)`Create`}
+          {isLoading ? (
+            <CircularProgress color="primary" />
+          ) : props?.id ? (
+            t(i18n)`Save`
+          ) : (
+            t(i18n)`Create`
+          )}
         </Button>
       </DialogActions>
     </>

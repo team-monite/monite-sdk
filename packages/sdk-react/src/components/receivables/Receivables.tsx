@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
@@ -16,13 +17,18 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 
-export const Receivables = () => (
+type ReceivablesProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+};
+
+export const Receivables = (props: ReceivablesProps) => (
   <MoniteScopedProviders>
-    <ReceivablesBase />
+    <ReceivablesBase {...props} />
   </MoniteScopedProviders>
 );
 
-const ReceivablesBase = () => {
+const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
 
@@ -38,6 +44,7 @@ const ReceivablesBase = () => {
       onUpdate: componentSettings?.receivables?.onUpdate,
       onDelete: componentSettings?.receivables?.onDelete,
       onCreate: componentSettings?.receivables?.onCreate,
+      onFirstInvoiceSent: componentSettings?.receivables?.onFirstInvoiceSent,
     }),
     [componentSettings?.receivables]
   );
@@ -82,6 +89,15 @@ const ReceivablesBase = () => {
       receivableCallbacks.onCreate?.(receivableId);
     },
     [receivableCallbacks, openInvoiceModal, setActiveTab]
+  );
+
+  const handleSendEmail = useCallback(
+    (invoiceId: string, isFirstInvoice: boolean) => {
+      if (isFirstInvoice) {
+        receivableCallbacks.onFirstInvoiceSent?.(invoiceId);
+      }
+    },
+    [receivableCallbacks]
   );
 
   const { root } = useRootElements();
@@ -149,6 +165,10 @@ const ReceivablesBase = () => {
           id={invoiceId}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+          onSendEmail={handleSendEmail}
         />
       </Dialog>
       <Dialog
@@ -160,7 +180,13 @@ const ReceivablesBase = () => {
           setIsCreateInvoiceDialogOpen(false);
         }}
       >
-        <InvoiceDetails type={'invoice'} onCreate={handleCreate} />
+        <InvoiceDetails
+          type="invoice"
+          onCreate={handleCreate}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
       </Dialog>
     </>
   );

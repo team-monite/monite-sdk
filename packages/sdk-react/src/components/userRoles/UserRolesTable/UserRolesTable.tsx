@@ -157,12 +157,7 @@ const UserRolesTableBase = ({
         headerName: t(i18n)`Permissions`,
         sortable: false,
         flex: 2,
-        renderCell: (params) => (
-          <PermissionsCell
-            permissions={params.value}
-            onCLickSeeAll={() => onRowClick?.(params.row.id)}
-          />
-        ),
+        renderCell: (params) => <PermissionsCell permissions={params.value} />,
       },
       {
         field: 'created_at',
@@ -175,7 +170,7 @@ const UserRolesTableBase = ({
         ) => i18n.date(value, locale.dateFormat),
       },
     ];
-  }, [locale.dateFormat, i18n, onRowClick]);
+  }, [locale.dateFormat, i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

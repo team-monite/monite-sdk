@@ -77,11 +77,17 @@ export const AutocompleteCreatedBy = ({
         'Monite-FilterControl',
         className
       )}
+      sx={{
+        '&.MuiAutocomplete-root': {
+          display: 'flex',
+          alignItems: 'center',
+        },
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
           variant="standard"
-          label={t(i18n)`Added by`}
+          placeholder={t(i18n)`Added by`}
           className="Monite-ApprovalAddedByFilter Monite-FilterControl"
           InputProps={{
             ...params.InputProps,

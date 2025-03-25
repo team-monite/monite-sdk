@@ -32,7 +32,7 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          placeholder={t(i18n)`Search`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -44,7 +44,6 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
       />
       <DatePicker
         className="Monite-ApprovalPolicyCreateAtFilter Monite-FilterControl Monite-DateFilterControl"
-        label={t(i18n)`Created at`}
         onChange={(value, error) => {
           if (error.validationError) {
             return;
@@ -53,7 +52,7 @@ export const Filters = ({ onChangeFilter, sx }: Props) => {
           onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
         }}
         slotProps={{
-          textField: { variant: 'standard' },
+          textField: { variant: 'standard', placeholder: t(i18n)`Created at` },
           popper: {
             container: root,
           },

@@ -8,12 +8,8 @@ import { type ReadableReceivablesStatus } from '@/enums/ReadableReceivablesStatu
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  FormControl as MuiFormControl,
-  InputLabel as MuiInputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import { CalendarToday } from '@mui/icons-material';
+import { FormControl as MuiFormControl, MenuItem, Select } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { formatISO } from 'date-fns';
@@ -55,7 +51,7 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
       className={className}
       searchField={
         <SearchField
-          label={t(i18n)`Search`}
+          placeholder={t(i18n)`Search`}
           onChange={(search) => {
             onChange(
               'document_id__contains' as T,
@@ -73,12 +69,12 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
             className="Monite-ReceivableStatusFilter Monite-FilterControl"
             variant="standard"
           >
-            <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
             <Select<ReadableReceivablesStatus>
               labelId="status"
               label={t(i18n)`Status`}
               defaultValue={undefined}
               MenuProps={{ container: root }}
+              displayEmpty
               onChange={(event) => {
                 onChange(
                   'status' as T,
@@ -103,12 +99,12 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
           fullWidth
           className="Monite-ReceivableCounterpartFilter Monite-FilterControl"
         >
-          <MuiInputLabel id="counterpart_id">{t(i18n)`Customer`}</MuiInputLabel>
           <Select
             labelId="counterpart_id"
             label={t(i18n)`Customer`}
             defaultValue={undefined}
             MenuProps={{ container: root }}
+            displayEmpty
             onChange={(event) => {
               onChange(
                 'counterpart_id' as T,
@@ -132,8 +128,10 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
       {filters.some((filter) => filter.field === 'due_date__lte') && (
         <DatePicker<Date>
           className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
-          label={t(i18n)`Due date`}
           views={['year', 'month', 'day']}
+          slots={{
+            openPickerIcon: CalendarToday,
+          }}
           onChange={(value, error) => {
             if (error.validationError) return;
             if (value === null || value === undefined)
@@ -147,7 +145,22 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
             );
           }}
           slotProps={{
-            textField: { variant: 'standard' },
+            textField: {
+              variant: 'standard',
+              placeholder: 'Due date',
+              InputProps: {
+                sx: {
+                  '&::placeholder': {
+                    opacity: 1,
+                    color: 'text.primary',
+                  },
+                  '& input::placeholder': {
+                    opacity: 1,
+                    color: 'text.primary',
+                  },
+                },
+              },
+            },
             popper: {
               container: root,
             },
@@ -156,6 +169,9 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
             },
             actionBar: {
               actions: ['clear', 'today'],
+            },
+            openPickerIcon: {
+              fontSize: 'small',
             },
           }}
         />

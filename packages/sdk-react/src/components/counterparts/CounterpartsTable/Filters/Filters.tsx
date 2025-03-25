@@ -1,4 +1,4 @@
-import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
+import { CounterpartShowCategories } from '@/components/counterparts/types';
 import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';

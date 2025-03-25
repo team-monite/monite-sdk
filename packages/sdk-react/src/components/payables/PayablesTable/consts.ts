@@ -8,11 +8,13 @@ export const FILTER_TYPE_DUE_DATE = 'due_date';
 export const FILTER_TYPE_SUMMARY_CARD = 'summary_card_filter';
 
 export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
-  'counterpart_id',
   'document_id',
-  'amount',
+  'counterpart_id',
+  'created_at',
   'due_date',
-  'was_created_by_user_id',
+  'status',
+  'amount',
+  'paid_amount',
   'pay',
 ];
 

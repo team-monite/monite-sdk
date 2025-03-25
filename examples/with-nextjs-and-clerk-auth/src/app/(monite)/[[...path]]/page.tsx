@@ -2,16 +2,19 @@
 
 import React from 'react';
 
+import { useUser } from '@clerk/nextjs';
 import { useMoniteContext } from '@monite/sdk-react';
 import { Box, Stack, Skeleton, Container } from '@mui/material';
 
 import { CashFlowCard } from '@/components/Dashboard/Cashflow';
 import { CreateInvoiceCard } from '@/components/Dashboard/CreateInvoiceCard';
 import { DuePayablesCard } from '@/components/Dashboard/DuePayables';
+import { FinancingCard } from '@/components/Dashboard/FinancingCard';
 import { OutstandingInvoicesCard } from '@/components/Dashboard/OutstandingInvoices';
 
 export default function DefaultPage() {
   const { api } = useMoniteContext();
+  const { user } = useUser();
   const { data: duePayables, isLoading: duePayablesLoading } =
     api.payables.getPayables.useQuery({
       query: { status: 'waiting_to_be_paid' },
@@ -23,7 +26,7 @@ export default function DefaultPage() {
     });
 
   return (
-    <Container className="" sx={{ pt: '24px', pb: '24px' }}>
+    <Box className="Monite-PageContainer Monite-Dashboard">
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
         <Stack
           direction="row"
@@ -33,10 +36,10 @@ export default function DefaultPage() {
           alignItems={'center'}
           sx={{ width: '100%', mb: '24px' }}
         >
-          <h1>Dashboard</h1>
+          <h1>Welcome{user?.firstName ? `, ${user?.firstName}` : ''}</h1>
         </Stack>
         <Stack
-          direction="row"
+          direction="column"
           spacing={3}
           useFlexGap={true}
           justifyContent="space-between"
@@ -44,6 +47,9 @@ export default function DefaultPage() {
         >
           <Box sx={{ flex: 1 }}>
             <CreateInvoiceCard />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <FinancingCard />
           </Box>
         </Stack>
         <Box sx={{ width: '100%', mt: 3 }}>
@@ -74,6 +80,6 @@ export default function DefaultPage() {
           </Box>
         </Stack>
       </Stack>
-    </Container>
+    </Box>
   );
 }

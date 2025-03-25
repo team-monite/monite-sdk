@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { GenericCounterpartContact } from '@/core/queries';
 
 export interface ExistingReceivableDetailsProps {
@@ -74,6 +75,17 @@ export interface ExistingReceivableDetailsProps {
    * @returns {void}
    */
   onMarkAsUncollectible?: (invoiceId: string) => void;
+
+  /**
+   * Indicates that an invoice email has been sent to the counterpart.
+   *
+   * @param {string} invoiceId - Invoice ID
+   * @param {boolean} isFirstInvoice - Whether this is the first invoice sent by the entity
+   *
+   * @returns {void}
+   */
+  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
+  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 export interface InvoiceDetailsCreateProps {
@@ -90,11 +102,14 @@ export interface InvoiceDetailsCreateProps {
    * @returns {void}
    */
   onCreate?: (receivableId: string) => void;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
 }
 
-export type InvoiceDetailsProps =
-  | ExistingReceivableDetailsProps
-  | InvoiceDetailsCreateProps;
+export type InvoiceDetailsProps = {
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+} & (ExistingReceivableDetailsProps | InvoiceDetailsCreateProps);
 
 export type CounterpartOrganizationRootResponse =
   components['schemas']['CounterpartOrganizationRootResponse'];

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { getCountries } from '@/core/utils/countries';
 import { useVatTypeLabelByCode } from '@/core/utils/useVatTypes';
 import { MoniteCard } from '@/ui/Card/Card';
@@ -9,7 +10,6 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { CardActions, Button, Divider } from '@mui/material';
 
-import { ConfirmDeleteDialogue } from '../../../ConfirmDeleteDialogue';
 import {
   useCounterpartVatView,
   CounterpartVatViewProps,
@@ -91,7 +91,7 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
           <CardActions>{actions}</CardActions>
         </>
       )}
-      <ConfirmDeleteDialogue
+      <ConfirmDeleteDialog
         isLoading={isLoading}
         onClose={handleCloseDeleteDialog}
         onDelete={handleDeleteVatId}

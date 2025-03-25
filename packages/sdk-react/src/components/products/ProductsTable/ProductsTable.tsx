@@ -4,7 +4,6 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
-import { TableActions } from '@/components/TableActions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
@@ -17,7 +16,7 @@ import { TablePagination } from '@/ui/table/TablePagination';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -100,7 +99,7 @@ const ProductsTableBase = ({
   onFilterChanged: onChangeFilterCallback,
   onSortChanged: onChangeSortCallback,
   onRowClick,
-  onEdit,
+
   onDeleted,
   openCreateModal,
 }: ProductTableProps) => {
@@ -131,16 +130,6 @@ const ProductsTableBase = ({
       action: 'read',
       entityUserId: user?.id,
     });
-  const { data: isUpdateSupported } = useIsActionAllowed({
-    method: 'product',
-    action: 'update',
-    entityUserId: user?.id,
-  });
-  const { data: isDeleteSupported } = useIsActionAllowed({
-    method: 'product',
-    action: 'delete',
-    entityUserId: user?.id,
-  });
 
   const {
     data: products,
@@ -184,15 +173,7 @@ const ProductsTableBase = ({
         display: 'flex',
         flex: 3,
         renderCell: (params) => (
-          <Stack spacing={0} width="100%">
-            <Typography variant="body1">{params.row.name}</Typography>
-            <Typography
-              variant="body2"
-              className="Monite-TextOverflowContainer"
-            >
-              {params.row.description}
-            </Typography>
-          </Stack>
+          <Typography variant="body1">{params.row.name}</Typography>
         ),
       },
       {
@@ -205,6 +186,15 @@ const ProductsTableBase = ({
           return params.row.type ? (
             <ProductType type={params.row.type} />
           ) : null;
+        },
+      },
+      {
+        field: 'measure_unit_id',
+        headerName: t(i18n)`Unit`,
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return <MeasureUnit unitId={params.value} />;
         },
       },
       {
@@ -222,44 +212,29 @@ const ProductsTableBase = ({
             : '';
         },
       },
-      {
-        field: 'measure_unit_id',
-        headerName: t(i18n)`Unit`,
-        flex: 1,
-        sortable: false,
-        renderCell: (params) => {
-          return <MeasureUnit unitId={params.value} />;
-        },
-      },
-      {
-        field: 'actions',
-        sortable: false,
-        headerName: '',
-        width: 70,
-        renderCell: (params) => (
-          <TableActions
-            permissions={{
-              isUpdateAllowed: isUpdateSupported,
-              isDeleteAllowed: isDeleteSupported,
-            }}
-            onEdit={() => onEdit?.(params.row)}
-            onDelete={() => {
-              setIsDeleteDialogOpen({
-                id: params.row.id,
-                open: true,
-              });
-            }}
-          />
-        ),
-      },
+      // {
+      //   field: 'actions',
+      //   sortable: false,
+      //   headerName: '',
+      //   width: 70,
+      //   renderCell: (params) => (
+      //     <TableActions
+      //       permissions={{
+      //         isUpdateAllowed: isUpdateSupported,
+      //         isDeleteAllowed: isDeleteSupported,
+      //       }}
+      //       onEdit={() => onEdit?.(params.row)}
+      //       onDelete={() => {
+      //         setIsDeleteDialogOpen({
+      //           id: params.row.id,
+      //           open: true,
+      //         });
+      //       }}
+      //     />
+      //   ),
+      // },
     ];
-  }, [
-    formatCurrencyToDisplay,
-    i18n,
-    isDeleteSupported,
-    isUpdateSupported,
-    onEdit,
-  ]);
+  }, [formatCurrencyToDisplay, i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

@@ -25,6 +25,7 @@ function getEntitySettings(): MergedSettingsResponse {
       default: 'EUR',
       exchange_rates: [],
     },
+    payables_skip_approval_flow: false,
   };
 }
 

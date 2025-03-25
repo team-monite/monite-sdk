@@ -168,6 +168,10 @@ th.line-items-table__fixed-item {
   padding-left: 0;
 }
 
+.invoice-preview .line-items-table .no-items td {
+  text-align: left;
+}
+
 .line-items-table tr:last-child td {
   border-bottom-style: solid;
 }
@@ -304,7 +308,6 @@ th.line-items-table__fixed-item {
 }
 
 .invoice-preview .header .block-entity-logo {
-  background: rgba(222, 222, 222, 1);
   width: 85px;
   height: 85px;
   border-radius: 50%;
@@ -313,16 +316,17 @@ th.line-items-table__fixed-item {
   object-fit: contain;
 }
 
-.invoice-preview .block-counterpart-info {
-  font-size: 10px;
-}
-
-.invoice-preview .header .block-entity-logo span {
+.invoice-preview .header .block-entity-logo .no-logo-placeholder {
+  background: rgba(222, 222, 222, 1);
   font-size: 13px;
   color: white;
   position: relative;
   left: -15px;
   top: 28px;
+}
+
+.invoice-preview .block-counterpart-info {
+  font-size: 10px;
 }
 
 .invoice-preview .payment-details h3 {

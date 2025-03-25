@@ -7,6 +7,7 @@ import {
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { useLingui } from '@lingui/react';
+import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
@@ -45,7 +46,13 @@ export const InvoiceStatusChip = forwardRef<
     <StyledChip
       ref={ref}
       color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      icon={
+        icon && Icon ? (
+          <Icon fontSize="small" />
+        ) : (
+          <Circle sx={{ fontSize: '10px !important' }} />
+        )
+      }
       label={getCommonStatusLabel(i18n, status)}
       size={size}
       status={status}

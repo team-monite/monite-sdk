@@ -1,21 +1,19 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  ReactNode,
+} from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { Dialog } from '@/components';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
-import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
-import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
-import {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-  CreateReceivablesFormProps,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { classNames } from '@/utils/css-utils';
+import { generateUniqueId } from '@/utils/uuid';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -24,8 +22,6 @@ import {
   Alert,
   Button,
   FormControl,
-  Select,
-  MenuItem,
   Card,
   Grid,
   Divider,
@@ -43,69 +39,23 @@ import {
   Box,
   Collapse,
   CardContent,
+  CircularProgress,
+  InputAdornment,
 } from '@mui/material';
-import { styled } from '@mui/material';
 
-interface VatRateControllerProps {
-  index: number;
-  vatRates?: VatRateListResponse;
-  highestVatRate: VatRateListResponse['data'][number] | undefined;
-}
-
-const VatRateController = ({
-  index,
-  vatRates,
-  highestVatRate,
-}: VatRateControllerProps) => {
-  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
-  const { root } = useRootElements();
-
-  useEffect(() => {
-    if (highestVatRate) {
-      setValue(`line_items.${index}.vat_rate_value`, highestVatRate.value);
-      setValue(`line_items.${index}.vat_rate_id`, highestVatRate.id);
-    }
-  }, [highestVatRate, index, setValue]);
-
-  return (
-    <Controller
-      name={`line_items.${index}.vat_rate_id`}
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <FormControl
-          variant="standard"
-          fullWidth
-          required
-          error={Boolean(error)}
-        >
-          <Select
-            {...field}
-            id={field.name}
-            labelId={field.name}
-            MenuProps={{ container: root }}
-            size="small"
-            onChange={(e) => {
-              const vatRate = vatRates?.data.find(
-                (rate) => rate.id === e.target.value
-              );
-              if (!vatRate) {
-                throw new Error('Vat rate not found');
-              }
-              setValue(`line_items.${index}.vat_rate_value`, vatRate.value);
-              field.onChange(e);
-            }}
-          >
-            {vatRates?.data.map((vatRate) => (
-              <MenuItem key={vatRate.id} value={vatRate.id}>
-                {vatRate.value / 100}%
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-    />
-  );
-};
+import { CreateProductDialog } from '../components/CreateProductDialog';
+import { useCreateInvoiceProductsTable } from '../components/useCreateInvoiceProductsTable';
+import {
+  CreateReceivablesFormBeforeValidationProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '../validation';
+import { ItemSelector } from './ItemSelector';
+import { MeasureUnitController } from './MeasureUnitController';
+import { PriceField } from './PriceField';
+import { ValidationErrorItem } from './Section.types';
+import { TaxRateController } from './TaxRateController';
+import { setValueWithValidation } from './utils';
+import { VatRateController } from './VatRateController';
 
 interface CardTableItemProps {
   label: string | ReactNode;
@@ -113,33 +63,6 @@ interface CardTableItemProps {
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
   className?: string;
-}
-
-/**
- * Prepares line item for the form
- *
- * @param product Product which we want to add to the form
- * @param vatRates List of available VAT rates
- */
-function prepareLineItem(
-  product: ProductServiceResponse,
-  vatRates: VatRateListResponse | undefined
-): CreateReceivablesFormBeforeValidationLineItemProps {
-  return {
-    product_id: product.id,
-    /**
-     * The quantity can't be less than `smallest_amount`
-     *  so we have to set `quantity` accordingly
-     */
-    quantity: product.smallest_amount ?? 1,
-    price: product.price,
-    name: product.name,
-    measure_unit_id: product.measure_unit_id,
-    vat_rate_id: vatRates?.data[0].id,
-    vat_rate_value: vatRates?.data[0].value,
-    tax_rate_value: 0,
-    smallest_amount: product.smallest_amount,
-  };
 }
 
 const CardTableItem = ({
@@ -179,71 +102,69 @@ const CardTableItem = ({
   );
 };
 
-const TotalCell = ({
-  item,
-  formatCurrencyToDisplay,
-}: {
-  item: CreateReceivablesFormBeforeValidationLineItemProps;
-  formatCurrencyToDisplay: ReturnType<
-    typeof useCurrencies
-  >['formatCurrencyToDisplay'];
-}) => {
-  if (!item.price) {
-    return null;
-  }
-
-  return (
-    <>
-      {formatCurrencyToDisplay(
-        item.price.value * item.quantity,
-        item.price.currency
-      )}
-    </>
-  );
-};
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
 
 interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
-  onCurrencyChanged: (currency: CurrencyEnum) => void;
   isNonVatSupported: boolean;
+}
+
+interface ProductItem {
+  id: string;
+  label: string;
+  price?: {
+    currency: components['schemas']['CurrencyEnum'];
+    value: number;
+  };
+  smallestAmount?: number;
+  measureUnit?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  vat_rate_id?: string;
+  vat_rate_value?: number;
 }
 
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
-  onCurrencyChanged,
   isNonVatSupported,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const {
     control,
     formState: { errors },
+    setValue,
+    getValues,
     watch,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'line_items',
+    shouldUnregister: false,
   });
+
+  // Use getValues to get current line items instead of watch to prevent excessive re-renders
+  const getCurrentLineItems = useCallback(() => {
+    return getValues('line_items');
+  }, [getValues]);
+
+  // Watch for changes to line items to trigger re-renders
   const watchedLineItems = watch('line_items');
+
+  // To avoid excessive recalculations, memoize the line items for the calculations
+  // Include watchedLineItems in dependencies to ensure re-render when values change
+  const currentLineItems = useMemo(
+    () => getCurrentLineItems(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getCurrentLineItems, watchedLineItems]
+  );
+
+  const mounted = useRef(false);
+  const isAddingRow = useRef(false);
   const { api } = useMoniteContext();
   const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
-  const handleSetActualCurrency = useCallback(
-    (currency: CurrencyEnum) => {
-      onCurrencyChanged(currency);
-    },
-    [onCurrencyChanged]
-  );
-
-  const handleOpenProductsTable = useCallback(() => {
-    setProductsTableOpen(true);
-  }, []);
-  const handleCloseProductsTable = useCallback(() => {
-    setProductsTableOpen(false);
-  }, []);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
 
   const {
     subtotalPrice,
@@ -251,10 +172,17 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: [...watchedLineItems],
+    lineItems: currentLineItems || fields,
     formatCurrencyToDisplay,
     isNonVatSupported: isNonVatSupported,
+    actualCurrency,
   });
+
+  // Hook to detect when rows finish adding
+  useEffect(() => {
+    // When fields length changes, we know the row addition has completed
+    isAddingRow.current = false;
+  }, [fields.length]);
 
   const generalError = useMemo(() => {
     if (!error || Array.isArray(error)) {
@@ -264,35 +192,282 @@ export const ItemsSection = ({
     return error.message;
   }, [error]);
 
-  const quantityError = useMemo(() => {
-    if (!error || !Array.isArray(error)) {
-      return;
-    }
+  const getErrorMessage = useCallback(
+    (key: string) => {
+      if (!error || !Array.isArray(error)) {
+        return;
+      }
 
-    const quantityErr = error.find((item) => item?.quantity);
+      const keys = key.split('.');
 
-    if (!quantityErr) {
-      return;
-    }
+      const specificError = error.find((item) => {
+        let current: ValidationErrorItem = item;
+        for (const k of keys) {
+          if (current && typeof current === 'object' && k in current) {
+            current = current[k] as ValidationErrorItem;
+          } else {
+            return false;
+          }
+        }
+        return current && typeof current === 'object' && 'message' in current;
+      });
 
-    return quantityErr.quantity.message;
-  }, [error]);
+      if (!specificError) {
+        return;
+      }
+
+      let result: ValidationErrorItem = specificError;
+      for (const k of keys) {
+        result = result?.[k] as ValidationErrorItem;
+      }
+
+      return (result as unknown as { message: string })?.message;
+    },
+    [error]
+  );
+
+  const quantityError = useMemo(
+    () => getErrorMessage('quantity'),
+    [getErrorMessage]
+  );
+  const nameError = useMemo(
+    () => getErrorMessage('product.name'),
+    [getErrorMessage]
+  );
+  const priceError = useMemo(() => {
+    return (
+      getErrorMessage('product.price.value') ||
+      getErrorMessage('product.price.currency')
+    );
+  }, [getErrorMessage]);
+  const taxError = useMemo(() => {
+    return (
+      getErrorMessage('vat_rate_id') ||
+      getErrorMessage('vat_rate_value') ||
+      getErrorMessage('tax_rate_value')
+    );
+  }, [getErrorMessage]);
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
-  const highestVatRate = vatRates?.data?.reduce(
-    (max, vatRate) => (vatRate.value > max.value ? vatRate : max),
-    vatRates?.data[0]
+
+  const highestVatRate = useMemo(
+    () =>
+      vatRates?.data?.reduce(
+        (max, rate) => (rate.value > max.value ? rate : max),
+        vatRates.data[0]
+      ),
+    [vatRates]
   );
 
-  const StyledTableCell = styled(TableCell)`
-    max-width: 100px;
+  const createEmptyRow = useCallback(
+    () => ({
+      id: generateUniqueId(),
+      product: {
+        price: {
+          value: 0,
+          currency: actualCurrency || defaultCurrency || 'USD',
+        },
+        name: '',
+        type: 'product' as const, //since those are not saved in catalogue i am presuming type does not matter
+      },
+      quantity: 1,
+      vat_rate_id: highestVatRate?.id,
+      vat_rate_value: highestVatRate?.value,
+    }),
+    [actualCurrency, defaultCurrency, highestVatRate?.id, highestVatRate?.value]
+  );
 
-    fieldset.MuiOutlinedInput-notchedOutline,
-    .MuiOutlinedInput-root:hover fieldset.MuiOutlinedInput-notchedOutline {
-      border-color: transparent;
+  const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
+
+  const countEmptyRows = (
+    fields: CreateReceivablesFormBeforeValidationLineItemProps[]
+  ) => {
+    return fields.reduce(
+      (count, field) => (field.product?.name === '' ? count + 1 : count),
+      0
+    );
+  };
+
+  const handleAddRow = useCallback(() => {
+    const emptyRowCount = countEmptyRows(fields);
+
+    if (emptyRowCount > 4) {
+      setTooManyEmptyRows(true);
+      return;
     }
-  `;
+
+    // Prevent duplicate additions
+    if (isAddingRow.current) {
+      return;
+    }
+
+    setTooManyEmptyRows(false);
+    isAddingRow.current = true;
+    append(createEmptyRow());
+  }, [fields, append, createEmptyRow]);
+
+  const handleAutoAddRow = useCallback(() => {
+    // Prevent duplicate additions
+    if (isAddingRow.current) {
+      return;
+    }
+
+    // Get a fresh count of empty rows
+    const currentItems = getValues('line_items');
+    const emptyRowCount = countEmptyRows(currentItems || fields);
+
+    if (emptyRowCount < 5) {
+      setTooManyEmptyRows(false);
+    }
+
+    // Only add a new row if there are NO empty rows left
+    // This prevents adding too many rows automatically
+    if (emptyRowCount === 0 && fields.length > 0) {
+      isAddingRow.current = true;
+      append(createEmptyRow());
+    }
+  }, [fields, append, createEmptyRow, getValues]);
+
+  // Initialize with a single empty row only once
+  useEffect(() => {
+    if (!mounted.current) {
+      // Prevent adding a row if we're already in the process
+      if (isAddingRow.current) {
+        return;
+      }
+
+      // Check if we already have line items from the form
+      const existingItems = getValues('line_items');
+
+      // Only add a row if no items exist
+      if (!existingItems || existingItems.length === 0) {
+        isAddingRow.current = true;
+        append(createEmptyRow());
+      }
+
+      mounted.current = true;
+    }
+  }, [append, createEmptyRow, getValues]);
+
+  // Reset the isAddingRow flag whenever fields change
+  useEffect(() => {
+    isAddingRow.current = false;
+  }, [fields.length]);
+
+  const { data: measureUnitsData, isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery();
+
+  const measureUnits = measureUnitsData?.data;
+
+  const setValueWithValidationLocal = useCallback(
+    (name: string, value: any, shouldValidate = true) => {
+      setValueWithValidation(name, value, shouldValidate, setValue);
+    },
+    [setValue]
+  );
+
+  const handleUpdate = useCallback(
+    (index: number, item: ProductItem) => {
+      if (item) {
+        // Name doesn't affect calculations - no validation needed
+        setValueWithValidationLocal(
+          `line_items.${index}.product.name`,
+          item.label,
+          false
+        );
+
+        // Price affects calculations - validation needed
+        const currentPrice = getValues(
+          `line_items.${index}.product.price.value`
+        );
+        if (!currentPrice || currentPrice === 0) {
+          setValueWithValidationLocal(
+            `line_items.${index}.product.price.value`,
+            item.price?.value || 0
+          );
+        }
+
+        setValueWithValidationLocal(
+          `line_items.${index}.product.price.currency`,
+          actualCurrency || defaultCurrency || 'USD'
+        );
+
+        // Measure unit affects display but not calculations
+        // First check if the item already has a measure unit
+        const currentMeasureUnitId = getValues(
+          `line_items.${index}.product.measure_unit_id`
+        );
+        const itemMeasureUnitId = item.measureUnit?.id;
+        const itemMeasureUnitName = item.measureUnit?.name;
+
+        // Prioritize:
+        // 1. Keep current if exists
+        // 2. Find by name if item has name but no ID
+        // 3. Use item's measure unit ID
+        // 4. Fallback to first available
+        let measureUnitId: string | undefined;
+
+        if (currentMeasureUnitId) {
+          // Keep existing measure unit if there is one
+          measureUnitId = currentMeasureUnitId;
+        } else if (itemMeasureUnitName && !itemMeasureUnitId && measureUnits) {
+          // Find measure unit by name if it has a name but no ID
+          const matchedUnit = measureUnits.find(
+            (unit) => unit.name === itemMeasureUnitName
+          );
+          if (matchedUnit) {
+            measureUnitId = matchedUnit.id;
+          }
+        } else if (itemMeasureUnitId) {
+          // Use the item's measure unit
+          measureUnitId = itemMeasureUnitId;
+        } else if (measureUnits?.[0]?.id) {
+          // Fallback to first available measure unit
+          measureUnitId = measureUnits[0].id;
+        }
+
+        if (measureUnitId) {
+          setValueWithValidationLocal(
+            `line_items.${index}.product.measure_unit_id`,
+            measureUnitId,
+            false
+          );
+        }
+
+        // VAT/Tax rates affect calculations - validation needed
+        setValueWithValidationLocal(
+          `line_items.${index}.vat_rate_id`,
+          item.vat_rate_id
+        );
+        setValueWithValidationLocal(
+          `line_items.${index}.vat_rate_value`,
+          item.vat_rate_value
+        );
+        setValueWithValidationLocal(
+          `line_items.${index}.quantity`,
+          item.smallestAmount || 1
+        );
+        setValueWithValidationLocal(
+          `line_items.${index}.product.type`,
+          'product',
+          false
+        );
+
+        setTimeout(() => {
+          handleAutoAddRow();
+        }, 0);
+      }
+    },
+    [
+      actualCurrency,
+      defaultCurrency,
+      setValueWithValidationLocal,
+      getValues,
+      measureUnits,
+      handleAutoAddRow,
+    ]
+  );
 
   return (
     <Stack spacing={0} className={className}>
@@ -301,7 +476,11 @@ export const ItemsSection = ({
         fontSize={'1.25em'}
         fontWeight={500}
         sx={{ marginBottom: 2 }}
-      >{t(i18n)`Items`}</Typography>
+      >
+        {t(i18n)`Items`}
+      </Typography>
+
+      {/* no items error */}
       <Collapse
         in={Boolean(generalError)}
         sx={{
@@ -312,6 +491,8 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{generalError}</Alert>
       </Collapse>
+
+      {/* quantity error */}
       <Collapse
         in={Boolean(quantityError)}
         sx={{
@@ -322,145 +503,264 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ marginBottom: 2 }}>
-        <CardContent>
-          <TableContainer sx={{ maxHeight: 400 }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow className={tableRowClassName}>
-                  <TableCell>{t(i18n)`Item`}</TableCell>
-                  <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell>{t(i18n)`Units`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                  <TableCell>
-                    {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fields.map((field, index) => (
-                  <TableRow className={tableRowClassName} key={field.id}>
-                    <TableCell>{field.name}</TableCell>
-                    <StyledTableCell>
-                      <Controller
-                        name={`line_items.${index}.quantity`}
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              type="number"
-                              inputProps={{ min: 1 }}
-                              size="small"
-                              fullWidth={false}
-                              error={Boolean(error)}
+
+      {/* name error */}
+      <Collapse
+        in={Boolean(nameError)}
+        sx={{
+          ':not(.MuiCollapse-hidden)': {
+            marginBottom: 1,
+          },
+        }}
+      >
+        <Alert severity="error">{nameError}</Alert>
+      </Collapse>
+
+      <Box>
+        <TableContainer
+          sx={{
+            overflow: 'visible',
+            overflowY: 'auto',
+          }}
+        >
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow className={tableRowClassName}>
+                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
+                  i18n
+                )`Item name`}</TableCell>
+                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
+                  i18n
+                )`Quantity`}</TableCell>
+                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
+                  i18n
+                )`Price`}</TableCell>
+                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
+                  {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
+                </TableCell>
+                <TableCell sx={{ padding: 0, width: '48px' }}></TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {isMeasureUnitsLoading ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '8px',
+                  }}
+                >
+                  <CircularProgress size={20} />
+                </Box>
+              ) : (
+                fields.map((field, index) => {
+                  return (
+                    <TableRow
+                      key={field.id || generateUniqueId()}
+                      className={tableRowClassName}
+                    >
+                      <TableCell
+                        sx={{
+                          width: { xs: '30%', xl: '40%' },
+                          paddingLeft: 0,
+                          paddingRight: 2,
+                        }}
+                      >
+                        <ItemSelector
+                          setIsCreateItemOpened={setIsCreateDialogOpen}
+                          onUpdate={(item) => handleUpdate(index, item)}
+                          fieldName={field.product?.name || field.name}
+                          index={index}
+                          error={Boolean(
+                            !field.product?.name && !field.name && nameError
+                          )}
+                          actualCurrency={actualCurrency}
+                          defaultCurrency={defaultCurrency}
+                          measureUnits={measureUnitsData}
+                        />
+                      </TableCell>
+
+                      <TableCell
+                        sx={{
+                          width: { xs: '30%', xl: '20%' },
+                          paddingLeft: 2,
+                          paddingRight: 2,
+                        }}
+                      >
+                        <Controller
+                          name={`line_items.${index}.quantity`}
+                          render={({ field }) => {
+                            return (
+                              <FormControl
+                                variant="standard"
+                                fullWidth
+                                required
+                                error={Boolean(quantityError)}
+                              >
+                                <TextField
+                                  {...field}
+                                  InputProps={{
+                                    endAdornment: (measureUnits?.length ?? 0) >
+                                      0 && (
+                                      <InputAdornment position="end">
+                                        <MeasureUnitController
+                                          control={control}
+                                          index={index}
+                                          errors={errors}
+                                          fieldError={
+                                            errors.line_items?.[index]?.product
+                                              ?.measure_unit_id
+                                          }
+                                          measureUnits={measureUnits}
+                                          getValues={getValues}
+                                          setValue={setValue}
+                                        />
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  type="number"
+                                  inputProps={{ min: 1 }}
+                                  size="small"
+                                  onChange={(e) => {
+                                    const value = parseInt(e.target.value) || 1;
+                                    setValueWithValidationLocal(
+                                      `line_items.${index}.quantity`,
+                                      value
+                                    );
+                                    field.onChange(e);
+                                  }}
+                                  sx={{
+                                    '& .MuiInputBase-root': {
+                                      paddingRight: '0 !important',
+                                      '.MuiInputBase-input': {
+                                        paddingRight: 0,
+                                      },
+                                      '&:hover .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
+                                        {
+                                          borderColor: 'transparent',
+                                        },
+                                    },
+                                  }}
+                                />
+                              </FormControl>
+                            );
+                          }}
+                        />
+                      </TableCell>
+
+                      <TableCell
+                        sx={{ width: '20%', paddingLeft: 2, paddingRight: 2 }}
+                        align="right"
+                      >
+                        <PriceField
+                          index={index}
+                          error={Boolean(priceError)}
+                          currency={actualCurrency || defaultCurrency || 'USD'}
+                        />
+                      </TableCell>
+
+                      <TableCell
+                        sx={{
+                          width: 'fit-content',
+                          paddingLeft: 2,
+                          paddingRight: 2,
+                        }}
+                      >
+                        {isNonVatSupported ? (
+                          <TaxRateController
+                            control={control}
+                            index={index}
+                            errors={errors}
+                            fieldError={
+                              errors.line_items?.[index]?.tax_rate_value
+                            }
+                            getValues={getValues}
+                            setValue={setValue}
+                          />
+                        ) : (
+                          <FormControl
+                            variant="standard"
+                            fullWidth
+                            required
+                            error={Boolean(taxError)}
+                          >
+                            <VatRateController
+                              control={control}
+                              index={index}
+                              errors={errors}
+                              fieldError={
+                                errors.line_items?.[index]?.vat_rate_id
+                              }
+                              vatRates={vatRates?.data}
+                              getValues={getValues}
+                              setValue={setValue}
+                              isNonVatSupported={isNonVatSupported}
+                              highestVatRate={highestVatRate}
                             />
                           </FormControl>
                         )}
-                      />
-                    </StyledTableCell>
-                    <TableCell>
-                      {field.measure_unit_id ? (
-                        <MeasureUnit unitId={field.measure_unit_id} />
-                      ) : (
-                        '—'
-                      )}
-                    </TableCell>
-                    <TableCell align="right">
-                      {field.price &&
-                        formatCurrencyToDisplay(
-                          field.price.value,
-                          field.price.currency
-                        )}
-                    </TableCell>
-                    <TableCell align="right">
-                      <TotalCell
-                        item={watchedLineItems[index]}
-                        formatCurrencyToDisplay={formatCurrencyToDisplay}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {isNonVatSupported ? (
-                        <Controller
-                          name={`line_items.${index}.tax_rate_value`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              required
-                              error={Boolean(error)}
-                            >
-                              <TextField
-                                {...field}
-                                id={field.name}
-                                type="number"
-                                inputProps={{ min: 1, max: 100 }}
-                                size="small"
-                                fullWidth={false}
-                                error={Boolean(error)}
-                                helperText={error?.message}
-                                InputProps={{ endAdornment: '%' }}
-                                sx={{ minWidth: 100 }}
-                              />
-                            </FormControl>
-                          )}
-                        />
-                      ) : (
-                        <VatRateController
-                          index={index}
-                          vatRates={vatRates}
-                          highestVatRate={highestVatRate}
-                        />
-                      )}
-                    </TableCell>
+                      </TableCell>
 
-                    <TableCell>
-                      <IconButton
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell colSpan={7}>
-                    <Button
-                      startIcon={<AddIcon />}
-                      onClick={handleOpenProductsTable}
-                    >
-                      {t(i18n)`Add item`}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Collapse in={shouldShowVatExemptRationale}>
-            <Box sx={{ m: 2 }}>
-              <Controller
-                name="vat_exemption_rationale"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    label={t(i18n)`VAT Exempt Rationale`}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    error={Boolean(error)}
-                  />
-                )}
-              />
-            </Box>
-          </Collapse>
-        </CardContent>
-      </Card>
+                      <TableCell sx={{ padding: 0, width: '48px' }}>
+                        <IconButton
+                          onClick={() => {
+                            remove(index);
+                            const emptyRowCount = countEmptyRows(fields);
+
+                            if (emptyRowCount < 5) {
+                              setTooManyEmptyRows(false);
+                            }
+                          }}
+                          sx={{ padding: '4px' }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Box mt={2}>
+          <Button
+            startIcon={<AddIcon />}
+            variant="outlined"
+            onClick={handleAddRow}
+            disabled={tooManyEmptyRows}
+          >
+            {t(i18n)`Row`}
+          </Button>
+          {tooManyEmptyRows && (
+            <Typography mt={2} variant="body2" color="warning">{t(
+              i18n
+            )`Please use some of the rows before adding new ones.`}</Typography>
+          )}
+        </Box>
+
+        <Collapse in={shouldShowVatExemptRationale}>
+          <Box sx={{ m: 2 }}>
+            <Controller
+              name="vat_exemption_rationale"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label={t(i18n)`VAT Exempt Rationale`}
+                  multiline
+                  rows={2}
+                  fullWidth
+                  error={Boolean(error)}
+                />
+              )}
+            />
+          </Box>
+        </Collapse>
+      </Box>
+
       <Card
         className={className + '-Totals'}
         variant="outlined"
@@ -481,6 +781,7 @@ export const ItemsSection = ({
             />
             <Divider sx={{ my: 1.5 }} />
             <CardTableItem
+              key={`totalTaxes-${totalTaxes}`}
               label={t(i18n)`Taxes total`}
               value={totalTaxes}
               className="Monite-TaxesTotal"
@@ -497,41 +798,13 @@ export const ItemsSection = ({
           </Stack>
         </CardContent>
       </Card>
-      <Dialog
-        className={className + '-Dialog-ProductsTable'}
-        open={productsTableOpen}
-        onClose={handleCloseProductsTable}
-        alignDialog="right"
-      >
-        <ProductsTable
-          defaultCurrency={defaultCurrency}
-          actualCurrency={actualCurrency}
-          hasProducts={fields.length > 0}
-          onAdd={({ items, currency }) => {
-            handleCloseProductsTable();
-            if (actualCurrency !== currency) {
-              replace(
-                items.map((product) => {
-                  return prepareLineItem(product, vatRates);
-                })
-              );
-              handleSetActualCurrency(currency);
 
-              return;
-            }
-
-            const productItemsMapped = items.map((product) => {
-              return prepareLineItem(product, vatRates);
-            });
-            append(productItemsMapped);
-            handleSetActualCurrency(currency);
-          }}
-        />
-      </Dialog>
+      <CreateProductDialog
+        actualCurrency={actualCurrency}
+        defaultCurrency={defaultCurrency}
+        open={isCreateDialogOpen}
+        handleClose={() => setIsCreateDialogOpen(false)}
+      />
     </Stack>
   );
 };
-
-type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
-type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type VatRateListResponse = components['schemas']['VatRateListResponse'];

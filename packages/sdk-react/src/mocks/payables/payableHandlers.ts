@@ -616,11 +616,13 @@ const sortBy = (
       const aDate = sort === 'created_at' ? new Date(a[sort]) : a[sort];
       const bDate = sort === 'created_at' ? new Date(b[sort]) : b[sort];
 
-      if (aDate < bDate) {
-        return order === 'asc' ? -1 : 1;
-      }
-      if (aDate > bDate) {
-        return order === 'asc' ? 1 : -1;
+      if (aDate !== undefined && bDate !== undefined) {
+        if (aDate < bDate) {
+          return order === 'asc' ? -1 : 1;
+        }
+        if (aDate > bDate) {
+          return order === 'asc' ? 1 : -1;
+        }
       }
     }
     return 0;

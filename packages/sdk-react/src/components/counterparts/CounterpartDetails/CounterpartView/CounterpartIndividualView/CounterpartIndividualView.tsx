@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
 
+import {
+  type CounterpartShowCategories,
+  CounterpartDataTestId,
+} from '@/components/counterparts/types';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CardActions, Divider } from '@mui/material';
 
-import type { CounterpartShowCategories } from '../../../Counterpart.types';
-import { CounterpartDataTestId } from '../../../Counterpart.types';
 import { getIndividualName } from '../../../helpers';
 import { CounterpartIndividualFields } from '../../CounterpartForm';
 import { printCounterpartType } from '../../helpers';

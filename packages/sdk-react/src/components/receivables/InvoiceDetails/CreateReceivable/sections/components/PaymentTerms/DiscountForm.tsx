@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { UseFormRegister, FieldErrors, FieldError } from 'react-hook-form';
 
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Alert,
@@ -35,6 +35,7 @@ export const DiscountForm = ({
   errors,
 }: DiscountFormProps) => {
   const [error, setError] = useState<string | undefined>('');
+  const { i18n } = useLingui();
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {

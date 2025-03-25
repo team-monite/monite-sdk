@@ -100,10 +100,10 @@ export function permissionsAdapter(actions: {
             action_name,
             permission,
           })
-        ) as unknown as components['schemas']['BizObjectsSchema']['objects'],
+        ) as unknown as components['schemas']['BizObjectsSchema-Input']['objects'],
       };
     }),
-  } as Required<components['schemas']['BizObjectsSchema']>;
+  } as Required<components['schemas']['BizObjectsSchema-Input']>;
 }
 
 type DefaultRoleName =
@@ -290,6 +290,24 @@ export const roles_default_permissions: {
       update: 'allowed',
       delete: 'allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
   },
   basic_member: {
     payable: {
@@ -460,6 +478,24 @@ export const roles_default_permissions: {
       update: 'allowed_for_own',
       delete: 'allowed_for_own',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'allowed',
+      update: 'allowed',
+      delete: 'allowed',
+    },
   },
   guest_member: {
     payable: {
@@ -625,6 +661,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'not_allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'not_allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -800,6 +854,24 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
   payables_employee_member: {
     payable: {
@@ -965,6 +1037,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -1140,6 +1230,24 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
   approver_member: {
     payable: {
@@ -1305,6 +1413,24 @@ export const roles_default_permissions: {
       delete: 'not_allowed',
     },
     person: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
       read: 'allowed',
       create: 'not_allowed',
       update: 'not_allowed',
@@ -1480,14 +1606,34 @@ export const roles_default_permissions: {
       update: 'not_allowed',
       delete: 'not_allowed',
     },
+    delivery_note: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    mailbox: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
+    ocr_task: {
+      read: 'allowed',
+      create: 'not_allowed',
+      update: 'not_allowed',
+      delete: 'not_allowed',
+    },
   },
 };
 
-type BizObjectType = NonNullable<BizObjects['object_type']>;
+type BizObjectType = NonNullable<
+  components['schemas']['BizObjectsSchema-Input']['objects']
+>[number]['object_type'];
 
-type BizObjects = Required<
-  NonNullable<components['schemas']['BizObjectsSchema']['objects']>[number]
->;
+type BizObjects = NonNullable<
+  components['schemas']['BizObjectsSchema-Input']['objects']
+>[number];
 
 type BizObject<
   T extends BizObjectType,

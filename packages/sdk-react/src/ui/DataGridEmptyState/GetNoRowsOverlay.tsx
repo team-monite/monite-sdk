@@ -47,12 +47,7 @@ export const GetNoRowsOverlay = ({
     return (
       <DataGridEmptyState
         title={filterTitle || noDataTitle || t(i18n)`No ${entityName} Found`}
-        descriptionLine1={
-          filterDescription1 ||
-          t(
-            i18n
-          )`No ${entityName.toLowerCase()} match your search or filter criteria.`
-        }
+        descriptionLine1={filterDescription1 || ''}
         descriptionLine2={
           filterDescription2 === null
             ? undefined

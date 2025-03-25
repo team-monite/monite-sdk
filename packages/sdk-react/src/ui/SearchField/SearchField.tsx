@@ -18,7 +18,8 @@ export const DEBOUNCE_SEARCH_TIMEOUT: number = 500;
  * @property {(value: string | null) => void} onChange - The function to be called when the input value changes.
  */
 interface SearchFieldProps {
-  label: string;
+  label?: string;
+  placeholder?: string;
   onChange: (value: string | null) => void;
   value?: string;
 }
@@ -40,7 +41,12 @@ interface SearchFieldProps {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange, value }: SearchFieldProps) => {
+export const SearchField = ({
+  label,
+  placeholder,
+  onChange,
+  value,
+}: SearchFieldProps) => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
@@ -57,13 +63,16 @@ export const SearchField = ({ label, onChange, value }: SearchFieldProps) => {
       aria-label="search-by-name"
       className="Monite-SearchField Monite-FilterControl"
     >
-      <InputLabel htmlFor="search-by-name" shrink>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel htmlFor="search-by-name" shrink>
+          {label}
+        </InputLabel>
+      )}
       <Input
         id="search-by-name"
         name="search-by-name"
         aria-label="search-by-name"
+        placeholder={placeholder}
         value={value}
         onChange={(search) => {
           debouncedOnChange(search.target.value || null);
@@ -73,6 +82,16 @@ export const SearchField = ({ label, onChange, value }: SearchFieldProps) => {
             <SearchIcon fontSize="medium" />
           </InputAdornment>
         }
+        sx={{
+          '&::placeholder': {
+            opacity: 1,
+            color: 'text.primary',
+          },
+          '& input::placeholder': {
+            opacity: 1,
+            color: 'text.primary',
+          },
+        }}
       />
     </FormControl>
   );
