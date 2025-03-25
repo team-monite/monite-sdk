@@ -32,7 +32,7 @@ interface VatRateControllerProps {
 export const VatRateController = ({
   control,
   index,
-  fieldError,
+  fieldError: externalFieldError,
   vatRates,
   getValues,
   setValue,
@@ -96,9 +96,12 @@ export const VatRateController = ({
     <Controller
       name={name}
       control={control}
-      render={({ field: vatRateField }) => {
-        // Get current value to ensure we have the latest
+      render={({
+        field: vatRateField,
+        fieldState: { error: internalFieldError },
+      }) => {
         const vatRateId = getValues(name);
+        const hasError = Boolean(externalFieldError || internalFieldError);
 
         return (
           <Select
@@ -108,7 +111,6 @@ export const VatRateController = ({
             onChange={(e) => {
               const selectedVatRateId = e.target.value;
 
-              // Find the corresponding VAT rate to update the value as well
               const selectedVatRate = vatRates?.find(
                 (rate) => rate.id === selectedVatRateId
               );
@@ -116,7 +118,6 @@ export const VatRateController = ({
               setValueWithValidation(name, selectedVatRateId, false, setValue);
 
               if (selectedVatRate) {
-                // Update the vat_rate_value immediately when the VAT rate changes
                 setValueWithValidation(
                   valueFieldName,
                   selectedVatRate.value,
@@ -127,7 +128,7 @@ export const VatRateController = ({
 
               vatRateField.onChange(e);
             }}
-            error={Boolean(fieldError)}
+            error={hasError}
           >
             {vatRates?.map((rate) => (
               <MenuItem key={rate.id} value={rate.id}>

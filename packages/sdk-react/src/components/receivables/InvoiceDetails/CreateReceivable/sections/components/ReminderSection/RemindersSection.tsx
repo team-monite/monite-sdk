@@ -376,7 +376,14 @@ const SelectReminderLayout = ({
   const { i18n } = useLingui();
 
   return (
-    <Grid gridAutoFlow="row" spacing={1} p={1} pl={0} sx={{ flexBasis: '45%' }}>
+    <Grid
+      container
+      gridAutoFlow="row"
+      spacing={1}
+      p={1}
+      pl={0}
+      sx={{ flexBasis: '45%' }}
+    >
       <Grid item sx={{ display: 'flex', alignItems: 'start' }}>
         {children}
 

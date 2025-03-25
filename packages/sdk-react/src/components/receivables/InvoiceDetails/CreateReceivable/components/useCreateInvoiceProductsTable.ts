@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
+import { rateMajorToMinor } from '@/core/utils/vatUtils';
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
@@ -40,9 +41,9 @@ export const useCreateInvoiceProductsTable = ({
     }, 0);
 
     const currency =
-      actualCurrency ||
+      actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
-        ?.product?.price?.currency ||
+        ?.product?.price?.currency ??
       lineItems.find((field) => Boolean(field.price?.currency))?.price
         ?.currency;
 
@@ -57,14 +58,20 @@ export const useCreateInvoiceProductsTable = ({
     });
   }, [lineItems, formatCurrencyToDisplay, actualCurrency]);
 
+  const getVatRateValue = useCallback(
+    (field: CreateReceivablesFormBeforeValidationLineItemProps) => {
+      return isNonVatSupported
+        ? rateMajorToMinor(field?.tax_rate_value ?? 0)
+        : field.vat_rate_value;
+    },
+    [isNonVatSupported]
+  );
+
   const taxes = lineItems.reduce((acc, field) => {
     const price = field.product?.price?.value ?? field.price?.value ?? 0;
     const quantity = field.quantity;
     const subtotalPrice = price * quantity;
-
-    const taxRate = isNonVatSupported
-      ? (field?.tax_rate_value ?? 0) * 100
-      : field.vat_rate_value;
+    const taxRate = getVatRateValue(field);
 
     if (!taxRate) {
       return acc;
@@ -76,9 +83,9 @@ export const useCreateInvoiceProductsTable = ({
 
   const totalTaxes = useMemo(() => {
     const currency =
-      actualCurrency ||
+      actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
-        ?.product?.price?.currency ||
+        ?.product?.price?.currency ??
       lineItems.find((field) => Boolean(field.price?.currency))?.price
         ?.currency;
 
@@ -103,7 +110,7 @@ export const useCreateInvoiceProductsTable = ({
 
   const shouldShowVatExemptRationale =
     !isNonVatSupported &&
-    lineItems.some((lineItem) => lineItem.vat_rate_value === 0);
+    lineItems.some((lineItem) => getVatRateValue(lineItem) === 0);
 
   return {
     subtotalPrice,
