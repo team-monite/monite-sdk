@@ -62,9 +62,12 @@ class MoniteDropin {
   private moniteAppElement: MoniteAppElement;
   private config: MoniteAppElementConfig;
   private events: Partial<Record<MoniteEventTypes, () => void>> = {};
+  private static defaultConfig: Partial<MoniteAppElementConfig> = {
+    componentSettings: {},
+  };
 
   constructor(config: MoniteAppElementConfig) {
-    this.config = config;
+    this.config = { ...MoniteDropin.defaultConfig, ...config };
     this.moniteAppElement = document.createElement(
       MONITE_APP_ELEMENT_NAME
     ) as MoniteAppElement;
