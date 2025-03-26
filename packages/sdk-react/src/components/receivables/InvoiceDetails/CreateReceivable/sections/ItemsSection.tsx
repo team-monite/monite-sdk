@@ -252,7 +252,7 @@ export const ItemsSection = ({
     setTooManyEmptyRows(false);
     isAddingRow.current = true;
     append(createEmptyRow());
-  }, [fields, append, createEmptyRow, setValue, getValues]);
+  }, [fields, append, createEmptyRow]);
 
   const handleAutoAddRow = useCallback(() => {
     if (isAddingRow.current) {
