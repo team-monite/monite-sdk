@@ -24,7 +24,7 @@ interface TaxRateControllerProps {
 export const TaxRateController = ({
   control,
   index,
-  fieldError,
+  fieldError: externalFieldError,
   setValue,
 }: TaxRateControllerProps) => {
   const name = `line_items.${index}.tax_rate_value` as const;
@@ -33,22 +33,40 @@ export const TaxRateController = ({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => {
+      render={({
+        field: { onChange, value, ...field },
+        fieldState: { error: internalFieldError },
+      }) => {
+        let numericValue = 0;
+
+        if (value !== undefined && value !== null) {
+          numericValue = typeof value === 'number' ? value : Number(value);
+          if (isNaN(numericValue)) numericValue = 0;
+        }
+
+        const hasError = Boolean(externalFieldError || internalFieldError);
+
         return (
           <TextField
             {...field}
+            value={numericValue}
             type="number"
+            inputProps={{
+              step: 1,
+              min: 0,
+              max: 100,
+            }}
             InputProps={{
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
             size="small"
-            error={Boolean(fieldError)}
+            error={hasError}
             onChange={(e) => {
-              const value = Number(e.target.value);
+              const numValue = Number(e.target.value);
+              const validValue = !isNaN(numValue) ? numValue : 0;
 
-              setValueWithValidation(name, value, true, setValue);
-
-              field.onChange(e);
+              setValueWithValidation(name, validValue, true, setValue);
+              onChange(validValue);
             }}
             sx={{
               width: '120px',

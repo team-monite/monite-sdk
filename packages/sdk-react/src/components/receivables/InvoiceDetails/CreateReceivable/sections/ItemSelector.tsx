@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -15,6 +9,7 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
+import { useDebounceCallback } from '@/core/hooks/useDebounce';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -28,8 +23,6 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-
-import debounce from 'lodash/debounce';
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
 
@@ -49,8 +42,6 @@ type MeasureUnit =
   components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
-  setIsCreateItemOpened: Dispatch<SetStateAction<boolean>>;
-  onUpdate: (arg0: ItemSelectorOptionProps, arg1?: boolean) => void;
   disabled?: boolean;
   error?: boolean;
   actualCurrency?: CurrencyEnum;
@@ -59,6 +50,8 @@ type ItemSelectorProps = {
   index: number;
   measureUnits?: { data: MeasureUnit[] };
   marginLeft?: string | number;
+  onCreateItem: () => void;
+  onUpdate: (item: ItemSelectorOptionProps, isCatalogItem?: boolean) => void;
 };
 
 const CREATE_NEW_ID = '__create-new__';
@@ -75,7 +68,6 @@ function isDividerOption(
 }
 
 export const ItemSelector = ({
-  setIsCreateItemOpened,
   fieldName,
   error,
   disabled,
@@ -83,8 +75,9 @@ export const ItemSelector = ({
   actualCurrency,
   defaultCurrency,
   measureUnits,
+  marginLeft = '4px', //to avoid box-shadow from being cut by container
+  onCreateItem,
   onUpdate,
-  marginLeft = '4px',
 }: ItemSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -161,21 +154,29 @@ export const ItemSelector = ({
     });
   }, [flattenProducts, measureUnits, fieldName]);
 
-  const handleCreateNewItem = useCallback(() => {
-    setIsCreateItemOpened(true);
-  }, [setIsCreateItemOpened]);
-
   const [customName, setCustomName] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleCustomNameChange = debounce(
+  useEffect(() => {
+    if (!isTyping && fieldName && fieldName.length > 0 && !customName.length) {
+      const searchMatch = flattenProducts?.find(
+        (item) => item?.name === fieldName
+      );
+
+      if (!searchMatch) {
+        setCustomName(fieldName);
+      }
+    }
+  }, [fieldName, isTyping, flattenProducts, customName]);
+
+  const handleCustomNameChange = useDebounceCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setCustomName(event.target.value);
     },
     300
   );
 
-  const handleFocus = useCallback(() => setIsTyping(true), []);
+  const handleFocus = () => setIsTyping(true);
   const handleBlur = useCallback(() => {
     setIsTyping(false);
     const isCustomName = !itemsAutocompleteData.some(
@@ -211,9 +212,6 @@ export const ItemSelector = ({
           if (searchMatch) {
             // inherited value was found in catalogue
             selectedItem = searchMatch;
-          } else {
-            // not found in catalogue, display name as is
-            setCustomName(fieldName);
           }
         }
 
@@ -236,11 +234,11 @@ export const ItemSelector = ({
             setCustomName('');
             field.onChange(null);
             return;
-          } else if (value) {
-            field.onChange(value.id);
-            setCustomName('');
-            onUpdate(value, true);
           }
+
+          field.onChange(value.id);
+          setCustomName('');
+          onUpdate(value, true);
         };
 
         return (
@@ -357,7 +355,7 @@ export const ItemSelector = ({
                     justifyContent: 'flex-start',
                     px: 2,
                   }}
-                  onClick={handleCreateNewItem}
+                  onClick={onCreateItem}
                 >
                   {itemOption.label}
                 </Button>

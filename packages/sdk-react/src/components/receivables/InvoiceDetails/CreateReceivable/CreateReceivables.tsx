@@ -15,6 +15,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -175,6 +176,8 @@ const CreateReceivablesBase = ({
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
+  const { data: vatRates } = api.vatRates.getVatRates.useQuery();
+
   useEffect(() => {
     const values = getValues();
     const billingAddressId = values.default_billing_address_id;
@@ -261,7 +264,7 @@ const CreateReceivablesBase = ({
           type: 'product',
         },
         ...(isNonVatSupported
-          ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
+          ? { tax_rate_value: rateMajorToMinor(item?.tax_rate_value ?? 0) }
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
@@ -454,11 +457,8 @@ const CreateReceivablesBase = ({
                             name="currency"
                             control={control}
                             hideLabel
-                            // @ts-expect-error -> i dont understand why this onChange asks for 4 parameters. only the 2nd is needed
-                            onChange={(
-                              event, // eslint-disable-line
-                              value
-                            ) => {
+                            // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
+                            onChange={(_event, value) => {
                               if (
                                 value &&
                                 !Array.isArray(value) &&
@@ -712,7 +712,101 @@ const CreateReceivablesBase = ({
             id={formName}
             noValidate
             onSubmit={(e) => {
-              handleSubmit(handleCreateReceivable)(e);
+              const allValues = getValues();
+
+              if (
+                !allValues.default_billing_address_id &&
+                counterpartAddresses?.data !== undefined &&
+                counterpartAddresses?.data?.length > 0
+              ) {
+                setValue(
+                  'default_billing_address_id',
+                  counterpartAddresses.data[0].id
+                );
+              }
+
+              // If in VAT mode, ensure all line items have VAT values
+              if (
+                !isNonVatSupported &&
+                allValues.line_items &&
+                allValues.line_items.length > 0
+              ) {
+                const filledLineItems = allValues.line_items.filter(
+                  (item) =>
+                    item.product &&
+                    item.product.name &&
+                    item.product.name.trim() !== ''
+                );
+
+                const lineItemsWithIssues = filledLineItems.filter((item) => {
+                  return (
+                    !item.vat_rate_id ||
+                    item.vat_rate_value === undefined ||
+                    item.vat_rate_value === null
+                  );
+                });
+
+                if (lineItemsWithIssues.length > 0) {
+                  if (vatRates?.data?.length) {
+                    const highestVatRate = vatRates.data.reduce(
+                      (max, rate) => (rate.value > max.value ? rate : max),
+                      vatRates.data[0]
+                    );
+
+                    filledLineItems.forEach((item) => {
+                      if (
+                        !item.vat_rate_id ||
+                        item.vat_rate_value === undefined ||
+                        item.vat_rate_value === null
+                      ) {
+                        const index = allValues.line_items.indexOf(item);
+                        if (index !== -1) {
+                          setValue(
+                            `line_items.${index}.vat_rate_id`,
+                            highestVatRate.id
+                          );
+                          setValue(
+                            `line_items.${index}.vat_rate_value`,
+                            highestVatRate.value
+                          );
+                        }
+                      }
+                    });
+                  }
+                }
+              }
+
+              handleSubmit(
+                (values) => {
+                  handleCreateReceivable(values);
+                },
+                (errors) => {
+                  if (errors.line_items) {
+                    if (Array.isArray(errors.line_items)) {
+                      showErrorToast(
+                        new Error(
+                          'Please check your line items. There are validation errors.'
+                        )
+                      );
+                    } else {
+                      showErrorToast(
+                        new Error(
+                          errors.line_items.message ||
+                            'Please add at least one line item.'
+                        )
+                      );
+                    }
+                  } else {
+                    const firstErrorKey = Object.keys(errors)[0];
+                    const firstError =
+                      errors[firstErrorKey as keyof typeof errors];
+                    const errorMessage =
+                      firstError?.message ||
+                      'Validation failed. Please check the form.';
+                    showErrorToast(new Error(errorMessage));
+                  }
+                }
+              )(e);
             }}
             style={{ marginBottom: theme.spacing(7) }}
           >

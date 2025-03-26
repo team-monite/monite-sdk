@@ -16,8 +16,6 @@ export const setValueWithValidation = (
   shouldValidate: boolean = true,
   setValue: UseFormSetValue<CreateReceivablesFormBeforeValidationProps>
 ) => {
-  console.log(`[Form] Setting value for ${name}:`, value);
-
   // Need to use any due to React Hook Form's typing limitations
   setValue(name as any, value, {
     shouldValidate,

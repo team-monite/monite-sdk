@@ -5,8 +5,8 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useVatTypes } from '@/core/hooks/useVatTypes';
 import { getCountriesArray } from '@/core/utils/countries';
-import { useVatTypes } from '@/core/utils/useVatTypes';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
