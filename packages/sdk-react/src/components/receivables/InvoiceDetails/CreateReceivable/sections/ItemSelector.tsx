@@ -14,13 +14,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import ClearIcon from '@mui/icons-material/Clear';
 import {
   Autocomplete,
   Button,
   CircularProgress,
   Divider,
-  IconButton,
   TextField,
 } from '@mui/material';
 
@@ -56,6 +54,7 @@ type ItemSelectorProps = {
 
 const CREATE_NEW_ID = '__create-new__';
 const DIVIDER = '__divider__';
+const CUSTOM_ID = 'custom';
 
 function isCreateNewItemOption(itemOption: ItemSelectorOptionProps): boolean {
   return itemOption?.id === CREATE_NEW_ID;
@@ -65,6 +64,12 @@ function isDividerOption(
   itemOption: ItemSelectorOptionProps | undefined | null
 ): boolean {
   return itemOption?.id === DIVIDER;
+}
+
+function isCustomOption(
+  itemOption: ItemSelectorOptionProps | undefined | null
+): boolean {
+  return itemOption?.id === CUSTOM_ID;
 }
 
 export const ItemSelector = ({
@@ -82,6 +87,8 @@ export const ItemSelector = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const currency = actualCurrency ?? defaultCurrency;
+  const [customName, setCustomName] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
     resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
@@ -154,16 +161,12 @@ export const ItemSelector = ({
     });
   }, [flattenProducts, measureUnits, fieldName]);
 
-  const [customName, setCustomName] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-
   useEffect(() => {
-    if (!isTyping && fieldName && fieldName.length > 0 && !customName.length) {
+    if (!isTyping && fieldName && fieldName.length > 0) {
       const searchMatch = flattenProducts?.find(
         (item) => item?.name === fieldName
       );
-
-      if (!searchMatch) {
+      if (!searchMatch && !customName) {
         setCustomName(fieldName);
       }
     }
@@ -177,16 +180,30 @@ export const ItemSelector = ({
   );
 
   const handleFocus = () => setIsTyping(true);
-  const handleBlur = useCallback(() => {
-    setIsTyping(false);
-    const isCustomName = !itemsAutocompleteData.some(
-      (item) => item.label === customName
-    );
+  const handleBlur = useCallback(
+    (field: any) => {
+      setIsTyping(false);
+      if (!customName.trim()) return;
 
-    if (isCustomName && customName.trim() !== '') {
-      onUpdate({ id: 'custom', label: customName }, false);
-    }
-  }, [customName, itemsAutocompleteData, onUpdate]);
+      const isCustomName = !itemsAutocompleteData.some(
+        (item) => item.label === customName
+      );
+
+      if (isCustomName) {
+        const lastValidItem = flattenProducts?.find(
+          (item) => item?.id === field?.value
+        );
+        if (lastValidItem) {
+          setCustomName(lastValidItem.name);
+          onUpdate({ id: lastValidItem.id, label: lastValidItem.name }, true);
+        } else {
+          setCustomName('');
+          onUpdate({ id: '', label: '' }, false);
+        }
+      }
+    },
+    [customName, itemsAutocompleteData, onUpdate, flattenProducts]
+  );
 
   return (
     <Controller
@@ -221,10 +238,9 @@ export const ItemSelector = ({
               label: selectedItem.name,
             }
           : customName
-          ? { id: 'custom', label: customName }
+          ? { id: CUSTOM_ID, label: customName }
           : null;
 
-        //will trigger only for existing items in catalogue so it is pointless to check custom scenario
         const handleItemChange = (value: ItemSelectorOptionProps | null) => {
           if (
             !value ||
@@ -233,6 +249,7 @@ export const ItemSelector = ({
           ) {
             setCustomName('');
             field.onChange(null);
+            onUpdate({ id: '', label: '' }, false);
             return;
           }
 
@@ -246,6 +263,23 @@ export const ItemSelector = ({
             {...field}
             value={selectedItemOption}
             onChange={(_, value) => handleItemChange(value)}
+            isOptionEqualToValue={(option, value) => {
+              if (!value) return false;
+
+              if (isCustomOption(value)) {
+                return isCustomOption(option) && option.label === value.label;
+              }
+
+              if (isCustomOption(option)) {
+                return false;
+              }
+
+              if (isCreateNewItemOption(value) || isDividerOption(value)) {
+                return option.id === value.id;
+              }
+
+              return option.id === value.id;
+            }}
             slotProps={{
               popper: {
                 container: root,
@@ -256,25 +290,17 @@ export const ItemSelector = ({
                 },
               },
             }}
+            disableClearable={false}
             filterOptions={(options, params) => {
-              const { filtered, reverseFiltered } = options.reduce<{
-                filtered: Array<{ id: string; label: string }>;
-                reverseFiltered: Array<{ id: string; label: string }>;
-              }>(
-                (acc, option) => {
-                  if (
-                    option.label
-                      .toLowerCase()
-                      .includes(params.inputValue.toLowerCase())
-                  ) {
-                    acc.filtered.push(option);
-                  } else {
-                    acc.reverseFiltered.push(option);
-                  }
-                  return acc;
-                },
-                { filtered: [], reverseFiltered: [] }
-              );
+              const filtered = options.filter((option) => {
+                const isSelectedItem = option.id === selectedItemOption?.id;
+                const isCustomItem = isCustomOption(option);
+                const matchesSearch = option.label
+                  .toLowerCase()
+                  .includes(params.inputValue.toLowerCase());
+
+                return !isSelectedItem && !isCustomItem && matchesSearch;
+              });
 
               filtered.unshift({
                 id: CREATE_NEW_ID,
@@ -287,62 +313,53 @@ export const ItemSelector = ({
                   label: '-',
                 });
               }
-              return [...filtered, ...reverseFiltered];
+
+              return filtered;
             }}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  {...params}
-                  label={``}
-                  placeholder={t(i18n)`Line item`}
-                  required
-                  error={error}
-                  className="Item-Selector"
-                  sx={{
-                    width: '100%',
-                    marginLeft,
-                  }}
-                  InputProps={{
-                    ...params.InputProps,
-                    value: params.inputProps.value,
-                    onFocus: handleFocus,
-                    onBlur: handleBlur,
-                    startAdornment: isLoading && <CircularProgress size={20} />,
-                    endAdornment: (() => {
-                      if (
-                        selectedItemOption &&
-                        params.inputProps['aria-expanded']
-                      ) {
-                        return (
-                          <IconButton
-                            onClick={() => {
-                              field.onChange(null);
-                              setCustomName('');
-                            }}
-                          >
-                            <ClearIcon sx={{ width: '1rem', height: '1rem' }} />
-                          </IconButton>
-                        );
-                      }
-                      return null;
-                    })(),
-                  }}
-                  onChange={handleCustomNameChange}
-                />
-              );
-            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={``}
+                placeholder={t(i18n)`Line item`}
+                required
+                error={error}
+                className="Item-Selector"
+                sx={{
+                  width: '100%',
+                  marginLeft,
+                }}
+                InputProps={{
+                  ...params.InputProps,
+                  onFocus: handleFocus,
+                  onBlur: () => handleBlur(field),
+                  startAdornment: isLoading && <CircularProgress size={20} />,
+                  endAdornment: (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      {params.InputProps.endAdornment}
+                    </div>
+                  ),
+                }}
+                onChange={handleCustomNameChange}
+              />
+            )}
             loading={isLoading || disabled}
-            options={itemsAutocompleteData}
+            options={[
+              ...(customName ? [{ id: CUSTOM_ID, label: customName }] : []),
+              ...itemsAutocompleteData,
+            ]}
             getOptionLabel={(itemOption) =>
               isCreateNewItemOption(itemOption) || isDividerOption(itemOption)
                 ? ''
                 : itemOption.label
             }
-            isOptionEqualToValue={(option, value) => {
-              return option.id === value.id;
-            }}
             selectOnFocus
-            clearOnBlur={false}
+            clearOnBlur={true}
             handleHomeEndKeys
             renderOption={(props, itemOption: ItemSelectorOptionProps) =>
               isCreateNewItemOption(itemOption) ? (

@@ -19,7 +19,6 @@ import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
-  Alert,
   Button,
   FormControl,
   Card,
@@ -44,7 +43,12 @@ import {
 } from '@mui/material';
 
 import { CreateProductDialog } from '../components/CreateProductDialog';
+import {
+  FormErrorDisplay,
+  useFormErrors,
+} from '../components/FormErrorDisplay';
 import { useCreateInvoiceProductsTable } from '../components/useCreateInvoiceProductsTable';
+import { setValueWithValidation } from '../utils';
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
@@ -52,9 +56,7 @@ import {
 import { ItemSelector } from './ItemSelector';
 import { MeasureUnitController } from './MeasureUnitController';
 import { PriceField } from './PriceField';
-import { ValidationErrorItem } from './Section.types';
 import { TaxRateController } from './TaxRateController';
-import { setValueWithValidation } from './utils';
 import { VatRateController } from './VatRateController';
 
 interface CardTableItemProps {
@@ -137,26 +139,17 @@ export const ItemsSection = ({
     watch,
   } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
+  const { generalError, fieldErrors } = useFormErrors(error);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'line_items',
     shouldUnregister: false,
   });
 
-  // Use getValues to get current line items instead of watch to prevent excessive re-renders
-  const getCurrentLineItems = useCallback(() => {
-    return getValues('line_items');
-  }, [getValues]);
-
-  // Watch for changes to line items to trigger re-renders
   const watchedLineItems = watch('line_items');
-
-  // To avoid excessive recalculations, memoize the line items for the calculations
-  // Include watchedLineItems in dependencies to ensure re-render when values change
   const currentLineItems = useMemo(
-    () => getCurrentLineItems(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getCurrentLineItems, watchedLineItems]
+    () => watchedLineItems || [],
+    [watchedLineItems]
   );
 
   const mounted = useRef(false);
@@ -181,70 +174,6 @@ export const ItemsSection = ({
   useEffect(() => {
     isAddingRow.current = false;
   }, [fields.length]);
-
-  const generalError = useMemo(() => {
-    if (!error || Array.isArray(error)) {
-      return;
-    }
-
-    return error.message;
-  }, [error]);
-
-  const getErrorMessage = useCallback(
-    (key: string) => {
-      if (!error || !Array.isArray(error)) {
-        return;
-      }
-
-      const keys = key.split('.');
-
-      const specificError = error.find((item) => {
-        let current: ValidationErrorItem = item;
-        for (const k of keys) {
-          if (current && typeof current === 'object' && k in current) {
-            current = current[k] as ValidationErrorItem;
-          } else {
-            return false;
-          }
-        }
-        return current && typeof current === 'object' && 'message' in current;
-      });
-
-      if (!specificError) {
-        return;
-      }
-
-      let result: ValidationErrorItem = specificError;
-      for (const k of keys) {
-        result = result?.[k] as ValidationErrorItem;
-      }
-
-      return (result as unknown as { message: string })?.message;
-    },
-    [error]
-  );
-
-  const quantityError = useMemo(
-    () => getErrorMessage('quantity'),
-    [getErrorMessage]
-  );
-  const nameError = useMemo(
-    () => getErrorMessage('product.name'),
-    [getErrorMessage]
-  );
-  const priceError = useMemo(() => {
-    return (
-      getErrorMessage('product.price.value') ||
-      getErrorMessage('product.price.currency')
-    );
-  }, [getErrorMessage]);
-  const taxError = useMemo(() => {
-    return (
-      getErrorMessage('vat_rate_id') ||
-      getErrorMessage('vat_rate_value') ||
-      getErrorMessage('tax_rate_value')
-    );
-  }, [getErrorMessage]);
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
@@ -323,7 +252,7 @@ export const ItemsSection = ({
     setTooManyEmptyRows(false);
     isAddingRow.current = true;
     append(createEmptyRow());
-  }, [fields, append, createEmptyRow]);
+  }, [fields, append, createEmptyRow, setValue, getValues]);
 
   const handleAutoAddRow = useCallback(() => {
     if (isAddingRow.current) {
@@ -476,15 +405,19 @@ export const ItemsSection = ({
         );
 
         setTimeout(() => {
+          setValue('line_items', getValues('line_items'), {
+            shouldValidate: true,
+          });
           handleAutoAddRow();
         }, 0);
       }
     },
     [
-      actualCurrency,
-      defaultCurrency,
       setValueWithValidationLocal,
       getValues,
+      actualCurrency,
+      defaultCurrency,
+      setValue,
       handleAutoAddRow,
     ]
   );
@@ -504,42 +437,7 @@ export const ItemsSection = ({
         {t(i18n)`Items`}
       </Typography>
 
-      {/* no items error */}
-      <Collapse
-        in={Boolean(generalError)}
-        sx={{
-          ':not(.MuiCollapse-hidden)': {
-            marginBottom: 1,
-          },
-        }}
-      >
-        <Alert severity="error">{generalError}</Alert>
-      </Collapse>
-
-      {/* Form-level error message display for specific errors */}
-      {(quantityError || nameError || priceError || taxError) && (
-        <Box
-          sx={{
-            color: 'error.main',
-            mb: 2,
-            p: 2,
-            border: '1px solid',
-            borderColor: 'error.light',
-            borderRadius: 1,
-            backgroundColor: 'error.lighter',
-          }}
-        >
-          <Typography variant="body2" fontWeight="bold" gutterBottom>
-            {t(i18n)`Please correct the following errors:`}
-          </Typography>
-          <ul style={{ margin: 0, paddingLeft: '20px' }}>
-            {nameError && <li>{nameError}</li>}
-            {quantityError && <li>{quantityError}</li>}
-            {priceError && <li>{priceError}</li>}
-            {taxError && <li>{taxError}</li>}
-          </ul>
-        </Box>
-      )}
+      <FormErrorDisplay generalError={generalError} fieldErrors={fieldErrors} />
 
       <Box>
         <TableContainer
@@ -603,7 +501,9 @@ export const ItemsSection = ({
                           fieldName={field.product?.name || field.name}
                           index={index}
                           error={Boolean(
-                            !field.product?.name && !field.name && nameError
+                            !field.product?.name &&
+                              !field.name &&
+                              fieldErrors.name
                           )}
                           actualCurrency={actualCurrency}
                           defaultCurrency={defaultCurrency}
@@ -627,7 +527,7 @@ export const ItemsSection = ({
                                 variant="standard"
                                 fullWidth
                                 required
-                                error={Boolean(quantityError)}
+                                error={Boolean(fieldErrors.quantity)}
                               >
                                 <TextField
                                   {...field}
@@ -697,7 +597,7 @@ export const ItemsSection = ({
                       >
                         <PriceField
                           index={index}
-                          error={Boolean(priceError)}
+                          error={Boolean(fieldErrors.price)}
                           currency={actualCurrency || defaultCurrency || 'USD'}
                         />
                       </TableCell>
@@ -725,7 +625,7 @@ export const ItemsSection = ({
                             variant="outlined"
                             fullWidth
                             required
-                            error={Boolean(taxError)}
+                            error={Boolean(fieldErrors.tax)}
                           >
                             <VatRateController
                               control={control}

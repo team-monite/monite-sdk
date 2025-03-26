@@ -5,7 +5,7 @@ import { DeepKeys } from '@/core/types/utils';
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../validation';
+} from './validation';
 
 export type LineItemPath =
   DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
@@ -16,15 +16,6 @@ export function getErrorMessage(
 ): string | undefined {
   if (!error) {
     return undefined;
-  }
-
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
   }
 
   if (!Array.isArray(error)) {
@@ -109,16 +100,20 @@ export const setValueWithValidation = (
  * @returns A number between 0 and 100 suitable for tax/VAT rates
  */
 export const processTaxRateValue = (inputValue: string): number => {
+  // Handle empty input
   if (inputValue === '') {
     return 0;
   }
 
+  // Convert to number
   const numValue = Number(inputValue);
 
+  // Return 0 for invalid numbers
   if (isNaN(numValue)) {
     return 0;
   }
 
+  // Clamp value between 0 and 100
   return Math.min(Math.max(numValue, 0), 100);
 };
 
@@ -128,7 +123,7 @@ export const processTaxRateValue = (inputValue: string): number => {
  *
  * @param inputElement The input HTML element
  */
-export const formatTaxRate = (inputElement: HTMLInputElement): void => {
+export const cleanupTaxRateInput = (inputElement: HTMLInputElement): void => {
   // Remove leading zeros (but keep values like 0.5)
   if (
     inputElement.value.startsWith('0') &&
@@ -136,7 +131,6 @@ export const formatTaxRate = (inputElement: HTMLInputElement): void => {
     !inputElement.value.startsWith('0.')
   ) {
     const newValue = inputElement.value.replace(/^0+/, '');
-
     inputElement.value = newValue || '0';
   }
 };
