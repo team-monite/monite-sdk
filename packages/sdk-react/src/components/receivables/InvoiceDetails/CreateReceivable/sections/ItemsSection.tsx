@@ -405,10 +405,10 @@ export const ItemsSection = ({
         );
 
         setTimeout(() => {
+          handleAutoAddRow();
           setValue('line_items', getValues('line_items'), {
             shouldValidate: true,
           });
-          handleAutoAddRow();
         }, 0);
       }
     },

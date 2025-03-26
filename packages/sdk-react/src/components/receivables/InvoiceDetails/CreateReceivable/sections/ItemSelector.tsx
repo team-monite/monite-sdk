@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, ControllerRenderProps } from 'react-hook-form';
 
 import { components } from '@/api';
 import {
@@ -181,7 +181,12 @@ export const ItemSelector = ({
 
   const handleFocus = () => setIsTyping(true);
   const handleBlur = useCallback(
-    (field: any) => {
+    (
+      field: ControllerRenderProps<
+        CreateReceivablesProductsFormProps,
+        `items.${number}`
+      >
+    ) => {
       setIsTyping(false);
       if (!customName.trim()) return;
 
