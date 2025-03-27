@@ -709,20 +709,7 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={(e) => {
-              const allValues = getValues();
-              const hasAddresses =
-                counterpartAddresses?.data &&
-                counterpartAddresses.data.length > 0;
-              const hasNoDefaultAddress = !allValues.default_billing_address_id;
-
-              if (hasAddresses && hasNoDefaultAddress) {
-                const firstAddressId = counterpartAddresses.data[0].id;
-                setValue('default_billing_address_id', firstAddressId);
-              }
-
-              handleSubmit((values) => handleCreateReceivable(values))(e);
-            }}
+            onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>

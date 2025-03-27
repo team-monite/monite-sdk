@@ -49,6 +49,7 @@ import {
 } from '../components/FormErrorDisplay';
 import { useCreateInvoiceProductsTable } from '../components/useCreateInvoiceProductsTable';
 import { setValueWithValidation } from '../utils';
+import { sanitizeLineItems } from '../utils';
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
@@ -166,7 +167,7 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    lineItems: currentLineItems || fields,
+    lineItems: sanitizeLineItems(currentLineItems || fields),
     formatCurrencyToDisplay,
     isNonVatSupported,
     actualCurrency,

@@ -1,11 +1,15 @@
 import { UseFormSetValue } from 'react-hook-form';
 
+import { components } from '@/api';
 import { DeepKeys } from '@/core/types/utils';
+import { generateUniqueId } from '@/utils/uuid';
 
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from './validation';
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
 
 export type LineItemPath =
   DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
@@ -133,4 +137,52 @@ export const cleanupTaxRateInput = (inputElement: HTMLInputElement): void => {
     const newValue = inputElement.value.replace(/^0+/, '');
     inputElement.value = newValue || '0';
   }
+};
+
+export type SanitizableLineItem = Omit<
+  Partial<CreateReceivablesFormBeforeValidationLineItemProps>,
+  'product'
+> & {
+  product?: Omit<
+    Partial<CreateReceivablesFormBeforeValidationLineItemProps['product']>,
+    'type'
+  > & {
+    type?: string;
+  };
+};
+
+/**
+ * Sanitizes line items for use in invoice creation
+ * Formats the data consistently and handles type conversions
+ */
+export const sanitizeLineItems = (
+  items: ReadonlyArray<SanitizableLineItem> | undefined
+): CreateReceivablesFormBeforeValidationLineItemProps[] => {
+  if (!items || !Array.isArray(items)) return [];
+
+  return items
+    .filter((item) => Boolean(item?.product?.name))
+    .map((item) => ({
+      ...item,
+      id: item.product_id || generateUniqueId(),
+      quantity: item.quantity ?? 1,
+      product: {
+        ...item.product,
+        type: item.product?.type as 'product' | 'service',
+        price: {
+          ...(item.product?.price || {}),
+          value: item.product?.price?.value ?? 0,
+          currency: (item.product?.price?.currency || 'USD') as CurrencyEnum,
+        },
+        measure_unit_id: item.product?.measure_unit_id || '',
+      },
+      ...(item.measure_unit?.name
+        ? {
+            measure_unit: {
+              name: item.measure_unit.name,
+              id: null,
+            },
+          }
+        : {}),
+    }));
 };
