@@ -62,9 +62,12 @@ class MoniteDropin {
   private moniteAppElement: MoniteAppElement;
   private config: MoniteAppElementConfig;
   private events: Partial<Record<MoniteEventTypes, () => void>> = {};
+  private static defaultConfig: Partial<MoniteAppElementConfig> = {
+    componentSettings: {},
+  };
 
   constructor(config: MoniteAppElementConfig) {
-    this.config = config;
+    this.config = { ...MoniteDropin.defaultConfig, ...config };
     this.moniteAppElement = document.createElement(
       MONITE_APP_ELEMENT_NAME
     ) as MoniteAppElement;
@@ -107,6 +110,19 @@ class MoniteDropin {
 
   public mount(container: HTMLElement) {
     container.appendChild(this.moniteAppElement);
+    return this;
+  }
+
+  public unmount() {
+    // Remove all event listeners
+    const events = Object.keys(this.events);
+    events.forEach((event) => {
+      this.off(event as MoniteEventTypes);
+    });
+
+    // Remove the element from the DOM
+    this.moniteAppElement.remove();
+
     return this;
   }
 
