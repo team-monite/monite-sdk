@@ -76,6 +76,7 @@ const PayableDetailsBase = ({
       cancelInvoice,
       reopenInvoice,
       deleteInvoice,
+      updateTags,
       isPaymentLinkAvailable,
       modalComponent,
     },
@@ -217,6 +218,7 @@ const PayableDetailsBase = ({
               ) : (
                 payable && (
                   <PayableDetailsInfo
+                    updateTags={(tags) => id && updateTags(id, tags || [])}
                     payable={payable}
                     optionalFields={optionalFields}
                   />
