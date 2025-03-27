@@ -394,10 +394,24 @@ export const ItemSelector = ({
             id={`item-selector-${index}`}
             value={selectedItemOption}
             onChange={(e, value, reason) => {
-              handleItemChange(e, value, reason);
               if (reason === 'clear') {
                 field.onChange(null);
-              } else if (value && typeof value !== 'string') {
+                handleItemChange(e, null, reason);
+                return;
+              }
+
+              if (typeof value === 'string') {
+                const stringValue: ItemSelectorOptionProps = {
+                  id: CUSTOM_ID,
+                  label: value,
+                };
+                handleItemChange(e, stringValue, reason);
+                field.onChange(stringValue.id);
+                return;
+              }
+
+              handleItemChange(e, value, reason);
+              if (value) {
                 field.onChange(value.id);
               }
             }}
