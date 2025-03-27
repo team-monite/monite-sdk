@@ -27,7 +27,6 @@ export const CurrencyInput = ({
   error,
   required,
   label,
-  defaultValue = null,
   ...params
 }: CurrencyInputProps) => {
   const { i18n } = useLingui();
@@ -61,7 +60,6 @@ export const CurrencyInput = ({
       label={label}
       error={!!error?.message}
       helperText={error?.message}
-      defaultValue={defaultValue}
       InputProps={{
         ...params.InputProps,
         sx: {

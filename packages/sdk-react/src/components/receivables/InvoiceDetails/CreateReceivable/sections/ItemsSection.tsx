@@ -54,6 +54,7 @@ import {
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../validation';
 import { ItemSelector } from './ItemSelector';
+import { CUSTOM_ID } from './ItemSelector';
 import { MeasureUnitController } from './MeasureUnitController';
 import { PriceField } from './PriceField';
 import { TaxRateController } from './TaxRateController';
@@ -255,7 +256,7 @@ export const ItemsSection = ({
   }, [fields, append, createEmptyRow]);
 
   const handleAutoAddRow = useCallback(() => {
-    if (isAddingRow.current) {
+    if (isAddingRow.current || !mounted.current) {
       return;
     }
 
@@ -377,7 +378,7 @@ export const ItemsSection = ({
         }
 
         // Only set VAT rates from catalog item when selecting from catalog, not for manual entries
-        if (item.id !== 'custom') {
+        if (item.id !== CUSTOM_ID) {
           // VAT/Tax rates from catalog have priority over existing values
           if (item.vat_rate_id !== undefined) {
             setValueWithValidationLocal(
@@ -422,9 +423,35 @@ export const ItemsSection = ({
     ]
   );
 
-  const createItemUpdateHandler = (index: number) => (item: ProductItem) => {
-    handleUpdate(index, item);
-  };
+  const handleCustomUpdate = useCallback(
+    (index: number, item: ProductItem) => {
+      if (!item) return;
+
+      setValueWithValidationLocal(
+        `line_items.${index}.product.name`,
+        item.label || '',
+        false
+      );
+
+      if (item.id !== '' && item.id !== CUSTOM_ID) {
+        handleUpdate(index, item);
+      }
+    },
+    [handleUpdate, setValueWithValidationLocal]
+  );
+
+  const createItemUpdateHandler =
+    (index: number) => (item: ProductItem, isCatalogItem?: boolean) => {
+      if (
+        !item ||
+        item.id === '' ||
+        (item.id === CUSTOM_ID && !isCatalogItem)
+      ) {
+        handleCustomUpdate(index, item);
+      } else {
+        handleUpdate(index, item);
+      }
+    };
 
   return (
     <Stack spacing={0} className={className}>
@@ -570,7 +597,7 @@ export const ItemsSection = ({
                                       `line_items.${index}.quantity`,
                                       value
                                     );
-                                    field.onChange(e);
+                                    field.onChange(value);
                                   }}
                                   sx={{
                                     '& .MuiInputBase-root': {
