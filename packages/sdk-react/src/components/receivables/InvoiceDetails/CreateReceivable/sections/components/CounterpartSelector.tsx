@@ -159,11 +159,10 @@ export const CounterpartSelector = ({
                   isCreateNewCounterpartOption(value) ||
                   isDividerOption(value)
                 ) {
-                  field.onChange(null);
-
+                  field.onChange('');
                   return;
                 }
-                field.onChange(value?.id);
+                field.onChange(value?.id ?? '');
               }}
               slotProps={{
                 popper: {
@@ -283,7 +282,7 @@ export const CounterpartSelector = ({
                           params.inputProps['aria-expanded']
                         ) {
                           return (
-                            <IconButton onClick={() => field.onChange(null)}>
+                            <IconButton onClick={() => field.onChange('')}>
                               <ClearIcon
                                 sx={{ width: '1rem', height: '1rem' }}
                               />

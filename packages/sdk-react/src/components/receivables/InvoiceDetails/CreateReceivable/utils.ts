@@ -1,11 +1,15 @@
 import { UseFormSetValue } from 'react-hook-form';
 
+import { components } from '@/api';
 import { DeepKeys } from '@/core/types/utils';
+import { generateUniqueId } from '@/utils/uuid';
 
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../validation';
+} from './validation';
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
 
 export type LineItemPath =
   DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
@@ -16,15 +20,6 @@ export function getErrorMessage(
 ): string | undefined {
   if (!error) {
     return undefined;
-  }
-
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
   }
 
   if (!Array.isArray(error)) {
@@ -109,16 +104,20 @@ export const setValueWithValidation = (
  * @returns A number between 0 and 100 suitable for tax/VAT rates
  */
 export const processTaxRateValue = (inputValue: string): number => {
+  // Handle empty input
   if (inputValue === '') {
     return 0;
   }
 
+  // Convert to number
   const numValue = Number(inputValue);
 
+  // Return 0 for invalid numbers
   if (isNaN(numValue)) {
     return 0;
   }
 
+  // Clamp value between 0 and 100
   return Math.min(Math.max(numValue, 0), 100);
 };
 
@@ -128,7 +127,7 @@ export const processTaxRateValue = (inputValue: string): number => {
  *
  * @param inputElement The input HTML element
  */
-export const formatTaxRate = (inputElement: HTMLInputElement): void => {
+export const cleanupTaxRateInput = (inputElement: HTMLInputElement): void => {
   // Remove leading zeros (but keep values like 0.5)
   if (
     inputElement.value.startsWith('0') &&
@@ -136,7 +135,54 @@ export const formatTaxRate = (inputElement: HTMLInputElement): void => {
     !inputElement.value.startsWith('0.')
   ) {
     const newValue = inputElement.value.replace(/^0+/, '');
-
     inputElement.value = newValue || '0';
   }
+};
+
+export type SanitizableLineItem = Omit<
+  Partial<CreateReceivablesFormBeforeValidationLineItemProps>,
+  'product'
+> & {
+  product?: Omit<
+    Partial<CreateReceivablesFormBeforeValidationLineItemProps['product']>,
+    'type'
+  > & {
+    type?: string;
+  };
+};
+
+/**
+ * Sanitizes line items for use in invoice creation
+ * Formats the data consistently and handles type conversions
+ */
+export const sanitizeLineItems = (
+  items: ReadonlyArray<SanitizableLineItem> | undefined
+): CreateReceivablesFormBeforeValidationLineItemProps[] => {
+  if (!items || !Array.isArray(items)) return [];
+
+  return items
+    .filter((item) => Boolean(item?.product?.name))
+    .map((item) => ({
+      ...item,
+      id: item.product_id || generateUniqueId(),
+      quantity: item.quantity ?? 1,
+      product: {
+        ...item.product,
+        type: item.product?.type as 'product' | 'service',
+        price: {
+          ...(item.product?.price || {}),
+          value: item.product?.price?.value ?? 0,
+          currency: (item.product?.price?.currency || 'USD') as CurrencyEnum,
+        },
+        measure_unit_id: item.product?.measure_unit_id || '',
+      },
+      ...(item.measure_unit?.name
+        ? {
+            measure_unit: {
+              name: item.measure_unit.name,
+              id: null,
+            },
+          }
+        : {}),
+    }));
 };

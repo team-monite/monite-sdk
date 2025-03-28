@@ -83,6 +83,8 @@ interface CommonCounterpartDetailsProps
   onVatCreate?: (id: VatId) => void;
   onVatUpdate?: (id: VatId) => void;
   onVatDelete?: (id: VatId) => void;
+
+  onReturn?: () => void;
 }
 
 export type CounterpartsDetailsProps = {
@@ -137,7 +139,13 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
   const [vatId, setVatId] = useState<string | undefined>();
 
   const [actions] = useState(() => ({
-    showView: () => setCounterpartView(COUNTERPART_VIEW.view),
+    showView: () => {
+      if (!props.id) {
+        props.onReturn?.();
+        return;
+      }
+      setCounterpartView(COUNTERPART_VIEW.view);
+    },
     showAddressForm: () => setCounterpartView(COUNTERPART_VIEW.addressForm),
     showOrganizationForm: () =>
       setCounterpartView(COUNTERPART_VIEW.organizationForm),

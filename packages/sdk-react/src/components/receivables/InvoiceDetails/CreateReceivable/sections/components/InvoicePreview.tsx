@@ -9,7 +9,6 @@ import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { getRateValueForDisplay } from '@/core/utils/vatUtils';
-import { generateUniqueId } from '@/utils/uuid';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -17,20 +16,13 @@ import { useLingui } from '@lingui/react';
 import { isValid } from 'date-fns';
 
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
+import { sanitizeLineItems } from '../../utils';
 import type {
   CreateReceivablesFormProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../../validation';
 // @ts-expect-error Importing css file from a different package is not supported
 import invoicePreviewStyles from './InvoicePreview.css';
-
-type LineItemWithMeasureUnit =
-  CreateReceivablesFormBeforeValidationLineItemProps & {
-    measure_unit?: {
-      name: string;
-      id: null;
-    };
-  };
 
 interface InvoicePreviewProps {
   address:
@@ -97,18 +89,7 @@ export const InvoicePreview = ({
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
-  const sanitizedItems = items
-    .filter((item) => item.product.name !== '')
-    .map((item) => ({
-      ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
-      id: item.product_id || generateUniqueId(),
-      smallest_amount: item.product.smallest_amount ?? undefined,
-      product: {
-        ...item.product,
-        type: item.product.type as 'product' | 'service',
-      },
-      measure_unit: (item as unknown as LineItemWithMeasureUnit).measure_unit,
-    }));
+  const sanitizedItems = sanitizeLineItems(items);
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
     lineItems: sanitizedItems,
@@ -339,18 +320,18 @@ export const InvoicePreview = ({
                   sanitizedItems.map((item) => (
                     <tr>
                       <td style={{ maxWidth: '120px' }}>
-                        {item?.product.name}
+                        {item?.product?.name}
                       </td>
                       <td>{item?.quantity}</td>
                       <td>
-                        {item?.product.measure_unit_id ? (
+                        {item?.product?.measure_unit_id ? (
                           <MeasureUnit unitId={item.product.measure_unit_id} />
                         ) : item?.measure_unit?.name ? (
                           item.measure_unit.name
                         ) : null}
                       </td>
                       <td>
-                        {item.product.price &&
+                        {item.product?.price &&
                           formatCurrencyToDisplay(
                             item.product.price.value,
                             item.product.price.currency,

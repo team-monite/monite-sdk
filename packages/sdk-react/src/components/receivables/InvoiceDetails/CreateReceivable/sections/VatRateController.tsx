@@ -13,8 +13,8 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { formatVatRateForDisplay } from '@/core/utils/vatUtils';
 import { MenuItem, Select } from '@mui/material';
 
+import { setValueWithValidation } from '../utils';
 import { CreateReceivablesFormBeforeValidationProps } from '../validation';
-import { setValueWithValidation } from './utils';
 
 type VatRateResponse = components['schemas']['VatRateResponse'];
 

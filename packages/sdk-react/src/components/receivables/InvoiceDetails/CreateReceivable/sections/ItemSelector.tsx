@@ -14,14 +14,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import ClearIcon from '@mui/icons-material/Clear';
 import {
   Autocomplete,
   Button,
   CircularProgress,
   Divider,
-  IconButton,
   TextField,
+  MenuItem,
 } from '@mui/material';
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
@@ -56,6 +55,7 @@ type ItemSelectorProps = {
 
 const CREATE_NEW_ID = '__create-new__';
 const DIVIDER = '__divider__';
+export const CUSTOM_ID = 'custom';
 
 function isCreateNewItemOption(itemOption: ItemSelectorOptionProps): boolean {
   return itemOption?.id === CREATE_NEW_ID;
@@ -65,6 +65,12 @@ function isDividerOption(
   itemOption: ItemSelectorOptionProps | undefined | null
 ): boolean {
   return itemOption?.id === DIVIDER;
+}
+
+function isCustomOption(
+  itemOption: ItemSelectorOptionProps | undefined | null
+): boolean {
+  return itemOption?.id === CUSTOM_ID;
 }
 
 export const ItemSelector = ({
@@ -82,6 +88,8 @@ export const ItemSelector = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const currency = actualCurrency ?? defaultCurrency;
+  const [customName, setCustomName] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
     resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
@@ -154,9 +162,6 @@ export const ItemSelector = ({
     });
   }, [flattenProducts, measureUnits, fieldName]);
 
-  const [customName, setCustomName] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-
   useEffect(() => {
     if (!isTyping && fieldName && fieldName.length > 0 && !customName.length) {
       const searchMatch = flattenProducts?.find(
@@ -176,17 +181,176 @@ export const ItemSelector = ({
     300
   );
 
-  const handleFocus = () => setIsTyping(true);
+  const handleFocus = useCallback(() => setIsTyping(true), []);
+
   const handleBlur = useCallback(() => {
     setIsTyping(false);
-    const isCustomName = !itemsAutocompleteData.some(
-      (item) => item.label === customName
-    );
+    if (customName && customName.trim() !== '') {
+      const isCustomName = !itemsAutocompleteData.some(
+        (item) => item.label === customName
+      );
 
-    if (isCustomName && customName.trim() !== '') {
-      onUpdate({ id: 'custom', label: customName }, false);
+      if (isCustomName) {
+        onUpdate({ id: CUSTOM_ID, label: customName }, false);
+      }
     }
   }, [customName, itemsAutocompleteData, onUpdate]);
+
+  const handleInputChange = useCallback(
+    (_: React.SyntheticEvent, value: string) => {
+      setCustomName(value);
+      if (value.trim()) {
+        onUpdate({ id: CUSTOM_ID, label: value }, false);
+      }
+    },
+    [onUpdate]
+  );
+
+  const handleItemChange = useCallback(
+    (
+      _: React.SyntheticEvent,
+      value: ItemSelectorOptionProps | null,
+      reason: string
+    ) => {
+      if (reason === 'clear') {
+        setIsTyping(false);
+        setCustomName('');
+        onUpdate({ id: '', label: '' }, false);
+        return;
+      }
+
+      if (!value || isCreateNewItemOption(value) || isDividerOption(value)) {
+        return;
+      }
+
+      if (isCustomOption(value)) {
+        setCustomName(value.label);
+        onUpdate({ id: CUSTOM_ID, label: value.label }, false);
+      } else {
+        setCustomName('');
+        onUpdate(value, true);
+      }
+    },
+    [onUpdate]
+  );
+
+  const isOptionEqualToValue = useCallback(
+    (option: ItemSelectorOptionProps, value: ItemSelectorOptionProps) => {
+      if (!value) return false;
+
+      if (isCustomOption(value)) {
+        return isCustomOption(option) && option.label === value.label;
+      }
+
+      if (isCustomOption(option)) {
+        return false;
+      }
+
+      if (isCreateNewItemOption(value) || isDividerOption(value)) {
+        return option.id === value.id;
+      }
+
+      return option.id === value.id;
+    },
+    []
+  );
+
+  const renderOption = useCallback(
+    (
+      props: React.HTMLAttributes<HTMLLIElement>,
+      itemOption: ItemSelectorOptionProps
+    ) => {
+      if (isCreateNewItemOption(itemOption)) {
+        return (
+          <Button
+            key={`item-option-${itemOption.id}-${itemOption.label}`}
+            component="div"
+            onClick={onCreateItem}
+            variant="text"
+            startIcon={<AddIcon />}
+            fullWidth
+            sx={{
+              justifyContent: 'flex-start',
+              px: 2,
+            }}
+          >
+            {itemOption.label}
+          </Button>
+        );
+      }
+
+      if (isDividerOption(itemOption)) {
+        return (
+          <Divider
+            key={`item-option-${itemOption.id}-${itemOption.label}`}
+            sx={{
+              width: '100%',
+              my: 1,
+            }}
+          />
+        );
+      }
+
+      return (
+        <MenuItem
+          {...props}
+          key={`item-option-${itemOption.id}-${itemOption.label}`}
+          sx={{
+            display: 'flex',
+            width: '100%',
+            py: 1,
+            px: 2,
+            '& .item-content': {
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 2,
+            },
+            '& .item-label': {
+              minWidth: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+            '& .item-details': {
+              flexShrink: 0,
+              textAlign: 'right',
+            },
+          }}
+        >
+          <div className="item-content">
+            <span className="item-label">{itemOption?.label}</span>
+            <span className="item-details">
+              {itemOption?.smallestAmount}{' '}
+              {itemOption?.measureUnit?.description} /{' '}
+              {itemOption?.price &&
+                formatCurrencyToDisplay(
+                  itemOption?.price?.value,
+                  itemOption?.price?.currency
+                )}
+            </span>
+          </div>
+        </MenuItem>
+      );
+    },
+    [formatCurrencyToDisplay, onCreateItem]
+  );
+
+  const getOptionLabel = useCallback(
+    (itemOption: string | ItemSelectorOptionProps) => {
+      if (typeof itemOption === 'string') {
+        return itemOption;
+      }
+
+      if (isCreateNewItemOption(itemOption) || isDividerOption(itemOption)) {
+        return '';
+      }
+
+      return itemOption.label;
+    },
+    []
+  );
 
   return (
     <Controller
@@ -221,31 +385,48 @@ export const ItemSelector = ({
               label: selectedItem.name,
             }
           : customName
-          ? { id: 'custom', label: customName }
+          ? { id: CUSTOM_ID, label: customName }
           : null;
-
-        //will trigger only for existing items in catalogue so it is pointless to check custom scenario
-        const handleItemChange = (value: ItemSelectorOptionProps | null) => {
-          if (
-            !value ||
-            isCreateNewItemOption(value) ||
-            isDividerOption(value)
-          ) {
-            setCustomName('');
-            field.onChange(null);
-            return;
-          }
-
-          field.onChange(value.id);
-          setCustomName('');
-          onUpdate(value, true);
-        };
 
         return (
           <Autocomplete
             {...field}
+            id={`item-selector-${index}`}
             value={selectedItemOption}
-            onChange={(_, value) => handleItemChange(value)}
+            onChange={(e, value, reason) => {
+              if (reason === 'clear') {
+                field.onChange(null);
+                handleItemChange(e, null, reason);
+                return;
+              }
+
+              if (typeof value === 'string') {
+                const stringValue: ItemSelectorOptionProps = {
+                  id: CUSTOM_ID,
+                  label: value,
+                };
+                handleItemChange(e, stringValue, reason);
+                field.onChange(stringValue.id);
+                return;
+              }
+
+              handleItemChange(e, value, reason);
+              if (value) {
+                field.onChange(value.id);
+              }
+            }}
+            onInputChange={handleInputChange}
+            freeSolo
+            blurOnSelect={false}
+            openOnFocus
+            loading={isLoading || disabled}
+            options={itemsAutocompleteData}
+            getOptionLabel={getOptionLabel}
+            selectOnFocus
+            clearOnBlur={false}
+            handleHomeEndKeys
+            renderOption={renderOption}
+            isOptionEqualToValue={isOptionEqualToValue}
             slotProps={{
               popper: {
                 container: root,
@@ -256,7 +437,26 @@ export const ItemSelector = ({
                 },
               },
             }}
+            disableClearable={false}
             filterOptions={(options, params) => {
+              if (options.length === 0) {
+                const result = [
+                  {
+                    id: CREATE_NEW_ID,
+                    label: t(i18n)`Create new item`,
+                  },
+                ];
+
+                if (params.inputValue.length) {
+                  result.push({
+                    id: CUSTOM_ID,
+                    label: params.inputValue,
+                  });
+                }
+
+                return result;
+              }
+
               const { filtered, reverseFiltered } = options.reduce<{
                 filtered: Array<{ id: string; label: string }>;
                 reverseFiltered: Array<{ id: string; label: string }>;
@@ -282,103 +482,58 @@ export const ItemSelector = ({
               });
 
               if (params.inputValue.length) {
+                const hasExactMatch = filtered.some(
+                  (item) =>
+                    item.label.toLowerCase() === params.inputValue.toLowerCase()
+                );
+
+                if (!hasExactMatch && params.inputValue.trim()) {
+                  filtered.push({
+                    id: CUSTOM_ID,
+                    label: params.inputValue,
+                  });
+                }
+
                 filtered.push({
                   id: DIVIDER,
                   label: '-',
                 });
               }
+
               return [...filtered, ...reverseFiltered];
             }}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  {...params}
-                  label={``}
-                  placeholder={t(i18n)`Line item`}
-                  required
-                  error={error}
-                  className="Item-Selector"
-                  sx={{
-                    width: '100%',
-                    marginLeft,
-                  }}
-                  InputProps={{
-                    ...params.InputProps,
-                    value: params.inputProps.value,
-                    onFocus: handleFocus,
-                    onBlur: handleBlur,
-                    startAdornment: isLoading && <CircularProgress size={20} />,
-                    endAdornment: (() => {
-                      if (
-                        selectedItemOption &&
-                        params.inputProps['aria-expanded']
-                      ) {
-                        return (
-                          <IconButton
-                            onClick={() => {
-                              field.onChange(null);
-                              setCustomName('');
-                            }}
-                          >
-                            <ClearIcon sx={{ width: '1rem', height: '1rem' }} />
-                          </IconButton>
-                        );
-                      }
-                      return null;
-                    })(),
-                  }}
-                  onChange={handleCustomNameChange}
-                />
-              );
-            }}
-            loading={isLoading || disabled}
-            options={itemsAutocompleteData}
-            getOptionLabel={(itemOption) =>
-              isCreateNewItemOption(itemOption) || isDividerOption(itemOption)
-                ? ''
-                : itemOption.label
-            }
-            isOptionEqualToValue={(option, value) => {
-              return option.id === value.id;
-            }}
-            selectOnFocus
-            clearOnBlur={false}
-            handleHomeEndKeys
-            renderOption={(props, itemOption: ItemSelectorOptionProps) =>
-              isCreateNewItemOption(itemOption) ? (
-                <Button
-                  key={itemOption.id}
-                  variant="text"
-                  startIcon={<AddIcon />}
-                  fullWidth
-                  sx={{
-                    justifyContent: 'flex-start',
-                    px: 2,
-                  }}
-                  onClick={onCreateItem}
-                >
-                  {itemOption.label}
-                </Button>
-              ) : itemOption.id === DIVIDER ? (
-                <Divider
-                  key={itemOption.id}
-                  sx={{ padding: '.5rem', marginBottom: '1rem' }}
-                />
-              ) : (
-                <li {...props} style={{ display: 'flex' }} key={itemOption.id}>
-                  {itemOption?.label}
-                  <span style={{ marginLeft: 'auto' }}>
-                    {itemOption?.smallestAmount}{' '}
-                    {itemOption?.measureUnit?.description} /{' '}
-                    {itemOption?.price &&
-                      formatCurrencyToDisplay(
-                        itemOption?.price?.value,
-                        itemOption?.price?.currency
-                      )}
-                  </span>
-                </li>
-              )
-            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={``}
+                placeholder={t(i18n)`Line item`}
+                required
+                error={error}
+                className="Item-Selector"
+                sx={{
+                  width: '100%',
+                  marginLeft,
+                }}
+                InputProps={{
+                  ...params.InputProps,
+                  onFocus: handleFocus,
+                  onBlur: handleBlur,
+                  startAdornment: isLoading && <CircularProgress size={20} />,
+                  endAdornment: (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      {params.InputProps.endAdornment}
+                    </div>
+                  ),
+                }}
+                onChange={handleCustomNameChange}
+              />
+            )}
           />
         );
       }}
