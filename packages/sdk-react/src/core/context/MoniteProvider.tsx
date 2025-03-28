@@ -10,7 +10,10 @@ import {
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { ThemeConfig } from '@/core/theme/types';
+import { Global, css } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+
+import { Theme } from 'mui-styles';
 
 import { GlobalToast } from '../GlobalToast';
 import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
@@ -60,10 +63,10 @@ export const MoniteProvider = ({
       componentSettings={componentSettings}
     >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
-        <MoniteMuiThemeProvider>
+        <MoniteThemeProvider>
           <ContainerCssBaseline enableColorScheme />
           <GlobalToast />
-        </MoniteMuiThemeProvider>
+        </MoniteThemeProvider>
       </EmotionCacheProvider>
       <MoniteAPIProvider APIContext={MoniteQraftContext}>
         {children}
@@ -72,7 +75,20 @@ export const MoniteProvider = ({
   );
 };
 
-const MoniteMuiThemeProvider = ({ children }: { children: ReactNode }) => {
+const getTailwindTheme = (theme: Theme) => css`
+  :root {
+    --monite-color-primary: ${theme.palette.primary.main};
+    --monite-color-secondary: ${theme.palette.secondary.main};
+  }
+`;
+
+const MoniteThemeProvider = ({ children }: { children: ReactNode }) => {
   const { theme } = useMoniteContext();
-  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
+  console.log(theme);
+  return (
+    <>
+      <Global styles={getTailwindTheme(theme)} />
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    </>
+  );
 };
