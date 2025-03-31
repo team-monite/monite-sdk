@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-beta.2
+
+### Patch Changes
+
+- 7b75dbf: Add Document templates to Dropin
+
 ## 2.0.0-beta.1
 
 ### Minor Changes

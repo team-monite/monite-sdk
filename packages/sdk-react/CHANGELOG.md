@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.2
+
+### Patch Changes
+
+- 7b75dbf: Add Document templates to Dropin
+- dab2d74: Fix Payables table payable.amount_paid
+- dfebd5c: Payment terms update validation fixed, dialog close focus hook
+
 ## 4.0.0-beta.1
 
 ### Minor Changes
