@@ -14,7 +14,7 @@ export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
   'due_date',
   'status',
   'amount',
-  'paid_amount',
+  'amount_paid',
   'pay',
 ];
 
