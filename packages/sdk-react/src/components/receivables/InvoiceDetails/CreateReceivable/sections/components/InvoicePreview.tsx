@@ -6,10 +6,9 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
-import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { generateUniqueId } from '@/utils/uuid';
+import { getRateValueForDisplay } from '@/core/utils/vatUtils';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -17,7 +16,11 @@ import { useLingui } from '@lingui/react';
 import { isValid } from 'date-fns';
 
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { CreateReceivablesFormProps } from '../../validation';
+import { sanitizeLineItems } from '../../utils';
+import type {
+  CreateReceivablesFormProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '../../validation';
 // @ts-expect-error Importing css file from a different package is not supported
 import invoicePreviewStyles from './InvoicePreview.css';
 
@@ -86,17 +89,7 @@ export const InvoicePreview = ({
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
-  const sanitizedItems = items
-    .filter((item) => item.product.name !== '')
-    .map((item) => ({
-      ...item, // map used to fix TS error "Types of property 'smallest_amount' are incompatible."
-      id: item.product_id || generateUniqueId(),
-      smallest_amount: item.product.smallest_amount ?? undefined,
-      product: {
-        ...item.product,
-        type: item.product.type as 'product' | 'service',
-      },
-    }));
+  const sanitizedItems = sanitizeLineItems(items);
 
   const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
     lineItems: sanitizedItems,
@@ -105,20 +98,20 @@ export const InvoicePreview = ({
     actualCurrency: currency,
   });
 
-  const getApplicableTaxRate = (
+  const getRateValueForItem = (
     item: CreateReceivablesFormBeforeValidationLineItemProps
-  ): number => {
-    if (isNonVatSupported) {
-      return item.tax_rate_value || 0;
-    }
-
-    return item.vat_rate_value || 0;
+  ) => {
+    return getRateValueForDisplay(
+      isNonVatSupported,
+      item.vat_rate_value ?? 0,
+      item.tax_rate_value ?? 0
+    );
   };
 
   const formatTaxRate = (
     item: CreateReceivablesFormBeforeValidationLineItemProps
   ): number => {
-    const taxRate = getApplicableTaxRate(item);
+    const taxRate = getRateValueForItem(item);
     if (taxRate < 100) {
       //when the tax value is 19, it should be displayed as 19
       return taxRate;
@@ -327,16 +320,18 @@ export const InvoicePreview = ({
                   sanitizedItems.map((item) => (
                     <tr>
                       <td style={{ maxWidth: '120px' }}>
-                        {item?.product.name}
+                        {item?.product?.name}
                       </td>
                       <td>{item?.quantity}</td>
                       <td>
-                        {item?.product.measure_unit_id && (
+                        {item?.product?.measure_unit_id ? (
                           <MeasureUnit unitId={item.product.measure_unit_id} />
-                        )}
+                        ) : item?.measure_unit?.name ? (
+                          item.measure_unit.name
+                        ) : null}
                       </td>
                       <td>
-                        {item.product.price &&
+                        {item.product?.price &&
                           formatCurrencyToDisplay(
                             item.product.price.value,
                             item.product.price.currency,

@@ -10,7 +10,11 @@ import {
 import { InputAdornment, TextField } from '@mui/material';
 
 import { CreateReceivablesFormBeforeValidationProps } from '../validation';
-import { setValueWithValidation } from './utils';
+import {
+  setValueWithValidation,
+  processTaxRateValue,
+  formatTaxRate,
+} from './utils';
 
 interface TaxRateControllerProps {
   control: Control<CreateReceivablesFormBeforeValidationProps>;
@@ -24,7 +28,7 @@ interface TaxRateControllerProps {
 export const TaxRateController = ({
   control,
   index,
-  fieldError,
+  fieldError: externalFieldError,
   setValue,
 }: TaxRateControllerProps) => {
   const name = `line_items.${index}.tax_rate_value` as const;
@@ -33,22 +37,34 @@ export const TaxRateController = ({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => {
+      render={({
+        field: { onChange, value, ...field },
+        fieldState: { error: internalFieldError },
+      }) => {
+        const hasError = Boolean(externalFieldError || internalFieldError);
+
         return (
           <TextField
             {...field}
+            value={value ?? ''}
             type="number"
+            inputProps={{
+              min: 0,
+              max: 100,
+            }}
             InputProps={{
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
             size="small"
-            error={Boolean(fieldError)}
+            error={hasError}
             onChange={(e) => {
-              const value = Number(e.target.value);
+              const processedValue = processTaxRateValue(e.target.value);
 
-              setValueWithValidation(name, value, true, setValue);
-
-              field.onChange(e);
+              setValueWithValidation(name, processedValue, true, setValue);
+              onChange(processedValue);
+            }}
+            onInput={(e) => {
+              formatTaxRate(e.target as HTMLInputElement);
             }}
             sx={{
               width: '120px',

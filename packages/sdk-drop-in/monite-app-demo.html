@@ -16,44 +16,14 @@
     <title>Monite App Widget Label</title>
   </head>
   <body>
-    <monite-app
-      style="height: 100%; width: 100%"
-      disabled
-      entity-id="defer"
-      api-url="defer"
-      basename="/"
-      component="defer"
-    >
-      <script slot="fetch-token">
-        async function fetchDropInToken() {
-          return await window.fetchToken();
-        }
-      </script>
-
-      <script slot="theme" type="application/json">
-        {
-          "typography": {
-            "fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"
-          }
-        }
-      </script>
-
-      <script slot="locale" type="application/json">
-        {
-          "code": "de-DE",
-          "messages": {
-            "Name, country, city": "City Test",
-            "Payables": "My Payables"
-          }
-        }
-      </script>
-    </monite-app>
-
     <script type="module">
       import { createAPIClient } from '@monite/sdk-react';
       import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
 
-      import { MONITE_APP_ELEMENT_NAME } from './src/custom-elements/monite-app';
+      import {
+        MONITE_APP_ELEMENT_NAME,
+        MoniteDropin,
+      } from './src/custom-elements/monite-app';
       import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
       import {
@@ -63,60 +33,6 @@
         getMoniteAppElement,
         getMoniteAppEventTarget,
       } from './src/lib/MoniteEvents';
-
-      window.fetchToken = fetchTokenDev;
-
-      /**
-       * Initialize event listeners using the recommended approach with addMoniteEventListener
-       * @returns {Function} A function to clean up all event listeners
-       */
-      function initRecommendedEventListeners() {
-        console.log(
-          '[Event System] Initializing with recommended approach (addMoniteEventListener)'
-        );
-
-        const cleanupFunctions = [];
-
-        cleanupFunctions.push(
-          addMoniteEventListener(MoniteEventTypes.INVOICE_CREATED, (event) => {
-            const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice created event:', {
-              type,
-              payload,
-              id,
-            });
-          })
-        );
-
-        cleanupFunctions.push(
-          addMoniteEventListener(MoniteEventTypes.INVOICE_UPDATED, (event) => {
-            const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice updated event:', {
-              type,
-              payload,
-              id,
-            });
-          })
-        );
-
-        cleanupFunctions.push(
-          addMoniteEventListener(MoniteEventTypes.INVOICE_DELETED, (event) => {
-            const { type, payload, id } = event.detail;
-            console.log('[Event Listener] Received invoice deleted event:', {
-              type,
-              payload,
-              id,
-            });
-          })
-        );
-
-        return function cleanupAllEventListeners() {
-          cleanupFunctions.forEach((cleanup) => cleanup());
-          console.log(
-            '[Event Listeners] All event listeners have been removed'
-          );
-        };
-      }
 
       /**
        * Initialize event listeners using the manual approach with standard DOM API
@@ -174,7 +90,7 @@
         };
       }
 
-      const cleanup = initRecommendedEventListeners();
+      //const cleanup = initRecommendedEventListeners();
 
       // To test the manual approach, comment out the line above and uncomment the line below
       // const cleanup = initManualEventListeners();
@@ -185,9 +101,9 @@
       // setTimeout(cleanup, 30000); // Clean up after 30 seconds
 
       // Ensure cleanup is called when the page is unloaded
-      window.addEventListener('beforeunload', () => {
-        cleanup();
-      });
+      // window.addEventListener('beforeunload', () => {
+      //   cleanup();
+      // });
 
       async function initApp() {
         let entityId;
@@ -210,25 +126,32 @@
           throw new Error('Error while fetching credentials');
         }
 
-        const moniteApp = getMoniteAppElement();
-        if (moniteApp) {
-          moniteApp.setAttribute(
-            'component',
-            location.pathname.split('/')[2] ?? 'receivables'
-          );
-          moniteApp.setAttribute('api-url', apiUrl);
-          moniteApp.setAttribute('entity-id', entityId);
-          moniteApp.removeAttribute('disabled');
-        } else {
-          console.warn(
-            `Could not find <${MONITE_APP_ELEMENT_NAME}> element in the DOM. Make sure it is properly included in your HTML.`
-          );
-        }
+        const component = location.pathname.split('/')[2] ?? 'payables';
+
+        window.dropin = new MoniteDropin({
+          entityId: entityId,
+          apiUrl: apiUrl,
+          fetchToken: fetchTokenDev,
+          theme: {
+            typography: {
+              fontFamily: 'Comic Sans MS, Comic Sans, cursive, monospace',
+            },
+          },
+          locale: {
+            code: 'de-DE',
+            messages: {
+              'Name, country, city': 'City Test',
+              Payables: 'My Payables',
+            },
+          },
+        });
+
+        dropin.create(component).mount(document.body);
       }
 
       initApp();
     </script>
 
-    <script type="module" src="/src/custom-elements/monite-app.ts"></script>
+    <!-- <script type="module" src="/src/custom-elements/monite-app.ts"></script> -->
   </body>
 </html>

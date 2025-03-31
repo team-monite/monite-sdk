@@ -15,6 +15,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -261,7 +262,7 @@ const CreateReceivablesBase = ({
           type: 'product',
         },
         ...(isNonVatSupported
-          ? { tax_rate_value: (item?.tax_rate_value ?? 0) * 100 }
+          ? { tax_rate_value: rateMajorToMinor(item?.tax_rate_value ?? 0) }
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
@@ -454,11 +455,8 @@ const CreateReceivablesBase = ({
                             name="currency"
                             control={control}
                             hideLabel
-                            // @ts-expect-error -> i dont understand why this onChange asks for 4 parameters. only the 2nd is needed
-                            onChange={(
-                              event, // eslint-disable-line
-                              value
-                            ) => {
+                            // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
+                            onChange={(_event, value) => {
                               if (
                                 value &&
                                 !Array.isArray(value) &&
@@ -711,9 +709,7 @@ const CreateReceivablesBase = ({
           <form
             id={formName}
             noValidate
-            onSubmit={(e) => {
-              handleSubmit(handleCreateReceivable)(e);
-            }}
+            onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={7}>

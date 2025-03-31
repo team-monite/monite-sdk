@@ -3,13 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
-import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
-import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
-import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
-import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
-import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
-import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMyEntity } from '@/core/queries';
@@ -17,6 +10,7 @@ import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
+import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -39,7 +33,16 @@ import {
 import { format } from 'date-fns';
 import * as yup from 'yup';
 
+import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
 import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
+import { ReminderSection } from '../../CreateReceivable/sections/components/ReminderSection/RemindersSection';
+import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
+import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
+import { getUpdateInvoiceValidationSchema } from '../../CreateReceivable/validation';
+import { EditInvoiceReminderDialog } from '../../EditInvoiceReminderDialog';
+import { useInvoiceReminderDialogs } from '../../useInvoiceReminderDialogs';
+import { useInvoiceDefaultValues } from '../hooks/useInvoiceDefaultValues';
+import { useMeasureUnitsMapping } from '../hooks/useMeasureUnitsMapping';
 
 type Schemas = components['schemas'];
 
@@ -53,9 +56,34 @@ interface EditInvoiceDetailsProps {
   onCancel: () => void;
 }
 
+interface ExtendedLineItem {
+  quantity: number;
+  product: {
+    name: string;
+    price?: {
+      currency: string;
+      value: number;
+    };
+    measure_unit_id: string;
+    measure_unit_name?: string;
+    type: string;
+  };
+  measure_unit?: {
+    name: string;
+    id: null;
+  };
+}
+
 type UpdateReceivablesFormProps = yup.InferType<
   ReturnType<typeof getUpdateInvoiceValidationSchema>
->;
+> & {
+  line_items: Array<
+    yup.InferType<
+      ReturnType<typeof getUpdateInvoiceValidationSchema>
+    >['line_items'][0] &
+      ExtendedLineItem
+  >;
+};
 
 const EditInvoiceDetailsContent = ({
   invoice,
@@ -74,63 +102,7 @@ const EditInvoiceDetailsContent = ({
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
 
-  const defaultValues = {
-    /** Customer section */
-    counterpart_id: invoice.counterpart_id,
-    counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
-
-    default_shipping_address_id: invoice.counterpart_shipping_address?.id ?? '',
-    default_billing_address_id: invoice.counterpart_billing_address?.id ?? '',
-
-    /** Entity section */
-    entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
-    fulfillment_date: invoice.fulfillment_date
-      ? new Date(invoice.fulfillment_date)
-      : null,
-    purchase_order: invoice.purchase_order ?? '',
-
-    /** Items section */
-    line_items: invoice.line_items.map((lineItem) => {
-      const measureUnitName = lineItem.product.measure_unit?.name;
-      let measureUnitId = lineItem.product.measure_unit?.id;
-
-      // If we have a measure unit name but no ID, try to find it in the available measure units
-      if (measureUnitName && !measureUnitId && measureUnits?.data) {
-        const matchedUnit = measureUnits.data.find(
-          (unit) => unit.name === measureUnitName
-        );
-        if (matchedUnit) {
-          measureUnitId = matchedUnit.id;
-        }
-      }
-
-      return {
-        quantity: lineItem.quantity,
-        product_id: lineItem.product.id,
-        vat_rate_id: lineItem.product.vat_rate.id ?? undefined,
-        vat_rate_value: lineItem.product.vat_rate.value,
-        product: {
-          name: lineItem.product.name,
-          price: lineItem.product.price,
-          // Get measure_unit_id directly from the API response if available, or use the matched ID
-          measure_unit_id: measureUnitId ?? undefined,
-          type: lineItem.product.type || 'product',
-        },
-        tax_rate_value: isNonVatSupported
-          ? lineItem.product.vat_rate.value / 100
-          : undefined,
-      };
-    }),
-    vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
-    memo: invoice.memo ?? '',
-
-    /** Items section */
-    entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
-    payment_terms_id: invoice.payment_terms?.id ?? '',
-
-    payment_reminder_id: invoice.payment_reminder_id ?? '',
-    overdue_reminder_id: invoice.overdue_reminder_id ?? '',
-  };
+  const defaultValues = useInvoiceDefaultValues(invoice, isNonVatSupported);
 
   const methods = useForm<UpdateReceivablesFormProps>({
     resolver: yupResolver(
@@ -150,7 +122,10 @@ const EditInvoiceDetailsContent = ({
     formState: { isDirty },
     getValues,
     setValue,
+    reset,
   } = methods;
+
+  useMeasureUnitsMapping(measureUnits, getValues, reset);
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const handleCancelWithAlert = useCallback(() => {
@@ -222,44 +197,54 @@ const EditInvoiceDetailsContent = ({
             onSubmit={handleSubmit((values) => {
               const lineItems: Schemas['UpdateLineItems'] = {
                 data: values.line_items.map((lineItem) => {
-                  // Check if we have a valid measure unit ID before processing
-                  let measureUnitName = '';
-                  if (lineItem.product.measure_unit_id) {
+                  const extendedLineItem =
+                    lineItem as unknown as ExtendedLineItem;
+
+                  let measureUnitName: string | undefined;
+
+                  // Case 1: We have a valid measure_unit_id - look up its name
+                  if (extendedLineItem.product.measure_unit_id) {
+                    const measureUnitId =
+                      extendedLineItem.product.measure_unit_id;
                     const unit = measureUnits?.data?.find(
-                      (u) => u.id === lineItem.product.measure_unit_id
+                      (u) => u.id === measureUnitId
                     );
-                    measureUnitName = unit?.name || '';
+                    measureUnitName = unit?.name;
+                  }
+                  // Case 2: We have a custom measure unit name but no ID
+                  else if (
+                    extendedLineItem.product.measure_unit_name ||
+                    extendedLineItem.measure_unit?.name
+                  ) {
+                    measureUnitName =
+                      extendedLineItem.product.measure_unit_name ||
+                      extendedLineItem.measure_unit?.name;
                   }
 
-                  // Ensure we have either VAT or tax rate, but not both
                   const processedLineItem = {
                     quantity: lineItem.quantity,
                     product: {
                       name: lineItem.product.name,
                       type: lineItem.product
                         .type as Schemas['ProductServiceTypeEnum'],
-                      // Keep the measure_unit_id as is since it's a valid UUID
-                      measure_unit: lineItem.product.measure_unit_id
-                        ? {
-                            name: measureUnitName,
-                          }
+                      measure_unit: measureUnitName
+                        ? { name: measureUnitName }
                         : undefined,
-                      // Ensure price is in minor units
                       price: lineItem.product.price
                         ? {
                             currency: lineItem.product.price.currency ?? 'USD',
                             value: Math.round(
                               lineItem.product.price.value ?? 0
-                            ), // Ensure we have whole numbers for minor units
+                            ),
                           }
                         : (undefined as unknown as Schemas['LineItemProductCreate']['price']),
                     },
-                    // For non-VAT supported regions, use tax_rate_value and set vat_rate to null
+                    // For non-VAT supported regions, use tax_rate_value
                     ...(isNonVatSupported
                       ? {
-                          tax_rate_value: Math.round(
-                            (lineItem.tax_rate_value ?? 0) * 100
-                          ), // Convert percentage to minor units
+                          tax_rate_value: rateMajorToMinor(
+                            lineItem.tax_rate_value ?? 0
+                          ),
                         }
                       : {
                           vat_rate_id: lineItem.vat_rate_id,
@@ -314,19 +299,7 @@ const EditInvoiceDetailsContent = ({
                         receivable as Schemas['InvoiceResponsePayload']
                       );
                     },
-                    onError: (error) => {
-                      console.error(
-                        '[EditInvoiceDetails] Invoice update failed:',
-                        error
-                      );
-                    },
                   });
-                },
-                onError: (error) => {
-                  console.error(
-                    '[EditInvoiceDetails] Line items update failed:',
-                    error
-                  );
                 },
               });
             })}

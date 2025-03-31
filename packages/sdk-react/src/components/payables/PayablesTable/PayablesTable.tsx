@@ -343,8 +343,8 @@ const PayablesTableBase = ({
         }),
         width: 120,
         valueGetter: (_, payable) => {
-          return payable.paid_amount && payable.currency
-            ? formatCurrencyToDisplay(payable.paid_amount, payable.currency)
+          return payable.amount_paid && payable.currency
+            ? formatCurrencyToDisplay(payable.amount_paid, payable.currency)
             : null;
         },
         renderCell: (params) => {

@@ -12,15 +12,24 @@ export const useDefaultCounterpartValues = ({
   counterpartAddresses,
   counterpartVats,
 }: DefaultValuesProps) => {
-  const { setValue } = useFormContext<CreateReceivablesFormProps>();
+  const { setValue, getValues } = useFormContext<CreateReceivablesFormProps>();
 
   useEffect(() => {
-    if (counterpartAddresses && counterpartAddresses.data.length === 1) {
-      const id = counterpartAddresses.data[0].id;
-      setValue('default_shipping_address_id', id);
-      setValue('default_billing_address_id', id);
+    if (counterpartAddresses && counterpartAddresses.data.length > 0) {
+      const currentBillingAddress = getValues('default_billing_address_id');
+      const currentShippingAddress = getValues('default_shipping_address_id');
+
+      if (!currentBillingAddress) {
+        const id = counterpartAddresses.data[0].id;
+        setValue('default_billing_address_id', id);
+      }
+
+      if (!currentShippingAddress) {
+        const id = counterpartAddresses.data[0].id;
+        setValue('default_shipping_address_id', id);
+      }
     }
-  }, [counterpartAddresses, setValue]);
+  }, [counterpartAddresses, setValue, getValues]);
 
   useEffect(() => {
     if (counterpartVats && counterpartVats.data.length === 1) {

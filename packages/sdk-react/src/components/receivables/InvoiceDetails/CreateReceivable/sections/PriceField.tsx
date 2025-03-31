@@ -12,7 +12,13 @@ import { FormControl, TextField } from '@mui/material';
 import { CreateReceivablesFormBeforeValidationProps } from '../validation';
 import { usePriceHelper } from './helpers';
 
-export const PriceField = ({ index, currency }: any) => {
+interface PriceFieldProps {
+  index: number;
+  currency: string;
+  error: boolean;
+}
+
+export const PriceField = ({ index, currency, error }: PriceFieldProps) => {
   const { formatCurrencyToDisplay, getSymbolFromCurrency } = useCurrencies();
   const { sanitizeAndFormatValue } = usePriceHelper();
 
@@ -29,7 +35,7 @@ export const PriceField = ({ index, currency }: any) => {
     name: `line_items.${index}.price.value`,
   });
 
-  const fieldValue = productPrice !== undefined ? productPrice : price;
+  const fieldValue = productPrice ?? price;
 
   const [isTyping, setIsTyping] = useState(false);
   const [rawValue, setRawValue] = useState<string>('');
@@ -101,17 +107,20 @@ export const PriceField = ({ index, currency }: any) => {
     <Controller
       name={`line_items.${index}.product.price.value`}
       control={control}
-      render={({ field: controllerField, fieldState: { error } }) => (
+      render={({
+        field: controllerField,
+        fieldState: { error: fieldError },
+      }) => (
         <FormControl
           variant="standard"
           fullWidth
           required
-          error={Boolean(error)}
+          error={Boolean(error || fieldError)}
         >
           <TextField
             size="small"
             type="text"
-            error={Boolean(error)}
+            error={Boolean(error || fieldError)}
             value={
               isTyping
                 ? rawValue

@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
 import { ConfirmDeleteDialog } from '@/components/counterparts/components';
+import { useVatTypeLabelByCode } from '@/core/hooks/useVatTypes';
 import { getCountries } from '@/core/utils/countries';
-import { useVatTypeLabelByCode } from '@/core/utils/useVatTypes';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

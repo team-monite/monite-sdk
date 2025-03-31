@@ -10,10 +10,11 @@ import {
 
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { formatVatRateForDisplay } from '@/core/utils/vatUtils';
 import { MenuItem, Select } from '@mui/material';
 
+import { setValueWithValidation } from '../utils';
 import { CreateReceivablesFormBeforeValidationProps } from '../validation';
-import { setValueWithValidation } from './utils';
 
 type VatRateResponse = components['schemas']['VatRateResponse'];
 
@@ -32,7 +33,7 @@ interface VatRateControllerProps {
 export const VatRateController = ({
   control,
   index,
-  fieldError,
+  fieldError: externalFieldError,
   vatRates,
   getValues,
   setValue,
@@ -43,18 +44,25 @@ export const VatRateController = ({
   const name = `line_items.${index}.vat_rate_id` as const;
   const valueFieldName = `line_items.${index}.vat_rate_value` as const;
   const taxRateFieldName = `line_items.${index}.tax_rate_value` as const;
-  const [hasSetDefaultVatRate, setHasSetDefaultVatRate] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const currentVatRateId = getValues(name);
-
-  // Set a default VAT rate if none is set and VAT rates are available
+  const currentVatRateValue = getValues(valueFieldName);
   useEffect(() => {
-    if (
-      !isNonVatSupported &&
-      !currentVatRateId &&
-      highestVatRate &&
-      !hasSetDefaultVatRate
-    ) {
+    if (hasInitialized) {
+      return;
+    }
+
+    const hasExistingVatRate =
+      currentVatRateId && currentVatRateValue !== undefined;
+
+    if (hasExistingVatRate) {
+      setHasInitialized(true);
+      return;
+    }
+
+    if (!isNonVatSupported && highestVatRate) {
+      // For VAT-supported regions, always set the highest VAT rate as default
       setValueWithValidation(name, highestVatRate.id, true, setValue);
       setValueWithValidation(
         valueFieldName,
@@ -62,29 +70,30 @@ export const VatRateController = ({
         true,
         setValue
       );
-      setHasSetDefaultVatRate(true);
-    } else if (isNonVatSupported && !hasSetDefaultVatRate) {
+      setValueWithValidation(taxRateFieldName, undefined, true, setValue);
+    } else if (isNonVatSupported) {
       // For non-VAT regions, set VAT rate to null and use tax_rate_value (default to 0%)
       setValueWithValidation(name, null, true, setValue);
       setValueWithValidation(valueFieldName, null, true, setValue);
 
-      // Initialize tax rate to 0 if not set
       if (getValues(taxRateFieldName) === undefined) {
         setValueWithValidation(taxRateFieldName, 0, true, setValue);
       }
-
-      setHasSetDefaultVatRate(true);
     }
+
+    setHasInitialized(true);
   }, [
-    currentVatRateId,
     highestVatRate,
-    hasSetDefaultVatRate,
+    hasInitialized,
     isNonVatSupported,
     name,
     valueFieldName,
     taxRateFieldName,
     setValue,
     getValues,
+    index,
+    currentVatRateId,
+    currentVatRateValue,
   ]);
 
   // If we're in a non-VAT region, we don't need to show the VAT rate selector
@@ -96,19 +105,21 @@ export const VatRateController = ({
     <Controller
       name={name}
       control={control}
-      render={({ field: vatRateField }) => {
-        // Get current value to ensure we have the latest
+      render={({
+        field: vatRateField,
+        fieldState: { error: internalFieldError },
+      }) => {
         const vatRateId = getValues(name);
+        const hasError = Boolean(externalFieldError || internalFieldError);
 
         return (
           <Select
             MenuProps={{ container: root }}
             {...vatRateField}
             value={vatRateId || ''}
+            variant="outlined"
             onChange={(e) => {
               const selectedVatRateId = e.target.value;
-
-              // Find the corresponding VAT rate to update the value as well
               const selectedVatRate = vatRates?.find(
                 (rate) => rate.id === selectedVatRateId
               );
@@ -116,7 +127,6 @@ export const VatRateController = ({
               setValueWithValidation(name, selectedVatRateId, false, setValue);
 
               if (selectedVatRate) {
-                // Update the vat_rate_value immediately when the VAT rate changes
                 setValueWithValidation(
                   valueFieldName,
                   selectedVatRate.value,
@@ -127,14 +137,11 @@ export const VatRateController = ({
 
               vatRateField.onChange(e);
             }}
-            error={Boolean(fieldError)}
+            error={hasError}
           >
             {vatRates?.map((rate) => (
               <MenuItem key={rate.id} value={rate.id}>
-                {(rate.value / 100).toLocaleString(undefined, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                })}
+                {formatVatRateForDisplay(rate.value)}
               </MenuItem>
             ))}
           </Select>

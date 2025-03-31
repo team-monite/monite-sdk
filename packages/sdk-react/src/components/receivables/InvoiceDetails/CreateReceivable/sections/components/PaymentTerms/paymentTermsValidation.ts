@@ -37,6 +37,7 @@ export const getValidation = (i18n: I18n, getFormState: () => any) =>
     description: yup.string().max(250).optional(),
     term_1: yup
       .object()
+      .nullable()
       .shape({
         number_of_days: yup
           .number()
@@ -61,6 +62,7 @@ export const getValidation = (i18n: I18n, getFormState: () => any) =>
       .optional(),
     term_2: yup
       .object()
+      .nullable()
       .shape({
         number_of_days: yup
           .number()

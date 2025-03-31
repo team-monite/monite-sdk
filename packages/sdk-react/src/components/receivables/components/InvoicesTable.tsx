@@ -239,13 +239,16 @@ const InvoicesTableBase = ({
                     >
                       <Typography
                         variant="body1"
-                        sx={{ display: 'flex' }}
-                        className=""
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          fontSize: 'inherit',
+                          fontWeight: 'inherit',
+                        }}
                       >
                         <>
                           <Sync
-                            fontSize="small"
-                            sx={{ marginRight: '4px' }}
+                            sx={{ marginRight: 0.5, fontSize: 'inherit' }}
                             color="inherit"
                           />
                           {t(i18n)`Recurring`}

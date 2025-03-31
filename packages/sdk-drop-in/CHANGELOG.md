@@ -1,5 +1,25 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-beta.2
+
+### Patch Changes
+
+- 7b75dbf: Add Document templates to Dropin
+
+## 2.0.0-beta.1
+
+### Minor Changes
+
+- 143072a: Default styles refresh across all components
+- 0a107f7: Adds Dropin unmount method
+- 010861f: Added discounts for payables
+- ca42346: Added ability to hide customer type section when creating a counterpart, default is set to ['customer', 'vendor'] through componentSettings and also added a new property called customerTypes to Receivables, Payables and Counterparts components to customize the available customer type options when creating a counterpart
+
+### Patch Changes
+
+- 92425e1: Fix payment term discounts translations
+- d068bbf: Added onboarding and sent invoice email events to the SDK and Drop-in component
+
 ## 2.0.0-alpha.18
 
 ### Minor Changes
