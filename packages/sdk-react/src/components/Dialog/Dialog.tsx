@@ -51,70 +51,75 @@ export const useDialog = (): DialogContextType | undefined => {
   return useContext(DialogContext);
 };
 
-export const Dialog = (props: MoniteDialogProps) => (
-  <MoniteScopedProviders>
-    <DialogBase {...props} />
-  </MoniteScopedProviders>
+export const Dialog = forwardRef<HTMLDivElement, MoniteDialogProps>(
+  (props, ref) => (
+    <MoniteScopedProviders>
+      <DialogBase {...props} ref={ref} />
+    </MoniteScopedProviders>
+  )
 );
 
-export const DialogBase = (props: MoniteDialogProps) => {
-  const { alignDialog, onClosed, ...otherProps } = props;
-  const { root } = useRootElements();
+export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
+  (props, ref) => {
+    const { alignDialog, onClosed, ...otherProps } = props;
+    const { root } = useRootElements();
 
-  return (
-    <DialogContext.Provider
-      value={{ isDialogContent: true, onClose: props.onClose }}
-    >
-      <MuiDialog
-        {...otherProps}
-        open={props.open}
-        container={root}
-        TransitionComponent={Transition}
-        TransitionProps={{
-          alignDialog: alignDialog,
-          onExited: onClosed,
-        }}
-        onClose={props.onClose}
-        classes={{
-          container: [
-            ScopedCssBaselineContainerClassName,
-            alignDialog && `MuiDialog-container__align-${alignDialog}`,
-          ]
-            .filter(Boolean)
-            .join(' '),
-          paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
-        }}
-        slotProps={
-          props.fullScreen
-            ? {
-                backdrop: {
-                  style: {
-                    background: 'none',
-                  },
-                },
-              }
-            : {}
-        }
-        css={css`
-          .MuiDialog-container__align-right {
-            justify-content: right;
-          }
-          .MuiDialog-container__align-left {
-            justify-content: left;
-          }
-
-          .MuiDialog-paper__align-left,
-          .MuiDialog-paper__align-right {
-            width: 50%;
-            height: 100%;
-            max-height: none;
-            margin: 0;
-            border-radius: 0;
-          }
-        `}
+    return (
+      <DialogContext.Provider
+        value={{ isDialogContent: true, onClose: props.onClose }}
       >
-        {props.children}
-      </MuiDialog>
-    </DialogContext.Provider>
-  );
-};
+        <MuiDialog
+          ref={ref}
+          {...otherProps}
+          open={props.open}
+          container={root}
+          TransitionComponent={Transition}
+          TransitionProps={{
+            alignDialog: alignDialog,
+            onExited: onClosed,
+          }}
+          onClose={props.onClose}
+          classes={{
+            container: [
+              ScopedCssBaselineContainerClassName,
+              alignDialog && `MuiDialog-container__align-${alignDialog}`,
+            ]
+              .filter(Boolean)
+              .join(' '),
+            paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
+          }}
+          slotProps={
+            props.fullScreen
+              ? {
+                  backdrop: {
+                    style: {
+                      background: 'none',
+                    },
+                  },
+                }
+              : {}
+          }
+          css={css`
+            .MuiDialog-container__align-right {
+              justify-content: right;
+            }
+            .MuiDialog-container__align-left {
+              justify-content: left;
+            }
+
+            .MuiDialog-paper__align-left,
+            .MuiDialog-paper__align-right {
+              width: 50%;
+              height: 100%;
+              max-height: none;
+              margin: 0;
+              border-radius: 0;
+            }
+          `}
+        >
+          {props.children}
+        </MuiDialog>
+      </DialogContext.Provider>
+    );
+  }
+);

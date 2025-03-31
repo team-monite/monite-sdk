@@ -2,10 +2,10 @@ import { useId, useState } from 'react';
 
 import { components } from '@/api';
 import { Dialog } from '@/components';
+import { useHandleDialogCloseFocus } from '@/core/hooks/useHandleDialogCloseFocus';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Typography,
   DialogTitle,
   DialogContent,
   Divider,
@@ -34,6 +34,9 @@ export const PaymentTermsDialog = ({
   const formName = `Monite-Form-paymentTerms-${useId()}`;
   const { i18n } = useLingui();
 
+  const { dialogRef, handleClose } =
+    useHandleDialogCloseFocus<HTMLDivElement>(closeDialog);
+
   const submitButtonText = selectedTerm ? t(i18n)`Save` : t(i18n)`Create`;
   const titleText = selectedTerm
     ? t(i18n)`Edit payment term`
@@ -48,16 +51,19 @@ export const PaymentTermsDialog = ({
 
   return (
     <>
-      <Dialog open={show} alignDialog="right" onClose={() => closeDialog()}>
-        <DialogTitle>
-          <Typography variant="h4">{titleText}</Typography>
-        </DialogTitle>
+      <Dialog
+        ref={dialogRef}
+        open={show}
+        alignDialog="right"
+        onClose={handleClose}
+      >
+        <DialogTitle>{titleText}</DialogTitle>
         <Divider />
         <DialogContent>
           <PaymentTermsForm
             formName={formName}
             selectedTerm={selectedTerm}
-            onTermsChange={closeDialog}
+            onTermsChange={handleClose}
           />
         </DialogContent>
         <Divider />
@@ -78,7 +84,7 @@ export const PaymentTermsDialog = ({
               >{t(i18n)`Delete`}</Button>
             )}
             <Stack direction="row" gap={1} useFlexGap>
-              <Button variant="text" onClick={() => closeDialog()}>{t(
+              <Button variant="text" onClick={handleClose}>{t(
                 i18n
               )`Cancel`}</Button>
               <Button type="submit" variant="contained" form={formName}>
