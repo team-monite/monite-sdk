@@ -13,10 +13,14 @@ import { ThemeConfig } from '@/core/theme/types';
 import { Global, css } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
-import { Theme } from 'mui-styles';
-
 import { GlobalToast } from '../GlobalToast';
-import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
+// @ts-expect-error - This is a global css file
+import tailwindApp from '../theme/app.css';
+import {
+  MoniteContextProvider,
+  MoniteTheme,
+  useMoniteContext,
+} from './MoniteContext';
 
 export interface MoniteSettings {
   entityId: string;
@@ -75,16 +79,27 @@ export const MoniteProvider = ({
   );
 };
 
-const getTailwindTheme = (theme: Theme) => css`
+const getTailwindTheme = (theme: MoniteTheme) => css`
   :root {
-    --monite-color-primary: ${theme.palette.primary.main};
-    --monite-color-secondary: ${theme.palette.secondary.main};
+    --monite-color-primary-50: ${theme.palette.primary[50]};
+    --monite-color-primary-60: ${theme.palette.primary[60]};
+    --monite-color-primary-80: ${theme.palette.primary[80]};
+    --monite-color-primary-90: ${theme.palette.primary[90]};
+
+    --monite-color-neutral-10: ${theme.palette.neutral[10]};
+    --monite-color-neutral-30: ${theme.palette.neutral[30]};
+    --monite-color-neutral-50: ${theme.palette.neutral[50]};
+    --monite-color-neutral-70: ${theme.palette.neutral[70]};
+    --monite-color-neutral-80: ${theme.palette.neutral[80]};
+    --monite-color-neutral-90: ${theme.palette.neutral[90]};
+    --monite-color-neutral-95: ${theme.palette.neutral[95]};
   }
+  ${tailwindApp}
 `;
 
 const MoniteThemeProvider = ({ children }: { children: ReactNode }) => {
   const { theme } = useMoniteContext();
-  console.log(theme);
+
   return (
     <>
       <Global styles={getTailwindTheme(theme)} />
