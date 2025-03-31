@@ -35,7 +35,7 @@ export type FieldValueTypes =
   | 'due_date'
   | 'was_created_by_user_id'
   | 'created_at'
-  | 'paid_amount'
+  | 'amount_paid'
   | 'status'
   | 'pay';
 
