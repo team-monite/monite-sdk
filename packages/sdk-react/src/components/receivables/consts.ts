@@ -14,8 +14,7 @@ import StarHalfOutlinedIcon from '@mui/icons-material/StarHalfOutlined';
 import { ChipTypeMap, type SvgIcon } from '@mui/material';
 
 export const ROW_TO_TAG_STATUS_MUI_MAP: Record<
-  | components['schemas']['ReceivablesStatusEnum']
-  | components['schemas']['WCInvoiceStatus'],
+  components['schemas']['ReceivablesStatusEnum'],
   ChipTypeMap['props']['color']
 > = {
   draft: 'default',
@@ -32,17 +31,10 @@ export const ROW_TO_TAG_STATUS_MUI_MAP: Record<
   declined: 'error',
   overdue: 'warning',
   deleted: 'error',
-  NEW: 'default',
-  DEFAULTED: 'default',
-  PAID: 'success',
-  FUNDED: 'success',
-  LATE: 'warning',
-  REJECTED: 'error',
 };
 
 export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
-  | components['schemas']['ReceivablesStatusEnum']
-  | components['schemas']['WCInvoiceStatus'],
+  components['schemas']['ReceivablesStatusEnum'],
   typeof SvgIcon
 > = {
   draft: InsertDriveFileOutlinedIcon,
@@ -59,12 +51,6 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   declined: DangerousOutlinedIcon,
   overdue: ErrorOutlineOutlinedIcon,
   deleted: DeleteIcon,
-  NEW: InsertDriveFileOutlinedIcon,
-  DEFAULTED: InsertDriveFileOutlinedIcon,
-  PAID: PaidOutlinedIcon,
-  FUNDED: PaidOutlinedIcon,
-  LATE: HourglassBottomOutlinedIcon,
-  REJECTED: CancelIcon,
 };
 
 // eslint-disable-next-line lingui/no-unlocalized-strings

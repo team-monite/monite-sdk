@@ -1,10 +1,10 @@
+import { FinanceBanner } from '@/components/financing';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
 
 import { PageHeader } from '../PageHeader';
-import { FinanceApplicationCard } from '../receivables/Financing/FinanceApplicationCard/FinanceApplicationCard';
 
 export function Integrations() {
   return (
@@ -26,7 +26,7 @@ function IntegrationsComponent() {
           gap: 2,
         }}
       >
-        <FinanceApplicationCard />
+        <FinanceBanner variant="finance_card" />
       </Box>
     </Box>
   );

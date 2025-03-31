@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import useScript from 'react-script-hook';
 
-import { Services } from '@/api';
+import { components, Services } from '@/api';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useMyEntity } from './useMe';
@@ -58,6 +60,27 @@ type startFinanceSessionOptions = {
   component?: string;
 };
 
+export enum ApplicationState {
+  INIT = 'init',
+  IN_PROGRESS = 'in_progress',
+  PENDING_APPROVAL = 'pending_approval',
+  NO_OFFERS_AVAILABLE = 'no_offers',
+  SERVICING = 'servicing',
+  APPROVED = 'approved',
+  OFFER_ACCEPTED = 'offer_accepted',
+  OFFERS_EXPIRED = 'offers_expired',
+}
+
+export type UseFinancingReturnValues = {
+  buttonText: string;
+  offer: components['schemas']['FinancingOffer'];
+  applicationState: string;
+  isInitializing: boolean;
+  isLoading: boolean;
+  isEnabled: boolean;
+  isServicing: boolean;
+};
+
 declare global {
   interface Window {
     KANMON_CONNECT:
@@ -66,7 +89,12 @@ declare global {
             connectToken: string;
             onEvent: (event: {
               eventType: string;
-              data: { actionMessage: string; actionRequired: boolean };
+              data: {
+                actionMessage: string;
+                actionRequired: boolean;
+                section: string;
+                userState: string;
+              };
             }) => void;
           }) => void;
           show: (options?: startFinanceSessionOptions) => void;
@@ -76,12 +104,51 @@ declare global {
   }
 }
 
+export const startFinanceSession = ({
+  sessionToken,
+  component,
+}: startFinanceSessionOptions = {}) => {
+  window?.KANMON_CONNECT?.show({ sessionToken, component });
+};
+
 export const useFinancing = () => {
-  const { apiUrl } = useMoniteContext();
-  const [displayButtonMessage, setDisplayButtonMessage] = useState('');
-  const [actionRequired, setActionRequired] = useState(false);
+  const { apiUrl, api, queryClient, componentSettings, entityId } =
+    useMoniteContext();
+  const { i18n } = useLingui();
+  const [buttonText, setButtonText] = useState('');
   const getConnectToken = useGetFinancingConnectToken();
+  const { data: finance } = useGetFinanceOffers();
   const { isUSEntity, isLoading: isUSEntityLoading } = useMyEntity();
+
+  const handleApplicationState = () => {
+    switch (finance?.business_status) {
+      case 'NEW':
+      default:
+        return ApplicationState.INIT;
+      case 'INPUT_REQUIRED':
+        return ApplicationState.IN_PROGRESS;
+      case 'ONBOARDED':
+        if (finance?.offers?.length === 0) {
+          return ApplicationState.PENDING_APPROVAL;
+        }
+
+        if (finance?.offers?.[0]?.status === 'NEW') {
+          return ApplicationState.APPROVED;
+        }
+
+        if (finance?.offers?.[0]?.status === 'EXPIRED') {
+          return ApplicationState.OFFERS_EXPIRED;
+        }
+
+        if (finance?.offers?.[0]?.status === 'ACCEPTED') {
+          return ApplicationState.OFFER_ACCEPTED;
+        }
+
+        return ApplicationState.SERVICING;
+    }
+  };
+
+  const applicationState = handleApplicationState();
 
   const isProduction = (() => {
     try {
@@ -103,29 +170,57 @@ export const useFinancing = () => {
     src: kanmonConnectScriptUrl,
   });
   const [isInitializing, setIsInitializing] = useState(false);
-  const [isFetchingConnectToken, setIsFetchingConnectToken] = useState(true);
-
-  const startFinanceSession = ({
-    sessionToken,
-    component,
-  }: startFinanceSessionOptions = {}) => {
-    window?.KANMON_CONNECT?.show({ sessionToken, component });
-  };
 
   const initialiseFinanceSdk = ({ connectToken }: { connectToken: string }) => {
-    setIsInitializing(true);
     window?.KANMON_CONNECT?.start({
       connectToken,
       onEvent: (event) => {
-        switch (event.eventType) {
-          case 'USER_STATE_CHANGED':
-            setIsInitializing(false);
-            setDisplayButtonMessage(event.data.actionMessage);
-            setActionRequired(event.data.actionRequired);
+        if (event.eventType !== 'USER_STATE_CHANGED') return;
+
+        switch (event.data.userState) {
+          case 'START_FLOW':
+            setButtonText(t(i18n)`Apply for financing`);
+            break;
+          case 'USER_INPUT_REQUIRED':
+            if (event.data.section === 'OFFER') {
+              setButtonText(t(i18n)`View terms and sign`);
+            } else {
+              setButtonText(t(i18n)`Resume application`);
+            }
+            break;
+          case 'WAITING_FOR_OFFERS':
+            setButtonText('');
+            if (
+              (finance?.business_status === 'INPUT_REQUIRED' ||
+                finance?.business_status === 'NEW') &&
+              componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete
+            ) {
+              componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete(
+                entityId
+              );
+            }
+            break;
+          case 'OFFERS_EXPIRED':
+          case 'NO_OFFERS_EXTENDED':
+            setButtonText('');
+            break;
+          case 'SERVICING':
+            setButtonText(t(i18n)`Financing menu`);
+            if (
+              finance?.business_status === 'ONBOARDED' &&
+              finance?.offers?.[0]?.status === 'NEW'
+            ) {
+              window.localStorage.setItem('isFinanceTabNew', 'true');
+            }
+            break;
+          case 'VIEW_OFFERS':
+          case 'OFFER_ACCEPTED':
+            setButtonText(t(i18n)`View terms and sign`);
             break;
           default:
-            setIsInitializing(false);
+            break;
         }
+        api.financingOffers.getFinancingOffers.invalidateQueries(queryClient);
       },
     });
   };
@@ -136,6 +231,7 @@ export const useFinancing = () => {
 
   useEffect(() => {
     const setupFinanceSdkConnection = async () => {
+      setIsInitializing(true);
       try {
         if (scriptLoading || !isUSEntity) {
           return;
@@ -146,7 +242,7 @@ export const useFinancing = () => {
       } catch {
         // Intentionally left empty
       } finally {
-        setIsFetchingConnectToken(false);
+        setIsInitializing(false);
       }
     };
 
@@ -156,17 +252,22 @@ export const useFinancing = () => {
       stopFinanceSession();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scriptLoading, isUSEntity]); // Escaped the eslint rule to avoid unnecessary dependencies from causing the hook to re-run
+  }, [scriptLoading, isUSEntity]);
 
-  const isLoading = isFetchingConnectToken || isUSEntityLoading;
+  const isLoading = isInitializing || isUSEntityLoading;
   const isEnabled = isUSEntity;
+  const isServicing =
+    finance?.business_status === 'ONBOARDED' &&
+    finance?.offers?.[0]?.status === 'CURRENT';
+  const offer = finance?.offers?.[0];
 
   return {
-    displayButtonMessage,
-    actionRequired,
-    startFinanceSession,
+    buttonText,
+    applicationState,
+    offer,
     isInitializing,
     isLoading,
     isEnabled,
+    isServicing,
   };
 };
