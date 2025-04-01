@@ -5,6 +5,8 @@ import { InvoicesTable } from '@/components';
 import { QuotesTable } from '@/components';
 import { FinanceTab } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { FINANCING_LABEL } from '@/components/financing/consts';
+import { useGetFinanceOffers } from '@/components/financing/hooks';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
@@ -12,10 +14,6 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMyEntity } from '@/core/queries';
-import {
-  FINANCING_LABEL,
-  useGetFinanceOffers,
-} from '@/core/queries/useFinancing';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

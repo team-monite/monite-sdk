@@ -9,6 +9,8 @@ import {
 } from '@mui/icons-material';
 import { type SvgIcon } from '@mui/material';
 
+export const FINANCING_LABEL = 'My Financing';
+
 export const ROW_TO_TAG_FINANCE_STATUS_MUI_MAP: Record<
   components['schemas']['WCInvoiceStatus'],
   string

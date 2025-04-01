@@ -1,4 +1,4 @@
-import { FinanceBanner } from '@/components/financing';
+import { FinanceIntegrationCard } from '@/components/financing';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -16,6 +16,7 @@ export function Integrations() {
 
 function IntegrationsComponent() {
   const { i18n } = useLingui();
+
   return (
     <Box>
       <PageHeader title={<>{t(i18n)`Integrations`}</>} />
@@ -26,7 +27,7 @@ function IntegrationsComponent() {
           gap: 2,
         }}
       >
-        <FinanceBanner variant="finance_card" />
+        <FinanceIntegrationCard />
       </Box>
     </Box>
   );

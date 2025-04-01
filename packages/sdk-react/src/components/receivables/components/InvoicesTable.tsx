@@ -4,6 +4,11 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FinanceBanner } from '@/components/financing';
 import {
+  useFinanceAnInvoice,
+  useGetFinancedInvoices,
+  useGetFinanceOffers,
+} from '@/components/financing/hooks';
+import {
   InvoiceRecurrenceStatusChip,
   InvoiceStatusChip,
   ReceivableFilters,
@@ -17,6 +22,7 @@ import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/types';
+import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -26,12 +32,6 @@ import {
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useMyEntity } from '@/core/queries';
-import {
-  useFinanceAnInvoice,
-  useGetFinancedInvoices,
-  useGetFinanceOffers,
-  startFinanceSession,
-} from '@/core/queries/useFinancing';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
@@ -104,7 +104,8 @@ const InvoicesTableBase = ({
   filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
-  const { locale, componentSettings } = useMoniteContext();
+  const { locale, componentSettings, api, queryClient } = useMoniteContext();
+  const { startFinanceSession } = useKanmonContext();
   const { data: financeData } = useGetFinanceOffers();
   const { data: financedInvoices } = useGetFinancedInvoices({});
   const { isUSEntity } = useMyEntity();
@@ -180,6 +181,9 @@ const InvoicesTableBase = ({
                 component: 'SESSION_INVOICE_FLOW_WITH_INVOICE_FILE',
               });
               setIsFinancingAnInvoice(false);
+              api.financingInvoices.getFinancingInvoices.invalidateQueries(
+                queryClient
+              );
             },
           }
         );
@@ -187,7 +191,13 @@ const InvoicesTableBase = ({
         setIsFinancingAnInvoice(false);
       }
     },
-    [financeInvoiceMutation, isFinancingAnInvoice]
+    [
+      financeInvoiceMutation,
+      isFinancingAnInvoice,
+      api,
+      queryClient,
+      startFinanceSession,
+    ]
   );
 
   const onChangeSort = (model: GridSortModel) => {

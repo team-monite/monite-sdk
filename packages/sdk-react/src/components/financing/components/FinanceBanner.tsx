@@ -4,12 +4,9 @@ import {
   FinanceBannerPlaceholder,
   FinanceFaqWrapper,
 } from '@/components/financing/components';
+import { ApplicationState, useFinancing } from '@/components/financing/hooks';
+import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useCurrencies } from '@/core/hooks';
-import {
-  ApplicationState,
-  useFinancing,
-  startFinanceSession,
-} from '@/core/queries/useFinancing';
 import { useTheme } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -29,13 +26,19 @@ type FinanceBannerProps = {
   variant?: 'finance' | 'onboard' | 'finance_card';
   /** Enables servicing banner variant */
   enableServicingBanner?: boolean;
+  /** Function that is called when clicking on View Details button.
+   * The button will only appear when entity is servicing, enableServicingBanner is true and handleViewDetails is passed.
+   * The purpose of this button is to give the user a way to navigate to the financing page through it. */
+  handleViewDetails?: () => void;
 };
 
 export const FinanceBanner = ({
   variant = 'onboard',
   enableServicingBanner = false,
+  handleViewDetails,
 }: FinanceBannerProps) => {
   const { i18n } = useLingui();
+  const { startFinanceSession } = useKanmonContext();
   const theme = useTheme();
   const { formatCurrencyToDisplay } = useCurrencies();
   const {
@@ -47,8 +50,11 @@ export const FinanceBanner = ({
     offer,
   } = useFinancing();
   const totalLimit = offer?.total_amount ?? 0;
-  const remainingLimit = offer?.available_amount ?? 0;
+  const remainingLimit =
+    (offer?.status === 'LATE' ? 0 : offer?.available_amount) ?? 0;
   const progress = (remainingLimit / totalLimit) * 100;
+  const isAvailable =
+    offer?.status !== 'CLOSED' && offer?.status !== 'DEFAULTED';
 
   const [isHidden, setIsHidden] = useState(() => {
     const sessionStorageBannerState: StorageBannerState = JSON.parse(
@@ -296,9 +302,9 @@ export const FinanceBanner = ({
           <Box sx={{ flex: '1 1 0%' }}>{handleBannerTextContent()}</Box>
         </Box>
         <Stack direction="row" gap={1} alignItems="center">
-          {shouldApplyFinanceStyles ? (
+          {shouldApplyFinanceStyles && handleViewDetails ? (
             <Button
-              onClick={handleHide}
+              onClick={handleViewDetails}
               variant="text"
               sx={{ color: '#292929' }}
             >
@@ -342,29 +348,40 @@ export const FinanceBanner = ({
 
       {shouldApplyFinanceStyles && (
         <Box mt={1} pl="56px" zIndex={10} position="relative">
-          <Typography variant="body1">{t(i18n)`Remaining limit`}</Typography>
+          {isAvailable ? (
+            <>
+              <Typography variant="body1">{t(
+                i18n
+              )`Remaining limit`}</Typography>
 
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Box display="flex" alignItems="center" gap={1}>
-              <Typography variant="h2" fontSize={32}>
-                {formatCurrencyToDisplay(remainingLimit, 'USD')}
-              </Typography>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                sx={{ color: '#B8B8B8' }}
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
               >
-                / {formatCurrencyToDisplay(totalLimit, 'USD')}
-              </Typography>
-            </Box>
-            <Typography variant="body1">
-              {offer?.pricing_plans?.length} {t(i18n)`financial plans enabled`}
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Typography variant="h2" fontSize={32}>
+                    {formatCurrencyToDisplay(remainingLimit, 'USD')}
+                  </Typography>
+                  <Typography
+                    component="span"
+                    variant="subtitle1"
+                    sx={{ color: '#B8B8B8' }}
+                  >
+                    / {formatCurrencyToDisplay(totalLimit, 'USD')}
+                  </Typography>
+                </Box>
+                <Typography variant="body1">
+                  {offer?.pricing_plans?.length}{' '}
+                  {t(i18n)`financial plans enabled`}
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            <Typography variant="h2" fontSize={32}>
+              {t(i18n)`Not available`}
             </Typography>
-          </Box>
+          )}
 
           <Box
             sx={{
@@ -384,6 +401,23 @@ export const FinanceBanner = ({
               }}
             />
           </Box>
+
+          {(!isAvailable || offer?.status === 'LATE') && (
+            <Typography variant="body1" fontWeight={400} mt={1}>
+              {offer?.status === 'CLOSED' &&
+                t(
+                  i18n
+                )`Financing is not available for your business anymore. Please, contact the provider for further details.`}
+              {offer?.status === 'DEFAULTED' &&
+                t(
+                  i18n
+                )`Financing is blocked due to a violation of the agreed-upon terms. Please, contact the provider for further details.`}
+              {offer?.status === 'LATE' &&
+                t(
+                  i18n
+                )`Due to late payment your financing is currently on hold. Please, contact the provider for further details.`}
+            </Typography>
+          )}
         </Box>
       )}
     </FinanceBannerPlaceholder>

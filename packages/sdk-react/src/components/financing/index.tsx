@@ -1,1 +1,6 @@
-export { FinanceBanner, FinanceTab, FinanceInvoice } from './components';
+export {
+  FinanceBanner,
+  FinanceIntegrationCard,
+  FinanceTab,
+  FinanceInvoice,
+} from './components';

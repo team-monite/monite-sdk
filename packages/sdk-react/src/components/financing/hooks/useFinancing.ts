@@ -1,64 +1,19 @@
 import { useEffect, useState } from 'react';
 import useScript from 'react-script-hook';
 
-import { components, Services } from '@/api';
+import { components } from '@/api';
+import {
+  useGetFinancingConnectToken,
+  useGetFinanceOffers,
+} from '@/components/financing/hooks';
+import { useKanmonContext } from '@/core/context/KanmonContext';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-import { useMoniteContext } from '../context/MoniteContext';
-import { useMyEntity } from './useMe';
-
-export const FINANCING_LABEL = 'My Financing';
-
-export const useGetFinancedInvoices = (
-  query: Services['financingInvoices']['getFinancingInvoices']['types']['parameters']['query'],
-  enabled = true
-) => {
-  const { api } = useMoniteContext();
-
-  return api.financingInvoices.getFinancingInvoices.useQuery(
-    {
-      query,
-    },
-    { enabled }
-  );
-};
-
-export const useFinanceAnInvoice = () => {
-  const { api } = useMoniteContext();
-
-  return api.financingInvoices.postFinancingInvoices.useMutation(
-    {},
-    {
-      onError: () => {},
-    }
-  );
-};
-
-export const useGetFinancingConnectToken = () => {
-  const { api } = useMoniteContext();
-
-  return api.financingTokens.postFinancingTokens.useMutation(
-    {},
-    {
-      onError: () => {},
-    }
-  );
-};
-
-export const useGetFinanceOffers = () => {
-  const { api } = useMoniteContext();
-
-  return api.financingOffers.getFinancingOffers.useQuery();
-};
-
 const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
 const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.kanmon.dev/scripts/v2/kanmon-connect.js`;
-
-type startFinanceSessionOptions = {
-  sessionToken?: string;
-  component?: string;
-};
 
 export enum ApplicationState {
   INIT = 'init',
@@ -81,41 +36,12 @@ export type UseFinancingReturnValues = {
   isServicing: boolean;
 };
 
-declare global {
-  interface Window {
-    KANMON_CONNECT:
-      | {
-          start: (options: {
-            connectToken: string;
-            onEvent: (event: {
-              eventType: string;
-              data: {
-                actionMessage: string;
-                actionRequired: boolean;
-                section: string;
-                userState: string;
-              };
-            }) => void;
-          }) => void;
-          show: (options?: startFinanceSessionOptions) => void;
-          stop: () => void;
-        }
-      | undefined;
-  }
-}
-
-export const startFinanceSession = ({
-  sessionToken,
-  component,
-}: startFinanceSessionOptions = {}) => {
-  window?.KANMON_CONNECT?.show({ sessionToken, component });
-};
-
 export const useFinancing = () => {
   const { apiUrl, api, queryClient, componentSettings, entityId } =
     useMoniteContext();
+  const { isKanmonInitialized, toggleKanmon, handleButtonText, buttonText } =
+    useKanmonContext();
   const { i18n } = useLingui();
-  const [buttonText, setButtonText] = useState('');
   const getConnectToken = useGetFinancingConnectToken();
   const { data: finance } = useGetFinanceOffers();
   const { isUSEntity, isLoading: isUSEntityLoading } = useMyEntity();
@@ -179,17 +105,17 @@ export const useFinancing = () => {
 
         switch (event.data.userState) {
           case 'START_FLOW':
-            setButtonText(t(i18n)`Apply for financing`);
+            handleButtonText(t(i18n)`Apply for financing`);
             break;
           case 'USER_INPUT_REQUIRED':
             if (event.data.section === 'OFFER') {
-              setButtonText(t(i18n)`View terms and sign`);
+              handleButtonText(t(i18n)`View terms and sign`);
             } else {
-              setButtonText(t(i18n)`Resume application`);
+              handleButtonText(t(i18n)`Resume application`);
             }
             break;
           case 'WAITING_FOR_OFFERS':
-            setButtonText('');
+            handleButtonText('');
             if (
               (finance?.business_status === 'INPUT_REQUIRED' ||
                 finance?.business_status === 'NEW') &&
@@ -202,10 +128,10 @@ export const useFinancing = () => {
             break;
           case 'OFFERS_EXPIRED':
           case 'NO_OFFERS_EXTENDED':
-            setButtonText('');
+            handleButtonText('');
             break;
           case 'SERVICING':
-            setButtonText(t(i18n)`Financing menu`);
+            handleButtonText(t(i18n)`Financing menu`);
             if (
               finance?.business_status === 'ONBOARDED' &&
               finance?.offers?.[0]?.status === 'NEW'
@@ -215,7 +141,7 @@ export const useFinancing = () => {
             break;
           case 'VIEW_OFFERS':
           case 'OFFER_ACCEPTED':
-            setButtonText(t(i18n)`View terms and sign`);
+            handleButtonText(t(i18n)`View terms and sign`);
             break;
           default:
             break;
@@ -223,10 +149,6 @@ export const useFinancing = () => {
         api.financingOffers.getFinancingOffers.invalidateQueries(queryClient);
       },
     });
-  };
-
-  const stopFinanceSession = () => {
-    window?.KANMON_CONNECT?.stop();
   };
 
   useEffect(() => {
@@ -239,6 +161,7 @@ export const useFinancing = () => {
         const response = await getConnectToken.mutateAsync();
 
         initialiseFinanceSdk({ connectToken: response.connect_token });
+        toggleKanmon(true);
       } catch {
         // Intentionally left empty
       } finally {
@@ -246,11 +169,9 @@ export const useFinancing = () => {
       }
     };
 
-    setupFinanceSdkConnection();
-
-    return () => {
-      stopFinanceSession();
-    };
+    if (!isKanmonInitialized) {
+      setupFinanceSdkConnection();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scriptLoading, isUSEntity]);
 

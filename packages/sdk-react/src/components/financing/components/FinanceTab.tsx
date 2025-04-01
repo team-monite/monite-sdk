@@ -1,4 +1,7 @@
-import { useFinancing, useGetFinanceOffers } from '@/core/queries/useFinancing';
+import {
+  useFinancing,
+  useGetFinanceOffers,
+} from '@/components/financing/hooks';
 import { CircularProgress, Stack } from '@mui/material';
 
 import { FinancedInvoicesTable } from './FinancedInvoicesTable';

@@ -10,8 +10,9 @@ import {
   useFinancing,
   useGetFinancedInvoices,
   useGetFinanceOffers,
-  startFinanceSession,
-} from '@/core/queries/useFinancing';
+} from '@/components/financing/hooks';
+import { useKanmonContext } from '@/core/context/KanmonContext';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, Tooltip, Typography } from '@mui/material';
@@ -24,6 +25,8 @@ interface FinanceInvoiceProps {
 
 export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
+  const { startFinanceSession } = useKanmonContext();
   const [isFinancingAnInvoice, setIsFinancingAnInvoice] = useState(false);
   const financeInvoiceMutation = useFinanceAnInvoice();
 
@@ -85,6 +88,9 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
               component: 'SESSION_INVOICE_FLOW_WITH_INVOICE_FILE',
             });
             setIsFinancingAnInvoice(false);
+            api.financingInvoices.getFinancingInvoices.invalidateQueries(
+              queryClient
+            );
           },
         }
       );

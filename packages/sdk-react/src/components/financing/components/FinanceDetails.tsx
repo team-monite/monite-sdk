@@ -2,9 +2,9 @@ import { components } from '@/api';
 import { FinancedInvoiceStatusChip } from '@/components/financing/components';
 import { InvoiceStatusChip } from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { startFinanceSession } from '@/core/queries/useFinancing';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -34,6 +34,7 @@ export const FinanceDetails = ({
 }: Props) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
+  const { startFinanceSession } = useKanmonContext();
   const { formatCurrencyToDisplay } = useCurrencies();
   const theme = useTheme();
   const dateFormat = locale.dateFormat;

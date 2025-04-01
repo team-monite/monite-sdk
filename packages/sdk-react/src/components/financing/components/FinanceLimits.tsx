@@ -6,8 +6,8 @@ import {
   FinanceBannerPlaceholder,
   FinanceHowItWorks,
 } from '@/components/financing/components';
+import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useCurrencies } from '@/core/hooks';
-import { startFinanceSession } from '@/core/queries/useFinancing';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, Stack, Button } from '@mui/material';
@@ -18,6 +18,7 @@ export const FinanceLimits = ({
   offers?: components['schemas']['FinancingOffer'][];
 }) => {
   const { i18n } = useLingui();
+  const { startFinanceSession } = useKanmonContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { formatCurrencyToDisplay } = useCurrencies();
   const totalLimit = offers?.[0]?.total_amount ?? 0;

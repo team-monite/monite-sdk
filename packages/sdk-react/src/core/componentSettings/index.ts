@@ -1,10 +1,10 @@
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
+import { FINANCING_LABEL } from '@/components/financing/consts';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
-import { FINANCING_LABEL } from '@/core/queries/useFinancing';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';

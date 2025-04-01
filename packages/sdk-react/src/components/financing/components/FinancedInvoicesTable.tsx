@@ -4,11 +4,13 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { Dialog } from '@/components/Dialog';
 import { FinancedInvoiceStatusChip } from '@/components/financing/components';
+import { useGetFinancedInvoices } from '@/components/financing/hooks';
 import { UseInvoiceRowActionMenuCellProps } from '@/components/receivables/hooks';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
 } from '@/components/receivables/types';
+import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -17,10 +19,6 @@ import {
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivableById } from '@/core/queries';
-import {
-  useGetFinancedInvoices,
-  startFinanceSession,
-} from '@/core/queries/useFinancing';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -85,6 +83,7 @@ const FinancedInvoicesTableBase = ({
 }: FinancedInvoicesTableProps) => {
   const { i18n } = useLingui();
   const { locale, componentSettings } = useMoniteContext();
+  const { startFinanceSession } = useKanmonContext();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const [financedInvoice, setFinancedInvoice] = useState<
     components['schemas']['FinancingInvoice'] | null
@@ -243,7 +242,7 @@ const FinancedInvoicesTableBase = ({
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n, dateFormat]);
+  }, [formatCurrencyToDisplay, i18n, dateFormat, startFinanceSession]);
 
   const gridApiRef = useAutosizeGridColumns(
     collectionData,
