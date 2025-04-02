@@ -18,15 +18,15 @@ msgstr ""
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:27
+#: src/components/financing/components/FinanceHowItWorks.tsx:61
 msgid "- the loan sum exceeds your remaining limit."
 msgstr "- the loan sum exceeds your remaining limit."
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:24
+#: src/components/financing/components/FinanceHowItWorks.tsx:58
 msgid "- they are already overdue."
 msgstr "- they are already overdue."
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:23
+#: src/components/financing/components/FinanceHowItWorks.tsx:55
 msgid "- they are due within 7 days."
 msgstr "- they are due within 7 days."
 
@@ -189,7 +189,7 @@ msgstr "A counterpart with this name exists but has not been specified in the do
 msgid "A fully paid invoice can be updated to contain the amount paid and the amount due sum"
 msgstr "A fully paid invoice can be updated to contain the amount paid and the amount due sum"
 
-#: src/components/financing/components/FinanceBanner.tsx:215
+#: src/components/financing/components/FinanceBanner.tsx:219
 msgid "A provider can't offer you financing"
 msgstr "A provider can't offer you financing"
 
@@ -209,7 +209,7 @@ msgstr "Accept Service Agreement"
 msgid "Accepted"
 msgstr "Accepted"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:35
+#: src/components/financing/components/FinanceHowItWorks.tsx:80
 msgid "Access funding through the invoice list, within the invoice details, or the 'My Financing' tab. If approved, you will receive the invoice amount instantly, minus the fee associated with the payment offer chosen."
 msgstr "Access funding through the invoice list, within the invoice details, or the 'My Financing' tab. If approved, you will receive the invoice amount instantly, minus the fee associated with the payment offer chosen."
 
@@ -670,7 +670,7 @@ msgstr "Applied policy"
 msgid "Apply for a monthly plan loans to manage your business more efficiently"
 msgstr "Apply for a monthly plan loans to manage your business more efficiently"
 
-#: src/components/financing/components/FinanceBanner.tsx:343
+#: src/components/financing/components/FinanceBanner.tsx:348
 #: src/components/financing/hooks/useFinancing.ts:108
 msgid "Apply for financing"
 msgstr "Apply for financing"
@@ -1581,7 +1581,7 @@ msgstr "Civic, Social, Fraternal Associations"
 msgid "Cleaning and Maintenance"
 msgstr "Cleaning and Maintenance"
 
-#: src/components/financing/components/FinanceBanner.tsx:321
+#: src/components/financing/components/FinanceBanner.tsx:326
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:36
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:206
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:74
@@ -2008,8 +2008,12 @@ msgid "Create a reminder preset"
 msgstr "Create a reminder preset"
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:13
-msgid "Create an invoice"
-msgstr "Create an invoice"
+#~ msgid "Create an invoice"
+#~ msgstr "Create an invoice"
+
+#: src/components/financing/components/FinanceHowItWorks.tsx:38
+msgid "Create an invoice:"
+msgstr "Create an invoice:"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:435
 msgid "Create an item with this currency to add it"
@@ -2706,7 +2710,7 @@ msgstr "Due Date"
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
-#: src/components/financing/components/FinanceBanner.tsx:416
+#: src/components/financing/components/FinanceBanner.tsx:421
 #: src/components/financing/components/FinanceLimits.tsx:42
 msgid "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
 msgstr "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
@@ -3268,7 +3272,7 @@ msgstr "Financed Invoices"
 msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
-#: src/components/financing/components/FinanceBanner.tsx:376
+#: src/components/financing/components/FinanceBanner.tsx:381
 msgid "financial plans enabled"
 msgstr "financial plans enabled"
 
@@ -3280,12 +3284,12 @@ msgstr "Financing"
 msgid "Financing date"
 msgstr "Financing date"
 
-#: src/components/financing/components/FinanceBanner.tsx:412
+#: src/components/financing/components/FinanceBanner.tsx:417
 #: src/components/financing/components/FinanceLimits.tsx:34
 msgid "Financing is blocked due to a violation of the agreed-upon terms. Please, contact the provider for further details."
 msgstr "Financing is blocked due to a violation of the agreed-upon terms. Please, contact the provider for further details."
 
-#: src/components/financing/components/FinanceBanner.tsx:408
+#: src/components/financing/components/FinanceBanner.tsx:413
 #: src/components/financing/components/FinanceLimits.tsx:38
 msgid "Financing is not available for your business anymore. Please, contact the provider for further details."
 msgstr "Financing is not available for your business anymore. Please, contact the provider for further details."
@@ -3443,7 +3447,7 @@ msgstr "Fulfillment date"
 msgid "Full name"
 msgstr "Full name"
 
-#: src/components/financing/components/FinanceBanner.tsx:166
+#: src/components/financing/components/FinanceBanner.tsx:170
 msgid "Fund your sales/purchases"
 msgstr "Fund your sales/purchases"
 
@@ -3503,7 +3507,7 @@ msgstr "Georgian Lari"
 msgid "Germany"
 msgstr "Germany"
 
-#: src/components/financing/components/FinanceBanner.tsx:170
+#: src/components/financing/components/FinanceBanner.tsx:174
 msgid "Get a small business loan plan to manage finances more efficiently."
 msgstr "Get a small business loan plan to manage finances more efficiently."
 
@@ -3702,7 +3706,7 @@ msgstr ""
 "Kind Regards,\n"
 "{1}"
 
-#: src/components/financing/components/FinanceBanner.tsx:321
+#: src/components/financing/components/FinanceBanner.tsx:326
 msgid "Hide"
 msgstr "Hide"
 
@@ -3759,7 +3763,7 @@ msgstr "Hotels, Motels, and Resorts"
 msgid "Household Appliance Stores"
 msgstr "Household Appliance Stores"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:52
+#: src/components/financing/components/FinanceHowItWorks.tsx:12
 msgid "How does invoice financing work?"
 msgstr "How does invoice financing work?"
 
@@ -3821,7 +3825,7 @@ msgstr "If the error recurs, contact support."
 msgid "If this error recurs, contact your admin."
 msgstr "If this error recurs, contact your admin."
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:14
+#: src/components/financing/components/FinanceHowItWorks.tsx:41
 msgid "If you applied for accounts receivable financing, issue an invoice and deliver it to your customer via email or any other channel."
 msgstr "If you applied for accounts receivable financing, issue an invoice and deliver it to your customer via email or any other channel."
 
@@ -4029,7 +4033,7 @@ msgstr "Invoice will be issued with items in the selected currency"
 msgid "Invoices"
 msgstr "Invoices"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:21
+#: src/components/financing/components/FinanceHowItWorks.tsx:53
 msgid "Invoices cannot be financed if"
 msgstr "Invoices cannot be financed if"
 
@@ -4124,7 +4128,7 @@ msgstr "Issued documents"
 msgid "Issued on"
 msgstr "Issued on"
 
-#: src/components/financing/components/FinanceBanner.tsx:193
+#: src/components/financing/components/FinanceBanner.tsx:197
 msgid "It can take up to 48 hours. We'll notify you about the results."
 msgstr "It can take up to 48 hours. We'll notify you about the results."
 
@@ -4821,7 +4825,7 @@ msgstr "Mozambique"
 msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 
-#: src/components/financing/components/FinanceBanner.tsx:240
+#: src/components/financing/components/FinanceBanner.tsx:244
 #: src/components/financing/components/FinanceLimits.tsx:61
 msgid "My financing"
 msgstr "My financing"
@@ -5153,7 +5157,7 @@ msgstr "Norwegian Krone"
 msgid "NOT allowed"
 msgstr "NOT allowed"
 
-#: src/components/financing/components/FinanceBanner.tsx:382
+#: src/components/financing/components/FinanceBanner.tsx:387
 #: src/components/financing/components/FinanceLimits.tsx:93
 msgid "Not available"
 msgstr "Not available"
@@ -5238,7 +5242,7 @@ msgstr "Optometrists, Ophthalmologist"
 msgid "Or add bill manually"
 msgstr "Or add bill manually"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:17
+#: src/components/financing/components/FinanceHowItWorks.tsx:47
 msgid "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 msgstr "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 
@@ -5415,8 +5419,12 @@ msgid "Pay out now"
 msgstr "Pay out now"
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:41
-msgid "Pay out the financed sum"
-msgstr "Pay out the financed sum"
+#~ msgid "Pay out the financed sum"
+#~ msgstr "Pay out the financed sum"
+
+#: src/components/financing/components/FinanceHowItWorks.tsx:97
+msgid "Pay out the financed sum:"
+msgstr "Pay out the financed sum:"
 
 #: src/components/payables/PayablesTable/PayablesTable.tsx:565
 #: src/components/userRoles/consts.ts:38
@@ -5707,7 +5715,7 @@ msgstr ""
 "Kind Regards,\n"
 "{0}"
 
-#: src/components/financing/components/FinanceBanner.tsx:232
+#: src/components/financing/components/FinanceBanner.tsx:236
 msgid "Please get in touch with the provider if you still wish to receive financing."
 msgstr "Please get in touch with the provider if you still wish to receive financing."
 
@@ -5777,7 +5785,7 @@ msgstr ""
 msgid "Please, check the list of products and services that will get deleted:"
 msgstr "Please, check the list of products and services that will get deleted:"
 
-#: src/components/financing/components/FinanceBanner.tsx:206
+#: src/components/financing/components/FinanceBanner.tsx:210
 msgid "Please, review the offered credit limit and approved financing plans."
 msgstr "Please, review the offered credit limit and approved financing plans."
 
@@ -6039,7 +6047,7 @@ msgstr "Railroads"
 msgid "Read more"
 msgstr "Read more"
 
-#: src/components/financing/components/FinanceBanner.tsx:180
+#: src/components/financing/components/FinanceBanner.tsx:184
 msgid "Read more >"
 msgstr "Read more >"
 
@@ -6178,7 +6186,7 @@ msgstr "Religious Organizations"
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/financing/components/FinanceBanner.tsx:353
+#: src/components/financing/components/FinanceBanner.tsx:358
 #: src/components/financing/components/FinanceLimits.tsx:76
 msgid "Remaining limit"
 msgstr "Remaining limit"
@@ -6521,8 +6529,12 @@ msgstr "Security number"
 #~ msgstr "See all"
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:34
-msgid "Select 'Get Paid Now'"
-msgstr "Select 'Get Paid Now'"
+#~ msgid "Select 'Get Paid Now'"
+#~ msgstr "Select 'Get Paid Now'"
+
+#: src/components/financing/components/FinanceHowItWorks.tsx:77
+msgid "Select 'Get Paid Now':"
+msgstr "Select 'Get Paid Now':"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:200
 msgid "Select customer"
@@ -7150,7 +7162,7 @@ msgstr "The first invoice is to be issued on the nearest date that matches the s
 msgid "The following fields are required:"
 msgstr "The following fields are required:"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:42
+#: src/components/financing/components/FinanceHowItWorks.tsx:100
 msgid "The full sum will be withdrawn from your bank account automatically on the date specified in the selected offer. You can also pay out the sum earlier via the 'Pay out' button."
 msgstr "The full sum will be withdrawn from your bank account automatically on the date specified in the selected offer. You can also pay out the sum earlier via the 'Pay out' button."
 
@@ -7245,7 +7257,7 @@ msgstr "There was an error loading {0}."
 msgid "There was an issue reading the file."
 msgstr "There was an issue reading the file."
 
-#: src/components/financing/components/FinanceBanner.tsx:219
+#: src/components/financing/components/FinanceBanner.tsx:223
 msgid "They will contact you if your credit score improves and you can reapply."
 msgstr "They will contact you if your credit score improves and you can reapply."
 
@@ -8040,7 +8052,7 @@ msgstr "View"
 msgid "View all"
 msgstr "View all"
 
-#: src/components/financing/components/FinanceBanner.tsx:311
+#: src/components/financing/components/FinanceBanner.tsx:316
 msgid "View details"
 msgstr "View details"
 
@@ -8263,7 +8275,7 @@ msgstr "You don’t have permissions to view this page.<0/>Contact your system a
 msgid "You have unsaved changes"
 msgstr "You have unsaved changes"
 
-#: src/components/financing/components/FinanceBanner.tsx:228
+#: src/components/financing/components/FinanceBanner.tsx:232
 msgid "You haven't accepted the offer and it has expired"
 msgstr "You haven't accepted the offer and it has expired"
 
@@ -8271,11 +8283,11 @@ msgstr "You haven't accepted the offer and it has expired"
 msgid "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."
 msgstr "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."
 
-#: src/components/financing/components/FinanceBanner.tsx:189
+#: src/components/financing/components/FinanceBanner.tsx:193
 msgid "Your application is in review"
 msgstr "Your application is in review"
 
-#: src/components/financing/components/FinanceBanner.tsx:202
+#: src/components/financing/components/FinanceBanner.tsx:206
 msgid "Your application was approved"
 msgstr "Your application was approved"
 

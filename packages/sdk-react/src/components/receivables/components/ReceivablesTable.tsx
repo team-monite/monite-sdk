@@ -213,7 +213,7 @@ const ReceivablesTableBase = ({
                 value={index}
                 {...(isFinanceTabNew &&
                   label == FINANCING_LABEL && {
-                    dir: 'rtl',
+                    iconPosition: 'end',
                     icon: (
                       <Box
                         sx={{
