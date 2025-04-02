@@ -51,6 +51,8 @@ export interface MoniteContextValue
   apiUrl: string;
   theme: Theme;
   componentSettings: ComponentSettings;
+  partnerId?: string;
+  projectId?: string;
   fetchToken: FetchToken;
 }
 
@@ -124,7 +126,7 @@ const ContextProvider = ({
   componentSettings,
   children,
 }: ContextProviderProps) => {
-  const { entityId, apiUrl, fetchToken } = monite;
+  const { entityId, apiUrl, partnerId, projectId, fetchToken } = monite;
   let environment: 'dev' | 'sandbox' | 'production';
 
   if (apiUrl) {
@@ -172,8 +174,12 @@ const ContextProvider = ({
   return (
     <MoniteContext.Provider
       value={{
+        api,
+        version,
         environment,
         entityId,
+        partnerId,
+        projectId,
         theme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,
@@ -183,8 +189,6 @@ const ContextProvider = ({
         dateFnsLocale,
         apiUrl: apiUrl || 'https://api.sandbox.monite.com/v1',
         fetchToken,
-        api,
-        version,
         requestFn,
       }}
     >

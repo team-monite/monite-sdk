@@ -19,6 +19,8 @@ import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
 export interface MoniteSettings {
   entityId: string;
   apiUrl?: string;
+  partnerId?: string;
+  projectId?: string;
   fetchToken: () => Promise<components['schemas']['AccessTokenResponse']>;
 }
 

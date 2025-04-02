@@ -56,6 +56,16 @@ interface MoniteAppElementConfig {
   componentSettings?: ComponentProps<
     typeof MoniteProvider
   >['componentSettings'];
+
+  /**
+   * Optional Partner ID (Client ID).
+   */
+  partnerId?: string;
+
+  /**
+   * Optional Project ID.
+   */
+  projectId?: string;
 }
 
 class MoniteDropin {
