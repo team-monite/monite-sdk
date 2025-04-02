@@ -1,98 +1,66 @@
+import { useOnboardingPaymentTheme } from '@/core/queries/useOnboardingPaymentTheme';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Link,
-  styled,
+  CircularProgress,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 
 import { MoniteLogo, OnboardingContainer } from '../../components';
-
-const StyledFooter = styled(Box)`
-  padding: ${({ theme }) => theme.spacing(2)};
-
-  ${({ theme }) => theme.breakpoints.up('lg')} {
-    padding: ${({ theme }) => theme.spacing(4)};
-    position: absolute;
-    bottom: 0;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.palette.text.secondary};
-  font-size: 14px;
-  line-height: 20px;
-`;
-
-const StyledText = styled(Box)`
-  color: ${({ theme }) => theme.palette.text.secondary};
-  font-size: 14px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-`;
-
-const StyledList = styled('ul')`
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-
-  ${({ theme }) => theme.breakpoints.up('sm')} {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  ${({ theme }) => theme.breakpoints.up('lg')} {
-    flex-direction: column;
-  }
-`;
-
-const StyledFooterWrapper = styled('div')`
-  margin-top: auto;
-`;
+import {
+  StyledFooter,
+  StyledLink,
+  StyledText,
+  StyledList,
+  StyledFooterWrapper,
+} from './OnboardingFooter.styled';
 
 function OnboardingFooterContent() {
   const { i18n } = useLingui();
+  const { data: themeData, isLoading } = useOnboardingPaymentTheme();
+
+  const customLogoUrl = themeData?.footer?.logo_url;
+  const customWebsiteUrl = themeData?.footer?.website_url;
+
+  if (isLoading) {
+    return (
+      <StyledFooter>
+        <CircularProgress size="1rem" />
+      </StyledFooter>
+    );
+  }
+
   return (
     <StyledFooter>
       <StyledList>
         <li>
-          <StyledLink
-            underline="hover"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://monite.com/terms/"
-          >
-            <Typography variant="body2">{t(i18n)`Terms`}</Typography>
-          </StyledLink>
-        </li>
-        <li>
-          <StyledLink
-            underline="hover"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://monite.com/data-privacy/"
-          >
-            <Typography variant="body2">{t(i18n)`Privacy`}</Typography>
-          </StyledLink>
-        </li>
-        <li>
           <StyledText>
             <Typography variant="body2">{t(i18n)`Powered by`}</Typography>
-            <StyledLink
-              href="https://monite.com/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <MoniteLogo />
-            </StyledLink>
+            {customLogoUrl && customWebsiteUrl ? (
+              <StyledLink
+                href={customWebsiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Box
+                  component="img"
+                  src={customLogoUrl}
+                  alt={customWebsiteUrl}
+                  sx={{ width: 'auto', height: '1rem' }}
+                />
+              </StyledLink>
+            ) : (
+              <StyledLink
+                href="https://monite.com/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <MoniteLogo />
+              </StyledLink>
+            )}
           </StyledText>
         </li>
       </StyledList>
