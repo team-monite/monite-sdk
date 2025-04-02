@@ -1,5 +1,29 @@
 import { useEffect, useRef } from 'react';
 
+import {
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+} from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import {
+  Worker,
+  Viewer,
+  ScrollMode,
+  ViewMode,
+  SpecialZoomLevel,
+} from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import {
+  pageNavigationPlugin,
+  RenderCurrentPageLabelProps,
+  RenderGoToPageProps,
+} from '@react-pdf-viewer/page-navigation';
+import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
+import { RenderCurrentScaleProps, zoomPlugin } from '@react-pdf-viewer/zoom';
+import '@react-pdf-viewer/zoom/lib/styles/index.css';
+
 import { embed } from 'pdfobject';
 
 export const SUPPORTED_MIME_TYPES = [
@@ -53,28 +77,56 @@ const PdfFileViewer = ({
   showToolbar?: number;
 }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!pdfRef.current) return;
-
-    embed(url, pdfRef.current, {
-      fallbackLink: true,
-      pdfOpenParams: {
-        scrollBar: 0,
-        statusBar: 0,
-        toolbar: showToolbar ?? 1,
-        navpanes: 0,
-        pagemode: 'none',
-        messages: 0,
-      },
-    });
-  }, [url, showToolbar]);
+  const pageNavigationPluginInstance = pageNavigationPlugin();
+  const zoomPluginInstance = zoomPlugin();
 
   return (
     <div
       className="Monite-PdfFileViewer"
       ref={pdfRef}
-      style={{ width: '100%', minHeight: '100%', border: 'none', height }}
-    />
+      style={{
+        width: '100%',
+        height: '100%',
+        maxHeight: '100%',
+        border: 'none',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          margin: '0 8px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <zoomPluginInstance.ZoomOut />
+          <zoomPluginInstance.ZoomPopover />
+          <zoomPluginInstance.ZoomIn />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <pageNavigationPluginInstance.GoToPreviousPage />
+
+          <pageNavigationPluginInstance.CurrentPageLabel>
+            {(props: RenderCurrentPageLabelProps) => (
+              <span style={{ fontSize: '0.75rem', margin: '0 4px' }}>{`${
+                props.currentPage + 1
+              } of ${props.numberOfPages}`}</span>
+            )}
+          </pageNavigationPluginInstance.CurrentPageLabel>
+          <pageNavigationPluginInstance.GoToNextPage />
+        </div>
+      </div>
+      <div style={{ height: '100%' }}>
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+          <Viewer
+            fileUrl={url}
+            scrollMode={ScrollMode.Page}
+            plugins={[pageNavigationPluginInstance, zoomPluginInstance]}
+            defaultScale={SpecialZoomLevel.PageWidth}
+          />
+        </Worker>
+      </div>
+    </div>
   );
 };
