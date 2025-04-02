@@ -4,7 +4,10 @@ import {
   FinanceBannerPlaceholder,
   FinanceFaqWrapper,
 } from '@/components/financing/components';
-import { ApplicationState, useFinancing } from '@/components/financing/hooks';
+import {
+  FinancialApplicationState,
+  useFinancing,
+} from '@/components/financing/hooks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useCurrencies } from '@/core/hooks';
 import { useTheme } from '@emotion/react';
@@ -60,13 +63,14 @@ export const FinanceBanner = ({
     const sessionStorageBannerState: StorageBannerState = JSON.parse(
       JSON.parse(JSON.stringify(sessionStorage.getItem(LOCAL_STORAGE_KEY)))
     );
-    const localStorageBannerState: StorageBannerState = JSON.parse(
-      JSON.parse(JSON.stringify(localStorage.getItem(LOCAL_STORAGE_KEY)))
-    );
 
     if (sessionStorageBannerState) {
       return sessionStorageBannerState.isHidden;
     }
+
+    const localStorageBannerState: StorageBannerState = JSON.parse(
+      JSON.parse(JSON.stringify(localStorage.getItem(LOCAL_STORAGE_KEY)))
+    );
 
     if (localStorageBannerState) {
       if (!localStorageBannerState.expires_at) {
@@ -88,17 +92,17 @@ export const FinanceBanner = ({
 
   const shouldApplyFinanceStyles = enableServicingBanner && isServicing;
   const isCustomBanner =
-    applicationState !== ApplicationState.PENDING_APPROVAL &&
-    applicationState !== ApplicationState.NO_OFFERS_AVAILABLE;
+    applicationState !== FinancialApplicationState.PENDING_APPROVAL &&
+    applicationState !== FinancialApplicationState.NO_OFFERS_AVAILABLE;
 
   const handleHide = () => {
     setIsHidden(true);
 
     switch (applicationState) {
-      case ApplicationState.IN_PROGRESS:
-      case ApplicationState.APPROVED:
-      case ApplicationState.PENDING_APPROVAL:
-      case ApplicationState.OFFER_ACCEPTED:
+      case FinancialApplicationState.IN_PROGRESS:
+      case FinancialApplicationState.APPROVED:
+      case FinancialApplicationState.PENDING_APPROVAL:
+      case FinancialApplicationState.OFFER_ACCEPTED:
         sessionStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({
@@ -107,7 +111,7 @@ export const FinanceBanner = ({
           })
         );
         return;
-      case ApplicationState.INIT:
+      case FinancialApplicationState.INIT:
         localStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({
@@ -116,8 +120,8 @@ export const FinanceBanner = ({
           })
         );
         return;
-      case ApplicationState.NO_OFFERS_AVAILABLE:
-      case ApplicationState.OFFERS_EXPIRED:
+      case FinancialApplicationState.NO_OFFERS_AVAILABLE:
+      case FinancialApplicationState.OFFERS_EXPIRED:
       default:
         localStorage.setItem(
           LOCAL_STORAGE_KEY,
@@ -132,21 +136,21 @@ export const FinanceBanner = ({
 
   const handleBannerIcon = () => {
     switch (applicationState) {
-      case ApplicationState.INIT:
-      case ApplicationState.IN_PROGRESS:
-      case ApplicationState.APPROVED:
+      case FinancialApplicationState.INIT:
+      case FinancialApplicationState.IN_PROGRESS:
+      case FinancialApplicationState.APPROVED:
       default:
         return {
           wrapper: lighten(theme.palette.primary.main, 0.6),
           icon: '#FFF',
         };
-      case ApplicationState.PENDING_APPROVAL:
+      case FinancialApplicationState.PENDING_APPROVAL:
         return {
           wrapper: '#F4F4FE',
           icon: theme.palette.primary.main,
         };
-      case ApplicationState.NO_OFFERS_AVAILABLE:
-      case ApplicationState.OFFERS_EXPIRED:
+      case FinancialApplicationState.NO_OFFERS_AVAILABLE:
+      case FinancialApplicationState.OFFERS_EXPIRED:
         return {
           wrapper: 'rgba(255,71,93,0.4)',
           icon: '#FFF',
@@ -158,8 +162,8 @@ export const FinanceBanner = ({
 
   const handleBannerTextContent = () => {
     switch (applicationState) {
-      case ApplicationState.INIT:
-      case ApplicationState.IN_PROGRESS:
+      case FinancialApplicationState.INIT:
+      case FinancialApplicationState.IN_PROGRESS:
       default:
         return (
           <>
@@ -183,7 +187,7 @@ export const FinanceBanner = ({
             </Typography>
           </>
         );
-      case ApplicationState.PENDING_APPROVAL:
+      case FinancialApplicationState.PENDING_APPROVAL:
         return (
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
@@ -196,7 +200,7 @@ export const FinanceBanner = ({
             </Typography>
           </>
         );
-      case ApplicationState.APPROVED:
+      case FinancialApplicationState.APPROVED:
         return (
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
@@ -209,7 +213,7 @@ export const FinanceBanner = ({
             </Typography>
           </>
         );
-      case ApplicationState.NO_OFFERS_AVAILABLE:
+      case FinancialApplicationState.NO_OFFERS_AVAILABLE:
         return (
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
@@ -222,7 +226,7 @@ export const FinanceBanner = ({
             </Typography>
           </>
         );
-      case ApplicationState.OFFERS_EXPIRED:
+      case FinancialApplicationState.OFFERS_EXPIRED:
         return (
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
@@ -235,7 +239,7 @@ export const FinanceBanner = ({
             </Typography>
           </>
         );
-      case ApplicationState.SERVICING:
+      case FinancialApplicationState.SERVICING:
         return (
           <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
             i18n
@@ -246,7 +250,8 @@ export const FinanceBanner = ({
 
   if (
     isHidden ||
-    (applicationState === ApplicationState.SERVICING && !enableServicingBanner)
+    (applicationState === FinancialApplicationState.SERVICING &&
+      !enableServicingBanner)
   ) {
     return null;
   }

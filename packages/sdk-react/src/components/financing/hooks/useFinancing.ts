@@ -15,7 +15,7 @@ import { useLingui } from '@lingui/react';
 const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
 const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.kanmon.dev/scripts/v2/kanmon-connect.js`;
 
-export enum ApplicationState {
+export enum FinancialApplicationState {
   INIT = 'init',
   IN_PROGRESS = 'in_progress',
   PENDING_APPROVAL = 'pending_approval',
@@ -50,27 +50,27 @@ export const useFinancing = () => {
     switch (finance?.business_status) {
       case 'NEW':
       default:
-        return ApplicationState.INIT;
+        return FinancialApplicationState.INIT;
       case 'INPUT_REQUIRED':
-        return ApplicationState.IN_PROGRESS;
+        return FinancialApplicationState.IN_PROGRESS;
       case 'ONBOARDED':
         if (finance?.offers?.length === 0) {
-          return ApplicationState.PENDING_APPROVAL;
+          return FinancialApplicationState.PENDING_APPROVAL;
         }
 
         if (finance?.offers?.[0]?.status === 'NEW') {
-          return ApplicationState.APPROVED;
+          return FinancialApplicationState.APPROVED;
         }
 
         if (finance?.offers?.[0]?.status === 'EXPIRED') {
-          return ApplicationState.OFFERS_EXPIRED;
+          return FinancialApplicationState.OFFERS_EXPIRED;
         }
 
         if (finance?.offers?.[0]?.status === 'ACCEPTED') {
-          return ApplicationState.OFFER_ACCEPTED;
+          return FinancialApplicationState.OFFER_ACCEPTED;
         }
 
-        return ApplicationState.SERVICING;
+        return FinancialApplicationState.SERVICING;
     }
   };
 

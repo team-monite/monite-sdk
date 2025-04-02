@@ -13,15 +13,14 @@ import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 export interface MoniteFinancedInvoiceStatusChipProps {
+  /** Whether to display status icon. */
   icon?: boolean;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
-  /** Display status icon? */
   /** The status of the invoice. */
   status: components['schemas']['WCInvoiceStatus'];
-  /** The variant of the Chip. */
 }
 
 /**
