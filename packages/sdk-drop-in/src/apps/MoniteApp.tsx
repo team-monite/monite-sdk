@@ -20,16 +20,20 @@ export const MoniteApp = ({
   rootElements,
   theme,
   componentSettings,
-  fetchToken,
   entityId,
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
+  partnerId,
+  projectId,
+  fetchToken,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
   entityId?: string;
   apiUrl?: string;
   component: WidgetType;
+  partnerId?: string;
+  projectId?: string;
   fetchToken?: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
@@ -61,8 +65,10 @@ export const MoniteApp = ({
         componentSettings={componentSettings}
         sdkConfig={{
           entityId,
-          fetchToken,
           apiUrl,
+          partnerId,
+          projectId,
+          fetchToken,
         }}
       >
         <Global

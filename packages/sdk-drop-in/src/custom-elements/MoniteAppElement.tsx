@@ -29,7 +29,14 @@ export class MoniteAppElement extends MoniteAppElementBase<
    * @readonly
    */
   static readonly attributesSchema: Record<
-    'disabled' | 'router' | 'basename' | 'component' | 'entity-id' | 'api-url',
+    | 'disabled'
+    | 'router'
+    | 'basename'
+    | 'component'
+    | 'entity-id'
+    | 'api-url'
+    | 'partner-id'
+    | 'project-id',
     AttributeConfig
   > = {
     disabled: {
@@ -48,6 +55,12 @@ export class MoniteAppElement extends MoniteAppElementBase<
       type: 'string',
     },
     'api-url': {
+      type: 'string',
+    },
+    'partner-id': {
+      type: 'string',
+    },
+    'project-id': {
       type: 'string',
     },
   };
