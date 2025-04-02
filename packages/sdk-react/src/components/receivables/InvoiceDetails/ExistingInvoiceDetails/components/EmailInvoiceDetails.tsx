@@ -49,9 +49,8 @@ import { isInvoiceIssued } from './helpers/invoiceStatus';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
-  isFirstInvoice?: boolean;
   onClose: () => void;
-  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
+  onSendEmail?: (invoiceId: string) => void;
 }
 
 interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
@@ -125,7 +124,6 @@ export const EmailInvoiceDetailsBase = ({
   to,
   isLoading,
   isIssued,
-  isFirstInvoice,
   onClose,
   onSendEmail,
 }: EmailInvoiceFormProps) => {
@@ -228,7 +226,7 @@ export const EmailInvoiceDetailsBase = ({
          */
         sendEmail(emailParams, {
           onSuccess: () => {
-            onSendEmail?.(invoiceId, Boolean(isFirstInvoice));
+            onSendEmail?.(invoiceId);
             onClose();
           },
         });
@@ -245,7 +243,6 @@ export const EmailInvoiceDetailsBase = ({
       onSendEmail,
       paymentMethods,
       sendMutation.mutate,
-      isFirstInvoice,
     ]
   );
 
