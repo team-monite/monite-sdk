@@ -5812,7 +5812,7 @@ msgstr "Postal code"
 msgid "Postal Services - Government Only"
 msgstr "Postal Services - Government Only"
 
-#: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:88
+#: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:41
 msgid "Powered by"
 msgstr "Powered by"
 
@@ -5859,8 +5859,8 @@ msgid "Price per unit"
 msgstr "Price per unit"
 
 #: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:83
-msgid "Privacy"
-msgstr "Privacy"
+#~ msgid "Privacy"
+#~ msgstr "Privacy"
 
 #: src/components/payables/PayablesTable/PayablesTable.tsx:247
 msgid "Processing file"
@@ -7082,8 +7082,8 @@ msgid "Tent and Awning Shops"
 msgstr "Tent and Awning Shops"
 
 #: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:73
-msgid "Terms"
-msgstr "Terms"
+#~ msgid "Terms"
+#~ msgstr "Terms"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:115
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
