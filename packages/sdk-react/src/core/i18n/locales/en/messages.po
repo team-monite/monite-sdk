@@ -874,7 +874,7 @@ msgstr "Azerbaijani Manat"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:424
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:421
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:48
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:276
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:273
 msgid "Back"
 msgstr "Back"
 
@@ -903,7 +903,7 @@ msgstr "Back of your identify document"
 msgid "Back of your identity document"
 msgstr "Back of your identity document"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:289
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:286
 msgid "Back to edit"
 msgstr "Back to edit"
 
@@ -1355,7 +1355,7 @@ msgstr "Cancel bill?"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:323
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:321
 msgid "Cancel Invoice"
 msgstr "Cancel Invoice"
 
@@ -1368,7 +1368,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:150
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:382
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:380
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1668,8 +1668,8 @@ msgid "Completed"
 msgstr "Completed"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:152
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:277
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:362
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:274
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:360
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -2027,7 +2027,7 @@ msgstr "Create invoice"
 #: src/components/receivables/Receivables.test.tsx:34
 #: src/components/receivables/Receivables.test.tsx:75
 #: src/components/receivables/Receivables.test.tsx:112
-#: src/components/receivables/Receivables.tsx:144
+#: src/components/receivables/Receivables.tsx:142
 msgid "Create Invoice"
 msgstr "Create Invoice"
 
@@ -2318,7 +2318,7 @@ msgstr "Defaulted"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:82
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:282
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:280
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:279
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2598,7 +2598,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:340
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:338
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2790,7 +2790,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:293
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:291
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -3105,7 +3105,7 @@ msgstr "Failed to delete Unit."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:420
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:417
 msgid "Failed to generate email preview"
 msgstr "Failed to generate email preview"
 
@@ -3611,7 +3611,7 @@ msgstr "Heating, Plumbing, A/C"
 msgid "here."
 msgstr "here."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:84
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:83
 msgid ""
 "Hi {0},\n"
 "Please find the invoice attached as discussed.\n"
@@ -3722,7 +3722,7 @@ msgstr "Icelandic Króna"
 msgid "If amount is"
 msgstr "If amount is"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:427
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:424
 msgid "If the error recurs, contact support, please."
 msgstr "If the error recurs, contact support, please."
 
@@ -3860,11 +3860,11 @@ msgstr "Invoice"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:98
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:97
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:261
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:259
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -3889,7 +3889,7 @@ msgstr "Invoice delete confirmation"
 msgid "Invoice financing"
 msgstr "Invoice financing"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:99
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:98
 msgid "Invoice from {entityName}"
 msgstr "Invoice from {entityName}"
 
@@ -3965,7 +3965,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:370
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:368
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:284
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:289
 msgid "Issue"
@@ -3980,7 +3980,7 @@ msgstr "Issue"
 msgid "Issue and send"
 msgstr "Issue and send"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:326
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:323
 msgid "Issue and Send"
 msgstr "Issue and Send"
 
@@ -4665,7 +4665,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:304
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:302
 msgid "More"
 msgstr "More"
 
@@ -4875,7 +4875,7 @@ msgstr "No {entityName}"
 msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:192
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:190
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
@@ -5565,7 +5565,7 @@ msgstr "Please enter a valid phone number."
 msgid "Please enter your IBAN number."
 msgstr "Please enter your IBAN number."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:90
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:89
 msgid ""
 "Please find the invoice attached as discussed.\n"
 "Kind Regards,\n"
@@ -5609,7 +5609,7 @@ msgstr "Please review the terms and conditions and accept them to continue."
 msgid "Please try again later."
 msgstr "Please try again later."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:424
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:421
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:70
 msgid "Please try to reload."
 msgstr "Please try to reload."
@@ -5710,7 +5710,7 @@ msgstr "Preset name"
 msgid "Preset Name"
 msgstr "Preset Name"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:316
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:313
 msgid "Preview email"
 msgstr "Preview email"
 
@@ -5941,7 +5941,7 @@ msgid "Reconciliation"
 msgstr "Reconciliation"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:349
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:347
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -5991,7 +5991,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:249
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:247
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
@@ -6032,7 +6032,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:436
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:433
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
 #: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:96
 msgid "Reload"
@@ -6251,7 +6251,7 @@ msgstr "Saint Pierre And Miquelon"
 msgid "Saint Vincent And Grenadines"
 msgstr "Saint Vincent And Grenadines"
 
-#: src/components/receivables/Receivables.tsx:129
+#: src/components/receivables/Receivables.tsx:127
 msgid "Sales"
 msgstr "Sales"
 
@@ -6387,7 +6387,7 @@ msgstr "Select invoices you would like to finance and send them for review."
 msgid "Select someone"
 msgstr "Select someone"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:326
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:323
 msgid "Send"
 msgstr "Send"
 
@@ -6400,7 +6400,7 @@ msgstr "Send"
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:312
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:310
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -8077,7 +8077,7 @@ msgstr "You don’t have any roles yet."
 msgid "You don’t have any tags yet."
 msgstr "You don’t have any tags yet."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:406
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:404
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
