@@ -114,13 +114,13 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
           >
             <MenuItem value={undefined}>{t(i18n)`All customers`}</MenuItem>
 
-            {counterpartsToSelect(counterparts?.data ?? []).map(
-              ({ value, label }) => (
+            {counterpartsToSelect(counterparts?.data ?? [])
+              .sort((a, b) => a.label.localeCompare(b.label))
+              .map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
                   {label}
                 </MenuItem>
-              )
-            )}
+              ))}
           </Select>
         </MuiFormControl>
       )}
