@@ -16,13 +16,9 @@ import { PaymentTabPanel } from './TabPanels/PaymentTabPanel/PaymentTabPanel';
 
 interface OverviewProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
-export const Overview = ({
-  invoice,
-  onWorkingCapitalOnboardingComplete,
-}: OverviewProps) => {
+export const Overview = ({ invoice }: OverviewProps) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<
     'overview' | 'details' | 'recurrence' | 'payments'
@@ -75,9 +71,6 @@ export const Overview = ({
           id={`${tabsBaseId}-overview-tabpanel`}
           aria-labelledby={`${tabsBaseId}-overview-tab`}
           onSetView={setView}
-          onWorkingCapitalOnboardingComplete={
-            onWorkingCapitalOnboardingComplete
-          }
         />
       )}
 

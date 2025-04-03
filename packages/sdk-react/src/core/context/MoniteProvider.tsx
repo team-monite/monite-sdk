@@ -13,6 +13,7 @@ import { ThemeConfig } from '@/core/theme/types';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
+import { KanmonContextProvider } from './KanmonContext';
 import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
 
 export interface MoniteSettings {
@@ -66,7 +67,7 @@ export const MoniteProvider = ({
         </MoniteMuiThemeProvider>
       </EmotionCacheProvider>
       <MoniteAPIProvider APIContext={MoniteQraftContext}>
-        {children}
+        <KanmonContextProvider>{children}</KanmonContextProvider>
       </MoniteAPIProvider>
     </MoniteContextProvider>
   );

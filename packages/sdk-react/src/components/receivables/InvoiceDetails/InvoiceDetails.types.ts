@@ -85,7 +85,6 @@ export interface ExistingReceivableDetailsProps {
    * @returns {void}
    */
   onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 export interface InvoiceDetailsCreateProps {

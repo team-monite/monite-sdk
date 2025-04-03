@@ -4,9 +4,11 @@ import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
+import {
+  ReceivablesTable,
+  ReceivablesTableTabEnum,
+} from '@/components/receivables/components';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
-import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
-import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';

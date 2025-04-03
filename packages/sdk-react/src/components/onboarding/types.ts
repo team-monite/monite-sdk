@@ -119,15 +119,6 @@ export interface OnboardingProps {
     response?: components['schemas']['EntityBankAccountResponse']
   ) => void;
   /**
-   * Called when working capital onboarding is completed.
-   * This happens when the business status transitions to 'ONBOARDED'.
-   *
-   * @param entityId The entity id
-   * @returns {void}
-   */
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
-
-  /**
    * Called when the onboarding process is completed.
    *
    * @returns {void}

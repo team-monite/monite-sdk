@@ -2,13 +2,14 @@ import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
+import { FinanceInvoice } from '@/components/financing';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/components';
 import { InvoiceRecurrence } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence';
 import { InvoiceRecurrenceBasedOn } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceBasedOn';
 import {
   createOverdueReminderCardTerms,
   createPaymentReminderCardTerms,
 } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
-import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import {
@@ -38,13 +39,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { FinanceInvoice } from '../../../Financing/FinanceInvoice/FinanceInvoice';
-
 interface OverviewTabPanelProps
   extends Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'> {
   invoice: components['schemas']['InvoiceResponsePayload'];
   onSetView: (view: 'recurrence') => void;
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 interface TransformCreditNotes {
@@ -56,7 +54,6 @@ interface TransformCreditNotes {
 export const OverviewTabPanel = ({
   invoice,
   onSetView,
-  onWorkingCapitalOnboardingComplete,
   ...restProps
 }: OverviewTabPanelProps) => {
   const { i18n } = useLingui();
@@ -127,10 +124,7 @@ export const OverviewTabPanel = ({
 
   return (
     <>
-      <FinanceInvoice
-        invoice={invoice}
-        onWorkingCapitalOnboardingComplete={onWorkingCapitalOnboardingComplete}
-      />
+      <FinanceInvoice invoice={invoice} />
       <Box
         sx={{
           '& > * + *': {

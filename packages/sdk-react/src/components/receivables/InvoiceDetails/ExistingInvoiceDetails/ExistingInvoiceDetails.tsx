@@ -1,6 +1,10 @@
 import { useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
+import {
+  InvoiceRecurrenceStatusChip,
+  InvoiceStatusChip,
+} from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
@@ -11,8 +15,6 @@ import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDe
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
@@ -416,12 +418,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview
-                invoice={receivable}
-                onWorkingCapitalOnboardingComplete={
-                  props.onWorkingCapitalOnboardingComplete
-                }
-              />
+              <Overview invoice={receivable} />
             </Stack>
           </Grid>
         </Grid>

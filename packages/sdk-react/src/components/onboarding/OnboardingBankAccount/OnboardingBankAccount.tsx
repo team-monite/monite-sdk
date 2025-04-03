@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
-import { useWorkingCapitalOnboarding } from '@/components/receivables/Financing/hooks/useWorkingCapitalOnboarding';
 import {
   CountryOption,
   RHFAutocomplete,
@@ -25,17 +24,13 @@ export interface OnboardingBankAccountProps {
     entityId: string,
     response?: EntityBankAccountResponse
   ) => void;
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
 export const OnboardingBankAccount = ({
   onPaymentOnboardingComplete,
-  onWorkingCapitalOnboardingComplete,
 }: OnboardingBankAccountProps = {}) => {
   const { i18n } = useLingui();
   const { entityId } = useMoniteContext();
-
-  useWorkingCapitalOnboarding(onWorkingCapitalOnboardingComplete);
 
   const {
     isLoading,

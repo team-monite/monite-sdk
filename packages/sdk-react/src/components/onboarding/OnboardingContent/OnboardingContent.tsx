@@ -42,7 +42,6 @@ type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 
 export function OnboardingContent({
   onPaymentOnboardingComplete,
-  onWorkingCapitalOnboardingComplete,
   onComplete,
 }: OnboardingProps = {}) {
   const { i18n } = useLingui();
@@ -61,7 +60,6 @@ export function OnboardingContent({
   const Step = getComponent(currentRequirement, personId);
   const props = getProps(currentRequirement, {
     onPaymentOnboardingComplete,
-    onWorkingCapitalOnboardingComplete,
   });
 
   if (!Step) return null;
@@ -237,8 +235,6 @@ const getProps = (
   if (isBankAccount(requirement)) {
     return {
       onPaymentOnboardingComplete: callbacks.onPaymentOnboardingComplete,
-      onWorkingCapitalOnboardingComplete:
-        callbacks.onWorkingCapitalOnboardingComplete,
     };
   }
 

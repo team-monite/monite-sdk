@@ -11,3 +11,4 @@ export * from './PageHeader';
 export * from './Dialog';
 export * from './integrations';
 export * from './documentDesign';
+export * from './financing';
