@@ -189,7 +189,7 @@ msgstr "A counterpart with this name exists but has not been specified in the do
 msgid "A fully paid invoice can be updated to contain the amount paid and the amount due sum"
 msgstr "A fully paid invoice can be updated to contain the amount paid and the amount due sum"
 
-#: src/components/financing/components/FinanceBanner.tsx:219
+#: src/components/financing/components/FinanceBanner.tsx:224
 msgid "A provider can't offer you financing"
 msgstr "A provider can't offer you financing"
 
@@ -670,7 +670,7 @@ msgstr "Applied policy"
 msgid "Apply for a monthly plan loans to manage your business more efficiently"
 msgstr "Apply for a monthly plan loans to manage your business more efficiently"
 
-#: src/components/financing/components/FinanceBanner.tsx:348
+#: src/components/financing/components/FinanceBanner.tsx:353
 #: src/components/financing/hooks/useFinancing.ts:108
 msgid "Apply for financing"
 msgstr "Apply for financing"
@@ -1581,7 +1581,7 @@ msgstr "Civic, Social, Fraternal Associations"
 msgid "Cleaning and Maintenance"
 msgstr "Cleaning and Maintenance"
 
-#: src/components/financing/components/FinanceBanner.tsx:326
+#: src/components/financing/components/FinanceBanner.tsx:331
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:36
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:206
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:74
@@ -2710,7 +2710,7 @@ msgstr "Due Date"
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
-#: src/components/financing/components/FinanceBanner.tsx:421
+#: src/components/financing/components/FinanceBanner.tsx:426
 #: src/components/financing/components/FinanceLimits.tsx:42
 msgid "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
 msgstr "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
@@ -3272,7 +3272,7 @@ msgstr "Financed Invoices"
 msgid "Financial Institutions"
 msgstr "Financial Institutions"
 
-#: src/components/financing/components/FinanceBanner.tsx:381
+#: src/components/financing/components/FinanceBanner.tsx:386
 msgid "financial plans enabled"
 msgstr "financial plans enabled"
 
@@ -3284,12 +3284,12 @@ msgstr "Financing"
 msgid "Financing date"
 msgstr "Financing date"
 
-#: src/components/financing/components/FinanceBanner.tsx:417
+#: src/components/financing/components/FinanceBanner.tsx:422
 #: src/components/financing/components/FinanceLimits.tsx:34
 msgid "Financing is blocked due to a violation of the agreed-upon terms. Please, contact the provider for further details."
 msgstr "Financing is blocked due to a violation of the agreed-upon terms. Please, contact the provider for further details."
 
-#: src/components/financing/components/FinanceBanner.tsx:413
+#: src/components/financing/components/FinanceBanner.tsx:418
 #: src/components/financing/components/FinanceLimits.tsx:38
 msgid "Financing is not available for your business anymore. Please, contact the provider for further details."
 msgstr "Financing is not available for your business anymore. Please, contact the provider for further details."
@@ -3447,7 +3447,7 @@ msgstr "Fulfillment date"
 msgid "Full name"
 msgstr "Full name"
 
-#: src/components/financing/components/FinanceBanner.tsx:170
+#: src/components/financing/components/FinanceBanner.tsx:175
 msgid "Fund your sales/purchases"
 msgstr "Fund your sales/purchases"
 
@@ -3507,7 +3507,7 @@ msgstr "Georgian Lari"
 msgid "Germany"
 msgstr "Germany"
 
-#: src/components/financing/components/FinanceBanner.tsx:174
+#: src/components/financing/components/FinanceBanner.tsx:179
 msgid "Get a small business loan plan to manage finances more efficiently."
 msgstr "Get a small business loan plan to manage finances more efficiently."
 
@@ -3706,7 +3706,7 @@ msgstr ""
 "Kind Regards,\n"
 "{1}"
 
-#: src/components/financing/components/FinanceBanner.tsx:326
+#: src/components/financing/components/FinanceBanner.tsx:331
 msgid "Hide"
 msgstr "Hide"
 
@@ -4128,7 +4128,7 @@ msgstr "Issued documents"
 msgid "Issued on"
 msgstr "Issued on"
 
-#: src/components/financing/components/FinanceBanner.tsx:197
+#: src/components/financing/components/FinanceBanner.tsx:202
 msgid "It can take up to 48 hours. We'll notify you about the results."
 msgstr "It can take up to 48 hours. We'll notify you about the results."
 
@@ -4825,7 +4825,7 @@ msgstr "Mozambique"
 msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 
-#: src/components/financing/components/FinanceBanner.tsx:244
+#: src/components/financing/components/FinanceBanner.tsx:249
 #: src/components/financing/components/FinanceLimits.tsx:61
 msgid "My financing"
 msgstr "My financing"
@@ -5157,7 +5157,7 @@ msgstr "Norwegian Krone"
 msgid "NOT allowed"
 msgstr "NOT allowed"
 
-#: src/components/financing/components/FinanceBanner.tsx:387
+#: src/components/financing/components/FinanceBanner.tsx:392
 #: src/components/financing/components/FinanceLimits.tsx:93
 msgid "Not available"
 msgstr "Not available"
@@ -5715,7 +5715,7 @@ msgstr ""
 "Kind Regards,\n"
 "{0}"
 
-#: src/components/financing/components/FinanceBanner.tsx:236
+#: src/components/financing/components/FinanceBanner.tsx:241
 msgid "Please get in touch with the provider if you still wish to receive financing."
 msgstr "Please get in touch with the provider if you still wish to receive financing."
 
@@ -5785,7 +5785,7 @@ msgstr ""
 msgid "Please, check the list of products and services that will get deleted:"
 msgstr "Please, check the list of products and services that will get deleted:"
 
-#: src/components/financing/components/FinanceBanner.tsx:210
+#: src/components/financing/components/FinanceBanner.tsx:215
 msgid "Please, review the offered credit limit and approved financing plans."
 msgstr "Please, review the offered credit limit and approved financing plans."
 
@@ -6047,7 +6047,7 @@ msgstr "Railroads"
 msgid "Read more"
 msgstr "Read more"
 
-#: src/components/financing/components/FinanceBanner.tsx:184
+#: src/components/financing/components/FinanceBanner.tsx:189
 msgid "Read more >"
 msgstr "Read more >"
 
@@ -6186,7 +6186,7 @@ msgstr "Religious Organizations"
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/financing/components/FinanceBanner.tsx:358
+#: src/components/financing/components/FinanceBanner.tsx:363
 #: src/components/financing/components/FinanceLimits.tsx:76
 msgid "Remaining limit"
 msgstr "Remaining limit"
@@ -7257,7 +7257,7 @@ msgstr "There was an error loading {0}."
 msgid "There was an issue reading the file."
 msgstr "There was an issue reading the file."
 
-#: src/components/financing/components/FinanceBanner.tsx:223
+#: src/components/financing/components/FinanceBanner.tsx:228
 msgid "They will contact you if your credit score improves and you can reapply."
 msgstr "They will contact you if your credit score improves and you can reapply."
 
@@ -8052,7 +8052,7 @@ msgstr "View"
 msgid "View all"
 msgstr "View all"
 
-#: src/components/financing/components/FinanceBanner.tsx:316
+#: src/components/financing/components/FinanceBanner.tsx:321
 msgid "View details"
 msgstr "View details"
 
@@ -8275,7 +8275,7 @@ msgstr "You don’t have permissions to view this page.<0/>Contact your system a
 msgid "You have unsaved changes"
 msgstr "You have unsaved changes"
 
-#: src/components/financing/components/FinanceBanner.tsx:232
+#: src/components/financing/components/FinanceBanner.tsx:237
 msgid "You haven't accepted the offer and it has expired"
 msgstr "You haven't accepted the offer and it has expired"
 
@@ -8283,11 +8283,11 @@ msgstr "You haven't accepted the offer and it has expired"
 msgid "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."
 msgstr "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."
 
-#: src/components/financing/components/FinanceBanner.tsx:193
+#: src/components/financing/components/FinanceBanner.tsx:198
 msgid "Your application is in review"
 msgstr "Your application is in review"
 
-#: src/components/financing/components/FinanceBanner.tsx:206
+#: src/components/financing/components/FinanceBanner.tsx:211
 msgid "Your application was approved"
 msgstr "Your application was approved"
 
