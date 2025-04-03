@@ -14,6 +14,7 @@ export const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.palette.text.secondary};
   font-size: 14px;
   line-height: 20px;
+  display: flex;
 `;
 
 export const StyledText = styled(Box)`
