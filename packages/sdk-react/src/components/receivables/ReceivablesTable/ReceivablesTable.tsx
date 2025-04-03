@@ -12,6 +12,7 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { FINANCING_LABEL, useFinancing } from '@/core/queries/useFinancing';
+import { Alert, AlertTitle } from '@/ui/components/alert';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -175,6 +176,9 @@ const ReceivablesTableBase = ({
 
   return (
     <>
+      <Alert variant="destructive">
+        <AlertTitle>shadcn/ui test</AlertTitle>
+      </Alert>
       <Box
         className={classNames(
           ScopedCssBaselineContainerClassName,
