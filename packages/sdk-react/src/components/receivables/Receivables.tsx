@@ -44,7 +44,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       onUpdate: componentSettings?.receivables?.onUpdate,
       onDelete: componentSettings?.receivables?.onDelete,
       onCreate: componentSettings?.receivables?.onCreate,
-      onFirstInvoiceSent: componentSettings?.receivables?.onFirstInvoiceSent,
+      onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
     }),
     [componentSettings?.receivables]
   );
@@ -92,10 +92,8 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
   );
 
   const handleSendEmail = useCallback(
-    (invoiceId: string, isFirstInvoice: boolean) => {
-      if (isFirstInvoice) {
-        receivableCallbacks.onFirstInvoiceSent?.(invoiceId);
-      }
+    (invoiceId: string) => {
+      receivableCallbacks.onInvoiceSent?.(invoiceId);
     },
     [receivableCallbacks]
   );

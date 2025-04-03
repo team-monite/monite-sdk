@@ -21,7 +21,7 @@ export enum MoniteEventTypes {
   INVOICE_DELETED = 'invoice.deleted',
   PAYMENTS_ONBOARDING_COMPLETED = 'payments.onboarding.completed',
   WORKING_CAPITAL_ONBOARDING_COMPLETED = 'working_capital.onboarding.completed',
-  FIRST_INVOICE_SENT = 'invoice.first_sent',
+  INVOICE_SENT = 'invoice.sent',
 }
 
 export interface BaseEventPayload {
@@ -112,8 +112,7 @@ export function enhanceReceivablesSettings(
   settings: ComponentSettings['receivables'] &
     Partial<MoniteReceivablesTableProps> = {}
 ): ComponentSettings['receivables'] {
-  const { onCreate, onUpdate, onDelete, onFirstInvoiceSent, ...rest } =
-    settings;
+  const { onCreate, onUpdate, onDelete, onInvoiceSent, ...rest } = settings;
 
   return {
     ...rest,
@@ -132,9 +131,9 @@ export function enhanceReceivablesSettings(
       MoniteEventTypes.INVOICE_DELETED,
       (id) => ({ id })
     ),
-    onFirstInvoiceSent: createEventHandler(
-      onFirstInvoiceSent,
-      MoniteEventTypes.FIRST_INVOICE_SENT,
+    onInvoiceSent: createEventHandler(
+      onInvoiceSent,
+      MoniteEventTypes.INVOICE_SENT,
       (id) => ({ id })
     ),
   } as ComponentSettings['receivables'];

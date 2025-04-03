@@ -33,7 +33,6 @@ const renderEmailInvoiceDetails = (props = {}) => {
           <EmailInvoiceDetails
             invoiceId={mockInvoiceId}
             onClose={jest.fn()}
-            isFirstInvoice={false}
             {...props}
           />
         </Dialog>
