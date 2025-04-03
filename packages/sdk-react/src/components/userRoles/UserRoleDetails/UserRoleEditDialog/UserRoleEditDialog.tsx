@@ -96,8 +96,8 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 interface UserRoleEditDialogProps {
   /** The id of the role to be displayed */
   id?: string;
-  onCreated?: (role: components['schemas']['RoleResponse']) => void;
-  onUpdated?: (role: components['schemas']['RoleResponse']) => void;
+  onCreated: (role: components['schemas']['RoleResponse']) => void;
+  onUpdated: (role: components['schemas']['RoleResponse']) => void;
   onClickDeleteRole: () => void;
 }
 
