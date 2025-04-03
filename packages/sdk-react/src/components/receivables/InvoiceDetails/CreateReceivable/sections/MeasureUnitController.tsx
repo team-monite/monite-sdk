@@ -12,8 +12,8 @@ import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { MenuItem, Select } from '@mui/material';
 
+import { setValueWithValidation } from '../utils';
 import { CreateReceivablesFormBeforeValidationProps } from '../validation';
-import { setValueWithValidation } from './utils';
 
 interface MeasureUnitControllerProps {
   control: Control<CreateReceivablesFormBeforeValidationProps>;
@@ -31,9 +31,9 @@ export const MeasureUnitController = ({
   index,
   fieldError: externalFieldError,
   measureUnits,
+  skipDefaultAssignment = false,
   getValues,
   setValue,
-  skipDefaultAssignment = false,
 }: MeasureUnitControllerProps) => {
   const { root } = useRootElements();
   const name = `line_items.${index}.product.measure_unit_id` as const;
@@ -43,7 +43,6 @@ export const MeasureUnitController = ({
   const currentMeasureUnitId = getValues(name);
   const firstAvailableMeasureUnit = measureUnits?.[0]?.id;
 
-  // Set a default measure unit if none is set and measure units are available
   useEffect(() => {
     if (skipDefaultAssignment) {
       return;
@@ -57,6 +56,10 @@ export const MeasureUnitController = ({
     ) {
       setValue(name, firstAvailableMeasureUnit, { shouldValidate: true });
       setHasSetDefaultMeasureUnit(true);
+      setValue(name, firstAvailableMeasureUnit, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   }, [
     currentMeasureUnitId,

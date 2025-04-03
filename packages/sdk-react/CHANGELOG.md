@@ -1,5 +1,34 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.2
+
+### Patch Changes
+
+- 7b75dbf: Add Document templates to Dropin
+- dab2d74: Fix Payables table payable.amount_paid
+- dfebd5c: Payment terms update validation fixed, dialog close focus hook
+
+## 4.0.0-beta.1
+
+### Minor Changes
+
+- 849f2f0: Edit tags in payables documents regardless of their status
+- 143072a: Default styles refresh across all components
+- 876aaa8: New line items
+- e04a0ba: Improve User Roles management view by simplifying permissions shown and splitting the dialog to edit the User Role into a full-screen dialog
+- 010861f: Added discounts for payables
+- ca42346: Added ability to hide customer type section when creating a counterpart, default is set to ['customer', 'vendor'] through componentSettings and also added a new property called customerTypes to Receivables, Payables and Counterparts components to customize the available customer type options when creating a counterpart
+
+### Patch Changes
+
+- 92425e1: Fix payment term discounts translations
+- 2e43f1d: Updated API schema and update supported currencies
+- fe95cbd: Line items bug fixes and refactoring
+- d068bbf: Added onboarding and sent invoice email events to the SDK and Drop-in component
+- 40cac95: Send invoice button changes its caption based on the invoice status
+- d69ab5a: Issues with formatting vat values, autocomplete item names etc fixed
+- 64d39a2: Issue and send fixed on the preview page
+
 ## 4.0.0-alpha.19
 
 ### Patch Changes

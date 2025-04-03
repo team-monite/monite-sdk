@@ -45,6 +45,5 @@ export const getRateValueForDisplay = (
 export const formatVatRateForDisplay = (rateValue: number): string => {
   return (rateMinorToMajor(rateValue) / 100).toLocaleString(undefined, {
     style: 'percent',
-    minimumFractionDigits: 2,
   });
 };

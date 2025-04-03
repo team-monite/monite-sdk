@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { Dialog } from '@/components';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   DialogTitle,
   DialogContent,
@@ -25,6 +25,8 @@ export const DeletePaymentTerms = ({
   const { deletePaymentTerm } = usePaymentTermsApi({
     onSuccessfullChange: () => closeDialog(true),
   });
+
+  const { i18n } = useLingui();
 
   return (
     <Dialog open={show}>
