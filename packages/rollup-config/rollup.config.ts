@@ -63,7 +63,7 @@ export const rollupConfig = (
               ? options.postcss
               : {
                   autoModules: true,
-                  plugins: [tailwindcss()],
+                  plugins: [tailwindcss({ optimize: true })],
                 }
           ),
         options?.url !== false &&
