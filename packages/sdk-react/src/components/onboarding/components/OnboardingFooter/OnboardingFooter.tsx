@@ -3,7 +3,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  CircularProgress,
+  Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
@@ -28,7 +28,13 @@ function OnboardingFooterContent() {
   if (isLoading) {
     return (
       <StyledFooter>
-        <CircularProgress size="1rem" />
+        <StyledList>
+          <li>
+            <StyledText>
+              <Skeleton variant="rectangular" width={100} height={24} />
+            </StyledText>
+          </li>
+        </StyledList>
       </StyledFooter>
     );
   }
