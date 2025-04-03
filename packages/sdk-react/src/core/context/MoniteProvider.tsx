@@ -81,18 +81,18 @@ export const MoniteProvider = ({
 
 const getTailwindTheme = (theme: MoniteTheme) => css`
   :root {
-    --monite-color-primary-50: ${theme.palette.primary[50]};
-    --monite-color-primary-60: ${theme.palette.primary[60]};
-    --monite-color-primary-80: ${theme.palette.primary[80]};
-    --monite-color-primary-90: ${theme.palette.primary[90]};
+    --mtw-color-primary-50: ${theme.palette.primary[50]};
+    --mtw-color-primary-60: ${theme.palette.primary[60]};
+    --mtw-color-primary-80: ${theme.palette.primary[80]};
+    --mtw-color-primary-90: ${theme.palette.primary[90]};
 
-    --monite-color-neutral-10: ${theme.palette.neutral[10]};
-    --monite-color-neutral-30: ${theme.palette.neutral[30]};
-    --monite-color-neutral-50: ${theme.palette.neutral[50]};
-    --monite-color-neutral-70: ${theme.palette.neutral[70]};
-    --monite-color-neutral-80: ${theme.palette.neutral[80]};
-    --monite-color-neutral-90: ${theme.palette.neutral[90]};
-    --monite-color-neutral-95: ${theme.palette.neutral[95]};
+    --mtw-color-neutral-10: ${theme.palette.neutral[10]};
+    --mtw-color-neutral-30: ${theme.palette.neutral[30]};
+    --mtw-color-neutral-50: ${theme.palette.neutral[50]};
+    --mtw-color-neutral-70: ${theme.palette.neutral[70]};
+    --mtw-color-neutral-80: ${theme.palette.neutral[80]};
+    --mtw-color-neutral-90: ${theme.palette.neutral[90]};
+    --mtw-color-neutral-95: ${theme.palette.neutral[95]};
   }
   ${tailwindApp}
 `;
