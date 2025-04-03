@@ -3,6 +3,7 @@ import { useReducer } from 'react';
 import {
   Dialog,
   PageHeader,
+  UserRoleDeleteDialog,
   UserRoleDetailsDialog,
   UserRoleEditDialog,
 } from '@/components';
@@ -28,19 +29,24 @@ type UserRolesAction = {
     | 'CLOSE_DETAILS'
     | 'OPEN_EDIT'
     | 'CLOSE_EDIT'
-    | 'OPEN_CREATE';
+    | 'OPEN_CREATE'
+    | 'OPEN_DELETE'
+    | 'CLOSE_DELETE'
+    | 'DELETED';
   payload?: string;
 };
 
 type UserRolesState = {
   isDetailsDialogOpened: boolean;
   isEditDialogOpened: boolean;
+  isDeleteDialogOpened: boolean;
   selectedUserRoleId?: string;
 };
 
 const initialState: UserRolesState = {
   isDetailsDialogOpened: false,
   isEditDialogOpened: false,
+  isDeleteDialogOpened: false,
   selectedUserRoleId: undefined,
 };
 
@@ -61,6 +67,18 @@ const userRolesReducer = (
       return { ...state, isEditDialogOpened: true };
     case 'CLOSE_EDIT':
       return { ...state, isEditDialogOpened: false };
+    case 'OPEN_DELETE':
+      return { ...state, isDeleteDialogOpened: true };
+    case 'CLOSE_DELETE':
+      return { ...state, isDeleteDialogOpened: false };
+    case 'DELETED':
+      return {
+        ...state,
+        selectedUserRoleId: undefined,
+        isDeleteDialogOpened: false,
+        isEditDialogOpened: false,
+        isDetailsDialogOpened: false,
+      };
     case 'OPEN_CREATE':
       return {
         ...state,
@@ -127,6 +145,7 @@ const UserRolesBase = () => {
         <UserRoleDetailsDialog
           id={state.selectedUserRoleId}
           onClickEditRole={() => dispatch({ type: 'OPEN_EDIT' })}
+          onClickDeleteRole={() => dispatch({ type: 'OPEN_DELETE' })}
         />
       </Dialog>
 
@@ -139,6 +158,19 @@ const UserRolesBase = () => {
           id={state.selectedUserRoleId}
           onCreated={() => dispatch({ type: 'CLOSE_EDIT' })}
           onUpdated={() => dispatch({ type: 'CLOSE_EDIT' })}
+          onClickDeleteRole={() => dispatch({ type: 'OPEN_DELETE' })}
+        />
+      </Dialog>
+
+      <Dialog
+        open={state.isDeleteDialogOpened}
+        onClose={() => dispatch({ type: 'CLOSE_DELETE' })}
+        fullWidth
+        maxWidth="sm"
+      >
+        <UserRoleDeleteDialog
+          id={state.selectedUserRoleId}
+          onDeleted={() => dispatch({ type: 'DELETED' })}
         />
       </Dialog>
     </>

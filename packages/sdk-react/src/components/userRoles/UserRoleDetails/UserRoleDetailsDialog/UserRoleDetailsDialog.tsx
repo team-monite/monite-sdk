@@ -85,16 +85,17 @@ interface UserRoleDetailsDialogProps {
   /** The id of the role to be displayed */
   id?: string;
 
-  /**
-   * Callback fired on click of edit role button
-   *
-   */
+  /** Callback fired on click of edit role button */
   onClickEditRole: () => void;
+
+  /** Callback fired on click of delete role button */
+  onClickDeleteRole: () => void;
 }
 
 export const UserRoleDetailsDialog = ({
   id,
   onClickEditRole,
+  onClickDeleteRole,
 }: UserRoleDetailsDialogProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -104,6 +105,12 @@ export const UserRoleDetailsDialog = ({
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
     action: 'update',
+    entityUserId: user?.id,
+  });
+
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'role',
+    action: 'delete',
     entityUserId: user?.id,
   });
 
@@ -283,16 +290,21 @@ export const UserRoleDetailsDialog = ({
           </Paper>
         </Stack>
       </StyledDialogContainer>
-      {isUpdateAllowed && (
-        <>
-          <Divider />
-          <DialogActions>
-            <Button variant="outlined" onClick={onClickEditRole}>{t(
-              i18n
-            )`Edit`}</Button>
-          </DialogActions>
-        </>
-      )}
+      <Divider />
+      <DialogActions>
+        <Stack direction="row" spacing={2}>
+          <Button
+            color="error"
+            onClick={onClickDeleteRole}
+            disabled={!isDeleteAllowed}
+          >{t(i18n)`Delete`}</Button>
+          <Button
+            variant="outlined"
+            onClick={onClickEditRole}
+            disabled={!isUpdateAllowed}
+          >{t(i18n)`Edit`}</Button>
+        </Stack>
+      </DialogActions>
     </>
   );
 };
