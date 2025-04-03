@@ -18,8 +18,8 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   ) => void;
   /** Callback to be called when an invoice is deleted */
   onDelete?: (receivableId: string) => void;
-  /** Callback to be called when a first invoice is sent */
-  onFirstInvoiceSent?: (invoiceId: string) => void;
+  /** Callback to be called when an invoice is sent */
+  onInvoiceSent?: (invoiceId: string) => void;
 }
 
 export interface OnboardingSettings {
@@ -160,6 +160,7 @@ export const getDefaultComponentSettings = (
     onCreate: componentSettings?.receivables?.onCreate,
     onUpdate: componentSettings?.receivables?.onUpdate,
     onDelete: componentSettings?.receivables?.onDelete,
+    onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
   },
   tags: {
     pageSizeOptions:
