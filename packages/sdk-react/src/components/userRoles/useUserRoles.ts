@@ -9,11 +9,13 @@ import { useLingui } from '@lingui/react';
 interface UseUserRoleMutationsProps {
   onCreated?: (role: components['schemas']['RoleResponse']) => void;
   onUpdated?: (role: components['schemas']['RoleResponse']) => void;
+  onDeleted?: () => void;
 }
 
 export const useUserRoleMutations = ({
   onCreated,
   onUpdated,
+  onDeleted,
 }: UseUserRoleMutationsProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -49,6 +51,27 @@ export const useUserRoleMutations = ({
     },
   });
 
+  const roleDeleteMutation = api.roles.deleteRolesId.useMutation(undefined, {
+    onSuccess: (_, variables) => {
+      const roleId = variables?.path.role_id;
+      Promise.all([
+        api.roles.getRoles.invalidateQueries(queryClient),
+        api.roles.getRolesId.invalidateQueries(
+          { parameters: { path: { role_id: roleId } } },
+          queryClient
+        ),
+        api.entityUsers.getEntityUsers.invalidateQueries(
+          { parameters: { query: { role_id: roleId } } },
+          queryClient
+        ),
+      ]);
+      toast.success(t(i18n)`Role has been deleted`);
+    },
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
+
   const createRole = (role: components['schemas']['CreateRoleRequest']) => {
     roleCreateMutation.mutate(
       { ...role },
@@ -76,11 +99,24 @@ export const useUserRoleMutations = ({
     );
   };
 
+  const deleteRole = (roleId: string) => {
+    roleDeleteMutation.mutate(
+      { path: { role_id: roleId } },
+      {
+        onSuccess: () => {
+          onDeleted?.();
+        },
+      }
+    );
+  };
+
   return {
     createRole,
     updateRole,
+    deleteRole,
     isCreating: roleCreateMutation.isPending,
     isUpdating: roleUpdateMutation.isPending,
+    isDeleting: roleDeleteMutation.isPending,
   };
 };
 
