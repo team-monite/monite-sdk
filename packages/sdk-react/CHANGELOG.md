@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.3
+
+### Patch Changes
+
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- a63196a: Added user role delete functionality
+- e70b0de: First invoice sent event renamed to invoice sent
+
 ## 4.0.0-beta.2
 
 ### Patch Changes
