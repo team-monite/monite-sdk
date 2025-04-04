@@ -66,5 +66,11 @@ module.exports = {
         'lingui/no-unlocalized-strings': 'off',
       },
     },
+    {
+      files: ['src/ui/components/**/*.{ts,tsx}'],
+      rules: {
+        'lingui/no-unlocalized-strings': 'off',
+      },
+    },
   ],
 };
