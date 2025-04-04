@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-beta.3
+
+### Patch Changes
+
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- e70b0de: First invoice sent event renamed to invoice sent
+
 ## 2.0.0-beta.2
 
 ### Patch Changes
