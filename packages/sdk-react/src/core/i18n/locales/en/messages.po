@@ -1262,7 +1262,7 @@ msgstr "Business Registration (Hong Kong)"
 msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:76
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:79
 #: src/components/onboarding/validators/validationSchemas.ts:129
 msgid "Business website"
 msgstr "Business website"
@@ -3880,7 +3880,7 @@ msgstr "Indonesian Rupiah"
 msgid "Industrial Supplies (Not Elsewhere Classified)"
 msgstr "Industrial Supplies (Not Elsewhere Classified)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:66
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:67
 #: src/components/onboarding/validators/validationSchemas.ts:127
 msgid "Industry"
 msgstr "Industry"
