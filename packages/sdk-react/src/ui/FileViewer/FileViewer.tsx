@@ -1,30 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  ZoomIn,
-  ZoomOut,
-} from '@mui/icons-material';
-import Button from '@mui/material/Button';
 import {
   Worker,
   Viewer,
   ScrollMode,
-  ViewMode,
   SpecialZoomLevel,
 } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import {
   pageNavigationPlugin,
   RenderCurrentPageLabelProps,
-  RenderGoToPageProps,
 } from '@react-pdf-viewer/page-navigation';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
-import { RenderCurrentScaleProps, zoomPlugin } from '@react-pdf-viewer/zoom';
+import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import '@react-pdf-viewer/zoom/lib/styles/index.css';
-
-import { embed } from 'pdfobject';
 
 export const SUPPORTED_MIME_TYPES = [
   'image/png',
@@ -67,15 +56,7 @@ export const FileViewer = ({
   );
 };
 
-const PdfFileViewer = ({
-  url,
-  height,
-  showToolbar,
-}: {
-  url: string;
-  height?: number | string;
-  showToolbar?: number;
-}) => {
+const PdfFileViewer = ({ url }: { url: string }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
@@ -123,7 +104,7 @@ const PdfFileViewer = ({
             fileUrl={url}
             scrollMode={ScrollMode.Page}
             plugins={[pageNavigationPluginInstance, zoomPluginInstance]}
-            defaultScale={SpecialZoomLevel.PageWidth}
+            defaultScale={SpecialZoomLevel.PageFit}
           />
         </Worker>
       </div>
