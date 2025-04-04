@@ -36,14 +36,7 @@ export const FileViewer = ({
   showPdfToolbar,
   pdfHeight,
 }: FileViewerProps) => {
-  if (mimetype === 'application/pdf')
-    return (
-      <PdfFileViewer
-        url={url}
-        showToolbar={showPdfToolbar}
-        height={pdfHeight}
-      />
-    );
+  if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
 
   return (
     <img
