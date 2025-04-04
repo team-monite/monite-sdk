@@ -1,6 +1,7 @@
 import { components } from '@/api';
 import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { FormTooltip } from '@/components/ui/FormTooltip/FormTooltip';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
@@ -73,7 +74,17 @@ export const OnboardingBusinessProfile = () => {
         {checkValue('url') && (
           <RHFTextField
             disabled={isPending}
-            label={t(i18n)`Business website`}
+            label={
+              <>
+                {t(i18n)`Business website`}
+                <FormTooltip
+                  title={t(
+                    i18n
+                  )`Must be a reachable, unique URL that describes the account's business.`}
+                  placement="top"
+                />
+              </>
+            }
             name="url"
             type="url"
             control={control}
