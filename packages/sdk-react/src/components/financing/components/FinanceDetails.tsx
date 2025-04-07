@@ -12,8 +12,6 @@ import {
   Button,
   darken,
   Divider,
-  List,
-  ListItem,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -49,15 +47,27 @@ export const FinanceDetails = ({
       )
     : '-';
 
-  const financePlans = offers?.map((offer) => ({
-    name: t(i18n)`Financing plan`,
-    items: offer.pricing_plans.map(
-      (item) =>
-        t(i18n)`${item.advance_rate_percentage / 100}% advance rate, Pay in ${
-          item.repayment_duration_days
-        } days, ${item.fee_percentage / 100}% fee`
-    ),
-  }));
+  const pricingPlan = offers?.[0]?.pricing_plans?.reduce<{
+    pricingPlanIndex: number;
+    data: {
+      advance_rate_percentage: number;
+      fee_percentage: number;
+      repayment_type: components['schemas']['WCRepaymentType'];
+      repayment_duration_days?: number;
+    };
+  } | null>((acc, cur, index) => {
+    if (
+      cur?.fee_percentage === financedInvoice?.fee_percentage &&
+      cur?.advance_rate_percentage === financedInvoice?.advance_rate_percentage
+    ) {
+      acc = {
+        pricingPlanIndex: index,
+        data: cur,
+      };
+    }
+
+    return acc;
+  }, null);
 
   const repaymentDate = financedInvoice?.repayment_schedule?.repayment_date
     ? i18n.date(financedInvoice.repayment_schedule.repayment_date, dateFormat)
@@ -110,64 +120,55 @@ export const FinanceDetails = ({
           )`${issueDate}`}</Typography>
         </Box>
 
-        {financePlans?.map((plan, planIndex) => (
-          <Box
-            key={`${plan.name}-${planIndex}`}
-            sx={{
-              display: 'flex',
-              gap: 3,
-            }}
-          >
-            <Box width="100%">
-              <Typography
-                variant="body1"
-                color={darken(theme.palette.grey[50], 0.4)}
-                mb={0.5}
-                fontWeight={400}
-              >{t(i18n)`Financing plan ${planIndex + 1}`}</Typography>
-              <List
-                sx={{
-                  py: 0,
-                  gap: 0.5,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                {plan.items.map((item, index) => (
-                  <ListItem key={`${planIndex}-${item}-${index}`} sx={{ p: 0 }}>
-                    <Typography variant="body1" fontWeight={400}>{t(
-                      i18n
-                    )`${item}`}</Typography>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-            <Box width="100%">
-              <Typography
-                variant="body1"
-                color={darken(theme.palette.grey[50], 0.4)}
-                mb={0.5}
-                fontWeight={400}
-              >{t(i18n)`Repayment on`}</Typography>
-              <Typography variant="body1" fontWeight={400}>{t(
-                i18n
-              )`${repaymentDate}`}</Typography>
-            </Box>
-            <Box width="100%">
-              <Typography
-                variant="body1"
-                color={darken(theme.palette.grey[50], 0.4)}
-                mb={0.5}
-                fontWeight={400}
-              >{t(i18n)`Status`}</Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 3,
+          }}
+        >
+          <Box width="100%">
+            <Typography
+              variant="body1"
+              color={darken(theme.palette.grey[50], 0.4)}
+              mb={0.5}
+              fontWeight={400}
+            >{t(i18n)`Financing plan ${
+              (pricingPlan?.pricingPlanIndex ?? 0) + 1
+            }`}</Typography>
 
-              <FinancedInvoiceStatusChip
-                icon
-                status={financedInvoice?.status ?? 'DEFAULTED'}
-              />
-            </Box>
+            <Typography variant="body1" fontWeight={400}>
+              {t(i18n)`${
+                (pricingPlan?.data?.advance_rate_percentage ?? 0) / 100
+              }% advance rate, Pay in ${
+                pricingPlan?.data?.repayment_duration_days
+              } days, ${(pricingPlan?.data?.fee_percentage ?? 0) / 100}% fee`}
+            </Typography>
           </Box>
-        ))}
+          <Box width="100%">
+            <Typography
+              variant="body1"
+              color={darken(theme.palette.grey[50], 0.4)}
+              mb={0.5}
+              fontWeight={400}
+            >{t(i18n)`Repayment on`}</Typography>
+            <Typography variant="body1" fontWeight={400}>{t(
+              i18n
+            )`${repaymentDate}`}</Typography>
+          </Box>
+          <Box width="100%">
+            <Typography
+              variant="body1"
+              color={darken(theme.palette.grey[50], 0.4)}
+              mb={0.5}
+              fontWeight={400}
+            >{t(i18n)`Status`}</Typography>
+
+            <FinancedInvoiceStatusChip
+              icon
+              status={financedInvoice?.status ?? 'DEFAULTED'}
+            />
+          </Box>
+        </Box>
         <Divider />
 
         <Box

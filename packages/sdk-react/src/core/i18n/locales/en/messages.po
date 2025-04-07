@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -44,7 +50,7 @@ msgstr "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice 
 msgid "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 
-#: src/components/financing/components/FinanceDetails.tsx:185
+#: src/components/financing/components/FinanceDetails.tsx:186
 #: src/components/financing/components/FinanceFaqDetails.tsx:58
 #: src/components/financing/components/FinanceFaqDetails.tsx:62
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:104
@@ -91,7 +97,7 @@ msgstr "{0}/{1} issued"
 msgid "{0}% advance rate"
 msgstr "{0}% advance rate"
 
-#: src/components/financing/components/FinanceDetails.tsx:56
+#: src/components/financing/components/FinanceDetails.tsx:140
 msgid "{0}% advance rate, Pay in {1} days, {2}% fee"
 msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
 
@@ -129,13 +135,18 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
-#: src/components/financing/components/FinanceDetails.tsx:108
+#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:83
+#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:119
+#~ msgid "{displayButtonMessage}"
+#~ msgstr "{displayButtonMessage}"
+
+#: src/components/financing/components/FinanceDetails.tsx:118
 msgid "{issueDate}"
 msgstr "{issueDate}"
 
 #: src/components/financing/components/FinanceDetails.tsx:138
-msgid "{item}"
-msgstr "{item}"
+#~ msgid "{item}"
+#~ msgstr "{item}"
 
 #: src/components/documentDesign/useDocumentTemplatesApi.ts:49
 msgid "{name} document template has been set as the default."
@@ -145,7 +156,11 @@ msgstr "{name} document template has been set as the default."
 msgid "{overdueDays} {0} overdue"
 msgstr "{overdueDays} {0} overdue"
 
-#: src/components/financing/components/FinanceDetails.tsx:152
+#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:213
+#~ msgid "{paymentDate}"
+#~ msgstr "{paymentDate}"
+
+#: src/components/financing/components/FinanceDetails.tsx:154
 msgid "{repaymentDate}"
 msgstr "{repaymentDate}"
 
@@ -3278,12 +3293,11 @@ msgstr "Financing is not available for your business anymore. Please, contact th
 msgid "Financing menu"
 msgstr "Financing menu"
 
-#: src/components/financing/components/FinanceDetails.tsx:53
 #: src/components/financing/components/FinanceOffers.tsx:63
 msgid "Financing plan"
 msgstr "Financing plan"
 
-#: src/components/financing/components/FinanceDetails.tsx:127
+#: src/components/financing/components/FinanceDetails.tsx:135
 msgid "Financing plan {0}"
 msgstr "Financing plan {0}"
 
@@ -3335,7 +3349,7 @@ msgstr "Florists Supplies, Nursery Stock, and Flowers"
 msgid "Flow"
 msgstr "Flow"
 
-#: src/components/financing/components/FinanceDetails.tsx:226
+#: src/components/financing/components/FinanceDetails.tsx:227
 msgid "For {invoiceAmount} | Issued {issueDate}"
 msgstr "For {invoiceAmount} | Issued {issueDate}"
 
@@ -3440,7 +3454,7 @@ msgstr "Fund your sales/purchases"
 msgid "Funded"
 msgstr "Funded"
 
-#: src/components/financing/components/FinanceDetails.tsx:103
+#: src/components/financing/components/FinanceDetails.tsx:113
 msgid "Funding details"
 msgstr "Funding details"
 
@@ -3934,7 +3948,7 @@ msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://
 msgid "Invoice"
 msgstr "Invoice"
 
-#: src/components/financing/components/FinanceDetails.tsx:222
+#: src/components/financing/components/FinanceDetails.tsx:223
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:176
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
@@ -6204,12 +6218,12 @@ msgstr "Removing an executive role from this person is not allowed"
 msgid "Reopen"
 msgstr "Reopen"
 
-#: src/components/financing/components/FinanceDetails.tsx:254
+#: src/components/financing/components/FinanceDetails.tsx:255
 #: src/components/financing/components/FinancedInvoicesTable.tsx:239
 msgid "Repay now"
 msgstr "Repay now"
 
-#: src/components/financing/components/FinanceDetails.tsx:151
+#: src/components/financing/components/FinanceDetails.tsx:153
 msgid "Repayment on"
 msgstr "Repayment on"
 
@@ -6217,7 +6231,7 @@ msgstr "Repayment on"
 msgid "Repayment on {repaymentDate}"
 msgstr "Repayment on {repaymentDate}"
 
-#: src/components/financing/components/FinanceDetails.tsx:197
+#: src/components/financing/components/FinanceDetails.tsx:198
 msgid "Repayment sum"
 msgstr "Repayment sum"
 
@@ -6552,7 +6566,7 @@ msgstr "Service {0} was created."
 msgid "Service {0} was updated."
 msgstr "Service {0} was updated."
 
-#: src/components/financing/components/FinanceDetails.tsx:192
+#: src/components/financing/components/FinanceDetails.tsx:193
 msgid "Service Fee"
 msgstr "Service Fee"
 
@@ -6818,7 +6832,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:47
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:50
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:216
-#: src/components/financing/components/FinanceDetails.tsx:162
+#: src/components/financing/components/FinanceDetails.tsx:164
 #: src/components/financing/components/FinancedInvoicesTable.tsx:171
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:49
 #: src/components/payables/PayablesTable/PayablesTable.tsx:299
