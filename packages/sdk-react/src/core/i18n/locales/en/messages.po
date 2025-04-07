@@ -3377,6 +3377,12 @@ msgstr "Fulfillment date"
 msgid "Full name"
 msgstr "Full name"
 
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:78
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:264
+#: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:86
+msgid "Full Social Security Number"
+msgstr "Full Social Security Number"
+
 #: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:87
 msgid "Fund your sales/purchases"
 msgstr "Fund your sales/purchases"
@@ -6376,9 +6382,6 @@ msgstr "Secretarial Support Services"
 msgid "Security Brokers/Dealers"
 msgstr "Security Brokers/Dealers"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:78
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:264
-#: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:86
 #: src/components/onboarding/validators/validationSchemas.ts:32
 #: src/components/onboarding/validators/validationSchemas.ts:105
 msgid "Security number"
