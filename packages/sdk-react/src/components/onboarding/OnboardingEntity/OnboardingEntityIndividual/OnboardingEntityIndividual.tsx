@@ -75,7 +75,7 @@ export const OnboardingEntityIndividual = ({
         <RHFTextField
           disabled={isLoading}
           type="tel"
-          label={t(i18n)`Security number`}
+          label={t(i18n)`Full Social Security Number`}
           name="individual.id_number"
           control={control}
         />
