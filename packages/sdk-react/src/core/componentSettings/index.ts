@@ -25,6 +25,18 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
 
 export interface OnboardingSettings {
   /**
+   * Custom footer logo URL for the Onboarding pages.
+   * If provided, the logo will be displayed instead of the Monite logo.
+   * Requires `onboardingFooterWebsiteUrl` to be provided as well.
+   */
+  footerLogoUrl?: string;
+  /**
+   * Custom footer website URL for the Onboarding pages.
+   * If provided, the logo (either default Monite logo or custom one if `onboardingFooterLogoUrl` is set)
+   * will link to this URL.
+   */
+  footerWebsiteUrl?: string;
+  /**
    * Called when bank account setup is completed.
    *
    * @param {string} entityId - The ID of the entity

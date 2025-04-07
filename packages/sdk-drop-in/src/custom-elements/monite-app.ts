@@ -56,16 +56,6 @@ interface MoniteAppElementConfig {
   componentSettings?: ComponentProps<
     typeof MoniteProvider
   >['componentSettings'];
-
-  /**
-   * Optional Partner ID (Client ID).
-   */
-  partnerId?: string;
-
-  /**
-   * Optional Project ID.
-   */
-  projectId?: string;
 }
 
 class MoniteDropin {
@@ -88,12 +78,6 @@ class MoniteDropin {
     this.moniteAppElement.setAttribute('api-url', this.config.apiUrl);
     this.moniteAppElement.setAttribute('component', component);
     this.moniteAppElement.setAttribute('basename', '/');
-    if (this.config.partnerId) {
-      this.moniteAppElement.setAttribute('partner-id', this.config.partnerId);
-    }
-    if (this.config.projectId) {
-      this.moniteAppElement.setAttribute('project-id', this.config.projectId);
-    }
 
     // Add fetch-token script
     this.moniteAppElement.fetchToken = this.config.fetchToken;

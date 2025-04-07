@@ -1,13 +1,7 @@
-import { useOnboardingPaymentTheme } from '@/core/queries/useOnboardingPaymentTheme';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Box,
-  Skeleton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import { MoniteLogo, OnboardingContainer } from '../../components';
 import {
@@ -18,26 +12,14 @@ import {
   StyledFooterWrapper,
 } from './OnboardingFooter.styled';
 
+const DEFAULT_WEBSITE_URL = 'https://monite.com/';
+
 function OnboardingFooterContent() {
   const { i18n } = useLingui();
-  const { data: themeData, isLoading } = useOnboardingPaymentTheme();
+  const { componentSettings } = useMoniteContext();
 
-  const customLogoUrl = themeData?.footer?.logo_url;
-  const customWebsiteUrl = themeData?.footer?.website_url;
-
-  if (isLoading) {
-    return (
-      <StyledFooter>
-        <StyledList>
-          <li>
-            <StyledText>
-              <Skeleton variant="rectangular" width={100} height={24} />
-            </StyledText>
-          </li>
-        </StyledList>
-      </StyledFooter>
-    );
-  }
+  const customLogoUrl = componentSettings?.onboarding?.footerLogoUrl;
+  const customWebsiteUrl = componentSettings?.onboarding?.footerWebsiteUrl;
 
   return (
     <StyledFooter>
@@ -60,7 +42,7 @@ function OnboardingFooterContent() {
               </StyledLink>
             ) : (
               <StyledLink
-                href="https://monite.com/"
+                href={DEFAULT_WEBSITE_URL}
                 rel="noopener noreferrer"
                 target="_blank"
               >

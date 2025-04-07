@@ -51,8 +51,6 @@ export interface MoniteContextValue
   apiUrl: string;
   theme: Theme;
   componentSettings: ComponentSettings;
-  partnerId?: string;
-  projectId?: string;
   fetchToken: FetchToken;
 }
 
@@ -126,7 +124,7 @@ const ContextProvider = ({
   componentSettings,
   children,
 }: ContextProviderProps) => {
-  const { entityId, apiUrl, partnerId, projectId, fetchToken } = monite;
+  const { entityId, apiUrl, fetchToken } = monite;
   let environment: 'dev' | 'sandbox' | 'production';
 
   if (apiUrl) {
@@ -178,8 +176,6 @@ const ContextProvider = ({
         version,
         environment,
         entityId,
-        partnerId,
-        projectId,
         theme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,

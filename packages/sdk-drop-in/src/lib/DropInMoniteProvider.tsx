@@ -18,7 +18,7 @@ export const DropInMoniteProvider = ({
   theme,
   componentSettings,
   locale,
-  sdkConfig: { entityId, apiUrl, fetchToken, partnerId, projectId },
+  sdkConfig: { entityId, apiUrl, fetchToken },
 }: DropInMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
 
@@ -26,11 +26,9 @@ export const DropInMoniteProvider = ({
     () => ({
       entityId,
       apiUrl,
-      partnerId,
-      projectId,
       fetchToken: () => fetchTokenLatest.current(),
     }),
-    [apiUrl, entityId, partnerId, projectId, fetchTokenLatest]
+    [apiUrl, entityId, fetchTokenLatest]
   );
 
   const enhancedComponentSettings = useMemo(() => {

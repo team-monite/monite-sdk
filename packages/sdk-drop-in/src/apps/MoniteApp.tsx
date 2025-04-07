@@ -23,8 +23,6 @@ export const MoniteApp = ({
   entityId,
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
-  partnerId,
-  projectId,
   fetchToken,
 }: {
   disabled?: boolean;
@@ -32,8 +30,6 @@ export const MoniteApp = ({
   entityId?: string;
   apiUrl?: string;
   component: WidgetType;
-  partnerId?: string;
-  projectId?: string;
   fetchToken?: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
@@ -66,8 +62,6 @@ export const MoniteApp = ({
         sdkConfig={{
           entityId,
           apiUrl,
-          partnerId,
-          projectId,
           fetchToken,
         }}
       >
