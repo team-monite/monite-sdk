@@ -32,8 +32,7 @@ export interface OnboardingSettings {
   footerLogoUrl?: string;
   /**
    * Custom footer website URL for the Onboarding pages.
-   * If provided, the logo (either default Monite logo or custom one if `onboardingFooterLogoUrl` is set)
-   * will link to this URL.
+   * If provided, the onboardingFooterLogoUrl logo will link to this URL.
    */
   footerWebsiteUrl?: string;
   /**
