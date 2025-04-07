@@ -1,17 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-03-26 11:00+0100\n"
+"POT-Creation-Date: 2025-04-07 16:37+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
@@ -135,11 +129,6 @@ msgstr "{days_before} {day_plural} till overdue"
 msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
-#: src/components/receivables/Financing/FinanceApplicationCard/FinanceApplicationCard.tsx:83
-#: src/components/receivables/Financing/FinanceBanner/FinanceBanner.tsx:119
-#~ msgid "{displayButtonMessage}"
-#~ msgstr "{displayButtonMessage}"
-
 #: src/components/financing/components/FinanceDetails.tsx:108
 msgid "{issueDate}"
 msgstr "{issueDate}"
@@ -155,10 +144,6 @@ msgstr "{name} document template has been set as the default."
 #: src/ui/DueDateCell/DueDateCell.tsx:53
 msgid "{overdueDays} {0} overdue"
 msgstr "{overdueDays} {0} overdue"
-
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:213
-#~ msgid "{paymentDate}"
-#~ msgstr "{paymentDate}"
 
 #: src/components/financing/components/FinanceDetails.tsx:152
 msgid "{repaymentDate}"
@@ -2011,10 +1996,6 @@ msgid "Create a reminder preset"
 msgstr "Create a reminder preset"
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:13
-#~ msgid "Create an invoice"
-#~ msgstr "Create an invoice"
-
-#: src/components/financing/components/FinanceHowItWorks.tsx:13
 msgid "Create an invoice:"
 msgstr "Create an invoice:"
 
@@ -2325,10 +2306,6 @@ msgstr "default"
 msgid "Default"
 msgstr "Default"
 
-#: src/components/receivables/getCommonStatusLabel.ts:39
-#~ msgid "Defaulted"
-#~ msgstr "Defaulted"
-
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:330
 #: src/components/counterparts/components/ConfirmDeleteDialog.test.tsx:25
 #: src/components/counterparts/components/ConfirmDeleteDialog.tsx:62
@@ -2626,10 +2603,6 @@ msgstr "Dominican Peso"
 #: src/core/utils/countries.ts:80
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
-
-#: src/components/receivables/Financing/FinanceInvoice/FinanceInvoice.tsx:168
-#~ msgid "Don't wait for the payment"
-#~ msgstr "Don't wait for the payment"
 
 #: src/components/financing/components/FinanceInvoice.tsx:140
 msgid "Don't wait for your client to pay"
@@ -3266,10 +3239,6 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Finance invoice"
 msgstr "Finance invoice"
 
-#: src/components/receivables/Financing/FinanceTab/FinanceWidget/FinanceOffers/FinanceOffers.tsx:68
-#~ msgid "Finance plan"
-#~ msgstr "Finance plan"
-
 #: src/components/financing/components/FinancedInvoicesTable.tsx:269
 msgid "Financed invoices"
 msgstr "Financed invoices"
@@ -3456,6 +3425,12 @@ msgstr "Fulfillment date"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:41
 msgid "Full name"
 msgstr "Full name"
+
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:78
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:264
+#: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:86
+msgid "Full Social Security Number"
+msgstr "Full Social Security Number"
 
 #: src/components/financing/components/FinanceBanner.tsx:141
 msgid "Fund your sales/purchases"
@@ -3778,10 +3753,6 @@ msgstr "Household Appliance Stores"
 msgid "How does invoice financing work?"
 msgstr "How does invoice financing work?"
 
-#: src/components/financing/components/FinanceLimits.tsx:150
-#~ msgid "How it works?"
-#~ msgstr "How it works?"
-
 #: src/core/utils/currencies.ts:67
 msgid "Hungarian Forint"
 msgstr "Hungarian Forint"
@@ -4044,10 +4015,6 @@ msgstr "Invoice will be issued with items in the selected currency"
 msgid "Invoices"
 msgstr "Invoices"
 
-#: src/components/financing/components/FinanceHowItWorks.tsx:53
-#~ msgid "Invoices cannot be financed if"
-#~ msgstr "Invoices cannot be financed if"
-
 #: src/components/financing/components/FinanceHowItWorks.tsx:21
 msgid "Invoices cannot be financed if:"
 msgstr "Invoices cannot be financed if:"
@@ -4164,10 +4131,6 @@ msgstr "It is an entity having legal status as an individual."
 #: src/components/onboarding/validators/validators.ts:153
 msgid "It looks like the phone number is too short."
 msgstr "It looks like the phone number is too short."
-
-#: src/components/financing/components/FinanceInvoice.tsx:114
-#~ msgid "It must be in \"Issued\" or \"Partially paid\" status, and should have up to 7 days from the issue date and till it's overdue."
-#~ msgstr "It must be in \"Issued\" or \"Partially paid\" status, and should have up to 7 days from the issue date and till it's overdue."
 
 #: src/components/financing/components/FinanceInvoice.tsx:109
 msgid "It must be in the \"Issued\" or \"Partially paid\" statuses and have more than 7 days till overdue."
@@ -4374,10 +4337,6 @@ msgstr "Last update"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:621
 msgid "Last updated on"
 msgstr "Last updated on"
-
-#: src/components/receivables/getCommonStatusLabel.ts:45
-#~ msgid "Late"
-#~ msgstr "Late"
 
 #: src/components/financing/utils/getCommonStatusLabel.ts:19
 msgid "Late payment"
@@ -5051,10 +5010,6 @@ msgstr "No default email for selected Counterpart. Reminders will not be sent."
 msgid "No file provided"
 msgstr "No file provided"
 
-#: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:214
-#~ msgid "No financed invoices yet"
-#~ msgstr "No financed invoices yet"
-
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:347
 msgid "No items"
 msgstr "No items"
@@ -5433,18 +5388,6 @@ msgstr "Pay in {0} days"
 msgid "Pay in the first {0} days"
 msgstr "Pay in the first {0} days"
 
-#: src/components/financing/components/FinancedInvoicesTable.tsx:239
-#~ msgid "Pay out"
-#~ msgstr "Pay out"
-
-#: src/components/financing/components/FinanceDetails.tsx:231
-#~ msgid "Pay out now"
-#~ msgstr "Pay out now"
-
-#: src/components/financing/components/FinanceHowItWorks.tsx:41
-#~ msgid "Pay out the financed sum"
-#~ msgstr "Pay out the financed sum"
-
 #: src/components/financing/components/FinanceHowItWorks.tsx:41
 msgid "Pay out the financed sum:"
 msgstr "Pay out the financed sum:"
@@ -5502,10 +5445,6 @@ msgstr "Payables purchase order"
 #: src/components/payables/PayablesTable/PayablesTable.tsx:387
 msgid "Payment"
 msgstr "Payment"
-
-#: src/components/receivables/Financing/FinanceInvoice/FinanceDetails.tsx:210
-#~ msgid "Payment amount"
-#~ msgstr "Payment amount"
 
 #: src/components/financing/components/FinancedInvoicesTable.tsx:211
 msgid "Payment date"
@@ -5706,10 +5645,6 @@ msgstr "Please add any individual who owns 25% or more of your business."
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:187
 msgid "Please correct the errors in persons information."
 msgstr "Please correct the errors in persons information."
-
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:533
-#~ msgid "Please correct the following errors:"
-#~ msgstr "Please correct the following errors:"
 
 #: src/components/products/ProductDetails/validation.ts:35
 #: src/components/products/ProductDetails/validation.ts:41
@@ -6102,10 +6037,6 @@ msgstr "Receivables tabs"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/ManualPaymentRecordDetails.tsx:88
 msgid "Received"
 msgstr "Received"
-
-#: src/components/financing/components/FinanceDetails.tsx:163
-#~ msgid "Received sum"
-#~ msgstr "Received sum"
 
 #: src/components/userRoles/consts.ts:46
 msgid "Reconciliation"
@@ -6553,21 +6484,10 @@ msgstr "Secretarial Support Services"
 msgid "Security Brokers/Dealers"
 msgstr "Security Brokers/Dealers"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:78
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:264
-#: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:86
 #: src/components/onboarding/validators/validationSchemas.ts:32
 #: src/components/onboarding/validators/validationSchemas.ts:105
 msgid "Security number"
 msgstr "Security number"
-
-#: src/components/userRoles/UserRolesTable/PermissionsCell/PermissionsCell.tsx:51
-#~ msgid "See all"
-#~ msgstr "See all"
-
-#: src/components/financing/components/FinanceHowItWorks.tsx:34
-#~ msgid "Select 'Get Paid Now'"
-#~ msgstr "Select 'Get Paid Now'"
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:34
 msgid "Select 'Get Paid Now':"
@@ -7206,10 +7126,6 @@ msgstr "The full sum will be withdrawn from your bank account automatically on t
 #: src/components/onboarding/validators/validators.ts:72
 msgid "The IBAN should correspond to the chosen country - {country}."
 msgstr "The IBAN should correspond to the chosen country - {country}."
-
-#: src/components/financing/components/FinanceInvoice.tsx:154
-#~ msgid "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
-#~ msgstr "The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/paymentTermsValidation.ts:81
 msgid "The number of days in Discount 2 must be more than the number of Discount 1 days"
@@ -8097,11 +8013,6 @@ msgstr "View all"
 msgid "View details"
 msgstr "View details"
 
-#: src/components/financing/hooks/useFinancing.ts:112
-#: src/components/financing/hooks/useFinancing.ts:144
-#~ msgid "View terms and sign"
-#~ msgstr "View terms and sign"
-
 #: src/core/utils/countries.ts:255
 msgid "Virgin Islands, British"
 msgstr "Virgin Islands, British"
@@ -8137,10 +8048,6 @@ msgstr "West African CFA Franc"
 #: src/core/utils/countries.ts:258
 msgid "Western Sahara"
 msgstr "Western Sahara"
-
-#: src/components/receivables/Financing/FinanceTab/FinancedInvoicesTable/FinancedInvoicesTable.tsx:218
-#~ msgid "What invoices can be financed?"
-#~ msgstr "What invoices can be financed?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:260
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
@@ -8339,10 +8246,6 @@ msgstr "Your application is in review"
 #: src/components/financing/components/FinanceBanner.tsx:178
 msgid "Your application was approved"
 msgstr "Your application was approved"
-
-#: src/components/financing/components/FinanceLimits.tsx:46
-#~ msgid "Your remaining limit is the amount available to you for financing additional invoices"
-#~ msgstr "Your remaining limit is the amount available to you for financing additional invoices"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/YourVatDetailsForm.tsx:116
 msgid "Your Tax ID"
