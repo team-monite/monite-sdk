@@ -17,13 +17,26 @@ jest.mock('@/components/Dialog', () => ({
 
 describe('UserRoleEditDialog', () => {
   it('renders the dialog with the correct title for creating a role', async () => {
-    renderWithClient(<UserRoleEditDialog />);
+    renderWithClient(
+      <UserRoleEditDialog
+        onCreated={jest.fn()}
+        onUpdated={jest.fn()}
+        onClickDeleteRole={jest.fn()}
+      />
+    );
 
     expect(screen.getByText('Create User Role')).toBeInTheDocument();
   });
 
   it('renders the dialog with the correct title for editing a role', async () => {
-    renderWithClient(<UserRoleEditDialog id={fullPermissionRole.id} />);
+    renderWithClient(
+      <UserRoleEditDialog
+        id={fullPermissionRole.id}
+        onCreated={jest.fn()}
+        onUpdated={jest.fn()}
+        onClickDeleteRole={jest.fn()}
+      />
+    );
 
     await waitUntilTableIsLoaded();
 
@@ -31,7 +44,14 @@ describe('UserRoleEditDialog', () => {
   });
 
   it('disables the save button when the form is not dirty', async () => {
-    renderWithClient(<UserRoleEditDialog id={fullPermissionRole.id} />);
+    renderWithClient(
+      <UserRoleEditDialog
+        id={fullPermissionRole.id}
+        onCreated={jest.fn()}
+        onUpdated={jest.fn()}
+        onClickDeleteRole={jest.fn()}
+      />
+    );
 
     await waitUntilTableIsLoaded();
 
@@ -39,7 +59,14 @@ describe('UserRoleEditDialog', () => {
   });
 
   it('enables the save button when the form is dirty', async () => {
-    renderWithClient(<UserRoleEditDialog id={fullPermissionRole.id} />);
+    renderWithClient(
+      <UserRoleEditDialog
+        id={fullPermissionRole.id}
+        onCreated={jest.fn()}
+        onUpdated={jest.fn()}
+        onClickDeleteRole={jest.fn()}
+      />
+    );
 
     await waitUntilTableIsLoaded();
 

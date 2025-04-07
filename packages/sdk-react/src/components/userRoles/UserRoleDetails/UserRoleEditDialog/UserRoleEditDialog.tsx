@@ -96,14 +96,16 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 interface UserRoleEditDialogProps {
   /** The id of the role to be displayed */
   id?: string;
-  onCreated?: (role: components['schemas']['RoleResponse']) => void;
-  onUpdated?: (role: components['schemas']['RoleResponse']) => void;
+  onCreated: (role: components['schemas']['RoleResponse']) => void;
+  onUpdated: (role: components['schemas']['RoleResponse']) => void;
+  onClickDeleteRole: () => void;
 }
 
 export const UserRoleEditDialog = ({
   id,
   onCreated,
   onUpdated,
+  onClickDeleteRole,
 }: UserRoleEditDialogProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -122,6 +124,12 @@ export const UserRoleEditDialog = ({
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
     action: 'update',
+    entityUserId: user?.id,
+  });
+
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'role',
+    action: 'delete',
     entityUserId: user?.id,
   });
 
@@ -264,20 +272,30 @@ export const UserRoleEditDialog = ({
           <Typography variant="h3" flex={1} ml={2}>
             {roleData ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
           </Typography>
-          <Button
-            type="submit"
-            form={formName}
-            disabled={
-              isUpdating ||
-              isCreating ||
-              (roleData && (!isDirty || !isUpdateAllowed))
-            }
-            autoFocus
-            color="primary"
-            variant="contained"
-          >
-            {t(i18n)`Save`}
-          </Button>
+          <Stack direction="row" spacing={2}>
+            {roleData && (
+              <Button
+                color="error"
+                onClick={onClickDeleteRole}
+                disabled={!isDeleteAllowed || isCreating || isUpdating}
+              >{t(i18n)`Delete`}</Button>
+            )}
+            <Button
+              type="submit"
+              form={formName}
+              disabled={
+                !isUpdateAllowed ||
+                isCreating ||
+                isUpdating ||
+                (roleData && !isDirty)
+              }
+              autoFocus
+              color="primary"
+              variant="contained"
+            >
+              {t(i18n)`Save`}
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
 

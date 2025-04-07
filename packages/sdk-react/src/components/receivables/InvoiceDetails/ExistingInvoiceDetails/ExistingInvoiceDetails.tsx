@@ -184,14 +184,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  const isFirstInvoice = !receivable.document_id;
   const documentId = receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID;
 
   if (presentation === InvoiceDetailsPresentation.Email) {
     return (
       <EmailInvoiceDetails
         invoiceId={props.id}
-        isFirstInvoice={isFirstInvoice}
         onClose={() => {
           setPresentation(InvoiceDetailsPresentation.Overview);
         }}
