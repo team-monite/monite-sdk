@@ -17,7 +17,7 @@ import { useMyEntity } from '@/core/queries';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs, useTheme } from '@mui/material';
 
 interface ReceivablesTableControlledProps {
   /** Event handler for tab change */
@@ -163,6 +163,7 @@ const ReceivablesTableBase = ({
   const { tab, tabs } = useReceivablesTableProps(inProps);
   const { data: finance } = useGetFinanceOffers();
   const { i18n } = useLingui();
+  const theme = useTheme();
   const { isUSEntity } = useMyEntity();
   const [activeTabIndex, setActiveTabIndex] = useState(tab ?? 0);
   const tabsIdBase = `Monite-ReceivablesTable-Tabs-${useId()}-`;
@@ -221,7 +222,7 @@ const ReceivablesTableBase = ({
                           height: 16,
                           px: 0.5,
                           borderRadius: '100%',
-                          bgcolor: '#3737FF',
+                          bgcolor: theme.palette.primary.main,
                           color: '#FFF',
                           alignContent: 'center',
                           fontSize: 10,

@@ -1,10 +1,16 @@
 import { useFinancing } from '@/components/financing/hooks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
-import { useTheme } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Money } from '@mui/icons-material';
-import { Box, Button, lighten, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  lighten,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
 import { FinanceFaqWrapper } from './FinanceFaqWrapper';
 
@@ -22,7 +28,7 @@ export const FinanceIntegrationCard = () => {
   return (
     <Stack
       gap={4}
-      sx={{ border: '1px solid #DEDEDE' }}
+      sx={{ border: `1px solid ${theme.palette.divider}` }}
       borderRadius="16px"
       p={3}
     >
@@ -41,7 +47,7 @@ export const FinanceIntegrationCard = () => {
         >
           <Money
             sx={{
-              color: '#3737FF',
+              color: theme.palette.primary.main,
               width: 20,
               height: 20,
             }}

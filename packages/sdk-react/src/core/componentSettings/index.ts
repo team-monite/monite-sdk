@@ -1,6 +1,7 @@
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FINANCING_LABEL } from '@/components/financing/consts';
+import { FinanceStep } from '@/components/financing/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
@@ -44,6 +45,19 @@ export interface OnboardingSettings {
   onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
 }
 
+export interface FinancingSettings {
+  /**
+   * Enables finance widget buttons inside finance card in My financing tab when true, if false,
+   * buttons are shown on the top right corner instead.
+   */
+  enableFinanceWidgetButton?: boolean;
+  /**
+   * Describes the step by step of how financing an invoice works, this is shown in a drawer when clicking on
+   * `How does invoice financing work?` button
+   */
+  financeSteps: FinanceStep[];
+}
+
 interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
@@ -81,6 +95,7 @@ export interface ComponentSettings {
     pageSizeOptions: number[];
   };
   onboarding: Partial<OnboardingSettings>;
+  financing: Partial<FinancingSettings>;
 }
 
 const defaultPageSizeOptions = [20, 50, 100];
@@ -155,6 +170,7 @@ export const getDefaultComponentSettings = (
       },
       {
         label: FINANCING_LABEL,
+        query: { type: 'financing' },
       },
     ],
     onCreate: componentSettings?.receivables?.onCreate,
@@ -170,4 +186,5 @@ export const getDefaultComponentSettings = (
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
   onboarding: componentSettings?.onboarding ?? {},
+  financing: componentSettings?.financing ?? {},
 });

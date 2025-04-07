@@ -236,7 +236,7 @@ const FinancedInvoicesTableBase = ({
               }}
               sx={{ py: 1.25, px: 1.5, height: 32, fontSize: 14 }}
             >
-              {t(i18n)`Pay out`}
+              {t(i18n)`Repay now`}
             </Button>
           ) : null;
         },

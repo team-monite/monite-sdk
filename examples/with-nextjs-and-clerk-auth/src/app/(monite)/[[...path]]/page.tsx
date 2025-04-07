@@ -42,6 +42,7 @@ export default function DefaultPage() {
         <FinanceBanner enableServicingBanner />
 
         <Stack
+          mt={3}
           direction="column"
           spacing={3}
           useFlexGap={true}

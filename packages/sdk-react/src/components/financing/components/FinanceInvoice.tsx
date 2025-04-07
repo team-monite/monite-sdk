@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { components } from '@/api';
 import {
-  FinanceBannerPlaceholder,
+  FinanceBannerWrapper,
   FinanceOverviewCard,
 } from '@/components/financing/components';
 import {
@@ -12,7 +12,6 @@ import {
   useGetFinanceOffers,
 } from '@/components/financing/hooks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, Tooltip, Typography } from '@mui/material';
@@ -25,7 +24,6 @@ interface FinanceInvoiceProps {
 
 export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
   const { startFinanceSession } = useKanmonContext();
   const [isFinancingAnInvoice, setIsFinancingAnInvoice] = useState(false);
   const financeInvoiceMutation = useFinanceAnInvoice();
@@ -88,9 +86,6 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
               component: 'SESSION_INVOICE_FLOW_WITH_INVOICE_FILE',
             });
             setIsFinancingAnInvoice(false);
-            api.financingInvoices.getFinancingInvoices.invalidateQueries(
-              queryClient
-            );
           },
         }
       );
@@ -105,7 +100,7 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
 
   if (!invoiceIsEligibleForFinance) {
     return (
-      <FinanceBannerPlaceholder shouldDisplayCustomBg={false}>
+      <FinanceBannerWrapper>
         <Box sx={{ flex: '1 1 0%' }}>
           <Typography variant="subtitle2">{t(
             i18n
@@ -113,10 +108,10 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
           <Typography variant="body1">
             {t(
               i18n
-            )`It must be in "Issued" or "Partially paid" status, and should have up to 7 days from the issue date and till it's overdue.`}
+            )`It must be in the "Issued" or "Partially paid" statuses and have more than 7 days till overdue.`}
           </Typography>
         </Box>
-      </FinanceBannerPlaceholder>
+      </FinanceBannerWrapper>
     );
   }
 
@@ -132,15 +127,13 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
   }
 
   return (
-    <FinanceBannerPlaceholder shouldDisplayCustomBg>
+    <FinanceBannerWrapper>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           gap: 2,
           justifyContent: 'space-between',
-          position: 'relative',
-          zIndex: 1,
         }}
       >
         <Box sx={{ flex: '1 1 0%' }}>
@@ -153,7 +146,7 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
               arrow
               title={t(
                 i18n
-              )`The issue date should be less than 7 days ago. You can't fund overdue invoices. The loan sum must be within your remaining limit.`}
+              )`Invoices that are due within 7 days cannot be financed. Overdue invoices cannot be financed. The loan sum must be within your remaining limit.`}
             >
               <Typography
                 variant="body1"
@@ -167,18 +160,16 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
         <Button
           onClick={financeInvoice}
           disabled={isFinancingAnInvoice || isLoading}
+          color="primary"
+          variant="contained"
           sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            ':disabled': {
-              color: 'white',
-              opacity: 0.5,
-            },
+            px: 2.5,
+            py: 1.5,
           }}
         >
           {isFinancingAnInvoice ? t(i18n)`Loading...` : t(i18n)`Get paid now`}
         </Button>
       </Box>
-    </FinanceBannerPlaceholder>
+    </FinanceBannerWrapper>
   );
 };

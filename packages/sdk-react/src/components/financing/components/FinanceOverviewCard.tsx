@@ -8,7 +8,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 
 import { FinanceDetails } from './FinanceDetails';
 
@@ -22,6 +22,7 @@ type Props = {
 
 export const FinanceOverviewCard = ({ invoice, offers }: Props) => {
   const { i18n } = useLingui();
+  const theme = useTheme();
   const { locale } = useMoniteContext();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
@@ -64,7 +65,7 @@ export const FinanceOverviewCard = ({ invoice, offers }: Props) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          border: '1px solid rgba(0,0,0,0.13)',
+          border: `1px solid ${theme.palette.divider}`,
           cursor: 'pointer',
         }}
       >

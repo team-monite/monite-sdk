@@ -7,6 +7,9 @@ import {
   useState,
 } from 'react';
 
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+
 export interface KanmonContextValue {
   isKanmonInitialized: boolean;
   buttonText: string;
@@ -18,6 +21,50 @@ export interface KanmonContextValue {
 type StartFinanceSessionOptions = {
   sessionToken?: string;
   component?: string;
+};
+
+type KanmonFinancedInvoiceSchedule = {
+  repaymentDate: string;
+  repaymentAmountCents: number;
+  repaymentFeeAmountCents: number;
+  repaymentPrincipalAmountCents: number;
+};
+
+export type KanmonFinancedInvoice = {
+  id: string;
+  feeAmountCents: number;
+  state: string;
+  principalAmountCents: number;
+  repaymentAmountCents: number;
+  invoiceAdvanceAmountCents: number;
+  issuedProductId: string;
+  platformInvoiceId: string;
+  platformInvoiceNumber: string;
+  payorType: string;
+  payorBusinessName: string;
+  payorFirstName?: string;
+  payorMiddleName?: string;
+  payorLastName?: string;
+  payorEmail: string;
+  payeeType?: string;
+  payeeBusinessName?: string;
+  payeeEmail?: string;
+  payeeFirstName?: string;
+  payeeMiddleName?: string;
+  payeeLastName?: string;
+  payeeAddress?: string;
+  invoiceAmountCents: number;
+  repaymentSchedule: {
+    schedule: KanmonFinancedInvoiceSchedule[];
+  };
+  advanceRatePercentage: number;
+  amountRequestedForFinancingCents: number;
+  transactionFeePercentage: number;
+  invoiceIssuedDate: string;
+  invoiceDueDate: string;
+  payorAddress?: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 declare global {
@@ -33,6 +80,7 @@ declare global {
                 actionRequired: boolean;
                 section: string;
                 userState: string;
+                invoice: KanmonFinancedInvoice;
               };
             }) => void;
           }) => void;
@@ -65,8 +113,9 @@ const stopFinanceSession = () => {
 };
 
 export const KanmonContextProvider = ({ children }: PropsWithChildren) => {
+  const { i18n } = useLingui();
   const [isKanmonInitialized, setIsKanmonInitialized] = useState(false);
-  const [buttonText, setButtonText] = useState('');
+  const [buttonText, setButtonText] = useState(t(i18n)`Apply for financing`);
 
   const handleButtonText = useCallback((value: string) => {
     setButtonText(value);

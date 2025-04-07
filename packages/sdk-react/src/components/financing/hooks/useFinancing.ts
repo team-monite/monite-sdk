@@ -6,7 +6,10 @@ import {
   useGetFinancingConnectToken,
   useGetFinanceOffers,
 } from '@/components/financing/hooks';
-import { useKanmonContext } from '@/core/context/KanmonContext';
+import {
+  KanmonFinancedInvoice,
+  useKanmonContext,
+} from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -30,7 +33,6 @@ export type UseFinancingReturnValues = {
   buttonText: string;
   offer: components['schemas']['FinancingOffer'];
   applicationState: string;
-  isInitializing: boolean;
   isLoading: boolean;
   isEnabled: boolean;
   isServicing: boolean;
@@ -44,7 +46,7 @@ export const useFinancing = () => {
   const { i18n } = useLingui();
   const getConnectToken = useGetFinancingConnectToken();
   const { data: finance } = useGetFinanceOffers();
-  const { isUSEntity, isLoading: isUSEntityLoading } = useMyEntity();
+  const { isUSEntity } = useMyEntity();
 
   const handleApplicationState = () => {
     switch (finance?.business_status) {
@@ -97,56 +99,130 @@ export const useFinancing = () => {
   });
   const [isInitializing, setIsInitializing] = useState(false);
 
+  const refreshFinancedInvoices = (financedInvoice: KanmonFinancedInvoice) => {
+    const newFinancedInvoice: components['schemas']['FinancingInvoice'] = {
+      type: 'receivable',
+      status: 'NEW',
+      invoice_id: financedInvoice?.platformInvoiceId,
+      document_id: financedInvoice?.platformInvoiceNumber,
+      due_date: financedInvoice?.invoiceDueDate,
+      issue_date: financedInvoice?.invoiceIssuedDate,
+      total_amount: financedInvoice?.invoiceAmountCents,
+      currency: 'USD',
+      payer_type: financedInvoice?.payorType,
+      payer_business_name: financedInvoice?.payorBusinessName,
+      payer_first_name: financedInvoice?.payorFirstName,
+      payer_last_name: financedInvoice?.payorLastName,
+      requested_amount: financedInvoice?.amountRequestedForFinancingCents,
+      principal_amount: financedInvoice?.principalAmountCents,
+      repayment_amount: financedInvoice?.repaymentAmountCents,
+      advance_amount: financedInvoice?.invoiceAdvanceAmountCents,
+      advance_rate_percentage: financedInvoice?.advanceRatePercentage * 100,
+      fee_amount: financedInvoice?.feeAmountCents,
+      fee_percentage: financedInvoice?.transactionFeePercentage * 100,
+      repayment_schedule: {
+        repayment_date:
+          financedInvoice?.repaymentSchedule?.schedule?.[0]?.repaymentDate,
+        repayment_amount:
+          financedInvoice?.repaymentSchedule?.schedule?.[0]
+            ?.repaymentAmountCents,
+        repayment_fee_amount:
+          financedInvoice?.repaymentSchedule?.schedule?.[0]
+            ?.repaymentFeeAmountCents,
+        repayment_principal_amount:
+          financedInvoice?.repaymentSchedule?.schedule?.[0]
+            ?.repaymentPrincipalAmountCents,
+      },
+    };
+
+    api.financingInvoices.getFinancingInvoices.setQueryData(
+      api.financingInvoices.getFinancingInvoices.getQueryKey({
+        query: {
+          type: 'receivable',
+          invoice_id: financedInvoice?.platformInvoiceId,
+        },
+      }),
+      (data) => {
+        return {
+          ...data,
+          data: [newFinancedInvoice],
+        };
+      },
+      queryClient
+    );
+
+    api.financingInvoices.getFinancingInvoices.setQueryData(
+      api.financingInvoices.getFinancingInvoices.getQueryKey({ query: {} }),
+      (data) => {
+        const currentData = data?.data ? data?.data : [];
+        return {
+          ...data,
+          data: [newFinancedInvoice, ...currentData],
+        };
+      },
+      queryClient
+    );
+  };
+
   const initialiseFinanceSdk = ({ connectToken }: { connectToken: string }) => {
     window?.KANMON_CONNECT?.start({
       connectToken,
       onEvent: (event) => {
-        if (event.eventType !== 'USER_STATE_CHANGED') return;
+        if (
+          event.eventType !== 'USER_STATE_CHANGED' &&
+          event.eventType !== 'USER_CONFIRMED_INVOICE'
+        )
+          return;
 
-        switch (event.data.userState) {
-          case 'START_FLOW':
-            handleButtonText(t(i18n)`Apply for financing`);
-            break;
-          case 'USER_INPUT_REQUIRED':
-            if (event.data.section === 'OFFER') {
-              handleButtonText(t(i18n)`View terms and sign`);
-            } else {
-              handleButtonText(t(i18n)`Resume application`);
-            }
-            break;
-          case 'WAITING_FOR_OFFERS':
-            handleButtonText('');
-            if (
-              (finance?.business_status === 'INPUT_REQUIRED' ||
-                finance?.business_status === 'NEW') &&
-              componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete
-            ) {
-              componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete(
-                entityId
-              );
-            }
-            break;
-          case 'OFFERS_EXPIRED':
-          case 'NO_OFFERS_EXTENDED':
-            handleButtonText('');
-            break;
-          case 'SERVICING':
-            handleButtonText(t(i18n)`Financing menu`);
-            if (
-              finance?.business_status === 'ONBOARDED' &&
-              finance?.offers?.[0]?.status === 'NEW'
-            ) {
-              window.localStorage.setItem('isFinanceTabNew', 'true');
-            }
-            break;
-          case 'VIEW_OFFERS':
-          case 'OFFER_ACCEPTED':
-            handleButtonText(t(i18n)`View terms and sign`);
-            break;
-          default:
-            break;
+        if (event.eventType === 'USER_CONFIRMED_INVOICE') {
+          refreshFinancedInvoices(event.data.invoice);
+        } else {
+          switch (event.data.userState) {
+            case 'START_FLOW':
+              handleButtonText(t(i18n)`Apply for financing`);
+              break;
+            case 'USER_INPUT_REQUIRED':
+              if (event.data.section === 'OFFER') {
+                handleButtonText(t(i18n)`Review terms and sign`);
+              } else {
+                handleButtonText(t(i18n)`Resume application`);
+              }
+              break;
+            case 'WAITING_FOR_OFFERS':
+              handleButtonText('');
+              if (
+                (finance?.business_status === 'INPUT_REQUIRED' ||
+                  finance?.business_status === 'NEW') &&
+                componentSettings?.onboarding
+                  ?.onWorkingCapitalOnboardingComplete
+              ) {
+                componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete(
+                  entityId
+                );
+              }
+              break;
+            case 'OFFERS_EXPIRED':
+            case 'NO_OFFERS_EXTENDED':
+              handleButtonText('');
+              break;
+            case 'SERVICING':
+              handleButtonText(t(i18n)`Financing menu`);
+              if (
+                finance?.business_status === 'ONBOARDED' &&
+                finance?.offers?.[0]?.status === 'NEW'
+              ) {
+                window.localStorage.setItem('isFinanceTabNew', 'true');
+              }
+              break;
+            case 'VIEW_OFFERS':
+            case 'OFFER_ACCEPTED':
+              handleButtonText(t(i18n)`Review terms and sign`);
+              break;
+            default:
+              break;
+          }
+          api.financingOffers.getFinancingOffers.invalidateQueries(queryClient);
         }
-        api.financingOffers.getFinancingOffers.invalidateQueries(queryClient);
       },
     });
   };
@@ -155,9 +231,6 @@ export const useFinancing = () => {
     const setupFinanceSdkConnection = async () => {
       setIsInitializing(true);
       try {
-        if (scriptLoading || !isUSEntity) {
-          return;
-        }
         const response = await getConnectToken.mutateAsync();
 
         initialiseFinanceSdk({ connectToken: response.connect_token });
@@ -169,13 +242,13 @@ export const useFinancing = () => {
       }
     };
 
-    if (!isKanmonInitialized) {
+    if (!isKanmonInitialized && !scriptLoading && isUSEntity) {
       setupFinanceSdkConnection();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scriptLoading, isUSEntity]);
 
-  const isLoading = isInitializing || isUSEntityLoading;
+  const isLoading = scriptLoading || isInitializing;
   const isEnabled = isUSEntity;
   const isServicing =
     finance?.business_status === 'ONBOARDED' &&
@@ -186,7 +259,6 @@ export const useFinancing = () => {
     buttonText,
     applicationState,
     offer,
-    isInitializing,
     isLoading,
     isEnabled,
     isServicing,

@@ -10,17 +10,10 @@ type FinanceWidgetProps = {
 
 export const FinanceWidget = ({ offers }: FinanceWidgetProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 4 }}>
-      {/* Limit */}
-      <Box sx={{ width: '100%' }}>
-        <FinanceLimits offers={offers} />
-      </Box>
+    <Box sx={{ display: 'flex', gap: 2 }}>
+      <FinanceLimits offers={offers} />
 
-      {offers?.[0]?.status === 'CURRENT' && (
-        <Box sx={{ width: '100%' }}>
-          <FinanceOffers offers={offers} />
-        </Box>
-      )}
+      {offers?.[0]?.status === 'CURRENT' && <FinanceOffers offers={offers} />}
     </Box>
   );
 };

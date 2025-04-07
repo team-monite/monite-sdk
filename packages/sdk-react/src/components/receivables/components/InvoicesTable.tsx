@@ -104,7 +104,7 @@ const InvoicesTableBase = ({
   filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
-  const { locale, componentSettings, api, queryClient } = useMoniteContext();
+  const { locale, componentSettings } = useMoniteContext();
   const { startFinanceSession } = useKanmonContext();
   const { data: financeData } = useGetFinanceOffers();
   const { data: financedInvoices } = useGetFinancedInvoices({});
@@ -181,9 +181,6 @@ const InvoicesTableBase = ({
                 component: 'SESSION_INVOICE_FLOW_WITH_INVOICE_FILE',
               });
               setIsFinancingAnInvoice(false);
-              api.financingInvoices.getFinancingInvoices.invalidateQueries(
-                queryClient
-              );
             },
           }
         );
@@ -191,13 +188,7 @@ const InvoicesTableBase = ({
         setIsFinancingAnInvoice(false);
       }
     },
-    [
-      financeInvoiceMutation,
-      isFinancingAnInvoice,
-      api,
-      queryClient,
-      startFinanceSession,
-    ]
+    [financeInvoiceMutation, isFinancingAnInvoice, startFinanceSession]
   );
 
   const onChangeSort = (model: GridSortModel) => {

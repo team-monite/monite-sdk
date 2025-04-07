@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
 import {
-  FinanceBannerPlaceholder,
+  FinanceBannerWrapper,
   FinanceFaqWrapper,
+  FinanceProgressBar,
 } from '@/components/financing/components';
 import {
   FinancialApplicationState,
@@ -10,11 +11,9 @@ import {
 } from '@/components/financing/hooks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useCurrencies } from '@/core/hooks';
-import { useTheme } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Money } from '@mui/icons-material';
-import { Box, Button, lighten, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
 
 const LOCAL_STORAGE_KEY = 'financing_banner_hidden';
 const SEVEN_DAYS_TIME_MILLISECONDS = 7 * 24 * 60 * 60 + 1000;
@@ -25,13 +24,6 @@ type StorageBannerState = {
 };
 
 type FinanceBannerProps = {
-  /** Defines the banner style.
-    `onboard` has a `height of 90px`, it is set to be used as an actual banner.
-    `finance` has a `height of 192px`, it is also set to be used as a banner but only when you are already part of a financing plan.
-    `finance_card` has a `height of 280px`, it is supposed to be used as a card.
-    It is also worth noting that their widths are all 100%, so what defines the width of the banner is the wrapping container.
-  */
-  variant?: 'finance' | 'onboard' | 'finance_card';
   /** `enableServicingBanner` is a boolean flag that enables the `FinanceBanner` to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing. */
   enableServicingBanner?: boolean;
   /** Function that is called when clicking on View Details button.
@@ -41,7 +33,6 @@ type FinanceBannerProps = {
 };
 
 export const FinanceBanner = ({
-  variant = 'onboard',
   enableServicingBanner = false,
   handleViewDetails,
 }: FinanceBannerProps) => {
@@ -98,7 +89,8 @@ export const FinanceBanner = ({
   const shouldApplyFinanceStyles = enableServicingBanner && isServicing;
   const isCustomBanner =
     applicationState !== FinancialApplicationState.PENDING_APPROVAL &&
-    applicationState !== FinancialApplicationState.NO_OFFERS_AVAILABLE;
+    applicationState !== FinancialApplicationState.NO_OFFERS_AVAILABLE &&
+    applicationState !== FinancialApplicationState.OFFERS_EXPIRED;
 
   const handleHide = () => {
     setIsHidden(true);
@@ -138,32 +130,6 @@ export const FinanceBanner = ({
         return;
     }
   };
-
-  const handleBannerIcon = () => {
-    switch (applicationState) {
-      case FinancialApplicationState.INIT:
-      case FinancialApplicationState.IN_PROGRESS:
-      case FinancialApplicationState.APPROVED:
-      default:
-        return {
-          wrapper: lighten(theme.palette.primary.main, 0.6),
-          icon: '#FFF',
-        };
-      case FinancialApplicationState.PENDING_APPROVAL:
-        return {
-          wrapper: '#F4F4FE',
-          icon: theme.palette.primary.main,
-        };
-      case FinancialApplicationState.NO_OFFERS_AVAILABLE:
-      case FinancialApplicationState.OFFERS_EXPIRED:
-        return {
-          wrapper: 'rgba(255,71,93,0.4)',
-          icon: '#FFF',
-        };
-    }
-  };
-
-  const iconColors = handleBannerIcon();
 
   const handleBannerTextContent = () => {
     switch (applicationState) {
@@ -206,6 +172,7 @@ export const FinanceBanner = ({
           </>
         );
       case FinancialApplicationState.APPROVED:
+      case FinancialApplicationState.OFFER_ACCEPTED:
         return (
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
@@ -266,21 +233,14 @@ export const FinanceBanner = ({
   }
 
   return (
-    <FinanceBannerPlaceholder
-      shouldDisplayCustomBg={isCustomBanner}
-      variant={variant}
-    >
+    <FinanceBannerWrapper shouldApplyFinanceStyles={shouldApplyFinanceStyles}>
       <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: 2,
-          zIndex: 10,
-          position: 'relative',
-          width: '100%',
-          height: shouldApplyFinanceStyles ? 'auto' : '100%',
-          alignItems: 'center',
-        }}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        width="100%"
+        height="100%"
       >
         <Box
           sx={{
@@ -290,74 +250,41 @@ export const FinanceBanner = ({
             alignItems: 'center',
           }}
         >
-          <Box
-            sx={{
-              backgroundColor: iconColors.wrapper,
-              borderRadius: '10px',
-              width: 40,
-              height: 40,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Money
-              sx={{
-                color: iconColors.icon,
-                width: 20,
-                height: 20,
-              }}
-            />
-          </Box>
           <Box sx={{ flex: '1 1 0%' }}>{handleBannerTextContent()}</Box>
         </Box>
         <Stack direction="row" gap={1} alignItems="center">
           {shouldApplyFinanceStyles && handleViewDetails ? (
-            <Button
-              onClick={handleViewDetails}
-              variant="text"
-              sx={{ color: '#292929' }}
-            >
+            <Button onClick={handleViewDetails} variant="text">
               {t(i18n)`View details`}
             </Button>
           ) : (
-            <Button
-              onClick={handleHide}
-              variant="text"
-              {...(isCustomBanner && {
-                sx: { color: '#292929' },
-              })}
-            >
+            <Button onClick={handleHide} variant="text">
               {isCustomBanner ? t(i18n)`Hide` : t(i18n)`Close`}
             </Button>
           )}
 
-          {isCustomBanner && (
+          {isCustomBanner && buttonText && (
             <Button
-              disabled={isLoading}
               onClick={() => {
                 if (isLoading) return;
                 startFinanceSession();
               }}
-              variant="outlined"
+              variant="contained"
+              color="primary"
               sx={{
-                bgcolor: 'black',
                 px: 2.5,
                 py: 1.5,
-                color: 'white',
-                minWidth: 185,
                 height: 40,
-                borderRadius: '8px',
               }}
             >
-              {buttonText || t(i18n)`Apply for financing`}
+              {buttonText}
             </Button>
           )}
         </Stack>
       </Box>
 
       {shouldApplyFinanceStyles && (
-        <Box mt={1} pl="56px" zIndex={10} position="relative">
+        <Box>
           {isAvailable ? (
             <>
               <Typography variant="body1">{t(
@@ -368,6 +295,7 @@ export const FinanceBanner = ({
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
+                mb={1}
               >
                 <Box display="flex" alignItems="center" gap={1}>
                   <Typography variant="h2" fontSize={32}>
@@ -376,7 +304,7 @@ export const FinanceBanner = ({
                   <Typography
                     component="span"
                     variant="subtitle1"
-                    sx={{ color: '#B8B8B8' }}
+                    sx={{ color: theme.palette.grey[400] }}
                   >
                     / {formatCurrencyToDisplay(totalLimit, 'USD')}
                   </Typography>
@@ -388,29 +316,12 @@ export const FinanceBanner = ({
               </Box>
             </>
           ) : (
-            <Typography variant="h2" fontSize={32}>
+            <Typography variant="h2" fontSize={32} mb={1}>
               {t(i18n)`Not available`}
             </Typography>
           )}
 
-          <Box
-            sx={{
-              backgroundColor: '#EBEBFF',
-              width: '100%',
-              height: '6px',
-              borderRadius: '3px',
-              mt: 1,
-            }}
-          >
-            <Box
-              sx={{
-                backgroundColor: 'rgba(153, 153, 255, 1)',
-                width: `${progress}%`,
-                height: '6px',
-                borderRadius: '3px',
-              }}
-            />
-          </Box>
+          <FinanceProgressBar progress={progress} />
 
           {(!isAvailable || offer?.status === 'LATE') && (
             <Typography variant="body1" fontWeight={400} mt={1}>
@@ -430,6 +341,6 @@ export const FinanceBanner = ({
           )}
         </Box>
       )}
-    </FinanceBannerPlaceholder>
+    </FinanceBannerWrapper>
   );
 };

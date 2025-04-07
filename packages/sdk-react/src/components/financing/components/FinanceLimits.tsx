@@ -1,25 +1,23 @@
-import { useState } from 'react';
-
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import {
-  FinanceBannerPlaceholder,
-  FinanceHowItWorks,
+  FinanceBannerWrapper,
+  FinanceMenuButtons,
+  FinanceProgressBar,
 } from '@/components/financing/components';
-import { useKanmonContext } from '@/core/context/KanmonContext';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, Stack, Button } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 export const FinanceLimits = ({
   offers = [],
 }: {
   offers?: components['schemas']['FinancingOffer'][];
 }) => {
+  const { componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
-  const { startFinanceSession } = useKanmonContext();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const theme = useTheme();
   const { formatCurrencyToDisplay } = useCurrencies();
   const totalLimit = offers?.[0]?.total_amount ?? 0;
   const remainingLimit =
@@ -44,7 +42,7 @@ export const FinanceLimits = ({
         )`Due to late payment your financing is currently on hold. Please, contact the provider for further details.`;
       default:
         return t(i18n)`
-        Your remaining limit is the amount available to you for financing additional invoices
+        Your amount available for financing additional invoices.
       `;
     }
   };
@@ -54,20 +52,18 @@ export const FinanceLimits = ({
   }
 
   return (
-    <Box maxWidth="542px" width="100%">
+    <Box maxWidth="440px" width="100%">
       <Typography
         variant="subtitle1"
-        sx={{ mb: 2, display: 'inline-block' }}
+        sx={{ mb: 3, display: 'inline-block' }}
       >{t(i18n)`My financing`}</Typography>
 
-      <FinanceBannerPlaceholder shouldDisplayCustomBg variant="finance_card">
+      <FinanceBannerWrapper>
         <Box
           sx={{
-            gap: 3,
             display: 'flex',
             flexDirection: 'column',
-            position: 'relative',
-            zIndex: 1,
+            gap: 1.25,
           }}
         >
           <Box>
@@ -77,89 +73,44 @@ export const FinanceLimits = ({
                   i18n
                 )`Remaining limit`}</Typography>
                 <Box display="flex" alignItems="center" gap={1}>
-                  <Typography variant="h2" fontSize={32}>
+                  <Typography variant="h2" fontSize={24} lineHeight="32px">
                     {formatCurrencyToDisplay(remainingLimit, 'USD')}
                   </Typography>
                   <Typography
                     component="span"
                     variant="subtitle1"
-                    sx={{ color: '#B8B8B8' }}
+                    fontSize={18}
+                    color={theme.palette.grey[400]}
                   >
                     / {formatCurrencyToDisplay(totalLimit, 'USD')}
                   </Typography>
                 </Box>
               </>
             ) : (
-              <Typography variant="h2" fontSize={32}>{t(
+              <Typography variant="h2" fontSize={24}>{t(
                 i18n
               )`Not available`}</Typography>
             )}
           </Box>
-          {/* Progress bar */}
-          <Box>
-            {isAvailable && (
-              <Box
-                sx={{
-                  backgroundColor: 'white',
-                  width: '100%',
-                  height: '6px',
-                  borderRadius: '3px',
-                }}
-              >
-                <Box
-                  sx={{
-                    backgroundColor: 'rgba(153, 153, 255, 1)',
-                    width: `${progress}%`,
-                    height: '6px',
-                    borderRadius: '3px',
-                  }}
-                />
-              </Box>
-            )}
+
+          <Box display="flex" flexDirection="column" gap={1.5}>
+            {isAvailable && <FinanceProgressBar progress={progress} />}
+
             <Typography
               variant="body1"
-              mt={1.5}
-              sx={{ color: 'rgba(0,0,0,0.56)', fontWeight: 400 }}
+              fontSize={14}
+              lineHeight="22px"
+              fontWeight={400}
             >
               {handleWidgetText()}
             </Typography>
           </Box>
 
-          <Stack direction="row" gap={1} alignItems="center">
-            <Button
-              onClick={() => startFinanceSession()}
-              variant="outlined"
-              sx={{
-                bgcolor: 'black',
-                px: 2.5,
-                py: 1.5,
-                color: 'white',
-                height: 40,
-                borderRadius: '8px',
-                borderColor: 'black',
-              }}
-            >
-              {t(i18n)`Financing menu`}
-            </Button>
-
-            <Button
-              variant="text"
-              onClick={() => setIsDialogOpen(true)}
-              sx={{ color: '#292929', px: 2.5, py: 1.5, height: 40 }}
-            >
-              {t(i18n)`How it works?`}
-            </Button>
-          </Stack>
+          {componentSettings?.financing?.enableFinanceWidgetButton && (
+            <FinanceMenuButtons />
+          )}
         </Box>
-      </FinanceBannerPlaceholder>
-
-      <Dialog
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        alignDialog="right"
-      >
-        <FinanceHowItWorks />
-      </Dialog>
+      </FinanceBannerWrapper>
     </Box>
   );
 };

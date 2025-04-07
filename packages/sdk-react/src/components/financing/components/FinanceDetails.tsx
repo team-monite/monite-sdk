@@ -10,6 +10,7 @@ import { useLingui } from '@lingui/react';
 import {
   Box,
   Button,
+  darken,
   Divider,
   List,
   ListItem,
@@ -83,6 +84,9 @@ export const FinanceDetails = ({
       )
     : '-';
 
+  const isRequestedSum =
+    financedInvoice?.status === 'REJECTED' || financedInvoice?.status === 'NEW';
+
   const shouldDisplayPayOutButton =
     financedInvoice?.status === 'FUNDED' || financedInvoice?.status === 'LATE';
 
@@ -115,32 +119,47 @@ export const FinanceDetails = ({
             }}
           >
             <Box width="100%">
-              <Typography variant="body1" color="#777">{t(
-                i18n
-              )`Financing plan ${planIndex + 1}`}</Typography>
-              <List>
+              <Typography
+                variant="body1"
+                color={darken(theme.palette.grey[50], 0.4)}
+                mb={0.5}
+                fontWeight={400}
+              >{t(i18n)`Financing plan ${planIndex + 1}`}</Typography>
+              <List
+                sx={{
+                  py: 0,
+                  gap: 0.5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 {plan.items.map((item, index) => (
-                  <ListItem
-                    key={`${planIndex}-${item}-${index}`}
-                    sx={{ p: 0, mt: 1 }}
-                  >
-                    <Typography variant="body1">{t(i18n)`${item}`}</Typography>
+                  <ListItem key={`${planIndex}-${item}-${index}`} sx={{ p: 0 }}>
+                    <Typography variant="body1" fontWeight={400}>{t(
+                      i18n
+                    )`${item}`}</Typography>
                   </ListItem>
                 ))}
               </List>
             </Box>
             <Box width="100%">
-              <Typography variant="body1" color="#777">{t(
-                i18n
-              )`Repayment on`}</Typography>
-              <Typography variant="body1">{t(
+              <Typography
+                variant="body1"
+                color={darken(theme.palette.grey[50], 0.4)}
+                mb={0.5}
+                fontWeight={400}
+              >{t(i18n)`Repayment on`}</Typography>
+              <Typography variant="body1" fontWeight={400}>{t(
                 i18n
               )`${repaymentDate}`}</Typography>
             </Box>
             <Box width="100%">
-              <Typography variant="body1" color="#777">{t(
-                i18n
-              )`Status`}</Typography>
+              <Typography
+                variant="body1"
+                color={darken(theme.palette.grey[50], 0.4)}
+                mb={0.5}
+                fontWeight={400}
+              >{t(i18n)`Status`}</Typography>
 
               <FinancedInvoiceStatusChip
                 icon
@@ -160,17 +179,22 @@ export const FinanceDetails = ({
             columnGap: 2,
           }}
         >
-          <Typography variant="body1" color="#777">{t(
-            i18n
-          )`Received sum`}</Typography>
+          <Typography
+            variant="body1"
+            color={darken(theme.palette.grey[50], 0.4)}
+          >{t(i18n)`${
+            isRequestedSum ? 'Requested sum' : 'Received sum'
+          }`}</Typography>
           <Typography variant="body1">{receivedSum}</Typography>
-          <Typography variant="body1" color="#777">{t(
-            i18n
-          )`Service Fee`}</Typography>
+          <Typography
+            variant="body1"
+            color={darken(theme.palette.grey[50], 0.4)}
+          >{t(i18n)`Service Fee`}</Typography>
           <Typography variant="body1">{serviceFee}</Typography>
-          <Typography variant="body1" color="#777">{t(
-            i18n
-          )`Repayment sum`}</Typography>
+          <Typography
+            variant="body1"
+            color={darken(theme.palette.grey[50], 0.4)}
+          >{t(i18n)`Repayment sum`}</Typography>
           <Typography variant="body1">{repaymentSum}</Typography>
         </Box>
 
@@ -181,8 +205,7 @@ export const FinanceDetails = ({
             borderRadius: '16px',
             px: 3,
             py: 2.5,
-            border: '1px solid',
-            borderColor: 'divider',
+            border: `1px solid ${theme.palette.divider}`,
             display: 'flex',
             gap: 2,
             justifyContent: 'space-between',
@@ -214,7 +237,7 @@ export const FinanceDetails = ({
         <Box
           sx={{
             mt: 'auto',
-            borderTop: '1px solid rgba(0,0,0,0.13)',
+            borderTop: `1px solid ${theme.palette.divider}`,
             px: 4,
             py: 2,
             display: 'flex',
@@ -228,7 +251,7 @@ export const FinanceDetails = ({
             onClick={() => startFinanceSession({ component: 'PAY_NOW' })}
             sx={{ py: 1.25, px: 1.5, height: 32, fontSize: 14, ml: 'auto' }}
           >
-            {t(i18n)`Pay out now`}
+            {t(i18n)`Repay now`}
           </Button>
         </Box>
       )}
