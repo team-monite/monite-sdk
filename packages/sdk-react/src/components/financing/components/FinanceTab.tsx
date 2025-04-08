@@ -26,7 +26,7 @@ export const FinanceTab = ({
   return (
     <Stack mt={4} gap={4}>
       {data?.offers && data.offers.length > 0 && (
-        <FinanceWidget offers={data?.offers} />
+        <FinanceWidget offers={data.offers} />
       )}
       <FinancedInvoicesTable onRowClick={onRowClick} offers={data?.offers} />
     </Stack>

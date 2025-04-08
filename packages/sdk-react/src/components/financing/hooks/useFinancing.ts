@@ -154,7 +154,7 @@ export const useFinancing = () => {
     api.financingInvoices.getFinancingInvoices.setQueryData(
       api.financingInvoices.getFinancingInvoices.getQueryKey({ query: {} }),
       (data) => {
-        const currentData = data?.data ? data?.data : [];
+        const currentData = data?.data ? data.data : [];
         return {
           ...data,
           data: [newFinancedInvoice, ...currentData],
