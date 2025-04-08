@@ -1,7 +1,9 @@
 import { useDialog } from '@/components/Dialog';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
+import {
+  InvoiceCounterpartName,
+  InvoiceStatusChip,
+} from '@/components/receivables/components';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';

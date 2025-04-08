@@ -1,8 +1,10 @@
 import { components } from '@/api';
+import {
+  InvoiceRecurrenceIterationStatusChip,
+  MoniteInvoiceRecurrenceIterationStatusChipProps,
+  InvoiceStatusChip,
+} from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
-import { InvoiceRecurrenceIterationStatusChip } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip';
-import { MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useReceivableById } from '@/core/queries';
