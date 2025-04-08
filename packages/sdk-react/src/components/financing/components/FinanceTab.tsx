@@ -24,7 +24,7 @@ export const FinanceTab = ({
   }
 
   return (
-    <Stack mt={4} gap={4}>
+    <Stack mt={4} gap={4} px={1.5} height="100%">
       {data?.offers && data.offers.length > 0 && (
         <FinanceWidget offers={data.offers} />
       )}

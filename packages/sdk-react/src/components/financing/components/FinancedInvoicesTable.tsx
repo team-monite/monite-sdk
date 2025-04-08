@@ -263,7 +263,6 @@ const FinancedInvoicesTableBase = ({
         overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
-        pb: 4,
       }}
     >
       <Typography mb={2} variant="subtitle1">{t(
