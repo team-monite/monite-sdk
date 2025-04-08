@@ -98,6 +98,17 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
     return null;
   }
 
+  if (isFinanced) {
+    return (
+      <Box>
+        <FinanceOverviewCard
+          invoice={invoice}
+          offers={financeOffersData ?? null}
+        />
+      </Box>
+    );
+  }
+
   if (!invoiceIsEligibleForFinance) {
     return (
       <FinanceBannerWrapper>
@@ -112,17 +123,6 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
           </Typography>
         </Box>
       </FinanceBannerWrapper>
-    );
-  }
-
-  if (isFinanced) {
-    return (
-      <Box>
-        <FinanceOverviewCard
-          invoice={invoice}
-          offers={financeOffersData ?? null}
-        />
-      </Box>
     );
   }
 

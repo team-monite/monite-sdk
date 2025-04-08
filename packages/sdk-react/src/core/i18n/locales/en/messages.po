@@ -4146,7 +4146,7 @@ msgstr "It is an entity having legal status as an individual."
 msgid "It looks like the phone number is too short."
 msgstr "It looks like the phone number is too short."
 
-#: src/components/financing/components/FinanceInvoice.tsx:109
+#: src/components/financing/components/FinanceInvoice.tsx:120
 msgid "It must be in the \"Issued\" or \"Partially paid\" statuses and have more than 7 days till overdue."
 msgstr "It must be in the \"Issued\" or \"Partially paid\" statuses and have more than 7 days till overdue."
 
@@ -7245,7 +7245,7 @@ msgstr "This form must be filled out by someone with significant control and man
 msgid "This invoice can be financed"
 msgstr "This invoice can be financed"
 
-#: src/components/financing/components/FinanceInvoice.tsx:105
+#: src/components/financing/components/FinanceInvoice.tsx:116
 msgid "This invoice can't be financed"
 msgstr "This invoice can't be financed"
 

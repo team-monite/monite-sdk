@@ -73,9 +73,9 @@ export const FinanceDetails = ({
     ? i18n.date(financedInvoice.repayment_schedule.repayment_date, dateFormat)
     : '—';
 
-  const receivedSum = financedInvoice?.total_amount
+  const receivedSum = financedInvoice?.repayment_amount
     ? formatCurrencyToDisplay(
-        financedInvoice.total_amount,
+        financedInvoice.repayment_amount,
         financedInvoice.currency
       )
     : '-';
