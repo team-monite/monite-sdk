@@ -16,6 +16,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { GlobalToast } from '../GlobalToast';
 // @ts-expect-error - This is a global css file
 import tailwindApp from '../theme/app.css';
+import { KanmonContextProvider } from './KanmonContext';
 import {
   MoniteContextProvider,
   MoniteTheme,
@@ -73,7 +74,7 @@ export const MoniteProvider = ({
         </MoniteThemeProvider>
       </EmotionCacheProvider>
       <MoniteAPIProvider APIContext={MoniteQraftContext}>
-        {children}
+        <KanmonContextProvider>{children}</KanmonContextProvider>
       </MoniteAPIProvider>
     </MoniteContextProvider>
   );

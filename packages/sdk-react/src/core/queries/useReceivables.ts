@@ -138,14 +138,19 @@ export const useUpdateReceivable = (receivable_id: string) => {
  *
  * @see {@link https://docs.monite.com/reference/get_receivables_id} Monite backend call API
  */
-export const useReceivableById = (receivable_id: string) => {
+export const useReceivableById = (receivable_id: string, enabled?: boolean) => {
   const { api } = useMoniteContext();
 
-  return api.receivables.getReceivablesId.useQuery({
-    path: {
-      receivable_id,
+  return api.receivables.getReceivablesId.useQuery(
+    {
+      path: {
+        receivable_id,
+      },
     },
-  });
+    {
+      enabled,
+    }
+  );
 };
 
 /**

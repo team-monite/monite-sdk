@@ -2,6 +2,7 @@ import { useId, useReducer, useState } from 'react';
 
 import {
   ApprovalPolicyDetails,
+  UserRoleDeleteDialog,
   UserRoleDetailsDialog,
   UserRoleEditDialog,
   UserRolesTable,
@@ -55,7 +56,10 @@ type RoleAction = {
     | 'CLOSE_ROLE_DETAILS'
     | 'OPEN_ROLE_EDIT'
     | 'CLOSE_ROLE_EDIT'
-    | 'OPEN_ROLE_CREATE';
+    | 'OPEN_ROLE_CREATE'
+    | 'OPEN_ROLE_DELETE'
+    | 'CLOSE_ROLE_DELETE'
+    | 'ROLE_DELETED';
   payload?: string;
 };
 
@@ -67,6 +71,7 @@ type PolicyAction = {
 type RolesPoliciesState = {
   isRoleDetailsDialogOpened: boolean;
   isRoleEditDialogOpened: boolean;
+  isRoleDeleteDialogOpened: boolean;
   selectedUserRoleId?: string;
   isPolicyDetailsDialogOpened: boolean;
   selectedApprovalPolicyId?: string;
@@ -75,6 +80,7 @@ type RolesPoliciesState = {
 const initialState: RolesPoliciesState = {
   isRoleDetailsDialogOpened: false,
   isRoleEditDialogOpened: false,
+  isRoleDeleteDialogOpened: false,
   selectedUserRoleId: undefined,
   isPolicyDetailsDialogOpened: false,
   selectedApprovalPolicyId: undefined,
@@ -97,6 +103,18 @@ const rolesPoliciesReducer = (
       return { ...state, isRoleEditDialogOpened: true };
     case 'CLOSE_ROLE_EDIT':
       return { ...state, isRoleEditDialogOpened: false };
+    case 'OPEN_ROLE_DELETE':
+      return { ...state, isRoleDeleteDialogOpened: true };
+    case 'CLOSE_ROLE_DELETE':
+      return { ...state, isRoleDeleteDialogOpened: false };
+    case 'ROLE_DELETED':
+      return {
+        ...state,
+        selectedUserRoleId: undefined,
+        isRoleDeleteDialogOpened: false,
+        isRoleEditDialogOpened: false,
+        isRoleDetailsDialogOpened: false,
+      };
     case 'OPEN_ROLE_CREATE':
       return {
         ...state,
@@ -300,6 +318,7 @@ const RolesAndApprovalPoliciesBase = () => {
         <UserRoleDetailsDialog
           id={state.selectedUserRoleId}
           onClickEditRole={() => dispatch({ type: 'OPEN_ROLE_EDIT' })}
+          onClickDeleteRole={() => dispatch({ type: 'OPEN_ROLE_DELETE' })}
         />
       </Dialog>
 
@@ -312,6 +331,19 @@ const RolesAndApprovalPoliciesBase = () => {
           id={state.selectedUserRoleId}
           onCreated={() => dispatch({ type: 'CLOSE_ROLE_EDIT' })}
           onUpdated={() => dispatch({ type: 'CLOSE_ROLE_EDIT' })}
+          onClickDeleteRole={() => dispatch({ type: 'OPEN_ROLE_DELETE' })}
+        />
+      </Dialog>
+
+      <Dialog
+        open={state.isRoleDeleteDialogOpened}
+        onClose={() => dispatch({ type: 'CLOSE_ROLE_DELETE' })}
+        fullWidth
+        maxWidth="sm"
+      >
+        <UserRoleDeleteDialog
+          id={state.selectedUserRoleId}
+          onDeleted={() => dispatch({ type: 'ROLE_DELETED' })}
         />
       </Dialog>
     </>

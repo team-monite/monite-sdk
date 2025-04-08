@@ -3,10 +3,15 @@ import { useState, useCallback, useMemo } from 'react';
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
+import { FinanceMenuButtons } from '@/components/financing/components';
+import { FINANCING_LABEL } from '@/components/financing/consts';
+import { useFinancing } from '@/components/financing/hooks';
 import { PageHeader } from '@/components/PageHeader';
+import {
+  ReceivablesTable,
+  ReceivablesTableTabEnum,
+} from '@/components/receivables/components';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
-import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
-import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -31,13 +36,14 @@ export const Receivables = (props: ReceivablesProps) => (
 const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
-
+  const { isEnabled, isServicing } = useFinancing();
   const [invoiceId, setInvoiceId] = useState<string>('');
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ReceivablesTableTabEnum>(
     componentSettings.receivables.tab ?? ReceivablesTableTabEnum.Invoices
   );
+  const activeTabItem = componentSettings?.receivables?.tabs?.[activeTab];
 
   const receivableCallbacks = useMemo(
     () => ({
@@ -132,14 +138,21 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
         }
         extra={
           <Box>
-            <Button
-              id="actions"
-              variant="contained"
-              disabled={!isCreateAllowed}
-              onClick={() => {
-                setIsCreateInvoiceDialogOpen(true);
-              }}
-            >{t(i18n)`Create Invoice`}</Button>
+            {isEnabled &&
+            isServicing &&
+            !componentSettings?.financing?.enableFinanceWidgetButton &&
+            activeTabItem?.label === FINANCING_LABEL ? (
+              <FinanceMenuButtons />
+            ) : (
+              <Button
+                id="actions"
+                variant="contained"
+                disabled={!isCreateAllowed}
+                onClick={() => {
+                  setIsCreateInvoiceDialogOpen(true);
+                }}
+              >{t(i18n)`Create Invoice`}</Button>
+            )}
           </Box>
         }
       />

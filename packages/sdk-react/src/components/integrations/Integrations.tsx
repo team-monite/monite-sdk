@@ -1,10 +1,10 @@
+import { FinanceIntegrationCard } from '@/components/financing';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
 
 import { PageHeader } from '../PageHeader';
-import { FinanceApplicationCard } from '../receivables/Financing/FinanceApplicationCard/FinanceApplicationCard';
 
 export function Integrations() {
   return (
@@ -16,6 +16,7 @@ export function Integrations() {
 
 function IntegrationsComponent() {
   const { i18n } = useLingui();
+
   return (
     <Box>
       <PageHeader title={<>{t(i18n)`Integrations`}</>} />
@@ -26,7 +27,7 @@ function IntegrationsComponent() {
           gap: 2,
         }}
       >
-        <FinanceApplicationCard />
+        <FinanceIntegrationCard />
       </Box>
     </Box>
   );

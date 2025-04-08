@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { useUser } from '@clerk/nextjs';
-import { useMoniteContext } from '@monite/sdk-react';
-import { Box, Stack, Skeleton, Container } from '@mui/material';
+import { FinanceBanner, useMoniteContext } from '@monite/sdk-react';
+import { Box, Stack, Skeleton } from '@mui/material';
 
 import { CashFlowCard } from '@/components/Dashboard/Cashflow';
 import { CreateInvoiceCard } from '@/components/Dashboard/CreateInvoiceCard';
@@ -38,6 +38,7 @@ export default function DefaultPage() {
         >
           <h1>Welcome{user?.firstName ? `, ${user?.firstName}` : ''}</h1>
         </Stack>
+
         <Stack
           direction="column"
           spacing={3}

@@ -18,6 +18,7 @@ describe('User Role Details', () => {
       <UserRoleDetailsDialog
         id={fullPermissionRole.id}
         onClickEditRole={onClickMock}
+        onClickDeleteRole={jest.fn()}
       />
     );
 
@@ -29,7 +30,11 @@ describe('User Role Details', () => {
   test('should render "Not Found" message component if the user role is not found', async () => {
     const onClickMock = jest.fn();
     renderWithClient(
-      <UserRoleDetailsDialog id="not-found-id" onClickEditRole={onClickMock} />
+      <UserRoleDetailsDialog
+        id="not-found-id"
+        onClickEditRole={onClickMock}
+        onClickDeleteRole={jest.fn()}
+      />
     );
 
     await waitUntilTableIsLoaded();
@@ -43,6 +48,7 @@ describe('User Role Details', () => {
       <UserRoleDetailsDialog
         id={fullPermissionRole.id}
         onClickEditRole={onClickMock}
+        onClickDeleteRole={jest.fn()}
       />
     );
 
