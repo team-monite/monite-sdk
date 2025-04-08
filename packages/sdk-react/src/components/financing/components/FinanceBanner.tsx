@@ -10,6 +10,7 @@ import {
   useFinancing,
 } from '@/components/financing/hooks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -23,6 +24,12 @@ type StorageBannerState = {
   expires_at: number;
 };
 
+export const FinanceBanner = (props: FinanceBannerProps) => (
+  <MoniteScopedProviders>
+    <FinanceBannerBase {...props} />
+  </MoniteScopedProviders>
+);
+
 type FinanceBannerProps = {
   /** `enableServicingBanner` is a boolean flag that enables the `FinanceBanner` to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing. */
   enableServicingBanner?: boolean;
@@ -32,7 +39,7 @@ type FinanceBannerProps = {
   handleViewDetails?: () => void;
 };
 
-export const FinanceBanner = ({
+const FinanceBannerBase = ({
   enableServicingBanner = false,
   handleViewDetails,
 }: FinanceBannerProps) => {

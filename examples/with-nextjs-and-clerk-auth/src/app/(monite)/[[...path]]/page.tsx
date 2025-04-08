@@ -39,10 +39,7 @@ export default function DefaultPage() {
           <h1>Welcome{user?.firstName ? `, ${user?.firstName}` : ''}</h1>
         </Stack>
 
-        <FinanceBanner enableServicingBanner />
-
         <Stack
-          mt={3}
           direction="column"
           spacing={3}
           useFlexGap={true}
