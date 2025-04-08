@@ -3880,7 +3880,7 @@ msgstr "Indonesian Rupiah"
 msgid "Industrial Supplies (Not Elsewhere Classified)"
 msgstr "Industrial Supplies (Not Elsewhere Classified)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:67
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:68
 #: src/components/onboarding/validators/validationSchemas.ts:127
 msgid "Industry"
 msgstr "Industry"
@@ -4820,6 +4820,10 @@ msgstr "Mozambique"
 #: src/components/onboarding/dicts/mccCodes.ts:978
 msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
+
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:92
+msgid "Must be a reachable, unique URL that describes the account's business."
+msgstr "Must be a reachable, unique URL that describes the account's business."
 
 #: src/components/financing/components/FinanceBanner.tsx:216
 #: src/components/financing/components/FinanceLimits.tsx:59
