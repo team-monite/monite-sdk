@@ -188,7 +188,10 @@ const ContextProvider = ({
     [entityId]
   );
 
-  const theme = useMemo(() => createThemeWithDefaults(userTheme), [userTheme]);
+  const theme = useMemo(
+    () => createThemeWithDefaults(userTheme) as MoniteTheme,
+    [userTheme]
+  );
 
   useEffect(() => {
     queryClient.mount();
@@ -200,7 +203,7 @@ const ContextProvider = ({
       value={{
         environment,
         entityId,
-        theme,
+        theme: theme as MoniteTheme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,
         sentryHub,

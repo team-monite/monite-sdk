@@ -6,7 +6,7 @@ import {
   MoniteAPIProvider,
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
-import { MoniteContext } from '@/core/context/MoniteContext';
+import { MoniteContext, MoniteTheme } from '@/core/context/MoniteContext';
 import {
   getLocaleWithDefaults,
   MoniteI18nProvider,
@@ -116,7 +116,9 @@ export const Provider = ({
         i18n,
         sentryHub,
         queryClient: client,
-        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        theme: createThemeWithDefaults(
+          moniteProviderProps?.theme
+        ) as MoniteTheme,
         componentSettings: getDefaultComponentSettings(
           i18n,
           moniteProviderProps?.componentSettings

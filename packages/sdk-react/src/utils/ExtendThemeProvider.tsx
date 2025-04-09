@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 
-import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
+import {
+  MoniteContext,
+  MoniteTheme,
+  useMoniteContext,
+} from '@/core/context/MoniteContext';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 
 /**
@@ -22,7 +26,7 @@ export function ExtendThemeProvider({
       <MoniteContext.Provider
         value={{
           ...moniteContext,
-          theme: extendedTheme,
+          theme: extendedTheme as MoniteTheme,
         }}
       >
         {children}
