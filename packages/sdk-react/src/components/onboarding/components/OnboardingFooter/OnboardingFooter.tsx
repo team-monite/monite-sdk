@@ -59,6 +59,11 @@ function OnboardingFooterContent() {
 export function OnboardingFooter() {
   const theme = useTheme();
   const moreThanLG = useMediaQuery(theme.breakpoints.up('lg'));
+  const { componentSettings } = useMoniteContext();
+
+  if (componentSettings?.onboarding?.hideFooter) {
+    return null;
+  }
 
   if (moreThanLG) {
     return (

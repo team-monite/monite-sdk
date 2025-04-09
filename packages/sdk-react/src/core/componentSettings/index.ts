@@ -36,6 +36,11 @@ export interface OnboardingSettings {
    */
   footerWebsiteUrl?: string;
   /**
+   * If true, hides the footer on the Onboarding pages.
+   * Defaults to false.
+   */
+  hideFooter?: boolean;
+  /**
    * Called when bank account setup is completed.
    *
    * @param {string} entityId - The ID of the entity
