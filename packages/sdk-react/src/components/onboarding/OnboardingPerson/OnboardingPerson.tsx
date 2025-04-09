@@ -261,7 +261,7 @@ export function OnboardingPerson() {
               <RHFTextField
                 disabled={isPending}
                 type="tel"
-                label={t(i18n)`Security number`}
+                label={t(i18n)`Full Social Security Number`}
                 name="id_number"
                 control={control}
               />

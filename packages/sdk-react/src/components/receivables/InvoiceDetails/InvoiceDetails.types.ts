@@ -80,12 +80,10 @@ export interface ExistingReceivableDetailsProps {
    * Indicates that an invoice email has been sent to the counterpart.
    *
    * @param {string} invoiceId - Invoice ID
-   * @param {boolean} isFirstInvoice - Whether this is the first invoice sent by the entity
    *
    * @returns {void}
    */
-  onSendEmail?: (invoiceId: string, isFirstInvoice: boolean) => void;
-  onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
+  onSendEmail?: (invoiceId: string) => void;
 }
 
 export interface InvoiceDetailsCreateProps {
