@@ -201,6 +201,8 @@ const ContextProvider = ({
   return (
     <MoniteContext.Provider
       value={{
+        api,
+        version,
         environment,
         entityId,
         theme: theme as MoniteTheme,
@@ -212,8 +214,6 @@ const ContextProvider = ({
         dateFnsLocale,
         apiUrl: apiUrl || 'https://api.sandbox.monite.com/v1',
         fetchToken,
-        api,
-        version,
         requestFn,
       }}
     >
