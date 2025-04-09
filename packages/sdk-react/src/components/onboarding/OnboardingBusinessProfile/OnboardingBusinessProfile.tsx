@@ -8,6 +8,8 @@ import {
 } from '@/core/queries/useOnboarding';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { InfoOutlined } from '@mui/icons-material';
+import { Alert, Box } from '@mui/material';
 
 import { getMccCodes } from '../dicts/mccCodes';
 import { useOnboardingForm } from '../hooks';
@@ -71,13 +73,27 @@ export const OnboardingBusinessProfile = () => {
         )}
 
         {checkValue('url') && (
-          <RHFTextField
-            disabled={isPending}
-            label={t(i18n)`Business website`}
-            name="url"
-            type="url"
-            control={control}
-          />
+          <Box sx={{ width: '100%' }}>
+            <RHFTextField
+              disabled={isPending}
+              label={t(i18n)`Business website`}
+              name="url"
+              type="url"
+              control={control}
+              fullWidth
+            />
+            <Alert
+              icon={<InfoOutlined fontSize="small" />}
+              severity="info"
+              sx={{
+                mt: 1,
+              }}
+            >
+              {t(
+                i18n
+              )`Must be a reachable, unique URL that describes the account's business.`}
+            </Alert>
+          </Box>
         )}
       </OnboardingStepContent>
     </OnboardingForm>
