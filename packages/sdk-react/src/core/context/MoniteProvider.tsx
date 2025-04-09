@@ -10,11 +10,18 @@ import {
 } from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { ThemeConfig } from '@/core/theme/types';
+import { Global, css } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
+// @ts-expect-error - This is a global css file
+import tailwindApp from '../theme/app.css';
 import { KanmonContextProvider } from './KanmonContext';
-import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
+import {
+  MoniteContextProvider,
+  MoniteTheme,
+  useMoniteContext,
+} from './MoniteContext';
 
 export interface MoniteSettings {
   entityId: string;
@@ -61,10 +68,10 @@ export const MoniteProvider = ({
       componentSettings={componentSettings}
     >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
-        <MoniteMuiThemeProvider>
+        <MoniteThemeProvider>
           <ContainerCssBaseline enableColorScheme />
           <GlobalToast />
-        </MoniteMuiThemeProvider>
+        </MoniteThemeProvider>
       </EmotionCacheProvider>
       <MoniteAPIProvider APIContext={MoniteQraftContext}>
         <KanmonContextProvider>{children}</KanmonContextProvider>
@@ -73,7 +80,31 @@ export const MoniteProvider = ({
   );
 };
 
-const MoniteMuiThemeProvider = ({ children }: { children: ReactNode }) => {
+const getTailwindTheme = (theme: MoniteTheme) => css`
+  :root {
+    --mtw-color-primary-50: ${theme.palette.primary[50]};
+    --mtw-color-primary-60: ${theme.palette.primary[60]};
+    --mtw-color-primary-80: ${theme.palette.primary[80]};
+    --mtw-color-primary-90: ${theme.palette.primary[90]};
+
+    --mtw-color-neutral-10: ${theme.palette.neutral[10]};
+    --mtw-color-neutral-30: ${theme.palette.neutral[30]};
+    --mtw-color-neutral-50: ${theme.palette.neutral[50]};
+    --mtw-color-neutral-70: ${theme.palette.neutral[70]};
+    --mtw-color-neutral-80: ${theme.palette.neutral[80]};
+    --mtw-color-neutral-90: ${theme.palette.neutral[90]};
+    --mtw-color-neutral-95: ${theme.palette.neutral[95]};
+  }
+  ${tailwindApp}
+`;
+
+const MoniteThemeProvider = ({ children }: { children: ReactNode }) => {
   const { theme } = useMoniteContext();
-  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
+
+  return (
+    <>
+      <Global styles={getTailwindTheme(theme)} />
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    </>
+  );
 };
