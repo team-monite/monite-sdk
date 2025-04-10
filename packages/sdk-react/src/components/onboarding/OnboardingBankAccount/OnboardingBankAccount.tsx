@@ -8,7 +8,6 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
@@ -16,14 +15,10 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-type EntityBankAccountResponse =
-  components['schemas']['EntityBankAccountResponse'];
-
 export interface OnboardingBankAccountProps {}
 
 export const OnboardingBankAccount = ({}: OnboardingBankAccountProps = {}) => {
   const { i18n } = useLingui();
-  const { entityId } = useMoniteContext();
 
   const {
     isLoading,
