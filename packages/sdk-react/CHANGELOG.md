@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.4
+
+### Patch Changes
+
+- 6ead5f4: Fix issue with Kanmon provider
+
 ## 4.0.0-beta.3
 
 ### Major Changes
