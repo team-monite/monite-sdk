@@ -65,7 +65,6 @@ export function OnboardingContent({
   }
 
   const Step = getComponent(currentRequirement, personId);
-  const props = getProps(currentRequirement, {});
 
   if (!Step) return null;
 
@@ -83,7 +82,7 @@ export function OnboardingContent({
             {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
-          <Step {...props} />
+          <Step />
         )
       }
     />
@@ -231,15 +230,4 @@ const getComponent = (
   if (isEntityDocuments(requirement)) return OnboardingEntityDocuments;
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
-};
-
-const getProps = (
-  requirement: OnboardingRequirement,
-  callbacks: OnboardingProps
-) => {
-  if (isBankAccount(requirement)) {
-    return {};
-  }
-
-  return {};
 };
