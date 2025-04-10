@@ -1,3 +1,4 @@
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -10,8 +11,7 @@ import { OnboardingProps } from './types';
 
 /**
  * Onboarding component
- * @alpha
- * @description Onboarding component has not yet been released.
+ * @description Onboarding component.
  */
 export const Onboarding = (props: OnboardingProps) => {
   return (
@@ -24,6 +24,7 @@ export const Onboarding = (props: OnboardingProps) => {
 const OnboardingComponent = (props: OnboardingProps) => {
   const { isLoading, error } = useOnboardingRequirementsData();
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
   if (error) {
     return <div>{getAPIErrorMessage(i18n, error)}</div>;
@@ -35,7 +36,7 @@ const OnboardingComponent = (props: OnboardingProps) => {
 
   return (
     <OnboardingContextProvider>
-      <OnboardingContent {...props} />
+      <OnboardingContent {...componentSettings.onboarding} {...props} />
     </OnboardingContextProvider>
   );
 };

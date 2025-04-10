@@ -108,20 +108,23 @@ export type OnboardingRequirementMask = Extract<
 
 export interface OnboardingProps {
   /**
-   * Called when bank account setup is completed.
-   *
-   * @param entityId The entity id
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
-   * @returns {void}
-   */
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: components['schemas']['EntityBankAccountResponse']
-  ) => void;
-  /**
    * Called when the onboarding process is completed.
    *
    * @returns {void}
    */
   onComplete?: () => void;
+
+  /**
+   * Called when the continue button is clicked on the onboarding completed page.
+   *
+   * @returns {void}
+   */
+  onContinue?: () => void;
+
+  /**
+   * Whether to show the continue button on the onboarding completed page.
+   *
+   * @default false
+   */
+  showContinueButton?: boolean;
 }

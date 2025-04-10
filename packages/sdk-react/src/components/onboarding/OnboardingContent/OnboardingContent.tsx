@@ -41,8 +41,9 @@ import type { OnboardingPersonId, OnboardingProps } from '../types';
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 
 export function OnboardingContent({
-  onPaymentOnboardingComplete,
   onComplete,
+  onContinue,
+  showContinueButton,
 }: OnboardingProps = {}) {
   const { i18n } = useLingui();
   const { currentRequirement, personId, onboardingCompleted } =
@@ -50,7 +51,13 @@ export function OnboardingContent({
   const { isLoading, error } = useOnboardingRequirementsData();
 
   if (onboardingCompleted) {
-    return <OnboardingCompleted onComplete={onComplete} />;
+    return (
+      <OnboardingCompleted
+        onComplete={onComplete}
+        onContinue={onContinue}
+        showContinueButton={showContinueButton}
+      />
+    );
   }
 
   if (isLoading || !currentRequirement) {
@@ -58,9 +65,6 @@ export function OnboardingContent({
   }
 
   const Step = getComponent(currentRequirement, personId);
-  const props = getProps(currentRequirement, {
-    onPaymentOnboardingComplete,
-  });
 
   if (!Step) return null;
 
@@ -78,7 +82,7 @@ export function OnboardingContent({
             {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
-          <Step {...props} />
+          <Step />
         )
       }
     />
@@ -226,17 +230,4 @@ const getComponent = (
   if (isEntityDocuments(requirement)) return OnboardingEntityDocuments;
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
-};
-
-const getProps = (
-  requirement: OnboardingRequirement,
-  callbacks: OnboardingProps
-) => {
-  if (isBankAccount(requirement)) {
-    return {
-      onPaymentOnboardingComplete: callbacks.onPaymentOnboardingComplete,
-    };
-  }
-
-  return {};
 };

@@ -22,6 +22,8 @@ export enum MoniteEventTypes {
   PAYMENTS_ONBOARDING_COMPLETED = 'payments.onboarding.completed',
   WORKING_CAPITAL_ONBOARDING_COMPLETED = 'working_capital.onboarding.completed',
   INVOICE_SENT = 'invoice.sent',
+  ONBOARDING_COMPLETED = 'onboarding.completed',
+  ONBOARDING_CONTINUE = 'onboarding.continue',
 }
 
 export interface BaseEventPayload {
@@ -149,17 +151,23 @@ export function enhanceOnboardingSettings(
   settings: ComponentSettings['onboarding'] = {}
 ): ComponentSettings['onboarding'] {
   const {
-    onPaymentOnboardingComplete,
     onWorkingCapitalOnboardingComplete,
+    onComplete,
+    onContinue,
     ...rest
   } = settings;
 
   return {
     ...rest,
-    onPaymentOnboardingComplete: createEventHandler(
-      onPaymentOnboardingComplete,
-      MoniteEventTypes.PAYMENTS_ONBOARDING_COMPLETED,
-      (id, response) => ({ id, response })
+    onComplete: createEventHandler(
+      onComplete,
+      MoniteEventTypes.ONBOARDING_COMPLETED,
+      (id) => ({ id })
+    ),
+    onContinue: createEventHandler(
+      onContinue,
+      MoniteEventTypes.ONBOARDING_CONTINUE,
+      (id) => ({ id })
     ),
     onWorkingCapitalOnboardingComplete: createEventHandler(
       onWorkingCapitalOnboardingComplete,
