@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
 import {
