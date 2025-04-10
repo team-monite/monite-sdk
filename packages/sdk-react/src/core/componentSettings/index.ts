@@ -40,17 +40,28 @@ export interface OnboardingSettings {
    * Defaults to false.
    */
   hideFooter?: boolean;
+
   /**
-   * Called when bank account setup is completed.
+   * Called when the onboarding process is completed.
    *
-   * @param {string} entityId - The ID of the entity
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
    * @returns {void}
    */
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: components['schemas']['EntityBankAccountResponse']
-  ) => void;
+  onComplete?: () => void;
+
+  /**
+   * Called when the continue button is clicked on the onboarding completed page.
+   *
+   * @returns {void}
+   */
+  onContinue?: () => void;
+
+  /**
+   * Whether to show the continue button on the onboarding completed page.
+   *
+   * @default false
+   */
+  showContinueButton?: boolean;
+
   /**
    * Called when working capital onboarding is completed.
    * This happens when the business status transitions to 'ONBOARDED'.

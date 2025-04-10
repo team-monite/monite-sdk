@@ -26,10 +26,11 @@ export function OnboardingLayout({ content, title }: OnboardingLayoutProps) {
 }
 
 const StyledLayout = styled(Box)`
-  position: relative;
   background-color: ${({ theme }) => theme.palette.background.default};
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledContent = styled(Box)`

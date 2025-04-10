@@ -19,16 +19,9 @@ import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 type EntityBankAccountResponse =
   components['schemas']['EntityBankAccountResponse'];
 
-export interface OnboardingBankAccountProps {
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: EntityBankAccountResponse
-  ) => void;
-}
+export interface OnboardingBankAccountProps {}
 
-export const OnboardingBankAccount = ({
-  onPaymentOnboardingComplete,
-}: OnboardingBankAccountProps = {}) => {
+export const OnboardingBankAccount = ({}: OnboardingBankAccountProps = {}) => {
   const { i18n } = useLingui();
   const { entityId } = useMoniteContext();
 
@@ -61,8 +54,6 @@ export const OnboardingBankAccount = ({
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
-
-    onPaymentOnboardingComplete?.(entityId, result);
 
     return result;
   });

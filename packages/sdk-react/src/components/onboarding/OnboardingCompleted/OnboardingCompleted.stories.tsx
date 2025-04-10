@@ -11,11 +11,13 @@ const Story = {
 
 type Story = StoryObj<typeof OnboardingCompleted>;
 
-const StoryWrapper = () => {
+const StoryWrapper = (
+  args: React.ComponentProps<typeof OnboardingCompleted>
+) => {
   return (
     <OnboardingContextProvider>
       <OnboardingStepContent>
-        <OnboardingCompleted />
+        <OnboardingCompleted {...args} />
       </OnboardingStepContent>
     </OnboardingContextProvider>
   );
@@ -23,6 +25,15 @@ const StoryWrapper = () => {
 
 export const Completed: Story = {
   render: () => <StoryWrapper />,
+};
+
+export const CompletedWithContinueButton: Story = {
+  render: () => (
+    <StoryWrapper
+      showContinueButton
+      onContinue={() => console.log('onContinue')}
+    />
+  ),
 };
 
 export default Story;
