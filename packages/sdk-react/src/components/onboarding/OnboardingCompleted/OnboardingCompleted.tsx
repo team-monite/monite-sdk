@@ -18,7 +18,6 @@ export const OnboardingCompleted = ({
   showContinueButton = false,
 }: OnboardingCompletedProps = {}) => {
   const { i18n } = useLingui();
-  console.log('showContinueButton', showContinueButton);
 
   useEffect(() => {
     onComplete?.();
