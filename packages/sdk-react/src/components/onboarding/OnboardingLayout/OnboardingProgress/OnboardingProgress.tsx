@@ -17,12 +17,9 @@ const StyledBox = styled(Box)`
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
     z-index: 3;
-    position: relative;
     height: 8px;
     border-radius: 100px;
-    left: 50%;
     width: 120px;
-    transform: translateX(-50%);
     margin: 0;
   }
 `;
