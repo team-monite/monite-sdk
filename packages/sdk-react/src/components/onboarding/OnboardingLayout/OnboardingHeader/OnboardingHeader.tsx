@@ -29,24 +29,23 @@ export function OnboardingHeader() {
 }
 
 const StyledHeader = styled(Paper)`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
+  justify-content: center;
   z-index: 2;
   width: 100%;
-  justify-content: center;
-  height: ${({ theme }) => theme.spacing(9)};
-  border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
+  border-radius: 0;
+  padding: ${({ theme }) => theme.spacing(4, 4)};
 
   ${({ theme }) => theme.breakpoints.down('sm')} {
     margin-bottom: ${({ theme }) => theme.spacing(1)};
   }
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
-    padding: ${({ theme }) => theme.spacing(0, 4)};
     position: sticky;
     left: 0;
     top: 0;
-    justify-content: flex-start;
   }
 
   ${({ elevation }) =>
