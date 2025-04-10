@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.5
+
+### Patch Changes
+
+- 0539718: Add onContinue/onComplete events in onboarding component
+
 ## 4.0.0-beta.4
 
 ### Patch Changes
