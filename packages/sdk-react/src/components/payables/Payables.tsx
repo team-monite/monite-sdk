@@ -76,7 +76,7 @@ const PayablesBase = ({
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
 
-  const { FileInput, openFileInput } = useFileInput();
+  const { FileInput, openFileInput, checkFileError } = useFileInput();
   const payableUploadFromFileMutation =
     api.payables.postPayablesUploadFromFile.useMutation(
       {},
@@ -87,18 +87,12 @@ const PayablesBase = ({
     );
 
   const handleFileUpload = (files: File | FileList) => {
-    const allowedTypes = [
-      'application/pdf',
-      'image/png',
-      'image/jpeg',
-      'image/tiff',
-    ];
-
     const fileArray = files instanceof File ? [files] : Array.from(files);
 
     fileArray.forEach((file) => {
-      if (!allowedTypes.includes(file.type)) {
-        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+      const error = checkFileError(file);
+      if (error) {
+        toast.error(error);
         return;
       }
 
@@ -166,7 +160,6 @@ const PayablesBase = ({
         />
       )}
       <FileInput
-        accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable files`}
         multiple
         onChange={(event) => {
