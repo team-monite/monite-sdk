@@ -1,4 +1,4 @@
-import React, { DragEvent, useState } from 'react';
+import { DragEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useFileInput, useMenuButton } from '@/core/hooks';
@@ -23,7 +23,7 @@ export const CreatePayableMenu = ({
 }: CreatePayableMenuProps) => {
   const { i18n } = useLingui();
   const { buttonProps, menuProps, open, closeMenu } = useMenuButton();
-  const { FileInput, openFileInput } = useFileInput();
+  const { FileInput, openFileInput, checkFileError } = useFileInput();
   const [dragIsOver, setDragIsOver] = useState(false);
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -41,16 +41,11 @@ export const CreatePayableMenu = ({
     setDragIsOver(false);
 
     const droppedFiles = Array.from(event.dataTransfer.files);
-    const allowedTypes = [
-      'application/pdf',
-      'image/png',
-      'image/jpeg',
-      'image/tiff',
-    ];
 
     droppedFiles.forEach((file) => {
-      if (!allowedTypes.includes(file.type)) {
-        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+      const error = checkFileError(file);
+      if (error) {
+        toast.error(error);
         return;
       }
 
@@ -148,13 +143,10 @@ export const CreatePayableMenu = ({
         </Stack>
       </Menu>
       <FileInput
-        accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable files`}
         multiple
         onChange={(event) => {
           const files = event.target.files;
-          console.debug('Files selected:', files);
-
           if (files) handleFileUpload(files);
           closeMenu();
         }}

@@ -14,6 +14,9 @@ export const getAPIErrorMessage = (
   if ('error' in error && 'message' in error.error) return error.error.message;
   if ('detail' in error && Array.isArray(error.detail))
     return error.detail?.map((detail) => detail.msg).join(', ');
+  if ('message' in error && error.message === 'Request size limit exceeded') {
+    return t(i18n)`Request size limit exceeded`;
+  }
 
   return defaultMessage ?? t(i18n)`Unknown`;
 };
