@@ -83,9 +83,6 @@ const PayablesBase = ({
       {
         onSuccess: () =>
           api.payables.getPayables.invalidateQueries(queryClient),
-        onError: (error) => {
-          toast.error(getAPIErrorMessage(i18n, error));
-        },
       }
     );
 
