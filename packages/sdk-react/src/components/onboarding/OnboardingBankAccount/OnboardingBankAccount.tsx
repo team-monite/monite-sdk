@@ -14,9 +14,7 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-export interface OnboardingBankAccountProps {}
-
-export const OnboardingBankAccount = ({}: OnboardingBankAccountProps = {}) => {
+export const OnboardingBankAccount = () => {
   const { i18n } = useLingui();
 
   const {
