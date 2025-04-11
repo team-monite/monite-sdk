@@ -83,6 +83,12 @@ const PayablesBase = ({
       {
         onSuccess: () =>
           api.payables.getPayables.invalidateQueries(queryClient),
+        onError: () => {
+          // This onError does nothing.
+          // The actionable onError is defined in payableUploadFromFileMutation.mutateAsync().
+          // Need to define this onError so that global QueryClient.mutationCache.onError is skipped.
+          return;
+        },
       }
     );
 

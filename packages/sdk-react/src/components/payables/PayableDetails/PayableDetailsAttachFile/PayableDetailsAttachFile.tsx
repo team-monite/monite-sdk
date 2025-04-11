@@ -46,6 +46,12 @@ export const PayableDetailsAttachFile = ({
             queryClient
           ),
         ]),
+      onError: () => {
+        // This onError does nothing.
+        // The actionable onError is defined in attachFileMutation.mutate().
+        // Need to define this onError so that global QueryClient.mutationCache.onError is skipped.
+        return;
+      },
     }
   );
 
