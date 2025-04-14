@@ -7,7 +7,7 @@ import { useLingui } from '@lingui/react';
 const maxFileSizeInMB = 20;
 const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
 
-const OCR_SUPPORTED_FORMATS = [
+export const OCR_SUPPORTED_FORMATS = [
   'application/pdf',
   'image/jpg',
   'image/png',

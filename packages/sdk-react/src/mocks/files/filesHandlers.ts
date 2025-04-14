@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
+import { OCR_SUPPORTED_FORMATS } from '@/core/hooks/useFileInput';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 
@@ -20,7 +20,7 @@ const filePath = `*/files`;
 const fileIdPath = `${filePath}/:fileId`;
 
 const fileFixture = (): FileResponse => {
-  const mimetype = getRandomItemFromArray(SUPPORTED_MIME_TYPES);
+  const mimetype = getRandomItemFromArray(OCR_SUPPORTED_FORMATS);
   const isPdf = mimetype === 'application/pdf';
 
   return {
