@@ -11,10 +11,16 @@ import {
 } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
+import { t } from '@lingui/macro';
 
-import { enrichFieldsByValues, generateFieldsByMask } from '../transformers';
+import {
+  generateFieldsByMask,
+  prepareBankAccountDataForPatch,
+  generateValuesByFields,
+} from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';
 import { useOnboardingForm } from './useOnboardingForm';
+import { type DefaultValues } from 'react-hook-form';
 
 export type OnboardingBankAccountReturnType = {
   isPending: boolean;
@@ -66,6 +72,9 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
     mutateAsync: deleteBankAccountMutation,
     isPending: isDeleteBankAccountPending,
   } = api.bankAccounts.deleteBankAccountsId.useMutation(undefined, {
+    onError: () => {
+      toast.error(t(i18n)`Could not remove previous bank account details.`);
+    },
     onSuccess: async (_, variables) => {
       await Promise.all([
         api.bankAccounts.getBankAccounts.invalidateQueries(queryClient),
@@ -110,22 +119,19 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const [countries, setCountries] = useState<AllowedCountries[]>([]);
 
-  const [fields, setFields] = useState<OnboardingBankAccount>(
-    useMemo(() => {
-      if (currentBankAccount) {
-        return currentBankAccount;
-      }
-
-      return generateFieldsByMask<OnboardingBankAccount>(getDefaultMask());
-    }, [currentBankAccount])
-  );
+  const [fields, setFields] = useState<OnboardingBankAccount>(() => {
+    if (currentBankAccount) {
+      return currentBankAccount;
+    }
+    return generateFieldsByMask<OnboardingBankAccount>(getDefaultMask());
+  });
 
   const onboardingForm = useOnboardingForm<
     CreateEntityBankAccountRequest,
     EntityBankAccountResponse | undefined
   >(fields, 'bankAccount');
 
-  const { watch } = onboardingForm.methods;
+  const { watch, reset } = onboardingForm.methods;
 
   const currency = watch('currency');
 
@@ -134,11 +140,11 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
     if (!bankAccountMasks) return;
     if (!(currency in bankAccountMasks)) return;
 
-    const mask = bankAccountMasks[currency];
+    const currentMask = bankAccountMasks[currency];
     const countries = currencyToCountries?.[currency];
 
     if (countries) setCountries(countries);
-    if (mask) setMask(mask);
+    if (currentMask) setMask(currentMask);
   }, [bankAccountMasks, currency, currencyToCountries]);
 
   useEffect(() => {
@@ -157,19 +163,36 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       });
 
       if (currentBankAccount) {
-        await deleteBankAccountMutation({
-          path: {
-            bank_account_id: currentBankAccount.id,
-          },
-        });
+        try {
+          await deleteBankAccountMutation({
+            path: {
+              bank_account_id: currentBankAccount.id,
+            },
+          });
+        } catch (error) {
+          // Error is already logged in the onError handler
+        }
       }
 
-      patchOnboardingRequirements({
+      const bankAccountDataForPatch = prepareBankAccountDataForPatch(
+        payload,
+        response.id,
+        mask,
+      );
+
+      await patchOnboardingRequirements({
         requirements: ['bank_accounts'],
         data: {
-          bank_accounts: [enrichFieldsByValues(fields, payload)],
+          bank_accounts: [bankAccountDataForPatch],
         },
       });
+      
+      setFields(bankAccountDataForPatch);
+
+      const formValues = generateValuesByFields<DefaultValues<CreateEntityBankAccountRequest>>(
+          bankAccountDataForPatch
+      );
+      reset(formValues);
 
       return response;
     },
@@ -178,7 +201,8 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       deleteBankAccountMutation,
       currentBankAccount,
       patchOnboardingRequirements,
-      fields,
+      mask,
+      reset,
     ]
   );
 

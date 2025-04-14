@@ -1,3 +1,5 @@
+import { components } from '@/api';
+
 import { format as formatDate, isValid } from 'date-fns';
 
 import {
@@ -10,6 +12,7 @@ import {
   OnboardingValueType,
   OnboardingOptionalParams,
 } from '../types';
+import { generateFieldsByMask } from './generateFieldsByMask';
 
 export function isOnboardingField(
   field: OnboardingFieldsType
@@ -446,4 +449,53 @@ export const restoreFields = <T extends OnboardingOutputFieldsType>(
       [key]: restoreFields(prevField, nextField),
     };
   }, nextValues);
+};
+
+type BankAccountType = components['schemas']['OnboardingBankAccount'];
+type BankAccountPatchPayload =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type OnboardingBankAccountMask =
+  components['schemas']['OnboardingBankAccountMask'];
+
+/**
+ * Prepares the Bank Account data specifically for the patchOnboardingRequirements call,
+ * ensuring the correct structure and types based on the provided mask.
+ */
+export const prepareBankAccountDataForPatch = (
+  payload: BankAccountPatchPayload,
+  responseId: string,
+  actualMask: OnboardingBankAccountMask | null
+): BankAccountType => {
+  const maskToUse = actualMask ?? { country: true, currency: true };
+  const template = generateFieldsByMask<BankAccountType>(maskToUse);
+
+  (template as BankAccountType).id = responseId;
+
+  for (const key in payload) {
+    const typedKey = key as keyof BankAccountPatchPayload;
+
+    if (!(key in template)) continue;
+
+    const templateKey = key as keyof BankAccountType;
+    const fieldInTemplate = template[templateKey];
+    const payloadValue = payload[typedKey];
+
+    // Use type guard to ensure we are setting value on a proper field object
+    if (fieldInTemplate && isOnboardingField(fieldInTemplate)) {
+      const mappedValue = mapValueToField(typedKey, payloadValue);
+
+      // Assign value based on type, converting numbers to strings
+      if (
+        typeof mappedValue === 'string' ||
+        mappedValue === null ||
+        mappedValue === undefined
+      ) {
+        fieldInTemplate.value = mappedValue;
+      } else if (typeof mappedValue === 'number') {
+        fieldInTemplate.value = String(mappedValue);
+      }
+    }
+  }
+
+  return template as BankAccountType;
 };
