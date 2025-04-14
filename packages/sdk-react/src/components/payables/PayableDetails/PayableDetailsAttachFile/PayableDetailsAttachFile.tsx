@@ -2,9 +2,9 @@ import { useState, useMemo, DragEvent, ChangeEvent } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useFileInput } from '@/core/hooks';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { CenteredContentBox } from '@/ui/box';
-import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -17,24 +17,10 @@ import {
   useTheme,
   CircularProgress,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const maxFileSizeInMB = 10;
-const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
 
 type PayableDetailsAttachFileProps = {
   payableId: string;
 };
-
-const VisuallyHiddenFileInput = styled('input')({
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 export const PayableDetailsAttachFile = ({
   payableId,
@@ -42,6 +28,8 @@ export const PayableDetailsAttachFile = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
   const theme = useTheme();
+
+  const { FileInput, checkFileError } = useFileInput();
 
   const [dragIsOver, setDragIsOver] = useState(false);
 
@@ -58,9 +46,6 @@ export const PayableDetailsAttachFile = ({
             queryClient
           ),
         ]),
-      onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
-      },
     }
   );
 
@@ -111,13 +96,9 @@ export const PayableDetailsAttachFile = ({
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      if (!SUPPORTED_MIME_TYPES.includes(file.type)) {
-        toast.error(t(i18n)`Unsupported file type`);
-        return;
-      }
-
-      if (file.size > maxFileSizeInKB) {
-        toast.error(t(i18n)`File size exceeds ${maxFileSizeInMB}MB limit.`);
+      const error = checkFileError(file);
+      if (error) {
+        toast.error(error);
         return;
       }
 
@@ -129,6 +110,9 @@ export const PayableDetailsAttachFile = ({
           {
             onSuccess: () => {
               toast.success(t(i18n)`File successfully attached`);
+            },
+            onError: (error) => {
+              toast.error(getAPIErrorMessage(i18n, error));
             },
           }
         );
@@ -193,12 +177,7 @@ export const PayableDetailsAttachFile = ({
             </Typography>
             <Button variant="outlined" component="label">
               {t(i18n)`Choose from device`}
-              <VisuallyHiddenFileInput
-                type="file"
-                accept="application/pdf,image/*"
-                multiple={false}
-                onChange={handleButtonUpload}
-              />
+              <FileInput onChange={handleButtonUpload} />
             </Button>
           </>
         )}
