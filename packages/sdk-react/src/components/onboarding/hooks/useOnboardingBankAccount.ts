@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { type DefaultValues } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -10,8 +11,8 @@ import {
   useOnboardingCurrencyToCountries,
 } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { useLingui } from '@lingui/react';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 import {
   generateFieldsByMask,
@@ -20,7 +21,6 @@ import {
 } from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';
 import { useOnboardingForm } from './useOnboardingForm';
-import { type DefaultValues } from 'react-hook-form';
 
 export type OnboardingBankAccountReturnType = {
   isPending: boolean;
@@ -169,7 +169,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
               bank_account_id: currentBankAccount.id,
             },
           });
-        } catch (error) {
+        } catch (_e) {
           // Error is already logged in the onError handler
         }
       }
@@ -177,7 +177,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       const bankAccountDataForPatch = prepareBankAccountDataForPatch(
         payload,
         response.id,
-        mask,
+        mask
       );
 
       await patchOnboardingRequirements({
@@ -186,12 +186,12 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
           bank_accounts: [bankAccountDataForPatch],
         },
       });
-      
+
       setFields(bankAccountDataForPatch);
 
-      const formValues = generateValuesByFields<DefaultValues<CreateEntityBankAccountRequest>>(
-          bankAccountDataForPatch
-      );
+      const formValues = generateValuesByFields<
+        DefaultValues<CreateEntityBankAccountRequest>
+      >(bankAccountDataForPatch);
       reset(formValues);
 
       return response;
