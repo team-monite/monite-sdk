@@ -11,7 +11,6 @@ export const OCR_SUPPORTED_FORMATS = [
   'application/pdf',
   'image/jpg',
   'image/png',
-  'image/gif',
 ];
 
 /**
