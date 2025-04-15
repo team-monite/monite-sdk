@@ -1,5 +1,4 @@
-import { Paper, styled, useMediaQuery, useScrollTrigger } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Paper, styled } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../../context';
 import { OnboardingProgress } from '../OnboardingProgress';

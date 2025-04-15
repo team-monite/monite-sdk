@@ -103,7 +103,7 @@ export function OnboardingProgress({ value }: OnboardingProgressProps) {
     return 2;
   };
 
-  const steps = ['Personal Info', 'Account Info', 'Confirmation'];
+  const steps = [1, 2, 3];
   const activeStep = getActiveStep();
 
   return (
