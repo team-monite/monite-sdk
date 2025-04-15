@@ -91,6 +91,9 @@ const CreateReceivablesBase = ({
   const dialogContext = useDialog();
   const { api, entityId, componentSettings } = useMoniteContext();
   const hasInitiallySetDefaultBank = useRef(false);
+  const enableEntityBankAccount = Boolean(
+    componentSettings?.receivables?.enableEntityBankAccount
+  );
   const {
     data: paymentTerms,
     isLoading: isPaymentTermsLoading,
@@ -102,7 +105,7 @@ const CreateReceivablesBase = ({
     });
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
-    Boolean(componentSettings?.receivables?.enableEntityBankAccount)
+    enableEntityBankAccount
   );
   const {
     isNonVatSupported,
@@ -119,7 +122,7 @@ const CreateReceivablesBase = ({
         i18n,
         isNonVatSupported,
         isNonCompliantFlow,
-        Boolean(componentSettings?.receivables?.enableEntityBankAccount)
+        enableEntityBankAccount
       )
     ),
     defaultValues: useMemo(
@@ -206,7 +209,7 @@ const CreateReceivablesBase = ({
   // should be broken down into multiple pieces to better position the logic to avoid these workarounds
   useEffect(() => {
     if (
-      componentSettings?.receivables?.enableEntityBankAccount &&
+      enableEntityBankAccount &&
       actualCurrency &&
       bankAccounts &&
       !hasInitiallySetDefaultBank.current
@@ -218,7 +221,7 @@ const CreateReceivablesBase = ({
       setValue('entity_bank_account_id', preselectedAccount?.id ?? '');
       hasInitiallySetDefaultBank.current = true;
     }
-  }, [actualCurrency, setValue, bankAccounts, componentSettings]);
+  }, [actualCurrency, setValue, bankAccounts, enableEntityBankAccount]);
 
   const {
     createReminderDialog,
@@ -810,7 +813,7 @@ const CreateReceivablesBase = ({
                   disabled={createReceivable.isPending}
                 />
 
-                {componentSettings?.receivables?.enableEntityBankAccount && (
+                {enableEntityBankAccount && (
                   <BankAccountSection
                     disabled={createReceivable.isPending}
                     handleOpenBankModal={(id?: string) => {
@@ -880,20 +883,19 @@ const CreateReceivablesBase = ({
         />
       )}
 
-      {componentSettings?.receivables?.enableEntityBankAccount &&
-        isBankFormOpen && (
-          <BankAccountFormDialog
-            isOpen={isBankFormOpen}
-            entityBankAccountId={selectedBankId}
-            bankAccounts={bankAccounts?.data ?? []}
-            onCancel={handleCloseForm}
-            onCreate={handleOnBankAccountCreation}
-            onUpdate={handleCloseForm}
-            onDelete={handleCloseForm}
-            handleClose={handleCloseForm}
-            handleSelectBankAfterDeletion={handleSelectBankAfterDeletion}
-          />
-        )}
+      {enableEntityBankAccount && isBankFormOpen && (
+        <BankAccountFormDialog
+          isOpen={isBankFormOpen}
+          entityBankAccountId={selectedBankId}
+          bankAccounts={bankAccounts?.data ?? []}
+          onCancel={handleCloseForm}
+          onCreate={handleOnBankAccountCreation}
+          onUpdate={handleCloseForm}
+          onDelete={handleCloseForm}
+          handleClose={handleCloseForm}
+          handleSelectBankAfterDeletion={handleSelectBankAfterDeletion}
+        />
+      )}
     </Stack>
   );
 };

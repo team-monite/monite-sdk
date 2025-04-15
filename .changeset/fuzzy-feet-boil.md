@@ -19,4 +19,4 @@ This component has the following props:
 - `componentSettings` now has 3 new properties for `receivables`:
   - `enableEntityBankAccount` flag to turn on entity bank account creation, by default it is set to false.
   - `bankAccountCountries` custom list of available countries to select from when creating a bank account, by default we display all.
-  - `ankAccountCurrencies` custom list of available currencies to select from when creating a bank account, by default we display all.
+  - `bankAccountCurrencies` custom list of available currencies to select from when creating a bank account, by default we display all.

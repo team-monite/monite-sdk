@@ -38,8 +38,12 @@ export const BankAccountCustomFields = ({
   const { root } = useRootElements();
   const [typeOfCode, setTypeOfCode] = useState<CodeType>(defaultTypeOfCode);
 
-  // This is a workaround to the validation issue we have right now
-  // I need to figure out a better way to handle it
+  // TODO: This is a workaround to the validation issue we have right now
+  // The issue is that when currency is not EUR, USD and GBP, sort_code and routing_number are required,
+  // however, once one has a value, the other should be optional
+  // It sounds easy but it gets very tricky with the validation schema
+  // One way to approach is inside when, but the issue is that both values are not present at the same time
+  // So the validation schema breaks and throws a "cyclic" error that happens when you try to read a field that doesn't exist.
   // I will do some research and once I find something good, I will update it
   useEffect(() => {
     const isConventionalCurrency =
