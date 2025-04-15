@@ -1,5 +1,19 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.7
+
+### Patch Changes
+
+- 34cd50b: Onboarding minor fixes
+
+## 4.0.0-beta.6
+
+### Patch Changes
+
+- 8ccf36d: Improve onboarding styles and copies
+- eb1d764: Payables table: prevent row click (and disable hover effect) for rows of payables with OCR status in processing
+- ef4d3b1: Fix issue when adding bank accounts through the onboarding flow
+
 ## 4.0.0-beta.5
 
 ### Patch Changes
