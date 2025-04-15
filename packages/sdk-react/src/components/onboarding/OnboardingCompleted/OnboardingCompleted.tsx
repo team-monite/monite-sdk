@@ -27,10 +27,10 @@ export const OnboardingCompleted = ({
     <OnboardingLayout
       title={
         <OnboardingTitle
-          title={t(i18n)`Onboarding Completed`}
+          title={t(i18n)`Onboarding completed!`}
           description={t(
             i18n
-          )`Thank you for completing onboarding for payments services. We will now review the information submitted.`}
+          )`Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete.`}
         />
       }
       content={
