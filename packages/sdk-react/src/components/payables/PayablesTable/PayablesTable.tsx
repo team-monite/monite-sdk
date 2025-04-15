@@ -515,8 +515,11 @@ const PayablesTableBase = ({
         loading={isLoading}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => {
-          if (!hasSelectedText()) {
-            onRowClick?.(params.row.id);
+          const payable =
+            params.row as components['schemas']['PayableResponseSchema'];
+
+          if (!hasSelectedText() && payable.ocr_status !== 'processing') {
+            onRowClick?.(payable.id);
           }
         }}
         sx={{
@@ -526,7 +529,14 @@ const PayablesTableBase = ({
           '&.MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
+          '& .MuiDataGrid-row.ocr-processing': {
+            pointerEvents: 'none',
+            backgroundColor: 'inherit',
+          },
         }}
+        getRowClassName={(params) =>
+          isPayableInOCRProcessing(params.row) ? 'ocr-processing' : ''
+        }
         slots={{
           pagination: () => (
             <TablePagination
