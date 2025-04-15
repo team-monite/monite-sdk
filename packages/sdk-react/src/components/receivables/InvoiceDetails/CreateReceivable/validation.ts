@@ -111,7 +111,8 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) =>
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
   isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean
+  isNonCompliantFlow: boolean,
+  shouldEnableBankAccount: boolean
 ) =>
   yup.object({
     type: yup.string().required(),
@@ -119,7 +120,12 @@ export const getCreateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Counterpart`)
       .required(),
-    entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
+    entity_bank_account_id: shouldEnableBankAccount
+      ? yup
+          .string()
+          .label(t(i18n)`Bank account`)
+          .required(t(i18n)`Choose how to get paid.`)
+      : yup.string().label(t(i18n)`Bank account`),
     entity_vat_id_id:
       isNonCompliantFlow || isNonVatSupported
         ? yup.string().label(t(i18n)`VAT ID`)

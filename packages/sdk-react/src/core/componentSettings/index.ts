@@ -10,6 +10,11 @@ import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+import {
+  defaultAvailableCountries,
+  defaultAvailableCurrencies,
+} from '../utils';
+
 interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
   /** Callback to be called when an invoice is updated */
@@ -21,6 +26,12 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   onDelete?: (receivableId: string) => void;
   /** Callback to be called when an invoice is sent */
   onInvoiceSent?: (invoiceId: string) => void;
+  /** Enables bank account creation on invoice creation flow */
+  enableEntityBankAccount?: boolean;
+  /** List of available countries, ISO format */
+  bankAccountCountries?: components['schemas']['AllowedCountries'][];
+  /** List of available currencies, ISO format */
+  bankAccountCurrencies?: components['schemas']['CurrencyEnum'][];
 }
 
 export interface OnboardingSettings {
@@ -177,6 +188,14 @@ export const getDefaultComponentSettings = (
     onUpdate: componentSettings?.receivables?.onUpdate,
     onDelete: componentSettings?.receivables?.onDelete,
     onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
+    enableEntityBankAccount:
+      componentSettings?.receivables?.enableEntityBankAccount || false,
+    bankAccountCurrencies:
+      componentSettings?.receivables?.bankAccountCurrencies ||
+      defaultAvailableCurrencies,
+    bankAccountCountries:
+      componentSettings?.receivables?.bankAccountCountries ||
+      defaultAvailableCountries,
   },
   tags: {
     pageSizeOptions:

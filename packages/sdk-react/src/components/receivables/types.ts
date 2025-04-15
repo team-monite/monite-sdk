@@ -21,3 +21,11 @@ export type FilterValue =
 export type ReceivablesTabFilter = NonNullable<
   API['receivables']['getReceivables']['types']['parameters']['query']
 >;
+
+export type EntityBankAccountFields = Omit<
+  components['schemas']['CreateEntityBankAccountRequest'],
+  'country' | 'currency'
+> & {
+  country: components['schemas']['AllowedCountries'] | '';
+  currency: components['schemas']['CurrencyEnum'] | '';
+};

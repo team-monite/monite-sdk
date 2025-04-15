@@ -53,6 +53,9 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   deleted: DeleteIcon,
 };
 
+export const NO_SORT_CODE = 'noSort';
+export const NO_ROUTING_NUMBER = 'noRouting';
+
 // eslint-disable-next-line lingui/no-unlocalized-strings
 export const INVOICE_DOCUMENT_AUTO_ID = 'INV-auto';
 
