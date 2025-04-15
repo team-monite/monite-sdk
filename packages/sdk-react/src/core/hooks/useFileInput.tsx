@@ -9,7 +9,7 @@ const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
 
 export const OCR_SUPPORTED_FORMATS = [
   'application/pdf',
-  'image/jpg',
+  'image/jpeg',
   'image/png',
 ];
 
