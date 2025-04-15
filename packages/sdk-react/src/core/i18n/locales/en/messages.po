@@ -265,7 +265,7 @@ msgstr "Active"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1180
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:216
-#: src/components/receivables/components/BankAccountFormDialog.tsx:184
+#: src/components/receivables/components/BankAccountFormDialog.tsx:190
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:544
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:142
 msgid "Add"
@@ -358,7 +358,7 @@ msgstr "Add Discount"
 msgid "Add item"
 msgstr "Add item"
 
-#: src/components/receivables/components/BankAccountFormDialog.tsx:132
+#: src/components/receivables/components/BankAccountFormDialog.tsx:138
 #: src/components/receivables/components/BankAccountSection.tsx:65
 msgid "Add new bank account"
 msgstr "Add new bank account"
@@ -1364,7 +1364,7 @@ msgstr "Canadian Dollar"
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:182
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:44
-#: src/components/receivables/components/BankAccountFormDialog.tsx:174
+#: src/components/receivables/components/BankAccountFormDialog.tsx:180
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:541
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:540
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:727
@@ -2387,7 +2387,7 @@ msgstr "Default currency switch"
 #: src/components/products/Products.test.tsx:235
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:270
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:53
-#: src/components/receivables/components/BankAccountFormDialog.tsx:162
+#: src/components/receivables/components/BankAccountFormDialog.tsx:168
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:74
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
@@ -2860,7 +2860,7 @@ msgstr "Edit {0} profile"
 msgid "Edit Approval Policy"
 msgstr "Edit Approval Policy"
 
-#: src/components/receivables/components/BankAccountFormDialog.tsx:131
+#: src/components/receivables/components/BankAccountFormDialog.tsx:137
 msgid "Edit bank account"
 msgstr "Edit bank account"
 
@@ -6518,7 +6518,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
-#: src/components/receivables/components/BankAccountFormDialog.tsx:184
+#: src/components/receivables/components/BankAccountFormDialog.tsx:190
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:546
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:733
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:451

@@ -2,6 +2,7 @@ import { useId, useState } from 'react';
 
 import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
@@ -81,6 +82,7 @@ const BankAccountFormDialogBase = ({
   handleSelectBankAfterDeletion,
 }: BankAccountFormProps) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const formId = `Monite-EntityBankForm-${useId()}`;
 
@@ -120,6 +122,10 @@ const BankAccountFormDialogBase = ({
 
   if (isBankLoading) {
     return <LoadingPage />;
+  }
+
+  if (!componentSettings?.receivables?.enableEntityBankAccount) {
+    return null;
   }
 
   return (
