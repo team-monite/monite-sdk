@@ -41,8 +41,9 @@ import type { OnboardingPersonId, OnboardingProps } from '../types';
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 
 export function OnboardingContent({
-  onPaymentOnboardingComplete,
   onComplete,
+  onContinue,
+  showContinueButton,
 }: OnboardingProps = {}) {
   const { i18n } = useLingui();
   const { currentRequirement, personId, onboardingCompleted } =
@@ -50,7 +51,13 @@ export function OnboardingContent({
   const { isLoading, error } = useOnboardingRequirementsData();
 
   if (onboardingCompleted) {
-    return <OnboardingCompleted onComplete={onComplete} />;
+    return (
+      <OnboardingCompleted
+        onComplete={onComplete}
+        onContinue={onContinue}
+        showContinueButton={showContinueButton}
+      />
+    );
   }
 
   if (isLoading || !currentRequirement) {
@@ -58,9 +65,6 @@ export function OnboardingContent({
   }
 
   const Step = getComponent(currentRequirement, personId);
-  const props = getProps(currentRequirement, {
-    onPaymentOnboardingComplete,
-  });
 
   if (!Step) return null;
 
@@ -78,7 +82,7 @@ export function OnboardingContent({
             {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
-          <Step {...props} />
+          <Step />
         )
       }
     />
@@ -105,11 +109,12 @@ const getTitle = (
   if (isEditingPerson(personId)) return t(i18n)`Edit individual`;
   if (isEntity(requirement)) return t(i18n)`Company details`;
   if (isRepresentative(requirement))
-    return t(i18n)`Verify you represent this business`;
+    return t(i18n)`Verify that you represent this business`;
   if (isOwners(requirement)) return t(i18n)`Business owners`;
   if (isDirectors(requirement)) return t(i18n)`Business directors`;
   if (isExecutives(requirement)) return t(i18n)`Business executives`;
-  if (isBankAccount(requirement)) return t(i18n)`Bank account`;
+  if (isBankAccount(requirement))
+    return t(i18n)`Add a bank account to receive payments`;
   if (isBusinessProfile(requirement)) return t(i18n)`Business details`;
   if (isPersons(requirement)) return t(i18n)`Persons review`;
   if (isTosAcceptance(requirement)) return t(i18n)`Terms and conditions`;
@@ -160,7 +165,7 @@ const getDescription = (
   if (isRepresentative(requirement))
     return t(
       i18n
-    )`This form must be filled out by someone with significant control and management of your business. If that’s not you, make sure to ask the right person to continue.`;
+    )`This form must be completed by someone with control and management of your business. If that’s not you, ask the right person.`;
 
   if (isOwners(requirement))
     return t(
@@ -178,7 +183,9 @@ const getDescription = (
     )`We’re required to collect information about any executives or senior managers who have significant management responsibility for this business.`;
 
   if (isBankAccount(requirement))
-    return t(i18n)`Add a bank to receive transfers of funds to your business.`;
+    return t(
+      i18n
+    )`Add a bank account to receive transfers of funds to your business.`;
 
   if (isBusinessProfile(requirement))
     return t(i18n)`Please provide information about your business.`;
@@ -226,17 +233,4 @@ const getComponent = (
   if (isEntityDocuments(requirement)) return OnboardingEntityDocuments;
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
-};
-
-const getProps = (
-  requirement: OnboardingRequirement,
-  callbacks: OnboardingProps
-) => {
-  if (isBankAccount(requirement)) {
-    return {
-      onPaymentOnboardingComplete: callbacks.onPaymentOnboardingComplete,
-    };
-  }
-
-  return {};
 };

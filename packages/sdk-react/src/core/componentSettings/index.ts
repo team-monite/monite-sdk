@@ -36,16 +36,43 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
 
 export interface OnboardingSettings {
   /**
-   * Called when bank account setup is completed.
+   * Custom footer logo URL for the Onboarding pages.
+   * If provided, the logo will be displayed instead of the Monite logo.
+   * Requires `onboardingFooterWebsiteUrl` to be provided as well.
+   */
+  footerLogoUrl?: string;
+  /**
+   * Custom footer website URL for the Onboarding pages.
+   * If provided, the onboardingFooterLogoUrl logo will link to this URL.
+   */
+  footerWebsiteUrl?: string;
+  /**
+   * If true, hides the footer on the Onboarding pages.
+   * Defaults to false.
+   */
+  hideFooter?: boolean;
+
+  /**
+   * Called when the onboarding process is completed.
    *
-   * @param {string} entityId - The ID of the entity
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
    * @returns {void}
    */
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: components['schemas']['EntityBankAccountResponse']
-  ) => void;
+  onComplete?: () => void;
+
+  /**
+   * Called when the continue button is clicked on the onboarding completed page.
+   *
+   * @returns {void}
+   */
+  onContinue?: () => void;
+
+  /**
+   * Whether to show the continue button on the onboarding completed page.
+   *
+   * @default false
+   */
+  showContinueButton?: boolean;
+
   /**
    * Called when working capital onboarding is completed.
    * This happens when the business status transitions to 'ONBOARDED'.

@@ -20,10 +20,10 @@ export const MoniteApp = ({
   rootElements,
   theme,
   componentSettings,
-  fetchToken,
   entityId,
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
+  fetchToken,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
@@ -61,8 +61,8 @@ export const MoniteApp = ({
         componentSettings={componentSettings}
         sdkConfig={{
           entityId,
-          fetchToken,
           apiUrl,
+          fetchToken,
         }}
       >
         <Global

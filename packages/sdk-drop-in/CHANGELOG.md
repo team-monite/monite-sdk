@@ -1,5 +1,56 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-beta.7
+
+### Patch Changes
+
+- 34cd50b: Onboarding minor fixes
+
+## 2.0.0-beta.6
+
+### Patch Changes
+
+- 8ccf36d: Improve onboarding styles and copies
+- ef4d3b1: Fix issue when adding bank accounts through the onboarding flow
+
+## 2.0.0-beta.5
+
+### Patch Changes
+
+- 0539718: Add onContinue/onComplete events in onboarding component
+
+## 2.0.0-beta.4
+
+### Patch Changes
+
+- 6ead5f4: Fix issue with Kanmon provider
+
+## 2.0.0-beta.3
+
+### Major Changes
+
+- 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
+
+  - FinanceApplicationCard has been renamed to FinanceIntegrationCard
+  - FinanceBanner accepts 2 props:
+    - enableServicingBanner
+    - handleViewDetails
+      It is also worth noting that the width of the banner is 100%, so what defines the width of the banner is the wrapping container.
+
+  enableServicingBanner is a boolean flag that enables the FinanceBanner to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing.
+
+  handleViewDetails is a function that is passed to the View details button. The button will only appear when entity is servicing, enableServicingBanner is true and handleViewDetails is passed. The purpose of this button is to give the user a way to navigate to the financing page through it.
+
+  componentSettings now also has an option for financing which allows user to customize whether the finance menu buttons will show on the top right corner of the financing tab page or inside the finance card. By default the buttons will show at the top right corner.
+  componentSettings also allows user to pass an array of finance steps to define the content of the How does invoice financing work drawer component.
+
+### Patch Changes
+
+- 2fe7793: Style improvements in Onboarding component
+- 2c0fd42: Onboarding footer customization: added `onboarding.footerLogoUrl` and `onboarding.footerWebsiteUrl` to `componentSettings` for direct configuration.
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- e70b0de: First invoice sent event renamed to invoice sent
+
 ## 2.0.0-beta.2
 
 ### Patch Changes

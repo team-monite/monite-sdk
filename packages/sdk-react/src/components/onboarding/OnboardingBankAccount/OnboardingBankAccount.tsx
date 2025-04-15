@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
 import {
@@ -8,7 +7,6 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
@@ -16,21 +14,8 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-type EntityBankAccountResponse =
-  components['schemas']['EntityBankAccountResponse'];
-
-export interface OnboardingBankAccountProps {
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: EntityBankAccountResponse
-  ) => void;
-}
-
-export const OnboardingBankAccount = ({
-  onPaymentOnboardingComplete,
-}: OnboardingBankAccountProps = {}) => {
+export const OnboardingBankAccount = () => {
   const { i18n } = useLingui();
-  const { entityId } = useMoniteContext();
 
   const {
     isLoading,
@@ -61,8 +46,6 @@ export const OnboardingBankAccount = ({
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
-
-    onPaymentOnboardingComplete?.(entityId, result);
 
     return result;
   });
