@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.0-beta.7
+
+### Patch Changes
+
+- 34cd50b: Onboarding minor fixes
+
 ## 2.0.0-beta.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.0.0-beta.7
+
+### Patch Changes
+
+- 34cd50b: Onboarding minor fixes
+
 ## 4.0.0-beta.6
 
 ### Patch Changes
