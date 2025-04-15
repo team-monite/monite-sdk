@@ -2,10 +2,17 @@
 @import 'tw-animate-css' source('../../../src/') prefix(mtw);
 
 @theme {
+  --color-primary-10: var(--mtw-color-primary-10);
+  --color-primary-20: var(--mtw-color-primary-20);
+  --color-primary-30: var(--mtw-color-primary-30);
+  --color-primary-40: var(--mtw-color-primary-40);
   --color-primary-50: var(--mtw-color-primary-50);
   --color-primary-60: var(--mtw-color-primary-60);
+  --color-primary-70: var(--mtw-color-primary-70);
   --color-primary-80: var(--mtw-color-primary-80);
+  --color-primary-85: var(--mtw-color-primary-85);
   --color-primary-90: var(--mtw-color-primary-90);
+  --color-primary-95: var(--mtw-color-primary-95);
 
   --color-neutral-10: var(--mtw-color-neutral-10);
   --color-neutral-30: var(--mtw-color-neutral-30);
@@ -14,6 +21,50 @@
   --color-neutral-80: var(--mtw-color-neutral-80);
   --color-neutral-90: var(--mtw-color-neutral-90);
   --color-neutral-95: var(--mtw-color-neutral-95);
+  --color-neutral-100: var(--mtw-color-neutral-100);
+
+  --color-neutral-t-10: var(--mtw-color-neutral-t-10);
+  --color-neutral-t-30: var(--mtw-color-neutral-t-30);
+  --color-neutral-t-50: var(--mtw-color-neutral-t-50);
+  --color-neutral-t-70: var(--mtw-color-neutral-t-70);
+  --color-neutral-t-80: var(--mtw-color-neutral-t-80);
+  --color-neutral-t-90: var(--mtw-color-neutral-t-90);
+  --color-neutral-t-95: var(--mtw-color-neutral-t-95);
+
+  --color-danger-10: var(--mtw-color-danger-10);
+  --color-danger-30: var(--mtw-color-danger-30);
+  --color-danger-40: var(--mtw-color-danger-40);
+  --color-danger-50: var(--mtw-color-danger-50);
+  --color-danger-60: var(--mtw-color-danger-60);
+  --color-danger-80: var(--mtw-color-danger-80);
+  --color-danger-90: var(--mtw-color-danger-90);
+  --color-danger-95: var(--mtw-color-danger-95);
+
+  --color-success-10: var(--mtw-color-success-10);
+  --color-success-30: var(--mtw-color-success-30);
+  --color-success-50: var(--mtw-color-success-50);
+  --color-success-60: var(--mtw-color-success-60);
+  --color-success-80: var(--mtw-color-success-80);
+  --color-success-90: var(--mtw-color-success-90);
+  --color-success-95: var(--mtw-color-success-95);
+
+  --color-warning-10: var(--mtw-color-warning-10);
+  --color-warning-30: var(--mtw-color-warning-30);
+  --color-warning-50: var(--mtw-color-warning-50);
+  --color-warning-60: var(--mtw-color-warning-60);
+  --color-warning-80: var(--mtw-color-warning-80);
+  --color-warning-90: var(--mtw-color-warning-90);
+  --color-warning-95: var(--mtw-color-warning-95);
+
+  --border: var(--mtw-border);
+
+  --sidebar-foreground: var(--mtw-sidebar-foreground);
+  --sidebar-primary: var(--mtw-sidebar-primary);
+  --sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
+  --sidebar-accent: var(--mtw-sidebar-accent);
+  --sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
+  --sidebar-border: var(--mtw-sidebar-border);
+  --sidebar-ring: var(--mtw-sidebar-ring);
 }
 
 :root {
@@ -50,6 +101,61 @@
   --mtw-sidebar-accent-foreground: oklch(0.205 0 0);
   --mtw-sidebar-border: oklch(0.922 0 0);
   --mtw-sidebar-ring: oklch(0.708 0 0);
+  --mtw-table-background-color: #edebff;
+
+  --mtw-color-primary-10: #24135e;
+  --mtw-color-primary-20: #311881;
+  --mtw-color-primary-30: #401da6;
+  --mtw-color-primary-40: #4a22bf;
+  --mtw-color-primary-50: #562bd6;
+  --mtw-color-primary-60: #7b63ee;
+  --mtw-color-primary-70: #a594fa;
+  --mtw-color-primary-80: #d6cdfe;
+  --mtw-color-primary-85: #f7f9fb;
+  --mtw-color-primary-90: #edebff;
+  --mtw-color-primary-95: #f7f5ff;
+
+  --mtw-color-neutral-10: #292929;
+  --mtw-color-neutral-30: #3b3b3b;
+  --mtw-color-neutral-50: #707070;
+  --mtw-color-neutral-70: #b8b8b8;
+  --mtw-color-neutral-80: #dedede;
+  --mtw-color-neutral-90: #f2f2f2;
+  --mtw-color-neutral-95: #fafafa;
+  --mtw-color-neutral-100: #ffffff;
+
+  --mtw-color-neutral-t-10: rgba(0, 0, 0, 0.84);
+  --mtw-color-neutral-t-30: rgba(0, 0, 0, 0.77);
+  --mtw-color-neutral-t-50: rgba(0, 0, 0, 0.56);
+  --mtw-color-neutral-t-70: rgba(0, 0, 0, 0.28);
+  --mtw-color-neutral-t-80: rgba(0, 0, 0, 0.13);
+  --mtw-color-neutral-t-90: rgba(0, 0, 0, 0.05);
+  --mtw-color-neutral-t-95: rgba(0, 0, 0, 0.02);
+
+  --mtw-color-danger-10: #992a37;
+  --mtw-color-danger-30: #cc384a;
+  --mtw-color-danger-40: #cc394b;
+  --mtw-color-danger-50: #ff4793;
+  --mtw-color-danger-60: #ff7a8a;
+  --mtw-color-danger-80: #ffc4ca;
+  --mtw-color-danger-90: #ffe0e3;
+  --mtw-color-danger-95: #fff8f9;
+
+  --mtw-color-success-10: #12705f;
+  --mtw-color-success-30: #0dac8e;
+  --mtw-color-success-50: #1fbca0;
+  --mtw-color-success-60: #4dd6bd;
+  --mtw-color-success-80: #ace5da;
+  --mtw-color-success-90: #ccf0e9;
+  --mtw-color-success-95: #eefbf9;
+
+  --mtw-color-warning-10: #996600;
+  --mtw-color-warning-30: #cc8000;
+  --mtw-color-warning-50: #ff9900;
+  --mtw-color-warning-60: #ffb333;
+  --mtw-color-warning-80: #ffd999;
+  --mtw-color-warning-90: #ffe6cc;
+  --mtw-color-warning-95: #fff3ee;
 }
 
 @theme inline {
@@ -89,4 +195,111 @@
   --color-sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
   --color-sidebar-border: var(--mtw-sidebar-border);
   --color-sidebar-ring: var(--mtw-sidebar-ring);
+}
+
+@layer base {
+  .markdown {
+    table {
+      border-collapse: separate;
+      display: block;
+      overflow-x: auto;
+      width: 100%;
+      border-spacing: 0;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      border-top-width: 1px;
+      border-bottom-width: 1px;
+
+      background-color: var(--mtw-table-background-color);
+    }
+
+    th:first-child {
+      border-left-width: 1px;
+      border-top-left-radius: calc(var(--mtw-radius) - 4px);
+    }
+
+    th:last-child {
+      border-right-width: 1px;
+      border-top-right-radius: calc(var(--mtw-radius) - 4px);
+    }
+
+    td {
+      border-bottom-width: 1px;
+    }
+
+    tr > td:first-child {
+      border-left-width: 1px;
+    }
+
+    td:last-child {
+      border-right-width: 1px;
+    }
+
+    tbody tr:last-child td:first-child {
+      border-bottom-left-radius: calc(var(--mtw-radius) - 4px);
+    }
+
+    tbody tr:last-child td:last-child {
+      border-bottom-right-radius: calc(var(--mtw-radius) - 4px);
+    }
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  [data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #888;
+  }
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  16.667% {
+    box-shadow: 9984px -10px 0 0 var(--mtw-dot-loader-stress-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px -10px 0 0 var(--mtw-dot-loader-stress-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px -10px 0 0 var(--mtw-dot-loader-stress-color);
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+}
+
+@layer utilities {
+  .animate-dot-typing {
+    --mtw-dot-loader-color: #d6cdfe;
+    --mtw-dot-loader-stress-color: #562bd6;
+
+    animation: dot-typing 1.5s infinite linear;
+  }
 }
