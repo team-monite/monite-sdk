@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 
 import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 
 import { SendHorizontal } from 'lucide-react';
@@ -19,15 +20,17 @@ import { setCursorAtTheEnd } from '../../utils/aiAssistant';
 import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
 
 interface ChatInputProps {
-  onStartConversation?: (conversationId: string) => void;
+  onStartConversation?: () => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const { api, queryClient } = useMoniteContext();
 
   const [showPrompts, setShowPrompts] = useState(false);
 
-  const { id, input, status, setInput, handleSubmit } = useAIAssistantChat();
+  const { input, status, setInput, handleSubmit, messages } =
+    useAIAssistantChat();
 
   const isStreaming = status === 'streaming';
   const isDisabled = !input || isStreaming;
@@ -53,7 +56,7 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
     handleSubmit(e);
     handleClearInput();
 
-    onStartConversation?.(id);
+    onStartConversation?.();
   };
 
   const handleKeyDown = (
