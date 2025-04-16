@@ -14,7 +14,15 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
 const LOCAL_STORAGE_KEY = 'financing_banner_hidden';
 const SEVEN_DAYS_TIME_MILLISECONDS = 7 * 24 * 60 * 60 + 1000;
@@ -46,6 +54,7 @@ const FinanceBannerBase = ({
   const { i18n } = useLingui();
   const { startFinanceSession } = useKanmonContext();
   const theme = useTheme();
+  const isLowerThanLargeScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const { formatCurrencyToDisplay } = useCurrencies();
   const {
     buttonText,
@@ -243,7 +252,14 @@ const FinanceBannerBase = ({
     <FinanceBannerWrapper shouldApplyFinanceStyles={shouldApplyFinanceStyles}>
       <Box
         display="flex"
-        alignItems="center"
+        alignItems={
+          isLowerThanLargeScreen && !shouldApplyFinanceStyles
+            ? 'flex-end'
+            : 'center'
+        }
+        flexDirection={
+          isLowerThanLargeScreen && !shouldApplyFinanceStyles ? 'column' : 'row'
+        }
         justifyContent="space-between"
         gap={2}
         width="100%"
@@ -251,15 +267,33 @@ const FinanceBannerBase = ({
       >
         <Box
           sx={{
+            width: '100%',
             display: 'flex',
             gap: 2,
             flex: '1 1 0%',
-            alignItems: 'center',
+            alignItems:
+              isLowerThanLargeScreen && !shouldApplyFinanceStyles
+                ? 'flex-start'
+                : 'center',
           }}
         >
           <Box sx={{ flex: '1 1 0%' }}>{handleBannerTextContent()}</Box>
         </Box>
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack
+          width={
+            isLowerThanLargeScreen && !shouldApplyFinanceStyles
+              ? '100%'
+              : 'auto'
+          }
+          direction="row"
+          gap={1}
+          alignItems="center"
+          justifyContent={
+            isLowerThanLargeScreen && !shouldApplyFinanceStyles
+              ? 'flex-end'
+              : 'flex-start'
+          }
+        >
           {shouldApplyFinanceStyles && handleViewDetails ? (
             <Button onClick={handleViewDetails} variant="text">
               {t(i18n)`View details`}
@@ -273,9 +307,9 @@ const FinanceBannerBase = ({
           {isCustomBanner && buttonText && (
             <Button
               onClick={() => {
-                if (isLoading) return;
                 startFinanceSession();
               }}
+              disabled={isLoading}
               variant="contained"
               color="primary"
               sx={{
@@ -284,7 +318,7 @@ const FinanceBannerBase = ({
                 height: 40,
               }}
             >
-              {buttonText}
+              {isLoading ? <CircularProgress size={20} /> : buttonText}
             </Button>
           )}
         </Stack>
@@ -302,9 +336,10 @@ const FinanceBannerBase = ({
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
+                gap={1}
                 mb={1}
               >
-                <Box display="flex" alignItems="center" gap={1}>
+                <Box display="flex" alignItems="center" gap={1} flexShrink={0}>
                   <Typography variant="h2" fontSize={32}>
                     {formatCurrencyToDisplay(remainingLimit, 'USD')}
                   </Typography>
@@ -316,7 +351,14 @@ const FinanceBannerBase = ({
                     / {formatCurrencyToDisplay(totalLimit, 'USD')}
                   </Typography>
                 </Box>
-                <Typography variant="body1">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {offer?.pricing_plans?.length}{' '}
                   {t(i18n)`financial plans enabled`}
                 </Typography>
