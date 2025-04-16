@@ -30,7 +30,7 @@ msgstr "- they are already overdue."
 msgid "- they are due within 7 days."
 msgstr "- they are due within 7 days."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:126
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:121
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
@@ -349,8 +349,8 @@ msgstr "Add Discount"
 msgid "Add item"
 msgstr "Add item"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:71
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:144
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:66
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:139
 #: src/components/payables/Payables.test.tsx:72
 #: src/components/payables/Payables.test.tsx:110
 #: src/components/payables/Payables.test.tsx:152
@@ -815,7 +815,7 @@ msgstr "Aruban Florin"
 msgid "At least 1 reminder is required"
 msgstr "At least 1 reminder is required"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:183
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:145
 msgid "Attach a file"
 msgstr "Attach a file"
 
@@ -1080,7 +1080,7 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:200
+#: src/components/payables/Payables.tsx:190
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
@@ -1540,7 +1540,7 @@ msgstr "Choose counterpart type:"
 msgid "Choose document"
 msgstr "Choose document"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:195
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:161
 msgid "Choose from device"
 msgstr "Choose from device"
 
@@ -2639,11 +2639,11 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:190
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:152
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:123
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:118
 msgid "Drag and drop files or click to upload"
 msgstr "Drag and drop files or click to upload"
 
@@ -2655,7 +2655,7 @@ msgstr "Drapery, Window Covering, and Upholstery Stores"
 msgid "Drinking Places"
 msgstr "Drinking Places"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:172
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:134
 msgid "Drop the file here to upload"
 msgstr "Drop the file here to upload"
 
@@ -3228,15 +3228,19 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
+#: src/core/hooks/useFileInput.tsx:87
+msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
+msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
+
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:201
 msgid "File is being processed..."
 msgstr "File is being processed..."
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:120
-msgid "File size exceeds {maxFileSizeInMB}MB limit."
-msgstr "File size exceeds {maxFileSizeInMB}MB limit."
+#~ msgid "File size exceeds {maxFileSizeInMB}MB limit."
+#~ msgstr "File size exceeds {maxFileSizeInMB}MB limit."
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:131
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:97
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
@@ -5015,7 +5019,7 @@ msgstr "No Credit Notes"
 msgid "No default email for selected Counterpart. Reminders will not be sent."
 msgstr "No default email for selected Counterpart. Reminders will not be sent."
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:107
+#: src/core/hooks/useFileInput.tsx:79
 msgid "No file provided"
 msgstr "No file provided"
 
@@ -5225,7 +5229,7 @@ msgstr "Opticians, Eyeglasses"
 msgid "Optometrists, Ophthalmologist"
 msgstr "Optometrists, Ophthalmologist"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:133
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:128
 msgid "Or add bill manually"
 msgstr "Or add bill manually"
 
@@ -5434,7 +5438,7 @@ msgstr "Payable \"{0}\" has been submitted"
 msgid "Payable \"{0}\" has been updated"
 msgstr "Payable \"{0}\" has been updated"
 
-#: src/components/payables/Payables.tsx:114
+#: src/components/payables/Payables.tsx:105
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
@@ -5442,7 +5446,7 @@ msgstr "Payable {0} uploaded successfully"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:147
+#: src/components/payables/Payables.tsx:138
 msgid "Payables"
 msgstr "Payables"
 
@@ -6229,6 +6233,10 @@ msgstr "Repayment sum"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:544
 msgid "Replace items"
 msgstr "Replace items"
+
+#: src/core/utils/getAPIErrorMessage.ts:18
+msgid "Request size limit exceeded"
+msgstr "Request size limit exceeded"
 
 #: src/components/approvalRequests/ApprovalRequests.tsx:48
 msgid "Request was approved"
@@ -7216,8 +7224,8 @@ msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:138
-msgid "There was an issue reading the file."
-msgstr "There was an issue reading the file."
+#~ msgid "There was an issue reading the file."
+#~ msgstr "There was an issue reading the file."
 
 #: src/components/financing/components/FinanceBanner.tsx:202
 msgid "They will contact you if your credit score improves and you can reapply."
@@ -7244,7 +7252,7 @@ msgstr "This invoice can be financed"
 msgid "This invoice can't be financed"
 msgstr "This invoice can't be financed"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:186
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:148
 #: src/components/payables/PayableDetails/PayableDetailsNoAttachedFile/PayableDetailsNoAttachedFile.tsx:30
 msgid "This invoice doesn't have a file attached."
 msgstr "This invoice doesn't have a file attached."
@@ -7604,7 +7612,7 @@ msgstr "Units"
 #: src/core/hooks/useVatTypes.ts:16
 #: src/core/hooks/useVatTypes.ts:18
 #: src/core/hooks/useVatTypes.ts:211
-#: src/core/utils/getAPIErrorMessage.ts:18
+#: src/core/utils/getAPIErrorMessage.ts:21
 msgid "Unknown"
 msgstr "Unknown"
 
@@ -7623,12 +7631,16 @@ msgstr "Unspecified"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:53
 #: src/components/payables/Payables.tsx:104
-msgid "Unsupported file format for {0}"
-msgstr "Unsupported file format for {0}"
+#~ msgid "Unsupported file format for {0}"
+#~ msgstr "Unsupported file format for {0}"
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:115
-msgid "Unsupported file type"
-msgstr "Unsupported file type"
+#~ msgid "Unsupported file type"
+#~ msgstr "Unsupported file type"
+
+#: src/core/hooks/useFileInput.tsx:83
+msgid "Unsupported file type for {0}"
+msgstr "Unsupported file type for {0}"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:280
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1180
@@ -7692,7 +7704,7 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:85
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:80
 msgid "Upload files"
 msgstr "Upload files"
 
@@ -7700,12 +7712,12 @@ msgstr "Upload files"
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:152
-#: src/components/payables/Payables.tsx:173
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:146
+#: src/components/payables/Payables.tsx:163
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/payables/Payables.tsx:113
+#: src/components/payables/Payables.tsx:104
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
