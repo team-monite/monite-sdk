@@ -8,7 +8,10 @@ import {
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import {
+  getRateValueForDisplay,
+  rateMinorToMajor,
+} from '@/core/utils/vatUtils';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -260,9 +263,9 @@ export const InvoicePreview = ({
                       {selectedPaymentTerm.term_1.discount && (
                         <span>
                           <br />
-                          {t(
-                            i18n
-                          )`${selectedPaymentTerm.term_1.discount}% discount`}
+                          {t(i18n)`${rateMinorToMajor(
+                            selectedPaymentTerm.term_1.discount
+                          )}% discount`}
                         </span>
                       )}
                     </p>
@@ -275,9 +278,9 @@ export const InvoicePreview = ({
                       {selectedPaymentTerm.term_2.discount && (
                         <span>
                           <br />
-                          {t(
-                            i18n
-                          )`${selectedPaymentTerm.term_2.discount}%discount`}
+                          {t(i18n)`${rateMinorToMajor(
+                            selectedPaymentTerm.term_2.discount
+                          )}%discount`}
                         </span>
                       )}
                     </p>

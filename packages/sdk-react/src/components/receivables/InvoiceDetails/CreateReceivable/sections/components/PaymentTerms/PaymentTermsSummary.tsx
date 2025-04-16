@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -28,7 +29,7 @@ export const PaymentTermsSummary = ({
           <PaymentTermSummaryItem
             renderIcon={(props) => <SellIcon {...props} />}
             leftLine={t(i18n)`Pay in the first ${term_1.number_of_days} days`}
-            rightLine={t(i18n)`${term_1.discount}% discount`}
+            rightLine={t(i18n)`${rateMinorToMajor(term_1.discount)}% discount`}
             sx={{ mb: 2 }}
           />
         )}
@@ -36,7 +37,7 @@ export const PaymentTermsSummary = ({
           <PaymentTermSummaryItem
             renderIcon={(props) => <SellIcon {...props} />}
             leftLine={t(i18n)`Pay in the first ${term_2.number_of_days} days`}
-            rightLine={t(i18n)`${term_2.discount}% discount`}
+            rightLine={t(i18n)`${rateMinorToMajor(term_2.discount)}% discount`}
             sx={{ mb: 2 }}
           />
         )}
