@@ -1,5 +1,122 @@
 # @monite/sdk-react
 
+## 4.0.0
+
+### Major Changes
+
+- 166b0d8: refactor(DEV-12144) remove sdk-api package
+- 8d0ea89: feat(DEV-12955): add new styling approach for the SDK
+- 1cb86af: refactor(DEV-12028): remove deprecated methods for payable details
+- 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
+
+  - FinanceApplicationCard has been renamed to FinanceIntegrationCard
+  - FinanceBanner accepts 2 props:
+    - enableServicingBanner
+    - handleViewDetails
+      It is also worth noting that the width of the banner is 100%, so what defines the width of the banner is the wrapping container.
+
+  enableServicingBanner is a boolean flag that enables the FinanceBanner to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing.
+
+  handleViewDetails is a function that is passed to the View details button. The button will only appear when entity is servicing, enableServicingBanner is true and handleViewDetails is passed. The purpose of this button is to give the user a way to navigate to the financing page through it.
+
+  componentSettings now also has an option for financing which allows user to customize whether the finance menu buttons will show on the top right corner of the financing tab page or inside the finance card. By default the buttons will show at the top right corner.
+  componentSettings also allows user to pass an array of finance steps to define the content of the How does invoice financing work drawer component.
+
+- 377e6ad: feat(DEV-13343): move date time format to locale
+
+### Minor Changes
+
+- d9aa339: Updated copies on Products & Services page.
+- 849f2f0: Edit tags in payables documents regardless of their status
+- 143072a: Default styles refresh across all components
+- c5d39e5: Line item units management added
+- 08fa299: improvements requested after invoice preview merge
+- ad63579: feat(DEV-13434): new styles for display components and form controls
+- 876aaa8: New line items
+- 9d52e3b: - Added entity bank account creation flow
+
+  - Receivables now exports `BankAccountFormDialog`, a Dialog component for the entity bank account creation flow
+    This component has the following props:
+
+    - `entityBankAccountId` id of the selected bank account, if passed, dialog will be edit mode and if not it will be the create one.
+    - `isOpen` determines the state of the dialog
+    - `bankAccounts` list of available entity bank accounts
+    - `onCancel` callback function when clicking on Cancel button
+    - `onCreate` callback function that gets called after creating new bank account
+    - `onUpdate` callback function that gets called after updating a bank account
+    - `onDelete` callback function that gets called after deleting a bank account
+    - `handleClose` callback function that gets called when closing the dialog
+    - `handleSelectBankAfterDeletion` callback function that gets called after bank account is deleted to enable user to select another bank account
+
+  - `componentSettings` now has 3 new properties for `receivables`:
+    - `enableEntityBankAccount` flag to turn on entity bank account creation, by default it is set to false.
+    - `bankAccountCountries` custom list of available countries to select from when creating a bank account, by default we display all.
+    - `bankAccountCurrencies` custom list of available currencies to select from when creating a bank account, by default we display all.
+
+- b3fc060: bugfix invoice previeww: tax rate showing always as zero, sometimes divided by 100 unnecessarily
+- e04a0ba: Improve User Roles management view by simplifying permissions shown and splitting the dialog to edit the User Role into a full-screen dialog
+- 5dddf03: New pre-release v4
+- 575e2a6: Fix Kanmon SDK env URL
+- 25d5f60: feat(DEV-13687) Argon changes during invoice creation
+- 2c645e2: Fixed style issues
+- a0cec41: feat(DEV-13430): add new styles to search and filters
+- 010861f: Added discounts for payables
+- 548efe1: Payment flow improvements on Accounts payable
+- 77d926e: Added keywords and category to tags table
+- 2c39324: feat(DEV-13429): add spacing token and update storybook utils to handle theme config
+- 94f9497: Adds option to delete canceled payables
+- ca42346: Added ability to hide customer type section when creating a counterpart, default is set to ['customer', 'vendor'] through componentSettings and also added a new property called customerTypes to Receivables, Payables and Counterparts components to customize the available customer type options when creating a counterpart
+- fdb71ad: Added DocumentDesign component
+- 86b7490: fix(DEV-13777): invoice preview
+
+### Patch Changes
+
+- 1ff6286: The payment terms discount units are converted to minor for API-related operations
+- 7b75dbf: Add Document templates to Dropin
+- 8ccf36d: Improve onboarding styles and copies
+- 6a68134: Prepend https in empty Onboarding URL field
+- 2604834: Display VAT id error message from API
+- dab2d74: Fix Payables table payable.amount_paid
+- f97dbe3: Added a tooltip for the website input field
+- eb1d764: Payables table: prevent row click (and disable hover effect) for rows of payables with OCR status in processing
+- 2fe7793: Style improvements in Onboarding component
+- f1b62b9: Filter forbidden fields in update person payloads
+- 23c29de: Update Kanmon live URL
+- cb63d74: onCreate receivable event added
+- 92425e1: Fix payment term discounts translations
+- 2c0fd42: Onboarding footer customization: added `onboarding.footerLogoUrl` and `onboarding.footerWebsiteUrl` to `componentSettings` for direct configuration.
+- 2e43f1d: Updated API schema and update supported currencies
+- b50d841: Product creation default values
+- fe95cbd: Line items bug fixes and refactoring
+- 923df35: Fix counterpart creation form styles
+- d068bbf: Added onboarding and sent invoice email events to the SDK and Drop-in component
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- 705bb89: Improve Payables file upload by handling error messages for file size limits. Fix duplicated error messages on file upload errors
+- a8b6f84: Re-create translation files
+- 40cac95: Send invoice button changes its caption based on the invoice status
+- 802f5c4: Custom currency dropdown renderer
+- 2f0f481: Fix invoice preview styles
+- 368fe8e: UI minor fixes in invoice creation
+- d69ab5a: Issues with formatting vat values, autocomplete item names etc fixed
+- 6ead5f4: Fix issue with Kanmon provider
+- 64d39a2: Issue and send fixed on the preview page
+- 1a0042c: Fix styling issues in Receivables table
+- 18df891: Improve error messages in Products&Services component
+- b0494f7: Update table styles
+- 3f6cd29: Load styles on invoice preview properly
+- 4140560: Removed Go to docs from user-roles modal
+- dfebd5c: Payment terms update validation fixed, dialog close focus hook
+- a63196a: Added user role delete functionality
+- e70b0de: First invoice sent event renamed to invoice sent
+- c3966ff: SSN title changed to Full Social Security Number
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+- 25e34f4: Improve aspect ratio in Invoice preview
+- 0539718: Add onContinue/onComplete events in onboarding component
+- 7a518b8: PDF download button is disabled until the url is defined
+- ef4d3b1: Fix issue when adding bank accounts through the onboarding flow
+- 665c8e6: When sending an invoice, we use the organization's email address as a fallback if there is no contact person defined.
+- 34cd50b: Onboarding minor fixes
+
 ## 4.0.0-beta.7
 
 ### Patch Changes
