@@ -21,8 +21,7 @@ import type {
   CreateReceivablesFormProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../../validation';
-// @ts-expect-error Importing css file from a different package is not supported
-import invoicePreviewStyles from './InvoicePreview.css';
+import './InvoicePreview.css';
 
 interface InvoicePreviewProps {
   address:
@@ -58,7 +57,6 @@ const StyledInvoicePreview = styled.div`
   height: fit-content;
   min-height: 100%;
   min-width: fit-content;
-  ${invoicePreviewStyles}
 `;
 
 export const InvoicePreview = ({

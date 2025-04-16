@@ -2,6 +2,7 @@ import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { Typography } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '../../../mocks';
 import { addNewItemToPayablesList } from '../../../mocks';
@@ -16,10 +17,10 @@ type Story = StoryObj<typeof PayablesTable>;
 
 export const FullPermissions: Story = {
   args: {
-    onPay: action('onPay'),
-    onRowClick: action('onRowClick'),
-    onChangeFilter: action('onChangeFilter'),
-    onChangeSort: action('onChangeSort'),
+    onPay: fn(),
+    onRowClick: fn(),
+    onChangeFilter: fn(),
+    onChangeSort: fn(),
   },
   render: (args) => (
     <div style={{ padding: 20 }}>
@@ -30,13 +31,13 @@ export const FullPermissions: Story = {
 
 export const AutoUpdatedTable: Story = {
   args: {
-    onPay: action('onPay'),
+    onPay: fn(),
     onRowClick: (...args) => {
       addNewItemToPayablesList();
       action('onRowClick')(...args);
     },
-    onChangeFilter: action('onChangeFilter'),
-    onChangeSort: action('onChangeSort'),
+    onChangeFilter: fn(),
+    onChangeSort: fn(),
   },
   render: (args) => (
     <div
@@ -63,10 +64,10 @@ export const AutoUpdatedTable: Story = {
 
 export const WithLowPermissions: Story = {
   args: {
-    onPay: action('onPay'),
-    onRowClick: action('onRowClick'),
-    onChangeFilter: action('onChangeFilter'),
-    onChangeSort: action('onChangeSort'),
+    onPay: fn(),
+    onRowClick: fn(),
+    onChangeFilter: fn(),
+    onChangeSort: fn(),
   },
   decorators: [
     withGlobalStorybookDecorator(() => {

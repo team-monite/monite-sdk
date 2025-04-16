@@ -31,6 +31,7 @@ import {
   TableCell,
   tableCellClasses,
   TableContainer,
+  TableContainer as MuiTableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -42,44 +43,46 @@ import { UserRoleRow, UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;
   flex-direction: column;
-`;
+` as typeof DialogContent;
 
 const StyledTableTitle = styled(Typography)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+` as typeof Typography;
 
 const StyledTableContainer = styled(TableContainer)`
   min-height: 300px;
-`;
+` as typeof MuiTableContainer;
 
-const StyledTableHead = styled(TableHead)(({ theme }) => ({
-  background: theme.palette.grey[300],
-}));
+const StyledTableHead = styled(TableHead)`
+  background: ${({ theme }) => theme.palette.grey[300]};
+` as typeof TableHead;
 
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.head}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9999',
-    minWidth: '180px',
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-  [`&.${tableCellClasses.body}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9998',
-    fontWeight: '600',
-    minWidth: '180px',
-    backgroundColor: theme.palette.background.default,
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-}));
+export const StyledTableCell = styled(TableCell)`
+  &.${tableCellClasses.head} {
+    background-color: ${({ theme }) => theme.palette.grey[100]};
+    white-space: nowrap;
+  }
+  
+  &.${tableCellClasses.head}:first-of-type {
+    position: sticky;
+    left: 0;
+    z-index: 9999;
+    min-width: 180px;
+    border-right: 1px solid ${({ theme }) => theme.palette.grey[300]};
+  }
+  
+  &.${tableCellClasses.body}:first-of-type {
+    position: sticky;
+    left: 0;
+    z-index: 9998;
+    font-weight: 600;
+    min-width: 180px;
+    background-color: ${({ theme }) => theme.palette.background.default};
+    border-right: 1px solid ${({ theme }) => theme.palette.grey[300]};
+  }
+` as typeof TableCell;
 
 interface UserRoleDetailsDialogProps {
   /** The id of the role to be displayed */

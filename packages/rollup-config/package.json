@@ -25,9 +25,14 @@
     "rollup-plugin-swc3": "0.12.1"
   },
   "devDependencies": {
+    "@lingui/macro": "^4.7.0",
+    "@lingui/react": "^4.7.0",
     "@rollup/plugin-image": "~3.0.3",
     "@tailwindcss/postcss": "~4.0.17",
+    "babel-plugin-macros": "^3.1.0",
     "postcss": "~8.5.3",
+    "react": "^18.2.0",
+    "rollup": "~3.29.5",
     "tailwindcss": "~4.0.17",
     "typescript": "~5.5.4"
   },

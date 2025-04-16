@@ -1,6 +1,6 @@
 import { Context, createContext, ReactNode } from 'react';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMoniteContext } from '@/core/hooks/useMoniteContext';
 import type { QraftContextValue } from '@openapi-qraft/react';
 import { QraftSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
 

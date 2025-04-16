@@ -55,16 +55,16 @@ export interface StyledCardProps extends ComponentProps<typeof Card> {
 export const SummaryStyledCard = styled(Card, {
   shouldForwardProp: (prop) =>
     prop !== 'selected' && prop !== 'isAllItems' && prop !== 'theme',
-})(({ isAllItems }: StyledCardProps) => ({
-  cursor: 'pointer',
-  display: 'flex',
-  padding: '12px 16px',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  height: 80,
-  minWidth: isAllItems ? '118px' : '230px',
-  flexShrink: 0,
-}));
+})`
+  cursor: pointer;
+  display: flex;
+  padding: 12px 16px;
+  flex-direction: column;
+  justify-content: center;
+  height: 80px;
+  min-width: ${({ isAllItems }: StyledCardProps) => isAllItems ? '118px' : '230px'};
+  flex-shrink: 0;
+` as React.ComponentType<StyledCardProps>;
 
 export const summaryCardClassName = 'Monite-SummaryCard';
 
@@ -341,10 +341,6 @@ export const SummaryCardsFilters = ({
 
 const usePayablesTableSummaryData = () => {
   const { api, queryClient } = useMoniteContext();
-
-  if (queryClient) {
-    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
-  }
 
   return api.payables.getPayablesAnalytics.useQuery(
     {},

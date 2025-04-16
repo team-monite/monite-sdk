@@ -75,7 +75,9 @@ interface StyledLabelTableCellProps extends TableCellProps {
   isRequired: boolean;
 }
 
-const StyledLabelTableCell = styled(TableCell)<StyledLabelTableCellProps>(
+const StyledLabelTableCell = styled(TableCell, {
+  shouldForwardProp: (prop) => prop !== 'isRequired',
+})<StyledLabelTableCellProps>(
   ({ theme, isRequired }) => ({
     color: isRequired ? theme.palette.error.main : theme.palette.text.secondary,
     minWidth: 120,

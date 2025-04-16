@@ -1,3 +1,4 @@
+// Import CSS directly - they will be handled by webpack
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -35,7 +36,10 @@ const preview = {
       },
     },
     backgrounds: { disable: true },
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { 
+      // In Storybook 8, use the fn() function from @storybook/test instead of argTypesRegex 
+      // for mocking component methods in play functions
+    },
     msw: {
       handlers,
     },

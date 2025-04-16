@@ -107,6 +107,12 @@
       "rules": {
         "lingui/no-unlocalized-strings": "off"
       }
+    },
+    {
+      "files": ["vite.config.ts"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
     }
   ]
 }

@@ -6,79 +6,19 @@ import {
   useMemo,
 } from 'react';
 
-import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
+import { createAPIClient } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
-import type { ComponentSettings } from '@/core/componentSettings';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
-  getLocaleWithDefaults,
-  I18nLoader,
-  MoniteLocaleWithRequired,
-  type MoniteLocale,
-} from '@/core/context/MoniteI18nProvider';
+  type ContextProviderProps,
+  type MoniteContextProviderProps,
+  type MoniteContextValue,
+  type MoniteTheme,
+} from '@/core/context/MoniteContext.types';
+import { getLocaleWithDefaults, I18nLoader } from '@/core/context/MoniteI18nProvider';
 import { SentryFactory } from '@/core/services';
-import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
-import type { I18n } from '@lingui/core';
-import type { Theme } from '@mui/material';
-import type { Hub } from '@sentry/react';
-import type { QueryClient } from '@tanstack/react-query';
-
-import type { Locale as DateFnsLocale } from 'date-fns';
-
-import { MoniteSettings } from './MoniteProvider';
-
-interface MoniteContextBaseValue {
-  locale: MoniteLocaleWithRequired;
-  i18n: I18n;
-  dateFnsLocale: DateFnsLocale;
-}
-
-export type FetchToken = () => Promise<{
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-}>;
-
-export type MoniteTheme = Theme & {
-  palette: {
-    neutral: {
-      main: string;
-      '10': string;
-      '30': string;
-      '50': string;
-      '70': string;
-      '80': string;
-      '90': string;
-      '95': string;
-    };
-    primary: {
-      main: string;
-      '10': string;
-      '30': string;
-      '50': string;
-      '60': string;
-      '70': string;
-      '80': string;
-      '90': string;
-      '95': string;
-    };
-  };
-};
-
-export interface MoniteContextValue
-  extends MoniteContextBaseValue,
-    CreateMoniteAPIClientResult {
-  environment: 'dev' | 'sandbox' | 'production';
-  entityId: string;
-  sentryHub: Hub | undefined;
-  queryClient: QueryClient;
-  apiUrl: string;
-  theme: MoniteTheme;
-  componentSettings: ComponentSettings;
-  fetchToken: FetchToken;
-}
 
 /**
  * @internal
@@ -98,14 +38,6 @@ export function useMoniteContext() {
   }
 
   return moniteContext;
-}
-
-interface MoniteContextProviderProps {
-  monite: MoniteSettings;
-  locale: Partial<MoniteLocale> | undefined;
-  theme: ThemeConfig | undefined;
-  componentSettings: Partial<ComponentSettings> | undefined;
-  children: ReactNode;
 }
 
 /**
@@ -133,13 +65,6 @@ export const MoniteContextProvider = ({
     </I18nLoader>
   );
 };
-
-interface ContextProviderProps extends MoniteContextBaseValue {
-  monite: MoniteSettings;
-  children: ReactNode;
-  theme: ThemeConfig | undefined;
-  componentSettings?: Partial<ComponentSettings>;
-}
 
 const ContextProvider = ({
   monite,

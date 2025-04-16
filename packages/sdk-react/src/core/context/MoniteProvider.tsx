@@ -8,18 +8,16 @@ import {
   MoniteAPIProvider,
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
-import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
+import { type MoniteLocale, type MoniteTheme } from '@/core/context/MoniteContext.types';
 import { ThemeConfig } from '@/core/theme/types';
 import { Global, css } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
-// @ts-expect-error - This is a global css file
-import tailwindApp from '../theme/app.css';
+import '../theme/app.css';
 import { KanmonContextProvider } from './KanmonContext';
 import {
   MoniteContextProvider,
-  MoniteTheme,
   useMoniteContext,
 } from './MoniteContext';
 
@@ -95,7 +93,6 @@ const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-neutral-90: ${theme.palette.neutral[90]};
     --mtw-color-neutral-95: ${theme.palette.neutral[95]};
   }
-  ${tailwindApp}
 `;
 
 const MoniteThemeProvider = ({ children }: { children: ReactNode }) => {
