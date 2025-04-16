@@ -11,9 +11,7 @@ import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Close } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Link as MuiLink } from '@mui/material';
+import { Link as MuiLink } from '@mui/material';
 
 import { Folder, PanelLeft, Search, SquarePen } from 'lucide-react';
 
