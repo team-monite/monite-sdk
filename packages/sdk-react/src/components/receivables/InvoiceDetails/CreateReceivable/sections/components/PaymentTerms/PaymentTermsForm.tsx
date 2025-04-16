@@ -189,8 +189,6 @@ export const PaymentTermsForm = ({
               field={field}
               isLast={index === discountForms.length - 1}
               remove={removeDiscountForm}
-              register={register}
-              errors={errors}
             />
           ))}
         </Stack>
