@@ -19,7 +19,7 @@ export const AISidebarWrapper: FC<AISidebarWrapperProps> = ({
         'mtw:h-full mtw:w-[300px]',
         'mtw:border mtw:border-sidebar-border mtw:border-t-0 mtw:border-solid',
         'mtw:duration-300 mtw:transition-[width] mtw:ease-linear',
-        'mtw:absolute mtw:bg-white mtw:right-0 mtw:hidden',
+        'mtw:absolute mtw:bg-white mtw:right-0 mtw:hidden mtw:mb-5',
         !open &&
           'mtw:w-[136px] mtw:border-none mtw:bg-transparent mtw:xl:bg-white',
         'mtw:xl:relative mtw:xl:bg-white mtw:md:block',
@@ -28,9 +28,9 @@ export const AISidebarWrapper: FC<AISidebarWrapperProps> = ({
     >
       <div
         className={cn(
-          'mtw:fixed mtw:inset-y-[85px] mtw:h-full mtw:py-7 mtw:z-10 mtw:w-[300px] mtw:right-0',
-          'mtw:transition-[width] mtw:ease-linear mtw:duration-300',
-          'mtw:flex mtw:flex-col mtw:gap-4',
+          'mtw:fixed mtw:inset-y-[85px] mtw:h-[calc(100vh-85px)] mtw:py-7 mtw:mb-5',
+          'mtw:transition-[width] mtw:ease-linear mtw:duration-300 mtw:z-10 mtw:w-[300px] mtw:right-0',
+          'mtw:flex mtw:flex-col mtw:gap-4 ',
           !open && 'mtw:w-[136px]'
         )}
       >
