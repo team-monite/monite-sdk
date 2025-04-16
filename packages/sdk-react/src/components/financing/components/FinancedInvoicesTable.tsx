@@ -207,11 +207,15 @@ const FinancedInvoicesTableBase = ({
         valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       {
-        field: 'due_date',
-        headerName: t(i18n)`Payment date`,
+        field: 'repayment_date',
+        headerName: t(i18n)`Repayment date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        valueGetter: (_, row) => {
+          const value = row.repayment_schedule?.repayment_date;
+
+          return value ? i18n.date(value, dateFormat) : '-';
+        },
       },
       {
         field: '',

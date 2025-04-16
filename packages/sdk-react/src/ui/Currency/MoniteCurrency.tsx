@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 import type { FieldError } from 'react-hook-form';
 
@@ -6,6 +7,7 @@ import {
   RHFAutocompleteProps,
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -34,6 +36,8 @@ export interface MoniteCurrencyProps<
   displayCode?: boolean;
   hideLabel?: boolean;
   actualCurrency?: components['schemas']['CurrencyEnum'];
+  fullWidth?: boolean;
+  shouldDisplayCustomList?: boolean;
 }
 
 /**
@@ -49,9 +53,12 @@ export const MoniteCurrency = <
   hideLabel = false,
   required,
   actualCurrency,
+  fullWidth,
+  shouldDisplayCustomList,
   ...props
 }: MoniteCurrencyProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const currencyLabel = t(i18n)`Currency`;
 
   const renderInput = (
@@ -68,15 +75,29 @@ export const MoniteCurrency = <
     />
   );
 
+  const currencyOptions = useMemo(
+    () =>
+      shouldDisplayCustomList
+        ? getCurrenciesArray(i18n).filter((currencyItem) =>
+            componentSettings?.receivables?.bankAccountCurrencies?.includes(
+              currencyItem?.code
+            )
+          )
+        : getCurrenciesArray(i18n),
+    [componentSettings, shouldDisplayCustomList, i18n]
+  );
+
   return (
     <RHFAutocomplete
       {...props}
       required={required}
+      disabled={currencyOptions?.length === 1 || props.disabled}
       className={`Monite-Currency ${hideLabel && 'Monite-Label-Hidden'}`}
       label={currencyLabel}
-      options={getCurrenciesArray(i18n)}
+      options={currencyOptions}
       optionKey="code"
       labelKey={displayCode ? 'code' : 'label'}
+      fullWidth={fullWidth}
       renderInput={renderInput}
       renderOption={(props, option) => (
         <CurrencyOption

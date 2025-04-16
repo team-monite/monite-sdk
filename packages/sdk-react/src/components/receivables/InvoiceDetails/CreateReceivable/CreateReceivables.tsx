@@ -1,9 +1,13 @@
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
+import {
+  BankAccountFormDialog,
+  BankAccountSection,
+} from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -46,6 +50,7 @@ import {
 
 import { format } from 'date-fns';
 
+import { useGetEntityBankAccounts } from '../../hooks';
 import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
@@ -84,7 +89,11 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { api, entityId } = useMoniteContext();
+  const { api, entityId, componentSettings } = useMoniteContext();
+  const hasInitiallySetDefaultBank = useRef(false);
+  const enableEntityBankAccount = Boolean(
+    componentSettings?.receivables?.enableEntityBankAccount
+  );
   const {
     data: paymentTerms,
     isLoading: isPaymentTermsLoading,
@@ -94,19 +103,26 @@ const CreateReceivablesBase = ({
     api.entities.getEntitiesIdVatIds.useQuery({
       path: { entity_id: entityId },
     });
+  const { data: bankAccounts } = useGetEntityBankAccounts(
+    undefined,
+    enableEntityBankAccount
+  );
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
     isNonCompliantFlow,
     data: entityData,
   } = useMyEntity();
+  const [isBankFormOpen, setIsBankFormOpen] = useState(false);
+  const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(
       getCreateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
-        isNonCompliantFlow
+        isNonCompliantFlow,
+        enableEntityBankAccount
       )
     ),
     defaultValues: useMemo(
@@ -188,6 +204,24 @@ const CreateReceivablesBase = ({
       );
     }
   }, [counterpartAddresses, getValues]);
+
+  // this is a workaround until we refactor this component, this component
+  // should be broken down into multiple pieces to better position the logic to avoid these workarounds
+  useEffect(() => {
+    if (
+      enableEntityBankAccount &&
+      actualCurrency &&
+      bankAccounts &&
+      !hasInitiallySetDefaultBank.current
+    ) {
+      const preselectedAccount = bankAccounts?.data?.find(
+        (bank) =>
+          bank?.currency === actualCurrency && bank?.is_default_for_currency
+      );
+      setValue('entity_bank_account_id', preselectedAccount?.id ?? '');
+      hasInitiallySetDefaultBank.current = true;
+    }
+  }, [actualCurrency, setValue, bankAccounts, enableEntityBankAccount]);
 
   const {
     createReminderDialog,
@@ -361,6 +395,20 @@ const CreateReceivablesBase = ({
     } else {
       setAnchorEl(event.currentTarget);
     }
+  };
+
+  const handleSelectBankAfterDeletion = (bankId: string) => {
+    setValue('entity_bank_account_id', bankId);
+  };
+
+  const handleCloseForm = () => {
+    setIsBankFormOpen(false);
+    if (selectedBankId) setSelectedBankId('');
+  };
+
+  const handleOnBankAccountCreation = (newBankAccountId: string) => {
+    setIsBankFormOpen(false);
+    setValue('entity_bank_account_id', newBankAccountId);
   };
 
   if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
@@ -764,6 +812,16 @@ const CreateReceivablesBase = ({
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />
+
+                {enableEntityBankAccount && (
+                  <BankAccountSection
+                    disabled={createReceivable.isPending}
+                    handleOpenBankModal={(id?: string) => {
+                      setIsBankFormOpen(true);
+                      if (id) setSelectedBankId(id);
+                    }}
+                  />
+                )}
               </Box>
               <Box>
                 <EntitySection
@@ -822,6 +880,20 @@ const CreateReceivablesBase = ({
           reminderId={editReminderDialog.reminderId}
           reminderType={editReminderDialog.reminderType}
           onClose={closeUpdateReminderDialog}
+        />
+      )}
+
+      {enableEntityBankAccount && isBankFormOpen && (
+        <BankAccountFormDialog
+          isOpen={isBankFormOpen}
+          entityBankAccountId={selectedBankId}
+          bankAccounts={bankAccounts?.data ?? []}
+          onCancel={handleCloseForm}
+          onCreate={handleOnBankAccountCreation}
+          onUpdate={handleCloseForm}
+          onDelete={handleCloseForm}
+          handleClose={handleCloseForm}
+          handleSelectBankAfterDeletion={handleSelectBankAfterDeletion}
         />
       )}
     </Stack>
