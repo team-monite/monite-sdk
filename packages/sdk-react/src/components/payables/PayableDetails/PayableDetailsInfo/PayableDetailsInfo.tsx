@@ -30,8 +30,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   CachedOutlined,
-  InfoOutlined,
   Edit as EditIcon,
+  WarningAmberRounded,
 } from '@mui/icons-material';
 import {
   Box,
@@ -682,7 +682,7 @@ const PayableCounterpartName = ({
   }
 
   return (
-    <Stack component="span" gap={2} direction="row">
+    <Stack component="span" gap={1} direction="row">
       {payable.counterpart_raw_data.name}
       {isCounterpartMatchingToOCRLoading && (
         <CircularProgress
@@ -697,14 +697,12 @@ const PayableCounterpartName = ({
             isCounterpartMatchingToOCRFound
               ? t(
                   i18n
-                )`A counterpart with this name exists but has not been specified in the document.`
-              : t(
-                  i18n
-                )`There is no such counterpart yet, you can create it in respective section.`
+                )`The vendor details in the bill don't fully match the saved counterpart.`
+              : t(i18n)`The specified vendor has not been saved yet.`
           }
         >
-          <InfoOutlined
-            color={isCounterpartMatchingToOCRFound ? 'disabled' : 'info'}
+          <WarningAmberRounded
+            color={isCounterpartMatchingToOCRFound ? 'disabled' : 'warning'}
             fontSize="small"
             sx={{ alignSelf: 'center' }}
           />
