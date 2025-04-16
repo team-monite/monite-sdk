@@ -253,7 +253,9 @@
 
   [data-placeholder]:empty:before {
     content: attr(data-placeholder);
-    color: #888;
+    color: #6D737E;
+    font-weight: normal;
+    font-size: 14px;
   }
 }
 

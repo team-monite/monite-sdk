@@ -42,11 +42,19 @@ html {
   margin: 0 auto;
 }
 
-.Monite-Dashboard,
-.Monite-AiAssistant {
+.Monite-Dashboard {
   &.Monite-PageContainer {
     overflow: auto;
     padding-bottom: 40px;
+  }
+}
+
+.Monite-AiAssistant {
+  &.Monite-PageContainer {
+    justify-content: flex-start;
+    padding-inline: 0;
+    padding-bottom: 0;
+    overflow: auto;
   }
 }
 
