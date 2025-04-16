@@ -1,10 +1,10 @@
-import { useState, useMemo, DragEvent, ChangeEvent } from 'react';
+import { useState, useMemo, DragEvent } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useFileInput } from '@/core/hooks';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { CenteredContentBox } from '@/ui/box';
-import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -17,24 +17,10 @@ import {
   useTheme,
   CircularProgress,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const maxFileSizeInMB = 10;
-const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
 
 type PayableDetailsAttachFileProps = {
   payableId: string;
 };
-
-const VisuallyHiddenFileInput = styled('input')({
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 export const PayableDetailsAttachFile = ({
   payableId,
@@ -42,6 +28,8 @@ export const PayableDetailsAttachFile = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
   const theme = useTheme();
+
+  const { FileInput, openFileInput, checkFileError } = useFileInput();
 
   const [dragIsOver, setDragIsOver] = useState(false);
 
@@ -58,8 +46,11 @@ export const PayableDetailsAttachFile = ({
             queryClient
           ),
         ]),
-      onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
+      onError: () => {
+        // This onError does nothing.
+        // The actionable onError is defined in attachFileMutation.mutate().
+        // Need to define this onError so that global QueryClient.mutationCache.onError is skipped.
+        return;
       },
     }
   );
@@ -89,56 +80,33 @@ export const PayableDetailsAttachFile = ({
     event.preventDefault();
     setDragIsOver(false);
 
-    const droppedFiles = Array.from(event.dataTransfer.files);
-
-    processFile(droppedFiles[0]);
-  };
-
-  const handleButtonUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const uploadedFiles = Array.from(event.target.files);
-
-      processFile(uploadedFiles[0]);
+    const droppedFile = Array.from(event.dataTransfer.files)[0];
+    if (droppedFile) {
+      handleFileUpload(droppedFile);
     }
   };
 
-  const processFile = (file?: File) => {
-    if (!file) {
-      toast.error(t(i18n)`No file provided`);
+  const handleFileUpload = (file: File) => {
+    const error = checkFileError(file);
+    if (error) {
+      toast.error(error);
       return;
     }
 
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      if (!SUPPORTED_MIME_TYPES.includes(file.type)) {
-        toast.error(t(i18n)`Unsupported file type`);
-        return;
-      }
-
-      if (file.size > maxFileSizeInKB) {
-        toast.error(t(i18n)`File size exceeds ${maxFileSizeInMB}MB limit.`);
-        return;
-      }
-
-      payableId &&
-        attachFileMutation.mutate(
-          {
-            file,
+    payableId &&
+      attachFileMutation.mutate(
+        {
+          file,
+        },
+        {
+          onSuccess: () => {
+            toast.success(t(i18n)`File successfully attached`);
           },
-          {
-            onSuccess: () => {
-              toast.success(t(i18n)`File successfully attached`);
-            },
-          }
-        );
-    };
-
-    reader.onerror = () => {
-      console.error(t(i18n)`There was an issue reading the file.`);
-    };
-
-    reader.readAsDataURL(file);
+          onError: (error) => {
+            toast.error(getAPIErrorMessage(i18n, error));
+          },
+        }
+      );
   };
 
   return attachFileMutation.isPending ? (
@@ -191,15 +159,19 @@ export const PayableDetailsAttachFile = ({
                 i18n
               )`Drag & Drop it here to save for administrative purposes.`}
             </Typography>
-            <Button variant="outlined" component="label">
+            <Button
+              variant="outlined"
+              component="label"
+              onClick={openFileInput}
+            >
               {t(i18n)`Choose from device`}
-              <VisuallyHiddenFileInput
-                type="file"
-                accept="application/pdf,image/*"
-                multiple={false}
-                onChange={handleButtonUpload}
-              />
             </Button>
+            <FileInput
+              onChange={(event) => {
+                const file = event.target.files ? event.target.files[0] : null;
+                if (file) handleFileUpload(file);
+              }}
+            />
           </>
         )}
       </Box>

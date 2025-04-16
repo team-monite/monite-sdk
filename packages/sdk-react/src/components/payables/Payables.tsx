@@ -76,32 +76,29 @@ const PayablesBase = ({
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
 
-  const { FileInput, openFileInput } = useFileInput();
+  const { FileInput, openFileInput, checkFileError } = useFileInput();
   const payableUploadFromFileMutation =
     api.payables.postPayablesUploadFromFile.useMutation(
       {},
       {
         onSuccess: () =>
           api.payables.getPayables.invalidateQueries(queryClient),
-        onError: (error) => {
-          toast.error(getAPIErrorMessage(i18n, error));
+        onError: () => {
+          // This onError does nothing.
+          // The actionable onError is defined in payableUploadFromFileMutation.mutateAsync().
+          // Need to define this onError so that global QueryClient.mutationCache.onError is skipped.
+          return;
         },
       }
     );
 
   const handleFileUpload = (files: File | FileList) => {
-    const allowedTypes = [
-      'application/pdf',
-      'image/png',
-      'image/jpeg',
-      'image/tiff',
-    ];
-
     const fileArray = files instanceof File ? [files] : Array.from(files);
 
     fileArray.forEach((file) => {
-      if (!allowedTypes.includes(file.type)) {
-        toast.error(t(i18n)`Unsupported file format for ${file.name}`);
+      const error = checkFileError(file);
+      if (error) {
+        toast.error(error);
         return;
       }
 
@@ -169,7 +166,6 @@ const PayablesBase = ({
         />
       )}
       <FileInput
-        accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable files`}
         multiple
         onChange={(event) => {

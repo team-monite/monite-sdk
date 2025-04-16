@@ -2,12 +2,6 @@ import { useEffect, useRef } from 'react';
 
 import { embed } from 'pdfobject';
 
-export const SUPPORTED_MIME_TYPES = [
-  'image/png',
-  'image/jpeg',
-  'application/pdf',
-];
-
 interface FileViewerProps {
   url: string;
   mimetype: string;
