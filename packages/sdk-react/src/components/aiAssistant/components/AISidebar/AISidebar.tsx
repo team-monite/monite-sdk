@@ -147,10 +147,7 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
 
         {conversationGroups.map(({ title, conversations }) => {
           return (
-            <div
-              key={title}
-              className="mtw:flex mtw:flex-col mtw:gap-3 mtw:overflow-y-auto"
-            >
+            <div key={title} className="mtw:flex mtw:flex-col mtw:gap-3">
               <h5 className="mtw:px-7 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
                 {title}
               </h5>
@@ -158,12 +155,12 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
               <ul className="mtw:flex mtw:flex-col mtw:items-start">
                 {conversations.map(({ title, id }) => (
                   <SidebarMenuItem
-                    isActive={pathname?.includes(`/ai-assistant/${id}`)}
+                    isActive={pathname?.includes(`/ai-assistant/chat/${id}`)}
                     key={id}
                   >
                     <Link
                       className="mtw:truncate mtw:w-full mtw:inline-block"
-                      href={`/ai-assistant/${id}`}
+                      href={`/ai-assistant/chat/${id}`}
                     >
                       <span key={id} className="mtw:truncate">
                         {title || t(i18n)`Chat ${id}`}
