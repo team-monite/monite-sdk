@@ -30,7 +30,7 @@ msgstr "- they are already overdue."
 msgid "- they are due within 7 days."
 msgstr "- they are due within 7 days."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:126
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:121
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
@@ -210,8 +210,8 @@ msgstr "Access Restricted"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:98
 #: src/components/onboarding/validators/validationSchemas.ts:117
-#: src/components/receivables/components/BankAccountCustomFields.tsx:111
-#: src/components/receivables/components/BankAccountCustomFields.tsx:171
+#: src/components/receivables/components/BankAccountCustomFields.tsx:115
+#: src/components/receivables/components/BankAccountCustomFields.tsx:175
 #: src/components/receivables/validation.ts:19
 #: src/components/receivables/validation.ts:53
 msgid "Account holder name"
@@ -229,9 +229,9 @@ msgstr "Account name"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:145
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:94
 #: src/components/onboarding/validators/validationSchemas.ts:118
-#: src/components/receivables/components/BankAccountCustomFields.tsx:75
-#: src/components/receivables/components/BankAccountCustomFields.tsx:135
-#: src/components/receivables/components/BankAccountCustomFields.tsx:234
+#: src/components/receivables/components/BankAccountCustomFields.tsx:79
+#: src/components/receivables/components/BankAccountCustomFields.tsx:139
+#: src/components/receivables/components/BankAccountCustomFields.tsx:238
 #: src/components/receivables/validation.ts:45
 msgid "Account number"
 msgstr "Account number"
@@ -287,7 +287,7 @@ msgstr "Add a business executive"
 msgid "Add a business owner"
 msgstr "Add a business owner"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:593
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:596
 msgid "Add a date when the product will be delivered or the service provided"
 msgstr "Add a date when the product will be delivered or the service provided"
 
@@ -363,8 +363,8 @@ msgstr "Add item"
 msgid "Add new bank account"
 msgstr "Add new bank account"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:71
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:144
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:66
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:139
 #: src/components/payables/Payables.test.tsx:72
 #: src/components/payables/Payables.test.tsx:110
 #: src/components/payables/Payables.test.tsx:152
@@ -522,7 +522,7 @@ msgstr "All invoices"
 msgid "All items"
 msgstr "All items"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:517
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:520
 msgid "All items in the invoice must be in this currency. Remove items that don’t match it."
 msgstr "All items in the invoice must be in this currency. Remove items that don’t match it."
 
@@ -560,7 +560,7 @@ msgstr "Allowed"
 msgid "Already updated PDFs can't be reverted to the default view"
 msgstr "Already updated PDFs can't be reverted to the default view"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:705
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:708
 msgid "Always display selected fields on the form (where available)"
 msgstr "Always display selected fields on the form (where available)"
 
@@ -829,7 +829,7 @@ msgstr "Aruban Florin"
 msgid "At least 1 reminder is required"
 msgstr "At least 1 reminder is required"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:183
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:151
 msgid "Attach a file"
 msgstr "Attach a file"
 
@@ -1115,7 +1115,7 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:200
+#: src/components/payables/Payables.tsx:196
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
@@ -1366,8 +1366,8 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:44
 #: src/components/receivables/components/BankAccountFormDialog.tsx:180
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:541
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:540
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:727
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:543
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:730
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:445
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:40
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:87
@@ -1524,7 +1524,7 @@ msgstr "CFP Franc"
 msgid "Chad"
 msgstr "Chad"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:491
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:494
 msgid "Change document currency"
 msgstr "Change document currency"
 
@@ -1577,7 +1577,7 @@ msgstr "Choose counterpart type:"
 msgid "Choose document"
 msgstr "Choose document"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:195
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:167
 msgid "Choose from device"
 msgstr "Choose from device"
 
@@ -2088,7 +2088,7 @@ msgstr "Create customer"
 msgid "Create from email"
 msgstr "Create from email"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:768
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:771
 msgid "Create invoice"
 msgstr "Create invoice"
 
@@ -2235,7 +2235,7 @@ msgstr "Cuba"
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:149
 #: src/components/products/ProductDetails/validation.ts:48
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:463
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:466
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
 #: src/components/receivables/validation.ts:31
@@ -2541,7 +2541,7 @@ msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:453
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:221
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:796
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:799
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -2701,11 +2701,11 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:190
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:158
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:123
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:118
 msgid "Drag and drop files or click to upload"
 msgstr "Drag and drop files or click to upload"
 
@@ -2717,7 +2717,7 @@ msgstr "Drapery, Window Covering, and Upholstery Stores"
 msgid "Drinking Places"
 msgstr "Drinking Places"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:172
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:140
 msgid "Drop the file here to upload"
 msgstr "Drop the file here to upload"
 
@@ -3031,8 +3031,8 @@ msgstr "Employment/Temp Agencies"
 msgid "Enable email reminders"
 msgstr "Enable email reminders"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:467
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:574
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:470
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:577
 msgid "Enable more fields"
 msgstr "Enable more fields"
 
@@ -3302,15 +3302,19 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
+#: src/core/hooks/useFileInput.tsx:86
+msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
+msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
+
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:201
 msgid "File is being processed..."
 msgstr "File is being processed..."
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:120
-msgid "File size exceeds {maxFileSizeInMB}MB limit."
-msgstr "File size exceeds {maxFileSizeInMB}MB limit."
+#~ msgid "File size exceeds {maxFileSizeInMB}MB limit."
+#~ msgstr "File size exceeds {maxFileSizeInMB}MB limit."
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:131
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:103
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
@@ -3489,8 +3493,8 @@ msgstr "Front of your identity document"
 msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:590
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:609
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:593
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:612
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:153
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:238
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:139
@@ -3857,7 +3861,7 @@ msgstr "I own 25% or more of the company."
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:103
 #: src/components/onboarding/validators/validationSchemas.ts:122
-#: src/components/receivables/components/BankAccountCustomFields.tsx:195
+#: src/components/receivables/components/BankAccountCustomFields.tsx:199
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:31
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:45
 #: src/components/receivables/validation.ts:79
@@ -4087,7 +4091,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:494
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:497
 msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
@@ -4892,8 +4896,8 @@ msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgid "Must be a reachable, unique URL that describes the account's business."
 msgstr "Must be a reachable, unique URL that describes the account's business."
 
-#: src/components/receivables/components/BankAccountCustomFields.tsx:116
-#: src/components/receivables/components/BankAccountCustomFields.tsx:176
+#: src/components/receivables/components/BankAccountCustomFields.tsx:120
+#: src/components/receivables/components/BankAccountCustomFields.tsx:180
 msgid "Must match the name on your bank account exactly."
 msgstr "Must match the name on your bank account exactly."
 
@@ -5096,7 +5100,7 @@ msgstr "No Credit Notes"
 msgid "No default email for selected Counterpart. Reminders will not be sent."
 msgstr "No default email for selected Counterpart. Reminders will not be sent."
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:107
+#: src/core/hooks/useFileInput.tsx:78
 msgid "No file provided"
 msgstr "No file provided"
 
@@ -5306,7 +5310,7 @@ msgstr "Opticians, Eyeglasses"
 msgid "Optometrists, Ophthalmologist"
 msgstr "Optometrists, Ophthalmologist"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:133
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:128
 msgid "Or add bill manually"
 msgstr "Or add bill manually"
 
@@ -5515,7 +5519,7 @@ msgstr "Payable \"{0}\" has been submitted"
 msgid "Payable \"{0}\" has been updated"
 msgstr "Payable \"{0}\" has been updated"
 
-#: src/components/payables/Payables.tsx:114
+#: src/components/payables/Payables.tsx:111
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
@@ -5523,7 +5527,7 @@ msgstr "Payable {0} uploaded successfully"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:147
+#: src/components/payables/Payables.tsx:144
 msgid "Payables"
 msgstr "Payables"
 
@@ -6037,8 +6041,8 @@ msgstr "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Hous
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:628
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:647
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:631
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:650
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:74
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:141
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:195
@@ -6319,6 +6323,10 @@ msgstr "Repayment sum"
 msgid "Replace items"
 msgstr "Replace items"
 
+#: src/core/utils/getAPIErrorMessage.ts:18
+msgid "Request size limit exceeded"
+msgstr "Request size limit exceeded"
+
 #: src/components/approvalRequests/ApprovalRequests.tsx:48
 msgid "Request was approved"
 msgstr "Request was approved"
@@ -6411,9 +6419,9 @@ msgstr "Roofing/Siding, Sheet Metal"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:13
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:106
 #: src/components/onboarding/validators/validationSchemas.ts:125
-#: src/components/receivables/components/BankAccountCustomFields.tsx:95
-#: src/components/receivables/components/BankAccountCustomFields.tsx:273
-#: src/components/receivables/components/BankAccountCustomFields.tsx:287
+#: src/components/receivables/components/BankAccountCustomFields.tsx:99
+#: src/components/receivables/components/BankAccountCustomFields.tsx:277
+#: src/components/receivables/components/BankAccountCustomFields.tsx:291
 #: src/components/receivables/validation.ts:61
 msgid "Routing number"
 msgstr "Routing number"
@@ -6519,8 +6527,8 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
 #: src/components/receivables/components/BankAccountFormDialog.tsx:190
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:546
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:733
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:549
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:736
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:451
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:40
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
@@ -6533,7 +6541,7 @@ msgstr "Saudi Riyal"
 msgid "Save"
 msgstr "Save"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:749
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:752
 msgid "Save and continue"
 msgstr "Save and continue"
 
@@ -6825,9 +6833,9 @@ msgstr "Something went wrong. Please try again"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:12
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:102
 #: src/components/onboarding/validators/validationSchemas.ts:121
-#: src/components/receivables/components/BankAccountCustomFields.tsx:155
-#: src/components/receivables/components/BankAccountCustomFields.tsx:275
-#: src/components/receivables/components/BankAccountCustomFields.tsx:305
+#: src/components/receivables/components/BankAccountCustomFields.tsx:159
+#: src/components/receivables/components/BankAccountCustomFields.tsx:279
+#: src/components/receivables/components/BankAccountCustomFields.tsx:309
 #: src/components/receivables/validation.ts:70
 msgid "Sort code"
 msgstr "Sort code"
@@ -7010,7 +7018,7 @@ msgstr "Sweden"
 msgid "Swedish Krona"
 msgstr "Swedish Krona"
 
-#: src/components/receivables/components/BankAccountCustomFields.tsx:213
+#: src/components/receivables/components/BankAccountCustomFields.tsx:217
 #: src/components/receivables/validation.ts:87
 msgid "SWIFT / BIC"
 msgstr "SWIFT / BIC"
@@ -7193,8 +7201,8 @@ msgstr "Tent and Awning Shops"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:120
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:121
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:666
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:685
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:669
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:688
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:106
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
@@ -7327,8 +7335,8 @@ msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:138
-msgid "There was an issue reading the file."
-msgstr "There was an issue reading the file."
+#~ msgid "There was an issue reading the file."
+#~ msgstr "There was an issue reading the file."
 
 #: src/components/financing/components/FinanceBanner.tsx:202
 msgid "They will contact you if your credit score improves and you can reapply."
@@ -7363,7 +7371,7 @@ msgstr "This invoice can be financed"
 msgid "This invoice can't be financed"
 msgstr "This invoice can't be financed"
 
-#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:186
+#: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:154
 #: src/components/payables/PayableDetails/PayableDetailsNoAttachedFile/PayableDetailsNoAttachedFile.tsx:30
 msgid "This invoice doesn't have a file attached."
 msgstr "This invoice doesn't have a file attached."
@@ -7611,8 +7619,8 @@ msgstr "Tuvalu"
 msgid "Type"
 msgstr "Type"
 
-#: src/components/receivables/components/BankAccountCustomFields.tsx:254
-#: src/components/receivables/components/BankAccountCustomFields.tsx:260
+#: src/components/receivables/components/BankAccountCustomFields.tsx:258
+#: src/components/receivables/components/BankAccountCustomFields.tsx:264
 msgid "Type of code"
 msgstr "Type of code"
 
@@ -7728,7 +7736,7 @@ msgstr "Units"
 #: src/core/hooks/useVatTypes.ts:16
 #: src/core/hooks/useVatTypes.ts:18
 #: src/core/hooks/useVatTypes.ts:211
-#: src/core/utils/getAPIErrorMessage.ts:18
+#: src/core/utils/getAPIErrorMessage.ts:21
 msgid "Unknown"
 msgstr "Unknown"
 
@@ -7747,12 +7755,16 @@ msgstr "Unspecified"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:53
 #: src/components/payables/Payables.tsx:104
-msgid "Unsupported file format for {0}"
-msgstr "Unsupported file format for {0}"
+#~ msgid "Unsupported file format for {0}"
+#~ msgstr "Unsupported file format for {0}"
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:115
-msgid "Unsupported file type"
-msgstr "Unsupported file type"
+#~ msgid "Unsupported file type"
+#~ msgstr "Unsupported file type"
+
+#: src/core/hooks/useFileInput.tsx:82
+msgid "Unsupported file type for {0}"
+msgstr "Unsupported file type for {0}"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:280
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1180
@@ -7816,7 +7828,7 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:85
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:80
 msgid "Upload files"
 msgstr "Upload files"
 
@@ -7824,12 +7836,12 @@ msgstr "Upload files"
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:152
-#: src/components/payables/Payables.tsx:173
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:146
+#: src/components/payables/Payables.tsx:169
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/payables/Payables.tsx:113
+#: src/components/payables/Payables.tsx:110
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
@@ -8235,7 +8247,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:631
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:634
 msgid "You can add a document number to have it in the PDF"
 msgstr "You can add a document number to have it in the PDF"
 
@@ -8283,7 +8295,7 @@ msgstr "You can create your first tag."
 msgid "You can disable it later in the PDF settings"
 msgstr "You can disable it later in the PDF settings"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:669
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:672
 msgid "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 msgstr "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 
@@ -8388,9 +8400,9 @@ msgstr "Your application is in review"
 msgid "Your application was approved"
 msgstr "Your application was approved"
 
-#: src/components/receivables/components/BankAccountCustomFields.tsx:80
-#: src/components/receivables/components/BankAccountCustomFields.tsx:140
-#: src/components/receivables/components/BankAccountCustomFields.tsx:239
+#: src/components/receivables/components/BankAccountCustomFields.tsx:84
+#: src/components/receivables/components/BankAccountCustomFields.tsx:144
+#: src/components/receivables/components/BankAccountCustomFields.tsx:243
 msgid "Your bank account must be a checking account."
 msgstr "Your bank account must be a checking account."
 
