@@ -45,7 +45,7 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
 
   const conversationGroups = useMemo(() => {
     return createConversationGroups(conversations, i18n);
-  }, [conversations]);
+  }, [conversations, i18n]);
 
   useEffect(() => {
     if (!isMobile) {
