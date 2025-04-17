@@ -51,6 +51,26 @@ export interface OnboardingSettings {
    * Defaults to false.
    */
   hideFooter?: boolean;
+  /**
+   * Whether to show the continue button on the onboarding completed page.
+   *
+   * @default false
+   */
+  showContinueButton?: boolean;
+  /**
+   * Allowed currencies to restrict options in the onboarding forms.
+   * The first currency in the array will be used as the default value.
+   *
+   * @example ['USD', 'EUR']
+   */
+  allowedCurrencies?: components['schemas']['CurrencyEnum'][];
+  /**
+   * Allowed country codes to restrict options in the onboarding forms.
+   * The first country code in the array will be used as the default value.
+   *
+   * @example ['US', 'GB']
+   */
+  allowedCountries?: components['schemas']['AllowedCountries'][];
 
   /**
    * Called when the onboarding process is completed.
@@ -65,14 +85,6 @@ export interface OnboardingSettings {
    * @returns {void}
    */
   onContinue?: () => void;
-
-  /**
-   * Whether to show the continue button on the onboarding completed page.
-   *
-   * @default false
-   */
-  showContinueButton?: boolean;
-
   /**
    * Called when working capital onboarding is completed.
    * This happens when the business status transitions to 'ONBOARDED'.

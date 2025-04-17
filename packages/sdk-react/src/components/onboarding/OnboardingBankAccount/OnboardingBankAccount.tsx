@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
+import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
 import {
@@ -14,7 +15,15 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-export const OnboardingBankAccount = () => {
+interface OnboardingBankAccountProps {
+  allowedCurrencies?: CurrencyEnum[];
+  allowedCountries?: AllowedCountries[];
+}
+
+export const OnboardingBankAccount = ({
+  allowedCurrencies,
+  allowedCountries,
+}: OnboardingBankAccountProps) => {
   const { i18n } = useLingui();
 
   const {
@@ -50,6 +59,28 @@ export const OnboardingBankAccount = () => {
     return result;
   });
 
+  const filteredCurrencies = useMemo(() => {
+    if (allowedCurrencies && allowedCurrencies.length > 0) {
+      return currencies.filter((c) => allowedCurrencies.includes(c));
+    }
+
+    return currencies;
+  }, [allowedCurrencies, currencies]);
+
+  const filteredCountryOptions = useMemo(() => {
+    const codesToUse =
+      allowedCountries && allowedCountries.length > 0
+        ? Object.values(countries).filter((code) =>
+            allowedCountries.includes(code)
+          )
+        : Object.values(countries);
+
+    return codesToUse.map((code) => ({
+      code,
+      label: t(i18n)`${getRegionName(code)}`,
+    }));
+  }, [allowedCountries, countries, i18n]);
+
   if (isLoading) return null;
 
   return (
@@ -58,15 +89,16 @@ export const OnboardingBankAccount = () => {
       actions={<OnboardingFormActions isLoading={isPending} />}
     >
       <OnboardingStepContent>
-        {checkValue('currency') && !!currencies.length && (
+        {checkValue('currency') && !!filteredCurrencies.length && (
           <RHFTextField
             disabled={isPending}
             label={t(i18n)`Currency`}
             name="currency"
             control={control}
+            defaultValue={allowedCurrencies?.[0]}
             select
           >
-            {currencies.map((currency) => (
+            {filteredCurrencies.map((currency) => (
               <MenuItem key={currency} value={currency}>
                 {currency}
               </MenuItem>
@@ -74,18 +106,16 @@ export const OnboardingBankAccount = () => {
           </RHFTextField>
         )}
 
-        {checkValue('country') && !!countries.length && (
+        {checkValue('country') && !!filteredCountryOptions.length && (
           <RHFAutocomplete
             disabled={isPending}
             name="country"
             control={control}
+            defaultValue={allowedCountries?.[0]}
             label={t(i18n)`Country`}
             optionKey="code"
             labelKey="label"
-            options={Object.values(countries).map((code) => ({
-              code,
-              label: t(i18n)`${getRegionName(code)}`,
-            }))}
+            options={filteredCountryOptions}
             renderOption={(props, option, state) => (
               <CountryOption
                 key={option.code}
@@ -145,3 +175,6 @@ export const OnboardingBankAccount = () => {
     </OnboardingForm>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type AllowedCountries = components['schemas']['AllowedCountries'];
