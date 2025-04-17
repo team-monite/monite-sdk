@@ -1,3 +1,6 @@
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+
 export const COLORS = [
   '#9999FF',
   '#E3135C',
@@ -11,27 +14,34 @@ export const COLORS = [
   '#aa3264',
 ];
 
-export const DEFAULT_PROMPTS = [
+export const getDefaultPrompts = (i18n: I18n) => [
   {
     id: '1',
-    content: 'Give me all invoices I still have unpaid',
+    content: t(i18n)`Give me all invoices I still have unpaid`,
     created_at: '2025-03-10T09:33:53.715Z',
   },
   {
     id: '2',
-    content:
-      'List all customers who have overdue payments for more than 60 days',
+    content: t(
+      i18n
+    )`List all customers who have overdue payments for more than 60 days`,
     created_at: '2025-03-10T09:33:53.715Z',
   },
   {
     id: '3',
-    content:
-      'Give me the total amount of receivables overdue by more than 30 days',
+    content: t(
+      i18n
+    )`Give me the total amount of receivables overdue by more than 30 days`,
     created_at: '2025-03-10T09:33:53.715Z',
   },
   {
     id: '4',
-    content: 'Who are my customers?',
+    content: t(i18n)`Who are my customers?`,
     created_at: '2025-03-10T09:33:53.715Z',
   },
+];
+
+export const getFeedbackOptions = (i18n: I18n) => [
+  { feedback: t(i18n)`This information is not correct` },
+  { feedback: t(i18n)`Didn’t follow prompt input` },
 ];

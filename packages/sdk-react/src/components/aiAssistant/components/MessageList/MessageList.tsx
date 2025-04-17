@@ -66,7 +66,7 @@ export const MessageList = () => {
       return;
     }
 
-    if (!parentRef.current || isReady.current || !height) {
+    if (!height) {
       return;
     }
 
@@ -74,6 +74,7 @@ export const MessageList = () => {
       virtualizer.scrollToIndex(messages.length - 1);
       isReady.current = true;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [height]);
 
   useEffect(() => {

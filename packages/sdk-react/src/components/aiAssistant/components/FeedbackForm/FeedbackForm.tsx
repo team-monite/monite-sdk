@@ -1,5 +1,13 @@
-import { type ChangeEvent, type FC, useEffect, useRef, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FC,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
+import { getFeedbackOptions } from '@/components/aiAssistant/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
@@ -7,11 +15,6 @@ import { useLingui } from '@lingui/react';
 import { Button, Input } from '@mui/material';
 
 import { X } from 'lucide-react';
-
-const FEEDBACK_OPTIONS = [
-  { feedback: 'This information is not correct' },
-  { feedback: 'Didn’t follow prompt input' },
-];
 
 interface FeedbackFormProps {
   id: string;
@@ -32,6 +35,8 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
   const [input, setInput] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const feedbackOptions = useMemo(() => getFeedbackOptions(i18n), [i18n]);
+
   const handleCloseForm = () => {
     setIsFeedbackFormOpen(false);
   };
@@ -51,8 +56,8 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
     setInput(e.target.value);
   };
 
-  const handleSubmit = () => {
-    handleSendFeedbackMessage(input);
+  const handleSubmit = async () => {
+    await handleSendFeedbackMessage(input);
   };
 
   useEffect(() => {
@@ -117,7 +122,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
       <h5 className="mtw:text-sm">{t(i18n)`Tell us more`}:</h5>
 
       <div className="mtw:flex mtw:flex-wrap mtw:gap-2 mtw:text-sm">
-        {FEEDBACK_OPTIONS.map(({ feedback }) => (
+        {feedbackOptions.map(({ feedback }) => (
           <Button
             type="button"
             onClick={() => handleSendFeedbackMessage(feedback)}
@@ -125,7 +130,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
             className="mtw:p-3 mtw:font-normal"
             variant="outlined"
           >
-            {t(i18n)`${feedback}`}
+            {feedback}
           </Button>
         ))}
       </div>

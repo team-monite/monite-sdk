@@ -38,14 +38,14 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
   handleDialogClose,
   LocationLink,
 }) => {
-  const [_, startTransition] = useTransition();
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+
+  const [_, startTransition] = useTransition();
 
   const [search, setSearch] = useState('');
   const [groups, setGroups] =
     useState<ConversationGroups[]>(conversationGroups);
-
-  const { api } = useMoniteContext();
 
   const { data } = api.ai.fetchConversations.useQuery<{ data: Conversation[] }>(
     {
@@ -70,7 +70,7 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
     }
 
     startTransition(() => {
-      const conversationGroups = createConversationGroups(conversations);
+      const conversationGroups = createConversationGroups(conversations, i18n);
 
       setGroups(conversationGroups);
     });
