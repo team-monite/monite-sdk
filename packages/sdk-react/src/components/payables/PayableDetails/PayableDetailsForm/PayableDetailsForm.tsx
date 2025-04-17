@@ -525,6 +525,10 @@ const PayableDetailsFormBase = forwardRef<
                             },
                           };
                         }}
+                        isCounterpartMatchingToOCRFound={
+                          !!matchingToOCRCounterpartId
+                        }
+                        counterpartRawName={payable?.counterpart_raw_data?.name}
                       />
                       <Controller
                         name="counterpartBankAccount"

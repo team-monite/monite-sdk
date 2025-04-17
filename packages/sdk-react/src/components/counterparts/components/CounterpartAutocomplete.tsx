@@ -29,6 +29,8 @@ import {
   createFilterOptions,
   Button,
 } from '@mui/material';
+import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -57,6 +59,8 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   multiple?: boolean;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  isCounterpartMatchingToOCRFound?: boolean;
+  counterpartRawName?: string;
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -68,6 +72,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   multiple = false,
   disabled = false,
   customerTypes,
+  isCounterpartMatchingToOCRFound,
+  counterpartRawName,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -222,23 +228,46 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={label}
-                    error={!!error}
-                    required={required}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {isCounterpartsLoading ? (
-                            <CircularProgress color="inherit" size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
+                  <>
+                    <TextField
+                      {...params}
+                      label={label}
+                      error={!!error}
+                      required={required}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {isCounterpartsLoading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                    {error && (
+                      <FormHelperText error>{error.message}</FormHelperText>
+                    )}
+                    {!isCounterpartMatchingToOCRFound &&
+                      counterpartRawName &&
+                      !getValues(name) && (
+                        <FormHelperText>
+                          {t(
+                            i18n
+                          )`The specified counterpart has not been saved yet.`}
+                          <br />
+                          {t(i18n)`Create new counterpart:`}
+                          <StyledButtonLink
+                            as="button"
+                            sx={{ marginLeft: 0.5 }}
+                            onClick={() => setIsCreateCounterpartOpened(true)}
+                          >
+                            {counterpartRawName}
+                          </StyledButtonLink>
+                        </FormHelperText>
+                      )}
+                  </>
                 )}
                 renderOption={(props, counterpartOption) => {
                   return isCreateNewCounterpartOption(counterpartOption) ? (
@@ -262,7 +291,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                   );
                 }}
               />
-              {error && <FormHelperText error>{error.message}</FormHelperText>}
             </>
           );
         }}
@@ -270,3 +298,10 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     </>
   );
 };
+
+const StyledButtonLink = styled(Link)(({ theme }) => ({
+  all: 'unset',
+  cursor: 'pointer',
+  color: theme.palette.primary.main,
+  textDecoration: 'underline',
+}));
