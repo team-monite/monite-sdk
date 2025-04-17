@@ -14,4 +14,12 @@ export const Onboarding: Story = {
   render: () => <OnboardingComponent />,
 };
 
+export const WithAllowedCountriesAndCurrencies: Story = {
+  args: {
+    allowedCountries: ['US'],
+    allowedCurrencies: ['USD'],
+  },
+  render: (args) => <OnboardingComponent {...args} />,
+};
+
 export default Story;
