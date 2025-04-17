@@ -5,7 +5,7 @@ import { cn } from '@/ui/lib/utils';
 import type { Props } from 'recharts/types/component/DefaultLegendContent';
 
 export const ChartLegend: FC<Props> = ({ payload }) => (
-  <div className="flex flex-col justify-start gap-4">
+  <div className="mtw:flex mtw:flex-col mtw:justify-start mtw:gap-4">
     {!!payload?.length &&
       payload.map(({ color, value, payload }, index) => (
         <div
