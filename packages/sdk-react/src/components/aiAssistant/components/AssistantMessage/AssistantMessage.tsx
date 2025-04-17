@@ -3,6 +3,8 @@ import { type FC } from 'react';
 
 import { LoaderDots } from '@/components/aiAssistant/components/LoaderDots/LoaderDots';
 import { cn } from '@/ui/lib/utils';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 import { splitByTags } from '../../utils/aiAssistant';
 import { AssistantButtons } from '../AssistantButtons/AssistantButtons';
@@ -26,6 +28,8 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
   isError = false,
   isSubmitted = false,
 }) => {
+  const { i18n } = useLingui();
+
   const parts = splitByTags(content);
   const showActionButtons = !isStreaming || (isStreaming && !isLast);
   const isAnswerLoading = isSubmitted && isLast;
@@ -51,8 +55,10 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
             'mtw:rounded-lg mtw:px-4 mtw:py-3 mtw:mb-4'
           )}
         >
-          Something went wrong. If this issue persists please contact us through
-          the chat icon in the bottom right or email us at help@getargon.ai
+          {t(
+            i18n
+          )`Something went wrong. If this issue persists please contact us through
+            the chat icon in the bottom right or email us at help@getargon.ai`}
         </div>
       </AssistantMessageWrapper>
     );

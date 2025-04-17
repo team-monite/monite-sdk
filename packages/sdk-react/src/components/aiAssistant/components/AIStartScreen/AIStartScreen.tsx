@@ -34,7 +34,7 @@ export const AIStartScreen: FC<AIStartScreenProps> = ({
           <AssistantLogo />
 
           <h1 className="mtw:text-center mtw:text-2xl mtw:font-medium">
-            What can I help with?
+            {t(i18n)`What can I help with?`}
           </h1>
         </div>
 

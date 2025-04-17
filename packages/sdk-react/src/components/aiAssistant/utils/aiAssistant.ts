@@ -1,17 +1,24 @@
+import { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+
 import { format } from 'date-fns';
 import isThisMonth from 'date-fns/isThisMonth';
 
 import { Chart, Conversation, Conversations, Part } from '../types';
 
-export const createConversationGroups = (conversations: Conversation[]) => {
+export const createConversationGroups = (
+  conversations: Conversation[],
+  i18: I18n
+) => {
   const conversationObject =
     conversations.reduce<Conversations>((groups, conversation) => {
       const { created_at: createdAt } = conversation;
 
+      // eslint-disable-next-line lingui/no-unlocalized-strings
       const monthYear = format(new Date(createdAt), 'MMMM yyyy');
       const thisMonth = isThisMonth(new Date(createdAt));
 
-      const key = thisMonth ? 'This month' : monthYear;
+      const key = thisMonth ? t(i18)`This month` : monthYear;
 
       if (groups[key]) {
         return {

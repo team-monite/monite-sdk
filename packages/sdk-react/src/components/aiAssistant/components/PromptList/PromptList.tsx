@@ -1,7 +1,8 @@
 import { type FC, useMemo } from 'react';
 
-import { DEFAULT_PROMPTS } from '@/components/aiAssistant/consts';
+import { getDefaultPrompts } from '@/components/aiAssistant/consts';
 import { cn } from '@/ui/lib/utils';
+import { useLingui } from '@lingui/react';
 
 import { Prompt } from '../../types';
 import { PromptCard } from '../PromptCard/PromptCard';
@@ -12,13 +13,17 @@ interface PromptListProps {
 }
 
 export const PromptList: FC<PromptListProps> = ({ divider, userPrompts }) => {
+  const { i18n } = useLingui();
+
+  const defaultPrompts = useMemo(() => getDefaultPrompts(i18n), [i18n]);
+
   const prompts = useMemo(() => {
-    const promptList = [...DEFAULT_PROMPTS, ...userPrompts];
+    const promptList = [...defaultPrompts, ...userPrompts];
     const remainder = divider ? promptList.length % divider : 0;
     const newLength = promptList.length - remainder;
 
     return promptList.filter((_, index) => index < newLength);
-  }, [divider, userPrompts]);
+  }, [defaultPrompts, divider, userPrompts]);
 
   return (
     <div className="mtw:size-full mtw:overflow-y-auto">

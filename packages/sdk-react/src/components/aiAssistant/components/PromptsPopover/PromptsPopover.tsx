@@ -1,8 +1,9 @@
 import React, { type FC, type RefObject, useMemo } from 'react';
 
-import { DEFAULT_PROMPTS } from '@/components/aiAssistant/consts';
+import { getDefaultPrompts } from '@/components/aiAssistant/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
+import { useLingui } from '@lingui/react';
 import { Popover } from '@mui/material';
 
 import { Prompt } from '../../types';
@@ -24,12 +25,15 @@ export const PromptsPopover: FC<PromptsPopoverProps> = ({
   onPromptInsert,
 }) => {
   const { api } = useMoniteContext();
+  const { i18n } = useLingui();
 
   const { data } = api.ai.fetchPrompts.useQuery<{
     data: Prompt[];
   }>();
 
   const { data: userPrompts = [] } = data || {};
+
+  const defaultPrompts = useMemo(() => getDefaultPrompts(i18n), [i18n]);
 
   const handlePreserveInputFocus = () => {
     if (!editorRef.current) {
@@ -40,8 +44,8 @@ export const PromptsPopover: FC<PromptsPopoverProps> = ({
   };
 
   const promptList = useMemo(
-    () => [...DEFAULT_PROMPTS, ...userPrompts],
-    [userPrompts]
+    () => [...defaultPrompts, ...userPrompts],
+    [defaultPrompts, userPrompts]
   );
 
   return (
