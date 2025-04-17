@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -18,8 +18,12 @@ export const AIStartPageContent: FC<AIAssistantProps> = ({
   const router = useRouter();
 
   const handleStartConversation = () => {
-    router.push(`/ai-assistant/${conversationId}/`);
+    router.push(`/ai-assistant/chat/${conversationId}/`);
   };
+
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
 
   return (
     <AIAssistant>
