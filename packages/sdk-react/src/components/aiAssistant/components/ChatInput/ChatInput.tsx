@@ -10,7 +10,6 @@ import React, {
 } from 'react';
 
 import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 
 import { SendHorizontal } from 'lucide-react';
@@ -25,12 +24,13 @@ interface ChatInputProps {
 
 export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const { api, queryClient } = useMoniteContext();
 
   const [showPrompts, setShowPrompts] = useState(false);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
+    null
+  );
 
-  const { input, status, setInput, handleSubmit, messages } =
-    useAIAssistantChat();
+  const { input, status, setInput, handleSubmit } = useAIAssistantChat();
 
   const isStreaming = status === 'streaming';
   const isDisabled = !input || isStreaming;
@@ -59,6 +59,10 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
     onStartConversation?.();
   };
 
+  const handleClosePrompts = useCallback(() => {
+    setShowPrompts(false);
+  }, []);
+
   const handleKeyDown = (
     e: KeyboardEvent<HTMLFormElement | HTMLDivElement>
   ) => {
@@ -72,12 +76,12 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
           editorRef.current.textContent.split('').length);
 
     if (e.key === 'Escape') {
-      setShowPrompts(false);
+      handleClosePrompts();
     }
 
     if (shouldRemoveInnerHtml) {
       handleClearInput();
-      setShowPrompts(false);
+      handleClosePrompts();
     }
 
     const isEnterPressed = e.key === 'Enter' && !e.shiftKey;
@@ -101,6 +105,7 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
     }
 
     setInput(content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePromptInsert = useCallback((prompt: string) => {
@@ -114,15 +119,17 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
     if (slashIndex !== -1) {
       editorRef.current.innerHTML = prompt;
 
-      setShowPrompts(false);
+      handleClosePrompts();
       setInput(prompt);
 
       setCursorAtTheEnd(editorRef.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePaste = useCallback((text: string) => {
     setInput(text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -139,6 +146,9 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
 
   return (
     <div
+      ref={(node) => {
+        setPopoverAnchorEl(node);
+      }}
       className={cn(
         'mtw:2xl:max-w-4xl mtw:lg:max-w-2xl mtw:md:max-w-lg mtw:sm:max-w-md mtw:max-w-xs mtw:mt-auto',
         'mtw:w-full mtw:mx-auto mtw:flex mtw:flex-col mtw:gap-2 mtw:sticky mtw:bottom-0 mtw:pb-15 mtw:bg-background'
@@ -161,6 +171,8 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
 
         <PromptsPopover
           editorRef={editorRef}
+          popoverAnchorEl={popoverAnchorEl}
+          closePrompts={handleClosePrompts}
           showPrompts={showPrompts}
           onPromptInsert={handlePromptInsert}
         />
