@@ -1,13 +1,29 @@
 'use client';
 
+import { FC, useEffect } from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import { AIAssistant, AIPrompts } from '@monite/sdk-react';
 
 import { AIAssistantWrapper } from '@/components/AIAssistant/AIAssistantWrapper';
 
-export const AIPromptsContent = () => {
+interface AIPromptsContentProps {
+  conversationId: string;
+}
+
+export const AIPromptsContent: FC<AIPromptsContentProps> = ({
+  conversationId,
+}) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
+
   return (
     <AIAssistant>
-      <AIAssistantWrapper messages={[]}>
+      <AIAssistantWrapper conversationId={conversationId} messages={[]}>
         <AIPrompts />
       </AIAssistantWrapper>
     </AIAssistant>
