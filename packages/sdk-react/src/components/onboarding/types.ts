@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import type { OnboardingSettings } from '@/core/componentSettings';
 
 export type OnboardingPersonId = string | null;
 
@@ -106,25 +107,11 @@ export type OnboardingRequirementMask = Extract<
   'representative' | 'directors' | 'executives' | 'owners'
 >;
 
-export interface OnboardingProps {
-  /**
-   * Called when the onboarding process is completed.
-   *
-   * @returns {void}
-   */
-  onComplete?: () => void;
-
-  /**
-   * Called when the continue button is clicked on the onboarding completed page.
-   *
-   * @returns {void}
-   */
-  onContinue?: () => void;
-
-  /**
-   * Whether to show the continue button on the onboarding completed page.
-   *
-   * @default false
-   */
-  showContinueButton?: boolean;
-}
+export type OnboardingProps = Pick<
+  OnboardingSettings,
+  | 'showContinueButton'
+  | 'allowedCurrencies'
+  | 'allowedCountries'
+  | 'onComplete'
+  | 'onContinue'
+>;
