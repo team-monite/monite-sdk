@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.1
+
+### Patch Changes
+
+- 560bd48: Added some minor adjustments to finance banner
+
 ## 2.0.0
 
 ### Major Changes

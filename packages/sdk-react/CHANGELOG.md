@@ -1,5 +1,12 @@
 # @monite/sdk-react
 
+## 4.0.1
+
+### Patch Changes
+
+- eab13cf: Added onboarding currency and country options
+- 560bd48: Added some minor adjustments to finance banner
+
 ## 4.0.0
 
 ### Major Changes
