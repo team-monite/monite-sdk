@@ -702,7 +702,7 @@ const PayableCounterpartName = ({
           }
         >
           <WarningAmberRounded
-            color={isCounterpartMatchingToOCRFound ? 'disabled' : 'warning'}
+            color="warning"
             fontSize="small"
             sx={{ alignSelf: 'center' }}
           />
