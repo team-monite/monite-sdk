@@ -8,6 +8,7 @@ import {
   PathValue,
 } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
@@ -59,7 +60,7 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   multiple?: boolean;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
-  isCounterpartMatchingToOCRFound?: boolean;
+  counterpartMatchingToOCRFound?: components['schemas']['CounterpartResponse'];
   counterpartRawName?: string;
 }
 
@@ -72,7 +73,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   multiple = false,
   disabled = false,
   customerTypes,
-  isCounterpartMatchingToOCRFound,
+  counterpartMatchingToOCRFound,
   counterpartRawName,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
@@ -242,7 +243,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     {error && (
                       <FormHelperText error>{error.message}</FormHelperText>
                     )}
-                    {!isCounterpartMatchingToOCRFound &&
+                    {!counterpartMatchingToOCRFound &&
                       counterpartRawName &&
                       !getValues(name) && (
                         <FormHelperText>

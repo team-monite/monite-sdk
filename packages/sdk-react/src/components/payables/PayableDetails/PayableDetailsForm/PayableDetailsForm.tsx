@@ -304,7 +304,7 @@ const PayableDetailsFormBase = forwardRef<
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
 
-    const { data: matchingToOCRCounterpartId } =
+    const { data: matchingToOCRCounterpart } =
       api.counterparts.getCounterparts.useQuery(
         {
           query: {
@@ -316,9 +316,10 @@ const PayableDetailsFormBase = forwardRef<
           enabled: Boolean(
             !payable?.counterpart_id && payable?.counterpart_raw_data?.name
           ),
-          select: (data) => data.data.at(0)?.id,
+          select: (data) => data.data.at(0),
         }
       );
+    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
 
     useEffect(() => {
       if (!matchingToOCRCounterpartId) return;
@@ -521,9 +522,7 @@ const PayableDetailsFormBase = forwardRef<
                             },
                           };
                         }}
-                        isCounterpartMatchingToOCRFound={
-                          !!matchingToOCRCounterpartId
-                        }
+                        counterpartMatchingToOCRFound={matchingToOCRCounterpart}
                         counterpartRawName={payable?.counterpart_raw_data?.name}
                       />
                       <Controller
