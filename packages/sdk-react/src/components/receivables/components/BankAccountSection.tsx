@@ -75,6 +75,7 @@ export const BankAccountSection = ({
             currency,
             account_number,
             is_default_for_currency,
+            iban,
           }) => (
             <MenuItem
               key={id}
@@ -108,9 +109,9 @@ export const BankAccountSection = ({
                   {display_name && `${display_name} `}
 
                   <Typography component="span" color={theme.palette.grey[400]}>
-                    {`${display_name && '|'} ${
-                      bank_name && bank_name
-                    } ****${account_number
+                    {`${display_name && '|'} ${bank_name && bank_name} ****${(
+                      account_number || iban
+                    )
                       ?.split('')
                       ?.slice(-4, undefined)
                       ?.join('')}, ${currency}`}
