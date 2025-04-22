@@ -84,7 +84,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
-    useCounterpartList({ query: { is_vendor: true } });
+    useCounterpartList({
+      query: { is_vendor: true },
+    });
 
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
@@ -140,6 +142,30 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     i18n,
   ]);
 
+  const currentValue = getValues(name);
+  const selectedCounterpartOption = useMemo(() => {
+    if (multiple) {
+      return Array.isArray(currentValue) ? currentValue : [];
+    }
+    return (
+      counterpartsAutocompleteData.find(
+        (option) => option.id === currentValue
+      ) || null
+    );
+  }, [currentValue, counterpartsAutocompleteData, multiple]);
+
+  if (isCounterpartsLoading) {
+    return (
+      <TextField
+        label={label}
+        disabled
+        InputProps={{
+          endAdornment: <CircularProgress size={20} />,
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <CreateCounterpartModal
@@ -156,32 +182,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         control={control}
         name={name}
         render={({ field, fieldState: { error } }) => {
-          const selectedCounterpart = counterparts?.data.find(
-            (counterpart) => counterpart.id === field.value
-          );
-
-          /**
-           * We have to set `selectedCounterpartOption` to `null`
-           *  if `selectedCounterpart` is `null` because
-           *  `Autocomplete` component doesn't work with `undefined`
-           */
-          const selectedCounterpartOption = selectedCounterpart
-            ? {
-                id: selectedCounterpart.id,
-                label: getCounterpartName(selectedCounterpart),
-              }
-            : null;
           return (
             <>
               <Autocomplete
                 {...field}
-                value={
-                  multiple
-                    ? Array.isArray(field.value)
-                      ? field.value
-                      : []
-                    : selectedCounterpartOption
-                }
+                value={selectedCounterpartOption}
                 id={field.name}
                 multiple={multiple}
                 autoComplete
@@ -194,7 +199,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     container: root,
                   },
                 }}
-                loading={isCounterpartsLoading}
                 options={counterpartsAutocompleteData}
                 getOptionLabel={(counterpartOption) =>
                   isCreateNewCounterpartOption(counterpartOption)
@@ -234,17 +238,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       label={label}
                       error={!!error}
                       required={required}
-                      InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                          <>
-                            {isCounterpartsLoading ? (
-                              <CircularProgress color="inherit" size={20} />
-                            ) : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
                     />
                     {error && (
                       <FormHelperText error>{error.message}</FormHelperText>
