@@ -19,11 +19,25 @@ import { SidebarMenuItem } from '../AISidebarMenuButton/AISidebarMenuButton';
 import { AISidebarWrapper } from '../AISidebarWrapper/AISidebarWrapper';
 
 interface AISidebarProps {
-  pathname?: string;
   LocationLink?: LocationLinkType;
+  linkProps: {
+    pathname?: string;
+    startPage?: {
+      isVisible: boolean;
+      href: string;
+    };
+    promptsPage?: {
+      isVisible: boolean;
+      href: string;
+    };
+    chatPage?: {
+      isVisible: boolean;
+      href: string;
+    };
+  };
 }
 
-export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
+export const AISidebar: FC<AISidebarProps> = ({ LocationLink, linkProps }) => {
   const isMobile = useIsMobile();
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -36,6 +50,13 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
   }>();
 
   const { data: conversations = [] } = data || {};
+
+  const { pathname, startPage, promptsPage, chatPage } = linkProps;
+  const { href: startPageHref, isVisible: isStartPageVisible } =
+    startPage || {};
+  const { href: promptsPageHref, isVisible: isPromptsPageVisible } =
+    promptsPage || {};
+  const { href: chatPageHref, isVisible: isChatPageVisible } = chatPage || {};
 
   const Link = LocationLink || MuiLink;
 
@@ -67,17 +88,19 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
     <AISidebarWrapper open={open}>
       <div
         className={cn(
-          'mtw:px-7 mtw:flex mtw:flex-row mtw:items-center mtw:justify-between mtw:-ml-1',
+          'mtw:px-5 mtw:flex mtw:flex-row mtw:items-center mtw:justify-between mtw:-ml-1',
           open && 'mtw:border-b mtw:border-solid mtw:border-gray-200 mtw:pb-6',
           !open && 'mtw:gap-4'
         )}
       >
         <div className="mtw:flex mtw:items-center mtw:gap-3">
-          <AISidebarIconButton aria-label={t(i18n)`New chat`}>
-            <Link href={'/ai-assistant'}>
-              <SquarePen size={24} />
-            </Link>
-          </AISidebarIconButton>
+          {startPageHref && isStartPageVisible && (
+            <AISidebarIconButton aria-label={t(i18n)`New chat`}>
+              <Link href={startPageHref}>
+                <SquarePen size={24} />
+              </Link>
+            </AISidebarIconButton>
+          )}
 
           <AISidebarIconButton
             className={cn(!open && 'mtw:hidden')}
@@ -118,21 +141,23 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
           !open && 'mtw:hidden'
         )}
       >
-        <h5 className="mtw:px-7 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
+        <h5 className="mtw:px-5 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
           {t(i18n)`Explore`}
         </h5>
 
         <ul>
-          <SidebarMenuItem isActive={pathname === '/assistant/prompts'}>
-            <Link
-              className="mtw:flex mtw:items-center mtw:gap-2"
-              href={'/ai-assistant/prompts'}
-            >
-              <Folder className="mtw:!w-5 mtw:!h-5" size={20} />
+          {promptsPageHref && isPromptsPageVisible && (
+            <SidebarMenuItem isActive={pathname === promptsPageHref}>
+              <Link
+                className="mtw:flex mtw:items-center mtw:gap-2"
+                href={promptsPageHref}
+              >
+                <Folder className="mtw:!w-5 mtw:!h-5" size={20} />
 
-              <span>{t(i18n)`Prompt Library`}</span>
-            </Link>
-          </SidebarMenuItem>
+                <span>{t(i18n)`Prompt Library`}</span>
+              </Link>
+            </SidebarMenuItem>
+          )}
         </ul>
       </div>
 
@@ -145,33 +170,39 @@ export const AISidebar: FC<AISidebarProps> = ({ pathname, LocationLink }) => {
       >
         {isLoading && <AISidebarSkeleton />}
 
-        {conversationGroups.map(({ title, conversations }) => {
-          return (
-            <div key={title} className="mtw:flex mtw:flex-col mtw:gap-3">
-              <h5 className="mtw:px-7 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
-                {title}
-              </h5>
+        {chatPageHref &&
+          isChatPageVisible &&
+          conversationGroups.map(({ title, conversations }) => {
+            return (
+              <div key={title} className="mtw:flex mtw:flex-col mtw:gap-3">
+                <h5 className="mtw:px-5 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
+                  {title}
+                </h5>
 
-              <ul className="mtw:flex mtw:flex-col mtw:items-start">
-                {conversations.map(({ title, id }) => (
-                  <SidebarMenuItem
-                    isActive={pathname?.includes(`/ai-assistant/chat/${id}`)}
-                    key={id}
-                  >
-                    <Link
-                      className="mtw:truncate mtw:w-full mtw:inline-block"
-                      href={`/ai-assistant/chat/${id}`}
-                    >
-                      <span key={id} className="mtw:truncate">
-                        {title || t(i18n)`Chat ${id}`}
-                      </span>
-                    </Link>
-                  </SidebarMenuItem>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
+                <ul className="mtw:flex mtw:flex-col mtw:items-start">
+                  {conversations.map(({ title, id }) => {
+                    const href = `${chatPageHref}/${id}`;
+
+                    return (
+                      <SidebarMenuItem
+                        isActive={pathname?.includes(href)}
+                        key={id}
+                      >
+                        <Link
+                          className="mtw:truncate mtw:w-full mtw:inline-block"
+                          href={href}
+                        >
+                          <span key={id} className="mtw:truncate">
+                            {title || t(i18n)`Chat ${id}`}
+                          </span>
+                        </Link>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
       </div>
     </AISidebarWrapper>
   );

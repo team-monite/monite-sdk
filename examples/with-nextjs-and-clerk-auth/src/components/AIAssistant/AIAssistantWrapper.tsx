@@ -76,7 +76,15 @@ export const AIAssistantWrapper: FC<AIAssistantWrapperProps> = ({
         </AIAssistantChatProvider>
       </div>
 
-      <AISidebar pathname={pathname} LocationLink={LocationLink} />
+      <AISidebar
+        linkProps={{
+          pathname,
+          startPage: { isVisible: true, href: '/ai-assistant' },
+          promptsPage: { isVisible: true, href: '/ai-assistant/prompts' },
+          chatPage: { isVisible: true, href: `/ai-assistant/chat` },
+        }}
+        LocationLink={LocationLink}
+      />
     </div>
   );
 };

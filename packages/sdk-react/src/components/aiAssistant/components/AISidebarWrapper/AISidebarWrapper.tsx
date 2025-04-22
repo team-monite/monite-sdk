@@ -28,9 +28,9 @@ export const AISidebarWrapper: FC<AISidebarWrapperProps> = ({
     >
       <div
         className={cn(
-          'mtw:fixed mtw:inset-y-[85px] mtw:h-[calc(100vh-85px)] mtw:py-7 mtw:mb-5',
-          'mtw:transition-[width] mtw:ease-linear mtw:duration-300 mtw:z-10 mtw:w-[300px] mtw:right-0',
-          'mtw:flex mtw:flex-col mtw:gap-4 ',
+          'mtw:fixed mtw:inset-y-[85px] mtw:h-[calc(100vh-95px)] mtw:pt-7 mtw:px-2 mtw:mb-5',
+          'mtw:transition-[width] mtw:ease-linear mtw:duration-300 mtw:z-10',
+          'mtw:flex mtw:flex-col mtw:gap-4 mtw:w-[300px] mtw:right-0',
           !open && 'mtw:w-[136px]'
         )}
       >
