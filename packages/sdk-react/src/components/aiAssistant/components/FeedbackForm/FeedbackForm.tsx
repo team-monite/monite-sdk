@@ -12,7 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, Input } from '@mui/material';
+import { Button, IconButton, Input } from '@mui/material';
 
 import { X } from 'lucide-react';
 
@@ -103,31 +103,32 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
       action="/assistant/post-feedback-details"
       onSubmit={handleSubmit}
       className={cn(
-        'mtw:relative mtw:p-4  mtw:mt-4 mtw:border mtw:border-solid mtw:border-border',
+        'mtw:relative mtw:p-4 mtw:mt-4 mtw:border mtw:border-solid mtw:border-border',
         'mtw:rounded-md mtw:flex mtw:flex-col mtw:gap-4'
       )}
     >
-      <Button
-        type="button"
+      <IconButton
         onClick={handleCloseForm}
         className={cn(
-          'mtw:absolute mtw:right-2 mtw:top-2 mtw:h-4 mtw:w-4',
-          'mtw:border-none mtw:p-0 mtw:hover:bg-transparent'
+          'mtw:!absolute mtw:!right-2 mtw:!top-2 mtw:!h-4 mtw:!w-4',
+          'mtw:!border-none mtw:!p-0 mtw:hover:!bg-transparent'
         )}
-        variant="outlined"
       >
         <X />
-      </Button>
+      </IconButton>
 
-      <h5 className="mtw:text-sm">{t(i18n)`Tell us more`}:</h5>
+      <h5 className="mtw:text-sm mtw:font-normal">{t(i18n)`Tell us more`}:</h5>
 
-      <div className="mtw:flex mtw:flex-wrap mtw:gap-2 mtw:text-sm">
+      <div className="mtw:flex mtw:flex-wrap mtw:gap-2">
         {feedbackOptions.map(({ feedback }) => (
           <Button
             type="button"
             onClick={() => handleSendFeedbackMessage(feedback)}
             key={feedback}
-            className="mtw:p-3 mtw:font-normal"
+            className={cn(
+              'mtw:!px-3 mtw:!py-2.5 mtw:!font-normal mtw:!text-sm mtw:!text-inherit',
+              'mtw:border mtw:border-solid mtw:!border-border mtw:!bg-transparent'
+            )}
             variant="outlined"
           >
             {feedback}
@@ -140,10 +141,11 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
         onChange={handleInputValue}
         placeholder={t(i18n)`(Optional) Feel free to add specific details`}
         className={cn(
-          'mtw:w-full mtw:focus-visible:ring-0 mtw:focus-visible:ring-offset-0 mtw:focus-visible:outline-none',
-          'mtw:resize-none mtw:border mtw:border-solid mtw:border-border',
-          'mtw:rounded-md mtw:py-2.5 mtw:px-3.5 mtw:text-sm'
+          'mtw:w-full mtw:focus-visible:ring-0 mtw:focus-visible:ring-offset-0',
+          'mtw:resize-none mtw:border mtw:border-solid mtw:!border-border',
+          'mtw:!rounded-md mtw:px-3.5 mtw:!text-sm'
         )}
+        slotProps={{ input: { className: 'mtw:!px-0' } }}
       />
     </form>
   );

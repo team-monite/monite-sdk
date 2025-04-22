@@ -114,8 +114,9 @@ export const MessageList = () => {
                 key={id}
                 data-index={index}
                 ref={virtualizer.measureElement}
-                className={clsx([
-                  'mtw:absolute mtw:top-0 mtw:flex mtw:justify-start mtw:gap-3 mtw:p-4 mtw:[&_li]:pb-2',
+                className={cn([
+                  'mtw:absolute mtw:top-0 mtw:flex mtw:justify-start mtw:gap-3',
+                  'mtw:p-4 mtw:[&_li]:pb-2 mtw:text-sm',
                   role === 'user'
                     ? 'mtw:right-0 mtw:max-w-[70%] mtw:self-end'
                     : 'mtw:left-0 mtw:max-w-full',
