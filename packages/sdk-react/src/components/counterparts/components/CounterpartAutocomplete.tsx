@@ -29,6 +29,7 @@ import {
   FormHelperText,
   createFilterOptions,
   Button,
+  Alert,
 } from '@mui/material';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
@@ -245,7 +246,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     )}
                     {!counterpartMatchingToOCRFound &&
                       counterpartRawName &&
-                      !getValues(name) && (
+                      !field.value &&
+                      !multiple && (
                         <FormHelperText>
                           {t(
                             i18n
@@ -255,11 +257,36 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                           <StyledButtonLink
                             as="button"
                             sx={{ marginLeft: 0.5 }}
-                            onClick={() => setIsCreateCounterpartOpened(true)}
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsCreateCounterpartOpened(true);
+                            }}
                           >
                             {counterpartRawName}
                           </StyledButtonLink>
                         </FormHelperText>
+                      )}
+                    {counterpartMatchingToOCRFound &&
+                      field.value == counterpartMatchingToOCRFound.id &&
+                      !multiple && (
+                        <Alert
+                          severity="warning"
+                          icon={false}
+                          sx={{ marginTop: 1 }}
+                        >
+                          {t(
+                            i18n
+                          )`The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
+                          <br />
+                          <StyledButtonLink
+                            as="button"
+                            inheritColor
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsCreateCounterpartOpened(true);
+                            }}
+                          >{t(i18n)`Create new counterpart`}</StyledButtonLink>
+                        </Alert>
                       )}
                   </>
                 )}
@@ -293,9 +320,12 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   );
 };
 
-const StyledButtonLink = styled(Link)(({ theme }) => ({
+const StyledButtonLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'inheritColor',
+})<{ inheritColor?: boolean }>(({ theme, inheritColor }) => ({
   all: 'unset',
   cursor: 'pointer',
-  color: theme.palette.primary.main,
+  color: inheritColor ? 'inherit' : theme.palette.primary.main,
   textDecoration: 'underline',
+  fontWeight: 500,
 }));
