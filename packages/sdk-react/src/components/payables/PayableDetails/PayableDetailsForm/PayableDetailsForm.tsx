@@ -301,10 +301,6 @@ const PayableDetailsFormBase = forwardRef<
     );
 
     useEffect(() => {
-      methods.reset();
-    }, [payablesValidations, methods.reset, methods]);
-
-    useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
 
