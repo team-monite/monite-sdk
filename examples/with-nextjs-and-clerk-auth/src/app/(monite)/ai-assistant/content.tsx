@@ -1,10 +1,10 @@
 'use client';
 
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { AIAssistant, AIStartScreen } from '@monite/sdk-react';
+import { AIStartScreen } from '@monite/sdk-react';
 
 import { AIAssistantWrapper } from '@/components/AIAssistant/AIAssistantWrapper';
 
@@ -21,15 +21,9 @@ export const AIStartPageContent: FC<AIAssistantProps> = ({
     router.push(`/ai-assistant/chat/${conversationId}/`);
   };
 
-  useEffect(() => {
-    router.refresh();
-  }, [router]);
-
   return (
-    <AIAssistant>
-      <AIAssistantWrapper conversationId={conversationId} messages={[]}>
-        <AIStartScreen onStartConversation={handleStartConversation} />
-      </AIAssistantWrapper>
-    </AIAssistant>
+    <AIAssistantWrapper conversationId={conversationId} messages={[]}>
+      <AIStartScreen onStartConversation={handleStartConversation} />
+    </AIAssistantWrapper>
   );
 };

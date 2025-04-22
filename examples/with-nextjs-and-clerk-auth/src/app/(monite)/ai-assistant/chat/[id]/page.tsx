@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 
 import { AIChatContent } from '@/app/(monite)/ai-assistant/chat/[id]/content';
-import { createConversation } from '@/lib/monite-api/create-conversation';
 import { getConversation } from '@/lib/monite-api/get-conversation';
 
 interface AiAssistantChatPageProps {

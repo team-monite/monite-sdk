@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 
-import { AIAssistant, AIChat, AIMessage } from '@monite/sdk-react';
+import { AIChat, AIMessage } from '@monite/sdk-react';
 
 import { AIAssistantWrapper } from '@/components/AIAssistant/AIAssistantWrapper';
 
@@ -14,12 +14,8 @@ interface AIAssistantWrapperProps {
 export const AIChatContent: FC<AIAssistantWrapperProps> = ({
   conversationId,
   messages,
-}) => {
-  return (
-    <AIAssistant>
-      <AIAssistantWrapper conversationId={conversationId} messages={messages}>
-        <AIChat />
-      </AIAssistantWrapper>
-    </AIAssistant>
-  );
-};
+}) => (
+  <AIAssistantWrapper conversationId={conversationId} messages={messages}>
+    <AIChat />
+  </AIAssistantWrapper>
+);
