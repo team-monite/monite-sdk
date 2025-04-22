@@ -31,12 +31,14 @@ interface SearchChatModalProps {
   conversationGroups: ConversationGroups[];
   handleDialogClose: () => void;
   LocationLink?: LocationLinkType;
+  chatPageHref: string;
 }
 
 export const SearchChatModal: FC<SearchChatModalProps> = ({
   conversationGroups,
   handleDialogClose,
   LocationLink,
+  chatPageHref,
 }) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -74,7 +76,7 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
 
       setGroups(conversationGroups);
     });
-  }, [conversations]);
+  }, [conversations, i18n]);
 
   return (
     <>
@@ -115,18 +117,22 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
                 </h5>
 
                 <div className="mtw:flex mtw:flex-col mtw:gap-1">
-                  {conversations.map(({ title, id }) => (
-                    <Link
-                      key={id}
-                      className={cn(
-                        'mtw:truncate mtw:px-5 mtw:py-2 mtw:text-sm mtw:rounded',
-                        'mtw:hover:text-sidebar-accent-foreground mtw:hover:bg-sidebar-accent'
-                      )}
-                      href={`/ai-assistant/${id}`}
-                    >
-                      {title || t(i18n)`Chat ${id}`}
-                    </Link>
-                  ))}
+                  {conversations.map(({ title, id }) => {
+                    const href = `${chatPageHref}/${id}`;
+
+                    return (
+                      <Link
+                        key={id}
+                        className={cn(
+                          'mtw:truncate mtw:px-5 mtw:py-2 mtw:text-sm mtw:rounded',
+                          'mtw:hover:text-sidebar-accent-foreground mtw:hover:bg-sidebar-accent'
+                        )}
+                        href={href}
+                      >
+                        {title || t(i18n)`Chat ${id}`}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             );

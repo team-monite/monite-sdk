@@ -109,21 +109,24 @@ export const AISidebar: FC<AISidebarProps> = ({ LocationLink, linkProps }) => {
             <Search onClick={handleClickDialogOpen} size={24} />
           </AISidebarIconButton>
 
-          <Dialog
-            closeAfterTransition
-            className="mtw:p-0"
-            open={isDialogOpen}
-            onClose={handleDialogClose}
-            sx={{
-              padding: '0px',
-            }}
-          >
-            <SearchChatModal
-              handleDialogClose={handleDialogClose}
-              conversationGroups={conversationGroups}
-              LocationLink={LocationLink}
-            />
-          </Dialog>
+          {chatPageHref && (
+            <Dialog
+              closeAfterTransition
+              className="mtw:p-0"
+              open={isDialogOpen}
+              onClose={handleDialogClose}
+              sx={{
+                padding: '0px',
+              }}
+            >
+              <SearchChatModal
+                handleDialogClose={handleDialogClose}
+                conversationGroups={conversationGroups}
+                LocationLink={LocationLink}
+                chatPageHref={chatPageHref}
+              />
+            </Dialog>
+          )}
         </div>
 
         <AISidebarIconButton
