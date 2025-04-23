@@ -81,13 +81,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { componentSettings } = useMoniteContext();
+  const { componentSettings, queryClient } = useMoniteContext();
   const { setValue, getValues } = useFormContext<TFieldValues>();
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
   const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
-    useState<boolean>(false);
-  const [wasCounterpartEditedInline, setWasCounterpartEditedInline] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
@@ -195,7 +193,12 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         <CounterpartDetails
           id={currentValue}
           onUpdate={() => {
-            setWasCounterpartEditedInline(true);
+            queryClient.invalidateQueries({
+              queryKey: [
+                'api.counterparts.getCounterparts',
+                { counterpart_name__icontains: counterpartRawName },
+              ],
+            });
             setIsEditCounterpartOpened(false);
           }}
           customerTypes={
@@ -314,7 +317,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       )}
                     {counterpartMatchingToOCRFound &&
                       currentValue == counterpartMatchingToOCRFound.id &&
-                      !wasCounterpartEditedInline &&
                       !multiple && (
                         <Alert
                           severity="warning"
