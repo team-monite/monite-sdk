@@ -44,6 +44,7 @@ export function OnboardingContent({
   onComplete,
   onContinue,
   showContinueButton,
+  ...restProps
 }: OnboardingProps = {}) {
   const { i18n } = useLingui();
   const { currentRequirement, personId, onboardingCompleted } =
@@ -68,6 +69,8 @@ export function OnboardingContent({
 
   if (!Step) return null;
 
+  const stepProps = getStepProps(Step, restProps);
+
   return (
     <OnboardingLayout
       title={
@@ -82,7 +85,7 @@ export function OnboardingContent({
             {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
-          <Step />
+          <Step {...stepProps} />
         )
       }
     />
@@ -233,4 +236,21 @@ const getComponent = (
   if (isEntityDocuments(requirement)) return OnboardingEntityDocuments;
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
+};
+
+const getStepProps = (
+  StepComponent: React.ComponentType<any>,
+  restProps: Omit<
+    OnboardingProps,
+    'onComplete' | 'onContinue' | 'showContinueButton'
+  >
+) => {
+  if (StepComponent === OnboardingBankAccount) {
+    return {
+      allowedCurrencies: restProps.allowedCurrencies,
+      allowedCountries: restProps.allowedCountries,
+    };
+  }
+
+  return {};
 };

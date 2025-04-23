@@ -10,6 +10,11 @@ import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+import {
+  defaultAvailableCountries,
+  defaultAvailableCurrencies,
+} from '../utils';
+
 interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
   /** Callback to be called when an invoice is updated */
@@ -21,6 +26,12 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   onDelete?: (receivableId: string) => void;
   /** Callback to be called when an invoice is sent */
   onInvoiceSent?: (invoiceId: string) => void;
+  /** Enables bank account creation on invoice creation flow */
+  enableEntityBankAccount?: boolean;
+  /** List of available countries, ISO format */
+  bankAccountCountries?: components['schemas']['AllowedCountries'][];
+  /** List of available currencies, ISO format */
+  bankAccountCurrencies?: components['schemas']['CurrencyEnum'][];
 }
 
 export interface OnboardingSettings {
@@ -40,6 +51,26 @@ export interface OnboardingSettings {
    * Defaults to false.
    */
   hideFooter?: boolean;
+  /**
+   * Whether to show the continue button on the onboarding completed page.
+   *
+   * @default false
+   */
+  showContinueButton?: boolean;
+  /**
+   * Allowed currencies to restrict options in the onboarding forms.
+   * The first currency in the array will be used as the default value.
+   *
+   * @example ['USD', 'EUR']
+   */
+  allowedCurrencies?: components['schemas']['CurrencyEnum'][];
+  /**
+   * Allowed country codes to restrict options in the onboarding forms.
+   * The first country code in the array will be used as the default value.
+   *
+   * @example ['US', 'GB']
+   */
+  allowedCountries?: components['schemas']['AllowedCountries'][];
 
   /**
    * Called when the onboarding process is completed.
@@ -54,14 +85,6 @@ export interface OnboardingSettings {
    * @returns {void}
    */
   onContinue?: () => void;
-
-  /**
-   * Whether to show the continue button on the onboarding completed page.
-   *
-   * @default false
-   */
-  showContinueButton?: boolean;
-
   /**
    * Called when working capital onboarding is completed.
    * This happens when the business status transitions to 'ONBOARDED'.
@@ -204,6 +227,14 @@ export const getDefaultComponentSettings = (
     onUpdate: componentSettings?.receivables?.onUpdate,
     onDelete: componentSettings?.receivables?.onDelete,
     onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
+    enableEntityBankAccount:
+      componentSettings?.receivables?.enableEntityBankAccount || false,
+    bankAccountCurrencies:
+      componentSettings?.receivables?.bankAccountCurrencies ||
+      defaultAvailableCurrencies,
+    bankAccountCountries:
+      componentSettings?.receivables?.bankAccountCountries ||
+      defaultAvailableCountries,
   },
   tags: {
     pageSizeOptions:

@@ -4,3 +4,4 @@ export * from './components/CreditNotesTable';
 export * from './InvoiceDetails';
 export * from './Receivables';
 export * from './components/ReceivablesTable';
+export * from './components/BankAccountFormDialog';
