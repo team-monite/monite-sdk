@@ -6,7 +6,7 @@ export const AssistantMessageWrapper: FC<PropsWithChildren> = ({
   children,
 }) => (
   <>
-    <div className="mtw:shrink-0 mtw:-mt-0.5">
+    <div className="mtw:shrink-0">
       <AssistantLogo sx={{ fontSize: 20 }} />
     </div>
 

@@ -1,6 +1,8 @@
 @import 'tailwindcss' source('../../../src/') prefix(mtw);
 @import 'tw-animate-css' source('../../../src/') prefix(mtw);
 
+@import './tailwind/typography.css';
+
 @theme {
   --color-primary-10: var(--mtw-color-primary-10);
   --color-primary-20: var(--mtw-color-primary-20);
@@ -198,62 +200,9 @@
 }
 
 @layer base {
-  .markdown {
-    table {
-      border-collapse: separate;
-      display: block;
-      overflow-x: auto;
-      width: 100%;
-      border-spacing: 0;
-    }
-
-    th {
-      text-align: left;
-      font-weight: 600;
-      border-top-width: 1px;
-      border-bottom-width: 1px;
-
-      background-color: var(--mtw-table-background-color);
-    }
-
-    th:first-of-type {
-      border-left-width: 1px;
-      border-top-left-radius: calc(var(--mtw-radius) - 4px);
-    }
-
-    th:last-of-type {
-      border-right-width: 1px;
-      border-top-right-radius: calc(var(--mtw-radius) - 4px);
-    }
-
-    td {
-      border-bottom-width: 1px;
-    }
-
-    tr > td:first-of-type {
-      border-left-width: 1px;
-    }
-
-    td:last-of-type {
-      border-right-width: 1px;
-    }
-
-    tbody tr:last-of-type td:first-of-type {
-      border-bottom-left-radius: calc(var(--mtw-radius) - 4px);
-    }
-
-    tbody tr:last-of-type td:last-child {
-      border-bottom-right-radius: calc(var(--mtw-radius) - 4px);
-    }
-
-    strong {
-      font-weight: 600;
-    }
-  }
-
   [data-placeholder]:empty:before {
     content: attr(data-placeholder);
-    color: #6D737E;
+    color: #6d737e;
     font-weight: normal;
     font-size: 14px;
   }

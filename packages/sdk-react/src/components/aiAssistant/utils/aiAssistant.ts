@@ -28,6 +28,7 @@ export const createConversationGroups = (
       }
 
       return {
+        ...groups,
         [key]: [conversation],
       };
     }, {}) || {};

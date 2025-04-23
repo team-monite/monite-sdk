@@ -116,7 +116,7 @@ export const MessageList = () => {
                 ref={virtualizer.measureElement}
                 className={cn([
                   'mtw:absolute mtw:top-0 mtw:flex mtw:justify-start mtw:gap-3',
-                  'mtw:p-4 mtw:[&_li]:pb-2 mtw:text-sm',
+                  'mtw:p-4 mtw:[&_li]:pb-2 mtw:text-sm mtw:font-normal',
                   role === 'user'
                     ? 'mtw:right-0 mtw:max-w-[70%] mtw:self-end'
                     : 'mtw:left-0 mtw:max-w-full',

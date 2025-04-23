@@ -66,19 +66,23 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
 
   return (
     <AssistantMessageWrapper>
-      <div className="mtw:flex mtw:flex-col mtw:overflow-x-auto">
-        {parts.map((part) => {
-          const { id } = part;
+      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:overflow-x-auto">
+        <div
+          className={cn(
+            isLast &&
+              isStreaming &&
+              "mtw:after:inline-block mtw:after:h-2 mtw:after:w-2 mtw:after:content-['']",
+            isLast &&
+              isStreaming &&
+              'mtw:after:ml-1 mtw:after:mt-3 mtw:after:animate-ping mtw:after:rounded-full mtw:after:bg-primary-50'
+          )}
+        >
+          {parts.map((part) => {
+            const { id } = part;
 
-          return (
-            <AssistantMessageContent
-              key={id}
-              part={part}
-              isLast={isLast}
-              isStreaming={isStreaming}
-            />
-          );
-        })}
+            return <AssistantMessageContent key={id} part={part} />;
+          })}
+        </div>
 
         <AssistantButtons
           showActionButtons={showActionButtons}

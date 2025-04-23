@@ -12,14 +12,10 @@ import { AIPieChart } from '../AIPieChart/AIPieChart';
 
 interface AssistantMessageContentProps {
   part: Part;
-  isLast: boolean;
-  isStreaming: boolean;
 }
 
 export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
   part,
-  isLast,
-  isStreaming,
 }) => {
   const chartWrapperRef = useRef(null);
 
@@ -46,17 +42,7 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
   switch (type) {
     case 'text': {
       return (
-        <div
-          className={cn([
-            'markdown',
-            'mtw:flex mtw:flex-col mtw:gap-4',
-            isLast &&
-              isStreaming &&
-              "mtw:after:inline-block mtw:after:h-2 mtw:after:w-2 mtw:after:content-['']",
-            'mtw:after:ml-2 mtw:after:animate-ping mtw:after:rounded-full mtw:after:bg-primary-50',
-            'mtw:[&_td]:p-2.5 mtw:[&_th]:p-2.5',
-          ])}
-        >
+        <div className={cn(['markdown', 'mtw:[&_td]:p-2.5 mtw:[&_th]:p-2.5'])}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
