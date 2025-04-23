@@ -59,7 +59,7 @@ export const BankAccountFormContent = ({
   const currentEntityCurrency = countryCurrencyList?.find(
     (item) => item.country === entity?.address?.country
   );
-  const { mutate: setAsDefault } = useSetDefaultBankAccount(false);
+  const { mutate: setAsDefault } = useSetDefaultBankAccount(false, false);
 
   const countryOptions = useMemo(
     () =>
@@ -72,7 +72,7 @@ export const BankAccountFormContent = ({
   );
 
   const defaultValues: EntityBankAccountFields = {
-    is_default_for_currency: bankAccount?.is_default_for_currency ?? false,
+    is_default_for_currency: false,
     country:
       bankAccount?.country ??
       (currentEntityCurrency?.country as components['schemas']['AllowedCountries']),
