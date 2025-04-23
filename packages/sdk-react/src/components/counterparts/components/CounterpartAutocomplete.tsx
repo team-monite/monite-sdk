@@ -10,12 +10,14 @@ import {
 
 import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
+import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
@@ -82,6 +84,10 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const { componentSettings } = useMoniteContext();
   const { setValue, getValues } = useFormContext<TFieldValues>();
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
+    useState<boolean>(false);
+  const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
+    useState<boolean>(false);
+  const [wasCounterpartEditedInline, setWasCounterpartEditedInline] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
@@ -180,6 +186,24 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         }
       />
 
+      <Dialog
+        alignDialog="right"
+        open={isEditCounterpartOpened}
+        container={root}
+        onClose={() => setIsEditCounterpartOpened(false)}
+      >
+        <CounterpartDetails
+          id={currentValue}
+          onUpdate={() => {
+            setWasCounterpartEditedInline(true);
+            setIsEditCounterpartOpened(false);
+          }}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
+      </Dialog>
+
       <Controller
         control={control}
         name={name}
@@ -240,13 +264,35 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       label={label}
                       error={!!error}
                       required={required}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {!multiple &&
+                              selectedCounterpartOption &&
+                              currentValue && (
+                                <Button
+                                  size="small"
+                                  sx={{ minWidth: 0, px: 1, mr: 1 }}
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    setIsEditCounterpartOpened(true);
+                                  }}
+                                >
+                                  {t(i18n)`Edit`}
+                                </Button>
+                              )}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
                     />
                     {error && (
                       <FormHelperText error>{error.message}</FormHelperText>
                     )}
                     {!counterpartMatchingToOCRFound &&
                       counterpartRawName &&
-                      !field.value &&
+                      !currentValue &&
                       !multiple && (
                         <FormHelperText>
                           {t(
@@ -267,7 +313,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </FormHelperText>
                       )}
                     {counterpartMatchingToOCRFound &&
-                      field.value == counterpartMatchingToOCRFound.id &&
+                      currentValue == counterpartMatchingToOCRFound.id &&
+                      !wasCounterpartEditedInline &&
                       !multiple && (
                         <Alert
                           severity="warning"
@@ -280,6 +327,19 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                           <br />
                           <StyledButtonLink
                             as="button"
+                            sx={{ marginRight: 1 }}
+                            inheritColor
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsEditCounterpartOpened(true);
+                            }}
+                          >{t(i18n)`Edit ${getCounterpartName(
+                            counterpartMatchingToOCRFound
+                          )}`}</StyledButtonLink>
+                          {t(i18n)` or `}
+                          <StyledButtonLink
+                            as="button"
+                            sx={{ marginLeft: 1 }}
                             inheritColor
                             onClick={(event) => {
                               event.preventDefault();
