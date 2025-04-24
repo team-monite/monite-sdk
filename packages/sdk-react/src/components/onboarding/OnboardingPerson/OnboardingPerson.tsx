@@ -1,6 +1,7 @@
 import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
+import { getIdentificationLabel } from '@/components/onboarding/helpers';
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -243,25 +244,17 @@ export function OnboardingPerson() {
           </OnboardingStepContent>
         )}
 
-        {(checkValue('id_number') || checkValue('ssn_last_4')) && (
+        {checkValue('id_number') && (
           <OnboardingStepContent>
             <OnboardingSubTitle>{t(i18n)`Verify identity`}</OnboardingSubTitle>
-
-            {checkValue('ssn_last_4') && (
-              <RHFTextField
-                disabled={isPending}
-                label={t(i18n)`Last 4 digits of Social Security number`}
-                name="ssn_last_4"
-                control={control}
-                type="tel"
-              />
-            )}
 
             {checkValue('id_number') && (
               <RHFTextField
                 disabled={isPending}
                 type="tel"
-                label={t(i18n)`Full Social Security Number`}
+                label={t(i18n)`${getIdentificationLabel(
+                  defaultValues?.address?.country
+                )}`}
                 name="id_number"
                 control={control}
               />

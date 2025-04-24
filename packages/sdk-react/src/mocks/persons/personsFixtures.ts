@@ -31,7 +31,6 @@ export const personFixture = (
       percent_ownership: faker.number.int({ min: 0, max: 100 }),
     },
     id_number: faker.number.int({ min: 0, max: 10 }).toString(),
-    ssn_last_4: faker.number.int({ min: 1000, max: 9999 }).toString(),
     id: faker.string.uuid(),
     entity_id: faker.string.uuid(),
     created_at: faker.date.recent().toISOString(),

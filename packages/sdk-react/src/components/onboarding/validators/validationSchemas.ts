@@ -29,11 +29,7 @@ export const entityIndividualSchema = (
   last_name: stringValidator().label(t(i18n)`Last name`),
   title: stringValidator().label(t(i18n)`Title`),
   date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(t(i18n)`Security number`),
-  ssn_last_4: stringValidator()
-    .label(t(i18n)`Last 4 digits of Social Security number`)
-    .trim()
-    .length(4),
+  id_number: stringValidator().label(t(i18n)`Personal identification number`),
 });
 
 export const entityOrganizationSchema = (
@@ -102,11 +98,7 @@ export const personSchema = (
     .email(),
   phone: phoneValidator(i18n).label(t(i18n)`Phone number`),
   date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(t(i18n)`Security number`),
-  ssn_last_4: stringValidator()
-    .label(t(i18n)`Last 4 digits of Social Security number`)
-    .trim()
-    .min(4),
+  id_number: stringValidator().label(t(i18n)`Personal identification number`),
 });
 
 export const bankAccountSchema = (
