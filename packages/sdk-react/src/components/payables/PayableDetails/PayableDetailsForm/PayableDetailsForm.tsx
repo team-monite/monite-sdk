@@ -285,10 +285,19 @@ const PayableDetailsFormBase = forwardRef<
       context: formContext,
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, trigger, resetField } =
-      methods;
+    const {
+      control,
+      handleSubmit,
+      watch,
+      reset,
+      trigger,
+      setValue,
+      getValues,
+      getFieldState,
+    } = methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
+    const currentCounterpartBankAccount = watch('counterpartBankAccount');
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
@@ -347,17 +356,16 @@ const PayableDetailsFormBase = forwardRef<
     }, [payable, formatFromMinorUnits, reset, lineItems]);
 
     useEffect(() => {
+      if (!currentCounterpart && !!currentCounterpartBankAccount) {
+        setValue('counterpartBankAccount', '', { shouldValidate: true });
+      }
+    }, [currentCounterpart, currentCounterpartBankAccount, setValue]);
+
+    useEffect(() => {
       if (!matchingToOCRCounterpartId) return;
-      const getFieldState = methods.getFieldState;
       if (getFieldState('counterpart').isTouched) return;
-      const setValue = methods.setValue;
       setValue('counterpart', matchingToOCRCounterpartId);
-    }, [
-      matchingToOCRCounterpartId,
-      methods.resetField,
-      methods.getFieldState,
-      methods.setValue,
-    ]);
+    }, [matchingToOCRCounterpartId, getFieldState, setValue]);
 
     useEffect(() => {
       if (
@@ -368,23 +376,21 @@ const PayableDetailsFormBase = forwardRef<
           counterpartBankAccountQuery.data.data,
           currentCurrency
         );
-
-        // Only reset if the value is different
-        const currentValue = methods.getValues('counterpartBankAccount');
+        const currentValue = getValues('counterpartBankAccount');
         if (currentValue !== defaultBankAccount) {
-          resetField('counterpartBankAccount', {
-            defaultValue: defaultBankAccount,
-            keepTouched: true,
+          setValue('counterpartBankAccount', defaultBankAccount, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
           });
         }
       }
     }, [
       counterpartBankAccountQuery.data,
-      currentCurrency,
-      resetField,
-      methods.getValues,
       counterpartBankAccountQuery.isSuccess,
-      methods,
+      currentCurrency,
+      getValues,
+      setValue,
     ]);
 
     useEffect(() => {
