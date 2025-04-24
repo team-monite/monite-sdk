@@ -76,7 +76,7 @@ export const OnboardingBusinessProfile = () => {
           <Box sx={{ width: '100%' }}>
             <RHFTextField
               disabled={isPending}
-              label={t(i18n)`Business website`}
+              label={t(i18n)`Business URL`}
               name="url"
               type="url"
               control={control}
@@ -91,7 +91,7 @@ export const OnboardingBusinessProfile = () => {
             >
               {t(
                 i18n
-              )`Must be a reachable, unique URL that describes the account's business.`}
+              )`This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature.`}
             </Alert>
           </Box>
         )}
