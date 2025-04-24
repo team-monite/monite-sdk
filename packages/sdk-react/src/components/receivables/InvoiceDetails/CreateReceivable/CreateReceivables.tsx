@@ -365,6 +365,7 @@ const CreateReceivablesBase = ({
   };
 
   const lineItems = watch('line_items');
+  const entityBankAccountId = watch('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
   const handleCurrencySubmit = () => {
@@ -376,9 +377,40 @@ const CreateReceivablesBase = ({
       if (validLineItems.length) {
         setRemoveItemsWarning(true);
       } else {
+        const newAccounts = bankAccounts?.data?.reduce<{
+          newDefault: components['schemas']['EntityBankAccountResponse'] | null;
+          currentlySelected:
+            | components['schemas']['EntityBankAccountResponse']
+            | null;
+        }>(
+          (acc, bankAccount) => {
+            if (bankAccount?.id === entityBankAccountId) {
+              acc.currentlySelected = bankAccount;
+            }
+
+            if (
+              bankAccount?.currency === tempCurrency &&
+              bankAccount?.is_default_for_currency
+            ) {
+              acc.newDefault = bankAccount;
+            }
+
+            return acc;
+          },
+          { newDefault: null, currentlySelected: null }
+        );
+
         setRemoveItemsWarning(false);
         setActualCurrency(tempCurrency);
         handleCloseCurrencyModal();
+
+        if (
+          newAccounts?.newDefault &&
+          newAccounts?.currentlySelected?.id !== newAccounts?.newDefault?.id &&
+          newAccounts?.currentlySelected?.is_default_for_currency
+        ) {
+          setValue('entity_bank_account_id', newAccounts?.newDefault?.id);
+        }
       }
     } else {
       setRemoveItemsWarning(false);
@@ -815,6 +847,7 @@ const CreateReceivablesBase = ({
 
                 {enableEntityBankAccount && (
                   <BankAccountSection
+                    entityCurrency={actualCurrency}
                     disabled={createReceivable.isPending}
                     handleOpenBankModal={(id?: string) => {
                       setIsBankFormOpen(true);
