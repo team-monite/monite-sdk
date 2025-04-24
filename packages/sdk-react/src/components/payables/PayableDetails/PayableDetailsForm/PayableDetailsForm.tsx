@@ -572,6 +572,19 @@ const PayableDetailsFormBase = forwardRef<
                                   .length === 0
                               }
                             >
+                              <Button
+                                variant="text"
+                                startIcon={<AddIcon />}
+                                fullWidth
+                                sx={{
+                                  justifyContent: 'flex-start',
+                                  px: 2,
+                                  py: 1,
+                                }}
+                                onClick={() => setIsEditCounterpartOpened(true)}
+                              >
+                                {t(i18n)`Add new bank account`}
+                              </Button>
                               {counterpartBankAccountQuery?.data?.data.map(
                                 (bankAccount) => (
                                   <MenuItem
