@@ -134,7 +134,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       } else {
         setValue(
           name,
-          newCounterpartId as PathValue<TFieldValues, FieldPath<TFieldValues>>
+          newCounterpartId as PathValue<TFieldValues, FieldPath<TFieldValues>>,
+          { shouldValidate: true }
         );
       }
     }
@@ -256,7 +257,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     setValue(
                       name,
                       (value as CounterpartsAutocompleteOptionProps | null)
-                        ?.id as PathValue<TFieldValues, FieldPath<TFieldValues>>
+                        ?.id as PathValue<
+                        TFieldValues,
+                        FieldPath<TFieldValues>
+                      >,
+                      { shouldValidate: true }
                     );
                   }
                 }}
