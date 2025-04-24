@@ -32,11 +32,6 @@ const emptyFields = {
     error: null,
     required: true,
   },
-  ssn_last_4: {
-    value: '',
-    error: null,
-    required: true,
-  },
   id_number: {
     value: '',
     error: null,
@@ -94,11 +89,6 @@ const existingFields = {
   },
   date_of_birth: {
     value: '1990-01-01',
-    error: null,
-    required: true,
-  },
-  ssn_last_4: {
-    value: '1234',
     error: null,
     required: true,
   },
@@ -180,7 +170,6 @@ const baseMswHandlers = [
       date_of_birth: true,
       ...(country === 'US' && {
         id_number: true,
-        ssn_last_4: true,
       }),
       address: {
         country: true,
@@ -223,7 +212,6 @@ const StoryWrapper = ({ isLoading, fields }: StoryWrapperProps) => {
         last_name: fields.last_name.value,
         title: fields.title.value,
         date_of_birth: fields.date_of_birth.value,
-        ssn_last_4: fields.ssn_last_4.value,
         id_number: fields.id_number.value,
         address: {
           country: fields.address.country.value,
@@ -257,7 +245,6 @@ const StoryWrapper = ({ isLoading, fields }: StoryWrapperProps) => {
                 last_name: fields.last_name.value,
                 title: fields.title.value,
                 date_of_birth: fields.date_of_birth.value,
-                ssn_last_4: fields.ssn_last_4.value,
                 id_number: fields.id_number.value,
               }}
               isLoading={isLoading}
