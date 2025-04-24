@@ -255,6 +255,8 @@ const PayableDetailsFormBase = forwardRef<
   ) => {
     const { i18n } = useLingui();
     const { api } = useMoniteContext();
+    const { root } = useRootElements();
+    const className = 'Monite-PayableDetailsForm';
 
     const {
       formatFromMinorUnits,
@@ -300,40 +302,6 @@ const PayableDetailsFormBase = forwardRef<
         : null
     );
 
-    useEffect(() => {
-      reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
-    }, [payable, formatFromMinorUnits, reset, lineItems]);
-
-    const { data: matchingToOCRCounterpart } =
-      api.counterparts.getCounterparts.useQuery(
-        {
-          query: {
-            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
-            limit: 1,
-          },
-        },
-        {
-          enabled: Boolean(
-            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
-          ),
-          select: (data) => data.data.at(0),
-        }
-      );
-    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
-
-    useEffect(() => {
-      if (!matchingToOCRCounterpartId) return;
-      const getFieldState = methods.getFieldState;
-      if (getFieldState('counterpart').isTouched) return;
-      const setValue = methods.setValue;
-      setValue('counterpart', matchingToOCRCounterpartId);
-    }, [
-      matchingToOCRCounterpartId,
-      methods.resetField,
-      methods.getFieldState,
-      methods.setValue,
-    ]);
-
     const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
@@ -357,9 +325,39 @@ const PayableDetailsFormBase = forwardRef<
 
     const isSubmittedByKeyboardRef = useRef(false);
 
-    const { root } = useRootElements();
+    const { data: matchingToOCRCounterpart } =
+      api.counterparts.getCounterparts.useQuery(
+        {
+          query: {
+            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
+            limit: 1,
+          },
+        },
+        {
+          enabled: Boolean(
+            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
+          ),
+          select: (data) => data.data.at(0),
+        }
+      );
+    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
 
-    const className = 'Monite-PayableDetailsForm';
+    useEffect(() => {
+      reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
+    }, [payable, formatFromMinorUnits, reset, lineItems]);
+
+    useEffect(() => {
+      if (!matchingToOCRCounterpartId) return;
+      const getFieldState = methods.getFieldState;
+      if (getFieldState('counterpart').isTouched) return;
+      const setValue = methods.setValue;
+      setValue('counterpart', matchingToOCRCounterpartId);
+    }, [
+      matchingToOCRCounterpartId,
+      methods.resetField,
+      methods.getFieldState,
+      methods.setValue,
+    ]);
 
     useEffect(() => {
       if (
