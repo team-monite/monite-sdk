@@ -1288,12 +1288,13 @@ msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:79
+#: src/components/onboarding/validators/validationSchemas.ts:133
 msgid "Business URL"
 msgstr "Business URL"
 
 #: src/components/onboarding/validators/validationSchemas.ts:133
-msgid "Business website"
-msgstr "Business website"
+#~ msgid "Business website"
+#~ msgstr "Business website"
 
 #: src/components/onboarding/dicts/mccCodes.ts:194
 msgid "Business/Secretarial Schools"
@@ -4009,8 +4010,12 @@ msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
 #: src/components/onboarding/validators/validationSchemas.ts:135
-msgid "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
-msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+msgid "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
+msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
+
+#: src/components/onboarding/validators/validationSchemas.ts:135
+#~ msgid "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+#~ msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
 
 #: src/components/financing/components/FinancedInvoicesTable.tsx:311
 #: src/components/receivables/components/CreditNotesTable.tsx:214
