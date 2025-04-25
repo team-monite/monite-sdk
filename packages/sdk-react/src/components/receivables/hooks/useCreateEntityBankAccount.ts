@@ -17,8 +17,10 @@ export const useCreateEntityBankAccount = (onCreate?: (id: string) => void) => {
       );
     },
 
-    onError: () => {
-      toast.error(t(i18n)`Failed to create Bank Account.`);
+    onError: (error: any) => {
+      toast.error(
+        error?.detail?.[0]?.msg || t(i18n)`Failed to create Bank Account.`
+      );
     },
   });
 };
