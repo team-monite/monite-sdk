@@ -103,6 +103,9 @@ const BankAccountFormDialogBase = ({
   const isMutating =
     isCreatingBankAccount || isUpdatingBankAccount || isDeletingBankAccount;
 
+  const shouldEnableDelete =
+    bankAccount && !bankAccount?.is_default_for_currency;
+
   const createBankAccount = (
     payload: components['schemas']['CreateEntityBankAccountRequest']
   ) => {
@@ -154,10 +157,10 @@ const BankAccountFormDialogBase = ({
         <DialogActions
           sx={{
             display: 'flex',
-            justifyContent: bankAccount ? 'space-between' : 'flex-end',
+            justifyContent: shouldEnableDelete ? 'space-between' : 'flex-end',
           }}
         >
-          {bankAccount && (
+          {shouldEnableDelete && (
             <Button
               type="button"
               variant="text"
@@ -193,7 +196,7 @@ const BankAccountFormDialogBase = ({
         </DialogActions>
       </Dialog>
 
-      {isDeleteModalOpen && bankAccount && (
+      {isDeleteModalOpen && shouldEnableDelete && (
         <BankAccountDeleteModal
           open={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
@@ -203,18 +206,14 @@ const BankAccountFormDialogBase = ({
               path: { bank_account_id: bankAccount?.id },
             });
 
-            if (!bankAccount?.is_default_for_currency) {
-              const foundDefaultBank = bankAccounts?.find((bank) => {
-                bank?.currency === bankAccount?.currency &&
-                  bank?.is_default_for_currency;
-              });
+            const foundDefaultBank = bankAccounts?.find((bank) => {
+              bank?.currency === bankAccount?.currency &&
+                bank?.is_default_for_currency;
+            });
 
-              handleSelectBankAfterDeletion?.(
-                foundDefaultBank ? foundDefaultBank?.id : ''
-              );
-
-              return;
-            }
+            handleSelectBankAfterDeletion?.(
+              foundDefaultBank ? foundDefaultBank?.id : ''
+            );
           }}
         />
       )}

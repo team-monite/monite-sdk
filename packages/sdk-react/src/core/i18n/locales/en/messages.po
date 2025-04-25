@@ -72,7 +72,7 @@ msgstr "{0} - {1}"
 msgid "{0} ({code})"
 msgstr "{0} ({code})"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:291
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:343
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:47
 msgid "{0} days"
 msgstr "{0} days"
@@ -101,7 +101,7 @@ msgstr "{0}% advance rate"
 msgid "{0}% advance rate, Pay in {1} days, {2}% fee"
 msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:266
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:318
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:32
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:40
 msgid "{0}% discount"
@@ -111,7 +111,7 @@ msgstr "{0}% discount"
 msgid "{0}% fee"
 msgstr "{0}% fee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:281
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:333
 msgid "{0}%discount"
 msgstr "{0}%discount"
 
@@ -232,6 +232,7 @@ msgstr "Account name"
 #: src/components/receivables/components/BankAccountCustomFields.tsx:79
 #: src/components/receivables/components/BankAccountCustomFields.tsx:139
 #: src/components/receivables/components/BankAccountCustomFields.tsx:238
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:198
 #: src/components/receivables/validation.ts:45
 msgid "Account number"
 msgstr "Account number"
@@ -265,7 +266,7 @@ msgstr "Active"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1180
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:216
-#: src/components/receivables/components/BankAccountFormDialog.tsx:190
+#: src/components/receivables/components/BankAccountFormDialog.tsx:193
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:544
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:142
 msgid "Add"
@@ -287,7 +288,7 @@ msgstr "Add a business executive"
 msgid "Add a business owner"
 msgstr "Add a business owner"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:596
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:628
 msgid "Add a date when the product will be delivered or the service provided"
 msgstr "Add a date when the product will be delivered or the service provided"
 
@@ -358,8 +359,8 @@ msgstr "Add Discount"
 msgid "Add item"
 msgstr "Add item"
 
-#: src/components/receivables/components/BankAccountFormDialog.tsx:138
-#: src/components/receivables/components/BankAccountSection.tsx:65
+#: src/components/receivables/components/BankAccountFormDialog.tsx:141
+#: src/components/receivables/components/BankAccountSection.tsx:68
 msgid "Add new bank account"
 msgstr "Add new bank account"
 
@@ -522,7 +523,7 @@ msgstr "All invoices"
 msgid "All items"
 msgstr "All items"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:520
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:552
 msgid "All items in the invoice must be in this currency. Remove items that don’t match it."
 msgstr "All items in the invoice must be in this currency. Remove items that don’t match it."
 
@@ -560,7 +561,7 @@ msgstr "Allowed"
 msgid "Already updated PDFs can't be reverted to the default view"
 msgstr "Already updated PDFs can't be reverted to the default view"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:708
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:740
 msgid "Always display selected fields on the form (where available)"
 msgstr "Always display selected fields on the form (where available)"
 
@@ -1002,11 +1003,11 @@ msgstr "Bank Account “{0}” has been created."
 msgid "Bank Account “{0}” has been updated."
 msgstr "Bank Account “{0}” has been updated."
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:88
+#: src/components/receivables/components/BankAccountFormContent.tsx:84
 msgid "Bank account {0}"
 msgstr "Bank account {0}"
 
-#: src/components/receivables/components/BankAccountDeleteModal.tsx:34
+#: src/components/receivables/components/BankAccountDeleteModal.tsx:27
 msgid "Bank account delete confirmation"
 msgstr "Bank account delete confirmation"
 
@@ -1015,7 +1016,7 @@ msgstr "Bank account delete confirmation"
 msgid "Bank Account has been deleted."
 msgstr "Bank Account has been deleted."
 
-#: src/components/receivables/hooks/useSetDefaultBankAccount.ts:16
+#: src/components/receivables/hooks/useSetDefaultBankAccount.ts:21
 msgid "Bank Account has been set as default."
 msgstr "Bank Account has been set as default."
 
@@ -1027,7 +1028,8 @@ msgstr "Bank account holder name"
 msgid "Bank accounts"
 msgstr "Bank accounts"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:245
+#: src/components/receivables/components/BankAccountFormContent.tsx:229
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:183
 #: src/components/receivables/validation.ts:35
 msgid "Bank name"
 msgstr "Bank name"
@@ -1101,6 +1103,7 @@ msgid "Bhutanese Ngultrum"
 msgstr "Bhutanese Ngultrum"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:190
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:193
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:36
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:37
 msgid "BIC"
@@ -1363,11 +1366,11 @@ msgstr "Canadian Dollar"
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:134
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:182
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:256
-#: src/components/receivables/components/BankAccountDeleteModal.tsx:44
-#: src/components/receivables/components/BankAccountFormDialog.tsx:180
+#: src/components/receivables/components/BankAccountDeleteModal.tsx:61
+#: src/components/receivables/components/BankAccountFormDialog.tsx:183
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:541
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:543
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:730
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:575
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:762
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:445
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:40
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:87
@@ -1524,7 +1527,7 @@ msgstr "CFP Franc"
 msgid "Chad"
 msgstr "Chad"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:494
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:526
 msgid "Change document currency"
 msgstr "Change document currency"
 
@@ -1980,8 +1983,8 @@ msgstr "Counterparts"
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
 #: src/components/onboarding/validators/validationSchemas.ts:115
 #: src/components/onboarding/validators/validationSchemas.ts:155
-#: src/components/receivables/components/BankAccountFormContent.tsx:182
-#: src/components/receivables/components/BankAccountFormContent.tsx:185
+#: src/components/receivables/components/BankAccountFormContent.tsx:166
+#: src/components/receivables/components/BankAccountFormContent.tsx:169
 #: src/components/receivables/validation.ts:27
 msgid "Country"
 msgstr "Country"
@@ -2088,7 +2091,7 @@ msgstr "Create customer"
 msgid "Create from email"
 msgstr "Create from email"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:771
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:803
 msgid "Create invoice"
 msgstr "Create invoice"
 
@@ -2240,7 +2243,7 @@ msgstr "Cuba"
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:149
 #: src/components/products/ProductDetails/validation.ts:48
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:466
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:498
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
 #: src/components/receivables/validation.ts:31
@@ -2269,7 +2272,7 @@ msgstr "Current status"
 #: src/components/receivables/components/QuotesTable.tsx:190
 #: src/components/receivables/components/ReceivableFilters.tsx:104
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:199
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:186
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:238
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:139
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 msgid "Customer"
@@ -2359,11 +2362,11 @@ msgid "default"
 msgstr "default"
 
 #: src/components/documentDesign/components/DocumentDesignTemplate/DocumentDesignTemplate.tsx:59
-#: src/components/receivables/components/BankAccountSection.tsx:124
+#: src/components/receivables/components/BankAccountSection.tsx:128
 msgid "Default"
 msgstr "Default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:277
+#: src/components/receivables/components/BankAccountFormContent.tsx:261
 msgid "Default currency switch"
 msgstr "Default currency switch"
 
@@ -2391,8 +2394,8 @@ msgstr "Default currency switch"
 #: src/components/products/Products.test.tsx:203
 #: src/components/products/Products.test.tsx:235
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:270
-#: src/components/receivables/components/BankAccountDeleteModal.tsx:53
-#: src/components/receivables/components/BankAccountFormDialog.tsx:168
+#: src/components/receivables/components/BankAccountDeleteModal.tsx:70
+#: src/components/receivables/components/BankAccountFormDialog.tsx:171
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
@@ -2546,7 +2549,7 @@ msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:450
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:221
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:799
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:831
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -2639,7 +2642,7 @@ msgstr "Discount Stores"
 msgid "Discounted subtotal"
 msgstr "Discounted subtotal"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:228
+#: src/components/receivables/components/BankAccountFormContent.tsx:212
 #: src/components/receivables/validation.ts:14
 #: src/components/receivables/validation.ts:40
 msgid "Display name"
@@ -2706,6 +2709,10 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
+#: src/components/receivables/components/BankAccountDeleteModal.tsx:43
+msgid "Draft or already issued invoices will keep this bank account. If required, you will need to manually update those invoices with new account information."
+msgstr "Draft or already issued invoices will keep this bank account. If required, you will need to manually update those invoices with new account information."
+
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:158
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
@@ -2745,7 +2752,7 @@ msgstr "Dry Cleaners"
 #: src/components/receivables/components/InvoicesTable.tsx:355
 #: src/components/receivables/components/QuotesTable.tsx:200
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:110
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:231
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:283
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
@@ -2830,7 +2837,7 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:175
 #: src/components/products/Products.test.tsx:272
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:246
-#: src/components/receivables/components/BankAccountSection.tsx:141
+#: src/components/receivables/components/BankAccountSection.tsx:145
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:270
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:413
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
@@ -2867,7 +2874,7 @@ msgstr "Edit {0} profile"
 msgid "Edit Approval Policy"
 msgstr "Edit Approval Policy"
 
-#: src/components/receivables/components/BankAccountFormDialog.tsx:137
+#: src/components/receivables/components/BankAccountFormDialog.tsx:140
 msgid "Edit bank account"
 msgstr "Edit bank account"
 
@@ -3038,8 +3045,8 @@ msgstr "Employment/Temp Agencies"
 msgid "Enable email reminders"
 msgstr "Enable email reminders"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:470
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:577
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:502
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:609
 msgid "Enable more fields"
 msgstr "Enable more fields"
 
@@ -3166,7 +3173,7 @@ msgstr "Failed to a create payment link. Please try again."
 msgid "Failed to create"
 msgstr "Failed to create"
 
-#: src/components/receivables/hooks/useCreateEntityBankAccount.ts:21
+#: src/components/receivables/hooks/useCreateEntityBankAccount.ts:22
 #: src/core/queries/useCounterpart.ts:98
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
@@ -3232,7 +3239,7 @@ msgstr "Failed to load PDF Viewer"
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
 
-#: src/components/receivables/hooks/useSetDefaultBankAccount.ts:20
+#: src/components/receivables/hooks/useSetDefaultBankAccount.ts:26
 msgid "Failed to set Bank Account as default."
 msgstr "Failed to set Bank Account as default."
 
@@ -3244,7 +3251,7 @@ msgstr "Failed to update"
 msgid "Failed to update Address."
 msgstr "Failed to update Address."
 
-#: src/components/receivables/hooks/useUpdateEntityBankAccount.ts:35
+#: src/components/receivables/hooks/useUpdateEntityBankAccount.ts:23
 #: src/core/queries/useCounterpart.ts:156
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
@@ -3496,10 +3503,10 @@ msgstr "Front of your identity document"
 msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:593
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:612
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:625
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:644
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:153
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:241
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:293
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:139
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:193
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
@@ -3865,6 +3872,7 @@ msgstr "I own 25% or more of the company."
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:133
 #: src/components/onboarding/validators/validationSchemas.ts:122
 #: src/components/receivables/components/BankAccountCustomFields.tsx:199
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:188
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:31
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:45
 #: src/components/receivables/validation.ts:79
@@ -4017,7 +4025,7 @@ msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://
 #: src/components/receivables/components/QuotesTable.tsx:238
 #: src/components/receivables/components/QuotesTable.tsx:304
 #: src/components/receivables/components/QuotesTable.tsx:306
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:171
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:223
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:314
 msgid "Invoice"
 msgstr "Invoice"
@@ -4094,7 +4102,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:497
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:529
 msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
@@ -4169,7 +4177,7 @@ msgstr "Issue at"
 #: src/components/receivables/components/CreditNotesTable.tsx:155
 #: src/components/receivables/components/InvoicesTable.tsx:329
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:85
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:228
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:280
 msgid "Issue date"
 msgstr "Issue date"
 
@@ -5107,7 +5115,7 @@ msgstr "No default email for selected Counterpart. Reminders will not be sent."
 msgid "No file provided"
 msgstr "No file provided"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:350
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:402
 msgid "No items"
 msgstr "No items"
 
@@ -5115,7 +5123,7 @@ msgstr "No items"
 msgid "No items yet"
 msgstr "No items yet"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:179
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:231
 msgid "No logo"
 msgstr "No logo"
 
@@ -5238,9 +5246,9 @@ msgid "Not available"
 msgstr "Not available"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:405
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:190
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:235
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:254
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:242
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:287
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:306
 #: src/components/tags/TagFormModal/TagFormModal.tsx:204
 msgid "Not set"
 msgstr "Not set"
@@ -5482,8 +5490,8 @@ msgstr "Pay in"
 msgid "Pay in {0} days"
 msgstr "Pay in {0} days"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:260
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:275
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:312
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:327
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:31
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:39
 msgid "Pay in the first {0} days"
@@ -5551,12 +5559,12 @@ msgstr "Payment"
 msgid "Payment details"
 msgstr "Payment details"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:429
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:481
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:23
 msgid "Payment Details"
 msgstr "Payment Details"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:290
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:342
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:153
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:46
 msgid "Payment due"
@@ -5604,7 +5612,7 @@ msgstr "Payment term successfully deleted"
 msgid "Payment term updated"
 msgstr "Payment term updated"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:249
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:301
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:157
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:210
@@ -5925,7 +5933,7 @@ msgstr "Previous page"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:449
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:127
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:313
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:365
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:487
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:92
@@ -5957,7 +5965,7 @@ msgstr "Processing..."
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:17
 #: src/components/products/ProductsTable/ProductsTable.tsx:315
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:309
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:361
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:104
 #: src/components/userRoles/consts.ts:43
@@ -6044,8 +6052,8 @@ msgstr "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Hous
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:631
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:650
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:663
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:682
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:74
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:141
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:195
@@ -6061,7 +6069,7 @@ msgstr "Qatar"
 msgid "Qatari Rial"
 msgstr "Qatari Rial"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:310
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:362
 msgid "Qty"
 msgstr "Qty"
 
@@ -6127,7 +6135,7 @@ msgstr "Receivable type not supported"
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
-#: src/components/receivables/components/BankAccountSection.tsx:39
+#: src/components/receivables/components/BankAccountSection.tsx:42
 msgid "Receive payments to"
 msgstr "Receive payments to"
 
@@ -6425,6 +6433,7 @@ msgstr "Roofing/Siding, Sheet Metal"
 #: src/components/receivables/components/BankAccountCustomFields.tsx:99
 #: src/components/receivables/components/BankAccountCustomFields.tsx:277
 #: src/components/receivables/components/BankAccountCustomFields.tsx:291
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:203
 #: src/components/receivables/validation.ts:61
 msgid "Routing number"
 msgstr "Routing number"
@@ -6529,9 +6538,9 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:347
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:82
-#: src/components/receivables/components/BankAccountFormDialog.tsx:190
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:549
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:736
+#: src/components/receivables/components/BankAccountFormDialog.tsx:193
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:581
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:768
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:451
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:40
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:352
@@ -6544,7 +6553,7 @@ msgstr "Saudi Riyal"
 msgid "Save"
 msgstr "Save"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:752
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:784
 msgid "Save and continue"
 msgstr "Save and continue"
 
@@ -6690,7 +6699,7 @@ msgstr "Set a recurrence period to issue invoices automatically"
 msgid "Set as default"
 msgstr "Set as default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:279
+#: src/components/receivables/components/BankAccountFormContent.tsx:263
 msgid "Set as default for this currency"
 msgstr "Set as default for this currency"
 
@@ -6711,7 +6720,7 @@ msgstr "Set reminders"
 msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:433
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:172
 msgid ""
 "Set up bank account to add payment info\n"
 "and set a QR code"
@@ -6839,6 +6848,7 @@ msgstr "Something went wrong. Please try again"
 #: src/components/receivables/components/BankAccountCustomFields.tsx:159
 #: src/components/receivables/components/BankAccountCustomFields.tsx:279
 #: src/components/receivables/components/BankAccountCustomFields.tsx:309
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:208
 #: src/components/receivables/validation.ts:70
 msgid "Sort code"
 msgstr "Sort code"
@@ -6982,7 +6992,7 @@ msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:727
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:497
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:361
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:413
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:748
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:31
@@ -7098,7 +7108,7 @@ msgstr "Tanzania"
 msgid "Tanzanian Shilling"
 msgstr "Tanzanian Shilling"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:315
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:367
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:491
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:53
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:61
@@ -7116,8 +7126,8 @@ msgstr "Tax ID"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:217
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:381
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:398
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:214
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:413
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:266
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:465
 msgid "TAX ID"
 msgstr "TAX ID"
 
@@ -7200,8 +7210,8 @@ msgstr "Tent and Awning Shops"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:123
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:124
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:669
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:688
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:701
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:720
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:106
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
@@ -7366,7 +7376,7 @@ msgstr "They will contact you if your credit score improves and you can reapply.
 msgid "This action can't be undone."
 msgstr "This action can't be undone."
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:166
+#: src/components/receivables/components/BankAccountFormContent.tsx:150
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
@@ -7480,7 +7490,7 @@ msgstr "Tongan Paʻanga"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:824
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:336
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:535
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:380
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:432
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:762
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:38
@@ -7503,7 +7513,7 @@ msgstr "Total Amount"
 msgid "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 msgstr "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:369
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:421
 msgid "Total Tax"
 msgstr "Total Tax"
 
@@ -7737,7 +7747,7 @@ msgstr "United States Outlying Islands"
 
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:88
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:311
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:363
 msgid "Units"
 msgstr "Units"
 
@@ -8031,8 +8041,8 @@ msgstr "Vat ID"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:342
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:348
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:219
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:418
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:271
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:470
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:49
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:131
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:134
@@ -8249,7 +8259,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:634
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:666
 msgid "You can add a document number to have it in the PDF"
 msgstr "You can add a document number to have it in the PDF"
 
@@ -8297,7 +8307,7 @@ msgstr "You can create your first tag."
 msgid "You can disable it later in the PDF settings"
 msgstr "You can disable it later in the PDF settings"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:672
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:704
 msgid "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 msgstr "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 
@@ -8314,8 +8324,8 @@ msgid "You can set up to 2 early payment discounts per invoice."
 msgstr "You can set up to 2 early payment discounts per invoice."
 
 #: src/components/receivables/components/BankAccountFormContent.tsx:160
-msgid "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
-msgstr "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
+#~ msgid "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
+#~ msgstr "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:71
 msgid "You can’t undo this action."
@@ -8383,8 +8393,8 @@ msgid "You haven't accepted the offer and it has expired"
 msgstr "You haven't accepted the offer and it has expired"
 
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:39
-msgid "You might need to update draft documents created with this bank account to ensure a correct payment."
-msgstr "You might need to update draft documents created with this bank account to ensure a correct payment."
+#~ msgid "You might need to update draft documents created with this bank account to ensure a correct payment."
+#~ msgstr "You might need to update draft documents created with this bank account to ensure a correct payment."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:35
 msgid "You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies."

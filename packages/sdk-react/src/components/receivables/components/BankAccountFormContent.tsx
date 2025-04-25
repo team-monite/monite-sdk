@@ -1,5 +1,4 @@
-// import { useEffect } from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -12,9 +11,7 @@ import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import {
-  Alert,
   Box,
   FormControl,
   FormHelperText,
@@ -62,8 +59,7 @@ export const BankAccountFormContent = ({
   const currentEntityCurrency = countryCurrencyList?.find(
     (item) => item.country === entity?.address?.country
   );
-  const [shouldDisplayWarning, setShouldDisplayWarning] = useState(true);
-  const { mutate: setAsDefault } = useSetDefaultBankAccount(false);
+  const { mutate: setAsDefault } = useSetDefaultBankAccount(false, false);
 
   const countryOptions = useMemo(
     () =>
@@ -76,7 +72,7 @@ export const BankAccountFormContent = ({
   );
 
   const defaultValues: EntityBankAccountFields = {
-    is_default_for_currency: bankAccount?.is_default_for_currency ?? false,
+    is_default_for_currency: false,
     country:
       bankAccount?.country ??
       (currentEntityCurrency?.country as components['schemas']['AllowedCountries']),
@@ -151,18 +147,6 @@ export const BankAccountFormContent = ({
   return (
     <form id={formId} onSubmit={handleSubmit(submitForm)} noValidate>
       <Stack spacing={2}>
-        {bankAccount?.is_default_for_currency && shouldDisplayWarning && (
-          <Alert
-            icon={<WarningAmberRoundedIcon />}
-            severity="error"
-            onClose={() => setShouldDisplayWarning(false)}
-          >
-            {t(
-              i18n
-            )`You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency.`}
-          </Alert>
-        )}
-
         <Typography fontWeight={400} variant="body1">{t(
           i18n
         )`This bank account will receive payments for your invoices`}</Typography>
