@@ -8,13 +8,16 @@ import {
   PathValue,
 } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
+import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
@@ -28,7 +31,10 @@ import {
   FormHelperText,
   createFilterOptions,
   Button,
+  Alert,
+  Link,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -57,6 +63,8 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   multiple?: boolean;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  counterpartMatchingToOCRFound?: components['schemas']['CounterpartResponse'];
+  counterpartRawName?: string;
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -68,17 +76,23 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   multiple = false,
   disabled = false,
   customerTypes,
+  counterpartMatchingToOCRFound,
+  counterpartRawName,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { componentSettings } = useMoniteContext();
+  const { componentSettings, queryClient } = useMoniteContext();
   const { setValue, getValues } = useFormContext<TFieldValues>();
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
+    useState<boolean>(false);
+  const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
-    useCounterpartList({ query: { is_vendor: true } });
+    useCounterpartList({
+      query: { is_vendor: true },
+    });
 
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
@@ -134,6 +148,30 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     i18n,
   ]);
 
+  const currentValue = getValues(name);
+  const selectedCounterpartOption = useMemo(() => {
+    if (multiple) {
+      return Array.isArray(currentValue) ? currentValue : [];
+    }
+    return (
+      counterpartsAutocompleteData.find(
+        (option) => option.id === currentValue
+      ) || null
+    );
+  }, [currentValue, counterpartsAutocompleteData, multiple]);
+
+  if (isCounterpartsLoading) {
+    return (
+      <TextField
+        label={label}
+        disabled
+        InputProps={{
+          endAdornment: <CircularProgress size={20} />,
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <CreateCounterpartModal
@@ -146,36 +184,38 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         }
       />
 
+      <Dialog
+        alignDialog="right"
+        open={isEditCounterpartOpened}
+        container={root}
+        onClose={() => setIsEditCounterpartOpened(false)}
+      >
+        <CounterpartDetails
+          id={currentValue}
+          onUpdate={() => {
+            queryClient.invalidateQueries({
+              queryKey: [
+                'api.counterparts.getCounterparts',
+                { counterpart_name__icontains: counterpartRawName },
+              ],
+            });
+            setIsEditCounterpartOpened(false);
+          }}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+        />
+      </Dialog>
+
       <Controller
         control={control}
         name={name}
         render={({ field, fieldState: { error } }) => {
-          const selectedCounterpart = counterparts?.data.find(
-            (counterpart) => counterpart.id === field.value
-          );
-
-          /**
-           * We have to set `selectedCounterpartOption` to `null`
-           *  if `selectedCounterpart` is `null` because
-           *  `Autocomplete` component doesn't work with `undefined`
-           */
-          const selectedCounterpartOption = selectedCounterpart
-            ? {
-                id: selectedCounterpart.id,
-                label: getCounterpartName(selectedCounterpart),
-              }
-            : null;
           return (
             <>
               <Autocomplete
                 {...field}
-                value={
-                  multiple
-                    ? Array.isArray(field.value)
-                      ? field.value
-                      : []
-                    : selectedCounterpartOption
-                }
+                value={selectedCounterpartOption}
                 id={field.name}
                 multiple={multiple}
                 autoComplete
@@ -188,7 +228,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     container: root,
                   },
                 }}
-                loading={isCounterpartsLoading}
                 options={counterpartsAutocompleteData}
                 getOptionLabel={(counterpartOption) =>
                   isCreateNewCounterpartOption(counterpartOption)
@@ -222,23 +261,96 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={label}
-                    error={!!error}
-                    required={required}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {isCounterpartsLoading ? (
-                            <CircularProgress color="inherit" size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
+                  <>
+                    <TextField
+                      {...params}
+                      label={label}
+                      error={!!error}
+                      required={required}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {!multiple &&
+                              selectedCounterpartOption &&
+                              currentValue && (
+                                <Button
+                                  size="small"
+                                  sx={{ minWidth: 0, px: 1, mr: 1 }}
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    setIsEditCounterpartOpened(true);
+                                  }}
+                                >
+                                  {t(i18n)`Edit`}
+                                </Button>
+                              )}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                    {error && (
+                      <FormHelperText error>{error.message}</FormHelperText>
+                    )}
+                    {!counterpartMatchingToOCRFound &&
+                      counterpartRawName &&
+                      !currentValue &&
+                      !multiple && (
+                        <FormHelperText>
+                          {t(
+                            i18n
+                          )`The specified counterpart has not been saved yet.`}
+                          <br />
+                          {t(i18n)`Create new counterpart:`}
+                          <StyledButtonLink
+                            as="button"
+                            sx={{ marginLeft: 0.5 }}
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsCreateCounterpartOpened(true);
+                            }}
+                          >
+                            {counterpartRawName}
+                          </StyledButtonLink>
+                        </FormHelperText>
+                      )}
+                    {counterpartMatchingToOCRFound &&
+                      currentValue == counterpartMatchingToOCRFound.id &&
+                      !multiple && (
+                        <Alert
+                          severity="warning"
+                          icon={false}
+                          sx={{ marginTop: 1 }}
+                        >
+                          {t(
+                            i18n
+                          )`The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
+                          <br />
+                          <StyledButtonLink
+                            as="button"
+                            sx={{ marginRight: 1 }}
+                            inheritColor
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsEditCounterpartOpened(true);
+                            }}
+                          >{t(i18n)`Edit ${getCounterpartName(
+                            counterpartMatchingToOCRFound
+                          )}`}</StyledButtonLink>
+                          {t(i18n)` or `}
+                          <StyledButtonLink
+                            as="button"
+                            sx={{ marginLeft: 1 }}
+                            inheritColor
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setIsCreateCounterpartOpened(true);
+                            }}
+                          >{t(i18n)`Create new counterpart`}</StyledButtonLink>
+                        </Alert>
+                      )}
+                  </>
                 )}
                 renderOption={(props, counterpartOption) => {
                   return isCreateNewCounterpartOption(counterpartOption) ? (
@@ -262,7 +374,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                   );
                 }}
               />
-              {error && <FormHelperText error>{error.message}</FormHelperText>}
             </>
           );
         }}
@@ -270,3 +381,13 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     </>
   );
 };
+
+const StyledButtonLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'inheritColor',
+})<{ inheritColor?: boolean }>(({ theme, inheritColor }) => ({
+  all: 'unset',
+  cursor: 'pointer',
+  color: inheritColor ? 'inherit' : theme.palette.primary.main,
+  textDecoration: 'underline',
+  fontWeight: 500,
+}));
