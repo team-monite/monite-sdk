@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.0.2
+
+### Patch Changes
+
+- 1fdc678: Fixed invoice preview not showing bank account information and some other minor fixes to bank account creation
+- d62d343: Business website field renamed to URL, alert info updated to reflect the change
+
 ## 2.0.1
 
 ### Patch Changes
