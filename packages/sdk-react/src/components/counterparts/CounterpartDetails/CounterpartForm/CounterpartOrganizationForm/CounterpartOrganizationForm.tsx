@@ -62,7 +62,6 @@ export const CounterpartOrganizationForm = (
   const {
     counterpart,
     formRef,
-    submitForm,
     createCounterpart,
     updateCounterpart,
     isLoading,
@@ -436,7 +435,7 @@ export const CounterpartOrganizationForm = (
           variant="contained"
           color="primary"
           disabled={isLoading}
-          onClick={submitForm}
+          onClick={handleSubmitWithoutPropagation}
         >
           {isLoading ? (
             <CircularProgress color="primary" />

@@ -29,7 +29,7 @@ export const prepareBankAccountCreatePayload = (
         };
       case 'EUR':
         return {
-          bic: reqPayload?.bic,
+          bic: reqPayload?.bic || undefined,
           iban: reqPayload?.iban,
         };
 
