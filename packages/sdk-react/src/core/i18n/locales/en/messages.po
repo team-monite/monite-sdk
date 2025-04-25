@@ -1292,8 +1292,12 @@ msgstr "Business Registration Number (South Korea)"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:79
 #: src/components/onboarding/validators/validationSchemas.ts:133
-msgid "Business website"
-msgstr "Business website"
+msgid "Business URL"
+msgstr "Business URL"
+
+#: src/components/onboarding/validators/validationSchemas.ts:133
+#~ msgid "Business website"
+#~ msgstr "Business website"
 
 #: src/components/onboarding/dicts/mccCodes.ts:194
 msgid "Business/Secretarial Schools"
@@ -2778,9 +2782,17 @@ msgstr "Due to an error, the OCR failed to read the data from the document. Plea
 msgid "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
 msgstr "Due to late payment your financing is currently on hold. Please, contact the provider for further details."
 
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:219
+#~ msgid "Due to regulations, we're required to collect information about a company's directors."
+#~ msgstr "Due to regulations, we're required to collect information about a company's directors."
+
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:179
 msgid "Due to regulations, we’re required to collect information about a company’s directors."
 msgstr "Due to regulations, we’re required to collect information about a company’s directors."
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:214
+#~ msgid "Due to regulatory guidelines, we're required to collect information on anyone who has significant ownership of your business."
+#~ msgstr "Due to regulatory guidelines, we're required to collect information on anyone who has significant ownership of your business."
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:174
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
@@ -4013,8 +4025,12 @@ msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
 #: src/components/onboarding/validators/validationSchemas.ts:135
-msgid "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
-msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+msgid "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
+msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
+
+#: src/components/onboarding/validators/validationSchemas.ts:135
+#~ msgid "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
+#~ msgstr "Invalid website URL. Please ensure it starts with 'http://' or 'https://'."
 
 #: src/components/financing/components/FinancedInvoicesTable.tsx:311
 #: src/components/receivables/components/CreditNotesTable.tsx:214
@@ -4904,8 +4920,8 @@ msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:92
-msgid "Must be a reachable, unique URL that describes the account's business."
-msgstr "Must be a reachable, unique URL that describes the account's business."
+#~ msgid "Must be a reachable, unique URL that describes the account's business."
+#~ msgstr "Must be a reachable, unique URL that describes the account's business."
 
 #: src/components/receivables/components/BankAccountCustomFields.tsx:120
 #: src/components/receivables/components/BankAccountCustomFields.tsx:180
@@ -7380,6 +7396,14 @@ msgstr "This action can't be undone."
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:92
+msgid "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
+msgstr "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:209
+#~ msgid "This form must be completed by someone with control and management of your business. If that's not you, ask the right person."
+#~ msgstr "This form must be completed by someone with control and management of your business. If that's not you, ask the right person."
+
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:169
 msgid "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 msgstr "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
@@ -8189,6 +8213,10 @@ msgstr "Wallis And Futuna"
 #: src/components/onboarding/dicts/mccCodes.ts:1425
 msgid "Watch/Jewelry Repair"
 msgstr "Watch/Jewelry Repair"
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:224
+#~ msgid "We're required to collect information about any executives or senior managers who have significant management responsibility for this business."
+#~ msgstr "We're required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:184
 msgid "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
