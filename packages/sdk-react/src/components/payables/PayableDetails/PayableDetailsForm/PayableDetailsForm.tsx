@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Controller,
   FieldNamesMarkedBoolean,
@@ -10,11 +10,13 @@ import {
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartAutocomplete } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
+import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -254,7 +256,9 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
-    const { api } = useMoniteContext();
+    const { api, queryClient, componentSettings } = useMoniteContext();
+    const { root } = useRootElements();
+    const className = 'Monite-PayableDetailsForm';
 
     const {
       formatFromMinorUnits,
@@ -283,10 +287,19 @@ const PayableDetailsFormBase = forwardRef<
       context: formContext,
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, trigger, resetField } =
-      methods;
+    const {
+      control,
+      handleSubmit,
+      watch,
+      reset,
+      trigger,
+      setValue,
+      getValues,
+      getFieldState,
+    } = methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
+    const currentCounterpartBankAccount = watch('counterpartBankAccount');
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
@@ -300,39 +313,8 @@ const PayableDetailsFormBase = forwardRef<
         : null
     );
 
-    useEffect(() => {
-      reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
-    }, [payable, formatFromMinorUnits, reset, lineItems]);
-
-    const { data: matchingToOCRCounterpart } =
-      api.counterparts.getCounterparts.useQuery(
-        {
-          query: {
-            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
-            limit: 1,
-          },
-        },
-        {
-          enabled: Boolean(
-            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
-          ),
-          select: (data) => data.data.at(0),
-        }
-      );
-    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
-
-    useEffect(() => {
-      if (!matchingToOCRCounterpartId) return;
-      const getFieldState = methods.getFieldState;
-      if (getFieldState('counterpart').isTouched) return;
-      const setValue = methods.setValue;
-      setValue('counterpart', matchingToOCRCounterpartId);
-    }, [
-      matchingToOCRCounterpartId,
-      methods.resetField,
-      methods.getFieldState,
-      methods.setValue,
-    ]);
+    const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
+      useState<boolean>(false);
 
     const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
       usePayableDetailsForm({
@@ -357,9 +339,38 @@ const PayableDetailsFormBase = forwardRef<
 
     const isSubmittedByKeyboardRef = useRef(false);
 
-    const { root } = useRootElements();
+    const { data: matchingToOCRCounterpart } =
+      api.counterparts.getCounterparts.useQuery(
+        {
+          query: {
+            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
+            limit: 1,
+          },
+        },
+        {
+          enabled: Boolean(
+            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
+          ),
+          select: (data) => data.data.at(0),
+        }
+      );
+    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
 
-    const className = 'Monite-PayableDetailsForm';
+    useEffect(() => {
+      reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
+    }, [payable, formatFromMinorUnits, reset, lineItems]);
+
+    useEffect(() => {
+      if (!currentCounterpart && !!currentCounterpartBankAccount) {
+        setValue('counterpartBankAccount', '', { shouldValidate: true });
+      }
+    }, [currentCounterpart, currentCounterpartBankAccount, setValue]);
+
+    useEffect(() => {
+      if (!matchingToOCRCounterpartId) return;
+      if (getFieldState('counterpart').isTouched) return;
+      setValue('counterpart', matchingToOCRCounterpartId);
+    }, [matchingToOCRCounterpartId, getFieldState, setValue]);
 
     useEffect(() => {
       if (
@@ -370,23 +381,21 @@ const PayableDetailsFormBase = forwardRef<
           counterpartBankAccountQuery.data.data,
           currentCurrency
         );
-
-        // Only reset if the value is different
-        const currentValue = methods.getValues('counterpartBankAccount');
+        const currentValue = getValues('counterpartBankAccount');
         if (currentValue !== defaultBankAccount) {
-          resetField('counterpartBankAccount', {
-            defaultValue: defaultBankAccount,
-            keepTouched: true,
+          setValue('counterpartBankAccount', defaultBankAccount, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
           });
         }
       }
     }, [
       counterpartBankAccountQuery.data,
-      currentCurrency,
-      resetField,
-      methods.getValues,
       counterpartBankAccountQuery.isSuccess,
-      methods,
+      currentCurrency,
+      getValues,
+      setValue,
     ]);
 
     useEffect(() => {
@@ -524,6 +533,10 @@ const PayableDetailsFormBase = forwardRef<
                         }}
                         counterpartMatchingToOCRFound={matchingToOCRCounterpart}
                         counterpartRawName={payable?.counterpart_raw_data?.name}
+                        showEditCounterpartButton
+                        setShowEditCounterpartDialog={
+                          setIsEditCounterpartOpened
+                        }
                       />
                       <Controller
                         name="counterpartBankAccount"
@@ -559,6 +572,19 @@ const PayableDetailsFormBase = forwardRef<
                                   .length === 0
                               }
                             >
+                              <Button
+                                variant="text"
+                                startIcon={<AddIcon />}
+                                fullWidth
+                                sx={{
+                                  justifyContent: 'flex-start',
+                                  px: 2,
+                                  py: 1,
+                                }}
+                                onClick={() => setIsEditCounterpartOpened(true)}
+                              >
+                                {t(i18n)`Add new bank account`}
+                              </Button>
                               {counterpartBankAccountQuery?.data?.data.map(
                                 (bankAccount) => (
                                   <MenuItem
@@ -847,6 +873,31 @@ const PayableDetailsFormBase = forwardRef<
             </form>
           </FormProvider>
         </Box>
+        <Dialog
+          alignDialog="right"
+          open={isEditCounterpartOpened}
+          container={root}
+          onClose={() => setIsEditCounterpartOpened(false)}
+        >
+          <CounterpartDetails
+            id={currentCounterpart}
+            onUpdate={() => {
+              queryClient.invalidateQueries({
+                queryKey: [
+                  'api.counterparts.getCounterparts',
+                  {
+                    counterpart_name__icontains:
+                      payable?.counterpart_raw_data?.name,
+                  },
+                ],
+              });
+              setIsEditCounterpartOpened(false);
+            }}
+            customerTypes={
+              customerTypes || componentSettings?.counterparts?.customerTypes
+            }
+          />
+        </Dialog>
       </>
     );
   }
