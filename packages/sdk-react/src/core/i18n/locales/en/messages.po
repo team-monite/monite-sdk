@@ -1329,7 +1329,7 @@ msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:79
-#: src/components/onboarding/validators/validationSchemas.ts:133
+#: src/components/onboarding/validators/validationSchemas.ts:125
 msgid "Business URL"
 msgstr "Business URL"
 
@@ -2071,8 +2071,10 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
-#: src/components/onboarding/validators/validationSchemas.ts:115
-#: src/components/onboarding/validators/validationSchemas.ts:155
+#: src/components/onboarding/validators/validationSchemas.ts:107
+#: src/components/onboarding/validators/validationSchemas.ts:147
+#: src/components/receivables/components/BankAccountFormContent.tsx:166
+#: src/components/receivables/components/BankAccountFormContent.tsx:169
 #: src/components/receivables/validation.ts:27
 #: src/ui/Country/MoniteCountry.tsx:69
 msgid "Country"
@@ -3589,10 +3591,10 @@ msgstr "Fireplace, Fireplace Screens, and Accessories Stores"
 msgid "First day of the month"
 msgstr "First day of the month"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:59
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:208
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:31
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:94
+#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:83
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:228
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:37
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:95
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:55
 #: src/components/onboarding/validators/validationSchemas.ts:28
 #: src/components/onboarding/validators/validationSchemas.ts:94
@@ -4217,7 +4219,7 @@ msgstr "Invalid IBAN"
 msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
-#: src/components/onboarding/validators/validationSchemas.ts:135
+#: src/components/onboarding/validators/validationSchemas.ts:127
 msgid "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 
@@ -4623,10 +4625,10 @@ msgstr "Laotian Kip"
 msgid "Last day of the month"
 msgstr "Last day of the month"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:77
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:227
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:40
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:103
+#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:101
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:247
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:46
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:104
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:56
 #: src/components/onboarding/validators/validationSchemas.ts:29
 #: src/components/onboarding/validators/validationSchemas.ts:95
