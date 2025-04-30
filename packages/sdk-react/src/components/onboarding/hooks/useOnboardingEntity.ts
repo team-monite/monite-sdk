@@ -91,6 +91,8 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
             individualPayload.ssn_last_4 = newSsnLast4;
           }
         }
+      } else if (fields.address?.country?.value !== 'US') {
+        delete (payload.individual as OptionalIndividualSchema).ssn_last_4;
       }
 
       const response = await updateEntityMutation({
