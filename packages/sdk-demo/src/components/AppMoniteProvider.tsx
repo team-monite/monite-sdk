@@ -35,6 +35,11 @@ const AppMoniteProvider = ({
         messages: i18n.messages[i18n.locale],
       }}
       theme={theme}
+      componentSettings={{
+        receivables: {
+          enableEntityBankAccount: true,
+        },
+      }}
     >
       {children}
     </MoniteProvider>

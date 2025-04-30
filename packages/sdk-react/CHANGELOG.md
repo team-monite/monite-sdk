@@ -1,5 +1,14 @@
 # @monite/sdk-react
 
+## 4.0.2
+
+### Patch Changes
+
+- f83fbf8: Fix Payable Counterpart Bank Account selection to show Bank Account name
+- 1fdc678: Fixed invoice preview not showing bank account information and some other minor fixes to bank account creation
+- d178c9a: Improve Payable form Counterpart partial match warnings and form selection. Added option to edit selected Counterpart on the form.
+- d62d343: Business website field renamed to URL, alert info updated to reflect the change
+
 ## 4.0.1
 
 ### Patch Changes

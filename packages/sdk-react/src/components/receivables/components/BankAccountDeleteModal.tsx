@@ -1,14 +1,7 @@
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-} from '@mui/material';
+import { Box, Button, Dialog, Typography } from '@mui/material';
 
 interface BankAccountDeleteModalProps {
   open: boolean;
@@ -35,13 +28,37 @@ export const BankAccountDeleteModal = ({
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle variant="h3">{t(i18n)`Delete bank account?`}</DialogTitle>
-      <DialogContent>{t(
-        i18n
-      )`You might need to update draft documents created with this bank account to ensure a correct payment.`}</DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit">{t(
+      <Box px={4} pt={4} pb={3}>
+        <Typography
+          variant="h3"
+          fontWeight={600}
+          fontSize={24}
+          lineHeight="32px"
+        >
+          {t(i18n)`Delete bank account?`}
+        </Typography>
+      </Box>
+      <Box px={4}>
+        <Typography variant="body1">
+          {t(
+            i18n
+          )`Draft or already issued invoices will keep this bank account. If required, you will need to manually update those invoices with new account information.`}
+        </Typography>
+      </Box>
+
+      <Box
+        height={96}
+        px={4}
+        pt={2}
+        pb={2}
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <Button variant="text" onClick={onClose} color="primary">{t(
           i18n
         )`Cancel`}</Button>
         <Button
@@ -51,7 +68,7 @@ export const BankAccountDeleteModal = ({
           onClick={handleDelete}
           autoFocus
         >{t(i18n)`Delete`}</Button>
-      </DialogActions>
+      </Box>
     </Dialog>
   );
 };

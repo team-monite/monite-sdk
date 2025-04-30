@@ -14,19 +14,7 @@ export const useUpdateEntityBankAccount = (onUpdate?: () => void) => {
         t(i18n)`Bank Account “${bank.display_name}” has been updated.`
       );
 
-      api.bankAccounts.getBankAccountsId.setQueryData(
-        {
-          path: {
-            bank_account_id: bank.id,
-          },
-        },
-        (prevBankAccount) => ({
-          ...prevBankAccount,
-          ...bank,
-        }),
-        queryClient
-      );
-
+      await api.bankAccounts.getBankAccountsId.invalidateQueries(queryClient);
       await api.bankAccounts.getBankAccounts.invalidateQueries(queryClient);
       onUpdate && onUpdate();
     },

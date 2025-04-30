@@ -130,11 +130,11 @@ export const businessProfileSchema = (
 ): ValidationSchema<BusinessProfile> => ({
   mcc: stringValidator().label(t(i18n)`Industry`),
   url: stringValidator()
-    .label(t(i18n)`Business website`)
+    .label(t(i18n)`Business URL`)
     .url(
       t(
         i18n
-      )`Invalid website URL. Please ensure it starts with 'http://' or 'https://'.`
+      )`Invalid URL. Please ensure it starts with 'http://' or 'https://'.`
     ),
 });
 

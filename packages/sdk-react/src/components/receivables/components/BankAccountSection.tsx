@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
@@ -19,11 +20,13 @@ import { useGetEntityBankAccounts } from '../hooks';
 type Props = {
   disabled?: boolean;
   handleOpenBankModal: (id?: string) => void;
+  entityCurrency?: components['schemas']['CurrencyEnum'];
 };
 
 export const BankAccountSection = ({
   disabled,
   handleOpenBankModal,
+  entityCurrency,
 }: Props) => {
   const { i18n } = useLingui();
   const theme = useTheme();
@@ -75,6 +78,7 @@ export const BankAccountSection = ({
             currency,
             account_number,
             is_default_for_currency,
+            iban,
           }) => (
             <MenuItem
               key={id}
@@ -108,9 +112,9 @@ export const BankAccountSection = ({
                   {display_name && `${display_name} `}
 
                   <Typography component="span" color={theme.palette.grey[400]}>
-                    {`${display_name && '|'} ${
-                      bank_name && bank_name
-                    } ****${account_number
+                    {`${display_name && '|'} ${bank_name && bank_name} ****${(
+                      account_number || iban
+                    )
                       ?.split('')
                       ?.slice(-4, undefined)
                       ?.join('')}, ${currency}`}
@@ -119,7 +123,7 @@ export const BankAccountSection = ({
               </Box>
 
               <Box display="flex" alignItems="center" gap={2}>
-                {is_default_for_currency && (
+                {entityCurrency === currency && is_default_for_currency && (
                   <Chip
                     label={t(i18n)`Default`}
                     sx={{
