@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -65,6 +65,18 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     }
   }, [clearErrors, resetField, country]);
 
+  const handleSubmitWithoutPropagation = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      handleSubmit((values) => {
+        saveBank(values);
+      })(e);
+    },
+    [handleSubmit, saveBank]
+  );
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -89,7 +101,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       </Stack>
       <Divider />
       <DialogContent>
-        <form id={formId} onSubmit={handleSubmit(saveBank)} noValidate>
+        <form id={formId} onSubmit={handleSubmitWithoutPropagation} noValidate>
           <Stack spacing={3}>
             <Controller
               name="name"

@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { BaseSyntheticEvent, useCallback, useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -34,7 +34,6 @@ export const CounterpartAddressFormUpdate = (
   const {
     methods: { control, handleSubmit },
     formRef,
-    submitForm,
     updateAddress,
     isLoading,
   } = useCounterpartAddressFormUpdate(props);
@@ -42,6 +41,18 @@ export const CounterpartAddressFormUpdate = (
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartAddress-${useId()}`;
+
+  const handleSubmitWithoutPropagation = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      handleSubmit((values) => {
+        updateAddress(prepareCounterpartAddressSubmit(values));
+      })(e);
+    },
+    [handleSubmit, updateAddress]
+  );
 
   return (
     <>
@@ -53,9 +64,7 @@ export const CounterpartAddressFormUpdate = (
         <form
           id={formName}
           ref={formRef}
-          onSubmit={handleSubmit((values) => {
-            updateAddress(prepareCounterpartAddressSubmit(values));
-          })}
+          onSubmit={handleSubmitWithoutPropagation}
         >
           <Stack spacing={3}>
             <Controller
@@ -179,7 +188,7 @@ export const CounterpartAddressFormUpdate = (
           variant="outlined"
           color="primary"
           type="submit"
-          onClick={submitForm}
+          onClick={handleSubmitWithoutPropagation}
           disabled={isLoading}
         >
           {t(i18n)`Update`}

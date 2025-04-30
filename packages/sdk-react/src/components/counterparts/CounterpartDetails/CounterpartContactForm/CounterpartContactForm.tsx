@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { BaseSyntheticEvent, useCallback, useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
 import { LoadingPage } from '@/ui/loadingPage';
@@ -25,20 +25,25 @@ import {
 
 export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { i18n } = useLingui();
-  const {
-    methods,
-    counterpart,
-    contact,
-    formRef,
-    submitForm,
-    saveContact,
-    isLoading,
-  } = useCounterpartContactForm(props);
+  const { methods, counterpart, contact, formRef, saveContact, isLoading } =
+    useCounterpartContactForm(props);
 
   const { control, handleSubmit, watch } = methods;
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartContact-${useId()}`;
+
+  const handleSubmitWithoutPropagation = useCallback(
+    (e: BaseSyntheticEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      handleSubmit((values) => {
+        saveContact(values);
+      })(e);
+    },
+    [handleSubmit, saveContact]
+  );
 
   if (isLoading) {
     return <LoadingPage />;
@@ -68,7 +73,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
           <form
             id={formName}
             ref={formRef}
-            onSubmit={handleSubmit(saveContact)}
+            onSubmit={handleSubmitWithoutPropagation}
           >
             <Grid container direction="column" rowSpacing={3}>
               <Grid item>
@@ -170,7 +175,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={submitForm}
+          onClick={handleSubmitWithoutPropagation}
           disabled={isLoading}
         >
           {contact ? t(i18n)`Update contact` : t(i18n)`Add contact`}
