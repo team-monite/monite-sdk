@@ -340,6 +340,23 @@ export const getEntityName = (entity?: EntityResponse) => {
     : (entity as EntityOrganizationResponse).organization?.legal_name;
 };
 
+/* eslint-disable lingui/no-unlocalized-strings */
+/**
+ * Gets the appropriate identification label key based on country
+ *
+ * @param {AllowedCountries | undefined | null} country - The country code
+ * @returns {string} The identification label key
+ */
+export function getIdentificationLabel(
+  country: AllowedCountries | undefined | null
+): string {
+  if (country === 'US') {
+    return 'Social Security Number';
+  }
+
+  return 'Personal identification number';
+}
+
 type EntityIndividualResponse =
   components['schemas']['EntityIndividualResponse'];
 type EntityOrganizationResponse =
@@ -348,3 +365,4 @@ type EntityResponse = components['schemas']['EntityResponse'];
 type OnboardingPerson = components['schemas']['OnboardingPerson'];
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 type Relationship = components['schemas']['Relationship'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

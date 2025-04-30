@@ -29,11 +29,6 @@ const defaultPerson: OnboardingPerson = {
     error: null,
     required: true,
   },
-  ssn_last_4: {
-    value: '6789',
-    error: null,
-    required: false,
-  },
   date_of_birth: {
     value: '1990-01-01',
     error: null,
@@ -121,11 +116,6 @@ export const Complete: Story = {
 export const WithoutOptionalFields: Story = {
   args: {
     ...defaultPerson,
-    ssn_last_4: {
-      value: '',
-      error: null,
-      required: false,
-    },
     address: {
       ...defaultPerson.address,
       line2: {

@@ -10,3 +10,4 @@ export * from './receivables/receivablesFixture';
 export * from './authentication';
 export * from './measureUnits';
 export * from './payment';
+export * from './onboarding';
