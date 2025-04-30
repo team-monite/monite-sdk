@@ -73,8 +73,28 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
       fields: OnboardingEntity,
       requirements: OnboardingRequirement[] = []
     ) => {
+      const payload = prepareValuesToSubmit(generateValuesByFields(fields));
+
+      if (payload.type === 'individual') {
+        const individualPayload =
+          payload.individual as OptionalIndividualSchema;
+        if (
+          fields.address?.country?.value === 'US' &&
+          individualPayload?.id_number
+        ) {
+          const newSsnLast4 = individualPayload.id_number.slice(-4);
+          const existingEntityData = onboarding?.data?.entity;
+          const existingSsnLast4Value =
+            existingEntityData?.individual?.ssn_last_4?.value;
+
+          if (newSsnLast4 !== existingSsnLast4Value) {
+            individualPayload.ssn_last_4 = newSsnLast4;
+          }
+        }
+      }
+
       const response = await updateEntityMutation({
-        body: prepareValuesToSubmit(generateValuesByFields(fields)),
+        body: payload,
       });
 
       patchOnboardingRequirements({
@@ -86,7 +106,11 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
       return response;
     },
-    [patchOnboardingRequirements, updateEntityMutation]
+    [
+      patchOnboardingRequirements,
+      updateEntityMutation,
+      onboarding?.data?.entity,
+    ]
   );
 
   const updateEntityRequirements = useCallback(
@@ -118,3 +142,5 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 type EntityResponse = components['schemas']['EntityResponse'];
 type OnboardingEntity = components['schemas']['OnboardingEntity'];
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+type OptionalIndividualSchema =
+  components['schemas']['OptionalIndividualSchema'];
