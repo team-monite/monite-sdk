@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, SetStateAction } from 'react';
 import {
   Controller,
   Control,
@@ -10,14 +10,12 @@ import {
 
 import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
-import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
@@ -65,6 +63,8 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   customerTypes?: CustomerTypes;
   counterpartMatchingToOCRFound?: components['schemas']['CounterpartResponse'];
   counterpartRawName?: string;
+  setShowEditCounterpartDialog?: (value: SetStateAction<boolean>) => void;
+  showEditCounterpartButton?: boolean;
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -78,14 +78,14 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   customerTypes,
   counterpartMatchingToOCRFound,
   counterpartRawName,
+  setShowEditCounterpartDialog,
+  showEditCounterpartButton = false,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { componentSettings, queryClient } = useMoniteContext();
+  const { componentSettings } = useMoniteContext();
   const { setValue, getValues } = useFormContext<TFieldValues>();
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
-    useState<boolean>(false);
-  const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
 
@@ -134,7 +134,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       } else {
         setValue(
           name,
-          newCounterpartId as PathValue<TFieldValues, FieldPath<TFieldValues>>
+          newCounterpartId as PathValue<TFieldValues, FieldPath<TFieldValues>>,
+          { shouldValidate: true }
         );
       }
     }
@@ -183,29 +184,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
           customerTypes || componentSettings?.counterparts?.customerTypes
         }
       />
-
-      <Dialog
-        alignDialog="right"
-        open={isEditCounterpartOpened}
-        container={root}
-        onClose={() => setIsEditCounterpartOpened(false)}
-      >
-        <CounterpartDetails
-          id={currentValue}
-          onUpdate={() => {
-            queryClient.invalidateQueries({
-              queryKey: [
-                'api.counterparts.getCounterparts',
-                { counterpart_name__icontains: counterpartRawName },
-              ],
-            });
-            setIsEditCounterpartOpened(false);
-          }}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
-        />
-      </Dialog>
 
       <Controller
         control={control}
@@ -256,7 +234,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     setValue(
                       name,
                       (value as CounterpartsAutocompleteOptionProps | null)
-                        ?.id as PathValue<TFieldValues, FieldPath<TFieldValues>>
+                        ?.id as PathValue<
+                        TFieldValues,
+                        FieldPath<TFieldValues>
+                      >,
+                      { shouldValidate: true }
                     );
                   }
                 }}
@@ -271,7 +253,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         ...params.InputProps,
                         endAdornment: (
                           <>
-                            {!multiple &&
+                            {showEditCounterpartButton &&
+                              setShowEditCounterpartDialog &&
+                              !multiple &&
                               selectedCounterpartOption &&
                               currentValue && (
                                 <Button
@@ -279,7 +263,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                                   sx={{ minWidth: 0, px: 1, mr: 1 }}
                                   onClick={(event) => {
                                     event.preventDefault();
-                                    setIsEditCounterpartOpened(true);
+                                    setShowEditCounterpartDialog(true);
                                   }}
                                 >
                                   {t(i18n)`Edit`}
@@ -317,7 +301,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       )}
                     {counterpartMatchingToOCRFound &&
                       currentValue == counterpartMatchingToOCRFound.id &&
-                      !multiple && (
+                      !multiple &&
+                      setShowEditCounterpartDialog && (
                         <Alert
                           severity="warning"
                           icon={false}
@@ -333,7 +318,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                             inheritColor
                             onClick={(event) => {
                               event.preventDefault();
-                              setIsEditCounterpartOpened(true);
+                              setShowEditCounterpartDialog(true);
                             }}
                           >{t(i18n)`Edit ${getCounterpartName(
                             counterpartMatchingToOCRFound
