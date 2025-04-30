@@ -344,6 +344,7 @@ const PayableDetailsFormBase = forwardRef<
         {
           query: {
             counterpart_name__icontains: payable?.counterpart_raw_data?.name,
+            is_vendor: true,
             limit: 1,
           },
         },
