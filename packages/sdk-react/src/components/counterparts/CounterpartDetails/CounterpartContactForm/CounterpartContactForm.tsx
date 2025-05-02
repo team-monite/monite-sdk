@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useCallback, useId } from 'react';
+import { useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
 import { LoadingPage } from '@/ui/loadingPage';
@@ -33,18 +33,6 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartContact-${useId()}`;
 
-  const handleSubmitWithoutPropagation = useCallback(
-    (e: BaseSyntheticEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      handleSubmit((values) => {
-        saveContact(values);
-      })(e);
-    },
-    [handleSubmit, saveContact]
-  );
-
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -73,7 +61,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
           <form
             id={formName}
             ref={formRef}
-            onSubmit={handleSubmitWithoutPropagation}
+            onSubmit={handleSubmit(saveContact)}
           >
             <Grid container direction="column" rowSpacing={3}>
               <Grid item>
@@ -175,7 +163,8 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={handleSubmitWithoutPropagation}
+          type="submit"
+          form={formName}
           disabled={isLoading}
         >
           {contact ? t(i18n)`Update contact` : t(i18n)`Add contact`}

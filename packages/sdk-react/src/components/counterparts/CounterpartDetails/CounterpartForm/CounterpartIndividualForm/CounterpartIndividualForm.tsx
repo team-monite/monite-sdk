@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useId } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -166,6 +166,8 @@ export const CounterpartIndividualForm = ({
     defaultValuesOCR,
   ]);
 
+  const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
+
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
@@ -211,7 +213,7 @@ export const CounterpartIndividualForm = ({
       >
         <FormProvider {...methods}>
           <form
-            id="counterpartIndividualForm"
+            id={formName}
             ref={formRef}
             onSubmit={handleSubmitWithoutPropagation}
           >
@@ -437,8 +439,9 @@ export const CounterpartIndividualForm = ({
         <Button
           variant="contained"
           color="primary"
+          type="submit"
+          form={formName}
           disabled={isLoading}
-          onClick={handleSubmitWithoutPropagation}
         >
           {isLoading ? (
             <CircularProgress color="primary" />

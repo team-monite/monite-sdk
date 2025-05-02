@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useCallback, useId } from 'react';
+import { useId } from 'react';
 
 import {
   CountryOption,
@@ -40,18 +40,6 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
 
   const vatTypes = useVatTypes();
 
-  const handleSubmitWithoutPropagation = useCallback(
-    (e: BaseSyntheticEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      handleSubmit((values) => {
-        saveVat(values);
-      })(e);
-    },
-    [handleSubmit, saveVat]
-  );
-
   if (!counterpart) return null;
 
   return (
@@ -72,7 +60,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
       </Stack>
       <Divider />
       <DialogContent>
-        <form id={formName} onSubmit={handleSubmitWithoutPropagation}>
+        <form id={formName} onSubmit={handleSubmit(saveVat)}>
           <Stack spacing={3}>
             <RHFAutocomplete
               name="country"
