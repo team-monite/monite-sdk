@@ -26,17 +26,8 @@ import {
 
 import * as yup from 'yup';
 
+import { getTagCategoryLabel, tagCategories } from '../helpers';
 import { useTags } from '../useTags';
-
-export const tagCategories = [
-  'document_type',
-  'department',
-  'project',
-  'cost_center',
-  'vendor_type',
-  'payment_method',
-  'approval_status',
-];
 
 const getValidationSchema = (i18n: I18n) =>
   yup
@@ -204,7 +195,7 @@ const TagFormModalBase = ({
                       <MenuItem value={''}>{t(i18n)`Not set`}</MenuItem>
                       {tagCategories.map((category) => (
                         <MenuItem key={category} value={category}>
-                          {category}
+                          {getTagCategoryLabel(category, i18n)}
                         </MenuItem>
                       ))}
                     </Select>
