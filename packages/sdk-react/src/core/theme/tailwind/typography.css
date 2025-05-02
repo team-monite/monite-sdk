@@ -18,7 +18,7 @@
       border-top-width: 1px;
       border-bottom-width: 1px;
 
-      background-color: var(--mtw-table-background-color);
+      background-color: var(--mtw-color-primary-65);
 
       && strong {
         font-size: 0.875rem;

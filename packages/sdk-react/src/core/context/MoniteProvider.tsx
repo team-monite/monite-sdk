@@ -89,6 +89,7 @@ const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-primary-50: ${theme.palette.primary[50]};
     --mtw-color-primary-55: ${theme.palette.primary[55]};
     --mtw-color-primary-60: ${theme.palette.primary[60]};
+    --mtw-color-primary-65: ${theme.palette.primary[65]};
     --mtw-color-primary-80: ${theme.palette.primary[80]};
     --mtw-color-primary-85: ${theme.palette.primary[85]};
     --mtw-color-primary-90: ${theme.palette.primary[90]};
@@ -126,8 +127,6 @@ const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-warning-80: ${theme.palette.warning[80]};
     --mtw-color-warning-90: ${theme.palette.warning[90]};
     --mtw-color-warning-95: ${theme.palette.warning[95]};
-
-    --mtw-table-background-color: ${theme.palette.primary[65]};
   }
 
   ${tailwindApp}
