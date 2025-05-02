@@ -1,14 +1,15 @@
 @layer base {
   .markdown {
-    font-size: 1rem;
-    line-height: 1.75;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
 
-    table {
+    &&& table {
       border-collapse: separate;
       display: block;
       overflow-x: auto;
       width: 100%;
       border-spacing: 0;
+      margin-block: 0.875rem;
     }
 
     th {
@@ -18,6 +19,11 @@
       border-bottom-width: 1px;
 
       background-color: var(--mtw-table-background-color);
+
+      && strong {
+        font-size: 0.875rem;
+        line-height: calc(1.25 / 0.875);
+      }
     }
 
     th:first-of-type {
@@ -83,6 +89,8 @@
 
     strong {
       font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.75;
     }
 
     ol {

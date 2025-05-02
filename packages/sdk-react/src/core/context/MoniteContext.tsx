@@ -56,10 +56,45 @@ export type MoniteTheme = Theme & {
     primary: {
       main: string;
       '10': string;
+      '20': string;
+      '30': string;
+      '40': string;
+      '50': string;
+      '55': string;
+      '60': string;
+      '65': string;
+      '80': string;
+      '85': string;
+      '90': string;
+      '95': string;
+    };
+    success: {
+      main: string;
+      '10': string;
       '30': string;
       '50': string;
       '60': string;
-      '70': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    warning: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    error: {
+      main: string;
+      '10': string;
+      '30': string;
+      '40': string;
+      '50': string;
+      '60': string;
       '80': string;
       '90': string;
       '95': string;
