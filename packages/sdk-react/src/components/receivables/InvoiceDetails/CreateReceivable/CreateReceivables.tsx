@@ -542,7 +542,6 @@ const CreateReceivablesBase = ({
                             hideLabel
                             groups={currencyGroups}
                             disabled={isLoadingCurrencyGroups}
-                            // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
                             onChange={(_event, value) => {
                               if (
                                 value &&
