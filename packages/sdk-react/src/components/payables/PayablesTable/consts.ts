@@ -29,3 +29,6 @@ export const DEFAULT_CARDS_ORDER: ExtendedPayableStateEnum[] = [
   'paid',
   'canceled',
 ];
+
+export const DEFAULT_REQUIRED_COLUMNS: [FieldValueTypes, ...FieldValueTypes[]] =
+  ['document_id'];
