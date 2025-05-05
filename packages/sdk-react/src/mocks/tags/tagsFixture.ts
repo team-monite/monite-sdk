@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { tagCategories } from '@/components/tags/TagFormModal/TagFormModal';
+import { tagCategories } from '@/components/tags/helpers';
 import {
   entityUser2,
   entityUser3,
