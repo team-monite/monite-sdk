@@ -109,6 +109,7 @@ const defaultComponentSettings: Partial<ComponentSettings> = {
       'due_date',
       'pay',
     ],
+    requiredColumns: ['document_id', 'created_at'],
   },
 };
 

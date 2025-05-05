@@ -7,7 +7,7 @@ export const FILTER_TYPE_CREATED_AT = 'created_at';
 export const FILTER_TYPE_DUE_DATE = 'due_date';
 export const FILTER_TYPE_SUMMARY_CARD = 'summary_card_filter';
 
-export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
+export const DEFAULT_FIELD_ORDER: [FieldValueTypes, ...FieldValueTypes[]] = [
   'document_id',
   'counterpart_id',
   'created_at',
@@ -29,3 +29,6 @@ export const DEFAULT_CARDS_ORDER: ExtendedPayableStateEnum[] = [
   'paid',
   'canceled',
 ];
+
+export const DEFAULT_REQUIRED_COLUMNS: [FieldValueTypes, ...FieldValueTypes[]] =
+  ['document_id'];
