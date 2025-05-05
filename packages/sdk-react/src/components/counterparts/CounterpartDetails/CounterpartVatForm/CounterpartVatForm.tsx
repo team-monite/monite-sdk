@@ -1,12 +1,9 @@
 import { useId } from 'react';
 
-import {
-  CountryOption,
-  RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
+import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useVatTypes } from '@/core/hooks/useVatTypes';
-import { getCountriesArray } from '@/core/utils/countries';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -62,22 +59,11 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
       <DialogContent>
         <form id={formName} onSubmit={handleSubmit(saveVat)}>
           <Stack spacing={3}>
-            <RHFAutocomplete
+            <MoniteCountry
               name="country"
-              disabled={isLoading}
               control={control}
-              label={t(i18n)`Country`}
-              options={getCountriesArray(i18n)}
-              optionKey="code"
-              labelKey="label"
-              renderOption={(props, option, state) => (
-                <CountryOption
-                  key={option.code}
-                  props={props}
-                  option={option}
-                  state={state}
-                />
-              )}
+              disabled={isLoading}
+              required
             />
 
             <RHFAutocomplete

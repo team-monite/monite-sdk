@@ -1,28 +1,20 @@
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
-import { getCountries } from '@/core/utils/countries';
-import { countriesToSelect } from '@/core/utils/selectHelpers';
+import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
-  Typography,
-  Stack,
-  Divider,
-  DialogContent,
-  TextField,
-  DialogActions,
   Button,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Select,
-  MenuItem,
+  DialogActions,
+  DialogContent,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
@@ -41,7 +33,6 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     saveBank,
     isLoading,
   } = useCounterpartBankForm(props);
-  const { root } = useRootElements();
   const country = watch('country');
 
   const { currencyGroups, isLoadingCurrencyGroups } =
@@ -200,40 +191,8 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 />
               )}
             />
-            <Controller
-              name="country"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl
-                  variant="standard"
-                  fullWidth
-                  required
-                  error={Boolean(error)}
-                >
-                  <InputLabel id={field.name}>{t(i18n)`Country`}</InputLabel>
-                  <Select
-                    labelId={field.name}
-                    label={t(i18n)`Country`}
-                    MenuProps={{ container: root }}
-                    {...field}
-                  >
-                    {countriesToSelect(getCountries(i18n)).map((country) => (
-                      <MenuItem key={country.value} value={country.value}>
-                        {country.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {error && <FormHelperText>{error.message}</FormHelperText>}
-                </FormControl>
-              )}
-            />
-            <MoniteCurrency
-              name="currency"
-              control={control}
-              required
-              groups={currencyGroups}
-              disabled={isLoadingCurrencyGroups}
-            />
+            <MoniteCountry name="country" control={control} required />
+            <MoniteCurrency name="currency" control={control} required />
           </Stack>
         </form>
       </DialogContent>
