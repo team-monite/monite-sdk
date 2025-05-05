@@ -1,24 +1,17 @@
 import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { getCountries } from '@/core/utils/countries';
-import { countriesToSelect } from '@/core/utils/selectHelpers';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Button,
+  DialogActions,
   DialogContent,
   Divider,
+  Stack,
   TextField,
   Typography,
-  Stack,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-  DialogActions,
-  Button,
 } from '@mui/material';
 
 import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
@@ -36,8 +29,6 @@ export const CounterpartAddressFormUpdate = (
     updateAddress,
     isLoading,
   } = useCounterpartAddressFormUpdate(props);
-  const { root } = useRootElements();
-
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartAddress-${useId()}`;
 
@@ -134,36 +125,7 @@ export const CounterpartAddressFormUpdate = (
                 />
               )}
             />
-            <Controller
-              name="country"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl
-                  variant="standard"
-                  fullWidth
-                  required
-                  error={Boolean(error)}
-                >
-                  <InputLabel htmlFor={field.name}>
-                    {t(i18n)`Country`}
-                  </InputLabel>
-                  <Select
-                    id={field.name}
-                    labelId={field.name}
-                    label={t(i18n)`Country`}
-                    MenuProps={{ container: root }}
-                    {...field}
-                  >
-                    {countriesToSelect(getCountries(i18n)).map((country) => (
-                      <MenuItem key={country.value} value={country.value}>
-                        {country.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {error && <FormHelperText>{error.message}</FormHelperText>}
-                </FormControl>
-              )}
-            />
+            <MoniteCountry name="country" control={control} required />
           </Stack>
         </form>
       </DialogContent>

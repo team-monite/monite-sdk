@@ -1,17 +1,12 @@
 import { useFormContext } from 'react-hook-form';
 
-import {
-  CountryOption,
-  RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { AllowedCountries } from '@/enums/AllowedCountries';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 import { OnboardingStepContent, OnboardingSubTitle } from '../OnboardingLayout';
 import { OnboardingAddressType } from '../types';
-import { getRegionName } from '../utils';
 
 type AddressType = { address: OnboardingAddressType };
 
@@ -37,25 +32,11 @@ export const OnboardingAddress = ({
       <OnboardingSubTitle>{title}</OnboardingSubTitle>
 
       {checkValue('country') && (
-        <RHFAutocomplete
+        <MoniteCountry
           disabled={isLoading}
           name="address.country"
           control={control}
-          label={t(i18n)`Country`}
-          optionKey="code"
-          labelKey="label"
-          options={AllowedCountries.map((code) => ({
-            code,
-            label: t(i18n)`${getRegionName(code)} (${code})`,
-          }))}
-          renderOption={(props, option, state) => (
-            <CountryOption
-              key={option.code}
-              props={props}
-              option={option}
-              state={state}
-            />
-          )}
+          required
         />
       )}
 
