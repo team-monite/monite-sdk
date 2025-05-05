@@ -25,15 +25,8 @@ import {
 
 export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { i18n } = useLingui();
-  const {
-    methods,
-    counterpart,
-    contact,
-    formRef,
-    submitForm,
-    saveContact,
-    isLoading,
-  } = useCounterpartContactForm(props);
+  const { methods, counterpart, contact, formRef, saveContact, isLoading } =
+    useCounterpartContactForm(props);
 
   const { control, handleSubmit, watch } = methods;
 
@@ -170,7 +163,8 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={submitForm}
+          type="submit"
+          form={formName}
           disabled={isLoading}
         >
           {contact ? t(i18n)`Update contact` : t(i18n)`Add contact`}

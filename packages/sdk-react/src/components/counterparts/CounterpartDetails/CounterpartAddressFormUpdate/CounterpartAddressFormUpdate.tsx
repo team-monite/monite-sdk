@@ -33,8 +33,6 @@ export const CounterpartAddressFormUpdate = (
   const { i18n } = useLingui();
   const {
     methods: { control, handleSubmit },
-    formRef,
-    submitForm,
     updateAddress,
     isLoading,
   } = useCounterpartAddressFormUpdate(props);
@@ -52,7 +50,6 @@ export const CounterpartAddressFormUpdate = (
       <DialogContent>
         <form
           id={formName}
-          ref={formRef}
           onSubmit={handleSubmit((values) => {
             updateAddress(prepareCounterpartAddressSubmit(values));
           })}
@@ -179,7 +176,7 @@ export const CounterpartAddressFormUpdate = (
           variant="outlined"
           color="primary"
           type="submit"
-          onClick={submitForm}
+          form={formName}
           disabled={isLoading}
         >
           {t(i18n)`Update`}

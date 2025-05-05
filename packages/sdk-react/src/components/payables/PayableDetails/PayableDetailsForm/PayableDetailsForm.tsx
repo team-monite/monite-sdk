@@ -256,7 +256,7 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
-    const { api, queryClient, componentSettings } = useMoniteContext();
+    const { api, componentSettings } = useMoniteContext();
     const { root } = useRootElements();
     const className = 'Monite-PayableDetailsForm';
 
@@ -344,6 +344,7 @@ const PayableDetailsFormBase = forwardRef<
         {
           query: {
             counterpart_name__icontains: payable?.counterpart_raw_data?.name,
+            is_vendor: true,
             limit: 1,
           },
         },
@@ -881,18 +882,6 @@ const PayableDetailsFormBase = forwardRef<
         >
           <CounterpartDetails
             id={currentCounterpart}
-            onUpdate={() => {
-              queryClient.invalidateQueries({
-                queryKey: [
-                  'api.counterparts.getCounterparts',
-                  {
-                    counterpart_name__icontains:
-                      payable?.counterpart_raw_data?.name,
-                  },
-                ],
-              });
-              setIsEditCounterpartOpened(false);
-            }}
             customerTypes={
               customerTypes || componentSettings?.counterparts?.customerTypes
             }

@@ -1,4 +1,10 @@
-import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
+import {
+  BaseSyntheticEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+} from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -174,6 +180,8 @@ export const CounterpartOrganizationForm = (
     reset,
   ]);
 
+  const formName = `Monite-Form-counterpartOrganizationForm-${useId()}`;
+
   if (!isCreateAllowed && !props.id) {
     return <AccessRestriction />;
   }
@@ -215,7 +223,7 @@ export const CounterpartOrganizationForm = (
       >
         <FormProvider {...methods}>
           <form
-            id="counterpartOrganizationForm"
+            id={formName}
             ref={formRef}
             onSubmit={handleSubmitWithoutPropagation}
           >
@@ -434,8 +442,9 @@ export const CounterpartOrganizationForm = (
         <Button
           variant="contained"
           color="primary"
+          type="submit"
+          form={formName}
           disabled={isLoading}
-          onClick={handleSubmitWithoutPropagation}
         >
           {isLoading ? (
             <CircularProgress color="primary" />
