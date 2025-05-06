@@ -17,7 +17,7 @@ export const SidebarMenuItem: FC<SidebarMenuButtonProps> = ({
   return (
     <li
       className={cn(
-        'mtw:w-full mtw:px-5 mtw:py-2 mtw:align-middle mtw:flex mtw:gap-2 mtw:items-center',
+        'mtw:w-full mtw:px-5 mtw:py-2 mtw:align-middle mtw:flex mtw:gap-2 mtw:items-center mtw:cursor-pointer',
         'mtw:hover:bg-sidebar-accent mtw:hover:text-sidebar-accent-foreground mtw:text-start mtw:rounded',
         'mtw:focus-visible:ring-2 mtw:active:bg-sidebar-accent mtw:active:text-sidebar-accent-foreground',
         isActive &&

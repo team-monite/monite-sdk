@@ -41,6 +41,10 @@ export interface Conversations {
   [title: string]: Conversation[];
 }
 
+export interface ConversationHistory extends Conversation {
+  messages: AIMessage[];
+}
+
 export interface AIMessage {
   id: string;
   created_at: string;
@@ -82,5 +86,7 @@ export type LocationLinkType = FC<{
   href: Url;
   className?: string;
 }>;
+
+export type AIPages = 'start' | 'chat' | 'prompt';
 
 export type { Message, UIMessage };

@@ -19,10 +19,14 @@ import { setCursorAtTheEnd } from '../../utils/aiAssistant';
 import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
 
 interface ChatInputProps {
-  onStartConversation?: () => void;
+  isNewChat: boolean;
+  onStartConversation: () => void;
 }
 
-export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
+export const ChatInput: FC<ChatInputProps> = ({
+  isNewChat,
+  onStartConversation,
+}) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const [showPrompts, setShowPrompts] = useState(false);
@@ -42,6 +46,10 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
 
     editorRef.current.innerHTML = '';
     setInput('');
+
+    if (isNewChat) {
+      onStartConversation();
+    }
   };
 
   const handleInputSubmit = (
@@ -55,8 +63,6 @@ export const ChatInput: FC<ChatInputProps> = ({ onStartConversation }) => {
 
     handleSubmit(e);
     handleClearInput();
-
-    onStartConversation?.();
   };
 
   const handleClosePrompts = useCallback(() => {

@@ -88,7 +88,7 @@ export const MessageList = () => {
   return (
     <div
       ref={parentRef}
-      className="mtw:h-[calc(100vh-230px)] mtw:w-full mtw:overflow-y-auto mtw:mt-6"
+      className="mtw:h-[calc(100vh-250px)] mtw:w-full mtw:overflow-y-auto mtw:mt-3"
     >
       <div
         className={cn(

@@ -42151,7 +42151,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response"
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAssistantCreateConversationResponse"
+                }
+              }
+            }
           },
           "405": {
             "description": "Method Not Allowed",
@@ -43074,6 +43081,23 @@
       "AggregationFunctionEnum": {
         "type": "string",
         "enum": ["count", "average", "summary", "min", "max"]
+      },
+      "AIAssistantCreateConversationResponse": {
+        "type":  "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "is_starred": {
+            "type": "boolean"
+          }
+        }
       },
       "AiAssistantPostFeedbackPayload": {
         "type": "object",

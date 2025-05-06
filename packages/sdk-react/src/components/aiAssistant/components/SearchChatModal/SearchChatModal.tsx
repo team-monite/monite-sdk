@@ -12,14 +12,9 @@ import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Close } from '@mui/icons-material';
-import {
-  DialogContent,
-  IconButton,
-  Input,
-  Link as MuiLink,
-} from '@mui/material';
+import { Button, DialogContent, IconButton, Input } from '@mui/material';
 
-import { Conversation, LocationLinkType } from '../../types';
+import { Conversation } from '../../types';
 import { createConversationGroups } from '../../utils/aiAssistant';
 
 interface ConversationGroups {
@@ -30,15 +25,13 @@ interface ConversationGroups {
 interface SearchChatModalProps {
   conversationGroups: ConversationGroups[];
   handleDialogClose: () => void;
-  LocationLink?: LocationLinkType;
-  chatPageHref: string;
+  handleSetChatPage: (id: string) => void;
 }
 
 export const SearchChatModal: FC<SearchChatModalProps> = ({
   conversationGroups,
   handleDialogClose,
-  LocationLink,
-  chatPageHref,
+  handleSetChatPage,
 }) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -58,7 +51,6 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
   );
 
   const { data: conversations = [] } = data || {};
-  const Link = LocationLink || MuiLink;
 
   const setSearchValue = useDebounceCallback(async (value: string) => {
     setSearch(value);
@@ -106,7 +98,7 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
         <div
           className={cn(
             'mtw:pt-6 mtw:px-1 mtw:mb-6 mtw:w-[32rem] mtw:h-[300px] mtw:overflow-y-auto',
-            'mtw:border-t mtw:border-t-border mtw:border-solid'
+            'mtw:border-t mtw:border-t-border mtw:border-solid mtw:flex mtw:flex-col mtw:gap-4'
           )}
         >
           {groups.map(({ title, conversations }) => {
@@ -116,21 +108,20 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
                   {title}
                 </h5>
 
-                <div className="mtw:flex mtw:flex-col mtw:gap-1">
+                <div className="mtw:flex mtw:flex-col">
                   {conversations.map(({ title, id }) => {
-                    const href = `${chatPageHref}/${id}`;
-
                     return (
-                      <Link
+                      <Button
+                        onClick={() => handleSetChatPage(id)}
+                        variant={'text'}
                         key={id}
                         className={cn(
-                          'mtw:truncate mtw:px-5 mtw:py-2 mtw:text-sm mtw:rounded',
-                          'mtw:hover:text-sidebar-accent-foreground mtw:hover:bg-sidebar-accent'
+                          'mtw:truncate mtw:!px-5 mtw:!py-2 mtw:!text-sm mtw:!rounded mtw:!justify-start',
+                          'mtw:hover:!text-sidebar-accent-foreground mtw:hover:!bg-sidebar-accent mtw:!text-inherit'
                         )}
-                        href={href}
                       >
                         {title || t(i18n)`Chat ${id}`}
-                      </Link>
+                      </Button>
                     );
                   })}
                 </div>

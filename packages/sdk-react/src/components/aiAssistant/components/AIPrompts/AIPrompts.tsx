@@ -7,9 +7,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-import { ChatInput } from '../ChatInput/ChatInput';
-
-export const AIPrompts = () => {
+export const AIPrompts = ({ isConversationIdLoading = false }) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
@@ -20,20 +18,16 @@ export const AIPrompts = () => {
   const { data: userPrompts = [] } = data || {};
 
   return (
-    <>
-      <div className="mtw:h-[calc(100vh-275px)] mtw:mt-10 mtw:flex mtw:flex-col mtw:gap-6">
-        <h1 className="mtw:text-center mtw:text-2xl mtw:font-medium">
-          {t(i18n)`Prompts`} <br />
-        </h1>
+    <div className="mtw:h-[calc(100vh-290px)] mtw:mt-12 mtw:flex mtw:flex-col mtw:gap-6">
+      <h1 className="mtw:text-center mtw:text-2xl mtw:font-medium">
+        {t(i18n)`Prompts`} <br />
+      </h1>
 
-        {isLoading ? (
-          <PromptListSkeleton />
-        ) : (
-          <PromptList userPrompts={userPrompts} />
-        )}
-      </div>
-
-      <ChatInput />
-    </>
+      {isLoading || isConversationIdLoading ? (
+        <PromptListSkeleton />
+      ) : (
+        <PromptList userPrompts={userPrompts} />
+      )}
+    </div>
   );
 };
