@@ -5,6 +5,7 @@ import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -66,6 +67,9 @@ export const ProductForm = ({
   const { data: measureUnits, isLoading: isLoadingUnits } =
     api.measureUnits.getMeasureUnits.useQuery();
 
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
+
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues,
@@ -73,8 +77,8 @@ export const ProductForm = ({
 
   const {
     control,
-    handleSubmit,
     formState: { isDirty },
+    handleSubmit,
     reset,
   } = methods;
 
@@ -221,8 +225,10 @@ export const ProductForm = ({
                 <MoniteCurrency
                   name="currency"
                   control={control}
-                  actualCurrency={defaultValues.currency}
                   required
+                  actualCurrency={defaultValues.currency}
+                  groups={currencyGroups}
+                  disabled={isLoadingCurrencyGroups}
                 />
               </Grid>
             </Grid>

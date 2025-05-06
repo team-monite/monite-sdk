@@ -312,3 +312,67 @@ export const getCurrenciesArray = (i18n: I18n): Array<CurrencyType> =>
   }));
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
+
+export interface CurrencyGroup {
+  title: string;
+  predicate: (option: CurrencyType) => boolean;
+}
+
+export const filterOptions = (
+  options: CurrencyType[],
+  state: { inputValue: string }
+): CurrencyType[] => {
+  const { inputValue } = state;
+  const lowerCaseInput = inputValue.toLowerCase().trim();
+
+  if (!lowerCaseInput) {
+    return options;
+  }
+
+  return options.filter(
+    (option) =>
+      option.code.toLowerCase().includes(lowerCaseInput) ||
+      option.label.toLowerCase().includes(lowerCaseInput)
+  );
+};
+
+export const getGroupTitleForOption = (
+  option: CurrencyType,
+  groups?: CurrencyGroup[]
+): { title: string; index: number } => {
+  if (!groups) {
+    return { title: '', index: Infinity };
+  }
+
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    if (group.predicate(option)) {
+      return { title: group.title, index: i };
+    }
+  }
+
+  return { title: '', index: groups.length };
+};
+
+export const sortCurrencyOptionsByGroup = (
+  options: CurrencyType[],
+  groups?: CurrencyGroup[]
+): CurrencyType[] => {
+  if (!groups) {
+    return options;
+  }
+
+  return [...options].sort((a, b) => {
+    const groupA = getGroupTitleForOption(a, groups);
+    const groupB = getGroupTitleForOption(b, groups);
+
+    if (groupA.index !== groupB.index) {
+      return groupA.index - groupB.index;
+    }
+
+    if (groupA.title === '' && groupB.title === '') {
+      return a.label.localeCompare(b.label);
+    }
+    return groupA.title.localeCompare(groupB.title);
+  });
+};

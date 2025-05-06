@@ -12,6 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useLocalStorageFields } from '@/core/hooks/useLocalStorageFields';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -443,6 +444,9 @@ const CreateReceivablesBase = ({
     setValue('entity_bank_account_id', newBankAccountId);
   };
 
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
+
   if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
     return <LoadingPage />;
   }
@@ -534,7 +538,10 @@ const CreateReceivablesBase = ({
                             size="small"
                             name="currency"
                             control={control}
+                            defaultValue={actualCurrency}
                             hideLabel
+                            groups={currencyGroups}
+                            disabled={isLoadingCurrencyGroups}
                             // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
                             onChange={(_event, value) => {
                               if (

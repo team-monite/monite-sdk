@@ -26,6 +26,7 @@ import {
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -166,6 +167,9 @@ export const ProductsTable = ({
   const currency = watch('currency');
   const dialogContent = useDialog();
   const { api } = useMoniteContext();
+
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
 
   const {
     data: productsInfinity,
@@ -335,6 +339,8 @@ export const ProductsTable = ({
               size="small"
               name="currency"
               control={control}
+              groups={currencyGroups}
+              disabled={isLoadingCurrencyGroups}
               onChange={() => {
                 if (fields.length > 0 || hasProducts) {
                   setOpenChangeCurrencyInfo(true);
