@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { getCountries } from '@/core/utils/countries';
 import { countriesToSelect } from '@/core/utils/selectHelpers';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -42,6 +43,9 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   } = useCounterpartBankForm(props);
   const { root } = useRootElements();
   const country = watch('country');
+
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
 
   useEffect(() => {
     if (country) {
@@ -223,7 +227,13 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 </FormControl>
               )}
             />
-            <MoniteCurrency name="currency" control={control} required />
+            <MoniteCurrency
+              name="currency"
+              control={control}
+              required
+              groups={currencyGroups}
+              disabled={isLoadingCurrencyGroups}
+            />
           </Stack>
         </form>
       </DialogContent>
