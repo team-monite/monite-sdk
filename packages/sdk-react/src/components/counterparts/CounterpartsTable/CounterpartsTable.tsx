@@ -282,7 +282,7 @@ const CounterpartsTableBase = ({
         }}
         onSortModelChange={onChangeSort}
         loading={isLoading}
-        rowHeight={60}
+        rowHeight={60} // default row height is 52px
         onRowClick={(params) => {
           if (!hasSelectedText()) {
             onRowClick?.(params.row.id);
