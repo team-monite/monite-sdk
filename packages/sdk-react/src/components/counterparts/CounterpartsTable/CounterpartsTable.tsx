@@ -15,7 +15,7 @@ import {
 } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartNameCellById } from '@/ui/CounterpartCell/CounterpartCell';
+import { CounterpartNameCountryAddressCellById } from '@/ui/CounterpartCell/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -236,19 +236,22 @@ const CounterpartsTableBase = ({
       {
         field: 'counterpart_name',
         sortable: true,
-        headerName: t(i18n)`Name, country, city`,
+        headerName: t(i18n)`Counterpart`,
         display: 'flex',
         flex: 1,
         renderCell: (params) => {
           const counterpart = params.row;
-          // Use CounterpartCellById but not CounterpartCellByName to display counterpart address
-          return <CounterpartCellById counterpartId={counterpart.id} />;
+          return (
+            <CounterpartNameCountryAddressCellById
+              counterpartId={counterpart.id}
+            />
+          );
         },
       },
       {
         field: 'category',
         sortable: false,
-        headerName: t(i18n)`Type`,
+        headerName: t(i18n)`Category`,
         display: 'flex',
         flex: 0.6,
         renderCell: (params) => {
@@ -333,13 +336,13 @@ const CounterpartsTableBase = ({
   ) {
     return (
       <DataGridEmptyState
-        title={t(i18n)`No Counterparts`}
+        title={t(i18n)`No counterparts yet`}
         descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
-        descriptionLine2={t(i18n)`You can create your first counterpart.`}
+        descriptionLine2={t(i18n)`Create your first counterpart.`}
         actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`Counterpart`]}
         onAction={() => {
-          if (!openModal) return;
-          openModal(true);
+          openModal?.(true);
         }}
         type="no-data"
       />
@@ -377,6 +380,7 @@ const CounterpartsTableBase = ({
         }}
         onSortModelChange={onChangeSort}
         loading={isLoading}
+        rowHeight={60}
         onRowClick={(params) => {
           if (!hasSelectedText()) {
             onRowClick?.(params.row.id);
@@ -409,8 +413,7 @@ const CounterpartsTableBase = ({
               isSearching={isSearching}
               isError={isError}
               onCreate={() => {
-                if (!openModal) return;
-                openModal(true);
+                openModal?.(true);
               }}
               refetch={refetch}
               entityName={t(i18n)`Counterpart`}
