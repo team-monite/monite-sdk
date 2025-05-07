@@ -1,11 +1,14 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { useCounterpartById } from '@/core/queries';
+import {
+  useCounterpartById,
+  useCounterpartAddressesById,
+} from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Avatar, Skeleton, Stack, Typography } from '@mui/material';
 
-interface CounterpartCellProps {
+interface CounterpartCellByIdProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
@@ -17,7 +20,7 @@ export const calculateAvatarColorIndex = (name: string) => {
   return sum % 5;
 };
 
-export const CounterPartCellByName = ({
+export const CounterPartCellByData = ({
   name,
   country,
   city,
@@ -104,9 +107,28 @@ export const CounterPartCellByName = ({
   );
 };
 
+export const CounterpartNameCountryAddressCellById = ({
+  counterpartId,
+}: CounterpartCellByIdProps) => {
+  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
+  const { data: addresses } = useCounterpartAddressesById(counterpartId);
+
+  if (isLoading) {
+    return <Skeleton animation="wave" height={26} width="100%" />;
+  }
+
+  return (
+    <CounterPartCellByData
+      name={getCounterpartName(counterpart)}
+      country={addresses?.data[0]?.country}
+      city={addresses?.data[0]?.city}
+    />
+  );
+};
+
 export const CounterpartNameCellById = ({
   counterpartId,
-}: CounterpartCellProps) => {
+}: CounterpartCellByIdProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
   const name = counterpart ? getCounterpartName(counterpart) : '';
 
