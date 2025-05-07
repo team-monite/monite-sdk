@@ -1,18 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartStatusChip } from '@/components/counterparts/components';
 import type { CounterpartShowCategories } from '@/components/counterparts/types';
-import { TableActions } from '@/components/TableActions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { CounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
-import {
-  useCounterpartList,
-  useDeleteCounterpart,
-} from '@/core/queries/useCounterpart';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartNameCountryAddressCellById } from '@/ui/CounterpartCell/CounterpartCell';
@@ -24,21 +19,10 @@ import { classNames } from '@/utils/css-utils';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Stack,
-} from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { getCounterpartName } from '../helpers';
 import {
   FILTER_TYPE_IS_CUSTOMER,
   FILTER_TYPE_SEARCH,
@@ -57,18 +41,6 @@ interface CounterpartGridSortModel {
  * Props for the CounterpartsTable component.
  */
 export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
-  /**
-   * Callback function that is called when the edit action is triggered.
-   * @param id - The ID of the counterpart to be edited.
-   */
-  onEdit?: (id: string) => void;
-
-  /**
-   * Callback function that is called when the delete action is triggered.
-   * @param id - The ID of the counterpart to be deleted.
-   */
-  onDelete?: (id: string) => void;
-
   /**
    * Callback function that is called when a row is clicked.
    * @param id - The ID of the clicked counterpart.
@@ -105,8 +77,6 @@ export const CounterpartsTable = (props: CounterpartsTableProps) => (
 
 const CounterpartsTableBase = ({
   onRowClick,
-  onEdit,
-  onDelete,
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
   showCategories = true,
@@ -114,10 +84,6 @@ const CounterpartsTableBase = ({
 }: CounterpartsTableProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [selectedCounterpart, setSelectedCounterpart] = useState<
-    CounterpartResponse | undefined
-  >(undefined);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -143,16 +109,6 @@ const CounterpartsTableBase = ({
       action: 'read',
       entityUserId: user?.id,
     });
-  const { data: isUpdateSupported } = useIsActionAllowed({
-    method: 'counterpart',
-    action: 'update',
-    entityUserId: user?.id,
-  });
-  const { data: isDeleteSupported } = useIsActionAllowed({
-    method: 'counterpart',
-    action: 'delete',
-    entityUserId: user?.id,
-  });
 
   const {
     data: counterparts,
@@ -179,13 +135,6 @@ const CounterpartsTableBase = ({
     refetch();
   }, [currentPaginationToken, currentSort, currentFilter, refetch]);
 
-  const closeDeleteCounterpartModal = useCallback(() => {
-    setIsDeleteDialogOpen(false);
-  }, []);
-  const closedDeleteCounterpartModal = useCallback(() => {
-    setSelectedCounterpart(undefined);
-  }, []);
-
   const onChangeSort = (m: GridSortModel) => {
     setSortModel(m[0] as CounterpartGridSortModel);
     setCurrentPaginationToken(null);
@@ -203,35 +152,9 @@ const CounterpartsTableBase = ({
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
 
-  const deleteCounterpartMutation = useDeleteCounterpart();
-  const deleteCounterpart = useCallback(() => {
-    if (!selectedCounterpart) {
-      return;
-    }
-
-    deleteCounterpartMutation.mutate(
-      {
-        path: {
-          counterpart_id: selectedCounterpart.id,
-        },
-      },
-      {
-        onSuccess: () => {
-          onDelete?.(selectedCounterpart.id);
-          closeDeleteCounterpartModal();
-        },
-      }
-    );
-  }, [
-    selectedCounterpart,
-    deleteCounterpartMutation,
-    onDelete,
-    closeDeleteCounterpartModal,
-  ]);
-
-  const { root } = useRootElements();
-
-  const columns = useMemo<GridColDef[]>(() => {
+  const columns = useMemo<
+    GridColDef<components['schemas']['CounterpartResponse']>[]
+  >(() => {
     return [
       {
         field: 'counterpart_name',
@@ -287,29 +210,8 @@ const CounterpartsTableBase = ({
           return <span>{email}</span>;
         },
       },
-      {
-        field: 'actions',
-        sortable: false,
-        headerName: '',
-        width: 70,
-        renderCell: (params) => (
-          <TableActions
-            permissions={{
-              isUpdateAllowed: isUpdateSupported,
-              isDeleteAllowed: isDeleteSupported,
-            }}
-            onEdit={() => {
-              onEdit?.(params.row.id);
-            }}
-            onDelete={() => {
-              setSelectedCounterpart(params.row);
-              setIsDeleteDialogOpen(true);
-            }}
-          />
-        ),
-      },
     ];
-  }, [i18n, isDeleteSupported, isUpdateSupported, onEdit]);
+  }, [i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
@@ -425,56 +327,6 @@ const CounterpartsTableBase = ({
         columns={columns}
         rows={counterparts?.data || []}
       />
-      <Dialog
-        className={className + 'Dialog-DeleteCounterpart'}
-        open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
-        container={root}
-        onClose={closeDeleteCounterpartModal}
-        aria-label={t(i18n)`Delete confirmation`}
-        maxWidth="sm"
-        fullWidth
-        TransitionProps={{
-          onExited: closedDeleteCounterpartModal,
-        }}
-      >
-        <DialogTitle
-          variant="h3"
-          className={className + 'Dialog-DeleteCounterpart-Title'}
-        >
-          {t(i18n)`Delete Counterpart "${getCounterpartName(
-            selectedCounterpart!
-          )}"?`}
-        </DialogTitle>
-        <DialogContent
-          className={className + 'Dialog-DeleteCounterpart-Content'}
-        >
-          <DialogContentText>
-            {t(i18n)`This action can't be undone.`}
-          </DialogContentText>
-        </DialogContent>
-        <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
-        <DialogActions
-          className={className + 'Dialog-DeleteCounterpart-Actions'}
-        >
-          <Button
-            variant="outlined"
-            onClick={closeDeleteCounterpartModal}
-            color="inherit"
-            className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
-          >
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={deleteCounterpart}
-            autoFocus
-            className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
-          >
-            {t(i18n)`Delete`}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

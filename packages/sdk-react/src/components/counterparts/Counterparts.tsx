@@ -141,7 +141,6 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
       {isReadAllowed && (
         <CounterpartsTable
           onRowClick={handleRowAction}
-          onEdit={handleRowAction}
           openModal={setOpenModal}
         />
       )}
