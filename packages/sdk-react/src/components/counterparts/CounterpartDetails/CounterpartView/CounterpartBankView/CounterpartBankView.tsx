@@ -79,7 +79,7 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
     <MoniteCard
       items={[
         {
-          label: t(i18n)`Account name`,
+          label: t(i18n)`Display name`,
           value: name,
         },
         {

@@ -97,7 +97,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   id={field.name}
-                  label={t(i18n)`Account name`}
+                  label={t(i18n)`Display name`}
                   variant="standard"
                   fullWidth
                   error={Boolean(error)}

@@ -84,7 +84,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
               name="type"
               disabled={isLoading}
               control={control}
-              label={t(i18n)`Vat type`}
+              label={t(i18n)`VAT type`}
               options={vatTypes}
               optionKey="code"
               labelKey="label"
@@ -92,7 +92,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
 
             <RHFTextField
               disabled={isLoading}
-              label={t(i18n)`Vat value`}
+              label={t(i18n)`VAT value`}
               name="value"
               control={control}
             />
@@ -111,7 +111,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
           type="submit"
           disabled={isLoading}
         >
-          {vat ? t(i18n)`Update Vat Id` : t(i18n)`Create Vat Id`}
+          {vat ? t(i18n)`Update VAT ID` : t(i18n)`Create VAT ID`}
         </Button>
       </DialogActions>
     </>
