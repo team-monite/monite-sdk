@@ -68,11 +68,9 @@ export const ConfirmDeleteDialog = ({
   );
 };
 
-const MoniteDialogTitle = styled(DialogTitle)(() => ({
+const MoniteDialogTitle = styled(DialogTitle)(({ theme }) => ({
   '&.MuiDialogTitle-root.MuiTypography-root': {
-    fontSize: 24,
-    fontWeight: '600',
-    lineHeight: '32px',
+    ...theme.typography.h3, // MUI v5 styles DialogTitle as H2. This is a workaround to apply H3 styles
     padding: '2rem 2rem 1.5rem',
   },
 }));
