@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { components } from '@/api';
 import {
   useCounterpartAddresses,
+  useCounterpartById,
   useUpdateCounterpartAddress,
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +29,8 @@ export function useCounterpartAddressFormUpdate({
   addressId,
   onUpdate,
 }: CounterpartAddressFormUpdateProps) {
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    useCounterpartById(counterpartId);
   const { data: address } = useCounterpartAddresses(counterpartId);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -68,10 +71,11 @@ export function useCounterpartAddressFormUpdate({
   );
 
   return {
+    counterpart,
     methods,
     formRef,
     submitForm,
     updateAddress,
-    isLoading: addressUpdateMutation.isPending,
+    isLoading: addressUpdateMutation.isPending || isCounterpartLoading,
   };
 }

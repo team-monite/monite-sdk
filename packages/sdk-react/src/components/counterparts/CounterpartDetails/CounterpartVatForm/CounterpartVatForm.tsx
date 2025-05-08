@@ -28,7 +28,7 @@ import {
 export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
   const { i18n } = useLingui();
   const {
-    methods: { control, handleSubmit, watch },
+    methods: { control, handleSubmit },
     counterpart,
     vat,
     saveVat,
@@ -55,7 +55,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption" data-testid="vatId">
-          {vat ? watch('value') : t(i18n)`Add VAT ID`}
+          {vat ? t(i18n)`Edit VAT ID` : t(i18n)`Add VAT ID`}
         </Typography>
       </Stack>
       <Divider />
@@ -101,18 +101,19 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" color="inherit" onClick={props.onCancel}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          form={formName}
-          type="submit"
-          disabled={isLoading}
-        >
-          {vat ? t(i18n)`Update VAT ID` : t(i18n)`Create VAT ID`}
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button variant="text" onClick={props.onCancel}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            form={formName}
+            disabled={isLoading}
+          >
+            {t(i18n)`Save`}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );
