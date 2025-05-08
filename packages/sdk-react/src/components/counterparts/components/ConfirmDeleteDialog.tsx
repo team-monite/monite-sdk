@@ -8,7 +8,8 @@ import {
   DialogActions,
   Button,
   DialogContentText,
-  Divider,
+  Stack,
+  styled,
 } from '@mui/material';
 
 type ConfirmDeleteDialogProps = {
@@ -40,28 +41,46 @@ export const ConfirmDeleteDialog = ({
       fullWidth
       maxWidth="sm"
     >
-      <DialogTitle variant="h3">
+      <MoniteDialogTitle>
         {t(i18n)`Delete ${type} “${name}“?`}
-      </DialogTitle>
-      <DialogContent>
+      </MoniteDialogTitle>
+      <MoniteDialogContent>
         <DialogContentText>
-          {t(i18n)`This action can't be undone.`}
+          {t(i18n)`You can't undo this action.`}
         </DialogContentText>
-      </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button color="inherit" onClick={onClose} variant="outlined">
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          color="error"
-          onClick={onDelete}
-          disabled={isLoading}
-          variant="outlined"
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      </DialogActions>
+      </MoniteDialogContent>
+      <MoniteDialogActions>
+        <Stack direction="row" spacing={2}>
+          <Button onClick={onClose} disabled={isLoading} autoFocus>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={onDelete}
+            disabled={isLoading}
+          >
+            {t(i18n)`Delete`}
+          </Button>
+        </Stack>
+      </MoniteDialogActions>
     </Dialog>
   );
 };
+
+const MoniteDialogTitle = styled(DialogTitle)(() => ({
+  '&.MuiDialogTitle-root.MuiTypography-root': {
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: '32px',
+    padding: '2rem 2rem 1.5rem',
+  },
+}));
+
+const MoniteDialogContent = styled(DialogContent)(() => ({
+  padding: '1rem 2rem',
+}));
+
+const MoniteDialogActions = styled(DialogActions)(() => ({
+  padding: '1.7rem 2rem',
+}));
