@@ -19,7 +19,12 @@ import DashboardCard from '@/components/DashboardCard';
 import { IconChart } from '@/icons';
 
 export const CashFlowCard = () => {
-  const { api } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
+
+  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: entityId },
+  });
+  const currency: string = entitySettings?.currency?.default ?? 'USD';
 
   const { data: totalReceived, isLoading: totalReceivedLoading } =
     api.analytics.getAnalyticsReceivables.useQuery({
@@ -171,7 +176,7 @@ export const CashFlowCard = () => {
             formatter={(value, name, props) => {
               return new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency: 'USD',
+                currency,
               }).format(Number(value) / 100);
             }}
             labelFormatter={(value) => {
@@ -195,7 +200,7 @@ export const CashFlowCard = () => {
                 notation: 'compact',
                 compactDisplay: 'short',
                 style: 'currency',
-                currency: 'USD',
+                currency,
               }).format(Number(value) / 100);
             }}
           />
