@@ -42114,6 +42114,530 @@
         },
         "security": [{ "HTTPBearer": [] }]
       }
+    },
+    "/ai/conversations": {
+      "post": {
+        "tags": ["AI Conversations"],
+        "summary": "Create Conversation",
+        "description": "Creates a new AI conversation.",
+        "operationId": "create_conversation",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAssistantCreateConversationResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["AI Conversations"],
+        "summary": "Fetch Conversations",
+        "description": "Fetches a list of AI conversations.",
+        "operationId": "fetch_conversations",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "name": "title__icontains",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/ai/conversations/{conversationId}": {
+      "get": {
+        "tags": ["AI Conversations"],
+        "summary": "Fetch Conversation",
+        "description": "Fetches messages of a specific conversation by ID.",
+        "operationId": "fetch_conversation_messages",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "conversationId",
+            "in": "path"
+          }
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/ai/prompts": {
+      "get": {
+        "tags": ["AI Prompts"],
+        "summary": "Fetch Prompts",
+        "description": "Retrieves a list of prompts.",
+        "operationId": "fetch_prompts",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 100
+            }
+          }
+        ],
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["AI Prompts"],
+        "summary": "Save Prompt",
+        "description": "Saves a new prompt.",
+        "operationId": "save_prompt",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiAssistantSavePromptPayload"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/ai/message_feedbacks": {
+      "post": {
+        "tags": ["AI Feedback"],
+        "summary": "Post Feedback",
+        "description": "Posts feedback for an AI message.",
+        "operationId": "post_feedback",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiAssistantPostFeedbackPayload"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/ai/message_feedbacks/commentary": {
+      "post": {
+        "tags": ["AI Feedback"],
+        "summary": "Post Feedback Message",
+        "description": "Posts a feedback message comment.",
+        "operationId": "post_feedback_message",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-06-23",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiAssistantPostFeedbackMessagePayload"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -42557,6 +43081,53 @@
       "AggregationFunctionEnum": {
         "type": "string",
         "enum": ["count", "average", "summary", "min", "max"]
+      },
+      "AIAssistantCreateConversationResponse": {
+        "type":  "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "is_starred": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AiAssistantPostFeedbackPayload": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      },
+      "AiAssistantPostFeedbackMessagePayload": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "AiAssistantSavePromptPayload": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          }
+        }
       },
       "AirwallexData": {
         "properties": {
@@ -63067,6 +63638,9 @@
     { "name": "Accounting connections" },
     { "name": "Accounting data pull" },
     { "name": "Accounting synchronized records" },
+    { "name": "AI Conversations" },
+    { "name": "AI Prompts" },
+    { "name": "AI Feedback" },
     { "name": "Accounting tax rates" },
     { "name": "Analytics" },
     { "name": "Approval policies" },
