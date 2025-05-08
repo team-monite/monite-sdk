@@ -8,6 +8,7 @@ export function useIsMobile() {
   );
 
   React.useEffect(() => {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
