@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.0.3
+
+### Patch Changes
+
+- 6c99ae4: Properly format Tag Categories labels
+- 711d4c5: Automatically select the Counterpat default bank account when selecting a Counterpart on the Payable details form.
+- 1727547: Fix bug of Payable form submission on saving of the Payable Vendor form.
+
 ## 4.0.2
 
 ### Patch Changes
