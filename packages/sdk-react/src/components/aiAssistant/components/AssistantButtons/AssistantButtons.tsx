@@ -73,9 +73,13 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
       return;
     }
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setIsCopied(false);
     }, 3000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [isCopied]);
 
   return (

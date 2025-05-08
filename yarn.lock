@@ -5403,6 +5403,7 @@ __metadata:
     tailwind-merge: "npm:~3.0.2"
     tw-animate-css: "npm:~1.2.5"
     typescript: "npm:~5.5.4"
+    yup: "npm:~0.32.11"
     zod: "npm:~3.24.2"
   peerDependencies:
     "@emotion/cache": ~11.11.0

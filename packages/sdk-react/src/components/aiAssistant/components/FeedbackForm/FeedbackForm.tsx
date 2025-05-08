@@ -74,10 +74,14 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
       return;
     }
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setIsSuccess(false);
       setIsFeedbackFormOpen(false);
     }, 2000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
