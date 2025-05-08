@@ -147,7 +147,14 @@ const CreateReceivablesBase = ({
     ),
   });
 
-  const { handleSubmit, watch, getValues, setValue } = methods;
+  const {
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    clearErrors,
+    getFieldState,
+  } = methods;
 
   const counterpartId = watch('counterpart_id');
 
@@ -366,6 +373,7 @@ const CreateReceivablesBase = ({
 
   const lineItems = watch('line_items');
   const entityBankAccountId = watch('entity_bank_account_id');
+  const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
   const handleCurrencySubmit = () => {
@@ -442,6 +450,12 @@ const CreateReceivablesBase = ({
     setIsBankFormOpen(false);
     setValue('entity_bank_account_id', newBankAccountId);
   };
+
+  useEffect(() => {
+    if (entityBankAccountId && bankAccountField?.invalid) {
+      clearErrors('entity_bank_account_id');
+    }
+  }, [entityBankAccountId, bankAccountField, clearErrors]);
 
   if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
     return <LoadingPage />;

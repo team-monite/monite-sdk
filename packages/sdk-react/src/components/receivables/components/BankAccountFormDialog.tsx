@@ -7,7 +7,9 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import {
+  Alert,
   Typography,
   Divider,
   DialogContent,
@@ -84,6 +86,7 @@ const BankAccountFormDialogBase = ({
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [shouldDisplayWarning, setShouldDisplayWarning] = useState(false);
   const formId = `Monite-EntityBankForm-${useId()}`;
 
   const { data: bankAccount, isLoading: isBankLoading } =
@@ -103,8 +106,7 @@ const BankAccountFormDialogBase = ({
   const isMutating =
     isCreatingBankAccount || isUpdatingBankAccount || isDeletingBankAccount;
 
-  const shouldEnableDelete =
-    bankAccount && !bankAccount?.is_default_for_currency;
+  const shouldEnableDelete = !!bankAccount;
 
   const createBankAccount = (
     payload: components['schemas']['CreateEntityBankAccountRequest']
@@ -145,6 +147,21 @@ const BankAccountFormDialogBase = ({
         <Divider />
 
         <DialogContent>
+          {bankAccount?.is_default_for_currency && shouldDisplayWarning && (
+            <Alert
+              icon={<WarningAmberRoundedIcon />}
+              severity="error"
+              onClose={() => setShouldDisplayWarning(false)}
+              sx={{
+                mb: 2,
+              }}
+            >
+              {t(
+                i18n
+              )`You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency.`}
+            </Alert>
+          )}
+
           <BankAccountFormContent
             createBankAccount={createBankAccount}
             updateBankAccount={updateBankAccount}
@@ -165,7 +182,13 @@ const BankAccountFormDialogBase = ({
               type="button"
               variant="text"
               color="error"
-              onClick={() => setIsDeleteModalOpen(true)}
+              onClick={() => {
+                if (bankAccount?.is_default_for_currency) {
+                  setShouldDisplayWarning(true);
+                } else {
+                  setIsDeleteModalOpen(true);
+                }
+              }}
               disabled={isMutating}
             >
               {t(i18n)`Delete`}
