@@ -1,4 +1,7 @@
 /* eslint lingui/no-unlocalized-strings: 0 */
+import { getErrorColors } from '@/core/theme/mui-monite/colors/error';
+import { getSuccessColors } from '@/core/theme/mui-monite/colors/success';
+import { getWarningColors } from '@/core/theme/mui-monite/colors/warning';
 import { MonitePalette, ThemeConfig } from '@/core/theme/types';
 import { Components } from '@mui/material/styles';
 import type {
@@ -96,9 +99,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     neutral: getNeutralColors(moniteTheme.colors.neutral),
 
     info: getSeverityColors(moniteTheme.colors.info),
-    success: getSeverityColors(moniteTheme.colors.success),
-    warning: getSeverityColors(moniteTheme.colors.warning),
-    error: getSeverityColors(moniteTheme.colors.error),
+    success: getSuccessColors(moniteTheme.colors.success),
+    warning: getWarningColors(moniteTheme.colors.warning),
+    error: getErrorColors(moniteTheme.colors.error),
 
     background: {
       default: moniteTheme.colors.background,

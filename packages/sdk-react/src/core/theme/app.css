@@ -1,11 +1,20 @@
 @import 'tailwindcss' source('../../../src/') prefix(mtw);
 @import 'tw-animate-css' source('../../../src/') prefix(mtw);
 
+@import './tailwind/typography.css';
+
 @theme {
+  --color-primary-10: var(--mtw-color-primary-10);
+  --color-primary-20: var(--mtw-color-primary-20);
+  --color-primary-30: var(--mtw-color-primary-30);
+  --color-primary-40: var(--mtw-color-primary-40);
   --color-primary-50: var(--mtw-color-primary-50);
   --color-primary-60: var(--mtw-color-primary-60);
+  --color-primary-70: var(--mtw-color-primary-70);
   --color-primary-80: var(--mtw-color-primary-80);
+  --color-primary-85: var(--mtw-color-primary-85);
   --color-primary-90: var(--mtw-color-primary-90);
+  --color-primary-95: var(--mtw-color-primary-95);
 
   --color-neutral-10: var(--mtw-color-neutral-10);
   --color-neutral-30: var(--mtw-color-neutral-30);
@@ -14,6 +23,41 @@
   --color-neutral-80: var(--mtw-color-neutral-80);
   --color-neutral-90: var(--mtw-color-neutral-90);
   --color-neutral-95: var(--mtw-color-neutral-95);
+
+  --color-danger-10: var(--mtw-color-error-10);
+  --color-danger-30: var(--mtw-color-error-30);
+  --color-danger-40: var(--mtw-color-error-40);
+  --color-danger-50: var(--mtw-color-error-50);
+  --color-danger-60: var(--mtw-color-error-60);
+  --color-danger-80: var(--mtw-color-error-80);
+  --color-danger-90: var(--mtw-color-error-90);
+  --color-danger-95: var(--mtw-color-error-95);
+
+  --color-success-10: var(--mtw-color-success-10);
+  --color-success-30: var(--mtw-color-success-30);
+  --color-success-50: var(--mtw-color-success-50);
+  --color-success-60: var(--mtw-color-success-60);
+  --color-success-80: var(--mtw-color-success-80);
+  --color-success-90: var(--mtw-color-success-90);
+  --color-success-95: var(--mtw-color-success-95);
+
+  --color-warning-10: var(--mtw-color-warning-10);
+  --color-warning-30: var(--mtw-color-warning-30);
+  --color-warning-50: var(--mtw-color-warning-50);
+  --color-warning-60: var(--mtw-color-warning-60);
+  --color-warning-80: var(--mtw-color-warning-80);
+  --color-warning-90: var(--mtw-color-warning-90);
+  --color-warning-95: var(--mtw-color-warning-95);
+
+  --border: var(--mtw-border);
+
+  --sidebar-foreground: var(--mtw-sidebar-foreground);
+  --sidebar-primary: var(--mtw-sidebar-primary);
+  --sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
+  --sidebar-accent: var(--mtw-sidebar-accent);
+  --sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
+  --sidebar-border: var(--mtw-sidebar-border);
+  --sidebar-ring: var(--mtw-sidebar-ring);
 }
 
 :root {
@@ -89,4 +133,60 @@
   --color-sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
   --color-sidebar-border: var(--mtw-sidebar-border);
   --color-sidebar-ring: var(--mtw-sidebar-ring);
+}
+
+@layer base {
+  [data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #6d737e;
+    font-weight: normal;
+    font-size: 14px;
+  }
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  16.667% {
+    box-shadow: 9984px -10px 0 0 var(--mtw-dot-loader-stress-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px -10px 0 0 var(--mtw-dot-loader-stress-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px -10px 0 0 var(--mtw-dot-loader-stress-color);
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px 0 0 0 var(--mtw-dot-loader-color),
+      10014px 0 0 0 var(--mtw-dot-loader-color);
+  }
+}
+
+@layer utilities {
+  .animate-dot-typing {
+    --mtw-dot-loader-color: #d6cdfe;
+    --mtw-dot-loader-stress-color: #562bd6;
+
+    animation: dot-typing 1.5s infinite linear;
+  }
 }
