@@ -415,25 +415,16 @@ export const CounterpartOrganizationForm = (
       <Divider />
       <DialogActions>
         <Stack direction="row" spacing={2}>
-          {isInvoiceCreation && (
-            <Button
-              variant="outlined"
-              sx={{ marginRight: 'auto' }}
-              onClick={props.onCancel}
-            >{t(i18n)`Back`}</Button>
-          )}
-          {(props?.id || dialogContext) && (
-            <Button
-              variant="text"
-              onClick={
-                props?.id
-                  ? props.onCancel
-                  : props.onClose || dialogContext?.onClose
-              }
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-          )}
+          <Button
+            variant="text"
+            onClick={
+              props?.id || isInvoiceCreation
+                ? props.onCancel
+                : props.onClose || dialogContext?.onClose
+            }
+          >
+            {isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`}
+          </Button>
           <Button
             variant="contained"
             type="submit"

@@ -63,7 +63,7 @@ export const CreateCounterpartModal = ({
           maxWidth: 600,
           bgcolor: 'background.paper',
           boxShadow: 24,
-          borderRadius: 8,
+          borderRadius: 2,
           maxHeight: '90%',
         }}
       >
