@@ -43083,7 +43083,7 @@
         "enum": ["count", "average", "summary", "min", "max"]
       },
       "AIAssistantCreateConversationResponse": {
-        "type":  "object",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"

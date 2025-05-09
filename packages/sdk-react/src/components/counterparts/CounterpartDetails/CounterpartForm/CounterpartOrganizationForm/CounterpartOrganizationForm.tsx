@@ -37,6 +37,7 @@ import {
   ListItemText,
   Grid,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
@@ -112,7 +113,7 @@ export const CounterpartOrganizationForm = (
     ),
   });
 
-  const { control, handleSubmit, reset, watch } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   const handleSubmitWithoutPropagation = useCallback(
     (e: BaseSyntheticEvent) => {
@@ -199,8 +200,8 @@ export const CounterpartOrganizationForm = (
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
                 : props?.id
-                ? watch('organization.companyName')
-                : t(i18n)`Create Counterpart – Company`}
+                ? t(i18n)`Edit company`
+                : t(i18n)`Create new Counterpart`}
             </Typography>
           </Grid>
           <Grid item xs={1}>
@@ -412,48 +413,33 @@ export const CounterpartOrganizationForm = (
         </FormProvider>
       </DialogContent>
       <Divider />
-      <DialogActions
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '1em',
-          padding: 4,
-        }}
-      >
-        {isInvoiceCreation && (
-          <Button
-            variant="outlined"
-            sx={{ marginRight: 'auto' }}
-            onClick={props.onCancel}
-          >{t(i18n)`Back`}</Button>
-        )}
-        {(props?.id || dialogContext) && (
+      <DialogActions>
+        <Stack direction="row" spacing={2}>
           <Button
             variant="text"
             onClick={
-              props?.id
+              props?.id || isInvoiceCreation
                 ? props.onCancel
                 : props.onClose || dialogContext?.onClose
             }
           >
-            {t(i18n)`Cancel`}
+            {isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`}
           </Button>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          form={formName}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <CircularProgress color="primary" />
-          ) : props?.id ? (
-            t(i18n)`Save`
-          ) : (
-            t(i18n)`Create`
-          )}
-        </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            form={formName}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <CircularProgress color="primary" />
+            ) : props?.id ? (
+              t(i18n)`Save`
+            ) : (
+              t(i18n)`Create`
+            )}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );

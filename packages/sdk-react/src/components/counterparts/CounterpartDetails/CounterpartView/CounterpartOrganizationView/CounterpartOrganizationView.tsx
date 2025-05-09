@@ -7,7 +7,7 @@ import {
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Divider, CardActions, Box, Typography, Chip } from '@mui/material';
+import { Divider, CardActions, Box, Chip } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { printCounterpartType } from '../../helpers';
@@ -24,9 +24,17 @@ export const DefaultEmail = ({
   const { i18n } = useLingui();
   return (
     <Box display="flex" alignItems="center">
-      <Typography noWrap sx={{ maxWidth: 250 }} title={email} component="div">
+      <Box
+        maxWidth={250}
+        sx={{
+          textWrap: 'nowrap',
+          overflow: 'hidden', // truncate value if it's too long, to keep the "default" label visible
+          textOverflow: 'ellipsis',
+        }}
+        title={email} // to show the non-truncated value on hover
+      >
         {email}
-      </Typography>
+      </Box>
       {isDefault && (
         <Box ml={2} mr={1} display="inline">
           <Chip
@@ -34,7 +42,7 @@ export const DefaultEmail = ({
             variant="filled"
             color="default"
             sx={{
-              // workaround to prevent the layout from shifting when the "Make Default" button is pressed
+              // workaround to prevent the layout from shifting when the "default" label is visible
               display: 'inline',
               verticalAlign: 'inherit',
               py: 0.84,

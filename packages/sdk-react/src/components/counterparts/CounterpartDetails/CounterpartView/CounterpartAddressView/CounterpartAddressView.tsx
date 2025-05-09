@@ -31,7 +31,7 @@ export const CounterpartAddressView = (props: CounterpartAddressViewProps) => {
           value: city,
         },
         {
-          label: t(i18n)`ZIP code`,
+          label: t(i18n)`Postal code`,
           value: postal_code,
         },
         {

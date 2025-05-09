@@ -37,7 +37,9 @@ describe('CounterpartAddressForm', () => {
       'line2'
     );
     expect(await screen.findByLabelText(/City/i)).toHaveValue('city');
-    expect(await screen.findByLabelText(/ZIP code/i)).toHaveValue('postalCode');
+    expect(await screen.findByLabelText(/Postal code/i)).toHaveValue(
+      'postalCode'
+    );
     expect(
       await screen.findByLabelText(/State \/ Area \/ Province/i)
     ).toHaveValue('state');
@@ -76,7 +78,9 @@ describe('CounterpartAddressForm', () => {
       'line2'
     );
     expect(await screen.findByLabelText(/City/i)).toHaveValue('city');
-    expect(await screen.findByLabelText(/ZIP code/i)).toHaveValue('postalCode');
+    expect(await screen.findByLabelText(/Postal code/i)).toHaveValue(
+      'postalCode'
+    );
     expect(
       await screen.findByLabelText(/State \/ Area \/ Province/i)
     ).toHaveValue('state');

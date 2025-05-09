@@ -1,4 +1,5 @@
-import { TableCell, TableRow, Typography } from '@mui/material';
+import { StyledLabelTableCell } from '@/ui/Card/Card';
+import { TableCell, TableRow } from '@mui/material';
 
 interface ProductTableItemProps {
   label: string;
@@ -8,13 +9,9 @@ interface ProductTableItemProps {
 export const ProductDetailsTableCell = (props: ProductTableItemProps) => {
   return (
     <TableRow key="name">
-      <TableCell
-        component="th"
-        scope="row"
-        sx={{ minWidth: 120, width: '35%' }}
-      >
-        <Typography color="text.secondary">{props.label}</Typography>
-      </TableCell>
+      <StyledLabelTableCell component="th" scope="row">
+        {props.label}
+      </StyledLabelTableCell>
       <TableCell>{props.value ? props.value : '—'}</TableCell>
     </TableRow>
   );

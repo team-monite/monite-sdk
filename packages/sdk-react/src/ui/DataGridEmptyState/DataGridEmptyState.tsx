@@ -93,7 +93,7 @@ export const DataGridEmptyState = ({
 
   return (
     <CenteredContentBox className={`${className}-Content`}>
-      <Stack alignItems="center" spacing={2}>
+      <Stack alignItems="center" spacing={3}>
         {defaultIcon && (
           <Box className={`${className}-Icon`}>{defaultIcon}</Box>
         )}
@@ -101,14 +101,24 @@ export const DataGridEmptyState = ({
           <Typography variant="h3" className={`${className}-Title`}>
             {title}
           </Typography>
-          <Typography variant="body1" className={`${className}-Description`}>
-            {descriptionLine1}
-          </Typography>
-          {descriptionLine2 && (
-            <Typography variant="body1" className={`${className}-Description`}>
-              {descriptionLine2}
+          <Box>
+            <Typography
+              variant="body1"
+              align="center"
+              className={`${className}-Description`}
+            >
+              {descriptionLine1}
             </Typography>
-          )}
+            {descriptionLine2 && (
+              <Typography
+                variant="body1"
+                align="center"
+                className={`${className}-Description`}
+              >
+                {descriptionLine2}
+              </Typography>
+            )}
+          </Box>
         </Stack>
         <ActionButton
           onAction={onAction}

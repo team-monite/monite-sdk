@@ -76,6 +76,7 @@ export const CreateCounterpartDialog = ({
         onClose={() => {
           setViewMode(View.ChooseMode);
           setCounterpartType(undefined);
+          onClose();
         }}
       >
         <CounterpartDetails
@@ -135,7 +136,7 @@ export const CreateCounterpartDialog = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="text" onClick={onClose}>
           {t(i18n)`Cancel`}
         </Button>
       </DialogActions>

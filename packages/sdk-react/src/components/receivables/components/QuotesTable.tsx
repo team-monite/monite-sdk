@@ -21,7 +21,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
-import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
@@ -191,7 +191,7 @@ const QuotesTableBase = ({
         width: defaultCounterpartColumnWidth,
         display: 'flex',
         renderCell: (params) => (
-          <CounterpartCellById counterpartId={params.row.counterpart_id} />
+          <CounterpartNameCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {

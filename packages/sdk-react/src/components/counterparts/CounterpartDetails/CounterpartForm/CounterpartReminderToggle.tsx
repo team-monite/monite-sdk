@@ -6,27 +6,30 @@ import {
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Switch, Typography } from '@mui/material';
+import { Box, Paper, Switch, Typography } from '@mui/material';
 
 export const CounterpartReminderToggle = <T extends FieldValues>(
   props: UseControllerProps<T>
 ) => {
   const { i18n } = useLingui();
-
   return (
-    <Box display="flex" alignItems="start" justifyContent="space-between">
-      <Box>
-        <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.84)' }}>
+    <Paper
+      variant="outlined"
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1rem',
+      }}
+    >
+      <Box sx={{ maxWidth: '70%' }}>
+        <Typography variant="subtitle2" color="textPrimary">
           {t(i18n)`Enable email reminders`}
         </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          sx={{ maxWidth: '70%' }}
-        >
+        <Typography variant="body2" color="textSecondary" mt={1}>
           {t(
             i18n
-          )`Disabling reminders prevents sending any payment reminders to this counterpart.`}
+          )`Payment reminders will be sent automatically to this counterpart.`}
         </Typography>
       </Box>
       <Controller
@@ -40,6 +43,6 @@ export const CounterpartReminderToggle = <T extends FieldValues>(
           />
         )}
       />
-    </Box>
+    </Paper>
   );
 };

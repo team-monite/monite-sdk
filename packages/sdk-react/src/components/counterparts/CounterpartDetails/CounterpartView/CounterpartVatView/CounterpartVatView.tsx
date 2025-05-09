@@ -76,11 +76,11 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
           value: country && getCountries(i18n)[country],
         },
         {
-          label: t(i18n)`Vat type`,
+          label: t(i18n)`VAT type`,
           value: vatType,
         },
         {
-          label: t(i18n)`Vat value`,
+          label: t(i18n)`VAT value`,
           value,
         },
       ]}
@@ -95,7 +95,7 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
         isLoading={isLoading}
         onClose={handleCloseDeleteDialog}
         onDelete={handleDeleteVatId}
-        type={t(i18n)`Vat ID`}
+        type={t(i18n)`VAT ID`}
         name={value ? value : ''}
         open={showDeleteDialog}
       />
