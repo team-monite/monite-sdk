@@ -314,12 +314,15 @@ const CounterpartsTableBase = ({
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
-              onCreate={() => {
-                openModal?.(true);
+              onCreate={(type) => {
+                if (type === t(i18n)`Counterpart`) {
+                  openModal?.(true);
+                }
               }}
               refetch={refetch}
               entityName={t(i18n)`Counterpart`}
               actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Counterpart`]}
               type="no-data"
             />
           ),
