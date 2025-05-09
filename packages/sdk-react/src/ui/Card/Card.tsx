@@ -8,10 +8,17 @@ import {
   TableRow,
   TableCell,
   styled,
+  TableCellProps,
 } from '@mui/material';
 
-const StyledLabelTableCell = styled(TableCell)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+interface StyledLabelTableCellProps extends TableCellProps {
+  isRequired?: boolean;
+}
+
+export const StyledLabelTableCell = styled(
+  TableCell
+)<StyledLabelTableCellProps>(({ theme, isRequired }) => ({
+  color: isRequired ? theme.palette.error.main : theme.palette.text.secondary,
   minWidth: 120,
   width: '35%',
 }));
@@ -45,7 +52,9 @@ export const MoniteCardItem = (props: ICardItem) => {
 
   return (
     <TableRow>
-      <StyledLabelTableCell>{props.label}</StyledLabelTableCell>
+      <StyledLabelTableCell component="th" scope="row">
+        {props.label}
+      </StyledLabelTableCell>
       <TableCell>{value}</TableCell>
     </TableRow>
   );
