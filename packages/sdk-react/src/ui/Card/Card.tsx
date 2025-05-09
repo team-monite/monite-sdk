@@ -3,11 +3,18 @@ import { ReactNode, useMemo } from 'react';
 import {
   Card as MuiCard,
   CardProps as MuiCardProps,
-  Divider,
-  Grid,
-  Stack,
-  Typography,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  styled,
 } from '@mui/material';
+
+const StyledLabelTableCell = styled(TableCell)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  minWidth: 120,
+  width: '35%',
+}));
 
 interface ICardItem {
   label: string;
@@ -23,11 +30,7 @@ interface ICardItem {
   withEmptyStateFiller?: boolean;
 }
 
-interface ICardItemProps extends ICardItem {
-  divider: boolean;
-}
-
-export const MoniteCardItem = (props: ICardItemProps) => {
+export const MoniteCardItem = (props: ICardItem) => {
   const value = useMemo(() => {
     if (!props.value && props.withEmptyStateFiller) {
       return '—';
@@ -41,70 +44,36 @@ export const MoniteCardItem = (props: ICardItemProps) => {
   }
 
   return (
-    <>
-      {props.divider && <Divider sx={{ mx: 2 }} />}
-      <Grid container direction="row" alignItems="center" sx={{ px: 2, py: 1 }}>
-        <Grid item xs={4}>
-          <Typography variant="body2" color="text.secondary">
-            {props.label}:
-          </Typography>
-        </Grid>
-        <Grid item xs={8}>
-          {value}
-        </Grid>
-      </Grid>
-    </>
+    <TableRow>
+      <StyledLabelTableCell>{props.label}</StyledLabelTableCell>
+      <TableCell>{value}</TableCell>
+    </TableRow>
   );
 };
 
-export interface ICardProps extends MuiCardProps {
+interface ICardProps extends MuiCardProps {
   /**
    * Items in the card. If `item.value` is `false` or `undefined`,
    *  then item will be ignored and won't be rendered
    */
   items: Array<ICardItem>;
 
-  /** Children to be rendered after the items */
+  /** Children to be rendered after the items. E.g.: action buttons */
   children?: ReactNode;
 }
 
 /**
- * Card component which displays a list of items
- *  has a divider between each item and has common
- *  styles for all cards in the app
+ * Card component which displays a list of items in a table format
  */
 export const MoniteCard = ({ items, children, ...cardProps }: ICardProps) => (
-  <MuiCard sx={{ width: '100%' }} variant="outlined" {...cardProps}>
-    <Stack direction="column">
-      {items.map((item, index) => {
-        /**
-         * The first item never should have a divider
-         *
-         * !!! Note !!! Divider renders before the item (on the top)
-         */
-        const notFirstItem = index !== 0;
-
-        /**
-         * We should safely get the previous item to check if it has value
-         * because the first item has index = 0, and there is no item with index = -1
-         */
-        const previousItem = index - 1 >= 0 ? items[index - 1] : undefined;
-        /**
-         * We should render divider only if the item before has divider,
-         * because ever second or third item might be without any data rendering
-         */
-        const previousItemHasValue = previousItem
-          ? Boolean(previousItem.value) ||
-            Boolean(previousItem.withEmptyStateFiller)
-          : false;
-
-        const shouldHaveDivider = notFirstItem && previousItemHasValue;
-
-        return (
-          <MoniteCardItem key={index} {...item} divider={shouldHaveDivider} />
-        );
-      })}
-    </Stack>
+  <MuiCard variant="outlined" {...cardProps}>
+    <Table>
+      <TableBody>
+        {items.map((item, index) => {
+          return <MoniteCardItem key={index} {...item} />;
+        })}
+      </TableBody>
+    </Table>
     {children}
   </MuiCard>
 );
