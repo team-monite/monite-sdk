@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CreateCounterpartDialog } from '@/components/counterparts/components';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { CustomerTypes } from '@/components/counterparts/types';
@@ -35,16 +35,16 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
   const { buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
-  const [openDetails, setOpenDetails] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState<boolean>(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
 
   const handleRowAction = useCallback((id: string) => {
-    setOpenDetails(true);
+    setOpenDetailsDialog(true);
     setId(id);
   }, []);
 
-  const closeModal = useCallback(() => {
-    setOpenDetails(false);
+  const closeDetailsDialog = useCallback(() => {
+    setOpenDetailsDialog(false);
   }, []);
 
   const handleOnClosedModal = useCallback(() => {
@@ -77,14 +77,14 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
     return (
       <Dialog
         alignDialog="right"
-        open={openDetails}
+        open={openDetailsDialog}
         container={root}
-        onClose={closeModal}
+        onClose={closeDetailsDialog}
         onClosed={handleOnClosedModal}
       >
         <CounterpartDetails
           id={counterpartId}
-          onDelete={closeModal}
+          onDelete={closeDetailsDialog}
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
@@ -109,7 +109,7 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
           <Box className={className + '-Actions'}>
             <Button
               {...buttonProps}
-              onClick={() => setOpenModal(true)}
+              onClick={() => setOpenCreateDialog(true)}
               className={className + '-Actions-CreateNew'}
               variant="contained"
               disabled={!isCreateAllowed}
@@ -120,31 +120,27 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
         }
       />
 
-      {openModal && (
-        <CreateCounterpartModal
-          open={openModal}
-          onClose={() => {
-            setOpenModal(false);
-          }}
-          onCreate={(newCounterpartId: string) => {
-            setId(newCounterpartId);
-            setOpenModal(false);
-            setOpenDetails(true);
-          }}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
-        />
-      )}
-
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
         <CounterpartsTable
           onRowClick={handleRowAction}
-          openModal={setOpenModal}
+          openModal={setOpenCreateDialog}
         />
       )}
+
       {counterpartDetails}
+
+      <CreateCounterpartDialog
+        open={openCreateDialog}
+        onClose={() => setOpenCreateDialog(false)}
+        onCreate={(newCounterpartId: string) => {
+          setId(newCounterpartId);
+          setOpenDetailsDialog(true);
+        }}
+        customerTypes={
+          customerTypes || componentSettings?.counterparts?.customerTypes
+        }
+      />
     </>
   );
 };
