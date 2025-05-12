@@ -2,12 +2,8 @@ import { useEffect, useMemo } from 'react';
 
 import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
-import { getRegionName } from '@/components/onboarding/utils';
-import {
-  CountryOption,
-  RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
@@ -67,20 +63,6 @@ export const OnboardingBankAccount = ({
     return currencies;
   }, [allowedCurrencies, currencies]);
 
-  const filteredCountryOptions = useMemo(() => {
-    const codesToUse =
-      allowedCountries && allowedCountries.length > 0
-        ? Object.values(countries).filter((code) =>
-            allowedCountries.includes(code)
-          )
-        : Object.values(countries);
-
-    return codesToUse.map((code) => ({
-      code,
-      label: t(i18n)`${getRegionName(code)}`,
-    }));
-  }, [allowedCountries, countries, i18n]);
-
   if (isLoading) return null;
 
   return (
@@ -106,24 +88,14 @@ export const OnboardingBankAccount = ({
           </RHFTextField>
         )}
 
-        {checkValue('country') && !!filteredCountryOptions.length && (
-          <RHFAutocomplete
-            disabled={isPending}
+        {checkValue('country') && (
+          <MoniteCountry
             name="country"
             control={control}
+            disabled={isPending}
             defaultValue={allowedCountries?.[0]}
-            label={t(i18n)`Country`}
-            optionKey="code"
-            labelKey="label"
-            options={filteredCountryOptions}
-            renderOption={(props, option, state) => (
-              <CountryOption
-                key={option.code}
-                props={props}
-                option={option}
-                state={state}
-              />
-            )}
+            allowedCountries={allowedCountries}
+            required
           />
         )}
 
