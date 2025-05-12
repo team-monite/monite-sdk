@@ -34,6 +34,10 @@ msgstr "- they are due within 7 days."
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:141
+msgid "(Optional) Feel free to add specific details"
+msgstr "(Optional) Feel free to add specific details"
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
 msgid "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 msgstr "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
@@ -398,6 +402,10 @@ msgstr "Add someone new"
 msgid "Add text"
 msgstr "Add text"
 
+#: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:41
+msgid "Add to prompts"
+msgstr "Add to prompts"
+
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:58
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:275
 msgid "Add VAT ID"
@@ -466,6 +474,10 @@ msgstr "Agree & Submit"
 #: src/components/onboarding/dicts/mccCodes.ts:27
 msgid "Agricultural Cooperative"
 msgstr "Agricultural Cooperative"
+
+#: src/components/aiAssistant/AIAssistant.tsx:21
+msgid "AI Assistant"
+msgstr "AI Assistant"
 
 #: src/components/onboarding/dicts/mccCodes.ts:32
 msgid "Airlines, Air Carriers"
@@ -947,6 +959,10 @@ msgstr "Back of your identity document"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:286
 msgid "Back to edit"
 msgstr "Back to edit"
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:129
+msgid "Bad response"
+msgstr "Bad response"
 
 #: src/core/utils/countries.ts:35
 msgid "Bahamas"
@@ -1544,6 +1560,11 @@ msgstr "Change document currency"
 msgid "Charitable and Social Service Organizations - Fundraising"
 msgstr "Charitable and Social Service Organizations - Fundraising"
 
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:166
+#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:127
+msgid "Chat {id}"
+msgstr "Chat {id}"
+
 #: src/components/onboarding/dicts/mccCodes.ts:263
 msgid "Chemicals and Allied Products (Not Elsewhere Classified)"
 msgstr "Chemicals and Allied Products (Not Elsewhere Classified)"
@@ -1634,6 +1655,10 @@ msgstr "Cleaning and Maintenance"
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:56
 msgid "Close"
 msgstr "Close"
+
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:108
+msgid "Close AI Sidebar"
+msgstr "Close AI Sidebar"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:142
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:657
@@ -1886,10 +1911,22 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:94
+msgid "Copied!"
+msgstr "Copied!"
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:94
+msgid "Copy"
+msgstr "Copy"
+
 #: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:219
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:92
+msgid "copy text"
+msgstr "copy text"
 
 #: src/core/hooks/useVatTypes.ts:127
 msgid "Corporate Number (Japan)"
@@ -2576,6 +2613,10 @@ msgstr "Details"
 msgid "Detective Agencies"
 msgstr "Detective Agencies"
 
+#: src/components/aiAssistant/consts.ts:46
+msgid "Didn’t follow prompt input"
+msgstr "Didn’t follow prompt input"
+
 #: src/components/onboarding/dicts/mccCodes.ts:450
 msgid "Digital Goods – Applications (Excludes Games)"
 msgstr "Digital Goods – Applications (Excludes Games)"
@@ -3174,6 +3215,10 @@ msgstr "Every last day of the month"
 msgid "Example: NET 30, –2%/10 days, –1%/20 days"
 msgstr "Example: NET 30, –2%/10 days, –1%/20 days"
 
+#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:44
+msgid "Examples"
+msgstr "Examples"
+
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:476
 msgid "excl. Tax"
 msgstr "excl. Tax"
@@ -3185,6 +3230,10 @@ msgstr "Executive"
 #: src/components/receivables/utils/getCommonStatusLabel.ts:17
 msgid "Expired"
 msgstr "Expired"
+
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:122
+msgid "Explore"
+msgstr "Explore"
 
 #: src/components/userRoles/consts.ts:34
 msgid "Export"
@@ -3650,6 +3699,14 @@ msgstr "Gibraltar Pound"
 msgid "Gift, Card, Novelty, and Souvenir Shops"
 msgstr "Gift, Card, Novelty, and Souvenir Shops"
 
+#: src/components/aiAssistant/consts.ts:20
+msgid "Give me all invoices I still have unpaid"
+msgstr "Give me all invoices I still have unpaid"
+
+#: src/components/aiAssistant/consts.ts:32
+msgid "Give me the total amount of receivables overdue by more than 30 days"
+msgstr "Give me the total amount of receivables overdue by more than 30 days"
+
 #: src/components/onboarding/dicts/mccCodes.ts:692
 msgid "Glass, Paint, and Wallpaper Stores"
 msgstr "Glass, Paint, and Wallpaper Stores"
@@ -3668,6 +3725,10 @@ msgstr "Go to Docs"
 #: src/components/onboarding/dicts/mccCodes.ts:702
 msgid "Golf Courses - Public"
 msgstr "Golf Courses - Public"
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:111
+msgid "Good response"
+msgstr "Good response"
 
 #: src/core/hooks/useVatTypes.ts:119
 msgid "Goods and Services Tax (India)"
@@ -4572,6 +4633,10 @@ msgstr "Line item"
 msgid "Linked documents"
 msgstr "Linked documents"
 
+#: src/components/aiAssistant/consts.ts:25
+msgid "List all customers who have overdue payments for more than 60 days"
+msgstr "List all customers who have overdue payments for more than 60 days"
+
 #: src/core/utils/countries.ts:145
 msgid "Lithuania"
 msgstr "Lithuania"
@@ -5030,6 +5095,10 @@ msgstr "New"
 #: src/core/utils/countries.ts:174
 msgid "New Caledonia"
 msgstr "New Caledonia"
+
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:76
+msgid "New chat"
+msgstr "New chat"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:126
 msgid "New counterpart"
@@ -6066,6 +6135,14 @@ msgstr "Professional Services"
 msgid "Project"
 msgstr "Project"
 
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:133
+msgid "Prompt Library"
+msgstr "Prompt Library"
+
+#: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:26
+msgid "Prompts"
+msgstr "Prompts"
+
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:148
 msgid "Provide documents"
 msgstr "Provide documents"
@@ -6608,6 +6685,10 @@ msgstr "Save changes"
 msgid "Save for later"
 msgstr "Save for later"
 
+#: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:43
+msgid "Save to prompt library"
+msgstr "Save to prompt library"
+
 #: src/components/receivables/components/InvoiceRecurrenceIterationStatusChip.tsx:96
 msgid "Scheduled"
 msgstr "Scheduled"
@@ -6640,6 +6721,14 @@ msgstr "Search by name"
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:36
 msgid "Search by number or vendor"
 msgstr "Search by number or vendor"
+
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:84
+msgid "Search chats"
+msgstr "Search chats"
+
+#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:101
+msgid "Search chats..."
+msgstr "Search chats..."
 
 #: src/components/onboarding/dicts/mccCodes.ts:1170
 msgid "Secretarial Support Services"
@@ -6878,6 +6967,14 @@ msgstr "Somalia"
 #: src/ui/error/Error.tsx:26
 msgid "Something went wrong"
 msgstr "Something went wrong"
+
+#: src/components/aiAssistant/components/AssistantMessage/AssistantMessage.tsx:58
+msgid ""
+"Something went wrong. If this issue persists please contact us through\n"
+"the chat icon in the bottom right or email us at help@getargon.ai"
+msgstr ""
+"Something went wrong. If this issue persists please contact us through\n"
+"the chat icon in the bottom right or email us at help@getargon.ai"
 
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:131
 msgid "Something went wrong. Please try again"
@@ -7242,6 +7339,10 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:122
+msgid "Tell us more"
+msgstr "Tell us more"
+
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:166
 msgid "Tell us more about your business"
 msgstr "Tell us more about your business"
@@ -7281,6 +7382,10 @@ msgstr "Thailand"
 #: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:31
 msgid "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 msgstr "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
+
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:92
+msgid "Thank you for your feedback!"
+msgstr "Thank you for your feedback!"
 
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:31
 msgid "The bill will receive the “Canceled” status and will require no payment. You can't undo this action."
@@ -7434,6 +7539,10 @@ msgstr "This can be a website, social media profile link or any other unique rea
 msgid "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 msgstr "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 
+#: src/components/aiAssistant/consts.ts:45
+msgid "This information is not correct"
+msgstr "This information is not correct"
+
 #: src/components/financing/components/FinanceInvoice.tsx:144
 msgid "This invoice can be financed"
 msgstr "This invoice can be financed"
@@ -7447,6 +7556,10 @@ msgstr "This invoice can't be financed"
 msgid "This invoice doesn't have a file attached."
 msgstr "This invoice doesn't have a file attached."
 
+#: src/components/aiAssistant/utils/aiAssistant.ts:21
+msgid "This month"
+msgstr "This month"
+
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:284
 msgid "This person is a member of the governing board of the company."
 msgstr "This person is a member of the governing board of the company."
@@ -7458,6 +7571,14 @@ msgstr "This person is an executive or senior manager with significant managemen
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:282
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:127
+msgid "thumb down"
+msgstr "thumb down"
+
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:109
+msgid "thumb up"
+msgstr "thumb up"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:118
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:34
@@ -8264,9 +8385,21 @@ msgstr "West African CFA Franc"
 msgid "Western Sahara"
 msgstr "Western Sahara"
 
+#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:37
+msgid "What can I help with?"
+msgstr "What can I help with?"
+
+#: src/components/aiAssistant/components/AIRichEditor/AIRichEditor.tsx:72
+msgid "What can I help you with?"
+msgstr "What can I help you with?"
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:260
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 msgstr "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
+
+#: src/components/aiAssistant/consts.ts:39
+msgid "Who are my customers?"
+msgstr "Who are my customers?"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:284
 msgid "Who needs to approve the document and how:"
