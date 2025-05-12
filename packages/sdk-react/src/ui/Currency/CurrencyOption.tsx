@@ -5,17 +5,22 @@ import { MenuItem, Box } from '@mui/material';
 interface CurrencyOptionProps {
   props: React.HTMLAttributes<HTMLLIElement>;
   option: CurrencyType;
-  displayCode?: boolean;
+  showCodeOnly?: boolean;
+  showCurrencyCode?: boolean;
+  showCurrencySymbol?: boolean;
 }
 
 export const CurrencyOption = ({
   props,
   option,
-  displayCode,
+  showCodeOnly = false,
+  showCurrencyCode = false,
+  showCurrencySymbol = true,
 }: CurrencyOptionProps) => {
   const { getSymbolFromCurrency } = useCurrencies();
-  const symbol = getSymbolFromCurrency(option.code);
-  const label = displayCode ? option.code : option.label;
+  const label = showCodeOnly
+    ? option.code
+    : `${option.label}${showCurrencyCode ? ' (' + option.code + ')' : ''}`;
 
   return (
     <MenuItem
@@ -24,7 +29,7 @@ export const CurrencyOption = ({
       value={option.label}
       sx={{
         width: '100%',
-        py: 1,
+        py: 1.25,
         px: 2,
       }}
     >
@@ -47,13 +52,15 @@ export const CurrencyOption = ({
         >
           {label}
         </Box>
-        <Box
-          sx={{
-            flexShrink: 0,
-          }}
-        >
-          {symbol}
-        </Box>
+        {showCurrencySymbol && !showCodeOnly && (
+          <Box
+            sx={{
+              flexShrink: 0,
+            }}
+          >
+            {getSymbolFromCurrency(option.code)}
+          </Box>
+        )}
       </Box>
     </MenuItem>
   );

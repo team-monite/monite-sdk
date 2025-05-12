@@ -985,7 +985,7 @@ export const ApprovalPolicyForm = ({
                     <MoniteCurrency
                       name="amountCurrency"
                       control={control}
-                      displayCode
+                      showCodeOnly
                     />
                   </Grid>
                 </Grid>
