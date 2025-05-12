@@ -34,7 +34,7 @@ msgstr "- they are due within 7 days."
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:141
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:146
 msgid "(Optional) Feel free to add specific details"
 msgstr "(Optional) Feel free to add specific details"
 
@@ -405,7 +405,7 @@ msgstr "Add text"
 msgid "Add to prompts"
 msgstr "Add to prompts"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:58
+#: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:55
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:275
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
@@ -474,7 +474,7 @@ msgstr "Agree & Submit"
 msgid "Agricultural Cooperative"
 msgstr "Agricultural Cooperative"
 
-#: src/components/aiAssistant/AIAssistant.tsx:21
+#: src/components/aiAssistant/AIAssistant.tsx:61
 msgid "AI Assistant"
 msgstr "AI Assistant"
 
@@ -959,7 +959,7 @@ msgstr "Back of your identity document"
 msgid "Back to edit"
 msgstr "Back to edit"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:129
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:133
 msgid "Bad response"
 msgstr "Bad response"
 
@@ -1559,8 +1559,8 @@ msgstr "Change document currency"
 msgid "Charitable and Social Service Organizations - Fundraising"
 msgstr "Charitable and Social Service Organizations - Fundraising"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:166
-#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:127
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:189
+#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:123
 msgid "Chat {id}"
 msgstr "Chat {id}"
 
@@ -1655,7 +1655,7 @@ msgstr "Cleaning and Maintenance"
 msgid "Close"
 msgstr "Close"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:108
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:134
 msgid "Close AI Sidebar"
 msgstr "Close AI Sidebar"
 
@@ -1910,11 +1910,11 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:94
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:98
 msgid "Copied!"
 msgstr "Copied!"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:94
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:98
 msgid "Copy"
 msgstr "Copy"
 
@@ -1923,7 +1923,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:92
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:96
 msgid "copy text"
 msgstr "copy text"
 
@@ -3210,7 +3210,7 @@ msgstr "Every last day of the month"
 msgid "Example: NET 30, –2%/10 days, –1%/20 days"
 msgstr "Example: NET 30, –2%/10 days, –1%/20 days"
 
-#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:44
+#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:36
 msgid "Examples"
 msgstr "Examples"
 
@@ -3226,7 +3226,7 @@ msgstr "Executive"
 msgid "Expired"
 msgstr "Expired"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:122
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:148
 msgid "Explore"
 msgstr "Explore"
 
@@ -3721,7 +3721,7 @@ msgstr "Go to Docs"
 msgid "Golf Courses - Public"
 msgstr "Golf Courses - Public"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:111
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:115
 msgid "Good response"
 msgstr "Good response"
 
@@ -5091,7 +5091,7 @@ msgstr "New"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:76
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:103
 msgid "New chat"
 msgstr "New chat"
 
@@ -6130,11 +6130,11 @@ msgstr "Professional Services"
 msgid "Project"
 msgstr "Project"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:133
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:158
 msgid "Prompt Library"
 msgstr "Prompt Library"
 
-#: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:26
+#: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:23
 msgid "Prompts"
 msgstr "Prompts"
 
@@ -6717,11 +6717,11 @@ msgstr "Search by name"
 msgid "Search by number or vendor"
 msgstr "Search by number or vendor"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:84
+#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:110
 msgid "Search chats"
 msgstr "Search chats"
 
-#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:101
+#: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:95
 msgid "Search chats..."
 msgstr "Search chats..."
 
@@ -7334,7 +7334,7 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:122
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:124
 msgid "Tell us more"
 msgstr "Tell us more"
 
@@ -7378,7 +7378,7 @@ msgstr "Thailand"
 msgid "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 msgstr "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:92
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:96
 msgid "Thank you for your feedback!"
 msgstr "Thank you for your feedback!"
 
@@ -7567,11 +7567,11 @@ msgstr "This person is an executive or senior manager with significant managemen
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:127
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:131
 msgid "thumb down"
 msgstr "thumb down"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:109
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:113
 msgid "thumb up"
 msgstr "thumb up"
 
@@ -8380,7 +8380,7 @@ msgstr "West African CFA Franc"
 msgid "Western Sahara"
 msgstr "Western Sahara"
 
-#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:37
+#: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:29
 msgid "What can I help with?"
 msgstr "What can I help with?"
 
