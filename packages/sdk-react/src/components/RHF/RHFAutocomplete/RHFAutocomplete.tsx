@@ -26,7 +26,7 @@ interface RHFAutocompleteBaseProps<
   label: string;
 }
 
-interface RenderInputParams {
+export interface RenderInputParams {
   error?: FieldError;
   label: string;
   required?: boolean;
@@ -38,6 +38,15 @@ type RenderInputFunction = ((
 ) => React.ReactNode) &
   ((params: AutocompleteRenderInputParams) => React.ReactNode);
 
+type AutocompleteOnChangeHandler<TOption> = NonNullable<
+  AutocompleteProps<
+    TOption,
+    boolean | undefined,
+    boolean | undefined,
+    boolean | undefined
+  >['onChange']
+>;
+
 export type RHFAutocompleteProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
@@ -45,7 +54,8 @@ export type RHFAutocompleteProps<
 > = RHFAutocompleteBaseProps<TFieldValues, TName> &
   Optional<CustomAutocompleteProps<TOption>, 'renderInput'> & {
     renderInput?: RenderInputFunction;
-  } & TextFieldProps;
+    onChange?: AutocompleteOnChangeHandler<TOption>;
+  } & Omit<TextFieldProps, 'onChange'>;
 
 interface CustomAutocompleteProps<TOption>
   extends AutocompleteProps<

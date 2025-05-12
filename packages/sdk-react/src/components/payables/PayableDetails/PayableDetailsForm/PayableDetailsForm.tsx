@@ -22,6 +22,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
@@ -403,6 +404,9 @@ const PayableDetailsFormBase = forwardRef<
       trigger();
     }, [trigger]);
 
+    const { currencyGroups, isLoadingCurrencyGroups } =
+      useProductCurrencyGroups();
+
     return (
       <>
         <Box
@@ -680,6 +684,8 @@ const PayableDetailsFormBase = forwardRef<
                             payablesValidations
                           )
                         }
+                        groups={currencyGroups}
+                        disabled={isLoadingCurrencyGroups}
                       />
                       {showTags && (
                         <Controller
