@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -192,7 +193,13 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               )}
             />
             <MoniteCountry name="country" control={control} required />
-            <MoniteCurrency name="currency" control={control} required />
+            <MoniteCurrency
+              name="currency"
+              control={control}
+              required
+              groups={currencyGroups}
+              disabled={isLoadingCurrencyGroups}
+            />
           </Stack>
         </form>
       </DialogContent>
