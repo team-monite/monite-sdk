@@ -1,10 +1,15 @@
+import type { SyntheticEvent } from 'react';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
-import { countryCurrencyList, getCountriesArray } from '@/core/utils/countries';
+import {
+  countryCurrencyList,
+  getCountriesArray,
+  CountryType,
+} from '@/core/utils/countries';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -94,15 +99,18 @@ export const BankAccountFormContent = ({
     (bank) => bank?.currency === (bankAccount?.currency || currency)
   );
 
-  const handleCountryChange = (_event: any, value: any) => {
-    if (!value) return;
+  const handleCountryChange = (
+    _event: SyntheticEvent,
+    value: (CountryType | string) | (CountryType | string)[] | null
+  ) => {
+    if (Array.isArray(value) || !value) return;
 
-    let countryCode: string | undefined;
+    let countryCode: CountryType['code'] | undefined;
 
-    if (value && typeof value === 'object' && 'code' in value) {
+    if (typeof value === 'string') {
+      countryCode = value as CountryType['code'];
+    } else if (typeof value === 'object' && value !== null && 'code' in value) {
       countryCode = value.code;
-    } else if (typeof value === 'string') {
-      countryCode = value;
     }
 
     if (countryCode) {
