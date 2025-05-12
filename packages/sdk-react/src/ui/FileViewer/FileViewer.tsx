@@ -15,6 +15,8 @@ import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import '@react-pdf-viewer/zoom/lib/styles/index.css';
 
+import './FileViewer.css';
+
 export const SUPPORTED_MIME_TYPES = [
   'image/png',
   'image/jpeg',
@@ -29,13 +31,7 @@ interface FileViewerProps {
   showPdfToolbar?: number;
 }
 
-export const FileViewer = ({
-  url,
-  mimetype,
-  name,
-  showPdfToolbar,
-  pdfHeight,
-}: FileViewerProps) => {
+export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
   if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
 
   return (
@@ -91,7 +87,13 @@ const PdfFileViewer = ({ url }: { url: string }) => {
           <pageNavigationPluginInstance.GoToNextPage />
         </div>
       </div>
-      <div style={{ height: '100%' }}>
+      <div
+        style={{
+          height: '100%',
+          backgroundColor: '#F0F2F4',
+          borderRadius: '8px',
+        }}
+      >
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
           <Viewer
             fileUrl={url}

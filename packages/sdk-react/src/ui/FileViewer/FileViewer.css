@@ -1,0 +1,12 @@
+:root {
+  --rpv-core__inner-page-background-color: #f0f2f4;
+  --rpv-core__page-layer-box-shadow: none;
+}
+
+.rpv-core__inner-page {
+  border-radius: 10px;
+}
+
+.rpv-core__canvas-layer {
+  border-radius: 8px;
+}
