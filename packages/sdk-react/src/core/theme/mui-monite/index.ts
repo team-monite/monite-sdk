@@ -814,6 +814,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             },
         },
         columnHeader: {
+          overflow: 'visible',
           borderLeftStyle: 'solid',
           borderLeftWidth: '0px',
           borderLeftColor: 'divider',
