@@ -9,13 +9,11 @@ import { CounterpartCellById } from '@/components/Dashboard/CounterpartCellById'
 import { DashboardTable } from '@/components/Dashboard/DashboardTable';
 import DashboardCard from '@/components/DashboardCard';
 import EmptyState from '@/components/EmptyState';
-import { IconReceipt, IconSmilyFace } from '@/icons';
+import { IconReceipt } from '@/icons';
 
 export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
   const emptyState = (
-    <EmptyState renderIcon={(props) => <IconSmilyFace {...props} />}>
-      All looks good! All invoices are collected.
-    </EmptyState>
+    <EmptyState>All looks good! All invoices are collected</EmptyState>
   );
   const totalOverdueInvoices = overdueInvoices?.length;
 
@@ -23,9 +21,7 @@ export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
     <DashboardCard
       title="Overdue invoices"
       renderIcon={(props) => <IconReceipt {...props} />}
-      sx={{
-        background: 'linear-gradient(0deg, #F5FAFD 0%, #FFF 100%)',
-      }}
+      sx={{}}
       action={
         <Link
           href={'/receivables'}

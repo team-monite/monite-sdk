@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import {
+  Area,
   Bar,
   CartesianGrid,
   ComposedChart,
@@ -148,13 +149,24 @@ export const CashFlowCard = () => {
   return (
     <DashboardCard
       title="Total received"
-      renderIcon={(props) => <IconChart {...props} />}
-      sx={{
-        background: 'linear-gradient(180deg, #F9F9FA 0%, #FFF 100%)',
-      }}
+      renderIcon={(props) => <IconChart sx={{ height: 20, width: 20 }} />}
     >
       <ResponsiveContainer width="100%" height={250}>
         <ComposedChart data={chartData}>
+          <defs>
+            <linearGradient
+              id="colorTrend"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="200"
+              gradientUnits="userSpaceOnUse"
+              spreadMethod="pad"
+            >
+              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.2" />
+              <stop offset="100%" stop-color="white" stop-opacity="0" />
+            </linearGradient>
+          </defs>
           <CartesianGrid stroke="#EAEAEA" vertical={false} />
           <XAxis
             dataKey="dimension_value"
@@ -173,7 +185,7 @@ export const CashFlowCard = () => {
           />
           <Tooltip
             separator={' '}
-            formatter={(value, name, props) => {
+            formatter={(value) => {
               return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency,
@@ -208,12 +220,13 @@ export const CashFlowCard = () => {
           <ReferenceLine y={0} stroke="#eee" />
           <Bar dataKey="paid" fill="transparent" />
           <Bar dataKey="received" fill="transparent" />
-          <Line
-            type="bump"
+          <Area
+            type="linear"
             dataKey="trend"
-            dot={{ stroke: '#111', strokeWidth: 2, r: 3, fill: '#fff' }}
-            strokeWidth={2}
-            stroke="#5E77FF"
+            dot={{ stroke: '#3737FF', strokeWidth: 2, r: 3, fill: '#fff' }}
+            strokeWidth={3}
+            stroke="#3737FF"
+            fill="url(#colorTrend)"
           />
         </ComposedChart>
       </ResponsiveContainer>
