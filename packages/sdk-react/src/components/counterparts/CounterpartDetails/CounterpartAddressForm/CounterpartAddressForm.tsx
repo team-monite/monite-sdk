@@ -1,20 +1,9 @@
-import { Controller, useFormContext, FieldPath } from 'react-hook-form';
+import { Controller, FieldPath, useFormContext } from 'react-hook-form';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { getCountries } from '@/core/utils/countries';
-import { countriesToSelect } from '@/core/utils/selectHelpers';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Paper, Stack, TextField } from '@mui/material';
 
 import { CounterpartAddressFormFields } from './helpers';
 
@@ -30,7 +19,6 @@ export const CounterpartAddressForm = ({
     : CounterpartAddressFormFields;
 
   const { control } = useFormContext<Form>();
-  const { root } = useRootElements();
 
   const fieldPath = (
     path: FieldPath<CounterpartAddressFormFields>
@@ -125,34 +113,11 @@ export const CounterpartAddressForm = ({
             />
           )}
         />
-        <Controller
+        <MoniteCountry
           name={fieldPath('country')}
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <FormControl
-              variant="standard"
-              fullWidth
-              required
-              error={Boolean(error)}
-            >
-              <InputLabel htmlFor={field.name}>{t(i18n)`Country`}</InputLabel>
-              <Select
-                id={field.name}
-                labelId={field.name}
-                label={t(i18n)`Country`}
-                MenuProps={{ container: root }}
-                {...field}
-                value={field.value ?? ''}
-              >
-                {countriesToSelect(getCountries(i18n)).map((country) => (
-                  <MenuItem key={country.value} value={country.value}>
-                    {country.label}
-                  </MenuItem>
-                ))}
-              </Select>
-              {error && <FormHelperText>{error.message}</FormHelperText>}
-            </FormControl>
-          )}
+          required
+          fullWidth
         />
       </Stack>
     </Paper>
