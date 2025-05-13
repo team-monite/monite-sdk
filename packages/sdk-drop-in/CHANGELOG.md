@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.0.3
+
+### Patch Changes
+
+- 350ac2e: Fixed some minor bugs with bank account behavior
+
 ## 2.0.2
 
 ### Patch Changes
