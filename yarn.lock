@@ -5091,6 +5091,7 @@ __metadata:
     "@openapi-qraft/cli": "npm:1.14.0"
     "@openapi-qraft/react": "npm:1.14.0"
     "@react-pdf-viewer/core": "npm:3.12.0"
+    "@react-pdf-viewer/get-file": "npm:~3.12.0"
     "@react-pdf-viewer/page-navigation": "npm:~3.12.0"
     "@react-pdf-viewer/scroll-mode": "npm:~3.12.0"
     "@react-pdf-viewer/zoom": "npm:~3.12.0"
@@ -6380,6 +6381,18 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 10/d47b6b256ce3d0a319573ae54f4961dd16e17124b08b4a138b598136764e2b3bf31f8755459574de445b055d56d987e9ed46c5754a6b53951aa34a035ac0fa3e
+  languageName: node
+  linkType: hard
+
+"@react-pdf-viewer/get-file@npm:~3.12.0":
+  version: 3.12.0
+  resolution: "@react-pdf-viewer/get-file@npm:3.12.0"
+  dependencies:
+    "@react-pdf-viewer/core": "npm:3.12.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10/3385c100ba4d9a3ab72d01b9eea7304127fb2b175ab9cd10ab98ec84b49a7d2677d560a398ed990fdd477a7bc8ef2dc3ff606c8a8b957ad81c8ee2b425138080
   languageName: node
   linkType: hard
 

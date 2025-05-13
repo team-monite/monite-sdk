@@ -7,6 +7,7 @@ import {
   SpecialZoomLevel,
 } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import { getFilePlugin } from '@react-pdf-viewer/get-file';
 import {
   pageNavigationPlugin,
   RenderCurrentPageLabelProps,
@@ -49,6 +50,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
+  const getFilePluginInstance = getFilePlugin();
 
   return (
     <div
@@ -75,6 +77,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
           <zoomPluginInstance.ZoomIn />
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
+          <getFilePluginInstance.DownloadButton />
           <pageNavigationPluginInstance.GoToPreviousPage />
 
           <pageNavigationPluginInstance.CurrentPageLabel>
@@ -98,7 +101,11 @@ const PdfFileViewer = ({ url }: { url: string }) => {
           <Viewer
             fileUrl={url}
             scrollMode={ScrollMode.Page}
-            plugins={[pageNavigationPluginInstance, zoomPluginInstance]}
+            plugins={[
+              pageNavigationPluginInstance,
+              zoomPluginInstance,
+              getFilePluginInstance,
+            ]}
             defaultScale={SpecialZoomLevel.PageFit}
           />
         </Worker>
