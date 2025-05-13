@@ -1,28 +1,21 @@
+import type { SyntheticEvent } from 'react';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMyEntity } from '@/core/queries';
-import { getCountries, countryCurrencyList } from '@/core/utils/countries';
-import { countriesToSelect } from '@/core/utils/selectHelpers';
+import {
+  countryCurrencyList,
+  getCountriesArray,
+  CountryType,
+} from '@/core/utils/countries';
+import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Switch,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Stack, Switch, TextField, Typography } from '@mui/material';
 
 import { useSetDefaultBankAccount } from '../hooks';
 import { EntityBankAccountFields } from '../types';
@@ -32,6 +25,7 @@ import {
 } from '../utils';
 import { getEntityBankAccountValidationSchema } from '../validation';
 import { BankAccountCustomFields } from './BankAccountCustomFields';
+import { FormSelect } from './FormSelect';
 
 type Props = {
   bankAccount?: components['schemas']['EntityBankAccountResponse'];
@@ -53,7 +47,6 @@ export const BankAccountFormContent = ({
   updateBankAccount,
 }: Props) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
   const { componentSettings } = useMoniteContext();
   const { data: entity } = useMyEntity();
   const currentEntityCurrency = countryCurrencyList?.find(
@@ -63,9 +56,9 @@ export const BankAccountFormContent = ({
 
   const countryOptions = useMemo(
     () =>
-      countriesToSelect(getCountries(i18n)).filter((countryItem) =>
+      getCountriesArray(i18n).filter((countryItem) =>
         componentSettings?.receivables?.bankAccountCountries?.includes(
-          countryItem?.value as components['schemas']['AllowedCountries']
+          countryItem?.code as components['schemas']['AllowedCountries']
         )
       ),
     [componentSettings, i18n]
@@ -105,6 +98,35 @@ export const BankAccountFormContent = ({
   const filteredBanksByCurrency = bankAccounts?.filter(
     (bank) => bank?.currency === (bankAccount?.currency || currency)
   );
+
+  const handleCountryChange = (
+    _event: SyntheticEvent,
+    value: (CountryType | string) | (CountryType | string)[] | null
+  ) => {
+    if (Array.isArray(value) || !value) return;
+
+    let countryCode: CountryType['code'] | undefined;
+
+    if (typeof value === 'string') {
+      countryCode = value as CountryType['code'];
+    } else if (typeof value === 'object' && value !== null && 'code' in value) {
+      countryCode = value.code;
+    }
+
+    if (countryCode) {
+      const currentCountry = countryCurrencyList?.find(
+        (item) => item.country === countryCode
+      );
+
+      if (currentCountry?.currency) {
+        setValue(
+          'currency',
+          currentCountry.currency as components['schemas']['CurrencyEnum']
+        );
+        clearErrors('currency');
+      }
+    }
+  };
 
   const submitForm = (values: EntityBankAccountFields) => {
     if (bankAccount) {
@@ -151,55 +173,31 @@ export const BankAccountFormContent = ({
           i18n
         )`This bank account will receive payments for your invoices`}</Typography>
 
-        <Box display="flex" gap={2} width="100%">
-          <Controller
-            name="country"
-            control={control}
-            disabled={countryOptions?.length === 1 || !!bankAccount}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl
-                variant="standard"
-                fullWidth
-                required
-                error={Boolean(error)}
-              >
-                <InputLabel id={field.name}>{t(i18n)`Country`}</InputLabel>
-                <Select
-                  labelId={field.name}
-                  label={t(i18n)`Country`}
-                  MenuProps={{ container: root }}
-                  {...field}
-                  onChange={(e) => {
-                    const currentValue = countryCurrencyList?.find(
-                      (item) => item.country === e.target.value
-                    );
-                    setValue(
-                      'currency',
-                      currentValue?.currency as components['schemas']['CurrencyEnum']
-                    );
-                    clearErrors();
-                    field.onChange(e);
-                  }}
-                >
-                  {countryOptions.map((country) => (
-                    <MenuItem key={country.value} value={country.value}>
-                      {country.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {error && <FormHelperText>{error.message}</FormHelperText>}
-              </FormControl>
-            )}
-          />
+        <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+          <FormSelect>
+            <MoniteCountry
+              name="country"
+              control={control}
+              disabled={countryOptions?.length === 1 || !!bankAccount}
+              required
+              fullWidth
+              allowedCountries={
+                componentSettings?.receivables?.bankAccountCountries
+              }
+              onChange={handleCountryChange}
+            />
+          </FormSelect>
 
-          <MoniteCurrency
-            name="currency"
-            control={control}
-            required
-            disabled={!!bankAccount}
-            fullWidth
-            shouldDisplayCustomList
-          />
+          <FormSelect>
+            <MoniteCurrency
+              name="currency"
+              control={control}
+              required
+              disabled={!!bankAccount}
+              fullWidth
+              shouldDisplayCustomList
+            />
+          </FormSelect>
         </Box>
 
         <Box display="flex" gap={2} width="100%">
