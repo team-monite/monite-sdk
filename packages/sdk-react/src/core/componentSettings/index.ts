@@ -3,7 +3,10 @@ import { CustomerTypes } from '@/components/counterparts/types';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { FinanceStep } from '@/components/financing/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
+import {
+  DEFAULT_REQUIRED_COLUMNS as defaultRequiredColumns,
+  DEFAULT_FIELD_ORDER as defaultPayableFieldOrder,
+} from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
@@ -189,6 +192,8 @@ export const getDefaultComponentSettings = (
     fieldOrder:
       componentSettings?.payables?.fieldOrder || defaultPayableFieldOrder,
     summaryCardFilters: componentSettings?.payables?.summaryCardFilters,
+    requiredColumns:
+      componentSettings?.payables?.requiredColumns || defaultRequiredColumns,
     optionalFields: componentSettings?.payables?.optionalFields,
     ocrRequiredFields: componentSettings?.payables?.ocrRequiredFields,
     ocrMismatchFields: componentSettings?.payables?.ocrMismatchFields ?? {
