@@ -1,5 +1,20 @@
 # @monite/sdk-react
 
+## 4.1.0
+
+### Minor Changes
+
+- 9ec6df7: Add component setting to make some Payables Table columns non-hideable.
+
+### Patch Changes
+
+- 6c99ae4: Properly format Tag Categories labels
+- b327291: Coutry selector component refactored and updated
+- 711d4c5: Automatically select the Counterpat default bank account when selecting a Counterpart on the Payable details form.
+- 1727547: Fix bug of Payable form submission on saving of the Payable Vendor form.
+- 350ac2e: Fixed some minor bugs with bank account behavior
+- 3dc98e1: Monite currency selector has added group functionality and fixed filtering logic
+
 ## 4.0.2
 
 ### Patch Changes
