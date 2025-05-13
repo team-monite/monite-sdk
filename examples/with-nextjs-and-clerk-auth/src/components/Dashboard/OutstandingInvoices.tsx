@@ -21,7 +21,6 @@ export const OutstandingInvoicesCard = ({ overdueInvoices }: any) => {
     <DashboardCard
       title="Overdue invoices"
       renderIcon={(props) => <IconReceipt {...props} />}
-      sx={{}}
       action={
         <Link
           href={'/receivables'}
