@@ -12,6 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useLocalStorageFields } from '@/core/hooks/useLocalStorageFields';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -147,7 +148,14 @@ const CreateReceivablesBase = ({
     ),
   });
 
-  const { handleSubmit, watch, getValues, setValue } = methods;
+  const {
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    clearErrors,
+    getFieldState,
+  } = methods;
 
   const counterpartId = watch('counterpart_id');
 
@@ -366,6 +374,7 @@ const CreateReceivablesBase = ({
 
   const lineItems = watch('line_items');
   const entityBankAccountId = watch('entity_bank_account_id');
+  const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
   const handleCurrencySubmit = () => {
@@ -442,6 +451,15 @@ const CreateReceivablesBase = ({
     setIsBankFormOpen(false);
     setValue('entity_bank_account_id', newBankAccountId);
   };
+
+  useEffect(() => {
+    if (entityBankAccountId && bankAccountField?.invalid) {
+      clearErrors('entity_bank_account_id');
+    }
+  }, [entityBankAccountId, bankAccountField, clearErrors]);
+
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
 
   if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
     return <LoadingPage />;
@@ -534,8 +552,10 @@ const CreateReceivablesBase = ({
                             size="small"
                             name="currency"
                             control={control}
+                            defaultValue={actualCurrency}
                             hideLabel
-                            // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
+                            groups={currencyGroups}
+                            disabled={isLoadingCurrencyGroups}
                             onChange={(_event, value) => {
                               if (
                                 value &&

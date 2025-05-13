@@ -151,8 +151,12 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, locale, queryClient, componentSettings } = useMoniteContext();
 
-  const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
-    usePayableTableThemeProps(inProps);
+  const {
+    isShowingSummaryCards,
+    fieldOrder,
+    requiredColumns,
+    summaryCardFilters,
+  } = usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -231,6 +235,7 @@ const PayablesTableBase = ({
       {
         field: 'document_id',
         sortable: false,
+        hideable: !requiredColumns?.includes('document_id'),
         headerName: t(i18n)`Number`,
         width: 140,
         display: 'flex',
@@ -260,6 +265,7 @@ const PayablesTableBase = ({
       {
         field: 'counterpart_id',
         sortable: false,
+        hideable: !requiredColumns?.includes('counterpart_id'),
         headerName: t(i18n)`Vendor`,
         display: 'flex',
         width: defaultCounterpartColumnWidth,
@@ -270,6 +276,7 @@ const PayablesTableBase = ({
       {
         field: 'created_at',
         type: 'date',
+        hideable: !requiredColumns?.includes('created_at'),
         headerName: t(i18n)`Invoice date`,
         width: 120,
         display: 'flex',
@@ -281,6 +288,7 @@ const PayablesTableBase = ({
       {
         field: 'due_date',
         sortable: false,
+        hideable: !requiredColumns?.includes('due_date'),
         type: 'date',
         headerName: t(i18n)({
           id: 'Due date Name',
@@ -296,6 +304,7 @@ const PayablesTableBase = ({
       {
         field: 'status',
         sortable: false,
+        hideable: !requiredColumns?.includes('status'),
         headerName: t(i18n)`Status`,
         display: 'flex',
         width: 100,
@@ -306,6 +315,7 @@ const PayablesTableBase = ({
       {
         field: 'amount',
         sortable: false,
+        hideable: !requiredColumns?.includes('amount'),
         headerAlign: 'right',
         align: 'right',
         headerName: t(i18n)({
@@ -332,8 +342,9 @@ const PayablesTableBase = ({
         },
       },
       {
-        field: 'paid',
+        field: 'amount_paid',
         sortable: false,
+        hideable: !requiredColumns?.includes('amount_paid'),
         headerAlign: 'right',
         align: 'right',
         headerName: t(i18n)({
@@ -386,6 +397,7 @@ const PayablesTableBase = ({
         field: 'pay',
         headerName: t(i18n)`Payment`,
         sortable: false,
+        hideable: !requiredColumns?.includes('pay'),
         display: 'flex',
         minWidth: 80,
         width: 80,
@@ -406,9 +418,10 @@ const PayablesTableBase = ({
       },
     ];
   }, [
+    requiredColumns,
+    i18n,
     locale.dateFormat,
     formatCurrencyToDisplay,
-    i18n,
     onPay,
     onPayUS,
     refetch,
@@ -597,5 +610,7 @@ const usePayableTableThemeProps = (
     summaryCardFilters:
       inProps?.summaryCardFilters ??
       componentSettings?.payables?.summaryCardFilters,
+    requiredColumns:
+      inProps?.requiredColumns ?? componentSettings?.payables?.requiredColumns,
   };
 };
