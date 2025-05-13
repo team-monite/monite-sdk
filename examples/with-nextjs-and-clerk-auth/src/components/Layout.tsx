@@ -36,7 +36,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           pt={2}
           mb={3}
           mx={0}
-          sx={{ borderTop: '1px solid #F0F2F4' }}
         >
           <NavigationList />
         </Box>

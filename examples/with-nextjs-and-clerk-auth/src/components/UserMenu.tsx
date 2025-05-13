@@ -2,8 +2,24 @@
 
 import React from 'react';
 
-import { OrganizationSwitcher, SignedIn, UserButton } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
+
 import { Box } from '@mui/material';
+
+const SignedIn = dynamic(
+  () => import('@clerk/nextjs').then((mod) => mod.SignedIn),
+  { ssr: false }
+);
+
+const UserButton = dynamic(
+  () => import('@clerk/nextjs').then((mod) => mod.UserButton),
+  { ssr: false }
+);
+
+const OrganizationSwitcher = dynamic(
+  () => import('@clerk/nextjs').then((mod) => mod.OrganizationSwitcher),
+  { ssr: false }
+);
 
 export function UserMenu() {
   return (

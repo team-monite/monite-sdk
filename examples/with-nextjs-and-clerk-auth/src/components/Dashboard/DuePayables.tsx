@@ -28,9 +28,6 @@ export const DuePayablesCard = ({
       title="Due payables"
       renderIcon={(props) => <IconPayable {...props} />}
       iconVariant="critical"
-      sx={{
-        background: 'linear-gradient(0deg, #F5FAFD 0%, #FFF 100%)',
-      }}
       action={
         <Link
           href={'/payables'}
