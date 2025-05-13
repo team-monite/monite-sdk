@@ -330,7 +330,6 @@ msgstr "Add another owner"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:212
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:259
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:83
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:218
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:128
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:322
 msgid "Add bank account"
@@ -410,7 +409,7 @@ msgstr "Add to prompts"
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:560
+#: src/components/payables/PayablesTable/PayablesTable.tsx:573
 msgid "Add your first bill"
 msgstr "Add your first bill"
 
@@ -1379,10 +1378,10 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/components/CreateCounterpartDialog.tsx:140
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:155
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:124
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:209
-#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:161
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:436
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:439
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:210
+#: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:160
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:419
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:426
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:92
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
@@ -2261,7 +2260,7 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
-#: src/core/componentSettings/index.ts:218
+#: src/core/componentSettings/index.ts:223
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -2604,7 +2603,7 @@ msgid "Description is required"
 msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:464
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:221
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:210
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:851
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
@@ -2702,6 +2701,8 @@ msgstr "Discount Stores"
 msgid "Discounted subtotal"
 msgstr "Discounted subtotal"
 
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:96
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:82
 #: src/components/receivables/components/BankAccountFormContent.tsx:210
 #: src/components/receivables/validation.ts:14
 #: src/components/receivables/validation.ts:40
@@ -2825,7 +2826,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:285
+#: src/components/payables/PayablesTable/PayablesTable.tsx:293
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -2950,6 +2951,7 @@ msgstr "Edit address"
 msgid "Edit Approval Policy"
 msgstr "Edit Approval Policy"
 
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:83
 #: src/components/receivables/components/BankAccountFormDialog.tsx:142
 msgid "Edit bank account"
 msgstr "Edit bank account"
@@ -4165,7 +4167,7 @@ msgid "Invoice cancel confirmation"
 msgstr "Invoice cancel confirmation"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:138
-#: src/components/payables/PayablesTable/PayablesTable.tsx:273
+#: src/components/payables/PayablesTable/PayablesTable.tsx:280
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -4220,7 +4222,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/components/InvoicesTable.tsx:503
-#: src/core/componentSettings/index.ts:210
+#: src/core/componentSettings/index.ts:215
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -5209,11 +5211,11 @@ msgstr "No Approval Policies"
 msgid "No Approval Requests"
 msgstr "No Approval Requests"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:561
+#: src/components/payables/PayablesTable/PayablesTable.tsx:574
 msgid "No bills found"
 msgstr "No bills found"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:558
+#: src/components/payables/PayablesTable/PayablesTable.tsx:571
 msgid "No bills yet"
 msgstr "No bills yet"
 
@@ -5387,7 +5389,7 @@ msgstr "Not set"
 #: src/components/financing/components/FinancedInvoicesTable.tsx:137
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:474
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:235
-#: src/components/payables/PayablesTable/PayablesTable.tsx:234
+#: src/components/payables/PayablesTable/PayablesTable.tsx:239
 #: src/components/receivables/components/CreditNotesTable.tsx:126
 #: src/components/receivables/components/InvoicesTable.tsx:213
 #: src/components/receivables/components/QuotesTable.tsx:147
@@ -5525,7 +5527,7 @@ msgstr "Paid"
 
 #. Payables Table "Paid" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:339
+#: src/components/payables/PayablesTable/PayablesTable.tsx:350
 msgid "Paid"
 msgstr "Paid"
 
@@ -5632,7 +5634,7 @@ msgstr "Pay in the first {0} days"
 msgid "Pay out the financed sum:"
 msgstr "Pay out the financed sum:"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:575
+#: src/components/payables/PayablesTable/PayablesTable.tsx:588
 #: src/components/userRoles/consts.ts:38
 msgid "Payable"
 msgstr "Payable"
@@ -5682,7 +5684,7 @@ msgid "Payables purchase order"
 msgstr "Payables purchase order"
 
 #: src/components/financing/components/FinancedInvoicesTable.tsx:222
-#: src/components/payables/PayablesTable/PayablesTable.tsx:387
+#: src/components/payables/PayablesTable/PayablesTable.tsx:398
 msgid "Payment"
 msgstr "Payment"
 
@@ -6095,7 +6097,7 @@ msgstr "Price"
 msgid "Price per unit"
 msgstr "Price per unit"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:247
+#: src/components/payables/PayablesTable/PayablesTable.tsx:252
 msgid "Processing file"
 msgstr "Processing file"
 
@@ -6249,7 +6251,7 @@ msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
 #: src/components/receivables/components/QuotesTable.tsx:302
-#: src/core/componentSettings/index.ts:214
+#: src/core/componentSettings/index.ts:219
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -7136,7 +7138,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/financing/components/FinanceDetails.tsx:164
 #: src/components/financing/components/FinancedInvoicesTable.tsx:171
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:49
-#: src/components/payables/PayablesTable/PayablesTable.tsx:299
+#: src/components/payables/PayablesTable/PayablesTable.tsx:308
 #: src/components/receivables/components/InvoicesTable.tsx:288
 #: src/components/receivables/components/QuotesTable.tsx:168
 #: src/components/receivables/components/ReceivableFilters.tsx:74
@@ -7710,7 +7712,7 @@ msgstr "Total"
 
 #. Payables Table "Total" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:311
+#: src/components/payables/PayablesTable/PayablesTable.tsx:321
 msgid "Total"
 msgstr "Total"
 
@@ -8011,7 +8013,6 @@ msgstr "Update Approval Policy"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:99
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:319
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:218
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:296
 msgid "Update bank account"
 msgstr "Update bank account"
@@ -8329,7 +8330,7 @@ msgstr "VAT Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:84
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:490
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:246
-#: src/components/payables/PayablesTable/PayablesTable.tsx:263
+#: src/components/payables/PayablesTable/PayablesTable.tsx:269
 msgid "Vendor"
 msgstr "Vendor"
 
@@ -8570,6 +8571,10 @@ msgstr "You can set up to 2 early payment discounts per invoice."
 msgid "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 msgstr "You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 
+#: src/components/counterparts/components/ConfirmDeleteDialog.tsx:49
+msgid "You can't undo this action."
+msgstr "You can't undo this action."
+
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:71
 msgid "You can’t undo this action."
 msgstr "You can’t undo this action."
@@ -8586,7 +8591,7 @@ msgstr "You don’t have any approval policies yet."
 msgid "You don’t have any approval requests yet."
 msgstr "You don’t have any approval requests yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:559
+#: src/components/payables/PayablesTable/PayablesTable.tsx:572
 msgid "You don’t have any bills yet"
 msgstr "You don’t have any bills yet"
 
