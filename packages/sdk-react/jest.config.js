@@ -104,4 +104,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./setup-tests.cjs', './src/setupTests.tsx'],
   transform: config,
+  transformIgnorePatterns: ['/node_modules/(?!(react-markdown))/'],
 };
