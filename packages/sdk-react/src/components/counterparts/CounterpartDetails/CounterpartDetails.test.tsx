@@ -362,7 +362,7 @@ describe('CounterpartDetails', () => {
           );
           fireEvent.click(createButton);
 
-          triggerChangeInput(/account name/i, '[create] Account name');
+          triggerChangeInput(/display name/i, '[create] Display name');
           triggerChangeInput(/iban/i, '[create] Iban');
           triggerChangeInput(/bic/i, '[create] Bic');
           triggerClickOnSelectOption(/country/i, 'Armenia');

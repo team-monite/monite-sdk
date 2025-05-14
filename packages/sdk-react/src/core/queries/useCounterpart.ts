@@ -582,6 +582,19 @@ export const useCounterpartById = (id?: string) => {
   );
 };
 
+export const useCounterpartAddressesById = (id?: string) => {
+  const { api } = useMoniteContext();
+
+  return api.counterparts.getCounterpartsIdAddresses.useQuery(
+    {
+      path: { counterpart_id: id ?? '' },
+    },
+    {
+      enabled: !!id,
+    }
+  );
+};
+
 export const useUpdateCounterpart = () => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();

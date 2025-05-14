@@ -11,10 +11,10 @@ export const getValidationSchema = (i18n: I18n) =>
       .required(),
     type: yup
       .string()
-      .label(t(i18n)`Vat Type`)
+      .label(t(i18n)`VAT Type`)
       .required(),
     value: yup
       .string()
-      .label(t(i18n)`Vat Value`)
+      .label(t(i18n)`VAT Value`)
       .required(),
   });

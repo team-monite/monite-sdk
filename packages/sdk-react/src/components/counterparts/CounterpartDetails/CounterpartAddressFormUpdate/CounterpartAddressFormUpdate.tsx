@@ -2,8 +2,10 @@ import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { MoniteCountry } from '@/ui/Country';
+import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Button,
   DialogActions,
@@ -14,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { getCounterpartName } from '../../helpers';
 import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
 import {
   useCounterpartAddressFormUpdate,
@@ -25,6 +28,7 @@ export const CounterpartAddressFormUpdate = (
 ) => {
   const { i18n } = useLingui();
   const {
+    counterpart,
     methods: { control, handleSubmit },
     updateAddress,
     isLoading,
@@ -32,11 +36,26 @@ export const CounterpartAddressFormUpdate = (
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartAddress-${useId()}`;
 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (!counterpart) return null;
+
   return (
     <>
-      <Typography variant="h3" sx={{ padding: 3 }}>
-        {t(i18n)`Address`}
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1}
+        sx={{ padding: 3 }}
+      >
+        <Typography variant="caption">
+          {getCounterpartName(counterpart)}
+        </Typography>
+        <ArrowForwardIcon fontSize="small" color="disabled" />
+        <Typography variant="caption">{t(i18n)`Edit address`}</Typography>
+      </Stack>
       <Divider />
       <DialogContent>
         <form
@@ -99,7 +118,7 @@ export const CounterpartAddressFormUpdate = (
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   id={field.name}
-                  label={t(i18n)`ZIP code`}
+                  label={t(i18n)`Postal code`}
                   variant="standard"
                   fullWidth
                   error={Boolean(error)}
@@ -131,18 +150,19 @@ export const CounterpartAddressFormUpdate = (
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" color="inherit" onClick={props.onCancel}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          type="submit"
-          form={formName}
-          disabled={isLoading}
-        >
-          {t(i18n)`Update`}
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button variant="text" onClick={props.onCancel}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            form={formName}
+            disabled={isLoading}
+          >
+            {t(i18n)`Save`}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );
