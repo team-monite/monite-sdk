@@ -63,7 +63,6 @@
     "@playwright/test": "~1.45.0",
     "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
-    "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react": "~4.3.4",

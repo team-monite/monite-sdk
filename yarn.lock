@@ -5293,7 +5293,6 @@ __metadata:
     "@playwright/test": "npm:~1.45.0"
     "@tanstack/react-query": "npm:~5.28.6"
     "@team-monite/eslint-plugin": "workspace:~"
-    "@team-monite/sdk-demo": "workspace:~"
     "@types/react": "npm:^18.0.9"
     "@types/react-dom": "npm:^18.0.4"
     "@vitejs/plugin-react": "npm:~4.3.4"
