@@ -1,13 +1,18 @@
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
+import {
+  BankAccountFormDialog,
+  BankAccountSection,
+} from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useLocalStorageFields } from '@/core/hooks/useLocalStorageFields';
+import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import {
   useCounterpartAddresses,
   useCounterpartById,
@@ -46,6 +51,7 @@ import {
 
 import { format } from 'date-fns';
 
+import { useGetEntityBankAccounts } from '../../hooks';
 import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
@@ -84,7 +90,11 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { api, entityId } = useMoniteContext();
+  const { api, entityId, componentSettings } = useMoniteContext();
+  const hasInitiallySetDefaultBank = useRef(false);
+  const enableEntityBankAccount = Boolean(
+    componentSettings?.receivables?.enableEntityBankAccount
+  );
   const {
     data: paymentTerms,
     isLoading: isPaymentTermsLoading,
@@ -94,19 +104,26 @@ const CreateReceivablesBase = ({
     api.entities.getEntitiesIdVatIds.useQuery({
       path: { entity_id: entityId },
     });
+  const { data: bankAccounts } = useGetEntityBankAccounts(
+    undefined,
+    enableEntityBankAccount
+  );
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
     isNonCompliantFlow,
     data: entityData,
   } = useMyEntity();
+  const [isBankFormOpen, setIsBankFormOpen] = useState(false);
+  const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(
       getCreateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
-        isNonCompliantFlow
+        isNonCompliantFlow,
+        enableEntityBankAccount
       )
     ),
     defaultValues: useMemo(
@@ -131,7 +148,14 @@ const CreateReceivablesBase = ({
     ),
   });
 
-  const { handleSubmit, watch, getValues, setValue } = methods;
+  const {
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    clearErrors,
+    getFieldState,
+  } = methods;
 
   const counterpartId = watch('counterpart_id');
 
@@ -188,6 +212,24 @@ const CreateReceivablesBase = ({
       );
     }
   }, [counterpartAddresses, getValues]);
+
+  // this is a workaround until we refactor this component, this component
+  // should be broken down into multiple pieces to better position the logic to avoid these workarounds
+  useEffect(() => {
+    if (
+      enableEntityBankAccount &&
+      actualCurrency &&
+      bankAccounts &&
+      !hasInitiallySetDefaultBank.current
+    ) {
+      const preselectedAccount = bankAccounts?.data?.find(
+        (bank) =>
+          bank?.currency === actualCurrency && bank?.is_default_for_currency
+      );
+      setValue('entity_bank_account_id', preselectedAccount?.id ?? '');
+      hasInitiallySetDefaultBank.current = true;
+    }
+  }, [actualCurrency, setValue, bankAccounts, enableEntityBankAccount]);
 
   const {
     createReminderDialog,
@@ -331,6 +373,8 @@ const CreateReceivablesBase = ({
   };
 
   const lineItems = watch('line_items');
+  const entityBankAccountId = watch('entity_bank_account_id');
+  const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
   const handleCurrencySubmit = () => {
@@ -342,9 +386,40 @@ const CreateReceivablesBase = ({
       if (validLineItems.length) {
         setRemoveItemsWarning(true);
       } else {
+        const newAccounts = bankAccounts?.data?.reduce<{
+          newDefault: components['schemas']['EntityBankAccountResponse'] | null;
+          currentlySelected:
+            | components['schemas']['EntityBankAccountResponse']
+            | null;
+        }>(
+          (acc, bankAccount) => {
+            if (bankAccount?.id === entityBankAccountId) {
+              acc.currentlySelected = bankAccount;
+            }
+
+            if (
+              bankAccount?.currency === tempCurrency &&
+              bankAccount?.is_default_for_currency
+            ) {
+              acc.newDefault = bankAccount;
+            }
+
+            return acc;
+          },
+          { newDefault: null, currentlySelected: null }
+        );
+
         setRemoveItemsWarning(false);
         setActualCurrency(tempCurrency);
         handleCloseCurrencyModal();
+
+        if (
+          newAccounts?.newDefault &&
+          newAccounts?.currentlySelected?.id !== newAccounts?.newDefault?.id &&
+          newAccounts?.currentlySelected?.is_default_for_currency
+        ) {
+          setValue('entity_bank_account_id', newAccounts?.newDefault?.id);
+        }
       }
     } else {
       setRemoveItemsWarning(false);
@@ -362,6 +437,29 @@ const CreateReceivablesBase = ({
       setAnchorEl(event.currentTarget);
     }
   };
+
+  const handleSelectBankAfterDeletion = (bankId: string) => {
+    setValue('entity_bank_account_id', bankId);
+  };
+
+  const handleCloseForm = () => {
+    setIsBankFormOpen(false);
+    if (selectedBankId) setSelectedBankId('');
+  };
+
+  const handleOnBankAccountCreation = (newBankAccountId: string) => {
+    setIsBankFormOpen(false);
+    setValue('entity_bank_account_id', newBankAccountId);
+  };
+
+  useEffect(() => {
+    if (entityBankAccountId && bankAccountField?.invalid) {
+      clearErrors('entity_bank_account_id');
+    }
+  }, [entityBankAccountId, bankAccountField, clearErrors]);
+
+  const { currencyGroups, isLoadingCurrencyGroups } =
+    useProductCurrencyGroups();
 
   if (isSettingsLoading || isEntityLoading || isMeasureUnitsLoading) {
     return <LoadingPage />;
@@ -454,8 +552,10 @@ const CreateReceivablesBase = ({
                             size="small"
                             name="currency"
                             control={control}
+                            defaultValue={actualCurrency}
                             hideLabel
-                            // @ts-expect-error -> Overloaded function args not inferred correctly (https://github.com/microsoft/TypeScript/issues/54539)
+                            groups={currencyGroups}
+                            disabled={isLoadingCurrencyGroups}
                             onChange={(_event, value) => {
                               if (
                                 value &&
@@ -764,6 +864,17 @@ const CreateReceivablesBase = ({
                   refetch={refetchPaymentTerms}
                   disabled={createReceivable.isPending}
                 />
+
+                {enableEntityBankAccount && (
+                  <BankAccountSection
+                    entityCurrency={actualCurrency}
+                    disabled={createReceivable.isPending}
+                    handleOpenBankModal={(id?: string) => {
+                      setIsBankFormOpen(true);
+                      if (id) setSelectedBankId(id);
+                    }}
+                  />
+                )}
               </Box>
               <Box>
                 <EntitySection
@@ -822,6 +933,20 @@ const CreateReceivablesBase = ({
           reminderId={editReminderDialog.reminderId}
           reminderType={editReminderDialog.reminderType}
           onClose={closeUpdateReminderDialog}
+        />
+      )}
+
+      {enableEntityBankAccount && isBankFormOpen && (
+        <BankAccountFormDialog
+          isOpen={isBankFormOpen}
+          entityBankAccountId={selectedBankId}
+          bankAccounts={bankAccounts?.data ?? []}
+          onCancel={handleCloseForm}
+          onCreate={handleOnBankAccountCreation}
+          onUpdate={handleCloseForm}
+          onDelete={handleCloseForm}
+          handleClose={handleCloseForm}
+          handleSelectBankAfterDeletion={handleSelectBankAfterDeletion}
         />
       )}
     </Stack>

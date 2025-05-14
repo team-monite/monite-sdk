@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { UseFormRegister, FieldErrors, FieldError } from 'react-hook-form';
+import { FieldError, useFormContext, Controller } from 'react-hook-form';
 
+import { rateMinorToMajor, rateMajorToMinor } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,8 +23,6 @@ export interface DiscountFormProps {
   index: number;
   isLast: boolean;
   remove: () => void;
-  register: UseFormRegister<PaymentTermsFields>;
-  errors: FieldErrors<PaymentTermsFields>;
 }
 
 export const DiscountForm = ({
@@ -31,19 +30,26 @@ export const DiscountForm = ({
   index,
   isLast,
   remove,
-  register,
-  errors,
 }: DiscountFormProps) => {
   const [error, setError] = useState<string | undefined>('');
   const { i18n } = useLingui();
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<PaymentTermsFields>();
+
+  const daysFieldName = `${field}.number_of_days` as const;
+  const discountFieldName = `${field}.discount` as const;
 
   useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      const flatErrors = Object.values(errors[field] || {}).map(
-        (error) => (error as FieldError)?.message
-      );
+    if (errors && errors[field]) {
+      const fieldErrors = errors[field];
+      const flatErrors = Object.values(fieldErrors ?? {})
+        .map((error) => (error as FieldError)?.message)
+        .filter(Boolean);
 
-      setError(flatErrors[0]);
+      setError(flatErrors[0] ?? '');
     } else {
       setError('');
     }
@@ -81,7 +87,7 @@ export const DiscountForm = ({
               i18n
             )`Pay in`}</Typography>
             <TextField
-              {...register(`${field}.number_of_days`)}
+              {...register(daysFieldName)}
               type="number"
               error={!!errors?.[field]?.number_of_days}
               InputProps={{
@@ -91,13 +97,36 @@ export const DiscountForm = ({
             <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>{t(
               i18n
             )`to get discount`}</Typography>
-            <TextField
-              {...register(`${field}.discount`)}
-              type="number"
-              error={!!errors?.[field]?.discount}
-              InputProps={{
-                endAdornment: '%',
-              }}
+            <Controller
+              name={discountFieldName}
+              control={control}
+              render={({
+                field: { onChange, onBlur, value, name },
+                fieldState: { error: fieldError },
+              }) => (
+                <TextField
+                  name={name}
+                  type="number"
+                  value={
+                    value !== null && value !== undefined
+                      ? rateMinorToMajor(value)
+                      : ''
+                  }
+                  onBlur={onBlur}
+                  onChange={(e) => {
+                    const majorValue = e.target.value;
+                    const minorValue =
+                      majorValue === ''
+                        ? null
+                        : rateMajorToMinor(parseFloat(majorValue));
+                    onChange(minorValue);
+                  }}
+                  error={!!fieldError}
+                  InputProps={{
+                    endAdornment: '%',
+                  }}
+                />
+              )}
             />
           </Stack>
         </CardContent>

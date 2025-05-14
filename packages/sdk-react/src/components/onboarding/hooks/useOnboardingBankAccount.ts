@@ -125,7 +125,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
     EntityBankAccountResponse | undefined
   >(fields, 'bankAccount');
 
-  const { watch } = onboardingForm.methods;
+  const { watch, reset: resetForm } = onboardingForm.methods;
 
   const currency = watch('currency');
 
@@ -157,12 +157,19 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       });
 
       if (currentBankAccount) {
-        await deleteBankAccountMutation({
-          path: {
-            bank_account_id: currentBankAccount.id,
-          },
-        });
+        try {
+          await deleteBankAccountMutation({
+            path: {
+              bank_account_id: currentBankAccount.id,
+            },
+          });
+        } catch (error) {
+          console.error('Error deleting bank account:', error);
+        }
       }
+
+      // Reset the form with the original payload to ensure fields are properly preserved
+      resetForm(payload);
 
       patchOnboardingRequirements({
         requirements: ['bank_accounts'],
@@ -179,6 +186,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       currentBankAccount,
       patchOnboardingRequirements,
       fields,
+      resetForm,
     ]
   );
 

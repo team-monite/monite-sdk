@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import type { OnboardingSettings } from '@/core/componentSettings';
 
 export type OnboardingPersonId = string | null;
 
@@ -106,22 +107,11 @@ export type OnboardingRequirementMask = Extract<
   'representative' | 'directors' | 'executives' | 'owners'
 >;
 
-export interface OnboardingProps {
-  /**
-   * Called when bank account setup is completed.
-   *
-   * @param entityId The entity id
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
-   * @returns {void}
-   */
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: components['schemas']['EntityBankAccountResponse']
-  ) => void;
-  /**
-   * Called when the onboarding process is completed.
-   *
-   * @returns {void}
-   */
-  onComplete?: () => void;
-}
+export type OnboardingProps = Pick<
+  OnboardingSettings,
+  | 'showContinueButton'
+  | 'allowedCurrencies'
+  | 'allowedCountries'
+  | 'onComplete'
+  | 'onContinue'
+>;

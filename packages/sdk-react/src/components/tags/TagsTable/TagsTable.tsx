@@ -26,6 +26,7 @@ import {
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
+import { getTagCategoryLabel } from '../helpers';
 import { TagFormModal } from '../TagFormModal';
 import { useTags } from '../useTags';
 
@@ -149,6 +150,9 @@ const TagsTableBase = ({
         headerName: t(i18n)`Category`,
         sortable: false,
         flex: 1,
+        valueFormatter: (
+          value: components['schemas']['TagReadSchema']['category']
+        ) => getTagCategoryLabel(value, i18n),
       },
       {
         field: 'keywords',

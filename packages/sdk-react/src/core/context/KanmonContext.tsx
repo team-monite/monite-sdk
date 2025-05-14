@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -112,7 +113,13 @@ const stopFinanceSession = () => {
   window?.KANMON_CONNECT?.stop();
 };
 
-export const KanmonContextProvider = ({ children }: PropsWithChildren) => {
+export const KanmonContextProvider = ({ children }: PropsWithChildren) => (
+  <MoniteScopedProviders>
+    <KanmonContextProviderBase>{children}</KanmonContextProviderBase>
+  </MoniteScopedProviders>
+);
+
+const KanmonContextProviderBase = ({ children }: PropsWithChildren) => {
   const { i18n } = useLingui();
   const [isKanmonInitialized, setIsKanmonInitialized] = useState(false);
   const [buttonText, setButtonText] = useState(t(i18n)`Apply for financing`);

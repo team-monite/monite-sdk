@@ -116,9 +116,13 @@ export const bankAccountSchema = (
   currency: stringValidator().label(t(i18n)`Currency`),
   account_holder_name: stringValidator().label(t(i18n)`Account holder name`),
   account_number: stringValidator().label(t(i18n)`Account number`),
-  sort_code: stringValidator().label(t(i18n)`Sort code`),
+  sort_code: stringValidator()
+    .length(6, t(i18n)`Sort code must be 6 digits`)
+    .label(t(i18n)`Sort code`),
   iban: ibanValidator(i18n).label(t(i18n)`IBAN`),
-  routing_number: stringValidator().label(t(i18n)`Routing number`),
+  routing_number: stringValidator()
+    .length(9, t(i18n)`Routing number must be 9 digits`)
+    .label(t(i18n)`Routing number`),
 });
 
 export const businessProfileSchema = (
@@ -126,11 +130,11 @@ export const businessProfileSchema = (
 ): ValidationSchema<BusinessProfile> => ({
   mcc: stringValidator().label(t(i18n)`Industry`),
   url: stringValidator()
-    .label(t(i18n)`Business website`)
+    .label(t(i18n)`Business URL`)
     .url(
       t(
         i18n
-      )`Invalid website URL. Please ensure it starts with 'http://' or 'https://'.`
+      )`Invalid URL. Please ensure it starts with 'http://' or 'https://'.`
     ),
 });
 

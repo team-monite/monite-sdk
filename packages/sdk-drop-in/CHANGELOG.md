@@ -1,5 +1,161 @@
 # @monite/sdk-drop-in
 
+## 2.0.3
+
+### Patch Changes
+
+- 350ac2e: Fixed some minor bugs with bank account behavior
+
+## 2.0.2
+
+### Patch Changes
+
+- 1fdc678: Fixed invoice preview not showing bank account information and some other minor fixes to bank account creation
+- d62d343: Business website field renamed to URL, alert info updated to reflect the change
+
+## 2.0.1
+
+### Patch Changes
+
+- 560bd48: Added some minor adjustments to finance banner
+
+## 2.0.0
+
+### Major Changes
+
+- 646c7ac: Bump Drop-in (v4)
+- 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
+
+  - FinanceApplicationCard has been renamed to FinanceIntegrationCard
+  - FinanceBanner accepts 2 props:
+    - enableServicingBanner
+    - handleViewDetails
+      It is also worth noting that the width of the banner is 100%, so what defines the width of the banner is the wrapping container.
+
+  enableServicingBanner is a boolean flag that enables the FinanceBanner to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing.
+
+  handleViewDetails is a function that is passed to the View details button. The button will only appear when entity is servicing, enableServicingBanner is true and handleViewDetails is passed. The purpose of this button is to give the user a way to navigate to the financing page through it.
+
+  componentSettings now also has an option for financing which allows user to customize whether the finance menu buttons will show on the top right corner of the financing tab page or inside the finance card. By default the buttons will show at the top right corner.
+  componentSettings also allows user to pass an array of finance steps to define the content of the How does invoice financing work drawer component.
+
+### Minor Changes
+
+- 60a0972: New Dropin syntax
+- 166b0d8: refactor(DEV-12144) remove sdk-api package
+- 143072a: Default styles refresh across all components
+- c5d39e5: Line item units management added
+- 9d52e3b: - Added entity bank account creation flow
+
+  - Receivables now exports `BankAccountFormDialog`, a Dialog component for the entity bank account creation flow
+    This component has the following props:
+
+    - `entityBankAccountId` id of the selected bank account, if passed, dialog will be edit mode and if not it will be the create one.
+    - `isOpen` determines the state of the dialog
+    - `bankAccounts` list of available entity bank accounts
+    - `onCancel` callback function when clicking on Cancel button
+    - `onCreate` callback function that gets called after creating new bank account
+    - `onUpdate` callback function that gets called after updating a bank account
+    - `onDelete` callback function that gets called after deleting a bank account
+    - `handleClose` callback function that gets called when closing the dialog
+    - `handleSelectBankAfterDeletion` callback function that gets called after bank account is deleted to enable user to select another bank account
+
+  - `componentSettings` now has 3 new properties for `receivables`:
+    - `enableEntityBankAccount` flag to turn on entity bank account creation, by default it is set to false.
+    - `bankAccountCountries` custom list of available countries to select from when creating a bank account, by default we display all.
+    - `bankAccountCurrencies` custom list of available currencies to select from when creating a bank account, by default we display all.
+
+- 5dddf03: New pre-release v4
+- 0a107f7: Adds Dropin unmount method
+- 575e2a6: Fix Kanmon SDK env URL
+- 3583a16: Bump Drop-in
+- 2c645e2: Fixed style issues
+- 00808d4: update sdk dependency
+- 010861f: Added discounts for payables
+- 9462a2f: Invoice creation redesign
+- 4fed228: Bump dropin to latest version
+- 331d6d4: feat(proposal): add component settings
+- bee7fab: Change Dropin exports
+- ca42346: Added ability to hide customer type section when creating a counterpart, default is set to ['customer', 'vendor'] through componentSettings and also added a new property called customerTypes to Receivables, Payables and Counterparts components to customize the available customer type options when creating a counterpart
+
+### Patch Changes
+
+- 7b75dbf: Add Document templates to Dropin
+- 8ccf36d: Improve onboarding styles and copies
+- 6a68134: Prepend https in empty Onboarding URL field
+- 2fe7793: Style improvements in Onboarding component
+- 23c29de: Update Kanmon live URL
+- cb63d74: onCreate receivable event added
+- 92425e1: Fix payment term discounts translations
+- 2c0fd42: Onboarding footer customization: added `onboarding.footerLogoUrl` and `onboarding.footerWebsiteUrl` to `componentSettings` for direct configuration.
+- 923df35: Fix counterpart creation form styles
+- d068bbf: Added onboarding and sent invoice email events to the SDK and Drop-in component
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- a8b6f84: Re-create translation files
+- 2f0f481: Fix invoice preview styles
+- 368fe8e: UI minor fixes in invoice creation
+- 6ead5f4: Fix issue with Kanmon provider
+- 1a0042c: Fix styling issues in Receivables table
+- 18df891: Improve error messages in Products&Services component
+- 3f6cd29: Load styles on invoice preview properly
+- e70b0de: First invoice sent event renamed to invoice sent
+- 4a9f5e5: Event handlers for drop in component (Receivables)
+- 25e34f4: Improve aspect ratio in Invoice preview
+- 0539718: Add onContinue/onComplete events in onboarding component
+- ef4d3b1: Fix issue when adding bank accounts through the onboarding flow
+- 34cd50b: Onboarding minor fixes
+
+## 2.0.0-beta.7
+
+### Patch Changes
+
+- 34cd50b: Onboarding minor fixes
+
+## 2.0.0-beta.6
+
+### Patch Changes
+
+- 8ccf36d: Improve onboarding styles and copies
+- ef4d3b1: Fix issue when adding bank accounts through the onboarding flow
+
+## 2.0.0-beta.5
+
+### Patch Changes
+
+- 0539718: Add onContinue/onComplete events in onboarding component
+
+## 2.0.0-beta.4
+
+### Patch Changes
+
+- 6ead5f4: Fix issue with Kanmon provider
+
+## 2.0.0-beta.3
+
+### Major Changes
+
+- 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
+
+  - FinanceApplicationCard has been renamed to FinanceIntegrationCard
+  - FinanceBanner accepts 2 props:
+    - enableServicingBanner
+    - handleViewDetails
+      It is also worth noting that the width of the banner is 100%, so what defines the width of the banner is the wrapping container.
+
+  enableServicingBanner is a boolean flag that enables the FinanceBanner to be a small summarized version of the financing tab, but only works when entity is onboarded and is servicing.
+
+  handleViewDetails is a function that is passed to the View details button. The button will only appear when entity is servicing, enableServicingBanner is true and handleViewDetails is passed. The purpose of this button is to give the user a way to navigate to the financing page through it.
+
+  componentSettings now also has an option for financing which allows user to customize whether the finance menu buttons will show on the top right corner of the financing tab page or inside the finance card. By default the buttons will show at the top right corner.
+  componentSettings also allows user to pass an array of finance steps to define the content of the How does invoice financing work drawer component.
+
+### Patch Changes
+
+- 2fe7793: Style improvements in Onboarding component
+- 2c0fd42: Onboarding footer customization: added `onboarding.footerLogoUrl` and `onboarding.footerWebsiteUrl` to `componentSettings` for direct configuration.
+- 069ec35: Ordered customers filter dropdown in Receivables alphabetically
+- e70b0de: First invoice sent event renamed to invoice sent
+
 ## 2.0.0-beta.2
 
 ### Patch Changes

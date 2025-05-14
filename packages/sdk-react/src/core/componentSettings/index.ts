@@ -3,12 +3,20 @@ import { CustomerTypes } from '@/components/counterparts/types';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { FinanceStep } from '@/components/financing/types';
 import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsForm';
-import { DEFAULT_FIELD_ORDER as defaultPayableFieldOrder } from '@/components/payables/PayablesTable/consts';
+import {
+  DEFAULT_REQUIRED_COLUMNS as defaultRequiredColumns,
+  DEFAULT_FIELD_ORDER as defaultPayableFieldOrder,
+} from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+
+import {
+  defaultAvailableCountries,
+  defaultAvailableCurrencies,
+} from '../utils';
 
 interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
@@ -21,20 +29,65 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   onDelete?: (receivableId: string) => void;
   /** Callback to be called when an invoice is sent */
   onInvoiceSent?: (invoiceId: string) => void;
+  /** Enables bank account creation on invoice creation flow */
+  enableEntityBankAccount?: boolean;
+  /** List of available countries, ISO format */
+  bankAccountCountries?: components['schemas']['AllowedCountries'][];
+  /** List of available currencies, ISO format */
+  bankAccountCurrencies?: components['schemas']['CurrencyEnum'][];
 }
 
 export interface OnboardingSettings {
   /**
-   * Called when bank account setup is completed.
+   * Custom footer logo URL for the Onboarding pages.
+   * If provided, the logo will be displayed instead of the Monite logo.
+   * Requires `onboardingFooterWebsiteUrl` to be provided as well.
+   */
+  footerLogoUrl?: string;
+  /**
+   * Custom footer website URL for the Onboarding pages.
+   * If provided, the onboardingFooterLogoUrl logo will link to this URL.
+   */
+  footerWebsiteUrl?: string;
+  /**
+   * If true, hides the footer on the Onboarding pages.
+   * Defaults to false.
+   */
+  hideFooter?: boolean;
+  /**
+   * Whether to show the continue button on the onboarding completed page.
    *
-   * @param {string} entityId - The ID of the entity
-   * @param {components['schemas']['EntityBankAccountResponse']} response - The bank account response data
+   * @default false
+   */
+  showContinueButton?: boolean;
+  /**
+   * Allowed currencies to restrict options in the onboarding forms.
+   * The first currency in the array will be used as the default value.
+   *
+   * @example ['USD', 'EUR']
+   */
+  allowedCurrencies?: components['schemas']['CurrencyEnum'][];
+  /**
+   * Allowed country codes to restrict options in the onboarding forms.
+   * The first country code in the array will be used as the default value.
+   *
+   * @example ['US', 'GB']
+   */
+  allowedCountries?: components['schemas']['AllowedCountries'][];
+
+  /**
+   * Called when the onboarding process is completed.
+   *
    * @returns {void}
    */
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: components['schemas']['EntityBankAccountResponse']
-  ) => void;
+  onComplete?: () => void;
+
+  /**
+   * Called when the continue button is clicked on the onboarding completed page.
+   *
+   * @returns {void}
+   */
+  onContinue?: () => void;
   /**
    * Called when working capital onboarding is completed.
    * This happens when the business status transitions to 'ONBOARDED'.
@@ -139,6 +192,8 @@ export const getDefaultComponentSettings = (
     fieldOrder:
       componentSettings?.payables?.fieldOrder || defaultPayableFieldOrder,
     summaryCardFilters: componentSettings?.payables?.summaryCardFilters,
+    requiredColumns:
+      componentSettings?.payables?.requiredColumns || defaultRequiredColumns,
     optionalFields: componentSettings?.payables?.optionalFields,
     ocrRequiredFields: componentSettings?.payables?.ocrRequiredFields,
     ocrMismatchFields: componentSettings?.payables?.ocrMismatchFields ?? {
@@ -177,6 +232,14 @@ export const getDefaultComponentSettings = (
     onUpdate: componentSettings?.receivables?.onUpdate,
     onDelete: componentSettings?.receivables?.onDelete,
     onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
+    enableEntityBankAccount:
+      componentSettings?.receivables?.enableEntityBankAccount || false,
+    bankAccountCurrencies:
+      componentSettings?.receivables?.bankAccountCurrencies ||
+      defaultAvailableCurrencies,
+    bankAccountCountries:
+      componentSettings?.receivables?.bankAccountCountries ||
+      defaultAvailableCountries,
   },
   tags: {
     pageSizeOptions:

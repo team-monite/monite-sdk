@@ -3,6 +3,7 @@ import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
+import tailwindcss from '@tailwindcss/postcss';
 
 import fs from 'fs';
 import { RollupOptions } from 'rollup';
@@ -60,7 +61,14 @@ export const rollupConfig = (
           postcss(
             typeof options?.postcss === 'object'
               ? options.postcss
-              : { autoModules: true }
+              : {
+                  autoModules: true,
+                  plugins: [
+                    tailwindcss({
+                      optimize: process.env.NODE_ENV === 'production',
+                    }),
+                  ],
+                }
           ),
         options?.url !== false &&
           url(

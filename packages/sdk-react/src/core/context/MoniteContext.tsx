@@ -41,6 +41,67 @@ export type FetchToken = () => Promise<{
   token_type: string;
 }>;
 
+export type MoniteTheme = Theme & {
+  palette: {
+    neutral: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '70': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    primary: {
+      main: string;
+      '10': string;
+      '20': string;
+      '30': string;
+      '40': string;
+      '50': string;
+      '55': string;
+      '60': string;
+      '65': string;
+      '80': string;
+      '85': string;
+      '90': string;
+      '95': string;
+    };
+    success: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    warning: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    error: {
+      main: string;
+      '10': string;
+      '30': string;
+      '40': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+  };
+};
+
 export interface MoniteContextValue
   extends MoniteContextBaseValue,
     CreateMoniteAPIClientResult {
@@ -49,7 +110,7 @@ export interface MoniteContextValue
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
-  theme: Theme;
+  theme: MoniteTheme;
   componentSettings: ComponentSettings;
   fetchToken: FetchToken;
 }
@@ -162,7 +223,10 @@ const ContextProvider = ({
     [entityId]
   );
 
-  const theme = useMemo(() => createThemeWithDefaults(userTheme), [userTheme]);
+  const theme = useMemo(
+    () => createThemeWithDefaults(userTheme) as MoniteTheme,
+    [userTheme]
+  );
 
   useEffect(() => {
     queryClient.mount();
@@ -172,9 +236,11 @@ const ContextProvider = ({
   return (
     <MoniteContext.Provider
       value={{
+        api,
+        version,
         environment,
         entityId,
-        theme,
+        theme: theme as MoniteTheme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,
         sentryHub,
@@ -183,8 +249,6 @@ const ContextProvider = ({
         dateFnsLocale,
         apiUrl: apiUrl || 'https://api.sandbox.monite.com/v1',
         fetchToken,
-        api,
-        version,
         requestFn,
       }}
     >

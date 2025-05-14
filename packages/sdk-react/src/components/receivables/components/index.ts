@@ -1,3 +1,8 @@
+export { BankAccountCustomFields } from './BankAccountCustomFields';
+export { BankAccountDeleteModal } from './BankAccountDeleteModal';
+export { BankAccountFormDialog } from './BankAccountFormDialog';
+export { BankAccountFormContent } from './BankAccountFormContent';
+export { BankAccountSection } from './BankAccountSection';
 export { CreditNotesTable } from './CreditNotesTable';
 export { InvoiceCounterpartName } from './InvoiceCounterpartName';
 export {

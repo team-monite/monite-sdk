@@ -66,14 +66,14 @@ export const NavigationList = () => {
       </Typography>
 
       <List className="NavigationList" disablePadding>
+        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
+          {t(i18n)`Document Design`}
+        </NavigationListItem>
         <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
           {t(i18n)`Roles & Approvals`}
         </NavigationListItem>
         <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
           {t(i18n)`Tags`}
-        </NavigationListItem>
-        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
-          {t(i18n)`Document Design`}
         </NavigationListItem>
       </List>
       <Box

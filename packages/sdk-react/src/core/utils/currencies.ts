@@ -157,6 +157,154 @@ export const getCurrencies = (i18n: I18n): CurrenciesType => ({
   ZMW: t(i18n)`Zambian Kwacha`,
 });
 
+export const defaultAvailableCurrencies: CurrencyEnum[] = [
+  'AED',
+  'AFN',
+  'ALL',
+  'AMD',
+  'ANG',
+  'AOA',
+  'ARS',
+  'AUD',
+  'AWG',
+  'AZN',
+  'BAM',
+  'BBD',
+  'BDT',
+  'BGN',
+  'BHD',
+  'BIF',
+  'BMD',
+  'BND',
+  'BOB',
+  'BRL',
+  'BSD',
+  'BTN',
+  'BWP',
+  'BYN',
+  'BZD',
+  'CAD',
+  'CDF',
+  'CHF',
+  'CLP',
+  'CNY',
+  'COP',
+  'CRC',
+  'CVE',
+  'CZK',
+  'DJF',
+  'DKK',
+  'DOP',
+  'DZD',
+  'EGP',
+  'ETB',
+  'EUR',
+  'FJD',
+  'FKP',
+  'GBP',
+  'GEL',
+  'GHS',
+  'GIP',
+  'GMD',
+  'GNF',
+  'GTQ',
+  'GYD',
+  'HKD',
+  'HNL',
+  'HTG',
+  'HUF',
+  'IDR',
+  'ILS',
+  'INR',
+  'IQD',
+  'ISK',
+  'JMD',
+  'JOD',
+  'JPY',
+  'KES',
+  'KGS',
+  'KHR',
+  'KMF',
+  'KRW',
+  'KWD',
+  'KYD',
+  'KZT',
+  'LAK',
+  'LBP',
+  'LKR',
+  'LRD',
+  'LSL',
+  'LYD',
+  'MAD',
+  'MDL',
+  'MGA',
+  'MKD',
+  'MMK',
+  'MNT',
+  'MOP',
+  'MUR',
+  'MVR',
+  'MWK',
+  'MXN',
+  'MYR',
+  'MZN',
+  'NAD',
+  'NGN',
+  'NIO',
+  'NOK',
+  'NPR',
+  'NZD',
+  'OMR',
+  'PAB',
+  'PEN',
+  'PGK',
+  'PHP',
+  'PKR',
+  'PLN',
+  'PYG',
+  'QAR',
+  'TMT',
+  'RON',
+  'RSD',
+  'RUB',
+  'RWF',
+  'SAR',
+  'SBD',
+  'SCR',
+  'SEK',
+  'SGD',
+  'SHP',
+  'SLE',
+  'SOS',
+  'SRD',
+  'SSP',
+  'SVC',
+  'SZL',
+  'THB',
+  'TJS',
+  'TND',
+  'TOP',
+  'TRY',
+  'TTD',
+  'TWD',
+  'TZS',
+  'UAH',
+  'UGX',
+  'USD',
+  'UYU',
+  'UZS',
+  'VND',
+  'VUV',
+  'WST',
+  'XAF',
+  'XCD',
+  'XOF',
+  'XPF',
+  'YER',
+  'ZAR',
+  'ZMW',
+];
+
 export const getCurrenciesArray = (i18n: I18n): Array<CurrencyType> =>
   Object.entries(getCurrencies(i18n)).map(([code, label]) => ({
     code: code as CurrencyEnum,
@@ -164,3 +312,67 @@ export const getCurrenciesArray = (i18n: I18n): Array<CurrencyType> =>
   }));
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
+
+export interface CurrencyGroup {
+  title: string;
+  predicate: (option: CurrencyType) => boolean;
+}
+
+export const filterOptions = (
+  options: CurrencyType[],
+  state: { inputValue: string }
+): CurrencyType[] => {
+  const { inputValue } = state;
+  const lowerCaseInput = inputValue.toLowerCase().trim();
+
+  if (!lowerCaseInput) {
+    return options;
+  }
+
+  return options.filter(
+    (option) =>
+      option.code.toLowerCase().includes(lowerCaseInput) ||
+      option.label.toLowerCase().includes(lowerCaseInput)
+  );
+};
+
+export const getGroupTitleForOption = (
+  option: CurrencyType,
+  groups?: CurrencyGroup[]
+): { title: string; index: number } => {
+  if (!groups) {
+    return { title: '', index: Infinity };
+  }
+
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    if (group.predicate(option)) {
+      return { title: group.title, index: i };
+    }
+  }
+
+  return { title: '', index: groups.length };
+};
+
+export const sortCurrencyOptionsByGroup = (
+  options: CurrencyType[],
+  groups?: CurrencyGroup[]
+): CurrencyType[] => {
+  if (!groups) {
+    return options;
+  }
+
+  return [...options].sort((a, b) => {
+    const groupA = getGroupTitleForOption(a, groups);
+    const groupB = getGroupTitleForOption(b, groups);
+
+    if (groupA.index !== groupB.index) {
+      return groupA.index - groupB.index;
+    }
+
+    if (groupA.title === '' && groupB.title === '') {
+      return a.label.localeCompare(b.label);
+    }
+    return groupA.title.localeCompare(groupB.title);
+  });
+};

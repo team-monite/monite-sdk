@@ -6,9 +6,13 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
+import { useGetEntityBankAccountById } from '@/components/receivables/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import {
+  getRateValueForDisplay,
+  rateMinorToMajor,
+} from '@/core/utils/vatUtils';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -79,7 +83,10 @@ export const InvoicePreview = ({
   const fulfillmentDate = watch('fulfillment_date');
   const items = watch('line_items');
   const memo = watch('memo');
+  const entityBankAccountId = watch('entity_bank_account_id') ?? '';
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
+  const { data: bankAccount } =
+    useGetEntityBankAccountById(entityBankAccountId);
 
   const dateTime = i18n.date(new Date(), locale.dateFormat);
 
@@ -155,6 +162,54 @@ export const InvoicePreview = ({
       }, 0);
       return { taxRate, totalTax };
     });
+  };
+
+  const renderBankAccountDetails = () => {
+    if (!bankAccount) {
+      return (
+        <div>
+          <span className="not-set">
+            {t(i18n)`Set up bank account to add payment info
+        and set a QR code`}{' '}
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mtw:flex mtw:flex-col">
+        {bankAccount?.bank_name && (
+          <p>
+            {t(i18n)`Bank name`}: {bankAccount?.bank_name}
+          </p>
+        )}
+        {bankAccount?.iban && (
+          <p>
+            {t(i18n)`IBAN`}: {bankAccount?.iban}
+          </p>
+        )}
+        {bankAccount?.bic && (
+          <p>
+            {t(i18n)`BIC`}: {bankAccount?.bic}
+          </p>
+        )}
+        {bankAccount?.account_number && (
+          <p>
+            {t(i18n)`Account number`}: {bankAccount?.account_number}
+          </p>
+        )}
+        {bankAccount?.routing_number && (
+          <p>
+            {t(i18n)`Routing number`}: {bankAccount?.routing_number}
+          </p>
+        )}
+        {bankAccount?.sort_code && (
+          <p>
+            {t(i18n)`Sort code`}: {bankAccount?.sort_code}
+          </p>
+        )}
+      </div>
+    );
   };
 
   const groupedItems = groupItemsByTaxRate(sanitizedItems);
@@ -260,9 +315,9 @@ export const InvoicePreview = ({
                       {selectedPaymentTerm.term_1.discount && (
                         <span>
                           <br />
-                          {t(
-                            i18n
-                          )`${selectedPaymentTerm.term_1.discount}% discount`}
+                          {t(i18n)`${rateMinorToMajor(
+                            selectedPaymentTerm.term_1.discount
+                          )}% discount`}
                         </span>
                       )}
                     </p>
@@ -275,9 +330,9 @@ export const InvoicePreview = ({
                       {selectedPaymentTerm.term_2.discount && (
                         <span>
                           <br />
-                          {t(
-                            i18n
-                          )`${selectedPaymentTerm.term_2.discount}%discount`}
+                          {t(i18n)`${rateMinorToMajor(
+                            selectedPaymentTerm.term_2.discount
+                          )}%discount`}
                         </span>
                       )}
                     </p>
@@ -386,7 +441,7 @@ export const InvoicePreview = ({
           </div>
         </article>
         <footer>
-          <section>
+          <section style={{ gap: '15mm' }}>
             <aside className="footer-aside footer-aside__start">
               <div className="block-entity-info">
                 <div>
@@ -423,14 +478,9 @@ export const InvoicePreview = ({
               <aside>
                 <div>
                   <div>
-                    <span>{t(i18n)`Payment Details`}:</span>
+                    <span>{t(i18n)`Payment Details`}</span>
                   </div>
-                  <div>
-                    <span className="not-set">
-                      {t(i18n)`Set up bank account to add payment info
-                  and set a QR code`}{' '}
-                    </span>
-                  </div>
+                  {renderBankAccountDetails()}
                 </div>
               </aside>
               <aside>

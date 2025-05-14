@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
-import { getRegionName } from '@/components/onboarding/utils';
-import {
-  CountryOption,
-  RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { useMoniteContext } from '@/core/context/MoniteContext';
+import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
@@ -16,21 +11,16 @@ import { MenuItem } from '@mui/material';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 
-type EntityBankAccountResponse =
-  components['schemas']['EntityBankAccountResponse'];
-
-export interface OnboardingBankAccountProps {
-  onPaymentOnboardingComplete?: (
-    entityId: string,
-    response?: EntityBankAccountResponse
-  ) => void;
+interface OnboardingBankAccountProps {
+  allowedCurrencies?: CurrencyEnum[];
+  allowedCountries?: AllowedCountries[];
 }
 
 export const OnboardingBankAccount = ({
-  onPaymentOnboardingComplete,
-}: OnboardingBankAccountProps = {}) => {
+  allowedCurrencies,
+  allowedCountries,
+}: OnboardingBankAccountProps) => {
   const { i18n } = useLingui();
-  const { entityId } = useMoniteContext();
 
   const {
     isLoading,
@@ -62,10 +52,16 @@ export const OnboardingBankAccount = ({
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
 
-    onPaymentOnboardingComplete?.(entityId, result);
-
     return result;
   });
+
+  const filteredCurrencies = useMemo(() => {
+    if (allowedCurrencies && allowedCurrencies.length > 0) {
+      return currencies.filter((c) => allowedCurrencies.includes(c));
+    }
+
+    return currencies;
+  }, [allowedCurrencies, currencies]);
 
   if (isLoading) return null;
 
@@ -75,15 +71,16 @@ export const OnboardingBankAccount = ({
       actions={<OnboardingFormActions isLoading={isPending} />}
     >
       <OnboardingStepContent>
-        {checkValue('currency') && !!currencies.length && (
+        {checkValue('currency') && !!filteredCurrencies.length && (
           <RHFTextField
             disabled={isPending}
             label={t(i18n)`Currency`}
             name="currency"
             control={control}
+            defaultValue={allowedCurrencies?.[0]}
             select
           >
-            {currencies.map((currency) => (
+            {filteredCurrencies.map((currency) => (
               <MenuItem key={currency} value={currency}>
                 {currency}
               </MenuItem>
@@ -91,26 +88,14 @@ export const OnboardingBankAccount = ({
           </RHFTextField>
         )}
 
-        {checkValue('country') && !!countries.length && (
-          <RHFAutocomplete
-            disabled={isPending}
+        {checkValue('country') && (
+          <MoniteCountry
             name="country"
             control={control}
-            label={t(i18n)`Country`}
-            optionKey="code"
-            labelKey="label"
-            options={Object.values(countries).map((code) => ({
-              code,
-              label: t(i18n)`${getRegionName(code)}`,
-            }))}
-            renderOption={(props, option, state) => (
-              <CountryOption
-                key={option.code}
-                props={props}
-                option={option}
-                state={state}
-              />
-            )}
+            disabled={isPending}
+            defaultValue={allowedCountries?.[0]}
+            allowedCountries={allowedCountries}
+            required
           />
         )}
 
@@ -162,3 +147,6 @@ export const OnboardingBankAccount = ({
     </OnboardingForm>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

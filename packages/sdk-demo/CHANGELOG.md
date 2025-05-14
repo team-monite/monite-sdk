@@ -1,5 +1,18 @@
 # @monite/sdk-drop-in
 
+## 1.12.1
+
+### Patch Changes
+
+- 1fdc678: Fixed invoice preview not showing bank account information and some other minor fixes to bank account creation
+
+## 1.12.0
+
+### Minor Changes
+
+- 166b0d8: refactor(DEV-12144) remove sdk-api package
+- 8d0ea89: feat(DEV-12955): add new styling approach for the SDK
+
 ## 1.11.0-alpha.1
 
 ### Minor Changes
