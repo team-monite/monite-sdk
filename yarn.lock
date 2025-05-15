@@ -5353,10 +5353,10 @@ __metadata:
     "@openapi-qraft/cli": "npm:1.14.0"
     "@openapi-qraft/react": "npm:1.14.0"
     "@react-pdf-viewer/core": "npm:3.12.0"
-    "@react-pdf-viewer/get-file": "npm:~3.12.0"
-    "@react-pdf-viewer/page-navigation": "npm:~3.12.0"
-    "@react-pdf-viewer/scroll-mode": "npm:~3.12.0"
-    "@react-pdf-viewer/zoom": "npm:~3.12.0"
+    "@react-pdf-viewer/get-file": "npm:3.12.0"
+    "@react-pdf-viewer/page-navigation": "npm:3.12.0"
+    "@react-pdf-viewer/scroll-mode": "npm:3.12.0"
+    "@react-pdf-viewer/zoom": "npm:3.12.0"
     "@sentry/react": "npm:~7.119.1"
     "@storybook/addon-actions": "npm:~7.6.20"
     "@storybook/addon-essentials": "npm:~7.6.20"
@@ -6659,7 +6659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-pdf-viewer/get-file@npm:~3.12.0":
+"@react-pdf-viewer/get-file@npm:3.12.0":
   version: 3.12.0
   resolution: "@react-pdf-viewer/get-file@npm:3.12.0"
   dependencies:
@@ -6671,7 +6671,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-pdf-viewer/page-navigation@npm:~3.12.0":
+"@react-pdf-viewer/page-navigation@npm:3.12.0":
   version: 3.12.0
   resolution: "@react-pdf-viewer/page-navigation@npm:3.12.0"
   dependencies:
@@ -6683,7 +6683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-pdf-viewer/scroll-mode@npm:~3.12.0":
+"@react-pdf-viewer/scroll-mode@npm:3.12.0":
   version: 3.12.0
   resolution: "@react-pdf-viewer/scroll-mode@npm:3.12.0"
   dependencies:
@@ -6695,7 +6695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-pdf-viewer/zoom@npm:~3.12.0":
+"@react-pdf-viewer/zoom@npm:3.12.0":
   version: 3.12.0
   resolution: "@react-pdf-viewer/zoom@npm:3.12.0"
   dependencies:

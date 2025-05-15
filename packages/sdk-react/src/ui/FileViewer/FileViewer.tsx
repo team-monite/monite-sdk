@@ -91,7 +91,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
           borderRadius: '8px',
         }}
       >
-        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+        <Worker workerUrl="https://js.monite.com/libs/pdf.js/3.4.120/pdf.worker.min.js">
           <Viewer
             fileUrl={url}
             scrollMode={ScrollMode.Page}
