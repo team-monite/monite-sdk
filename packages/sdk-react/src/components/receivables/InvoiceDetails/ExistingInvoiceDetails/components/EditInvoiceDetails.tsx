@@ -1,5 +1,6 @@
 import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
 import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
+import { useLineItemSubmitCleanup } from '../../CreateReceivable/hooks/useLineItemSubmitCleanup';
 import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
 import {
@@ -109,6 +110,9 @@ const EditInvoiceDetailsContent = ({
     reset,
   } = methods;
 
+  const { registerLineItemCleanupFn, runLineItemCleanup } =
+    useLineItemSubmitCleanup();
+
   useMeasureUnitsMapping(measureUnits, getValues, reset);
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -178,117 +182,121 @@ const EditInvoiceDetailsContent = ({
           <form
             id={formName}
             noValidate
-            onSubmit={handleSubmit((values) => {
-              const lineItems: Schemas['UpdateLineItems'] = {
-                data: values.line_items.map((lineItem) => {
-                  const extendedLineItem =
-                    lineItem as unknown as ExtendedLineItem;
+            onSubmit={async (e) => {
+              e.preventDefault();
+              runLineItemCleanup();
+              await handleSubmit((values) => {
+                const lineItems: Schemas['UpdateLineItems'] = {
+                  data: values.line_items.map((lineItem) => {
+                    const extendedLineItem =
+                      lineItem as unknown as ExtendedLineItem;
 
-                  let measureUnitName: string | undefined;
+                    let measureUnitName: string | undefined;
 
-                  // Case 1: We have a valid measure_unit_id - look up its name
-                  if (extendedLineItem.product.measure_unit_id) {
-                    const measureUnitId =
-                      extendedLineItem.product.measure_unit_id;
-                    const unit = measureUnits?.data?.find(
-                      (u) => u.id === measureUnitId
-                    );
-                    measureUnitName = unit?.name;
-                  }
-                  // Case 2: We have a custom measure unit name but no ID
-                  else if (
-                    extendedLineItem.product.measure_unit_name ||
-                    extendedLineItem.measure_unit?.name
-                  ) {
-                    measureUnitName =
-                      extendedLineItem.product.measure_unit_name ||
-                      extendedLineItem.measure_unit?.name;
-                  }
-
-                  const processedLineItem = {
-                    quantity: lineItem.quantity,
-                    product: {
-                      name: lineItem.product.name,
-                      type: lineItem.product
-                        .type as Schemas['ProductServiceTypeEnum'],
-                      measure_unit: measureUnitName
-                        ? { name: measureUnitName }
-                        : undefined,
-                      price: lineItem.product.price
-                        ? {
-                            currency: (lineItem.product.price.currency ??
-                              'USD') as Schemas['CurrencyEnum'],
-                            value: Math.round(
-                              lineItem.product.price.value ?? 0
-                            ),
-                          }
-                        : (undefined as unknown as Schemas['LineItemProductCreate']['price']),
-                    },
-                    // For non-VAT supported regions, use tax_rate_value
-                    ...(isNonVatSupported
-                      ? {
-                          tax_rate_value: rateMajorToMinor(
-                            lineItem.tax_rate_value ?? 0
-                          ),
-                        }
-                      : {
-                          vat_rate_id: lineItem.vat_rate_id,
-                        }),
-                  };
-
-                  return processedLineItem;
-                }),
-              };
-
-              const invoicePayload: Schemas['ReceivableUpdatePayload'] = {
-                invoice: {
-                  /** Customer section */
-                  counterpart_id: values.counterpart_id,
-                  counterpart_vat_id_id:
-                    values.counterpart_vat_id_id || undefined,
-                  currency: actualCurrency,
-                  memo: values.memo,
-                  footer: values.footer,
-                  vat_exemption_rationale: values.vat_exemption_rationale,
-                  // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                  counterpart_shipping_address_id:
-                    values?.default_shipping_address_id || null,
-                  counterpart_billing_address_id:
-                    values?.default_billing_address_id,
-                  /** We shouldn't send an empty string to the server if the value is not set */
-                  entity_bank_account_id:
-                    values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
-                  // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                  fulfillment_date: values.fulfillment_date
-                    ? /**
-                       * We have to change the date as Backend accepts it.
-                       * There is no `time` in request, only year, month and date
-                       */
-                      format(values.fulfillment_date, 'yyyy-MM-dd')
-                    : null,
-                  // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                  payment_reminder_id: values.payment_reminder_id || null,
-                  // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                  overdue_reminder_id: values.overdue_reminder_id || null,
-                  /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
-                  // purchase_order: values.purchase_order || undefined,
-                },
-              };
-
-              updateReceivableLineItems.mutate(lineItems, {
-                onSuccess: () => {
-                  updateReceivable.mutate(invoicePayload, {
-                    onSuccess: (receivable) => {
-                      onUpdated(
-                        receivable as Schemas['InvoiceResponsePayload']
+                    // Case 1: We have a valid measure_unit_id - look up its name
+                    if (extendedLineItem.product.measure_unit_id) {
+                      const measureUnitId =
+                        extendedLineItem.product.measure_unit_id;
+                      const unit = measureUnits?.data?.find(
+                        (u) => u.id === measureUnitId
                       );
-                    },
-                  });
-                },
-              });
-            })}
+                      measureUnitName = unit?.name;
+                    }
+                    // Case 2: We have a custom measure unit name but no ID
+                    else if (
+                      extendedLineItem.product.measure_unit_name ||
+                      extendedLineItem.measure_unit?.name
+                    ) {
+                      measureUnitName =
+                        extendedLineItem.product.measure_unit_name ||
+                        extendedLineItem.measure_unit?.name;
+                    }
+
+                    const processedLineItem = {
+                      quantity: lineItem.quantity,
+                      product: {
+                        name: lineItem.product.name,
+                        type: lineItem.product
+                          .type as Schemas['ProductServiceTypeEnum'],
+                        measure_unit: measureUnitName
+                          ? { name: measureUnitName }
+                          : undefined,
+                        price: lineItem.product.price
+                          ? {
+                              currency:
+                                lineItem.product.price.currency ?? 'USD',
+                              value: Math.round(
+                                lineItem.product.price.value ?? 0
+                              ),
+                            }
+                          : (undefined as unknown as Schemas['LineItemProductCreate']['price']),
+                      },
+                      // For non-VAT supported regions, use tax_rate_value
+                      ...(isNonVatSupported
+                        ? {
+                            tax_rate_value:
+                              lineItem.tax_rate_value !== undefined
+                                ? rateMajorToMinor(lineItem.tax_rate_value)
+                                : undefined,
+                          }
+                        : {
+                            vat_rate_id: lineItem.vat_rate_id,
+                          }),
+                    };
+
+                    return processedLineItem;
+                  }),
+                };
+
+                const invoicePayload: Schemas['ReceivableUpdatePayload'] = {
+                  invoice: {
+                    /** Customer section */
+                    counterpart_id: values.counterpart_id,
+                    counterpart_vat_id_id:
+                      values.counterpart_vat_id_id || undefined,
+                    currency: actualCurrency,
+                    memo: values.memo,
+                    vat_exemption_rationale: values.vat_exemption_rationale,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    counterpart_shipping_address_id:
+                      values?.default_shipping_address_id || null,
+                    counterpart_billing_address_id:
+                      values?.default_billing_address_id,
+                    /** We shouldn't send an empty string to the server if the value is not set */
+                    entity_bank_account_id:
+                      values.entity_bank_account_id || undefined,
+                    payment_terms_id: values.payment_terms_id,
+                    entity_vat_id_id: values.entity_vat_id_id || undefined,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    fulfillment_date: values.fulfillment_date
+                      ? /**
+                         * We have to change the date as Backend accepts it.
+                         * There is no `time` in request, only year, month and date
+                         */
+                        format(values.fulfillment_date, 'yyyy-MM-dd')
+                      : null,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    payment_reminder_id: values.payment_reminder_id || null,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    overdue_reminder_id: values.overdue_reminder_id || null,
+                    /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
+                    // purchase_order: values.purchase_order || undefined,
+                  },
+                };
+
+                updateReceivableLineItems.mutate(lineItems, {
+                  onSuccess: () => {
+                    updateReceivable.mutate(invoicePayload, {
+                      onSuccess: (receivable) => {
+                        onUpdated(
+                          receivable as Schemas['InvoiceResponsePayload']
+                        );
+                      },
+                    });
+                  },
+                });
+              })(e);
+            }}
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Stack direction="column" spacing={4}>
@@ -306,6 +314,7 @@ const EditInvoiceDetailsContent = ({
                 isNonVatSupported={isNonVatSupported}
                 actualCurrency={actualCurrency}
                 isVatSelectionDisabled
+                registerLineItemCleanupFn={registerLineItemCleanupFn}
               />
               {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
                * is defined and non-empty */}

@@ -61,8 +61,14 @@ export const FullfillmentSummary = ({
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
   const handlePaymentTermsChange = async (newId: string = '') => {
-    await refetch();
-    setValue('payment_terms_id', newId);
+    try {
+      await refetch();
+      await Promise.resolve();
+
+      setValue('payment_terms_id', newId);
+    } catch (error) {
+      console.error('Error changing payment terms:', error);
+    }
   };
 
   return (

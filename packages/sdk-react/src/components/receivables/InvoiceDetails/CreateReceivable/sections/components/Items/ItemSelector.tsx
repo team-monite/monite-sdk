@@ -23,21 +23,17 @@ import {
   MenuItem,
 } from '@mui/material';
 
-type CurrencyEnum = components['schemas']['CurrencyEnum'];
-
 interface ItemSelectorOptionProps {
   id: string;
   label: string;
   price?: {
-    currency: components['schemas']['CurrencyEnum'];
+    currency: CurrencyEnum;
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['LineItemProductMeasureUnit'];
+  measureUnit?: MeasureUnit;
   currency?: CurrencyEnum;
 }
-
-type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
   disabled?: boolean;
@@ -49,7 +45,7 @@ type ItemSelectorProps = {
   measureUnits?: { data: MeasureUnit[] };
   marginLeft?: string | number;
   onCreateItem: () => void;
-  onUpdate: (item: ItemSelectorOptionProps, isCatalogItem?: boolean) => void;
+  onChange: (item: ItemSelectorOptionProps, isCatalogItem?: boolean) => void;
 };
 
 const CREATE_NEW_ID = '__create-new__';
@@ -72,6 +68,19 @@ function isCustomOption(
   return itemOption?.id === CUSTOM_ID;
 }
 
+export interface ProductItem {
+  id: string;
+  label: string;
+  price?: {
+    currency: CurrencyEnum;
+    value: number;
+  };
+  smallestAmount?: number;
+  measureUnit?: MeasureUnit;
+  vat_rate_id?: string;
+  vat_rate_value?: number;
+}
+
 export const ItemSelector = ({
   fieldName,
   error,
@@ -82,7 +91,7 @@ export const ItemSelector = ({
   measureUnits,
   marginLeft = '4px', //to avoid box-shadow from being cut by container
   onCreateItem,
-  onUpdate,
+  onChange,
 }: ItemSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -190,19 +199,19 @@ export const ItemSelector = ({
       );
 
       if (isCustomName) {
-        onUpdate({ id: CUSTOM_ID, label: customName }, false);
+        onChange({ id: CUSTOM_ID, label: customName }, false);
       }
     }
-  }, [customName, itemsAutocompleteData, onUpdate]);
+  }, [customName, itemsAutocompleteData, onChange]);
 
   const handleInputChange = useCallback(
     (_: React.SyntheticEvent, value: string) => {
       setCustomName(value);
       if (value.trim()) {
-        onUpdate({ id: CUSTOM_ID, label: value }, false);
+        onChange({ id: CUSTOM_ID, label: value }, false);
       }
     },
-    [onUpdate]
+    [onChange]
   );
 
   const handleItemChange = useCallback(
@@ -214,7 +223,7 @@ export const ItemSelector = ({
       if (reason === 'clear') {
         setIsTyping(false);
         setCustomName('');
-        onUpdate({ id: '', label: '' }, false);
+        onChange({ id: '', label: '' }, false);
         return;
       }
 
@@ -224,13 +233,13 @@ export const ItemSelector = ({
 
       if (isCustomOption(value)) {
         setCustomName(value.label);
-        onUpdate({ id: CUSTOM_ID, label: value.label }, false);
+        onChange({ id: CUSTOM_ID, label: value.label }, false);
       } else {
         setCustomName('');
-        onUpdate(value, true);
+        onChange(value, true);
       }
     },
-    [onUpdate]
+    [onChange]
   );
 
   const isOptionEqualToValue = useCallback(
@@ -539,3 +548,7 @@ export const ItemSelector = ({
     />
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type MeasureUnit =
+  components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];

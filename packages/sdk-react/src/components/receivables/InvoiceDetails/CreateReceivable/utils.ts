@@ -121,6 +121,41 @@ export const processTaxRateValue = (inputValue: string): number => {
   return Math.min(Math.max(numValue, 0), 100);
 };
 
+const COMMON_DECIMAL_SEPARATOR = '.';
+
+/**
+ * Parses a string that might contain locale-specific formatting (e.g., commas for decimals)
+ * into a standard number.
+ *
+ * @param inputValue The raw input string.
+ * @returns A number, or 0 if parsing fails.
+ */
+export const parseLocaleNumericString = (inputValue: string): number => {
+  if (typeof inputValue !== 'string' || !inputValue.trim()) {
+    return 0;
+  }
+
+  const buf = inputValue.replace(/,/g, COMMON_DECIMAL_SEPARATOR);
+
+  let resultString = '';
+  let hasDot = false;
+
+  for (const char of buf) {
+    if (/\d/.test(char)) {
+      resultString += char;
+    } else if (char === COMMON_DECIMAL_SEPARATOR) {
+      if (!hasDot) {
+        resultString += COMMON_DECIMAL_SEPARATOR;
+        hasDot = true;
+      }
+    }
+  }
+
+  const numValue = parseFloat(resultString);
+
+  return isNaN(numValue) ? 0 : numValue;
+};
+
 /**
  * Handles cleaning up the input element for tax/VAT rate fields
  * Fixes issues like leading zeros
