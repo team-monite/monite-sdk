@@ -38,7 +38,7 @@ describe('CounterpartBankForm', () => {
 
     await waitFor(() => expect(submitBtn).not.toBeDisabled());
 
-    triggerChangeInput(/account name/i, '[create] Account name');
+    triggerChangeInput(/display name/i, '[create] Display name');
     triggerChangeInput(/iban/i, '[create] Iban');
     triggerChangeInput(/bic/i, '[create] Bic');
     triggerClickOnSelectOption(/country/i, 'Armenia');
@@ -142,7 +142,7 @@ describe('CounterpartBankForm', () => {
         cachedMoniteSettings
       );
 
-      const accountName = '[create] Account name';
+      const accountName = '[create] Display name';
       const iban = '[create] Iban';
       const bic = '[create] Bic';
       const countrySelectName = /country/i;
@@ -157,7 +157,7 @@ describe('CounterpartBankForm', () => {
 
       triggerClickOnSelectOption(countrySelectName, /Armenia/i);
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
-      triggerChangeInput(/account name/i, accountName);
+      triggerChangeInput(/display name/i, accountName);
       triggerChangeInput(/iban/i, iban);
       triggerChangeInput(/bic/i, bic);
 
@@ -186,7 +186,7 @@ describe('CounterpartBankForm', () => {
         cachedMoniteSettings
       );
 
-      const accountName = '[create] Account name';
+      const accountName = '[create] Display name';
       const iban = '[create] Iban';
       const bic = '[create] Bic';
       const accountNumber = '[create] Account number';
@@ -202,7 +202,7 @@ describe('CounterpartBankForm', () => {
       triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
 
-      triggerChangeInput(/account name/i, accountName);
+      triggerChangeInput(/display name/i, accountName);
       triggerChangeInput(/iban/i, iban);
       triggerChangeInput(/bic/i, bic);
       triggerChangeInput(/account number/i, accountNumber);

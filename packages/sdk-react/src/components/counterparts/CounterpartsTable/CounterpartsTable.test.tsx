@@ -268,7 +268,7 @@ describe('CounterpartsTable', () => {
     test('should trigger "onEdit" callback when we click on "edit" button', async () => {
       const onEditMock = jest.fn();
 
-      renderWithClient(<CounterpartsTable onEdit={onEditMock} />);
+      renderWithClient(<CounterpartsTable />);
 
       await waitUntilTableIsLoaded();
 
@@ -322,7 +322,7 @@ describe('CounterpartsTable', () => {
     test('should trigger "onDelete" callback when we click on "delete" button', async () => {
       const onDeleteMock = jest.fn();
 
-      renderWithClient(<CounterpartsTable onDelete={onDeleteMock} />);
+      renderWithClient(<CounterpartsTable />);
 
       await waitUntilTableIsLoaded();
 

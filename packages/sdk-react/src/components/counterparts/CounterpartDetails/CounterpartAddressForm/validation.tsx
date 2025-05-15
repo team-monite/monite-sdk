@@ -14,5 +14,5 @@ export const getAddressValidationSchema = (i18n: I18n) => ({
 
   country: yup.string().required(t(i18n)`Country is required`),
 
-  postalCode: yup.string().required(t(i18n)`ZIP code is required`),
+  postalCode: yup.string().required(t(i18n)`Postal code is required`),
 });

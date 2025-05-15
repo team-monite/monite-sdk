@@ -85,7 +85,7 @@ export const CounterpartAddressForm = ({
           render={({ field, fieldState: { error } }) => (
             <TextField
               id={field.name}
-              label={t(i18n)`ZIP code`}
+              label={t(i18n)`Postal code`}
               variant="standard"
               fullWidth
               required

@@ -181,7 +181,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
     <MoniteCard
       items={[
         {
-          label: t(i18n)`Full name`,
+          label: t(i18n)`Name`,
           value: getIndividualName(firstName, lastName),
         },
         {

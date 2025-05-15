@@ -24,6 +24,7 @@ import {
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
+import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { TagsModal } from '@/ui/tagsModal';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -50,7 +51,6 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import { TableCellProps } from '@mui/material/TableCell/TableCell';
 
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
@@ -71,17 +71,6 @@ const DetailsWrapper = styled(Box)(() => ({
   height: 0,
 }));
 
-interface StyledLabelTableCellProps extends TableCellProps {
-  isRequired: boolean;
-}
-
-const StyledLabelTableCell = styled(TableCell)<StyledLabelTableCellProps>(
-  ({ theme, isRequired }) => ({
-    color: isRequired ? theme.palette.error.main : theme.palette.text.secondary,
-    minWidth: 120,
-    width: '35%',
-  })
-);
 /**
  * PayableDetailsInfo component.
  *

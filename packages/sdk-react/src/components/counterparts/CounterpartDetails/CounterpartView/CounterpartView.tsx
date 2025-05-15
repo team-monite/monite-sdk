@@ -14,7 +14,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
@@ -24,6 +23,7 @@ import {
   DialogContent,
   Stack,
   Box,
+  DialogActions,
 } from '@mui/material';
 
 import {
@@ -115,41 +115,19 @@ export const CounterpartView = (props: CounterpartViewProps) => {
 
   const actions = useMemo(() => {
     return (
-      (isUpdateAllowed || isDeleteAllowed) && (
-        <>
-          {isUpdateAllowed && (
-            <Button
-              startIcon={<EditIcon fontSize="small" />}
-              variant="text"
-              color="primary"
-              size="small"
-              onClick={onEdit}
-            >
-              {t(i18n)`Edit`}
-            </Button>
-          )}
-
-          {isDeleteAllowed && (
-            <Button
-              startIcon={<DeleteForeverIcon />}
-              variant="text"
-              color="error"
-              size="small"
-              onClick={handleOpenDeleteCounterpartDialog}
-            >
-              {t(i18n)`Delete`}
-            </Button>
-          )}
-        </>
+      isUpdateAllowed && (
+        <Button
+          startIcon={<EditIcon fontSize="small" />}
+          variant="text"
+          color="primary"
+          size="small"
+          onClick={onEdit}
+        >
+          {t(i18n)`Edit`}
+        </Button>
       )
     );
-  }, [
-    handleOpenDeleteCounterpartDialog,
-    i18n,
-    isDeleteAllowed,
-    isUpdateAllowed,
-    onEdit,
-  ]);
+  }, [i18n, isUpdateAllowed, onEdit]);
 
   if (
     isLoading ||
@@ -349,6 +327,18 @@ export const CounterpartView = (props: CounterpartViewProps) => {
           )}
         </Stack>
       </DialogContent>
+      <Divider />
+      <DialogActions>
+        <Stack direction="row" spacing={2}>
+          <Button
+            color="error"
+            onClick={handleOpenDeleteCounterpartDialog}
+            disabled={!isDeleteAllowed}
+          >
+            {t(i18n)`Delete`}
+          </Button>
+        </Stack>
+      </DialogActions>
     </>
   );
 };

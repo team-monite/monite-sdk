@@ -8,7 +8,6 @@ import {
   useCounterpartForm,
   CounterpartsFormProps,
 } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
-import { getIndividualName } from '@/components/counterparts/helpers';
 import {
   CounterpartDataTestId,
   type DefaultValuesOCRIndividual,
@@ -36,6 +35,7 @@ import {
   ListItemText,
   Grid,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
@@ -105,7 +105,7 @@ export const CounterpartIndividualForm = ({
     },
   });
 
-  const { control, handleSubmit, reset, watch } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   const handleSubmitWithoutPropagation = useCallback(
     (e: BaseSyntheticEvent) => {
@@ -185,11 +185,8 @@ export const CounterpartIndividualForm = ({
               {isInvoiceCreation
                 ? t(i18n)`Create customer`
                 : props?.id
-                ? getIndividualName(
-                    watch('individual.firstName'),
-                    watch('individual.lastName')
-                  )
-                : t(i18n)`Create Counterpart - Individual`}
+                ? t(i18n)`Edit individual`
+                : t(i18n)`Create new Counterpart`}
             </Typography>
           </Grid>
           <Grid item xs={1}>
@@ -409,48 +406,33 @@ export const CounterpartIndividualForm = ({
       </DialogContent>
       <Divider />
 
-      <DialogActions
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '1em',
-          padding: 4,
-        }}
-      >
-        {isInvoiceCreation && (
-          <Button
-            variant="outlined"
-            sx={{ marginRight: 'auto' }}
-            onClick={props.onCancel}
-          >{t(i18n)`Back`}</Button>
-        )}
-        {(props?.id || dialogContext) && (
+      <DialogActions>
+        <Stack direction="row" spacing={2}>
           <Button
             variant="text"
             onClick={
-              props?.id
+              props?.id || isInvoiceCreation
                 ? props.onCancel
                 : props.onClose || dialogContext?.onClose
             }
           >
-            {t(i18n)`Cancel`}
+            {isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`}
           </Button>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          form={formName}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <CircularProgress color="primary" />
-          ) : props?.id ? (
-            t(i18n)`Save`
-          ) : (
-            t(i18n)`Create`
-          )}
-        </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            form={formName}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <CircularProgress color="primary" />
+            ) : props?.id ? (
+              t(i18n)`Save`
+            ) : (
+              t(i18n)`Create`
+            )}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );

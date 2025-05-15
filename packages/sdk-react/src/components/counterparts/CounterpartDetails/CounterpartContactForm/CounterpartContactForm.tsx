@@ -16,7 +16,7 @@ import {
   Button,
 } from '@mui/material';
 
-import { getIndividualName, getCounterpartName } from '../../helpers';
+import { getCounterpartName } from '../../helpers';
 import { CounterpartAddressForm } from '../CounterpartAddressForm';
 import {
   useCounterpartContactForm,
@@ -28,7 +28,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { methods, counterpart, contact, formRef, saveContact, isLoading } =
     useCounterpartContactForm(props);
 
-  const { control, handleSubmit, watch } = methods;
+  const { control, handleSubmit } = methods;
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartContact-${useId()}`;
@@ -50,9 +50,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption">
-          {contact
-            ? getIndividualName(watch('firstName'), watch('lastName'))
-            : t(i18n)`Add contact person`}
+          {contact ? t(i18n)`Edit contact person` : t(i18n)`Add contact person`}
         </Typography>
       </Stack>
       <Divider />
@@ -157,18 +155,19 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" color="inherit" onClick={props.onCancel}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          type="submit"
-          form={formName}
-          disabled={isLoading}
-        >
-          {contact ? t(i18n)`Update contact` : t(i18n)`Add contact`}
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button variant="text" onClick={props.onCancel}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            form={formName}
+            disabled={isLoading}
+          >
+            {t(i18n)`Save`}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );
