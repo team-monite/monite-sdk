@@ -51,6 +51,8 @@ import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
+import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { InvoicePreview } from './sections/components/InvoicePreview';
@@ -150,6 +152,9 @@ const CreateReceivablesBase = ({
     getFieldState,
   } = methods;
 
+  const { registerLineItemCleanupFn, runLineItemCleanup } =
+    useLineItemSubmitCleanup();
+
   const counterpartId = watch('counterpart_id');
 
   const initialSettingsFields = {
@@ -247,16 +252,19 @@ const CreateReceivablesBase = ({
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+
       return;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
+
       return;
     }
 
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
+
       return;
     }
 
@@ -297,7 +305,11 @@ const CreateReceivablesBase = ({
           type: 'product',
         },
         ...(isNonVatSupported
-          ? { tax_rate_value: rateMajorToMinor(item?.tax_rate_value ?? 0) }
+          ? {
+              tax_rate_value: item?.tax_rate_value
+                ? rateMajorToMinor(item.tax_rate_value)
+                : undefined,
+            }
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
@@ -408,7 +420,7 @@ const CreateReceivablesBase = ({
 
         if (
           newAccounts?.newDefault &&
-          newAccounts?.currentlySelected?.id !== newAccounts?.newDefault?.id &&
+          newAccounts?.currentlySelected?.id !== newAccounts.newDefault.id &&
           newAccounts?.currentlySelected?.is_default_for_currency
         ) {
           setValue('entity_bank_account_id', newAccounts?.newDefault?.id);
@@ -670,7 +682,9 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={visibleSettingsFields.isFulfillmentDateShown}
+                      checked={
+                        visibleSettingsFields.isFulfillmentDateShown
+                      }
                       onChange={(e) =>
                         handleFieldChange(
                           'isFulfillmentDateShown',
@@ -706,7 +720,9 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={visibleSettingsFields.isPurchaseOrderShown}
+                      checked={
+                        visibleSettingsFields.isPurchaseOrderShown
+                      }
                       onChange={(e) =>
                         handleFieldChange(
                           'isPurchaseOrderShown',
@@ -742,7 +758,9 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={visibleSettingsFields.isTermsAndConditionsShown}
+                      checked={
+                        visibleSettingsFields.isTermsAndConditionsShown
+                      }
                       onChange={(e) =>
                         handleFieldChange(
                           'isTermsAndConditionsShown',
@@ -788,7 +806,10 @@ const CreateReceivablesBase = ({
                     minHeight: 96,
                   }}
                 >
-                  <Button variant="text" onClick={handleCloseEnableFieldsModal}>
+                  <Button
+                    variant="text"
+                    onClick={handleCloseEnableFieldsModal}
+                  >
                     {t(i18n)`Cancel`}
                   </Button>
                   <Button
@@ -802,15 +823,36 @@ const CreateReceivablesBase = ({
             </Box>
           </Modal>
 
+          <Button
+            variant="contained"
+            key="next"
+            color="primary"
+            type="submit"
+            form={formName}
+            disabled={createReceivable.isPending}
+          >{t(i18n)`Save and continue`}</Button>
+
           <FormProvider {...methods}>
             <form
               id={formName}
               noValidate
-              onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                runLineItemCleanup();
+                await handleSubmit(handleCreateReceivable)(e);
+              }}
               style={{ marginBottom: theme.spacing(7) }}
             >
               <Stack direction="column" spacing={7}>
                 <Box>
+                  <Typography
+                    sx={{ mt: 8, mb: 5 }}
+                    data-testid={
+                      ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
+                    }
+                    variant="h3"
+                  >{t(i18n)`Create invoice`}</Typography>
+
                   <CustomerSection
                     disabled={createReceivable.isPending}
                     counterpart={counterpart}
@@ -822,6 +864,7 @@ const CreateReceivablesBase = ({
                 </Box>
 
                 <ItemsSection
+                  registerLineItemCleanupFn={registerLineItemCleanupFn}
                   defaultCurrency={
                     settings?.currency?.default || fallbackCurrency
                   }
