@@ -49,6 +49,8 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.png$': '<rootDir>/src/mocks/fileMock.ts',
+    'react-markdown':
+      '<rootDir>/node_modules/react-markdown/react-markdown.min.js',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -104,5 +106,4 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./setup-tests.cjs', './src/setupTests.tsx'],
   transform: config,
-  transformIgnorePatterns: ['/node_modules/(?!(react-markdown))/'],
 };
