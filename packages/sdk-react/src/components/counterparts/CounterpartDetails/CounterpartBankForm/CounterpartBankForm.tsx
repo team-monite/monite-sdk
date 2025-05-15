@@ -80,7 +80,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption" data-testid="bankName">
-          {bank ? watch('name') : t(i18n)`Add bank account`}
+          {bank ? t(i18n)`Edit bank account` : t(i18n)`Add bank account`}
         </Typography>
       </Stack>
       <Divider />
@@ -93,7 +93,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   id={field.name}
-                  label={t(i18n)`Account name`}
+                  label={t(i18n)`Display name`}
                   variant="standard"
                   fullWidth
                   error={Boolean(error)}
@@ -205,18 +205,19 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" color="inherit" onClick={props.onCancel}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          type="submit"
-          form={formId}
-          variant="outlined"
-          color="primary"
-          disabled={isLoading}
-        >
-          {bank ? t(i18n)`Update bank account` : t(i18n)`Add bank account`}
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button variant="text" onClick={props.onCancel}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            type="submit"
+            form={formId}
+            variant="contained"
+            disabled={isLoading}
+          >
+            {t(i18n)`Save`}
+          </Button>
+        </Stack>
       </DialogActions>
     </>
   );

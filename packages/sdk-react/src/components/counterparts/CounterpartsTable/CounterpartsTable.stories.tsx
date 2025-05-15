@@ -16,8 +16,6 @@ type Story = StoryObj<typeof CounterpartsTable>;
 
 export const FullPermissions: Story = {
   args: {
-    onEdit: action('onEdit'),
-    onDelete: action('onDelete'),
     onRowClick: action('onRowClick'),
     onChangeSort: action('onChangeSort'),
     onChangeFilter: action('onChangeFilter'),
@@ -32,8 +30,6 @@ export const FullPermissions: Story = {
 
 export const WithReadOnlyPermissions: Story = {
   args: {
-    onEdit: action('onEdit'),
-    onDelete: action('onDelete'),
     onRowClick: action('onRowClick'),
     onChangeSort: action('onChangeSort'),
     onChangeFilter: action('onChangeFilter'),
@@ -62,8 +58,6 @@ export const WithReadOnlyPermissions: Story = {
 
 export const WithEmptyPermissions: Story = {
   args: {
-    onEdit: action('onEdit'),
-    onDelete: action('onDelete'),
     onRowClick: action('onRowClick'),
     onChangeSort: action('onChangeSort'),
     onChangeFilter: action('onChangeFilter'),

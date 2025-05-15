@@ -39,9 +39,9 @@ export const getTheme = (theme: ThemeConfig) => {
         lineHeight: theme.typography?.h2?.lineHeight ?? '40px',
       },
       h3: {
-        fontSize: theme.typography?.h2?.fontSize ?? 24,
-        fontWeight: theme.typography?.h2?.fontWeight ?? 600,
-        lineHeight: theme.typography?.h2?.lineHeight ?? '32px',
+        fontSize: theme.typography?.h3?.fontSize ?? 24,
+        fontWeight: theme.typography?.h3?.fontWeight ?? 600,
+        lineHeight: theme.typography?.h3?.lineHeight ?? '32px',
       },
       subtitle1: {
         fontSize: theme.typography?.h2?.fontSize ?? 20,

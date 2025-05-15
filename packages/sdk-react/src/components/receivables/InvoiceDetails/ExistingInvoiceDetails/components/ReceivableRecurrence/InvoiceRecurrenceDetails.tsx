@@ -32,7 +32,6 @@ export const InvoiceRecurrenceDetails = ({
   return (
     <>
       <MoniteCardItem
-        divider
         label={t(i18n)`Start date`}
         value={t(i18n)`${i18n.date(new Date(start_year, start_month - 1, 1), {
           month: 'long',
@@ -41,7 +40,6 @@ export const InvoiceRecurrenceDetails = ({
       />
 
       <MoniteCardItem
-        divider
         label={t(i18n)`End date`}
         value={t(i18n)`${i18n.date(new Date(end_year, end_month - 1, 1), {
           month: 'long',
@@ -50,7 +48,6 @@ export const InvoiceRecurrenceDetails = ({
       />
 
       <MoniteCardItem
-        divider
         label={t(i18n)`Frequency`}
         value={
           day_of_month === 'first_day'
@@ -61,7 +58,6 @@ export const InvoiceRecurrenceDetails = ({
 
       <Box position="relative">
         <MoniteCardItem
-          divider
           label={t(i18n)`Issued documents`}
           value={
             <>

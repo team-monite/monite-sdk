@@ -6,14 +6,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import { Box, FormControl, MenuItem, Select, SxProps } from '@mui/material';
 
 import { Theme } from 'mui-styles';
 
@@ -40,7 +33,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
       sx={sx}
       searchField={
         <SearchField
-          label={t(i18n)`Search by name`}
+          placeholder={t(i18n)`Search by name`}
           onChange={(search) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search);
           }}
@@ -52,10 +45,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
         fullWidth
         className="Monite-CounterpartTypeFilter Monite-FilterControl"
       >
-        <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
         <Select
-          labelId="type"
-          label={t(i18n)`Type`}
           defaultValue="all"
           MenuProps={{ container: root }}
           onChange={(search) => {
@@ -63,7 +53,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
           }}
         >
           {[
-            { label: t(i18n)`All`, value: 'all' },
+            { label: t(i18n)`All types`, value: 'all' },
             {
               label: t(i18n)`Individuals`,
               value: 'individual',
@@ -88,10 +78,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
           fullWidth
           className="Monite-CounterpartCategoryFilter Monite-FilterControl"
         >
-          <InputLabel id="category">{t(i18n)`Category`}</InputLabel>
           <Select
-            labelId="category"
-            label={t(i18n)`Category`}
             defaultValue="all"
             MenuProps={{ container: root }}
             onChange={(search) => {
@@ -100,7 +87,7 @@ export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
           >
             {[
               {
-                label: t(i18n)`Customers & Vendors`,
+                label: t(i18n)`All categories`,
                 value: 'all',
               },
               {

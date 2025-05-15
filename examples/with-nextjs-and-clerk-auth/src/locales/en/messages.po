@@ -44,7 +44,7 @@ msgstr "Counterparts"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/components/NavigationMenu/NavigationList.tsx:76
+#: src/components/NavigationMenu/NavigationList.tsx:70
 msgid "Document Design"
 msgstr "Document Design"
 
@@ -126,7 +126,7 @@ msgstr "Projects"
 #~ msgid "Purchases"
 #~ msgstr "Purchases"
 
-#: src/components/NavigationMenu/NavigationList.tsx:70
+#: src/components/NavigationMenu/NavigationList.tsx:73
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
@@ -142,7 +142,7 @@ msgstr "Settings"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:73
+#: src/components/NavigationMenu/NavigationList.tsx:76
 msgid "Tags"
 msgstr "Tags"
 
