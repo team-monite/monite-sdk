@@ -5414,6 +5414,10 @@ msgstr "Nurseries, Lawn and Garden Supply Stores"
 msgid "Nursing/Personal Care"
 msgstr "Nursing/Personal Care"
 
+#: src/ui/FileViewer/FileViewer.tsx:84
+msgid "of"
+msgstr "of"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:179
 msgid "Offer a discount to your customer if they pay early."
 msgstr "Offer a discount to your customer if they pay early."

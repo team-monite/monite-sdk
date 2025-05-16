@@ -24,6 +24,7 @@ module.exports = {
           'data-testid',
           'rel',
           'accept',
+          'workerUrl',
         ],
         ignoreProperty: [
           'style',
