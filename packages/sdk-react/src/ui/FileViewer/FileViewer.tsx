@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   Worker,
   Viewer,
@@ -45,6 +47,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
   const getFilePluginInstance = getFilePlugin();
+  const { i18n } = useLingui();
 
   return (
     <div
@@ -78,7 +81,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
             {(props: RenderCurrentPageLabelProps) => (
               <span style={{ fontSize: '0.75rem', margin: '0 4px' }}>{`${
                 props.currentPage + 1
-              } of ${props.numberOfPages}`}</span>
+              } ${t(i18n)`of`} ${props.numberOfPages}`}</span>
             )}
           </pageNavigationPluginInstance.CurrentPageLabel>
           <pageNavigationPluginInstance.GoToNextPage />
