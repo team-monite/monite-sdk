@@ -39,6 +39,20 @@ jest.mock('@mui/x-data-grid', () => {
   };
 });
 
+jest.mock('rehype-raw', () => {
+  return jest.fn((tree) => tree);
+});
+
+jest.mock('remark-gfm', () => {
+  return jest.fn(() => (tree: any) => tree);
+});
+
+jest.mock('react-markdown', () => {
+  return jest.fn().mockImplementation(({ children }) => {
+    return <>{children}</>;
+  });
+});
+
 /**
  * We have to disable the CacheProvider for all tests
  * as its usage slows down the tests.
