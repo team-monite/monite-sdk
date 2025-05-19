@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useVatTypeLabelByCode } from '@/core/hooks/useVatTypes';
 import { getCountries } from '@/core/utils/countries';
 import { MoniteCard } from '@/ui/Card/Card';
@@ -17,7 +17,7 @@ import {
 
 export const CounterpartVatView = (props: CounterpartVatViewProps) => {
   const { i18n } = useLingui();
-  const { deleteVat, onEdit, isLoading } = useCounterpartVatView(props);
+  const { deleteVat, onEdit } = useCounterpartVatView(props);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
   const {
@@ -91,13 +91,14 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
           <CardActions>{actions}</CardActions>
         </>
       )}
-      <ConfirmDeleteDialog
-        isLoading={isLoading}
-        onClose={handleCloseDeleteDialog}
-        onDelete={handleDeleteVatId}
-        type={t(i18n)`VAT ID`}
-        name={value ? value : ''}
+      <ConfirmationModal
         open={showDeleteDialog}
+        title={t(i18n)`Delete VAT ID “${value}“?`}
+        message={t(i18n)`You can't undo this action.`}
+        confirmLabel={t(i18n)`Delete`}
+        cancelLabel={t(i18n)`Cancel`}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleDeleteVatId}
       />
     </MoniteCard>
   );

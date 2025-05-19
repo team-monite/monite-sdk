@@ -1,7 +1,7 @@
 import { type MouseEvent, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -124,7 +124,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
     state,
   } = prepareCounterpartContact(props.contact);
 
-  const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
+  const { deleteContact, onEdit } = useCounterpartContactView(props);
   const { mutate } = useMakeCounterpartContactDefault();
 
   const makeDefault = (event: MouseEvent<HTMLElement>) => {
@@ -216,13 +216,17 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
           <CardActions>{actions}</CardActions>
         </>
       )}
-      <ConfirmDeleteDialog
-        isLoading={isLoading}
-        onClose={handleCloseDeleteDialog}
-        onDelete={deleteContact}
-        type={t(i18n)`Contact Person`}
-        name={getIndividualName(firstName, lastName)}
+      <ConfirmationModal
         open={showDeleteDialog}
+        title={t(i18n)`Delete Contact Person “${getIndividualName(
+          firstName,
+          lastName
+        )}“?`}
+        message={t(i18n)`You can't undo this action.`}
+        confirmLabel={t(i18n)`Delete`}
+        cancelLabel={t(i18n)`Cancel`}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={deleteContact}
       />
     </MoniteCard>
   );

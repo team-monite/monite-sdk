@@ -12,23 +12,25 @@ import {
   styled,
 } from '@mui/material';
 
-type ConfirmDeleteDialogProps = {
+type ConfirmationModalProps = {
   open: boolean;
-  type: string;
-  name: string;
-  isLoading: boolean;
+  title: string;
+  message: string;
+  confirmLabel: string;
+  cancelLabel: string;
   onClose: () => void;
-  onDelete: () => void;
+  onConfirm: () => void;
 };
 
-export const ConfirmDeleteDialog = ({
-  onClose,
-  onDelete,
-  type,
-  name,
-  isLoading,
+export const ConfirmationModal = ({
   open,
-}: ConfirmDeleteDialogProps) => {
+  title,
+  message,
+  confirmLabel,
+  cancelLabel,
+  onClose,
+  onConfirm,
+}: ConfirmationModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -37,30 +39,21 @@ export const ConfirmDeleteDialog = ({
       open={open}
       container={root}
       onClose={onClose}
-      aria-label={t(i18n)`Delete confirmation`}
+      aria-label={t(i18n)`Confirmation dialog`}
       fullWidth
       maxWidth="sm"
     >
-      <MoniteDialogTitle>
-        {t(i18n)`Delete ${type} “${name}“?`}
-      </MoniteDialogTitle>
+      <MoniteDialogTitle>{title}</MoniteDialogTitle>
       <MoniteDialogContent>
-        <DialogContentText>
-          {t(i18n)`You can't undo this action.`}
-        </DialogContentText>
+        <DialogContentText>{message}</DialogContentText>
       </MoniteDialogContent>
       <MoniteDialogActions>
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} disabled={isLoading} autoFocus>
-            {t(i18n)`Cancel`}
+          <Button onClick={onClose} autoFocus>
+            {cancelLabel}
           </Button>
-          <Button
-            color="error"
-            variant="contained"
-            onClick={onDelete}
-            disabled={isLoading}
-          >
-            {t(i18n)`Delete`}
+          <Button color="error" variant="contained" onClick={onConfirm}>
+            {confirmLabel}
           </Button>
         </Stack>
       </MoniteDialogActions>
