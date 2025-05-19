@@ -2170,14 +2170,15 @@ msgstr "Create New"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:222
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:335
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:189
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:204
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:184
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:189
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:204
-msgid "Create new Counterpart"
-msgstr "Create new Counterpart"
+#~ msgid "Create new Counterpart"
+#~ msgstr "Create new Counterpart"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:289
 msgid "Create new counterpart:"
@@ -8275,8 +8276,12 @@ msgid "VAT ID or Tax ID"
 msgstr "VAT ID or Tax ID"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:233
-msgid "Vat IDs"
-msgstr "Vat IDs"
+#~ msgid "Vat IDs"
+#~ msgstr "Vat IDs"
+
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:233
+msgid "VAT IDs"
+msgstr "VAT IDs"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:72
 msgid "VAT information"

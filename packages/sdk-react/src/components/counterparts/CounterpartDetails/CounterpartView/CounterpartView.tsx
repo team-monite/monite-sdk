@@ -230,7 +230,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             spacing={2}
             data-testid={CounterpartDataTestId.Vat}
           >
-            <Typography variant="subtitle2">{t(i18n)`Vat IDs`}</Typography>
+            <Typography variant="subtitle2">{t(i18n)`VAT IDs`}</Typography>
 
             {vats?.map((vat) => (
               <CounterpartVatView
