@@ -185,6 +185,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             cancelLabel={t(i18n)`Cancel`}
             onClose={handleCloseDeleteCounterpartDialog}
             onConfirm={handleDeleteCounterpart}
+            isLoading={isLoading}
           />
 
           {counterpart && isOrganizationCounterpart(counterpart) && (

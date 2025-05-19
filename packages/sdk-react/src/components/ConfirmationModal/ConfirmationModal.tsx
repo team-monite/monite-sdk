@@ -10,6 +10,7 @@ import {
   DialogContentText,
   Stack,
   styled,
+  CircularProgress,
 } from '@mui/material';
 
 type ConfirmationModalProps = {
@@ -20,6 +21,7 @@ type ConfirmationModalProps = {
   cancelLabel: string;
   onClose: () => void;
   onConfirm: () => void;
+  isLoading?: boolean;
 };
 
 export const ConfirmationModal = ({
@@ -30,6 +32,7 @@ export const ConfirmationModal = ({
   cancelLabel,
   onClose,
   onConfirm,
+  isLoading = false,
 }: ConfirmationModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -49,10 +52,20 @@ export const ConfirmationModal = ({
       </MoniteDialogContent>
       <MoniteDialogActions>
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} autoFocus>
+          <Button onClick={onClose} autoFocus disabled={isLoading}>
             {cancelLabel}
           </Button>
-          <Button color="error" variant="contained" onClick={onConfirm}>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={onConfirm}
+            disabled={isLoading}
+            startIcon={
+              isLoading ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : undefined
+            }
+          >
             {confirmLabel}
           </Button>
         </Stack>

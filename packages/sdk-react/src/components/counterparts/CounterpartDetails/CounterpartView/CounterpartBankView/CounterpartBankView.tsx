@@ -17,7 +17,7 @@ import {
 
 export const CounterpartBankView = (props: CounterpartBankViewProps) => {
   const { i18n } = useLingui();
-  const { deleteBank, onEdit } = useCounterpartBankView(props);
+  const { deleteBank, onEdit, isLoading } = useCounterpartBankView(props);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const { isUpdateAllowed, isDeleteAllowed } = props.permissions;
 
@@ -130,6 +130,7 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}
         onConfirm={handleDeleteBankAccount}
+        isLoading={isLoading}
       />
     </MoniteCard>
   );

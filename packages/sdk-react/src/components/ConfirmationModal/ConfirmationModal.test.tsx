@@ -82,4 +82,37 @@ describe('ConfirmationModal', () => {
 
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
   });
+
+  describe('loading state', () => {
+    it('disables both buttons when isLoading is true', () => {
+      renderComponent({ isLoading: true });
+
+      const confirmButton = screen.getByText('Confirm');
+      const cancelButton = screen.getByText('Cancel');
+
+      expect(confirmButton).toBeDisabled();
+      expect(cancelButton).toBeDisabled();
+    });
+
+    it('shows loading spinner on confirm button when isLoading is true', () => {
+      renderComponent({ isLoading: true });
+
+      const confirmButton = screen.getByText('Confirm');
+      expect(confirmButton.querySelector('svg')).toBeInTheDocument();
+    });
+
+    it('does not trigger onConfirm when confirm button is clicked in loading state', () => {
+      renderComponent({ isLoading: true });
+
+      fireEvent.click(screen.getByText('Confirm'));
+      expect(defaultProps.onConfirm).not.toHaveBeenCalled();
+    });
+
+    it('does not trigger onClose when cancel button is clicked in loading state', () => {
+      renderComponent({ isLoading: true });
+
+      fireEvent.click(screen.getByText('Cancel'));
+      expect(defaultProps.onClose).not.toHaveBeenCalled();
+    });
+  });
 });

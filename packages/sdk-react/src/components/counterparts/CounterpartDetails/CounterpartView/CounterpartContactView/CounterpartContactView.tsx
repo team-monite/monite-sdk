@@ -124,7 +124,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
     state,
   } = prepareCounterpartContact(props.contact);
 
-  const { deleteContact, onEdit } = useCounterpartContactView(props);
+  const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
   const { mutate } = useMakeCounterpartContactDefault();
 
   const makeDefault = (event: MouseEvent<HTMLElement>) => {
@@ -227,6 +227,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}
         onConfirm={deleteContact}
+        isLoading={isLoading}
       />
     </MoniteCard>
   );

@@ -17,7 +17,7 @@ import {
 
 export const CounterpartVatView = (props: CounterpartVatViewProps) => {
   const { i18n } = useLingui();
-  const { deleteVat, onEdit } = useCounterpartVatView(props);
+  const { deleteVat, onEdit, isLoading } = useCounterpartVatView(props);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
   const {
@@ -99,6 +99,7 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}
         onConfirm={handleDeleteVatId}
+        isLoading={isLoading}
       />
     </MoniteCard>
   );

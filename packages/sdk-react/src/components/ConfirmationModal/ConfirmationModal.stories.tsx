@@ -36,6 +36,14 @@ export const Closed: Story = {
   render: (args) => <ConfirmationModal {...args} />,
 };
 
+export const Loading: Story = {
+  args: {
+    ...Default.args,
+    isLoading: true,
+  },
+  render: (args) => <ConfirmationModal {...args} />,
+};
+
 export const LongMessage: Story = {
   args: {
     open: true,
