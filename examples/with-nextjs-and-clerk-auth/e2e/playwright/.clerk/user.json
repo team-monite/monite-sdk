@@ -1,0 +1,95 @@
+{
+  "cookies": [
+    {
+      "name": "__cf_bm",
+      "value": "tUSDMjqh7SiQPRATwLx2dTZ1GwRsetOyyqafTBnxSHw-1747742124-1.0.1.1-vkrwQ4UnzoSghAynci5T1IghwZI7a2DUXB35w.A8U3nr7dxBAGikhqxc4lExoiIcamZlIxgvmWin.jq.8ZyY6A.U4h4zcqRZUxbfien57Rk",
+      "domain": ".helped-iguana-46.clerk.accounts.dev",
+      "path": "/",
+      "expires": 1747743924.91767,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_cfuvid",
+      "value": "kk2L7xXkXP0rUdgSSjGT.58qdfkChvkYpHkSZlfQ.8E-1747742124842-0.0.1.1-604800000",
+      "domain": ".helped-iguana-46.clerk.accounts.dev",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__clerk_db_jwt",
+      "value": "dvb_2xMJgzgqTdb9npeYwpKKKOJQhkY",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__clerk_db_jwt_bWNBAhJH",
+      "value": "dvb_2xMJgzgqTdb9npeYwpKKKOJQhkY",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__session",
+      "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yWTdoUFFWb1VsQnNBZVIxeW1ZTXhjTkRsV2MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3NDc3NDIxOTEsImZ2YSI6WzAsLTFdLCJpYXQiOjE3NDc3NDIxMzEsImlzcyI6Imh0dHBzOi8vaGVscGVkLWlndWFuYS00Ni5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3NDc3NDIxMjEsIm9yZ19pZCI6Im9yZ18yWWNEZnhaMmlpa2RlTTl6Q2FnREs5ZE5KS3QiLCJvcmdfcGVybWlzc2lvbnMiOltdLCJvcmdfcm9sZSI6ImJhc2ljX21lbWJlciIsIm9yZ19zbHVnIjoibW9uaXRlIiwic2lkIjoic2Vzc18yeE1KaHNTcGdVdXd0Zzh0UFI2dFhEdmVQenkiLCJzdWIiOiJ1c2VyXzJ4Smd1Y2NTYXYzb0k5UjdBYXJYZnVOSzVUOCJ9.Pyfk1ycrE1Ihd81tedGo2Bps0yFfiK1ogyc8L06hiwU9zVD3W8hFmRlrZ6carX5N5nSuXclfm6ccfGRdS2HH6iwMCcJ-uupa8ESFLrLkGxFzaekkb8tPDmpwWZPskd1dcF9D0KuFKzc3ygCc5FuAIQTBzXSDtn6H849U_0ksO1X1lMKx7HdBcxCU0qCocHaTWEbDmamk57_q3sWR4GE-07hoseQ_oruskw85BDDqHehROKVoaStVnvGxL7ArxFihqD3dw9XTJ2QgNCJ8ICxcwdWJ9sPJDRTVK81otTu2bFi0XtlVIWw7VqUhwkHq5VbCvrlgUWAw6WvHXs503rl3gg",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__session_bWNBAhJH",
+      "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yWTdoUFFWb1VsQnNBZVIxeW1ZTXhjTkRsV2MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3NDc3NDIxOTEsImZ2YSI6WzAsLTFdLCJpYXQiOjE3NDc3NDIxMzEsImlzcyI6Imh0dHBzOi8vaGVscGVkLWlndWFuYS00Ni5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3NDc3NDIxMjEsIm9yZ19pZCI6Im9yZ18yWWNEZnhaMmlpa2RlTTl6Q2FnREs5ZE5KS3QiLCJvcmdfcGVybWlzc2lvbnMiOltdLCJvcmdfcm9sZSI6ImJhc2ljX21lbWJlciIsIm9yZ19zbHVnIjoibW9uaXRlIiwic2lkIjoic2Vzc18yeE1KaHNTcGdVdXd0Zzh0UFI2dFhEdmVQenkiLCJzdWIiOiJ1c2VyXzJ4Smd1Y2NTYXYzb0k5UjdBYXJYZnVOSzVUOCJ9.Pyfk1ycrE1Ihd81tedGo2Bps0yFfiK1ogyc8L06hiwU9zVD3W8hFmRlrZ6carX5N5nSuXclfm6ccfGRdS2HH6iwMCcJ-uupa8ESFLrLkGxFzaekkb8tPDmpwWZPskd1dcF9D0KuFKzc3ygCc5FuAIQTBzXSDtn6H849U_0ksO1X1lMKx7HdBcxCU0qCocHaTWEbDmamk57_q3sWR4GE-07hoseQ_oruskw85BDDqHehROKVoaStVnvGxL7ArxFihqD3dw9XTJ2QgNCJ8ICxcwdWJ9sPJDRTVK81otTu2bFi0XtlVIWw7VqUhwkHq5VbCvrlgUWAw6WvHXs503rl3gg",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__client_uat_bWNBAhJH",
+      "value": "1747742131",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "__client_uat",
+      "value": "1747742131",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1779278131,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Strict"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "__clerk_environment",
+          "value": "{\"value\":{\"object\":\"environment\",\"auth_config\":{\"claimed_at\":null,\"id\":\"\",\"object\":\"auth_config\",\"reverification\":false,\"single_session_mode\":false},\"display_config\":{\"object\":\"display_config\",\"after_create_organization_url\":\"http://localhost:3000\",\"after_join_waitlist_url\":\"http://localhost:3000\",\"after_leave_organization_url\":\"http://localhost:3000\",\"after_sign_in_url\":\"http://localhost:3000\",\"after_sign_out_all_url\":\"https://helped-iguana-46.accounts.dev/sign-in\",\"after_sign_out_one_url\":\"https://helped-iguana-46.accounts.dev/sign-in/choose\",\"after_sign_up_url\":\"http://localhost:3000\",\"after_switch_session_url\":\"http://localhost:3000\",\"application_name\":\"Monite Demo\",\"branded\":false,\"captcha_heartbeat\":false,\"captcha_oauth_bypass\":[],\"captcha_provider\":\"turnstile\",\"captcha_public_key_invisible\":null,\"captcha_public_key\":null,\"captcha_widget_type\":null,\"clerk_js_version\":\"4\",\"create_organization_url\":\"https://helped-iguana-46.accounts.dev/create-organization\",\"favicon_image_url\":\"\",\"home_url\":\"http://localhost:3000\",\"id\":\"display_config_2Y7hPRxb3lrPMB8d9kCl4YJ3j0X\",\"instance_environment_type\":\"development\",\"logo_image_url\":\"https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJvVzhOVHNaR09jNUprTk12UndFVDZtRDQ1YiJ9\",\"organization_profile_url\":\"https://helped-iguana-46.accounts.dev/organization\",\"preferred_sign_in_strategy\":\"password\",\"privacy_policy_url\":\"\",\"show_devmode_warning\":false,\"sign_in_url\":\"https://helped-iguana-46.accounts.dev/sign-in\",\"sign_up_url\":\"https://helped-iguana-46.accounts.dev/sign-up\",\"support_email\":\"\",\"terms_url\":\"\",\"theme\":{\"buttons\":{\"font_color\":\"#ffffff\",\"font_family\":\"\\\"Source Sans Pro\\\", sans-serif\",\"font_weight\":\"600\"},\"general\":{\"color\":\"#6c47ff\",\"padding\":\"1em\",\"box_shadow\":\"0 2px 8px rgba(0, 0, 0, 0.2)\",\"font_color\":\"#151515\",\"font_family\":\"\\\"Source Sans Pro\\\", sans-serif\",\"border_radius\":\"0.5em\",\"background_color\":\"#ffffff\",\"label_font_weight\":\"600\"},\"accounts\":{\"background_color\":\"#ffffff\"}},\"user_profile_url\":\"https://helped-iguana-46.accounts.dev/user\",\"waitlist_url\":\"https://helped-iguana-46.accounts.dev/waitlist\"},\"id\":\"\",\"maintenance_mode\":false,\"organization_settings\":{\"actions\":{\"admin_delete\":false},\"domains\":{\"enabled\":false,\"enrollment_modes\":[\"manual_invitation\",\"automatic_invitation\",\"automatic_suggestion\"],\"default_role\":\"basic_member\"},\"enabled\":true,\"max_allowed_memberships\":3},\"user_settings\":{\"actions\":{\"delete_self\":true,\"create_organization\":false,\"create_organizations_limit\":null},\"attributes\":{\"email_address\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":true,\"first_factors\":[\"email_code\"],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[\"email_code\"],\"verify_at_sign_up\":true,\"name\":\"email_address\"},\"phone_number\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"phone_number\"},\"username\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"username\"},\"web3_wallet\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"web3_wallet\"},\"first_name\":{\"enabled\":true,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"first_name\"},\"last_name\":{\"enabled\":true,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"last_name\"},\"password\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"password\"},\"authenticator_app\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"authenticator_app\"},\"ticket\":{\"enabled\":true,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"ticket\"},\"backup_code\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"backup_code\"},\"passkey\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"passkey\"}},\"passkey_settings\":{\"allow_autofill\":true,\"show_sign_in_button\":true},\"password_settings\":{\"disable_hibp\":false,\"min_length\":8,\"max_length\":72,\"require_special_char\":false,\"require_numbers\":false,\"require_uppercase\":false,\"require_lowercase\":false,\"show_zxcvbn\":false,\"min_zxcvbn_strength\":0,\"enforce_hibp_on_sign_in\":false,\"allowed_special_characters\":\"!\\\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\"},\"saml\":{\"enabled\":false},\"sign_in\":{\"second_factor\":{\"required\":false}},\"sign_up\":{\"captcha_enabled\":false,\"captcha_widget_type\":\"\",\"custom_action_required\":false,\"progressive\":true,\"mode\":\"restricted\",\"legal_consent_enabled\":false},\"social\":{}},\"commerce_settings\":{\"billing\":{\"stripe_publishable_key\":\"\",\"enabled\":false,\"has_paid_user_plans\":false,\"has_paid_org_plans\":false}}},\"exp\":1747828531053}"
+        }
+      ]
+    }
+  ]
+}
