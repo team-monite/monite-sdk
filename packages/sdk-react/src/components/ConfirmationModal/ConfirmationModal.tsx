@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -13,10 +15,9 @@ import {
   CircularProgress,
 } from '@mui/material';
 
-type ConfirmationModalProps = {
+type BaseConfirmationModalProps = {
   open: boolean;
   title: string;
-  message: string;
   confirmLabel: string;
   cancelLabel: string;
   onClose: () => void;
@@ -24,10 +25,25 @@ type ConfirmationModalProps = {
   isLoading?: boolean;
 };
 
+type MessageConfirmationModalProps = BaseConfirmationModalProps & {
+  message: string;
+  children?: never;
+};
+
+type ChildrenConfirmationModalProps = BaseConfirmationModalProps & {
+  message?: never;
+  children: ReactNode;
+};
+
+type ConfirmationModalProps =
+  | MessageConfirmationModalProps
+  | ChildrenConfirmationModalProps;
+
 export const ConfirmationModal = ({
   open,
   title,
   message,
+  children,
   confirmLabel,
   cancelLabel,
   onClose,
@@ -48,7 +64,7 @@ export const ConfirmationModal = ({
     >
       <MoniteDialogTitle>{title}</MoniteDialogTitle>
       <MoniteDialogContent>
-        <DialogContentText>{message}</DialogContentText>
+        {message ? <DialogContentText>{message}</DialogContentText> : children}
       </MoniteDialogContent>
       <MoniteDialogActions>
         <Stack direction="row" spacing={2}>

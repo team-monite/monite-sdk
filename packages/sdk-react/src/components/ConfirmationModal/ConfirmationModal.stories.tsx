@@ -57,3 +57,34 @@ export const LongMessage: Story = {
   },
   render: (args) => <ConfirmationModal {...args} />,
 };
+
+export const WithChildren: Story = {
+  args: {
+    open: true,
+    title: 'Custom Content',
+    confirmLabel: 'Proceed',
+    cancelLabel: 'Cancel',
+    onClose: () => console.log('Dialog closed'),
+    onConfirm: () => console.log('Action confirmed'),
+    children: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <p>
+          This dialog demonstrates custom content using children instead of a
+          message.
+        </p>
+        <div
+          style={{
+            padding: '1rem',
+            backgroundColor: '#f5f5f5',
+            borderRadius: '4px',
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            You can include any React components here.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  render: (args) => <ConfirmationModal {...args} />,
+};

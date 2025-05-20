@@ -115,4 +115,81 @@ describe('ConfirmationModal', () => {
       expect(defaultProps.onClose).not.toHaveBeenCalled();
     });
   });
+
+  describe('children prop', () => {
+    it('renders children content instead of message when provided', () => {
+      const children = <div data-testid="custom-content">Custom Content</div>;
+      renderComponent({ children, message: undefined });
+
+      expect(screen.getByTestId('custom-content')).toBeInTheDocument();
+      expect(screen.queryByText('Test Message')).not.toBeInTheDocument();
+    });
+
+    it('renders both message and children when both are provided', () => {
+      const children = <div data-testid="custom-content">Custom Content</div>;
+      renderComponent({ children });
+
+      expect(screen.getByTestId('custom-content')).toBeInTheDocument();
+      expect(screen.getByText('Test Message')).toBeInTheDocument();
+    });
+  });
+
+  describe('accessibility', () => {
+    it('has correct ARIA attributes', () => {
+      renderComponent();
+
+      const dialog = screen.getByRole('dialog');
+      expect(dialog).toHaveAttribute('aria-label', 'Confirmation dialog');
+    });
+
+    it('maintains focus trap within the dialog', () => {
+      renderComponent();
+
+      const dialog = screen.getByRole('dialog');
+      const confirmButton = screen.getByText('Confirm');
+      const cancelButton = screen.getByText('Cancel');
+
+      // Focus should start on cancel button (autoFocus)
+      expect(cancelButton).toHaveFocus();
+
+      // Tab should move focus to confirm button
+      fireEvent.keyDown(dialog, { key: 'Tab' });
+      expect(confirmButton).toHaveFocus();
+
+      // Tab should move focus back to cancel button
+      fireEvent.keyDown(dialog, { key: 'Tab' });
+      expect(cancelButton).toHaveFocus();
+    });
+  });
+
+  describe('styling', () => {
+    it('applies correct styles to dialog title', () => {
+      renderComponent();
+
+      const title = screen.getByText('Test Title');
+      expect(title).toHaveStyle({
+        padding: '2rem 2rem 1.5rem',
+      });
+    });
+
+    it('applies correct styles to dialog content', () => {
+      renderComponent();
+
+      const content = screen.getByText('Test Message').parentElement;
+      expect(content).toHaveStyle({
+        padding: '1rem 2rem',
+      });
+    });
+
+    it('applies correct styles to dialog actions', () => {
+      renderComponent();
+
+      const actions = screen
+        .getByText('Confirm')
+        .closest('div[class*="MuiDialogActions"]');
+      expect(actions).toHaveStyle({
+        padding: '1.7rem 2rem',
+      });
+    });
+  });
 });
