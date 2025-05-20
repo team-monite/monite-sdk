@@ -1,19 +1,10 @@
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import {
   useDeleteReceivableById,
   useReceivableById,
 } from '@/core/queries/useReceivables';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Skeleton,
-} from '@mui/material';
 
 interface InvoiceDeleteModalProps {
   /** Receivable id */
@@ -36,51 +27,38 @@ export const InvoiceDeleteModal = ({
   onDelete,
 }: InvoiceDeleteModalProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
   const { data: receivable, isLoading: isReceivableLoading } =
     useReceivableById(id);
 
   const deleteMutation = useDeleteReceivableById(id);
 
+  const handleConfirm = () => {
+    deleteMutation.mutate(undefined, {
+      onSuccess: () => {
+        onDelete?.(id);
+        onClose();
+      },
+    });
+  };
+
+  if (!receivable && isReceivableLoading) {
+    return null;
+  }
+
+  const title = receivable?.document_id
+    ? t(i18n)`Delete receivable “${receivable.document_id}”?`
+    : t(i18n)`Delete receivable?`;
+
   return (
-    <Dialog
+    <ConfirmationModal
       open={open && Boolean(id)}
-      container={root}
+      title={title}
+      message={t(i18n)`This action can’t be undone.`}
+      confirmLabel={t(i18n)`Delete`}
+      cancelLabel={t(i18n)`Cancel`}
       onClose={onClose}
-      aria-label={t(i18n)`Invoice delete confirmation`}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle variant="h3">
-        {!receivable ? (
-          <Skeleton />
-        ) : receivable.document_id ? (
-          t(i18n)`Delete receivable "${receivable.document_id}"?`
-        ) : (
-          t(i18n)`Delete receivable?`
-        )}
-      </DialogTitle>
-      <DialogContent>{t(i18n)`This action can't be undone.`}</DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit">{t(
-          i18n
-        )`Cancel`}</Button>
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={deleteMutation.isPending || isReceivableLoading}
-          onClick={() => {
-            deleteMutation.mutate(undefined, {
-              onSuccess: () => {
-                onDelete?.(id);
-                onClose();
-              },
-            });
-          }}
-          autoFocus
-        >{t(i18n)`Delete`}</Button>
-      </DialogActions>
-    </Dialog>
+      onConfirm={handleConfirm}
+      isLoading={deleteMutation.isPending || isReceivableLoading}
+    />
   );
 };

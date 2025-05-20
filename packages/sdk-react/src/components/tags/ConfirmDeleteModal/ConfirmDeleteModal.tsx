@@ -1,19 +1,10 @@
 import { toast } from 'react-hot-toast';
 
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-} from '@mui/material';
 
 interface ConfirmDeleteModalProps {
   /** The tag what we want to delete */
@@ -76,41 +67,17 @@ const ConfirmDeleteModalBase = ({
       },
     });
   };
-  const { root } = useRootElements();
 
   return (
-    <>
-      <Dialog
-        open={modalOpened}
-        container={root}
-        onClose={onClose}
-        aria-label={t(i18n)`Delete tag`}
-        fullWidth={true}
-        maxWidth="sm"
-      >
-        <DialogTitle variant="h3">
-          {t(i18n)`Delete "${tag.name}" tag?`}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {t(i18n)`This action can't be undone.`}
-          </DialogContentText>
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          <Button variant="outlined" color="inherit" onClick={onClose}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDelete}
-            autoFocus
-          >
-            {t(i18n)`Delete`}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+    <ConfirmationModal
+      open={modalOpened}
+      title={t(i18n)`Delete “${tag.name}” tag?`}
+      message={t(i18n)`This action can’t be undone.`}
+      confirmLabel={t(i18n)`Delete`}
+      cancelLabel={t(i18n)`Cancel`}
+      onClose={onClose}
+      onConfirm={handleDelete}
+      isLoading={deleteTagMutation.isPending}
+    />
   );
 };
