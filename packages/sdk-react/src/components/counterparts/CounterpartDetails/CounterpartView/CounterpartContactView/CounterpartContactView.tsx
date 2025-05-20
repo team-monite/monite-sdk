@@ -222,7 +222,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
           firstName,
           lastName
         )}“?`}
-        message={t(i18n)`You can't undo this action.`}
+        message={t(i18n)`You can’t undo this action.`}
         confirmLabel={t(i18n)`Delete`}
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}

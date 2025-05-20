@@ -180,7 +180,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             title={t(i18n)`Delete Counterpart “${getCounterpartName(
               counterpart
             )}“?`}
-            message={t(i18n)`You can't undo this action.`}
+            message={t(i18n)`You can’t undo this action.`}
             confirmLabel={t(i18n)`Delete`}
             cancelLabel={t(i18n)`Cancel`}
             onClose={handleCloseDeleteCounterpartDialog}

@@ -94,7 +94,7 @@ export const CounterpartVatView = (props: CounterpartVatViewProps) => {
       <ConfirmationModal
         open={showDeleteDialog}
         title={t(i18n)`Delete VAT ID “${value}“?`}
-        message={t(i18n)`You can't undo this action.`}
+        message={t(i18n)`You can’t undo this action.`}
         confirmLabel={t(i18n)`Delete`}
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}

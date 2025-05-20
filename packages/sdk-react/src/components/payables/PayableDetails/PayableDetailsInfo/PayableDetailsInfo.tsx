@@ -687,7 +687,7 @@ const PayableCounterpartName = ({
             isCounterpartMatchingToOCRFound
               ? t(
                   i18n
-                )`The vendor details in the bill don't fully match the saved counterpart.`
+                )`The vendor details in the bill don’t fully match the saved counterpart.`
               : t(i18n)`The specified vendor has not been saved yet.`
           }
         >

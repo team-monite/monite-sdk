@@ -125,7 +125,7 @@ export const InvoiceRecurrenceCancelModal = ({
             </Typography>
           )}
         </ul>
-        <Typography>{t(i18n)`This action can't be undone.`}</Typography>
+        <Typography>{t(i18n)`This action can’t be undone.`}</Typography>
       </DialogContent>
       <Divider />
       <DialogActions>

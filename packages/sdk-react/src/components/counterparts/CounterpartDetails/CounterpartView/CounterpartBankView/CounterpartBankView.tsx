@@ -125,7 +125,7 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
       <ConfirmationModal
         open={showDeleteDialog}
         title={t(i18n)`Delete Bank Account “${name}“?`}
-        message={t(i18n)`You can't undo this action.`}
+        message={t(i18n)`You can’t undo this action.`}
         confirmLabel={t(i18n)`Delete`}
         cancelLabel={t(i18n)`Cancel`}
         onClose={handleCloseDeleteDialog}
