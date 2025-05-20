@@ -1,22 +1,14 @@
 import { toast } from 'react-hot-toast';
 import { usePreviousDistinct } from 'react-use';
 
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useReceivableById } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { plural, t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Typography,
-} from '@mui/material';
+import { Typography } from '@mui/material';
 
 import deepEqual from 'deep-eql';
 
@@ -30,7 +22,6 @@ export const InvoiceRecurrenceCancelModal = ({
   onClose: () => void;
 }) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
   const { data: receivable, isLoading: isReceivableLoading } =
     useReceivableById(receivableId);
 
@@ -95,61 +86,44 @@ export const InvoiceRecurrenceCancelModal = ({
     other: 'invoices',
   })}`;
 
+  const handleConfirm = () => {
+    cancelRecurrenceMutation.mutate(undefined, {
+      onSuccess: onClose,
+    });
+  };
+
   return (
-    <Dialog
+    <ConfirmationModal
       open={open && Boolean(receivableId)}
-      container={root}
+      title={t(i18n)`Cancel Recurring Invoice`}
+      confirmLabel={t(i18n)`Cancel recurrence`}
+      cancelLabel={t(i18n)`Close`}
       onClose={onClose}
-      aria-label={t(i18n)`Cancel recurrence confirmation`}
-      maxWidth="sm"
-      fullWidth
+      onConfirm={handleConfirm}
+      isLoading={
+        cancelRecurrenceMutation.isPending ||
+        isReceivableLoading ||
+        recurrence?.status !== 'active'
+      }
     >
-      <DialogTitle variant="h3">{t(
-        i18n
-      )`Cancel Recurring Invoice`}</DialogTitle>
-      <DialogContent>
-        <Typography>
-          {t(i18n)`Are you sure you want to cancel this recurring invoice?`}
+      <Typography>
+        {t(i18n)`Are you sure you want to cancel this recurring invoice?`}
+      </Typography>
+      <ul>
+        <Typography component="li">
+          {t(i18n)`All future iterations of this invoice will be canceled.`}
         </Typography>
-        <ul>
+        {invoice && totalPendingInvoices !== undefined && (
           <Typography component="li">
-            {t(i18n)`All future iterations of this invoice will be canceled.`}
+            <Trans>
+              Total amount for <strong>{totalPendingInvoices}</strong> canceled{' '}
+              {invoicesPluralForm}:{' '}
+              <strong>{pendingInvoicesTotalAmountWithCreditNotes}</strong>
+            </Trans>
           </Typography>
-          {invoice && totalPendingInvoices !== undefined && (
-            <Typography component="li">
-              <Trans>
-                Total amount for <strong>{totalPendingInvoices}</strong>{' '}
-                canceled {invoicesPluralForm}:{' '}
-                <strong>{pendingInvoicesTotalAmountWithCreditNotes}</strong>
-              </Trans>
-            </Typography>
-          )}
-        </ul>
-        <Typography>{t(i18n)`This action can’t be undone.`}</Typography>
-      </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit" autoFocus>
-          {t(i18n)`Close`}
-        </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={
-            cancelRecurrenceMutation.isPending ||
-            isReceivableLoading ||
-            recurrence?.status !== 'active'
-          }
-          onClick={(event) => {
-            event.preventDefault();
-            cancelRecurrenceMutation.mutate(undefined, {
-              onSuccess: onClose,
-            });
-          }}
-        >
-          {t(i18n)`Cancel recurrence`}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        )}
+      </ul>
+      <Typography>{t(i18n)`This action can’t be undone.`}</Typography>
+    </ConfirmationModal>
   );
 };
