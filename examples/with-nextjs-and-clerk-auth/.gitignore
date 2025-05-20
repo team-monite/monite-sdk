@@ -73,3 +73,4 @@ terraform.rc
 playwright/.auth/
 playwright/.clerk/
 playwright-report/
+test-results/

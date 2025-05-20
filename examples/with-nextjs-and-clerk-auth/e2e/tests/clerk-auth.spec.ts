@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// Import test setup to ensure auth file exists
-import '../test-setup';
 import { signInUser, signOutUser } from '../utils/auth-helpers';
 
 test('user can sign in and sign out', async ({ page }) => {
