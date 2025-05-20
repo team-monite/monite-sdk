@@ -68,7 +68,7 @@ export const ConfirmationModal = ({
       </MoniteDialogContent>
       <MoniteDialogActions>
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} autoFocus disabled={isLoading}>
+          <Button onClick={onClose} autoFocus>
             {cancelLabel}
           </Button>
           <Button
