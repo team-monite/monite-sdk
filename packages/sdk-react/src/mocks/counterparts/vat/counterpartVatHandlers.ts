@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { generateRandomToken } from '@/utils/test-utils-random';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -55,7 +56,7 @@ export const counterpartVatHandlers = [
     const json = await request.json();
 
     const response: CounterpartVatIDResponse = {
-      id: (Math.random() + 1).toString(36).substring(7),
+      id: generateRandomToken(),
       counterpart_id: counterpartVatFixture.counterpart_id,
       ...json,
       country: json.country ?? counterpartVatFixture.country,

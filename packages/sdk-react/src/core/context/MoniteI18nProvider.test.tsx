@@ -1,4 +1,3 @@
-import { beforeEach } from 'vitest';
 import { ReactNode } from 'react';
 
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';

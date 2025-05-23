@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { Dialog } from '@/components';
 import { CounterpartOrganizationForm } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
 import { organizationId } from '@/mocks/counterparts/counterpart.mocks.types';
@@ -12,6 +11,8 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 describe('CounterpartOrganizationForm', () => {
   describe('# Existing Organization', () => {
@@ -58,9 +59,7 @@ describe('CounterpartOrganizationForm', () => {
     });
 
     test.skip('should NOT show "Cancel" button when CounterpartOrganization NOT in Dialog component', async () => {
-      renderWithClient(
-        <CounterpartOrganizationForm showCategories />
-      );
+      renderWithClient(<CounterpartOrganizationForm showCategories />);
 
       await waitUntilTableIsLoaded();
 

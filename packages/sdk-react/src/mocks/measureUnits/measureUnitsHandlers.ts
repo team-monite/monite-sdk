@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { generateMeasureUnitId } from '@/utils/test-utils-random';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -84,7 +85,7 @@ export const measureUnitsHandlers = [
       }
 
       const newUnit = {
-        id: `unit-${Math.random().toString(36).substr(2, 9)}`, // Generate a random ID
+        id: generateMeasureUnitId(), // Generate a random ID
         name: json.name,
         description: json.description,
         created_at: new Date().toISOString(),

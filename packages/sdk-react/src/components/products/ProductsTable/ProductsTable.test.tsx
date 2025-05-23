@@ -1,4 +1,3 @@
-import { afterEach, vi, MockedFunction} from 'vitest';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -21,6 +20,8 @@ import {
   within,
   act,
 } from '@testing-library/react';
+
+import { afterEach, vi, MockedFunction } from 'vitest';
 
 import { ProductsTable } from './ProductsTable';
 

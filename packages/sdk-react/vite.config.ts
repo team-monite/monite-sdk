@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 // import react from '@vitejs/plugin-react-swc'; // Old SWC-based plugin
-import lingui from '@lingui/vite-plugin';
+import linguiPlugin from '@lingui/vite-plugin';
 import react from '@vitejs/plugin-react';
 
 // New Babel-based plugin
@@ -32,7 +32,7 @@ export default defineConfig({
         ],
       },
     }),
-    lingui({ cwd: __dirname }),
+    linguiPlugin({ cwd: __dirname }),
     tsconfigPaths(),
     // swc.vite({ // Remove unplugin-swc configuration
     //   jsc: {

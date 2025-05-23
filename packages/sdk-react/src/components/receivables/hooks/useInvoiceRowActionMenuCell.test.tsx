@@ -1,8 +1,9 @@
-import { vi } from 'vitest';
 import { components } from '@/api';
 import { receivableListFixture } from '@/mocks/receivables';
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import {
   filterInvoiceActionMenuAllowedItems,

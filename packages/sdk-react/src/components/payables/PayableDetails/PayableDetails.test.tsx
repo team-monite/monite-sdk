@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { components } from '@/api';
 import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
@@ -25,6 +24,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
+import { vi } from 'vitest';
 
 import { PayableDetails } from './PayableDetails';
 

@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 
 import { createAPIClient } from '@/api/client';
@@ -17,6 +16,8 @@ import { t } from '@lingui/macro';
 import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { vi } from 'vitest';
 
 vi.useFakeTimers();
 vi.setConfig({ testTimeout: 10000 });
