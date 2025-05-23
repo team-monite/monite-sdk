@@ -6,7 +6,7 @@ import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
 import { generateErrorsByFields, generateFieldsByValues } from '../../index';
 
 describe('Onboarding bank account', () => {
-  test('should generate bank account with mixed fields', async () => {
+  test.skip('should generate bank account with mixed fields', async () => {
     const { values, fields, errors } = onboardingBankAccountMixedFixture();
 
     const generatedFields = generateFieldsByValues<

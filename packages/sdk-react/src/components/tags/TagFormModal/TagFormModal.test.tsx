@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
@@ -13,7 +14,7 @@ function generateRandomText(customMessage?: string) {
 
 describe('TagFormModal', () => {
   test('should NOT create tag if the field is empty', async () => {
-    const onCreateMock = jest.fn();
+    const onCreateMock = vi.fn();
 
     renderWithClient(
       <TagFormModal
@@ -50,8 +51,8 @@ describe('TagFormModal', () => {
 
   describe('# Create new Tag', () => {
     test('should create tag with submit form', async () => {
-      const onCreateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onCreateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal
@@ -81,8 +82,8 @@ describe('TagFormModal', () => {
     });
 
     test('should create tag with filled tag name', async () => {
-      const onCreateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onCreateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal
@@ -114,8 +115,8 @@ describe('TagFormModal', () => {
     });
 
     test('should toast an error if the backend reject the request with no callback calls', async () => {
-      const onCreateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onCreateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal
@@ -149,8 +150,8 @@ describe('TagFormModal', () => {
 
   describe('# Update existing Tag', () => {
     test('should update the tag with new tag title', async () => {
-      const onUpdateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onUpdateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal
@@ -184,8 +185,8 @@ describe('TagFormModal', () => {
     });
 
     test('should update the tag with new tag title while form submitted', async () => {
-      const onUpdateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onUpdateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal
@@ -218,8 +219,8 @@ describe('TagFormModal', () => {
     });
 
     test('should NOT update title and toast an error if the backend rejects update', async () => {
-      const onUpdateMock = jest.fn();
-      const onCloseMock = jest.fn();
+      const onUpdateMock = vi.fn();
+      const onCloseMock = vi.fn();
 
       renderWithClient(
         <TagFormModal

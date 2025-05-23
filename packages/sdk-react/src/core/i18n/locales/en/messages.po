@@ -442,7 +442,7 @@ msgstr "Add new bank account"
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:125
 #: src/components/payables/Payables.test.tsx:72
 #: src/components/payables/Payables.test.tsx:110
-#: src/components/payables/Payables.test.tsx:152
+#: src/components/payables/Payables.test.tsx:153
 msgid "Add new bill"
 msgstr "Add new bill"
 
@@ -607,7 +607,7 @@ msgid "All invoices"
 msgstr "All invoices"
 
 #: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:69
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:84
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:62
 msgid "All items"
 msgstr "All items"
 
@@ -1827,7 +1827,7 @@ msgstr "Close recurrence details"
 msgid "Close reminder's creation"
 msgstr "Close reminder's creation"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:203
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:187
 msgid "Close role details"
 msgstr "Close role details"
 
@@ -4704,7 +4704,7 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:167
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:145
 msgid "item"
 msgstr "item"
 
@@ -4737,7 +4737,7 @@ msgstr "Item tax"
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:167
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:145
 msgid "items"
 msgstr "items"
 
@@ -5731,7 +5731,7 @@ msgstr "Non-FI, Stored Value Card Purchase/Load"
 msgid "Nondurable Goods (Not Elsewhere Classified)"
 msgstr "Nondurable Goods (Not Elsewhere Classified)"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:261
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:251
 #: src/components/userRoles/UserRolesTable/PermissionsCell/PermissionsCell.tsx:40
 msgid "None"
 msgstr "None"
@@ -8664,7 +8664,7 @@ msgstr "Upload a document here."
 msgid "Upload files"
 msgstr "Upload files"
 
-#: src/components/payables/Payables.test.tsx:37
+#: src/components/payables/Payables.test.tsx:38
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
@@ -8706,8 +8706,8 @@ msgstr "User roles"
 msgid "User Roles"
 msgstr "User Roles"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:881
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:241
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:908
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:231
 msgid "Users"
 msgstr "Users"
 
@@ -8735,7 +8735,7 @@ msgstr "Users from the list - Any"
 msgid "Users or Roles"
 msgstr "Users or Roles"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:250
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:240
 msgid "Users with this role"
 msgstr "Users with this role"
 

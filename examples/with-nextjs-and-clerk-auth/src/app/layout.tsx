@@ -1,5 +1,3 @@
-'use server';
-
 import { ReactNode } from 'react';
 
 import { ClerkProvider } from '@clerk/nextjs';
@@ -25,21 +23,22 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const user = await currentUser();
+  // const user = await currentUser();
 
   return (
-    <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
-      <html lang="en">
-        <body className={themeFont.className}>
-          <RootI18nProvider>
+    // <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
+    <html lang="en">
+      <body className={themeFont.className}>
+        {/* <RootI18nProvider>
             <RootQueryClientProvider>
               <AppRouterCacheProvider options={{ key: 'mui' }}>
                 <AppThemeProvider>{children}</AppThemeProvider>
               </AppRouterCacheProvider>
             </RootQueryClientProvider>
-          </RootI18nProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </RootI18nProvider> */}
+        {children}
+      </body>
+    </html>
+    // </ClerkProvider>
   );
 }

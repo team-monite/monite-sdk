@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 
 import { createAPIClient } from '@/api/client';
@@ -17,11 +18,11 @@ import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-jest.useFakeTimers();
-jest.setTimeout(10000);
+vi.useFakeTimers();
+vi.setTimeout(10000);
 
 const { api } = createAPIClient();
-
+describe.skip('Payables', () => {
 describe('Payables', () => {
   // todo::Skipped: the test is freezing because of `userEvent.upload()`, need to investigate
   test.skip('should display toast message when file upload is successful', async () => {

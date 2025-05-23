@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { RootElementsProvider } from '@/core/context/RootElementsProvider';
@@ -31,8 +32,8 @@ const renderEmailInvoiceDetails = (props = {}) => {
       <RootElementsProvider>
         <Dialog open={true}>
           <EmailInvoiceDetails
+            onClose={vi.fn()}
             invoiceId={mockInvoiceId}
-            onClose={jest.fn()}
             {...props}
           />
         </Dialog>
@@ -64,9 +65,9 @@ describe('EmailInvoiceDetails', () => {
     });
   });
 
-  test('should handle issue and send flow in compose view', async () => {
-    const onClose = jest.fn();
-    renderEmailInvoiceDetails({ onClose });
+  test('should trigger onClose callback when invoice is sent', async () => {
+    const onClose = vi.fn();
+    renderEmailInvoiceDetails({ onClose, invoiceId: mockInvoiceId });
 
     const button = await screen.findByTestId('issue-and-send-button');
 
@@ -81,9 +82,9 @@ describe('EmailInvoiceDetails', () => {
     });
   });
 
-  test('should handle preview and issue-send flow', async () => {
-    const onClose = jest.fn();
-    renderEmailInvoiceDetails({ onClose });
+  test('should trigger onClose callback when invoice is sent from preview', async () => {
+    const onClose = vi.fn();
+    renderEmailInvoiceDetails({ onClose, invoiceId: mockInvoiceId });
 
     const previewButton = await screen.findByTestId('preview-button');
     await waitFor(() => {
