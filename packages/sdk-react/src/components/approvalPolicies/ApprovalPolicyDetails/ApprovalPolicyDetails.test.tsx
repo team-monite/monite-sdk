@@ -136,7 +136,7 @@ describe.skip('ApprovalPolicyDetails', () => {
   // As QA team reported, it is not clear when the script should be an array when the user is creating a new policy with one script object.
   // This test is to ensure that the script is always an array when creating a new policy.
   test('should create an array from "script" field value if it is a single object', async () => {
-    const onCreatedMock = jest.fn();
+    const onCreatedMock = vi.fn();
     const singleScriptObject = { key: 'value' };
 
     renderWithClient(<ApprovalPolicyDetails onCreated={onCreatedMock} />);

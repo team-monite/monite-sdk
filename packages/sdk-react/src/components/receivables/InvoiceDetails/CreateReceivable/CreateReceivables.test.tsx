@@ -157,7 +157,7 @@ import { CreateReceivables } from './CreateReceivables';
 
   describe('# Select Counterpart', () => {
     test('should show "Create counterpart" dialog when the user clicks on "Customer" select and "Create new counterpart" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -179,7 +179,7 @@ import { CreateReceivables } from './CreateReceivables';
     });
 
     test('should show "Create individual" dialog when the user clicks on "individual" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -203,7 +203,7 @@ import { CreateReceivables } from './CreateReceivables';
     });
 
     test('should show "Create organization" dialog when the user clicks on "organization" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -234,7 +234,7 @@ import { CreateReceivables } from './CreateReceivables';
 
   describe('# Select Item', () => {
     test('should show "Create item" dialog when the user clicks on "Add item" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -252,7 +252,7 @@ import { CreateReceivables } from './CreateReceivables';
     });
 
     test('should show "Create item" dialog when the user clicks on "Add item" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -271,7 +271,7 @@ import { CreateReceivables } from './CreateReceivables';
 
     //TODO: fix this test after we solve problem with multiple spinners on waitUntilTableIsLoaded
     test.skip('should show "Create product" dialog when the user clicks on "Add item" button and then "Create new" button', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -302,7 +302,7 @@ import { CreateReceivables } from './CreateReceivables';
   // from invoice creation screen, so for now, the VAT ID has been removed and therefore this needs to be skipped
   describe.skip('# Entity VAT ID', () => {
     test('should be able to select entity VAT id when data is fetched', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables
@@ -333,7 +333,7 @@ import { CreateReceivables } from './CreateReceivables';
 
   describe('# Payment terms', () => {
     test('should be able to select payment term when data is fetched', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(
         <CreateReceivables

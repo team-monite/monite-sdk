@@ -3,11 +3,13 @@ import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
-import { getSampleFromArray } from '@/utils/storybook-utils';
 import {
+  generateRandomDate,
+  generateRandomId,
   getRandomItemFromArray,
   getRandomProperty,
-} from '@/utils/storybook-utils';
+  getSampleFromArray,
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
@@ -16,7 +18,7 @@ import { tagListFixture } from '../tags';
 
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
 
-const generateTags = () => {
+const getRandomTags = () => {
   const hasTags = Math.random() > 0.6;
 
   return hasTags ? getSampleFromArray(tagListFixture) : [];
@@ -73,7 +75,7 @@ function generatePayable(
         },
       ],
     },
-    tags: generateTags(),
+    tags: getRandomTags(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     other_extracted_data: {

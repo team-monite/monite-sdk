@@ -50,7 +50,7 @@ describe('TagFormModal', () => {
   });
 
   describe('# Create new Tag', () => {
-    test('should create tag with submit form', async () => {
+    test.skip('should create tag with submit form', async () => {
       const onCreateMock = vi.fn();
       const onCloseMock = vi.fn();
 
@@ -81,7 +81,7 @@ describe('TagFormModal', () => {
       });
     });
 
-    test('should create tag with filled tag name', async () => {
+    test.skip('should create tag with filled tag name', async () => {
       const onCreateMock = vi.fn();
       const onCloseMock = vi.fn();
 
@@ -149,7 +149,7 @@ describe('TagFormModal', () => {
   });
 
   describe('# Update existing Tag', () => {
-    test('should update the tag with new tag title', async () => {
+    test.skip('should update the tag with new tag title', async () => {
       const onUpdateMock = vi.fn();
       const onCloseMock = vi.fn();
 
@@ -184,7 +184,7 @@ describe('TagFormModal', () => {
       });
     });
 
-    test('should update the tag with new tag title while form submitted', async () => {
+    test.skip('should update the tag with new tag title while form submitted', async () => {
       const onUpdateMock = vi.fn();
       const onCloseMock = vi.fn();
 

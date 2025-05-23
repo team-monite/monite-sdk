@@ -3,7 +3,7 @@ import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { organizationId } from '../counterpart.mocks.types';

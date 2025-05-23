@@ -20,7 +20,7 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
-import { lighten, useTheme } from '@mui/material/styles';
+import { lighten, styled, useTheme } from '@mui/material/styles';
 
 type FilterTypes = {
   status: components['schemas']['PayableStateEnum'] | 'all';
