@@ -2,7 +2,6 @@ import { useCallback, useEffect, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 
 import { components } from '@/api';
-import { useDialog } from '@/components/Dialog';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
   transformPermissionsToComponentFormat,
@@ -11,17 +10,15 @@ import {
 } from '@/components/userRoles/UserRoleDetails/helpers';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Close as CloseIcon } from '@mui/icons-material';
 import {
-  AppBar,
   Button,
   DialogContent,
-  IconButton,
   Stack,
   styled,
   Table,
@@ -31,7 +28,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Toolbar,
   Typography,
 } from '@mui/material';
 
@@ -51,19 +47,10 @@ interface UserRoleRequest {
   permissions: components['schemas']['BizObjectsSchema-Input'];
 }
 
-const StyledDialogContainer = styled(DialogContent)`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledTableTitle = styled(Typography)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const StyledTableContainer = styled(TableContainer)`
-  min-height: 300px;
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
 `;
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
@@ -108,7 +95,6 @@ export const UserRoleEditDialog = ({
   onClickDeleteRole,
 }: UserRoleEditDialogProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
 
   const { isLoadingRole, isPendingRole, roleData, roleQueryError } =
@@ -242,6 +228,31 @@ export const UserRoleEditDialog = ({
     return createRole(formattedData);
   };
 
+  const title = id ? t(i18n)`Edit user role` : t(i18n)`Create user role`;
+
+  const actions = (
+    <>
+      {id && isDeleteAllowed && (
+        <Button
+          variant="text"
+          color="error"
+          onClick={onClickDeleteRole}
+          disabled={isCreating || isUpdating}
+        >
+          {t(i18n)`Delete`}
+        </Button>
+      )}
+      <Button
+        variant="contained"
+        type="submit"
+        form={formName}
+        disabled={!isDirty || isCreating || isUpdating || !isUpdateAllowed}
+      >
+        {t(i18n)`Save`}
+      </Button>
+    </>
+  );
+
   if (id && (isLoadingRole || isPendingRole)) {
     return <LoadingPage />;
   }
@@ -257,71 +268,39 @@ export const UserRoleEditDialog = ({
 
   return (
     <>
-      <AppBar position="relative" color="inherit" sx={{ borderRadius: '0' }}>
-        <Toolbar>
-          {dialogContext?.isDialogContent && (
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={dialogContext.onClose}
-              aria-label={t(i18n)`Close role edit`}
-            >
-              <CloseIcon />
-            </IconButton>
-          )}
-          <Typography variant="h3" flex={1} ml={2}>
-            {roleData ? t(i18n)`Edit User Role` : t(i18n)`Create User Role`}
-          </Typography>
-          <Stack direction="row" spacing={2}>
-            {roleData && (
-              <Button
-                color="error"
-                onClick={onClickDeleteRole}
-                disabled={!isDeleteAllowed || isCreating || isUpdating}
-              >{t(i18n)`Delete`}</Button>
-            )}
-            <Button
-              type="submit"
-              form={formName}
-              disabled={
-                !isUpdateAllowed ||
-                isCreating ||
-                isUpdating ||
-                (roleData && !isDirty)
-              }
-              autoFocus
-              color="primary"
-              variant="contained"
-            >
-              {t(i18n)`Save`}
-            </Button>
-          </Stack>
-        </Toolbar>
-      </AppBar>
-
-      <StyledDialogContainer>
+      <FullScreenModalHeader
+        title={title}
+        actions={actions}
+        closeButtonTooltip={t(i18n)`Close role editor`}
+      />
+      <DialogContent dividers>
         <FormProvider {...methods}>
           <form
             id={formName}
             noValidate
             onSubmit={handleSubmit(handleRoleFormSubmission)}
-            style={{ maxHeight: '100%' }}
+            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
           >
             <Stack
               direction="column"
               alignItems="stretch"
-              sx={{ width: '100%', height: '100%' }}
+              spacing={2}
+              sx={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
             >
               <RHFTextField
-                label={t(i18n)`Name`}
-                name="name"
                 control={control}
-                fullWidth
+                name="name"
+                label={t(i18n)`Name`}
                 required
               />
-              <StyledTableTitle variant="subtitle2" my={1}>
+              <Typography variant="subtitle2">
                 {t(i18n)`Permissions`}
-              </StyledTableTitle>
+              </Typography>
               <StyledTableContainer>
                 <Table stickyHeader>
                   <StyledTableHead>
@@ -337,10 +316,10 @@ export const UserRoleEditDialog = ({
                     {rows.map((row, index) => (
                       <UserRoleRow
                         key={row.name}
-                        index={index}
-                        view={UserRoleViewMode.Mutate}
                         row={row}
+                        view={UserRoleViewMode.Mutate}
                         columns={columns}
+                        index={index}
                       />
                     ))}
                   </TableBody>
@@ -349,7 +328,7 @@ export const UserRoleEditDialog = ({
             </Stack>
           </form>
         </FormProvider>
-      </StyledDialogContainer>
+      </DialogContent>
     </>
   );
 };
