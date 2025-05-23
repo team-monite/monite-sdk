@@ -3607,6 +3607,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/babel-plugin-transform-js@npm:~2.9.2":
+  version: 2.9.2
+  resolution: "@lingui/babel-plugin-transform-js@npm:2.9.2"
+  checksum: 10/e2340719a08d15e0d49f47a6667bf17b640c65a523f0a08597a704796cfd83d32a53fce58e9eb5532019b036708cd8f03fbcd003da62cc6379c915f5510b2c3d
+  languageName: node
+  linkType: hard
+
 "@lingui/cli@npm:5.3.1, @lingui/cli@npm:~5.3.1":
   version: 5.3.1
   resolution: "@lingui/cli@npm:5.3.1"
@@ -4015,6 +4022,7 @@ __metadata:
     "@fontsource/roboto": "npm:~5.0.8"
     "@hookform/devtools": "npm:~4.3.1"
     "@hookform/resolvers": "npm:~2.9.3"
+    "@lingui/babel-plugin-transform-js": "npm:~2.9.2"
     "@lingui/cli": "npm:~5.3.1"
     "@lingui/core": "npm:~5.3.1"
     "@lingui/macro": "npm:~5.3.1"
@@ -4049,6 +4057,7 @@ __metadata:
     "@testing-library/jest-dom": "npm:~6.6.3"
     "@testing-library/react": "npm:~14.1.0"
     "@testing-library/user-event": "npm:~14.4.3"
+    "@types/babel-plugin-macros": "npm:^3"
     "@types/chroma-js": "npm:~2.4.4"
     "@types/deep-eql": "npm:~4.0.2"
     "@types/identity-obj-proxy": "npm:^3"
@@ -4057,6 +4066,7 @@ __metadata:
     "@types/pdfobject": "npm:~2.2.5"
     "@types/react": "npm:~18.2.0"
     "@vitejs/plugin-react": "npm:~4.3.4"
+    babel-plugin-macros: "npm:~3.1.0"
     chroma-js: "npm:~3.1.2"
     class-variance-authority: "npm:~0.7.1"
     clsx: "npm:~2.1.1"
@@ -7890,7 +7900,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:^7.0.0, @types/babel__core@npm:^7.1.14, @types/babel__core@npm:^7.18.0, @types/babel__core@npm:^7.20.5":
+"@types/babel-plugin-macros@npm:^3":
+  version: 3.1.3
+  resolution: "@types/babel-plugin-macros@npm:3.1.3"
+  dependencies:
+    "@types/babel__core": "npm:*"
+  checksum: 10/1a6624586f765ee8b8a5723430e0d74f84cc1dae8ebed8499e7ae699a40ebedc785f6809f9be922708f9775d270f98041f4791a49f537955fe60a79a4d1d67ae
+  languageName: node
+  linkType: hard
+
+"@types/babel__core@npm:*, @types/babel__core@npm:^7.0.0, @types/babel__core@npm:^7.1.14, @types/babel__core@npm:^7.18.0, @types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:

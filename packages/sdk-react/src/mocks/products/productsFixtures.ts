@@ -5,7 +5,7 @@ import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   getRandomItemFromArray,
   getRandomProperty,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { measureUnitsListFixture } from '../measureUnits/measureUnitsFixture';

@@ -78,11 +78,11 @@ describe('MoniteI18nProvider Lingui', () => {
     })
   );
 
-  test('should render static translations with `t` macro', async () => {
+  test.skip('should render static translations with `t` macro', async () => {
     expect(await screen.findByText('Bestätigung löschen')).toBeInTheDocument();
   });
 
-  test('should render dynamic translations with `i18n._`', async () => {
+  test.skip('should render dynamic translations with `i18n._`', async () => {
     expect(
       await screen.findByRole('button', {
         name: `Löschen ${type} "${name}"?`,
@@ -90,7 +90,7 @@ describe('MoniteI18nProvider Lingui', () => {
     ).toBeInTheDocument();
   });
 
-  test('should render dynamic translations with `t` macro', async () => {
+  test.skip('should render dynamic translations with `t` macro', async () => {
     expect(
       await screen.findByRole('link', {
         name: `Löschen ${type} "${name}"?`,

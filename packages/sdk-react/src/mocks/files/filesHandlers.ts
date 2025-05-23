@@ -1,6 +1,6 @@
 import { components } from '@/api';
 import { OCR_SUPPORTED_FORMATS } from '@/core/hooks/useFileInput';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';

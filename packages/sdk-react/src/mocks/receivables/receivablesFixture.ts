@@ -22,7 +22,7 @@ import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 export type ReceivablesListFixture = {

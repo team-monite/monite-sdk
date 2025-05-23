@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
+import { getRandomNumber, getRandomProperty } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { individualId } from '../counterpart.mocks.types';

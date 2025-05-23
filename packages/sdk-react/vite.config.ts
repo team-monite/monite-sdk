@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 // import react from '@vitejs/plugin-react-swc'; // Old SWC-based plugin
+import lingui from '@lingui/vite-plugin';
 import react from '@vitejs/plugin-react';
 
 // New Babel-based plugin
@@ -7,7 +8,6 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
-import lingui from '@lingui/vite-plugin';
 
 // This is a minimal Vite config for sdk-react.
 // It primarily serves to anchor Vitest to this package.
@@ -24,7 +24,8 @@ export default defineConfig({
       // Use Babel for transformation
       babel: {
         plugins: [
-          // 'macros', // Removed
+          '@lingui/babel-plugin-transform-js',
+          'macros',
           ['@emotion/babel-plugin', { sourceMap: true, autoLabel: 'dev-only' }],
           // Note: We might need a more specific Lingui Babel plugin if 'macros' isn\'t enough
           // e.g., '@lingui/babel-plugin-transform-js' or ensure babel-plugin-macros handles it.
@@ -65,11 +66,15 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     root: __dirname, // Vitest also respects this root
-    setupFiles: ['./setup-tests.ts'],
+    setupFiles: ['./vitest.setup.ts'],
     retry: process.env.CI ? 3 : 0,
     server: {
       deps: {
-        inline: ['@testing-library/jest-dom', '@mui/material', '@emotion/react'],
+        inline: [
+          '@testing-library/jest-dom',
+          '@mui/material',
+          '@emotion/react',
+        ],
       },
     },
     coverage: {

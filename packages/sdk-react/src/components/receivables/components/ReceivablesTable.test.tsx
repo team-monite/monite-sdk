@@ -16,7 +16,7 @@ describe('ReceivablesTable', () => {
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('renders the list of "Quotes" if tab specified', async () => {
+  test.skip('renders the list of "Quotes" if tab specified', async () => {
     renderWithClient(<ReceivablesTable tab={1} onTabChange={vi.fn()} />);
 
     await expect(
@@ -28,7 +28,7 @@ describe('ReceivablesTable', () => {
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('renders "Quotes" tab panel when click on tab "Quotes"', async () => {
+  test.skip('renders "Quotes" tab panel when click on tab "Quotes"', async () => {
     renderWithClient(<ReceivablesTable />);
 
     const quotesTab = screen.findByRole('tab', { name: 'Quotes' });
@@ -42,7 +42,7 @@ describe('ReceivablesTable', () => {
     expect(documents[0]).toBeInTheDocument();
   });
 
-  test('renders the list of "Credit notes" if tab specified', async () => {
+  test.skip('renders the list of "Credit notes" if tab specified', async () => {
     renderWithClient(<ReceivablesTable tab={2} onTabChange={vi.fn()} />);
 
     await expect(

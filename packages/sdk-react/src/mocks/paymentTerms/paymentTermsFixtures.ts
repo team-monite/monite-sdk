@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { getRandomNumber } from '@/utils/storybook-utils';
+import { getRandomNumber } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 export function generatePaymentTerm(index?: number): PaymentTermsResponse {

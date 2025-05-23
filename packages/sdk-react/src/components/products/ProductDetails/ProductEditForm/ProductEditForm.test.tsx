@@ -8,7 +8,7 @@ import { ProductEditForm } from './ProductEditForm';
 describe.skip('ProductEditForm', () => {
   describe('#Actions', () => {
     test('should trigger "onUpdate" callback with product when we click on "update" button', async () => {
-      const onUpdateMock = jest.fn();
+      const onUpdateMock = vi.fn();
 
       renderWithClient(
         <ProductEditForm

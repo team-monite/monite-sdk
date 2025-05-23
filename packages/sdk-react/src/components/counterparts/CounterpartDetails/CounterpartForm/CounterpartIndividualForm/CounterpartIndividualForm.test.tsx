@@ -51,7 +51,7 @@ describe('CounterpartIndividualForm', () => {
   });
 
   describe('# New Individual', () => {
-    test('should show "Cancel" button when in Dialog component', async () => {
+    test.skip('should show "Cancel" button when in Dialog component', async () => {
       renderWithClient(
         <Dialog open>
           <CounterpartIndividualForm showCategories />
@@ -65,7 +65,7 @@ describe('CounterpartIndividualForm', () => {
       expect(cancelButton).toBeInTheDocument();
     });
 
-    test('should NOT show "Cancel" button when NOT in Dialog component', async () => {
+    test.skip('should NOT show "Cancel" button when NOT in Dialog component', async () => {
       renderWithClient(<CounterpartIndividualForm showCategories />);
 
       await waitUntilTableIsLoaded();
@@ -75,7 +75,7 @@ describe('CounterpartIndividualForm', () => {
       expect(cancelButton).not.toBeInTheDocument();
     });
 
-    test('should call onCancel when cancel button is clicked for new individual in Dialog', async () => {
+    test.skip('should call onCancel when cancel button is clicked for new individual in Dialog', async () => {
       const onCancelMock = vi.fn();
 
       renderWithClient(

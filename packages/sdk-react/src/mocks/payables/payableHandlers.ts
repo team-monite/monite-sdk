@@ -8,7 +8,7 @@ import {
   PAYABLE_ID_WITHOUT_FILE,
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 
 import { http, HttpResponse, delay } from 'msw';
 

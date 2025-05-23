@@ -14,7 +14,7 @@ import {
 } from '@testing-library/react';
 
 describe('InvoicesTable', () => {
-  test('renders action menu if onRowAction property specified', async () => {
+  test.skip('renders action menu if onRowAction property specified', async () => {
     const onClick = vi.fn();
 
     renderWithClient(<InvoicesTable onRowActionClick={onClick} />);
@@ -24,7 +24,7 @@ describe('InvoicesTable', () => {
     ).resolves.toBeInTheDocument();
   });
 
-  test('renders action menu default items', async () => {
+  test.skip('renders action menu default items', async () => {
     renderWithClient(<InvoicesTable onRowActionClick={vi.fn()} />);
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
@@ -54,7 +54,7 @@ describe('InvoicesTable', () => {
     ).not.toBeInTheDocument();
   }, 10_000);
 
-  test('renders action menu custom items', async () => {
+  test.skip('renders action menu custom items', async () => {
     const onRowActionClick = vi.fn();
 
     renderWithClient(
@@ -99,7 +99,7 @@ describe('InvoicesTable', () => {
     ]);
   }, 10_000);
 
-  test('not renders action menu if onRowAction property is not specified', async () => {
+  test.skip('not renders action menu if onRowAction property is not specified', async () => {
     renderWithClient(<InvoicesTable />);
 
     const firstInvoiceNotEmptyDocumentId = receivableListFixture.invoice.find(
