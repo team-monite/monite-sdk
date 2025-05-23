@@ -16,14 +16,7 @@ import { NotFound } from '@/ui/notFound';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Alert,
-  Backdrop,
-  Box,
-  DialogContent,
-  Divider,
-  Grid,
-} from '@mui/material';
+import { Alert, Backdrop, Box, DialogContent, Grid } from '@mui/material';
 
 import { OptionalFields } from '../types';
 import { PayableDetailsForm } from './PayableDetailsForm';
@@ -165,7 +158,6 @@ const PayableDetailsBase = ({
           isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
         />
-        <Divider />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid container columnSpacing={4} height="100%">
             <Grid item container xs={6} height="100%">

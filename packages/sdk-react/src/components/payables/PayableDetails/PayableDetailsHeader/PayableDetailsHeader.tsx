@@ -2,23 +2,12 @@ import { ReactNode, useState } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { PayableDataTestId } from '@/components/payables/types';
 import { useCounterpartById } from '@/core/queries';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-  Box,
-  Button,
-  ButtonProps,
-  DialogTitle,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { PayableDetailsCancelModal } from '../PayableDetailsCancelModal';
@@ -63,7 +52,6 @@ export const PayableDetailsHeader = ({
   modalComponent,
 }: PayablesDetailsHeaderProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { data: counterpart } = useCounterpartById(payable?.counterpart_id);
   const [showCancelationModal, setShowCancelationModal] = useState(false);
 
@@ -137,56 +125,38 @@ export const PayableDetailsHeader = ({
   const className = 'Monite-PayableDetails-Header';
   const canCancel = permissions.includes('cancel');
 
+  const title = payable?.document_id
+    ? counterpartName
+      ? `${t(i18n)`Bill`} #${payable.document_id} ${t(
+          i18n
+        )`from`} ${counterpartName}`
+      : isEdit
+      ? `${t(i18n)`Edit bill`} #${payable.document_id}`
+      : `${t(i18n)`Bill`} #${payable.document_id}`
+    : t(i18n)`New incoming invoice`;
+
+  const actions =
+    (!payable || !isPayableInOCRProcessing(payable)) &&
+    permissions.map((permission) => {
+      const { children, ...restProps } = buttonsByPermissions[permission];
+      return (
+        <Button key={permission} {...restProps}>
+          {children}
+        </Button>
+      );
+    });
+
   return (
-    <DialogTitle sx={{ position: 'relative' }} className={className}>
-      <Toolbar>
-        {dialogContext?.isDialogContent && (
-          <IconWrapper
-            edge="start"
-            color="inherit"
-            onClick={onClose}
-            ariaLabelOverride={t(i18n)`Close payable details`}
-            tooltip={t(i18n)`Close payable details`}
-          >
-            <CloseIcon />
-          </IconWrapper>
-        )}
-
-        <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-          <Typography variant="h3" sx={{ ml: 3, flex: 1 }} component="div">
-            {payable?.document_id
-              ? counterpartName
-                ? `${t(i18n)`Bill`} #${payable.document_id} ${t(
-                    i18n
-                  )`from`} ${counterpartName}`
-                : isEdit
-                ? `${t(i18n)`Edit bill`} #${payable.document_id}`
-                : `${t(i18n)`Bill`} #${payable.document_id}`
-              : t(i18n)`New incoming invoice`}
-          </Typography>
+    <>
+      <FullScreenModalHeader
+        className={className}
+        title={title}
+        statusElement={
           <PayableStatusChip status={payable?.status ?? 'draft'} />
-        </Box>
-
-        {(!payable || !isPayableInOCRProcessing(payable)) && (
-          <Stack
-            spacing={2}
-            direction="row"
-            sx={{ marginLeft: 'auto' }}
-            data-testid={PayableDataTestId.PayableDetailsActions}
-          >
-            {permissions.map((permission) => {
-              const { children, ...restProps } =
-                buttonsByPermissions[permission];
-
-              return (
-                <Button key={permission} {...restProps}>
-                  {children}
-                </Button>
-              );
-            })}
-          </Stack>
-        )}
-      </Toolbar>
+        }
+        actions={actions}
+        closeButtonTooltip={t(i18n)`Close payable details`}
+      />
       {modalComponent}
       {canCancel && (
         <PayableDetailsCancelModal
@@ -195,6 +165,6 @@ export const PayableDetailsHeader = ({
           handleConfirmation={cancelInvoice}
         />
       )}
-    </DialogTitle>
+    </>
   );
 };
