@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { InvoicesTable } from '@/components';
 import { CREATE_INVOICE } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
@@ -12,6 +11,8 @@ import {
   render,
   screen,
 } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 describe('InvoicesTable', () => {
   test.skip('renders action menu if onRowAction property specified', async () => {

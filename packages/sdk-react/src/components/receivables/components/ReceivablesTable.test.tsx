@@ -1,6 +1,7 @@
-import { vi } from 'vitest';
 import { renderWithClient } from '@/utils/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { ReceivablesTable } from './ReceivablesTable';
 

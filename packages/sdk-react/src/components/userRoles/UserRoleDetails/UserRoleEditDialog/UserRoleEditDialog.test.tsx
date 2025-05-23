@@ -5,6 +5,7 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { screen } from '@testing-library/react';
+
 import { vi } from 'vitest';
 
 import { UserRoleEditDialog } from './UserRoleEditDialog';
