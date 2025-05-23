@@ -1423,7 +1423,7 @@ msgstr "Canadian Dollar"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:77
 #: src/components/tags/TagFormModal/TagFormModal.tsx:253
 #: src/components/userRoles/consts.ts:77
-#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:81
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:177
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:218
 #: src/ui/tagsModal/tagsModal.tsx:46
@@ -1665,7 +1665,7 @@ msgstr "Cleaning and Maintenance"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:206
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:100
-#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:56
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:60
 msgid "Close"
 msgstr "Close"
 
@@ -2484,7 +2484,7 @@ msgstr "Default currency switch"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:442
 #: src/components/tags/TagsTable/TagsTable.tsx:207
 #: src/components/userRoles/consts.ts:72
-#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:88
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:72
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:161
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:300
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:202
@@ -2509,17 +2509,17 @@ msgstr "Delete “{0}” tag?"
 #~ msgid "Delete “{0}” tag???"
 #~ msgstr "Delete “{0}” tag???"
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:70
-#~ msgid "Delete \"{0}\"?"
-#~ msgstr "Delete \"{0}\"?"
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:70
+msgid "Delete \"{0}\"?"
+msgstr "Delete \"{0}\"?"
 
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
 msgid "Delete “{0}“?"
 msgstr "Delete “{0}“?"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:67
-msgid "Delete “{0}”?"
-msgstr "Delete “{0}”?"
+#~ msgid "Delete “{0}”?"
+#~ msgstr "Delete “{0}”?"
 
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:110
 msgid "Delete \"{name}\" unit and associated items?"
@@ -7795,7 +7795,7 @@ msgstr "To add a discount you need to fill out all the fields"
 msgid "To create a preset you need to fill out all the required fields"
 msgstr "To create a preset you need to fill out all the required fields"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:53
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:56
 msgid "To delete this role, remove it from all users"
 msgstr "To delete this role, remove it from all users"
 
@@ -8719,15 +8719,14 @@ msgstr "You can set up to 2 early payment discounts per invoice."
 msgid "You can’t delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 msgstr "You can’t delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 
-#: src/components/counterparts/components/ConfirmDeleteDialog.tsx:49
-#~ msgid "You can't undo this action."
-#~ msgstr "You can't undo this action."
+#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:71
+msgid "You can't undo this action."
+msgstr "You can't undo this action."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:128
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:225
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:97
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:183
-#: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:71
 msgid "You can’t undo this action."
 msgstr "You can’t undo this action."
 
