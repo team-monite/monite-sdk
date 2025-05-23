@@ -5,7 +5,7 @@ import {
   getRandomItemFromArray,
   getRandomNumber,
   getRandomProperty,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 export const bankAccountsFixture: EntityBankAccountPaginationResponse = {

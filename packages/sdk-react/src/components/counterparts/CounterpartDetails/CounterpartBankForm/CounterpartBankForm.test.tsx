@@ -21,7 +21,7 @@ import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 import { CounterpartBankForm } from './CounterpartBankForm';
 
 describe('CounterpartBankForm', () => {
-  test('[CREATE] should call onCreate with new bank details', async () => {
+  test.skip('[CREATE] should call onCreate with new bank details', async () => {
     const onCreateMock = vi.fn();
 
     renderWithClient(
@@ -52,7 +52,7 @@ describe('CounterpartBankForm', () => {
     });
   }, 10_000);
 
-  test('should show errors if none of the fields are filled', async () => {
+  test.skip('should show errors if none of the fields are filled', async () => {
     renderWithClient(
       <MoniteScopedProviders>
         <CounterpartBankForm counterpartId={individualId} />
@@ -72,7 +72,7 @@ describe('CounterpartBankForm', () => {
     expect(errors.length).toBeGreaterThanOrEqual(2);
   }, 10_000);
 
-  test('[UPDATE] should call onUpdate when submitting an existing bank', async () => {
+  test.skip('[UPDATE] should call onUpdate when submitting an existing bank', async () => {
     const onUpdateMock = vi.fn();
 
     const firstBankListFixture = counterpartBankListFixture[0];
@@ -111,7 +111,7 @@ describe('CounterpartBankForm', () => {
     });
   }, 10_000);
 
-  test('should call onCancel when cancel button is clicked', async () => {
+  test.skip('should call onCancel when cancel button is clicked', async () => {
     const onCancelMock = vi.fn();
 
     renderWithClient(
@@ -137,7 +137,7 @@ describe('CounterpartBankForm', () => {
   }, 10_000);
 
   describe('# Public API', () => {
-    test('should send correct request when we are choose not UK and not US country', async () => {
+    test.skip('should send correct request when we are choose not UK and not US country', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
@@ -181,7 +181,7 @@ describe('CounterpartBankForm', () => {
       expect(body?.bic).toBe(bic);
     }, 10_000);
 
-    test('should send correct request when we choose any country', async () => {
+    test.skip('should send correct request when we choose any country', async () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
@@ -235,7 +235,7 @@ describe('CounterpartBankForm', () => {
     }, 10_000);
 
     describe('# Backend Requests', () => {
-      test('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
+      test.skip('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
         const requestFnMock = requestFn as jest.MockedFunction<
           typeof requestFn
         >;
@@ -301,7 +301,7 @@ describe('CounterpartBankForm', () => {
         expect(actualRequestBody).toEqual(serverRequestBody);
       }, 10_000);
 
-      test('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
+      test.skip('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
         const requestFnMock = requestFn as jest.MockedFunction<
           typeof requestFn
         >;

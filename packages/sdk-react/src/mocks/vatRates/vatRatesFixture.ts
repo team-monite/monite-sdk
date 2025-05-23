@@ -1,6 +1,6 @@
 import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 function getRandomVatRate(index: number): VatRateResponse {
