@@ -5,7 +5,7 @@ import { TablePagination } from './TablePagination';
 
 describe('TablePagination', () => {
   it('calls onPrevious when the previous button is clicked', () => {
-    const onPrevious = jest.fn();
+    const onPrevious = vi.fn();
 
     renderWithClient(
       <TablePagination
@@ -32,7 +32,7 @@ describe('TablePagination', () => {
   });
 
   it('calls onNext when the next button is clicked', () => {
-    const onNext = jest.fn();
+    const onNext = vi.fn();
 
     renderWithClient(
       <TablePagination
@@ -59,7 +59,7 @@ describe('TablePagination', () => {
   it('calls onPaginationModelChange when the rows per page is changed', async () => {
     const customPageSizeOptions = [1, 2, 3, 4, 5];
 
-    const onRowsPerPageChange = jest.fn();
+    const onRowsPerPageChange = vi.fn();
     renderWithClient(
       <TablePagination
         pageSizeOptions={customPageSizeOptions}

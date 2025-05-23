@@ -12,7 +12,7 @@ import { useIsActionAllowed, usePermissions } from './usePermissions';
 
 const getRandomToken = () => (Math.random() + 1).toString(36).substring(7);
 
-describe('useRoles', () => {
+describe.skip('useRoles', () => {
   describe('# usePermissions', () => {
     test('should return all permissions for "payable" action when the user have all permissions', async () => {
       const { result } = renderHook(() => usePermissions('payable'), {

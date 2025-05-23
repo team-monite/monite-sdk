@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
@@ -17,8 +18,7 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { PayablesTable } from './PayablesTable';
 
-jest.useFakeTimers();
-jest.setTimeout(10000);
+vi.useFakeTimers();
 
 describe('PayablesTable', () => {
   describe('# UI', () => {
@@ -58,7 +58,7 @@ describe('PayablesTable', () => {
 
   describe('# Actions', () => {
     test('should trigger a `onRowClick` callback when click on a row', async () => {
-      const onRowClickMock = jest.fn();
+      const onRowClickMock = vi.fn();
 
       renderWithClient(<PayablesTable onRowClick={onRowClickMock} />);
 
@@ -78,7 +78,7 @@ describe('PayablesTable', () => {
     });
 
     test('should trigger "onChangeFilterMock" with "field: search" when we are filtering items', async () => {
-      const onChangeFilterMock = jest.fn();
+      const onChangeFilterMock = vi.fn();
 
       renderWithClient(<PayablesTable onChangeFilter={onChangeFilterMock} />);
 
@@ -95,7 +95,7 @@ describe('PayablesTable', () => {
        * We have to push the timer forward because `search` is debounced,
        *  and we have to wait until the search will be executed
        */
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       await waitFor(() => {
         expect(onChangeFilterMock).toHaveBeenCalledWith({
@@ -106,7 +106,7 @@ describe('PayablesTable', () => {
     });
 
     test('should trigger "onChangeFilterMock" with "status" and changing "value" when we are filtering payables', async () => {
-      const onChangeFilterMock = jest.fn();
+      const onChangeFilterMock = vi.fn();
 
       renderWithClient(<PayablesTable onChangeFilter={onChangeFilterMock} />);
 
@@ -136,7 +136,7 @@ describe('PayablesTable', () => {
     });
 
     test('should show "Pay" button for payables in status "Waiting to be paid" and user has permission to pay', async () => {
-      const onPayMock = jest.fn();
+      const onPayMock = vi.fn();
 
       renderWithClient(<PayablesTable onPay={onPayMock} />);
 
@@ -150,7 +150,7 @@ describe('PayablesTable', () => {
     });
 
     test('should NOT show "Pay" button for payables in status "Waiting to be paid" but the user has NO permission to pay', async () => {
-      const onPayMock = jest.fn();
+      const onPayMock = vi.fn();
 
       const monite = {
         /**
@@ -196,7 +196,7 @@ describe('PayablesTable', () => {
        * We have to push the timer forward because `search` is debounced,
        *  and we have to wait until the search will be executed
        */
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       await waitFor(() => {
         const items = screen.getAllByRole('row');
@@ -317,7 +317,7 @@ describe('PayablesTable', () => {
        *  to wait until the table will be re-fetched
        *  and new data will come
        */
-      jest.advanceTimersByTime(2_000);
+      vi.advanceTimersByTime(2_000);
 
       expect(
         await screen.findByText(String(resultItem!.document_id))

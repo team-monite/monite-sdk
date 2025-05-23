@@ -371,7 +371,7 @@ msgstr "Add new bank account"
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:139
 #: src/components/payables/Payables.test.tsx:72
 #: src/components/payables/Payables.test.tsx:110
-#: src/components/payables/Payables.test.tsx:152
+#: src/components/payables/Payables.test.tsx:153
 msgid "Add new bill"
 msgstr "Add new bill"
 
@@ -533,7 +533,7 @@ msgid "All invoices"
 msgstr "All invoices"
 
 #: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:69
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:84
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:62
 msgid "All items"
 msgstr "All items"
 
@@ -775,7 +775,7 @@ msgstr "approvals required"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:112
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:169
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:210
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:175
 msgid "Approve"
 msgstr "Approve"
 
@@ -1416,7 +1416,7 @@ msgstr "Canadian Dollar"
 #: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:81
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:177
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:218
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:183
 #: src/ui/tagsModal/tagsModal.tsx:46
 msgid "Cancel"
 msgstr "Cancel"
@@ -1689,11 +1689,11 @@ msgstr "Close recurrence details"
 msgid "Close reminder's creation"
 msgstr "Close reminder's creation"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:222
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:187
 msgid "Close role details"
 msgstr "Close role details"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:267
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:232
 msgid "Close role edit"
 msgstr "Close role edit"
 
@@ -2073,7 +2073,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.tsx:261
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:153
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:194
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:159
 msgid "Create"
 msgstr "Create"
 
@@ -2131,7 +2131,7 @@ msgstr "Create customer"
 
 #: src/components/userRoles/consts.ts:76
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:185
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:226
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:191
 msgid "Create from email"
 msgstr "Create from email"
 
@@ -2217,7 +2217,7 @@ msgstr "Create product or service"
 msgid "Create Quote"
 msgstr "Create Quote"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:273
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:238
 msgid "Create User Role"
 msgstr "Create User Role"
 
@@ -2469,7 +2469,7 @@ msgstr "Default currency switch"
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:161
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:300
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:202
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:281
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:246
 msgid "Delete"
 msgstr "Delete"
 
@@ -2922,7 +2922,7 @@ msgstr "Ecuador"
 #: src/components/userRoles/consts.ts:71
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:157
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:305
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:198
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:163
 msgid "Edit"
 msgstr "Edit"
 
@@ -3039,7 +3039,7 @@ msgstr "Edit tags"
 msgid "Edit term"
 msgstr "Edit term"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:273
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:238
 msgid "Edit User Role"
 msgstr "Edit User Role"
 
@@ -4363,7 +4363,7 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:167
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:145
 msgid "item"
 msgstr "item"
 
@@ -4396,7 +4396,7 @@ msgstr "Item tax"
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:167
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:145
 msgid "items"
 msgstr "items"
 
@@ -5057,7 +5057,7 @@ msgstr "N/A"
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:29
 #: src/components/tags/TagFormModal/TagFormModal.tsx:175
 #: src/components/tags/TagsTable/TagsTable.tsx:144
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:316
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:281
 #: src/components/userRoles/UserRoleDetails/validation.ts:10
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:151
 msgid "Name"
@@ -5344,7 +5344,7 @@ msgstr "Non-FI, Stored Value Card Purchase/Load"
 msgid "Nondurable Goods (Not Elsewhere Classified)"
 msgstr "Nondurable Goods (Not Elsewhere Classified)"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:286
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:251
 #: src/components/userRoles/UserRolesTable/PermissionsCell/PermissionsCell.tsx:40
 msgid "None"
 msgstr "None"
@@ -5610,7 +5610,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:74
 #: src/components/userRoles/consts.ts:75
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:173
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:214
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:179
 msgid "Pay"
 msgstr "Pay"
 
@@ -5788,12 +5788,12 @@ msgid "Period starts on"
 msgstr "Period starts on"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:145
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:186
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:151
 msgid "Permission"
 msgstr "Permission"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:237
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:323
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:288
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:157
 msgid "Permissions"
 msgstr "Permissions"
@@ -6466,7 +6466,7 @@ msgstr "Removing an executive role from this person is not allowed"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:107
 #: src/components/userRoles/consts.ts:78
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:181
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:222
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:187
 msgid "Reopen"
 msgstr "Reopen"
 
@@ -6554,7 +6554,7 @@ msgid "Role has been deleted"
 msgstr "Role has been deleted"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:199
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:252
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:217
 msgid "Role not found"
 msgstr "Role not found"
 
@@ -6714,7 +6714,7 @@ msgstr "Saudi Riyal"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:222
 #: src/components/tags/TagFormModal/TagFormModal.tsx:261
 #: src/components/tags/TagsTable/TagsTable.test.tsx:283
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:296
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:261
 msgid "Save"
 msgstr "Save"
 
@@ -7167,7 +7167,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:95
 #: src/components/userRoles/consts.ts:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:165
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:206
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:171
 msgid "Submit"
 msgstr "Submit"
 
@@ -7540,7 +7540,7 @@ msgid "There is no reminder by provided id: {reminderId}"
 msgstr "There is no reminder by provided id: {reminderId}"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:200
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:253
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:218
 msgid "There is no role by provided id: {id}"
 msgstr "There is no role by provided id: {id}"
 
@@ -8053,7 +8053,7 @@ msgstr "Upload a document here."
 msgid "Upload files"
 msgstr "Upload files"
 
-#: src/components/payables/Payables.test.tsx:37
+#: src/components/payables/Payables.test.tsx:38
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
@@ -8096,7 +8096,7 @@ msgid "User Roles"
 msgstr "User Roles"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:908
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:266
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:231
 msgid "Users"
 msgstr "Users"
 
@@ -8124,7 +8124,7 @@ msgstr "Users from the list - Any"
 msgid "Users or Roles"
 msgstr "Users or Roles"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:275
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:240
 msgid "Users with this role"
 msgstr "Users with this role"
 
@@ -8390,7 +8390,7 @@ msgstr "View"
 
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:149
-#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:190
+#: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:155
 msgid "View"
 msgstr "View"
 

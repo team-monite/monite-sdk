@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { components } from '@/api';
 import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
@@ -310,7 +311,7 @@ describe('PayableDetails', () => {
       const user = userEvent.setup();
 
       test('should call "onClose" callback when the user clicks on "X" button', async () => {
-        const onCloseMock = jest.fn();
+        const onCloseMock = vi.fn();
 
         renderWithClient(
           <Dialog open={true}>
@@ -329,7 +330,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onSaved" callback when we click on "Save" button', async () => {
-        const onSavedMock = jest.fn();
+        const onSavedMock = vi.fn();
 
         renderWithClient(
           <PayableDetails id={payableId} onSaved={onSavedMock} />
@@ -356,7 +357,7 @@ describe('PayableDetails', () => {
 
       test('should trigger "onCanceled" callback when we click on "Cancel" button', async () => {
         fixture.status = 'new';
-        const onCanceledMock = jest.fn();
+        const onCanceledMock = vi.fn();
 
         renderWithClient(
           <PayableDetails id={payableId} onCanceled={onCanceledMock} />
@@ -384,7 +385,7 @@ describe('PayableDetails', () => {
 
       test('should trigger "onSubmitted" callback when we click on "Submit" button', async () => {
         fixture.status = 'new';
-        const onSubmittedMock = jest.fn();
+        const onSubmittedMock = vi.fn();
 
         renderWithClient(
           <PayableDetails id={payableId} onSubmitted={onSubmittedMock} />
@@ -405,7 +406,7 @@ describe('PayableDetails', () => {
 
       test('should trigger "onRejected" callback when we click on "Reject" button', async () => {
         fixture.status = 'approve_in_progress';
-        const onRejectedMock = jest.fn();
+        const onRejectedMock = vi.fn();
 
         renderWithClient(
           <PayableDetails id={payableId} onRejected={onRejectedMock} />
@@ -426,7 +427,7 @@ describe('PayableDetails', () => {
 
       test('should trigger "onApproved" callback when we click on "Approve" button', async () => {
         fixture.status = 'approve_in_progress';
-        const onApprovedMock = jest.fn();
+        const onApprovedMock = vi.fn();
 
         renderWithClient(
           <PayableDetails id={payableId} onApproved={onApprovedMock} />
@@ -447,7 +448,7 @@ describe('PayableDetails', () => {
 
       //TODO: cover with test for integration flow of payments intent
       test('should trigger "onPay" callback when we click on "Pay" button', async () => {
-        const onPayMock = jest.fn();
+        const onPayMock = vi.fn();
         const payableId = 'waiting-to-be-paid-id';
         const fixture = { status: 'waiting_to_be_paid', id: payableId };
 
@@ -469,11 +470,11 @@ describe('PayableDetails', () => {
 
     describe('# Detail information changes', () => {
       beforeEach(() => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterAll(() => {
-        jest.useRealTimers();
+        vi.useRealTimers();
       });
 
       test('should update UI when we change payable detail information', async () => {
@@ -497,7 +498,7 @@ describe('PayableDetails', () => {
 
         const newDocumentId = changeDocumentIdByPayableId(payableId);
 
-        jest.advanceTimersByTime(15_000);
+        vi.advanceTimersByTime(15_000);
 
         const newDocumentIdElement = await screen.findByDisplayValue(
           newDocumentId

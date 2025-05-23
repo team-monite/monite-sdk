@@ -35,6 +35,7 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 import DateFnsDeLocale from 'date-fns/locale/de';
@@ -167,7 +168,12 @@ export function createRenderWithClient(props?: ICreateRenderWithClientProps) {
 }
 
 // for component testing
-export function renderWithClient(children: ReactElement, sdk?: MoniteSettings) {
+export function renderWithClient(
+  children: ReactElement,
+  sdk?: MoniteSettings
+): Omit<RenderResult, 'rerender'> & {
+  rerender: (children: ReactElement) => void;
+} {
   // const testQueryClient = createReactQueryClient();
   const testQueryClient = queryClient;
   testQueryClient.cancelQueries();
