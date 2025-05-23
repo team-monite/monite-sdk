@@ -1831,7 +1831,7 @@ msgstr "Conditions"
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/components/ConfirmationModal/ConfirmationModal.tsx:61
+#: src/ui/ConfirmationModal/ConfirmationModal.tsx:61
 msgid "Confirmation dialog"
 msgstr "Confirmation dialog"
 
