@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook, waitFor } from '@testing-library/react';
 
@@ -132,7 +133,7 @@ describe('useCurrencies', () => {
 
   describe('# formatCurrencyToDisplay', () => {
     test('should return "100,00 $" when we provide 10000 minor units in browser locale format', async () => {
-      jest.spyOn(window.navigator, 'language', 'get').mockReturnValue('de-DE');
+      vi.spyOn(window.navigator, 'language', 'get').mockReturnValue('de-DE');
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: createRenderWithClient(),

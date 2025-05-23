@@ -138,7 +138,7 @@ enum USPayDialogPage {
 const ChooseBankAccountPage = () => {
   const [selectedValue, setSelectedValue] = useState('option1');
 
-  const itemProps: SxProps<Theme> = {
+  const itemProps = {
     borderRadius: '3px',
     borderWidth: '1px',
     m: '1px',
@@ -146,7 +146,7 @@ const ChooseBankAccountPage = () => {
     borderColor: 'divider',
     p: 2,
   };
-  const selectedProps: SxProps<Theme> = {
+  const selectedProps = {
     borderRadius: '3px',
     borderWidth: '2px',
     borderStyle: 'solid',
@@ -159,74 +159,36 @@ const ChooseBankAccountPage = () => {
       <DialogTitle variant="h3">Choose bank account</DialogTitle>
       <DialogContent sx={{ p: 3 }}>
         <Stack direction="column" alignItems="stretch" gap={2}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={selectedValue == 'option1' ? selectedProps : itemProps}
-            onClick={() => setSelectedValue('option1')}
-          >
-            <img
-              style={{
-                width: '40px',
-                height: 'auto',
-                marginRight: '16px',
-              }}
-              src={jpmIcon}
-              alt="JPMorgan"
-            />
-            <Stack direction="column" sx={{ flexGrow: 2 }}>
-              <Typography variant="body1">JPMorgan Chase</Typography>
-              <Typography variant="body2">
-                Checking account • 7004 8841 7002 1630 0
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={selectedValue == 'option2' ? selectedProps : itemProps}
-            onClick={() => setSelectedValue('option2')}
-          >
-            <img
-              style={{
-                width: '40px',
-                height: 'auto',
-                marginRight: '16px',
-              }}
-              src={amexIcon}
-              alt="Amex"
-            />
-            <Stack direction="column" sx={{ flexGrow: 2 }}>
-              <Typography variant="body1">American Express</Typography>
-              <Typography variant="body2">
-                Checking account • 8744 3360 8539 9580
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={selectedValue == 'option3' ? selectedProps : itemProps}
-            onClick={() => setSelectedValue('option3')}
-          >
-            <img
-              style={{
-                width: '40px',
-                height: 'auto',
-                marginRight: '16px',
-              }}
-              src={mercuryIcon}
-              alt="Mercury"
-            />
-            <Stack direction="column" sx={{ flexGrow: 2 }}>
-              <Typography variant="body1">Mercury</Typography>
-              <Typography variant="body2">
-                Checking account • 3690 8597 4129 4280
-              </Typography>
-            </Stack>
-          </Stack>
+          {[
+            { value: 'option1', icon: jpmIcon, alt: 'JPMorgan', name: 'JPMorgan Chase', details: 'Checking account • 7004 8841 7002 1630 0' },
+            { value: 'option2', icon: amexIcon, alt: 'Amex', name: 'American Express', details: 'Checking account • 8744 3360 8539 9580' },
+            { value: 'option3', icon: mercuryIcon, alt: 'Mercury', name: 'Mercury', details: 'Checking account • 3690 8597 4129 4280' },
+          ].map((item) => {
+            const currentSx = selectedValue === item.value ? selectedProps : itemProps;
+            return (
+              <Stack
+                key={item.value}
+                direction="row"
+                alignItems="center"
+                sx={currentSx as React.CSSProperties}
+                onClick={() => setSelectedValue(item.value)}
+              >
+                <img
+                  style={{
+                    width: '40px',
+                    height: 'auto',
+                    marginRight: '16px',
+                  }}
+                  src={item.icon}
+                  alt={item.alt}
+                />
+                <Stack direction="column" sx={{ flexGrow: 2 }}>
+                  <Typography variant="body1">{item.name}</Typography>
+                  <Typography variant="body2">{item.details}</Typography>
+                </Stack>
+              </Stack>
+            );
+          })}
         </Stack>
       </DialogContent>
     </>
@@ -242,7 +204,7 @@ const TransferTypePage = () => {
     setSelectedValue(event.target.value);
   };
 
-  const itemProps: SxProps<Theme> = {
+  const itemProps = {
     borderRadius: '6px',
     borderWidth: '1px',
     ml: '1px',
@@ -253,7 +215,7 @@ const TransferTypePage = () => {
     borderColor: 'divider',
     p: '2px 12px 6px 2px',
   };
-  const selectedProps: SxProps<Theme> = {
+  const selectedProps = {
     borderRadius: '6px',
     borderWidth: '2px',
     borderStyle: 'solid',
@@ -279,40 +241,51 @@ const TransferTypePage = () => {
             onChange={handleChange}
           >
             <Stack direction="row" gap={2}>
-              <FormControlLabel
-                value="option1"
-                control={<Radio />}
-                label={
-                  <Box sx={{ p: 0 }}>
-                    <Typography variant="body1">Via bank transfer</Typography>
-                    <Typography variant="body2">
+              {[
+                {
+                  value: 'option1',
+                  label: 'Via bank transfer',
+                  details: () => (
+                    <>
                       $1 fee, take 2-3 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 3),
                         locale.dateTimeFormat
                       )}
-                    </Typography>
-                  </Box>
-                }
-                sx={selectedValue == 'option1' ? selectedProps : itemProps}
-              />
-              <FormControlLabel
-                value="option2"
-                control={<Radio />}
-                label={
-                  <Box sx={{ p: 0 }}>
-                    <Typography variant="body1">Via paper check</Typography>
-                    <Typography variant="body2">
+                    </>
+                  ),
+                },
+                {
+                  value: 'option2',
+                  label: 'Via paper check',
+                  details: () => (
+                    <>
                       $5 fee, take 5-7 business days, estimated arrival{' '}
                       {i18n.date(
                         new Date(Date.now() + 86400000 * 7),
                         locale.dateTimeFormat
                       )}
-                    </Typography>
-                  </Box>
-                }
-                sx={selectedValue == 'option2' ? selectedProps : itemProps}
-              />
+                    </>
+                  ),
+                },
+              ].map((option) => {
+                const currentSx = 
+                  selectedValue === option.value ? selectedProps : itemProps;
+                return (
+                  <FormControlLabel
+                    key={option.value}
+                    value={option.value}
+                    control={<Radio />}
+                    label={
+                      <Box sx={{ p: 0 }}>
+                        <Typography variant="body1">{option.label}</Typography>
+                        <Typography variant="body2">{option.details()}</Typography>
+                      </Box>
+                    }
+                    sx={currentSx as React.CSSProperties}
+                  />
+                );
+              })}
             </Stack>
           </RadioGroup>
         </FormControl>

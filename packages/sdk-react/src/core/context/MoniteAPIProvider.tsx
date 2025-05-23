@@ -4,7 +4,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import type { QraftContextValue } from '@openapi-qraft/react';
 import { QraftSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
 
-export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
+export const MoniteQraftContext = createContext<BasicQraftContextValue | any>(undefined);
 
 export const MoniteAPIProvider = ({
   children,

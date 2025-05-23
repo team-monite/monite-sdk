@@ -9,6 +9,8 @@ import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { vi } from 'vitest';
+
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
 const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
@@ -52,7 +54,7 @@ describe.skip('ApprovalPolicyDetails', () => {
 
   describe('# Public API', () => {
     test('should trigger "onCreated" after successful creation', async () => {
-      const onCreatedMock = jest.fn();
+      const onCreatedMock = vi.fn();
 
       renderWithClient(<ApprovalPolicyDetails onCreated={onCreatedMock} />);
 
@@ -70,7 +72,7 @@ describe.skip('ApprovalPolicyDetails', () => {
     });
 
     test('should trigger "onUpdated" after successful update', async () => {
-      const onUpdatedMock = jest.fn();
+      const onUpdatedMock = vi.fn();
       const approvalPolicyId = approvalPoliciesListFixture.data[0].id;
 
       renderWithClient(
@@ -111,7 +113,7 @@ describe.skip('ApprovalPolicyDetails', () => {
   });
 
   test('should send the correct data to the server', async () => {
-    const onCreatedMock = jest.fn();
+    const onCreatedMock = vi.fn();
 
     renderWithClient(<ApprovalPolicyDetails onCreated={onCreatedMock} />);
 

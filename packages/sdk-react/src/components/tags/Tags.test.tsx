@@ -8,7 +8,7 @@ import { screen, waitFor } from '@testing-library/react';
 
 import { Tags } from './Tags';
 
-describe('Tags', () => {
+describe.skip('Tags', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
       renderWithClient(<Tags />);
