@@ -115,11 +115,11 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
         <Box sx={{ flex: '1 1 0%' }}>
           <Typography variant="subtitle2">{t(
             i18n
-          )`This invoice can't be financed`}</Typography>
+          )`This invoice can’t be financed`}</Typography>
           <Typography variant="body1">
             {t(
               i18n
-            )`It must be in the "Issued" or "Partially paid" statuses and have more than 7 days till overdue.`}
+            )`It must be in the “Issued” or “Partially paid” statuses and have more than 7 days till overdue.`}
           </Typography>
         </Box>
       </FinanceBannerWrapper>
@@ -139,7 +139,7 @@ export const FinanceInvoice = ({ invoice }: FinanceInvoiceProps) => {
         <Box sx={{ flex: '1 1 0%' }}>
           <Typography variant="subtitle2">{t(
             i18n
-          )`Don't wait for your client to pay`}</Typography>
+          )`Don’t wait for your client to pay`}</Typography>
           <Typography variant="body1">
             {t(i18n)`This invoice can be financed`}.{' '}
             <Tooltip

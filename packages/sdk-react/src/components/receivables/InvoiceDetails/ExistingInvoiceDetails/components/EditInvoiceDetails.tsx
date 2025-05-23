@@ -4,13 +4,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMyEntity } from '@/core/queries';
 import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -18,10 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,
   Button,
-  Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   Stack,
@@ -91,7 +88,6 @@ const EditInvoiceDetailsContent = ({
   onUpdated,
 }: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
   const { api } = useMoniteContext();
   const {
     isLoading: isEntityLoading,
@@ -328,29 +324,17 @@ const EditInvoiceDetailsContent = ({
                 onCreateReminder={onCreateReminder}
               />
             </Stack>
-            <Dialog
-              className={className + '-Dialog-CancelWithoutSaving'}
+            <ConfirmationModal
               open={isAlertOpen}
+              title={t(i18n)`Cancel without saving?`}
+              message={t(
+                i18n
+              )`There are unsaved changes. If you leave, they will be lost.`}
+              confirmLabel={t(i18n)`Yes`}
+              cancelLabel={t(i18n)`No`}
               onClose={() => setIsAlertOpen(false)}
-              container={root}
-              maxWidth="sm"
-            >
-              <DialogTitle>{t(i18n)`Cancel without saving?`}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>{t(
-                  i18n
-                )`There are unsaved changes. If you leave, they will be lost.`}</DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  variant="outlined"
-                  onClick={() => setIsAlertOpen(false)}
-                >{t(i18n)`No`}</Button>
-                <Button variant="contained" color="error" onClick={onCancel}>{t(
-                  i18n
-                )`Yes`}</Button>
-              </DialogActions>
-            </Dialog>
+              onConfirm={onCancel}
+            />
           </form>
         </FormProvider>
       </DialogContent>

@@ -29,7 +29,7 @@ export const PayableDetailsNoAttachedFile = () => {
         />
         <Typography color="secondary">{t(
           i18n
-        )`This invoice doesn't have a file attached.`}</Typography>
+        )`This invoice doesn’t have a file attached.`}</Typography>
       </Box>
     </Box>
   );

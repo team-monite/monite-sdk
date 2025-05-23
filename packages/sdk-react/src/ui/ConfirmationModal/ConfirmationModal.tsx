@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -10,25 +12,44 @@ import {
   DialogContentText,
   Stack,
   styled,
+  CircularProgress,
 } from '@mui/material';
 
-type ConfirmDeleteDialogProps = {
+type BaseConfirmationModalProps = {
   open: boolean;
-  type: string;
-  name: string;
-  isLoading: boolean;
+  title: string;
+  confirmLabel: string;
+  cancelLabel: string;
   onClose: () => void;
-  onDelete: () => void;
+  onConfirm: () => void;
+  isLoading?: boolean;
 };
 
-export const ConfirmDeleteDialog = ({
-  onClose,
-  onDelete,
-  type,
-  name,
-  isLoading,
+type MessageConfirmationModalProps = BaseConfirmationModalProps & {
+  message: string;
+  children?: never;
+};
+
+type ChildrenConfirmationModalProps = BaseConfirmationModalProps & {
+  message?: never;
+  children: ReactNode;
+};
+
+type ConfirmationModalProps =
+  | MessageConfirmationModalProps
+  | ChildrenConfirmationModalProps;
+
+export const ConfirmationModal = ({
   open,
-}: ConfirmDeleteDialogProps) => {
+  title,
+  message,
+  children,
+  confirmLabel,
+  cancelLabel,
+  onClose,
+  onConfirm,
+  isLoading = false,
+}: ConfirmationModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -37,30 +58,31 @@ export const ConfirmDeleteDialog = ({
       open={open}
       container={root}
       onClose={onClose}
-      aria-label={t(i18n)`Delete confirmation`}
+      aria-label={t(i18n)`Confirmation dialog`}
       fullWidth
       maxWidth="sm"
     >
-      <MoniteDialogTitle>
-        {t(i18n)`Delete ${type} “${name}“?`}
-      </MoniteDialogTitle>
+      <MoniteDialogTitle>{title}</MoniteDialogTitle>
       <MoniteDialogContent>
-        <DialogContentText>
-          {t(i18n)`You can't undo this action.`}
-        </DialogContentText>
+        {message ? <DialogContentText>{message}</DialogContentText> : children}
       </MoniteDialogContent>
       <MoniteDialogActions>
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} disabled={isLoading} autoFocus>
-            {t(i18n)`Cancel`}
+          <Button onClick={onClose} autoFocus>
+            {cancelLabel}
           </Button>
           <Button
             color="error"
             variant="contained"
-            onClick={onDelete}
+            onClick={onConfirm}
             disabled={isLoading}
+            startIcon={
+              isLoading ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : undefined
+            }
           >
-            {t(i18n)`Delete`}
+            {confirmLabel}
           </Button>
         </Stack>
       </MoniteDialogActions>

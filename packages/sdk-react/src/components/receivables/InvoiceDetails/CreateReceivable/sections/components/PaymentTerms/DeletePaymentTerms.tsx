@@ -1,13 +1,7 @@
 import { components } from '@/api';
-import { Dialog } from '@/components';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from '@mui/material';
 
 import { usePaymentTermsApi } from './usePaymentTermsApi';
 
@@ -29,25 +23,16 @@ export const DeletePaymentTerms = ({
   const { i18n } = useLingui();
 
   return (
-    <Dialog open={show}>
-      <DialogTitle>{t(i18n)`Delete payment term?`}</DialogTitle>
-      <DialogContent>
-        {t(
-          i18n
-        )`You won't be able to use it to create new invoices, but it won't affect the existing invoices with this term and their future copies.`}
-      </DialogContent>
-      <DialogActions>
-        <Button variant="text" onClick={() => closeDialog(false)}>{t(
-          i18n
-        )`Cancel`}</Button>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => deletePaymentTerm(paymentTermsId)}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <ConfirmationModal
+      open={show}
+      title={t(i18n)`Delete payment term?`}
+      message={t(
+        i18n
+      )`You won’t be able to use it to create new invoices, but it won’t affect the existing invoices with this term and their future copies.`}
+      confirmLabel={t(i18n)`Delete`}
+      cancelLabel={t(i18n)`Cancel`}
+      onClose={() => closeDialog(false)}
+      onConfirm={() => deletePaymentTerm(paymentTermsId)}
+    />
   );
 };

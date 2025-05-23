@@ -1,15 +1,10 @@
 import { useDialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-} from '@mui/material';
+import { DialogActions, DialogTitle } from '@mui/material';
+import { Button } from '@mui/material';
 
 import { useUserRoleMutations } from '../../useUserRoles';
 
@@ -46,6 +41,14 @@ export const UserRoleDeleteDialog = ({
     }
   };
 
+  if (!dialogContext) {
+    return null;
+  }
+
+  const handleClose = () => {
+    dialogContext.onClose?.();
+  };
+
   if (users && users.data && users.data.length > 0) {
     return (
       <>
@@ -53,41 +56,24 @@ export const UserRoleDeleteDialog = ({
           {t(i18n)`To delete this role, remove it from all users`}
         </DialogTitle>
         <DialogActions>
-          <Button variant="contained" onClick={dialogContext?.onClose}>{t(
-            i18n
-          )`Close`}</Button>
+          <Button variant="contained" onClick={handleClose}>
+            {t(i18n)`Close`}
+          </Button>
         </DialogActions>
       </>
     );
   }
 
   return (
-    <>
-      <DialogTitle variant="h3" id="responsive-dialog-title">
-        {t(i18n)`Delete “${role?.name}”?`}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          {t(i18n)`You can’t undo this action.`}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button
-            autoFocus
-            onClick={dialogContext?.onClose}
-            disabled={isDeleting}
-          >
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleClickDelete}
-            disabled={isDeleting}
-          >{t(i18n)`Delete`}</Button>
-        </Stack>
-      </DialogActions>
-    </>
+    <ConfirmationModal
+      open={true}
+      title={t(i18n)`Delete "${role?.name}"?`}
+      message={t(i18n)`You can't undo this action.`}
+      confirmLabel={t(i18n)`Delete`}
+      cancelLabel={t(i18n)`Cancel`}
+      onClose={handleClose}
+      onConfirm={handleClickDelete}
+      isLoading={isDeleting}
+    />
   );
 };

@@ -117,7 +117,7 @@ export const ManualPaymentRecordDetails = ({
         <Typography variant="body2">{t(
           i18n
         )`Please, check the details of your payment record.
-  You won't be able to change or delete it after.`}</Typography>
+  You won’t be able to change or delete it after.`}</Typography>
       </Alert>
     </Box>
   );

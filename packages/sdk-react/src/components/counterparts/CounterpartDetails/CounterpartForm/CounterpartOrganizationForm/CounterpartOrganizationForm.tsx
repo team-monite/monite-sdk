@@ -201,7 +201,7 @@ export const CounterpartOrganizationForm = (
                 ? t(i18n)`Create customer`
                 : props?.id
                 ? t(i18n)`Edit company`
-                : t(i18n)`Create new Counterpart`}
+                : t(i18n)`Create new counterpart`}
             </Typography>
           </Grid>
           <Grid item xs={1}>
