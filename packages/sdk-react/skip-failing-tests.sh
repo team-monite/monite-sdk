@@ -98,7 +98,7 @@ jq -c '.testResults[]' "$JSON_REPORT_TEMP_PROCESSED" | while IFS= read -r test_s
   file_path_from_report=$(printf "%s" "$test_suite_json" | jq -r '.name')
   suite_status=$(printf "%s" "$test_suite_json" | jq -r '.status')
 
-  if [ -z "$file_path_from_report" ] || [ "$file_path_from_report" == "null" ]; then
+  if [ -z "$file_path_from_report" ] || [ "$file_path_from_report" = "null" ]; then
     echo "  Warning: Could not extract file_path from a test suite entry. Raw entry: $test_suite_json"
     continue
   fi
@@ -279,12 +279,12 @@ jq -c '.testResults[]' "$JSON_REPORT_TEMP_PROCESSED" | while IFS= read -r test_s
   num_assertions=$(printf "%s" "$test_suite_json" | jq -r '.assertionResults | length')
   num_failed_assertions=$(printf "%s" "$test_suite_json" | jq -r '[.assertionResults[] | select(.status == "failed")] | length')
 
-  if [ "$num_assertions" == "null" ] || [ "$num_failed_assertions" == "null" ]; then
+  if [ "$num_assertions" = "null" ] || [ "$num_failed_assertions" = "null" ]; then
       echo "  Warning: Could not extract assertion counts for $operating_file_path. Skipping modifications for this file."
       continue
   fi
 
-  if [ "$suite_status" == "failed" ]; then
+  if [ "$suite_status" = "failed" ]; then
     # Always process individual failing tests, regardless of how many there are
     echo "  $num_failed_assertions out of $num_assertions tests failed in $operating_file_path. Skipping individual tests."
     failing_test_titles_json=$(printf "%s" "$test_suite_json" | jq -c '.assertionResults[] | select(.status == "failed") | .ancestorTitles + [.title]')
@@ -292,7 +292,7 @@ jq -c '.testResults[]' "$JSON_REPORT_TEMP_PROCESSED" | while IFS= read -r test_s
     printf "%s\n" "$failing_test_titles_json" | while IFS= read -r test_title_array_json; do
       if [ -z "$test_title_array_json" ]; then continue; fi
       it_title=$(printf "%s" "$test_title_array_json" | jq -r '.[-1]')
-      if [ -z "$it_title" ] || [ "$it_title" == "null" ]; then
+      if [ -z "$it_title" ] || [ "$it_title" = "null" ]; then
           echo "    Warning: Could not extract a valid it_title from: $test_title_array_json"
           continue
       fi

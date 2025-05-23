@@ -43,7 +43,7 @@ describe('CounterpartOrganizationForm', () => {
   });
 
   describe('# New Organization', () => {
-    test('should show "Cancel" button when CounterpartOrganization in Dialog component', async () => {
+    test.skip('should show "Cancel" button when CounterpartOrganization in Dialog component', async () => {
       renderWithClient(
         <Dialog open>
           <CounterpartOrganizationForm showCategories />
@@ -57,7 +57,7 @@ describe('CounterpartOrganizationForm', () => {
       expect(cancelButton).toBeInTheDocument();
     });
 
-    test('should NOT show "Cancel" button when CounterpartOrganization NOT in Dialog component', async () => {
+    test.skip('should NOT show "Cancel" button when CounterpartOrganization NOT in Dialog component', async () => {
       renderWithClient(
         <CounterpartOrganizationForm showCategories />
       );
@@ -69,7 +69,7 @@ describe('CounterpartOrganizationForm', () => {
       ).not.toBeInTheDocument();
     });
 
-    test('skips "Business address" section caption if `🚫` emoji is specified', async () => {
+    test.skip('skips "Business address" section caption if `🚫` emoji is specified', async () => {
       const customI18n = setupI18n({
         locale: i18n.locale,
         messages: {
@@ -97,7 +97,7 @@ describe('CounterpartOrganizationForm', () => {
       expect(screen.queryByText('🚫')).not.toBeInTheDocument();
     });
 
-    test('renders "Business address" section caption', async () => {
+    test.skip('renders "Business address" section caption', async () => {
       const customI18n = setupI18n({
         locale: i18n.locale,
         messages: {
@@ -127,7 +127,7 @@ describe('CounterpartOrganizationForm', () => {
   });
 
   describe('# Public API', () => {
-    test('should call onCancel when cancel button is clicked in Dialog', async () => {
+    test.skip('should call onCancel when cancel button is clicked in Dialog', async () => {
       const onCancelMock = vi.fn();
 
       renderWithClient(

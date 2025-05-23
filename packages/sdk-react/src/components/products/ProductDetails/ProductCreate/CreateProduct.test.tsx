@@ -13,7 +13,7 @@ import { CreateProduct } from './CreateProduct';
 describe.skip('CreateProduct', () => {
   describe('#FormValidation', () => {
     test('should show error message when fields are empty and form is submitted', async () => {
-      const onCreateMock = jest.fn();
+      const onCreateMock = vi.fn();
 
       renderWithClient(<CreateProduct onCreated={onCreateMock} />);
 

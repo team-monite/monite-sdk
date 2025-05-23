@@ -5,7 +5,7 @@ import { counterpartListFixture } from '@/mocks';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 const genCounterpartContactFixture = (
