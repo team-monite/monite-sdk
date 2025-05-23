@@ -1,4 +1,3 @@
-import { afterEach, vi } from 'vitest';
 import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart';
 import {
@@ -22,6 +21,8 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { CounterpartsTable } from './CounterpartsTable';
 

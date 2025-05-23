@@ -1,8 +1,9 @@
-import { vi } from 'vitest';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import { productsListFixture } from '@/mocks/products';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { ExistingProductDetails } from './ExistingProductDetails';
 

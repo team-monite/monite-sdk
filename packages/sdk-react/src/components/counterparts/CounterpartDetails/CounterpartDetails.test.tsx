@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { components } from '@/api';
 import { CounterpartContactView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
@@ -22,6 +21,8 @@ import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { vi } from 'vitest';
 
 import { CounterpartDataTestId } from '../types';
 import { CounterpartDetails } from './CounterpartDetails';

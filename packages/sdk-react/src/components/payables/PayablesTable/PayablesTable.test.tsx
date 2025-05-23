@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
@@ -15,6 +14,8 @@ import {
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { PayablesTable } from './PayablesTable';
 

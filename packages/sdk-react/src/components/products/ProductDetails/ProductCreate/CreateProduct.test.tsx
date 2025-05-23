@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { measureUnitsListFixture } from '@/mocks';
 import {
   renderWithClient,
@@ -7,6 +6,8 @@ import {
   triggerChangeInput,
 } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { CreateProduct } from './CreateProduct';
 

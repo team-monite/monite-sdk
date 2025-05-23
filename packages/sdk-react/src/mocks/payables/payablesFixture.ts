@@ -19,7 +19,7 @@ import { tagListFixture } from '../tags';
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
 
 const getRandomTags = () => {
-  const hasTags = Math.random() > 0.6;
+  const hasTags = faker.datatype.boolean({ probability: 0.4 }); // 40% chance of having tags
 
   return hasTags ? getSampleFromArray(tagListFixture) : [];
 };
@@ -27,20 +27,25 @@ const getRandomTags = () => {
 function generatePayable(
   payable?: Partial<components['schemas']['PayableResponseSchema']>
 ): components['schemas']['PayableResponseSchema'] {
+  const randomStatus = getRandomItemFromArray(PayableStateEnum);
+  const randomCurrency = getRandomItemFromArray(CurrencyEnum);
+  const randomApprovalPolicy = getRandomItemFromArray(
+    approvalPoliciesListFixture.data
+  );
+
   const createdPayable: components['schemas']['PayableResponseSchema'] = {
     id: faker.string.uuid(),
     credit_notes: [],
     entity_id: getRandomProperty(entityUsers).id,
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
-    status: getRandomItemFromArray(PayableStateEnum),
+    status: randomStatus === undefined ? 'draft' : randomStatus,
     source_of_payable_data: 'ocr',
-    currency: getRandomItemFromArray(CurrencyEnum),
+    currency: randomCurrency === undefined ? 'USD' : randomCurrency,
     amount_due: Number(faker.finance.amount()),
     amount_paid: Number(faker.finance.amount()),
     amount_to_pay: Number(faker.finance.amount()),
-    approval_policy_id: getRandomItemFromArray(approvalPoliciesListFixture.data)
-      .id,
+    approval_policy_id: randomApprovalPolicy?.id,
     description: faker.commerce.productDescription(),
     due_date: faker.date.soon().toString(),
     payment_terms: undefined,
