@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { Receivables } from '@/components';
@@ -25,9 +24,11 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 
+import { vi } from 'vitest';
+
 import { CreateReceivables } from './CreateReceivables';
 
-  test.skip('should show errors when user submit an empty form', async () => {
+test.skip('should show errors when user submit an empty form', async () => {
   test('should show errors when user submit an empty form', async () => {
     renderWithClient(
       <CreateReceivables

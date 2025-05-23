@@ -11,7 +11,6 @@ import { MonitePayableTableProps } from '@/components/payables/PayablesTable/typ
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
 
 import {
   defaultAvailableCountries,
@@ -212,15 +211,15 @@ export const getDefaultComponentSettings = (
     tab: componentSettings?.receivables?.tab || 0,
     tabs: componentSettings?.receivables?.tabs || [
       {
-        label: t`Invoices`,
+        label: i18n.t('Invoices'),
         query: { type: 'invoice' },
       },
       {
-        label: t`Quotes`,
+        label: i18n.t('Quotes'),
         query: { type: 'quote' },
       },
       {
-        label: t`Credit notes`,
+        label: i18n.t('Credit notes'),
         query: { type: 'credit_note' },
       },
       {

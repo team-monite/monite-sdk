@@ -1,6 +1,7 @@
 import { fullPermissionRole } from '@/mocks/roles';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { screen } from '@testing-library/react';
+
 import { vi } from 'vitest';
 
 import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
