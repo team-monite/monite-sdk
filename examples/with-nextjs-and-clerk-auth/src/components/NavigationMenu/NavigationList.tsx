@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { List } from '@mui/material';
 
 import { NavigationListItem } from '@/components/NavigationMenu/NavigationListItem';
@@ -24,6 +24,16 @@ import {
 
 export const NavigationList = () => {
   const { i18n } = useLingui();
+  const [isDevEnvironment, setIsDevEnvironment] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsDevEnvironment(
+        window.location.hostname.includes('localhost') ||
+          window.location.hostname.includes('dev')
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -37,9 +47,11 @@ export const NavigationList = () => {
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
           {t(i18n)`Invoicing`}
         </NavigationListItem>
-        <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
-          {t(i18n)`AI Assistant`}
-        </NavigationListItem>
+        {isDevEnvironment && (
+          <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
+            {t(i18n)`AI Assistant`}
+          </NavigationListItem>
+        )}
         <NavigationListItem href="/projects" icon={<IconBag />}>
           {t(i18n)`Projects`}
         </NavigationListItem>
