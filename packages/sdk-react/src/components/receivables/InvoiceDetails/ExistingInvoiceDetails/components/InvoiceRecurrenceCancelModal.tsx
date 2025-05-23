@@ -1,11 +1,11 @@
 import { toast } from 'react-hot-toast';
 import { usePreviousDistinct } from 'react-use';
 
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useReceivableById } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { plural, t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Typography } from '@mui/material';

@@ -1,8 +1,8 @@
 import { toast } from 'react-hot-toast';
 
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

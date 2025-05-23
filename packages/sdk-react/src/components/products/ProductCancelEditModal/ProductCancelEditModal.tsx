@@ -1,4 +1,4 @@
-import { ConfirmationModal } from '@/components/ConfirmationModal';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

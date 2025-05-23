@@ -1,8 +1,8 @@
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import {
   useDeleteReceivableById,
   useReceivableById,
 } from '@/core/queries/useReceivables';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

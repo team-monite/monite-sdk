@@ -2,7 +2,6 @@ import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
@@ -11,6 +10,7 @@ import {
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

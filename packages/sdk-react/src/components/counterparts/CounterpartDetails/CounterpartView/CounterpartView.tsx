@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { CounterpartDataTestId } from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';

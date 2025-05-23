@@ -1,11 +1,11 @@
 import { type MouseEvent, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';

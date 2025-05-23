@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 
-import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useVatTypeLabelByCode } from '@/core/hooks/useVatTypes';
 import { getCountries } from '@/core/utils/countries';
 import { MoniteCard } from '@/ui/Card/Card';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
