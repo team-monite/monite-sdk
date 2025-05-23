@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "outDir": "dist",
+    "composite": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2016",
     "sourceMap": true,

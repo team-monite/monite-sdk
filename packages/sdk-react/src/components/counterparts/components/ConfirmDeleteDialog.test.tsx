@@ -7,7 +7,7 @@ import { ConfirmDeleteDialog } from './ConfirmDeleteDialog';
 
 describe('CounterpartConfirmDeleteModal', () => {
   test('should trigger "onDelete" callback when we click on "delete" button', async () => {
-    const onDeleteMock = jest.fn();
+    const onDeleteMock = vi.fn();
 
     renderWithClient(
       <MoniteScopedProviders>
@@ -16,7 +16,7 @@ describe('CounterpartConfirmDeleteModal', () => {
           type="individual"
           name="individual"
           isLoading={false}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onDelete={onDeleteMock}
         />
       </MoniteScopedProviders>
@@ -35,7 +35,7 @@ describe('CounterpartConfirmDeleteModal', () => {
   });
 
   test('should trigger "onCancel" callback when we click on "cancel" button', async () => {
-    const onCancelMock = jest.fn();
+    const onCancelMock = vi.fn();
 
     renderWithClient(
       <MoniteScopedProviders>
@@ -45,7 +45,7 @@ describe('CounterpartConfirmDeleteModal', () => {
           name="individual"
           isLoading={false}
           onClose={onCancelMock}
-          onDelete={jest.fn()}
+          onDelete={vi.fn()}
         />
       </MoniteScopedProviders>
     );

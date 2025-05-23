@@ -1,3 +1,4 @@
+import { expect } from "vitest";
 import { counterpartBankListFixture } from '@/mocks/counterparts';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';

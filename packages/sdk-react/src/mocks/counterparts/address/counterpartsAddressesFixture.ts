@@ -40,7 +40,7 @@ export function generateCounterpartAddress(): components['schemas']['Counterpart
   };
 }
 
-export const counterpartsAddressesFixture = counterpartListFixture
+export const counterpartsAddressesFixture = (counterpartListFixture || [])
   .map((counterpart) => {
     return generateRandomAddress(counterpart.id);
   })
