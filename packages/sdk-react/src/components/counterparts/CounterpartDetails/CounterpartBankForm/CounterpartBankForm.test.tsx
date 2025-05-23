@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -20,8 +21,8 @@ import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 import { CounterpartBankForm } from './CounterpartBankForm';
 
 describe('CounterpartBankForm', () => {
-  test('should create a bank account', async () => {
-    const onCreateMock = jest.fn();
+  test('[CREATE] should call onCreate with new bank details', async () => {
+    const onCreateMock = vi.fn();
 
     renderWithClient(
       <MoniteScopedProviders>
@@ -51,7 +52,7 @@ describe('CounterpartBankForm', () => {
     });
   }, 10_000);
 
-  test('should show errors if non of the field is filled', async () => {
+  test('should show errors if none of the fields are filled', async () => {
     renderWithClient(
       <MoniteScopedProviders>
         <CounterpartBankForm counterpartId={individualId} />
@@ -71,8 +72,8 @@ describe('CounterpartBankForm', () => {
     expect(errors.length).toBeGreaterThanOrEqual(2);
   }, 10_000);
 
-  test('should update a bank account', async () => {
-    const onUpdateMock = jest.fn();
+  test('[UPDATE] should call onUpdate when submitting an existing bank', async () => {
+    const onUpdateMock = vi.fn();
 
     const firstBankListFixture = counterpartBankListFixture[0];
     const counterpart = counterpartListFixture.find(
@@ -81,7 +82,9 @@ describe('CounterpartBankForm', () => {
 
     if (!counterpart) {
       throw new Error(
-        `Could not find counterpart by provided bank counterpart id: ${firstBankListFixture.counterpart_id}`
+        `Could not find counterpart by provided bank counterpart id: ${
+          firstBankListFixture.counterpart_id
+        }`
       );
     }
 
@@ -108,8 +111,8 @@ describe('CounterpartBankForm', () => {
     });
   }, 10_000);
 
-  test('should catch onCancel callback', async () => {
-    const onCancelMock = jest.fn();
+  test('should call onCancel when cancel button is clicked', async () => {
+    const onCancelMock = vi.fn();
 
     renderWithClient(
       <MoniteScopedProviders>

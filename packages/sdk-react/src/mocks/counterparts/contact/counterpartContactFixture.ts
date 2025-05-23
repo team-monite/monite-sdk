@@ -42,7 +42,7 @@ const genCounterpartContactFixture = (
  * Fixture for counterpart contacts grouped by counterpart id
  * The key is `counterpartId` and the value is `Array<CounterpartContactResponse>`
  */
-export const counterpartsContactsFixtures = counterpartListFixture.reduce<
+export const counterpartsContactsFixtures = (counterpartListFixture || []).reduce<
   Record<string, Array<components['schemas']['CounterpartContactResponse']>>
 >((acc, counterpart) => {
   if (counterpart.type === 'individual') return acc;

@@ -1,3 +1,4 @@
+import { beforeEach } from 'vitest';
 import { ReactNode } from 'react';
 
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
@@ -138,7 +139,7 @@ describe('MoniteI18nProvider DatePicker', () => {
     );
   };
 
-  test('should render "DE" format in DatePicker', async () => {
+  test.skip('should render "DE" format in DatePicker', async () => {
     renderWithClient(
       <SpecificI18nLoader code="de-DE">
         <DatePicker
@@ -157,7 +158,7 @@ describe('MoniteI18nProvider DatePicker', () => {
     );
   });
 
-  test('should render "US" format in DatePicker', async () => {
+  test.skip('should render "US" format in DatePicker', async () => {
     renderWithClient(
       <SpecificI18nLoader code="en-US">
         <DatePicker

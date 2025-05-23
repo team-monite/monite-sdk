@@ -1,3 +1,4 @@
+import { afterEach, vi } from 'vitest';
 import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart';
 import {
@@ -48,7 +49,7 @@ function getFirstOrganization(): components['schemas']['CounterpartOrganizationR
 
 describe('CounterpartsTable', () => {
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   describe('# UI', () => {
@@ -472,11 +473,11 @@ describe('CounterpartsTable', () => {
 
       const value = 'Acme';
       await act(() => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
 
         triggerChangeInput(/Search by name/i, value);
 
-        jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
+        vi.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
       });
 
       const lastCallArguments =

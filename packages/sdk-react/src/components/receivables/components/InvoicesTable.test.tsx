@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { InvoicesTable } from '@/components';
 import { CREATE_INVOICE } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
@@ -14,7 +15,7 @@ import {
 
 describe('InvoicesTable', () => {
   test('renders action menu if onRowAction property specified', async () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
 
     renderWithClient(<InvoicesTable onRowActionClick={onClick} />);
 
@@ -24,7 +25,7 @@ describe('InvoicesTable', () => {
   });
 
   test('renders action menu default items', async () => {
-    renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
+    renderWithClient(<InvoicesTable onRowActionClick={vi.fn()} />);
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
       name: new RegExp(CREATE_INVOICE),
@@ -54,7 +55,7 @@ describe('InvoicesTable', () => {
   }, 10_000);
 
   test('renders action menu custom items', async () => {
-    const onRowActionClick = jest.fn();
+    const onRowActionClick = vi.fn();
 
     renderWithClient(
       <InvoicesTable
