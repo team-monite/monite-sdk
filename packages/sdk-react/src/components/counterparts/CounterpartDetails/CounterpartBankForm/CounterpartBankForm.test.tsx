@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -17,6 +16,8 @@ import {
 import { t } from '@lingui/macro';
 import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { CounterpartBankForm } from './CounterpartBankForm';
 
@@ -82,9 +83,7 @@ describe('CounterpartBankForm', () => {
 
     if (!counterpart) {
       throw new Error(
-        `Could not find counterpart by provided bank counterpart id: ${
-          firstBankListFixture.counterpart_id
-        }`
+        `Could not find counterpart by provided bank counterpart id: ${firstBankListFixture.counterpart_id}`
       );
     }
 
