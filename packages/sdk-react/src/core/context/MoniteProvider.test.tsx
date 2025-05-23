@@ -1,10 +1,11 @@
-import { vi } from 'vitest';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { useLingui } from '@lingui/react';
 import { useTheme } from '@mui/material/styles';
 import { renderHook, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { MoniteProvider } from './MoniteProvider';
 

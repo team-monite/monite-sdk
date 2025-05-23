@@ -9,6 +9,8 @@ import {
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
 import { getRandomItemFromArray } from '@/utils/test-utils-random';
+import { generateUniqueId } from '@/utils/uuid';
+import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -53,17 +55,20 @@ export function changeDocumentIdByPayableId(payableId: string): string {
  *  at the beginning of the list
  */
 export function addNewItemToPayablesList(): components['schemas']['PayableResponseSchema'] {
+  const randomStatus = getRandomItemFromArray(Object.values(PayableStateEnum));
+  const randomCurrency = getRandomItemFromArray(Object.values(CurrencyEnum));
+
   const newItem: components['schemas']['PayableResponseSchema'] = {
-    id: (Math.random() + 1).toString(36).substring(2),
+    id: generateUniqueId(),
     entity_id: entityIds[0],
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
-    status: getRandomItemFromArray(PayableStateEnum),
+    status: randomStatus === undefined ? 'draft' : randomStatus,
     source_of_payable_data: 'user_specified',
-    currency: getRandomItemFromArray(CurrencyEnum),
-    amount_due: Math.floor(Math.random() * 10_000 + 1),
-    amount_paid: Math.floor(Math.random() * 10_000 + 1),
-    amount_to_pay: Math.floor(Math.random() * 10_000 + 1),
+    currency: randomCurrency === undefined ? 'USD' : randomCurrency,
+    amount_due: faker.number.int({ min: 1, max: 10_000 }),
+    amount_paid: faker.number.int({ min: 1, max: 10_000 }),
+    amount_to_pay: faker.number.int({ min: 1, max: 10_000 }),
     description: 'string',
     due_date: '2023-01-25',
     payment_terms: {
@@ -112,7 +117,7 @@ export function addNewItemToPayablesList(): components['schemas']['PayableRespon
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     other_extracted_data: undefined,
-    document_id: (Math.random() + 1).toString(36).substring(7),
+    document_id: faker.string.alphanumeric(7),
     subtotal: undefined,
     tax: undefined,
     credit_notes: [],

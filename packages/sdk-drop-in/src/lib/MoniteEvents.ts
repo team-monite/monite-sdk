@@ -8,6 +8,7 @@ import type {
   ComponentSettings,
   MoniteReceivablesTableProps,
 } from '@monite/sdk-react';
+import { faker } from '@faker-js/faker';
 
 import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
 
@@ -259,7 +260,7 @@ function generateEventId(): string {
     return crypto.randomUUID();
   }
 
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${faker.string.alphanumeric(9)}`;
 }
 
 export { generateEventId };

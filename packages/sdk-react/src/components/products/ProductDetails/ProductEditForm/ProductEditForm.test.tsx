@@ -1,7 +1,8 @@
-import { vi } from 'vitest';
 import { productsListFixture } from '@/mocks/products';
 import { renderWithClient } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { ProductEditForm } from './ProductEditForm';
 

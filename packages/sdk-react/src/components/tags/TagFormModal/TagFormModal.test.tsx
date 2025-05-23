@@ -1,15 +1,14 @@
-import { vi } from 'vitest';
 import { renderWithClient } from '@/utils/test-utils';
+import { generateRandomToken } from '@/utils/test-utils-random';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { TagFormModal } from './TagFormModal';
 
 function generateRandomText(customMessage?: string) {
-  return (Math.random() + 1)
-    .toString(36)
-    .substring(7)
-    .concat(customMessage ?? '');
+  return generateRandomToken().concat(customMessage ?? '');
 }
 
 describe('TagFormModal', () => {

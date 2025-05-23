@@ -1,10 +1,11 @@
-import { afterEach, vi } from 'vitest';
 import { components } from '@/api';
 import { Dialog } from '@/components';
 import { InvoiceDetailsPermissions } from '@/core/queries/useReceivables';
 import { receivableListFixture } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { ActiveInvoiceTitleTestId } from './CreateReceivable/components/ProductsTable.types';
 import { InvoiceDetails } from './InvoiceDetails';
