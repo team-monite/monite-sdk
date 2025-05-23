@@ -30,8 +30,8 @@ interface DialogProps {
 
 vi.mock('@/components/Dialog', () => ({
   Dialog: ({ children }: DialogProps) => <>{children}</>,
-  useDialog: jest.fn(() => ({
-    openDialog: jest.fn(),
+  useDialog: vi.fn(() => ({
+    openDialog: vi.fn(),
     closeDialog: vi.fn(),
   })),
 }));

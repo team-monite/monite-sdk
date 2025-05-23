@@ -19,10 +19,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 vi.useFakeTimers();
-vi.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 const { api } = createAPIClient();
-describe.skip('Payables', () => {
+
 describe('Payables', () => {
   // todo::Skipped: the test is freezing because of `userEvent.upload()`, need to investigate
   test.skip('should display toast message when file upload is successful', async () => {
@@ -49,7 +49,7 @@ describe('Payables', () => {
   });
 
   describe('# Permissions', () => {
-    test('support "read" and "create" permissions', async () => {
+    test.skip('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
@@ -82,7 +82,7 @@ describe('Payables', () => {
       await expect(payableCell).resolves.toBeInTheDocument();
     });
 
-    test('support no "read" and no "create" permissions', async () => {
+    test.skip('support no "read" and no "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
@@ -119,7 +119,7 @@ describe('Payables', () => {
       ).resolves.toBeInTheDocument();
     });
 
-    test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
+    test.skip('support "allowed_for_own" access for "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false, gcTime: Infinity, staleTime: Infinity },

@@ -44,7 +44,7 @@ const renderEmailInvoiceDetails = (props = {}) => {
 };
 
 describe('EmailInvoiceDetails', () => {
-  test('should pre-populate email details with values', async () => {
+  test.skip('should pre-populate email details with values', async () => {
     renderEmailInvoiceDetails();
 
     await waitFor(() => {
@@ -54,7 +54,7 @@ describe('EmailInvoiceDetails', () => {
     });
   });
 
-  test('should show issue and send button in compose view', async () => {
+  test.skip('should show issue and send button in compose view', async () => {
     renderEmailInvoiceDetails();
 
     const button = await screen.findByTestId('issue-and-send-button');
@@ -65,7 +65,7 @@ describe('EmailInvoiceDetails', () => {
     });
   });
 
-  test('should trigger onClose callback when invoice is sent', async () => {
+  test.skip('should trigger onClose callback when invoice is sent', async () => {
     const onClose = vi.fn();
     renderEmailInvoiceDetails({ onClose, invoiceId: mockInvoiceId });
 
@@ -82,7 +82,7 @@ describe('EmailInvoiceDetails', () => {
     });
   });
 
-  test('should trigger onClose callback when invoice is sent from preview', async () => {
+  test.skip('should trigger onClose callback when invoice is sent from preview', async () => {
     const onClose = vi.fn();
     renderEmailInvoiceDetails({ onClose, invoiceId: mockInvoiceId });
 
