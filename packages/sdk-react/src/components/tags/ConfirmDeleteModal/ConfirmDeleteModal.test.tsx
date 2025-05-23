@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
@@ -6,7 +7,7 @@ import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 
 describe('ConfirmDeleteModal', () => {
   test('should trigger `onClose` callback when click on "cancel" button', () => {
-    const onCloseMock = jest.fn();
+    const onCloseMock = vi.fn();
 
     renderWithClient(
       <ConfirmDeleteModal
@@ -32,8 +33,8 @@ describe('ConfirmDeleteModal', () => {
   });
 
   test('should trigger `onDelete` and `onClose` callbacks when click on "delete" button', async () => {
-    const onDeleteMock = jest.fn();
-    const onCloseMock = jest.fn();
+    const onDeleteMock = vi.fn();
+    const onCloseMock = vi.fn();
 
     renderWithClient(
       <ConfirmDeleteModal
@@ -65,8 +66,8 @@ describe('ConfirmDeleteModal', () => {
   });
 
   test('should NOT trigger `onDelete` and `onClose` callbacks when response failed', async () => {
-    const onDeleteMock = jest.fn();
-    const onCloseMock = jest.fn();
+    const onDeleteMock = vi.fn();
+    const onCloseMock = vi.fn();
 
     renderWithClient(
       <ConfirmDeleteModal

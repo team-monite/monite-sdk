@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Dialog } from '@/components';
 import { CounterpartOrganizationForm } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
 import { organizationId } from '@/mocks/counterparts/counterpart.mocks.types';
@@ -41,7 +42,7 @@ describe('CounterpartOrganizationForm', () => {
     });
   });
 
-  describe('# Create new Organization', () => {
+  describe('# New Organization', () => {
     test('should show "Cancel" button when CounterpartOrganization in Dialog component', async () => {
       renderWithClient(
         <Dialog open>
@@ -58,16 +59,14 @@ describe('CounterpartOrganizationForm', () => {
 
     test('should NOT show "Cancel" button when CounterpartOrganization NOT in Dialog component', async () => {
       renderWithClient(
-        <Dialog open>
-          <CounterpartOrganizationForm showCategories />
-        </Dialog>
+        <CounterpartOrganizationForm showCategories />
       );
 
       await waitUntilTableIsLoaded();
 
-      const cancelButton = screen.getByRole('button', { name: /Cancel/i });
-
-      expect(cancelButton).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: /Cancel/i })
+      ).not.toBeInTheDocument();
     });
 
     test('skips "Business address" section caption if `🚫` emoji is specified', async () => {
@@ -128,8 +127,8 @@ describe('CounterpartOrganizationForm', () => {
   });
 
   describe('# Public API', () => {
-    test('should call "onClose" when "Cancel" button is clicked', async () => {
-      const onCancelMock = jest.fn();
+    test('should call onCancel when cancel button is clicked in Dialog', async () => {
+      const onCancelMock = vi.fn();
 
       renderWithClient(
         <Dialog open onClose={onCancelMock}>

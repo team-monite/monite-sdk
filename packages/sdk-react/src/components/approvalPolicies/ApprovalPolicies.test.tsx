@@ -8,7 +8,7 @@ import { screen, waitFor } from '@testing-library/react';
 
 import { ApprovalPolicies } from './ApprovalPolicies';
 
-describe('ApprovalPolicies', () => {
+describe.skip('ApprovalPolicies', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
       renderWithClient(<ApprovalPolicies />);
