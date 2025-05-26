@@ -1,8 +1,10 @@
+'use client';
+
 import { Box } from '@mui/material';
 
 import { ApprovalPolicies } from '@/components/MoniteComponents';
 
-export default async function ApprovalPoliciesPage() {
+export default function ApprovalPoliciesPage() {
   return (
     <Box className="Monite-PageContainer Monite-ApprovalPolicies">
       <ApprovalPolicies />
