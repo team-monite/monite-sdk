@@ -8,7 +8,7 @@ export const generateDocumentTemplate = (): TemplateReceivableResponse => ({
   id: faker.string.uuid(),
   created_at: faker.date.past().toISOString(),
   updated_at: faker.date.past().toISOString(),
-  document_type: 'invoice',
+  document_type: 'receivable',
   is_default: false,
   language: 'en',
   name: faker.word.noun(),
