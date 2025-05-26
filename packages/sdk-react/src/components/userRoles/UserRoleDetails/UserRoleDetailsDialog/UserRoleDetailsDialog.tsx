@@ -32,7 +32,8 @@ import {
 } from '@mui/material';
 
 import { useUserRoleQuery } from '../../useUserRoles';
-import { UserRoleRow, UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
+import { UserRoleViewMode } from '../UserRole.types';
+import { UserRoleRow } from '../UserRoleRow/UserRoleRow';
 
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;

@@ -65,7 +65,7 @@
     }
   },
   "type": "commonjs",
-  "main": "dist/lib/index.js",
+  "main": "dist/src/lib/index.js",
   "files": [
     "dist",
     "!dist/tests/**/*"

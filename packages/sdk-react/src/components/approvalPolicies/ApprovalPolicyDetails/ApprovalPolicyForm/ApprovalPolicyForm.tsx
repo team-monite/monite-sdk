@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
@@ -16,12 +15,9 @@ import {
   ApprovalPoliciesOperator,
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import {
-  CounterpartAutocomplete,
-  CounterpartsAutocompleteOptionProps,
-} from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useDialog } from '@/components/Dialog/Dialog';
+import { RHFTextField } from '@/components/RHF/RHFTextField/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -42,6 +38,10 @@ import {
 
 import * as yup from 'yup';
 
+import {
+  CounterpartAutocomplete,
+  CounterpartsAutocompleteOptionProps,
+} from '../../../counterparts/components';
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
 import { AutocompleteTags } from './AutocompleteTags';

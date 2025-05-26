@@ -36,8 +36,8 @@ function generateEntityVatIdResourceList(
     id: faker.string.uuid(),
     entity_id: entityId,
     value: faker.string.numeric(10),
-    type: getRandomItemFromArray(VatIDTypeEnum),
-    country: getRandomItemFromArray(AllowedCountries),
+    type: getRandomItemFromArray(VatIDTypeEnum) as components['schemas']['VatIDTypeEnum'],
+    country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
   }));
 }
 

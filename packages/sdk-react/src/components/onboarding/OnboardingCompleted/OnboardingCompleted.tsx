@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 
 import { OnboardingLayout, OnboardingTitle } from '../OnboardingLayout';
 
-interface OnboardingCompletedProps {
+export interface OnboardingCompletedProps {
   onComplete?: () => void;
   onContinue?: () => void;
   showContinueButton?: boolean;

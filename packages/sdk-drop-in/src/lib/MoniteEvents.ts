@@ -3,12 +3,12 @@
  *
  * This module provides a centralized way to define, emit, and handle Monite events.
  */
+import { faker } from '@faker-js/faker';
 import { APISchema } from '@monite/sdk-react';
 import type {
   ComponentSettings,
   MoniteReceivablesTableProps,
 } from '@monite/sdk-react';
-import { faker } from '@faker-js/faker';
 
 import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
 

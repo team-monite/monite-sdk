@@ -1,8 +1,9 @@
-import { vi } from 'vitest';
 import { documentTemplateList } from '@/mocks/documentTemplates';
 import { renderWithClient } from '@/utils/test-utils';
 import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { DocumentDesign } from './DocumentDesign';
 
@@ -10,7 +11,7 @@ const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 global.URL.createObjectURL = vi.fn();
 global.URL.createObjectURL = vi.fn();
 
-  test.skip('should render document design page', () => {
+test.skip('should render document design page', () => {
   test('should render document design page', () => {
     renderWithClient(<DocumentDesign />);
 
@@ -18,7 +19,7 @@ global.URL.createObjectURL = vi.fn();
     expect(screen.getByText('Select template')).toBeInTheDocument();
   });
 
-    test.skip('it should show template selection modal', async () => {
+  test.skip('it should show template selection modal', async () => {
     test('it should show template selection modal', async () => {
       renderWithClient(<DocumentDesign />);
 
@@ -55,7 +56,7 @@ global.URL.createObjectURL = vi.fn();
       ).toBeInTheDocument();
     });
 
-      test.skip('it enables `Set as default` button', async () => {
+    test.skip('it enables `Set as default` button', async () => {
       test('it enables `Set as default` button', async () => {
         renderWithClient(<DocumentDesign />);
 
@@ -95,7 +96,7 @@ global.URL.createObjectURL = vi.fn();
       });
     });
 
-      test.skip('it should hide selection modal', async () => {
+    test.skip('it should hide selection modal', async () => {
       test('it should hide selection modal', async () => {
         renderWithClient(<DocumentDesign />);
 

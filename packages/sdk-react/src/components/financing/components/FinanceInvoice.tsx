@@ -18,7 +18,7 @@ import { Box, Button, Tooltip, Typography } from '@mui/material';
 
 const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
 
-interface FinanceInvoiceProps {
+export interface FinanceInvoiceProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
 }
 

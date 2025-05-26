@@ -14,7 +14,7 @@ function generateRandomAddress(
 ): components['schemas']['CounterpartAddressResourceList'] {
   return {
     data: new Array(getRandomNumber(1, 5)).fill(1).map((_, index) => ({
-      country: getRandomItemFromArray(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -29,7 +29,7 @@ function generateRandomAddress(
 
 export function generateCounterpartAddress(): components['schemas']['CounterpartAddress'] {
   return {
-    country: getRandomItemFromArray(AllowedCountries),
+    country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
     city: faker.location.city(),
     postal_code: faker.location.zipCode(),
     state: faker.datatype.boolean() ? faker.location.state() : undefined,

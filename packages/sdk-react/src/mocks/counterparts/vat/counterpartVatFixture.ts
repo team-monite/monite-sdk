@@ -13,7 +13,7 @@ const genCounterpartVatFixture = (id: number = 0): CounterpartVatIDResponse => {
   return {
     id: `vat-id-${id}`,
     counterpart_id: organizationId,
-    type: getRandomItemFromArray(VatIDTypeEnum),
+    type: getRandomItemFromArray(VatIDTypeEnum) as components['schemas']['VatIDTypeEnum'],
     value: faker.string.numeric(10),
     country: getRandomItemFromArray(['DE', 'US', 'KZ', 'GE']),
   };

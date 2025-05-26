@@ -5,7 +5,6 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { CounterpartStatusChip } from '@/components/counterparts/components';
 import type { CounterpartShowCategories } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -70,9 +69,7 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
 };
 
 export const CounterpartsTable = (props: CounterpartsTableProps) => (
-  <MoniteScopedProviders>
-    <CounterpartsTableBase {...props} />
-  </MoniteScopedProviders>
+  <CounterpartsTableBase {...props} />
 );
 
 const CounterpartsTableBase = ({
@@ -239,7 +236,7 @@ const CounterpartsTableBase = ({
     return (
       <DataGridEmptyState
         title={t(i18n)`No counterparts yet`}
-        descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
+        descriptionLine1={t(i18n)`You don't have any counterparts yet.`}
         descriptionLine2={t(i18n)`Create your first counterpart.`}
         actionButtonLabel={t(i18n)`Create new`}
         actionOptions={[t(i18n)`Counterpart`]}
