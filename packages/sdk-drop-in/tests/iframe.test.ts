@@ -14,7 +14,7 @@ const routingPaths: Record<WidgetType, string> = {
   'approval-policies': '/approval-policies',
   onboarding: '/onboarding',
   'user-roles': '/user-roles',
-  'document-templates': '/document-templates',
+  'template-settings': '/template-settings',
 };
 
 test.beforeEach(async ({ page }) => {
