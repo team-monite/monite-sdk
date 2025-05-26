@@ -80,6 +80,11 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
       }
     };
 
+    if (!root) {
+      console.warn('DialogBase: Monite root element is not available.');
+      return null;
+    }
+
     return (
       <DialogContext.Provider
         value={{

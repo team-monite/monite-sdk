@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { PromptList } from '@/components/aiAssistant/components/PromptList/PromptList';
 import { PromptListSkeleton } from '@/components/aiAssistant/components/PromptListSkeleton/PromptListSkeleton';
 import { Prompt } from '@/components/aiAssistant/types';

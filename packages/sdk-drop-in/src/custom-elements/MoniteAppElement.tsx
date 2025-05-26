@@ -121,12 +121,16 @@ export class MoniteAppElement extends MoniteAppElementBase<
   render() {
     if (!this.isMounted) return;
 
-    const appRootNode = this.root.querySelector('#monite-app-root') as HTMLElement | null;
+    const appRootNode = this.root.querySelector(
+      '#monite-app-root'
+    ) as HTMLElement | null;
 
     if (!appRootNode)
       throw new Error('#monite-app-root not found in Shadow DOM');
 
-    const stylesRootNode = this.root.querySelector('#monite-app-styles') as HTMLElement | null;
+    const stylesRootNode = this.root.querySelector(
+      '#monite-app-styles'
+    ) as HTMLElement | null;
 
     if (!stylesRootNode)
       throw new Error('#monite-app-styles not found in Shadow DOM');

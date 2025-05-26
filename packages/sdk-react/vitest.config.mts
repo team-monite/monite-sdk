@@ -18,12 +18,4 @@ export default defineConfig({
   ssr: {
     noExternal: ['vite-tsconfig-paths'],
   },
-  // If tsconfigPaths still fails, uncomment and try manual aliases:
-  // resolve: {
-  //   alias: {
-  //     // Ensure path is imported if you uncomment this section
-  //     // import path from 'path';
-  //     // '@/': path.resolve(__dirname, 'src'), // path would be undefined here
-  //   },
-  // },
 });

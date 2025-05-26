@@ -1,9 +1,10 @@
-import { vi } from 'vitest';
 import { Dialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { CounterpartIndividualForm } from './CounterpartIndividualForm';
 

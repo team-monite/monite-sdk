@@ -1,6 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/eslintrc",
-  "extends": ["plugin:@team-monite/react"],
+  "extends": ["plugin:@team-monite/eslint-plugin/react"],
+  "plugins": ["@team-monite/eslint-plugin"],
   "overrides": [
     {
       "files": ["*"],
