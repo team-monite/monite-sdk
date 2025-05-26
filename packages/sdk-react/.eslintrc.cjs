@@ -1,9 +1,10 @@
-{
+module.exports = {
   "extends": [
-    "plugin:@team-monite/react",
-    "plugin:@team-monite/lingui",
-    "plugin:@team-monite/mui"
+    "plugin:@team-monite/eslint-plugin/react",
+    "plugin:@team-monite/eslint-plugin/lingui",
+    "plugin:@team-monite/eslint-plugin/mui"
   ],
+  "plugins": ["@team-monite/eslint-plugin"],
   "ignorePatterns": [
     "src/core/i18n/locales/*/messages.ts",
     "src/core/i18n/locales/*/messages.d.ts",
@@ -114,4 +115,4 @@
       }
     }
   ]
-}
+};

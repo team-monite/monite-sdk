@@ -31,7 +31,7 @@ import { addDays, formatISO } from 'date-fns';
 import { Filters } from './Filters';
 import { PermissionsCell } from './PermissionsCell';
 
-interface UserRolesTableProps {
+export interface UserRolesTableProps {
   /**
    * Triggered when the filtering options are changed.
    * Sync with the server *is* performed.
@@ -191,7 +191,7 @@ const UserRolesTableBase = ({
     return (
       <DataGridEmptyState
         title={t(i18n)`No Roles`}
-        descriptionLine1={t(i18n)`You don’t have any roles yet.`}
+        descriptionLine1={t(i18n)`You don't have any roles yet.`}
         descriptionLine2={t(i18n)`You can create your first role.`}
         actionButtonLabel={t(i18n)`Create new`}
         actionOptions={[t(i18n)`Role`]}

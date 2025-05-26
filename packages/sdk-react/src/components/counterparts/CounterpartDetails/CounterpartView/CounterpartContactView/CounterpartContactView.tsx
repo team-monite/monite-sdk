@@ -1,7 +1,6 @@
 import { type MouseEvent, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -13,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import StarIcon from '@mui/icons-material/Star';
 import { Button, CardActions, Divider } from '@mui/material';
 
+import { ConfirmDeleteDialog } from '../../../components/ConfirmDeleteDialog';
 import { getIndividualName } from '../../../helpers';
 import { printAddress } from '../../CounterpartAddressForm';
 import { prepareCounterpartContact } from '../../CounterpartContactForm';

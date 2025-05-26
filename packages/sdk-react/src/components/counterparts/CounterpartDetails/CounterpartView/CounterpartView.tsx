@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { CounterpartDataTestId } from '@/components/counterparts/types';
@@ -26,6 +25,7 @@ import {
   DialogActions,
 } from '@mui/material';
 
+import { ConfirmDeleteDialog } from '../../components/ConfirmDeleteDialog';
 import {
   getCounterpartName,
   isIndividualCounterpart,
