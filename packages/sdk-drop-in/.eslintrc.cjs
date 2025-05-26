@@ -1,16 +1,24 @@
 module.exports = {
-  ignorePatterns: [".eslintrc.cjs", ".eslintrc.js", ".eslintrc.json"],
+  extends: ["plugin:@team-monite/eslint-plugin/react"],
+  plugins: ["@team-monite/eslint-plugin"],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: ["./tsconfig.json"],
+    tsconfigRootDir: __dirname
+  },
+  settings: {
+    "import/resolver": {
+      typescript: {
+        alwaysTryTypes: true,
+        project: ["./tsconfig.json"]
+      }
+    }
+  },
   overrides: [
     {
-      files: ["*.js", "*.cjs"],
-      parser: "espree",
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "script"
-      },
-      env: {
-        node: true
-      },
+      files: ["*"],
       rules: {
         "import/no-extraneous-dependencies": [
           "error",
@@ -19,43 +27,9 @@ module.exports = {
       }
     },
     {
-      files: ["vite.config.ts", "vite.config.dev.ts", "playwright.config.ts"],
-      parser: "@typescript-eslint/parser",
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module"
-      },
+      files: ["vite.config.ts", "vite.config.dev.ts"],
       rules: {
-        "import/no-default-export": "off",
-        "import/no-extraneous-dependencies": [
-          "error",
-          { devDependencies: true }
-        ]
-      }
-    },
-    {
-      files: ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx"],
-      extends: ["plugin:@team-monite/react"],
-      parser: "@typescript-eslint/parser",
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        project: ["./tsconfig.json"],
-        tsconfigRootDir: __dirname
-      },
-      settings: {
-        "import/resolver": {
-          typescript: {
-            alwaysTryTypes: true,
-            project: ["./tsconfig.json"]
-          }
-        }
-      },
-      rules: {
-        "import/no-extraneous-dependencies": [
-          "error",
-          { devDependencies: true }
-        ]
+        "import/no-default-export": "off"
       }
     }
   ]

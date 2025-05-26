@@ -1,12 +1,5 @@
 import { useId, useReducer, useState } from 'react';
 
-import {
-  ApprovalPolicyDetails,
-  UserRoleDeleteDialog,
-  UserRoleDetailsDialog,
-  UserRoleEditDialog,
-  UserRolesTable,
-} from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { Dialog } from '@/components/Dialog';
@@ -31,6 +24,12 @@ import {
   Tab,
   Tabs,
 } from '@mui/material';
+
+import { UserRoleDeleteDialog } from '../userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog';
+import { UserRoleDetailsDialog } from '../userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog';
+import { UserRoleEditDialog } from '../userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog';
+import { UserRolesTable } from '../userRoles/UserRolesTable/UserRolesTable';
+import { ApprovalPolicyDetails } from './ApprovalPolicyDetails/ApprovalPolicyDetails';
 
 /**
  * ApprovalPolicies component

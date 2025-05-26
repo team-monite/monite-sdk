@@ -11,8 +11,8 @@ import { EntityIdLoader } from '@/components/EntityIdLoader';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
-import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
-import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
+import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider';
+import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
 import { Global } from '@emotion/react';
 import { t, Trans } from '@lingui/macro';
@@ -27,7 +27,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { getFontFaceStyles } from './fontStyles.ts';
+import { getFontFaceStyles } from './fontStyles';
 
 export const SDKDemo = () => {
   const queryClient = useMemo(() => new QueryClient(), []);

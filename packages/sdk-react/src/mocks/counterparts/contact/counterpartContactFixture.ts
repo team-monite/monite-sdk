@@ -28,7 +28,7 @@ const genCounterpartContactFixture = (
     phone: faker.phone.number('+ ### ### ## ##'),
     is_default: id === 0,
     address: {
-      country: getRandomItemFromArray(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
