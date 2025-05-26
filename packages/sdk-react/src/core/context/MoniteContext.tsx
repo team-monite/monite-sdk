@@ -1,6 +1,6 @@
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -201,12 +201,10 @@ const ContextProvider = ({
   }
 
   const sentryHub = useMemo(() => {
-    return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
-      ? new SentryFactory({
-          environment,
-          entityId,
-        }).create()
-      : undefined;
+    return new SentryFactory({
+      environment,
+      entityId,
+    }).create();
   }, [entityId, environment]);
 
   const queryClient = useMemo(

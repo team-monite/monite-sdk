@@ -1,7 +1,8 @@
-import { vi } from 'vitest';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+
+import { vi } from 'vitest';
 
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 

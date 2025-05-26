@@ -10,10 +10,6 @@ const nextConfig = {
   experimental: {
     swcPlugins: [['@lingui/swc-plugin', {}]],
   },
-  compiler: {
-    emotion: true,
-  },
-  transpilePackages: ['@monite/sdk-react'],
 };
 
 export default nextConfig;
