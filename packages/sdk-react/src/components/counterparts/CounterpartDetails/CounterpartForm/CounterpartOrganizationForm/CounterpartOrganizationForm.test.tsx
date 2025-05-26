@@ -35,7 +35,7 @@ describe('CounterpartOrganizationForm', () => {
         </Dialog>
       );
 
-      await waitUntilTableIsLoaded();
+      await screen.findByRole('button', { name: /Cancel/i });
 
       const cancelButton = screen.getByRole('button', { name: /Cancel/i });
 

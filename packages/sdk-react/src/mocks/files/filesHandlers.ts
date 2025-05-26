@@ -25,11 +25,11 @@ const fileFixture = (): FileResponse => {
 
   return {
     id: faker.string.uuid(),
-    file_type: 'image',
+    file_type: 'payable',
     name: 'test.png',
     region: 'us-east-1',
-    md5: '123456789',
-    mimetype,
+    md5: faker.string.uuid(),
+    mimetype: mimetype || 'application/octet-stream',
     url: isPdf
       ? 'https://www.africau.edu/images/default/sample.pdf'
       : faker.image.url(),

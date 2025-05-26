@@ -3,106 +3,144 @@ import { ReactNode } from 'react';
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { Provider, renderWithClient } from '@/utils/test-utils';
-import { t, Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
+import { useLingui, I18nProvider } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { QueryClient } from '@tanstack/react-query';
 import { act, renderHook, screen, waitFor } from '@testing-library/react';
 
-import {
-  MoniteI18nProvider,
-  I18nLoader,
-  getLocaleWithDefaults,
-} from './MoniteI18nProvider';
+import { I18nLoader, getLocaleWithDefaults } from './i18nUtils';
+import { MoniteI18nProvider } from './MoniteI18nProvider';
 
 describe('MoniteI18nProvider Lingui', () => {
   const type = 'Gegenstück';
   const name = 'John';
 
-  const HelloWold = () => {
+  const HelloWoldGeneral = () => {
     const { i18n } = useLingui();
-
     return (
       <>
-        <button type="reset">
-          <Trans>
-            Delete {type} “{name}”?
-          </Trans>
+        <button type="button">
+          {i18n.t('Delete {type} "{name}"?', { name: 'Alex', type })}
         </button>
-        <a href="#">{t(i18n)`Delete ${type} “${name}”?`}</a>
-        <button>
-          {i18n._('Delete {type} “{name}”?', { name: 'Alex', type })}
-        </button>
-        <p>{t(i18n)`Delete confirmation`}</p>
+        <a href="#">{i18n.t('Delete {type} "{name}"?', { type, name })}</a>
+        <p>{i18n.t('Delete confirmation')}</p>
       </>
     );
   };
 
-  beforeEach(async () =>
-    act(() => {
-      function App() {
-        const moniteContext = useMoniteContext();
+  const HelloWoldTransOnly = () => {
+    const { i18n } = useLingui();
+    const myVar = 'TEST_VAR_CONTENT';
 
-        return (
-          <I18nLoader
-            locale={{
-              code: 'en',
-              currencyNumberFormat: {
-                display: 'symbol',
-                localeCode: 'en',
-              },
-              messages: {
-                'Delete confirmation': 'Bestätigung löschen',
-                'Delete {type} “{name}”?': 'Löschen {type} "{name}"?',
-              },
+    return (
+      <button type="reset">
+        {i18n.t('SimpleVarTestWithElement', { myVar })}{' '}
+      </button>
+    );
+  };
+
+  const LinguiTestContextWrapper = ({
+    code,
+    messages,
+    children,
+  }: {
+    code: string;
+    messages: Record<string, string>;
+    children: ReactNode;
+  }) => {
+    const moniteContext = useMoniteContext();
+
+    return (
+      <I18nLoader
+        locale={{
+          code,
+          currencyNumberFormat: {
+            display: 'symbol',
+            localeCode: 'en',
+          },
+          messages,
+        }}
+      >
+        {(i18nInstance) => (
+          <MoniteContext.Provider
+            value={{
+              ...moniteContext,
+              i18n: i18nInstance,
             }}
           >
-            {(i18n) => (
-              <MoniteContext.Provider
-                value={{
-                  ...moniteContext,
-                  i18n,
-                }}
-              >
-                <MoniteI18nProvider>
-                  <HelloWold />
-                </MoniteI18nProvider>
-              </MoniteContext.Provider>
-            )}
-          </I18nLoader>
+            <I18nProvider i18n={i18nInstance}>
+              <MoniteI18nProvider>{children}</MoniteI18nProvider>
+            </I18nProvider>
+          </MoniteContext.Provider>
+        )}
+      </I18nLoader>
+    );
+  };
+
+  describe('General translations with i18n.t', () => {
+    beforeEach(() => {
+      act(() => {
+        renderWithClient(
+          <LinguiTestContextWrapper
+            code="de"
+            messages={{
+              'Delete confirmation': 'Bestätigung löschen',
+              'Delete {type} "{name}"?': 'Löschen {type} "{name}"?',
+            }}
+          >
+            <HelloWoldGeneral />
+          </LinguiTestContextWrapper>
         );
-      }
+      });
+    });
 
-      return void renderWithClient(<App />);
-    })
-  );
+    test('should render static text (paragraph)', async () => {
+      expect(
+        await screen.findByText('Bestätigung löschen')
+      ).toBeInTheDocument();
+    });
 
-  test.skip('should render static translations with `t` macro', async () => {
-    expect(await screen.findByText('Bestätigung löschen')).toBeInTheDocument();
+    test('should render dynamic text for button (Alex)', async () => {
+      expect(
+        await screen.findByRole('button', {
+          name: `Löschen ${type} "Alex"?`,
+        })
+      ).toBeInTheDocument();
+    });
+
+    test('should render dynamic text for link (John)', async () => {
+      expect(
+        await screen.findByRole('link', {
+          name: `Löschen ${type} "${name}"?`,
+        })
+      ).toBeInTheDocument();
+    });
   });
 
-  test.skip('should render dynamic translations with `i18n._`', async () => {
-    expect(
-      await screen.findByRole('button', {
-        name: `Löschen ${type} "${name}"?`,
-      })
-    ).toBeInTheDocument();
-  });
+  describe('Scoped translation functionality (formerly Trans component test)', () => {
+    beforeEach(() => {
+      act(() => {
+        renderWithClient(
+          <LinguiTestContextWrapper
+            code="de"
+            messages={{
+              SimpleVarTestWithElement: 'Einfacher Test mit {myVar}',
+              'Delete {type} "{name}"?': 'Löschen {type} "{name}"?',
+            }}
+          >
+            <HelloWoldTransOnly />
+          </LinguiTestContextWrapper>
+        );
+      });
+    });
 
-  test.skip('should render dynamic translations with `t` macro', async () => {
-    expect(
-      await screen.findByRole('link', {
-        name: `Löschen ${type} "${name}"?`,
-      })
-    ).toBeInTheDocument();
-  });
-
-  test('should render dynamic translations with `<Trans/>`', async () => {
-    expect(
-      await screen.findByRole('button', {
-        name: `Löschen ${type} "Alex"?`,
-      })
-    ).toBeInTheDocument();
+    test('should render dynamic translations using i18n.t with a local variable', async () => {
+      expect(
+        await screen.findByRole('button', {
+          name: 'Einfacher Test mit TEST_VAR_CONTENT',
+        })
+      ).toBeInTheDocument();
+    });
   });
 });
 
@@ -123,7 +161,7 @@ describe('MoniteI18nProvider DatePicker', () => {
           currencyNumberFormat: { localeCode: code, display: 'symbol' },
         }}
       >
-        {(i18n, dateFnsLocale) => (
+        {(i18n: any, dateFnsLocale: any) => (
           <MoniteContext.Provider
             value={{
               ...moniteContext,
@@ -260,7 +298,7 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
 
     await waitFor(() => {
       expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
-        '100,00 $'
+        '100,00\u00A0$'
       );
     });
   });
@@ -288,7 +326,7 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
 
     await waitFor(() => {
       expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
-        '100,00 USD'
+        '100,00\u00A0USD'
       );
     });
   });
@@ -317,6 +355,128 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
     await waitFor(() => {
       expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
         '100,00 US-Dollar'
+      );
+    });
+  });
+
+  test('should format with currency symbol and default locale', async () => {
+    const queryClient = new QueryClient();
+    const { result } = renderHook(useCurrencies, {
+      wrapper: ({ children }) => (
+        <Provider
+          client={queryClient}
+          moniteProviderProps={{
+            locale: getLocaleWithDefaults({ code: 'en' }),
+          }}
+        >
+          {children}
+        </Provider>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '$100.00'
+      );
+    });
+  });
+
+  test('should format with currency code and default locale', async () => {
+    const queryClient = new QueryClient();
+    const { result } = renderHook(useCurrencies, {
+      wrapper: ({ children }) => (
+        <Provider
+          client={queryClient}
+          moniteProviderProps={{
+            locale: getLocaleWithDefaults({
+              code: 'en',
+              currencyNumberFormat: { display: 'code' },
+            }),
+          }}
+        >
+          {children}
+        </Provider>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        'USD\u00A0100.00'
+      );
+    });
+  });
+
+  test('should format with currency name and default locale', async () => {
+    const queryClient = new QueryClient();
+    const { result } = renderHook(useCurrencies, {
+      wrapper: ({ children }) => (
+        <Provider
+          client={queryClient}
+          moniteProviderProps={{
+            locale: getLocaleWithDefaults({
+              code: 'en',
+              currencyNumberFormat: { display: 'name' },
+            }),
+          }}
+        >
+          {children}
+        </Provider>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100.00 US dollars'
+      );
+    });
+  });
+
+  test('should format with custom locale code', async () => {
+    const queryClient = new QueryClient();
+    const { result } = renderHook(useCurrencies, {
+      wrapper: ({ children }) => (
+        <Provider
+          client={queryClient}
+          moniteProviderProps={{
+            locale: getLocaleWithDefaults({
+              code: 'de-DE',
+              currencyNumberFormat: { localeCode: 'de-DE' },
+            }),
+          }}
+        >
+          {children}
+        </Provider>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100,00\u00A0$'
+      );
+    });
+  });
+
+  test('should format with custom locale code and currency code', async () => {
+    const queryClient = new QueryClient();
+    const { result } = renderHook(useCurrencies, {
+      wrapper: ({ children }) => (
+        <Provider
+          client={queryClient}
+          moniteProviderProps={{
+            locale: getLocaleWithDefaults({
+              code: 'de-DE',
+              currencyNumberFormat: { display: 'code', localeCode: 'de-DE' },
+            }),
+          }}
+        >
+          {children}
+        </Provider>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100,00\u00A0USD'
       );
     });
   });

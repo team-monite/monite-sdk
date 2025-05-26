@@ -1,6 +1,5 @@
 import { toast } from 'react-hot-toast';
 
-import { PageHeader } from '@/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -10,6 +9,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
 
+import { PageHeader } from '../PageHeader';
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
 export const ApprovalRequests = () => (

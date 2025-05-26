@@ -33,8 +33,8 @@ import {
 
 import { useUserRoleMutations, useUserRoleQuery } from '../../useUserRoles';
 import { PermissionRow } from '../types';
+import { UserRoleViewMode } from '../UserRole.types';
 import { UserRoleRow } from '../UserRoleRow';
-import { UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
 import { getValidationSchema } from '../validation';
 
 interface UserRoleFormValues {

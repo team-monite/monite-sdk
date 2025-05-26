@@ -4,17 +4,17 @@ import { components } from '@/api';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import type { ComponentSettings } from '@/core/componentSettings';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
-import {
-  MoniteAPIProvider,
-  MoniteQraftContext,
-} from '@/core/context/MoniteAPIProvider';
-import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
+import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { ThemeConfig } from '@/core/theme/types';
 
 import { GlobalToast } from '../GlobalToast';
 import { MoniteThemeProvider } from '../theme/MoniteThemeProvider';
+import { MoniteLocale } from './i18nUtils';
 import { KanmonContextProvider } from './KanmonContext';
-import { MoniteContextProvider } from './MoniteContext';
+import {
+  MoniteContextProvider,
+  MoniteQraftContext,
+} from './MoniteContext';
 
 export interface MoniteSettings {
   entityId: string;
