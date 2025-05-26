@@ -1,6 +1,6 @@
 'use client';
 
-import { MoniteProvider, Onboarding } from '@monite/sdk-react';
+import { Onboarding } from '@monite/sdk-react';
 import { Box } from '@mui/material';
 
 export default function CounterpartsPage() {

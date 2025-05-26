@@ -391,7 +391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.5, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.22.0, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.27.1, @babel/parser@npm:^7.27.2":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.5, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.21.2, @babel/parser@npm:^7.22.0, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.27.1, @babel/parser@npm:^7.27.2":
   version: 7.27.2
   resolution: "@babel/parser@npm:7.27.2"
   dependencies:
@@ -3581,6 +3581,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/babel-plugin-extract-messages@npm:4.7.2":
+  version: 4.7.2
+  resolution: "@lingui/babel-plugin-extract-messages@npm:4.7.2"
+  checksum: 10/7034e0a3f102c2043355abd6bbef93c77e8d72fc892b824f6952c537e16f4bc7a05c153381510727c513b2f44a06d7a559a823780e87aca927eec72d59cbcfaf
+  languageName: node
+  linkType: hard
+
 "@lingui/babel-plugin-extract-messages@npm:5.3.1":
   version: 5.3.1
   resolution: "@lingui/babel-plugin-extract-messages@npm:5.3.1"
@@ -3692,6 +3699,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/cli@npm:~4.7.0":
+  version: 4.7.2
+  resolution: "@lingui/cli@npm:4.7.2"
+  dependencies:
+    "@babel/core": "npm:^7.21.0"
+    "@babel/generator": "npm:^7.21.1"
+    "@babel/parser": "npm:^7.21.2"
+    "@babel/runtime": "npm:^7.21.0"
+    "@babel/types": "npm:^7.21.2"
+    "@lingui/babel-plugin-extract-messages": "npm:4.7.2"
+    "@lingui/conf": "npm:4.7.2"
+    "@lingui/core": "npm:4.7.2"
+    "@lingui/format-po": "npm:4.7.2"
+    "@lingui/message-utils": "npm:4.7.2"
+    babel-plugin-macros: "npm:^3.0.1"
+    chalk: "npm:^4.1.0"
+    chokidar: "npm:3.5.1"
+    cli-table: "npm:0.3.6"
+    commander: "npm:^10.0.0"
+    convert-source-map: "npm:^2.0.0"
+    date-fns: "npm:^2.16.1"
+    esbuild: "npm:^0.17.10"
+    glob: "npm:^7.1.4"
+    inquirer: "npm:^7.3.3"
+    micromatch: "npm:4.0.2"
+    normalize-path: "npm:^3.0.0"
+    ora: "npm:^5.1.0"
+    pathe: "npm:^1.1.0"
+    pkg-up: "npm:^3.1.0"
+    pofile: "npm:^1.1.4"
+    pseudolocale: "npm:^2.0.0"
+    ramda: "npm:^0.27.1"
+    source-map: "npm:^0.8.0-beta.0"
+  bin:
+    lingui: dist/lingui.js
+  checksum: 10/fd6bb9059d34dca1aade2d398355d5d3353dbb327b76b7266a3e4b7643cebb67184e2b23926613445fa16ec60227a2c1e1e7c742ee6a6d9b479f38cd22e0aeeb
+  languageName: node
+  linkType: hard
+
 "@lingui/conf@npm:4.14.1":
   version: 4.14.1
   resolution: "@lingui/conf@npm:4.14.1"
@@ -3703,6 +3749,20 @@ __metadata:
     jiti: "npm:^1.17.1"
     lodash.get: "npm:^4.4.2"
   checksum: 10/5444cea269c362c48052f1606bb33ebe2be3f37885d89b61a7a7e65d810d6534e516bf6d2596ba85bd7045991fa8284f40963bc849b029da6bd93d8112ee0efe
+  languageName: node
+  linkType: hard
+
+"@lingui/conf@npm:4.7.2":
+  version: 4.7.2
+  resolution: "@lingui/conf@npm:4.7.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    chalk: "npm:^4.1.0"
+    cosmiconfig: "npm:^8.0.0"
+    jest-validate: "npm:^29.4.3"
+    jiti: "npm:^1.17.1"
+    lodash.get: "npm:^4.4.2"
+  checksum: 10/0a9a0a3d0011413a20ff8c15b86aa86b6e017d44d01338de0d086a495c6e724f9fe2e598b855797fea9d2434f040a66051db808e9d80ba71b10673049a4ef518
   languageName: node
   linkType: hard
 
@@ -3727,6 +3787,17 @@ __metadata:
     "@lingui/message-utils": "npm:4.14.1"
     unraw: "npm:^3.0.0"
   checksum: 10/034fb98434ec65f4a5e58c80eb19e746bfb73270bf58e9e3390f344041179d0fe60722d2a2a5b2b850d4b2795f7aafd0ce62b7c952489f9c794fef111dc3a215
+  languageName: node
+  linkType: hard
+
+"@lingui/core@npm:4.7.2, @lingui/core@npm:~4.7.0":
+  version: 4.7.2
+  resolution: "@lingui/core@npm:4.7.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@lingui/message-utils": "npm:4.7.2"
+    unraw: "npm:^3.0.0"
+  checksum: 10/0f14fe2140ebd5e02e666c163c9b05cc802a6e608ca95bdca84553ee4127ba427e95699dda9f9844488c6f56cb17b70bb03e1d281c9057f7393c49f27c753695
   languageName: node
   linkType: hard
 
@@ -3761,6 +3832,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/format-po@npm:4.7.2":
+  version: 4.7.2
+  resolution: "@lingui/format-po@npm:4.7.2"
+  dependencies:
+    "@lingui/conf": "npm:4.7.2"
+    "@lingui/message-utils": "npm:4.7.2"
+    date-fns: "npm:^2.29.3"
+    pofile: "npm:^1.1.4"
+  checksum: 10/4b0f4e701f8f68ec0c1841340346a9afbde5aab5d9becd8dffb48d52e8c47bce7f8df0a28d894c854a6bd97b07088a024b1d92c42cbee58d50d4fa8727cb577c
+  languageName: node
+  linkType: hard
+
 "@lingui/format-po@npm:5.3.1":
   version: 5.3.1
   resolution: "@lingui/format-po@npm:5.3.1"
@@ -3789,6 +3872,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/macro@npm:~4.7.0":
+  version: 4.7.2
+  resolution: "@lingui/macro@npm:4.7.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@babel/types": "npm:^7.20.7"
+    "@lingui/conf": "npm:4.7.2"
+    "@lingui/core": "npm:4.7.2"
+    "@lingui/message-utils": "npm:4.7.2"
+  peerDependencies:
+    "@lingui/react": ^4.0.0
+    babel-plugin-macros: 2 || 3
+  checksum: 10/b69d62a2f7daebb9eed4ff251851ae4df55481210e85518330761fc339c3c41d42119dd02b40b39f7e66057f2c05dda869dd051e37fe756a8ff8e208c6a8ec7e
+  languageName: node
+  linkType: hard
+
 "@lingui/macro@npm:~5.3.1":
   version: 5.3.1
   resolution: "@lingui/macro@npm:5.3.1"
@@ -3814,6 +3913,16 @@ __metadata:
     "@messageformat/parser": "npm:^5.0.0"
     js-sha256: "npm:^0.10.1"
   checksum: 10/d1bcca72e8eabbe2c526673662a3e8689be2752a142a41de0e7b2320b1de9fb025b9ce63baf41cbca887d3993efade720bfcf71c1d4260ed57819ca2f85b0c2b
+  languageName: node
+  linkType: hard
+
+"@lingui/message-utils@npm:4.7.2":
+  version: 4.7.2
+  resolution: "@lingui/message-utils@npm:4.7.2"
+  dependencies:
+    "@messageformat/parser": "npm:^5.0.0"
+    js-sha256: "npm:^0.10.1"
+  checksum: 10/e6d68740802ed0d69bed05a355466ba2ab0c8b62e014bec19911c5afdffb7e3098aa037b0c1dcd4e94389f6d2e642f051b977e540e574fd28c49b5b80999b2a9
   languageName: node
   linkType: hard
 
@@ -3855,6 +3964,18 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 10/b448eb9fc83415428b5cff501497993c2d0f40768f5ae10d9cf6e5d4ae6f711a08c573380165fda277c0a9805447d7b9aff901a33705abf1eaadde97d330adf4
+  languageName: node
+  linkType: hard
+
+"@lingui/react@npm:~4.7.0":
+  version: 4.7.2
+  resolution: "@lingui/react@npm:4.7.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@lingui/core": "npm:4.7.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/a54b20262a6474856741e5fe2defebc66265611f1e488ec309538392e7b71fe957eb577bb0c5018ee9680564b43f2c181766c3bc12f5fecb393259b712d64e00
   languageName: node
   linkType: hard
 
@@ -11002,6 +11123,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cli-table@npm:0.3.6":
+  version: 0.3.6
+  resolution: "cli-table@npm:0.3.6"
+  dependencies:
+    colors: "npm:1.0.3"
+  checksum: 10/8cedcd30da4172986412d0b49f4e3d718aee4acadc48bc2f1c3b9269eafbb4bd03b4029559a77fd46e21d18734254b4b0e6b0e372924d4a6f3feee0004f25404
+  languageName: node
+  linkType: hard
+
 "cli-table@npm:^0.3.11":
   version: 0.3.11
   resolution: "cli-table@npm:0.3.11"
@@ -11950,7 +12080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.28.0":
+"date-fns@npm:^2.16.1, date-fns@npm:^2.28.0, date-fns@npm:^2.29.3":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -22577,10 +22707,10 @@ __metadata:
     "@emotion/react": "npm:~11.11.1"
     "@emotion/styled": "npm:~11.11.0"
     "@faker-js/faker": "npm:~8.3.1"
-    "@lingui/cli": "npm:~4.14.1"
-    "@lingui/core": "npm:~4.14.1"
-    "@lingui/macro": "npm:~4.14.1"
-    "@lingui/react": "npm:~4.14.1"
+    "@lingui/cli": "npm:~4.7.0"
+    "@lingui/core": "npm:~4.7.0"
+    "@lingui/macro": "npm:~4.7.0"
+    "@lingui/react": "npm:~4.7.0"
     "@lingui/swc-plugin": "npm:4.0.8"
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": "npm:~5.14.3"
