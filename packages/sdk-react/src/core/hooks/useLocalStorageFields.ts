@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { hasLocalStorage } from '@/core/utils';
 
 /**
  * Hook for persistent storage of form fields with SSR safety
@@ -19,7 +21,7 @@ export const useLocalStorageFields = <T>(
 
   useEffect(() => {
     try {
-      if (typeof window !== 'undefined') {
+      if (hasLocalStorage) {
         const remembered = window.localStorage.getItem(rememberKey) === 'true';
         setIsRemembered(remembered);
 
@@ -41,7 +43,7 @@ export const useLocalStorageFields = <T>(
 
       setStoredValue(valueToStore);
 
-      if (typeof window !== 'undefined' && isRemembered) {
+      if (hasLocalStorage && isRemembered) {
         window.localStorage.setItem(prefixedKey, JSON.stringify(valueToStore));
       }
     } catch (error) {
@@ -53,7 +55,7 @@ export const useLocalStorageFields = <T>(
     try {
       setIsRemembered(checked);
 
-      if (typeof window !== 'undefined') {
+      if (hasLocalStorage) {
         window.localStorage.setItem(rememberKey, String(checked));
 
         if (checked) {

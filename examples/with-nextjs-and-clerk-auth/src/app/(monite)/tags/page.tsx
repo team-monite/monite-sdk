@@ -1,8 +1,10 @@
+'use client';
+
 import { Box } from '@mui/material';
 
 import { Tags } from '@/components/MoniteComponents';
 
-export default async function TagsPage() {
+export default function TagsPage() {
   return (
     <Box className="Monite-PageContainer Monite-Tags">
       <Tags />

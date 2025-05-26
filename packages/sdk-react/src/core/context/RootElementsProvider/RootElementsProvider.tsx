@@ -1,4 +1,9 @@
-import { createContext, ReactNode, useContext, ContextType } from 'react';
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  type ContextType,
+} from 'react';
 
 const RootElementsContext = createContext<{
   styles: Element | undefined;
