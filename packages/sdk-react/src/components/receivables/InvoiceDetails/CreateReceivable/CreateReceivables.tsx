@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
+import { useDialog, TemplateSettings } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
 import {
   BankAccountFormDialog,
@@ -351,6 +351,7 @@ const CreateReceivablesBase = ({
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
+  const [isEditTemplateModalOpen, setIsEditTemplateModalOpen] = useState(false);
 
   const handleFieldChange = (fieldName: string, value: boolean) => {
     setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
@@ -515,6 +516,9 @@ const CreateReceivablesBase = ({
                   >
                     <Typography>{t(i18n)`Currency`}</Typography>
                     <Typography>{actualCurrency}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => setIsEditTemplateModalOpen(true)}>
+                    <Typography>{t(i18n)`Edit template settings`}</Typography>
                   </MenuItem>
                   <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
                     <Typography>{t(i18n)`Enable more fields`}</Typography>
@@ -933,6 +937,14 @@ const CreateReceivablesBase = ({
           reminderId={editReminderDialog.reminderId}
           reminderType={editReminderDialog.reminderType}
           onClose={closeUpdateReminderDialog}
+        />
+      )}
+
+      {isEditTemplateModalOpen && (
+        <TemplateSettings
+          isDialog
+          isOpen={isEditTemplateModalOpen}
+          handleCloseDialog={() => setIsEditTemplateModalOpen(false)}
         />
       )}
 

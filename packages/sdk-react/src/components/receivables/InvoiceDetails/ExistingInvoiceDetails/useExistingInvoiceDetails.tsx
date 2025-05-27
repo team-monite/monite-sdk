@@ -143,6 +143,7 @@ export function useExistingInvoiceDetails({
       case 'issued':
       case 'partially_paid':
       case 'overdue':
+      case 'draft':
         return true;
       default:
         return false;
@@ -172,6 +173,8 @@ export function useExistingInvoiceDetails({
 
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
+
+  const isEditTemplateButtonVisible = receivable?.status === 'draft';
 
   const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: entityId },
@@ -208,6 +211,7 @@ export function useExistingInvoiceDetails({
       isCancelButtonVisible,
       isCancelButtonDisabled,
       isCancelRecurrenceButtonDisabled,
+      isEditTemplateButtonVisible,
     },
   };
 }
