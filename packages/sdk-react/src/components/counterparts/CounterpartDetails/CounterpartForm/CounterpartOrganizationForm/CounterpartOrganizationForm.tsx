@@ -10,19 +10,15 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
-import {
-  CounterpartDataTestId,
-  type DefaultValuesOCROrganization,
-} from '@/components/counterparts/types';
+import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
   DialogContent,
@@ -190,35 +186,24 @@ export const CounterpartOrganizationForm = (
   return (
     <>
       {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
-        <Grid
-          container
-          alignItems="center"
-          data-testid={CounterpartDataTestId.OrganizationForm}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3 }}>
-              {isInvoiceCreation
-                ? t(i18n)`Create customer`
-                : props?.id
-                ? t(i18n)`Edit company`
-                : t(i18n)`Create new Counterpart`}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
-                onClick={props.onClose || dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
+        <DialogHeader
+          secondaryLevel
+          title={
+            isInvoiceCreation
+              ? t(i18n)`Create customer`
+              : props?.id
+              ? t(i18n)`Edit company`
+              : t(i18n)`Create new Counterpart`
+          }
+          closeSecondaryLevelDialog={
+            props?.id || isInvoiceCreation
+              ? props.onCancel
+              : props.onClose || dialogContext?.onClose
+          }
+          showDivider={!isInvoiceCreation}
+        />
       )}
 
-      {!isInvoiceCreation && <Divider />}
       <DialogContent
         sx={{ padding: '2rem', overflowY: 'auto', height: '450px' }}
       >

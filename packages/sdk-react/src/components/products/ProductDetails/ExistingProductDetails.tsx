@@ -14,12 +14,11 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -27,7 +26,6 @@ import {
   DialogActions,
   DialogContent,
   Divider,
-  Grid,
   Table,
   TableBody,
   Typography,
@@ -122,25 +120,10 @@ const ExistingProductDetailsBase = ({
 
   return (
     <MoniteScopedProviders>
-      <Grid container alignItems="center">
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {product.name}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Product Close`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
+      <DialogHeader
+        title={product.name}
+        closeButtonTooltip={t(i18n)`Close product details`}
+      />
       <DialogContent>
         <ProductDeleteModal
           id={id}

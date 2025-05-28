@@ -8,19 +8,15 @@ import {
   useCounterpartForm,
   CounterpartsFormProps,
 } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
-import {
-  CounterpartDataTestId,
-  type DefaultValuesOCRIndividual,
-} from '@/components/counterparts/types';
+import { type DefaultValuesOCRIndividual } from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
   DialogContent,
@@ -175,35 +171,23 @@ export const CounterpartIndividualForm = ({
   return (
     <>
       {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
-        <Grid
-          container
-          alignItems="center"
-          data-testid={CounterpartDataTestId.IndividualForm}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3, fontWeight: 500 }}>
-              {isInvoiceCreation
-                ? t(i18n)`Create customer`
-                : props?.id
-                ? t(i18n)`Edit individual`
-                : t(i18n)`Create new Counterpart`}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
-                onClick={props.onClose || dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
+        <DialogHeader
+          secondaryLevel
+          title={
+            isInvoiceCreation
+              ? t(i18n)`Create customer`
+              : props?.id
+              ? t(i18n)`Edit individual`
+              : t(i18n)`Create new Counterpart`
+          }
+          closeSecondaryLevelDialog={
+            props?.id || isInvoiceCreation
+              ? props.onCancel
+              : props.onClose || dialogContext?.onClose
+          }
+          showDivider={!isInvoiceCreation}
+        />
       )}
-
-      {!isInvoiceCreation && <Divider />}
 
       <DialogContent
         sx={{ padding: '2rem', overflowY: 'auto', height: '450px' }}

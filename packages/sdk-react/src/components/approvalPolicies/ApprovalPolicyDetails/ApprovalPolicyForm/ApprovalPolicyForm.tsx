@@ -1,4 +1,4 @@
-import { useId, useState, useEffect } from 'react';
+import { useId, useState, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -25,17 +25,14 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
-  Breadcrumbs,
-  DialogTitle,
   DialogContent,
   Divider,
   Grid,
@@ -608,59 +605,55 @@ export const ApprovalPolicyForm = ({
     setValue('scriptType', null);
   };
 
+  const dialogState = useMemo(() => {
+    const isSecondaryLevel =
+      isEdit ||
+      isAddingTrigger ||
+      isAddingRule ||
+      Boolean(scriptInEdit) ||
+      Boolean(triggerInEdit);
+
+    const getTitle = () => {
+      if (triggerInEdit) return t(i18n)`Edit Condition`;
+      if (isAddingTrigger) return t(i18n)`Add Condition`;
+      if (scriptInEdit) return t(i18n)`Edit Rule`;
+      if (isAddingRule) return t(i18n)`Add Rule`;
+      return isEdit
+        ? t(i18n)`Edit Approval Policy`
+        : t(i18n)`Create Approval Policy`;
+    };
+
+    const getPreviousTitle = () => {
+      if (triggerInEdit || isAddingTrigger || scriptInEdit || isAddingRule) {
+        return isEdit
+          ? t(i18n)`Edit Approval Policy`
+          : t(i18n)`Create Approval Policy`;
+      }
+      return undefined;
+    };
+
+    return {
+      isSecondaryLevel,
+      title: getTitle(),
+      previousLevelTitle: getPreviousTitle(),
+    };
+  }, [
+    isEdit,
+    triggerInEdit,
+    isAddingTrigger,
+    scriptInEdit,
+    isAddingRule,
+    i18n,
+  ]);
+
   return (
     <>
-      <DialogTitle>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-        >
-          {triggerInEdit || isAddingTrigger || scriptInEdit || isAddingRule ? (
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                sx={{ cursor: 'pointer' }}
-                onClick={resetFormTriggerOrScript}
-              >
-                {isEdit
-                  ? t(i18n)`Edit Approval Policy`
-                  : t(i18n)`Create Approval Policy`}
-              </Typography>
-              {(triggerInEdit || isAddingTrigger) && (
-                <Typography variant="subtitle1" color="text.primary">
-                  {isAddingTrigger
-                    ? t(i18n)`Add Condition`
-                    : t(i18n)`Edit Condition`}
-                </Typography>
-              )}
-              {(scriptInEdit || isAddingRule) && (
-                <Typography variant="subtitle1" color="text.primary">
-                  {isAddingRule ? t(i18n)`Add Rule` : t(i18n)`Edit Rule`}
-                </Typography>
-              )}
-            </Breadcrumbs>
-          ) : (
-            <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-              {isEdit
-                ? t(i18n)`Edit Approval Policy`
-                : t(i18n)`Create Approval Policy`}
-            </Typography>
-          )}
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext.onClose}
-              aria-label={t(i18n)`Close approval policy details`}
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Box>
-      </DialogTitle>
+      <DialogHeader
+        secondaryLevel={dialogState.isSecondaryLevel}
+        title={dialogState.title}
+        previousLevelTitle={dialogState.previousLevelTitle}
+        closeSecondaryLevelDialog={resetFormTriggerOrScript}
+      />
       <Divider />
       <DialogContent>
         <FormProvider {...methods}>

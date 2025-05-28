@@ -4,11 +4,10 @@ import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useVatTypes } from '@/core/hooks/useVatTypes';
 import { MoniteCountry } from '@/ui/Country';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
-  Typography,
   Stack,
   Divider,
   DialogContent,
@@ -41,21 +40,12 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption" data-testid="vatId">
-          {vat ? t(i18n)`Edit VAT ID` : t(i18n)`Add VAT ID`}
-        </Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={vat ? t(i18n)`Edit VAT ID` : t(i18n)`Add VAT ID`}
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <form id={formName} onSubmit={handleSubmit(saveVat)}>
           <Stack spacing={3}>

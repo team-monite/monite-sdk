@@ -2,10 +2,10 @@ import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { MoniteCountry } from '@/ui/Country';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Button,
   DialogActions,
@@ -13,7 +13,6 @@ import {
   Divider,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
@@ -44,19 +43,12 @@ export const CounterpartAddressFormUpdate = (
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption">{t(i18n)`Edit address`}</Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={t(i18n)`Edit address`}
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <form
           id={formName}

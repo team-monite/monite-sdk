@@ -4,22 +4,19 @@ import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { CounterpartDataTestId } from '@/components/counterparts/types';
-import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
   Typography,
   Divider,
-  Grid,
   DialogContent,
   Stack,
   Box,
@@ -55,7 +52,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     onEdit,
     title,
   } = useCounterpartView(props);
-  const dialogContext = useDialog();
 
   const isEmailDefault =
     counterpart && contacts && isOrganizationCounterpart(counterpart)
@@ -154,25 +150,10 @@ export const CounterpartView = (props: CounterpartViewProps) => {
   }
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item xs={11}>
-          <Typography variant="h3" sx={{ padding: 3 }}>
-            {title}
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Counterpart Close`}
-              onClick={dialogContext.onClose}
-              color="default"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
+      <DialogHeader
+        title={title}
+        closeButtonTooltip={t(i18n)`Close counterpart`}
+      />
       <DialogContent>
         <Stack direction="column" spacing={4}>
           <ConfirmDeleteDialog

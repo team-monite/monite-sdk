@@ -1,10 +1,10 @@
 import { useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
+import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Grid,
   Typography,
@@ -39,21 +39,14 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption">
-          {contact ? t(i18n)`Edit contact person` : t(i18n)`Add contact person`}
-        </Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={
+          contact ? t(i18n)`Edit contact person` : t(i18n)`Add contact person`
+        }
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <FormProvider {...methods}>
           <form
