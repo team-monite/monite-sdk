@@ -3,6 +3,7 @@
  *
  * This module provides a centralized way to define, emit, and handle Monite events.
  */
+import { faker } from '@faker-js/faker';
 import { APISchema } from '@monite/sdk-react';
 import type {
   ComponentSettings,
@@ -259,7 +260,7 @@ function generateEventId(): string {
     return crypto.randomUUID();
   }
 
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${faker.string.alphanumeric(9)}`;
 }
 
 export { generateEventId };

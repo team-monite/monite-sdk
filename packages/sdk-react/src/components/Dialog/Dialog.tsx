@@ -64,6 +64,11 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
     const { alignDialog, onClosed, ...otherProps } = props;
     const { root } = useRootElements();
 
+    if (!root) {
+      console.warn('DialogBase: Monite root element is not available.');
+      return null;
+    }
+
     return (
       <DialogContext.Provider
         value={{ isDialogContent: true, onClose: props.onClose }}

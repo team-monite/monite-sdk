@@ -3,6 +3,8 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { screen, waitFor, within } from '@testing-library/react';
 
+import { expect } from 'vitest';
+
 import { CounterpartDataTestId } from '../types';
 
 export async function getActionButtonInDeleteModal(

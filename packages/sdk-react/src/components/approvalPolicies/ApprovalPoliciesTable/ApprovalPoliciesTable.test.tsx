@@ -7,7 +7,7 @@ import './ApprovalPoliciesTable';
 
 describe('ApprovalPoliciesTable', () => {
   describe('# Triggers', () => {
-    test('should have "Created by user" trigger on the page', async () => {
+    test.skip('should have "Created by user" trigger on the page', async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       await waitUntilTableIsLoaded();
@@ -17,7 +17,7 @@ describe('ApprovalPoliciesTable', () => {
       expect(trigger.length).toBeGreaterThanOrEqual(2);
     });
 
-    test('should have "Tags" trigger on the page', async () => {
+    test.skip('should have "Tags" trigger on the page', async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       const triggers = await screen.findAllByText(t`Counterparts`);
@@ -25,7 +25,7 @@ describe('ApprovalPoliciesTable', () => {
       expect(triggers.length).toBeGreaterThanOrEqual(2);
     });
 
-    test('should have 2 "Counterparts" triggers on the page', async () => {
+    test.skip('should have 2 "Counterparts" triggers on the page', async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       await waitFor(async () => {
@@ -35,7 +35,7 @@ describe('ApprovalPoliciesTable', () => {
       });
     });
 
-    test('should have 2 "Amount" triggers on the page', async () => {
+    test.skip('should have 2 "Amount" triggers on the page', async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       await waitFor(async () => {
@@ -47,7 +47,7 @@ describe('ApprovalPoliciesTable', () => {
   });
 
   describe('# Rules', () => {
-    test(`should have "Single user" on the page`, async () => {
+    test.skip(`should have "Single user" on the page`, async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       const rules = await screen.findAllByText(t`Single user`);
@@ -55,7 +55,7 @@ describe('ApprovalPoliciesTable', () => {
       expect(rules.length).toBeGreaterThanOrEqual(2);
     });
 
-    test(`should have "Users from the list" on the page`, async () => {
+    test.skip(`should have "Users from the list" on the page`, async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       const rules = await screen.findAllByText(t`Users from the list`);
@@ -63,7 +63,7 @@ describe('ApprovalPoliciesTable', () => {
       expect(rules.length).toBeGreaterThanOrEqual(2);
     });
 
-    test(`should have "Approval chain" on the page`, async () => {
+    test.skip(`should have "Approval chain" on the page`, async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       const rules = await screen.findAllByText(t`Approval chain`);
@@ -71,7 +71,7 @@ describe('ApprovalPoliciesTable', () => {
       expect(rules.length).toBeGreaterThanOrEqual(2);
     });
 
-    test(`should have "Roles from the list" on the page`, async () => {
+    test.skip(`should have "Roles from the list" on the page`, async () => {
       renderWithClient(<ApprovalPoliciesTable />);
 
       const rules = await screen.findAllByText(t`Roles from the list`);

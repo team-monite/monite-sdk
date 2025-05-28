@@ -8,7 +8,6 @@ import type { createAPIClient } from '@/api/client';
 import type { DataGridProps } from '@mui/x-data-grid';
 import { mergeHeaders, requestFn } from '@openapi-qraft/react';
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 
 import 'jest-fetch-mock';
 

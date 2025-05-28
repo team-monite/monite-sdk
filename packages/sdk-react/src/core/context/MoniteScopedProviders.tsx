@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';

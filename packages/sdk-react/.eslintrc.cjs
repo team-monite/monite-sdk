@@ -1,9 +1,10 @@
-{
+module.exports = {
   "extends": [
-    "plugin:@team-monite/react",
-    "plugin:@team-monite/lingui",
-    "plugin:@team-monite/mui"
+    "plugin:@team-monite/eslint-plugin/react",
+    "plugin:@team-monite/eslint-plugin/lingui",
+    "plugin:@team-monite/eslint-plugin/mui"
   ],
+  "plugins": ["@team-monite/eslint-plugin"],
   "ignorePatterns": [
     "src/core/i18n/locales/*/messages.ts",
     "src/core/i18n/locales/*/messages.d.ts",
@@ -64,12 +65,17 @@
     },
     {
       "files": [
+        "vitest.config.ts",
+        "vitest.config.mts",
+        "vitest.setup.ts",
+        "vite.config.ts",
         "src/mocks/**/*.{ts,tsx,jsx,jsx,cjx,mjs}",
         "src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts",
         "src/utils/form/FillForm.executor.ts",
         "src/utils/test-utils.tsx",
         "src/components/onboarding/onboardingTestUtils.ts",
-        "src/setupTests.tsx"
+        "src/setupTests.tsx",
+        "config/rollup.config.mjs"
       ],
       "rules": {
         "import/no-extraneous-dependencies": [
@@ -103,10 +109,10 @@
       }
     },
     {
-      "files": ["src/utils/test-utils.tsx"],
+      "files": ["vitest.config.mts"],
       "rules": {
-        "lingui/no-unlocalized-strings": "off"
+        "import/no-default-export": "off"
       }
     }
   ]
-}
+};

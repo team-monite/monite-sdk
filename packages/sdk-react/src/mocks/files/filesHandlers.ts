@@ -1,6 +1,6 @@
 import { components } from '@/api';
 import { OCR_SUPPORTED_FORMATS } from '@/core/hooks/useFileInput';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
@@ -25,11 +25,11 @@ const fileFixture = (): FileResponse => {
 
   return {
     id: faker.string.uuid(),
-    file_type: 'image',
+    file_type: 'payable',
     name: 'test.png',
     region: 'us-east-1',
-    md5: '123456789',
-    mimetype,
+    md5: faker.string.uuid(),
+    mimetype: mimetype || 'application/octet-stream',
     url: isPdf
       ? 'https://www.africau.edu/images/default/sample.pdf'
       : faker.image.url(),
