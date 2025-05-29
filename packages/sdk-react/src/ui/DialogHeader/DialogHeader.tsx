@@ -86,7 +86,16 @@ const DialogHeaderBreadcrumbs = memo(
  *    - Else, shows only the current title
  *
  * Note: For secondary level dialogs, the close (X) button is not shown. A cancel button is expected to be
- * present in the dialog content.
+ * present in the dialog content (for example, with the DialogFooter component).
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <DialogHeader
+ *   title="Edit addresss"
+ *   previousLevelTitle="Counterpart"
+ * />
+ * ```
  */
 export const DialogHeader = memo(
   ({
