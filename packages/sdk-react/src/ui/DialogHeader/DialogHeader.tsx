@@ -109,15 +109,14 @@ export const DialogHeader = memo(
     const { i18n } = useLingui();
     const dialogContext = useDialog();
 
-    const isSecondaryLevel = secondaryLevel || dialogContext?.secondaryLevel;
-    const showCloseButton = dialogContext?.isDialogContent && !isSecondaryLevel;
+    const showCloseButton = dialogContext?.isDialogContent && !secondaryLevel;
     const closeButtonLabel = closeButtonTooltip || t(i18n)`Close dialog`;
 
     return (
       <>
         <Grid container alignItems="center">
           <Grid item xs={11}>
-            {isSecondaryLevel && previousLevelTitle ? (
+            {secondaryLevel && previousLevelTitle ? (
               <DialogHeaderBreadcrumbs
                 previousLevelTitle={previousLevelTitle}
                 title={title}
