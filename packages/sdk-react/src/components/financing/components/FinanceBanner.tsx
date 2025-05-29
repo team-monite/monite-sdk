@@ -206,7 +206,7 @@ const FinanceBannerBase = ({
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
               i18n
-            )`A provider can't offer you financing`}</Typography>
+            )`A provider can’t offer you financing`}</Typography>
             <Typography variant="body1">
               {t(
                 i18n
@@ -219,7 +219,7 @@ const FinanceBannerBase = ({
           <>
             <Typography variant="subtitle2" sx={{ fontSize: 20 }}>{t(
               i18n
-            )`You haven't accepted the offer and it has expired`}</Typography>
+            )`You haven’t accepted the offer and it has expired`}</Typography>
             <Typography variant="body1">
               {t(
                 i18n

@@ -153,7 +153,7 @@ export const PayableDetailsAttachFile = ({
             )`Attach a file`}</Typography>
             <Typography color="secondary">{t(
               i18n
-            )`This invoice doesn't have a file attached.`}</Typography>
+            )`This invoice doesn’t have a file attached.`}</Typography>
             <Typography color="secondary" sx={{ marginBottom: 2 }}>
               {t(
                 i18n

@@ -390,7 +390,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               {!isUpdateAllowed ? (
                 <Alert severity="info">{t(
                   i18n
-                )`You don't have permission to issue this document. Please, contact your system administrator for details.`}</Alert>
+                )`You don’t have permission to issue this document. Please, contact your system administrator for details.`}</Alert>
               ) : (
                 (buttons.isIssueButtonVisible ||
                   buttons.isComposeEmailButtonVisible) && (

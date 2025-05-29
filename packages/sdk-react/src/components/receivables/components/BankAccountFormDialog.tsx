@@ -158,7 +158,7 @@ const BankAccountFormDialogBase = ({
             >
               {t(
                 i18n
-              )`You can't delete a default account. To delete a default bank account, you must first assign a new default account for the same currency.`}
+              )`You can’t delete a default account. To delete a default bank account, you must first assign a new default account for the same currency.`}
             </Alert>
           )}
 
