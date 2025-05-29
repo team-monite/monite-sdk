@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -84,43 +84,31 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   const productFormId = `Monite-ProductForm-${useId()}`;
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
-  if (productQueryError || !product) {
-    return (
-      <>
-        <DialogHeader title={t(i18n)`Edit ${product?.type}`} />
-        <CenteredContentBox>
-          <Stack alignItems="center" spacing={2}>
-            <Box>
-              <SearchOffIcon fontSize="large" color="error" />
-            </Box>
-            <Stack alignItems="center" spacing={1}>
-              <Typography>{t(
-                i18n
-              )`Something went wrong. Please try again`}</Typography>
-            </Stack>
-          </Stack>
-        </CenteredContentBox>
-      </>
-    );
-  }
-
-  const defaultValues = {
-    name: product.name,
-    type: product.type,
-    units: product.measure_unit_id,
-    smallestAmount: product.smallest_amount,
-    pricePerUnit:
-      formatFromMinorUnits(
-        product.price?.value as number,
-        product.price?.currency as CurrencyEnum
-      ) ?? undefined,
-    currency: product.price?.currency,
-    description: product.description ?? '',
-  };
+  const defaultValues = useMemo(
+    () => ({
+      name: product?.name,
+      type: product?.type || 'product',
+      units: product?.measure_unit_id,
+      smallestAmount: product?.smallest_amount,
+      pricePerUnit:
+        formatFromMinorUnits(
+          product?.price?.value as number,
+          product?.price?.currency as CurrencyEnum
+        ) ?? undefined,
+      currency: product?.price?.currency,
+      description: product?.description ?? '',
+    }),
+    [
+      product?.name,
+      product?.type,
+      product?.measure_unit_id,
+      product?.smallest_amount,
+      product?.price?.value,
+      product?.price?.currency,
+      product?.description,
+      formatFromMinorUnits,
+    ]
+  );
 
   const handleSubmit = async (values: IProductFormSubmitValues) => {
     const payload: ProductServiceRequest = {
@@ -147,6 +135,30 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       },
     });
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (productQueryError || !product) {
+    return (
+      <>
+        <DialogHeader title={t(i18n)`Edit ${product?.type}`} />
+        <CenteredContentBox>
+          <Stack alignItems="center" spacing={2}>
+            <Box>
+              <SearchOffIcon fontSize="large" color="error" />
+            </Box>
+            <Stack alignItems="center" spacing={1}>
+              <Typography>{t(
+                i18n
+              )`Something went wrong. Please try again`}</Typography>
+            </Stack>
+          </Stack>
+        </CenteredContentBox>
+      </>
+    );
+  }
 
   return (
     <>

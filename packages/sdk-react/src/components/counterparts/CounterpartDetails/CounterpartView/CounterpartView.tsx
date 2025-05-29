@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { CounterpartDataTestId } from '@/components/counterparts/types';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -149,13 +149,17 @@ export const CounterpartView = (props: CounterpartViewProps) => {
       />
       <DialogContent>
         <Stack direction="column" spacing={4}>
-          <ConfirmDeleteDialog
+          <ConfirmationModal
             open={showDeleteCounterpart}
-            type={t(i18n)`Counterpart`}
-            name={getCounterpartName(counterpart)}
-            isLoading={isLoading}
+            title={t(i18n)`Delete Counterpart “${getCounterpartName(
+              counterpart
+            )}“?`}
+            message={t(i18n)`You can’t undo this action.`}
+            confirmLabel={t(i18n)`Delete`}
+            cancelLabel={t(i18n)`Cancel`}
             onClose={handleCloseDeleteCounterpartDialog}
-            onDelete={handleDeleteCounterpart}
+            onConfirm={handleDeleteCounterpart}
+            isLoading={isLoading}
           />
 
           {counterpart && isOrganizationCounterpart(counterpart) && (
@@ -204,7 +208,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             spacing={2}
             data-testid={CounterpartDataTestId.Vat}
           >
-            <Typography variant="subtitle2">{t(i18n)`Vat IDs`}</Typography>
+            <Typography variant="subtitle2">{t(i18n)`VAT IDs`}</Typography>
 
             {vats?.map((vat) => (
               <CounterpartVatView

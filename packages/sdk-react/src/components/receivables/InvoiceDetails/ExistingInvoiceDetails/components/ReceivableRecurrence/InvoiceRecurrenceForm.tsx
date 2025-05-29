@@ -393,7 +393,7 @@ const useValidationSchema = () => {
               ['last_day', null],
               t(
                 i18n
-              )`The start date for the recurrence shouldn't be in the past`
+              )`The start date for the recurrence shouldn’t be in the past`
             )
             .required(t(i18n)`Required`),
       })

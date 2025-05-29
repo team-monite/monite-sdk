@@ -1078,18 +1078,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               padding: '0 0 0 16px',
             },
           },
-          '& + .MuiDivider-root': {
-            display: 'none',
-          },
-          '&.Monite-CreateReceivable-Title': {
-            position: 'fixed',
-            width: `calc(50% - ${20}px)`,
-            background: 'white',
-            zIndex: 9,
-            padding: '20px 20px 20px 0',
-            top: 0,
-            left: 0,
-          },
         },
       },
     },
@@ -1097,7 +1085,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           margin: 0,
-          padding: '40px 32px',
+          padding: '24px 32px 40px',
           '> form': {
             maxWidth: 'min(940px, 100%)',
             margin: '0 auto',

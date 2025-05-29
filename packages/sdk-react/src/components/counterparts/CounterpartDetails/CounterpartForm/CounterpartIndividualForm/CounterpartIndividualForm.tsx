@@ -175,7 +175,7 @@ export const CounterpartIndividualForm = ({
               ? t(i18n)`Create customer`
               : props?.id
               ? t(i18n)`Edit individual`
-              : t(i18n)`Create new Counterpart`
+              : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
             props?.id || isInvoiceCreation
