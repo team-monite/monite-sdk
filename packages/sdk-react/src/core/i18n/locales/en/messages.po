@@ -1398,9 +1398,9 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:99
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:185
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:86
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:107
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:85
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:106
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:78
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:68
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:182
@@ -1439,11 +1439,11 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:144
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:368
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:375
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:141
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:353
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:360
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:25
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:118
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:106
 msgid "Cancel bill"
 msgstr "Cancel bill"
 
@@ -1472,7 +1472,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:99
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:382
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:333
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -2493,7 +2493,7 @@ msgstr "Default currency switch"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:57
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:282
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:220
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:281
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -8803,7 +8803,7 @@ msgstr "You don’t have any tags yet."
 #~ msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 #~ msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:406
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:391
 msgid "You don’t have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don’t have permission to issue this document. Please, contact your system administrator for details."
 
