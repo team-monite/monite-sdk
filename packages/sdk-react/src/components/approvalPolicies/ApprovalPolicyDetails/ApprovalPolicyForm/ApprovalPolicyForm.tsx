@@ -812,6 +812,8 @@ export const ApprovalPolicyForm = ({
                                   },
                                 })) || []),
                               ],
+                              then: ['{Payables.approve(invoice.id)}'],
+                              else: ['{Payables.reject(invoice.id)}'],
                             },
                           ]
                         : []),
