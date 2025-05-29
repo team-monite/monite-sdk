@@ -13,16 +13,15 @@ import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  DialogActions,
   DialogContent,
   Divider,
   Typography,
-  Button,
   TextField,
   Checkbox,
   List,
@@ -30,8 +29,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  CircularProgress,
-  Stack,
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
@@ -388,36 +385,20 @@ export const CounterpartIndividualForm = ({
           </form>
         </FormProvider>
       </DialogContent>
-      <Divider />
-
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button
-            variant="text"
-            onClick={
-              props?.id || isInvoiceCreation
-                ? props.onCancel
-                : props.onClose || dialogContext?.onClose
-            }
-          >
-            {isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <CircularProgress color="primary" />
-            ) : props?.id ? (
-              t(i18n)`Save`
-            ) : (
-              t(i18n)`Create`
-            )}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: props.id ? t(i18n)`Save` : t(i18n)`Create`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
+          onClick:
+            props?.id || isInvoiceCreation
+              ? props.onCancel
+              : props.onClose || dialogContext?.onClose,
+        }}
+      />
     </>
   );
 };

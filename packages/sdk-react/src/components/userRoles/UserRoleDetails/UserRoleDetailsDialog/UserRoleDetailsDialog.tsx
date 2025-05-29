@@ -7,6 +7,7 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -14,10 +15,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Button,
-  DialogActions,
   DialogContent,
-  Divider,
   List,
   ListItem,
   Paper,
@@ -267,21 +265,18 @@ export const UserRoleDetailsDialog = ({
           </Paper>
         </Stack>
       </StyledDialogContainer>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button
-            color="error"
-            onClick={onClickDeleteRole}
-            disabled={!isDeleteAllowed}
-          >{t(i18n)`Delete`}</Button>
-          <Button
-            variant="outlined"
-            onClick={onClickEditRole}
-            disabled={!isUpdateAllowed}
-          >{t(i18n)`Edit`}</Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Edit`,
+          onClick: onClickEditRole,
+          isDisabled: !isUpdateAllowed,
+        }}
+        deleteButton={{
+          label: t(i18n)`Delete`,
+          onClick: onClickDeleteRole,
+          isDisabled: !isDeleteAllowed,
+        }}
+      />
     </>
   );
 };

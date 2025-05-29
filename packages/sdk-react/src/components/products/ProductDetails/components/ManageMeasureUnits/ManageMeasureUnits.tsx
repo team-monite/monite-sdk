@@ -1,7 +1,8 @@
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, DialogActions, DialogContent, Divider } from '@mui/material';
+import { DialogContent } from '@mui/material';
 
 import { ManageMeasureUnitsForm } from '../ManageMeasureUnitsForm';
 
@@ -22,12 +23,15 @@ export const ManageMeasureUnits = ({
       <DialogContent>
         <ManageMeasureUnitsForm />
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button variant="contained" onClick={handleClose}>
-          {t(i18n)`Done`}
-        </Button>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Done`,
+          onClick: handleClose,
+        }}
+        cancelButton={{
+          hideCancel: true,
+        }}
+      />
     </>
   );
 };

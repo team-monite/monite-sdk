@@ -14,6 +14,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -21,11 +22,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Button,
   Card,
-  DialogActions,
   DialogContent,
-  Divider,
   Table,
   TableBody,
   Typography,
@@ -201,32 +199,18 @@ const ExistingProductDetailsBase = ({
           </Card>
         </Box>
       </DialogContent>
-      <Divider />
-      {(isDeleteAllowed || isUpdateAllowed) && (
-        <DialogActions>
-          {isDeleteAllowed && (
-            <Button
-              variant="text"
-              color="error"
-              onClick={() => {
-                // @todo: Anashev - must be changed. We have to remove it directly from this component
-                // onDeleted?.(product);
-                setDeleteModalOpened(true);
-              }}
-            >
-              {t(i18n)`Delete`}
-            </Button>
-          )}
-          {isUpdateAllowed && (
-            <Button
-              variant="outlined"
-              onClick={() => setView(ProductDetailsView.Edit)}
-            >
-              {t(i18n)`Edit`}
-            </Button>
-          )}
-        </DialogActions>
-      )}
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Edit`,
+          onClick: () => setView(ProductDetailsView.Edit),
+          isDisabled: !isUpdateAllowed,
+        }}
+        deleteButton={{
+          label: t(i18n)`Delete`,
+          onClick: () => setDeleteModalOpened(true),
+          isDisabled: !isDeleteAllowed,
+        }}
+      />
     </MoniteScopedProviders>
   );
 };

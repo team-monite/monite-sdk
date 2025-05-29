@@ -13,15 +13,13 @@ import {
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Button,
   Chip,
-  DialogActions,
   DialogContent,
-  Divider,
   List,
   ListItem,
   Typography,
@@ -286,31 +284,21 @@ export const ApprovalPolicyView = ({
           </Table>
         </Paper>
       </DialogContent>
-      <Divider />
-      <DialogActions sx={{ justifyContent: 'space-between' }}>
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={deleteMutation.isPending}
-          onClick={(e) => {
-            e.preventDefault();
-
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Edit`,
+          onClick: () => setIsEdit(true),
+        }}
+        deleteButton={{
+          onClick: () => {
             deleteMutation.mutate(
               { path: { approval_policy_id: approvalPolicy.id } },
-              {
-                onSuccess: () => {
-                  dialogContext?.onClose?.();
-                },
-              }
+              { onSuccess: () => dialogContext?.onClose?.() }
             );
-          }}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-        <Button variant="outlined" onClick={() => setIsEdit(true)}>
-          {t(i18n)`Edit`}
-        </Button>
-      </DialogActions>
+          },
+          isLoading: deleteMutation.isPending,
+        }}
+      />
     </>
   );
 };

@@ -1,20 +1,12 @@
 import { useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Grid,
-  Typography,
-  Stack,
-  Divider,
-  DialogContent,
-  TextField,
-  DialogActions,
-  Button,
-} from '@mui/material';
+import { Grid, Typography, DialogContent, TextField } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
 import { CounterpartAddressForm } from '../CounterpartAddressForm';
@@ -146,22 +138,16 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
           </form>
         </FormProvider>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" onClick={props.onCancel}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {t(i18n)`Save`}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Save`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          onClick: props.onCancel,
+        }}
+      />
     </>
   );
 };

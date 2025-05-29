@@ -1,4 +1,4 @@
-import { useId, useState, useEffect, useMemo } from 'react';
+import { useId, useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -25,6 +25,7 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
@@ -32,14 +33,11 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Button,
   DialogContent,
-  Divider,
   Grid,
   MenuItem,
   Stack,
   Typography,
-  DialogActions,
 } from '@mui/material';
 
 import * as yup from 'yup';
@@ -605,56 +603,38 @@ export const ApprovalPolicyForm = ({
     setValue('scriptType', null);
   };
 
-  const dialogState = useMemo(() => {
-    const isSecondaryLevel =
-      isEdit ||
-      isAddingTrigger ||
-      isAddingRule ||
-      Boolean(scriptInEdit) ||
-      Boolean(triggerInEdit);
+  const isEditingTriggerOrRule =
+    Boolean(triggerInEdit) || Boolean(scriptInEdit);
+  const isAddingTriggerOrRule = isAddingTrigger || isAddingRule;
+  const isInSecondaryView = isEditingTriggerOrRule || isAddingTriggerOrRule;
 
-    const getTitle = () => {
-      if (triggerInEdit) return t(i18n)`Edit Condition`;
-      if (isAddingTrigger) return t(i18n)`Add Condition`;
-      if (scriptInEdit) return t(i18n)`Edit Rule`;
-      if (isAddingRule) return t(i18n)`Add Rule`;
+  const getTitle = () => {
+    if (triggerInEdit) return t(i18n)`Edit Condition`;
+    if (isAddingTrigger) return t(i18n)`Add Condition`;
+    if (scriptInEdit) return t(i18n)`Edit Rule`;
+    if (isAddingRule) return t(i18n)`Add Rule`;
+    return isEdit
+      ? t(i18n)`Edit Approval Policy`
+      : t(i18n)`Create Approval Policy`;
+  };
+
+  const getPreviousTitle = () => {
+    if (isInSecondaryView) {
       return isEdit
         ? t(i18n)`Edit Approval Policy`
         : t(i18n)`Create Approval Policy`;
-    };
-
-    const getPreviousTitle = () => {
-      if (triggerInEdit || isAddingTrigger || scriptInEdit || isAddingRule) {
-        return isEdit
-          ? t(i18n)`Edit Approval Policy`
-          : t(i18n)`Create Approval Policy`;
-      }
-      return undefined;
-    };
-
-    return {
-      isSecondaryLevel,
-      title: getTitle(),
-      previousLevelTitle: getPreviousTitle(),
-    };
-  }, [
-    isEdit,
-    triggerInEdit,
-    isAddingTrigger,
-    scriptInEdit,
-    isAddingRule,
-    i18n,
-  ]);
+    }
+    return undefined;
+  };
 
   return (
     <>
       <DialogHeader
-        secondaryLevel={dialogState.isSecondaryLevel}
-        title={dialogState.title}
-        previousLevelTitle={dialogState.previousLevelTitle}
+        secondaryLevel={isEdit || isInSecondaryView}
+        title={getTitle()}
+        previousLevelTitle={getPreviousTitle()}
         closeSecondaryLevelDialog={resetFormTriggerOrScript}
       />
-      <Divider />
       <DialogContent>
         <FormProvider {...methods}>
           <form
@@ -1151,49 +1131,36 @@ export const ApprovalPolicyForm = ({
           </form>
         </FormProvider>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule ? (
-          <>
-            <Button variant="outlined" onClick={resetFormTriggerOrScript}>
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                setTriggerInEdit(null);
-                setScriptInEdit(null);
-                setIsAddingTrigger(false);
-                setIsAddingRule(false);
-                setValue('triggerType', null);
-                setValue('scriptType', null);
-              }}
-            >
-              {triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                isEdit ? setIsEdit(false) : dialogContext?.onClose?.();
-              }}
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              form={formId}
-              disabled={updateMutation.isPending || createMutation.isPending}
-            >
-              {t(i18n)`Save`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      <DialogFooter
+        primaryButton={
+          triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
+            ? {
+                label: triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`,
+                onClick: (event?: React.MouseEvent<HTMLButtonElement>) => {
+                  event?.preventDefault();
+                  setTriggerInEdit(null);
+                  setScriptInEdit(null);
+                  setIsAddingTrigger(false);
+                  setIsAddingRule(false);
+                  setValue('triggerType', null);
+                  setValue('scriptType', null);
+                },
+              }
+            : {
+                label: t(i18n)`Save`,
+                formId,
+                isLoading: updateMutation.isPending || createMutation.isPending,
+              }
+        }
+        cancelButton={{
+          onClick:
+            triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
+              ? resetFormTriggerOrScript
+              : isEdit
+              ? () => setIsEdit(false)
+              : dialogContext?.onClose,
+        }}
+      />
     </>
   );
 };

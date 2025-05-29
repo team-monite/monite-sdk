@@ -7,20 +7,13 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { CenteredContentBox } from '@/ui/box';
+import { DialogFooter } from '@/ui/DialogFooter/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import {
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, DialogContent, Stack, Typography } from '@mui/material';
 
 import { ProductCancelEditModal } from '../../ProductCancelEditModal';
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
@@ -187,41 +180,29 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           />
         )}
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {manageMeasureUnits ? (
-          <Button
-            variant="contained"
-            onClick={() => setManageMeasureUnits(false)}
-          >
-            {t(i18n)`Done`}
-          </Button>
-        ) : (
-          <>
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() =>
-                isFormDirty
-                  ? setCancelEditModalOpened(true)
-                  : props.onCanceled()
-              }
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              form={productFormId}
-              disabled={
-                productUpdateMutation.isPending || isMeasureUnitsLoading
-              }
-            >
-              {t(i18n)`Update`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      {manageMeasureUnits ? (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Done`,
+            onClick: () => setManageMeasureUnits(false),
+          }}
+          cancelButton={{
+            onClick: () => setManageMeasureUnits(false),
+          }}
+        />
+      ) : (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Update`,
+            formId: productFormId,
+            isLoading: productUpdateMutation.isPending || isMeasureUnitsLoading,
+          }}
+          cancelButton={{
+            onClick: () =>
+              isFormDirty ? setCancelEditModalOpened(true) : props.onCanceled(),
+          }}
+        />
+      )}
     </>
   );
 };

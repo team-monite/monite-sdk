@@ -4,16 +4,11 @@ import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useVatTypes } from '@/core/hooks/useVatTypes';
 import { MoniteCountry } from '@/ui/Country';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Stack,
-  Divider,
-  DialogContent,
-  DialogActions,
-  Button,
-} from '@mui/material';
+import { Stack, DialogContent } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
 import {
@@ -75,22 +70,16 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
           </Stack>
         </form>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" onClick={props.onCancel}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {t(i18n)`Save`}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Save`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          onClick: props.onCancel,
+        }}
+      />
     </>
   );
 };

@@ -2,15 +2,15 @@ import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components/Dialog';
 import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, DialogActions, DialogContent, Divider } from '@mui/material';
+import { DialogContent } from '@mui/material';
 
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
@@ -34,7 +34,6 @@ export const CreateProduct = (props: ProductDetailsCreateProps) => (
 
 const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
 
   const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(false);
@@ -132,37 +131,25 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
           />
         )}
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {manageMeasureUnits ? (
-          <Button
-            variant="contained"
-            onClick={() => setManageMeasureUnits(false)}
-          >
-            {t(i18n)`Done`}
-          </Button>
-        ) : (
-          <>
-            {dialogContext && (
-              <Button
-                variant="text"
-                color="primary"
-                onClick={dialogContext.onClose}
-              >
-                {t(i18n)`Cancel`}
-              </Button>
-            )}
-            <Button
-              variant="contained"
-              type="submit"
-              form={productFormId}
-              disabled={isPending}
-            >
-              {t(i18n)`Create`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      {manageMeasureUnits ? (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Done`,
+            onClick: () => setManageMeasureUnits(false),
+          }}
+          cancelButton={{
+            onClick: () => setManageMeasureUnits(false),
+          }}
+        />
+      ) : (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Create`,
+            formId: productFormId,
+            isLoading: isPending,
+          }}
+        />
+      )}
     </>
   );
 };
