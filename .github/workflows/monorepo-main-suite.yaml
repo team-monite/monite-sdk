@@ -95,6 +95,10 @@ jobs:
         run: yarn e2e
         env:
           MONITE_E2E_APP_ADMIN_CONFIG_JSON: ${{ secrets.MONITE_E2E_APP_ADMIN_CONFIG_JSON }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          E2E_CLERK_USER_PASSWORD: ${{ secrets.E2E_CLERK_USER_PASSWORD }}
+          E2E_CLERK_USER_USERNAME: ${{ secrets.E2E_CLERK_USER_USERNAME }}
 
   translations-validation:
     needs: build
