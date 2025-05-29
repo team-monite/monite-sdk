@@ -109,7 +109,7 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
           <Alert severity="warning">
             <Typography variant="body2">{t(
               i18n
-            )`Already updated PDFs can't be reverted to the default view`}</Typography>
+            )`Already updated PDFs can’t be reverted to the default view`}</Typography>
           </Alert>
           <Typography sx={{ marginTop: 4 }} variant="body2">{t(
             i18n

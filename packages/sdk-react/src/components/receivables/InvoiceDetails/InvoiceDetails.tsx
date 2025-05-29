@@ -30,7 +30,7 @@ const InvoiceDetailsBase = ({
         <AccessRestriction
           description={t(
             i18n
-          )`You can not create receivable with a type other than "${'invoice'}"`}
+          )`You can not create receivable with a type other than “${'invoice'}”`}
         />
       );
     }
