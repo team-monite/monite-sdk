@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 // Import test setup to ensure auth file exists
-import '../test-setup';
 import { signInUser } from '../utils/auth-helpers';
 
 test.describe('Dashboard', () => {
