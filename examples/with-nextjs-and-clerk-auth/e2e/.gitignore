@@ -1,0 +1,10 @@
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Environment variables that may contain sensitive data
+.env.local.e2e
+.env.e2e 
