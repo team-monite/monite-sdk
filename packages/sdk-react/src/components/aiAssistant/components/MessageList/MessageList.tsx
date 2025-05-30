@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
