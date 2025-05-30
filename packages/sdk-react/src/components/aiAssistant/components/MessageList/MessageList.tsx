@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
@@ -8,50 +8,38 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import clsx from 'clsx';
 
 import { useAIAssistantChat } from '../../context/AIAssistantChatContext';
-import { useFollowLastItem } from '../../hooks/useFollowLastItem';
 import { getChatTotalHeight } from '../../utils/aiAssistant';
 import { AssistantMessage } from '../AssistantMessage/AssistantMessage';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 
 const POSSIBLE_ITEM_SIZE = 100;
 const MESSAGE_ID = 'message-id';
+const MOCK_MESSAGE = {
+  content: '',
+  id: MESSAGE_ID,
+  role: 'assistant',
+  parts: [],
+} as UIMessage;
 
 export const MessageList = () => {
-  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+  const parentRef = useRef<null | HTMLDivElement>(null);
   const isReady = useRef(false);
 
-  const { id, messages, status } = useAIAssistantChat();
+  const { messages, status, setMessages } = useAIAssistantChat();
   const isMobile = useIsMobile();
 
   const isSubmitted = status === 'submitted';
   const isStreaming = status === 'streaming';
   const isError = status === 'error';
 
-  const fillerMessage = useMemo(
-    () =>
-      ({
-        content: '',
-        id: MESSAGE_ID,
-        role: 'assistant',
-        parts: [],
-      } as UIMessage),
-    []
-  );
-
-  const newAssistantMessage = isStreaming
-    ? messages[messages.length - 1]
-    : undefined;
-
   const virtualizer = useVirtualizer({
     getScrollElement: () => parentRef.current,
     count: messages.length,
     estimateSize: () => POSSIBLE_ITEM_SIZE,
-    overscan: 5,
+    overscan: 25,
     getItemKey: useCallback((index: number) => messages[index]?.id, [messages]),
   });
   const virtualMessages = virtualizer.getVirtualItems();
-
-  const parentRef = useFollowLastItem<UIMessage>(newAssistantMessage);
 
   const height = virtualizer.getTotalSize();
   const totalHeight = getChatTotalHeight({
@@ -60,30 +48,40 @@ export const MessageList = () => {
     isError,
     height,
   });
+  const messagesLength = messages.length;
 
   useEffect(() => {
-    if (!id) {
-      return;
-    }
-
     if (!height) {
       return;
     }
 
     requestAnimationFrame(() => {
-      virtualizer.scrollToIndex(messages.length - 1);
-      isReady.current = true;
+      virtualizer.scrollToIndex(messagesLength - 1, {
+        align: isReady.current ? 'start' : 'end',
+        behavior: isReady.current ? 'smooth' : undefined,
+      });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [height]);
 
   useEffect(() => {
-    if (!isSubmitted || !lastMessageRef.current) {
+    if (!isSubmitted) {
       return;
     }
 
-    lastMessageRef.current.scrollIntoView();
+    isReady.current = true;
+    virtualizer.scrollToIndex(messages.length - 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitted]);
+
+  useEffect(() => {
+    if (!isStreaming) {
+      return;
+    }
+
+    setMessages((prev) => [...prev, MOCK_MESSAGE]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStreaming]);
 
   return (
     <div
@@ -144,18 +142,6 @@ export const MessageList = () => {
                 content=""
                 id={MESSAGE_ID}
               />
-            </div>
-          )}
-
-          {isSubmitted && (
-            <div
-              ref={lastMessageRef}
-              className={clsx([
-                'mtw:absolute mtw:bottom-0 mtw:left-0 mtw:max-w-full mtw:px-4 mtw:pt-5',
-                'mtw:flex mtw:justify-start mtw:gap-3',
-              ])}
-            >
-              <ChatMessage message={fillerMessage} isLast />
             </div>
           )}
         </div>
