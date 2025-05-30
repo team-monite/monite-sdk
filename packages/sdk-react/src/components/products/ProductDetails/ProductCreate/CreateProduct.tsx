@@ -2,24 +2,15 @@ import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components/Dialog';
 import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-  Breadcrumbs,
-  Button,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { DialogContent } from '@mui/material';
 
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
@@ -43,7 +34,6 @@ export const CreateProduct = (props: ProductDetailsCreateProps) => (
 
 const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
 
   const [manageMeasureUnits, setManageMeasureUnits] = useState<boolean>(false);
@@ -115,41 +105,20 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item xs={11}>
-          {manageMeasureUnits ? (
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Typography
-                sx={{ cursor: 'pointer', p: 3, pr: 0 }}
-                onClick={() => setManageMeasureUnits(false)}
-              >
-                {t(i18n)`Create new product or service`}
-              </Typography>
-              {manageMeasureUnits && (
-                <Typography color="text.primary">{t(
-                  i18n
-                )`Manage measure units`}</Typography>
-              )}
-            </Breadcrumbs>
-          ) : (
-            <Typography sx={{ p: 3 }}>
-              {t(i18n)`Create new product or service`}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Close new product or service form`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
+      <DialogHeader
+        secondaryLevel={manageMeasureUnits}
+        title={
+          manageMeasureUnits
+            ? t(i18n)`Manage measure units`
+            : t(i18n)`Create new product or service`
+        }
+        previousLevelTitle={
+          manageMeasureUnits
+            ? t(i18n)`Create new product or service`
+            : undefined
+        }
+        closeSecondaryLevelDialog={() => setManageMeasureUnits(false)}
+      />
       <DialogContent>
         {manageMeasureUnits ? (
           <ManageMeasureUnitsForm />
@@ -162,37 +131,25 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
           />
         )}
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {manageMeasureUnits ? (
-          <Button
-            variant="contained"
-            onClick={() => setManageMeasureUnits(false)}
-          >
-            {t(i18n)`Done`}
-          </Button>
-        ) : (
-          <>
-            {dialogContext && (
-              <Button
-                variant="text"
-                color="primary"
-                onClick={dialogContext.onClose}
-              >
-                {t(i18n)`Cancel`}
-              </Button>
-            )}
-            <Button
-              variant="contained"
-              type="submit"
-              form={productFormId}
-              disabled={isPending}
-            >
-              {t(i18n)`Create`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      {manageMeasureUnits ? (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Done`,
+            onClick: () => setManageMeasureUnits(false),
+          }}
+          cancelButton={{
+            onClick: () => setManageMeasureUnits(false),
+          }}
+        />
+      ) : (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Create`,
+            formId: productFormId,
+            isLoading: isPending,
+          }}
+        />
+      )}
     </>
   );
 };

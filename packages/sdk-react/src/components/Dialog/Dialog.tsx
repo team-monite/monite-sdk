@@ -63,10 +63,29 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
   (props, ref) => {
     const { alignDialog, onClosed, ...otherProps } = props;
     const { root } = useRootElements();
+    const parentDialog = useDialog();
+
+    const handleClose = (
+      event: { stopPropagation?: () => void },
+      reason: 'backdropClick' | 'escapeKeyDown'
+    ) => {
+      // Disable closing through through backdrop clicks.
+      // Only allow closing through explicit close actions (like close button) and ESC key.
+      if (reason !== 'backdropClick') {
+        // If this is a nested dialog and ESC was pressed, prevent the event from bubbling up
+        if (reason === 'escapeKeyDown' && parentDialog) {
+          event.stopPropagation?.();
+        }
+        props.onClose?.(event, reason);
+      }
+    };
 
     return (
       <DialogContext.Provider
-        value={{ isDialogContent: true, onClose: props.onClose }}
+        value={{
+          isDialogContent: true,
+          onClose: handleClose,
+        }}
       >
         <MuiDialog
           ref={ref}
@@ -78,7 +97,7 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
             alignDialog: alignDialog,
             onExited: onClosed,
           }}
-          onClose={props.onClose}
+          onClose={handleClose}
           classes={{
             container: [
               ScopedCssBaselineContainerClassName,

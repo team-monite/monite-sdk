@@ -4,19 +4,12 @@ import { Controller } from 'react-hook-form';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { DialogContent, Stack, TextField } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
 import {
@@ -69,21 +62,12 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption" data-testid="bankName">
-          {bank ? t(i18n)`Edit bank account` : t(i18n)`Add bank account`}
-        </Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={bank ? t(i18n)`Edit bank account` : t(i18n)`Add bank account`}
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <form id={formId} onSubmit={handleSubmit(saveBank)} noValidate>
           <Stack spacing={3}>
@@ -203,22 +187,16 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           </Stack>
         </form>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" onClick={props.onCancel}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            type="submit"
-            form={formId}
-            variant="contained"
-            disabled={isLoading}
-          >
-            {t(i18n)`Save`}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Save`,
+          formId: formId,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          onClick: props.onCancel,
+        }}
+      />
     </>
   );
 };

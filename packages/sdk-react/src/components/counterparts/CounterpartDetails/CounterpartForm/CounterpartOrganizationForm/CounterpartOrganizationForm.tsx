@@ -10,25 +10,20 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
-import {
-  CounterpartDataTestId,
-  type DefaultValuesOCROrganization,
-} from '@/components/counterparts/types';
+import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
-  DialogActions,
   DialogContent,
   Divider,
   Typography,
-  Button,
   TextField,
   Checkbox,
   List,
@@ -36,8 +31,6 @@ import {
   ListItemButton,
   ListItemText,
   Grid,
-  CircularProgress,
-  Stack,
 } from '@mui/material';
 
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
@@ -190,35 +183,24 @@ export const CounterpartOrganizationForm = (
   return (
     <>
       {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
-        <Grid
-          container
-          alignItems="center"
-          data-testid={CounterpartDataTestId.OrganizationForm}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3 }}>
-              {isInvoiceCreation
-                ? t(i18n)`Create customer`
-                : props?.id
-                ? t(i18n)`Edit company`
-                : t(i18n)`Create new counterpart`}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Counterpart Close`}
-                onClick={props.onClose || dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
+        <DialogHeader
+          secondaryLevel
+          title={
+            isInvoiceCreation
+              ? t(i18n)`Create customer`
+              : props?.id
+              ? t(i18n)`Edit company`
+              : t(i18n)`Create new counterpart`
+          }
+          closeSecondaryLevelDialog={
+            props?.id || isInvoiceCreation
+              ? props.onCancel
+              : props.onClose || dialogContext?.onClose
+          }
+          showDivider={!isInvoiceCreation}
+        />
       )}
 
-      {!isInvoiceCreation && <Divider />}
       <DialogContent
         sx={{ padding: '2rem', overflowY: 'auto', height: '450px' }}
       >
@@ -412,35 +394,20 @@ export const CounterpartOrganizationForm = (
           </form>
         </FormProvider>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button
-            variant="text"
-            onClick={
-              props?.id || isInvoiceCreation
-                ? props.onCancel
-                : props.onClose || dialogContext?.onClose
-            }
-          >
-            {isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <CircularProgress color="primary" />
-            ) : props?.id ? (
-              t(i18n)`Save`
-            ) : (
-              t(i18n)`Create`
-            )}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: props?.id ? t(i18n)`Save` : t(i18n)`Create`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
+          onClick:
+            props?.id || isInvoiceCreation
+              ? props.onCancel
+              : props.onClose || dialogContext?.onClose,
+        }}
+      />
     </>
   );
 };

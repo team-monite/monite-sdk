@@ -2,19 +2,12 @@ import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { MoniteCountry } from '@/ui/Country';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { DialogContent, Stack, TextField } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
 import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
@@ -44,19 +37,12 @@ export const CounterpartAddressFormUpdate = (
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption">{t(i18n)`Edit address`}</Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={t(i18n)`Edit address`}
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <form
           id={formName}
@@ -148,22 +134,16 @@ export const CounterpartAddressFormUpdate = (
           </Stack>
         </form>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" onClick={props.onCancel}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {t(i18n)`Save`}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Save`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          onClick: props.onCancel,
+        }}
+      />
     </>
   );
 };
