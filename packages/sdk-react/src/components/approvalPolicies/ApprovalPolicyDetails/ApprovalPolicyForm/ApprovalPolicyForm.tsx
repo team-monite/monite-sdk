@@ -753,6 +753,8 @@ export const ApprovalPolicyForm = ({
                                 user_ids: [values.rules.single_user.id],
                                 required_approval_count: 1,
                               },
+                              then: ['{Payables.approve(invoice.id)}'],
+                              else: ['{Payables.reject(invoice.id)}'],
                             },
                           ]
                         : []),
@@ -774,6 +776,8 @@ export const ApprovalPolicyForm = ({
                                       : parseInt(values.usersFromListCount)
                                     : 0,
                               },
+                              then: ['{Payables.approve(invoice.id)}'],
+                              else: ['{Payables.reject(invoice.id)}'],
                             },
                           ]
                         : []),
@@ -795,6 +799,8 @@ export const ApprovalPolicyForm = ({
                                       : parseInt(values.rolesFromListCount)
                                     : 0,
                               },
+                              then: ['{Payables.approve(invoice.id)}'],
+                              else: ['{Payables.reject(invoice.id)}'],
                             },
                           ]
                         : []),
