@@ -99,6 +99,8 @@ jobs:
           CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
           E2E_CLERK_USER_PASSWORD: ${{ secrets.E2E_CLERK_USER_PASSWORD }}
           E2E_CLERK_USER_USERNAME: ${{ secrets.E2E_CLERK_USER_USERNAME }}
+          MONITE_PROJECT_CLIENT_ID: ${{ secrets.MONITE_PROJECT_CLIENT_ID }}
+          MONITE_PROJECT_CLIENT_SECRET: ${{ secrets.MONITE_PROJECT_CLIENT_SECRET }}
 
   translations-validation:
     needs: build
