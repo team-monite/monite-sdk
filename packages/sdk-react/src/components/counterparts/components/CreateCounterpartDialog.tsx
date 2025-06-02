@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Dialog } from '../../Dialog/Dialog';
+import { Dialog } from '@/components/Dialog';
 import { CounterpartDetails } from '../CounterpartDetails/CounterpartDetails';
 import { CounterpartTypeItem } from './CounterpartTypeItem';
 

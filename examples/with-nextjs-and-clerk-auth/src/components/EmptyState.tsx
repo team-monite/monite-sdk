@@ -1,10 +1,16 @@
 import { ReactNode } from 'react';
 
-import { Box, SxProps, SvgIconProps, Typography } from '@mui/material';
+import {
+  Box,
+  Typography,
+  type SxProps,
+  type SvgIconProps,
+} from '@mui/material';
 
 interface EmptyStateProps {
   children: ReactNode;
   vertical?: boolean;
+  // eslint-disable-next-line no-unused-vars
   renderIcon?: (props: SvgIconProps) => ReactNode;
 }
 

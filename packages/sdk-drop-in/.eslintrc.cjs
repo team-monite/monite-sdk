@@ -5,18 +5,30 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: ["./tsconfig.json"],
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname
   },
   settings: {
     "import/resolver": {
       typescript: {
         alwaysTryTypes: true,
-        project: ["./tsconfig.json"]
+        project: ["./tsconfig.json", "./tsconfig.node.json"]
       }
     }
   },
   overrides: [
+    {
+      files: [".eslintrc.cjs"],
+      env: {
+        node: true
+      },
+      parserOptions: {
+        project: null
+      },
+      rules: {
+        "prettier/prettier": "off"
+      }
+    },
     {
       files: ["*"],
       rules: {

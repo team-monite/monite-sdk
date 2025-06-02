@@ -13,11 +13,11 @@ import {
   waitFor,
 } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 
 import { TagsTable } from './TagsTable';
 
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
 const { api } = createAPIClient();
 

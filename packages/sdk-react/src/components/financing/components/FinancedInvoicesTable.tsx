@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { Dialog } from '@/components/Dialog';
-import { FinancedInvoiceStatusChip } from '@/components/financing/components';
+import { FinancedInvoiceStatusChip } from '@/components/financing/components/FinancedInvoiceStatusChip';
 import { useGetFinancedInvoices } from '@/components/financing/hooks';
 import { UseInvoiceRowActionMenuCellProps } from '@/components/receivables/hooks';
 import {

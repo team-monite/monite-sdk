@@ -15,6 +15,11 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 
+export interface IconWrapperSettings {
+  icon?: React.ReactNode;
+  fallbackIcon?: React.ReactNode;
+}
+
 interface IconWrapperEvents {
   onHover?: (event: MouseEvent<HTMLButtonElement>) => void;
   onFocus?: (event: FocusEvent<HTMLButtonElement>) => void;
@@ -40,6 +45,7 @@ export interface MoniteIconWrapperProps
   sx?: SxProps<Theme>;
   isDynamic?: boolean;
   ariaLabelOverride?: string;
+  iconWrapperSettings?: IconWrapperSettings; // Updated to use the new type
 }
 
 /**
@@ -91,22 +97,22 @@ export const IconWrapper = forwardRef<
       onBlur,
       ariaLabelOverride,
       isDynamic = false,
+      iconWrapperSettings,
       ...props
     },
     ref
   ) => {
-    const { componentSettings } = useMoniteContext();
-    const providerProps = componentSettings?.general?.iconWrapper;
+    const providerProps = iconWrapperSettings || {};
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
-      providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+      icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
     );
 
     useEffect(() => {
       setDisplayIcon(
-        providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+        icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
       );
-    }, [providerProps.icon, providerProps.fallbackIcon]);
+    }, [icon, fallbackIcon, providerProps.icon, providerProps.fallbackIcon]);
 
     const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
       onHover?.(event);
@@ -117,7 +123,7 @@ export const IconWrapper = forwardRef<
 
     const handleMouseLeave = () => {
       setDisplayIcon(
-        providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+        icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
       );
     };
 

@@ -28,7 +28,7 @@ export const getUserEntitiesData = (
   if (!entities || typeof entities !== 'object') return {};
 
   return Object.fromEntries(
-    Object.entries(entities).filter(([key, value]) => isEntityUserObject(value))
+    Object.entries(entities).filter(([, value]) => isEntityUserObject(value))
   );
 };
 
