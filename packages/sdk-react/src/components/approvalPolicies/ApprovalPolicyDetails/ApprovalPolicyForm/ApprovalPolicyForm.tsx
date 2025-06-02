@@ -16,7 +16,7 @@ import {
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { useDialog } from '@/components/Dialog/Dialog';
+import { useDialog } from '@/components/Dialog';
 import { RHFTextField } from '@/components/RHF/RHFTextField/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';

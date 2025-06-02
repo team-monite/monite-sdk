@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  AIAssistantChatProvider,
-  AIChat,
-  AIPages,
-  AIPrompts,
-  AIStartScreen,
-} from '@/components';
-import { AISidebar } from '@/components';
-import { ChatInput } from '@/components/aiAssistant/components/ChatInput/ChatInput';
 import { PageHeader } from '@/components/PageHeader';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+
+import { AIChat } from './components/AIChat/AIChat';
+import { AIPrompts } from './components/AIPrompts/AIPrompts';
+import { AISidebar } from './components/AISidebar/AISidebar';
+import { AIStartScreen } from './components/AIStartScreen/AIStartScreen';
+import { ChatInput } from './components/ChatInput/ChatInput';
+import { AIAssistantChatProvider } from './context/AIAssistantChatContext';
+import type { AIPages } from './types';
 
 export const AIAssistant = () => (
   <MoniteScopedProviders>

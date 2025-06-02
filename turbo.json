@@ -41,7 +41,7 @@
       "outputs": ["storybook_static/**"]
     },
     "test": {
-      "cache": true,
+      "cache": false,
       "dependsOn": [
         "write-package-version-file",
         "compile-translations",

@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AIPages, Dialog } from '@/components';
 import { AISidebarIconButton } from '@/components/aiAssistant/components/AISidebarIconButton/AISidebarIconButton';
 import { AISidebarSkeleton } from '@/components/aiAssistant/components/AISidebarSkeleton/AISidebarSkeleton';
 import { SearchChatModal } from '@/components/aiAssistant/components/SearchChatModal/SearchChatModal';
 import { Conversation } from '@/components/aiAssistant/types';
 import { createConversationGroups } from '@/components/aiAssistant/utils/aiAssistant';
+import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
@@ -14,6 +14,7 @@ import { useLingui } from '@lingui/react';
 
 import { Folder, PanelLeft, Search, SquarePen } from 'lucide-react';
 
+import type { AIPages } from '../../types';
 import { SidebarMenuItem } from '../AISidebarMenuButton/AISidebarMenuButton';
 import { AISidebarWrapper } from '../AISidebarWrapper/AISidebarWrapper';
 

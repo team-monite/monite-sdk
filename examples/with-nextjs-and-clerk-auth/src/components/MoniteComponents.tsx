@@ -28,7 +28,7 @@ import {
   UserRoles as UserRolesBase,
   DocumentDesign as DocumentDesignBase,
 } from '@monite/sdk-react';
-import { Theme } from '@monite/sdk-react/mui-styles';
+// import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
   Button,
@@ -42,8 +42,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
-  Stack,
-  SxProps,
+  Stack, // SxProps,
   Table,
   TableBody,
   TableCell,

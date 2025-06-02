@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
-import {
-  FinanceBannerWrapper,
-  FinanceFaqWrapper,
-  FinanceProgressBar,
-} from '@/components/financing/components';
+import { FinanceBannerWrapper } from './FinanceBannerWrapper';
+import { FinanceFaqWrapper } from './FinanceFaqWrapper';
+import { FinanceProgressBar } from './FinanceProgressBar';
 import {
   FinancialApplicationState,
   useFinancing,

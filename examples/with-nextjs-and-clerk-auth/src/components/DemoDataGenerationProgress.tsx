@@ -31,7 +31,7 @@ export const DemoDataGenerationProgress = () => {
       withCredentials: true,
     });
 
-    eventSource.addEventListener('close', (event) => {
+    eventSource.addEventListener('close', () => {
       setMessage('');
       eventSource.close();
     });

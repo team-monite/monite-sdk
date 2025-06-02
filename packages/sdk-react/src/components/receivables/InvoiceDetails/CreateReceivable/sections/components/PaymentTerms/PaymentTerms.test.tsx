@@ -2,12 +2,12 @@ import { renderWithClient } from '@/utils/test-utils';
 import { requestFn } from '@openapi-qraft/react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 
 import { PaymentTermsDialog } from './PaymentTermsDialog';
 
 const closeDialogMock = vi.fn();
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
 describe('PaymentTerms', () => {
   test.skip('should show a dialog for payment term creation', async () => {

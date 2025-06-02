@@ -17,7 +17,7 @@ import { t } from '@lingui/macro';
 import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 
 import { CounterpartBankForm } from './CounterpartBankForm';
 
@@ -137,7 +137,7 @@ describe('CounterpartBankForm', () => {
 
   describe('# Public API', () => {
     test.skip('should send correct request when we are choose not UK and not US country', async () => {
-      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+      const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
       renderWithClient(
         <CounterpartBankForm counterpartId={individualId} />,
@@ -181,7 +181,7 @@ describe('CounterpartBankForm', () => {
     }, 10_000);
 
     test.skip('should send correct request when we choose any country', async () => {
-      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+      const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
       renderWithClient(
         <CounterpartBankForm counterpartId={individualId} />,
@@ -235,9 +235,7 @@ describe('CounterpartBankForm', () => {
 
     describe('# Backend Requests', () => {
       test.skip('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
-        const requestFnMock = requestFn as jest.MockedFunction<
-          typeof requestFn
-        >;
+        const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
         renderWithClient(
           <MoniteScopedProviders>
@@ -301,9 +299,7 @@ describe('CounterpartBankForm', () => {
       }, 10_000);
 
       test.skip('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
-        const requestFnMock = requestFn as jest.MockedFunction<
-          typeof requestFn
-        >;
+        const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
         const firstBankListFixture = counterpartBankListFixture[0];
 

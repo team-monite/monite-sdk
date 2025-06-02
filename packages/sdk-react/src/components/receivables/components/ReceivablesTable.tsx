@@ -1,9 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 
-import { CreditNotesTable } from '@/components';
-import { InvoicesTable } from '@/components';
-import { QuotesTable } from '@/components';
-import { FinanceTab } from '@/components';
+import { FinanceTab } from '@/components/financing/components/FinanceTab';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { useGetFinanceOffers } from '@/components/financing/hooks';
@@ -18,6 +15,10 @@ import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs, useTheme } from '@mui/material';
+
+import { CreditNotesTable } from './CreditNotesTable';
+import { InvoicesTable } from './InvoicesTable';
+import { QuotesTable } from './QuotesTable';
 
 interface ReceivablesTableControlledProps {
   /** Event handler for tab change */

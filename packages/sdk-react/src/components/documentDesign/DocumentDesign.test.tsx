@@ -3,11 +3,11 @@ import { renderWithClient } from '@/utils/test-utils';
 import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 
 import { DocumentDesign } from './DocumentDesign';
 
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 global.URL.createObjectURL = vi.fn();
 global.URL.createObjectURL = vi.fn();
 

@@ -6,7 +6,7 @@ import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import {
   ExistingProductDetailsProps,
   ProductDetailsView,
-} from '@/components/products/ProductDetails/ProductDetails';
+} from '@/components/products/ProductDetails/ProductDetails.types';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';

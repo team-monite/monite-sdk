@@ -4,6 +4,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "types": ["vitest/globals"],
     "composite": true,
     "allowJs": true,
     "esModuleInterop": true,
@@ -27,6 +28,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "typings.d.ts", "vite.server.ts", "src", "tests"],
+  "include": ["src/**/*", "typings.d.ts", "vite.server.ts", "src", "tests", "vitest.setup.ts", "vitest.config.mts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

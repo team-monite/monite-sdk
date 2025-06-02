@@ -23,7 +23,7 @@ import {
   personSchema,
   relationshipSchema,
 } from '../validators/validationSchemas';
-import { isOnboardingField } from './index';
+import { isOnboardingField } from './commonDataTransformers';
 
 export type ValidationSchemasType =
   | 'entity'

@@ -4,6 +4,7 @@ import { apiVersion } from '@/api/api-version';
 import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
+import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
@@ -17,7 +18,7 @@ import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -126,6 +127,11 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
+  const storybookRootElement =
+    typeof document !== 'undefined' ? document.body : undefined;
+  const storybookStylesElement =
+    typeof document !== 'undefined' ? document.head : undefined;
+
   return (
     <>
       <FallbackProviders theme={deepmerge(defaultThemeConfig, props.theme)}>
@@ -137,8 +143,15 @@ export const GlobalStorybookDecorator = (props: {
             props.componentSettings
           )}
         >
-          <MoniteReactQueryDevtools />
-          {props.children}
+          <RootElementsProvider
+            elements={{
+              root: storybookRootElement,
+              styles: storybookStylesElement,
+            }}
+          >
+            <MoniteReactQueryDevtools />
+            {props.children}
+          </RootElementsProvider>
         </MoniteProvider>
       </FallbackProviders>
     </>

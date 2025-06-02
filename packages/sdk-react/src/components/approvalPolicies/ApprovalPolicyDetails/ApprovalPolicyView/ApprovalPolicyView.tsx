@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
+import { useDialog } from '@/components/Dialog/DialogContext';
 import {
   useApprovalPolicyScript,
   Rules,
