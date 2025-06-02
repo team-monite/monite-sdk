@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { AIChatStatus } from '@/components';
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
 import type { UIMessage } from '@ai-sdk/ui-utils';
@@ -23,11 +24,13 @@ const MOCK_MESSAGE = {
 
 export const MessageList = () => {
   const parentRef = useRef<null | HTMLDivElement>(null);
-  const isReady = useRef(false);
+  const isScrolledToEnd = useRef(false);
+  const prevStatusRef = useRef<AIChatStatus>('ready');
 
   const { messages, status, setMessages } = useAIAssistantChat();
   const isMobile = useIsMobile();
 
+  const isReady = status === 'ready';
   const isSubmitted = status === 'submitted';
   const isStreaming = status === 'streaming';
   const isError = status === 'error';
@@ -51,25 +54,22 @@ export const MessageList = () => {
   const messagesLength = messages.length;
 
   useEffect(() => {
-    if (!height) {
+    if (!messagesLength || isScrolledToEnd.current) {
       return;
     }
 
     requestAnimationFrame(() => {
-      virtualizer.scrollToIndex(messagesLength - 1, {
-        align: isReady.current ? 'start' : 'end',
-        behavior: isReady.current ? 'smooth' : undefined,
-      });
+      virtualizer.scrollToIndex(messagesLength - 1);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [height]);
+  }, [messagesLength]);
 
   useEffect(() => {
     if (!isSubmitted) {
       return;
     }
 
-    isReady.current = true;
+    isScrolledToEnd.current = true;
     virtualizer.scrollToIndex(messages.length - 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitted]);
@@ -82,6 +82,21 @@ export const MessageList = () => {
     setMessages((prev) => [...prev, MOCK_MESSAGE]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStreaming]);
+
+  useEffect(() => {
+    const shouldScrollToLastMessage =
+      prevStatusRef.current !== status && (isReady || isStreaming);
+
+    if (shouldScrollToLastMessage) {
+      virtualizer.scrollToIndex(messages.length - 1, {
+        align: 'start',
+        behavior: 'smooth',
+      });
+    }
+
+    prevStatusRef.current = status;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   return (
     <div
@@ -117,7 +132,7 @@ export const MessageList = () => {
                   'mtw:p-4 mtw:[&_li]:pb-2 mtw:text-sm mtw:font-normal',
                   role === 'user'
                     ? 'mtw:right-0 mtw:max-w-[70%] mtw:self-end'
-                    : 'mtw:left-0 mtw:max-w-full',
+                    : 'mtw:left-0 mtw:w-full',
                 ])}
                 style={{
                   transform: `translateY(${start}px)`,
@@ -131,7 +146,7 @@ export const MessageList = () => {
           {isError && (
             <div
               className={clsx([
-                'mtw:absolute mtw:bottom-0 mtw:left-0 mtw:max-w-full mtw:px-4 mtw:pt-5',
+                'mtw:absolute mtw:bottom-0 mtw:left-0 mtw:w-full mtw:px-4 mtw:pt-5',
                 'mtw:flex mtw:justify-start mtw:gap-3',
               ])}
             >

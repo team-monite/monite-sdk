@@ -69,7 +69,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
     }
 
     formRef.current.focus();
-    formRef.current.scrollTo();
+    formRef.current.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
