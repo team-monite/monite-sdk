@@ -6,6 +6,8 @@ import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
+import { MoniteErrorBoundary } from './MoniteErrorBoundary';
+
 /**
  * Provides a single instance of `<ScopedCssBaseline/>` component,
  * `<EmotionCacheProvider/>` and `<MuiThemeProvider/>` components.
@@ -17,17 +19,26 @@ export const MoniteScopedProviders = ({
 }: {
   children: ReactNode;
 }) => {
-  const hasStylesContext = useContext(SingleInstanceScopedStyleProviderContext);
-  const { theme } = useMoniteContext();
+  const { theme, componentSettings, environment, entityId } = useMoniteContext(); // Get environment and entityId
+  const hasStyles = useContext(SingleInstanceScopedStyleProviderContext);
 
-  return hasStylesContext ? (
-    <>{children}</>
-  ) : (
+  if (hasStyles) {
+    return <>{children}</>;
+  }
+
+  return (
     <SingleInstanceScopedStyleProviderContext.Provider value={true}>
       <EmotionCacheProvider cacheKey="monite-css">
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
-            <SentryProvider>{children}</SentryProvider>
+            <MoniteErrorBoundary>
+              <SentryProvider
+                config={{ enabled: true, tags: { environment, entityId } }} // Use real values
+                iconWrapperSettings={componentSettings?.general?.iconWrapper}
+              >
+                {children}
+              </SentryProvider>
+            </MoniteErrorBoundary>
           </MuiThemeProvider>
         </MoniteI18nProvider>
       </EmotionCacheProvider>

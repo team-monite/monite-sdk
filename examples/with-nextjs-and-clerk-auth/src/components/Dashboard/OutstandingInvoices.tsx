@@ -2,7 +2,7 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
-import { ArrowForward, ArrowRight } from '@mui/icons-material';
+import { ArrowForward } from '@mui/icons-material';
 import { Link, TableCell, TableRow } from '@mui/material';
 
 import { CounterpartCellById } from '@/components/Dashboard/CounterpartCellById';

@@ -83,7 +83,7 @@ function renderColors<T extends { [key: string]: any }>(
 
   Object.keys(components).forEach((key) => {
     const prop = key as keyof T;
-    if (!components.hasOwnProperty(prop)) return;
+    if (!Object.prototype.hasOwnProperty.call(components, prop)) return;
     const propValue = components[prop];
     // noinspection SuspiciousTypeOfGuard
     if (typeof propValue === 'string' && colorProps.includes(key)) {
@@ -98,7 +98,7 @@ function renderColors<T extends { [key: string]: any }>(
   return output;
 }
 
-const statusBackgroundColors = {
+export const statusBackgroundColors = {
   draft: '#000000D6',
   new: '#3737FF',
   approve_in_progress: '#E75300',
@@ -187,6 +187,7 @@ const counterpartColors: string[] = [
 
 const defaultMoniteTypography:
   | TypographyOptions
+  // eslint-disable-next-line no-unused-vars
   | ((palette: Palette) => TypographyOptions) = {
   fontFamily:
     '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
@@ -1038,73 +1039,73 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MoniteApprovalRequestStatusChip: {
-    defaultProps: {
-      icon: false,
-      size: 'small',
-    },
-  },
-  MoniteInvoiceStatusChip: {
-    defaultProps: {
-      icon: false,
-      size: 'small',
-    },
-    styleOverrides: {
-      root: {
-        fontSize: '13px',
-      },
-    },
-    variants: [
-      {
-        props: { status: 'draft' },
-        style: statusColors.black,
-      },
-      {
-        props: { status: 'issued' },
-        style: statusColors.blue,
-      },
-      {
-        props: { status: 'accepted' },
-        style: statusColors.green,
-      },
-      {
-        props: { status: 'expired' },
-        style: statusColors.red,
-      },
-      {
-        props: { status: 'declined' },
-        style: statusColors.red,
-      },
-      {
-        props: { status: 'recurring' },
-        style: statusColors.green,
-      },
-      {
-        props: { status: 'partially_paid' },
-        style: statusColors.violet,
-      },
-      {
-        props: { status: 'paid' },
-        style: statusColors.green,
-      },
-      {
-        props: { status: 'overdue' },
-        style: statusColors.orange,
-      },
-      {
-        props: { status: 'uncollectible' },
-        style: statusColors.red,
-      },
-      {
-        props: { status: 'canceled' },
-        style: statusColors.orange,
-      },
-      {
-        props: { status: 'deleted' },
-        style: statusColors.black,
-      },
-    ],
-  },
+  // MoniteApprovalRequestStatusChip: {
+  //   defaultProps: {
+  //     icon: false,
+  //     size: 'small',
+  //   },
+  // },
+  // MoniteInvoiceStatusChip: {
+  //   defaultProps: {
+  //     icon: false,
+  //     size: 'small',
+  //   },
+  //   styleOverrides: {
+  //     root: {
+  //       fontSize: '13px',
+  //     },
+  //   },
+  //   variants: [
+  //     {
+  //       props: { status: 'draft' },
+  //       style: statusColors.black,
+  //     },
+  //     {
+  //       props: { status: 'issued' },
+  //       style: statusColors.blue,
+  //     },
+  //     {
+  //       props: { status: 'accepted' },
+  //       style: statusColors.green,
+  //     },
+  //     {
+  //       props: { status: 'expired' },
+  //       style: statusColors.red,
+  //     },
+  //     {
+  //       props: { status: 'declined' },
+  //       style: statusColors.red,
+  //     },
+  //     {
+  //       props: { status: 'recurring' },
+  //       style: statusColors.green,
+  //     },
+  //     {
+  //       props: { status: 'partially_paid' },
+  //       style: statusColors.violet,
+  //     },
+  //     {
+  //       props: { status: 'paid' },
+  //       style: statusColors.green,
+  //     },
+  //     {
+  //       props: { status: 'overdue' },
+  //       style: statusColors.orange,
+  //     },
+  //     {
+  //       props: { status: 'uncollectible' },
+  //       style: statusColors.red,
+  //     },
+  //     {
+  //       props: { status: 'canceled' },
+  //       style: statusColors.orange,
+  //     },
+  //     {
+  //       props: { status: 'deleted' },
+  //       style: statusColors.black,
+  //     },
+  //   ],
+  // },
 };
 
 const lightComponents = renderColors(defaultMoniteComponents, paletteLight);

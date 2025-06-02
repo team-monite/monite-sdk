@@ -4,8 +4,10 @@ import useScript from 'react-script-hook';
 import { components } from '@/api';
 import {
   useGetFinancingConnectToken,
+} from '@/components/financing/hooks/useGetFinancingConnectToken';
+import {
   useGetFinanceOffers,
-} from '@/components/financing/hooks';
+} from '@/components/financing/hooks/useGetFinanceOffers';
 import {
   KanmonFinancedInvoice,
   useKanmonContext,

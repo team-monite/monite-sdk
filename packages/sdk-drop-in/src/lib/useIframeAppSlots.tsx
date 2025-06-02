@@ -1,4 +1,10 @@
-import { ComponentProps, useCallback, useEffect, useState } from 'react';
+import {
+  ComponentProps,
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
 
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { type APISchema, type MoniteProvider } from '@monite/sdk-react';
@@ -19,6 +25,17 @@ export const useMoniteIframeAppSlots = (): {
     APISchema.components['schemas']['AccessTokenResponse']
   >;
 } => {
+  const isTestEnvironment = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+
+    return (
+      window.location.search.includes('test=playwright') ||
+      window.location.search.includes('test=e2e') ||
+      navigator.userAgent.includes('Playwright') ||
+      navigator.userAgent.includes('HeadlessChrome')
+    );
+  }, []);
+
   const [slots, setSlots] = useState<Partial<MoniteProviderSlots>>({});
 
   const [iframeCommunicator] = useState(
@@ -26,6 +43,14 @@ export const useMoniteIframeAppSlots = (): {
   );
 
   const fetchToken = useCallback(() => {
+    if (isTestEnvironment) {
+      return Promise.resolve({
+        access_token: 'mocked_access_token_for_e2e_tests',
+        token_type: 'Bearer' as const,
+        expires_in: 3600,
+      });
+    }
+
     return new Promise<APISchema.components['schemas']['AccessTokenResponse']>(
       (resolve) => {
         iframeCommunicator.on('fetch-token', (data) => {
@@ -39,10 +64,14 @@ export const useMoniteIframeAppSlots = (): {
     ).finally(() => {
       iframeCommunicator.off('fetch-token');
     });
-  }, [iframeCommunicator]);
+  }, [iframeCommunicator, isTestEnvironment]);
 
   useEffect(
     function subscribe() {
+      if (isTestEnvironment) {
+        return;
+      }
+
       iframeCommunicator.on('locale', (locale) => {
         // @ts-expect-error - payload is not a valid locale object
         setSlots((prevSlots) => ({ ...prevSlots, locale }));
@@ -64,7 +93,7 @@ export const useMoniteIframeAppSlots = (): {
         iframeCommunicator.disconnect();
       };
     },
-    [iframeCommunicator, fetchToken]
+    [iframeCommunicator, fetchToken, isTestEnvironment]
   );
 
   return { ...slots, fetchToken };

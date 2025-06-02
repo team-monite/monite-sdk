@@ -7,7 +7,6 @@ import {
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
 import { Button } from '@/ui/components/button';
-import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -18,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Dialog } from '@/ui/Dialog';
 import { CounterpartDetails } from '../CounterpartDetails/CounterpartDetails';
 import { CounterpartTypeItem } from './CounterpartTypeItem';
 

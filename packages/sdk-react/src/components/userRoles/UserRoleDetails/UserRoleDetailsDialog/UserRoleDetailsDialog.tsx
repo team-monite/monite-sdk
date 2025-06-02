@@ -23,8 +23,8 @@ import {
   styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
+  TableCell, // Keep this if other TableCells are used, otherwise remove
+  tableCellClasses, // Remove this if not used elsewhere
   TableContainer,
   TableHead,
   TableRow,
@@ -34,6 +34,7 @@ import {
 import { useUserRoleQuery } from '../../useUserRoles';
 import { UserRoleViewMode } from '../UserRole.types';
 import { UserRoleRow } from '../UserRoleRow/UserRoleRow';
+import { StyledTableCell } from '../UserRoleTableComponents'; // Added import
 
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;
@@ -54,28 +55,29 @@ const StyledTableHead = styled(TableHead)(({ theme }) => ({
   background: theme.palette.grey[300],
 }));
 
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.head}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9999',
-    minWidth: '180px',
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-  [`&.${tableCellClasses.body}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9998',
-    fontWeight: '600',
-    minWidth: '180px',
-    backgroundColor: theme.palette.background.default,
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-}));
+// REMOVE THIS DEFINITION
+// export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: theme.palette.grey[100],
+//     whiteSpace: 'nowrap',
+//   },
+//   [`&.${tableCellClasses.head}:first-of-type`]: {
+//     position: 'sticky',
+//     left: 0,
+//     zIndex: '9999',
+//     minWidth: '180px',
+//     borderRight: `1px solid ${theme.palette.grey[300]}`,
+//   },
+//   [`&.${tableCellClasses.body}:first-of-type`]: {
+//     position: 'sticky',
+//     left: 0,
+//     zIndex: '9998',
+//     fontWeight: '600',
+//     minWidth: '180px',
+//     backgroundColor: theme.palette.background.default,
+//     borderRight: `1px solid ${theme.palette.grey[300]}`,
+//   },
+// }));
 
 interface UserRoleDetailsDialogProps {
   /** The id of the role to be displayed */

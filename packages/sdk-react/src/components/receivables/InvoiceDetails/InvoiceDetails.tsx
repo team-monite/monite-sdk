@@ -5,8 +5,8 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-import { CreateReceivables } from './CreateReceivable';
-import { ExistingReceivableDetails } from './ExistingInvoiceDetails';
+import { CreateReceivables } from './CreateReceivable/CreateReceivables';
+import { ExistingReceivableDetails } from './ExistingInvoiceDetails/ExistingReceivableDetails';
 
 export const InvoiceDetails = ({
   customerTypes,

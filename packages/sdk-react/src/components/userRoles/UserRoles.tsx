@@ -1,12 +1,7 @@
 import { useReducer } from 'react';
 
-import {
-  Dialog,
-  PageHeader,
-  UserRoleDeleteDialog,
-  UserRoleDetailsDialog,
-  UserRoleEditDialog,
-} from '@/components';
+import { Dialog } from '@/components/Dialog';
+import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -15,6 +10,9 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
 
+import { UserRoleDeleteDialog } from './UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog';
+import { UserRoleDetailsDialog } from './UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog';
+import { UserRoleEditDialog } from './UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog';
 import { UserRolesTable } from './UserRolesTable';
 
 export const UserRoles = () => (

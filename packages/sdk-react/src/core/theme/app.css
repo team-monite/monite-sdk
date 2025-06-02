@@ -1,7 +1,9 @@
-@import 'tailwindcss' source('../../../src/') prefix(mtw);
-@import 'tw-animate-css' source('../../../src/') prefix(mtw);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import './tailwind/typography.css';
+/* placeholder for tw-animate-css integration, if needed separately */
+/* e.g., @import './path/to/tw-animate-css.css'; */
 
 @theme {
   --color-primary: var(--mtw-color-primary-50);
@@ -136,13 +138,12 @@
   --color-sidebar-ring: var(--mtw-sidebar-ring);
 }
 
-@layer base {
-  [data-placeholder]:empty:before {
-    content: attr(data-placeholder);
-    color: #6d737e;
-    font-weight: normal;
-    font-size: 14px;
-  }
+/* Using a class selector instead of @layer base to avoid conflicts */
+[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: #6d737e;
+  font-weight: normal;
+  font-size: 14px;
 }
 
 @keyframes dot-typing {
@@ -189,11 +190,10 @@
   }
 }
 
-@layer utilities {
-  .animate-dot-typing {
-    --mtw-dot-loader-color: #d6cdfe;
-    --mtw-dot-loader-stress-color: #562bd6;
+/* Using a class selector instead of @layer utilities to avoid conflicts */
+.animate-dot-typing {
+  --mtw-dot-loader-color: #d6cdfe;
+  --mtw-dot-loader-stress-color: #562bd6;
 
-    animation: dot-typing 1.5s infinite linear;
-  }
+  animation: dot-typing 1.5s infinite linear;
 }

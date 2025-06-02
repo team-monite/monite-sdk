@@ -112,7 +112,12 @@ const SDKDemoComponent = ({
                 >
                   <MoniteReactQueryDevtools />
                   <Global styles={getFontFaceStyles} />
-                  <BrowserRouter>
+                  <BrowserRouter
+                    future={{
+                      v7_startTransition: true,
+                      v7_relativeSplatPath: true,
+                    }}
+                  >
                     <DefaultLayout
                       siderProps={{
                         footer: <SiderFooter onLogout={logout} />,

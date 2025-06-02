@@ -10,13 +10,11 @@ import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import type { ComponentSettings } from '@/core/componentSettings';
 import { createQueryClient } from '@/core/context/createQueryClient';
-import { SentryFactory } from '@/core/services';
-import { type ThemeConfig } from '@/core/theme/types';
+import type { ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import type { I18n } from '@lingui/core';
 import type { Theme } from '@mui/material';
 import type { QraftContextValue } from '@openapi-qraft/react';
-import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
@@ -107,7 +105,6 @@ export interface MoniteContextValue
     CreateMoniteAPIClientResult {
   environment: 'dev' | 'sandbox' | 'production';
   entityId: string;
-  sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
   theme: MoniteTheme;
@@ -167,6 +164,7 @@ export const MoniteContextProvider = ({
           locale={defaultedLocale}
           dateFnsLocale={datePickerAdapterLocale}
         >
+          {/* SentryProvider is now used inside ContextProvider where settings are resolved */}
           {children}
         </ContextProvider>
       )}
@@ -205,17 +203,7 @@ const ContextProvider = ({
     environment = 'sandbox';
   }
 
-  const sentryHub = useMemo(() => {
-    return new SentryFactory({
-      environment,
-      entityId,
-    }).create();
-  }, [entityId, environment]);
-
-  const queryClient = useMemo(
-    () => createQueryClient(i18n, sentryHub),
-    [i18n, sentryHub]
-  );
+  const queryClient = useMemo(() => createQueryClient(i18n, null), [i18n]);
 
   const { api, version, requestFn } = useMemo(
     () =>
@@ -246,7 +234,6 @@ const ContextProvider = ({
         theme: theme as MoniteTheme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,
-        sentryHub,
         i18n,
         locale,
         dateFnsLocale,

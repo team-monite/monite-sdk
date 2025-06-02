@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 
 import { components } from '@/api';
-import { Dialog } from '@/components';
+import { Dialog } from '@/components/Dialog';
 import { useHandleDialogCloseFocus } from '@/core/hooks/useHandleDialogCloseFocus';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
