@@ -34,7 +34,7 @@ msgstr "- they are due within 7 days."
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:146
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:147
 msgid "(Optional) Feel free to add specific details"
 msgstr "(Optional) Feel free to add specific details"
 
@@ -7543,7 +7543,7 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:124
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:125
 msgid "Tell us more"
 msgstr "Tell us more"
 
@@ -7591,7 +7591,7 @@ msgstr "Thailand"
 msgid "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 msgstr "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:96
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:99
 msgid "Thank you for your feedback!"
 msgstr "Thank you for your feedback!"
 
