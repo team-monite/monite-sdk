@@ -310,7 +310,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         >
                           {t(
                             i18n
-                          )`The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
+                          )`The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
                           <br />
                           <StyledButtonLink
                             as="button"

@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 
-import { ConfirmDeleteDialog } from '@/components/counterparts/components';
 import { getCountries } from '@/core/utils/countries';
 import { getCurrencies } from '@/core/utils/currencies';
 import { MoniteCard } from '@/ui/Card/Card';
+import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -122,13 +122,15 @@ export const CounterpartBankView = (props: CounterpartBankViewProps) => {
           <CardActions>{actions}</CardActions>
         </>
       )}
-      <ConfirmDeleteDialog
-        isLoading={isLoading}
-        onClose={handleCloseDeleteDialog}
-        onDelete={handleDeleteBankAccount}
-        type={t(i18n)`Bank Account`}
-        name={name ? name : ''}
+      <ConfirmationModal
         open={showDeleteDialog}
+        title={t(i18n)`Delete Bank Account “${name}“?`}
+        message={t(i18n)`You can’t undo this action.`}
+        confirmLabel={t(i18n)`Delete`}
+        cancelLabel={t(i18n)`Cancel`}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleDeleteBankAccount}
+        isLoading={isLoading}
       />
     </MoniteCard>
   );

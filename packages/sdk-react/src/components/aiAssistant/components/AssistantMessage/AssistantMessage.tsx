@@ -66,15 +66,12 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
 
   return (
     <AssistantMessageWrapper>
-      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:overflow-x-auto">
+      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:overflow-x-auto mtw:grow">
         <div
           className={cn(
-            isLast &&
-              isStreaming &&
-              "mtw:after:inline-block mtw:after:h-2 mtw:after:w-2 mtw:after:content-['']",
-            isLast &&
-              isStreaming &&
-              'mtw:after:ml-1 mtw:after:mt-3 mtw:after:animate-ping mtw:after:rounded-full mtw:after:bg-primary-50'
+            'mtw:transition-[height] mtw:ease-in-out mtw:duration-3000',
+            'mtw:h-full mtw:overflow-y-hidden',
+            isLast && isStreaming && 'mtw:h-0'
           )}
         >
           {parts.map((part) => {

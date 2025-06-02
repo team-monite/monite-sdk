@@ -1,6 +1,5 @@
 import { useState, useTransition } from 'react';
 
-import { useDialog } from '@/components';
 import {
   InvoiceRecurrenceStatusChip,
   InvoiceStatusChip,
@@ -20,12 +19,12 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CancelIcon from '@mui/icons-material/Cancel';
-import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -33,15 +32,11 @@ import {
   Alert,
   Button,
   DialogContent,
-  DialogTitle,
   Grid,
-  IconButton,
   Menu,
   MenuItem,
   MenuProps,
   Stack,
-  Toolbar,
-  Typography,
   CircularProgress,
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
@@ -121,7 +116,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(
     DeliveryMethod.Email
   );
-  const dialogContext = useDialog();
   const { data: receivable, isLoading: isInvoiceLoading } = useReceivableById(
     props.id
   );
@@ -200,6 +194,148 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const className = 'Monite-ExistingInvoiceDetails';
 
+  const title =
+    receivable.status === 'recurring'
+      ? t(i18n)`Recurring invoice`
+      : t(i18n)`Invoice ${documentId}`;
+
+  const statusElement =
+    receivable.status === 'recurring' ? (
+      recurrence && (
+        <InvoiceRecurrenceStatusChip status={recurrence.status} icon={false} />
+      )
+    ) : (
+      <InvoiceStatusChip status={receivable.status} />
+    );
+
+  const actions = (
+    <>
+      {buttons.isDeleteButtonVisible && (
+        <Button
+          variant="text"
+          color="error"
+          onClick={() => setDeleteModalOpened(true)}
+          disabled={buttons.isDeleteButtonDisabled}
+        >
+          {t(i18n)`Delete`}
+        </Button>
+      )}
+      {buttons.isEditButtonVisible && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={(event) => {
+            event.preventDefault();
+            startViewChange(callbacks.handleChangeViewInvoice);
+          }}
+          disabled={loading}
+        >
+          {t(i18n)`Edit invoice`}
+        </Button>
+      )}
+      {buttons.isMoreButtonVisible && (
+        <>
+          <Button
+            {...buttonProps}
+            variant="text"
+            color="primary"
+            disableElevation
+            disabled={loading}
+            endIcon={<MoreVertIcon />}
+          >
+            {t(i18n)`More`}
+          </Button>
+          <StyledMenu {...menuProps}>
+            <MenuItem
+              onClick={() => {
+                setPresentation(InvoiceDetailsPresentation.Email);
+              }}
+            >
+              <EmailIcon fontSize="small" />
+              {t(i18n)`Send invoice`}
+            </MenuItem>
+            {buttons.isCancelButtonVisible && (
+              <MenuItem
+                onClick={(event) => {
+                  event.preventDefault();
+                  setCancelModalOpened(true);
+                }}
+                disabled={buttons.isCancelButtonDisabled}
+              >
+                <CancelIcon fontSize="small" />
+                {t(i18n)`Cancel Invoice`}
+              </MenuItem>
+            )}
+          </StyledMenu>
+        </>
+      )}
+      {buttons.isDownloadPDFButtonVisible && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={callbacks.handleDownloadPDF}
+          disabled={buttons.isDownloadPDFButtonDisabled}
+          startIcon={
+            buttons.isDownloadPDFButtonDisabled ? (
+              <CircularProgress size={20} color="inherit" />
+            ) : null
+          }
+        >
+          {t(i18n)`Download PDF`}
+        </Button>
+      )}
+      <RecordManualPaymentModal invoice={receivable}>
+        {({ openModal }) => (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={openModal}
+            disabled={loading}
+          >
+            {t(i18n)`Record payment`}
+          </Button>
+        )}
+      </RecordManualPaymentModal>
+      {buttons.isComposeEmailButtonVisible && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(event) => {
+            event.preventDefault();
+            setPresentation(InvoiceDetailsPresentation.Email);
+          }}
+          disabled={loading}
+          endIcon={<KeyboardArrowRightIcon />}
+        >
+          {t(i18n)`Compose email`}
+        </Button>
+      )}
+      {buttons.isIssueButtonVisible && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={callbacks.handleIssueOnly}
+          disabled={loading}
+        >
+          {t(i18n)`Issue`}
+        </Button>
+      )}
+      {receivable.status === 'recurring' && recurrence?.status === 'active' && (
+        <Button
+          variant="outlined"
+          color="error"
+          disabled={buttons.isCancelRecurrenceButtonDisabled}
+          onClick={(event) => {
+            event.preventDefault();
+            setCancelRecurrenceModalOpened(true);
+          }}
+        >
+          {t(i18n)`Cancel recurrence`}
+        </Button>
+      )}
+    </>
+  );
+
   return (
     <>
       <InvoiceDeleteModal
@@ -227,165 +363,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         }}
       />
 
-      <DialogTitle className={className + '-Title'}>
-        <Toolbar>
-          <Grid container>
-            <Grid item xs={6}>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                {dialogContext && (
-                  <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={dialogContext?.onClose}
-                    aria-label="close"
-                    disabled={loading}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                )}
+      <FullScreenModalHeader
+        className={className + '-Title'}
+        title={title}
+        statusElement={statusElement}
+        actions={actions}
+        closeButtonTooltip={t(i18n)`Close invoice details`}
+      />
 
-                {receivable.status === 'recurring' ? (
-                  <>
-                    <Typography variant="h3">{t(
-                      i18n
-                    )`Recurring invoice`}</Typography>
-                    {recurrence && (
-                      <InvoiceRecurrenceStatusChip
-                        status={recurrence.status}
-                        icon={false}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <Typography variant="h3">{t(
-                      i18n
-                    )`Invoice ${documentId}`}</Typography>
-                    <InvoiceStatusChip status={receivable.status} />
-                  </>
-                )}
-              </Stack>
-            </Grid>
-            <Grid item xs={6}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="end"
-                spacing={2}
-              >
-                {buttons.isDeleteButtonVisible && (
-                  <Button
-                    variant="text"
-                    color="error"
-                    onClick={() => setDeleteModalOpened(true)}
-                    disabled={buttons.isDeleteButtonDisabled}
-                  >{t(i18n)`Delete`}</Button>
-                )}
-                {buttons.isEditButtonVisible && (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      startViewChange(callbacks.handleChangeViewInvoice);
-                    }}
-                    disabled={loading}
-                  >{t(i18n)`Edit invoice`}</Button>
-                )}
-                {buttons.isMoreButtonVisible && (
-                  <>
-                    <Button
-                      {...buttonProps}
-                      variant="text"
-                      color="primary"
-                      disableElevation
-                      disabled={loading}
-                      endIcon={<MoreVertIcon />}
-                    >{t(i18n)`More`}</Button>
-                    <StyledMenu {...menuProps}>
-                      <MenuItem
-                        onClick={() => {
-                          setPresentation(InvoiceDetailsPresentation.Email);
-                        }}
-                      >
-                        <EmailIcon fontSize="small" />
-                        {t(i18n)`Send invoice`}
-                      </MenuItem>
-                      {buttons.isCancelButtonVisible && (
-                        <MenuItem
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setCancelModalOpened(true);
-                          }}
-                          disabled={buttons.isCancelButtonDisabled}
-                        >
-                          <CancelIcon fontSize="small" />
-                          {t(i18n)`Cancel Invoice`}
-                        </MenuItem>
-                      )}
-                    </StyledMenu>
-                  </>
-                )}
-                {buttons.isDownloadPDFButtonVisible && (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={callbacks.handleDownloadPDF}
-                    disabled={buttons.isDownloadPDFButtonDisabled}
-                    startIcon={
-                      buttons.isDownloadPDFButtonDisabled ? (
-                        <CircularProgress size={20} color="inherit" />
-                      ) : null
-                    }
-                  >{t(i18n)`Download PDF`}</Button>
-                )}
-                <RecordManualPaymentModal invoice={receivable}>
-                  {({ openModal }) => (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={openModal}
-                      disabled={loading}
-                    >{t(i18n)`Record payment`}</Button>
-                  )}
-                </RecordManualPaymentModal>
-                {buttons.isComposeEmailButtonVisible && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setPresentation(InvoiceDetailsPresentation.Email);
-                    }}
-                    disabled={loading}
-                    endIcon={<KeyboardArrowRightIcon />}
-                  >{t(i18n)`Compose email`}</Button>
-                )}
-                {buttons.isIssueButtonVisible && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={callbacks.handleIssueOnly}
-                    disabled={loading}
-                  >{t(i18n)`Issue`}</Button>
-                )}
-                {receivable.status === 'recurring' &&
-                  recurrence?.status === 'active' && (
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      disabled={buttons.isCancelRecurrenceButtonDisabled}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCancelRecurrenceModalOpened(true);
-                      }}
-                    >{t(i18n)`Cancel recurrence`}</Button>
-                  )}
-              </Stack>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </DialogTitle>
       <DialogContent
         className={className + '-Content'}
         sx={{ display: 'flex', flexDirection: 'column' }}
@@ -405,7 +390,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               {!isUpdateAllowed ? (
                 <Alert severity="info">{t(
                   i18n
-                )`You don't have permission to issue this document. Please, contact your system administrator for details.`}</Alert>
+                )`You don’t have permission to issue this document. Please, contact your system administrator for details.`}</Alert>
               ) : (
                 (buttons.isIssueButtonVisible ||
                   buttons.isComposeEmailButtonVisible) && (
