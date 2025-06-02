@@ -228,7 +228,7 @@ export const InvoicePreview = ({
               {entityData?.logo?.url ? (
                 <img src={entityData.logo.url} />
               ) : (
-                <div className="no-logo-placeholder">{t(i18n)`No logo`}</div>
+                <span>{t(i18n)`No logo`}</span>
               )}
             </div>
           </aside>

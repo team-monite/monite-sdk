@@ -2,7 +2,6 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -41,6 +40,9 @@ interface CounterpartsAutocompleteOptionProps {
 
 type CounterpartSelectorProps = {
   disabled?: boolean;
+  shouldDisableAutomaticUpdate?: boolean;
+  currentCounterpartId?: string;
+  handleUpdateCounterpartId?: (value?: string) => void;
   counterpartAddresses?: components['schemas']['CounterpartAddressResourceList'];
 } & (
   | {
@@ -76,8 +78,11 @@ export const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   setIsEditCounterpartOpened,
   isSimplified = false,
+  shouldDisableAutomaticUpdate = false,
   disabled,
   counterpartAddresses,
+  currentCounterpartId,
+  handleUpdateCounterpartId,
 }: CounterpartSelectorProps) => {
   const { i18n } = useLingui();
 
@@ -96,9 +101,10 @@ export const CounterpartSelector = ({
       setIsEditCounterpartOpened(true);
     }
   }, [isSimplified, setIsEditCounterpartOpened]);
-  const [address, setAddress] = useState('');
 
   const [isFocused, setIsFocused] = useState(false);
+
+  const counterpartId = watch('counterpart_id');
 
   const counterpartsAutocompleteData = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
@@ -113,42 +119,28 @@ export const CounterpartSelector = ({
     [counterparts]
   );
 
-  const counterpartId = watch('counterpart_id');
+  const selectedCounterpart = counterparts?.data.find(
+    (counterpart) =>
+      counterpart.id ===
+      (shouldDisableAutomaticUpdate ? currentCounterpartId : counterpartId)
+  );
 
-  useEffect(() => {
-    const selectedCounterpart = counterparts?.data.find(
-      (counterpart) => counterpart.id === counterpartId
-    );
-    if (selectedCounterpart && counterpartAddresses?.data[0]) {
-      setAddress(
-        prepareAddressView({ address: counterpartAddresses?.data[0] })
-      );
-    } else {
-      setAddress('');
-    }
-  }, [counterpartId, counterparts, counterpartAddresses]);
+  const selectedCounterpartOption = selectedCounterpart
+    ? {
+        id: selectedCounterpart.id,
+        label: getCounterpartName(selectedCounterpart),
+      }
+    : null;
+
+  const address = counterpartAddresses?.data?.[0]
+    ? prepareAddressView({ address: counterpartAddresses?.data[0] })
+    : '';
 
   return (
     <Controller
       name="counterpart_id"
       control={control}
       render={({ field, fieldState: { error } }) => {
-        const selectedCounterpart = counterparts?.data.find(
-          (counterpart) => counterpart.id === field.value
-        );
-
-        /**
-         * We have to set `selectedCounterpartOption` to `null`
-         *  if `selectedCounterpart` is `null` because
-         *  `Autocomplete` component doesn't work with `undefined`
-         */
-        const selectedCounterpartOption = selectedCounterpart
-          ? {
-              id: selectedCounterpart.id,
-              label: getCounterpartName(selectedCounterpart),
-            }
-          : null;
-
         return (
           <>
             <Autocomplete
@@ -159,10 +151,21 @@ export const CounterpartSelector = ({
                   isCreateNewCounterpartOption(value) ||
                   isDividerOption(value)
                 ) {
-                  field.onChange('');
+                  if (
+                    shouldDisableAutomaticUpdate &&
+                    handleUpdateCounterpartId
+                  ) {
+                    handleUpdateCounterpartId('');
+                  } else {
+                    field.onChange('');
+                  }
                   return;
                 }
-                field.onChange(value?.id ?? '');
+                if (shouldDisableAutomaticUpdate && handleUpdateCounterpartId) {
+                  handleUpdateCounterpartId(value?.id ?? '');
+                } else {
+                  field.onChange(value?.id ?? '');
+                }
               }}
               slotProps={{
                 popper: {

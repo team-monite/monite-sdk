@@ -16,18 +16,11 @@ export const useDefaultCounterpartValues = ({
 
   useEffect(() => {
     if (counterpartAddresses && counterpartAddresses.data.length > 0) {
-      const currentBillingAddress = getValues('default_billing_address_id');
-      const currentShippingAddress = getValues('default_shipping_address_id');
+      const billingAddressId = counterpartAddresses.data[0].id;
+      setValue('default_billing_address_id', billingAddressId);
 
-      if (!currentBillingAddress) {
-        const id = counterpartAddresses.data[0].id;
-        setValue('default_billing_address_id', id);
-      }
-
-      if (!currentShippingAddress) {
-        const id = counterpartAddresses.data[0].id;
-        setValue('default_shipping_address_id', id);
-      }
+      const shippingAddressId = counterpartAddresses.data[0].id;
+      setValue('default_shipping_address_id', shippingAddressId);
     }
   }, [counterpartAddresses, setValue, getValues]);
 

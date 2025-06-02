@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import {
   CounterpartIndividualForm,
   CounterpartOrganizationForm,
@@ -10,12 +9,13 @@ import {
   prepareAddressView,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CounterpartSelector } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
+  useCounterpartById,
   useCounterpartContactList,
+  useCounterpartVatList,
 } from '@/core/queries';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
@@ -27,7 +27,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Collapse,
   FormControl,
   FormHelperText,
   Grid,
@@ -39,77 +38,73 @@ import {
   Modal,
   Select,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../../validation';
-import { SectionGeneralProps } from '../Section.types';
-import { useDefaultCounterpartValues } from './useDefaultCounterpartValues';
 
-export interface EditCounterpartModalProps extends SectionGeneralProps {
-  counterpart: components['schemas']['CounterpartResponse'] | undefined;
-  counterpartVats:
-    | {
-        data: components['schemas']['CounterpartVatIDResponse'][];
-      }
-    | undefined;
-  isCounterpartLoading: boolean;
-  isCounterpartVatsLoading: boolean;
+type FormValues = {
+  billingAddressId: string;
+  shippingAddressId: string;
+};
+
+export interface EditCounterpartModalProps {
+  disabled: boolean;
+  initialCounterpartId: string;
   open: boolean;
   onClose: () => void;
 }
 
 export const EditCounterpartModal = ({
-  counterpart,
-  counterpartVats,
-  isCounterpartLoading,
-  isCounterpartVatsLoading,
+  initialCounterpartId,
   disabled,
   open,
   onClose,
 }: EditCounterpartModalProps) => {
   const { i18n } = useLingui();
-  const { control, setValue, watch } =
-    useFormContext<CreateReceivablesFormProps>();
-
+  const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
   const { root } = useRootElements();
-
-  const counterpartId = watch('counterpart_id');
-
-  const { data: contacts } = useCounterpartContactList(counterpartId);
-  const defaultContact = contacts?.find((c) => c.is_default);
-  const {
-    data: counterpartAddresses,
-    isLoading: _isCounterpartAddressesLoading,
-  } = useCounterpartAddresses(counterpartId);
-  // _isCounterpartAddressesLoading will be true if counterpartId isn't set
-  const isCounterpartAddressesLoading =
-    counterpartId && _isCounterpartAddressesLoading;
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
-  const isHiddenForUS =
-    !_isCounterpartAddressesLoading &&
-    Array.isArray(counterpartAddresses?.data) &&
-    counterpartAddresses.data.length > 0 &&
-    counterpartAddresses.data[0]?.country === 'US';
-  const isAddressFormDisabled =
-    isCounterpartAddressesLoading ||
-    !counterpartId ||
-    disabled ||
-    counterpartAddresses?.data.length === 1;
-
-  useDefaultCounterpartValues({
-    counterpartAddresses,
-    counterpartVats,
+  const [currentCounterpartId, setCurrentCounterpartId] =
+    useState(initialCounterpartId);
+  const [formValues, setFormValues] = useState<FormValues>({
+    billingAddressId: '',
+    shippingAddressId: '',
   });
+
+  const { data: counterpart } = useCounterpartById(currentCounterpartId);
+  const { data: contacts } = useCounterpartContactList(currentCounterpartId);
+  const { data: counterpartAddresses, isLoading: isAddressesLoading } =
+    useCounterpartAddresses(currentCounterpartId);
+  const { data: counterpartVats } = useCounterpartVatList(currentCounterpartId);
+
+  const defaultContact = contacts?.find((c) => c.is_default);
+
+  const isAddressFormDisabled =
+    isAddressesLoading ||
+    !currentCounterpartId ||
+    counterpartAddresses?.data.length === 1;
 
   const handleUpdate = () => {
     onClose();
     setIsEditMode(false);
   };
 
+  const handleSaveChanges = () => {
+    onClose();
+    setValue('counterpart_id', currentCounterpartId);
+    setValue('default_billing_address_id', formValues.billingAddressId);
+    setValue('default_shipping_address_id', formValues.shippingAddressId);
+  };
+
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
+
+  useEffect(() => {
+    setFormValues({
+      billingAddressId: counterpartAddresses?.data?.[0]?.id ?? '',
+      shippingAddressId: counterpartAddresses?.data?.[0]?.id ?? '',
+    });
+  }, [counterpartAddresses]);
 
   return (
     <Modal open={open} container={root}>
@@ -146,19 +141,19 @@ export const EditCounterpartModal = ({
         {isEditMode ? (
           counterpart && isOrganizationCounterpart(counterpart) ? (
             <CounterpartOrganizationForm
-              id={counterpartId}
+              id={currentCounterpartId}
               onCancel={() => setIsEditMode(false)}
               onUpdate={handleUpdate}
-              isInvoiceCreation={true}
-              showCategories={false} //when to show or hide categories?
+              isInvoiceCreation
+              showCategories={false}
             />
           ) : (
             <CounterpartIndividualForm
-              id={counterpartId}
+              id={currentCounterpartId}
               onCancel={() => setIsEditMode(false)}
               onUpdate={handleUpdate}
-              isInvoiceCreation={true}
-              showCategories={false} //when to show or hide categories?
+              isInvoiceCreation
+              showCategories={false}
             />
           )
         ) : (
@@ -166,8 +161,12 @@ export const EditCounterpartModal = ({
             <Stack sx={{ padding: '2rem' }}>
               <CounterpartSelector
                 isSimplified
-                disabled={disabled}
                 counterpartAddresses={counterpartAddresses}
+                shouldDisableAutomaticUpdate
+                currentCounterpartId={currentCounterpartId}
+                handleUpdateCounterpartId={(value) =>
+                  setCurrentCounterpartId(value ?? '')
+                }
               />
               <List
                 sx={{
@@ -242,6 +241,15 @@ export const EditCounterpartModal = ({
                     )`Billing address`}</InputLabel>
                     <Select
                       {...field}
+                      value={formValues.billingAddressId}
+                      onChange={(event) =>
+                        setFormValues((prevState) => ({
+                          ...prevState,
+                          billingAddressId: event.target.value
+                            ? event.target.value
+                            : '',
+                        }))
+                      }
                       labelId={field.name}
                       label={t(i18n)`Billing address`}
                       IconComponent={() => (
@@ -249,7 +257,7 @@ export const EditCounterpartModal = ({
                       )}
                       MenuProps={{ container: root }}
                       startAdornment={
-                        isCounterpartAddressesLoading ? (
+                        isAddressesLoading ? (
                           <CircularProgress size={20} />
                         ) : null
                       }
@@ -275,12 +283,21 @@ export const EditCounterpartModal = ({
                     error={Boolean(error)}
                     disabled={isAddressFormDisabled}
                   >
-                    <InputLabel htmlFor={field.name}>{t(
-                      i18n
-                    )`Shipping address`}</InputLabel>
+                    <InputLabel htmlFor={field.name}>
+                      {t(i18n)`Shipping address`}
+                    </InputLabel>
                     <Select
                       {...field}
                       id={field.name}
+                      value={formValues.shippingAddressId}
+                      onChange={(event) =>
+                        setFormValues((prevState) => ({
+                          ...prevState,
+                          shippingAddressId: event.target.value
+                            ? event.target.value
+                            : '',
+                        }))
+                      }
                       labelId={field.name}
                       MenuProps={{ container: root }}
                       label={t(i18n)`Shipping address`}
@@ -288,7 +305,7 @@ export const EditCounterpartModal = ({
                         <KeyboardArrowDown fontSize="small" />
                       )}
                       startAdornment={
-                        isCounterpartAddressesLoading ? (
+                        isAddressesLoading ? (
                           <CircularProgress size={20} />
                         ) : null
                       }
@@ -320,103 +337,6 @@ export const EditCounterpartModal = ({
                   </FormControl>
                 )}
               />
-              {isEditMode && (
-                <>
-                  <Controller
-                    name="counterpart_vat_id_id"
-                    control={control}
-                    render={({ field, fieldState: { error } }) => (
-                      <FormControl
-                        variant="standard"
-                        sx={{ marginBottom: '1rem' }}
-                        fullWidth
-                        disabled={
-                          isCounterpartVatsLoading ||
-                          !counterpartVats?.data ||
-                          counterpartVats?.data.length < 2 ||
-                          disabled
-                        }
-                        hidden={isHiddenForUS}
-                        error={Boolean(error)}
-                      >
-                        <InputLabel htmlFor={field.name}>{t(
-                          i18n
-                        )`VAT ID`}</InputLabel>
-                        <Select
-                          {...field}
-                          labelId={field.name}
-                          label={t(i18n)`VAT ID`}
-                          IconComponent={() => (
-                            <KeyboardArrowDown fontSize="small" />
-                          )}
-                          MenuProps={{ container: root }}
-                          startAdornment={
-                            isCounterpartVatsLoading ? (
-                              <CircularProgress size={20} />
-                            ) : null
-                          }
-                        >
-                          {counterpartVats?.data?.map(
-                            ({ id, country, value }) => (
-                              <MenuItem key={id} value={id}>
-                                {country && (
-                                  <CountryInvoiceOption code={country} />
-                                )}
-                                {value}
-                              </MenuItem>
-                            )
-                          )}
-                        </Select>
-                        {error && (
-                          <FormHelperText>{error.message}</FormHelperText>
-                        )}
-                      </FormControl>
-                    )}
-                  />
-                  <Box mb={isHiddenForUS ? 0 : 1}>
-                    <TextField
-                      disabled
-                      fullWidth
-                      variant="standard"
-                      label={t(i18n)`TAX ID`}
-                      value={counterpart?.tax_id ?? ''}
-                      hidden={isHiddenForUS}
-                      InputProps={{
-                        startAdornment: isCounterpartLoading ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          <>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{
-                                whiteSpace: 'nowrap',
-                                mr: 1,
-                                ml: '14px',
-                              }}
-                            >
-                              {t(i18n)`TAX ID`}
-                            </Typography>
-                          </>
-                        ),
-                      }}
-                    />
-                    {!isHiddenForUS && (
-                      <Collapse
-                        in={
-                          counterpart &&
-                          !counterpart.tax_id &&
-                          !isCounterpartLoading
-                        }
-                      >
-                        <FormHelperText>{t(
-                          i18n
-                        )`No TAX ID available`}</FormHelperText>
-                      </Collapse>
-                    )}
-                  </Box>
-                </>
-              )}
             </Stack>
             <Grid
               container
@@ -425,12 +345,10 @@ export const EditCounterpartModal = ({
               sx={{ borderTop: 'solid 1px rgba(0, 0, 0, 0.13)' }}
             >
               <Grid item xs={6}>
-                {!isEditMode && (
-                  <Button
-                    variant="outlined"
-                    onClick={() => setIsEditMode(true)}
-                  >{t(i18n)`Edit profile`}</Button>
-                )}
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsEditMode(true)}
+                >{t(i18n)`Edit profile`}</Button>
               </Grid>
               <Grid
                 item
@@ -446,7 +364,8 @@ export const EditCounterpartModal = ({
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => setIsEditMode(false)}
+                  disabled={disabled}
+                  onClick={handleSaveChanges}
                 >
                   {t(i18n)`Save`}
                 </Button>
