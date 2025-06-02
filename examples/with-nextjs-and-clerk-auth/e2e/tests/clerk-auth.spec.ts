@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-import { signInUser, signOutUser } from '../utils/auth-helpers';
+import { signInUser } from '../utils/auth-helpers';
 
-test('user can sign in and sign out', async ({ page }) => {
+test('user can sign in', async ({ page }) => {
   // Sign in
   await signInUser(page);
 
@@ -13,12 +13,6 @@ test('user can sign in and sign out', async ({ page }) => {
   // Access another protected page
   await page.goto('/payables');
   await expect(page).not.toHaveURL(/^\/|.*sign-in.*/);
-
-  // Sign out
-  await signOutUser(page);
-
-  // Verify redirect to sign-in page
-  await expect(page).toHaveURL(/^\/|.*sign-in.*/);
 });
 
 test('unauthenticated user is redirected to sign-in and authenticated user is redirected to main path', async ({

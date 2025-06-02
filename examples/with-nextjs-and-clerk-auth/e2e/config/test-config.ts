@@ -2,8 +2,8 @@
 export const testConfig = {
   // Auth credentials - in real usage, these should come from environment variables
   auth: {
-    email: process.env.TEST_USER_EMAIL || 'test@monite.com',
-    password: process.env.TEST_USER_PASSWORD || 'test',
+    email: process.env.E2E_CLERK_USER_USERNAME || 'test@monite.com',
+    password: process.env.E2E_CLERK_USER_PASSWORD || 'test',
   },
 
   // API endpoints

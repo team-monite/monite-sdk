@@ -57,7 +57,5 @@ export async function signInUser(
  * @param page Playwright Page object
  */
 export async function signOutUser(page: Page): Promise<void> {
-  await setupClerkTestingToken({ page });
-
   await clerk.signOut({ page });
 }

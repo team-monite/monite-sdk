@@ -1,7 +1,11 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { clerk, clerkSetup } from '@clerk/testing/playwright';
+import {
+  clerk,
+  clerkSetup,
+  setupClerkTestingToken,
+} from '@clerk/testing/playwright';
 import { test as setup } from '@playwright/test';
 
 // Define __dirname in ES module
@@ -18,6 +22,10 @@ setup('global setup', async ({}) => {
 const authFile = path.join(__dirname, '../playwright/.clerk/user.json');
 setup('authenticate', async ({ page }) => {
   await page.goto('/sign-in');
+
+  await setupClerkTestingToken({ page });
+
+  // Use Clerk's signIn utility
   await clerk.signIn({
     page,
     signInParams: {

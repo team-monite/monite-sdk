@@ -45,7 +45,7 @@ export default defineConfig({
   webServer: {
     command: 'yarn dev',
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    // reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
     stderr: 'pipe',
   },
