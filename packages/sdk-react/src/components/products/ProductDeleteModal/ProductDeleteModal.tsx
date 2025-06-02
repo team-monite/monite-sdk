@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
 
-import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
+import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';

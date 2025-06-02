@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import { permissionsAdapter } from '@/lib/monite-api/create-entity-role';
 import type { components } from '@/lib/monite-api/schema';
 

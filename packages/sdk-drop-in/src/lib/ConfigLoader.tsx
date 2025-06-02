@@ -1,15 +1,26 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const ConfigLoader = ({
   children,
 }: {
-  children: (config: {
-    apiUrl: string;
-    appBasename: string;
-    appHostname: string;
-  }) => ReactNode;
+  children: (
+    config: {
+      apiUrl: string;
+      appBasename: string;
+      appHostname: string;
+    },
+    rawConfig: {
+      stand: string;
+      api_url: string;
+      app_basename: string;
+      app_hostname: string;
+      client_id: string;
+      entity_user_id: string;
+      client_secret: string;
+    }
+  ) => ReactNode;
 }) => {
   const configQuery = useSuspenseQuery({
     queryKey: ['application-config'],
@@ -18,20 +29,25 @@ export const ConfigLoader = ({
     gcTime: Infinity,
   });
 
+  const processedConfig = useMemo(
+    () => ({
+      apiUrl: `${configQuery.data.api_url}/v1`,
+      appBasename: configQuery.data.app_basename,
+      appHostname: configQuery.data.app_hostname,
+    }),
+    [
+      configQuery.data.api_url,
+      configQuery.data.app_basename,
+      configQuery.data.app_hostname,
+    ]
+  );
+
   if (!configQuery.data.api_url)
     throw new Error('"api_url" not found in the "config.json"');
   if (!configQuery.data.app_basename)
     throw new Error('"app_basename" not found in the "config.json"');
 
-  return (
-    <>
-      {children({
-        apiUrl: `${configQuery.data.api_url}/v1`,
-        appBasename: configQuery.data.app_basename,
-        appHostname: configQuery.data.app_hostname,
-      })}
-    </>
-  );
+  return <>{children(processedConfig, configQuery.data)}</>;
 };
 
 export async function getConfig(): Promise<{

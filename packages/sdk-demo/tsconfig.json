@@ -24,8 +24,10 @@
     "noEmit": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "include": ["src/**/*", "typings.d.ts", "vite.server.ts", "src"],
+  "include": ["src/**/*", "typings.d.ts", "vite.server.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

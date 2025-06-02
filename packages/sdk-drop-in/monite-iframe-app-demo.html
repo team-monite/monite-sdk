@@ -16,7 +16,13 @@
     <title>Monite App Widget Label</title>
   </head>
   <body>
-  <div id="root"></div>
-  <script src="/src/monite-iframe-app-demo.tsx" type="module"></script>
+    <div id="root"></div>
+    
+    <!-- Load React placeholder synchronously before any modules -->
+    <script src="/init-react-globals.js"></script>
+    <!-- Load React globals as ES module -->
+    <script src="/src/init-react-globals.js" type="module"></script>
+    <!-- Load main app -->
+    <script src="/src/monite-iframe-app-demo.tsx" type="module"></script>
   </body>
 </html>

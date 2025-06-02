@@ -13,7 +13,7 @@ import { vi } from 'vitest';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+const requestFnMock = requestFn as vi.MockedFunction<typeof requestFn>;
 
 const fillForm = async (
   name: string,

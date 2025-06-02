@@ -1,118 +1,126 @@
 module.exports = {
-  "extends": [
-    "plugin:@team-monite/eslint-plugin/react",
-    "plugin:@team-monite/eslint-plugin/lingui",
-    "plugin:@team-monite/eslint-plugin/mui"
+  extends: [
+    'plugin:@team-monite/eslint-plugin/react',
+    'plugin:@team-monite/eslint-plugin/lingui',
+    'plugin:@team-monite/eslint-plugin/mui',
   ],
-  "plugins": ["@team-monite/eslint-plugin"],
-  "ignorePatterns": [
-    "src/core/i18n/locales/*/messages.ts",
-    "src/core/i18n/locales/*/messages.d.ts",
-    "*Fixture.ts",
-    "src/api/services/**/*",
-    "src/api/api-version.ts",
-    "src/api/create-api-client.ts",
-    "src/api/index.ts",
-    "src/api/schema.ts"
+  plugins: ['@team-monite/eslint-plugin'],
+  ignorePatterns: [
+    'src/core/i18n/locales/*/messages.ts',
+    'src/core/i18n/locales/*/messages.d.ts',
+    '*Fixture.ts',
+    'src/api/services/**/*',
+    'src/api/api-version.ts',
+    'src/api/create-api-client.ts',
+    'src/api/index.ts',
+    'src/api/schema.ts',
   ],
-  "rules": {
-    "import/no-unresolved": "error",
-    "@team-monite/mui-require-container-property": "error",
-    "no-restricted-imports": [
-      "error",
+  rules: {
+    'import/no-unresolved': 'error',
+    '@team-monite/mui-require-container-property': 'error',
+    'no-restricted-imports': [
+      'error',
       {
-        "paths": [
+        paths: [
           {
-            "name": "@tanstack/react-query",
-            "importNames": ["useQueryClient", "QueryClientProvider"]
-          }
-        ]
-      }
-    ]
+            name: '@tanstack/react-query',
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            importNames: ['useQueryClient', 'QueryClientProvider'],
+          },
+        ],
+      },
+    ],
+    'lingui/no-unlocalized-strings': [
+      'error',
+      {
+        markupOnly: false,
+        ignoreAttribute: [],
+        functions: ['t', '_', 'i18n._'],
+      },
+    ],
   },
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "alwaysTryTypes": true,
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
 
-        "project": "packages/sdk-react/tsconfig.json"
-      }
-    }
+        project: 'packages/sdk-react/tsconfig.json',
+      },
+    },
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["*"],
-      "rules": {
-        "import/no-duplicates": "off",
+      files: ['*'],
+      rules: {
+        'import/no-duplicates': 'off',
 
-        "no-prototype-builtins": "off",
+        'no-prototype-builtins': 'off',
 
-        "prefer-const": "warn",
+        'prefer-const': 'warn',
 
-        "@typescript-eslint/no-empty-function": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-inferrable-types": "off",
-        "@typescript-eslint/ban-types": [
-          "error",
+        '@typescript-eslint/no-empty-function': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-inferrable-types': 'off',
+        '@typescript-eslint/ban-types': [
+          'error',
           {
-            "types": {
-              "{}": false
-            }
-          }
-        ]
-      }
+            types: {
+              '{}': false,
+            },
+          },
+        ],
+      },
     },
     {
-      "files": [
-        "vitest.config.ts",
-        "vitest.config.mts",
-        "vitest.setup.ts",
-        "vite.config.ts",
-        "src/mocks/**/*.{ts,tsx,jsx,jsx,cjx,mjs}",
-        "src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts",
-        "src/utils/form/FillForm.executor.ts",
-        "src/utils/test-utils.tsx",
-        "src/components/onboarding/onboardingTestUtils.ts",
-        "src/setupTests.tsx",
-        "config/rollup.config.mjs"
+      files: [
+        'vitest.config.ts',
+        'vitest.config.mts',
+        'vitest.setup.ts',
+        'vite.config.ts',
+        'src/mocks/**/*.{ts,tsx,jsx,jsx,cjx,mjs}',
+        'src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts',
+        'src/utils/form/FillForm.executor.ts',
+        'src/utils/test-utils.tsx',
+        'src/components/onboarding/onboardingTestUtils.ts',
+        'config/rollup.config.mjs',
       ],
-      "rules": {
-        "import/no-extraneous-dependencies": [
-          "error",
-          { "devDependencies": true }
-        ]
-      }
+      rules: {
+        'import/no-extraneous-dependencies': [
+          'error',
+          { devDependencies: true },
+        ],
+      },
     },
     {
-      "files": ["src/mocks/entityUsers/entityUserByIdFixture.ts"],
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": "off"
-      }
+      files: ['src/mocks/entityUsers/entityUserByIdFixture.ts'],
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'off',
+      },
     },
     {
-      "files": ["src/components/onboarding/hooks/useOnboardingValidation.ts"],
-      "rules": {
-        "import/named": "off"
-      }
+      files: ['src/components/onboarding/hooks/useOnboardingValidation.ts'],
+      rules: {
+        'import/named': 'off',
+      },
     },
     {
-      "files": ["src/components/payables/PayablesTable/PayablesTable.test.tsx"],
-      "rules": {
-        "no-empty": "off"
-      }
+      files: ['src/components/payables/PayablesTable/PayablesTable.test.tsx'],
+      rules: {
+        'no-empty': 'off',
+      },
     },
     {
-      "files": ["src/utils/test-utils.tsx"],
-      "rules": {
-        "lingui/no-unlocalized-strings": "off"
-      }
+      files: ['src/utils/test-utils.tsx'],
+      rules: {
+        'lingui/no-unlocalized-strings': 'off',
+      },
     },
     {
-      "files": ["vitest.config.mts"],
-      "rules": {
-        "import/no-default-export": "off"
-      }
-    }
-  ]
+      files: ['vitest.config.mts'],
+      rules: {
+        'import/no-default-export': 'off',
+      },
+    },
+  ],
 };

@@ -1,4 +1,17 @@
+import { vi } from 'vitest';
+
 import { kebabToCamelCase } from './MoniteAppElement';
+
+// Mock the problematic sdk-react import to avoid ES module issues
+vi.mock('@monite/sdk-react', () => ({
+  default: {},
+  APISchema: {},
+}));
+
+// Mock the MoniteApp import to avoid dependency issues
+vi.mock('@/apps/MoniteApp', () => ({
+  MoniteApp: () => null,
+}));
 
 describe('kebabToCamel', () => {
   it('converts kebab-case to camelCase', () => {

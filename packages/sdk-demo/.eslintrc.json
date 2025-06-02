@@ -2,6 +2,14 @@
   "$schema": "http://json.schemastore.org/eslintrc",
   "extends": ["plugin:@team-monite/eslint-plugin/react"],
   "plugins": ["@team-monite/eslint-plugin"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
+  },
   "overrides": [
     {
       "files": ["*"],

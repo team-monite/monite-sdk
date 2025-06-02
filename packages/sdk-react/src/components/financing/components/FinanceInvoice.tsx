@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
 import { components } from '@/api';
-import {
-  FinanceBannerWrapper,
-  FinanceOverviewCard,
-} from '@/components/financing/components';
+import { FinanceBannerWrapper } from '@/components/financing/components/FinanceBannerWrapper';
+import { FinanceOverviewCard } from '@/components/financing/components/FinanceOverviewCard';
 import {
   useFinanceAnInvoice,
   useFinancing,

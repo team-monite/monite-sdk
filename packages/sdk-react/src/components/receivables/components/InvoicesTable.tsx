@@ -2,17 +2,20 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { FinanceBanner } from '@/components/financing';
+import { FinanceBanner } from '@/components/financing/components/FinanceBanner';
 import {
   useFinanceAnInvoice,
   useGetFinancedInvoices,
   useGetFinanceOffers,
 } from '@/components/financing/hooks';
-import {
-  InvoiceRecurrenceStatusChip,
-  InvoiceStatusChip,
-  ReceivableFilters,
-} from '@/components/receivables/components';
+// import {
+//   InvoiceRecurrenceStatusChip,
+//   InvoiceStatusChip,
+//   ReceivableFilters,
+// } from '@/components/receivables/components'; // Remove this block
+import { InvoiceRecurrenceStatusChip } from './InvoiceRecurrenceStatusChip'; // Add this line
+import { InvoiceStatusChip } from './InvoiceStatusChip'; // Add this line
+import { ReceivableFilters } from './ReceivableFilters'; // Add this line
 import { useReceivablesFilters } from '@/components/receivables/hooks';
 import {
   useInvoiceRowActionMenuCell,

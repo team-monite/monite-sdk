@@ -30,7 +30,12 @@ describe('Payables', () => {
     const user = userEvent.setup();
 
     renderWithClient(
-      <BrowserRouter>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Payables />
       </BrowserRouter>
     );

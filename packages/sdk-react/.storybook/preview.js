@@ -1,11 +1,21 @@
+import './buffer-polyfill.js';
+
+// import { Buffer } from 'buffer';
+
+// Ensure Buffer is on window object as early as possible.
+// if (typeof window !== 'undefined' && typeof window.Buffer === 'undefined') {
+// window.Buffer = Buffer;
+// console.log('[Storybook preview.js] Manually set window.Buffer');
+// }
+
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { initialize, mswLoader } from 'msw-storybook-addon';
+// import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import { handlers } from '../src/mocks/handlers';
+// import { handlers } from '../src/mocks/handlers';
 import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
 
 /**
@@ -17,7 +27,7 @@ const mockedRequests = true;
 const decorators = [withGlobalStorybookDecorator()];
 
 // Initialize MSW
-initialize();
+// initialize();
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -36,11 +46,12 @@ const preview = {
     },
     backgrounds: { disable: true },
     actions: { argTypesRegex: '^on[A-Z].*' },
-    msw: {
-      handlers,
-    },
+    // msw: {
+    //   handlers,
+    // },
   },
-  loaders: [mswLoader],
+  // loaders: [mswLoader],
+  loaders: [],
   decorators,
 };
 

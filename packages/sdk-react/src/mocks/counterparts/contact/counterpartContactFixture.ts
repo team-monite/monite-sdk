@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { counterpartListFixture } from '@/mocks';
+import { counterpartListFixture } from '../counterpart/counterpartFixture';
 import {
   getRandomItemFromArray,
   getRandomNumber,
