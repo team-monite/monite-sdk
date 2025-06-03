@@ -1,6 +1,6 @@
 /** @type {import('@lingui/conf').LinguiConfig} */
 module.exports = {
-  compileNamespace: 'ts',
+  compileNamespace: 'es',
   sourceLocale: 'en',
   locales: ['en'],
   catalogs: [

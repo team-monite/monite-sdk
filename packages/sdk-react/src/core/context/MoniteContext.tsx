@@ -203,7 +203,7 @@ const ContextProvider = ({
     environment = 'sandbox';
   }
 
-  const queryClient = useMemo(() => createQueryClient(i18n, null), [i18n]);
+  const queryClient = useMemo(() => createQueryClient(i18n), [i18n]);
 
   const { api, version, requestFn } = useMemo(
     () =>

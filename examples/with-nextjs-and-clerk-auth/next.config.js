@@ -1,7 +1,3 @@
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // experimental: {
@@ -28,6 +24,14 @@ const nextConfig = {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         ...Object.fromEntries(nodeModules.map((module) => [module, false])),
+      };
+    } else {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        document: false,
+        window: false,
+        navigator: false,
+        location: false,
       };
     }
 

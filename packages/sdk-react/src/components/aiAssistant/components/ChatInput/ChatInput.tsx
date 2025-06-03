@@ -139,6 +139,8 @@ export const ChatInput: FC<ChatInputProps> = ({
   }, []);
 
   useEffect(() => {
+    if (typeof document === 'undefined') return;
+
     const isFocused = document.activeElement === editorRef.current;
 
     if (!editorRef.current || isFocused) {

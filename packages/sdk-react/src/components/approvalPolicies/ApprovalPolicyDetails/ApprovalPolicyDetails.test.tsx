@@ -9,11 +9,11 @@ import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { vi } from 'vitest';
+import { MockedFunction } from '@vitest/spy';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
-const requestFnMock = requestFn as vi.MockedFunction<typeof requestFn>;
+const requestFnMock = requestFn as MockedFunction<typeof requestFn>;
 
 const fillForm = async (
   name: string,

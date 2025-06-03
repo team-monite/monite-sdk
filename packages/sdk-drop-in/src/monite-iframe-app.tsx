@@ -3,10 +3,16 @@ import { createRoot } from 'react-dom/client';
 
 import { MoniteIframeApp } from '@/apps/MoniteIframeApp.tsx';
 
-const root = createRoot(document.getElementById('root') as HTMLElement);
+if (typeof document !== 'undefined') {
+  const rootElement = document.getElementById('root') as HTMLElement;
 
-root.render(
-  <StrictMode>
-    <MoniteIframeApp />
-  </StrictMode>
-);
+  if (rootElement) {
+    const root = createRoot(rootElement);
+
+    root.render(
+      <StrictMode>
+        <MoniteIframeApp />
+      </StrictMode>
+    );
+  }
+}

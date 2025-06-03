@@ -34,8 +34,8 @@ const AppMoniteProvider = ({
   return (
     <RootElementsProvider
       elements={{
-        root: document.body,
-        styles: document.head,
+        root: typeof document !== 'undefined' ? document.body : undefined,
+        styles: typeof document !== 'undefined' ? document.head : undefined,
       }}
     >
       <MoniteProvider
