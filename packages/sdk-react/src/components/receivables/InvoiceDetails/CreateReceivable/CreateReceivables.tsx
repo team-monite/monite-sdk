@@ -35,6 +35,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
@@ -66,6 +67,7 @@ import {
 import { format } from 'date-fns';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 type Schemas = components['schemas'];
 
@@ -81,8 +83,8 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
 
 const CreateReceivablesBase = ({
   type,
-  onCreate,
   customerTypes,
+  onCreate,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const { api, entityId, componentSettings } = useMoniteContext();
@@ -95,13 +97,31 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
+  const {
+    data: entityVatIds,
+    error: vatIdsError,
+  } = api.entities.getEntitiesIdVatIds.useQuery(
+    {
+      path: { entity_id: entityId },
+    },
+    {
+      enabled: !!entityId,
+    }
+  );
+
+  if (vatIdsError) {
+    const message = getAPIErrorMessage(i18n, vatIdsError);
+
+    if (message) {
+      toast.error(message);
+    }
+  }
+
+  const { data: settings, isLoading: isSettingsLoading } =
+  api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: entityId },
   });
-  const { data: settings, isLoading: isSettingsLoading } =
-    api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: entityId },
-    });
+
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -268,12 +288,6 @@ const CreateReceivablesBase = ({
 
       return;
     }
-
-    const shippingAddressId = values.default_shipping_address_id;
-
-    const counterpartShippingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === shippingAddressId
-    );
 
     const invoicePayload: Omit<
       Schemas['ReceivableFacadeCreateInvoicePayload'],
@@ -463,11 +477,11 @@ const CreateReceivablesBase = ({
       const selectedBankAccount = bankAccounts.data.find(
         (bank) => bank.id === entityBankAccountId
       );
-  
+
       if (!selectedBankAccount?.currency) return;
 
       const newCurrency = selectedBankAccount.currency;
-      
+
       if (newCurrency !== actualCurrency) {
         setActualCurrency(newCurrency);
       }
