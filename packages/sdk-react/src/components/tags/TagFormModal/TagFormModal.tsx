@@ -6,15 +6,14 @@ import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Button,
-  DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   Select,
   InputLabel,
@@ -146,10 +145,13 @@ const TagFormModalBase = ({
         alignDialog="right"
         aria-label={t(i18n)`Edit tag`}
       >
-        <DialogTitle variant="h3">
-          {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
-        </DialogTitle>
-        <DialogContent dividers>
+        <DialogHeader
+          title={
+            tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`
+          }
+          closeButtonTooltip={t(i18n)`Close tag form`}
+        />
+        <DialogContent>
           <form
             id={formName}
             name={formName}
@@ -248,19 +250,16 @@ const TagFormModalBase = ({
             </Stack>
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button variant="text" color="primary" onClick={onClose}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            disabled={inProgress}
-            type="submit"
-            form={formName}
-          >
-            {tag ? t(i18n)`Save` : t(i18n)`Create`}
-          </Button>
-        </DialogActions>
+        <DialogFooter
+          primaryButton={{
+            label: tag ? t(i18n)`Save` : t(i18n)`Create`,
+            formId: formName,
+            isLoading: inProgress,
+          }}
+          cancelButton={{
+            onClick: onClose,
+          }}
+        />
       </Dialog>
     </>
   );

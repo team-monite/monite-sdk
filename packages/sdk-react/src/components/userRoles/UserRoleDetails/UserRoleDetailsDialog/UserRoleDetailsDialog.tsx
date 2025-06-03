@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { useDialog } from '@/components/Dialog';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import {
   transformPermissionsToComponentFormat,
@@ -8,19 +7,15 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Close as CloseIcon } from '@mui/icons-material';
 import {
   Box,
-  Button,
-  DialogActions,
   DialogContent,
-  DialogTitle,
-  Divider,
   List,
   ListItem,
   Paper,
@@ -99,7 +94,6 @@ export const UserRoleDetailsDialog = ({
 }: UserRoleDetailsDialogProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
@@ -204,29 +198,10 @@ export const UserRoleDetailsDialog = ({
 
   return (
     <>
-      <DialogTitle>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-        >
-          <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-            {roleData.name}
-          </Typography>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext.onClose}
-              aria-label={t(i18n)`Close role details`}
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Box>
-      </DialogTitle>
-      <Divider />
+      <DialogHeader
+        title={roleData.name}
+        closeButtonTooltip={t(i18n)`Close role details`}
+      />
       <StyledDialogContainer>
         <Stack
           direction="column"
@@ -290,21 +265,18 @@ export const UserRoleDetailsDialog = ({
           </Paper>
         </Stack>
       </StyledDialogContainer>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button
-            color="error"
-            onClick={onClickDeleteRole}
-            disabled={!isDeleteAllowed}
-          >{t(i18n)`Delete`}</Button>
-          <Button
-            variant="outlined"
-            onClick={onClickEditRole}
-            disabled={!isUpdateAllowed}
-          >{t(i18n)`Edit`}</Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Edit`,
+          onClick: onClickEditRole,
+          isDisabled: !isUpdateAllowed,
+        }}
+        deleteButton={{
+          label: t(i18n)`Delete`,
+          onClick: onClickDeleteRole,
+          isDisabled: !isDeleteAllowed,
+        }}
+      />
     </>
   );
 };
