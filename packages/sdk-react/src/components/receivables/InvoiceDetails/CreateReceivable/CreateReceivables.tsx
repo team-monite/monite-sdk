@@ -1,8 +1,11 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
+// Ensure toast is imported
 import { components } from '@/api';
 import { showErrorToast } from '@/components/onboarding/utils';
+// Import the error message utility
 import {
   BankAccountFormDialog,
   BankAccountSection,
@@ -21,6 +24,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
@@ -94,9 +98,24 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
-    path: { entity_id: entityId },
-  });
+  const { data: entityVatIds, isLoading: isEntityVatIdsLoading, error: vatIdsError } =
+    api.entities.getEntitiesIdVatIds.useQuery(
+      {
+        path: { entity_id: entityId },
+      },
+      {
+        enabled: !!entityId,
+      }
+    );
+
+  if (vatIdsError) {
+    const message = getAPIErrorMessage(i18n, vatIdsError);
+
+    if (message) {
+      toast.error(message);
+    }
+  }
+  
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -464,11 +483,11 @@ const CreateReceivablesBase = ({
       const selectedBankAccount = bankAccounts.data.find(
         (bank) => bank.id === entityBankAccountId
       );
-  
+
       if (!selectedBankAccount?.currency) return;
 
       const newCurrency = selectedBankAccount.currency;
-      
+
       if (newCurrency !== actualCurrency) {
         setActualCurrency(newCurrency);
       }
