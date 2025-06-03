@@ -3348,6 +3348,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@clerk/backend@npm:^1.32.2":
+  version: 1.32.2
+  resolution: "@clerk/backend@npm:1.32.2"
+  dependencies:
+    "@clerk/shared": "npm:^3.9.1"
+    "@clerk/types": "npm:^4.59.0"
+    cookie: "npm:1.0.2"
+    snakecase-keys: "npm:8.0.1"
+    tslib: "npm:2.8.1"
+  peerDependencies:
+    svix: ^1.62.0
+  peerDependenciesMeta:
+    svix:
+      optional: true
+  checksum: 10/f3879ef51e8a56ca4f04cdad7ca76097af6e0f6409726296078876a8a805892aa5c1e949d8fe4f2b52fb6ab2b255c7c2b57f720a512f6f78b713a9e53a14d1cd
+  languageName: node
+  linkType: hard
+
 "@clerk/clerk-react@npm:^5.22.11":
   version: 5.22.11
   resolution: "@clerk/clerk-react@npm:5.22.11"
@@ -3415,12 +3433,63 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@clerk/shared@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "@clerk/shared@npm:3.9.1"
+  dependencies:
+    "@clerk/types": "npm:^4.59.0"
+    dequal: "npm:2.0.3"
+    glob-to-regexp: "npm:0.4.1"
+    js-cookie: "npm:3.0.5"
+    std-env: "npm:^3.9.0"
+    swr: "npm:^2.3.3"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+    react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10/844febe235b72e5d069e0db87de3e7064622465f3ac9a588d711c6f88e6221e6c47412edd59226fc7a7c43c0f8526931ae53d4398147caf4695a33d1e7a548b0
+  languageName: node
+  linkType: hard
+
+"@clerk/testing@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "@clerk/testing@npm:1.7.1"
+  dependencies:
+    "@clerk/backend": "npm:^1.32.2"
+    "@clerk/shared": "npm:^3.9.1"
+    "@clerk/types": "npm:^4.59.0"
+    dotenv: "npm:16.4.7"
+  peerDependencies:
+    "@playwright/test": ^1
+    cypress: ^13
+  peerDependenciesMeta:
+    "@playwright/test":
+      optional: true
+    cypress:
+      optional: true
+  checksum: 10/ce83446d153e8eb7393cda5dbe46c9dccdbfe46d9cbce95252a123a47add080a748ae06fea0ee5fa4de3c3b8e2b947ce405bbbbba9374a6e635db8346dcaf3a8
+  languageName: node
+  linkType: hard
+
 "@clerk/types@npm:^4.40.2, @clerk/types@npm:^4.45.0":
   version: 4.45.0
   resolution: "@clerk/types@npm:4.45.0"
   dependencies:
     csstype: "npm:3.1.1"
   checksum: 10/13cad349697c2145615617062c0b8a5d36f2ab2c50b9865292874fdca86f5b40104ada9b3120f76d564565788ad098b352c4777005859e9b31896239db9e666d
+  languageName: node
+  linkType: hard
+
+"@clerk/types@npm:^4.59.0":
+  version: 4.59.0
+  resolution: "@clerk/types@npm:4.59.0"
+  dependencies:
+    csstype: "npm:3.1.3"
+  checksum: 10/4eada90c13410d2763b9e201ed50b287a8b244020fb6a59bc5f0b975c10c5f1817b3dca861e21e7fc9dc0e0e6f5840a329d61dc60b2d7634da4f0ad0fd93a636
   languageName: node
   linkType: hard
 
@@ -6020,6 +6089,17 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10/115e8ceeec6bc69dff2048b35c0ab4f8bbee12d8bb6c1f4af758604586d802b6e669dcb02dda61d078de42c2b4ddce41b3d9e726d7daa6b4b850f4adbf7333ff
+  languageName: node
+  linkType: hard
+
+"@playwright/test@npm:^1.52.0":
+  version: 1.52.0
+  resolution: "@playwright/test@npm:1.52.0"
+  dependencies:
+    playwright: "npm:1.52.0"
+  bin:
+    playwright: cli.js
+  checksum: 10/e18a4eb626c7bc6cba212ff2e197cf9ae2e4da1c91bfdf08a744d62e27222751173e4b220fa27da72286a89a3b4dea7c09daf384d23708f284b64f98e9a63a88
   languageName: node
   linkType: hard
 
@@ -13383,17 +13463,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csstype@npm:3.1.3, csstype@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "csstype@npm:3.1.3"
+  checksum: 10/f593cce41ff5ade23f44e77521e3a1bcc2c64107041e1bf6c3c32adc5187d0d60983292fda326154d20b01079e24931aa5b08e4467cc488b60bb1e7f6d478ade
+  languageName: node
+  linkType: hard
+
 "csstype@npm:^3.0.2, csstype@npm:^3.0.6":
   version: 3.1.2
   resolution: "csstype@npm:3.1.2"
   checksum: 10/1f39c541e9acd9562996d88bc9fb62d1cb234786ef11ed275567d4b2bd82e1ceacde25debc8de3d3b4871ae02c2933fa02614004c97190711caebad6347debc2
-  languageName: node
-  linkType: hard
-
-"csstype@npm:^3.1.3":
-  version: 3.1.3
-  resolution: "csstype@npm:3.1.3"
-  checksum: 10/f593cce41ff5ade23f44e77521e3a1bcc2c64107041e1bf6c3c32adc5187d0d60983292fda326154d20b01079e24931aa5b08e4467cc488b60bb1e7f6d478ade
   languageName: node
   linkType: hard
 
@@ -14128,6 +14208,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:16.4.7":
+  version: 16.4.7
+  resolution: "dotenv@npm:16.4.7"
+  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^16.0.0":
   version: 16.4.1
   resolution: "dotenv@npm:16.4.1"
@@ -14139,6 +14226,13 @@ __metadata:
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 10/55a3134601115194ae0f924e54473459ed0d9fc340ae610b676e248cca45aa7c680d86365318ea964e6da4e2ea80c4514c1adab5adb43d6867fb57ff068f95c8
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.5.0":
+  version: 16.5.0
+  resolution: "dotenv@npm:16.5.0"
+  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
   languageName: node
   linkType: hard
 
@@ -22234,6 +22328,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.52.0":
+  version: 1.52.0
+  resolution: "playwright-core@npm:1.52.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10/42e13f5f98dc25ebc95525fb338a215b9097b2ba39d41e99972a190bf75d79979f163f5bc07b1ca06847ee07acb2c9b487d070fab67e9cd55e33310fc05aca3c
+  languageName: node
+  linkType: hard
+
 "playwright@npm:1.45.0, playwright@npm:~1.45.0":
   version: 1.45.0
   resolution: "playwright@npm:1.45.0"
@@ -22246,6 +22349,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 10/65e7e4059ef09b89c9b03022ea3c462b004868eb92bbda1e95e45f99ab35a085b2982506837621ec62bf2caf2f2617aac7a016f8b85bc58026838e948889cd1d
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.52.0":
+  version: 1.52.0
+  resolution: "playwright@npm:1.52.0"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.52.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10/214175446089000c2ac997b925063b95f7d86d129c5d7c74caa5ddcb05bcad598dfd569d2133a10dc82d288bf67e7858877dcd099274b0b928b9c63db7d6ecec
   languageName: node
   linkType: hard
 
@@ -24646,6 +24764,7 @@ __metadata:
   dependencies:
     "@clerk/clerk-sdk-node": "npm:5.1.6"
     "@clerk/nextjs": "npm:6.11.1"
+    "@clerk/testing": "npm:^1.7.1"
     "@emotion/cache": "npm:~11.11.0"
     "@faker-js/faker": "npm:~8.3.1"
     "@lingui/cli": "npm:~4.7.0"
@@ -24658,6 +24777,7 @@ __metadata:
     "@mui/material": "npm:~5.15.14"
     "@mui/material-nextjs": "npm:^5.15.11"
     "@openapi-qraft/cli": "npm:1.14.0"
+    "@playwright/test": "npm:^1.52.0"
     "@team-monite/sdk-demo": "workspace:~"
     "@testing-library/jest-dom": "npm:~6.1.4"
     "@testing-library/react": "npm:~14.1.0"
@@ -24669,7 +24789,7 @@ __metadata:
     chalk: "npm:~5.3.0"
     commander: "npm:~11.1.0"
     date-fns: "npm:~4.1.0"
-    dotenv: "npm:^16.3.0"
+    dotenv: "npm:^16.5.0"
     dotenv-cli: "npm:^7.3.0"
     eslint: "npm:8.57.0"
     eslint-config-next: "npm:~14.0.3"
@@ -25315,6 +25435,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"std-env@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "std-env@npm:3.9.0"
+  checksum: 10/3044b2c54a74be4f460db56725571241ab3ac89a91f39c7709519bc90fa37148784bc4cd7d3a301aa735f43bd174496f263563f76703ce3e81370466ab7c235b
+  languageName: node
+  linkType: hard
+
 "stdin-discarder@npm:^0.2.1":
   version: 0.2.2
   resolution: "stdin-discarder@npm:0.2.2"
@@ -25871,7 +25998,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swr@npm:^2.2.5":
+"swr@npm:^2.2.5, swr@npm:^2.3.3":
   version: 2.3.3
   resolution: "swr@npm:2.3.3"
   dependencies:
@@ -26452,6 +26579,13 @@ __metadata:
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 10/e14311d5392ec0e3519feb9afdb54483d7f3aa2d3def6f1a1a30bd3deca5dfeadd106e80bee9ba880bce86a2e50854c9fe5958572cd188d7ac6f8625101a6a8f
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
   languageName: node
   linkType: hard
 
