@@ -61,7 +61,10 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
       } = content;
 
       return (
-        <div ref={chartWrapperRef} className="mtw:h-[300px] mtw:w-full">
+        <div
+          ref={chartWrapperRef}
+          className="mtw:h-[300px] mtw:w-full mtw:mt-3"
+        >
           {chartType === 'bar' && (
             <AIBarChart data={data} metrics={metrics} parentWidth={width} />
           )}

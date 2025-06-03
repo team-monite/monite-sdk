@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -96,6 +96,58 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   const productFormId = `Monite-ProductForm-${useId()}`;
 
+  const defaultValues = useMemo(
+    () => ({
+      name: product?.name,
+      type: product?.type || 'product',
+      units: product?.measure_unit_id,
+      smallestAmount: product?.smallest_amount,
+      pricePerUnit:
+        formatFromMinorUnits(
+          product?.price?.value as number,
+          product?.price?.currency as CurrencyEnum
+        ) ?? undefined,
+      currency: product?.price?.currency,
+      description: product?.description ?? '',
+    }),
+    [
+      product?.name,
+      product?.type,
+      product?.measure_unit_id,
+      product?.smallest_amount,
+      product?.price?.value,
+      product?.price?.currency,
+      product?.description,
+      formatFromMinorUnits,
+    ]
+  );
+
+  const handleSubmit = async (values: IProductFormSubmitValues) => {
+    const payload: ProductServiceRequest = {
+      name: values.name,
+      type: values.type,
+      measure_unit_id: values.units,
+      smallest_amount: values.smallestAmount,
+      price: {
+        value:
+          formatToMinorUnits(values.pricePerUnit, values.currency) ??
+          values.pricePerUnit,
+        currency: values.currency,
+      },
+      description: values.description,
+    };
+
+    return productUpdateMutation.mutate(payload, {
+      onSuccess: (product) => {
+        props.onUpdated?.(product);
+        // TODO: Restore `props.onCanceled()` in onSuccess to switch details dialog from edit to read mode,
+        // or introduce a new variable (e.g., `viewMode`, `isEdit`) to handle this transition.
+        // see: https://github.com/team-monite/monite-sdk/pull/101#discussion_r1630759805
+        props.onCanceled();
+      },
+    });
+  };
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -137,46 +189,6 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       </>
     );
   }
-
-  const defaultValues = {
-    name: product.name,
-    type: product.type,
-    units: product.measure_unit_id,
-    smallestAmount: product.smallest_amount,
-    pricePerUnit:
-      formatFromMinorUnits(
-        product.price?.value as number,
-        product.price?.currency as CurrencyEnum
-      ) ?? undefined,
-    currency: product.price?.currency,
-    description: product.description ?? '',
-  };
-
-  const handleSubmit = async (values: IProductFormSubmitValues) => {
-    const payload: ProductServiceRequest = {
-      name: values.name,
-      type: values.type,
-      measure_unit_id: values.units,
-      smallest_amount: values.smallestAmount,
-      price: {
-        value:
-          formatToMinorUnits(values.pricePerUnit, values.currency) ??
-          values.pricePerUnit,
-        currency: values.currency,
-      },
-      description: values.description,
-    };
-
-    return productUpdateMutation.mutate(payload, {
-      onSuccess: (product) => {
-        props.onUpdated?.(product);
-        // TODO: Restore `props.onCanceled()` in onSuccess to switch details dialog from edit to read mode,
-        // or introduce a new variable (e.g., `viewMode`, `isEdit`) to handle this transition.
-        // see: https://github.com/team-monite/monite-sdk/pull/101#discussion_r1630759805
-        props.onCanceled();
-      },
-    });
-  };
 
   return (
     <>

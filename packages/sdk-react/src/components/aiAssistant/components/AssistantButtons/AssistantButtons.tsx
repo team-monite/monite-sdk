@@ -87,7 +87,8 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
       <div
         className={cn(
           'mtw:flex mtw:items-center mtw:gap-2.5 mtw:invisible',
-          showActionButtons && 'mtw:visible'
+          'mtw:opacity-0 mtw:transition-[opacity] mtw:duration-300 mtw:delay-2500',
+          showActionButtons && 'mtw:visible mtw:opacity-100'
         )}
       >
         <AIButtonTooltip

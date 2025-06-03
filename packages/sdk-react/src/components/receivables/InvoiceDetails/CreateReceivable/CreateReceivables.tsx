@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { useDialog, TemplateSettings } from '@/components';
+import { TemplateSettings } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
 import {
   BankAccountFormDialog,
@@ -22,29 +22,25 @@ import {
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { Menu } from '@mui/material';
 import {
   Alert,
   Box,
   Button,
-  Card,
   Checkbox,
   DialogContent,
-  DialogTitle,
   FormControlLabel,
   Grid,
   MenuItem,
   Modal,
-  Popper,
   Stack,
   Switch,
-  Toolbar,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -56,7 +52,6 @@ import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
-import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { InvoicePreview } from './sections/components/InvoicePreview';
@@ -89,7 +84,6 @@ const CreateReceivablesBase = ({
   customerTypes,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { api, entityId, componentSettings } = useMoniteContext();
   const hasInitiallySetDefaultBank = useRef(false);
   const enableEntityBankAccount = Boolean(
@@ -468,20 +462,19 @@ const CreateReceivablesBase = ({
 
   return (
     <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
-      <DialogContent className={className + '-Content'} sx={{ width: '50%' }}>
-        <DialogTitle className={className + '-Title Invoice-Preview'}>
-          <Toolbar>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                edge="start"
-                color="inherit"
-                onClick={dialogContext?.onClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-            <Box sx={{ marginLeft: 'auto' }}>
+      <Box
+        sx={{
+          width: '50%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <FullScreenModalHeader
+          className={className + '-Title Invoice-Preview'}
+          title={t(i18n)`Create invoice`}
+          actions={
+            <>
               <Button
                 variant="outlined"
                 color="primary"
@@ -495,309 +488,56 @@ const CreateReceivablesBase = ({
               >
                 <SettingsOutlinedIcon />
               </Button>
-              <Popper
+              <Menu
                 anchorEl={anchorEl}
-                container={root}
-                keepMounted
-                placement="bottom-end"
                 open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                container={root}
               >
-                <Card
-                  sx={{
-                    padding: '1em',
-                    marginTop: '.5em',
-                    boxShadow: '0px 4px 16px 0px #0F0F0F29',
-                    width: '240px',
+                <MenuItem
+                  onClick={() => {
+                    setIsCurrencyModalOpen(true);
+                    setAnchorEl(null);
                   }}
                 >
-                  <MenuItem
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}
-                    onClick={() => setIsCurrencyModalOpen(true)}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}
                   >
                     <Typography>{t(i18n)`Currency`}</Typography>
                     <Typography>{actualCurrency}</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={() => setIsEditTemplateModalOpen(true)}>
-                    <Typography>{t(i18n)`Edit template settings`}</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={() => setIsEnableFieldsModalOpen(true)}>
-                    <Typography>{t(i18n)`Enable more fields`}</Typography>
-                  </MenuItem>
+                  </Box>
+                </MenuItem>
 
-                  {/* Currency Modal */}
-                  <Modal
-                    open={isCurrencyModalOpen}
-                    container={root}
-                    onClose={handleCloseCurrencyModal}
-                  >
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        maxWidth: 600,
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        borderRadius: 8,
-                      }}
-                    >
-                      <Grid container alignItems="center" p={4}>
-                        <Grid item width="100%">
-                          <Typography variant="h3" mb={3.5}>
-                            {t(i18n)`Change document currency`}
-                          </Typography>
-                          <Typography variant="body2" color="black" mb={1}>
-                            {t(
-                              i18n
-                            )`Invoice will be issued with items in the selected currency`}
-                          </Typography>
-                          <MoniteCurrency
-                            size="small"
-                            name="currency"
-                            control={control}
-                            defaultValue={actualCurrency}
-                            hideLabel
-                            groups={currencyGroups}
-                            disabled={isLoadingCurrencyGroups}
-                            onChange={(_event, value) => {
-                              if (
-                                value &&
-                                !Array.isArray(value) &&
-                                typeof value !== 'string'
-                              ) {
-                                setTempCurrency(value.code);
-                              }
-                            }}
-                          />
-                          {removeItemsWarning && (
-                            <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
-                              <Typography variant="inherit">
-                                {t(
-                                  i18n
-                                )`All items in the invoice must be in this currency. Remove items that don’t match it.`}
-                              </Typography>
-                            </Alert>
-                          )}
-                        </Grid>
-                        <Grid
-                          item
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
-                            justifySelf: 'flex-end',
-                            marginLeft: 'auto',
-                            gap: '1rem',
-                            minHeight: 96,
-                          }}
-                        >
-                          <Button
-                            variant="text"
-                            onClick={handleCloseCurrencyModal}
-                          >
-                            {t(i18n)`Cancel`}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={handleCurrencySubmit}
-                          >
-                            {t(i18n)`Save`}
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </Modal>
+                <MenuItem
+                  onClick={() => {
+                    setIsEditTemplateModalOpen(true);
+                    setAnchorEl(null);
+                  }}
+                >
+                  <Typography>{t(i18n)`Edit template settings`}</Typography>
+                </MenuItem>
 
-                  {/* Enable Fields Modal */}
-                  <Modal
-                    open={isEnableFieldsModalOpen}
-                    container={root}
-                    onClose={handleCloseEnableFieldsModal}
-                  >
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        maxWidth: 600,
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        borderRadius: 8,
-                      }}
-                    >
-                      <Grid container alignItems="center" p={4}>
-                        <Grid item width="100%">
-                          <Typography variant="h3" mb={3.5}>
-                            {t(i18n)`Enable more fields`}
-                          </Typography>
-                          {/* fulfillment date */}
-                          <Box
-                            display="flex"
-                            alignItems="start"
-                            justifyContent="space-between"
-                            sx={{
-                              pb: 4,
-                            }}
-                          >
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
-                              >
-                                {t(i18n)`Fulfillment date`}
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                {t(
-                                  i18n
-                                )`Add a date when the product will be delivered or the service provided`}
-                              </Typography>
-                            </Box>
-                            <Switch
-                              checked={
-                                visibleSettingsFields.isFulfillmentDateShown
-                              }
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  'isFulfillmentDateShown',
-                                  e.target.checked
-                                )
-                              }
-                              color="primary"
-                              aria-label={t(i18n)`Fulfillment date`}
-                            />
-                          </Box>
-                          {/* purchase order */}
-                          <Box
-                            display="flex"
-                            alignItems="start"
-                            justifyContent="space-between"
-                            sx={{
-                              pb: 4,
-                              pt: 4,
-                              borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
-                            }}
-                          >
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
-                              >
-                                {t(i18n)`Purchase order`}
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                {t(
-                                  i18n
-                                )`You can add a document number to have it in the PDF`}
-                              </Typography>
-                            </Box>
-                            <Switch
-                              checked={
-                                visibleSettingsFields.isPurchaseOrderShown
-                              }
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  'isPurchaseOrderShown',
-                                  e.target.checked
-                                )
-                              }
-                              color="primary"
-                              aria-label={t(i18n)`Purchase order`}
-                            />
-                          </Box>
-                          {/* terms and conditions */}
-                          <Box
-                            sx={{
-                              display: 'none', //change to flex when backend is ready
-                              pb: 4,
-                              pt: 4,
-                              alignItems: 'start',
-                              justifyContent: 'space-between',
-                              borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
-                            }}
-                          >
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
-                              >
-                                {t(i18n)`Terms and conditions`}
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                {t(
-                                  i18n
-                                )`You can include details about the warranty, insurance, liability, late payment fees and any other important notes`}
-                              </Typography>
-                            </Box>
-                            <Switch
-                              checked={
-                                visibleSettingsFields.isTermsAndConditionsShown
-                              }
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  'isTermsAndConditionsShown',
-                                  e.target.checked
-                                )
-                              }
-                              color="primary"
-                              aria-label={t(i18n)`Terms and conditions`}
-                            />
-                          </Box>
-                          {/* always show */}
-                          <Box
-                            sx={{
-                              marginTop: 4,
-                              paddingTop: 1,
-                            }}
-                          >
-                            <FormControlLabel
-                              sx={{ ml: 0 }} //reset mui style
-                              control={
-                                <Checkbox
-                                  edge="start"
-                                  checked={areFieldsAlwaysSelected}
-                                  onChange={handleFieldsAlwaysSelectedChange}
-                                  disableRipple
-                                />
-                              }
-                              label={t(
-                                i18n
-                              )`Always display selected fields on the form (where available)`}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid
-                          item
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
-                            justifySelf: 'flex-end',
-                            marginLeft: 'auto',
-                            gap: '1rem',
-                            minHeight: 96,
-                          }}
-                        >
-                          <Button
-                            variant="text"
-                            onClick={handleCloseEnableFieldsModal}
-                          >
-                            {t(i18n)`Cancel`}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={handleCloseEnableFieldsModal}
-                          >
-                            {t(i18n)`Save`}
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </Modal>
-                </Card>
-              </Popper>
-
+                <MenuItem
+                  onClick={() => {
+                    setIsEnableFieldsModalOpen(true);
+                    setAnchorEl(null);
+                  }}
+                >
+                  <Typography>{t(i18n)`Enable more fields`}</Typography>
+                </MenuItem>
+              </Menu>
               <Button
                 variant="contained"
                 key="next"
@@ -805,97 +545,356 @@ const CreateReceivablesBase = ({
                 type="submit"
                 form={formName}
                 disabled={createReceivable.isPending}
-              >{t(i18n)`Save and continue`}</Button>
-            </Box>
-          </Toolbar>
-        </DialogTitle>
-        <FormProvider {...methods}>
-          <form
-            id={formName}
-            noValidate
-            onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
-            style={{ marginBottom: theme.spacing(7) }}
-          >
-            <Stack direction="column" spacing={7}>
-              <Box>
-                <Typography
-                  sx={{ mt: 8, mb: 5 }}
-                  data-testid={
-                    ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                  }
-                  variant="h3"
-                >{t(i18n)`Create invoice`}</Typography>
-
-                <CustomerSection
-                  disabled={createReceivable.isPending}
-                  counterpart={counterpart}
-                  counterpartVats={counterpartVats}
-                  isCounterpartVatsLoading={isCounterpartVatsLoading}
-                  isCounterpartLoading={isCounterpartLoading}
-                  customerTypes={customerTypes}
-                />
-              </Box>
-
-              <ItemsSection
-                defaultCurrency={
-                  settings?.currency?.default || fallbackCurrency
-                }
-                actualCurrency={actualCurrency}
-                isNonVatSupported={isNonVatSupported}
-              />
-
-              <Box
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
               >
-                <Box sx={{ mb: 2 }}>
-                  <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
-                    i18n
-                  )`Details`}</Typography>
-                  <YourVatDetailsForm
-                    isEntityVatIdsLoading={isEntityVatIdsLoading}
-                    entityVatIds={entityVatIds}
+                {t(i18n)`Save and continue`}
+              </Button>
+            </>
+          }
+          closeButtonTooltip={t(i18n)`Close invoice creation`}
+        />
+
+        <DialogContent
+          className={className + '-Content'}
+          sx={{ overflow: 'auto', flex: 1 }}
+        >
+          {/* Currency Modal */}
+          <Modal
+            open={isCurrencyModalOpen}
+            container={root}
+            onClose={handleCloseCurrencyModal}
+          >
+            <Box
+              sx={{
+                position: 'relative',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: 600,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                borderRadius: 8,
+              }}
+            >
+              <Grid container alignItems="center" p={4}>
+                <Grid item width="100%">
+                  <Typography variant="h3" mb={3.5}>
+                    {t(i18n)`Change document currency`}
+                  </Typography>
+                  <Typography variant="body2" color="black" mb={1}>
+                    {t(
+                      i18n
+                    )`Invoice will be issued with items in the selected currency`}
+                  </Typography>
+                  <MoniteCurrency
+                    size="small"
+                    name="currency"
+                    control={control}
+                    defaultValue={actualCurrency}
+                    hideLabel
+                    groups={currencyGroups}
+                    disabled={isLoadingCurrencyGroups}
+                    onChange={(_event, value) => {
+                      if (
+                        value &&
+                        !Array.isArray(value) &&
+                        typeof value !== 'string'
+                      ) {
+                        setTempCurrency(value.code);
+                      }
+                    }}
+                  />
+                  {removeItemsWarning && (
+                    <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
+                      <Typography variant="inherit">
+                        {t(
+                          i18n
+                        )`All items in the invoice must be in this currency. Remove items that don't match it.`}
+                      </Typography>
+                    </Alert>
+                  )}
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                    justifySelf: 'flex-end',
+                    marginLeft: 'auto',
+                    gap: '1rem',
+                    minHeight: 96,
+                  }}
+                >
+                  <Button variant="text" onClick={handleCloseCurrencyModal}>
+                    {t(i18n)`Cancel`}
+                  </Button>
+                  <Button variant="contained" onClick={handleCurrencySubmit}>
+                    {t(i18n)`Save`}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
+
+          {/* Enable Fields Modal */}
+          <Modal
+            open={isEnableFieldsModalOpen}
+            container={root}
+            onClose={handleCloseEnableFieldsModal}
+          >
+            <Box
+              sx={{
+                position: 'relative',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: 600,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                borderRadius: 8,
+              }}
+            >
+              <Grid container alignItems="center" p={4}>
+                <Grid item width="100%">
+                  <Typography variant="h3" mb={3.5}>
+                    {t(i18n)`Enable more fields`}
+                  </Typography>
+                  {/* fulfillment date */}
+                  <Box
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="space-between"
+                    sx={{
+                      pb: 4,
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                      >
+                        {t(i18n)`Fulfillment date`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(
+                          i18n
+                        )`Add a date when the product will be delivered or the service provided`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isFulfillmentDateShown}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          'isFulfillmentDateShown',
+                          e.target.checked
+                        )
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Fulfillment date`}
+                    />
+                  </Box>
+                  {/* purchase order */}
+                  <Box
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="space-between"
+                    sx={{
+                      pb: 4,
+                      pt: 4,
+                      borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                      >
+                        {t(i18n)`Purchase order`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(
+                          i18n
+                        )`You can add a document number to have it in the PDF`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isPurchaseOrderShown}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          'isPurchaseOrderShown',
+                          e.target.checked
+                        )
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Purchase order`}
+                    />
+                  </Box>
+                  {/* terms and conditions */}
+                  <Box
+                    sx={{
+                      display: 'none', //change to flex when backend is ready
+                      pb: 4,
+                      pt: 4,
+                      alignItems: 'start',
+                      justifyContent: 'space-between',
+                      borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                      >
+                        {t(i18n)`Terms and conditions`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(
+                          i18n
+                        )`You can include details about the warranty, insurance, liability, late payment fees and any other important notes`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isTermsAndConditionsShown}
+                      onChange={(e) =>
+                        handleFieldChange(
+                          'isTermsAndConditionsShown',
+                          e.target.checked
+                        )
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Terms and conditions`}
+                    />
+                  </Box>
+                  {/* always show */}
+                  <Box
+                    sx={{
+                      marginTop: 4,
+                      paddingTop: 1,
+                    }}
+                  >
+                    <FormControlLabel
+                      sx={{ ml: 0 }} //reset mui style
+                      control={
+                        <Checkbox
+                          edge="start"
+                          checked={areFieldsAlwaysSelected}
+                          onChange={handleFieldsAlwaysSelectedChange}
+                          disableRipple
+                        />
+                      }
+                      label={t(
+                        i18n
+                      )`Always display selected fields on the form (where available)`}
+                    />
+                  </Box>
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                    justifySelf: 'flex-end',
+                    marginLeft: 'auto',
+                    gap: '1rem',
+                    minHeight: 96,
+                  }}
+                >
+                  <Button variant="text" onClick={handleCloseEnableFieldsModal}>
+                    {t(i18n)`Cancel`}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={handleCloseEnableFieldsModal}
+                  >
+                    {t(i18n)`Save`}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
+
+          <FormProvider {...methods}>
+            <form
+              id={formName}
+              noValidate
+              onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
+              style={{ marginBottom: theme.spacing(7) }}
+            >
+              <Stack direction="column" spacing={7}>
+                <Box>
+                  <CustomerSection
+                    disabled={createReceivable.isPending}
+                    counterpart={counterpart}
+                    counterpartVats={counterpartVats}
+                    isCounterpartVatsLoading={isCounterpartVatsLoading}
+                    isCounterpartLoading={isCounterpartLoading}
+                    customerTypes={customerTypes}
+                  />
+                </Box>
+
+                <ItemsSection
+                  defaultCurrency={
+                    settings?.currency?.default || fallbackCurrency
+                  }
+                  actualCurrency={actualCurrency}
+                  isNonVatSupported={isNonVatSupported}
+                />
+
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Box sx={{ mb: 2 }}>
+                    <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
+                      i18n
+                    )`Details`}</Typography>
+                    <YourVatDetailsForm
+                      isEntityVatIdsLoading={isEntityVatIdsLoading}
+                      entityVatIds={entityVatIds}
+                      disabled={createReceivable.isPending}
+                    />
+                  </Box>
+                  <FullfillmentSummary
+                    paymentTerms={paymentTerms}
+                    isPaymentTermsLoading={isPaymentTermsLoading}
+                    isFieldShown={visibleSettingsFields.isFulfillmentDateShown}
+                    refetch={refetchPaymentTerms}
+                    disabled={createReceivable.isPending}
+                  />
+
+                  {enableEntityBankAccount && (
+                    <BankAccountSection
+                      entityCurrency={actualCurrency}
+                      disabled={createReceivable.isPending}
+                      handleOpenBankModal={(id?: string) => {
+                        setIsBankFormOpen(true);
+                        if (id) setSelectedBankId(id);
+                      }}
+                    />
+                  )}
+                </Box>
+                <Box>
+                  <EntitySection
+                    visibleFields={visibleSettingsFields}
                     disabled={createReceivable.isPending}
                   />
                 </Box>
-                <FullfillmentSummary
-                  paymentTerms={paymentTerms}
-                  isPaymentTermsLoading={isPaymentTermsLoading}
-                  isFieldShown={visibleSettingsFields.isFulfillmentDateShown}
-                  refetch={refetchPaymentTerms}
+                <ReminderSection
                   disabled={createReceivable.isPending}
+                  onUpdateOverdueReminder={onEditOverdueReminder}
+                  onUpdatePaymentReminder={onEditPaymentReminder}
+                  onCreateReminder={onCreateReminder}
                 />
+              </Stack>
+            </form>
+          </FormProvider>
+        </DialogContent>
+      </Box>
 
-                {enableEntityBankAccount && (
-                  <BankAccountSection
-                    entityCurrency={actualCurrency}
-                    disabled={createReceivable.isPending}
-                    handleOpenBankModal={(id?: string) => {
-                      setIsBankFormOpen(true);
-                      if (id) setSelectedBankId(id);
-                    }}
-                  />
-                )}
-              </Box>
-              <Box>
-                <EntitySection
-                  visibleFields={visibleSettingsFields}
-                  disabled={createReceivable.isPending}
-                />
-              </Box>
-              <ReminderSection
-                disabled={createReceivable.isPending}
-                onUpdateOverdueReminder={onEditOverdueReminder}
-                onUpdatePaymentReminder={onEditPaymentReminder}
-                onCreateReminder={onCreateReminder}
-              />
-            </Stack>
-          </form>
-        </FormProvider>
-      </DialogContent>
       <Box
         width="50%"
         sx={{
