@@ -40,7 +40,7 @@ interface CounterpartsAutocompleteOptionProps {
 
 type CounterpartSelectorProps = {
   disabled?: boolean;
-  shouldDisableAutomaticUpdate?: boolean;
+  shouldDisableFormUpdate?: boolean;
   currentCounterpartId?: string;
   handleUpdateCounterpartId?: (value?: string) => void;
   counterpartAddresses?: components['schemas']['CounterpartAddressResourceList'];
@@ -78,7 +78,7 @@ export const CounterpartSelector = ({
   setIsCreateCounterpartOpened,
   setIsEditCounterpartOpened,
   isSimplified = false,
-  shouldDisableAutomaticUpdate = false,
+  shouldDisableFormUpdate = false,
   disabled,
   counterpartAddresses,
   currentCounterpartId,
@@ -122,7 +122,7 @@ export const CounterpartSelector = ({
   const selectedCounterpart = counterparts?.data.find(
     (counterpart) =>
       counterpart.id ===
-      (shouldDisableAutomaticUpdate ? currentCounterpartId : counterpartId)
+      (shouldDisableFormUpdate ? currentCounterpartId : counterpartId)
   );
 
   const selectedCounterpartOption = selectedCounterpart
@@ -151,17 +151,14 @@ export const CounterpartSelector = ({
                   isCreateNewCounterpartOption(value) ||
                   isDividerOption(value)
                 ) {
-                  if (
-                    shouldDisableAutomaticUpdate &&
-                    handleUpdateCounterpartId
-                  ) {
+                  if (shouldDisableFormUpdate && handleUpdateCounterpartId) {
                     handleUpdateCounterpartId('');
                   } else {
                     field.onChange('');
                   }
                   return;
                 }
-                if (shouldDisableAutomaticUpdate && handleUpdateCounterpartId) {
+                if (shouldDisableFormUpdate && handleUpdateCounterpartId) {
                   handleUpdateCounterpartId(value?.id ?? '');
                 } else {
                   field.onChange(value?.id ?? '');

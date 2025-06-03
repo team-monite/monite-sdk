@@ -2215,7 +2215,7 @@ msgstr "Create New"
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:335
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:189
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:204
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:187
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:184
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
@@ -2372,7 +2372,7 @@ msgstr "Current status"
 #: src/components/receivables/components/InvoicesTable.tsx:307
 #: src/components/receivables/components/QuotesTable.tsx:190
 #: src/components/receivables/components/ReceivableFilters.tsx:104
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:202
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:238
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:139
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
@@ -3003,7 +3003,7 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:272
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:246
 #: src/components/receivables/components/BankAccountSection.tsx:145
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:273
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:270
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
 #: src/components/TableActions/TableActions.tsx:50
 #: src/components/tags/TagsTable/TagsTable.test.tsx:376
@@ -6949,7 +6949,7 @@ msgstr "Security number"
 msgid "Select 'Get Paid Now':"
 msgstr "Select 'Get Paid Now':"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:203
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:200
 msgid "Select customer"
 msgstr "Select customer"
 

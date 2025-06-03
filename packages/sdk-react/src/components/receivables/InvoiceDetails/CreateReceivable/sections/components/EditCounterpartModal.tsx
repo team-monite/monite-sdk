@@ -162,7 +162,7 @@ export const EditCounterpartModal = ({
               <CounterpartSelector
                 isSimplified
                 counterpartAddresses={counterpartAddresses}
-                shouldDisableAutomaticUpdate
+                shouldDisableFormUpdate
                 currentCounterpartId={currentCounterpartId}
                 handleUpdateCounterpartId={(value) =>
                   setCurrentCounterpartId(value ?? '')
