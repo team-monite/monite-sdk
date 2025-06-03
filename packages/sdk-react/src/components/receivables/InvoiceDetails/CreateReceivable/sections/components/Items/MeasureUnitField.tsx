@@ -33,11 +33,7 @@ export const MeasureUnitField = ({
 
     const firstAvailableMeasureUnitId = availableMeasureUnits?.[0]?.id;
 
-    if (
-      !value &&
-      value !== '' && // Don't set default if explicitly initialized with empty string
-      firstAvailableMeasureUnitId
-    ) {
+    if (!value && value !== '' && firstAvailableMeasureUnitId) {
       onChange(firstAvailableMeasureUnitId);
       setHasSetDefault(true);
     }

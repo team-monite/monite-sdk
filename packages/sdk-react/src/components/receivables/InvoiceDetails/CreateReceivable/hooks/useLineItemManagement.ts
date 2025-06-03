@@ -66,7 +66,7 @@ export const useLineItemManagement = ({
 
   const watchedLineItems = watch('line_items');
   const currentLineItems = useMemo(
-    () => watchedLineItems || [],
+    () => watchedLineItems ?? [],
     [watchedLineItems]
   );
 
@@ -140,9 +140,7 @@ export const useLineItemManagement = ({
   );
 
   const performAutoAddRow = useCallback(() => {
-    if (isAddingRow.current || !mounted.current) {
-      return;
-    }
+    if (isAddingRow.current || !mounted.current) return;
 
     const currentItems = getValues('line_items') || [];
     const emptyRowCount = countEmptyRows(currentItems);
@@ -151,6 +149,8 @@ export const useLineItemManagement = ({
       setTooManyEmptyRows(false);
     }
 
+    // Only add a new row if there are NO empty rows left
+    // This prevents adding too many rows automatically
     if (emptyRowCount === 0 && currentItems.length > 0) {
       isAddingRow.current = true;
 
@@ -189,9 +189,7 @@ export const useLineItemManagement = ({
       return;
     }
 
-    if (isAddingRow.current) {
-      return;
-    }
+    if (isAddingRow.current) return;
 
     setTooManyEmptyRows(false);
     isAddingRow.current = true;
@@ -219,19 +217,19 @@ export const useLineItemManagement = ({
   }, [debouncedAutoAddRow]);
 
   useEffect(() => {
-    if (isAddingRow.current) {
-      Promise.resolve().then(() => {
-        isAddingRow.current = false;
-      });
-    }
+    if (!isAddingRow.current) return;
+
+    Promise.resolve().then(() => {
+      if (!mounted) return;
+
+      isAddingRow.current = false;
+    });
   }, [fields.length]);
 
   const cleanUpLineItemsForSubmission = useCallback(() => {
     const currentItems = getValues('line_items');
 
-    if (!currentItems?.length) {
-      return;
-    }
+    if (!currentItems?.length) return;
 
     const nonEmptyItems = currentItems.filter((item) =>
       Boolean(item?.product?.name?.trim())
@@ -241,10 +239,9 @@ export const useLineItemManagement = ({
     );
 
     let finalItems: CreateReceivablesFormBeforeValidationLineItemProps[] = [];
-    const actualNonEmptyItems = nonEmptyItems; // nonEmptyItems is already the filtered list
 
-    if (actualNonEmptyItems.length > 0) {
-      finalItems = actualNonEmptyItems;
+    if (nonEmptyItems.length > 0) {
+      finalItems = nonEmptyItems;
     } else if (currentItems.length > 0) {
       finalItems = [createEmptyRow(firstEmptyItem || undefined)];
     }
@@ -350,7 +347,7 @@ export const useLineItemManagement = ({
         const error = formErrors.line_items?.[index] as
           | DeepPartial<CreateReceivablesFormBeforeValidationLineItemProps>
           | undefined;
-        return error || {};
+        return error ?? {};
       });
     }
     return fields.map(() => ({}));

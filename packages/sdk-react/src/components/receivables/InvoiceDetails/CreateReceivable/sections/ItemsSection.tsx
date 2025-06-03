@@ -134,6 +134,7 @@ export const ItemsSection = ({
       const itemMeasureUnitId = item.measureUnit?.id;
       const itemMeasureUnitName = item.measureUnit?.name;
 
+      // If the item has a measure unit with name but no ID, preserve it as a custom unit
       if (itemMeasureUnitName && !itemMeasureUnitId) {
         setValueWithoutValidation(
           `line_items.${index}.product.measure_unit_id`,
@@ -147,7 +148,7 @@ export const ItemsSection = ({
           name: itemMeasureUnitName,
           id: null,
         });
-      } else if (itemMeasureUnitId || currentMeasureUnitId) {
+      } else if (itemMeasureUnitId || currentMeasureUnitId) { // Otherwise, if there's a measure unit ID to use, set it
         setValueWithoutValidation(
           `line_items.${index}.product.measure_unit_id`,
           itemMeasureUnitId || currentMeasureUnitId
@@ -187,8 +188,10 @@ export const ItemsSection = ({
       const isActualCatalogItem =
         item.id !== '' && item.id !== CUSTOM_ID && isCatalogItem;
 
+      // Only set VAT rates from catalog item when selecting from catalog, not for manual entries
       if (isActualCatalogItem) {
         const currentPrice = getValues(
+          // if user manually typed a price it is unlikely they want the price of the catalogue to overwrite it
           `line_items.${index}.product.price.value`
         );
         if (!currentPrice) {

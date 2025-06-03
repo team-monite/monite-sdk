@@ -26,7 +26,7 @@ export const getRateValueForDisplay = (
  * toLocaleString with style: 'percent' expects values in range 0-1, where 0.07 represents 7%
  */
 export const formatVatRateForDisplay = (rateValue: number): string => {
-  return (rateMinorToMajor(rateValue) / 100).toLocaleString(undefined, { // Use the new utility
+  return (rateMinorToMajor(rateValue) / 100).toLocaleString(undefined, {
     style: 'percent',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

@@ -568,6 +568,16 @@ const CreateReceivablesBase = ({
               >
                 {t(i18n)`Save and continue`}
               </Button>
+              <Button
+                variant="contained"
+                key="next"
+                color="primary"
+                type="submit"
+                form={formName}
+                disabled={createReceivable.isPending}
+              >
+                {t(i18n)`Save and continue`}
+              </Button>
             </>
           }
           closeButtonTooltip={t(i18n)`Close invoice creation`}
@@ -866,15 +876,6 @@ const CreateReceivablesBase = ({
               </Grid>
             </Box>
           </Modal>
-
-          <Button
-            variant="contained"
-            key="next"
-            color="primary"
-            type="submit"
-            form={formName}
-            disabled={createReceivable.isPending}
-          >{t(i18n)`Save and continue`}</Button>
 
           <FormProvider {...methods}>
             <form
