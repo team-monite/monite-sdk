@@ -158,8 +158,14 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       '@': path.resolve(__dirname, '../src'),
-      jsdom: false,
-      canvas: false,
+      'fs': path.resolve(__dirname, '../../../src/polyfills/fs.js'),
+      'stream': path.resolve(__dirname, '../../../src/polyfills/stream.js'),
+      'util': path.resolve(__dirname, '../../../src/polyfills/util.js'),
+      'path': path.resolve(__dirname, '../../../src/polyfills/path.js'),
+      'os': path.resolve(__dirname, '../../../src/polyfills/os.js'),
+      'tty': path.resolve(__dirname, '../../../src/polyfills/empty.js'),
+      'jsdom': false,
+      'canvas': false,
     };
     console.log('[Storybook webpackFinal for sdk-react] Configured resolve.alias (includes @).');
 
