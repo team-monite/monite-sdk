@@ -10,7 +10,6 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { CardActions, Button, Divider } from '@mui/material';
 
-import { ConfirmDeleteDialog } from '../../../components/ConfirmDeleteDialog';
 import {
   useCounterpartBankView,
   CounterpartBankViewProps,

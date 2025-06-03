@@ -16,7 +16,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Typography, DialogContent, Stack, Box } from '@mui/material';
 
-import { ConfirmDeleteDialog } from '../../components/ConfirmDeleteDialog';
 import {
   getCounterpartName,
   isIndividualCounterpart,
