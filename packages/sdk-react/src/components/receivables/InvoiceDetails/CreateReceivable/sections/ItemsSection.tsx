@@ -148,7 +148,8 @@ export const ItemsSection = ({
           name: itemMeasureUnitName,
           id: null,
         });
-      } else if (itemMeasureUnitId || currentMeasureUnitId) { // Otherwise, if there's a measure unit ID to use, set it
+      } else if (itemMeasureUnitId || currentMeasureUnitId) {
+        // Otherwise, if there's a measure unit ID to use, set it
         setValueWithoutValidation(
           `line_items.${index}.product.measure_unit_id`,
           itemMeasureUnitId || currentMeasureUnitId

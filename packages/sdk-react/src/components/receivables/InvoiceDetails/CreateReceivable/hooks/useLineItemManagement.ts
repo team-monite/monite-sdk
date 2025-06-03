@@ -224,7 +224,7 @@ export const useLineItemManagement = ({
 
       isAddingRow.current = false;
     });
-  }, [fields.length]);
+  }, [fields.length, mounted]);
 
   const cleanUpLineItemsForSubmission = useCallback(() => {
     const currentItems = getValues('line_items');
