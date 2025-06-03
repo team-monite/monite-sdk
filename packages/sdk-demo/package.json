@@ -8,14 +8,16 @@
     "./package.json": "./package.json",
     "./*": "./build/*.js"
   },
-  "types": "build/src/index.d.ts",
+  "types": "build/index.d.ts",
   "scripts": {
     "dev": "vite --port 5173",
     "dev:lib": "cross-env NODE_ENV=development rollup --watch --config rollup.config.mjs",
     "dev:with-lib": "yarn dev:lib & vite --port 5173",
-    "build": "vite build --outDir build && yarn build:lib",
-    "build:lib": "cross-env NODE_ENV=production rollup --config rollup.config.mjs --silent",
-    "clean": "rimraf build/; rimraf --glob 'src/locales/*/messages.ts'; rimraf --glob 'src/locales/*/messages.d.ts'",
+    "build:vite": "vite build --outDir build",
+    "build:rollup": "cross-env NODE_ENV=production rollup --config rollup.config.mjs --silent",
+    "build:lib": "yarn compile-translations && yarn build:rollup",
+    "build": "yarn compile-translations && yarn build:vite && yarn build:lib",
+    "clean": "rimraf build/; rimraf --glob 'src/locales/*/messages.js'; rimraf --glob 'src/locales/*/messages.d.ts'",
     "preview": "vite preview --outDir build",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
@@ -51,8 +53,7 @@
     "@openapi-qraft/react": "1.14.0",
     "@tanstack/query-core": "~5.28.6",
     "@tanstack/react-query": "~5.28.6",
-    "@tanstack/react-query-devtools": "~5.28.6",
-    "vite-plugin-html-config": "~2.0.2"
+    "@tanstack/react-query-devtools": "~5.28.6"
   },
   "devDependencies": {
     "@hookform/resolvers": "~2.9.3",
@@ -69,7 +70,6 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",
-    "@vitejs/plugin-react-swc": "~3.7.1",
     "babel-plugin-macros": "^3.1.0",
     "cookie-parser": "~1.4.7",
     "cross-env": "^7.0.3",
@@ -91,7 +91,6 @@
     "ts-node": "~10.9.1",
     "typescript": "~5.5.4",
     "vite": "~5.4.19",
-    "vite-plugin-dts": "~4.5.4",
     "web-vitals": "^2.1.4",
     "yup": "~0.32.11"
   }

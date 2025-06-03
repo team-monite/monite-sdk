@@ -3,10 +3,17 @@ import { createRoot } from 'react-dom/client';
 
 import { MoniteIframeAppDemo } from '@/apps/MoniteIframeAppDemo';
 
-const root = createRoot(document.getElementById('root') as HTMLElement);
+// SSR safety check
+if (typeof document !== 'undefined') {
+  const rootElement = document.getElementById('root') as HTMLElement;
 
-root.render(
-  <StrictMode>
-    <MoniteIframeAppDemo />
-  </StrictMode>
-);
+  if (rootElement) {
+    const root = createRoot(rootElement);
+
+    root.render(
+      <StrictMode>
+        <MoniteIframeAppDemo />
+      </StrictMode>
+    );
+  }
+}

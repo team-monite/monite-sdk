@@ -1,11 +1,9 @@
-'use client';
-
 import React, { ReactNode } from 'react';
 
 import { Box, Drawer } from '@mui/material';
 
-import { NavigationList } from '@/components/NavigationMenu';
-import { UserMenu } from '@/components/UserMenu';
+import { ClientNavigation } from '@/components/NavigationMenu/ClientNavigation';
+import { ClientUserMenu } from '@/components/UserMenu/ClientUserMenu';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -28,7 +26,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         PaperProps={{ sx: { width: 260 } }}
         variant="permanent"
       >
-        <UserMenu />
+        <ClientUserMenu />
         <Box
           display="flex"
           flex="1"
@@ -37,7 +35,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           mb={3}
           mx={0}
         >
-          <NavigationList />
+          <ClientNavigation />
         </Box>
       </Drawer>
       <Box

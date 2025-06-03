@@ -1,8 +1,8 @@
 export { Counterparts } from './counterparts';
-export { ApprovalPolicies } from './approvalPolicies';
+export * from './approvalPolicies';
 export { ApprovalRequests } from './approvalRequests';
 export { Payables } from './payables';
-export { Receivables } from './receivables';
+export * from './receivables';
 export { Onboarding } from './onboarding';
 export * from './products';
 export * from './tags';

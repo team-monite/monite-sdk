@@ -4,6 +4,7 @@ import { Trans as ReactTrans } from '@lingui/react';
 import type { DataGridProps } from '@mui/x-data-grid';
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
+import * as Sentry from '@sentry/react';
 
 import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 
@@ -168,6 +169,7 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
 }));
 
 beforeAll(() => {
+  Sentry.init({});
   server.listen({
     onUnhandledRequest: 'warn',
   });

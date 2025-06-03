@@ -131,7 +131,11 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     }
   }, [onboarding?.data?.persons]);
 
-  useEffect(() => window.scrollTo(0, 0), [requirement, isEditMode]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, [requirement, isEditMode]);
 
   useEffect(() => {
     if (isEditMode) return;

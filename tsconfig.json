@@ -7,10 +7,19 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noEmit": true,
+
+    "paths": {
+      "vite": ["./node_modules/vite"],
+      "@vitejs/plugin-react-swc": ["./node_modules/@vitejs/plugin-react-swc"],
+      "vite-plugin-html-config": ["./node_modules/vite-plugin-html-config"]
+    }
   },
   "include": [
     "packages/*/src/**/*",

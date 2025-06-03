@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 
 import dynamic from 'next/dynamic';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Box } from '@mui/material';
+
+import LoadingFallback from '@/components/LoadingFallback';
 
 const SignedIn = dynamic(
   () => import('@clerk/nextjs').then((mod) => mod.SignedIn),
@@ -22,7 +24,7 @@ const OrganizationSwitcher = dynamic(
   { ssr: false }
 );
 
-export function UserMenu() {
+export function UserMenuContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -61,5 +63,13 @@ export function UserMenu() {
         />
       </SignedIn>
     </Box>
+  );
+}
+
+export function UserMenu() {
+  return (
+    <Suspense fallback={<LoadingFallback text="Loading menu..." />}>
+      <UserMenuContent />
+    </Suspense>
   );
 }

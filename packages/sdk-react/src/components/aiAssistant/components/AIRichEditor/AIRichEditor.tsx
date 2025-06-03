@@ -32,6 +32,10 @@ export const AIRichEditor = forwardRef<HTMLDivElement, AIRichEditorProps>(
         return;
       }
 
+      if (typeof document === 'undefined' || typeof window === 'undefined') {
+        return;
+      }
+
       const selection = window.getSelection();
 
       if (!selection || !selection.rangeCount) {
