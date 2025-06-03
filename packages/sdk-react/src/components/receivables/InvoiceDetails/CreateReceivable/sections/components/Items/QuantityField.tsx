@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useLingui } from '@lingui/react';
 import { Controller, Control, FieldError } from 'react-hook-form';
 
 import { components } from '@/api';
 import { parseLocaleNumericString } from '@/components/receivables/InvoiceDetails/CreateReceivable/utils';
 import type { LineItemPath } from '@/components/receivables/InvoiceDetails/CreateReceivable/utils';
 import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useLingui } from '@lingui/react';
 import { TextField, FormControl, InputAdornment } from '@mui/material';
 
 import { MeasureUnitField } from './MeasureUnitField';
@@ -100,7 +100,10 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
               );
             }}
             onBlur={() => {
-              const numericValue = parseLocaleNumericString(quantityRawValue, i18n.locale);
+              const numericValue = parseLocaleNumericString(
+                quantityRawValue,
+                i18n.locale
+              );
               onLineItemValueChange('quantity', numericValue, {
                 shouldValidate: true,
               });
@@ -111,7 +114,10 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
               const rawValue = e.target.value;
               setQuantityRawValue(rawValue);
               onLineItemManuallyChanged();
-              const numericValue = parseLocaleNumericString(rawValue, i18n.locale);
+              const numericValue = parseLocaleNumericString(
+                rawValue,
+                i18n.locale
+              );
               onLineItemValueChange('quantity', numericValue, {
                 shouldValidate: false,
               });

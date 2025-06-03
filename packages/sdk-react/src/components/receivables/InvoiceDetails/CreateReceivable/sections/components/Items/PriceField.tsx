@@ -65,11 +65,12 @@ export const PriceField = ({
     // This prevents resetting the input (and cursor position) while the user is actively typing.
     if (!isFocused) {
       const majorValue = formatMinorToMajorCurrency(value, numberFormatter);
+
       if (majorValue !== inputValue) {
         setInputValue(majorValue);
       }
     }
-  }, [value, isFocused, locale, numberFormatter]);
+  }, [value, isFocused, locale, numberFormatter, inputValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -85,10 +86,11 @@ export const PriceField = ({
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     setIsFocused(false);
-    let currentVal = e.target.value.trim();
+
+    const currentVal = e.target.value.trim();
 
     if (currentVal === '') {
-      setInputValue(formatMinorToMajorCurrency(0, numberFormatter)); 
+      setInputValue(formatMinorToMajorCurrency(0, numberFormatter));
       onChange(0);
 
       return;
