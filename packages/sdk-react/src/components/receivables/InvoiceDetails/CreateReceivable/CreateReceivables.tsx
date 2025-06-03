@@ -2,10 +2,9 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-// Ensure toast is imported
 import { components } from '@/api';
 import { showErrorToast } from '@/components/onboarding/utils';
-// Import the error message utility
+
 import {
   BankAccountFormDialog,
   BankAccountSection,
@@ -900,14 +899,6 @@ const CreateReceivablesBase = ({
                       </div>
                     </Alert>
                   )}
-
-                  <Typography
-                    sx={{ mt: 8, mb: 5 }}
-                    data-testid={
-                      ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                    }
-                    variant="h3"
-                  >{t(i18n)`Create invoice`}</Typography>
 
                   <CustomerSection
                     disabled={createReceivable.isPending}
