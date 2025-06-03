@@ -3,4 +3,4 @@
 '@monite/sdk-drop-in': patch
 ---
 
-Fixed some minor UI issues and inconsistencies with design
+Fixed bugs on the Invoice Creation screen, specifically on the VAT and memo fields, and on the costumer modal. Improved design of the reminders component.
