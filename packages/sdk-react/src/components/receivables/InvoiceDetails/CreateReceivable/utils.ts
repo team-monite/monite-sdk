@@ -165,21 +165,16 @@ export const parseLocaleNumericString = (
     ''
   );
 
-  const normalizedString = cleanedString.replace(
-    localeDecimalSeparator,
-    COMMON_DECIMAL_SEPARATOR
-  );
 
   let resultString = '';
-  let hasDot = false;
-  for (const char of normalizedString) {
+  let hasSeparator = false;
+
+  for (const char of cleanedString) {
     if (/\d/.test(char)) {
       resultString += char;
-    } else if (char === COMMON_DECIMAL_SEPARATOR) {
-      if (!hasDot) {
-        resultString += COMMON_DECIMAL_SEPARATOR;
-        hasDot = true;
-      }
+    } else if (char === localeDecimalSeparator && !hasSeparator) {
+      resultString += COMMON_DECIMAL_SEPARATOR;
+      hasSeparator = true;
     }
   }
 

@@ -2,6 +2,8 @@ import { UseFormSetValue } from 'react-hook-form';
 
 import { DeepKeys } from '@/core/types/utils';
 
+import { rateMinorToMajor, rateMajorToMinor } from '@/core/utils/currencies';
+
 import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
@@ -10,6 +12,13 @@ import {
 export type LineItemPath =
   DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
 
+/**
+ * Retrieves a specific error message from an error object or array based on a path.
+ *
+ * @param error The error object or array containing validation errors.
+ * @param path A dot-separated string representing the path to the desired error message.
+ * @returns The error message string if found, otherwise undefined.
+ */
 export function getErrorMessage(
   error: unknown,
   path: string
@@ -74,6 +83,14 @@ export function getErrorMessage(
     : undefined;
 }
 
+/**
+ * Retrieves a specific error message for a line item field.
+ * This is a specialized version of getErrorMessage for line item paths.
+ *
+ * @param error The error object or array containing validation errors.
+ * @param path The LineItemPath (type-safe path) to the line item's error message.
+ * @returns The error message string if found, otherwise undefined.
+ */
 export function getLineItemErrorMessage(
   error: unknown,
   path: LineItemPath
@@ -82,12 +99,12 @@ export function getLineItemErrorMessage(
 }
 
 /**
- * Sets a value in the form with optional validation
+ * Sets a value in the form with optional validation using React Hook Form's setValue.
  *
- * @param name Field name
- * @param value Field value
- * @param shouldValidate Whether to validate after setting
- * @param setValue Form setValue function
+ * @param name The name of the field to set.
+ * @param value The value to set for the field.
+ * @param shouldValidate Optional. Whether to trigger validation after setting the value. Defaults to true.
+ * @param setValue The setValue function provided by React Hook Form's useForm.
  */
 export const setValueWithValidation = (
   name: string,
@@ -103,10 +120,10 @@ export const setValueWithValidation = (
 };
 
 /**
- * Handles tax/VAT rate input value
+ * Processes a string input value for a tax/VAT rate to ensure it's a number between 0 and 100.
  *
- * @param inputValue The raw input string from the TextField
- * @returns A number between 0 and 100 suitable for tax/VAT rates
+ * @param inputValue The raw input string, typically from a text field.
+ * @returns A number representing the tax/VAT rate, constrained between 0 and 100. Returns 0 for empty or invalid inputs.
  */
 export const processTaxRateValue = (inputValue: string): number => {
   if (inputValue === '') {
@@ -123,10 +140,10 @@ export const processTaxRateValue = (inputValue: string): number => {
 };
 
 /**
- * Handles cleaning up the input element for tax/VAT rate fields
- * Fixes issues like leading zeros
+ * Formats the value of an input element intended for tax/VAT rates.
+ * Specifically, it removes leading zeros unless the value is a decimal like "0.5".
  *
- * @param inputElement The input HTML element
+ * @param inputElement The HTMLInputElement whose value needs to be formatted.
  */
 export const formatTaxRate = (inputElement: HTMLInputElement): void => {
   // Remove leading zeros (but keep values like 0.5)
@@ -139,4 +156,58 @@ export const formatTaxRate = (inputElement: HTMLInputElement): void => {
 
     inputElement.value = newValue || '0';
   }
+};
+
+/**
+ * Converts a minor unit value to a locale-formatted major unit string.
+ * Example: 12345 (minor units) with 'en-US' locale -> "123.45"
+ *
+ * @param minorValue The numeric value in minor units (e.g., cents).
+ * @param numberFormatter An Intl.NumberFormat instance configured for the desired locale and currency.
+ * @returns A string representing the value in major units, formatted according to the locale, or an empty string if minorValue is undefined or NaN.
+ */
+export const formatMinorToMajorCurrency = (
+  minorValue: number | undefined,
+  numberFormatter: Intl.NumberFormat
+): string => {
+  if (minorValue === undefined || isNaN(minorValue)) return '';
+
+  const majorValue = rateMinorToMajor(minorValue);
+  return numberFormatter.format(majorValue);
+};
+
+/**
+ * Converts a locale-formatted major unit string to a minor unit number.
+ * Example: "1,234.56" with English locale -> 123456
+ *
+ * @param majorValueString The string representing the value in major units, formatted according to a specific locale.
+ * @param localeDecimalSeparator The decimal separator character used in majorValueString (e.g., "." or ",").
+ * @param localeGroupSeparator Optional. The group separator character used in majorValueString (e.g., "," or ".").
+ * @returns A number representing the value in minor units. Returns 0 for empty or invalid input strings.
+ */
+export const parseMajorToMinorCurrency = (
+  majorValueString: string,
+  localeDecimalSeparator: string,
+  localeGroupSeparator?: string
+): number => {
+  if (majorValueString.trim() === '') return 0;
+
+  let normalizedValue = majorValueString;
+  if (localeGroupSeparator) {
+    const escapedGroupSeparator = localeGroupSeparator.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    );
+    normalizedValue = normalizedValue.replace(
+      new RegExp(escapedGroupSeparator, 'g'),
+      ''
+    );
+  }
+  normalizedValue = normalizedValue.replace(localeDecimalSeparator, '.');
+
+  const numValue = parseFloat(normalizedValue);
+
+  if (isNaN(numValue)) return 0;
+
+  return rateMajorToMinor(numValue);
 };

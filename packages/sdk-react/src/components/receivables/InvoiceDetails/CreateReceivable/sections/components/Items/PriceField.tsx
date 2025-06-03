@@ -1,13 +1,26 @@
-import { ChangeEvent, useEffect, useState, FocusEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  useMemo,
+  type ChangeEvent,
+  type FocusEvent,
+} from 'react';
 
 import { useCurrencies } from '@/core/hooks';
+import { useLingui } from '@lingui/react';
 import { InputAdornment, TextField } from '@mui/material';
+
+import {
+  formatMinorToMajorCurrency,
+  parseMajorToMinorCurrency,
+} from '../../utils';
 
 interface PriceFieldProps {
   value?: number;
   error?: boolean;
   currency: string;
   disabled?: boolean;
+  locale?: string;
   onChange: (newValue: number) => void;
 }
 
@@ -17,22 +30,33 @@ export const PriceField = ({
   currency,
   disabled = false,
   onChange,
+  locale: propLocale,
 }: PriceFieldProps) => {
   const { getSymbolFromCurrency } = useCurrencies();
+  const { i18n } = useLingui();
 
-  const minorToMajor = (minorValue?: number): string => {
-    if (minorValue === undefined) return '';
-    return (minorValue / 100).toFixed(2);
-  };
+  const locale = propLocale ?? i18n.locale;
 
-  const majorToMinor = (majorValue: string): number => {
-    if (majorValue === '' || majorValue === '0') return 0;
-    const numValue = parseFloat(majorValue);
-    if (isNaN(numValue)) return 0;
-    return Math.round(numValue * 100);
-  };
+  const numberFormatter = useMemo(() => {
+    return new Intl.NumberFormat(locale, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }, [locale]);
 
-  const [inputValue, setInputValue] = useState<string>(minorToMajor(value));
+  const { decimalSeparator, groupSeparator } = useMemo(() => {
+    const parts = new Intl.NumberFormat(locale).formatToParts(12345.67);
+
+    return {
+      decimalSeparator:
+        parts.find((part) => part.type === 'decimal')?.value || '.',
+      groupSeparator: parts.find((part) => part.type === 'group')?.value || '',
+    };
+  }, [locale]);
+
+  const [inputValue, setInputValue] = useState<string>(
+    formatMinorToMajorCurrency(value, numberFormatter)
+  );
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
@@ -40,15 +64,16 @@ export const PriceField = ({
     // and the prop-derived value actually differs from the current input value.
     // This prevents resetting the input (and cursor position) while the user is actively typing.
     if (!isFocused) {
-      const majorValue = minorToMajor(value);
+      const majorValue = formatMinorToMajorCurrency(value, numberFormatter);
       if (majorValue !== inputValue) {
         setInputValue(majorValue);
       }
     }
-  }, [value, isFocused, inputValue]);
+  }, [value, isFocused, locale, numberFormatter]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
+
     setInputValue(val);
     // Immediate reformatting is avoided here to allow the user to type freely (e.g., decimals).
     // The final parsing, formatting, and calling onChange occur on blur.
@@ -60,21 +85,22 @@ export const PriceField = ({
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     setIsFocused(false);
-    let valueToProcess = e.target.value;
+    let currentVal = e.target.value.trim();
 
-    try {
-      const parsed = parseFloat(valueToProcess);
-      if (!isNaN(parsed)) {
-        valueToProcess = parsed.toFixed(2);
-      } else {
-        valueToProcess = '0.00';
-      }
-    } catch {
-      valueToProcess = '0.00';
+    if (currentVal === '') {
+      setInputValue(formatMinorToMajorCurrency(0, numberFormatter)); 
+      onChange(0);
+
+      return;
     }
-    setInputValue(valueToProcess);
 
-    const minorValue = majorToMinor(valueToProcess);
+    const minorValue = parseMajorToMinorCurrency(
+      currentVal,
+      decimalSeparator,
+      groupSeparator
+    );
+
+    setInputValue(formatMinorToMajorCurrency(minorValue, numberFormatter));
     onChange(minorValue);
   };
 
@@ -96,7 +122,6 @@ export const PriceField = ({
       }}
       inputProps={{
         inputMode: 'decimal',
-        pattern: '[0-9]*(.[0-9]+)?',
         min: 0,
         step: '0.01',
       }}
