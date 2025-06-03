@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { showErrorToast } from '@/components/onboarding/utils';
-
 import {
   BankAccountFormDialog,
   BankAccountSection,
@@ -54,7 +53,6 @@ import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
-import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
@@ -98,15 +96,18 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds, isLoading: isEntityVatIdsLoading, error: vatIdsError } =
-    api.entities.getEntitiesIdVatIds.useQuery(
-      {
-        path: { entity_id: entityId },
-      },
-      {
-        enabled: !!entityId,
-      }
-    );
+  const {
+    data: entityVatIds,
+    isLoading: isEntityVatIdsLoading,
+    error: vatIdsError,
+  } = api.entities.getEntitiesIdVatIds.useQuery(
+    {
+      path: { entity_id: entityId },
+    },
+    {
+      enabled: !!entityId,
+    }
+  );
 
   if (vatIdsError) {
     const message = getAPIErrorMessage(i18n, vatIdsError);
@@ -115,7 +116,7 @@ const CreateReceivablesBase = ({
       toast.error(message);
     }
   }
-  
+
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -571,6 +572,16 @@ const CreateReceivablesBase = ({
                   <Typography>{t(i18n)`Enable more fields`}</Typography>
                 </MenuItem>
               </Menu>
+              <Button
+                variant="contained"
+                key="next"
+                color="primary"
+                type="submit"
+                form={formName}
+                disabled={createReceivable.isPending}
+              >
+                {t(i18n)`Save and continue`}
+              </Button>
             </>
           }
           closeButtonTooltip={t(i18n)`Close invoice creation`}
@@ -705,9 +716,7 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={
-                        visibleSettingsFields.isFulfillmentDateShown
-                      }
+                      checked={visibleSettingsFields.isFulfillmentDateShown}
                       onChange={(e) =>
                         handleFieldChange(
                           'isFulfillmentDateShown',
@@ -743,9 +752,7 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={
-                        visibleSettingsFields.isPurchaseOrderShown
-                      }
+                      checked={visibleSettingsFields.isPurchaseOrderShown}
                       onChange={(e) =>
                         handleFieldChange(
                           'isPurchaseOrderShown',
@@ -781,9 +788,7 @@ const CreateReceivablesBase = ({
                       </Typography>
                     </Box>
                     <Switch
-                      checked={
-                        visibleSettingsFields.isTermsAndConditionsShown
-                      }
+                      checked={visibleSettingsFields.isTermsAndConditionsShown}
                       onChange={(e) =>
                         handleFieldChange(
                           'isTermsAndConditionsShown',
@@ -829,10 +834,7 @@ const CreateReceivablesBase = ({
                     minHeight: 96,
                   }}
                 >
-                  <Button
-                    variant="text"
-                    onClick={handleCloseEnableFieldsModal}
-                  >
+                  <Button variant="text" onClick={handleCloseEnableFieldsModal}>
                     {t(i18n)`Cancel`}
                   </Button>
                   <Button
@@ -845,15 +847,6 @@ const CreateReceivablesBase = ({
               </Grid>
             </Box>
           </Modal>
-
-          <Button
-            variant="contained"
-            key="next"
-            color="primary"
-            type="submit"
-            form={formName}
-            disabled={createReceivable.isPending}
-          >{t(i18n)`Save and continue`}</Button>
 
           <FormProvider {...methods}>
             <form

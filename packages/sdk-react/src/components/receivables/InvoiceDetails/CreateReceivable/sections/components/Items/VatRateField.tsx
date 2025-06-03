@@ -57,6 +57,7 @@ export const VatRateField = ({
       defaultVatValue = highestVatRate.value;
       defaultTaxRate = null;
     } else if (isNonVatSupported) {
+      // For non-VAT regions, set VAT rate to null and use tax_rate_value (default to 0%)
       defaultVatId = null;
       defaultVatValue = null;
       defaultTaxRate =
@@ -76,6 +77,7 @@ export const VatRateField = ({
     currentTaxRateValue,
   ]);
 
+  // If we're in a non-VAT region, we don't need to show the VAT rate selector
   if (isNonVatSupported) {
     return null;
   }

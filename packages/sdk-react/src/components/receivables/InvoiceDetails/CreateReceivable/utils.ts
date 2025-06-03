@@ -165,7 +165,6 @@ export const parseLocaleNumericString = (
     ''
   );
 
-
   let resultString = '';
   let hasSeparator = false;
 
