@@ -59,6 +59,7 @@ export const useLineItemManagement = ({
 
   const mounted = useIsMounted();
   const isAddingRow = useRef(false);
+  const [initialRowAdded, setInitialRowAdded] = useState(false);
 
   const [autoAddedRows, setAutoAddedRows] = useState<number[]>([]);
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
@@ -265,16 +266,17 @@ export const useLineItemManagement = ({
   }, [getValues, setValue, clearErrors, createEmptyRow]);
 
   useEffect(() => {
-    if (!mounted.current) {
-      const existingItems = getValues('line_items');
+    if (!mounted.current || initialRowAdded) return;
 
-      if (!existingItems?.length && !isAddingRow.current) {
-        isAddingRow.current = true;
-        append(createEmptyRow());
-        setAutoAddedRows([0]);
-      }
+    const existingItems = getValues('line_items');
+
+    if (!existingItems?.length && !isAddingRow.current) {
+      isAddingRow.current = true;
+      append(createEmptyRow());
+      setAutoAddedRows([0]);
+      setInitialRowAdded(true);
     }
-  }, [append, createEmptyRow, getValues, setAutoAddedRows, mounted]);
+  }, [mounted, initialRowAdded, getValues, append, createEmptyRow]);
 
   const handleRemoveItem = useCallback(
     (index: number) => {

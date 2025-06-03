@@ -459,6 +459,22 @@ const CreateReceivablesBase = ({
   }, [entityBankAccountId, bankAccountField, clearErrors]);
 
   useEffect(() => {
+    if (entityBankAccountId && bankAccounts?.data) {
+      const selectedBankAccount = bankAccounts.data.find(
+        (bank) => bank.id === entityBankAccountId
+      );
+  
+      if (!selectedBankAccount?.currency) return;
+
+      const newCurrency = selectedBankAccount.currency;
+      
+      if (newCurrency !== actualCurrency) {
+        setActualCurrency(newCurrency);
+      }
+    }
+  }, [entityBankAccountId, bankAccounts?.data, actualCurrency]);
+
+  useEffect(() => {
     if (entityVatIds && entityVatIds.data.length > 0) {
       setValue('entity_vat_id_id', entityVatIds.data[0].id);
     }
