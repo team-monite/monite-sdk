@@ -1,9 +1,8 @@
-'use client';
-
-import { Onboarding } from '@monite/sdk-react';
 import { Box } from '@mui/material';
 
-export default function CounterpartsPage() {
+import { Onboarding } from '@/components/MoniteComponents';
+
+export default function OnboardingPage() {
   return (
     <Box className="Monite-PageContainer Monite-Onboarding">
       <Onboarding />

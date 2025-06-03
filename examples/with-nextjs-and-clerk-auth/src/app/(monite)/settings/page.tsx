@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import Image from 'next/image';
@@ -8,7 +6,7 @@ import { Box, Stack, Typography } from '@mui/material';
 
 import stubSvg from './stub.svg';
 
-export default function ProjectsPage() {
+export default function SettingsPage() {
   return (
     <Box className="Monite-PageContainer Monite-Settings">
       <Stack direction="column" justifyContent="flex-start" alignItems="center">

@@ -67,6 +67,10 @@ export function emitMoniteEvent<T extends EventPayload>(
   type: MoniteEventTypes,
   payload: T
 ): boolean {
+  if (typeof CustomEvent === 'undefined') {
+    return true;
+  }
+
   const target = getMoniteAppEventTarget();
   const event = new CustomEvent<MoniteEvent<T>>(
     `${MONITE_EVENT_PREFIX}:${type}`,
@@ -204,15 +208,16 @@ export function enhanceComponentSettings(
 export function addMoniteEventListener<T extends EventPayload>(
   eventType: MoniteEventTypes,
   callback: (event: CustomEvent<MoniteEvent<T>>) => void,
-  target: Element | Document = getMoniteAppEventTarget()
+  target?: Element | Document
 ): () => void {
+  const eventTarget = target || getMoniteAppEventTarget();
   const eventName = `${MONITE_EVENT_PREFIX}:${eventType}`;
   const wrappedCallback = callback as EventListener;
 
-  target.addEventListener(eventName, wrappedCallback);
+  eventTarget.addEventListener(eventName, wrappedCallback);
 
   return () => {
-    target.removeEventListener(eventName, wrappedCallback);
+    eventTarget.removeEventListener(eventName, wrappedCallback);
   };
 }
 
@@ -222,6 +227,9 @@ export function addMoniteEventListener<T extends EventPayload>(
  * @returns The Monite app element or null if not found
  */
 export function getMoniteAppElement(): Element | null {
+  if (typeof document === 'undefined') {
+    return null;
+  }
   return document.querySelector(MONITE_APP_ELEMENT_NAME);
 }
 
@@ -244,6 +252,14 @@ export function getMoniteAppElement(): Element | null {
  * @returns The most appropriate target for Monite events
  */
 export function getMoniteAppEventTarget(): Element | Document {
+  if (typeof document === 'undefined') {
+    return {
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => true,
+    } as unknown as Document;
+  }
+
   const moniteApp = getMoniteAppElement();
   if (moniteApp && moniteApp.hasAttribute('component')) {
     return moniteApp;
@@ -260,7 +276,10 @@ function generateEventId(): string {
     return crypto.randomUUID();
   }
 
-  return `${Date.now()}-${faker.string.alphanumeric(9)}`;
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substring(2, 11);
+
+  return `${timestamp}-${random}`;
 }
 
 export { generateEventId };

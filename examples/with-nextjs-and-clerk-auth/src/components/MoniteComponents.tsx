@@ -8,27 +8,9 @@ import React, {
   useState,
 } from 'react';
 
+import dynamic from 'next/dynamic';
+
 import { useLingui } from '@lingui/react';
-import {
-  ApprovalPolicies as ApprovalPoliciesBase,
-  Counterparts as CounterpartsBase,
-  Dialog,
-  getCounterpartName,
-  MoniteProvider as MoniteProviderBase,
-  Payables as PayablesBase,
-  Products as ProductsBase,
-  Receivables as ReceivablesBase,
-  RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
-  Tags as TagsBase,
-  toast,
-  useCounterpartById,
-  useCurrencies,
-  useMoniteContext,
-  useRootElements,
-  UserRoles as UserRolesBase,
-  DocumentDesign as DocumentDesignBase,
-} from '@monite/sdk-react';
-// import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
   Button,
@@ -42,13 +24,178 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
-  Stack, // SxProps,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
+
+import LoadingFallback from '@/components/LoadingFallback';
+
+const MoniteProviderComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({
+      default: mod.MoniteProvider,
+    })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const ApprovalPoliciesComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({
+      default: mod.ApprovalPolicies,
+    })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const CounterpartsComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({ default: mod.Counterparts })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const PayablesComponent = dynamic(
+  () => import('@monite/sdk-react').then((mod) => ({ default: mod.Payables })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const ProductsComponent = dynamic(
+  () => import('@monite/sdk-react').then((mod) => ({ default: mod.Products })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const ReceivablesComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({ default: mod.Receivables })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const RolesAndApprovalPoliciesComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({
+      default: mod.RolesAndApprovalPolicies,
+    })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const TagsComponent = dynamic(
+  () => import('@monite/sdk-react').then((mod) => ({ default: mod.Tags })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const UserRolesComponent = dynamic(
+  () => import('@monite/sdk-react').then((mod) => ({ default: mod.UserRoles })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const DocumentDesignComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({
+      default: mod.DocumentDesign,
+    })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const OnboardingComponent = dynamic(
+  () =>
+    import('@monite/sdk-react').then((mod) => ({
+      default: mod.Onboarding,
+    })),
+  { ssr: false, loading: () => <LoadingFallback minimal /> }
+);
+
+const getUtils = () => {
+  if (typeof window === 'undefined') {
+    return {
+      useCounterpartById: () => ({ data: null }),
+      useCurrencies: () => ({
+        data: [],
+        formatCurrencyToDisplay: () => '—',
+      }),
+      useMoniteContext: () => ({
+        locale: { code: 'en', dateTimeFormat: 'MM/dd/yyyy' },
+        api: {
+          payables: {
+            getPayablesId: {
+              useQuery: () => ({ data: null }),
+              invalidateQueries: () => Promise.resolve(),
+            },
+            getPayables: {
+              invalidateQueries: () => Promise.resolve(),
+            },
+            postPayablesIdMarkAsPaid: {
+              useMutation: () => ({
+                mutateAsync: () => Promise.resolve({}),
+              }),
+            },
+          },
+        },
+        queryClient: {},
+      }),
+      useRootElements: () => ({ root: null, styles: null }),
+      getCounterpartName: () => '',
+      toast: { success: () => {}, error: () => {} },
+      Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    };
+  }
+
+  try {
+    const MoniteSDK = require('@monite/sdk-react');
+    return {
+      useCounterpartById: MoniteSDK.useCounterpartById,
+      useCurrencies: MoniteSDK.useCurrencies,
+      useMoniteContext: MoniteSDK.useMoniteContext,
+      useRootElements: MoniteSDK.useRootElements,
+      getCounterpartName: MoniteSDK.getCounterpartName,
+      toast: MoniteSDK.toast,
+      Dialog: MoniteSDK.Dialog,
+    };
+  } catch (error) {
+    return {
+      useCounterpartById: () => ({ data: null }),
+      useCurrencies: () => ({
+        data: [],
+        formatCurrencyToDisplay: () => '—',
+      }),
+      useMoniteContext: () => ({
+        locale: { code: 'en', dateTimeFormat: 'MM/dd/yyyy' },
+        api: {
+          payables: {
+            getPayablesId: {
+              useQuery: () => ({ data: null }),
+              invalidateQueries: () => Promise.resolve(),
+            },
+            getPayables: {
+              invalidateQueries: () => Promise.resolve(),
+            },
+            postPayablesIdMarkAsPaid: {
+              useMutation: () => ({
+                mutateAsync: () => Promise.resolve({}),
+              }),
+            },
+          },
+        },
+        queryClient: {},
+      }),
+      useRootElements: () => ({ root: null, styles: null }),
+      getCounterpartName: () => '',
+      toast: { success: () => {}, error: () => {} },
+      Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    };
+  }
+};
+
+const {
+  useCounterpartById,
+  useCurrencies,
+  useMoniteContext,
+  useRootElements,
+  getCounterpartName,
+  toast,
+  Dialog,
+} = getUtils();
 
 /* eslint-disable */
 
@@ -93,7 +240,7 @@ export const MoniteProvider = ({
   );
 
   return (
-    <MoniteProviderBase
+    <MoniteProviderComponent
       monite={monite}
       componentSettings={{
         receivables: {
@@ -124,7 +271,7 @@ export const MoniteProvider = ({
       }}
     >
       {children}
-    </MoniteProviderBase>
+    </MoniteProviderComponent>
   );
 };
 
@@ -159,11 +306,30 @@ const ChooseBankAccountPage = () => {
       <DialogContent sx={{ p: 3 }}>
         <Stack direction="column" alignItems="stretch" gap={2}>
           {[
-            { value: 'option1', icon: jpmIcon, alt: 'JPMorgan', name: 'JPMorgan Chase', details: 'Checking account • 7004 8841 7002 1630 0' },
-            { value: 'option2', icon: amexIcon, alt: 'Amex', name: 'American Express', details: 'Checking account • 8744 3360 8539 9580' },
-            { value: 'option3', icon: mercuryIcon, alt: 'Mercury', name: 'Mercury', details: 'Checking account • 3690 8597 4129 4280' },
+            {
+              value: 'option1',
+              icon: jpmIcon,
+              alt: 'JPMorgan',
+              name: 'JPMorgan Chase',
+              details: 'Checking account • 7004 8841 7002 1630 0',
+            },
+            {
+              value: 'option2',
+              icon: amexIcon,
+              alt: 'Amex',
+              name: 'American Express',
+              details: 'Checking account • 8744 3360 8539 9580',
+            },
+            {
+              value: 'option3',
+              icon: mercuryIcon,
+              alt: 'Mercury',
+              name: 'Mercury',
+              details: 'Checking account • 3690 8597 4129 4280',
+            },
           ].map((item) => {
-            const currentSx = selectedValue === item.value ? selectedProps : itemProps;
+            const currentSx =
+              selectedValue === item.value ? selectedProps : itemProps;
             return (
               <Stack
                 key={item.value}
@@ -247,10 +413,9 @@ const TransferTypePage = () => {
                   details: () => (
                     <>
                       $1 fee, take 2-3 business days, estimated arrival{' '}
-                      {i18n.date(
-                        new Date(Date.now() + 86400000 * 3),
-                        locale.dateTimeFormat
-                      )}
+                      {i18n.date(new Date(Date.now() + 86400000 * 3), {
+                        dateStyle: 'short',
+                      })}
                     </>
                   ),
                 },
@@ -260,15 +425,14 @@ const TransferTypePage = () => {
                   details: () => (
                     <>
                       $5 fee, take 5-7 business days, estimated arrival{' '}
-                      {i18n.date(
-                        new Date(Date.now() + 86400000 * 7),
-                        locale.dateTimeFormat
-                      )}
+                      {i18n.date(new Date(Date.now() + 86400000 * 7), {
+                        dateStyle: 'short',
+                      })}
                     </>
                   ),
                 },
               ].map((option) => {
-                const currentSx = 
+                const currentSx =
                   selectedValue === option.value ? selectedProps : itemProps;
                 return (
                   <FormControlLabel
@@ -278,7 +442,9 @@ const TransferTypePage = () => {
                     label={
                       <Box sx={{ p: 0 }}>
                         <Typography variant="body1">{option.label}</Typography>
-                        <Typography variant="body2">{option.details()}</Typography>
+                        <Typography variant="body2">
+                          {option.details()}
+                        </Typography>
                       </Box>
                     }
                     sx={currentSx as React.CSSProperties}
@@ -383,7 +549,7 @@ const USPayDialog = ({
   const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
     undefined,
     {
-      onSuccess: (payable) =>
+      onSuccess: (payable: { id: string }) =>
         Promise.all([
           api.payables.getPayablesId.invalidateQueries(
             { parameters: { path: { payable_id: payable.id } } },
@@ -391,8 +557,8 @@ const USPayDialog = ({
           ),
           api.payables.getPayables.invalidateQueries(queryClient),
         ]),
-      onError: (error) => {
-        toast.error(error.toString());
+      onError: (error: unknown) => {
+        toast.error((error as Error).toString());
       },
     }
   );
@@ -491,7 +657,7 @@ export const Payables = () => {
 
   return (
     <>
-      <PayablesBase
+      <PayablesComponent
         onPayUS={(payableId: string) => {
           setCurrentPayableId(payableId);
           setModalOpen(true);
@@ -516,35 +682,39 @@ export const Payables = () => {
 };
 
 export const Receivables = () => {
-  return <ReceivablesBase />;
+  return <ReceivablesComponent />;
 };
 
 export const Counterparts = () => {
-  return <CounterpartsBase />;
+  return <CounterpartsComponent />;
 };
 
 export const Products = () => {
-  return <ProductsBase />;
+  return <ProductsComponent />;
 };
 
 export const ApprovalPolicies = () => {
-  return <ApprovalPoliciesBase />;
+  return <ApprovalPoliciesComponent />;
 };
 
 export const Tags = () => {
-  return <TagsBase />;
+  return <TagsComponent />;
 };
 
 export const UserRoles = () => {
-  return <UserRolesBase />;
+  return <UserRolesComponent />;
 };
 
 export const RolesAndPolicies = () => {
-  return <RolesAndApprovalPoliciesBase />;
+  return <RolesAndApprovalPoliciesComponent />;
 };
 
 export const InvoiceDesign = () => {
-  return <DocumentDesignBase />;
+  return <DocumentDesignComponent />;
+};
+
+export const Onboarding = () => {
+  return <OnboardingComponent />;
 };
 
 const amexIcon =

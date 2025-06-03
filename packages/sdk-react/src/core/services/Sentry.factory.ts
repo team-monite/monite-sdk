@@ -42,7 +42,7 @@ export const SentryFactory = {
      */
     const sentryEnvironment = config.environment;
 
-    const isLocalhost = window.location.hostname === 'localhost';
+    const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
     const isDevelopmentRuntime = import.meta.env.MODE === 'development';
 
     const debug = sentryEnvironment === 'dev';
