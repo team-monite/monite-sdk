@@ -247,8 +247,6 @@ export const useLineItemManagement = ({
       finalItems = actualNonEmptyItems;
     } else if (currentItems.length > 0) {
       finalItems = [createEmptyRow(firstEmptyItem || undefined)];
-    } else {
-      finalItems = [];
     }
 
     const didItemsChange =
