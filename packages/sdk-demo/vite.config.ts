@@ -81,31 +81,31 @@ export default async function viteConfig() {
         // Use regex-based aliasing to handle Node.js modules and their subpaths
         {
           find: /^fs(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/fs.js'),
         },
         {
           find: /^stream(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/stream.js'),
         },
         {
           find: /^util(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/util.js'),
         },
         {
           find: /^path(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/path.js'),
         },
         {
           find: /^os(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/os.js'),
         },
         {
           find: /^tty(\/.*)?$/,
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
         },
         {
           find: 'jsdom',
-          replacement: resolve(__dirname, './src/empty.js'),
+          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
         },
       ],
     },
