@@ -13,7 +13,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import StarIcon from '@mui/icons-material/Star';
 import { Button, CardActions, Divider } from '@mui/material';
 
-import { ConfirmDeleteDialog } from '../../../components/ConfirmDeleteDialog';
 import { getIndividualName } from '../../../helpers';
 import { printAddress } from '../../CounterpartAddressForm';
 import { prepareCounterpartContact } from '../../CounterpartContactForm';
