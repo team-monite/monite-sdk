@@ -25,10 +25,12 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  SxProps,
   Table,
   TableBody,
   TableCell,
   TableRow,
+  Theme,
   Typography,
 } from '@mui/material';
 
@@ -284,7 +286,7 @@ enum USPayDialogPage {
 const ChooseBankAccountPage = () => {
   const [selectedValue, setSelectedValue] = useState('option1');
 
-  const itemProps = {
+  const itemProps: SxProps<Theme> = {
     borderRadius: '3px',
     borderWidth: '1px',
     m: '1px',
@@ -292,7 +294,7 @@ const ChooseBankAccountPage = () => {
     borderColor: 'divider',
     p: 2,
   };
-  const selectedProps = {
+  const selectedProps: SxProps<Theme> = {
     borderRadius: '3px',
     borderWidth: '2px',
     borderStyle: 'solid',
@@ -335,7 +337,7 @@ const ChooseBankAccountPage = () => {
                 key={item.value}
                 direction="row"
                 alignItems="center"
-                sx={currentSx as React.CSSProperties}
+                sx={currentSx}
                 onClick={() => setSelectedValue(item.value)}
               >
                 <img
@@ -369,7 +371,7 @@ const TransferTypePage = () => {
     setSelectedValue(event.target.value);
   };
 
-  const itemProps = {
+  const itemProps: SxProps<Theme> = {
     borderRadius: '6px',
     borderWidth: '1px',
     ml: '1px',
@@ -380,7 +382,7 @@ const TransferTypePage = () => {
     borderColor: 'divider',
     p: '2px 12px 6px 2px',
   };
-  const selectedProps = {
+  const selectedProps: SxProps<Theme> = {
     borderRadius: '6px',
     borderWidth: '2px',
     borderStyle: 'solid',
@@ -447,7 +449,7 @@ const TransferTypePage = () => {
                         </Typography>
                       </Box>
                     }
-                    sx={currentSx as React.CSSProperties}
+                    sx={currentSx}
                   />
                 );
               })}
