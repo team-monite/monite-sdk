@@ -388,11 +388,11 @@ export const rateMinorToMajor = (rateMinor: number): number => {
 };
 
 /**
-* Converts a rate from major units (UI display format) to minor units (API format)
-* Example: 20 -> 2000
-* @param rateMajor The rate value in major units (from UI)
-* @returns The rate value in minor units (for API)
-*/
+ * Converts a rate from major units (UI display format) to minor units (API format)
+ * Example: 20 -> 2000
+ * @param rateMajor The rate value in major units (from UI)
+ * @returns The rate value in minor units (for API)
+ */
 export const rateMajorToMinor = (rateMajor: number): number => {
   return rateMajor * 100;
 };
