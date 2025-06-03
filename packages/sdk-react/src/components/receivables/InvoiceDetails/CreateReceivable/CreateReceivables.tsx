@@ -3,7 +3,6 @@ import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
-import { ActiveInvoiceTitleTestId } from './components/ProductsTable.types';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
@@ -930,14 +929,6 @@ const CreateReceivablesBase = ({
                       </div>
                     </Alert>
                   )}
-
-                  <Typography
-                    sx={{ mt: 8, mb: 5 }}
-                    data-testid={
-                      ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId
-                    }
-                    variant="h3"
-                  >{t(i18n)`Create invoice`}</Typography>
 
                   <CustomerSection
                     disabled={createReceivable.isPending}
