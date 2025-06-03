@@ -69,3 +69,8 @@ terraform.rc
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+playwright/.auth/
+playwright/.clerk/
+playwright-report/
+test-results/
