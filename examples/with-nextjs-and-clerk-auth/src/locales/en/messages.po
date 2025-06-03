@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/components/NavigationMenu/NavigationList.tsx:52
-msgid "AI Assistant"
-msgstr "AI Assistant"
+#~ msgid "AI Assistant"
+#~ msgstr "AI Assistant"
 
 #: src/components/NavigationMenu/NavigationList.tsx:45
-msgid "Bill Pay"
-msgstr "Bill Pay"
+#~ msgid "Bill Pay"
+#~ msgstr "Bill Pay"
 
 #: src/components/MoniteComponents.tsx:488
 #~ msgid "Cancel"
@@ -32,8 +32,8 @@ msgstr "Bill Pay"
 #~ msgstr "Continue"
 
 #: src/components/NavigationMenu/NavigationList.tsx:59
-msgid "Counterparts"
-msgstr "Counterparts"
+#~ msgid "Counterparts"
+#~ msgstr "Counterparts"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:134
 #: src/components/ThemeSelect/useThemeSelect.ts:33
@@ -41,12 +41,12 @@ msgstr "Counterparts"
 #~ msgstr "Dark Mode"
 
 #: src/components/NavigationMenu/NavigationList.tsx:42
-msgid "Dashboard"
-msgstr "Dashboard"
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
 
 #: src/components/NavigationMenu/NavigationList.tsx:82
-msgid "Document Design"
-msgstr "Document Design"
+#~ msgid "Document Design"
+#~ msgstr "Document Design"
 
 #: src/components/NavigationMenu/NavigationList.tsx:79
 #~ msgid "Email Templates"
@@ -57,8 +57,8 @@ msgstr "Document Design"
 #~ msgstr "English"
 
 #: src/components/NavigationMenu/NavigationList.tsx:103
-msgid "Get Help"
-msgstr "Get Help"
+#~ msgid "Get Help"
+#~ msgstr "Get Help"
 
 #: src/components/NavigationMenu/NavigationList.tsx:73
 #~ msgid "Integrations"
@@ -73,8 +73,8 @@ msgstr "Get Help"
 #~ msgstr "Invoice Design"
 
 #: src/components/NavigationMenu/NavigationList.tsx:48
-msgid "Invoicing"
-msgstr "Invoicing"
+#~ msgid "Invoicing"
+#~ msgstr "Invoicing"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:118
 #~ msgid "Language"
@@ -115,36 +115,36 @@ msgstr "Invoicing"
 #~ msgstr "Payable \"{0}\" has been paid"
 
 #: src/components/NavigationMenu/NavigationList.tsx:62
-msgid "Products & Services"
-msgstr "Products & Services"
+#~ msgid "Products & Services"
+#~ msgstr "Products & Services"
 
 #: src/components/NavigationMenu/NavigationList.tsx:56
-msgid "Projects"
-msgstr "Projects"
+#~ msgid "Projects"
+#~ msgstr "Projects"
 
 #: src/components/NavigationMenu/NavigationList.tsx:41
 #~ msgid "Purchases"
 #~ msgstr "Purchases"
 
 #: src/components/NavigationMenu/NavigationList.tsx:85
-msgid "Roles & Approvals"
-msgstr "Roles & Approvals"
+#~ msgid "Roles & Approvals"
+#~ msgstr "Roles & Approvals"
 
 #: src/components/NavigationMenu/NavigationList.tsx:44
 #~ msgid "Sales"
 #~ msgstr "Sales"
 
 #: src/components/NavigationMenu/NavigationList.tsx:77
-msgid "Settings"
-msgstr "Settings"
+#~ msgid "Settings"
+#~ msgstr "Settings"
 
 #: src/components/MoniteComponents.tsx:356
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
 #: src/components/NavigationMenu/NavigationList.tsx:88
-msgid "Tags"
-msgstr "Tags"
+#~ msgid "Tags"
+#~ msgstr "Tags"
 
 #: src/components/NavigationMenu/NavigationList.tsx:64
 #~ msgid "Team"
