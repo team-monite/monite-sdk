@@ -42,6 +42,10 @@ export const createConversationGroups = (
 };
 
 export const setCursorAtTheEnd = (element: HTMLElement) => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
   const range = document.createRange();
   const selection = window.getSelection();
 

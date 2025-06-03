@@ -68,6 +68,11 @@ class MoniteDropin {
 
   constructor(config: MoniteAppElementConfig) {
     this.config = { ...MoniteDropin.defaultConfig, ...config };
+
+    if (typeof document === 'undefined') {
+      throw new Error('MoniteDropin cannot be used in SSR environment');
+    }
+
     this.moniteAppElement = document.createElement(
       MONITE_APP_ELEMENT_NAME
     ) as MoniteAppElement;
@@ -81,6 +86,10 @@ class MoniteDropin {
 
     // Add fetch-token script
     this.moniteAppElement.fetchToken = this.config.fetchToken;
+
+    if (typeof document === 'undefined') {
+      throw new Error('MoniteDropin cannot be used in SSR environment');
+    }
 
     // Add locale script
     const localeScript = document.createElement('script');

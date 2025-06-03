@@ -21,6 +21,7 @@ export default async function viteConfig() {
     plugins: [
       dts({
         outDir: 'build',
+        entryRoot: 'src',
         // rollupTypes: true, // Consider if you want to bundle .d.ts files into a single file via Rollup
       }),
       react({
@@ -72,6 +73,10 @@ export default async function viteConfig() {
         {
           find: '@emotion/styled',
           replacement: resolve(__dirname, '../../node_modules/@emotion/styled'),
+        },
+        {
+          find: /^vite$/,
+          replacement: resolve(__dirname, '../../node_modules/vite'),
         },
         // Use regex-based aliasing to handle Node.js modules and their subpaths
         {

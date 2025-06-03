@@ -1,5 +1,3 @@
-'use client';
-
 import { Box } from '@mui/material';
 
 import { Counterparts } from '@/components/MoniteComponents';

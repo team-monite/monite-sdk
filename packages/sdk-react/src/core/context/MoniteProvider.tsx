@@ -10,7 +10,6 @@ import { Global, css } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 import { GlobalToast } from '../GlobalToast';
-// @ts-expect-error - This is a global css file
 import tailwindApp from '../theme/app.css';
 import { MoniteLocale } from './i18nUtils';
 import { KanmonContextProvider } from './KanmonContext';

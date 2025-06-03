@@ -18,7 +18,6 @@ import { setupI18n } from '@lingui/core';
 import {
   BrowserClient,
   defaultStackParser,
-  Hub,
   makeFetchTransport,
 } from '@sentry/react';
 import { QueryCache, QueryClient } from '@tanstack/react-query';
@@ -104,7 +103,6 @@ export const Provider = ({
     stackParser: defaultStackParser,
     integrations: [],
   });
-  const sentryHub = new Hub(sentryClient);
   const apiClient = createAPIClient({
     entityId: moniteSettings.entityId,
     context: MoniteQraftContext,
@@ -131,7 +129,6 @@ export const Provider = ({
         environment: 'dev',
         locale: getLocaleWithDefaults(moniteProviderProps?.locale),
         i18n,
-        sentryHub,
         queryClient: client,
         theme: createThemeWithDefaults(
           moniteProviderProps?.theme

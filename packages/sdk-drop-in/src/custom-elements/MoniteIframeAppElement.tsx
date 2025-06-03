@@ -143,6 +143,12 @@ export class MoniteIframeAppElement extends MoniteAppElementBase<
     this.iframeAppRoot =
       this.iframeAppRoot ||
       (() => {
+        if (typeof document === 'undefined') {
+          throw new Error(
+            'MoniteIframeAppElement cannot be used in SSR environment'
+          );
+        }
+
         const iframeNode = document.createElement('iframe');
         iframeNode.id = 'monite-iframe-app';
         iframeNode.style.border = 'none';
