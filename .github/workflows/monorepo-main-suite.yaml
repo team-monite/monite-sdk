@@ -77,32 +77,38 @@ jobs:
       - name: Unit Test
         run: yarn test
 
-  install-playwright-drop-in:
+  install-playwright-browsers:
     needs: build
-    name: Install Playwright Browsers (Drop-in)
+    name: Install Playwright Browsers
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        workspace: 
+          - "@monite/sdk-drop-in"
+          - "sdk-demo-with-nextjs-and-clerk-auth"
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
         uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Install Playwright Browsers
-        run: yarn workspace @monite/sdk-drop-in exec playwright install
+        run: yarn workspace ${{ matrix.workspace }} exec playwright install
 
-  install-playwright-demo:
-    needs: build
-    name: Install Playwright Browsers (Demo)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
+      - name: Get Playwright cache directory
+        id: playwright-cache
+        run: |
+          echo "cache-dir=$(yarn workspace ${{ matrix.workspace }} exec playwright --version | head -1 | awk '{print $2}' || echo 'unknown')" >> $GITHUB_OUTPUT
+          echo "workspace-safe=$(echo '${{ matrix.workspace }}' | sed 's/@//g' | sed 's/\//-/g')" >> $GITHUB_OUTPUT
 
-      - name: Install Playwright Browsers
-        run: yarn workspace sdk-demo-with-nextjs-and-clerk-auth exec playwright install
+      - name: Upload Playwright browsers
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-browsers-${{ steps.playwright-cache.outputs.workspace-safe }}
+          path: ~/.cache/ms-playwright
+          retention-days: 1
 
   e2e-testing:
-    needs: [install-playwright-drop-in, install-playwright-demo]
+    needs: install-playwright-browsers
     name: E2E Playwright Testing
     environment: common
     runs-on: ubuntu-latest
@@ -111,6 +117,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
         uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
+
+      - name: Download all Playwright browsers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-browsers-*
+          path: ~/.cache/ms-playwright
+          merge-multiple: true
 
       - name: E2E Test
         run: yarn e2e
