@@ -1,6 +1,7 @@
 import {
   type ChangeEvent,
   type FC,
+  FormEvent,
   useEffect,
   useMemo,
   useRef,
@@ -56,7 +57,9 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
     setInput(e.target.value);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
     await handleSendFeedbackMessage(input);
   };
 
@@ -66,7 +69,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
     }
 
     formRef.current.focus();
-    formRef.current.scrollTo();
+    formRef.current.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
@@ -103,8 +106,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
   return (
     <form
       ref={formRef}
-      method="post"
-      action="/assistant/post-feedback-details"
       onSubmit={handleSubmit}
       className={cn(
         'mtw:relative mtw:p-4 mtw:mt-4 mtw:border mtw:border-solid mtw:border-border',
