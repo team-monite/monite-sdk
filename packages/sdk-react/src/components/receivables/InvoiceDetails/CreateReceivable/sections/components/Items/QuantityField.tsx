@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLingui } from '@lingui/react';
 import { Controller, Control, FieldError } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -36,6 +37,7 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
   onLineItemValueChange,
   onLineItemManuallyChanged,
 }) => {
+  const { i18n } = useLingui();
   const [editingQuantityIndex, setEditingQuantityIndex] = useState<
     number | null
   >(null);
@@ -98,7 +100,7 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
               );
             }}
             onBlur={() => {
-              const numericValue = parseLocaleNumericString(quantityRawValue);
+              const numericValue = parseLocaleNumericString(quantityRawValue, i18n.locale);
               onLineItemValueChange('quantity', numericValue, {
                 shouldValidate: true,
               });
@@ -109,7 +111,7 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
               const rawValue = e.target.value;
               setQuantityRawValue(rawValue);
               onLineItemManuallyChanged();
-              const numericValue = parseLocaleNumericString(rawValue);
+              const numericValue = parseLocaleNumericString(rawValue, i18n.locale);
               onLineItemValueChange('quantity', numericValue, {
                 shouldValidate: false,
               });
