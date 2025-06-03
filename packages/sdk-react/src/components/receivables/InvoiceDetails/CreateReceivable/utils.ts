@@ -123,24 +123,56 @@ export const processTaxRateValue = (inputValue: string): number => {
 
 const COMMON_DECIMAL_SEPARATOR = '.';
 
+const escapeRegexChars = (str: string) =>
+  str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+
+const getLocaleSeparators = (locale?: string) => {
+  if (typeof Intl === 'undefined' || typeof Intl.NumberFormat === 'undefined') {
+    return { decimal: '.', group: ',' };
+  }
+
+  try {
+    const parts = Intl.NumberFormat(locale).formatToParts(12345.6);
+    const decimal = parts.find((part) => part.type === 'decimal')?.value || '.';
+    const group = parts.find((part) => part.type === 'group')?.value || ',';
+    return { decimal, group };
+  } catch (error) {
+    console.error('Error getting locale separators:', error);
+    return { decimal: '.', group: ',' };
+  }
+};
+
 /**
  * Parses a string that might contain locale-specific formatting (e.g., commas for decimals)
  * into a standard number.
  *
  * @param inputValue The raw input string.
+ * @param locale Optional: The BCP 47 language tag for the locale to use for parsing (e.g., "en-US", "de-DE"). Defaults to browser's locale.
  * @returns A number, or 0 if parsing fails.
  */
-export const parseLocaleNumericString = (inputValue: string): number => {
+export const parseLocaleNumericString = (
+  inputValue: string,
+  locale?: string
+): number => {
   if (typeof inputValue !== 'string' || !inputValue.trim()) {
     return 0;
   }
 
-  const buf = inputValue.replace(/,/g, COMMON_DECIMAL_SEPARATOR);
+  const { decimal: localeDecimalSeparator, group: localeGroupSeparator } =
+    getLocaleSeparators(locale);
+  const cleanedString = inputValue.replace(
+    new RegExp(escapeRegexChars(localeGroupSeparator), 'g'),
+    ''
+  );
+
+  const normalizedString = cleanedString.replace(
+    localeDecimalSeparator,
+    COMMON_DECIMAL_SEPARATOR
+  );
 
   let resultString = '';
   let hasDot = false;
-
-  for (const char of buf) {
+  for (const char of normalizedString) {
     if (/\d/.test(char)) {
       resultString += char;
     } else if (char === COMMON_DECIMAL_SEPARATOR) {

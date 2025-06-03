@@ -463,6 +463,22 @@ const CreateReceivablesBase = ({
     }
   }, [entityBankAccountId, bankAccountField, clearErrors]);
 
+  useEffect(() => {
+    if (entityBankAccountId && bankAccounts?.data) {
+      const selectedBankAccount = bankAccounts.data.find(
+        (bank) => bank.id === entityBankAccountId
+      );
+  
+      if (!selectedBankAccount?.currency) return;
+
+      const newCurrency = selectedBankAccount.currency;
+      
+      if (newCurrency !== actualCurrency) {
+        setActualCurrency(newCurrency);
+      }
+    }
+  }, [entityBankAccountId, bankAccounts?.data, actualCurrency]);
+
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
 
