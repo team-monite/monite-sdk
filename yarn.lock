@@ -1970,6 +1970,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@clerk/backend@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@clerk/backend@npm:2.0.0"
+  dependencies:
+    "@clerk/shared": "npm:^3.9.6"
+    "@clerk/types": "npm:^4.60.0"
+    cookie: "npm:1.0.2"
+    snakecase-keys: "npm:8.0.1"
+    tslib: "npm:2.8.1"
+  checksum: 10/3c02439700c09240dc239aac2c1f376aa034965552b3aec33e6fc570351554f4d5f121f2756a6d7f81633014f3a3d6bde5d22766466b05236d38ae00a9139767
+  languageName: node
+  linkType: hard
+
 "@clerk/clerk-react@npm:^5.22.11":
   version: 5.31.8
   resolution: "@clerk/clerk-react@npm:5.31.8"
@@ -2059,12 +2072,63 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@clerk/shared@npm:^3.9.6":
+  version: 3.9.6
+  resolution: "@clerk/shared@npm:3.9.6"
+  dependencies:
+    "@clerk/types": "npm:^4.60.0"
+    dequal: "npm:2.0.3"
+    glob-to-regexp: "npm:0.4.1"
+    js-cookie: "npm:3.0.5"
+    std-env: "npm:^3.9.0"
+    swr: "npm:^2.3.3"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+    react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10/fc1929b667c76ef945927a7f4c9be2e9c2e2f5e9b5b88d71cb1c04d9731aea9044745ff406753906955b5a39df4cad242196c3d2e3274d5403cf6ae81b19d979
+  languageName: node
+  linkType: hard
+
+"@clerk/testing@npm:^1.7.1":
+  version: 1.8.0
+  resolution: "@clerk/testing@npm:1.8.0"
+  dependencies:
+    "@clerk/backend": "npm:^2.0.0"
+    "@clerk/shared": "npm:^3.9.6"
+    "@clerk/types": "npm:^4.60.0"
+    dotenv: "npm:16.4.7"
+  peerDependencies:
+    "@playwright/test": ^1
+    cypress: ^13
+  peerDependenciesMeta:
+    "@playwright/test":
+      optional: true
+    cypress:
+      optional: true
+  checksum: 10/46b54b1e2284064a03ea3c8efba9224d0b35e4eeab678be149ec300c5dc46cdf82072dfe2c1ace850a975fe462927003efc9d86a3e802597de6ad388481bf73e
+  languageName: node
+  linkType: hard
+
 "@clerk/types@npm:^4.40.2, @clerk/types@npm:^4.45.0, @clerk/types@npm:^4.46.1, @clerk/types@npm:^4.59.3":
   version: 4.59.3
   resolution: "@clerk/types@npm:4.59.3"
   dependencies:
     csstype: "npm:3.1.3"
   checksum: 10/7259ec629b85e2996e5deffdcc432926ab90738f1a475b1ef96cef4ea41141fa566d1f97efa4dc6f2bfbe4769f0905698607324f210372b833489ee9f75ad571
+  languageName: node
+  linkType: hard
+
+"@clerk/types@npm:^4.60.0":
+  version: 4.60.0
+  resolution: "@clerk/types@npm:4.60.0"
+  dependencies:
+    csstype: "npm:3.1.3"
+  checksum: 10/cb3552ef0a38a3495c556f0dc003ce981361a769ca9d7f225fadf891546af1efb8ce3e4a4ee498a799c319724c83d946342f6a668914d8be5aa66032e5006b8b
   languageName: node
   linkType: hard
 
@@ -4045,6 +4109,7 @@ __metadata:
     "@types/postcss-import": "npm:~14.0.3"
     "@types/react": "npm:~18.2.0"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
+    "@vitest/spy": "npm:^3.2.0"
     autoprefixer: "npm:^10.4.17"
     babel-plugin-macros: "npm:~3.1.0"
     chroma-js: "npm:~3.1.2"
@@ -4104,6 +4169,7 @@ __metadata:
     v8: "npm:~0.1.0"
     vite: "npm:~5.4.19"
     vite-tsconfig-paths: "npm:~5.1.4"
+    vitest: "npm:^3.2.0"
     webpack: "npm:^5.90.3"
     yup: "npm:~0.32.11"
     zod: "npm:~3.24.2"
@@ -7850,7 +7916,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.5.0"
     eslint-import-resolver-typescript: "npm:~3.6.1"
     eslint-plugin-import: "npm:~2.29.1"
-    eslint-plugin-lingui: "npm:^0.10.1"
+    eslint-plugin-lingui: "npm:~0.10.1"
     eslint-plugin-prettier: "npm:^4.0.0"
     eslint-plugin-react-hooks: "npm:~4.6.0"
     eslint-plugin-react-refresh: "npm:~0.3.4"
@@ -9796,6 +9862,15 @@ __metadata:
   dependencies:
     tinyspy: "npm:^4.0.3"
   checksum: 10/7cf401b550e48be5e3acc6593ad29a8add77df0767ce601e75b423d1be8376ebe9a0654f7145a2ae6b818cd3a75337ec8ee18dced510eb1c527e35cbacca2b7b
+  languageName: node
+  linkType: hard
+
+"@vitest/spy@npm:^3.2.0":
+  version: 3.2.1
+  resolution: "@vitest/spy@npm:3.2.1"
+  dependencies:
+    tinyspy: "npm:^4.0.3"
+  checksum: 10/9bc559ab1c0b13350f6e9e0bfeceb025ccc65d5008afa8be4a8e52d0b69ebed3a1c43ff7edfb4ecb9bd90b20d4b192fdf99ea95351c1131f5629faa410deef1d
   languageName: node
   linkType: hard
 
@@ -13692,7 +13767,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0, dotenv@npm:^16.3.0":
+"dotenv@npm:16.4.7":
+  version: 16.4.7
+  resolution: "dotenv@npm:16.4.7"
+  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.0, dotenv@npm:^16.3.0, dotenv@npm:^16.5.0":
   version: 16.5.0
   resolution: "dotenv@npm:16.5.0"
   checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
@@ -14788,7 +14870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-lingui@npm:^0.10.1":
+"eslint-plugin-lingui@npm:~0.10.1":
   version: 0.10.1
   resolution: "eslint-plugin-lingui@npm:0.10.1"
   dependencies:
@@ -22890,6 +22972,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.52.0":
+  version: 1.52.0
+  resolution: "playwright-core@npm:1.52.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10/42e13f5f98dc25ebc95525fb338a215b9097b2ba39d41e99972a190bf75d79979f163f5bc07b1ca06847ee07acb2c9b487d070fab67e9cd55e33310fc05aca3c
+  languageName: node
+  linkType: hard
+
 "playwright@npm:1.45.3, playwright@npm:~1.45.0":
   version: 1.45.3
   resolution: "playwright@npm:1.45.3"
@@ -22902,6 +22993,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 10/86959666c68f53b984df3d4a4aa3a7806fff95d5735dc4c16f5cef0889ab07180e1600792f0e66f9b84250931f5971077774cd8f2f077d8b02171f89a33ab588
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.52.0":
+  version: 1.52.0
+  resolution: "playwright@npm:1.52.0"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.52.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10/214175446089000c2ac997b925063b95f7d86d129c5d7c74caa5ddcb05bcad598dfd569d2133a10dc82d288bf67e7858877dcd099274b0b928b9c63db7d6ecec
   languageName: node
   linkType: hard
 
@@ -25471,6 +25577,7 @@ __metadata:
     "@babel/plugin-transform-unicode-regex": "npm:^7.24.1"
     "@clerk/clerk-sdk-node": "npm:5.1.6"
     "@clerk/nextjs": "npm:6.11.1"
+    "@clerk/testing": "npm:^1.7.1"
     "@emotion/babel-plugin": "npm:^11.11.0"
     "@emotion/cache": "npm:~11.11.0"
     "@emotion/react": "npm:~11.11.1"
@@ -25486,6 +25593,7 @@ __metadata:
     "@mui/material": "npm:~5.15.14"
     "@mui/material-nextjs": "npm:^5.15.11"
     "@openapi-qraft/cli": "npm:1.14.0"
+    "@playwright/test": "npm:^1.52.0"
     "@tanstack/react-query": "npm:~5.28.6"
     "@team-monite/sdk-demo": "workspace:~"
     "@testing-library/jest-dom": "npm:~6.1.4"
