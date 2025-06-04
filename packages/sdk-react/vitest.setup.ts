@@ -2,11 +2,12 @@ import { type ReactNode, forwardRef, createElement } from 'react';
 
 import { Trans as ReactTrans } from '@lingui/react';
 import type { DataGridProps } from '@mui/x-data-grid';
+import * as Sentry from '@sentry/react';
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import * as Sentry from '@sentry/react';
 
-import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+// Vitest imports grouped together
+import { afterAll, afterEach, beforeAll, vi, expect } from 'vitest';
 
 import { server } from './src/mocks/server';
 
@@ -63,8 +64,13 @@ vi.mock('@lingui/macro', async (importOriginal) => {
 });
 
 /**
- * Mock for MUI DataGrid to disable virtualization in tests
- * This prevents issues with virtual scrolling in testing environments
+ * We have to disable virtualization for all data-tables
+ *  and only for tests.
+ * For production, we would like to have
+ *  more performant tables
+ *
+ * @see {@link https://github.com/mui/mui-x/issues/1151#issuecomment-1108349639} Stackoverflow discussion
+ * @see {@link https://mui.com/x/react-data-grid/virtualization/#disable-virtualization} MUI Documentation
  */
 vi.mock('@mui/x-data-grid', async (importActual) => {
   const actual = await importActual<typeof import('@mui/x-data-grid')>();
@@ -72,6 +78,10 @@ vi.mock('@mui/x-data-grid', async (importActual) => {
   return {
     ...actual,
     DataGrid: forwardRef<HTMLDivElement, DataGridProps>((props, ref) => {
+      // Assert that column filter is disabled: DataGrid filtering
+      // isn't compatible with our datasources.
+      expect(props.disableColumnFilter).toBe(true);
+
       return createElement(actual.DataGrid, {
         ...props,
         disableVirtualization: true,
@@ -82,7 +92,8 @@ vi.mock('@mui/x-data-grid', async (importActual) => {
 });
 
 /**
- * Mock for Emotion's CacheProvider to simplify CSS-in-JS handling in tests
+ * We have to disable the CacheProvider for all tests
+ * as its usage slows down the tests.
  */
 vi.mock('@emotion/react', async (importActual) => {
   const actual = await importActual<typeof import('@emotion/react')>();
@@ -90,6 +101,18 @@ vi.mock('@emotion/react', async (importActual) => {
   return {
     ...actual,
     CacheProvider: ({ children }: { children: ReactNode }) => children,
+  };
+});
+
+/**
+ * Mock the `requestFn` to allow usage of `requestFn.mock.*` methods
+ */
+vi.mock('@openapi-qraft/react', async (importActual) => {
+  const module = await importActual<typeof import('@openapi-qraft/react')>();
+  return {
+    ...module,
+    requestFn: vi.fn(module.requestFn),
+    __esModule: true,
   };
 });
 
@@ -108,19 +131,23 @@ vi.mock('./src/api/client', async (importActual) => {
   const createAPIClientMocked = (options: CreateAPIClientOptions = {}) => {
     const apiClient = actual.createAPIClient(options);
 
+    /**
+     * Mock implementation of `requestFn` for testing purposes.
+     *
+     * Note: The '/me' and '/my_role' endpoints do not accept the 'x-monite-entity-id' header by type (just as the real API).
+     * However, the internal implementation of handlers for MSW (Mock Service Worker) uses this header to determine permissions (full, low, empty).
+     */
     const requestFnMocked: RequestFn = (
       schema,
       requestInfo,
       requestOptions
     ) => {
-      const shouldAddEntityId =
-        options?.entityId && actual.isMoniteEntityIdPath(schema.url);
-
-      const headers = shouldAddEntityId
-        ? mergeHeaders(requestInfo.headers, {
-            'x-monite-entity-id': options.entityId,
-          })
-        : requestInfo.headers;
+      const headers =
+        options?.entityId && ['/me', '/my_role'].includes(schema.url)
+          ? mergeHeaders(requestInfo.headers, {
+              'x-monite-entity-id': options.entityId,
+            })
+          : requestInfo.headers;
 
       return apiClient.requestFn(
         schema,
@@ -136,6 +163,7 @@ vi.mock('./src/api/client', async (importActual) => {
   };
 
   return {
+    __esModule: true,
     ...actual,
     createAPIClient: createAPIClientMocked,
   };
@@ -168,11 +196,20 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   thresholds: [],
 }));
 
+// Store original console.error for restoration
+const originalConsoleError = console.error;
+
 beforeAll(() => {
   Sentry.init({});
   server.listen({
     onUnhandledRequest: 'warn',
   });
+
+  // Suppress 'An update to ... inside a test was not wrapped in act(...)' errors in the console
+  console.error = (...args) => {
+    if (typeof args[0] === 'string' && /act/.test(args[0])) return;
+    originalConsoleError(...args);
+  };
 });
 
 afterEach(() => {
@@ -182,4 +219,7 @@ afterEach(() => {
 
 afterAll(() => {
   server.close();
+
+  // Restore console.error function
+  console.error = originalConsoleError;
 });

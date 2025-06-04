@@ -12,7 +12,7 @@ import { TableRow } from '@mui/material';
 
 import { CommonActions, PayableActions, PermissionRow } from '../types';
 import { UserRoleViewMode } from '../UserRole.types';
-import { StyledTableCell } from '../UserRoleTableComponents'; // Add this
+import { StyledTableCell } from '../UserRoleTableComponents';
 
 interface UserRoleRowProps {
   /** The row data to be displayed */

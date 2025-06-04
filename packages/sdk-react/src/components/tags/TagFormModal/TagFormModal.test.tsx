@@ -3,7 +3,7 @@ import { generateRandomToken } from '@/utils/test-utils-random';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 import { TagFormModal } from './TagFormModal';
 

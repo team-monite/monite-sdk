@@ -13,15 +13,15 @@ const config = defineConfig({
   reporter: [['html', { open: 'never' }]],
   use: {
     actionTimeout: 0,
-    baseURL: 'http://localhost:5174',
+    baseURL: 'http://localhost:5273',
     trace: 'on-first-retry',
     headless: true,
   },
   webServer: {
     // Note: 'yarn build && yarn preview' is not used here as routing support is needed,
     // which is implemented for dev mode.
-    command: 'yarn dev',
-    port: 5174,
+    command: 'yarn dev --port 5273',
+    port: 5273,
     timeout: 120_000,
     reuseExistingServer: !process.env.CI,
   },

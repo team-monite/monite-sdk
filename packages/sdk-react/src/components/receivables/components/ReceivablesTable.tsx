@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 
-import { FinanceTab } from '@/components/financing/components/FinanceTab';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { FinanceTab } from '@/components/financing/components/FinanceTab';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { useGetFinanceOffers } from '@/components/financing/hooks';
 import {

@@ -11,7 +11,7 @@ import {
   screen,
 } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 import { InvoicesTable } from './InvoicesTable';
 
@@ -126,7 +126,7 @@ describe('InvoicesTable', () => {
       render(
         <DataGridEmptyState
           title={t(i18n)`No Receivables`}
-          descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+          descriptionLine1={t(i18n)`You don’t have any roles yet.`}
           descriptionLine2={t(i18n)`You can create your first invoice.`}
           actionButtonLabel={t(i18n)`Create Invoice`}
           onAction={() => {}}
@@ -136,7 +136,7 @@ describe('InvoicesTable', () => {
 
       expect(screen.getByText('No Receivables')).toBeInTheDocument();
       expect(
-        screen.getByText('You don’t have any invoices yet.')
+        screen.getByText('You don’t have any roles yet.')
       ).toBeInTheDocument();
       expect(
         screen.getByText('You can create your first invoice.')

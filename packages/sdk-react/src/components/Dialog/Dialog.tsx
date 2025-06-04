@@ -1,10 +1,4 @@
-import {
-  // createContext, // Removed
-  forwardRef,
-  ReactElement,
-  Ref,
-  // useContext, // Removed
-} from 'react';
+import { forwardRef, ReactElement, Ref } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -14,7 +8,7 @@ import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
 import { SlideProps } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 
-import { DialogContext, useDialog } from './DialogContext'; // Import from new file
+import { DialogContext } from './DialogContext';
 import { MoniteDialogProps } from './DialogProps.types';
 
 const Transition = forwardRef(function Transition(
@@ -99,6 +93,7 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
               alignDialog && `MuiDialog-container__align-${alignDialog}`,
             ]
               .filter(Boolean)
+              // eslint-disable-next-line lingui/no-unlocalized-strings
               .join(' '),
             paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
           }}

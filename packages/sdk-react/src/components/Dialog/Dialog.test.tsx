@@ -1,7 +1,7 @@
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/react';
 
-import { test, vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 import { Dialog } from './Dialog';
 

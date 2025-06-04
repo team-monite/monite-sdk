@@ -1,6 +1,9 @@
 import { createContext, ReactNode, useContext } from 'react';
 
-import { useOnboardingRequirements, type OnboardingRequirementsType } from '../hooks/useOnboardingRequirements';
+import {
+  useOnboardingRequirements,
+  type OnboardingRequirementsType,
+} from '../hooks/useOnboardingRequirements';
 
 const OnboardingRequirementsContext = createContext<OnboardingRequirementsType>(
   {} as OnboardingRequirementsType

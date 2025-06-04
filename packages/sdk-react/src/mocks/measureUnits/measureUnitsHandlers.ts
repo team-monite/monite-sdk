@@ -85,7 +85,7 @@ export const measureUnitsHandlers = [
       }
 
       const newUnit = {
-        id: generateMeasureUnitId(), // Generate a random ID
+        id: generateMeasureUnitId(),
         name: json.name,
         description: json.description,
         created_at: new Date().toISOString(),

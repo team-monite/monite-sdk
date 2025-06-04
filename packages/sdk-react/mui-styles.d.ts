@@ -1,13 +1,4 @@
 import {
-  type MoniteApprovalRequestStatusChipProps,
-  type MoniteApprovalStatusChipProps,
-  type MoniteCounterpartStatusChipProps,
-  type MoniteInvoiceRecurrenceIterationStatusChipProps,
-  type MoniteInvoiceRecurrenceStatusChipProps,
-  type MoniteInvoiceStatusChipProps,
-  type MonitePayableStatusChipProps,
-} from '@/core/theme/types';
-import {
   ComponentsOverrides,
   ComponentsPropsList,
   ComponentsVariants,
@@ -15,6 +6,17 @@ import {
   Palette,
   PaletteOptions,
 } from '@mui/material/styles';
+
+// Import the original types from theme/types.ts instead of redefining them
+import {
+  MoniteInvoiceStatusChipProps,
+  MoniteApprovalRequestStatusChipProps,
+  MonitePayableStatusChipProps,
+  MoniteInvoiceRecurrenceStatusChipProps,
+  MoniteInvoiceRecurrenceIterationStatusChipProps,
+  MoniteCounterpartStatusChipProps,
+  MoniteApprovalStatusChipProps,
+} from '@/core/theme/types';
 
 type Theme = Omit<MuiTheme, 'components'> & {
   palette: Palette & {
