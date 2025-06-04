@@ -3,6 +3,7 @@ import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' assert
 
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { paths } from '@/lib/monite-api/schema';
+import { isBuildTime } from '@/lib/utils/build-time-detection';
 
 const apiVersion = apiPackage.apiVersion;
 
@@ -18,25 +19,9 @@ export const createMoniteClient = (token: AccessToken) => {
   });
 };
 
-const isBuildTime = () => {
-  const isBuild = process.env.NEXT_PHASE === 'phase-production-build';
-
-  if (isBuild) {
-    return true;
-  }
-
-  const isCiBuild =
-    process.env.NODE_ENV === 'production' &&
-    typeof window === 'undefined' &&
-    (!process.env.CLERK_SECRET_KEY || !process.env.MONITE_API_URL);
-
-  if (isCiBuild) {
-    return true;
-  }
-
-  return false;
-};
-
+/**
+ * Get the Monite API URL, with build-time fallback to prevent errors during static generation
+ */
 export const getMoniteApiUrl = (): string => {
   if (isBuildTime()) {
     return 'https://api.mock.monite.com/v1';
