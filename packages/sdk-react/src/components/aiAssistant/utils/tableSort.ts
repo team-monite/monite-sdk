@@ -35,9 +35,15 @@ const parseTableCellValue = (value: string): number | Date | string => {
     return new Date(date);
   }
 
-  const numeric = trimmedValue.replace(/[^0-9.,-]/g, '').replace(/,/g, '');
+  const numeric = trimmedValue.replace(/[^\d.-]/g, '').replace(/,/g, '');
   const parsed = parseFloat(numeric);
-  const isValidNumber = !isNaN(parsed) && numeric.length > 0;
+  const isValidNumber =
+    !isNaN(parsed) && isFinite(parsed) && numeric.length > 0;
+  const decimalCount = (numeric.match(/\./g) || []).length;
+
+  if (decimalCount > 1) {
+    return trimmedValue;
+  }
 
   if (isValidNumber) {
     return parsed;
@@ -63,6 +69,16 @@ export const sortAssistantTable = ({
 
     const { children: childrenA } = propsA;
     const { children: childrenB } = propsB;
+
+    const maxCellIndex =
+      Math.min(
+        Children.toArray(childrenA).length,
+        Children.toArray(childrenB).length
+      ) - 1;
+
+    if (sortIndex > maxCellIndex || sortIndex < 0) {
+      return 0;
+    }
 
     const cellA = Children.toArray(childrenA)[sortIndex] as ReactElement;
     const cellB = Children.toArray(childrenB)[sortIndex] as ReactElement;

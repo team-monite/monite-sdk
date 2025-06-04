@@ -7,12 +7,14 @@ interface MarkdownTableProps {
 }
 
 export const MarkdownTable: FC<MarkdownTableProps> = ({ children }) => {
-  const arrayChildren = Children.toArray(children) as ReactElement[];
+  const arrayChildren = Children.toArray(children);
   const thead = arrayChildren.find(
-    (child) => isValidElement(child) && child.type === 'thead'
+    (child): child is ReactElement =>
+      isValidElement(child) && child.type === 'thead'
   );
   const tbody = arrayChildren.find(
-    (child) => isValidElement(child) && child.type === 'tbody'
+    (child): child is ReactElement =>
+      isValidElement(child) && child.type === 'tbody'
   );
 
   if (!thead || !tbody) {

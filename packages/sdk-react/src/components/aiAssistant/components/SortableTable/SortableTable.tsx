@@ -12,7 +12,7 @@ interface SortableTableProps {
 }
 
 export const SortableTable: FC<SortableTableProps> = ({ tbody, thead }) => {
-  const [sortIndex, setSortIndex] = useState<number>(0);
+  const [sortIndex, setSortIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState<SortDirection>('asc');
 
   const [headerRow] = Children.toArray(thead.props.children) as ReactElement[];
@@ -22,7 +22,13 @@ export const SortableTable: FC<SortableTableProps> = ({ tbody, thead }) => {
   const bodyRows = Children.toArray(tbody.props.children) as ReactElement[];
 
   const sortedRows = useMemo(
-    () => sortAssistantTable({ bodyRows, sortIndex, direction }),
+    () => {
+      if (sortIndex === null) {
+        return bodyRows;
+      }
+
+      return sortAssistantTable({ bodyRows, sortIndex, direction });
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [direction, sortIndex]
   );
