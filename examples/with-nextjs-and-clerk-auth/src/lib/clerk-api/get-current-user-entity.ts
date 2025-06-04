@@ -6,11 +6,22 @@ import { getEntityUserData } from '@/lib/clerk-api/get-entity-user-data';
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
 
 const isBuildTime = () => {
-  return (
-    process.env.NEXT_PHASE === 'phase-production-build' ||
-    (process.env.NODE_ENV === 'production' && !process.env.CLERK_SECRET_KEY) ||
-    (typeof window === 'undefined' && !global.fetch)
-  );
+  const isBuild = process.env.NEXT_PHASE === 'phase-production-build';
+
+  if (isBuild) {
+    return true;
+  }
+
+  const isCiBuild =
+    process.env.NODE_ENV === 'production' &&
+    typeof window === 'undefined' &&
+    (!process.env.CLERK_SECRET_KEY || !process.env.MONITE_API_URL);
+
+  if (isCiBuild) {
+    return true;
+  }
+
+  return false;
 };
 
 export const getCurrentUserEntity = async () => {
