@@ -4,25 +4,7 @@ import { auth, clerkClient, currentUser } from '@clerk/nextjs/server';
 
 import { getEntityUserData } from '@/lib/clerk-api/get-entity-user-data';
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
-
-const isBuildTime = () => {
-  const isBuild = process.env.NEXT_PHASE === 'phase-production-build';
-
-  if (isBuild) {
-    return true;
-  }
-
-  const isCiBuild =
-    process.env.NODE_ENV === 'production' &&
-    typeof window === 'undefined' &&
-    (!process.env.CLERK_SECRET_KEY || !process.env.MONITE_API_URL);
-
-  if (isCiBuild) {
-    return true;
-  }
-
-  return false;
-};
+import { isBuildTime } from '@/lib/utils/build-time-detection';
 
 export const getCurrentUserEntity = async () => {
   if (isBuildTime()) {
