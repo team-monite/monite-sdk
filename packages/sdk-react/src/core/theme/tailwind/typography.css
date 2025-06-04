@@ -38,6 +38,7 @@
 
     td {
       border-bottom-width: 1px;
+      white-space: nowrap;
     }
 
     tr > td:first-of-type {
