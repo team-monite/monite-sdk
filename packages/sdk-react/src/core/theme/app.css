@@ -1,66 +1,17 @@
+/* Import typography styles for markdown content BEFORE other directives */
+@import "./tailwind/typography.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* placeholder for tw-animate-css integration, if needed separately */
-/* e.g., @import './path/to/tw-animate-css.css'; */
+/* e.g., @import "./path/to/tw-animate-css.css"; */
 
-@theme {
-  --color-primary-10: var(--mtw-color-primary-10);
-  --color-primary-20: var(--mtw-color-primary-20);
-  --color-primary-30: var(--mtw-color-primary-30);
-  --color-primary-40: var(--mtw-color-primary-40);
-  --color-primary-50: var(--mtw-color-primary-50);
-  --color-primary-60: var(--mtw-color-primary-60);
-  --color-primary-70: var(--mtw-color-primary-70);
-  --color-primary-80: var(--mtw-color-primary-80);
-  --color-primary-85: var(--mtw-color-primary-85);
-  --color-primary-90: var(--mtw-color-primary-90);
-  --color-primary-95: var(--mtw-color-primary-95);
-
-  --color-neutral-10: var(--mtw-color-neutral-10);
-  --color-neutral-30: var(--mtw-color-neutral-30);
-  --color-neutral-50: var(--mtw-color-neutral-50);
-  --color-neutral-70: var(--mtw-color-neutral-70);
-  --color-neutral-80: var(--mtw-color-neutral-80);
-  --color-neutral-90: var(--mtw-color-neutral-90);
-  --color-neutral-95: var(--mtw-color-neutral-95);
-
-  --color-danger-10: var(--mtw-color-error-10);
-  --color-danger-30: var(--mtw-color-error-30);
-  --color-danger-40: var(--mtw-color-error-40);
-  --color-danger-50: var(--mtw-color-error-50);
-  --color-danger-60: var(--mtw-color-error-60);
-  --color-danger-80: var(--mtw-color-error-80);
-  --color-danger-90: var(--mtw-color-error-90);
-  --color-danger-95: var(--mtw-color-error-95);
-
-  --color-success-10: var(--mtw-color-success-10);
-  --color-success-30: var(--mtw-color-success-30);
-  --color-success-50: var(--mtw-color-success-50);
-  --color-success-60: var(--mtw-color-success-60);
-  --color-success-80: var(--mtw-color-success-80);
-  --color-success-90: var(--mtw-color-success-90);
-  --color-success-95: var(--mtw-color-success-95);
-
-  --color-warning-10: var(--mtw-color-warning-10);
-  --color-warning-30: var(--mtw-color-warning-30);
-  --color-warning-50: var(--mtw-color-warning-50);
-  --color-warning-60: var(--mtw-color-warning-60);
-  --color-warning-80: var(--mtw-color-warning-80);
-  --color-warning-90: var(--mtw-color-warning-90);
-  --color-warning-95: var(--mtw-color-warning-95);
-
-  --border: var(--mtw-border);
-
-  --sidebar-foreground: var(--mtw-sidebar-foreground);
-  --sidebar-primary: var(--mtw-sidebar-primary);
-  --sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
-  --sidebar-accent: var(--mtw-sidebar-accent);
-  --sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
-  --sidebar-border: var(--mtw-sidebar-border);
-  --sidebar-ring: var(--mtw-sidebar-ring);
-}
+/*
+ * Commenting out @theme blocks - appears to be Tailwind v4 syntax causing conflicts
+ * TODO: Investigate if these can be converted to proper Tailwind v3 theme extensions
+ */
 
 :root {
   --mtw-background: oklch(1 0 0);
@@ -98,51 +49,13 @@
   --mtw-sidebar-ring: oklch(0.708 0 0);
 }
 
-@theme inline {
-  --color-background: var(--mtw-background);
-  --color-foreground: var(--mtw-foreground);
-  --color-card: var(--mtw-card);
-  --color-card-foreground: var(--mtw-card-foreground);
-  --color-popover: var(--mtw-popover);
-  --color-popover-foreground: var(--mtw-popover-foreground);
-  --color-primary: var(--mtw-primary);
-  --color-primary-foreground: var(--mtw-primary-foreground);
-  --color-secondary: var(--mtw-secondary);
-  --color-secondary-foreground: var(--mtw-secondary-foreground);
-  --color-muted: var(--mtw-muted);
-  --color-muted-foreground: var(--mtw-muted-foreground);
-  --color-accent: var(--mtw-accent);
-  --color-accent-foreground: var(--mtw-accent-foreground);
-  --color-destructive: var(--mtw-destructive);
-  --color-destructive-foreground: var(--mtw-destructive-foreground);
-  --color-border: var(--mtw-border);
-  --color-input: var(--mtw-input);
-  --color-ring: var(--mtw-ring);
-  --color-chart-1: var(--mtw-chart-1);
-  --color-chart-2: var(--mtw-chart-2);
-  --color-chart-3: var(--mtw-chart-3);
-  --color-chart-4: var(--mtw-chart-4);
-  --color-chart-5: var(--mtw-chart-5);
-  --radius-sm: calc(var(--mtw-radius) - 4px);
-  --radius-md: calc(var(--mtw-radius) - 2px);
-  --radius-lg: var(--mtw-radius);
-  --radius-xl: calc(var(--mtw-radius) + 4px);
-  --color-sidebar: var(--mtw-sidebar);
-  --color-sidebar-foreground: var(--mtw-sidebar-foreground);
-  --color-sidebar-primary: var(--mtw-sidebar-primary);
-  --color-sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
-  --color-sidebar-accent: var(--mtw-sidebar-accent);
-  --color-sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
-  --color-sidebar-border: var(--mtw-sidebar-border);
-  --color-sidebar-ring: var(--mtw-sidebar-ring);
-}
-
-/* Using a class selector instead of @layer base to avoid conflicts */
-[data-placeholder]:empty:before {
-  content: attr(data-placeholder);
-  color: #6d737e;
-  font-weight: normal;
-  font-size: 14px;
+@layer base {
+  [data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #6d737e;
+    font-weight: normal;
+    font-size: 14px;
+  }
 }
 
 @keyframes dot-typing {
@@ -183,10 +96,10 @@
   }
 }
 
-/* Using a class selector instead of @layer utilities to avoid conflicts */
-.animate-dot-typing {
-  --mtw-dot-loader-color: #d6cdfe;
-  --mtw-dot-loader-stress-color: #562bd6;
-
-  animation: dot-typing 1.5s infinite linear;
+@layer utilities {
+  .animate-dot-typing {
+    --mtw-dot-loader-color: #d6cdfe;
+    --mtw-dot-loader-stress-color: #562bd6;
+    animation: dot-typing 1.5s infinite linear;
+  }
 }

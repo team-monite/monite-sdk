@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 
 import { MoniteIframeAppDemo } from '@/apps/MoniteIframeAppDemo';
 
-// SSR safety check
 if (typeof document !== 'undefined') {
   const rootElement = document.getElementById('root') as HTMLElement;
 

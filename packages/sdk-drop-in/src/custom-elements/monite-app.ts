@@ -14,7 +14,22 @@ import { MoniteAppElement } from './MoniteAppElement';
 
 const MONITE_APP_ELEMENT_NAME = 'monite-app';
 
-customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
+if (
+  typeof customElements !== 'undefined' &&
+  typeof MoniteAppElement === 'function'
+) {
+  try {
+    customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'NotSupportedError') {
+      console.warn(
+        `Custom element ${MONITE_APP_ELEMENT_NAME} is already defined`
+      );
+    } else {
+      throw error;
+    }
+  }
+}
 
 interface MoniteAppElementConfig {
   /**

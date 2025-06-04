@@ -5,7 +5,9 @@ export interface DialogContextType {
   onClose?: (...args: any[]) => void;
 }
 
-export const DialogContext = createContext<DialogContextType | undefined>(undefined);
+export const DialogContext = createContext<DialogContextType | undefined>(
+  undefined
+);
 
 export const useDialog = (): DialogContextType | undefined => {
   return useContext(DialogContext);

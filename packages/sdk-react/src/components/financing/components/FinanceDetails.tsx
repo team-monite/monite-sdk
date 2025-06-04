@@ -1,6 +1,4 @@
 import { components } from '@/api';
-// import { FinancedInvoiceStatusChip } from '@/components/financing/components'; // Remove this line
-import { FinancedInvoiceStatusChip } from './FinancedInvoiceStatusChip'; // Add this line
 import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useKanmonContext } from '@/core/context/KanmonContext';
@@ -16,6 +14,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+
+import { FinancedInvoiceStatusChip } from './FinancedInvoiceStatusChip';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];

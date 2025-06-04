@@ -211,15 +211,15 @@ export const getDefaultComponentSettings = (
     tab: componentSettings?.receivables?.tab || 0,
     tabs: componentSettings?.receivables?.tabs || [
       {
-        label: i18n.t('Invoices'),
+        label: i18n._('Invoices'),
         query: { type: 'invoice' },
       },
       {
-        label: i18n.t('Quotes'),
+        label: i18n._('Quotes'),
         query: { type: 'quote' },
       },
       {
-        label: i18n.t('Credit notes'),
+        label: i18n._('Credit notes'),
         query: { type: 'credit_note' },
       },
       {

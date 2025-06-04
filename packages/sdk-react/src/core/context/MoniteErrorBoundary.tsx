@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { useDialog } from '@/components/Dialog/DialogContext'; // Changed import path
-import { ErrorBase } from '@/ui/error/Error';
+import { useDialog } from '@/components/Dialog/DialogContext';
+import { ErrorComponent } from '@/ui/error/Error';
 import { ErrorBoundary } from '@sentry/react';
 
 export const MoniteErrorBoundary = ({ children }: { children: ReactNode }) => {
@@ -10,7 +10,7 @@ export const MoniteErrorBoundary = ({ children }: { children: ReactNode }) => {
   return (
     <ErrorBoundary
       fallback={(props) => (
-        <ErrorBase onClose={dialogContext?.onClose} {...props} />
+        <ErrorComponent onClose={dialogContext?.onClose} {...props} />
       )}
     >
       {children}

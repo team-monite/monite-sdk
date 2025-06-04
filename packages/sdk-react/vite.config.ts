@@ -1,7 +1,6 @@
 /// <reference types="vitest" />
 import linguiPlugin from '@lingui/vite-plugin';
-// import react from '@vitejs/plugin-react'; // Remove this line
-import reactSWC from '@vitejs/plugin-react-swc'; // Add this line
+import reactSWC from '@vitejs/plugin-react-swc';
 
 import path from 'path';
 import { defineConfig } from 'vite';

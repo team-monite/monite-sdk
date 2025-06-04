@@ -14,6 +14,4 @@ export * from './documentDesign';
 export * from './financing';
 export * from './aiAssistant';
 export { CounterpartsTable } from './counterparts/CounterpartsTable';
-export { QuotesTable } from './receivables/components/QuotesTable';
 export { getCounterpartName } from './counterparts/helpers';
-export { RolesAndApprovalPolicies } from './approvalPolicies/RolesAndPolicies';

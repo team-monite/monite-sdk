@@ -21,7 +21,7 @@ import {
   act,
 } from '@testing-library/react';
 
-import { afterEach, vi, MockedFunction } from 'vitest';
+import { vi, MockedFunction } from 'vitest';
 
 import { ProductsTable } from './ProductsTable';
 

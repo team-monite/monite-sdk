@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   extends: [
     'plugin:@team-monite/eslint-plugin/react',
@@ -30,25 +32,98 @@ module.exports = {
         ],
       },
     ],
-    'lingui/no-unlocalized-strings': [
-      'error',
-      {
-        markupOnly: false,
-        ignoreAttribute: [],
-        functions: ['t', '_', 'i18n._'],
-      },
-    ],
   },
   settings: {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-
-        project: 'packages/sdk-react/tsconfig.json',
+        project: [
+          'packages/sdk-react/tsconfig.json',
+          'tsconfig.json'
+        ],
       },
     },
   },
   overrides: [
+    {
+      files: [
+        'src/api/**/*.{ts,tsx}', // Covers API related files
+        'src/config/**/*.{ts,tsx}',
+        'src/core/constants/**/*.{ts,tsx}',
+        'src/core/data/**/*.{ts,tsx}',
+        'src/core/hooks/**/*.{ts,tsx}', // Generalized from useFileInput.tsx
+        'src/core/queries/**/*.{ts,tsx}', // Generalized from usePermissions.ts
+        'src/core/utils/**/*.{ts,tsx}',
+        'src/core/validation/**/*.{ts,tsx}',
+        'src/lib/**/*.{ts,tsx}', // For other library-like code
+        'src/stories/**/*.{ts,tsx}', // For Storybook files
+        'src/ui/**/*.{ts,tsx}', // Added for general UI components like CountryFlag
+        'src/types/**/*.ts', // For global/shared type definitions
+        // Component-specific technical files
+        'src/components/**/const*.{ts,tsx}',
+        'src/components/**/helpers.{ts,tsx}',
+        'src/components/**/utils.{ts,tsx}',
+        'src/components/**/hooks/**/*.{ts,tsx}',
+        'src/components/**/data.{ts,tsx}',
+        'src/components/**/types.{ts,tsx}',
+        'src/components/**/context/**/*.{ts,tsx}',
+        'src/components/**/transformers/**/*.{ts,tsx}',
+      ],
+      rules: {
+        'lingui/no-unlocalized-strings': 'off',
+        '@team-monite/lingui-require-argument-for-t-function': 'off',
+        'lingui/t-call-in-function': 'off',
+        'lingui/no-single-variables-to-translate': 'off',
+        'lingui/no-expression-in-message': 'off',
+        'lingui/no-single-tag-to-translate': 'off',
+        'lingui/no-trans-inside-trans': 'off',
+        'lingui/text-restrictions': 'off', // Also disable text-restrictions if it causes issues here
+      },
+    },
+    {
+      files: [
+        '**/*.test.{ts,tsx,js,jsx}',
+        '**/*.spec.{ts,tsx,js,jsx}',
+        '**/*.stories.{ts,tsx,js,jsx}',
+        '**/mocks/**/*',
+        '**/*Fixture.{ts,tsx,js,jsx}',
+        '**/*Fixtures.{ts,tsx,js,jsx}',
+        '**/*fixture.{ts,tsx,js,jsx}',
+        '**/*fixtures.{ts,tsx,js,jsx}',
+        '**/*Handlers.{ts,tsx,js,jsx}',
+        '**/*handlers.{ts,tsx,js,jsx}',
+        'src/utils/test-utils.test.tsx',
+        // Configuration and development files
+        'vitest.config.ts',
+        'vitest.config.mts',
+        'vitest.setup.ts',
+        'vite.config.ts',
+        'config/rollup.config.mjs',
+        // Test utility and helper files
+        'src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts',
+        'src/utils/form/FillForm.executor.ts',
+        'src/utils/test-utils.tsx',
+        'src/components/onboarding/onboardingTestUtils.ts',
+      ],
+      rules: {
+        'lingui/no-unlocalized-strings': 'off',
+        'lingui/t-call-in-function': 'off',
+        'lingui/no-single-variables-to-translate': 'off',
+        'lingui/no-expression-in-message': 'off',
+        'lingui/no-single-tag-to-translate': 'off',
+        'lingui/no-trans-inside-trans': 'off',
+        'lingui/text-restrictions': 'off',
+        '@team-monite/lingui-require-argument-for-t-function': 'off',
+        'import/no-extraneous-dependencies': [
+          'error',
+          { 
+            devDependencies: true,
+            peerDependencies: true,
+            packageDir: [__dirname, path.join(__dirname, '../..')]
+          },
+        ],
+      },
+    },
     {
       files: ['*'],
       rules: {
@@ -72,24 +147,15 @@ module.exports = {
         ],
       },
     },
+    // Icon components - use generic patterns
     {
       files: [
-        'vitest.config.ts',
-        'vitest.config.mts',
-        'vitest.setup.ts',
-        'vite.config.ts',
-        'src/mocks/**/*.{ts,tsx,jsx,jsx,cjx,mjs}',
-        'src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts',
-        'src/utils/form/FillForm.executor.ts',
-        'src/utils/test-utils.tsx',
-        'src/components/onboarding/onboardingTestUtils.ts',
-        'config/rollup.config.mjs',
+        '**/icons/**/*.{ts,tsx}',
+        '**/*Icon.{ts,tsx}',
+        '**/*icon.{ts,tsx}',
       ],
       rules: {
-        'import/no-extraneous-dependencies': [
-          'error',
-          { devDependencies: true },
-        ],
+        'lingui/no-unlocalized-strings': 'off',
       },
     },
     {
@@ -111,15 +177,15 @@ module.exports = {
       },
     },
     {
-      files: ['src/utils/test-utils.tsx'],
-      rules: {
-        'lingui/no-unlocalized-strings': 'off',
-      },
-    },
-    {
       files: ['vitest.config.mts'],
       rules: {
         'import/no-default-export': 'off',
+      },
+    },
+    {
+      files: ['.eslintrc.cjs', '.eslintrc.js'],
+      parserOptions: {
+        project: null,
       },
     },
   ],

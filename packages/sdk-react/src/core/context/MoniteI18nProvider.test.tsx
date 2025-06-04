@@ -20,10 +20,10 @@ describe('MoniteI18nProvider Lingui', () => {
     return (
       <>
         <button type="button">
-          {i18n.t('Delete {type} "{name}"?', { name: 'Alex', type })}
+          {i18n._('Delete {type} "{name}"?', { name: 'Alex', type })}
         </button>
-        <a href="#">{i18n.t('Delete {type} "{name}"?', { type, name })}</a>
-        <p>{i18n.t('Delete confirmation')}</p>
+        <a href="#">{i18n._('Delete {type} "{name}"?', { type, name })}</a>
+        <p>{i18n._('Delete confirmation')}</p>
       </>
     );
   };
@@ -34,7 +34,7 @@ describe('MoniteI18nProvider Lingui', () => {
 
     return (
       <button type="reset">
-        {i18n.t('SimpleVarTestWithElement', { myVar })}{' '}
+        {i18n._('SimpleVarTestWithElement', { myVar })}{' '}
       </button>
     );
   };
@@ -77,7 +77,7 @@ describe('MoniteI18nProvider Lingui', () => {
     );
   };
 
-  describe('General translations with i18n.t', () => {
+  describe('General translations with i18n._', () => {
     beforeEach(() => {
       act(() => {
         renderWithClient(
@@ -134,7 +134,7 @@ describe('MoniteI18nProvider Lingui', () => {
       });
     });
 
-    test('should render dynamic translations using i18n.t with a local variable', async () => {
+    test('should render dynamic translations using i18n._ with a local variable', async () => {
       expect(
         await screen.findByRole('button', {
           name: 'Einfacher Test mit TEST_VAR_CONTENT',

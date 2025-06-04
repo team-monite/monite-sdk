@@ -21,6 +21,8 @@ import {
   within,
 } from '@testing-library/react';
 
+import { describe, test, expect, vi } from 'vitest';
+
 import { Products } from './Products';
 
 interface DialogProps {

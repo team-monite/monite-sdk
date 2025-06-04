@@ -13,6 +13,8 @@ import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { describe, test, expect } from 'vitest';
+
 describe.skip('Receivables', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {

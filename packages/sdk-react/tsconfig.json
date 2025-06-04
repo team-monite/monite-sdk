@@ -25,7 +25,7 @@
 
     /* Modules */
     "module": "esnext" /* Specify what module code is generated. */,
-    "rootDir": "src",                                  /* Specify the root folder within your source files. */
+    "rootDir": "." /* Specify the root folder within your source files. */,
     "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
@@ -33,7 +33,7 @@
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */
-    "types": ["vite/client", "vitest/globals", "jest", "@testing-library/jest-dom", "../sdk-react/vitest-env.d.ts", "node"] /* Use vitest/globals for proper test globals. */,
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom", "../sdk-react/vitest-env.d.ts", "node"] /* Use vitest/globals for proper test globals. */,
     "resolveJsonModule": true /* Enable importing .json files */,
     // "noResolve": true,                                /* Disallow `import`s, `require`s or `<reference>`s from expanding the number of files TypeScript should add to a project. */
 
@@ -99,6 +99,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*", "typings.d.ts", "config/rollup.config.mjs", "mui-styles.d.ts", "emotion.d.ts", "vite-env.d.ts", "vitest-env.d.ts"],
+  "include": ["src/**/*", "typings.d.ts", "config/rollup.config.mjs", "mui-styles.d.ts", "emotion.d.ts", "vite-env.d.ts", "vitest-env.d.ts", "vitest.config.mts"],
   "exclude": ["node_modules", "dist"]
 }

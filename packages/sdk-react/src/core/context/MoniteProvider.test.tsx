@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { useTheme } from '@mui/material/styles';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 import { MoniteProvider } from './MoniteProvider';
 

@@ -8,14 +8,6 @@ import {
   useGetFinancedInvoices,
   useGetFinanceOffers,
 } from '@/components/financing/hooks';
-// import {
-//   InvoiceRecurrenceStatusChip,
-//   InvoiceStatusChip,
-//   ReceivableFilters,
-// } from '@/components/receivables/components'; // Remove this block
-import { InvoiceRecurrenceStatusChip } from './InvoiceRecurrenceStatusChip'; // Add this line
-import { InvoiceStatusChip } from './InvoiceStatusChip'; // Add this line
-import { ReceivableFilters } from './ReceivableFilters'; // Add this line
 import { useReceivablesFilters } from '@/components/receivables/hooks';
 import {
   useInvoiceRowActionMenuCell,
@@ -60,6 +52,10 @@ import {
   GridSortDirection,
   GridSortModel,
 } from '@mui/x-data-grid';
+
+import { InvoiceRecurrenceStatusChip } from './InvoiceRecurrenceStatusChip';
+import { InvoiceStatusChip } from './InvoiceStatusChip';
+import { ReceivableFilters } from './ReceivableFilters';
 
 interface InvoicesTableBaseProps {
   /**
