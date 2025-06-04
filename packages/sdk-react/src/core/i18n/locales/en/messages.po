@@ -1397,7 +1397,7 @@ msgstr "Cameroon"
 msgid "Can't be a negative number"
 msgstr "Can't be a negative number"
 
-#: src/components/templateSettings/schemas.ts:8
+#: src/components/templateSettings/schemas.ts:11
 msgid "Can't be less than 1"
 msgstr "Can't be less than 1"
 
@@ -1488,7 +1488,7 @@ msgstr "Cancel bill?"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:246
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:247
 msgid "Cancel Invoice"
 msgstr "Cancel Invoice"
 
@@ -1505,7 +1505,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:99
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:350
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:346
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1721,7 +1721,7 @@ msgstr "Close approval policy details"
 msgid "Close invoice creation"
 msgstr "Close invoice creation"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:396
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:392
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:182
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
 msgid "Close invoice details"
@@ -1820,7 +1820,7 @@ msgstr "Companies"
 msgid "Company details"
 msgstr "Company details"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:85
+#: src/components/templateSettings/components/LogoSelection.tsx:96
 msgid "Company logo"
 msgstr "Company logo"
 
@@ -1841,7 +1841,7 @@ msgstr "Completed"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:152
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:274
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:327
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:323
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -2543,7 +2543,7 @@ msgstr "Default currency switch"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:57
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:269
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:266
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:281
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2915,7 +2915,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:301
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:297
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2938,7 +2938,7 @@ msgstr "Drag & Drop it here to save for administrative purposes."
 msgid "Drag and drop files or click to upload"
 msgstr "Drag and drop files or click to upload"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:87
+#: src/components/templateSettings/components/LogoSelection.tsx:98
 msgid "Drag and drop the image here."
 msgstr "Drag and drop the image here."
 
@@ -3074,7 +3074,7 @@ msgstr "Ecuador"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector.tsx:270
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:413
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrence.tsx:94
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:286
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:282
 #: src/components/TableActions/TableActions.tsx:50
 #: src/components/tags/TagsTable/TagsTable.test.tsx:376
 #: src/components/tags/TagsTable/TagsTable.test.tsx:407
@@ -3197,7 +3197,7 @@ msgid "Edit tags"
 msgstr "Edit tags"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:529
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:256
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:257
 #: src/components/templateSettings/TemplateSettings.tsx:165
 #: src/components/templateSettings/TemplateSettings.tsx:174
 msgid "Edit template settings"
@@ -3342,7 +3342,7 @@ msgstr "Entity bank account"
 msgid "Entity documents"
 msgstr "Entity documents"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:139
+#: src/components/templateSettings/components/LogoSelection.tsx:150
 msgid "Entity logo"
 msgstr "Entity logo"
 
@@ -4348,7 +4348,7 @@ msgstr "Invoice {0}"
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:203
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:204
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -4381,7 +4381,7 @@ msgstr "Invoice from {entityName}"
 msgid "Invoice has been marked as paid"
 msgstr "Invoice has been marked as paid"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:154
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:155
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:146
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -4465,7 +4465,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:337
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:333
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:286
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:291
 msgid "Issue"
@@ -5188,7 +5188,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:226
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:227
 msgid "More"
 msgstr "More"
 
@@ -5700,7 +5700,7 @@ msgstr "Or add bill manually"
 msgid "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 msgstr "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 
-#: src/components/templateSettings/components/LogoSelection.tsx:89
+#: src/components/templateSettings/components/LogoSelection.tsx:100
 msgid "Or select the file on your computer."
 msgstr "Or select the file on your computer."
 
@@ -6558,7 +6558,7 @@ msgstr "Quebec Sales Tax (Canada)"
 msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
-#: src/components/templateSettings/components/DiscardChangesModal.tsx:54
+#: src/components/templateSettings/components/DiscardChangesModal.tsx:49
 msgid "Quit without saving"
 msgstr "Quit without saving"
 
@@ -6600,11 +6600,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:164
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:165
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:163
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:164
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -6626,7 +6626,7 @@ msgid "Reconciliation"
 msgstr "Reconciliation"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:312
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:308
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -6676,7 +6676,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:202
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:203
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
@@ -6772,7 +6772,7 @@ msgstr "Reminders are disabled for this Counterpart."
 msgid "Reminders are disabled for this Entity."
 msgstr "Reminders are disabled for this Entity."
 
-#: src/components/templateSettings/components/LogoSelection.tsx:130
+#: src/components/templateSettings/components/LogoSelection.tsx:141
 msgid "Remove"
 msgstr "Remove"
 
@@ -7120,7 +7120,7 @@ msgstr "Select 'Get Paid Now':"
 msgid "Select customer"
 msgstr "Select customer"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:109
+#: src/components/templateSettings/components/LogoSelection.tsx:120
 msgid "Select file"
 msgstr "Select file"
 
@@ -7149,7 +7149,7 @@ msgstr "Send"
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:235
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:236
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -7881,7 +7881,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:155
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:156
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -9033,7 +9033,7 @@ msgstr "You don’t have any tags yet."
 #~ msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 #~ msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:416
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:412
 msgid "You don’t have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don’t have permission to issue this document. Please, contact your system administrator for details."
 

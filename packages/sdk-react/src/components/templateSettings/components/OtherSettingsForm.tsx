@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, Divider } from '@mui/material';
 
-import { useDiscardChangesContext } from '../context';
 import { usePatchEntitySettings } from '../hooks';
 import { OtherSettingsFormValues } from '../types';
 import { DisplayBankSection } from './DisplayBankSection';

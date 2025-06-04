@@ -25,7 +25,7 @@ export const CommonSettingsBlock = ({ control }: Props) => {
 
   return (
     <div className="mtw:flex mtw:flex-col mtw:gap-4">
-      <h2 className="mtw:text-lg mtw:font-semibold mtw:text-[#292929]">{t(
+      <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
         i18n
       )`Common settings`}</h2>
 

@@ -37,15 +37,24 @@ export const LogoSelection = () => {
   const { mutate: deleteLogo, isPending: isDeletingLogo } =
     useDeleteEntityLogo(entityId);
 
-  async function handleUploadLogo(file: File) {
-    await uploadLogo({
-      body: {
-        file,
-      },
-      path: {
-        entity_id: entityId,
-      },
-    });
+  async function handleUploadLogo(file: File | null) {
+    if (file) {
+      const error = checkFileError(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      setUploadingFileName(file?.name);
+      await uploadLogo({
+        body: {
+          file,
+        },
+        path: {
+          entity_id: entityId,
+        },
+      });
+    }
   }
 
   const isUploadInProgress = isUploading || isUploadError || isUploadSuccess;
@@ -72,7 +81,9 @@ export const LogoSelection = () => {
         event.preventDefault();
         setIsDragging(false);
 
-        const file = event.dataTransfer?.files?.[0];
+        const file = event.dataTransfer?.files
+          ? event.dataTransfer?.files?.[0]
+          : null;
         handleUploadLogo(file);
       }}
     >
@@ -156,16 +167,7 @@ export const LogoSelection = () => {
       <FileInput
         onChange={(event) => {
           const file = event.target.files ? event.target.files[0] : null;
-          if (file) {
-            const error = checkFileError(file);
-            if (error) {
-              toast.error(error);
-              return;
-            }
-            setUploadingFileName(file?.name);
-
-            handleUploadLogo(file);
-          }
+          handleUploadLogo(file);
         }}
       />
     </div>

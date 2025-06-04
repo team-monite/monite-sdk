@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
 
-import { useDiscardChangesContext } from '../context';
 import { usePatchEntitySettings } from '../hooks';
 import { getDocumentNumberFormSchema } from '../schemas';
 import { DocumentNumberFormValues } from '../types';

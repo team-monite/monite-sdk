@@ -1,6 +1,6 @@
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
-import { TextField } from '@mui/material';
+import { TextField, useTheme } from '@mui/material';
 
 import { DocumentNumberFormValues, DocumentType } from '../types';
 
@@ -15,6 +15,8 @@ type Props = {
 export const DocumentRow = ({ control, availableType }: Props) => {
   const { watch } = useFormContext<DocumentNumberFormValues>();
   const fieldName = availableType.name;
+  const theme = useTheme();
+  console.log(theme);
 
   const minDigits = watch('min_digits');
   const customPrefix = watch('prefix');
@@ -51,16 +53,16 @@ export const DocumentRow = ({ control, availableType }: Props) => {
               fullWidth
               error={Boolean(error)}
               sx={{
-                width: 104,
-                minWidth: 104,
-                height: 32,
+                width: '6.5rem',
+                minWidth: '6.5rem',
+                height: '2rem',
                 '& .MuiInputBase-root': {
-                  height: 32,
-                  minHeight: 32,
+                  height: '2rem',
+                  minHeight: '2rem',
                 },
                 '& .MuiInputBase-input': {
-                  height: 32,
-                  minHeight: 32,
+                  height: '2rem',
+                  minHeight: '2rem',
                 },
               }}
             />
@@ -80,6 +82,10 @@ export const DocumentRow = ({ control, availableType }: Props) => {
               fullWidth
               type="number"
               onChange={(event) => {
+                // This RegEx is for removing the zeros that are added with padStart
+                // before storing the input value so we don't store something like 001 but 1 instead
+                // For example, if min digits is 3, the next number should be 001
+                // Now, when we type in this input, the stored value is actually 1 and not 001
                 const filteredValue = event.target.value.replace(
                   /^0+(?=\d)/,
                   ''
@@ -90,16 +96,16 @@ export const DocumentRow = ({ control, availableType }: Props) => {
               error={Boolean(error)}
               helperText={error?.message}
               sx={{
-                width: 128,
-                minWidth: 128,
-                height: 32,
+                width: '8rem',
+                minWidth: '8rem',
+                height: '2rem',
                 '& .MuiInputBase-root': {
-                  height: 32,
-                  minHeight: 32,
+                  height: '2rem',
+                  minHeight: '2rem',
                 },
                 '& .MuiInputBase-input': {
-                  height: 32,
-                  minHeight: 32,
+                  height: '2rem',
+                  minHeight: '2rem',
                 },
               }}
             />

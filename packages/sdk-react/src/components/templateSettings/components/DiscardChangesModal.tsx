@@ -42,15 +42,10 @@ export const DiscardChangesModal = ({
       </DialogContent>
 
       <DialogActions sx={{ px: 4 }}>
-        <Button variant="text" onClick={onClose} color="primary">
+        <Button variant="text" onClick={onClose} color="primary" autoFocus>
           {t(i18n)`Cancel`}
         </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={onContinue}
-          autoFocus
-        >
+        <Button variant="contained" color="error" onClick={onContinue}>
           {t(i18n)`Quit without saving`}
         </Button>
       </DialogActions>

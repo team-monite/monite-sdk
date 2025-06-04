@@ -40,7 +40,7 @@ import {
   Stack,
   CircularProgress,
 } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
@@ -107,6 +107,7 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
+  const theme = useTheme();
 
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
@@ -260,14 +261,9 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               <MenuItem
                 onClick={() => setDeleteModalOpened(true)}
                 disabled={buttons.isDeleteButtonDisabled}
+                sx={{ color: theme.palette.error.main }}
               >
-                <Button
-                  variant="text"
-                  color="error"
-                  // disabled={buttons.isDeleteButtonDisabled}
-                >
-                  {t(i18n)`Delete`}
-                </Button>
+                {t(i18n)`Delete`}
               </MenuItem>
             )}
           </StyledMenu>

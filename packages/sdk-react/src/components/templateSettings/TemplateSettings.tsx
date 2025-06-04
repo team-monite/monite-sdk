@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
+import {
+  DiscardChangesContextProvider,
+  useDiscardChangesContext,
+} from '@/core/context/DiscardChangesContext';
 // import { useMoniteContext } from '@/core/context/MoniteContext';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
@@ -11,10 +15,6 @@ import { Box, Tab, Tabs, DialogContent } from '@mui/material';
 import { PageHeader } from '../PageHeader';
 import { LayoutAndLogo, OtherSettings } from './components';
 import { DiscardChangesModal } from './components/DiscardChangesModal';
-import {
-  DiscardChangesContextProvider,
-  useDiscardChangesContext,
-} from './context';
 
 type TabType = 'documentDesign' | 'documentNumber' | 'otherSettings';
 
