@@ -8,7 +8,7 @@ import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
 import { SlideProps } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 
-import { DialogContext } from './DialogContext';
+import { DialogContext, useDialog } from './DialogContext';
 import { MoniteDialogProps } from './DialogProps.types';
 
 const Transition = forwardRef(function Transition(
