@@ -18,7 +18,30 @@ export const createMoniteClient = (token: AccessToken) => {
   });
 };
 
+const isBuildTime = () => {
+  const isBuild = process.env.NEXT_PHASE === 'phase-production-build';
+
+  if (isBuild) {
+    return true;
+  }
+
+  const isCiBuild =
+    process.env.NODE_ENV === 'production' &&
+    typeof window === 'undefined' &&
+    (!process.env.CLERK_SECRET_KEY || !process.env.MONITE_API_URL);
+
+  if (isCiBuild) {
+    return true;
+  }
+
+  return false;
+};
+
 export const getMoniteApiUrl = (): string => {
+  if (isBuildTime()) {
+    return 'https://api.mock.monite.com/v1';
+  }
+
   const moniteApiUrl = process.env.MONITE_API_URL;
   if (!moniteApiUrl) throw new Error('MONITE_API_URL is not set');
   return moniteApiUrl;
