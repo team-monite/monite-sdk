@@ -8,6 +8,7 @@ import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { AppThemeProvider } from '@/components/ThemeRegistry/AppThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
+import { getClerkPublishableKey } from '@/lib/utils/build-time-detection';
 
 import './globals.css';
 
@@ -26,7 +27,7 @@ export default async function RootLayout({
   // const user = await currentUser();
 
   return (
-    <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={getClerkPublishableKey()}>
       <html lang="en">
         <body className={themeFont.className}>
           <RootI18nProvider>

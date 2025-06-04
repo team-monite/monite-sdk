@@ -1,5 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
+import { getClerkPublishableKey } from '@/lib/utils/build-time-detection';
+
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/clerk-middleware#protect-all-routes for more information about configuring your middleware
@@ -18,7 +20,7 @@ export default clerkMiddleware(
       await auth.protect();
     }
   },
-  { publishableKey: process.env.CLERK_PUBLISHABLE_KEY }
+  { publishableKey: getClerkPublishableKey() }
 );
 
 export const config = {
