@@ -19,7 +19,7 @@ import { tagListFixture } from '../tags';
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
 
 const getRandomTags = () => {
-  const hasTags = faker.datatype.boolean({ probability: 0.4 }); // 40% chance of having tags
+  const hasTags = faker.datatype.boolean({ probability: 0.4 });
 
   return hasTags ? getSampleFromArray(tagListFixture) : [];
 };

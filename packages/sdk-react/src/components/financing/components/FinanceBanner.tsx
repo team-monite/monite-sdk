@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-import { FinanceBannerWrapper } from './FinanceBannerWrapper';
-import { FinanceFaqWrapper } from './FinanceFaqWrapper';
-import { FinanceProgressBar } from './FinanceProgressBar';
 import {
   FinancialApplicationState,
   useFinancing,
@@ -21,6 +18,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+
+import { FinanceBannerWrapper } from './FinanceBannerWrapper';
+import { FinanceFaqWrapper } from './FinanceFaqWrapper';
+import { FinanceProgressBar } from './FinanceProgressBar';
 
 const LOCAL_STORAGE_KEY = 'financing_banner_hidden';
 const SEVEN_DAYS_TIME_MILLISECONDS = 7 * 24 * 60 * 60 + 1000;

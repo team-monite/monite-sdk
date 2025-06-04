@@ -8,7 +8,6 @@ import {
 import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { MockedFunction } from '@vitest/spy';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';

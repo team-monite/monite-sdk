@@ -15,7 +15,7 @@ import {
 } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 import { PayablesTable } from './PayablesTable';
 

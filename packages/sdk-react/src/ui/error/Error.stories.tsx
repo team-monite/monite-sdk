@@ -1,19 +1,19 @@
-import { useDialog } from '@/components/Dialog';
 import { useState } from 'react';
 
+import { useDialog } from '@/components/Dialog';
 import { Button } from '@mui/material';
 import { ErrorBoundary } from '@sentry/react';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ErrorBase } from './Error';
+import { ErrorComponent } from './Error';
 
-const meta: Meta<typeof ErrorBase> = {
+const meta: Meta<typeof ErrorComponent> = {
   title: 'components/Error',
-  component: ErrorBase,
+  component: ErrorComponent,
 };
 
-type Story = StoryObj<typeof ErrorBase>;
+type Story = StoryObj<typeof ErrorComponent>;
 
 const ButtonWithThrowError = () => {
   const [error, setError] = useState<Error>();
@@ -35,19 +35,23 @@ const ButtonWithThrowError = () => {
   );
 };
 
-export const Default: Story = {
-  render: () => {
-    const dialogContext = useDialog();
+const ErrorStoryComponent = () => {
+  const dialogContext = useDialog();
 
-    return (
-      <ErrorBoundary
-        fallback={(props) => <ErrorBase onClose={dialogContext?.onClose} {...props} />}
-        onError={action('onError')}
-      >
-        <ButtonWithThrowError />
-      </ErrorBoundary>
-    );
-  },
+  return (
+    <ErrorBoundary
+      fallback={(props) => (
+        <ErrorComponent onClose={dialogContext?.onClose} {...props} />
+      )}
+      onError={action('onError')}
+    >
+      <ButtonWithThrowError />
+    </ErrorBoundary>
+  );
+};
+
+export const Default: Story = {
+  render: () => <ErrorStoryComponent />,
 };
 
 export default meta;

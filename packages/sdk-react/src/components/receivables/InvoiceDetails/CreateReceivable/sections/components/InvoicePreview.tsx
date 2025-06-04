@@ -25,7 +25,6 @@ import type {
   CreateReceivablesFormProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../../validation';
-
 import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {

@@ -5,6 +5,8 @@ import { CounterpartAddressFormFields } from '@/components/counterparts/Counterp
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/dom';
 
+import { describe, it, expect } from 'vitest';
+
 import { CounterpartAddressForm } from './CounterpartAddressForm';
 
 describe('CounterpartAddressForm', () => {
