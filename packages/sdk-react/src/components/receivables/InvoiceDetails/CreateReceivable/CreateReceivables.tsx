@@ -436,6 +436,12 @@ const CreateReceivablesBase = ({
     }
   }, [entityBankAccountId, bankAccountField, clearErrors]);
 
+  useEffect(() => {
+    if (entityVatIds && entityVatIds.data.length > 0) {
+      setValue('entity_vat_id_id', entityVatIds.data[0].id);
+    }
+  }, [entityVatIds, setValue]);
+
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
 
@@ -466,7 +472,6 @@ const CreateReceivablesBase = ({
                   event.preventDefault();
                   handleSettings(event);
                 }}
-                form={formName}
                 disabled={createReceivable.isPending}
               >
                 <SettingsOutlinedIcon />
@@ -513,7 +518,6 @@ const CreateReceivablesBase = ({
               </Menu>
               <Button
                 variant="contained"
-                key="next"
                 color="primary"
                 type="submit"
                 form={formName}

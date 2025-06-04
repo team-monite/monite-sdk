@@ -69,7 +69,7 @@ export const ReminderDetails = ({
         } after`,
         termPeriodName: t(i18n)`Due date`,
         id: `overdue-${index + 1}`,
-      }));
+      })) ?? [];
 
   return (
     <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:p-4 mtw:bg-neutral-95 mtw:rounded-md">

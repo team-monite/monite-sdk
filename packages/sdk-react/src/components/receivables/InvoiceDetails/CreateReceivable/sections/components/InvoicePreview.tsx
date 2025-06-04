@@ -373,7 +373,7 @@ export const InvoicePreview = ({
               <tbody className="products">
                 {sanitizedItems.length > 0 ? (
                   sanitizedItems.map((item) => (
-                    <tr>
+                    <tr key={item.id}>
                       <td style={{ maxWidth: '120px' }}>
                         {item?.product?.name}
                       </td>

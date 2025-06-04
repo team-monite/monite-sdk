@@ -32,10 +32,7 @@ export const ReminderOverdue = ({
     method: 'overdue_reminder',
     action: 'update',
   });
-  const { data: isCreatePaymentReminderAllowed } = useIsActionAllowed({
-    method: 'payment_reminder',
-    action: 'create',
-  });
+
   const { data: isCreateOverdueReminderAllowed } = useIsActionAllowed({
     method: 'overdue_reminder',
     action: 'create',
@@ -105,7 +102,7 @@ export const ReminderOverdue = ({
                 props?.onClick?.(event);
               }
             }}
-            disabled={!isCreatePaymentReminderAllowed}
+            disabled={!isCreateOverdueReminderAllowed}
             sx={
               option.value === 'create'
                 ? {

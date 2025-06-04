@@ -18,8 +18,12 @@ interface ReminderSectionProps extends SectionGeneralProps {
 
 export const RemindersSection = (props: ReminderSectionProps) => {
   const { i18n } = useLingui();
-  const [showReminders, setShowReminders] = useState(false);
-  const { setValue } = useFormContext<CreateReceivablesFormProps>();
+  const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
+  const dueDateId = watch('payment_reminder_id');
+  const overdueId = watch('overdue_reminder_id');
+  const [showReminders, setShowReminders] = useState(
+    Boolean(dueDateId || overdueId)
+  );
 
   return (
     <section className="mtw:flex mtw:flex-col mtw:gap-6 mtw:pb-10">

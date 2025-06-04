@@ -29,8 +29,10 @@ export const ReminderSectionContent = ({
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { watch, resetField } = useFormContext<CreateReceivablesFormProps>();
+  const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
   const counterpartId = watch('counterpart_id');
+  const paymentReminderId = watch('payment_reminder_id');
+  const overdueReminderId = watch('overdue_reminder_id');
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -62,20 +64,14 @@ export const ReminderSectionContent = ({
     (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
   useEffect(() => {
-    if (
-      !hasValidReminderEmailLoading &&
-      !hasValidReminderEmail &&
-      !counterpart?.reminders_enabled
-    ) {
-      resetField('payment_reminder_id');
-      resetField('overdue_reminder_id');
+    if (shouldShowAlert && paymentReminderId) {
+      setValue('payment_reminder_id', '');
     }
-  }, [
-    counterpart?.reminders_enabled,
-    hasValidReminderEmail,
-    hasValidReminderEmailLoading,
-    resetField,
-  ]);
+
+    if (shouldShowAlert && overdueReminderId) {
+      setValue('overdue_reminder_id', '');
+    }
+  }, [shouldShowAlert, paymentReminderId, overdueReminderId, setValue]);
 
   return shouldShowAlert ? (
     <Alert severity="warning">
@@ -111,17 +107,13 @@ export const ReminderSectionContent = ({
       <ReminderBeforeDueDate
         handleCreate={onCreateReminder}
         onUpdatePaymentReminder={onUpdatePaymentReminder}
-        disabled={
-          disabled || !hasValidReminderEmail || !counterpart?.reminders_enabled
-        }
+        disabled={disabled || isCounterpartLoading}
       />
 
       <ReminderOverdue
         handleCreate={onCreateReminder}
         onUpdateOverdueReminder={onUpdateOverdueReminder}
-        disabled={
-          disabled || !hasValidReminderEmail || !counterpart?.reminders_enabled
-        }
+        disabled={disabled || isCounterpartLoading}
       />
     </div>
   );
