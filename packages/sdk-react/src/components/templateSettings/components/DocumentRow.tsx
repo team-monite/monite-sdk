@@ -1,6 +1,6 @@
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
-import { TextField, useTheme } from '@mui/material';
+import { TextField } from '@mui/material';
 
 import { DocumentNumberFormValues, DocumentType } from '../types';
 
@@ -15,8 +15,6 @@ type Props = {
 export const DocumentRow = ({ control, availableType }: Props) => {
   const { watch } = useFormContext<DocumentNumberFormValues>();
   const fieldName = availableType.name;
-  const theme = useTheme();
-  console.log(theme);
 
   const minDigits = watch('min_digits');
   const customPrefix = watch('prefix');
