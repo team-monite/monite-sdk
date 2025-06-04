@@ -73,20 +73,6 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const { api } = useMoniteContext();
 
-  const preparePersonPayload = <
-    T extends PersonRequest | OptionalPersonRequest
-  >(
-    payload: T
-  ): T => {
-    const finalPayload = { ...payload };
-    if (finalPayload.address?.country === 'US' && finalPayload.id_number) {
-      finalPayload.ssn_last_4 = finalPayload.id_number.slice(-4);
-    } else if (finalPayload.address?.country !== 'US') {
-      delete finalPayload.ssn_last_4;
-    }
-    return finalPayload;
-  };
-
   const {
     mutateAsync: createPersonMutation,
     isPending: isCreateLoading,
@@ -125,10 +111,8 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const createPerson = useCallback(
     async (payload: PersonRequest) => {
-      const finalPayload = preparePersonPayload(payload);
-
       const response = await createPersonMutation({
-        body: finalPayload,
+        body: payload,
       });
 
       const requirement = isRepresentative(currentRequirement)
@@ -169,11 +153,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const updatePerson = useCallback(
     async (personId: string, payload: OptionalPersonRequest) => {
-      const finalPayload = preparePersonPayload(payload);
-
       const response = await updatePersonMutation({
         path: { person_id: personId },
-        body: filterRequestBody(finalPayload),
+        body: filterRequestBody(payload),
       });
 
       patchOnboardingRequirements({
@@ -200,11 +182,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const updateRepresentativePerson = useCallback(
     async (personId: string, payload: OptionalPersonRequest) => {
-      const finalPayload = preparePersonPayload(payload);
-
       const response = await updatePersonMutation({
         path: { person_id: personId },
-        body: filterRequestBody(finalPayload),
+        body: filterRequestBody(payload),
       });
 
       patchOnboardingRequirements({

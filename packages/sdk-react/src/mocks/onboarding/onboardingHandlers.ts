@@ -14,8 +14,6 @@ import { personFixture } from '../persons/personsFixtures';
 import { onboardingBusinessProfileFixture } from './onboardingBusinessProfile';
 import { onboardingEntityFixture } from './onboardingEntityFixtures';
 
-const idRequiredCountries: (string | null)[] = ['GB', 'US'];
-
 const onboardingPath = `*/frontend/onboarding_requirements`;
 
 const onboardingPersonMaskPath = `*/frontend/person_mask`;
@@ -246,9 +244,7 @@ export const onboardingHandlers = [
 
         ...(!isDirector && { date_of_birth: true }),
 
-        ...(idRequiredCountries.includes(filter.country) && {
-          id_number: true,
-        }),
+        id_number: true,
 
         ...(!isDirector && {
           address: {
