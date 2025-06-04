@@ -1,33 +1,31 @@
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
+import { type IconWrapperSettings } from '@/ui/iconWrapper';
 import { useLingui } from '@lingui/react';
 import CachedIcon from '@mui/icons-material/Cached';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
-import type { FallbackRender } from '@sentry/react';
-
 
 export interface ErrorBaseProps {
   error: unknown;
   componentStack?: string;
   eventId?: string;
+  iconWrapperSettings?: IconWrapperSettings;
   resetError?: () => void;
   onClose?: () => void;
-  iconWrapperSettings?: {
-    icon?: React.ReactNode;
-    fallbackIcon?: React.ReactNode;
-  };
 }
 
-export const ErrorBase = ({
+export const ErrorComponent = ({
   error,
+  iconWrapperSettings,
   resetError,
   onClose,
-  iconWrapperSettings,
 }: ErrorBaseProps) => {
-  const { i18n: { _ } } = useLingui();
+  const {
+    i18n: { _ },
+  } = useLingui();
   const safeError = error instanceof Error ? error : new Error(String(error));
 
   return (

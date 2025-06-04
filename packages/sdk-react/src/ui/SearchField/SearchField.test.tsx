@@ -1,6 +1,6 @@
 import { render, fireEvent, act } from '@testing-library/react';
 
-import { vi } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 
 import { SearchField, DEBOUNCE_SEARCH_TIMEOUT } from './SearchField';
 

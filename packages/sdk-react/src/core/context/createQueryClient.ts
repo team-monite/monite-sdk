@@ -3,8 +3,13 @@ import { toast } from 'react-hot-toast';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { MutationCache, QueryClient, type DefaultOptions, type QueryCache } from '@tanstack/react-query';
 import * as Sentry from '@sentry/react';
+import {
+  MutationCache,
+  QueryClient,
+  type DefaultOptions,
+  type QueryCache,
+} from '@tanstack/react-query';
 
 export const createQueryClient = (
   i18n: I18n,

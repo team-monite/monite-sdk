@@ -7,7 +7,6 @@ import React, {
   FocusEvent,
 } from 'react';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import { SxProps } from '@mui/material';
@@ -45,7 +44,7 @@ export interface MoniteIconWrapperProps
   sx?: SxProps<Theme>;
   isDynamic?: boolean;
   ariaLabelOverride?: string;
-  iconWrapperSettings?: IconWrapperSettings; // Updated to use the new type
+  iconWrapperSettings?: IconWrapperSettings;
 }
 
 /**
@@ -105,12 +104,18 @@ export const IconWrapper = forwardRef<
     const providerProps = iconWrapperSettings || {};
 
     const [displayIcon, setDisplayIcon] = useState<ReactNode>(
-      icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+      icon ||
+        fallbackIcon ||
+        providerProps.icon ||
+        providerProps.fallbackIcon || <CloseIcon />
     );
 
     useEffect(() => {
       setDisplayIcon(
-        icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+        icon ||
+          fallbackIcon ||
+          providerProps.icon ||
+          providerProps.fallbackIcon || <CloseIcon />
       );
     }, [icon, fallbackIcon, providerProps.icon, providerProps.fallbackIcon]);
 
@@ -123,7 +128,10 @@ export const IconWrapper = forwardRef<
 
     const handleMouseLeave = () => {
       setDisplayIcon(
-        icon || fallbackIcon || providerProps.icon || providerProps.fallbackIcon || <CloseIcon />
+        icon ||
+          fallbackIcon ||
+          providerProps.icon ||
+          providerProps.fallbackIcon || <CloseIcon />
       );
     };
 

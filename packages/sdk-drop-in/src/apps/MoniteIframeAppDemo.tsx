@@ -30,14 +30,6 @@ const MockSDKDemoAPIProvider = ({
   return <>{children}</>;
 };
 
-const MockSDKDemoI18nProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return <>{children}</>;
-};
-
 const MockDefaultLayout = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -133,6 +125,24 @@ const RobustEntityIdLoader = ({
   >;
   config: Record<string, unknown>;
 }) => {
+  const isCI = process.env.CI === 'true';
+
+  if (isCI) {
+    return (
+      <EntityIdLoader apiUrl={apiUrl} fetchToken={fetchToken}>
+        {(entityId) => (
+          <SDKDemoAPIProvider
+            apiUrl={apiUrl}
+            entityId={entityId}
+            fetchToken={fetchToken}
+          >
+            {children(entityId)}
+          </SDKDemoAPIProvider>
+        )}
+      </EntityIdLoader>
+    );
+  }
+
   const isTestEnvironment =
     typeof window !== 'undefined' &&
     (window.location.search.includes('test=playwright') ||
@@ -180,27 +190,102 @@ export const MoniteIframeAppDemo = () => {
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<AppCircularProgress color="primary" />}>
         <ConfigLoader>
-          {({ apiUrl, appBasename, appHostname }, config) => (
-            <RobustEntityIdLoader
-              apiUrl={apiUrl}
-              fetchToken={fetchTokenDev}
-              config={config}
-            >
-              {() => (
-                <MoniteIframeAppConsumerComponent
-                  appBasename={appBasename}
-                  appHostname={appHostname}
-                  fetchToken={fetchTokenDev}
-                  isMocked={config?.client_id === 'mocked_client_id'}
-                />
-              )}
-            </RobustEntityIdLoader>
-          )}
+          {({ apiUrl, appBasename, appHostname }, config) => {
+            const isCI = process.env.CI === 'true';
+
+            const shouldUseMockedRendering =
+              !isCI &&
+              typeof window !== 'undefined' &&
+              (window.location.search.includes('test=playwright') ||
+                window.location.search.includes('test=e2e'));
+
+            return (
+              <RobustEntityIdLoader
+                apiUrl={apiUrl}
+                fetchToken={fetchTokenDev}
+                config={config}
+              >
+                {() => (
+                  <MoniteIframeAppConsumerComponent
+                    appBasename={appBasename}
+                    appHostname={appHostname}
+                    fetchToken={fetchTokenDev}
+                    isMocked={shouldUseMockedRendering}
+                  />
+                )}
+              </RobustEntityIdLoader>
+            );
+          }}
         </ConfigLoader>
       </Suspense>
     </QueryClientProvider>
   );
 };
+
+const RouterWrapper = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter
+    basename={window.location.pathname.split('/')[1]}
+    future={{
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    }}
+  >
+    {children}
+  </BrowserRouter>
+);
+
+const SharedRoutes = ({
+  appBasename,
+  appHostname,
+  fetchToken,
+  localeCode,
+  isMocked,
+}: {
+  appBasename: string;
+  appHostname: string;
+  fetchToken: FetchTokenHandler;
+  localeCode: string;
+  isMocked: boolean;
+}) => (
+  <Routes>
+    <Route
+      path="/"
+      element={
+        <MoniteIframe
+          appBasename={appBasename}
+          appHostname={appHostname}
+          fetchToken={fetchToken}
+          localeCode={localeCode}
+          isMocked={isMocked}
+        />
+      }
+    />
+    <Route
+      path="/settings/:component"
+      element={
+        <MoniteIframe
+          appBasename={appBasename}
+          appHostname={appHostname}
+          fetchToken={fetchToken}
+          localeCode={localeCode}
+          isMocked={isMocked}
+        />
+      }
+    />
+    <Route
+      path="/:component"
+      element={
+        <MoniteIframe
+          appBasename={appBasename}
+          appHostname={appHostname}
+          fetchToken={fetchToken}
+          localeCode={localeCode}
+          isMocked={isMocked}
+        />
+      }
+    />
+  </Routes>
+);
 
 const MoniteIframeAppConsumerComponent = ({
   appBasename,
@@ -214,179 +299,36 @@ const MoniteIframeAppConsumerComponent = ({
   isMocked?: boolean;
 }) => {
   const localeCode = 'en-US';
-
-  // Detect test environment by checking URL parameters
-  const isTestEnvironment =
-    typeof window !== 'undefined' &&
-    (window.location.search.includes('test=playwright') ||
-      window.location.search.includes('test=e2e'));
-
-  const useMockComponents =
-    process.env.NODE_ENV === 'development' &&
-    isMocked &&
-    !process.env.CI &&
-    !isTestEnvironment;
-
-  if (isTestEnvironment) {
-    return (
-      <>
-        <CssBaseline enableColorScheme />
-        <BrowserRouter
-          basename={window.location.pathname.split('/')[1]}
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
-          <MockDefaultLayout>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <MoniteIframe
-                    appBasename={appBasename}
-                    appHostname={appHostname}
-                    fetchToken={fetchToken}
-                    localeCode={localeCode}
-                    isMocked={false}
-                  />
-                }
-              />
-              <Route
-                path="/settings/:component"
-                element={
-                  <MoniteIframe
-                    appBasename={appBasename}
-                    appHostname={appHostname}
-                    fetchToken={fetchToken}
-                    localeCode={localeCode}
-                    isMocked={false}
-                  />
-                }
-              />
-              <Route
-                path="/:component"
-                element={
-                  <MoniteIframe
-                    appBasename={appBasename}
-                    appHostname={appHostname}
-                    fetchToken={fetchToken}
-                    localeCode={localeCode}
-                    isMocked={false}
-                  />
-                }
-              />
-            </Routes>
-          </MockDefaultLayout>
-        </BrowserRouter>
-      </>
-    );
-  }
+  const LayoutComponent = isMocked ? MockDefaultLayout : DefaultLayout;
 
   return (
     <>
       <CssBaseline enableColorScheme />
-      {useMockComponents ? (
-        <MockSDKDemoI18nProvider>
-          <BrowserRouter
-            basename={window.location.pathname.split('/')[1]}
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <MockDefaultLayout>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-                <Route
-                  path="/settings/:component"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-                <Route
-                  path="/:component"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-              </Routes>
-            </MockDefaultLayout>
-          </BrowserRouter>
-        </MockSDKDemoI18nProvider>
+      {isMocked ? (
+        <RouterWrapper>
+          <LayoutComponent>
+            <SharedRoutes
+              appBasename={appBasename}
+              appHostname={appHostname}
+              fetchToken={fetchToken}
+              localeCode={localeCode}
+              isMocked={isMocked}
+            />
+          </LayoutComponent>
+        </RouterWrapper>
       ) : (
         <SDKDemoI18nProvider localeCode={localeCode}>
-          <BrowserRouter
-            basename={window.location.pathname.split('/')[1]}
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <DefaultLayout>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-                <Route
-                  path="/settings/:component"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-                <Route
-                  path="/:component"
-                  element={
-                    <MoniteIframe
-                      appBasename={appBasename}
-                      appHostname={appHostname}
-                      fetchToken={fetchToken}
-                      localeCode={localeCode}
-                      isMocked={useMockComponents}
-                    />
-                  }
-                />
-              </Routes>
-            </DefaultLayout>
-          </BrowserRouter>
+          <RouterWrapper>
+            <LayoutComponent>
+              <SharedRoutes
+                appBasename={appBasename}
+                appHostname={appHostname}
+                fetchToken={fetchToken}
+                localeCode={localeCode}
+                isMocked={isMocked}
+              />
+            </LayoutComponent>
+          </RouterWrapper>
         </SDKDemoI18nProvider>
       )}
     </>

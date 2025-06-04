@@ -96,7 +96,7 @@ export const Provider = ({
       [localeCode]: {},
     },
   });
-  const sentryClient = new BrowserClient({
+  const _sentryClient = new BrowserClient({
     dsn: undefined,
     debug: true,
     transport: makeFetchTransport,

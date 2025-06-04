@@ -19,26 +19,36 @@ export const MoniteScopedProviders = ({
 }: {
   children: ReactNode;
 }) => {
-  const { theme, componentSettings, environment, entityId } = useMoniteContext(); // Get environment and entityId
+  const { theme, componentSettings, environment, entityId } =
+    useMoniteContext();
   const hasStyles = useContext(SingleInstanceScopedStyleProviderContext);
 
   if (hasStyles) {
     return <>{children}</>;
   }
 
+  const sentryTags = Object.fromEntries(
+    Object.entries({ environment, entityId }).filter(
+      ([_, value]) => value != null
+    )
+  );
+
   return (
     <SingleInstanceScopedStyleProviderContext.Provider value={true}>
       <EmotionCacheProvider cacheKey="monite-css">
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
-            <MoniteErrorBoundary>
-              <SentryProvider
-                config={{ enabled: true, tags: { environment, entityId } }} // Use real values
-                iconWrapperSettings={componentSettings?.general?.iconWrapper}
-              >
-                {children}
-              </SentryProvider>
-            </MoniteErrorBoundary>
+            <SentryProvider
+              config={{
+                enabled:
+                  environment === 'production' ||
+                  Boolean(process.env.ENABLE_SENTRY),
+                tags: sentryTags,
+              }}
+              iconWrapperSettings={componentSettings?.general?.iconWrapper}
+            >
+              <MoniteErrorBoundary>{children}</MoniteErrorBoundary>
+            </SentryProvider>
           </MuiThemeProvider>
         </MoniteI18nProvider>
       </EmotionCacheProvider>

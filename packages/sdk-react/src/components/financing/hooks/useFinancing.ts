@@ -2,12 +2,8 @@ import { useEffect, useState } from 'react';
 import useScript from 'react-script-hook';
 
 import { components } from '@/api';
-import {
-  useGetFinancingConnectToken,
-} from '@/components/financing/hooks/useGetFinancingConnectToken';
-import {
-  useGetFinanceOffers,
-} from '@/components/financing/hooks/useGetFinanceOffers';
+import { useGetFinanceOffers } from '@/components/financing/hooks/useGetFinanceOffers';
+import { useGetFinancingConnectToken } from '@/components/financing/hooks/useGetFinancingConnectToken';
 import {
   KanmonFinancedInvoice,
   useKanmonContext,

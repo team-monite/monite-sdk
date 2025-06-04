@@ -33,8 +33,8 @@ const renderEmailInvoiceDetails = (props = {}) => {
       <RootElementsProvider>
         <Dialog open={true}>
           <EmailInvoiceDetails
-            onClose={vi.fn()}
             invoiceId={mockInvoiceId}
+            onClose={vi.fn()}
             {...props}
           />
         </Dialog>

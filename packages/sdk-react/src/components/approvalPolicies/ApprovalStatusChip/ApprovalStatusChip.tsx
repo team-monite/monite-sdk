@@ -1,26 +1,17 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   APPROVAL_STATUS_TO_MUI_ICON_MAP,
   getRowToStatusTextMap,
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/approvalPolicies/consts';
+import { MoniteApprovalStatusChipProps } from '@/core/theme/types';
 import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface MoniteApprovalStatusChipProps {
-  /** The status of the payable. */
-  status: components['schemas']['ApprovalPolicyStatus'];
-  /** Display status icon? */
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-}
+export type { MoniteApprovalStatusChipProps };
 
 /**
  * Displays the status of a Payable.

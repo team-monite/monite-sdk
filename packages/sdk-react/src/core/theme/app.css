@@ -1,3 +1,6 @@
+/* Import typography styles for markdown content BEFORE other directives */
+@import "./tailwind/typography.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,51 +102,13 @@
   --mtw-sidebar-ring: oklch(0.708 0 0);
 }
 
-@theme inline {
-  --color-background: var(--mtw-background);
-  --color-foreground: var(--mtw-foreground);
-  --color-card: var(--mtw-card);
-  --color-card-foreground: var(--mtw-card-foreground);
-  --color-popover: var(--mtw-popover);
-  --color-popover-foreground: var(--mtw-popover-foreground);
-  --color-primary: var(--mtw-primary);
-  --color-primary-foreground: var(--mtw-primary-foreground);
-  --color-secondary: var(--mtw-secondary);
-  --color-secondary-foreground: var(--mtw-secondary-foreground);
-  --color-muted: var(--mtw-muted);
-  --color-muted-foreground: var(--mtw-muted-foreground);
-  --color-accent: var(--mtw-accent);
-  --color-accent-foreground: var(--mtw-accent-foreground);
-  --color-destructive: var(--mtw-destructive);
-  --color-destructive-foreground: var(--mtw-destructive-foreground);
-  --color-border: var(--mtw-border);
-  --color-input: var(--mtw-input);
-  --color-ring: var(--mtw-ring);
-  --color-chart-1: var(--mtw-chart-1);
-  --color-chart-2: var(--mtw-chart-2);
-  --color-chart-3: var(--mtw-chart-3);
-  --color-chart-4: var(--mtw-chart-4);
-  --color-chart-5: var(--mtw-chart-5);
-  --radius-sm: calc(var(--mtw-radius) - 4px);
-  --radius-md: calc(var(--mtw-radius) - 2px);
-  --radius-lg: var(--mtw-radius);
-  --radius-xl: calc(var(--mtw-radius) + 4px);
-  --color-sidebar: var(--mtw-sidebar);
-  --color-sidebar-foreground: var(--mtw-sidebar-foreground);
-  --color-sidebar-primary: var(--mtw-sidebar-primary);
-  --color-sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
-  --color-sidebar-accent: var(--mtw-sidebar-accent);
-  --color-sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
-  --color-sidebar-border: var(--mtw-sidebar-border);
-  --color-sidebar-ring: var(--mtw-sidebar-ring);
-}
-
-/* Using a class selector instead of @layer base to avoid conflicts */
-[data-placeholder]:empty:before {
-  content: attr(data-placeholder);
-  color: #6d737e;
-  font-weight: normal;
-  font-size: 14px;
+@layer base {
+  [data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #6d737e;
+    font-weight: normal;
+    font-size: 14px;
+  }
 }
 
 @keyframes dot-typing {
@@ -190,10 +155,10 @@
   }
 }
 
-/* Using a class selector instead of @layer utilities to avoid conflicts */
-.animate-dot-typing {
-  --mtw-dot-loader-color: #d6cdfe;
-  --mtw-dot-loader-stress-color: #562bd6;
-
-  animation: dot-typing 1.5s infinite linear;
+@layer utilities {
+  .animate-dot-typing {
+    --mtw-dot-loader-color: #d6cdfe;
+    --mtw-dot-loader-stress-color: #562bd6;
+    animation: dot-typing 1.5s infinite linear;
+  }
 }

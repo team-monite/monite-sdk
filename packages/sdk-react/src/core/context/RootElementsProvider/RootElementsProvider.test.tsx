@@ -1,13 +1,10 @@
 import { renderHook } from '@testing-library/react';
 
+import { describe, it, expect } from 'vitest';
+
 import { RootElementsProvider, useRootElements } from './RootElementsProvider';
 
 describe('RootElementsProvider', () => {
-  const mockRootElements = {
-    styles: document.createElement('div'),
-    root: document.createElement('div'),
-  };
-
   it('has default `styles` as `undefined`', async () => {
     const { result } = renderHook(() => useRootElements(), {
       wrapper: ({ children }) => (
@@ -29,6 +26,11 @@ describe('RootElementsProvider', () => {
   });
 
   it('uses `elements` property if specified', async () => {
+    const mockRootElements = {
+      styles: document.createElement('div'),
+      root: document.createElement('div'),
+    };
+
     const { result } = renderHook(() => useRootElements(), {
       wrapper: ({ children }) => (
         <RootElementsProvider elements={mockRootElements}>
@@ -41,6 +43,11 @@ describe('RootElementsProvider', () => {
   });
 
   it('could be overridden by parent context if no value specified', async () => {
+    const mockRootElements = {
+      styles: document.createElement('div'),
+      root: document.createElement('div'),
+    };
+
     const { result } = renderHook(() => useRootElements(), {
       wrapper: ({ children }) => (
         <RootElementsProvider elements={mockRootElements}>
@@ -53,6 +60,11 @@ describe('RootElementsProvider', () => {
   });
 
   it('could not be overridden by parent context if `element` property specified', async () => {
+    const mockRootElements = {
+      styles: document.createElement('div'),
+      root: document.createElement('div'),
+    };
+
     const { result } = renderHook(() => useRootElements(), {
       wrapper: ({ children }) => (
         <RootElementsProvider elements={mockRootElements}>

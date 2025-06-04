@@ -236,7 +236,7 @@ const CounterpartsTableBase = ({
     return (
       <DataGridEmptyState
         title={t(i18n)`No counterparts yet`}
-        descriptionLine1={t(i18n)`You don't have any counterparts yet.`}
+        descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
         descriptionLine2={t(i18n)`Create your first counterpart.`}
         actionButtonLabel={t(i18n)`Create new`}
         actionOptions={[t(i18n)`Counterpart`]}

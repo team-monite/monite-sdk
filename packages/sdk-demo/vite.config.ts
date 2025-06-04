@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import htmlPlugin from 'vite-plugin-html-config';
-// import { nodePolyfills } from 'vite-plugin-node-polyfills'; // REMOVED
 
 import { version } from './package.json';
 
@@ -22,7 +21,6 @@ export default async function viteConfig() {
       dts({
         outDir: 'build',
         entryRoot: 'src',
-        // rollupTypes: true, // Consider if you want to bundle .d.ts files into a single file via Rollup
       }),
       react({
         jsxImportSource: '@emotion/react',
@@ -31,15 +29,7 @@ export default async function viteConfig() {
           ['@swc/plugin-emotion', {}],
         ],
       }),
-      htmlPlugin(htmlPluginOpt),
-      // nodePolyfills({
-      //   protocolImports: true,
-      //   globals: {
-      //     Buffer: true,
-      //     global: true,
-      //     process: true,
-      //   }
-      // }), // REMOVED
+      htmlPlugin(htmlPluginOpt)
     ],
     optimizeDeps: {
       exclude: [
@@ -57,7 +47,6 @@ export default async function viteConfig() {
           find: '@',
           replacement: resolve(__dirname, './src'),
         },
-        // Ensure shared instances of React dependencies from monorepo root
         {
           find: /^react$/,
           replacement: resolve(__dirname, '../../node_modules/react'),
@@ -78,7 +67,6 @@ export default async function viteConfig() {
           find: /^vite$/,
           replacement: resolve(__dirname, '../../node_modules/vite'),
         },
-        // Use regex-based aliasing to handle Node.js modules and their subpaths
         {
           find: /^fs(\/.*)?$/,
           replacement: resolve(__dirname, '../../src/polyfills/fs.js'),
@@ -111,8 +99,8 @@ export default async function viteConfig() {
     },
     define: {
       'process.env': {},
-      'process.version': '""', // Corrected quotes
-      'process.versions': { node: '""' }, // Corrected quotes, Mock process.versions.node
+      'process.version': '""',
+      'process.versions': { node: '""' },
       'process.stdout': {
         fd: 1,
         isTTY: false,
@@ -132,8 +120,6 @@ export default async function viteConfig() {
         isTTY: false,
       },
       global: 'window',
-      // Make React globally available for bundled packages that expect it
-      React: 'window.React',
     },
     build: {
       rollupOptions: {

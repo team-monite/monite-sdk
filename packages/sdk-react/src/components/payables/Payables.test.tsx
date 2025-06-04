@@ -17,7 +17,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { vi } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
 vi.useFakeTimers();
 vi.setConfig({ testTimeout: 10000 });
