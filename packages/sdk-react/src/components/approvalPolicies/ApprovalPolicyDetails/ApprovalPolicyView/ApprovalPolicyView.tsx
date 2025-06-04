@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -13,18 +13,13 @@ import {
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
-  Box,
-  Button,
   Chip,
-  DialogTitle,
-  DialogActions,
   DialogContent,
-  Divider,
   List,
   ListItem,
   Typography,
@@ -214,29 +209,10 @@ export const ApprovalPolicyView = ({
 
   return (
     <>
-      <DialogTitle>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-        >
-          <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-            {approvalPolicy?.name}
-          </Typography>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext.onClose}
-              aria-label={t(i18n)`Close approval policy details`}
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Box>
-      </DialogTitle>
-      <Divider />
+      <DialogHeader
+        title={approvalPolicy?.name}
+        closeButtonTooltip={t(i18n)`Close approval policy details`}
+      />
       <DialogContent>
         <Typography variant="h5" mt={2} mb={1}>
           {t(i18n)`Description`}
@@ -308,31 +284,21 @@ export const ApprovalPolicyView = ({
           </Table>
         </Paper>
       </DialogContent>
-      <Divider />
-      <DialogActions sx={{ justifyContent: 'space-between' }}>
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={deleteMutation.isPending}
-          onClick={(e) => {
-            e.preventDefault();
-
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Edit`,
+          onClick: () => setIsEdit(true),
+        }}
+        deleteButton={{
+          onClick: () => {
             deleteMutation.mutate(
               { path: { approval_policy_id: approvalPolicy.id } },
-              {
-                onSuccess: () => {
-                  dialogContext?.onClose?.();
-                },
-              }
+              { onSuccess: () => dialogContext?.onClose?.() }
             );
-          }}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-        <Button variant="outlined" onClick={() => setIsEdit(true)}>
-          {t(i18n)`Edit`}
-        </Button>
-      </DialogActions>
+          },
+          isLoading: deleteMutation.isPending,
+        }}
+      />
     </>
   );
 };

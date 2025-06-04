@@ -44,3 +44,33 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## End-to-End Testing with Playwright
+
+This project includes automated end-to-end tests using Playwright with Clerk testing integration.
+
+### Setup for E2E Tests
+
+1. Create a test user in your Clerk Dashboard:
+   - Sign in to your [Clerk Dashboard](https://dashboard.clerk.com)
+   - Navigate to your application
+   - Go to the "Users" tab and create a new user with email/password authentication
+
+2. Configure test credentials in your `.env.local` file:
+   ```
+   E2E_CLERK_USER_USERNAME=your-test-email@example.com
+   E2E_CLERK_USER_PASSWORD=your-test-password
+   CLERK_SECRET_KEY=your-clerk-secret-key
+   CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+   ```
+   
+### Running E2E Tests
+
+- Run all tests in headless mode:
+  ```bash
+  yarn test:e2e
+  ```
+
+- Run tests with UI mode (useful for debugging):
+  ```bash
+  yarn test:e2e:ui
+  ```
