@@ -100,7 +100,7 @@ export const ChatInput: FC<ChatInputProps> = ({
   };
 
   const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const content = e.target.innerHTML;
+    const content = e.target.textContent ?? '';
 
     if (content === '/') {
       const selection = window.getSelection();
