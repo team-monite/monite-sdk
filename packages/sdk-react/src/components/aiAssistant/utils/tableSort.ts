@@ -1,6 +1,9 @@
 import { Children, ReactElement, ReactNode } from 'react';
 
 import { SortDirection } from '@/components';
+import { DATE_FORMATS, TIME_FORMATS } from '@/components/aiAssistant/consts';
+
+import { isValid, parse } from 'date-fns';
 
 const getTableCellText = (cell: ReactElement) => {
   const { props } = cell;
@@ -25,14 +28,33 @@ const getTableCellText = (cell: ReactElement) => {
   return '';
 };
 
+export const getParsedDate = (value: string) => {
+  const timeFormats = value.includes(':') ? TIME_FORMATS : [''];
+  const formats = DATE_FORMATS.flatMap((dateFormat) =>
+    timeFormats.map((timeFormat) => `${dateFormat}${timeFormat}`)
+  );
+
+  let date;
+
+  for (let i = 0; i < formats.length; i++) {
+    date = parse(value, formats[i], new Date());
+
+    if (isValid(date)) {
+      break;
+    }
+  }
+
+  return date;
+};
+
 const parseTableCellValue = (value: string): number | Date | string => {
   const trimmedValue = value.trim();
 
-  const date = Date.parse(trimmedValue);
-  const isValidDate = !isNaN(date);
+  const parsedDate = getParsedDate(trimmedValue);
+  const isValidDate = parsedDate && isValid(parsedDate);
 
   if (isValidDate) {
-    return new Date(date);
+    return parsedDate;
   }
 
   const numeric = trimmedValue.replace(/[^\d.-]/g, '').replace(/,/g, '');

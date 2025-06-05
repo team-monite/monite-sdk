@@ -13,6 +13,29 @@ export const COLORS = [
   '#6ddfce',
   '#aa3264',
 ];
+export const DATE_FORMATS = [
+  'yyyy-MM-dd',
+  'yy-MM-dd',
+  'dd-MM-yyyy',
+  'dd-MM-yy',
+  'dd.MM.yyyy',
+  'dd.MM.yy',
+  'yyyy/MM/dd',
+  'yy/MM/dd',
+  'dd/MM/yyyy',
+  'dd/MM/yy',
+  'MM/dd/yyyy',
+  'MM/dd/yy',
+];
+export const TIME_FORMATS = [
+  '',
+  ' HH:mm',
+  ' HH:mm',
+  ' HH:mm:ss',
+  ' HH:mm:ss',
+  ' hh:mm:ss aa',
+  ' hh:mm aa',
+];
 
 export const getDefaultPrompts = (i18n: I18n) => [
   {
