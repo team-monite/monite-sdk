@@ -23,17 +23,17 @@ export const DATE_FORMATS = [
   'yyyy/MM/dd',
   'yy/MM/dd',
   'dd/MM/yyyy',
-  'dd/MM/yy',
-  'MM/dd/yyyy',
+  'dd/MM/yy', // eslint-disable-next-line lingui/no-unlocalized-strings
+  'MM/dd/yyyy', // eslint-disable-next-line lingui/no-unlocalized-strings
   'MM/dd/yy',
 ];
 export const TIME_FORMATS = [
-  '',
-  ' HH:mm',
-  ' HH:mm',
-  ' HH:mm:ss',
-  ' HH:mm:ss',
-  ' hh:mm:ss aa',
+  '', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm:ss', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm:ss', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' hh:mm:ss aa', // eslint-disable-next-line lingui/no-unlocalized-strings
   ' hh:mm aa',
 ];
 
