@@ -60,7 +60,7 @@ const parseTableCellValue = (value: string): number | Date | string => {
   const numeric = trimmedValue.replace(/[^\d.-]/g, '').replace(/,/g, '');
   const parsed = parseFloat(numeric);
   const isValidNumber =
-    !isNaN(parsed) && isFinite(parsed) && numeric.length > 0;
+    !isNaN(parsed) && Number.isFinite(parsed) && numeric.length > 0;
   const decimalCount = (numeric.match(/\./g) || []).length;
 
   if (decimalCount > 1) {
