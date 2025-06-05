@@ -13,6 +13,29 @@ export const COLORS = [
   '#6ddfce',
   '#aa3264',
 ];
+export const DATE_FORMATS = [
+  'yyyy-MM-dd',
+  'yy-MM-dd',
+  'dd-MM-yyyy',
+  'dd-MM-yy',
+  'dd.MM.yyyy',
+  'dd.MM.yy',
+  'yyyy/MM/dd',
+  'yy/MM/dd',
+  'dd/MM/yyyy',
+  'dd/MM/yy', // eslint-disable-next-line lingui/no-unlocalized-strings
+  'MM/dd/yyyy', // eslint-disable-next-line lingui/no-unlocalized-strings
+  'MM/dd/yy',
+];
+export const TIME_FORMATS = [
+  '', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm:ss', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' HH:mm:ss', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' hh:mm:ss aa', // eslint-disable-next-line lingui/no-unlocalized-strings
+  ' hh:mm aa',
+];
 
 export const getDefaultPrompts = (i18n: I18n) => [
   {
