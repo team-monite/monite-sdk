@@ -17,5 +17,12 @@ export default defineConfig({
     hookTimeout: 10000,
     teardownTimeout: 10000,
     isolate: true,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/e2e/**',
+    ],
   },
 });
