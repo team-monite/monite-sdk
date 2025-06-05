@@ -24,7 +24,7 @@ export const DisplayBankSection = ({
     <section className="mtw:flex mtw:flex-col mtw:gap-6">
       <div className="mtw:flex mtw:justify-between mtw:gap-4">
         <div className="mtw:flex mtw:flex-col mtw:gap-1">
-          <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
+          <h2 className="mtw:text-base mtw:font-medium mtw:text-neutral-30">{t(
             i18n
           )`Display bank account details on PDF`}</h2>
           <p className="mtw:text-sm mtw:font-normal mtw:text-neutral-50">{t(
@@ -36,9 +36,11 @@ export const DisplayBankSection = ({
           checked={isShowing}
           onChange={(event) => {
             if (!event.target.checked) {
-              setValue('credit_note_bank_display', false);
-              setValue('invoice_bank_display', false);
-              setValue('quote_bank_display', false);
+              setValue('credit_note_bank_display', false, {
+                shouldDirty: true,
+              });
+              setValue('invoice_bank_display', false, { shouldDirty: true });
+              setValue('quote_bank_display', false, { shouldDirty: true });
             }
 
             setIsShowing(!isShowing);
@@ -49,7 +51,7 @@ export const DisplayBankSection = ({
       </div>
 
       {isShowing && (
-        <div className="mtw:flex mtw:flex-col mtw:gap-3">
+        <div className="mtw:flex mtw:flex-col">
           <Controller
             name="invoice_bank_display"
             control={control}

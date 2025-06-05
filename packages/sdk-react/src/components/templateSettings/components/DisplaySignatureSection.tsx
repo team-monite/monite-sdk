@@ -20,7 +20,7 @@ export const DisplaySignatureSection = ({ control }: Props) => {
     <section className="mtw:flex mtw:flex-col mtw:gap-6">
       <div className="mtw:flex mtw:justify-between mtw:gap-4">
         <div className="mtw:flex mtw:flex-col mtw:gap-1">
-          <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
+          <h2 className="mtw:text-base mtw:font-medium mtw:text-neutral-30">{t(
             i18n
           )`Display signature section on a Quote`}</h2>
           <p className="mtw:text-sm mtw:font-normal mtw:text-neutral-50">{t(

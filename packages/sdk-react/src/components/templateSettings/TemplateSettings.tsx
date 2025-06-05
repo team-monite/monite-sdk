@@ -58,7 +58,7 @@ const TemplateSettingsBase = ({
   };
 
   const content = (
-    <Box display="flex" flexDirection="column" gap={5} p={4}>
+    <div className="mtw:flex mtw:flex-col mtw:w-full mtw:gap-10 mtw:place-self-center mtw:pb-8 mtw:max-w-[1080px]">
       <Tabs
         value={activeTabItem}
         variant="standard"
@@ -107,7 +107,7 @@ const TemplateSettingsBase = ({
             minHeight: '0',
           }}
         >
-          <LayoutAndLogo />
+          <LayoutAndLogo isDialog={!!isDialog} />
         </Box>
       )}
 
@@ -144,7 +144,7 @@ const TemplateSettingsBase = ({
           <OtherSettings />
         </Box>
       )}
-    </Box>
+    </div>
   );
 
   return (
@@ -165,7 +165,7 @@ const TemplateSettingsBase = ({
               {t(i18n)`Edit template settings`}
             </h2>
           </header>
-          <DialogContent sx={{ px: 13, py: 0 }}>{content}</DialogContent>
+          <DialogContent sx={{ px: 4, py: 0 }}>{content}</DialogContent>
         </Dialog>
       ) : (
         <>
@@ -192,7 +192,9 @@ const TemplateSettingsBase = ({
             setActiveTabItem(temporaryTabItem);
           }
 
-          if (isDialog && handleCloseDialog) handleCloseDialog();
+          if (isDialog && handleCloseDialog && !temporaryTabItem) {
+            handleCloseDialog();
+          }
         }}
       />
     </>

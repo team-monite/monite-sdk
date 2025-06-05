@@ -1831,7 +1831,7 @@ msgstr "Companies"
 msgid "Company details"
 msgstr "Company details"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:96
+#: src/components/templateSettings/components/LogoSelection.tsx:92
 msgid "Company logo"
 msgstr "Company logo"
 
@@ -2347,7 +2347,7 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:108
+#: src/components/templateSettings/components/DisplayBankSection.tsx:110
 #: src/components/templateSettings/utils.ts:11
 msgid "Credit note"
 msgstr "Credit note"
@@ -2841,7 +2841,7 @@ msgstr "Discounted subtotal"
 msgid "Display bank account details on PDF"
 msgstr "Display bank account details on PDF"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:47
+#: src/components/templateSettings/components/DisplayBankSection.tsx:49
 msgid "Display bank display options"
 msgstr "Display bank display options"
 
@@ -2946,7 +2946,7 @@ msgstr "Drag & Drop it here to save for administrative purposes."
 msgid "Drag and drop files or click to upload"
 msgstr "Drag and drop files or click to upload"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:98
+#: src/components/templateSettings/components/LogoSelection.tsx:94
 msgid "Drag and drop the image here."
 msgstr "Drag and drop the image here."
 
@@ -3350,7 +3350,7 @@ msgstr "Entity bank account"
 msgid "Entity documents"
 msgstr "Entity documents"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:150
+#: src/components/templateSettings/components/LogoSelection.tsx:155
 msgid "Entity logo"
 msgstr "Entity logo"
 
@@ -3530,7 +3530,7 @@ msgstr "Failed to load PDF Viewer"
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
 
-#: src/components/templateSettings/hooks/useDeleteEntityLogo.ts:27
+#: src/components/templateSettings/hooks/useDeleteEntityLogo.ts:26
 msgid "Failed to remove logo."
 msgstr "Failed to remove logo."
 
@@ -4342,7 +4342,7 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/receivables/components/QuotesTable.tsx:306
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:223
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:310
-#: src/components/templateSettings/components/DisplayBankSection.tsx:68
+#: src/components/templateSettings/components/DisplayBankSection.tsx:70
 #: src/components/templateSettings/utils.ts:9
 msgid "Invoice"
 msgstr "Invoice"
@@ -4889,7 +4889,7 @@ msgstr "Loading..."
 msgid "Loan sum"
 msgstr "Loan sum"
 
-#: src/components/templateSettings/hooks/useDeleteEntityLogo.ts:23
+#: src/components/templateSettings/hooks/useDeleteEntityLogo.ts:22
 msgid "Logo was removed."
 msgstr "Logo was removed."
 
@@ -5708,7 +5708,7 @@ msgstr "Or add bill manually"
 msgid "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 msgstr "Or if you applied for accounts payable financing, upload/select the uploaded invoice you've received from your vendor."
 
-#: src/components/templateSettings/components/LogoSelection.tsx:100
+#: src/components/templateSettings/components/LogoSelection.tsx:96
 msgid "Or select the file on your computer."
 msgstr "Or select the file on your computer."
 
@@ -6570,7 +6570,7 @@ msgstr "Quick Copy, Repro, and Blueprint"
 msgid "Quit without saving"
 msgstr "Quit without saving"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:88
+#: src/components/templateSettings/components/DisplayBankSection.tsx:90
 #: src/components/templateSettings/utils.ts:13
 msgid "Quote"
 msgstr "Quote"
@@ -6780,7 +6780,7 @@ msgstr "Reminders are disabled for this Counterpart."
 msgid "Reminders are disabled for this Entity."
 msgstr "Reminders are disabled for this Entity."
 
-#: src/components/templateSettings/components/LogoSelection.tsx:141
+#: src/components/templateSettings/components/LogoSelection.tsx:137
 msgid "Remove"
 msgstr "Remove"
 
@@ -7128,7 +7128,7 @@ msgstr "Select 'Get Paid Now':"
 msgid "Select customer"
 msgstr "Select customer"
 
-#: src/components/templateSettings/components/LogoSelection.tsx:120
+#: src/components/templateSettings/components/LogoSelection.tsx:116
 msgid "Select file"
 msgstr "Select file"
 
@@ -7207,7 +7207,7 @@ msgstr "Set a {0} for this customer to issue invoice"
 msgid "Set a recurrence period to issue invoices automatically"
 msgstr "Set a recurrence period to issue invoices automatically"
 
-#: src/components/templateSettings/components/TemplatesSelection.tsx:63
+#: src/components/templateSettings/components/TemplatesSelection.tsx:64
 msgid "Set as default"
 msgstr "Set as default"
 

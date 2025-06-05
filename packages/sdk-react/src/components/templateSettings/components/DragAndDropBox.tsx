@@ -70,7 +70,7 @@ export const DragAndDropBox = ({
         isDraggingOver
           ? 'mtw:border-solid mtw:border-primary-95'
           : 'mtw:border-dashed mtw:border-primary-80'
-      } mtw:h-30 mtw:transition-all mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:gap-3 mtw:rounded-md mtw:border mtw:px-6`}
+      } mtw:h-30 mtw:box-border mtw:transition-all mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:gap-3 mtw:rounded-md mtw:border mtw:px-6`}
     >
       {isUploadInProgress ? (
         <>

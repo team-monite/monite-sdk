@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { Stack, Box, Divider, CircularProgress } from '@mui/material';
+import { Divider, CircularProgress } from '@mui/material';
 
 import { useDocumentTemplatesApi } from '../hooks';
 import { LogoSelection } from './LogoSelection';
@@ -11,7 +11,11 @@ import { TemplatesSelection } from './TemplatesSelection';
 
 type DocumentTemplate = components['schemas']['TemplateReceivableResponse'];
 
-export const LayoutAndLogo = () => {
+type Props = {
+  isDialog: boolean;
+};
+
+export const LayoutAndLogo = ({ isDialog }: Props) => {
   const { componentSettings } = useMoniteContext();
   const {
     invoiceTemplates,
@@ -30,16 +34,20 @@ export const LayoutAndLogo = () => {
   }
 
   return (
-    <Stack direction="row" gap={10}>
+    <div
+      className={`mtw:flex mtw:flex-col mtw:gap-10 mtw:xl:gap-20 ${
+        isDialog ? 'mtw:md:flex-row' : 'mtw:lg:flex-row'
+      }`}
+    >
       {componentSettings?.templateSettings?.showTemplateSection &&
         componentSettings?.templateSettings?.showTemplatePreview && (
-          <Box sx={{ width: 400, height: 'auto', minWidth: 400 }}>
+          <div className="mtw:w-[400px] mtw:h-auto mtw:min-w-[400px]">
             {selectedTemplate && (
               <TemplatePreview template={selectedTemplate} />
             )}
-          </Box>
+          </div>
         )}
-      <Stack gap={5}>
+      <div className="mtw:flex mtw:flex-col mtw:gap-10">
         {componentSettings?.templateSettings?.showTemplateSection && (
           <>
             <TemplatesSelection
@@ -63,9 +71,9 @@ export const LayoutAndLogo = () => {
         )}
 
         {componentSettings?.templateSettings?.showLogoSection && (
-          <LogoSelection />
+          <LogoSelection isDialog={isDialog} />
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

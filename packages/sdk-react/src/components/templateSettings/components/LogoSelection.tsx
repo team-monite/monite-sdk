@@ -6,25 +6,21 @@ import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Upload, DeleteOutline } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 import { useUploadEntityLogo, useDeleteEntityLogo } from '../hooks';
 import { DragAndDropBox } from './DragAndDropBox';
 
-export const LogoSelection = () => {
+type Props = {
+  isDialog: boolean;
+};
+
+export const LogoSelection = ({ isDialog }: Props) => {
   const { i18n } = useLingui();
   const { data: entity } = useMyEntity();
   const entityId = entity?.id ?? '';
   const { FileInput, openFileInput, checkFileError, resetInput } =
     useFileInput();
-  const theme = useTheme();
-  const isLowerThanLargeScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const [isDragging, setIsDragging] = useState(false);
   const [uploadingFileName, setUploadingFileName] = useState('');
   const {
@@ -57,17 +53,17 @@ export const LogoSelection = () => {
     }
   }
 
-  const isUploadInProgress = isUploading || isUploadError || isUploadSuccess;
+  const isUploadInProgress = isUploading || isUploadError;
 
   return (
     <div
       className={`${isDragging && 'mtw:bg-primary-95'} ${
         isDragging ? 'mtw:box-border!' : 'mtw:box-content!'
       } ${
-        isLowerThanLargeScreen
-          ? 'mtw:flex-col mtw:h-auto'
-          : 'mtw:flex-row mtw:h-30'
-      } mtw:flex mtw:gap-6 mtw:justify-between mtw:mb-8`}
+        isDialog
+          ? 'mtw:sm:flex-row mtw:h-30 mtw:md:flex-col mtw:md:h-auto mtw:lg:flex-row mtw:lg:h-30 mtw:lg:justify-between'
+          : 'mtw:h-auto mtw:md:flex-row mtw:md:h-30 mtw:lg:flex-col mtw:lg:h-auto mtw:xl:flex-row mtw:xl:h-30 mtw:xl:justify-between'
+      } mtw:flex mtw:flex-col mtw:gap-6 mtw:mb-8`}
       onDragEnter={(event) => {
         event.preventDefault();
         setIsDragging(true);
@@ -87,7 +83,7 @@ export const LogoSelection = () => {
         handleUploadLogo(file);
       }}
     >
-      {!isUploadInProgress && !isDragging && (
+      {!isUploadInProgress && Boolean(!uploadingFileName) && !isDragging && (
         <Box display="flex" flexDirection="column" gap={2.5}>
           <div>
             <Typography
@@ -145,9 +141,19 @@ export const LogoSelection = () => {
         </Box>
       )}
 
-      {entity?.logo ? (
-        <div className="mtw:w-auto mtw:max-h-30">
-          <img src={entity?.logo?.url} alt={t(i18n)`Entity logo`} />
+      {entity?.logo && Boolean(!uploadingFileName) ? (
+        <div
+          className={`mtw:flex mtw:w-60 mtw:h-30 mtw:box-border mtw:justify-end ${
+            isDialog
+              ? 'mtw:md:justify-start mtw:lg:justify-end'
+              : 'mtw:lg:justify-start mtw:xl:justify-end'
+          }`}
+        >
+          <img
+            src={entity?.logo?.url}
+            className="mtw:w-auto mtw:max-w-full mtw:object-contain mtw:max-h-30"
+            alt={t(i18n)`Entity logo`}
+          />
         </div>
       ) : (
         <DragAndDropBox

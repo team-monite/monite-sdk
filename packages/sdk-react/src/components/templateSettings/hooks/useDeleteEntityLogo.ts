@@ -16,8 +16,7 @@ export const useDeleteEntityLogo = (entityId: string) => {
     },
     {
       onSuccess: async () => {
-        await api.entities.getEntitiesId.invalidateQueries(
-          { parameters: { path: { entity_id: entityId } } },
+        await api.entityUsers.getEntityUsersMyEntity.invalidateQueries(
           queryClient
         );
         toast.success(t(i18n)`Logo was removed.`);

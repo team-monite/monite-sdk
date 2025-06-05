@@ -53,7 +53,8 @@ export const TemplatesSelection = ({
         variant="contained"
         onClick={handleSetDefault}
         sx={{
-          width: '128px',
+          width: 'fit-content',
+          minWidth: '128px',
           py: 2,
           fontSize: 14,
           fontWeight: 500,
