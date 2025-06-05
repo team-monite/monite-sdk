@@ -16,6 +16,7 @@ module.exports = {
     'src/api/create-api-client.ts',
     'src/api/index.ts',
     'src/api/schema.ts',
+    'config/rollup.config.mjs',
   ],
   rules: {
     'import/no-unresolved': 'error',

@@ -4,6 +4,7 @@ import packageJson from '../package.json' with { type: 'json' };
 
 const sdkReactSwcOptions = {
   exclude: ['**/*.css'],
+  sourceMaps: true,
   jsc: {
     experimental: {
       plugins: [
