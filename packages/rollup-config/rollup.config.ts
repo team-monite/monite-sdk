@@ -14,55 +14,6 @@ import postcss from 'rollup-plugin-postcss';
 import postcssImport from 'postcss-import';
 import swc from '@rollup/plugin-swc';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
-import { Plugin } from 'rollup';
-
-const suppressSourcemapErrors = (): Plugin => {
-  let originalError: typeof console.error;
-  let originalWarn: typeof console.warn;
-  let originalLog: typeof console.log;
-  
-  return {
-    name: 'suppress-sourcemap-errors',
-    buildStart() {
-      originalError = console.error;
-      originalWarn = console.warn;
-      originalLog = console.log;
-      
-      console.error = (...args) => {
-        const message = args.join(' ').toLowerCase();
-        if (message.includes('error when using sourcemap') || 
-            message.includes("can't resolve original location") ||
-            message.includes('could not resolve import') ||
-            message.includes('use of eval') ||
-            message.includes('d3-scale') ||
-            message.includes('d3-shape') ||
-            message.includes('@tanstack/react-query') ||
-            message.includes('@openapi-qraft/react') ||
-            message.includes('sourcemap error') ||
-            message.includes('sourcemap warning')) {
-          return;
-        }
-        originalError.apply(console, args);
-      };
-      
-      console.warn = (...args) => {
-        const message = args.join(' ').toLowerCase();
-        if (message.includes('sourcemap') || 
-            message.includes('d3-') ||
-            message.includes('eval') ||
-            message.includes('react-query')) {
-          return;
-        }
-        originalWarn.apply(console, args);
-      };
-    },
-    buildEnd() {
-      if (originalError) console.error = originalError;
-      if (originalWarn) console.warn = originalWarn;
-      if (originalLog) console.log = originalLog;
-    }
-  };
-};
 
 type Options = {
   url?: false | Parameters<typeof url>[0];
@@ -83,32 +34,46 @@ export const rollupConfig = (
     configs.push({
       input: 'src/index.ts',
       external: (id) => {
-        if (id.includes('@tanstack/react-query') || 
-            id.includes('@openapi-qraft/react') ||
-            id.includes('d3-scale') || 
-            id.includes('d3-shape')) {
+        // LIst of external packages that should not be bundled
+        const externalPackages = [
+          '@tanstack/react-query',
+          '@openapi-qraft/react',
+          'd3-scale',
+          'd3-shape',
+          'canvas',
+          'jsdom',
+          'agent-base',
+          'vinyl',
+          'cosmiconfig'
+        ];
+        
+        if (externalPackages.some(pkg => id.includes(pkg))) {
           return true;
         }
-        if (id.includes('canvas') || id.includes('jsdom') || id.includes('.node') || id.includes('agent-base') || id.includes('vinyl') || id.includes('cosmiconfig')) {
-          return true;
-        }
+        
         if (/^(fs|path|os|crypto|util|events|stream|buffer|url|assert|child_process|cluster|dgram|dns|domain|http|https|net|punycode|querystring|readline|repl|string_decoder|sys|timers|tls|tty|vm|zlib|fs\/promises)$/.test(id)) {
           return true;
         }
+        
         if (id.startsWith('node:')) {
           return true;
         }
+        
+        if (id.includes('.node')) {
+          return true;
+        }
+        
         return false;
       },
       output: {
         file: packageJson.main,
         format: 'commonjs',
-        sourcemap: false,
+        sourcemap: true,
+        sourcemapFile: packageJson.main + '.map',
         interop: 'compat',
         inlineDynamicImports: true,
       },
       plugins: [
-        suppressSourcemapErrors(),
         json(),
         image(),
         options?.typescriptPaths && typescriptPaths(options.typescriptPaths),
@@ -165,12 +130,15 @@ export const rollupConfig = (
           ),
       ],
       onwarn(warning, warn) {
+        // Skip module level directives (like "use client")
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return;
-       
-        if (warning.code === 'SOURCEMAP_ERROR') return;
         
-        if (warning.message && warning.message.includes('Error when using sourcemap')) return;
-        if (warning.message && warning.message.includes("Can't resolve original location")) return;
+        if (warning.code === 'SOURCEMAP_ERROR' && warning.id?.includes('node_modules')) {
+          const thirdPartyPackages = ['d3-scale', 'd3-shape', '@tanstack/react-query', '@openapi-qraft/react', 'recharts'];
+          if (thirdPartyPackages.some(pkg => warning.id?.includes(pkg))) {
+            return;
+          }
+        }
         
         if (warning.code === 'UNRESOLVED_IMPORT' && 'source' in warning && warning.source) {
           const externalPackages = ['d3-scale', 'd3-shape', '@tanstack/react-query', '@openapi-qraft/react'];
@@ -183,10 +151,6 @@ export const rollupConfig = (
           return;
         }
         
-        if (warning.message && (warning.message.includes('d3-scale') || warning.message.includes('d3-shape'))) {
-          return;
-        }
-
         if (warning.code === 'CIRCULAR_DEPENDENCY') {
           const message = warning.message.toLowerCase();
           const [importer] = message.split(' -> ');
@@ -213,32 +177,45 @@ export const rollupConfig = (
     configs.push({
       input: 'src/index.ts',
       external: (id) => {
-        if (id.includes('@tanstack/react-query') || 
-            id.includes('@openapi-qraft/react') ||
-            id.includes('d3-scale') || 
-            id.includes('d3-shape')) {
+        // LIst of external packages that should not be bundled
+        const externalPackages = [
+          '@tanstack/react-query',
+          '@openapi-qraft/react',
+          'd3-scale',
+          'd3-shape',
+          'canvas',
+          'jsdom',
+          'agent-base',
+          'vinyl',
+          'cosmiconfig'
+        ];
+        
+        if (externalPackages.some(pkg => id.includes(pkg))) {
           return true;
         }
-        if (id.includes('canvas') || id.includes('jsdom') || id.includes('.node') || id.includes('agent-base') || id.includes('vinyl') || id.includes('cosmiconfig')) {
-          return true;
-        }
+        
         if (/^(fs|path|os|crypto|util|events|stream|buffer|url|assert|child_process|cluster|dgram|dns|domain|http|https|net|punycode|querystring|readline|repl|string_decoder|sys|timers|tls|tty|vm|zlib|fs\/promises)$/.test(id)) {
           return true;
         }
-
+        
         if (id.startsWith('node:')) {
           return true;
         }
+        
+        if (id.includes('.node')) {
+          return true;
+        }
+        
         return false;
       },
       output: {
         file: packageJson.module,
         format: 'esm',
-        sourcemap: false,
+        sourcemap: true,
+        sourcemapFile: packageJson.module + '.map',
         inlineDynamicImports: true,
       },
       plugins: [
-        suppressSourcemapErrors(),
         json(),
         image(),
         options?.typescriptPaths && typescriptPaths(options.typescriptPaths),
@@ -295,12 +272,15 @@ export const rollupConfig = (
           ),
       ],
       onwarn(warning, warn) {
+        // Skip module level directives (like "use client")
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return;
         
-        if (warning.code === 'SOURCEMAP_ERROR') return;
-        
-        if (warning.message && warning.message.includes('Error when using sourcemap')) return;
-        if (warning.message && warning.message.includes("Can't resolve original location")) return;
+        if (warning.code === 'SOURCEMAP_ERROR' && warning.id?.includes('node_modules')) {
+          const thirdPartyPackages = ['d3-scale', 'd3-shape', '@tanstack/react-query', '@openapi-qraft/react', 'recharts'];
+          if (thirdPartyPackages.some(pkg => warning.id?.includes(pkg))) {
+            return;
+          }
+        }
         
         if (warning.code === 'UNRESOLVED_IMPORT' && 'source' in warning && warning.source) {
           const externalPackages = ['d3-scale', 'd3-shape', '@tanstack/react-query', '@openapi-qraft/react'];
@@ -313,10 +293,6 @@ export const rollupConfig = (
           return;
         }
         
-        if (warning.message && (warning.message.includes('d3-scale') || warning.message.includes('d3-shape'))) {
-          return;
-        }
-
         if (warning.code === 'CIRCULAR_DEPENDENCY') {
           const message = warning.message.toLowerCase();
           const [importer] = message.split(' -> ');
