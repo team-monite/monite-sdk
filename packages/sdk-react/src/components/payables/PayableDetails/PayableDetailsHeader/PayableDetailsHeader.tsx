@@ -28,7 +28,6 @@ export interface PayablesDetailsHeaderProps {
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
   onClose?: () => void;
-  isPaymentLinkAvailable: boolean;
   isProcessingPayment: boolean;
   modalComponent: ReactNode;
 }
@@ -46,7 +45,6 @@ export const PayableDetailsHeader = ({
   deleteInvoice,
   payInvoice,
   payableDetailsFormId,
-  isPaymentLinkAvailable,
   isProcessingPayment,
   onClose,
   modalComponent,
@@ -117,7 +115,7 @@ export const PayableDetailsHeader = ({
     pay: {
       variant: 'contained',
       onClick: payInvoice,
-      disabled: !isPaymentLinkAvailable || isProcessingPayment,
+      disabled: isProcessingPayment,
       children: t(i18n)`Pay`,
     },
   };

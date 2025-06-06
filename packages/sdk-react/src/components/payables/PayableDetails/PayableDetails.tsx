@@ -70,7 +70,6 @@ const PayableDetailsBase = ({
       reopenInvoice,
       deleteInvoice,
       updateTags,
-      isPaymentLinkAvailable,
       modalComponent,
     },
   } = usePayableDetails({
@@ -154,7 +153,6 @@ const PayableDetailsBase = ({
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
-          isPaymentLinkAvailable={isPaymentLinkAvailable}
           isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
         />
