@@ -83,7 +83,7 @@ export function OnboardingPersonView({
             <Typography variant="body2">{t(i18n)`Verify identity`}</Typography>
           </OnboardingViewLabel>
           <OnboardingViewRow
-            label={t(i18n)`${getIdentificationLabel(address?.country?.value)}`}
+            label={getIdentificationLabel(i18n, address?.country?.value)}
             field={id_number}
           />
         </OnboardingViewTable>

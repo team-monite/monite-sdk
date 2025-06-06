@@ -1,17 +1,23 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { ReactNode } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { StoryObj } from '@storybook/react';
+import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { http, HttpResponse } from 'msw';
 
 import { OnboardingContextProvider } from '../../context';
+import { useOnboardingForm } from '../../hooks/useOnboardingForm';
 import { OnboardingAddress } from '../../OnboardingAddress';
-import { OnboardingFormActions } from '../../OnboardingFormActions';
+import { OnboardingFormActionsTemplate } from '../../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../../OnboardingLayout';
 import { OnboardingEntityIndividual } from './OnboardingEntityIndividual';
 
 type StoryWrapperProps = {
+  children: ReactNode;
   individualDefaultValues: IndividualData;
   addressDefaultValues: AddressData;
   isLoading: boolean;
@@ -214,18 +220,13 @@ const baseMswHandlers = [
   }),
 ];
 
-const Story = {
-  title: 'Onboarding/Entity/Individual',
-  component: OnboardingEntityIndividual,
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-};
-
-type Story = StoryObj<StoryWrapperProps>;
-const getDefaultsFromFields = (fields: typeof emptyFieldsUS) => ({
+const getDefaultsFromFields = (
+  fields:
+    | typeof emptyFieldsUS
+    | typeof existingFieldsUS
+    | typeof emptyFieldsGB
+    | typeof existingFieldsGB
+) => ({
   individualDefaultValues: {
     first_name: fields.first_name.value,
     last_name: fields.last_name.value,
@@ -243,39 +244,152 @@ const getDefaultsFromFields = (fields: typeof emptyFieldsUS) => ({
   },
 });
 
-const StoryWrapper = ({
+const i18n = setupI18n({
+  locale: 'en',
+  messages: {
+    en: enLocaleMessages,
+  },
+});
+
+const FormContent = ({
   individualDefaultValues,
   addressDefaultValues,
   isLoading,
 }: StoryWrapperProps) => {
-  const methods = useForm({
-    defaultValues: {
-      individual: individualDefaultValues,
-      address: addressDefaultValues,
+  const individualFields = {
+    individual: {
+      first_name: {
+        value: individualDefaultValues.first_name,
+        error: null,
+        required: true,
+      },
+      last_name: {
+        value: individualDefaultValues.last_name,
+        error: null,
+        required: true,
+      },
+      title: {
+        value: individualDefaultValues.title,
+        error: null,
+        required: true,
+      },
+      date_of_birth: {
+        value: individualDefaultValues.date_of_birth,
+        error: null,
+        required: true,
+      },
+      id_number: {
+        value: individualDefaultValues.id_number,
+        error: null,
+        required: true,
+      },
     },
-  });
+    address: {
+      country: {
+        value: addressDefaultValues.country,
+        error: null,
+        required: true,
+      },
+      line1: { value: addressDefaultValues.line1, error: null, required: true },
+      line2: {
+        value: addressDefaultValues.line2,
+        error: null,
+        required: false,
+      },
+      city: { value: addressDefaultValues.city, error: null, required: true },
+      state: {
+        value: addressDefaultValues.state,
+        error: null,
+        required: addressDefaultValues.country === 'US',
+      },
+      postal_code: {
+        value: addressDefaultValues.postal_code,
+        error: null,
+        required: true,
+      },
+    },
+  };
+
+  const { defaultValues, methods } = useOnboardingForm(
+    individualFields,
+    'entityIndividual',
+    addressDefaultValues.country as components['schemas']['AllowedCountries']
+  );
+
+  const individualData = defaultValues?.individual || individualDefaultValues;
+  const addressData = defaultValues?.address || addressDefaultValues;
 
   return (
-    <OnboardingContextProvider>
-      <FormProvider {...methods}>
-        <OnboardingForm>
-          <OnboardingStepContent>
-            <OnboardingEntityIndividual
-              defaultValues={individualDefaultValues}
-              isLoading={isLoading}
-            />
-            <OnboardingAddress
-              title="Address"
-              defaultValues={addressDefaultValues}
-              isLoading={isLoading}
-            />
-            <OnboardingFormActions isLoading={isLoading} />
-          </OnboardingStepContent>
-        </OnboardingForm>
-      </FormProvider>
-    </OnboardingContextProvider>
+    <FormProvider {...methods}>
+      <OnboardingForm
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <OnboardingStepContent>
+          <OnboardingEntityIndividual
+            defaultValues={individualData}
+            isLoading={isLoading}
+          />
+          <OnboardingAddress
+            title="Address"
+            defaultValues={addressData}
+            isLoading={isLoading}
+          />
+        </OnboardingStepContent>
+        <OnboardingFormActionsTemplate
+          primaryLabel="Submit"
+          isLoading={isLoading}
+        />
+      </OnboardingForm>
+    </FormProvider>
   );
 };
+
+const StoryWrapper = (props: StoryWrapperProps) => {
+  return (
+    <I18nProvider i18n={i18n}>
+      <OnboardingContextProvider>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            padding: '2rem',
+            backgroundColor: '#f5f5f5',
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '600px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              padding: '2rem',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+          >
+            <FormContent {...props} />
+          </div>
+        </div>
+      </OnboardingContextProvider>
+    </I18nProvider>
+  );
+};
+
+const meta: Meta<StoryWrapperProps> = {
+  title: 'Onboarding/OnboardingEntityIndividual',
+  component: StoryWrapper,
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<StoryWrapperProps>;
 
 export const US_Empty: Story = {
   args: {
@@ -406,8 +520,6 @@ export const GB_Loading: Story = {
   },
   render: StoryWrapper,
 };
-
-export default Story;
 
 type IndividualData = components['schemas']['OptionalIndividualSchema'];
 type AddressData = components['schemas']['EntityAddressSchema'];

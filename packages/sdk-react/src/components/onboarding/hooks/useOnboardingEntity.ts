@@ -86,11 +86,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
       return response;
     },
-    [
-      patchOnboardingRequirements,
-      updateEntityMutation,
-      onboarding?.data?.entity,
-    ]
+    [patchOnboardingRequirements, updateEntityMutation]
   );
 
   const updateEntityRequirements = useCallback(
@@ -122,5 +118,3 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 type EntityResponse = components['schemas']['EntityResponse'];
 type OnboardingEntity = components['schemas']['OnboardingEntity'];
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
-type OptionalIndividualSchema =
-  components['schemas']['OptionalIndividualSchema'];

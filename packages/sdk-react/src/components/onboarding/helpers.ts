@@ -1,4 +1,6 @@
 import { components } from '@/api';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 
 import type {
   EntityOrganizationRelationshipCode,
@@ -340,21 +342,22 @@ export const getEntityName = (entity?: EntityResponse) => {
     : (entity as EntityOrganizationResponse).organization?.legal_name;
 };
 
-/* eslint-disable lingui/no-unlocalized-strings */
 /**
- * Gets the appropriate identification label key based on country
+ * Gets the appropriate translated identification label based on country
  *
+ * @param {I18n} i18n - The i18n instance for translation
  * @param {AllowedCountries | undefined | null} country - The country code
- * @returns {string} The identification label key
+ * @returns {string} The translated identification label
  */
 export function getIdentificationLabel(
+  i18n: I18n,
   country: AllowedCountries | undefined | null
 ): string {
   if (country === 'US') {
-    return 'Social Security Number';
+    return t(i18n)`Social Security Number`;
   }
 
-  return 'Personal identification number';
+  return t(i18n)`Personal identification number`;
 }
 
 type EntityIndividualResponse =

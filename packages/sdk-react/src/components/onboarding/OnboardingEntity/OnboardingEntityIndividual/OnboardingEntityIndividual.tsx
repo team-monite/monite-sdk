@@ -71,9 +71,10 @@ export const OnboardingEntityIndividual = ({
         <RHFTextField
           disabled={isLoading}
           type="tel"
-          label={t(i18n)`${getIdentificationLabel(
+          label={getIdentificationLabel(
+            i18n,
             addressCountry as AllowedCountries
-          )}`}
+          )}
           name="individual.id_number"
           control={control}
         />

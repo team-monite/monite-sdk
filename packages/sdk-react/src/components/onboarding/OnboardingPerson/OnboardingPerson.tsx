@@ -1,7 +1,6 @@
 import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { getIdentificationLabel } from '@/components/onboarding/helpers';
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -12,6 +11,7 @@ import { useLingui } from '@lingui/react';
 import { FormGroup, FormHelperText } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';
+import { getIdentificationLabel } from '../helpers';
 import {
   isEditingPerson,
   isExecutives,
@@ -252,9 +252,10 @@ export function OnboardingPerson() {
               <RHFTextField
                 disabled={isPending}
                 type="tel"
-                label={t(i18n)`${getIdentificationLabel(
+                label={getIdentificationLabel(
+                  i18n,
                   defaultValues?.address?.country
-                )}`}
+                )}
                 name="id_number"
                 control={control}
               />
