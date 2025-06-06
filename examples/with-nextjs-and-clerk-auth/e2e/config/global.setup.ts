@@ -12,6 +12,9 @@ import { test as setup } from '@playwright/test';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Setup must be run serially, necessary if Playwright is configured to run fully parallel
+setup.describe.configure({ mode: 'serial' });
+
 const authFile = path.join(__dirname, '../playwright/.clerk/user.json');
 
 setup('global setup and authenticate', async ({ page }) => {
