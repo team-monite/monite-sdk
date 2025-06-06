@@ -1,5 +1,6 @@
 import { useState, useTransition } from 'react';
 
+import { TemplateSettings } from '@/components';
 import {
   InvoiceRecurrenceStatusChip,
   InvoiceStatusChip,
@@ -39,7 +40,7 @@ import {
   Stack,
   CircularProgress,
 } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
@@ -106,6 +107,7 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
+  const theme = useTheme();
 
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
@@ -130,6 +132,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
   const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
+  const [editTemplateModalOpen, setEditTemplateModalOpen] =
+    useState<boolean>(false);
   const [cancelRecurrenceModalOpened, setCancelRecurrenceModalOpened] =
     useState(false);
 
@@ -210,29 +214,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const actions = (
     <>
-      {buttons.isDeleteButtonVisible && (
-        <Button
-          variant="text"
-          color="error"
-          onClick={() => setDeleteModalOpened(true)}
-          disabled={buttons.isDeleteButtonDisabled}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      )}
-      {buttons.isEditButtonVisible && (
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={(event) => {
-            event.preventDefault();
-            startViewChange(callbacks.handleChangeViewInvoice);
-          }}
-          disabled={loading}
-        >
-          {t(i18n)`Edit invoice`}
-        </Button>
-      )}
       {buttons.isMoreButtonVisible && (
         <>
           <Button
@@ -266,8 +247,40 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 {t(i18n)`Cancel Invoice`}
               </MenuItem>
             )}
+            {buttons.isEditTemplateButtonVisible && (
+              <MenuItem
+                onClick={(event) => {
+                  event.preventDefault();
+                  setEditTemplateModalOpen(true);
+                }}
+              >
+                {t(i18n)`Edit template settings`}
+              </MenuItem>
+            )}
+            {buttons.isDeleteButtonVisible && (
+              <MenuItem
+                onClick={() => setDeleteModalOpened(true)}
+                disabled={buttons.isDeleteButtonDisabled}
+                sx={{ color: theme.palette.error.main }}
+              >
+                {t(i18n)`Delete`}
+              </MenuItem>
+            )}
           </StyledMenu>
         </>
+      )}
+      {buttons.isEditButtonVisible && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={(event) => {
+            event.preventDefault();
+            startViewChange(callbacks.handleChangeViewInvoice);
+          }}
+          disabled={loading}
+        >
+          {t(i18n)`Edit`}
+        </Button>
       )}
       {buttons.isDownloadPDFButtonVisible && (
         <Button
@@ -362,6 +375,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           setCancelRecurrenceModalOpened(false);
         }}
       />
+
+      {editTemplateModalOpen && (
+        <TemplateSettings
+          isDialog
+          isOpen={editTemplateModalOpen}
+          handleCloseDialog={() => setEditTemplateModalOpen(false)}
+        />
+      )}
 
       <FullScreenModalHeader
         className={className + '-Title'}

@@ -8,9 +8,14 @@ import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
 export const useDocumentTemplatesApi = () => {
-  const { api, queryClient } = useMoniteContext();
+  const { api, queryClient, componentSettings } = useMoniteContext();
   const { data: documentTemplates, isLoading } =
-    api.documentTemplates.getDocumentTemplates.useQuery({});
+    api.documentTemplates.getDocumentTemplates.useQuery(
+      {},
+      {
+        enabled: componentSettings?.templateSettings?.showTemplateSection,
+      }
+    );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
     const filtered =
