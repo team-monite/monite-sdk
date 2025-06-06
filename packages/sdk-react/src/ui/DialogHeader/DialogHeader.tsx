@@ -1,8 +1,8 @@
 import { memo } from 'react';
 
+import { useDialog } from '@/components';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useDialog } from '@monite/sdk-react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CloseIcon from '@mui/icons-material/Close';
 import {
