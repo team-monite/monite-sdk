@@ -3801,7 +3801,7 @@ msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
 #. placeholder {0}: file.name
-#: src/core/hooks/useFileInput.tsx:86
+#: src/core/hooks/useFileInput.tsx:79
 msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
 msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
 
@@ -5709,7 +5709,7 @@ msgstr "No Credit Notes"
 #~ msgid "No default email for selected Counterpart. Reminders will not be sent."
 #~ msgstr "No default email for selected Counterpart. Reminders will not be sent."
 
-#: src/core/hooks/useFileInput.tsx:84
+#: src/core/hooks/useFileInput.tsx:71
 msgid "No file provided"
 msgstr "No file provided"
 
@@ -8744,7 +8744,7 @@ msgid "Unspecified"
 msgstr "Unspecified"
 
 #. placeholder {0}: file.name
-#: src/core/hooks/useFileInput.tsx:82
+#: src/core/hooks/useFileInput.tsx:75
 msgid "Unsupported file type for {0}"
 msgstr "Unsupported file type for {0}"
 

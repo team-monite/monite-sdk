@@ -4,6 +4,7 @@ import React, {
   ChangeEvent,
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -140,6 +141,9 @@ const getUtils = () => {
       getCounterpartName: () => '',
       toast: { success: () => {}, error: () => {} },
       Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+      RootElementsProvider: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+      ),
     };
   }
 
@@ -153,6 +157,7 @@ const getUtils = () => {
       getCounterpartName: MoniteSDK.getCounterpartName,
       toast: MoniteSDK.toast,
       Dialog: MoniteSDK.Dialog,
+      RootElementsProvider: MoniteSDK.RootElementsProvider,
     };
   } catch (error) {
     return {
@@ -185,6 +190,9 @@ const getUtils = () => {
       getCounterpartName: () => '',
       toast: { success: () => {}, error: () => {} },
       Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+      RootElementsProvider: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+      ),
     };
   }
 };
@@ -197,6 +205,7 @@ const {
   getCounterpartName,
   toast,
   Dialog,
+  RootElementsProvider,
 } = getUtils();
 
 /* eslint-disable */
@@ -213,6 +222,20 @@ export const MoniteProvider = ({
   children: ReactNode;
 }) => {
   const { i18n } = useLingui();
+  const [rootElements, setRootElements] = useState<{
+    root: Element | undefined;
+    styles: Element | undefined;
+  }>({
+    root: undefined,
+    styles: undefined,
+  });
+
+  useEffect(() => {
+    setRootElements({
+      root: document.body,
+      styles: document.head,
+    });
+  }, []);
 
   const fetchToken = useCallback(async () => {
     /**
@@ -242,38 +265,40 @@ export const MoniteProvider = ({
   );
 
   return (
-    <MoniteProviderComponent
-      monite={monite}
-      componentSettings={{
-        receivables: {
-          tabs: [
-            {
-              label: 'Invoices',
-              query: {
-                type: 'invoice',
+    <RootElementsProvider elements={rootElements}>
+      <MoniteProviderComponent
+        monite={monite}
+        componentSettings={{
+          receivables: {
+            tabs: [
+              {
+                label: 'Invoices',
+                query: {
+                  type: 'invoice',
+                },
               },
-            },
-            {
-              label: 'My Financing',
-              query: {
-                type: 'financing',
+              {
+                label: 'My Financing',
+                query: {
+                  type: 'financing',
+                },
               },
-            },
-          ],
-          enableEntityBankAccount: true,
-        },
-      }}
-      locale={{
-        code: i18n.locale,
-        messages: {
-          Payables: 'Bill Pay',
-          Counterpart: 'Customer',
-          Sales: 'Invoicing',
-        },
-      }}
-    >
-      {children}
-    </MoniteProviderComponent>
+            ],
+            enableEntityBankAccount: true,
+          },
+        }}
+        locale={{
+          code: i18n.locale,
+          messages: {
+            Payables: 'Bill Pay',
+            Counterpart: 'Customer',
+            Sales: 'Invoicing',
+          },
+        }}
+      >
+        {children}
+      </MoniteProviderComponent>
+    </RootElementsProvider>
   );
 };
 

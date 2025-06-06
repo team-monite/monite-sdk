@@ -1,105 +1,98 @@
 /* Import typography styles for markdown content BEFORE other directives */
 @import "./tailwind/typography.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 
 /* placeholder for tw-animate-css integration, if needed separately */
-/* e.g., @import './path/to/tw-animate-css.css'; */
+/* e.g., @import "./path/to/tw-animate-css.css"; */
 
 @theme {
-  --color-primary: var(--mtw-color-primary-50);
-  --color-primary-10: var(--mtw-color-primary-10);
-  --color-primary-20: var(--mtw-color-primary-20);
-  --color-primary-30: var(--mtw-color-primary-30);
-  --color-primary-40: var(--mtw-color-primary-40);
-  --color-primary-50: var(--mtw-color-primary-50);
-  --color-primary-60: var(--mtw-color-primary-60);
-  --color-primary-70: var(--mtw-color-primary-70);
-  --color-primary-80: var(--mtw-color-primary-80);
-  --color-primary-85: var(--mtw-color-primary-85);
-  --color-primary-90: var(--mtw-color-primary-90);
-  --color-primary-95: var(--mtw-color-primary-95);
-
-  --color-neutral-10: var(--mtw-color-neutral-10);
-  --color-neutral-30: var(--mtw-color-neutral-30);
-  --color-neutral-50: var(--mtw-color-neutral-50);
-  --color-neutral-70: var(--mtw-color-neutral-70);
-  --color-neutral-80: var(--mtw-color-neutral-80);
-  --color-neutral-90: var(--mtw-color-neutral-90);
-  --color-neutral-95: var(--mtw-color-neutral-95);
-
-  --color-danger-10: var(--mtw-color-error-10);
-  --color-danger-30: var(--mtw-color-error-30);
-  --color-danger-40: var(--mtw-color-error-40);
-  --color-danger-50: var(--mtw-color-error-50);
-  --color-danger-60: var(--mtw-color-error-60);
-  --color-danger-80: var(--mtw-color-error-80);
-  --color-danger-90: var(--mtw-color-error-90);
-  --color-danger-95: var(--mtw-color-error-95);
-
-  --color-success-10: var(--mtw-color-success-10);
-  --color-success-30: var(--mtw-color-success-30);
-  --color-success-50: var(--mtw-color-success-50);
-  --color-success-60: var(--mtw-color-success-60);
-  --color-success-80: var(--mtw-color-success-80);
-  --color-success-90: var(--mtw-color-success-90);
-  --color-success-95: var(--mtw-color-success-95);
-
-  --color-warning-10: var(--mtw-color-warning-10);
-  --color-warning-30: var(--mtw-color-warning-30);
-  --color-warning-50: var(--mtw-color-warning-50);
-  --color-warning-60: var(--mtw-color-warning-60);
-  --color-warning-80: var(--mtw-color-warning-80);
-  --color-warning-90: var(--mtw-color-warning-90);
-  --color-warning-95: var(--mtw-color-warning-95);
-
-  --border: var(--mtw-border);
-
-  --sidebar-foreground: var(--mtw-sidebar-foreground);
-  --sidebar-primary: var(--mtw-sidebar-primary);
-  --sidebar-primary-foreground: var(--mtw-sidebar-primary-foreground);
-  --sidebar-accent: var(--mtw-sidebar-accent);
-  --sidebar-accent-foreground: var(--mtw-sidebar-accent-foreground);
-  --sidebar-border: var(--mtw-sidebar-border);
-  --sidebar-ring: var(--mtw-sidebar-ring);
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0 0);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0 0);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0 0);
+  --color-primary: oklch(0.205 0 0);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.97 0 0);
+  --color-secondary-foreground: oklch(0.205 0 0);
+  --color-muted: oklch(0.97 0 0);
+  --color-muted-foreground: oklch(0.556 0 0);
+  --color-accent: oklch(0.97 0 0);
+  --color-accent-foreground: oklch(0.205 0 0);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-destructive-foreground: oklch(0.577 0.245 27.325);
+  --color-border: oklch(0.922 0 0);
+  --color-input: oklch(0.922 0 0);
+  --color-ring: oklch(0.708 0 0);
+  --color-chart-1: oklch(0.646 0.222 41.116);
+  --color-chart-2: oklch(0.6 0.118 184.704);
+  --color-chart-3: oklch(0.398 0.07 227.392);
+  --color-chart-4: oklch(0.828 0.189 84.429);
+  --color-chart-5: oklch(0.769 0.188 70.08);
+  --color-sidebar: oklch(0.985 0 0);
+  --color-sidebar-foreground: oklch(0.145 0 0);
+  --color-sidebar-primary: oklch(0.205 0 0);
+  --color-sidebar-primary-foreground: oklch(0.985 0 0);
+  --color-sidebar-accent: oklch(0.97 0 0);
+  --color-sidebar-accent-foreground: oklch(0.205 0 0);
+  --color-sidebar-border: oklch(0.922 0 0);
+  --color-sidebar-ring: oklch(0.708 0 0);
+  
+  /* Legacy gray colors for backward compatibility */
+  --color-gray-300: #d1d5db;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  /* Border radius */
+  --radius: 0.625rem;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  
+  /* Animation keyframes */
+  --animate-dot-typing: dot-typing 1.5s infinite linear;
 }
 
+/* Public API: --mtw-* CSS custom properties for SDK consumer theme customization */
 :root {
-  --mtw-background: oklch(1 0 0);
-  --mtw-foreground: oklch(0.145 0 0);
-  --mtw-card: oklch(1 0 0);
-  --mtw-card-foreground: oklch(0.145 0 0);
-  --mtw-popover: oklch(1 0 0);
-  --mtw-popover-foreground: oklch(0.145 0 0);
-  --mtw-primary: var(--mtw-color-primary-50);
-  --mtw-primary-foreground: oklch(0.985 0 0);
-  --mtw-secondary: oklch(0.97 0 0);
-  --mtw-secondary-foreground: oklch(0.205 0 0);
-  --mtw-muted: oklch(0.97 0 0);
-  --mtw-muted-foreground: oklch(0.556 0 0);
-  --mtw-accent: oklch(0.97 0 0);
-  --mtw-accent-foreground: oklch(0.205 0 0);
-  --mtw-destructive: var(--mtw-color-danger-50);
-  --mtw-destructive-foreground: oklch(0.577 0.245 27.325);
-  --mtw-border: oklch(0.922 0 0);
-  --mtw-input: oklch(0.922 0 0);
-  --mtw-ring: oklch(0.708 0 0);
-  --mtw-chart-1: oklch(0.646 0.222 41.116);
-  --mtw-chart-2: oklch(0.6 0.118 184.704);
-  --mtw-chart-3: oklch(0.398 0.07 227.392);
-  --mtw-chart-4: oklch(0.828 0.189 84.429);
-  --mtw-chart-5: oklch(0.769 0.188 70.08);
-  --mtw-radius: 0.625rem;
-  --mtw-sidebar: oklch(0.985 0 0);
-  --mtw-sidebar-foreground: oklch(0.145 0 0);
-  --mtw-sidebar-primary: oklch(0.205 0 0);
-  --mtw-sidebar-primary-foreground: oklch(0.985 0 0);
-  --mtw-sidebar-accent: oklch(0.97 0 0);
-  --mtw-sidebar-accent-foreground: oklch(0.205 0 0);
-  --mtw-sidebar-border: oklch(0.922 0 0);
-  --mtw-sidebar-ring: oklch(0.708 0 0);
+  --mtw-background: var(--color-background);
+  --mtw-foreground: var(--color-foreground);
+  --mtw-card: var(--color-card);
+  --mtw-card-foreground: var(--color-card-foreground);
+  --mtw-popover: var(--color-popover);
+  --mtw-popover-foreground: var(--color-popover-foreground);
+  --mtw-primary: var(--color-primary);
+  --mtw-primary-foreground: var(--color-primary-foreground);
+  --mtw-secondary: var(--color-secondary);
+  --mtw-secondary-foreground: var(--color-secondary-foreground);
+  --mtw-muted: var(--color-muted);
+  --mtw-muted-foreground: var(--color-muted-foreground);
+  --mtw-accent: var(--color-accent);
+  --mtw-accent-foreground: var(--color-accent-foreground);
+  --mtw-destructive: var(--color-destructive);
+  --mtw-destructive-foreground: var(--color-destructive-foreground);
+  --mtw-border: var(--color-border);
+  --mtw-input: var(--color-input);
+  --mtw-ring: var(--color-ring);
+  --mtw-chart-1: var(--color-chart-1);
+  --mtw-chart-2: var(--color-chart-2);
+  --mtw-chart-3: var(--color-chart-3);
+  --mtw-chart-4: var(--color-chart-4);
+  --mtw-chart-5: var(--color-chart-5);
+  --mtw-radius: var(--radius);
+  --mtw-sidebar: var(--color-sidebar);
+  --mtw-sidebar-foreground: var(--color-sidebar-foreground);
+  --mtw-sidebar-primary: var(--color-sidebar-primary);
+  --mtw-sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+  --mtw-sidebar-accent: var(--color-sidebar-accent);
+  --mtw-sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+  --mtw-sidebar-border: var(--color-sidebar-border);
+  --mtw-sidebar-ring: var(--color-sidebar-ring);
 }
 
 @layer base {
@@ -161,4 +154,30 @@
     --mtw-dot-loader-stress-color: #562bd6;
     animation: dot-typing 1.5s infinite linear;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.visually-hidden-input {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+  width: 1px;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
 }

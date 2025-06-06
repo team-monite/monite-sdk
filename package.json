@@ -37,6 +37,7 @@
     "@lingui/swc-plugin": "^5.5.2",
     "@lingui/vite-plugin": "^5.3.0",
     "@sentry/cli": "~2.28.6",
+    "@tailwindcss/postcss": "~4.1.8",
     "@tailwindcss/typography": "~0.5.16",
     "@team-monite/eslint-plugin": "workspace:~",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

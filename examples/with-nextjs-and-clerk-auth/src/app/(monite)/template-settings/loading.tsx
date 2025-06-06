@@ -1,5 +1,5 @@
 import LoadingFallback from '@/components/LoadingFallback';
 
-export default function InvoiceDesignLoading() {
-  return <LoadingFallback text="Loading invoice design..." />;
+export default function TemplateSettingsLoading() {
+  return <LoadingFallback text="Loading template settings..." />;
 }
