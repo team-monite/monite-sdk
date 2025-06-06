@@ -9,11 +9,11 @@ import {
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Button,
   DialogActions,
   DialogContent,
   Divider,
@@ -136,7 +136,7 @@ export const CreateCounterpartDialog = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="ghost" size="lg" onClick={onClose}>
           {t(i18n)`Cancel`}
         </Button>
       </DialogActions>

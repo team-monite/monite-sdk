@@ -18,9 +18,10 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 type ReceivablesProps = {
   /** @see {@link CustomerTypes} */
@@ -146,12 +147,14 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
             ) : (
               <Button
                 id="actions"
-                variant="contained"
+                size="lg"
                 disabled={!isCreateAllowed}
                 onClick={() => {
                   setIsCreateInvoiceDialogOpen(true);
                 }}
-              >{t(i18n)`Create Invoice`}</Button>
+              >
+                {t(i18n)`Create Invoice`}
+              </Button>
             )}
           </Box>
         }
