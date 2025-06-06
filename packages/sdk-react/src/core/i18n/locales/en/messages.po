@@ -57,10 +57,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/financing/components/FinanceDetails.tsx:186
 #: src/components/financing/components/FinanceFaqDetails.tsx:58
 #: src/components/financing/components/FinanceFaqDetails.tsx:62
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:74
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:255
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
-#: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:86
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:114
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:80
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:36
@@ -219,7 +216,7 @@ msgid "Access Restricted"
 msgstr "Access Restricted"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:98
-#: src/components/onboarding/validators/validationSchemas.ts:109
+#: src/components/onboarding/validators/validationSchemas.ts:112
 #: src/components/receivables/components/BankAccountCustomFields.tsx:115
 #: src/components/receivables/components/BankAccountCustomFields.tsx:175
 #: src/components/receivables/validation.ts:19
@@ -238,7 +235,7 @@ msgstr "Account Holder Name"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:125
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:94
-#: src/components/onboarding/validators/validationSchemas.ts:110
+#: src/components/onboarding/validators/validationSchemas.ts:113
 #: src/components/receivables/components/BankAccountCustomFields.tsx:79
 #: src/components/receivables/components/BankAccountCustomFields.tsx:139
 #: src/components/receivables/components/BankAccountCustomFields.tsx:238
@@ -952,24 +949,24 @@ msgstr "Back"
 msgid "Back of your additional document"
 msgstr "Back of your additional document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:62
-#: src/components/onboarding/validators/validationSchemas.ts:87
+#: src/components/onboarding/validators/validationSchemas.ts:64
+#: src/components/onboarding/validators/validationSchemas.ts:89
 msgid "Back of your additional identify document"
 msgstr "Back of your additional identify document"
 
-#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:123
-#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:152
+#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:127
+#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:159
 msgid "Back of your additional identity document"
 msgstr "Back of your additional identity document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:56
-#: src/components/onboarding/validators/validationSchemas.ts:81
+#: src/components/onboarding/validators/validationSchemas.ts:58
+#: src/components/onboarding/validators/validationSchemas.ts:83
 msgid "Back of your identify document"
 msgstr "Back of your identify document"
 
-#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:99
+#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:103
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:115
-#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:128
+#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:135
 msgid "Back of your identity document"
 msgstr "Back of your identity document"
 
@@ -1314,8 +1311,8 @@ msgstr "Business Number (Canada)"
 msgid "Business owners"
 msgstr "Business owners"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:38
-#: src/components/onboarding/validators/validationSchemas.ts:21
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:42
+#: src/components/onboarding/validators/validationSchemas.ts:22
 msgid "Business phone number"
 msgstr "Business phone number"
 
@@ -1327,8 +1324,8 @@ msgstr "Business Registration (Hong Kong)"
 msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:79
-#: src/components/onboarding/validators/validationSchemas.ts:125
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:82
+#: src/components/onboarding/validators/validationSchemas.ts:128
 msgid "Business URL"
 msgstr "Business URL"
 
@@ -1643,7 +1640,7 @@ msgstr "Cigar Stores and Stands"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:30
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:64
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:29
-#: src/components/onboarding/validators/validationSchemas.ts:150
+#: src/components/onboarding/validators/validationSchemas.ts:153
 msgid "City"
 msgstr "City"
 
@@ -2070,8 +2067,8 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
-#: src/components/onboarding/validators/validationSchemas.ts:107
-#: src/components/onboarding/validators/validationSchemas.ts:147
+#: src/components/onboarding/validators/validationSchemas.ts:110
+#: src/components/onboarding/validators/validationSchemas.ts:150
 #: src/components/receivables/validation.ts:27
 #: src/ui/Country/MoniteCountry.tsx:69
 msgid "Country"
@@ -2342,7 +2339,7 @@ msgstr "Cuba"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:20
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:114
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:77
-#: src/components/onboarding/validators/validationSchemas.ts:108
+#: src/components/onboarding/validators/validationSchemas.ts:111
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:152
 #: src/components/products/ProductDetails/validation.ts:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:516
@@ -2421,8 +2418,8 @@ msgstr "Date"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:64
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:239
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:64
-#: src/components/onboarding/validators/validationSchemas.ts:31
-#: src/components/onboarding/validators/validationSchemas.ts:100
+#: src/components/onboarding/validators/validationSchemas.ts:33
+#: src/components/onboarding/validators/validationSchemas.ts:103
 msgid "Date of birth"
 msgstr "Date of birth"
 
@@ -3192,11 +3189,11 @@ msgstr "Elementary, Secondary Schools"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:69
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:73
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:113
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:61
-#: src/components/onboarding/validators/validationSchemas.ts:19
-#: src/components/onboarding/validators/validationSchemas.ts:97
+#: src/components/onboarding/validators/validationSchemas.ts:20
+#: src/components/onboarding/validators/validationSchemas.ts:100
 msgid "Email address"
 msgstr "Email address"
 
@@ -3593,8 +3590,8 @@ msgstr "First day of the month"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:37
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:95
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:55
-#: src/components/onboarding/validators/validationSchemas.ts:28
-#: src/components/onboarding/validators/validationSchemas.ts:94
+#: src/components/onboarding/validators/validationSchemas.ts:30
+#: src/components/onboarding/validators/validationSchemas.ts:97
 msgid "First name"
 msgstr "First name"
 
@@ -3670,24 +3667,24 @@ msgstr "from {0}"
 msgid "Front of your additional document"
 msgstr "Front of your additional document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:59
-#: src/components/onboarding/validators/validationSchemas.ts:84
+#: src/components/onboarding/validators/validationSchemas.ts:61
+#: src/components/onboarding/validators/validationSchemas.ts:86
 msgid "Front of your additional identify document"
 msgstr "Front of your additional identify document"
 
-#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:111
-#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:140
+#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:115
+#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:147
 msgid "Front of your additional identity document"
 msgstr "Front of your additional identity document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:53
-#: src/components/onboarding/validators/validationSchemas.ts:78
+#: src/components/onboarding/validators/validationSchemas.ts:55
+#: src/components/onboarding/validators/validationSchemas.ts:80
 msgid "Front of your identify document"
 msgstr "Front of your identify document"
 
-#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:87
+#: src/components/onboarding/OnboardingEntityDocuments/OnboardingEntityDocuments.tsx:91
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:111
-#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:116
+#: src/components/onboarding/OnboardingPersonDocuments/OnboardingPersonDocuments.tsx:123
 msgid "Front of your identity document"
 msgstr "Front of your identity document"
 
@@ -4009,7 +4006,7 @@ msgstr "Hold on, we’re processing the file you’ve uploaded."
 msgid "Holy See (Vatican City State)"
 msgstr "Holy See (Vatican City State)"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:34
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:38
 msgid "Home address"
 msgstr "Home address"
 
@@ -4074,7 +4071,7 @@ msgstr "I own 25% or more of the company."
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:8
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:105
-#: src/components/onboarding/validators/validationSchemas.ts:114
+#: src/components/onboarding/validators/validationSchemas.ts:117
 #: src/components/receivables/components/BankAccountCustomFields.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:188
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:31
@@ -4166,8 +4163,8 @@ msgstr "Indonesian Rupiah"
 msgid "Industrial Supplies (Not Elsewhere Classified)"
 msgstr "Industrial Supplies (Not Elsewhere Classified)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:68
-#: src/components/onboarding/validators/validationSchemas.ts:123
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:71
+#: src/components/onboarding/validators/validationSchemas.ts:126
 msgid "Industry"
 msgstr "Industry"
 
@@ -4216,7 +4213,7 @@ msgstr "Invalid IBAN"
 msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
-#: src/components/onboarding/validators/validationSchemas.ts:127
+#: src/components/onboarding/validators/validationSchemas.ts:130
 msgid "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 
@@ -4533,7 +4530,7 @@ msgstr "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:55
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:211
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:58
-#: src/components/onboarding/validators/validationSchemas.ts:136
+#: src/components/onboarding/validators/validationSchemas.ts:139
 msgid "Job title"
 msgstr "Job title"
 
@@ -4627,8 +4624,8 @@ msgstr "Last day of the month"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:46
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:104
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:56
-#: src/components/onboarding/validators/validationSchemas.ts:29
-#: src/components/onboarding/validators/validationSchemas.ts:95
+#: src/components/onboarding/validators/validationSchemas.ts:31
+#: src/components/onboarding/validators/validationSchemas.ts:98
 msgid "Last name"
 msgstr "Last name"
 
@@ -4675,7 +4672,7 @@ msgid "Lebanon"
 msgstr "Lebanon"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityOrganization/OnboardingEntityOrganization.tsx:30
-#: src/components/onboarding/validators/validationSchemas.ts:38
+#: src/components/onboarding/validators/validationSchemas.ts:40
 msgid "Legal business name"
 msgstr "Legal business name"
 
@@ -4733,13 +4730,13 @@ msgstr "Liechtenstein"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:46
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:27
-#: src/components/onboarding/validators/validationSchemas.ts:148
+#: src/components/onboarding/validators/validationSchemas.ts:151
 msgid "Line 1"
 msgstr "Line 1"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:55
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:28
-#: src/components/onboarding/validators/validationSchemas.ts:149
+#: src/components/onboarding/validators/validationSchemas.ts:152
 msgid "Line 2"
 msgstr "Line 2"
 
@@ -5612,7 +5609,7 @@ msgstr "Overview"
 msgid "Owner"
 msgstr "Owner"
 
-#: src/components/onboarding/validators/validationSchemas.ts:168
+#: src/components/onboarding/validators/validationSchemas.ts:171
 msgid "Ownership declaration"
 msgstr "Ownership declaration"
 
@@ -5900,7 +5897,7 @@ msgstr "Pending"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:220
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:68
-#: src/components/onboarding/validators/validationSchemas.ts:137
+#: src/components/onboarding/validators/validationSchemas.ts:140
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
@@ -5927,8 +5924,7 @@ msgstr "Permissions"
 msgid "Person"
 msgstr "Person"
 
-#: src/components/onboarding/validators/validationSchemas.ts:32
-#: src/components/onboarding/validators/validationSchemas.ts:101
+#: src/components/onboarding/helpers.ts:360
 msgid "Personal identification number"
 msgstr "Personal identification number"
 
@@ -5966,10 +5962,10 @@ msgstr "Philippines"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:202
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:54
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:88
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:39
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:43
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:230
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:62
-#: src/components/onboarding/validators/validationSchemas.ts:99
+#: src/components/onboarding/validators/validationSchemas.ts:102
 msgid "Phone number"
 msgstr "Phone number"
 
@@ -6006,11 +6002,11 @@ msgstr "Pitcairn"
 msgid "Platform/Monite"
 msgstr "Platform/Monite"
 
-#: src/components/onboarding/validators/validationSchemas.ts:167
+#: src/components/onboarding/validators/validationSchemas.ts:170
 msgid "Please accept Ownership Declaration to proceed."
 msgstr "Please accept Ownership Declaration to proceed."
 
-#: src/components/onboarding/validators/validationSchemas.ts:164
+#: src/components/onboarding/validators/validationSchemas.ts:167
 msgid "Please accept Service Agreement to proceed."
 msgstr "Please accept Service Agreement to proceed."
 
@@ -6181,7 +6177,7 @@ msgstr "Portugal"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:34
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:83
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:31
-#: src/components/onboarding/validators/validationSchemas.ts:152
+#: src/components/onboarding/validators/validationSchemas.ts:155
 msgid "Postal code"
 msgstr "Postal code"
 
@@ -6505,7 +6501,7 @@ msgstr "Recurring invoice"
 msgid "Reference"
 msgstr "Reference"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:33
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:37
 msgid "Registered business address"
 msgstr "Registered business address"
 
@@ -6728,7 +6724,7 @@ msgstr "Roofing/Siding, Sheet Metal"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:155
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:13
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:106
-#: src/components/onboarding/validators/validationSchemas.ts:117
+#: src/components/onboarding/validators/validationSchemas.ts:120
 #: src/components/receivables/components/BankAccountCustomFields.tsx:99
 #: src/components/receivables/components/BankAccountCustomFields.tsx:277
 #: src/components/receivables/components/BankAccountCustomFields.tsx:291
@@ -6741,7 +6737,7 @@ msgstr "Routing number"
 msgid "Routing Number"
 msgstr "Routing Number"
 
-#: src/components/onboarding/validators/validationSchemas.ts:116
+#: src/components/onboarding/validators/validationSchemas.ts:119
 msgid "Routing number must be 9 digits"
 msgstr "Routing number must be 9 digits"
 
@@ -7131,6 +7127,10 @@ msgstr "Smallest amount"
 msgid "Snowmobile Dealers"
 msgstr "Snowmobile Dealers"
 
+#: src/components/onboarding/helpers.ts:357
+msgid "Social Security Number"
+msgstr "Social Security Number"
+
 #: src/core/utils/countries.ts:217
 msgid "Solomon Islands"
 msgstr "Solomon Islands"
@@ -7167,7 +7167,7 @@ msgstr "Something went wrong. Please try again"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:140
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:12
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:102
-#: src/components/onboarding/validators/validationSchemas.ts:113
+#: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/receivables/components/BankAccountCustomFields.tsx:159
 #: src/components/receivables/components/BankAccountCustomFields.tsx:279
 #: src/components/receivables/components/BankAccountCustomFields.tsx:309
@@ -7180,7 +7180,7 @@ msgstr "Sort code"
 msgid "Sort Code"
 msgstr "Sort Code"
 
-#: src/components/onboarding/validators/validationSchemas.ts:112
+#: src/components/onboarding/validators/validationSchemas.ts:115
 msgid "Sort code must be 6 digits"
 msgstr "Sort code must be 6 digits"
 
@@ -7252,7 +7252,7 @@ msgstr "Start date"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:38
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:73
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:30
-#: src/components/onboarding/validators/validationSchemas.ts:151
+#: src/components/onboarding/validators/validationSchemas.ts:154
 msgid "State"
 msgstr "State"
 
@@ -7478,8 +7478,8 @@ msgstr "Tax Identification Number (Slovenia)"
 msgid "Tax information"
 msgstr "Tax information"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:87
-#: src/components/onboarding/validators/validationSchemas.ts:22
+#: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:91
+#: src/components/onboarding/validators/validationSchemas.ts:23
 msgid "Tax number"
 msgstr "Tax number"
 
@@ -7547,7 +7547,7 @@ msgstr "Terms and conditions"
 msgid "Terms and Conditions"
 msgstr "Terms and Conditions"
 
-#: src/components/onboarding/validators/validationSchemas.ts:165
+#: src/components/onboarding/validators/validationSchemas.ts:168
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -7732,7 +7732,7 @@ msgstr "This action can’t be undone."
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:92
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:95
 msgid "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
 msgstr "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
 
@@ -7774,15 +7774,15 @@ msgstr "This invoice doesn’t have a file attached."
 msgid "This month"
 msgstr "This month"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:277
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:278
 msgid "This person is a member of the governing board of the company."
 msgstr "This person is a member of the governing board of the company."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:281
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:282
 msgid "This person is an executive or senior manager with significant management responsibility."
 msgstr "This person is an executive or senior manager with significant management responsibility."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:275
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:276
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
 
@@ -7811,7 +7811,7 @@ msgstr "Timor-Leste"
 msgid "Tire Retreading and Repair"
 msgstr "Tire Retreading and Repair"
 
-#: src/components/onboarding/validators/validationSchemas.ts:30
+#: src/components/onboarding/validators/validationSchemas.ts:32
 msgid "Title"
 msgstr "Title"
 
