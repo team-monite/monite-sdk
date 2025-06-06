@@ -45,7 +45,11 @@ const mainNavigationItems: NavigationItemConfig[] = [
 ];
 
 const settingsNavigationItems: NavigationItemConfig[] = [
-  { href: '/invoice-design', icon: <IconBrush />, labelKey: 'Document Design' },
+  {
+    href: '/template-settings',
+    icon: <IconBrush />,
+    labelKey: 'Template settings',
+  },
   {
     href: '/user-roles',
     icon: <IconPostcard />,

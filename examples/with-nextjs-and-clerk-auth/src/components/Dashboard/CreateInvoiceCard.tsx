@@ -5,8 +5,6 @@ import { Box, Link } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
 
-// import { IconReceipt } from '@/icons';
-
 export const CreateInvoiceCard = () => {
   return (
     <div
@@ -32,7 +30,7 @@ export const CreateInvoiceCard = () => {
           }}
         >
           <Link
-            href={'/invoice-design'}
+            href={'/template-settings'}
             sx={{
               '&:hover': {
                 textDecoration: 'underline',

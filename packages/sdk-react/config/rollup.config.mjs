@@ -6,6 +6,10 @@ const sdkReactSwcOptions = {
   exclude: ['**/*.css'],
   sourceMaps: true,
   jsc: {
+    parser: {
+      syntax: "typescript",
+      tsx: true,
+    },
     experimental: {
       plugins: [
         ['@lingui/swc-plugin', {}],
