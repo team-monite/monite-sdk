@@ -66,7 +66,7 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
 
   return (
     <AssistantMessageWrapper>
-      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:overflow-x-auto">
+      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:overflow-x-auto mtw:grow">
         <div
           className={cn(
             'mtw:transition-[height] mtw:ease-in-out mtw:duration-3000',

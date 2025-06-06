@@ -88,5 +88,7 @@ export type LocationLinkType = FC<{
 }>;
 
 export type AIPages = 'start' | 'chat' | 'prompt';
+export type AIChatStatus = 'ready' | 'submitted' | 'streaming' | 'error';
+export type SortDirection = 'asc' | 'desc';
 
 export type { Message, UIMessage };
