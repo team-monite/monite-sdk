@@ -64,11 +64,6 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
       }
     };
 
-    if (!root) {
-      console.warn('DialogBase: Monite root element is not available.');
-      return null;
-    }
-
     return (
       <DialogContext.Provider
         value={{
@@ -93,7 +88,6 @@ export const DialogBase = forwardRef<HTMLDivElement, MoniteDialogProps>(
               alignDialog && `MuiDialog-container__align-${alignDialog}`,
             ]
               .filter(Boolean)
-              // eslint-disable-next-line lingui/no-unlocalized-strings
               .join(' '),
             paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
           }}

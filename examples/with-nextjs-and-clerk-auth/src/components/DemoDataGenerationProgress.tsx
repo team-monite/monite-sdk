@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
-const DemoDataGenerationProgressContent = () => {
+const DemoDataGenerationProgressInner = () => {
   const displayDemoDataGenerationProgress = useSearchParams().has(
     'display_demo_data_generation_progress'
   );
@@ -59,10 +59,14 @@ const DemoDataGenerationProgressContent = () => {
   );
 };
 
-export const DemoDataGenerationProgress = () => {
+const DemoDataGenerationProgressContent = () => {
   return (
     <Suspense fallback={null}>
-      <DemoDataGenerationProgressContent />
+      <DemoDataGenerationProgressInner />
     </Suspense>
   );
+};
+
+export const DemoDataGenerationProgress = () => {
+  return <DemoDataGenerationProgressContent />;
 };

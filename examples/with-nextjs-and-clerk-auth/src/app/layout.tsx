@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ClerkProvider } from '@clerk/nextjs';
+import '@monite/sdk-react/styles.css';
 // import { currentUser } from '@clerk/nextjs/server';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
