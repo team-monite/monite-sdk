@@ -119,7 +119,6 @@ const OnboardingComponent = dynamic(
   { ssr: false, loading: () => <LoadingFallback minimal /> }
 );
 
-
 /* eslint-disable */
 
 const MoniteProviderImpl = ({
