@@ -1,11 +1,13 @@
+'use client';
+
 import { Box } from '@mui/material';
 
-import { RolesAndPolicies } from '@/components/MoniteComponents';
+import { UserRoles } from '@/components/MoniteComponents';
 
-export default async function UserRolesPage() {
+export default function UserRolesPage() {
   return (
     <Box className="Monite-PageContainer Monite-UserRoles">
-      <RolesAndPolicies />
+      <UserRoles />
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { organizationId } from '../counterpart.mocks.types';
@@ -13,7 +13,7 @@ const genCounterpartVatFixture = (id: number = 0): CounterpartVatIDResponse => {
   return {
     id: `vat-id-${id}`,
     counterpart_id: organizationId,
-    type: getRandomItemFromArray(VatIDTypeEnum),
+    type: getRandomItemFromArray(VatIDTypeEnum) as components['schemas']['VatIDTypeEnum'],
     value: faker.string.numeric(10),
     country: getRandomItemFromArray(['DE', 'US', 'KZ', 'GE']),
   };

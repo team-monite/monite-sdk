@@ -2,7 +2,7 @@ import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
+import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';

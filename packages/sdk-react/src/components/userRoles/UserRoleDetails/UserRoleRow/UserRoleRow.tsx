@@ -11,16 +11,8 @@ import {
 import { TableRow } from '@mui/material';
 
 import { CommonActions, PayableActions, PermissionRow } from '../types';
-import { StyledTableCell } from '../UserRoleDetailsDialog/UserRoleDetailsDialog';
-
-/** View mode of the user role */
-export enum UserRoleViewMode {
-  /** Read mode - the user is only viewing the role details */
-  Read = 'read',
-
-  /** Mutate mode - the user is adding or editing the role */
-  Mutate = 'mutate',
-}
+import { UserRoleViewMode } from '../UserRole.types';
+import { StyledTableCell } from '../UserRoleTableComponents';
 
 interface UserRoleRowProps {
   /** The row data to be displayed */

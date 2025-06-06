@@ -334,3 +334,82 @@ Integration example:
   </script>
 </monite-iframe-app>
 ```
+
+## E2E Testing
+
+The E2E testing system supports **conditional API testing** that automatically switches between mocked and real API calls based on the environment and configuration.
+
+### Testing Modes
+
+| Environment | API Calls | Speed | Reliability | Setup Required |
+|------------|-----------|-------|-------------|----------------|
+| **Local Development** 🔒 | Mocked | ⚡ Fast | 🎯 Consistent | ✅ None |
+| **Local with Real API** 🌐 | Real | 🐌 Slower | 🌐 Network-dependent | 🔧 Credentials |
+| **CI Environment** 🌐 | Real | 🐌 Slower | 🌐 Network-dependent | ✅ Auto-configured |
+
+### Local Development Mode (Default)
+
+**Quick start:**
+```bash
+yarn e2e
+```
+
+**Characteristics:**
+- ✅ **Fast execution** (~27 seconds)
+- ✅ **No network dependencies**
+- ✅ **Consistent results**
+- ✅ **Works offline**
+- ⚠️ **Limited API coverage** (mocked responses)
+
+**What gets mocked:**
+- `**/auth/token` → Returns mock access token
+- `**/entity_users/my_entity` → Returns mock entity data
+
+### Real API Mode
+
+**Local testing with real API:**
+```bash
+# Set your real credentials
+export MONITE_E2E_APP_ADMIN_CONFIG_JSON='{"stand":"dev","api_url":"https://api.dev.monite.com","app_basename":"monite-iframe-app","app_hostname":"localhost","entity_user_id":"your_real_entity_user_id","client_id":"your_real_client_id","client_secret":"your_real_client_secret"}'
+
+# Run tests
+yarn e2e
+```
+
+**Characteristics:**
+- ✅ **Real authentication flow**
+- ✅ **Real data from Monite API**
+- ✅ **True end-to-end validation**
+- ✅ **Tests actual iframe content**
+- ⚠️ **Requires valid credentials**
+- ⚠️ **Network-dependent timing**
+
+### Debugging E2E Tests
+
+**Check which mode is active** by looking for these log messages:
+```bash
+# Mock Mode
+🔒 Using API mocks for local development
+
+# Real API Mode
+🌐 Using real API calls - no mocks applied
+```
+
+**Debug with browser:**
+```bash
+yarn e2e --headed
+```
+
+### When to Use Which Mode
+
+**Use Mock Mode 🔒 for:**
+- ✅ **Local development** and debugging
+- ✅ **Quick validation** of UI changes
+- ✅ **Testing navigation** and layout
+- ✅ **Offline development**
+
+**Use Real API Mode 🌐 for:**
+- ✅ **True end-to-end testing**
+- ✅ **Authentication flow validation**
+- ✅ **Real data integration testing**
+- ✅ **Production readiness checks**

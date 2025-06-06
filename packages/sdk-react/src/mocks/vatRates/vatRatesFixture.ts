@@ -1,17 +1,18 @@
 import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 function getRandomVatRate(index: number): VatRateResponse {
+  const randomCountry = getRandomItemFromArray(AllowedCountries);
   return {
     id: faker.string.nanoid(),
     value: index === 1 ? 0 : faker.number.int({ min: 0, max: 10_000 }),
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.past().toISOString(),
-    country: getRandomItemFromArray(AllowedCountries),
+    country: randomCountry === undefined ? 'US' : randomCountry,
     status: 'active',
-    created_by: getRandomItemFromArray(['monite', 'accounting']),
+    created_by: getRandomItemFromArray(['monite', 'accounting']) ?? 'monite',
   };
 }
 

@@ -2,7 +2,11 @@ import { ComponentProps, ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
 import { useLingui } from '@lingui/react';
-import { MoniteProvider, MoniteSettings } from '@monite/sdk-react';
+import {
+  MoniteProvider,
+  MoniteSettings,
+  RootElementsProvider,
+} from '@monite/sdk-react';
 
 type AppMoniteProvider = {
   sdkConfig: MoniteSettings;
@@ -28,21 +32,28 @@ const AppMoniteProvider = ({
   const { i18n } = useLingui();
 
   return (
-    <MoniteProvider
-      monite={monite}
-      locale={{
-        code: i18n.locale,
-        messages: i18n.messages[i18n.locale],
-      }}
-      theme={theme}
-      componentSettings={{
-        receivables: {
-          enableEntityBankAccount: true,
-        },
+    <RootElementsProvider
+      elements={{
+        root: typeof document !== 'undefined' ? document.body : undefined,
+        styles: typeof document !== 'undefined' ? document.head : undefined,
       }}
     >
-      {children}
-    </MoniteProvider>
+      <MoniteProvider
+        monite={monite}
+        locale={{
+          code: i18n.locale,
+          messages: i18n.messages[i18n.locale],
+        }}
+        theme={theme}
+        componentSettings={{
+          receivables: {
+            enableEntityBankAccount: true,
+          },
+        }}
+      >
+        {children}
+      </MoniteProvider>
+    </RootElementsProvider>
   );
 };
 

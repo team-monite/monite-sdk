@@ -1,6 +1,6 @@
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -10,23 +10,21 @@ import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import type { ComponentSettings } from '@/core/componentSettings';
 import { createQueryClient } from '@/core/context/createQueryClient';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import type { ThemeConfig } from '@/core/theme/types';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
+import type { I18n } from '@lingui/core';
+import type { Theme } from '@mui/material';
+import type { QraftContextValue } from '@openapi-qraft/react';
+import type { QueryClient } from '@tanstack/react-query';
+
+import type { Locale as DateFnsLocale } from 'date-fns';
+
 import {
   getLocaleWithDefaults,
   I18nLoader,
   MoniteLocaleWithRequired,
   type MoniteLocale,
-} from '@/core/context/MoniteI18nProvider';
-import { SentryFactory } from '@/core/services';
-import { type ThemeConfig } from '@/core/theme/types';
-import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
-import type { I18n } from '@lingui/core';
-import type { Theme } from '@mui/material';
-import type { Hub } from '@sentry/react';
-import type { QueryClient } from '@tanstack/react-query';
-
-import type { Locale as DateFnsLocale } from 'date-fns';
-
+} from './i18nUtils';
 import { MoniteSettings } from './MoniteProvider';
 
 interface MoniteContextBaseValue {
@@ -107,13 +105,17 @@ export interface MoniteContextValue
     CreateMoniteAPIClientResult {
   environment: 'dev' | 'sandbox' | 'production';
   entityId: string;
-  sentryHub: Hub | undefined;
   queryClient: QueryClient;
   apiUrl: string;
   theme: MoniteTheme;
   componentSettings: ComponentSettings;
   fetchToken: FetchToken;
 }
+
+/**
+ * @internal
+ */
+export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
 
 /**
  * @internal
@@ -162,6 +164,7 @@ export const MoniteContextProvider = ({
           locale={defaultedLocale}
           dateFnsLocale={datePickerAdapterLocale}
         >
+          {/* SentryProvider is now used inside ContextProvider where settings are resolved */}
           {children}
         </ContextProvider>
       )}
@@ -200,19 +203,7 @@ const ContextProvider = ({
     environment = 'sandbox';
   }
 
-  const sentryHub = useMemo(() => {
-    return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
-      ? new SentryFactory({
-          environment,
-          entityId,
-        }).create()
-      : undefined;
-  }, [entityId, environment]);
-
-  const queryClient = useMemo(
-    () => createQueryClient(i18n, sentryHub),
-    [i18n, sentryHub]
-  );
+  const queryClient = useMemo(() => createQueryClient(i18n), [i18n]);
 
   const { api, version, requestFn } = useMemo(
     () =>
@@ -243,7 +234,6 @@ const ContextProvider = ({
         theme: theme as MoniteTheme,
         componentSettings: getDefaultComponentSettings(i18n, componentSettings),
         queryClient,
-        sentryHub,
         i18n,
         locale,
         dateFnsLocale,

@@ -4,8 +4,7 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartStatusChip } from '@/components/counterparts/components';
 import type { CounterpartShowCategories } from '@/components/counterparts/types';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useMoniteContext } from '@/core/context/MoniteContext/useMoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -70,9 +69,7 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
 };
 
 export const CounterpartsTable = (props: CounterpartsTableProps) => (
-  <MoniteScopedProviders>
-    <CounterpartsTableBase {...props} />
-  </MoniteScopedProviders>
+  <CounterpartsTableBase {...props} />
 );
 
 const CounterpartsTableBase = ({

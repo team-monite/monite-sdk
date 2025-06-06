@@ -19,7 +19,9 @@ export const EmotionCacheProvider = ({
   const [emotionCache] = useState(() =>
     createCache({
       key: cacheKey,
-      container: rootElements.styles,
+      container:
+        rootElements.styles ||
+        (typeof document !== 'undefined' ? document.head : undefined),
     })
   );
 

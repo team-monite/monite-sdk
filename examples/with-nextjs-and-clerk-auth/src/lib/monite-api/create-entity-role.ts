@@ -117,6 +117,7 @@ type DefaultRoleName =
   | 'payer_member';
 
 export const roles_default_permissions: {
+  // eslint-disable-next-line no-unused-vars
   [role in DefaultRoleName]: {
     [ObjectType in BizObjectType]: BizObjectActions<ObjectType>;
   };

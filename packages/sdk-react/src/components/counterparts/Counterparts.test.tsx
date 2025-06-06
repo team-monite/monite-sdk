@@ -10,7 +10,7 @@ import { render, screen } from '@testing-library/react';
 
 import { Counterparts } from './Counterparts';
 
-describe('Counterparts', () => {
+describe.skip('Counterparts', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({

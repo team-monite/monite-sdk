@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
+import { useDialog } from '@/components/Dialog';
 import { Button } from '@mui/material';
 import { ErrorBoundary } from '@sentry/react';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Error as ErrorComponent } from './Error';
+import { ErrorComponent } from './Error';
 
 const meta: Meta<typeof ErrorComponent> = {
   title: 'components/Error',
@@ -34,17 +35,23 @@ const ButtonWithThrowError = () => {
   );
 };
 
+const ErrorStoryComponent = () => {
+  const dialogContext = useDialog();
+
+  return (
+    <ErrorBoundary
+      fallback={(props) => (
+        <ErrorComponent onClose={dialogContext?.onClose} {...props} />
+      )}
+      onError={action('onError')}
+    >
+      <ButtonWithThrowError />
+    </ErrorBoundary>
+  );
+};
+
 export const Default: Story = {
-  render: () => {
-    return (
-      <ErrorBoundary
-        fallback={(props) => <ErrorComponent {...props} />}
-        onError={action('onError')}
-      >
-        <ButtonWithThrowError />
-      </ErrorBoundary>
-    );
-  },
+  render: () => <ErrorStoryComponent />,
 };
 
 export default meta;

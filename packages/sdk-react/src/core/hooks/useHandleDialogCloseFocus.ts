@@ -26,6 +26,11 @@ export function useHandleDialogCloseFocus<
 
   const handleClose = useCallback(
     (...args: Args) => {
+      if (typeof document === 'undefined') {
+        onClose?.(...args);
+        return;
+      }
+
       const elementToBlur = document.activeElement;
 
       if (

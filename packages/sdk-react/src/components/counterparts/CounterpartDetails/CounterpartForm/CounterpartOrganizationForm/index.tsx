@@ -1,2 +1,2 @@
-export * from './CounterpartOrganizationForm';
+export { CounterpartOrganizationForm } from './CounterpartOrganizationForm';
 export * from './mapper';

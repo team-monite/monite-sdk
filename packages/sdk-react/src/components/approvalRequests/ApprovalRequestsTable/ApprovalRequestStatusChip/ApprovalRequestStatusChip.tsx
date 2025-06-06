@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
+import { MoniteApprovalRequestStatusChipProps } from '@/core/theme/types';
 import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
@@ -11,18 +11,7 @@ import {
 } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
 
-type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
-
-export interface MoniteApprovalRequestStatusChipProps {
-  /** The status of the approval request. */
-  status: ApprovalRequestStatus;
-  /** The size of the Chip. */
-  icon?: boolean;
-  /** Display status icon? */
-  variant?: ChipProps['variant'];
-  /** The variant of the Chip. */
-  size?: ChipProps['size'];
-}
+export type { MoniteApprovalRequestStatusChipProps };
 
 /**
  * Displays the status of an Approval Request.

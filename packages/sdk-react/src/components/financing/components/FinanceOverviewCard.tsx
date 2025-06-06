@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
-import { FinancedInvoiceStatusChip } from '@/components/financing/components';
+import { FinancedInvoiceStatusChip } from '@/components/financing/components/FinancedInvoiceStatusChip';
 import { useGetFinancedInvoices } from '@/components/financing/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';

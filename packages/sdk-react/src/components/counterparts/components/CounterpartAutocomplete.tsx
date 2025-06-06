@@ -9,7 +9,6 @@ import {
 } from 'react-hook-form';
 
 import { components } from '@/api';
-import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
@@ -33,6 +32,8 @@ import {
   Link,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
+import { CreateCounterpartModal } from './CreateCounterpartModal';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;
