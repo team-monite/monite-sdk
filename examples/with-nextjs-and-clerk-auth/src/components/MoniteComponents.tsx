@@ -13,6 +13,16 @@ import dynamic from 'next/dynamic';
 
 import { useLingui } from '@lingui/react';
 import {
+  useCounterpartById,
+  useCurrencies,
+  useMoniteContext,
+  useRootElements,
+  getCounterpartName,
+  toast,
+  Dialog,
+  RootElementsProvider,
+} from '@monite/sdk-react';
+import {
   Box,
   Button,
   Card,
@@ -109,108 +119,10 @@ const OnboardingComponent = dynamic(
   { ssr: false, loading: () => <LoadingFallback minimal /> }
 );
 
-const getUtils = () => {
-  if (typeof window === 'undefined') {
-    return {
-      useCounterpartById: () => ({ data: null }),
-      useCurrencies: () => ({
-        data: [],
-        formatCurrencyToDisplay: () => '—',
-      }),
-      useMoniteContext: () => ({
-        locale: { code: 'en', dateTimeFormat: 'MM/dd/yyyy' },
-        api: {
-          payables: {
-            getPayablesId: {
-              useQuery: () => ({ data: null }),
-              invalidateQueries: () => Promise.resolve(),
-            },
-            getPayables: {
-              invalidateQueries: () => Promise.resolve(),
-            },
-            postPayablesIdMarkAsPaid: {
-              useMutation: () => ({
-                mutateAsync: () => Promise.resolve({}),
-              }),
-            },
-          },
-        },
-        queryClient: {},
-      }),
-      useRootElements: () => ({ root: null, styles: null }),
-      getCounterpartName: () => '',
-      toast: { success: () => {}, error: () => {} },
-      Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-      RootElementsProvider: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-      ),
-    };
-  }
-
-  try {
-    const MoniteSDK = require('@monite/sdk-react');
-    return {
-      useCounterpartById: MoniteSDK.useCounterpartById,
-      useCurrencies: MoniteSDK.useCurrencies,
-      useMoniteContext: MoniteSDK.useMoniteContext,
-      useRootElements: MoniteSDK.useRootElements,
-      getCounterpartName: MoniteSDK.getCounterpartName,
-      toast: MoniteSDK.toast,
-      Dialog: MoniteSDK.Dialog,
-      RootElementsProvider: MoniteSDK.RootElementsProvider,
-    };
-  } catch (error) {
-    return {
-      useCounterpartById: () => ({ data: null }),
-      useCurrencies: () => ({
-        data: [],
-        formatCurrencyToDisplay: () => '—',
-      }),
-      useMoniteContext: () => ({
-        locale: { code: 'en', dateTimeFormat: 'MM/dd/yyyy' },
-        api: {
-          payables: {
-            getPayablesId: {
-              useQuery: () => ({ data: null }),
-              invalidateQueries: () => Promise.resolve(),
-            },
-            getPayables: {
-              invalidateQueries: () => Promise.resolve(),
-            },
-            postPayablesIdMarkAsPaid: {
-              useMutation: () => ({
-                mutateAsync: () => Promise.resolve({}),
-              }),
-            },
-          },
-        },
-        queryClient: {},
-      }),
-      useRootElements: () => ({ root: null, styles: null }),
-      getCounterpartName: () => '',
-      toast: { success: () => {}, error: () => {} },
-      Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-      RootElementsProvider: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-      ),
-    };
-  }
-};
-
-const {
-  useCounterpartById,
-  useCurrencies,
-  useMoniteContext,
-  useRootElements,
-  getCounterpartName,
-  toast,
-  Dialog,
-  RootElementsProvider,
-} = getUtils();
 
 /* eslint-disable */
 
-export const MoniteProvider = ({
+const MoniteProviderImpl = ({
   apiUrl,
   entityId,
   entityUserId,
@@ -302,6 +214,10 @@ export const MoniteProvider = ({
   );
 };
 
+export const MoniteProvider = dynamic(() => Promise.resolve(MoniteProviderImpl), {
+  ssr: false,
+});
+
 enum USPayDialogPage {
   ChooseBankAccount,
   TransferType,
@@ -389,7 +305,6 @@ const ChooseBankAccountPage = () => {
 
 const TransferTypePage = () => {
   const { i18n } = useLingui();
-  const { locale } = useMoniteContext();
   const [selectedValue, setSelectedValue] = useState('option1');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -673,7 +588,7 @@ const USPayDialog = ({
   );
 };
 
-export const Payables = () => {
+const PayablesImpl = () => {
   const { root } = useRootElements();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
@@ -707,6 +622,10 @@ export const Payables = () => {
     </>
   );
 };
+
+export const Payables = dynamic(() => Promise.resolve(PayablesImpl), {
+  ssr: false,
+});
 
 export const Receivables = () => {
   return <ReceivablesComponent />;
