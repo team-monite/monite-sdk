@@ -22,7 +22,14 @@ test.describe('Dashboard', () => {
     await page.goto('/');
     await expect(page).toHaveURL('/');
 
-    // Verify some authenticated content is visible
-    await expect(page.locator('text=Total received')).toBeVisible();
+    // Verify dashboard content is visible - look for either state of the cash flow card
+    // It shows "Total received" when there's data, or "Cashflow" when there's no data
+    await expect(
+      page.locator('text=Total received').or(page.locator('text=Cashflow'))
+    ).toBeVisible();
+
+    await expect(
+      page.locator('text=Set your style & create invoice')
+    ).toBeVisible();
   });
 });
