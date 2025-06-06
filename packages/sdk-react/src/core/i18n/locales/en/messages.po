@@ -2696,7 +2696,7 @@ msgstr "Details"
 msgid "Detective Agencies"
 msgstr "Detective Agencies"
 
-#: src/components/aiAssistant/consts.ts:46
+#: src/components/aiAssistant/consts.ts:69
 msgid "Didn’t follow prompt input"
 msgstr "Didn’t follow prompt input"
 
@@ -3810,11 +3810,11 @@ msgstr "Gibraltar Pound"
 msgid "Gift, Card, Novelty, and Souvenir Shops"
 msgstr "Gift, Card, Novelty, and Souvenir Shops"
 
-#: src/components/aiAssistant/consts.ts:20
+#: src/components/aiAssistant/consts.ts:43
 msgid "Give me all invoices I still have unpaid"
 msgstr "Give me all invoices I still have unpaid"
 
-#: src/components/aiAssistant/consts.ts:32
+#: src/components/aiAssistant/consts.ts:55
 msgid "Give me the total amount of receivables overdue by more than 30 days"
 msgstr "Give me the total amount of receivables overdue by more than 30 days"
 
@@ -4748,7 +4748,7 @@ msgstr "Line item"
 msgid "Linked documents"
 msgstr "Linked documents"
 
-#: src/components/aiAssistant/consts.ts:25
+#: src/components/aiAssistant/consts.ts:48
 msgid "List all customers who have overdue payments for more than 60 days"
 msgstr "List all customers who have overdue payments for more than 60 days"
 
@@ -7744,7 +7744,7 @@ msgstr "This can be a website, social media profile link or any other unique rea
 msgid "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 msgstr "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 
-#: src/components/aiAssistant/consts.ts:45
+#: src/components/aiAssistant/consts.ts:68
 msgid "This information is not correct"
 msgstr "This information is not correct"
 
@@ -8631,7 +8631,7 @@ msgstr "What can I help you with?"
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 msgstr "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 
-#: src/components/aiAssistant/consts.ts:39
+#: src/components/aiAssistant/consts.ts:62
 msgid "Who are my customers?"
 msgstr "Who are my customers?"
 
