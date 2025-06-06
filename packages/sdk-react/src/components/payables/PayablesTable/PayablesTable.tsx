@@ -15,6 +15,7 @@ import {
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
+import { usePayablePaymentIntentsAndRecords } from '@/core/queries/usePaymentRecords';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -213,6 +214,22 @@ const PayablesTableBase = ({
       ? 2_000
       : undefined,
   });
+
+  // Get IDs of payables in status [waiting_to_be_paid, partially_paid]
+  const payableIdsInWaitingToBePaidOrPartiallyPaid = useMemo(() => {
+    return payables?.data
+      ?.filter(
+        (payable) =>
+          payable.status === 'waiting_to_be_paid' ||
+          payable.status === 'partially_paid'
+      )
+      .map((payable) => payable.id);
+  }, [payables?.data]);
+  // Fetch payment records for payables in status [waiting_to_be_paid, partially_paid]
+  const { payablesPaymentIntentsRecord, isLoading: isPaymentRecordsLoading } =
+    usePayablePaymentIntentsAndRecords(
+      payableIdsInWaitingToBePaidOrPartiallyPaid || []
+    );
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
@@ -443,15 +460,31 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Payment`,
         sortable: false,
         hideable: !requiredColumns?.includes('pay'),
-        display: 'flex',
-        minWidth: 80,
-        width: 80,
+        width: 200,
+        minWidth: 150,
+        maxWidth: 450,
         renderCell: (params) => {
           const payable = params.row;
+
+          const statusShowPaymentActions = [
+            'waiting_to_be_paid',
+            'partially_paid',
+          ].includes(payable.status);
+
+          if (!statusShowPaymentActions) {
+            return null;
+          }
+
+          if (isPaymentRecordsLoading) {
+            return <CircularProgress size={22} sx={{ mr: 1 }} />;
+          }
 
           return (
             <PayablesTableAction
               payable={payable}
+              payableRecentPaymentRecordByIntent={
+                payablesPaymentIntentsRecord[payable.id] || []
+              }
               onPayableActionComplete={() => {
                 refetch();
               }}
@@ -467,6 +500,8 @@ const PayablesTableBase = ({
     i18n,
     locale.dateFormat,
     formatCurrencyToDisplay,
+    isPaymentRecordsLoading,
+    payablesPaymentIntentsRecord,
     onPay,
     onPayUS,
     refetch,
