@@ -1,46 +1,35 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { CustomerType } from '@/components/counterparts/types';
 import { CounterpartSelector } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector';
-import { useCounterpartAddresses } from '@/core/queries';
+import { useCounterpartAddresses, useCounterpartVatList } from '@/core/queries';
 import { Stack } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
 import { EditCounterpartModal } from './components/EditCounterpartModal';
 import { useDefaultCounterpartValues } from './components/useDefaultCounterpartValues';
-import { SectionGeneralProps } from './Section.types';
 
-export interface CustomerSectionProps extends SectionGeneralProps {
-  counterpart: components['schemas']['CounterpartResponse'] | undefined;
-  counterpartVats:
-    | {
-        data: components['schemas']['CounterpartVatIDResponse'][];
-      }
-    | undefined;
-  isCounterpartLoading: boolean;
-  isCounterpartVatsLoading: boolean;
+export interface CustomerSectionProps {
+  disabled: boolean;
   customerTypes?: CustomerType[];
+  isEditModalOpen?: boolean;
+  handleEditModal?: (isOpen: boolean) => void;
 }
 
 export const CustomerSection = ({
-  counterpart,
-  counterpartVats,
   disabled,
-  isCounterpartLoading,
-  isCounterpartVatsLoading,
   customerTypes,
+  isEditModalOpen,
+  handleEditModal,
 }: CustomerSectionProps) => {
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
 
   const counterpartId = watch('counterpart_id');
 
-  const {
-    data: counterpartAddresses,
-    isLoading: _isCounterpartAddressesLoading,
-  } = useCounterpartAddresses(counterpartId);
+  const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
+  const { data: counterpartVats } = useCounterpartVatList(counterpartId);
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
@@ -72,15 +61,19 @@ export const CustomerSection = ({
         isInvoiceCreation
       />
 
-      <EditCounterpartModal
-        counterpart={counterpart}
-        counterpartVats={counterpartVats}
-        isCounterpartLoading={isCounterpartLoading}
-        isCounterpartVatsLoading={isCounterpartVatsLoading}
-        disabled={disabled}
-        open={isEditCounterpartOpened}
-        onClose={() => setIsEditCounterpartOpened(false)}
-      />
+      {(isEditModalOpen || isEditCounterpartOpened) && (
+        <EditCounterpartModal
+          initialCounterpartId={counterpartId}
+          disabled={disabled}
+          open={isEditModalOpen || isEditCounterpartOpened}
+          onClose={() => {
+            if (handleEditModal) {
+              handleEditModal(false);
+            }
+            setIsEditCounterpartOpened(false);
+          }}
+        />
+      )}
     </Stack>
   );
 };

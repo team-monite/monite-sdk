@@ -20,3 +20,8 @@ export {
   type MoniteReceivablesTableProps,
   ReceivablesTableTabEnum,
 } from './ReceivablesTable';
+export { ReminderBeforeDueDate } from './ReminderBeforeDueDate';
+export { ReminderDetails } from './ReminderDetails';
+export { ReminderSectionContent } from './ReminderSectionContent';
+export { ReminderSelectLayout } from './ReminderSelectLayout';
+export { RemindersSection } from './RemindersSection';

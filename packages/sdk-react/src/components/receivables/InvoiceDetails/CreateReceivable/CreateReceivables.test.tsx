@@ -296,7 +296,10 @@ describe('CreateReceivables', () => {
     });
   });
 
-  describe('# Entity VAT ID', () => {
+  // This will be moved to another test file when we create it in an upcoming task
+  // The task is to move the entity VAT ID work to the entity settings and to be able to call it
+  // from invoice creation screen, so for now, the VAT ID has been removed and therefore this needs to be skipped
+  describe.skip('# Entity VAT ID', () => {
     test('should be able to select entity VAT id when data is fetched', async () => {
       const onCreateMock = jest.fn();
 

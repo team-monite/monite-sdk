@@ -307,22 +307,18 @@ th.line-items-table__fixed-item {
   text-align: right;
 }
 
-.invoice-preview .header .block-entity-logo {
+.block-entity-logo {
+  background: rgba(222, 222, 222, 1);
+  font-size: 13px;
+  color: white;
   width: 85px;
   height: 85px;
   border-radius: 50%;
   max-width: 21mm;
   max-height: 21mm;
   object-fit: contain;
-}
-
-.invoice-preview .header .block-entity-logo .no-logo-placeholder {
-  background: rgba(222, 222, 222, 1);
-  font-size: 13px;
-  color: white;
-  position: relative;
-  left: -15px;
-  top: 28px;
+  place-content: center;
+  text-align: center;
 }
 
 .invoice-preview .block-counterpart-info {
