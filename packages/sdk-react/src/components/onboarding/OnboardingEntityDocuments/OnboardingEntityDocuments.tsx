@@ -37,7 +37,11 @@ export const OnboardingEntityDocuments = () => {
   const fields = onboarding?.data?.entity_documents;
 
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<EntityDocumentsSchema, void>(fields, 'entityDocuments');
+    useOnboardingForm<EntityDocumentsSchema, void>(
+      fields,
+      'entityDocuments',
+      entity?.address?.country
+    );
 
   const { control } = methods;
 

@@ -244,8 +244,7 @@ export const onboardingHandlers = [
 
         ...(!isDirector && { date_of_birth: true }),
 
-        ...(filter.country === 'GB' && { id_number: true }),
-        ...(filter.country === 'US' && { ssn_last_4: true }),
+        id_number: true,
 
         ...(!isDirector && {
           address: {

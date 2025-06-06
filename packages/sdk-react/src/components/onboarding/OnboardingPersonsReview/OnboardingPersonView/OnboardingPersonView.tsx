@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { getIdentificationLabel } from '@/components/onboarding/helpers';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Typography, styled } from '@mui/material';
@@ -22,7 +23,6 @@ export function OnboardingPersonView({
   email,
   phone,
   date_of_birth,
-  ssn_last_4,
   id_number,
   address,
   relationship,
@@ -77,18 +77,14 @@ export function OnboardingPersonView({
           <OnboardingAddressView {...address} />
         </OnboardingViewTable>
       )}
-      {Boolean(id_number?.value || ssn_last_4?.value) && (
+      {Boolean(id_number?.value) && (
         <OnboardingViewTable>
           <OnboardingViewLabel>
             <Typography variant="body2">{t(i18n)`Verify identity`}</Typography>
           </OnboardingViewLabel>
           <OnboardingViewRow
-            label={t(i18n)`Full Social Security Number`}
+            label={getIdentificationLabel(i18n, address?.country?.value)}
             field={id_number}
-          />
-          <OnboardingViewRow
-            label={t(i18n)`Last 4 digits of Social Security number`}
-            field={ssn_last_4}
           />
         </OnboardingViewTable>
       )}

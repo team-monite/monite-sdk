@@ -1,17 +1,29 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { ReactNode } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { StoryObj } from '@storybook/react';
+import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { http, HttpResponse } from 'msw';
 
 import { OnboardingContextProvider } from '../../context';
+import { useOnboardingForm } from '../../hooks/useOnboardingForm';
 import { OnboardingAddress } from '../../OnboardingAddress';
-import { OnboardingFormActions } from '../../OnboardingFormActions';
+import { OnboardingFormActionsTemplate } from '../../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../../OnboardingLayout';
 import { OnboardingEntityIndividual } from './OnboardingEntityIndividual';
 
-const emptyFields = {
+type StoryWrapperProps = {
+  children: ReactNode;
+  individualDefaultValues: IndividualData;
+  addressDefaultValues: AddressData;
+  isLoading: boolean;
+};
+
+const emptyFieldsUS = {
   first_name: {
     value: '',
     error: null,
@@ -28,11 +40,6 @@ const emptyFields = {
     required: true,
   },
   date_of_birth: {
-    value: '',
-    error: null,
-    required: true,
-  },
-  ssn_last_4: {
     value: '',
     error: null,
     required: true,
@@ -76,7 +83,7 @@ const emptyFields = {
   },
 };
 
-const existingFields = {
+const existingFieldsUS = {
   first_name: {
     value: 'John',
     error: null,
@@ -94,11 +101,6 @@ const existingFields = {
   },
   date_of_birth: {
     value: '1990-01-01',
-    error: null,
-    required: true,
-  },
-  ssn_last_4: {
-    value: '1234',
     error: null,
     required: true,
   },
@@ -135,6 +137,30 @@ const existingFields = {
     },
     postal_code: {
       value: '10001',
+      error: null,
+      required: true,
+    },
+  },
+};
+
+const emptyFieldsGB = {
+  ...emptyFieldsUS,
+  address: {
+    ...emptyFieldsUS.address,
+    country: {
+      value: 'GB',
+      error: null,
+      required: true,
+    },
+  },
+};
+
+const existingFieldsGB = {
+  ...existingFieldsUS,
+  address: {
+    ...existingFieldsUS.address,
+    country: {
+      value: 'GB',
       error: null,
       required: true,
     },
@@ -180,7 +206,6 @@ const baseMswHandlers = [
       date_of_birth: true,
       ...(country === 'US' && {
         id_number: true,
-        ssn_last_4: true,
       }),
       address: {
         country: true,
@@ -195,87 +220,182 @@ const baseMswHandlers = [
   }),
 ];
 
-const Story = {
-  title: 'Onboarding/Entity/Individual',
-  component: OnboardingEntityIndividual,
-  parameters: {
-    msw: {
-      handlers: [],
-    },
+const getDefaultsFromFields = (
+  fields:
+    | typeof emptyFieldsUS
+    | typeof existingFieldsUS
+    | typeof emptyFieldsGB
+    | typeof existingFieldsGB
+) => ({
+  individualDefaultValues: {
+    first_name: fields.first_name.value,
+    last_name: fields.last_name.value,
+    title: fields.title.value,
+    date_of_birth: fields.date_of_birth.value,
+    id_number: fields.id_number.value,
   },
-};
-
-type Story = StoryObj<typeof OnboardingEntityIndividual>;
-
-type StoryWrapperProps = {
-  isLoading: boolean;
-  fields: typeof emptyFields;
-};
-
-type OnboardingCountryCode =
-  components['schemas']['OptionalPersonAddressRequest']['country'];
-
-const StoryWrapper = ({ isLoading, fields }: StoryWrapperProps) => {
-  const methods = useForm({
-    defaultValues: {
-      individual: {
-        first_name: fields.first_name.value,
-        last_name: fields.last_name.value,
-        title: fields.title.value,
-        date_of_birth: fields.date_of_birth.value,
-        ssn_last_4: fields.ssn_last_4.value,
-        id_number: fields.id_number.value,
-        address: {
-          country: fields.address.country.value,
-          line1: fields.address.line1.value,
-          line2: fields.address.line2.value,
-          city: fields.address.city.value,
-          state: fields.address.state.value,
-          postal_code: fields.address.postal_code.value,
-        },
-      },
-    },
-  });
-
-  const addressDefaultValues = {
-    country: fields.address.country.value as OnboardingCountryCode,
+  addressDefaultValues: {
+    country: fields.address.country.value as AddressData['country'],
     line1: fields.address.line1.value,
     line2: fields.address.line2.value,
     city: fields.address.city.value,
     state: fields.address.state.value,
     postal_code: fields.address.postal_code.value,
+  },
+});
+
+const i18n = setupI18n({
+  locale: 'en',
+  messages: {
+    en: enLocaleMessages,
+  },
+});
+
+const FormContent = ({
+  individualDefaultValues,
+  addressDefaultValues,
+  isLoading,
+}: StoryWrapperProps) => {
+  const individualFields = {
+    individual: {
+      first_name: {
+        value: individualDefaultValues.first_name,
+        error: null,
+        required: true,
+      },
+      last_name: {
+        value: individualDefaultValues.last_name,
+        error: null,
+        required: true,
+      },
+      title: {
+        value: individualDefaultValues.title,
+        error: null,
+        required: true,
+      },
+      date_of_birth: {
+        value: individualDefaultValues.date_of_birth,
+        error: null,
+        required: true,
+      },
+      id_number: {
+        value: individualDefaultValues.id_number,
+        error: null,
+        required: true,
+      },
+    },
+    address: {
+      country: {
+        value: addressDefaultValues.country,
+        error: null,
+        required: true,
+      },
+      line1: { value: addressDefaultValues.line1, error: null, required: true },
+      line2: {
+        value: addressDefaultValues.line2,
+        error: null,
+        required: false,
+      },
+      city: { value: addressDefaultValues.city, error: null, required: true },
+      state: {
+        value: addressDefaultValues.state,
+        error: null,
+        required: addressDefaultValues.country === 'US',
+      },
+      postal_code: {
+        value: addressDefaultValues.postal_code,
+        error: null,
+        required: true,
+      },
+    },
   };
 
+  const { defaultValues, methods } = useOnboardingForm(
+    individualFields,
+    'entityIndividual',
+    addressDefaultValues.country as components['schemas']['AllowedCountries']
+  );
+
+  const individualData = defaultValues?.individual || individualDefaultValues;
+  const addressData = defaultValues?.address || addressDefaultValues;
+
   return (
-    <OnboardingContextProvider>
-      <FormProvider {...methods}>
-        <OnboardingForm>
-          <OnboardingStepContent>
-            <OnboardingEntityIndividual
-              defaultValues={{
-                first_name: fields.first_name.value,
-                last_name: fields.last_name.value,
-                title: fields.title.value,
-                date_of_birth: fields.date_of_birth.value,
-                ssn_last_4: fields.ssn_last_4.value,
-                id_number: fields.id_number.value,
-              }}
-              isLoading={isLoading}
-            />
-            <OnboardingAddress
-              title="Address"
-              defaultValues={addressDefaultValues}
-              isLoading={isLoading}
-            />
-            <OnboardingFormActions isLoading={isLoading} />
-          </OnboardingStepContent>
-        </OnboardingForm>
-      </FormProvider>
-    </OnboardingContextProvider>
+    <FormProvider {...methods}>
+      <OnboardingForm
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <OnboardingStepContent>
+          <OnboardingEntityIndividual
+            defaultValues={individualData}
+            isLoading={isLoading}
+          />
+          <OnboardingAddress
+            title="Address"
+            defaultValues={addressData}
+            isLoading={isLoading}
+          />
+        </OnboardingStepContent>
+        <OnboardingFormActionsTemplate
+          primaryLabel="Submit"
+          isLoading={isLoading}
+        />
+      </OnboardingForm>
+    </FormProvider>
   );
 };
 
-export const NewIndividual: Story = {
+const StoryWrapper = (props: StoryWrapperProps) => {
+  return (
+    <I18nProvider i18n={i18n}>
+      <OnboardingContextProvider>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            padding: '2rem',
+            backgroundColor: '#f5f5f5',
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '600px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              padding: '2rem',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+          >
+            <FormContent {...props} />
+          </div>
+        </div>
+      </OnboardingContextProvider>
+    </I18nProvider>
+  );
+};
+
+const meta: Meta<StoryWrapperProps> = {
+  title: 'Onboarding/OnboardingEntityIndividual',
+  component: StoryWrapper,
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<StoryWrapperProps>;
+
+export const US_Empty: Story = {
+  args: {
+    ...getDefaultsFromFields(emptyFieldsUS),
+    isLoading: false,
+  },
   parameters: {
     msw: {
       handlers: [
@@ -286,7 +406,7 @@ export const NewIndividual: Story = {
             data: {
               current_requirement: 'individual',
               is_edit_mode: true,
-              individual_fields: emptyFields,
+              individual_fields: emptyFieldsUS,
             },
           };
           return HttpResponse.json(response);
@@ -294,10 +414,14 @@ export const NewIndividual: Story = {
       ],
     },
   },
-  render: () => <StoryWrapper isLoading={false} fields={emptyFields} />,
+  render: StoryWrapper,
 };
 
-export const WithExistingIndividual: Story = {
+export const US_Filled: Story = {
+  args: {
+    ...getDefaultsFromFields(existingFieldsUS),
+    isLoading: false,
+  },
   parameters: {
     msw: {
       handlers: [
@@ -308,7 +432,7 @@ export const WithExistingIndividual: Story = {
             data: {
               current_requirement: 'individual',
               is_edit_mode: true,
-              individual_fields: existingFields,
+              individual_fields: existingFieldsUS,
             },
           };
           return HttpResponse.json(response);
@@ -316,7 +440,86 @@ export const WithExistingIndividual: Story = {
       ],
     },
   },
-  render: () => <StoryWrapper isLoading={false} fields={existingFields} />,
+  render: StoryWrapper,
 };
 
-export default Story;
+export const US_Loading: Story = {
+  args: {
+    ...getDefaultsFromFields(emptyFieldsUS),
+    isLoading: true,
+  },
+  parameters: {
+    msw: {
+      handlers: baseMswHandlers,
+    },
+  },
+  render: StoryWrapper,
+};
+
+export const GB_Empty: Story = {
+  args: {
+    ...getDefaultsFromFields(emptyFieldsGB),
+    isLoading: false,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        ...baseMswHandlers,
+        http.get('*/frontend/onboarding_requirements', () => {
+          const response = {
+            requirements: ['individual'],
+            data: {
+              current_requirement: 'individual',
+              is_edit_mode: true,
+              individual_fields: emptyFieldsGB,
+            },
+          };
+          return HttpResponse.json(response);
+        }),
+      ],
+    },
+  },
+  render: StoryWrapper,
+};
+
+export const GB_Filled: Story = {
+  args: {
+    ...getDefaultsFromFields(existingFieldsGB),
+    isLoading: false,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        ...baseMswHandlers,
+        http.get('*/frontend/onboarding_requirements', () => {
+          const response = {
+            requirements: ['individual'],
+            data: {
+              current_requirement: 'individual',
+              is_edit_mode: true,
+              individual_fields: existingFieldsGB,
+            },
+          };
+          return HttpResponse.json(response);
+        }),
+      ],
+    },
+  },
+  render: StoryWrapper,
+};
+
+export const GB_Loading: Story = {
+  args: {
+    ...getDefaultsFromFields(emptyFieldsGB),
+    isLoading: true,
+  },
+  parameters: {
+    msw: {
+      handlers: baseMswHandlers,
+    },
+  },
+  render: StoryWrapper,
+};
+
+type IndividualData = components['schemas']['OptionalIndividualSchema'];
+type AddressData = components['schemas']['EntityAddressSchema'];

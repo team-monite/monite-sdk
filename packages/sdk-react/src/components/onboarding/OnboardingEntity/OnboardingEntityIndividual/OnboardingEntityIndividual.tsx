@@ -1,12 +1,16 @@
 import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
+import { getIdentificationLabel } from '@/components/onboarding/helpers';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-type IndividualType = { individual: OptionalIndividualSchema };
+type IndividualType = {
+  individual: OptionalIndividualSchema;
+  address?: { country: string };
+};
 
 type OnboardingEntityIndividualProps = {
   defaultValues: OptionalIndividualSchema;
@@ -18,7 +22,9 @@ export const OnboardingEntityIndividual = ({
   isLoading,
 }: OnboardingEntityIndividualProps) => {
   const { i18n } = useLingui();
-  const { control } = useFormContext<IndividualType>();
+  const { control, watch } = useFormContext<IndividualType>();
+
+  const addressCountry = watch('address.country');
 
   const checkField = (key: keyof OptionalIndividualSchema) =>
     defaultValues.hasOwnProperty(key);
@@ -61,21 +67,14 @@ export const OnboardingEntityIndividual = ({
         />
       )}
 
-      {checkField('ssn_last_4') && (
-        <RHFTextField
-          disabled={isLoading}
-          label={t(i18n)`Last 4 digits of Social Security number`}
-          name="individual.ssn_last_4"
-          control={control}
-          type="tel"
-        />
-      )}
-
       {checkField('id_number') && (
         <RHFTextField
           disabled={isLoading}
           type="tel"
-          label={t(i18n)`Full Social Security Number`}
+          label={getIdentificationLabel(
+            i18n,
+            addressCountry as AllowedCountries
+          )}
           name="individual.id_number"
           control={control}
         />
@@ -86,3 +85,4 @@ export const OnboardingEntityIndividual = ({
 
 type OptionalIndividualSchema =
   components['schemas']['OptionalIndividualSchema'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

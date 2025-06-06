@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMyEntity } from '@/core/queries';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -62,8 +63,14 @@ export const OnboardingPersonDocuments = () => {
     return documents;
   }, [personDocuments, personId]);
 
+  const { data: entity } = useMyEntity();
+
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<PersonDocumentsSchema, void>(fields, 'personDocuments');
+    useOnboardingForm<PersonDocumentsSchema, void>(
+      fields,
+      'personDocuments',
+      entity?.address?.country
+    );
 
   const { control } = methods;
 

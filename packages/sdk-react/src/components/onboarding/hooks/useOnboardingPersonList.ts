@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
+import { useMyEntity } from '@/core/queries';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -44,7 +45,9 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
 
   const { currentRequirement } = useOnboardingRequirementsContext();
 
-  const form = useOnboardingForm({}, 'person');
+  const { data: entity } = useMyEntity();
+
+  const form = useOnboardingForm({}, 'person', entity?.address?.country);
 
   const { updatePerson, isPending, updateOrganizationRequirements } =
     useOnboardingPerson();

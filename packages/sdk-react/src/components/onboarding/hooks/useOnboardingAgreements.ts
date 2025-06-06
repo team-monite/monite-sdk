@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
+import { useMyEntity } from '@/core/queries';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
@@ -59,10 +60,12 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
     [requirements]
   );
 
+  const { data: entity } = useMyEntity();
+
   const form = useOnboardingForm<
     OnboardingAgreementsSchema,
     EntityOnboardingDataResponse | undefined
-  >(values, 'agreements');
+  >(values, 'agreements', entity?.address?.country);
 
   const handleSubmitAgreements = useCallback(
     async (values: OnboardingAgreementsSchema) => {

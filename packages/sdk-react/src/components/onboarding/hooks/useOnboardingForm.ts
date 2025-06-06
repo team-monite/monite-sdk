@@ -59,7 +59,8 @@ export function useOnboardingForm<
   R extends FieldValues | undefined | void
 >(
   _incomingFields: OnboardingOutputFieldsType | undefined,
-  type: ValidationSchemasType
+  type: ValidationSchemasType,
+  country?: AllowedCountries
 ): OnboardingFormType<V, R> {
   const _incomingFieldsRef = useRef(_incomingFields);
   const incomingFields = useMemo(() => {
@@ -71,6 +72,7 @@ export function useOnboardingForm<
   const validationSchema = useOnboardingValidationSchema({
     fields: incomingFields,
     type,
+    country,
   });
 
   const methods = useForm<V>({
@@ -176,3 +178,4 @@ export function useOnboardingForm<
 type ErrorSchema = components['schemas']['ErrorSchemaResponse'];
 type HTTPValidationError = components['schemas']['HTTPValidationError'];
 type ValidationError = components['schemas']['ValidationError'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

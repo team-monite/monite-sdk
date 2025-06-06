@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMyEntity } from '@/core/queries';
 import {
   useOnboardingBankAccountMask,
   useOnboardingRequirementsData,
@@ -120,10 +121,12 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
     }, [currentBankAccount])
   );
 
+  const { data: entity } = useMyEntity();
+
   const onboardingForm = useOnboardingForm<
     CreateEntityBankAccountRequest,
     EntityBankAccountResponse | undefined
-  >(fields, 'bankAccount');
+  >(fields, 'bankAccount', entity?.address?.country);
 
   const { watch, reset: resetForm } = onboardingForm.methods;
 

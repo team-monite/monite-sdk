@@ -24,7 +24,6 @@ function getEntityByType(
     last_name: 'Fay',
     date_of_birth: '1990-12-12',
     id_number: 'MU74GHWU3185808205961009653RKD',
-    ssn_last_4: '1234',
   };
 
   return {
@@ -102,11 +101,6 @@ export const onboardingEntityIndividualFixture = (): OnboardingTestData<
           required: true,
           value: 'Fay',
         },
-        ssn_last_4: {
-          error: null,
-          required: true,
-          value: '1234',
-        },
         title: {
           error: null,
           required: true,
@@ -179,11 +173,6 @@ export const onboardingEntityIndividualMixedFixture = (): OnboardingTestData<
           error: null,
           required: true,
           value: 'Fay',
-        },
-        ssn_last_4: {
-          error: null,
-          required: true,
-          value: '1234',
         },
         title: {
           error: null,
