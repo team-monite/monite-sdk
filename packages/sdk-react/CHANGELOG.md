@@ -1,5 +1,17 @@
 # @monite/sdk-react
 
+## 4.2.0
+
+### Minor Changes
+
+- 55393f1: New built-in PDF viewer
+
+### Patch Changes
+
+- 7c240cc: Improvements in style to Counterparts table and Counterpart dialog details and forms.
+- dee192a: Improved consistency of confirmation modals.
+- 61e23fa: Side Dialogs can no longer be closed by clicking outside the dialog.
+
 ## 4.1.0
 
 ### Minor Changes
