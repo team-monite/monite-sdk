@@ -31,8 +31,7 @@
     "preview": "vite preview",
     "clean": "rimraf dist/",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "e2e": "playwright test"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "sideEffects": true,
   "jest": {

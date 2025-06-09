@@ -2,29 +2,18 @@ import { useId, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components/Dialog';
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { CenteredContentBox } from '@/ui/box';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Grid,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, DialogContent, Stack, Typography } from '@mui/material';
 
 import { ProductCancelEditModal } from '../../ProductCancelEditModal';
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
@@ -50,7 +39,6 @@ export const ProductEditForm = (props: IProductEditFormProps) => (
 
 const ProductEditFormBase = (props: IProductEditFormProps) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { formatToMinorUnits, formatFromMinorUnits } = useCurrencies();
 
   const { api, queryClient } = useMoniteContext();
@@ -155,25 +143,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
   if (productQueryError || !product) {
     return (
       <>
-        <Grid container alignItems="center">
-          <Grid item xs={11}>
-            <Typography variant="h3" sx={{ padding: 3 }}>
-              {t(i18n)`Edit ${product?.type}`}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            {dialogContext?.isDialogContent && (
-              <IconWrapper
-                aria-label={t(i18n)`Edit Product Close`}
-                onClick={dialogContext.onClose}
-                color="inherit"
-              >
-                <CloseIcon />
-              </IconWrapper>
-            )}
-          </Grid>
-        </Grid>
-        <Divider />
+        <DialogHeader title={t(i18n)`Edit ${product?.type}`} />
         <CenteredContentBox>
           <Stack alignItems="center" spacing={2}>
             <Box>
@@ -192,41 +162,18 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item xs={11}>
-          {manageMeasureUnits ? (
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Typography
-                sx={{ padding: 3, cursor: 'pointer', pr: 0 }}
-                onClick={() => setManageMeasureUnits(false)}
-              >
-                {t(i18n)`Edit ${product?.type}`}
-              </Typography>
-              {manageMeasureUnits && (
-                <Typography color="text.primary">{t(
-                  i18n
-                )`Manage measure units`}</Typography>
-              )}
-            </Breadcrumbs>
-          ) : (
-            <Typography sx={{ padding: 3 }}>
-              {t(i18n)`Edit ${product?.type}`}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs={1}>
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              aria-label={t(i18n)`Edit Product Close`}
-              onClick={dialogContext.onClose}
-              color="inherit"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Grid>
-      </Grid>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        title={
+          manageMeasureUnits
+            ? t(i18n)`Manage measure units`
+            : t(i18n)`Edit ${product?.type}`
+        }
+        previousLevelTitle={
+          manageMeasureUnits ? t(i18n)`Edit ${product?.type}` : undefined
+        }
+        closeSecondaryLevelDialog={() => setManageMeasureUnits(false)}
+      />
       <DialogContent>
         <ProductCancelEditModal
           open={cancelEditModalOpened}
@@ -245,41 +192,29 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           />
         )}
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {manageMeasureUnits ? (
-          <Button
-            variant="contained"
-            onClick={() => setManageMeasureUnits(false)}
-          >
-            {t(i18n)`Done`}
-          </Button>
-        ) : (
-          <>
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() =>
-                isFormDirty
-                  ? setCancelEditModalOpened(true)
-                  : props.onCanceled()
-              }
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              form={productFormId}
-              disabled={
-                productUpdateMutation.isPending || isMeasureUnitsLoading
-              }
-            >
-              {t(i18n)`Update`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      {manageMeasureUnits ? (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Done`,
+            onClick: () => setManageMeasureUnits(false),
+          }}
+          cancelButton={{
+            onClick: () => setManageMeasureUnits(false),
+          }}
+        />
+      ) : (
+        <DialogFooter
+          primaryButton={{
+            label: t(i18n)`Update`,
+            formId: productFormId,
+            isLoading: productUpdateMutation.isPending || isMeasureUnitsLoading,
+          }}
+          cancelButton={{
+            onClick: () =>
+              isFormDirty ? setCancelEditModalOpened(true) : props.onCanceled(),
+          }}
+        />
+      )}
     </>
   );
 };

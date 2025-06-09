@@ -25,24 +25,19 @@ import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
-  Button,
-  Breadcrumbs,
-  DialogTitle,
   DialogContent,
-  Divider,
   Grid,
   MenuItem,
   Stack,
   Typography,
-  DialogActions,
 } from '@mui/material';
 
 import * as yup from 'yup';
@@ -608,60 +603,38 @@ export const ApprovalPolicyForm = ({
     setValue('scriptType', null);
   };
 
+  const isEditingTriggerOrRule =
+    Boolean(triggerInEdit) || Boolean(scriptInEdit);
+  const isAddingTriggerOrRule = isAddingTrigger || isAddingRule;
+  const isInSecondaryView = isEditingTriggerOrRule || isAddingTriggerOrRule;
+
+  const getTitle = () => {
+    if (triggerInEdit) return t(i18n)`Edit Condition`;
+    if (isAddingTrigger) return t(i18n)`Add Condition`;
+    if (scriptInEdit) return t(i18n)`Edit Rule`;
+    if (isAddingRule) return t(i18n)`Add Rule`;
+    return isEdit
+      ? t(i18n)`Edit Approval Policy`
+      : t(i18n)`Create Approval Policy`;
+  };
+
+  const getPreviousTitle = () => {
+    if (isInSecondaryView) {
+      return isEdit
+        ? t(i18n)`Edit Approval Policy`
+        : t(i18n)`Create Approval Policy`;
+    }
+    return undefined;
+  };
+
   return (
     <>
-      <DialogTitle>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-        >
-          {triggerInEdit || isAddingTrigger || scriptInEdit || isAddingRule ? (
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                sx={{ cursor: 'pointer' }}
-                onClick={resetFormTriggerOrScript}
-              >
-                {isEdit
-                  ? t(i18n)`Edit Approval Policy`
-                  : t(i18n)`Create Approval Policy`}
-              </Typography>
-              {(triggerInEdit || isAddingTrigger) && (
-                <Typography variant="subtitle1" color="text.primary">
-                  {isAddingTrigger
-                    ? t(i18n)`Add Condition`
-                    : t(i18n)`Edit Condition`}
-                </Typography>
-              )}
-              {(scriptInEdit || isAddingRule) && (
-                <Typography variant="subtitle1" color="text.primary">
-                  {isAddingRule ? t(i18n)`Add Rule` : t(i18n)`Edit Rule`}
-                </Typography>
-              )}
-            </Breadcrumbs>
-          ) : (
-            <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-              {isEdit
-                ? t(i18n)`Edit Approval Policy`
-                : t(i18n)`Create Approval Policy`}
-            </Typography>
-          )}
-          {dialogContext?.isDialogContent && (
-            <IconWrapper
-              edge="start"
-              color="inherit"
-              onClick={dialogContext.onClose}
-              aria-label={t(i18n)`Close approval policy details`}
-            >
-              <CloseIcon />
-            </IconWrapper>
-          )}
-        </Box>
-      </DialogTitle>
-      <Divider />
+      <DialogHeader
+        secondaryLevel={isEdit || isInSecondaryView}
+        title={getTitle()}
+        previousLevelTitle={getPreviousTitle()}
+        closeSecondaryLevelDialog={resetFormTriggerOrScript}
+      />
       <DialogContent>
         <FormProvider {...methods}>
           <form
@@ -1166,49 +1139,36 @@ export const ApprovalPolicyForm = ({
           </form>
         </FormProvider>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        {triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule ? (
-          <>
-            <Button variant="outlined" onClick={resetFormTriggerOrScript}>
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                setTriggerInEdit(null);
-                setScriptInEdit(null);
-                setIsAddingTrigger(false);
-                setIsAddingRule(false);
-                setValue('triggerType', null);
-                setValue('scriptType', null);
-              }}
-            >
-              {triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                isEdit ? setIsEdit(false) : dialogContext?.onClose?.();
-              }}
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              form={formId}
-              disabled={updateMutation.isPending || createMutation.isPending}
-            >
-              {t(i18n)`Save`}
-            </Button>
-          </>
-        )}
-      </DialogActions>
+      <DialogFooter
+        primaryButton={
+          triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
+            ? {
+                label: triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`,
+                onClick: (event?: React.MouseEvent<HTMLButtonElement>) => {
+                  event?.preventDefault();
+                  setTriggerInEdit(null);
+                  setScriptInEdit(null);
+                  setIsAddingTrigger(false);
+                  setIsAddingRule(false);
+                  setValue('triggerType', null);
+                  setValue('scriptType', null);
+                },
+              }
+            : {
+                label: t(i18n)`Save`,
+                formId,
+                isLoading: updateMutation.isPending || createMutation.isPending,
+              }
+        }
+        cancelButton={{
+          onClick:
+            triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
+              ? resetFormTriggerOrScript
+              : isEdit
+              ? () => setIsEdit(false)
+              : dialogContext?.onClose,
+        }}
+      />
     </>
   );
 };

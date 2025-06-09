@@ -4,17 +4,11 @@ import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useVatTypes } from '@/core/hooks/useVatTypes';
 import { MoniteCountry } from '@/ui/Country';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {
-  Typography,
-  Stack,
-  Divider,
-  DialogContent,
-  DialogActions,
-  Button,
-} from '@mui/material';
+import { Stack, DialogContent } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
 import {
@@ -41,21 +35,12 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ padding: 3 }}
-      >
-        <Typography variant="caption">
-          {getCounterpartName(counterpart)}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" color="disabled" />
-        <Typography variant="caption" data-testid="vatId">
-          {vat ? t(i18n)`Edit VAT ID` : t(i18n)`Add VAT ID`}
-        </Typography>
-      </Stack>
-      <Divider />
+      <DialogHeader
+        secondaryLevel
+        previousLevelTitle={getCounterpartName(counterpart)}
+        title={vat ? t(i18n)`Edit VAT ID` : t(i18n)`Add VAT ID`}
+        closeSecondaryLevelDialog={props.onCancel}
+      />
       <DialogContent>
         <form id={formName} onSubmit={handleSubmit(saveVat)}>
           <Stack spacing={3}>
@@ -85,22 +70,16 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
           </Stack>
         </form>
       </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" onClick={props.onCancel}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            form={formName}
-            disabled={isLoading}
-          >
-            {t(i18n)`Save`}
-          </Button>
-        </Stack>
-      </DialogActions>
+      <DialogFooter
+        primaryButton={{
+          label: t(i18n)`Save`,
+          formId: formName,
+          isLoading: isLoading,
+        }}
+        cancelButton={{
+          onClick: props.onCancel,
+        }}
+      />
     </>
   );
 };

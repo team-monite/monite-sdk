@@ -2,6 +2,7 @@ import React, { type FC, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import { AIBarChart } from '@/components/aiAssistant/components/AIBarChart/AIBarChart';
+import { MarkdownTable } from '@/components/aiAssistant/components/MarkdownTable/MarkdownTable';
 import { cn } from '@/ui/lib/utils';
 
 import rehypeRaw from 'rehype-raw';
@@ -46,6 +47,9 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
+            components={{
+              table: ({ node, ...props }) => <MarkdownTable {...props} />,
+            }}
           >
             {content}
           </ReactMarkdown>
@@ -61,7 +65,10 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
       } = content;
 
       return (
-        <div ref={chartWrapperRef} className="mtw:h-[300px] mtw:w-full">
+        <div
+          ref={chartWrapperRef}
+          className="mtw:h-[300px] mtw:w-full mtw:mt-3"
+        >
           {chartType === 'bar' && (
             <AIBarChart data={data} metrics={metrics} parentWidth={width} />
           )}
