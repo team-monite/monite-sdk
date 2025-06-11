@@ -9,6 +9,7 @@ import {
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
+import { VatInclusiveMenu } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
@@ -484,9 +485,10 @@ export const ItemsSection = ({
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
                   i18n
                 )`Quantity`}</TableCell>
-                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
-                  i18n
-                )`Price`}</TableCell>
+                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
+                  {t(i18n)`Price`}
+                  <VatInclusiveMenu />
+                </TableCell>
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
                   {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
                 </TableCell>

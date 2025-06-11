@@ -20,3 +20,4 @@ export {
   type MoniteReceivablesTableProps,
   ReceivablesTableTabEnum,
 } from './ReceivablesTable';
+export { VatInclusiveMenu } from './VatInclusiveMenu';
