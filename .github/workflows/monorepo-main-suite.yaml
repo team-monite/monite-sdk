@@ -147,7 +147,7 @@ jobs:
           MONITE_PROJECT_CLIENT_ID: ${{ secrets.MONITE_PROJECT_CLIENT_ID }}
           MONITE_PROJECT_CLIENT_SECRET: ${{ secrets.MONITE_PROJECT_CLIENT_SECRET }}
           MONITE_API_URL: ${{ secrets.MONITE_API_URL }}
-      
+ 
   translations-validation:
     needs: build
     name: Translations Validation
