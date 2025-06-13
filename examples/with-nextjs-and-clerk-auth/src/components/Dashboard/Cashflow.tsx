@@ -14,9 +14,10 @@ import {
 } from 'recharts';
 
 import { useMoniteContext } from '@monite/sdk-react';
-import { Button, Skeleton } from '@mui/material';
 
 import DashboardCard from '@/components/DashboardCard';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { IconChart } from '@/icons';
 
 export const CashFlowCard = () => {
@@ -100,7 +101,7 @@ export const CashFlowCard = () => {
   }, [totalReceived, totalPaid]);
 
   if (totalReceivedLoading || totalPaidLoading) {
-    return <Skeleton variant="rounded" width={'100%'} height={354} />;
+    return <Skeleton className="w-full h-[354px] rounded-lg" />;
   }
 
   if (chartData.length === 0) {
@@ -109,37 +110,17 @@ export const CashFlowCard = () => {
         title="Cashflow"
         renderIcon={(props) => <IconChart {...props} />}
       >
-        <div
-          style={{
-            height: '250px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <div className="h-[250px] flex flex-col justify-center items-center">
           <IconChart style={{ fill: '#B8B8B8' }} />
           <p>
             Invoice analysis will appear when enough transaction data is
             available
           </p>
           <Button
-            href={'/receivables'}
-            variant={'contained'}
-            size={'medium'}
-            sx={{
-              '&:hover': {
-                borderRadius: '8px',
-                background: '#F8F8FF',
-              },
-              background: '#EBEBFF',
-              color: '#3737FF',
-              borderRadius: '8px',
-              height: `40px`,
-              fontSize: `0.9rem`,
-            }}
+            asChild
+            className="bg-[#EBEBFF] text-[#3737FF] rounded-lg h-10 text-[0.9rem] font-medium transition-colors hover:bg-[#F8F8FF]"
           >
-            Create invoice
+            <a href="/receivables">Create invoice</a>
           </Button>
         </div>
       </DashboardCard>
