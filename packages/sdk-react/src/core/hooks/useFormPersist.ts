@@ -9,6 +9,8 @@ export const useFormPersist = (
   setValue: SetFieldValue<any>
 ) => {
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const storage = window.sessionStorage;
     try {
       const str = storage.getItem(name);

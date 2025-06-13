@@ -31,7 +31,7 @@ import { addDays, formatISO } from 'date-fns';
 import { Filters } from './Filters';
 import { PermissionsCell } from './PermissionsCell';
 
-interface UserRolesTableProps {
+export interface UserRolesTableProps {
   /**
    * Triggered when the filtering options are changed.
    * Sync with the server *is* performed.

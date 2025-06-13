@@ -5,7 +5,7 @@ import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   getRandomItemFromArray,
   getRandomProperty,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { measureUnitsListFixture } from '../measureUnits/measureUnitsFixture';
@@ -16,12 +16,18 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
     const product: ProductServiceResponse = {
       id: faker.string.nanoid(),
       name: faker.commerce.productName(),
-      type: getRandomItemFromArray(ProductServiceTypeEnum),
+      type: getRandomItemFromArray(
+        ProductServiceTypeEnum
+      ) as components['schemas']['ProductServiceTypeEnum'],
       description:
         !index || faker.datatype.boolean()
           ? faker.commerce.productDescription()
           : undefined,
-      measure_unit_id: getRandomItemFromArray(measureUnitsListFixture.data).id,
+      measure_unit_id: (
+        getRandomItemFromArray(measureUnitsListFixture.data) || {
+          id: faker.string.uuid(),
+        }
+      ).id,
       smallest_amount:
         !index || faker.datatype.boolean()
           ? Number(faker.commerce.price({ min: 1, max: 10 }))
@@ -31,7 +37,8 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
       created_at: faker.date.past().toString(),
       updated_at: faker.date.past().toString(),
       price: {
-        currency: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
+        currency: (getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']) ||
+          'USD') as components['schemas']['CurrencyEnum'],
         value: Number(faker.commerce.price({ min: 9, max: 9_999 })) * 100,
       },
     };

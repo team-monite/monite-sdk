@@ -1,6 +1,5 @@
 import { ComponentProps, forwardRef, useRef, useState } from 'react';
 
-import { css } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -61,13 +60,7 @@ export const useFileInput = () => {
           else if (ref) ref.current = node;
           fileInputRef.current.node = node;
         }}
-        css={css`
-          position: absolute;
-          opacity: 0;
-          width: 1px;
-          height: 1px;
-          font-size: 0;
-        `}
+        className="visually-hidden-input"
         {...props}
       />
     ))

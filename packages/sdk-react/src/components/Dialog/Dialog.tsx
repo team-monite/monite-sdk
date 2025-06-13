@@ -1,10 +1,4 @@
-import {
-  createContext,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useContext,
-} from 'react';
+import { forwardRef, ReactElement, Ref } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -14,6 +8,7 @@ import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
 import { SlideProps } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 
+import { DialogContext, useDialog } from './DialogContext';
 import { MoniteDialogProps } from './DialogProps.types';
 
 const Transition = forwardRef(function Transition(
@@ -39,17 +34,6 @@ const Transition = forwardRef(function Transition(
 
   return <Fade ref={ref} {...otherProps} />;
 });
-
-interface DialogContextType {
-  isDialogContent: boolean;
-  onClose?: (...args: any[]) => void;
-}
-
-const DialogContext = createContext<DialogContextType | undefined>(undefined);
-
-export const useDialog = (): DialogContextType | undefined => {
-  return useContext(DialogContext);
-};
 
 export const Dialog = forwardRef<HTMLDivElement, MoniteDialogProps>(
   (props, ref) => (

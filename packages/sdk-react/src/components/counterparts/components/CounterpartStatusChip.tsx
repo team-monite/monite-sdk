@@ -1,6 +1,9 @@
 import { forwardRef } from 'react';
 
-import { CustomerType } from '@/components/counterparts/types';
+import type {
+  MoniteCounterpartStatusChipProps,
+  MoniteCounterpartType,
+} from '@/core/theme/types';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -9,14 +12,8 @@ import { Chip, ChipProps } from '@mui/material';
 import { lighten } from '@mui/material/styles';
 import { styled, useTheme, useThemeProps } from '@mui/material/styles';
 
-export interface MoniteCounterpartStatusChipProps {
-  /** The status of the invoice. */
-  status: CustomerType;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-}
+// Re-export the types for external consumers
+export type { MoniteCounterpartStatusChipProps, MoniteCounterpartType };
 
 /**
  * Displays the status of a Counterpart.
@@ -73,7 +70,7 @@ const StyledChip = styled(
   }
 )({});
 
-const getLabel = (i18n: I18n, status: CustomerType): string => {
+const getLabel = (i18n: I18n, status: MoniteCounterpartType): string => {
   switch (status) {
     case 'customer':
       return t(i18n)`Customer`;

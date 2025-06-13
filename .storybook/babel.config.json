@@ -1,0 +1,12 @@
+{
+  "presets": [
+    ["@babel/preset-react", {
+      "runtime": "automatic",
+      "importSource": "@emotion/react"
+    }]
+  ],
+  "plugins": [
+    "@lingui/babel-plugin-macros",
+    "babel-plugin-add-react-displayname"
+  ]
+} 

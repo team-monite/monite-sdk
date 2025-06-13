@@ -93,7 +93,8 @@ export const OnboardingFileUploader = ({
           {isPending && t(i18n)`Processing...`}
           {!isPending && t(i18n)`Choose document`}
 
-          <VisuallyHiddenInput
+          <input
+            className="visually-hidden-input"
             accept={'.jpg,.jpeg,.png,.pdf'}
             onChange={handleSubmit}
             type="file"
@@ -124,14 +125,3 @@ const StyledUploading = styled(Paper, {
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
 `;
-
-const VisuallyHiddenInput = styled('input')({
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});

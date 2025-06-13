@@ -6,7 +6,6 @@ import type {
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CircularProgress } from '@mui/material';
 
 import { CounterpartAddressFormUpdate } from './CounterpartAddressFormUpdate';
@@ -23,11 +22,9 @@ import {
   useCounterpartDetails,
 } from './useCounterpartDetails';
 
-export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
-  <MoniteScopedProviders>
-    <CounterpartDetailsBase {...props} />
-  </MoniteScopedProviders>
-);
+export const CounterpartDetails = (props: CounterpartsDetailsProps) => {
+  return <CounterpartDetailsBase {...props} />;
+};
 
 const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const { componentSettings } = useMoniteContext();

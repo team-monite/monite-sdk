@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noEmit": true,
+
+    "paths": {
+      "vite": ["./node_modules/vite"],
+      "@vitejs/plugin-react-swc": ["./node_modules/@vitejs/plugin-react-swc"],
+      "vite-plugin-html-config": ["./node_modules/vite-plugin-html-config"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*",
+    "packages/*/tests/**/*",
+    "packages/*/*.ts",
+    "packages/*/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ],
+  "references": [
+    { "path": "./packages/sdk-react" },
+    { "path": "./packages/sdk-drop-in" },
+    { "path": "./packages/sdk-demo" },
+    { "path": "./packages/eslint-plugin" },
+    { "path": "./packages/rollup-config" }
+  ]
+} 

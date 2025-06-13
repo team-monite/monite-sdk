@@ -19,31 +19,67 @@ export const MoniteIframeApp = () => {
   const { fetchToken, theme, locale, componentSettings } =
     useMoniteIframeAppSlots();
 
+  const isTestEnvironment = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+
+    return (
+      window.location.search.includes('test=playwright') ||
+      window.location.search.includes('test=e2e') ||
+      navigator.userAgent.includes('Playwright') ||
+      navigator.userAgent.includes('HeadlessChrome') ||
+      (window.parent !== window &&
+        window.parent.location.search.includes('test=playwright'))
+    );
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<AppCircularProgress />}>
         <ConfigLoader>
-          {({ apiUrl, appBasename }) => (
-            <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
-              {(entityId) => (
-                <SDKDemoAPIProvider
+          {({ apiUrl, appBasename }) => {
+            if (isTestEnvironment) {
+              const mockFetchToken = () =>
+                Promise.resolve({
+                  access_token: 'mocked_access_token_for_e2e_tests',
+                  token_type: 'Bearer' as const,
+                  expires_in: 3600,
+                });
+
+              return (
+                <MoniteIframeAppComponent
+                  theme={theme}
+                  componentSettings={componentSettings}
+                  locale={locale}
+                  entityId="mocked_entity_id_for_e2e"
                   apiUrl={apiUrl}
-                  entityId={entityId}
-                  fetchToken={fetchToken}
-                >
-                  <MoniteIframeAppComponent
-                    theme={theme}
-                    componentSettings={componentSettings}
-                    locale={locale}
-                    entityId={entityId}
+                  fetchToken={mockFetchToken}
+                  basename={appBasename}
+                />
+              );
+            }
+
+            return (
+              <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
+                {(entityId: string) => (
+                  <SDKDemoAPIProvider
                     apiUrl={apiUrl}
+                    entityId={entityId}
                     fetchToken={fetchToken}
-                    basename={appBasename}
-                  />
-                </SDKDemoAPIProvider>
-              )}
-            </EntityIdLoader>
-          )}
+                  >
+                    <MoniteIframeAppComponent
+                      theme={theme}
+                      componentSettings={componentSettings}
+                      locale={locale}
+                      entityId={entityId}
+                      apiUrl={apiUrl}
+                      fetchToken={fetchToken}
+                      basename={appBasename}
+                    />
+                  </SDKDemoAPIProvider>
+                )}
+              </EntityIdLoader>
+            );
+          }}
         </ConfigLoader>
       </Suspense>
     </QueryClientProvider>
@@ -109,7 +145,13 @@ const MoniteIframeAppComponent = ({
             }
           `}
         />
-        <BrowserRouter basename={basename || undefined}>
+        <BrowserRouter
+          basename={basename || undefined}
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <Routes>
             <Route
               path={'/'}

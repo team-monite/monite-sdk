@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
 import { components } from '@/api';
-import {
-  FinanceBannerWrapper,
-  FinanceOverviewCard,
-} from '@/components/financing/components';
+import { FinanceBannerWrapper } from '@/components/financing/components/FinanceBannerWrapper';
+import { FinanceOverviewCard } from '@/components/financing/components/FinanceOverviewCard';
 import {
   useFinanceAnInvoice,
   useFinancing,
@@ -18,7 +16,7 @@ import { Box, Button, Tooltip, Typography } from '@mui/material';
 
 const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
 
-interface FinanceInvoiceProps {
+export interface FinanceInvoiceProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
 }
 

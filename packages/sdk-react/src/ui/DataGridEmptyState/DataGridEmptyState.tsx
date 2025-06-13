@@ -54,6 +54,7 @@ export const DataGridEmptyState = ({
   switch (type) {
     case 'error':
       defaultIcon = (
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main' }} />
       );
       break;
@@ -164,6 +165,7 @@ const ActionButton = ({
             buttonProps.onClick?.(event);
           }
         }}
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         startIcon={type === 'error' ? <RefreshIcon /> : undefined}
         endIcon={
           actionOptions.length > 1 ? (

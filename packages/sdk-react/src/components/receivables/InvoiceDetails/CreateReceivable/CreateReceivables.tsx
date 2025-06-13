@@ -3,10 +3,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { showErrorToast } from '@/components/onboarding/utils';
-import {
-  BankAccountFormDialog,
-  BankAccountSection,
-} from '@/components/receivables/components';
+import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
+import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
