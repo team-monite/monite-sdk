@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import { ManageMeasureUnits } from '@/components/products/ProductDetails/components/ManageMeasureUnits';
 import {
   ProductDetails,
@@ -12,6 +11,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -8,8 +8,8 @@ import {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
 import { Button } from '@/ui/components/button';
+import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

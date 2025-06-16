@@ -3,9 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { Dialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';

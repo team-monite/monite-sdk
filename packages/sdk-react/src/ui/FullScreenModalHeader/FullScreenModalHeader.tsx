@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { useDialog } from '@/components/Dialog';
+import { useDialog } from '@/ui/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

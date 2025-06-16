@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { useDialog } from '@/components/Dialog';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import {
   ExistingProductDetailsProps,
@@ -13,6 +12,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage';

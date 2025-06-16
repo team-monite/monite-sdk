@@ -9,13 +9,13 @@ import {
 } from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { Dialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
