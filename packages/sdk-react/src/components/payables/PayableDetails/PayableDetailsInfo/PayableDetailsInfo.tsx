@@ -12,7 +12,6 @@ import {
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -26,6 +25,7 @@ import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { TagsModal } from '@/ui/tagsModal';
+import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

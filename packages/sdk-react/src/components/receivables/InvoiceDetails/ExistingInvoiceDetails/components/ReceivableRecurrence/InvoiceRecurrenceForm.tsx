@@ -2,11 +2,11 @@ import { useCallback, useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { IconWrapper } from '@/ui/iconWrapper';
+import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
 import { useLingui } from '@lingui/react';
 import {
   CheckRounded as CheckRoundedIcon,

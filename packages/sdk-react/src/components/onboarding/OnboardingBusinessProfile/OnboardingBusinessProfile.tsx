@@ -1,11 +1,11 @@
 import { components } from '@/api';
-import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { InfoOutlined } from '@mui/icons-material';

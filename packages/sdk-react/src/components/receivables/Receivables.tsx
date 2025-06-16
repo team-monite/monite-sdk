@@ -6,7 +6,6 @@ import { Dialog } from '@/components/Dialog';
 import { FinanceMenuButtons } from '@/components/financing/components';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { useFinancing } from '@/components/financing/hooks';
-import { PageHeader } from '@/components/PageHeader';
 import {
   ReceivablesTable,
   ReceivablesTableTabEnum,
@@ -19,6 +18,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { Button } from '@/ui/components/button';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress } from '@mui/material';

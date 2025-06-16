@@ -5,7 +5,6 @@ import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { Dialog } from '@/components/Dialog';
-import { PageHeader } from '@/components/PageHeader';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -13,6 +12,7 @@ import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, CircularProgress } from '@mui/material';

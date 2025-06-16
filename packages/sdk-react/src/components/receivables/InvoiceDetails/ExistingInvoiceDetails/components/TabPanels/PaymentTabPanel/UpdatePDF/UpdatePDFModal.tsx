@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useMarkInvoiceAsPaid,
   usePatchEntitiesIdSettings,
 } from '@/core/queries';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

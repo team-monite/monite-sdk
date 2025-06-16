@@ -1,10 +1,10 @@
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { counterpartsToSelect } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { ReceivableFilterType } from '@/components/receivables/types';
 import { getCommonStatusLabel } from '@/components/receivables/utils';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { type ReadableReceivablesStatus } from '@/enums/ReadableReceivablesStatusEnum';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
