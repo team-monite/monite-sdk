@@ -34,34 +34,19 @@ export const CashFlowCard = () => {
         metric: 'total_amount',
         dimension: 'created_at',
         aggregation_function: 'summary',
-        date_dimension_breakdown: 'daily',
-        limit: 7,
-        status: 'paid',
-      },
-    });
-
-  const { data: totalPaid, isLoading: totalPaidLoading } =
-    api.analytics.getAnalyticsPayables.useQuery({
-      query: {
-        metric: 'total_amount',
-        dimension: 'created_at',
-        aggregation_function: 'summary',
-        date_dimension_breakdown: 'daily',
+        date_dimension_breakdown: 'monthly',
+        limit: 6,
         status: 'paid',
       },
     });
 
   // Process data for the chart
   const chartData = useMemo(() => {
-    if (!totalReceived?.data || !totalPaid?.data) return [];
+    if (!totalReceived?.data) return [];
 
     // total of dates to display
-    const dimensionValues = Array.from(
-      new Set(
-        [...totalReceived.data, ...totalPaid.data].map(
-          (item) => item.dimension_value
-        )
-      )
+    const dimensionValues = [...totalReceived.data].map(
+      (item) => item.dimension_value
     );
 
     // fill in dates with data
@@ -69,26 +54,19 @@ export const CashFlowCard = () => {
       const receivedData = totalReceived.data.find(
         (item) => item.dimension_value === dimensionValue
       );
-      const paidData = totalPaid.data.find(
-        (item) => item.dimension_value === dimensionValue
-      );
+
       const received = receivedData ? receivedData.metric_value : 0;
-      const paid = paidData ? -paidData.metric_value : 0;
-      const trend = received + paid;
 
       return {
         dimension_value: dimensionValue,
         received,
-        paid,
-        trend,
       };
     });
 
-    const minItems = 7;
+    const minItems = 6;
+
     const emptyValue = {
       received: 0,
-      paid: 0,
-      trend: 0,
       dimension_value: null,
     };
 
@@ -98,9 +76,9 @@ export const CashFlowCard = () => {
       ),
       ...dataByDimension.reverse(),
     ];
-  }, [totalReceived, totalPaid]);
+  }, [totalReceived]);
 
-  if (totalReceivedLoading || totalPaidLoading) {
+  if (totalReceivedLoading) {
     return <Skeleton className="w-full h-[354px] rounded-lg" />;
   }
 
@@ -144,7 +122,7 @@ export const CashFlowCard = () => {
               gradientUnits="userSpaceOnUse"
               spreadMethod="pad"
             >
-              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.2" />
+              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.4" />
               <stop offset="100%" stop-color="white" stop-opacity="0" />
             </linearGradient>
           </defs>
@@ -158,10 +136,16 @@ export const CashFlowCard = () => {
             tickFormatter={(value) => {
               if (!value) return '-';
               const date = new Date(value);
-              return date.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              });
+              if (date.getFullYear() === new Date().getFullYear()) {
+                return date.toLocaleDateString('en-US', {
+                  month: 'long',
+                });
+              } else {
+                return date.toLocaleDateString('en-US', {
+                  month: 'long',
+                  year: 'numeric',
+                });
+              }
             }}
           />
           <Tooltip
@@ -199,11 +183,9 @@ export const CashFlowCard = () => {
           />
 
           <ReferenceLine y={0} stroke="#eee" />
-          <Bar dataKey="paid" fill="transparent" />
-          <Bar dataKey="received" fill="transparent" />
           <Area
             type="linear"
-            dataKey="trend"
+            dataKey="received"
             dot={{ stroke: '#3737FF', strokeWidth: 2, r: 3, fill: '#fff' }}
             strokeWidth={3}
             stroke="#3737FF"
