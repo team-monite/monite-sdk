@@ -62,7 +62,7 @@
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
     "@testing-library/jest-dom": "~6.6.3",
-    "@types/react": "^18.0.9",
+    "@types/react": "18.3.1",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react": "~4.3.4",
     "@vitejs/plugin-react-swc": "~3.7.1",
@@ -78,7 +78,7 @@
     "typescript": "~5.5.4",
     "vite": "~5.4.19",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "~3.1.4"
+    "vitest": "^3.2.0"
   },
   "dependencies": {
     "@team-monite/sdk-demo": "workspace:~"

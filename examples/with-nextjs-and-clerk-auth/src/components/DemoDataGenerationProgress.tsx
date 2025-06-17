@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePrevious } from 'react-use';
 
 import { useSearchParams } from 'next/navigation';
@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
-const DemoDataGenerationProgressInner = () => {
+export const DemoDataGenerationProgress = () => {
   const displayDemoDataGenerationProgress = useSearchParams().has(
     'display_demo_data_generation_progress'
   );
@@ -57,16 +57,4 @@ const DemoDataGenerationProgressInner = () => {
       </Alert>
     </Snackbar>
   );
-};
-
-const DemoDataGenerationProgressContent = () => {
-  return (
-    <Suspense fallback={null}>
-      <DemoDataGenerationProgressInner />
-    </Suspense>
-  );
-};
-
-export const DemoDataGenerationProgress = () => {
-  return <DemoDataGenerationProgressContent />;
 };

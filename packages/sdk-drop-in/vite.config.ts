@@ -153,7 +153,19 @@ export default async function viteConfig({ mode }: ConfigEnv) {
         name: 'Monite Drop-in',
       },
       rollupOptions: {
-        external: ['react', 'react-dom'],
+        external: (id) => {
+          const external = [
+            'react',
+            'react-dom',
+            'acorn',
+            'gulp-sourcemaps',
+            'vinyl',
+            'cosmiconfig',
+            'jiti'
+          ];
+
+          return external.some(pkg => id.includes(pkg));
+        },
         output: {
           globals: {
             react: 'React',

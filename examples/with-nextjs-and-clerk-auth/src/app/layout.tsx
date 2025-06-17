@@ -1,15 +1,15 @@
+'use server';
+
 import { ReactNode } from 'react';
 
 import { ClerkProvider } from '@clerk/nextjs';
-import '@monite/sdk-react/styles.css';
-// import { currentUser } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { AppThemeProvider } from '@/components/ThemeRegistry/AppThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
-import { getClerkPublishableKey } from '@/lib/utils/build-time-detection';
 
 import './globals.css';
 
@@ -25,10 +25,10 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  // const user = await currentUser();
+  const user = await currentUser();
 
   return (
-    <ClerkProvider publishableKey={getClerkPublishableKey()}>
+    <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <body className={themeFont.className}>
           <RootI18nProvider>

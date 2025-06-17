@@ -1,4 +1,3 @@
-import '@monite/sdk-react/mui-styles';
 import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,
@@ -84,7 +83,7 @@ function renderColors<T extends { [key: string]: any }>(
 
   Object.keys(components).forEach((key) => {
     const prop = key as keyof T;
-    if (!Object.prototype.hasOwnProperty.call(components, prop)) return;
+    if (!components.hasOwnProperty(prop)) return;
     const propValue = components[prop];
     // noinspection SuspiciousTypeOfGuard
     if (typeof propValue === 'string' && colorProps.includes(key)) {
@@ -99,7 +98,7 @@ function renderColors<T extends { [key: string]: any }>(
   return output;
 }
 
-export const statusBackgroundColors = {
+const statusBackgroundColors = {
   draft: '#000000D6',
   new: '#3737FF',
   approve_in_progress: '#E75300',
@@ -188,7 +187,6 @@ const counterpartColors: string[] = [
 
 const defaultMoniteTypography:
   | TypographyOptions
-  // eslint-disable-next-line no-unused-vars
   | ((palette: Palette) => TypographyOptions) = {
   fontFamily:
     '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',

@@ -11,6 +11,66 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:41
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:44
+msgid "Bill Pay"
+msgstr "Bill Pay"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:47
+msgid "Invoicing"
+msgstr "Invoicing"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:51
+msgid "AI Assistant"
+msgstr "AI Assistant"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:55
+msgid "Projects"
+msgstr "Projects"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:58
+msgid "Counterparts"
+msgstr "Counterparts"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:61
+msgid "Products & Services"
+msgstr "Products & Services"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:76
+msgid "Settings"
+msgstr "Settings"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:81
+msgid "Document Design"
+msgstr "Document Design"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:84
+msgid "Roles & Approvals"
+msgstr "Roles & Approvals"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:87
+msgid "Tags"
+msgstr "Tags"
+
+#. js-lingui-explicit-id
+#: src/components/NavigationMenu/NavigationList.tsx:102
+msgid "Get Help"
+msgstr "Get Help"
+
 #: src/components/NavigationMenu/NavigationList.tsx:52
 #~ msgid "AI Assistant"
 #~ msgstr "AI Assistant"

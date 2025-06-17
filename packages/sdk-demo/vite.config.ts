@@ -24,10 +24,6 @@ export default async function viteConfig() {
       }),
       react({
         jsxImportSource: '@emotion/react',
-        plugins: [
-          ['@lingui/swc-plugin', {}],
-          ['@swc/plugin-emotion', {}],
-        ],
       }),
       htmlPlugin(htmlPluginOpt)
     ],
@@ -140,6 +136,16 @@ export default async function viteConfig() {
             },
           },
         ],
+        external: (id) => {
+          const external = [
+            'acorn',
+            'gulp-sourcemaps',
+            'vinyl',
+            'cosmiconfig'
+          ];
+
+          return external.some(pkg => id.includes(pkg));
+        },
       },
     },
   });
