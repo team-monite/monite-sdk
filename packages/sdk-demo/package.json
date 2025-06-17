@@ -20,6 +20,7 @@
     "preview": "vite preview --outDir build",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "echo 'No tests defined for sdk-demo - demo application' && exit 0",
     "extract-translations": "lingui extract --config lingui.config.cjs",
     "compile-translations": "lingui compile --config lingui.config.cjs"
   },
@@ -90,6 +91,7 @@
     "ts-node": "~10.9.1",
     "typescript": "~5.5.4",
     "vite": "~5.4.19",
+    "vitest": "^3.2.0",
     "web-vitals": "^2.1.4",
     "yup": "~0.32.11"
   }

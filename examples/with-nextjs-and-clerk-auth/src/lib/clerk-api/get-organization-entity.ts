@@ -35,7 +35,6 @@ const getDefaultRoles = (roles: unknown) => {
     keyof typeof roles_default_permissions
   >;
 
-  // eslint-disable-next-line no-unused-vars
   const entityRoles: { [key in (typeof roleNames)[number]]?: string } = {};
 
   for (const roleName of roleNames) {

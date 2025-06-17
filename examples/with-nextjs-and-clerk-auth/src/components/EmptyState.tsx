@@ -10,7 +10,6 @@ import {
 interface EmptyStateProps {
   children: ReactNode;
   vertical?: boolean;
-  // eslint-disable-next-line no-unused-vars
   renderIcon?: (props: SvgIconProps) => ReactNode;
 }
 

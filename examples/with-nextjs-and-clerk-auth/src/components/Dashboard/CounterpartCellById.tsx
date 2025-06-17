@@ -1,5 +1,3 @@
-'use client';
-
 import { useMoniteContext } from '@monite/sdk-react';
 
 export const CounterpartCellById = ({

@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useEffect, Suspense, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Box } from '@mui/material';
-
-import LoadingFallback from '@/components/LoadingFallback';
 
 const SignedIn = dynamic(
   () => import('@clerk/nextjs').then((mod) => mod.SignedIn),
@@ -24,19 +22,12 @@ const OrganizationSwitcher = dynamic(
   { ssr: false }
 );
 
-function UserMenuContentInner() {
+export function UserMenu() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Handle reload parameter
   useEffect(() => {
-    if (!isClient) return;
-
     const reloadParam = searchParams.get('reload');
     if (reloadParam) {
       // Remove the reload parameter from the URL
@@ -57,11 +48,7 @@ function UserMenuContentInner() {
       // Force a full page reload
       window.location.reload();
     }
-  }, [pathname, searchParams, isClient]);
-
-  if (!isClient) {
-    return <LoadingFallback text="Loading menu..." />;
-  }
+  }, [pathname, searchParams]);
 
   return (
     <Box display="flex" flexDirection="row" gap={2} mt={4} mx={3} mb={3}>
@@ -75,16 +62,4 @@ function UserMenuContentInner() {
       </SignedIn>
     </Box>
   );
-}
-
-export function UserMenuContent() {
-  return (
-    <Suspense fallback={<LoadingFallback text="Loading menu..." />}>
-      <UserMenuContentInner />
-    </Suspense>
-  );
-}
-
-export function UserMenu() {
-  return <UserMenuContent />;
 }

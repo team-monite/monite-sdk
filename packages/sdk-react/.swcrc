@@ -9,12 +9,6 @@
       "react": {
         "runtime": "automatic"
       }
-    },
-    "experimental": {
-      "plugins": [
-        ["@lingui/swc-plugin", {}],
-        ["@swc/plugin-emotion", {}]
-      ]
     }
   }
 }
