@@ -1,10 +1,8 @@
-'use client';
-
 import { Box } from '@mui/material';
 
 import { Products } from '@/components/MoniteComponents';
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
   return (
     <Box className="Monite-PageContainer Monite-Products">
       <Products />

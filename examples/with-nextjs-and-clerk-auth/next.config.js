@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: {
-  //   swcPlugins: [['@lingui/swc-plugin', {}]],
-  // },
-
   webpack: (config, { isServer }) => {
     if (!isServer) {
       const nodeModules = [
@@ -19,27 +15,43 @@ const nextConfig = {
         'zlib',
         'path',
         'os',
+        'assert',
+        'module',
+        'url',
+        'util',
+        'events',
+        'buffer',
+        'querystring',
+        'string_decoder',
       ];
 
+      // Handle both regular and node: protocol imports
       config.resolve.fallback = {
         ...config.resolve.fallback,
         ...Object.fromEntries(nodeModules.map((module) => [module, false])),
+        ...Object.fromEntries(nodeModules.map((module) => [`node:${module}`, false])),
       };
-    } else {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        document: false,
-        window: false,
-        navigator: false,
-        location: false,
+
+      // Mark server-only dependencies as external to prevent bundling
+      config.externals = {
+        ...config.externals,
+        jiti: 'jiti',
+        cosmiconfig: 'cosmiconfig',
+        'cosmiconfig-typescript-loader': 'cosmiconfig-typescript-loader',
+        'tsx': 'tsx',
+        'esbuild': 'esbuild',
+        'tsup': 'tsup',
+      };
+
+      // Add alias for node: protocol imports
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        ...Object.fromEntries(nodeModules.map((module) => [`node:${module}`, false])),
       };
     }
 
     return config;
   },
-
-  reactStrictMode: true,
-  swcMinify: true,
 };
 
 export default nextConfig;

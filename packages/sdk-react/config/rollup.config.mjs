@@ -10,12 +10,6 @@ const sdkReactSwcOptions = {
       syntax: "typescript",
       tsx: true,
     },
-    experimental: {
-      plugins: [
-        ['@lingui/swc-plugin', {}],
-        ['@swc/plugin-emotion', {}],
-      ],
-    },
     transform: {
       react: {
         runtime: 'automatic',

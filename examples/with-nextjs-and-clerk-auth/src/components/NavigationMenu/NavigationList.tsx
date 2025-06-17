@@ -21,98 +21,11 @@ import {
   IconBrush,
 } from '@/icons';
 
-interface NavigationItemConfig {
-  href: string;
-  icon: React.ReactNode;
-  labelKey: string;
-  target?: string;
-  showOnlyInDev?: boolean;
-}
-
-const mainNavigationItems: NavigationItemConfig[] = [
-  { href: '/', icon: <IconApps />, labelKey: 'Dashboard' },
-  { href: '/payables', icon: <IconUsdCircle />, labelKey: 'Bill Pay' },
-  { href: '/receivables', icon: <IconReceipt />, labelKey: 'Invoicing' },
-  {
-    href: '/ai-assistant',
-    icon: <IconBolt />,
-    labelKey: 'AI Assistant',
-    showOnlyInDev: true,
-  },
-  { href: '/projects', icon: <IconBag />, labelKey: 'Projects' },
-  { href: '/counterparts', icon: <IconUniversity />, labelKey: 'Counterparts' },
-  { href: '/products', icon: <IconBox />, labelKey: 'Products & Services' },
-];
-
-const settingsNavigationItems: NavigationItemConfig[] = [
-  {
-    href: '/template-settings',
-    icon: <IconBrush />,
-    labelKey: 'Template settings',
-  },
-  {
-    href: '/user-roles',
-    icon: <IconPostcard />,
-    labelKey: 'Roles & Approvals',
-  },
-  { href: '/tags', icon: <IconFilesLandscapes />, labelKey: 'Tags' },
-];
-
-const helpNavigationItems: NavigationItemConfig[] = [
-  {
-    href: 'https://docs.monite.com/',
-    icon: <IconQuestionCircle />,
-    labelKey: 'Get Help',
-    target: '_blank',
-  },
-];
-
-interface NavigationSectionProps {
-  items: NavigationItemConfig[];
-  isClient: boolean;
-  isDevEnvironment: boolean;
-  i18n?: any;
-}
-
-const NavigationSection: React.FC<NavigationSectionProps> = ({
-  items,
-  isClient,
-  isDevEnvironment,
-  i18n,
-}) => {
-  const getLabel = (labelKey: string) => {
-    return isClient && i18n ? i18n._(labelKey) : labelKey;
-  };
-
-  return (
-    <>
-      {items.map((item) => {
-        if (item.showOnlyInDev && !isDevEnvironment) {
-          return null;
-        }
-
-        return (
-          <NavigationListItem
-            key={item.href}
-            href={item.href}
-            icon={item.icon}
-            target={item.target}
-          >
-            {getLabel(item.labelKey)}
-          </NavigationListItem>
-        );
-      })}
-    </>
-  );
-};
-
 export const NavigationList = () => {
   const { i18n } = useLingui();
   const [isDevEnvironment, setIsDevEnvironment] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     if (typeof window !== 'undefined') {
       setIsDevEnvironment(
         window.location.hostname.includes('localhost') ||
@@ -121,19 +34,32 @@ export const NavigationList = () => {
     }
   }, []);
 
-  const getLabel = (labelKey: string) => {
-    return isClient && i18n ? i18n._(labelKey) : labelKey;
-  };
-
   return (
     <>
       <List className="NavigationList" disablePadding>
-        <NavigationSection
-          items={mainNavigationItems}
-          isClient={isClient}
-          isDevEnvironment={isDevEnvironment}
-          i18n={i18n}
-        />
+        <NavigationListItem href="/" icon={<IconApps />}>
+          {i18n._('Dashboard')}
+        </NavigationListItem>
+        <NavigationListItem href="/payables" icon={<IconUsdCircle />}>
+          {i18n._('Bill Pay')}
+        </NavigationListItem>
+        <NavigationListItem href="/receivables" icon={<IconReceipt />}>
+          {i18n._('Invoicing')}
+        </NavigationListItem>
+        {isDevEnvironment && (
+          <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
+            {i18n._('AI Assistant')}
+          </NavigationListItem>
+        )}
+        <NavigationListItem href="/projects" icon={<IconBag />}>
+          {i18n._('Projects')}
+        </NavigationListItem>
+        <NavigationListItem href="/counterparts" icon={<IconUniversity />}>
+          {i18n._('Counterparts')}
+        </NavigationListItem>
+        <NavigationListItem href="/products" icon={<IconBox />}>
+          {i18n._('Products & Services')}
+        </NavigationListItem>
       </List>
 
       <Typography
@@ -147,18 +73,20 @@ export const NavigationList = () => {
           padding: '8px 16px 0 16px',
         }}
       >
-        {getLabel('Settings')}
+        {i18n._('Settings')}
       </Typography>
 
       <List className="NavigationList" disablePadding>
-        <NavigationSection
-          items={settingsNavigationItems}
-          isClient={isClient}
-          isDevEnvironment={isDevEnvironment}
-          i18n={i18n}
-        />
+        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
+          {i18n._('Document Design')}
+        </NavigationListItem>
+        <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
+          {i18n._('Roles & Approvals')}
+        </NavigationListItem>
+        <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
+          {i18n._('Tags')}
+        </NavigationListItem>
       </List>
-
       <Box
         display="flex"
         flexGrow="1"
@@ -166,12 +94,13 @@ export const NavigationList = () => {
         justifyContent="flex-end"
       >
         <List className="NavigationList" disablePadding>
-          <NavigationSection
-            items={helpNavigationItems}
-            isClient={isClient}
-            isDevEnvironment={isDevEnvironment}
-            i18n={i18n}
-          />
+          <NavigationListItem
+            href="https://docs.monite.com/"
+            target="_blank"
+            icon={<IconQuestionCircle />}
+          >
+            {i18n._('Get Help')}
+          </NavigationListItem>
         </List>
       </Box>
     </>

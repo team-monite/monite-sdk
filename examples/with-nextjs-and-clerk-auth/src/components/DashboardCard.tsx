@@ -11,7 +11,6 @@ interface DashboardCardProps {
   children?: ReactNode;
   sx?: CSSProperties;
   backgroundColor?: string;
-  // eslint-disable-next-line no-unused-vars
   renderIcon?: (props: SvgIconProps) => ReactNode;
 }
 
