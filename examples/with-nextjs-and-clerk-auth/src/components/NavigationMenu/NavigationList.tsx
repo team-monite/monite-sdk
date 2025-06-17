@@ -77,7 +77,7 @@ export const NavigationList = () => {
       </Typography>
 
       <List className="NavigationList" disablePadding>
-        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
+        <NavigationListItem href="/template-settings" icon={<IconBrush />}>
           {i18n._('Document Design')}
         </NavigationListItem>
         <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
