@@ -20,6 +20,12 @@ import {
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -27,7 +33,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { Menu } from '@mui/material';
 import {
   Alert,
   Box,
@@ -36,7 +41,6 @@ import {
   DialogContent,
   FormControlLabel,
   Grid,
-  MenuItem,
   Modal,
   Stack,
   Switch,
@@ -97,6 +101,9 @@ const CreateReceivablesBase = ({
     api.entities.getEntitiesIdVatIds.useQuery({
       path: { entity_id: entityId },
     });
+  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: entityId },
+  });
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -136,8 +143,9 @@ const CreateReceivablesBase = ({
         overdue_reminder_id: '',
         payment_reminder_id: '',
         memo: '',
+        vat_mode: entitySettings?.vat_mode ?? 'exclusive',
       }),
-      [type]
+      [type, entitySettings?.vat_mode]
     ),
   });
 
@@ -316,7 +324,8 @@ const CreateReceivablesBase = ({
       currency: actualCurrency,
       payment_reminder_id: values.payment_reminder_id || undefined,
       overdue_reminder_id: values.overdue_reminder_id || undefined,
-      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
+      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id),
+      vat_mode: values.vat_mode || 'exclusive',
     };
 
     createReceivable.mutate(
@@ -357,12 +366,10 @@ const CreateReceivablesBase = ({
 
   const handleCloseCurrencyModal = () => {
     setIsCurrencyModalOpen(false);
-    setAnchorEl(null);
   };
 
   const handleCloseEnableFieldsModal = () => {
     setIsEnableFieldsModalOpen(false);
-    setAnchorEl(null);
   };
 
   const lineItems = watch('line_items');
@@ -421,16 +428,6 @@ const CreateReceivablesBase = ({
     }
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleSettings = (event: any) => {
-    if (anchorEl) {
-      setAnchorEl(null);
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
   const handleSelectBankAfterDeletion = (bankId: string) => {
     setValue('entity_bank_account_id', bankId);
   };
@@ -473,59 +470,40 @@ const CreateReceivablesBase = ({
           title={t(i18n)`Create invoice`}
           actions={
             <>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ marginRight: '.5em' }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleSettings(event);
-                }}
-                form={formName}
-                disabled={createReceivable.isPending}
-              >
-                <SettingsOutlinedIcon />
-              </Button>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                container={root}
-              >
-                <MenuItem
-                  onClick={() => {
-                    setIsCurrencyModalOpen(true);
-                    setAnchorEl(null);
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    }}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{ marginRight: '.5em' }}
+                    disabled={createReceivable.isPending}
                   >
-                    <Typography>{t(i18n)`Currency`}</Typography>
-                    <Typography>{actualCurrency}</Typography>
-                  </Box>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setIsEnableFieldsModalOpen(true);
-                    setAnchorEl(null);
-                  }}
-                >
-                  <Typography>{t(i18n)`Enable more fields`}</Typography>
-                </MenuItem>
-              </Menu>
+                    <SettingsOutlinedIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => setIsCurrencyModalOpen(true)}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}
+                    >
+                      <Typography>{t(i18n)`Currency`}</Typography>
+                      <Typography>{actualCurrency}</Typography>
+                    </Box>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsEnableFieldsModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Enable more fields`}</Typography>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Button
                 variant="contained"
                 key="next"

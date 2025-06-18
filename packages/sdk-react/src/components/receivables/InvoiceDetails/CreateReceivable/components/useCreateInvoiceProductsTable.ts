@@ -1,9 +1,10 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
+import { getRateValueForDisplay } from '@/core/utils/vatUtils';
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
@@ -12,6 +13,7 @@ interface UseCreateInvoiceProductsTable {
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
   actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
+  isInclusivePricing: boolean;
 }
 
 interface UseCreateInvoiceProductsTableProps {
@@ -19,6 +21,7 @@ interface UseCreateInvoiceProductsTableProps {
   totalTaxes: Price | undefined;
   totalPrice: Price | undefined;
   shouldShowVatExemptRationale: boolean;
+  taxesByVatRate: Record<number, number>;
 }
 
 /**
@@ -30,12 +33,29 @@ export const useCreateInvoiceProductsTable = ({
   formatCurrencyToDisplay,
   isNonVatSupported,
   actualCurrency,
+  isInclusivePricing,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
+  const getPriceAndQuantity = (
+    field: CreateReceivablesFormBeforeValidationLineItemProps
+  ) => {
+    const price = field.product?.price?.value ?? field.price?.value ?? 0;
+    const quantity = field.quantity ?? 1;
+    return { price, quantity };
+  };
+
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
-      const price = field.product?.price?.value ?? field.price?.value ?? 0;
-      const quantity = field.quantity;
-
+      const { price, quantity } = getPriceAndQuantity(field);
+      const vatRate =
+        getRateValueForDisplay(
+          isNonVatSupported,
+          field.vat_rate_value ?? 0,
+          field.tax_rate_value ?? 0
+        ) / 100;
+      if (isInclusivePricing && vatRate) {
+        const base = (price * quantity) / (1 + vatRate);
+        return acc + base;
+      }
       return acc + price * quantity;
     }, 0);
 
@@ -55,33 +75,43 @@ export const useCreateInvoiceProductsTable = ({
       currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, formatCurrencyToDisplay, actualCurrency]);
+  }, [
+    lineItems,
+    formatCurrencyToDisplay,
+    actualCurrency,
+    isInclusivePricing,
+    isNonVatSupported,
+  ]);
 
-  const getVatRateValue = useCallback(
-    (field: CreateReceivablesFormBeforeValidationLineItemProps) => {
-      return isNonVatSupported ? field.tax_rate_value : field.vat_rate_value;
-    },
-    [isNonVatSupported]
-  );
+  const taxesByVatRate = useMemo(() => {
+    return lineItems.reduce((acc, field) => {
+      const { price, quantity } = getPriceAndQuantity(field);
+      const vatRate = getRateValueForDisplay(
+        isNonVatSupported,
+        field.vat_rate_value ?? 0,
+        field.tax_rate_value ?? 0
+      );
 
-  const taxes = lineItems.reduce((acc, field) => {
-    const price = field.product?.price?.value ?? field.price?.value ?? 0;
-    const quantity = field.quantity;
-    const subtotalPrice = price * quantity;
-    const taxRate = getVatRateValue(field);
+      if (!vatRate) return acc;
 
-    if (!taxRate) {
+      const amount = price * quantity;
+      const tax = isInclusivePricing
+        ? amount - amount / (1 + vatRate / 100)
+        : amount * (vatRate / 100);
+
+      if (acc[vatRate]) {
+        acc[vatRate] += tax;
+      } else {
+        acc[vatRate] = tax;
+      }
+
       return acc;
-    }
-
-    const tax = isNonVatSupported
-      ? (subtotalPrice * taxRate) / 100
-      : (subtotalPrice * taxRate) / 10_000;
-
-    return acc + tax;
-  }, 0);
+    }, {} as Record<number, number>);
+  }, [lineItems, isInclusivePricing, isNonVatSupported]);
 
   const totalTaxes = useMemo(() => {
+    const taxes = Object.values(taxesByVatRate).reduce((acc, v) => acc + v, 0);
+
     const currency =
       actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
@@ -98,24 +128,33 @@ export const useCreateInvoiceProductsTable = ({
       currency,
       formatter: formatCurrencyToDisplay,
     });
-  }, [lineItems, taxes, formatCurrencyToDisplay, actualCurrency]);
+  }, [lineItems, formatCurrencyToDisplay, actualCurrency, taxesByVatRate]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
       return undefined;
     }
-
     return subtotalPrice.add(totalTaxes);
   }, [subtotalPrice, totalTaxes]);
 
   const shouldShowVatExemptRationale =
     !isNonVatSupported &&
-    lineItems.some((lineItem) => getVatRateValue(lineItem) === 0);
+    lineItems.some(
+      (lineItem) =>
+        getRateValueForDisplay(
+          isNonVatSupported,
+          lineItem.vat_rate_value ?? 0,
+          lineItem.tax_rate_value ?? 0
+        ) /
+          100 ===
+        0
+    );
 
   return {
     subtotalPrice,
     totalTaxes,
     totalPrice,
     shouldShowVatExemptRationale,
+    taxesByVatRate,
   };
 };

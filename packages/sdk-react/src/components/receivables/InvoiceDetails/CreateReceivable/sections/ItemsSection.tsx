@@ -9,11 +9,10 @@ import {
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { VatInclusiveMenu } from '@/components/receivables/components';
+import { VatModeMenu } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
-import { classNames } from '@/utils/css-utils';
 import { generateUniqueId } from '@/utils/uuid';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -22,8 +21,6 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   Button,
   FormControl,
-  Card,
-  Grid,
   Divider,
   Typography,
   Table,
@@ -33,15 +30,15 @@ import {
   TableRow,
   IconButton,
   TextField,
-  TypographyTypeMap,
   Stack,
   TableContainer,
   Box,
   Collapse,
-  CardContent,
   CircularProgress,
   InputAdornment,
 } from '@mui/material';
+
+import { twMerge } from 'tailwind-merge';
 
 import { CreateProductDialog } from '../components/CreateProductDialog';
 import {
@@ -62,48 +59,23 @@ import { PriceField } from './PriceField';
 import { TaxRateController } from './TaxRateController';
 import { VatRateController } from './VatRateController';
 
-interface CardTableItemProps {
+interface TotalTableItemProps {
   label: string | ReactNode;
   value?: string | Price;
-  variant?: TypographyTypeMap['props']['variant'];
-  sx?: TypographyTypeMap['props']['sx'];
   className?: string;
 }
 
-const CardTableItem = ({
-  label,
-  value,
-  variant = 'body1',
-  sx,
-  className,
-}: CardTableItemProps) => {
-  const componentClassName = 'Monite-CreateReceivable-CardTableItem';
+const TotalTableItem = ({ label, value, className }: TotalTableItemProps) => {
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems="center"
-      className={classNames(componentClassName, className)}
-    >
-      <Grid item xs={4}>
-        {typeof label === 'string' ? (
-          <Typography variant="body1">{label}</Typography>
-        ) : (
-          label
-        )}
-      </Grid>
-      {value && (
-        <Grid item xs={8} display="flex" justifyContent="end">
-          <Typography
-            variant={variant}
-            sx={sx}
-            className={componentClassName + '-Value'}
-          >
-            {value.toString()}
-          </Typography>
-        </Grid>
+    <li
+      className={twMerge(
+        'mtw:flex mtw:justify-between mtw:items-center',
+        className
       )}
-    </Grid>
+    >
+      <span>{label}</span>
+      <span>{value?.toString()}</span>
+    </li>
   );
 };
 
@@ -154,6 +126,7 @@ export const ItemsSection = ({
     () => watchedLineItems || [],
     [watchedLineItems]
   );
+  const isInclusivePricing = watch('vat_mode') === 'inclusive';
 
   const mounted = useRef(false);
   const isAddingRow = useRef(false);
@@ -167,11 +140,13 @@ export const ItemsSection = ({
     totalPrice,
     totalTaxes,
     shouldShowVatExemptRationale,
+    taxesByVatRate,
   } = useCreateInvoiceProductsTable({
     lineItems: sanitizeLineItems(currentLineItems || fields),
     formatCurrencyToDisplay,
     isNonVatSupported,
     actualCurrency,
+    isInclusivePricing,
   });
 
   useEffect(() => {
@@ -485,9 +460,17 @@ export const ItemsSection = ({
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
                   i18n
                 )`Quantity`}</TableCell>
-                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
+                <TableCell
+                  sx={{
+                    paddingLeft: 2,
+                    paddingRight: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                  }}
+                >
                   {t(i18n)`Price`}
-                  <VatInclusiveMenu />
+                  <VatModeMenu />
                 </TableCell>
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
                   {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
@@ -622,7 +605,7 @@ export const ItemsSection = ({
                       </TableCell>
 
                       <TableCell
-                        sx={{ width: '20%', paddingLeft: 2, paddingRight: 2 }}
+                        sx={{ width: '25%', paddingLeft: 2, paddingRight: 2 }}
                         align="right"
                       >
                         <PriceField
@@ -733,43 +716,42 @@ export const ItemsSection = ({
         </Box>
       </Collapse>
 
-      <Card
-        className={className + '-Totals'}
-        variant="outlined"
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          borderRadius: 0,
-          border: 0,
-          paddingBottom: 4,
-        }}
-      >
-        <CardContent sx={{ maxWidth: '560px', width: '100%' }}>
-          <Stack>
-            <CardTableItem
-              label={t(i18n)`Subtotal`}
-              value={subtotalPrice}
-              className="Monite-Subtotal"
+      <Divider sx={{ my: 2 }} />
+
+      <ul className="mtw:w-full mtw:flex mtw:flex-col mtw:gap-2 mtw:list-none">
+        <TotalTableItem
+          label={t(i18n)`Subtotal`}
+          value={subtotalPrice}
+          className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
+        />
+
+        {Object.entries(taxesByVatRate)?.length > 0 ? (
+          Object.entries(taxesByVatRate).map(([taxRate, totalTax]) => (
+            <TotalTableItem
+              key={taxRate}
+              label={t(i18n)`Total Tax (${taxRate}%)`}
+              value={formatCurrencyToDisplay(
+                totalTax,
+                actualCurrency || defaultCurrency || 'USD',
+                true
+              )?.toString()}
+              className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
             />
-            <Divider sx={{ my: 1.5 }} />
-            <CardTableItem
-              key={`totalTaxes-${totalTaxes}`}
-              label={t(i18n)`Taxes total`}
-              value={totalTaxes}
-              className="Monite-TaxesTotal"
-            />
-            <Divider sx={{ my: 1.5 }} />
-            <CardTableItem
-              label={
-                <Typography variant="subtitle1">{t(i18n)`Total`}</Typography>
-              }
-              value={totalPrice}
-              variant="subtitle1"
-              className="Monite-Total"
-            />
-          </Stack>
-        </CardContent>
-      </Card>
+          ))
+        ) : (
+          <TotalTableItem
+            label={t(i18n)`Taxes total`}
+            value={totalTaxes}
+            className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
+          />
+        )}
+
+        <TotalTableItem
+          label={t(i18n)`Total`}
+          value={totalPrice}
+          className="mtw:text-base mtw:font-medium mtw:text-neutral-10"
+        />
+      </ul>
 
       <CreateProductDialog
         actualCurrency={actualCurrency}

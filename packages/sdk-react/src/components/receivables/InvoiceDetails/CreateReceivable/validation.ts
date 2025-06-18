@@ -244,6 +244,7 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   vat_rate_value?: number;
   tax_rate_value?: number;
   smallest_amount?: number;
+  vat_mode?: components['schemas']['VatModeEnum'];
 }
 
 export interface CreateReceivablesFormBeforeValidationProps {
@@ -251,9 +252,12 @@ export interface CreateReceivablesFormBeforeValidationProps {
   counterpart_id: string;
   line_items: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
   vat_exemption_rationale?: string;
+  vat_mode?: components['schemas']['VatModeEnum'];
 }
 
 /** Describes a final version of the form (AFTER the user filled all required fields) */
 export type CreateReceivablesFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceValidationSchema>
->;
+> & {
+  vat_mode?: components['schemas']['VatModeEnum'] | null;
+};
