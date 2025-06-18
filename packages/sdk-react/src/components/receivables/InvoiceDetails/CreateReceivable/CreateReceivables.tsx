@@ -101,9 +101,10 @@ const CreateReceivablesBase = ({
     api.entities.getEntitiesIdVatIds.useQuery({
       path: { entity_id: entityId },
     });
-  const { data: entitySettings } = api.entities.getEntitiesIdSettings.useQuery({
-    path: { entity_id: entityId },
-  });
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: entityId },
+    });
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -143,9 +144,9 @@ const CreateReceivablesBase = ({
         overdue_reminder_id: '',
         payment_reminder_id: '',
         memo: '',
-        vat_mode: entitySettings?.vat_mode ?? 'exclusive',
+        vat_mode: settings?.vat_mode ?? 'exclusive',
       }),
-      [type, entitySettings?.vat_mode]
+      [type, settings?.vat_mode]
     ),
   });
 
@@ -182,10 +183,6 @@ const CreateReceivablesBase = ({
     useCounterpartVatList(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isLoading: isSettingsLoading } =
-    api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: entityId },
-    });
 
   const [actualCurrency, setActualCurrency] = useState<
     Schemas['CurrencyEnum'] | undefined

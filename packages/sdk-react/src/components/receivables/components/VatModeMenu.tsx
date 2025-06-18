@@ -21,7 +21,10 @@ export function VatModeMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="mtw:text-primary-50 mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1">
+        <button
+          type="button"
+          className="mtw:text-primary-50 mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1"
+        >
           {t(i18n)`${isInclusivePricing ? 'Incl.' : 'Excl.'} tax`}
           <ChevronDownIcon className="mtw:w-4 mtw:h-4" />
         </button>

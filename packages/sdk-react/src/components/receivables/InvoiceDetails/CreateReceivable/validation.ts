@@ -167,6 +167,11 @@ export const getCreateInvoiceValidationSchema = (
       .optional()
       .nullable()
       .label(t(i18n)`Payment reminder`),
+    vat_mode: yup
+      .mixed<components['schemas']['VatModeEnum']>()
+      .oneOf(['exclusive', 'inclusive'])
+      .label(t(i18n)`VAT mode`)
+      .required(),
   });
 
 export const getUpdateInvoiceValidationSchema = (
@@ -220,6 +225,11 @@ export const getUpdateInvoiceValidationSchema = (
       .optional()
       .nullable()
       .label(t(i18n)`Payment reminder`),
+    vat_mode: yup
+      .mixed<components['schemas']['VatModeEnum']>()
+      .oneOf(['exclusive', 'inclusive'])
+      .label(t(i18n)`VAT mode`)
+      .required(),
   });
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
@@ -258,6 +268,4 @@ export interface CreateReceivablesFormBeforeValidationProps {
 /** Describes a final version of the form (AFTER the user filled all required fields) */
 export type CreateReceivablesFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceValidationSchema>
-> & {
-  vat_mode?: components['schemas']['VatModeEnum'] | null;
-};
+>;
