@@ -1,4 +1,6 @@
 import { components } from '@/api';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 
 import type {
   EntityOrganizationRelationshipCode,
@@ -340,6 +342,24 @@ export const getEntityName = (entity?: EntityResponse) => {
     : (entity as EntityOrganizationResponse).organization?.legal_name;
 };
 
+/**
+ * Gets the appropriate translated identification label based on country
+ *
+ * @param {I18n} i18n - The i18n instance for translation
+ * @param {AllowedCountries | undefined | null} country - The country code
+ * @returns {string} The translated identification label
+ */
+export function getIdentificationLabel(
+  i18n: I18n,
+  country: AllowedCountries | undefined | null
+): string {
+  if (country === 'US') {
+    return t(i18n)`Social Security Number`;
+  }
+
+  return t(i18n)`Personal identification number`;
+}
+
 type EntityIndividualResponse =
   components['schemas']['EntityIndividualResponse'];
 type EntityOrganizationResponse =
@@ -348,3 +368,4 @@ type EntityResponse = components['schemas']['EntityResponse'];
 type OnboardingPerson = components['schemas']['OnboardingPerson'];
 type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
 type Relationship = components['schemas']['Relationship'];
+type AllowedCountries = components['schemas']['AllowedCountries'];
