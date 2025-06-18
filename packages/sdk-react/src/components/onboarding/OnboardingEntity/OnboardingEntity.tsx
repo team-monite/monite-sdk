@@ -21,7 +21,11 @@ export const OnboardingEntity = () => {
   const { isPending, updateEntity, entity } = useOnboardingEntity();
 
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<UpdateEntityRequest, EntityResponse>(entity, 'entity');
+    useOnboardingForm<UpdateEntityRequest, EntityResponse>(
+      entity,
+      'entity',
+      entity?.address?.country?.value ?? undefined
+    );
 
   const { control } = methods;
 
