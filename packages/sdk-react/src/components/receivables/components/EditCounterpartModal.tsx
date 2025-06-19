@@ -9,7 +9,7 @@ import {
   prepareAddressView,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { CounterpartSelector } from '@/components/receivables/components/CounterpartSelector';
+import { CounterpartSelector } from '@/components/receivables/components';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -97,11 +97,11 @@ export const EditCounterpartModal = ({
   };
 
   const handleSaveChanges = () => {
-    onClose();
-    setIsDirty(false);
     setValue('counterpart_id', currentCounterpartId);
     setValue('default_billing_address_id', formValues.billingAddressId);
     setValue('default_shipping_address_id', formValues.shippingAddressId);
+    setIsDirty(false);
+    onClose();
   };
 
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
