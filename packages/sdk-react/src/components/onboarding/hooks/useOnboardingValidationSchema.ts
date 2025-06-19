@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { useLingui } from '@lingui/react';
 
@@ -9,9 +10,11 @@ import {
 export const useOnboardingValidationSchema = ({
   fields,
   type,
+  country,
 }: {
   fields?: OnboardingFieldsType;
   type: ValidationSchemasType;
+  country?: AllowedCountries;
 }) => {
   const { i18n } = useLingui();
 
@@ -21,5 +24,8 @@ export const useOnboardingValidationSchema = ({
     fields,
     type,
     i18n,
+    country,
   });
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];

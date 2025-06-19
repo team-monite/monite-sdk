@@ -1902,6 +1902,13 @@
             "in": "query"
           },
           {
+            "description": "Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "name": "has_tags",
+            "in": "query"
+          },
+          {
             "description": "Return only payables from a given origin ['einvoice', 'upload', 'email']",
             "required": false,
             "schema": {
@@ -8907,8 +8914,7 @@
     "/custom_vat_rates": {
       "get": {
         "tags": ["Custom VAT rates"],
-        "summary": "Get All Custom Vat Rates",
-        "description": "Get custom VAT rates",
+        "summary": "Get custom VAT rates",
         "operationId": "get_custom_vat_rates",
         "parameters": [
           {
@@ -8994,8 +9000,7 @@
       },
       "post": {
         "tags": ["Custom VAT rates"],
-        "summary": "Add Custom Vat Rate",
-        "description": "Create a custom VAT rate",
+        "summary": "Create a custom VAT rate",
         "operationId": "post_custom_vat_rates",
         "parameters": [
           {
@@ -9091,8 +9096,7 @@
     "/custom_vat_rates/{custom_vat_rate_id}": {
       "get": {
         "tags": ["Custom VAT rates"],
-        "summary": "Get Custom Vat Rate",
-        "description": "Get a custom VAT rate by ID",
+        "summary": "Get a custom VAT rate by ID",
         "operationId": "get_custom_vat_rates_id",
         "parameters": [
           {
@@ -9192,8 +9196,7 @@
       },
       "delete": {
         "tags": ["Custom VAT rates"],
-        "summary": "Delete Custom Vat Rate",
-        "description": "Delete a custom VAT rate",
+        "summary": "Delete a custom VAT rate",
         "operationId": "delete_custom_vat_rates_id",
         "parameters": [
           {
@@ -9284,8 +9287,7 @@
       },
       "patch": {
         "tags": ["Custom VAT rates"],
-        "summary": "Update Custom Vat Rate",
-        "description": "Update a custom VAT rate",
+        "summary": "Update a custom VAT rate",
         "operationId": "patch_custom_vat_rates_id",
         "parameters": [
           {
@@ -12335,6 +12337,14 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -12858,6 +12868,14 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -12929,6 +12947,14 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -12994,6 +13020,14 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -13096,7 +13130,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/EntityLogoUploadRequest"
+                "$ref": "#/components/schemas/Body_put_entities_id_logo"
               }
             }
           }
@@ -13145,6 +13179,7 @@
             }
           }
         },
+        "schema_name": "EntityLogoUploadRequest",
         "security": [{ "HTTPBearer": [] }]
       },
       "delete": {
@@ -15584,7 +15619,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -15594,7 +15629,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -15606,14 +15641,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -18526,18 +18561,6 @@
             "in": "header"
           },
           {
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/AllowedCountries" },
-            "name": "country",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": { "type": "integer" },
-            "name": "value",
-            "in": "query"
-          },
-          {
             "description": "The ID of the entity that owns the requested resource.",
             "required": true,
             "schema": {
@@ -18549,104 +18572,22 @@
             "in": "header"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VatRateRequest" }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
-          },
-          "405": {
-            "description": "Method Not Allowed",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+                "schema": { "$ref": "#/components/schemas/VatRateResponse" }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        },
-        "security": [{ "HTTPBearer": [] }]
-      },
-      "delete": {
-        "tags": ["VAT rates internal"],
-        "summary": "Delete Vat Rates",
-        "operationId": "delete_internal_vat_rates",
-        "parameters": [
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "example": "2024-05-25",
-            "name": "x-monite-version",
-            "in": "header"
-          },
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" },
-            "name": "vat_rate_id",
-            "in": "query"
-          },
-          {
-            "description": "The ID of the entity that owns the requested resource.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
-            },
-            "name": "x-monite-entity-id",
-            "in": "header"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
           },
           "405": {
             "description": "Method Not Allowed",
@@ -18709,6 +18650,97 @@
       }
     },
     "/internal/vat_rates/{vat_rate_id}": {
+      "delete": {
+        "tags": ["VAT rates internal"],
+        "summary": "Delete Vat Rates",
+        "operationId": "delete_internal_vat_rates_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "vat_rate_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
       "patch": {
         "tags": ["VAT rates internal"],
         "summary": "Update Vat Rates",
@@ -22253,7 +22285,7 @@
       "post": {
         "tags": ["Credit notes"],
         "summary": "Upload a credit note from a file",
-        "description": "Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.",
+        "description": "Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
         "operationId": "post_payable_credit_notes_upload_from_file",
         "parameters": [
           {
@@ -25936,6 +25968,13 @@
             "in": "query"
           },
           {
+            "description": "Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "name": "has_tags",
+            "in": "query"
+          },
+          {
             "description": "Return only payables from a given origin ['einvoice', 'upload', 'email']",
             "required": false,
             "schema": {
@@ -26508,6 +26547,13 @@
             "in": "query"
           },
           {
+            "description": "Filter objects based on whether they have tags. If true, only objects with tags are returned. If false, only objects without tags are returned.",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "name": "has_tags",
+            "in": "query"
+          },
+          {
             "description": "Return only payables from a given origin ['einvoice', 'upload', 'email']",
             "required": false,
             "schema": {
@@ -26675,7 +26721,7 @@
       "post": {
         "tags": ["Payables"],
         "summary": "Upload a payable from a file",
-        "description": "Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.",
+        "description": "Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
         "operationId": "post_payables_upload_from_file",
         "parameters": [
           {
@@ -27957,6 +28003,210 @@
           },
           "409": {
             "description": "Possible responses: `Action for {object_type} at permissions not found: {action}`, `Object type at permissions not found: {object_type}`, `Action {action} for {object_type} not allowed`, `Payable couldn't be updated due to current state`, `The file cannot be attached because another file is already attached. Please note that only one file attachment is allowed.`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/payables/{payable_id}/history": {
+      "get": {
+        "tags": ["Payables"],
+        "summary": "Returns the history of the specified accounts payable document.",
+        "operationId": "get_payables_id_history",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payable_id",
+            "in": "path"
+          },
+          {
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/PayableHistoryCursorFields" }
+              ]
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "description": "Return only the specified event types",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/PayableHistoryEventTypeEnum"
+              },
+              "type": "array"
+            },
+            "name": "event_type__in",
+            "in": "query"
+          },
+          {
+            "description": "Return only events caused by the entity users with the specified IDs. To specify multiple user IDs, repeat this parameter for each ID:\n`entity_user_id__in=<user1>&entity_user_id__in=<user2>`",
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "entity_user_id__in",
+            "in": "query"
+          },
+          {
+            "description": "Return only events that occurred after the specified date and time. The value must be in the ISO 8601 format `YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm]`.",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "timestamp__gt",
+            "in": "query"
+          },
+          {
+            "description": "Return only events that occurred before the specified date and time.",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "timestamp__lt",
+            "in": "query"
+          },
+          {
+            "description": "Return only events that occurred on or after the specified date and time.",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "timestamp__gte",
+            "in": "query"
+          },
+          {
+            "description": "Return only events that occurred before or on the specified date and time.",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "timestamp__lte",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayableHistoryPaginationResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -29551,7 +29801,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -29561,7 +29811,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -29573,14 +29823,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -33522,7 +33772,9 @@
           "required": true,
           "content": {
             "multipart/form-data": {
-              "schema": { "$ref": "#/components/schemas/CompanyLogoUpdate" }
+              "schema": {
+                "$ref": "#/components/schemas/Body_patch__portal_v1_companies_id_logo"
+              }
             }
           }
         },
@@ -33591,7 +33843,8 @@
               }
             }
           }
-        }
+        },
+        "schema_name": "CompanyLogoUpdate"
       }
     },
     "/portal/v1/email_exists": {
@@ -33836,7 +34089,9 @@
           "required": true,
           "content": {
             "multipart/form-data": {
-              "schema": { "$ref": "#/components/schemas/ProfileAvatarUpdate" }
+              "schema": {
+                "$ref": "#/components/schemas/Body_patch__portal_v1_profile_avatar"
+              }
             }
           }
         },
@@ -33891,7 +34146,8 @@
               }
             }
           }
-        }
+        },
+        "schema_name": "ProfileAvatarUpdate"
       }
     },
     "/portal/v1/projects": {
@@ -35633,7 +35889,9 @@
           "required": true,
           "content": {
             "multipart/form-data": {
-              "schema": { "$ref": "#/components/schemas/UserAvatarFileUpload" }
+              "schema": {
+                "$ref": "#/components/schemas/Body_patch__portal_v1_users_id_avatar"
+              }
             }
           }
         },
@@ -35688,7 +35946,8 @@
               }
             }
           }
-        }
+        },
+        "schema_name": "UserAvatarFileUpload"
       }
     },
     "/portal/v1/users/{user_id}/enable": {
@@ -40500,7 +40759,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/GetAllRecurrences" }
+                "schema": {
+                  "$ref": "#/components/schemas/RecurrenceResponseList"
+                }
               }
             }
           },
@@ -40602,7 +40863,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Recurrence" }
+                "schema": { "$ref": "#/components/schemas/RecurrenceResponse" }
               }
             }
           },
@@ -40702,7 +40963,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Recurrence" }
+                "schema": { "$ref": "#/components/schemas/RecurrenceResponse" }
               }
             }
           },
@@ -40810,7 +41071,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Recurrence" }
+                "schema": { "$ref": "#/components/schemas/RecurrenceResponse" }
               }
             }
           },
@@ -43417,6 +43678,7 @@
             "{$request.body.url}": {
               "post": {
                 "summary": "Webhook Notification",
+                "description": "Placeholder for webhook notification callback.\n\nThis endpoint is defined to illustrate the webhook callback mechanism in OpenAPI schema.\nIt is not intended for actual use and will always raise NotImplementedError.\n\nRaises:\n    NotImplementedError: Always, as this endpoint is not implemented.",
                 "operationId": "webhook_notification__request_body_url__post",
                 "requestBody": {
                   "required": true,
@@ -45628,6 +45890,26 @@
         "additionalProperties": false,
         "type": "object"
       },
+      "Body_patch__portal_v1_companies_id_logo": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
+      "Body_patch__portal_v1_profile_avatar": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
+      "Body_patch__portal_v1_users_id_avatar": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
+      "Body_put_entities_id_logo": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
       "BusinessInfoSchema": {
         "properties": {
           "base_currency": { "type": "string" },
@@ -45944,11 +46226,6 @@
         },
         "additionalProperties": false,
         "type": "object"
-      },
-      "CompanyLogoUpdate": {
-        "properties": { "file": { "type": "string", "format": "binary" } },
-        "type": "object",
-        "required": ["file"]
       },
       "CompanyRequest": {
         "properties": {
@@ -48674,7 +48951,7 @@
           "discount": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__Discount"
+                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__DiscountResponse"
               }
             ],
             "description": "The discount for a receivable."
@@ -49296,7 +49573,7 @@
         "properties": {
           "components": {
             "items": {
-              "$ref": "#/components/schemas/package__receivables__v2024_05_25__custom_vat_rate__VatRateComponent"
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
             },
             "type": "array",
             "maxItems": 3,
@@ -49328,7 +49605,7 @@
           },
           "components": {
             "items": {
-              "$ref": "#/components/schemas/package__receivables__v2024_05_25__custom_vat_rate__VatRateComponent"
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
             },
             "type": "array",
             "maxItems": 3,
@@ -49347,7 +49624,7 @@
           },
           "value": {
             "type": "number",
-            "description": "Total sum of the Custom VAT rate including components. Percent multiplied by a 100. Example: 12.125% is 1212,5."
+            "description": "Total sum of the Custom VAT rate including components. Percent multiplied by a 100. Example: 12.125% is 1212.5."
           }
         },
         "type": "object",
@@ -49374,7 +49651,7 @@
         "properties": {
           "components": {
             "items": {
-              "$ref": "#/components/schemas/package__receivables__v2024_05_25__custom_vat_rate__VatRateComponent"
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
             },
             "type": "array",
             "maxItems": 3,
@@ -50914,11 +51191,6 @@
           "type"
         ]
       },
-      "EntityLogoUploadRequest": {
-        "properties": { "file": { "type": "string", "format": "binary" } },
-        "type": "object",
-        "required": ["file"]
-      },
       "EntityOnboardingDataRequest": {
         "properties": {
           "business_profile": {
@@ -51133,13 +51405,13 @@
             "type": "array",
             "description": "A set of entities of different types returned per page"
           },
-          "prev_pagination_token": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
-          },
           "next_pagination_token": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
           }
         },
         "type": "object",
@@ -51597,6 +51869,16 @@
         "type": "object",
         "required": ["description", "required"]
       },
+      "FileAttachedEventData": {
+        "properties": {
+          "file_name": { "type": "string" },
+          "file_size": { "type": "integer" },
+          "url": { "type": "string" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["file_name", "file_size", "url"]
+      },
       "FileResponse": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -51897,17 +52179,6 @@
         "type": "object",
         "required": ["data"]
       },
-      "GetAllRecurrences": {
-        "properties": {
-          "data": {
-            "items": { "$ref": "#/components/schemas/Recurrence" },
-            "type": "array"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["data"]
-      },
       "GetOnboardingRequirementsResponse": {
         "properties": {
           "data": {
@@ -52061,6 +52332,58 @@
         "required": ["first_name", "last_name"],
         "description": "A schema contains metadata for an individual"
       },
+      "InlinePaymentTermsRequestPayload": {
+        "properties": {
+          "term_1": {
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermDiscount" }],
+            "description": "The first tier of the payment term. Represents the terms of the first early discount."
+          },
+          "term_2": {
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermDiscount" }],
+            "description": "The second tier of the payment term. Defines the terms of the second early discount."
+          },
+          "term_final": {
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermFinal" }],
+            "description": "The final tier of the payment term. Defines the invoice due date."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["term_final"]
+      },
+      "InlineTermDiscount": {
+        "properties": {
+          "discount": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The discount percentage in minor units. E.g., 200 means 2%. 1050 means 10.5%."
+          },
+          "end_date": { "type": "string", "format": "date" },
+          "number_of_days": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The amount of days after the invoice issue date."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["discount"]
+      },
+      "InlineTermFinal": {
+        "properties": {
+          "end_date": { "type": "string", "format": "date" },
+          "number_of_days": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The amount of days after the invoice issue date."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
       "InternalLineItemProduct": {
         "properties": {
           "id": {
@@ -52089,6 +52412,13 @@
           },
           "entity_id": { "type": "string", "format": "uuid" },
           "entity_user_id": { "type": "string", "format": "uuid" },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
+          },
           "is_inline": {
             "type": "boolean",
             "description": "Indicates whether the product is inline",
@@ -52297,7 +52627,7 @@
           "discount": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/package__receivables__latest__billables__Discount"
+                "$ref": "#/components/schemas/package__receivables__latest__billables__DiscountResponse"
               }
             ],
             "description": "The discount for a receivable."
@@ -52721,7 +53051,7 @@
           "discount": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__Discount"
+                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__DiscountResponse"
               }
             ],
             "description": "The discount for a receivable."
@@ -52959,11 +53289,6 @@
       },
       "Item": {
         "properties": {
-          "text": {
-            "type": "string",
-            "description": "The text as recognized by OCR.",
-            "example": "€1,125.00"
-          },
           "confidence": {
             "type": "number",
             "maximum": 100.0,
@@ -52974,11 +53299,15 @@
           "processed_text": {
             "description": "If the `text` value is identified as a currency amount or a date, `processed_text` contains this value converted to a common format:\n\n* Currency amounts (such as the total, subtotal, tax/VAT, line item prices) are converted to numbers with the currency character removed. For example, \"€1,125.00\" becomes 1125.0.* Dates are converted to the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format, `YYYY-MM-DDThh:mm:ss`. For example, \"26/3/2021\" becomes \"2021-03-26T00:00:00\".\n\nIf `text` is not a currency amount or a date, `processed_text` is `null`.",
             "example": 1125
+          },
+          "text": {
+            "type": "string",
+            "description": "The text as recognized by OCR.",
+            "example": "€1,125.00"
           }
         },
-        "additionalProperties": false,
         "type": "object",
-        "required": ["text", "confidence"],
+        "required": ["confidence", "text"],
         "description": "Contains information about a text block or line extracted from an uploaded document by OCR."
       },
       "IterationStatus": {
@@ -53004,7 +53333,6 @@
             "description": "The value (if any)."
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["label", "value"],
         "description": "A label-value pair extracted from an uploaded document by OCR.\nFor example, the label could be \"Total\" and the value could be a currency amount."
@@ -53297,6 +53625,12 @@
             "minimum": 0.0,
             "description": "The quantity of each of the goods, materials, or services listed in the receivable."
           },
+          "tax_rate_name": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "description": "Specifies the display name of the tax rate. This field is applicable only when tax_rate_value is also provided."
+          },
           "tax_rate_value": {
             "type": "integer",
             "maximum": 10000.0,
@@ -53439,6 +53773,13 @@
             "type": "string",
             "description": "Description of the product."
           },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
+          },
           "is_inline": {
             "type": "boolean",
             "description": "Indicates whether the product is inline",
@@ -53481,6 +53822,13 @@
             "type": "string",
             "maxLength": 2000,
             "description": "Description of the product."
+          },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
           },
           "ledger_account_id": { "type": "string", "format": "uuid" },
           "measure_unit": { "$ref": "#/components/schemas/UnitRequest" },
@@ -53655,6 +54003,11 @@
             "maximum": 2147483647.0,
             "minimum": 0.0,
             "description": "The quantity of each of the goods, materials, or services listed in the receivable."
+          },
+          "tax_rate_name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Specifies the display name of the tax rate. This field is applicable only when tax_rate_value is also provided."
           },
           "tax_rate_value": {
             "type": "integer",
@@ -53926,7 +54279,9 @@
           "SEPA Direct Debit",
           "SOFORT",
           "Apple Pay",
-          "Google Pay"
+          "Google Pay",
+          "Affirm",
+          "Klarna"
         ]
       },
       "MoniteAllPaymentMethodsTypes": {
@@ -53945,24 +54300,35 @@
           "sepa_debit",
           "sofort",
           "applepay",
-          "googlepay"
+          "googlepay",
+          "affirm",
+          "klarna"
         ]
       },
       "OCRAddress": {
         "properties": {
+          "city": {
+            "type": "string",
+            "description": "City name.",
+            "example": "Berlin"
+          },
           "country": {
             "type": "string",
             "description": "Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).",
             "example": "DE"
           },
+          "line1": {
+            "type": "string",
+            "description": "Street address.",
+            "example": "Flughafenstrasse 52"
+          },
+          "line2": {
+            "type": "string",
+            "description": "Additional address information (if any)."
+          },
           "original_country_name": {
             "type": "string",
             "description": "Country name as it is stated in the document.",
-            "example": "Berlin"
-          },
-          "city": {
-            "type": "string",
-            "description": "City name.",
             "example": "Berlin"
           },
           "postal_code": {
@@ -53973,18 +54339,8 @@
           "state": {
             "type": "string",
             "description": "State, region, province, or county."
-          },
-          "line1": {
-            "type": "string",
-            "description": "Street address.",
-            "example": "Flughafenstrasse 52"
-          },
-          "line2": {
-            "type": "string",
-            "description": "Additional address information (if any)."
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "description": "In general it's compatible with CounterpartAddress model but\n* All fields are optional\n* There is an additional field original_country_name"
       },
@@ -54047,18 +54403,7 @@
         "type": "object",
         "required": ["sender", "recipient", "line_items"]
       },
-      "OCRDocumentTypeEnum": {
-        "type": "string",
-        "enum": [
-          "quote",
-          "invoice",
-          "credit_note",
-          "discount_reminder",
-          "final_reminder",
-          "payables_purchase_order",
-          "overdue_reminder"
-        ]
-      },
+      "OCRDocumentTypeEnum": { "enum": ["invoice", "credit_note", "receipt"] },
       "OCRFileUpload": {
         "properties": { "file": { "type": "string", "format": "binary" } },
         "type": "object",
@@ -55893,6 +56238,7 @@
       "PartnerMetadata": {
         "properties": {
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "description": "Metadata for partner needs"
           }
@@ -55903,7 +56249,10 @@
       "PartnerMetadataResponse": {
         "properties": {
           "metadata": {
-            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "anyOf": [
+              { "additionalProperties": true, "type": "object" },
+              { "type": "null" }
+            ],
             "description": "Metadata for partner needs"
           }
         },
@@ -55958,7 +56307,10 @@
           },
           "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
           "default_role": {
-            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "anyOf": [
+              { "additionalProperties": true, "type": "object" },
+              { "type": "null" }
+            ],
             "description": "A default role to provision upon new entity creation."
           },
           "payments": {
@@ -56027,7 +56379,10 @@
           },
           "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
           "default_role": {
-            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "anyOf": [
+              { "additionalProperties": true, "type": "object" },
+              { "type": "null" }
+            ],
             "description": "A default role to provision upon new entity creation."
           },
           "payments": {
@@ -56359,6 +56714,14 @@
         "type": "object",
         "required": ["file"]
       },
+      "PayableCreatedEventData": {
+        "properties": {
+          "payable_source": { "$ref": "#/components/schemas/PayableOriginEnum" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["payable_source"]
+      },
       "PayableCreditNoteData": {
         "properties": {
           "id": {
@@ -56393,6 +56756,15 @@
         "type": "object",
         "required": ["id", "status"]
       },
+      "PayableCreditNoteLinkedEventData": {
+        "properties": {
+          "credit_note_document_id": { "type": "string" },
+          "credit_note_id": { "type": "string" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["credit_note_id"]
+      },
       "PayableCreditNoteStateEnum": {
         "type": "string",
         "enum": [
@@ -56404,6 +56776,15 @@
           "canceled",
           "submitted_for_approval"
         ]
+      },
+      "PayableCreditNoteUnlinkedEventData": {
+        "properties": {
+          "credit_note_document_id": { "type": "string" },
+          "credit_note_id": { "type": "string" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["credit_note_id"]
       },
       "PayableCursorFields": {
         "type": "string",
@@ -56455,7 +56836,6 @@
             "description": "A state in a country where the entity is registered"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["city", "line1", "postal_code"],
         "description": "A schema represents address info of the entity"
@@ -56601,6 +56981,94 @@
           "status"
         ],
         "description": "A base for an entity response schema"
+      },
+      "PayableHistoryCursorFields": { "type": "string", "enum": ["timestamp"] },
+      "PayableHistoryEventTypeEnum": {
+        "type": "string",
+        "enum": [
+          "status_changed",
+          "payable_created",
+          "payable_updated",
+          "credit_note_linked",
+          "credit_note_unlinked",
+          "file_attached"
+        ]
+      },
+      "PayableHistoryPaginationResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/PayableHistoryResponse" },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"],
+        "description": "A paginated list of change history records."
+      },
+      "PayableHistoryResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique ID of the history record.",
+            "examples": ["cd58435b-1c79-4b17-9f79-f898c93e5f97"]
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity user who made the change or trigger the event, or `null` if it was done by using a partner access token.",
+            "examples": ["d5a577b0-01c0-4566-ac5c-44f41935e8c4"]
+          },
+          "event_data": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/PayableStatusChangedEventData" },
+              { "$ref": "#/components/schemas/PayableUpdatedEventData" },
+              { "$ref": "#/components/schemas/PayableCreatedEventData" },
+              {
+                "$ref": "#/components/schemas/PayableCreditNoteLinkedEventData"
+              },
+              {
+                "$ref": "#/components/schemas/PayableCreditNoteUnlinkedEventData"
+              },
+              { "$ref": "#/components/schemas/FileAttachedEventData" }
+            ],
+            "description": "An object containing additional information about the event or change. The object structure varies based on the `event_type`. "
+          },
+          "event_type": {
+            "allOf": [
+              { "$ref": "#/components/schemas/PayableHistoryEventTypeEnum" }
+            ],
+            "description": "The type of the event or change."
+          },
+          "payable_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the payable document that was changed or triggered an event.",
+            "examples": ["f669a8a4-0563-4ab9-b54f-e9d700d282c5"]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC date and time when the event or change occurred."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "event_data",
+          "event_type",
+          "payable_id",
+          "timestamp"
+        ]
       },
       "PayableIndividualSchema": {
         "properties": {
@@ -57063,6 +57531,15 @@
           "rejected"
         ]
       },
+      "PayableStatusChangedEventData": {
+        "properties": {
+          "new_status": { "$ref": "#/components/schemas/PayableStateEnum" },
+          "old_status": { "$ref": "#/components/schemas/PayableStateEnum" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["new_status", "old_status"]
+      },
       "PayableTemplatesVariable": {
         "properties": {
           "description": { "type": "string" },
@@ -57221,6 +57698,11 @@
         "additionalProperties": false,
         "type": "object",
         "description": "This schema is used to update the data of an existing payable."
+      },
+      "PayableUpdatedEventData": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object"
       },
       "PayableUploadFile": {
         "properties": { "file": { "type": "string", "format": "binary" } },
@@ -57883,6 +58365,19 @@
         "type": "string",
         "enum": ["paid_at", "amount", "overpaid_amount"]
       },
+      "PaymentRecordHistoryResponse": {
+        "properties": {
+          "entity_user_id": { "type": "string", "format": "uuid" },
+          "status": { "$ref": "#/components/schemas/PaymentRecordStatusEnum" },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the change in a history"
+          }
+        },
+        "type": "object",
+        "required": ["status", "timestamp"]
+      },
       "PaymentRecordMarkAsSucceededRequest": {
         "properties": {
           "paid_at": {
@@ -58004,6 +58499,13 @@
             "format": "uuid",
             "description": "ID of the user associated with the payment, if applicable."
           },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentRecordHistoryResponse"
+            },
+            "type": "array",
+            "description": "History of the payment record."
+          },
           "is_external": { "type": "boolean" },
           "object": {
             "$ref": "#/components/schemas/PaymentRecordObjectResponse"
@@ -58048,6 +58550,7 @@
           "id",
           "amount",
           "currency",
+          "history",
           "is_external",
           "object",
           "payment_intent_id"
@@ -58230,58 +58733,6 @@
         "type": "object",
         "required": ["currently_due", "eventually_due", "pending_verification"]
       },
-      "PaymentTerm": {
-        "properties": {
-          "number_of_days": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The amount of days after the invoice issue date."
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["number_of_days"]
-      },
-      "PaymentTermDiscount": {
-        "properties": {
-          "discount": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The discount percentage in minor units. E.g., 200 means 2%. 1050 means 10.5%."
-          },
-          "number_of_days": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The amount of days after the invoice issue date."
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["discount", "number_of_days"]
-      },
-      "PaymentTermDiscountWithDate": {
-        "properties": {
-          "discount": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The discount percentage in minor units. E.g., 200 means 2%. 1050 means 10.5%."
-          },
-          "end_date": { "type": "string", "format": "date" },
-          "number_of_days": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The amount of days after the invoice issue date."
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["discount", "number_of_days"]
-      },
       "PaymentTerms": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -58291,39 +58742,35 @@
           },
           "name": { "type": "string" },
           "term_1": {
-            "allOf": [
-              { "$ref": "#/components/schemas/PaymentTermDiscountWithDate" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermDiscount" }],
             "description": "The first tier of the payment term. Represents the terms of the first early discount."
           },
           "term_2": {
-            "allOf": [
-              { "$ref": "#/components/schemas/PaymentTermDiscountWithDate" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermDiscount" }],
             "description": "The second tier of the payment term. Defines the terms of the second early discount."
           },
           "term_final": {
-            "allOf": [{ "$ref": "#/components/schemas/TermFinalWithDate" }],
+            "allOf": [{ "$ref": "#/components/schemas/InlineTermFinal" }],
             "description": "The final tier of the payment term. Defines the invoice due date."
           }
         },
         "type": "object",
-        "required": ["id", "term_final"]
+        "required": ["term_final"]
       },
       "PaymentTermsCreatePayload": {
         "properties": {
           "description": { "type": "string", "maxLength": 255 },
           "name": { "type": "string", "maxLength": 100, "minLength": 1 },
           "term_1": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The first tier of the payment term. Represents the terms of the first early discount."
           },
           "term_2": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The second tier of the payment term. Defines the terms of the second early discount."
           },
           "term_final": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTerm" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermFinalDays" }],
             "description": "The final tier of the payment term. Defines the invoice due date."
           }
         },
@@ -58347,15 +58794,15 @@
           "description": { "type": "string" },
           "name": { "type": "string" },
           "term_1": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The first tier of the payment term. Represents the terms of the first early discount."
           },
           "term_2": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The second tier of the payment term. Defines the terms of the second early discount."
           },
           "term_final": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTerm" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermFinalDays" }],
             "description": "The final tier of the payment term. Defines the invoice due date."
           }
         },
@@ -58367,15 +58814,15 @@
           "description": { "type": "string", "maxLength": 255 },
           "name": { "type": "string", "maxLength": 100, "minLength": 1 },
           "term_1": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The first tier of the payment term. Represents the terms of the first early discount."
           },
           "term_2": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTermDiscount" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermDiscountDays" }],
             "description": "The second tier of the payment term. Defines the terms of the second early discount."
           },
           "term_final": {
-            "allOf": [{ "$ref": "#/components/schemas/PaymentTerm" }],
+            "allOf": [{ "$ref": "#/components/schemas/TermFinalDays" }],
             "description": "The final tier of the payment term. Defines the invoice due date."
           }
         },
@@ -58955,11 +59402,7 @@
       },
       "PortalUserProfileResponseWithOptionalRole": {
         "properties": {
-          "email": { "type": "string", "format": "email" },
           "id": { "type": "string", "format": "uuid" },
-          "company": { "$ref": "#/components/schemas/CompanyResponse" },
-          "fullname": { "type": "string" },
-          "status": { "$ref": "#/components/schemas/PortalUserStatus" },
           "avatar": {
             "anyOf": [
               {
@@ -58968,15 +59411,19 @@
               { "type": "null" }
             ]
           },
+          "company": { "$ref": "#/components/schemas/CompanyResponse" },
+          "email": { "type": "string", "format": "email" },
+          "fullname": { "type": "string" },
           "role_id": {
             "anyOf": [
               { "type": "string", "format": "uuid" },
               { "type": "null" }
             ]
-          }
+          },
+          "status": { "$ref": "#/components/schemas/PortalUserStatus" }
         },
         "type": "object",
-        "required": ["email", "id", "company", "fullname", "status", "role_id"]
+        "required": ["id", "company", "email", "fullname", "role_id", "status"]
       },
       "PortalUserStatus": {
         "type": "string",
@@ -59158,6 +59605,13 @@
             "maxLength": 2000,
             "description": "Description of the product."
           },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
+          },
           "ledger_account_id": { "type": "string", "format": "uuid" },
           "measure_unit_id": {
             "type": "string",
@@ -59214,6 +59668,13 @@
           },
           "entity_id": { "type": "string", "format": "uuid" },
           "entity_user_id": { "type": "string", "format": "uuid" },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
+          },
           "ledger_account_id": { "type": "string", "format": "uuid" },
           "measure_unit_id": {
             "type": "string",
@@ -59252,6 +59713,13 @@
             "maxLength": 255,
             "description": "Description of the product."
           },
+          "external_reference": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "A user-defined identifier of the product. For example, an internal product code or SKU (stock keeping unit). Client applications can use this field to map the products in Monite to an external product catalog.",
+            "examples": ["HT-1234-S-BL", "SERVICE-67890"]
+          },
           "ledger_account_id": { "type": "string", "format": "uuid" },
           "measure_unit_id": {
             "type": "string",
@@ -59282,11 +59750,6 @@
         },
         "additionalProperties": false,
         "type": "object"
-      },
-      "ProfileAvatarUpdate": {
-        "properties": { "file": { "type": "string", "format": "binary" } },
-        "type": "object",
-        "required": ["file"]
       },
       "ProfileAvatarUpdateResponse": {
         "properties": {
@@ -59602,7 +60065,6 @@
             "description": "State, region, province, or county."
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["city", "country", "line1", "postal_code"],
         "description": "Address information."
@@ -60213,7 +60675,7 @@
           "discount": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__Discount"
+                "$ref": "#/components/schemas/package__receivables__v2024_05_25__billables__DiscountResponse"
               }
             ],
             "description": "The discount for a receivable."
@@ -60911,6 +61373,9 @@
             "description": "Link to the invoice's payment page. Either Monite's payment links or your custom payment links."
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
+          "payment_terms": {
+            "$ref": "#/components/schemas/InlinePaymentTermsRequestPayload"
+          },
           "payment_terms_id": { "type": "string", "format": "uuid" },
           "project_id": {
             "type": "string",
@@ -62025,7 +62490,22 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "Recurrence": {
+      "RecurrenceFrequency": {
+        "type": "string",
+        "enum": ["day", "week", "month", "quarter", "year"]
+      },
+      "RecurrenceIteration": {
+        "properties": {
+          "issue_at": { "type": "string", "format": "date" },
+          "issued_invoice_id": { "type": "string", "format": "uuid" },
+          "iteration": { "type": "integer", "default": 1 },
+          "status": { "$ref": "#/components/schemas/IterationStatus" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["issue_at", "status"]
+      },
+      "RecurrenceResponse": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "created_at": {
@@ -62044,7 +62524,6 @@
           },
           "body_text": {
             "type": "string",
-            "minLength": 1,
             "description": "The body text for the email that will be sent with the recurring invoice."
           },
           "current_iteration": {
@@ -62131,7 +62610,6 @@
           },
           "subject_text": {
             "type": "string",
-            "minLength": 1,
             "description": "The subject for the email that will be sent with the recurring invoice."
           }
         },
@@ -62153,20 +62631,16 @@
           "status"
         ]
       },
-      "RecurrenceFrequency": {
-        "type": "string",
-        "enum": ["day", "week", "month", "quarter", "year"]
-      },
-      "RecurrenceIteration": {
+      "RecurrenceResponseList": {
         "properties": {
-          "issue_at": { "type": "string", "format": "date" },
-          "issued_invoice_id": { "type": "string", "format": "uuid" },
-          "iteration": { "type": "integer", "default": 1 },
-          "status": { "$ref": "#/components/schemas/IterationStatus" }
+          "data": {
+            "items": { "$ref": "#/components/schemas/RecurrenceResponse" },
+            "type": "array"
+          }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["issue_at", "status"]
+        "required": ["data"]
       },
       "RecurrenceStatus": {
         "type": "string",
@@ -63294,9 +63768,27 @@
         "type": "string",
         "enum": ["block", "source_object"]
       },
-      "TermFinalWithDate": {
+      "TermDiscountDays": {
         "properties": {
-          "end_date": { "type": "string", "format": "date" },
+          "discount": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The discount percentage in minor units. E.g., 200 means 2%. 1050 means 10.5%."
+          },
+          "number_of_days": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The amount of days after the invoice issue date."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["discount", "number_of_days"]
+      },
+      "TermFinalDays": {
+        "properties": {
           "number_of_days": {
             "type": "integer",
             "maximum": 10000.0,
@@ -63959,6 +64451,9 @@
             "description": "Link to your invoice's custom payment rails or external payment link."
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
+          "payment_terms": {
+            "$ref": "#/components/schemas/InlinePaymentTermsRequestPayload"
+          },
           "payment_terms_id": {
             "type": "string",
             "format": "uuid",
@@ -64070,6 +64565,9 @@
             "description": "Metadata for partner needs"
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
+          "payment_terms": {
+            "$ref": "#/components/schemas/InlinePaymentTermsRequestPayload"
+          },
           "payment_terms_id": { "type": "string", "format": "uuid" },
           "project_id": {
             "type": "string",
@@ -64321,6 +64819,9 @@
             "type": "object",
             "description": "Metadata for partner needs"
           },
+          "payment_terms": {
+            "$ref": "#/components/schemas/InlinePaymentTermsRequestPayload"
+          },
           "payment_terms_id": {
             "type": "string",
             "format": "uuid",
@@ -64527,11 +65028,6 @@
         "type": "object",
         "required": ["file", "file_type"]
       },
-      "UserAvatarFileUpload": {
-        "properties": { "file": { "type": "string", "format": "binary" } },
-        "type": "object",
-        "required": ["file"]
-      },
       "UserUpdatePayload": {
         "properties": {
           "fullname": {
@@ -64576,22 +65072,18 @@
           "description": { "type": "string" },
           "name": { "type": "string" }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["description", "name"]
       },
       "VariablesObject": {
         "properties": {
-          "object_subtype": {
-            "$ref": "#/components/schemas/OCRDocumentTypeEnum"
-          },
+          "object_subtype": { "$ref": "#/components/schemas/DocumentTypeEnum" },
           "object_type": { "type": "string" },
           "variables": {
             "items": { "$ref": "#/components/schemas/Variable" },
             "type": "array"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["object_subtype", "object_type", "variables"]
       },
@@ -64602,7 +65094,6 @@
             "type": "array"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["data"]
       },
@@ -64682,6 +65173,43 @@
         "type": "object",
         "required": ["data"]
       },
+      "VatRateRequest": {
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the VAT."
+          },
+          "country": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).",
+            "example": "DE"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date",
+            "description": "Date starting from when this rate can be used."
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when this rate was depreciated, after this date rate cannot be used."
+          },
+          "value": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "Percent minor units. Example: 12.5% is 1250."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["country"]
+      },
       "VatRateResponse": {
         "properties": {
           "id": {
@@ -64699,6 +65227,15 @@
             "format": "date-time",
             "description": "Date/time when this rate was updated in the table."
           },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the VAT."
+          },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
             "description": "Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).",
@@ -64706,7 +65243,9 @@
           },
           "created_by": {
             "allOf": [{ "$ref": "#/components/schemas/VatRateCreator" }],
-            "description": "By whom this rate was recorded: monite employee | accounting system."
+            "description": "By whom this rate was recorded: monite employee | accounting system.",
+            "default": "monite",
+            "deprecated": true
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/VatRateStatusEnum" }],
@@ -64735,14 +65274,19 @@
       "VatRateStatusEnum": { "type": "string", "enum": ["active", "inactive"] },
       "VatRateUpdate": {
         "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the VAT."
+          },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
             "description": "Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).",
             "example": "DE"
-          },
-          "created_by": {
-            "allOf": [{ "$ref": "#/components/schemas/VatRateCreator" }],
-            "description": "By whom this rate was recorded: monite employee | accounting system."
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/VatRateStatusEnum" }],
@@ -65090,7 +65634,7 @@
       },
       "YapilyCountriesCoverageCodes": {
         "type": "string",
-        "enum": ["BE", "GB", "IT", "IE", "NL", "DE"]
+        "enum": ["BE", "GB", "IT", "IE", "NL", "DE", "AT"]
       },
       "api__v1__receivables__pagination__ReceivableCursorFields": {
         "type": "string",
@@ -65687,6 +66231,29 @@
         "type": "object",
         "required": ["amount", "type"]
       },
+      "package__receivables__latest__billables__DiscountResponse": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The actual discount of the product in [minor units](https://docs.monite.com/references/currencies#minor-units) if type field equals amount, else in percent minor units"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/DiscountType" }],
+            "description": "The field specifies whether to use product currency or %."
+          },
+          "value": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The monetary amount of the discount, in [minor units](https://docs.monite.com/references/currencies#minor-units). If the discount `type` is `amount`, this value is the same as the `amount` value. If `type` is `percentage`, the value is the calculated discount amount."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["amount", "type"]
+      },
       "package__receivables__latest__billables__Price": {
         "properties": {
           "currency": {
@@ -65703,24 +66270,6 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["currency", "value"]
-      },
-      "package__receivables__latest__custom_vat_rate__VatRateComponent": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 64,
-            "description": "Display name of the Sub-tax."
-          },
-          "value": {
-            "type": "number",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "Percent multiplied by a 100. Example: 12.125% is 1212,5. Will be rounded to 2 decimal places"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["name", "value"]
       },
       "package__receivables__latest__receivables__LineItemProductMeasureUnit": {
         "properties": {
@@ -65740,7 +66289,7 @@
           },
           "components": {
             "items": {
-              "$ref": "#/components/schemas/package__receivables__latest__custom_vat_rate__VatRateComponent"
+              "$ref": "#/components/schemas/package__receivables__latest__shared__VatRateComponent"
             },
             "type": "array",
             "minItems": 1,
@@ -65755,6 +66304,10 @@
             "type": "boolean",
             "description": "Indicates whether this vat rate is defined by user.",
             "default": false
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the vat rate."
           },
           "value": {
             "type": "number",
@@ -65898,6 +66451,10 @@
             "minItems": 1,
             "description": "Sub-taxes included in the VAT."
           },
+          "name": {
+            "type": "string",
+            "description": "Display name of the vat rate."
+          },
           "taxable_amount": {
             "type": "integer",
             "minimum": 0.0,
@@ -65932,6 +66489,24 @@
         "type": "object",
         "required": ["name", "value", "amount"]
       },
+      "package__receivables__latest__shared__VatRateComponent": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Tax."
+          },
+          "value": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "Percent multiplied by a 100. Example: 12.125% is 1212.5. Will be rounded to 2 decimal places"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["name", "value"]
+      },
       "package__receivables__v2024_05_25__billables__Discount": {
         "properties": {
           "amount": {
@@ -65943,6 +66518,29 @@
           "type": {
             "allOf": [{ "$ref": "#/components/schemas/DiscountType" }],
             "description": "The field specifies whether to use product currency or %."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["amount", "type"]
+      },
+      "package__receivables__v2024_05_25__billables__DiscountResponse": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The actual discount of the product in [minor units](https://docs.monite.com/references/currencies#minor-units) if type field equals amount, else in percent minor units"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/DiscountType" }],
+            "description": "The field specifies whether to use product currency or %."
+          },
+          "value": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The monetary amount of the discount, in [minor units](https://docs.monite.com/references/currencies#minor-units). If the discount `type` is `amount`, this value is the same as the `amount` value. If `type` is `percentage`, the value is the calculated discount amount."
           }
         },
         "additionalProperties": false,
@@ -65966,24 +66564,6 @@
         "type": "object",
         "required": ["currency", "value"]
       },
-      "package__receivables__v2024_05_25__custom_vat_rate__VatRateComponent": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 64,
-            "description": "Display name of the Sub-tax."
-          },
-          "value": {
-            "type": "number",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "Percent multiplied by a 100. Example: 12.125% is 1212,5. Will be rounded to 2 decimal places"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["name", "value"]
-      },
       "package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -66002,9 +66582,11 @@
           },
           "components": {
             "items": {
-              "$ref": "#/components/schemas/package__receivables__v2024_05_25__custom_vat_rate__VatRateComponent"
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
             },
-            "type": "array"
+            "type": "array",
+            "minItems": 1,
+            "description": "Sub-taxes included in the VAT."
           },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
@@ -66015,6 +66597,10 @@
             "type": "boolean",
             "description": "Indicates whether this vat rate is defined by user.",
             "default": false
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the vat rate."
           },
           "value": {
             "type": "integer",
@@ -66173,7 +66759,13 @@
             "items": {
               "$ref": "#/components/schemas/package__receivables__v2024_05_25__receivables__TotalVatAmountItemComponent"
             },
-            "type": "array"
+            "type": "array",
+            "minItems": 1,
+            "description": "Sub-taxes included in the VAT."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the vat rate."
           },
           "taxable_amount": {
             "type": "integer",
@@ -66208,6 +66800,24 @@
         },
         "type": "object",
         "required": ["name", "value", "amount"]
+      },
+      "package__receivables__v2024_05_25__shared__VatRateComponent": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Tax."
+          },
+          "value": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "Percent multiplied by a 100. Example: 12.125% is 1212.5. Will be rounded to 2 decimal places"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["name", "value"]
       },
       "package__roles__head__schemas__ActionSchema": {
         "properties": {
