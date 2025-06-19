@@ -121,6 +121,67 @@ export const processTaxRateValue = (inputValue: string): number => {
   return Math.min(Math.max(numValue, 0), 100);
 };
 
+const COMMON_DECIMAL_SEPARATOR = '.';
+
+const escapeRegexChars = (str: string) =>
+  str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+
+const getLocaleSeparators = (locale?: string) => {
+  if (typeof Intl === 'undefined' || typeof Intl.NumberFormat === 'undefined') {
+    return { decimal: '.', group: ',' };
+  }
+
+  try {
+    const parts = Intl.NumberFormat(locale).formatToParts(12345.6);
+    const decimal = parts.find((part) => part.type === 'decimal')?.value || '.';
+    const group = parts.find((part) => part.type === 'group')?.value || ',';
+    return { decimal, group };
+  } catch (error) {
+    console.error('Error getting locale separators:', error);
+    return { decimal: '.', group: ',' };
+  }
+};
+
+/**
+ * Parses a string that might contain locale-specific formatting (e.g., commas for decimals)
+ * into a standard number.
+ *
+ * @param inputValue The raw input string.
+ * @param locale Optional: The BCP 47 language tag for the locale to use for parsing (e.g., "en-US", "de-DE"). Defaults to browser's locale.
+ * @returns A number, or 0 if parsing fails.
+ */
+export const parseLocaleNumericString = (
+  inputValue: string,
+  locale?: string
+): number => {
+  if (typeof inputValue !== 'string' || !inputValue.trim()) {
+    return 0;
+  }
+
+  const { decimal: localeDecimalSeparator, group: localeGroupSeparator } =
+    getLocaleSeparators(locale);
+  const cleanedString = inputValue.replace(
+    new RegExp(escapeRegexChars(localeGroupSeparator), 'g'),
+    ''
+  );
+
+  let resultString = '';
+  let hasSeparator = false;
+
+  for (const char of cleanedString) {
+    if (/\d/.test(char)) {
+      resultString += char;
+    } else if (char === localeDecimalSeparator && !hasSeparator) {
+      resultString += COMMON_DECIMAL_SEPARATOR;
+      hasSeparator = true;
+    }
+  }
+
+  const numValue = parseFloat(resultString);
+
+  return isNaN(numValue) ? 0 : numValue;
+};
+
 /**
  * Handles cleaning up the input element for tax/VAT rate fields
  * Fixes issues like leading zeros
