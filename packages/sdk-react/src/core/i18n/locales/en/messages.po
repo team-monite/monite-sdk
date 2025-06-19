@@ -58,7 +58,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/financing/components/FinanceFaqDetails.tsx:58
 #: src/components/financing/components/FinanceFaqDetails.tsx:62
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
-#: src/components/receivables/components/EditCounterpartModal.tsx:427
+#: src/components/receivables/components/EditCounterpartModal.tsx:430
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:114
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:80
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:36
@@ -3111,7 +3111,7 @@ msgstr "Edit preset"
 #~ msgid "Edit Product Close"
 #~ msgstr "Edit Product Close"
 
-#: src/components/receivables/components/EditCounterpartModal.tsx:409
+#: src/components/receivables/components/EditCounterpartModal.tsx:412
 msgid "Edit profile"
 msgstr "Edit profile"
 
@@ -6872,7 +6872,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:332
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:70
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
-#: src/components/receivables/components/EditCounterpartModal.tsx:435
+#: src/components/receivables/components/EditCounterpartModal.tsx:438
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:609
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:787
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:40

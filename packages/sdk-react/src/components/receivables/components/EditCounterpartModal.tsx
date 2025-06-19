@@ -378,7 +378,10 @@ export const EditCounterpartModal = ({
                             onClick={(event) => {
                               event.preventDefault();
                               setIsDirty(true);
-                              setValue('default_shipping_address_id', '');
+                              setFormValues((prevState) => ({
+                                ...prevState,
+                                shippingAddressId: '',
+                              }));
                             }}
                           >
                             <ClearIcon fontSize="small" />
