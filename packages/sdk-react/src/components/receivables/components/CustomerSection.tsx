@@ -1,21 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { CustomerType } from '@/components/counterparts/types';
-import { CounterpartSelector } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector';
+import {
+  CounterpartSelector,
+  EditCounterpartModal,
+} from '@/components/receivables/components';
 import { useCounterpartAddresses, useCounterpartVatList } from '@/core/queries';
-import { Stack } from '@mui/material';
 
-import { CreateReceivablesFormProps } from '../validation';
-import { EditCounterpartModal } from './components/EditCounterpartModal';
-import { useDefaultCounterpartValues } from './components/useDefaultCounterpartValues';
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 
 export interface CustomerSectionProps {
   disabled: boolean;
   customerTypes?: CustomerType[];
   isEditModalOpen?: boolean;
   handleEditModal?: (isOpen: boolean) => void;
+  counterpart?: components['schemas']['CounterpartResponse'];
 }
 
 export const CustomerSection = ({
@@ -23,25 +25,54 @@ export const CustomerSection = ({
   customerTypes,
   isEditModalOpen,
   handleEditModal,
+  counterpart,
 }: CustomerSectionProps) => {
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
 
-  const counterpartId = watch('counterpart_id');
+  const selectedBillingAddressId = watch('default_billing_address_id');
+  const selectedShippingAddressId = watch('default_shipping_address_id');
 
-  const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
-  const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+  const { data: counterpartAddresses } = useCounterpartAddresses(
+    counterpart?.id
+  );
+  const { data: counterpartVats } = useCounterpartVatList(counterpart?.id);
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);
   const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
     useState<boolean>(false);
 
-  const className = 'Monite-CreateReceivable-CustomerSection';
+  useEffect(() => {
+    if (!counterpartAddresses?.data?.length) return;
 
-  useDefaultCounterpartValues({ counterpartAddresses, counterpartVats });
+    if (!selectedBillingAddressId) {
+      const billingAddressId =
+        counterpart?.default_billing_address_id ||
+        counterpartAddresses.data[0].id ||
+        '';
+      setValue('default_billing_address_id', billingAddressId);
+    }
+
+    if (!selectedShippingAddressId) {
+      const shippingAddressId = counterpart?.default_shipping_address_id || '';
+      setValue('default_shipping_address_id', shippingAddressId);
+    }
+  }, [
+    counterpartAddresses,
+    setValue,
+    counterpart,
+    selectedBillingAddressId,
+    selectedShippingAddressId,
+  ]);
+
+  useEffect(() => {
+    if (counterpartVats && counterpartVats.data.length === 1) {
+      setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
+    }
+  }, [counterpartVats, setValue]);
 
   return (
-    <Stack spacing={2} className={className}>
+    <div className="mtw:w-full">
       <CounterpartSelector
         setIsCreateCounterpartOpened={setIsCreateCounterpartOpened}
         setIsEditCounterpartOpened={setIsEditCounterpartOpened}
@@ -63,7 +94,9 @@ export const CustomerSection = ({
 
       {(isEditModalOpen || isEditCounterpartOpened) && (
         <EditCounterpartModal
-          initialCounterpartId={counterpartId}
+          initialCounterpartId={counterpart?.id || ''}
+          initialBillingAddressId={selectedBillingAddressId}
+          initialShippingAddressId={selectedShippingAddressId}
           disabled={disabled}
           open={isEditModalOpen || isEditCounterpartOpened}
           onClose={() => {
@@ -74,6 +107,6 @@ export const CustomerSection = ({
           }}
         />
       )}
-    </Stack>
+    </div>
   );
 };

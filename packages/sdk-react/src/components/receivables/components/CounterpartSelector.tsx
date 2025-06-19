@@ -31,7 +31,7 @@ import {
   createFilterOptions,
 } from '@mui/material';
 
-import { CreateReceivablesFormProps } from '../../validation';
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -267,7 +267,7 @@ export const CounterpartSelector = ({
                         ) {
                           return (
                             <Button onClick={handleEditCounterpart}>
-                              {t(i18n)`Edit`}
+                              {t(i18n)`View details`}
                             </Button>
                           );
                         }

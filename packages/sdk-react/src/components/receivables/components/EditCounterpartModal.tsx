@@ -9,7 +9,7 @@ import {
   prepareAddressView,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { CounterpartSelector } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CounterpartSelector';
+import { CounterpartSelector } from '@/components/receivables/components/CounterpartSelector';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -38,10 +38,11 @@ import {
   Modal,
   Select,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 
-import { CreateReceivablesFormProps } from '../../validation';
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 
 type FormValues = {
   billingAddressId: string;
@@ -51,12 +52,16 @@ type FormValues = {
 export interface EditCounterpartModalProps {
   disabled: boolean;
   initialCounterpartId: string;
+  initialBillingAddressId: string;
+  initialShippingAddressId?: string;
   open: boolean;
   onClose: () => void;
 }
 
 export const EditCounterpartModal = ({
   initialCounterpartId,
+  initialBillingAddressId,
+  initialShippingAddressId,
   disabled,
   open,
   onClose,
@@ -71,19 +76,20 @@ export const EditCounterpartModal = ({
     billingAddressId: '',
     shippingAddressId: '',
   });
+  const [isDirty, setIsDirty] = useState(false);
 
   const { data: counterpart } = useCounterpartById(currentCounterpartId);
   const { data: contacts } = useCounterpartContactList(currentCounterpartId);
   const { data: counterpartAddresses, isLoading: isAddressesLoading } =
     useCounterpartAddresses(currentCounterpartId);
   const { data: counterpartVats } = useCounterpartVatList(currentCounterpartId);
+  const currentBillingAddress = counterpartAddresses?.data.find(
+    (address) => address?.id === formValues.billingAddressId
+  );
 
   const defaultContact = contacts?.find((c) => c.is_default);
 
-  const isAddressFormDisabled =
-    isAddressesLoading ||
-    !currentCounterpartId ||
-    counterpartAddresses?.data.length === 1;
+  const isAddressFormDisabled = isAddressesLoading || !currentCounterpartId;
 
   const handleUpdate = () => {
     onClose();
@@ -92,6 +98,7 @@ export const EditCounterpartModal = ({
 
   const handleSaveChanges = () => {
     onClose();
+    setIsDirty(false);
     setValue('counterpart_id', currentCounterpartId);
     setValue('default_billing_address_id', formValues.billingAddressId);
     setValue('default_shipping_address_id', formValues.shippingAddressId);
@@ -100,11 +107,37 @@ export const EditCounterpartModal = ({
   const isOrganization = counterpart && isOrganizationCounterpart(counterpart);
 
   useEffect(() => {
-    setFormValues({
-      billingAddressId: counterpartAddresses?.data?.[0]?.id ?? '',
-      shippingAddressId: counterpartAddresses?.data?.[0]?.id ?? '',
+    if (!counterpartAddresses?.data?.length) return;
+
+    setFormValues(() => {
+      const isInitialBillingAddressValid = counterpartAddresses.data.find(
+        (address) => address.id === initialBillingAddressId
+      );
+      const isInitialShippingAddressValid = counterpartAddresses.data.find(
+        (address) => address.id === initialShippingAddressId
+      );
+
+      const billingAddressId =
+        (isInitialBillingAddressValid && initialBillingAddressId) ||
+        counterpart?.default_billing_address_id ||
+        counterpartAddresses.data[0].id ||
+        '';
+      const shippingAddressId =
+        (isInitialShippingAddressValid && initialShippingAddressId) ||
+        counterpart?.default_shipping_address_id ||
+        '';
+
+      return {
+        billingAddressId,
+        shippingAddressId,
+      };
     });
-  }, [counterpartAddresses]);
+  }, [
+    counterpartAddresses,
+    counterpart,
+    initialShippingAddressId,
+    initialBillingAddressId,
+  ]);
 
   return (
     <Modal open={open} container={root}>
@@ -125,7 +158,7 @@ export const EditCounterpartModal = ({
             <Typography variant="h3">
               {isEditMode
                 ? t(i18n)`Edit customer's profile`
-                : t(i18n)`Edit customer`}
+                : t(i18n)`View customer's details`}
             </Typography>
           </Grid>
           <Grid item xs={1}>
@@ -164,9 +197,10 @@ export const EditCounterpartModal = ({
                 counterpartAddresses={counterpartAddresses}
                 shouldDisableFormUpdate
                 currentCounterpartId={currentCounterpartId}
-                handleUpdateCounterpartId={(value) =>
-                  setCurrentCounterpartId(value ?? '')
-                }
+                handleUpdateCounterpartId={(value) => {
+                  setIsDirty(true);
+                  setCurrentCounterpartId(value ?? '');
+                }}
               />
               <List
                 sx={{
@@ -227,50 +261,72 @@ export const EditCounterpartModal = ({
               <Controller
                 name="default_billing_address_id"
                 control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl
-                    variant="standard"
-                    sx={{ marginBottom: '1rem' }}
-                    fullWidth
-                    required
-                    error={Boolean(error)}
-                    disabled={isAddressFormDisabled}
-                  >
-                    <InputLabel id={field.name}>{t(
-                      i18n
-                    )`Billing address`}</InputLabel>
-                    <Select
-                      {...field}
-                      value={formValues.billingAddressId}
-                      onChange={(event) =>
-                        setFormValues((prevState) => ({
-                          ...prevState,
-                          billingAddressId: event.target.value
-                            ? event.target.value
-                            : '',
-                        }))
-                      }
-                      labelId={field.name}
-                      label={t(i18n)`Billing address`}
-                      IconComponent={() => (
-                        <KeyboardArrowDown fontSize="small" />
-                      )}
-                      MenuProps={{ container: root }}
-                      startAdornment={
-                        isAddressesLoading ? (
-                          <CircularProgress size={20} />
-                        ) : null
-                      }
+                render={({ field, fieldState: { error } }) =>
+                  (counterpartAddresses &&
+                    counterpartAddresses?.data?.length > 1) ||
+                  isAddressesLoading ? (
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginBottom: '1rem' }}
+                      fullWidth
+                      required
+                      error={Boolean(error)}
+                      disabled={isAddressFormDisabled}
                     >
-                      {counterpartAddresses?.data.map((address) => (
-                        <MenuItem key={address.id} value={address.id}>
-                          {prepareAddressView({ address })}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {error && <FormHelperText>{error.message}</FormHelperText>}
-                  </FormControl>
-                )}
+                      <InputLabel id={field.name}>{t(
+                        i18n
+                      )`Billing address`}</InputLabel>
+                      <Select
+                        {...field}
+                        value={formValues.billingAddressId}
+                        onChange={(event) => {
+                          setIsDirty(true);
+                          setFormValues((prevState) => ({
+                            ...prevState,
+                            billingAddressId: event.target.value
+                              ? event.target.value
+                              : '',
+                          }));
+                        }}
+                        labelId={field.name}
+                        label={t(i18n)`Billing address`}
+                        IconComponent={() => (
+                          <KeyboardArrowDown fontSize="small" />
+                        )}
+                        MenuProps={{ container: root }}
+                        startAdornment={
+                          isAddressesLoading ? (
+                            <CircularProgress size={20} />
+                          ) : null
+                        }
+                      >
+                        {counterpartAddresses?.data.map((address) => (
+                          <MenuItem key={address.id} value={address.id}>
+                            {prepareAddressView({ address })}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                  ) : (
+                    <TextField
+                      {...field}
+                      value={prepareAddressView({
+                        address: currentBillingAddress,
+                      })}
+                      id={field.name}
+                      label={t(i18n)`Billing address`}
+                      required
+                      variant="standard"
+                      fullWidth
+                      disabled
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                    />
+                  )
+                }
               />
               <Controller
                 name="default_shipping_address_id"
@@ -290,14 +346,15 @@ export const EditCounterpartModal = ({
                       {...field}
                       id={field.name}
                       value={formValues.shippingAddressId}
-                      onChange={(event) =>
+                      onChange={(event) => {
+                        setIsDirty(true);
                         setFormValues((prevState) => ({
                           ...prevState,
                           shippingAddressId: event.target.value
                             ? event.target.value
                             : '',
-                        }))
-                      }
+                        }));
+                      }}
                       labelId={field.name}
                       MenuProps={{ container: root }}
                       label={t(i18n)`Shipping address`}
@@ -320,6 +377,7 @@ export const EditCounterpartModal = ({
                             size="small"
                             onClick={(event) => {
                               event.preventDefault();
+                              setIsDirty(true);
                               setValue('default_shipping_address_id', '');
                             }}
                           >
@@ -359,16 +417,24 @@ export const EditCounterpartModal = ({
                 }}
                 xs={6}
               >
-                <Button variant="text" onClick={onClose}>
-                  {t(i18n)`Cancel`}
-                </Button>
                 <Button
-                  variant="contained"
-                  disabled={disabled}
-                  onClick={handleSaveChanges}
+                  variant="text"
+                  onClick={() => {
+                    setIsDirty(false);
+                    onClose();
+                  }}
                 >
-                  {t(i18n)`Save`}
+                  {t(i18n)`${isDirty ? 'Cancel' : 'Close'}`}
                 </Button>
+                {isDirty && (
+                  <Button
+                    variant="contained"
+                    disabled={disabled}
+                    onClick={handleSaveChanges}
+                  >
+                    {t(i18n)`Save`}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </>

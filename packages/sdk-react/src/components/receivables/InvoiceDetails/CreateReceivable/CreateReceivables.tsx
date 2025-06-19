@@ -6,8 +6,9 @@ import { showErrorToast } from '@/components/onboarding/utils';
 import {
   BankAccountFormDialog,
   BankAccountSection,
+  RemindersSection,
+  CustomerSection,
 } from '@/components/receivables/components';
-import { RemindersSection } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -54,7 +55,6 @@ import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { InvoicePreview } from './sections/components/InvoicePreview';
-import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import {
@@ -826,6 +826,7 @@ const CreateReceivablesBase = ({
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
                     handleEditModal={handleEditCounterpartModalState}
+                    counterpart={counterpart}
                   />
                 </Box>
 
