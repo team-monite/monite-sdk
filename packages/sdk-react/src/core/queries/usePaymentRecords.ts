@@ -87,7 +87,9 @@ export const usePayablePaymentIntentsAndRecords = (
   // Automatically fetch next page when available
   useEffect(() => {
     if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
+      fetchNextPage().catch((error) => {
+        console.error('Error fetching next page:', error);
+      });
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
