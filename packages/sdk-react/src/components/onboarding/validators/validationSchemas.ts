@@ -2,6 +2,7 @@ import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+import { getIdentificationLabel } from '../helpers';
 import {
   booleanValidator,
   dateOfBirthValidator,
@@ -23,17 +24,14 @@ export const entitySchema = (
 });
 
 export const entityIndividualSchema = (
-  i18n: I18n
+  i18n: I18n,
+  country?: AllowedCountries | null
 ): ValidationSchema<OptionalIndividualSchema> => ({
   first_name: stringValidator().label(t(i18n)`First name`),
   last_name: stringValidator().label(t(i18n)`Last name`),
   title: stringValidator().label(t(i18n)`Title`),
   date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(t(i18n)`Security number`),
-  ssn_last_4: stringValidator()
-    .label(t(i18n)`Last 4 digits of Social Security number`)
-    .trim()
-    .length(4),
+  id_number: stringValidator().label(getIdentificationLabel(i18n, country)),
 });
 
 export const entityOrganizationSchema = (
@@ -93,7 +91,8 @@ export const personDocumentsSchema = (
 });
 
 export const personSchema = (
-  i18n: I18n
+  i18n: I18n,
+  country?: AllowedCountries | null
 ): ValidationSchema<OptionalPersonRequest> => ({
   first_name: stringValidator().label(t(i18n)`First name`),
   last_name: stringValidator().label(t(i18n)`Last name`),
@@ -102,11 +101,7 @@ export const personSchema = (
     .email(),
   phone: phoneValidator(i18n).label(t(i18n)`Phone number`),
   date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(t(i18n)`Security number`),
-  ssn_last_4: stringValidator()
-    .label(t(i18n)`Last 4 digits of Social Security number`)
-    .trim()
-    .min(4),
+  id_number: stringValidator().label(getIdentificationLabel(i18n, country)),
 });
 
 export const bankAccountSchema = (
@@ -194,3 +189,4 @@ type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
 type PersonOnboardingDocumentsPayload =
   components['schemas']['PersonOnboardingDocumentsPayload'];
 type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

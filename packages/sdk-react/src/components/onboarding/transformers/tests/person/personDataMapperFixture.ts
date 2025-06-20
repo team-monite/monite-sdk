@@ -9,7 +9,6 @@ export const personMask: OnboardingPersonMask = {
   date_of_birth: true,
   phone: true,
   id_number: true,
-  ssn_last_4: true,
   address: {
     country: true,
     line1: true,
@@ -54,7 +53,6 @@ function getPerson(): OptionalPersonRequest {
     email: '',
     phone: '',
     id_number: '',
-    ssn_last_4: '',
     address,
     relationship,
   };
@@ -145,11 +143,6 @@ export const onboardingPersonFixture = (): OnboardingTestData<
           value: null,
         },
       },
-      ssn_last_4: {
-        error: null,
-        required: true,
-        value: null,
-      },
     },
     errors: [],
   };
@@ -232,11 +225,6 @@ export const onboardingPersonOptionalFixture = (): OnboardingTestData<
           required: true,
           value: null,
         },
-      },
-      ssn_last_4: {
-        error: null,
-        required: true,
-        value: null,
       },
     },
     errors: [],
