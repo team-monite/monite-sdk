@@ -2,6 +2,7 @@ import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { RemindersSection } from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
@@ -32,7 +33,6 @@ import * as yup from 'yup';
 
 import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
 import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
-import { ReminderSection } from '../../CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
 import { getUpdateInvoiceValidationSchema } from '../../CreateReceivable/validation';
@@ -318,7 +318,7 @@ const EditInvoiceDetailsContent = ({
                 isVatSelectionDisabled
               />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
-              <ReminderSection
+              <RemindersSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}
                 onUpdatePaymentReminder={onEditPaymentReminder}
