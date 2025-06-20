@@ -28,11 +28,11 @@ export const usePaymentRecords = (
  *
  * @param payableIds - Array of payable IDs to fetch payment records for
  * @returns {Object} - Hook result containing:
- *   - recentRecordByPayableAndIntent: Payment intents with most recent record per intent, grouped by payable ID
+ *   - payablesPaymentIntentsRecord: Payment intents with most recent record per intent, grouped by payable ID
  *   - isLoading: Loading state boolean
  *   - error: Error state if request fails
  *
- * Example data returned in recentRecordByPayableAndIntent:
+ * Example data returned in payablesPaymentIntentsRecord:
  * - Payment intents with most recent record per intent, grouped by payable ID:
  * ```
  * {
