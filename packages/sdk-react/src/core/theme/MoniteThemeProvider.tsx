@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { getTailwindTheme } from '@/core/theme/tailwind/tailwindTheme';
 import { useMoniteContext } from '@/index';
@@ -11,9 +11,11 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 export const MoniteThemeProvider = ({ children }: { children: ReactNode }) => {
   const { theme } = useMoniteContext();
 
+  const tailwindStyles = useMemo(() => getTailwindTheme(theme), [theme]);
+
   return (
     <>
-      <Global styles={getTailwindTheme(theme)} />
+      <Global styles={tailwindStyles} />
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
     </>
   );
