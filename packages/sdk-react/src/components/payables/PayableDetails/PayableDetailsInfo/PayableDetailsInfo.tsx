@@ -6,6 +6,7 @@ import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
+import { PayableApprovalFlowSection } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection';
 import {
   isFieldRequired,
   isOcrMismatch,
@@ -156,6 +157,8 @@ const PayableDetailsInfoBase = ({
   );
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
+
+  const showApprovalFlow = Boolean(approvalPolicy?.id);
 
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),
@@ -417,14 +420,41 @@ const PayableDetailsInfoBase = ({
                     {t(i18n)`Applied policy`}
                   </StyledLabelTableCell>
                   <TableCell>
-                    {!isApprovalPolicyLoading &&
-                      (approvalPolicy?.name || t(i18n)`no policy`)}
+                    {!isApprovalPolicyLoading && approvalPolicy?.name ? (
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                      >
+                        <span>{approvalPolicy.name}</span>
+                        {(payable.status === 'waiting_to_be_paid' ||
+                          payable.status === 'paid' ||
+                          payable.status === 'partially_paid') && (
+                          <Chip
+                            label={t(i18n)`Approved`}
+                            color="success"
+                            size="small"
+                          />
+                        )}
+                      </Box>
+                    ) : (
+                      !isApprovalPolicyLoading && t(i18n)`no policy`
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </Paper>
         </Grid>
+
+        {showApprovalFlow && approvalPolicy && (
+          <Grid item xs={12}>
+            <PayableApprovalFlowSection
+              approvalPolicy={approvalPolicy}
+              payableId={payable.id}
+              currentStatus={payable.status}
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} className={className + '-Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}

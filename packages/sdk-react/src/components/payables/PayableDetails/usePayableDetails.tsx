@@ -13,6 +13,10 @@ import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/use
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import {
+  useEntityUserByAuthToken,
+  useEntityUserRoleByAuthToken,
+} from '@/core/queries/useEntityUsers';
 import { usePayablePaymentIntentsAndRecords } from '@/core/queries/usePaymentRecords';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -27,6 +31,8 @@ export type PayableDetailsPermissions =
   | 'submit'
   | 'reject'
   | 'approve'
+  | 'forceReject'
+  | 'forceApprove'
   | 'reopen'
   | 'delete'
   | 'pay';
@@ -136,6 +142,9 @@ export function usePayableDetails({
   const [payableId, setPayableId] = useState<string | undefined>(id);
   const [isPermissionsLoading, setIsPermissionsLoading] =
     useState<boolean>(true);
+
+  const { data: currentUser } = useEntityUserByAuthToken();
+  const { data: currentUserRole } = useEntityUserRoleByAuthToken();
   const [permissions, setPermissions] = useState<PayableDetailsPermissions[]>(
     []
   );
@@ -203,6 +212,21 @@ export function usePayableDetails({
   );
 
   const lineItems = lineItemsData?.data;
+
+  const { data: approvalRequests } =
+    api.approvalRequests.getApprovalRequests.useQuery(
+      {
+        query: {
+          object_id: payableId,
+          object_type: 'payable',
+        },
+      },
+      {
+        enabled: !!payableId && payable?.status === 'approve_in_progress',
+      }
+    );
+
+  const activeApprovalRequest = approvalRequests?.data?.[0];
 
   const { data: isCancelAvailable } = useIsActionAllowed({
     method: 'payable',
@@ -351,7 +375,44 @@ export function usePayableDetails({
         toast.error(getAPIErrorMessage(i18n, error));
       },
     });
-  const rejectMutation = api.payables.postPayablesIdReject.useMutation(
+
+  const rejectApprovalRequestMutation =
+    api.approvalRequests.postApprovalRequestsIdReject.useMutation(undefined, {
+      onSuccess: () =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payableId ?? '' } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.approvalRequests.getApprovalRequests.invalidateQueries(
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    });
+
+  const approveApprovalRequestMutation =
+    api.approvalRequests.postApprovalRequestsIdApprove.useMutation(undefined, {
+      onSuccess: () =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payableId ?? '' } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.approvalRequests.getApprovalRequests.invalidateQueries(
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    });
+
+  const forceRejectMutation = api.payables.postPayablesIdReject.useMutation(
     undefined,
     {
       onSuccess: (payable) =>
@@ -367,7 +428,8 @@ export function usePayableDetails({
       },
     }
   );
-  const approveMutation =
+
+  const forceApproveMutation =
     api.payables.postPayablesIdApprovePaymentOperation.useMutation(undefined, {
       onSuccess: (payable) =>
         Promise.all([
@@ -483,8 +545,30 @@ export function usePayableDetails({
       case 'approve_in_progress': {
         const permissions: PayableDetailsPermissions[] = [];
 
-        if (isApproveAvailable) {
+        const isApprover =
+          activeApprovalRequest &&
+          activeApprovalRequest.user_ids?.includes(currentUser?.id ?? '');
+
+        if (isApproveAvailable && activeApprovalRequest && isApprover) {
           permissions.push('reject', 'approve');
+        }
+
+        const hasApprovePermission = () => {
+          const payableObj = currentUserRole?.permissions?.objects?.find(
+            (o) => o.object_type === 'payable'
+          );
+          if (!payableObj?.actions) return false;
+          return (
+            Array.isArray(payableObj.actions) &&
+            payableObj.actions.some(
+              (a) => a.action_name === 'approve' && a.permission === 'allowed'
+            )
+          );
+        };
+        const isApprovalSuperUser = hasApprovePermission();
+
+        if (isApproveAvailable && isApprovalSuperUser) {
+          permissions.push('forceReject', 'forceApprove');
         }
 
         setPermissions(permissions);
@@ -530,6 +614,9 @@ export function usePayableDetails({
     status,
     payableId,
     payable?.amount_to_pay,
+    activeApprovalRequest,
+    currentUser?.id,
+    currentUserRole?.permissions,
   ]);
 
   useEffect(() => {
@@ -550,18 +637,22 @@ export function usePayableDetails({
         updateMutation.isPending ||
         cancelMutation.isPending ||
         submitMutation.isPending ||
-        rejectMutation.isPending ||
-        approveMutation.isPending ||
-        reopenMutation.isPending
+        forceRejectMutation.isPending ||
+        forceApproveMutation.isPending ||
+        reopenMutation.isPending ||
+        rejectApprovalRequestMutation.isPending ||
+        approveApprovalRequestMutation.isPending
     );
   }, [
     createMutation.isPending,
     updateMutation.isPending,
     cancelMutation.isPending,
     submitMutation.isPending,
-    rejectMutation.isPending,
-    approveMutation.isPending,
+    forceRejectMutation.isPending,
+    forceApproveMutation.isPending,
     reopenMutation.isPending,
+    rejectApprovalRequestMutation.isPending,
+    approveApprovalRequestMutation.isPending,
   ]);
 
   const createInvoice = async (
@@ -772,13 +863,16 @@ export function usePayableDetails({
   };
 
   const rejectInvoice = async () => {
-    if (payableId) {
-      await rejectMutation.mutateAsync(
+    if (payableId && activeApprovalRequest) {
+      await rejectApprovalRequestMutation.mutateAsync(
         {
-          path: { payable_id: payableId },
+          body: undefined,
+          path: { approval_request_id: activeApprovalRequest.id },
         },
         {
-          onSuccess: (payable) => {
+          onSuccess: () => {
+            if (!payable) return;
+
             toast.success(
               t(i18n)`Payable “${payable.document_id}” has been rejected`
             );
@@ -790,15 +884,53 @@ export function usePayableDetails({
   };
 
   const approveInvoice = async () => {
+    if (payableId && activeApprovalRequest) {
+      await approveApprovalRequestMutation.mutateAsync(
+        {
+          path: { approval_request_id: activeApprovalRequest.id },
+        },
+        {
+          onSuccess: () => {
+            if (!payable) return;
+
+            toast.success(
+              t(i18n)`Payable “${payable.document_id}” has been approved`
+            );
+          },
+        }
+      );
+      onApproved?.(payableId);
+    }
+  };
+
+  const forceRejectInvoice = async () => {
     if (payableId) {
-      await approveMutation.mutateAsync(
+      await forceRejectMutation.mutateAsync(
         {
           path: { payable_id: payableId },
         },
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable “${payable.document_id}” has been approved`
+              t(i18n)`Payable “${payable.document_id}” has been force rejected`
+            );
+          },
+        }
+      );
+      onRejected?.(payableId);
+    }
+  };
+
+  const forceApproveInvoice = async () => {
+    if (payableId) {
+      await forceApproveMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable “${payable.document_id}” has been force approved`
             );
           },
         }
@@ -816,7 +948,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable “${payable.document_id}” has been reopened`
+              t(i18n)`Payable “${payable.document_id}” has been force reopened`
             );
           },
         }
@@ -863,6 +995,7 @@ export function usePayableDetails({
     permissions,
     lineItems,
     showPayButton,
+    activeApprovalRequest,
     actions: {
       setEdit,
       createInvoice,
@@ -870,6 +1003,8 @@ export function usePayableDetails({
       submitInvoice,
       rejectInvoice,
       approveInvoice,
+      forceRejectInvoice,
+      forceApproveInvoice,
       reopenInvoice,
       cancelInvoice,
       deleteInvoice,
