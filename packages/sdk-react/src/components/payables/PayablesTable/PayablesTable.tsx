@@ -351,7 +351,7 @@ const PayablesTableBase = ({
         },
         renderCell: (params) => {
           if (!params.value) {
-            return <span style={{ opacity: 0.4 }}>-</span>;
+            return <span className="mtw:opacity-40">-</span>;
           }
           return params.value;
         },
@@ -392,11 +392,11 @@ const PayablesTableBase = ({
             return params.value ? (
               formatCurrencyToDisplay(params.value, params.row.currency)
             ) : (
-              <span style={{ opacity: 0.4 }}>0.00</span>
+              <span className="mtw:opacity-40">0.00</span>
             );
           }
 
-          return <span style={{ opacity: 0.4 }}>-</span>;
+          return <span className="mtw:opacity-40">-</span>;
         },
       },
       {
@@ -437,11 +437,11 @@ const PayablesTableBase = ({
             return params.value ? (
               formatCurrencyToDisplay(params.value, params.row.currency)
             ) : (
-              <span style={{ opacity: 0.4 }}>0.00</span>
+              <span className="mtw:opacity-40">0.00</span>
             );
           }
 
-          return <span style={{ opacity: 0.4 }}>-</span>;
+          return <span className="mtw:opacity-40">-</span>;
         },
       },
       // {
