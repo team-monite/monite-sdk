@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { useMyEntity } from '@/core/queries';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
@@ -31,11 +32,13 @@ export const OnboardingBusinessProfile = () => {
     ...fields
   } = onboarding?.data?.business_profile ?? {};
 
+  const { data: entity } = useMyEntity();
+
   const { defaultValues, methods, checkValue, handleSubmit } =
     useOnboardingForm<
       BusinessProfile,
       EntityOnboardingDataResponse | undefined
-    >(fields, 'businessProfile');
+    >(fields, 'businessProfile', entity?.address?.country);
 
   const { control } = methods;
 

@@ -11,6 +11,7 @@ import { useLingui } from '@lingui/react';
 import { FormGroup, FormHelperText } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';
+import { getIdentificationLabel } from '../helpers';
 import {
   isEditingPerson,
   isExecutives,
@@ -243,25 +244,18 @@ export function OnboardingPerson() {
           </OnboardingStepContent>
         )}
 
-        {(checkValue('id_number') || checkValue('ssn_last_4')) && (
+        {checkValue('id_number') && (
           <OnboardingStepContent>
             <OnboardingSubTitle>{t(i18n)`Verify identity`}</OnboardingSubTitle>
-
-            {checkValue('ssn_last_4') && (
-              <RHFTextField
-                disabled={isPending}
-                label={t(i18n)`Last 4 digits of Social Security number`}
-                name="ssn_last_4"
-                control={control}
-                type="tel"
-              />
-            )}
 
             {checkValue('id_number') && (
               <RHFTextField
                 disabled={isPending}
                 type="tel"
-                label={t(i18n)`Full Social Security Number`}
+                label={getIdentificationLabel(
+                  i18n,
+                  defaultValues?.address?.country
+                )}
                 name="id_number"
                 control={control}
               />

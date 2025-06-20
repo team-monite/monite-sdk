@@ -54,15 +54,19 @@ export type GenerateValidationSchemaType = {
   fields: OnboardingFieldsType;
   type: ValidationSchemasType;
   i18n: I18n;
+  country?: AllowedCountries | null;
 };
 
 export const generateOnboardingValidationSchema = ({
   fields,
   type,
   i18n,
+  country,
 }: GenerateValidationSchemaType): AnyObjectSchema => {
-  const schema: ValidationSchema<UnifiedSchemaType> =
-    getSchemaByType(type)(i18n);
+  const schema: ValidationSchema<UnifiedSchemaType> = getSchemaByType(type)(
+    i18n,
+    country
+  );
 
   return object(
     Object.entries(fields).reduce((acc: Record<string, any>, [key, item]) => {
@@ -88,6 +92,7 @@ export const generateOnboardingValidationSchema = ({
             fields: field,
             type: subresourceType,
             i18n,
+            country,
           }),
         },
       };
@@ -160,3 +165,4 @@ type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
 type UpdateEntityBankAccountRequest =
   components['schemas']['UpdateEntityBankAccountRequest'];
 type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];
+type AllowedCountries = components['schemas']['AllowedCountries'];
