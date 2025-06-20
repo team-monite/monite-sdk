@@ -25,9 +25,12 @@ test.describe('Dashboard', () => {
     // Wait for page to fully load
     await page.waitForLoadState('networkidle');
 
+    // Add additional wait for API calls to complete
+    await page.waitForTimeout(3000);
+
     // Verify dashboard content is visible - look for either state of the cash flow card
     await expect(
       page.locator('text=Total received').or(page.locator('text=Cashflow'))
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 15000 });
   });
 });

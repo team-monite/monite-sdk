@@ -3,12 +3,20 @@
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "tsx": true
+      "tsx": true,
+      "dynamicImport": true
     },
     "transform": {
       "react": {
-        "runtime": "automatic"
+        "runtime": "automatic",
+        "importSource": "@emotion/react"
       }
+    },
+    "experimental": {
+      "plugins": [
+        ["@lingui/swc-plugin", {}]
+      ]
     }
-  }
+  },
+  "sourceMaps": true
 }
