@@ -419,11 +419,11 @@ msgstr "Add your first bill"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:236
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:90
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:561
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:591
 msgid "Added by"
 msgstr "Added by"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:592
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:622
 msgid "Added on"
 msgstr "Added on"
 
@@ -679,11 +679,16 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:185
+msgid "Any {required_approval_count} users from the list"
+msgstr "Any {required_approval_count} users from the list"
+
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:205
 msgid "Any {value} users from the list"
 msgstr "Any {value} users from the list"
 
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:203
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:183
 msgid "Any user from the list"
 msgstr "Any user from the list"
 
@@ -693,10 +698,11 @@ msgid "Any user that has user role"
 msgstr "Any user that has user role"
 
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:207
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:190
 msgid "Any user with role"
 msgstr "Any user with role"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:417
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:420
 msgid "Applied policy"
 msgstr "Applied policy"
 
@@ -721,8 +727,13 @@ msgstr "Approval chain"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:840
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1095
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:257
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:307
 msgid "Approval flow"
 msgstr "Approval flow"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:49
+msgid "Approval Flow"
+msgstr "Approval Flow"
 
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:278
 msgid "Approval policies"
@@ -761,6 +772,10 @@ msgstr "Approval policy updated"
 msgid "Approval request"
 msgstr "Approval request"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:60
+msgid "Approval Request"
+msgstr "Approval Request"
+
 #: src/components/approvalRequests/ApprovalRequests.tsx:81
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:342
 msgid "Approval Requests"
@@ -784,7 +799,7 @@ msgstr "approvals required"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:180
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:423
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:100
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:107
 #: src/components/userRoles/consts.ts:74
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:163
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:196
@@ -798,6 +813,8 @@ msgstr "Approve request"
 #: src/components/approvalRequests/helpers.ts:12
 #: src/components/payables/consts.ts:36
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:211
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:64
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:432
 msgid "Approved"
 msgstr "Approved"
 
@@ -1015,7 +1032,7 @@ msgid "Bangladeshi Taka"
 msgstr "Bangladeshi Taka"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:566
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:278
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:281
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:182
@@ -1147,8 +1164,8 @@ msgstr "BIC"
 msgid "Bicycle Shops"
 msgstr "Bicycle Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:130
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:135
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:148
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:153
 msgid "Bill"
 msgstr "Bill"
 
@@ -1394,7 +1411,8 @@ msgstr "Canadian Dollar"
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:85
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:106
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:78
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:76
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:85
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:68
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:28
@@ -1435,7 +1453,7 @@ msgstr "Cancel"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:353
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:360
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:25
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:106
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:113
 msgid "Cancel bill"
 msgstr "Cancel bill"
 
@@ -1706,7 +1724,7 @@ msgstr "Close modal"
 #~ msgid "Close new product or service form"
 #~ msgstr "Close new product or service form"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:158
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:221
 msgid "Close payable details"
 msgstr "Close payable details"
 
@@ -1883,7 +1901,7 @@ msgstr "Construction Materials (Not Elsewhere Classified)"
 msgid "Consulting, Public Relations"
 msgstr "Consulting, Public Relations"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:260
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:263
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:105
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:211
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
@@ -2575,7 +2593,7 @@ msgstr "Delete Bank Account “{name}“?"
 msgid "Delete bank account?"
 msgstr "Delete bank account?"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:115
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:122
 msgid "Delete bill"
 msgstr "Delete bill"
 
@@ -2685,7 +2703,7 @@ msgid "Description is required"
 msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:464
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:210
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:213
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:840
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
@@ -2757,7 +2775,7 @@ msgstr "Director"
 #~ msgstr "Disabling reminders prevents sending any payment reminders to this counterpart."
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:795
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:500
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:530
 msgid "Discount"
 msgstr "Discount"
 
@@ -2899,7 +2917,7 @@ msgstr "Dry Cleaners"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:207
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:147
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:672
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:310
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:313
 #: src/components/receivables/components/InvoicesTable.tsx:355
 #: src/components/receivables/components/QuotesTable.tsx:200
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:110
@@ -2920,7 +2938,7 @@ msgstr "Due date"
 msgid "Due Date"
 msgstr "Due Date"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:191
+#: src/components/payables/PayableDetails/PayableDetails.tsx:221
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -2991,7 +3009,7 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:253
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:326
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:470
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:64
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:71
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:204
 #: src/components/products/Products.test.tsx:175
 #: src/components/products/Products.test.tsx:272
@@ -3042,7 +3060,7 @@ msgstr "Edit Approval Policy"
 msgid "Edit bank account"
 msgstr "Edit bank account"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:134
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:152
 msgid "Edit bill"
 msgstr "Edit bill"
 
@@ -3116,7 +3134,7 @@ msgstr "Edit tag"
 msgid "Edit tag ”{0}”"
 msgstr "Edit tag ”{0}”"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:399
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:402
 #: src/ui/tagsModal/tagsModal.tsx:41
 msgid "Edit tags"
 msgstr "Edit tags"
@@ -3330,7 +3348,7 @@ msgstr "Example: NET 30, –2%/10 days, –1%/20 days"
 msgid "Examples"
 msgstr "Examples"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:465
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:495
 msgid "excl. Tax"
 msgstr "excl. Tax"
 
@@ -3509,7 +3527,7 @@ msgstr "Fijian Dollar"
 msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
 msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:190
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:193
 msgid "File is being processed..."
 msgstr "File is being processed..."
 
@@ -3627,6 +3645,24 @@ msgstr "For {invoiceAmount} | Issued {issueDate}"
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:91
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:133
+msgid "Force Approve"
+msgstr "Force Approve"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:50
+msgid "Force Approve bill?"
+msgstr "Force Approve bill?"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:91
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:139
+msgid "Force Reject"
+msgstr "Force Reject"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:51
+msgid "Force Reject bill?"
+msgstr "Force Reject bill?"
+
 #: src/core/utils/countries.ts:92
 msgid "France"
 msgstr "France"
@@ -3651,7 +3687,7 @@ msgstr "French Southern Territories"
 msgid "Frequency"
 msgstr "Frequency"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:130
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:148
 msgid "from"
 msgstr "from"
 
@@ -3989,7 +4025,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Hide"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:548
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:578
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:184
 msgid "History"
 msgstr "History"
@@ -3998,7 +4034,7 @@ msgstr "History"
 msgid "Hobby, Toy, and Game Shops"
 msgstr "Hobby, Toy, and Game Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:193
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:196
 msgid "Hold on, we’re processing the file you’ve uploaded."
 msgstr "Hold on, we’re processing the file you’ve uploaded."
 
@@ -4378,7 +4414,7 @@ msgstr "Issue at"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:197
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:641
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:291
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:294
 #: src/components/receivables/components/CreditNotesTable.tsx:155
 #: src/components/receivables/components/InvoicesTable.tsx:329
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:85
@@ -4495,7 +4531,7 @@ msgid "items"
 msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:750
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:430
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:460
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:120
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:465
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:90
@@ -4639,7 +4675,7 @@ msgstr "Last name is required"
 msgid "Last update"
 msgstr "Last update"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:610
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:640
 msgid "Last updated on"
 msgstr "Last updated on"
 
@@ -5140,7 +5176,7 @@ msgstr "N/A"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:184
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:41
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:436
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:466
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:111
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:142
@@ -5221,7 +5257,7 @@ msgstr "New chat"
 msgid "New counterpart"
 msgstr "New counterpart"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:136
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:154
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
@@ -5305,6 +5341,10 @@ msgstr "No Approval Policies"
 msgid "No Approval Requests"
 msgstr "No Approval Requests"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:95
+msgid "No approval requests found"
+msgstr "No approval requests found"
+
 #: src/components/payables/PayablesTable/PayablesTable.tsx:574
 msgid "No bills found"
 msgstr "No bills found"
@@ -5370,7 +5410,7 @@ msgstr "No payment reminders available"
 msgid "No payments yet"
 msgstr "No payments yet"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:421
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:439
 msgid "no policy"
 msgstr "no policy"
 
@@ -5393,6 +5433,10 @@ msgstr "No Receivables"
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:193
 msgid "No Roles"
 msgstr "No Roles"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:341
+msgid "No roles assigned"
+msgstr "No roles assigned"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles/AutocompleteRoles.tsx:57
 msgid "No roles found"
@@ -5418,6 +5462,10 @@ msgstr "No Tax ID available"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:412
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:357
+msgid "No users assigned"
+msgstr "No users assigned"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser/AutocompleteUser.tsx:56
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUsers/AutocompleteUsers.tsx:60
@@ -5472,7 +5520,7 @@ msgstr "NOT allowed"
 msgid "Not available"
 msgstr "Not available"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:394
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:397
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:242
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:287
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:306
@@ -5482,7 +5530,7 @@ msgstr "Not set"
 
 #: src/components/financing/components/FinancedInvoicesTable.tsx:137
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:474
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:235
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:238
 #: src/components/payables/PayablesTable/PayablesTable.tsx:239
 #: src/components/receivables/components/CreditNotesTable.tsx:126
 #: src/components/receivables/components/InvoicesTable.tsx:213
@@ -5700,7 +5748,7 @@ msgid "Pawn Shops"
 msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:213
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:121
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:128
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:74
 #: src/components/userRoles/consts.ts:75
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:167
@@ -5741,7 +5789,7 @@ msgstr "Payable"
 #~ msgid "Payable \"{0}\" has been approved"
 #~ msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:786
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:882
 msgid "Payable “{0}” has been approved"
 msgstr "Payable “{0}” has been approved"
 
@@ -5749,7 +5797,7 @@ msgstr "Payable “{0}” has been approved"
 #~ msgid "Payable \"{0}\" has been canceled"
 #~ msgstr "Payable \"{0}\" has been canceled"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:731
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:822
 msgid "Payable “{0}” has been canceled"
 msgstr "Payable “{0}” has been canceled"
 
@@ -5757,15 +5805,27 @@ msgstr "Payable “{0}” has been canceled"
 #~ msgid "Payable \"{0}\" has been created"
 #~ msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:563
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:654
 msgid "Payable “{0}” has been created"
 msgstr "Payable “{0}” has been created"
+
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:918
+msgid "Payable “{0}” has been force approved"
+msgstr "Payable “{0}” has been force approved"
+
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:900
+msgid "Payable “{0}” has been force rejected"
+msgstr "Payable “{0}” has been force rejected"
+
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:936
+msgid "Payable “{0}” has been force reopened"
+msgstr "Payable “{0}” has been force reopened"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:768
 #~ msgid "Payable \"{0}\" has been rejected"
 #~ msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:768
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:862
 msgid "Payable “{0}” has been rejected"
 msgstr "Payable “{0}” has been rejected"
 
@@ -5774,14 +5834,14 @@ msgstr "Payable “{0}” has been rejected"
 #~ msgstr "Payable \"{0}\" has been reopened"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:804
-msgid "Payable “{0}” has been reopened"
-msgstr "Payable “{0}” has been reopened"
+#~ msgid "Payable “{0}” has been reopened"
+#~ msgstr "Payable “{0}” has been reopened"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:749
 #~ msgid "Payable \"{0}\" has been submitted"
 #~ msgstr "Payable \"{0}\" has been submitted"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:749
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:840
 msgid "Payable “{0}” has been submitted"
 msgstr "Payable “{0}” has been submitted"
 
@@ -5789,7 +5849,7 @@ msgstr "Payable “{0}” has been submitted"
 #~ msgid "Payable \"{0}\" has been updated"
 #~ msgstr "Payable \"{0}\" has been updated"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:617
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:708
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
@@ -5797,7 +5857,7 @@ msgstr "Payable “{0}” has been updated"
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:118
+#: src/components/payables/PayableDetails/PayableDetails.tsx:134
 msgid "Payable not found"
 msgstr "Payable not found"
 
@@ -5892,6 +5952,7 @@ msgid "Payments"
 msgstr "Payments"
 
 #: src/components/approvalPolicies/consts.ts:28
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:80
 msgid "Pending"
 msgstr "Pending"
 
@@ -6216,7 +6277,7 @@ msgstr "Preview email"
 msgid "Previous page"
 msgstr "Previous page"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:438
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:468
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:365
@@ -6368,7 +6429,7 @@ msgstr "Qatari Rial"
 msgid "Qty"
 msgstr "Qty"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:437
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:467
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:62
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:484
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:33
@@ -6511,7 +6572,7 @@ msgstr "Registered Number (Japan)"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:177
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:402
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:89
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:96
 msgid "Reject"
 msgstr "Reject"
 
@@ -6523,6 +6584,7 @@ msgstr "Reject request"
 #: src/components/financing/utils/getCommonStatusLabel.ts:21
 #: src/components/payables/consts.ts:37
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:197
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlow.tsx:72
 msgid "Rejected"
 msgstr "Rejected"
 
@@ -6597,7 +6659,7 @@ msgstr "Remove person"
 msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:95
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:102
 #: src/components/userRoles/consts.ts:78
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:175
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:208
@@ -6836,7 +6898,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:108
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:265
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:332
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:70
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:77
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:620
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:798
@@ -7104,6 +7166,7 @@ msgstr "Singapore Dollar"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:852
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:187
 #: src/components/approvalPolicies/useApprovalPolicyScript.tsx:200
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:180
 msgid "Single user"
 msgstr "Single user"
 
@@ -7302,7 +7365,7 @@ msgstr "Subject"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:144
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:381
-#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:83
+#: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:90
 #: src/components/userRoles/consts.ts:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:159
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:192
@@ -7314,7 +7377,7 @@ msgid "Submit invoice"
 msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:760
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:486
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:516
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:413
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:748
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
@@ -7401,7 +7464,7 @@ msgstr "Tag “{0}” was updated”"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:889
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:69
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:725
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:369
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:372
 #: src/components/tags/Tags.tsx:52
 #: src/components/tags/TagsTable/TagsTable.tsx:285
 msgid "Tags"
@@ -7571,6 +7634,14 @@ msgstr "Thank you for completing onboarding for payments services. We will revie
 msgid "Thank you for your feedback!"
 msgstr "Thank you for your feedback!"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:57
+msgid "The bill status will change to Approved, skipping the approval flow."
+msgstr "The bill status will change to Approved, skipping the approval flow."
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:60
+msgid "The bill status will change to Rejected, skipping the approval flow."
+msgstr "The bill status will change to Rejected, skipping the approval flow."
+
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:31
 #~ msgid "The bill will receive the “Canceled” status and will require no payment. You can't undo this action."
 #~ msgstr "The bill will receive the “Canceled” status and will require no payment. You can't undo this action."
@@ -7632,7 +7703,7 @@ msgstr "The review for the persons has been completed. You can proceed to the ne
 msgid "The specified counterpart has not been saved yet."
 msgstr "The specified counterpart has not been saved yet."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:691
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:721
 msgid "The specified vendor has not been saved yet."
 msgstr "The specified vendor has not been saved yet."
 
@@ -7652,7 +7723,7 @@ msgstr "The template you set as the default will apply to all documents you issu
 #~ msgid "The vendor details in the bill don't fully match the saved counterpart."
 #~ msgstr "The vendor details in the bill don't fully match the saved counterpart."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:688
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:718
 msgid "The vendor details in the bill don’t fully match the saved counterpart."
 msgstr "The vendor details in the bill don’t fully match the saved counterpart."
 
@@ -7680,7 +7751,7 @@ msgstr "There is no counterpart by provided id: {0}"
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:119
+#: src/components/payables/PayableDetails/PayableDetails.tsx:135
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
@@ -7706,7 +7777,7 @@ msgstr "There is no role by provided id: {id}"
 #~ msgid "There is no such counterpart yet, you can create it in respective section."
 #~ msgstr "There is no such counterpart yet, you can create it in respective section."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:141
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:142
 msgid "There may be a mismatch between the OCR data and payable data. Please review the details"
 msgstr "There may be a mismatch between the OCR data and payable data. Please review the details"
 
@@ -7873,8 +7944,8 @@ msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:857
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:325
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:524
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:328
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:554
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:432
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:762
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
@@ -7906,7 +7977,7 @@ msgstr "Total Tax"
 msgid "Total taxes"
 msgstr "Total taxes"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:439
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:469
 msgid "Total, tax"
 msgstr "Total, tax"
 
@@ -8302,7 +8373,7 @@ msgstr "Users or Roles"
 msgid "Users with this role"
 msgstr "Users with this role"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:196
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:199
 msgid "Usually it takes no more than 1–2 minutes."
 msgstr "Usually it takes no more than 1–2 minutes."
 
@@ -8463,7 +8534,7 @@ msgstr "VAT information"
 msgid "VAT total"
 msgstr "VAT total"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:510
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:540
 msgid "VAT Total"
 msgstr "VAT Total"
 
@@ -8510,7 +8581,7 @@ msgstr "VAT Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:50
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:84
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:490
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:246
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:249
 #: src/components/payables/PayablesTable/PayablesTable.tsx:269
 msgid "Vendor"
 msgstr "Vendor"
