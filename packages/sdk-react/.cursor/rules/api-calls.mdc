@@ -1,0 +1,354 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# OpenAPI Qraft React v1.14.0 - Cursor Rules for Monite API
+
+## Overview
+When using `@openapi-qraft/react` v1.14.0 with Monite's API client, follow these patterns for type-safe API calls. The library uses React Query under the hood.
+
+## Getting the API Client
+```typescript
+import { useMoniteContext } from '@/contexts/MoniteContext';
+
+// Inside your component
+const { api, entityId } = useMoniteContext();
+```
+
+## Query Hooks (GET Requests)
+
+### Basic Query
+```typescript
+const { api, entityId } = useMoniteContext();
+
+// Simple GET request without parameters
+const { data, error, isLoading } = api.users.getUsers.useQuery();
+
+// GET request with path parameters
+const { data, error, isLoading } = api.users.getUserById.useQuery({
+  params: { id: userId },
+});
+
+// GET request with query parameters
+const { data, error, isLoading } = api.products.getProducts.useQuery({
+  query: {
+    page: currentPage,
+    limit: pageSize,
+    search: searchTerm,
+    category: selectedCategory,
+  },
+});
+
+// With entityId in path parameters
+const { data, error, isLoading } = api.entities.getEntityById.useQuery({
+  params: { entityId },
+});
+
+// Query with conditional execution
+const { data, error, isLoading } = api.invoices.getInvoices.useQuery(
+  {
+    params: { entityId },
+    query: { status: 'pending' },
+  },
+  {
+    enabled: !!entityId, // Only run query if entityId exists
+  }
+);
+```
+
+## Mutation Hooks (POST, PUT, PATCH, DELETE)
+
+### POST Requests
+```typescript
+const { api, entityId } = useMoniteContext();
+
+// Create mutation
+const createInvoiceMutation = api.invoices.createInvoice.useMutation({
+  onSuccess: (data) => {
+    console.log('Invoice created:', data);
+    // Invalidate related queries
+    queryClient.invalidateQueries(['invoices']);
+  },
+  onError: (error) => {
+    console.error('Failed to create invoice:', error);
+  },
+});
+
+// Usage
+const handleCreateInvoice = async (invoiceData: CreateInvoiceInput) => {
+  await createInvoiceMutation.mutateAsync({
+    params: { entityId },
+    body: invoiceData,
+  });
+};
+```
+
+### PUT Requests
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const updateInvoiceMutation = api.invoices.updateInvoice.useMutation({
+  onSuccess: (data, variables) => {
+    queryClient.invalidateQueries(['invoices', variables.params.invoiceId]);
+  },
+});
+
+// Usage
+updateInvoiceMutation.mutate({
+  params: { 
+    entityId,
+    invoiceId: invoice.id,
+  },
+  body: updatedInvoiceData,
+});
+```
+
+### PATCH Requests
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const patchUserMutation = api.users.patchUser.useMutation();
+
+// Usage
+patchUserMutation.mutate({
+  params: { 
+    entityId,
+    userId,
+  },
+  body: {
+    // Only the fields to update
+    email: newEmail,
+  },
+});
+```
+
+### DELETE Requests
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const deleteProductMutation = api.products.deleteProduct.useMutation({
+  onSuccess: () => {
+    queryClient.invalidateQueries(['products']);
+  },
+});
+
+// Usage
+deleteProductMutation.mutate({
+  params: { 
+    entityId,
+    productId,
+  },
+});
+```
+
+## Common Patterns
+
+### 1. Loading States
+```typescript
+const { api, entityId } = useMoniteContext();
+const { data, error, isLoading, isFetching } = api.payments.getPayments.useQuery({
+  params: { entityId },
+});
+
+if (isLoading) return <Spinner />;
+if (error) return <ErrorMessage error={error} />;
+if (!data) return null;
+
+return <PaymentsList payments={data} />;
+```
+
+### 2. Pagination
+```typescript
+const { api, entityId } = useMoniteContext();
+const [page, setPage] = useState(1);
+
+const { data, error, isLoading } = api.transactions.getTransactions.useQuery({
+  params: { entityId },
+  query: {
+    page,
+    limit: 20,
+  },
+});
+```
+
+### 3. Search/Filtering
+```typescript
+const { api, entityId } = useMoniteContext();
+const [searchTerm, setSearchTerm] = useState('');
+const [status, setStatus] = useState<InvoiceStatus | undefined>();
+
+const { data, error, isLoading } = api.invoices.getInvoices.useQuery({
+  params: { entityId },
+  query: {
+    search: searchTerm,
+    status,
+    sort: 'created_at',
+    order: 'desc',
+  },
+});
+```
+
+### 4. Dependent Queries
+```typescript
+const { api, entityId } = useMoniteContext();
+
+// First query
+const { data: user } = api.users.getCurrentUser.useQuery();
+
+// Second query depends on first
+const { data: userSettings } = api.settings.getUserSettings.useQuery(
+  {
+    params: { 
+      entityId,
+      userId: user?.id,
+    },
+  },
+  {
+    enabled: !!user?.id, // Only run when user.id is available
+  }
+);
+```
+
+### 5. Optimistic Updates
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const updateStatusMutation = api.invoices.updateInvoiceStatus.useMutation({
+  onMutate: async (variables) => {
+    // Cancel outgoing refetches
+    await queryClient.cancelQueries(['invoices', variables.params.invoiceId]);
+    
+    // Snapshot previous value
+    const previousInvoice = queryClient.getQueryData(['invoices', variables.params.invoiceId]);
+    
+    // Optimistically update
+    queryClient.setQueryData(['invoices', variables.params.invoiceId], (old) => ({
+      ...old,
+      status: variables.body.status,
+    }));
+    
+    return { previousInvoice };
+  },
+  onError: (err, variables, context) => {
+    // Rollback on error
+    if (context?.previousInvoice) {
+      queryClient.setQueryData(['invoices', variables.params.invoiceId], context.previousInvoice);
+    }
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries(['invoices']);
+  },
+});
+```
+
+### 6. File Uploads
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const uploadFileMutation = api.files.uploadFile.useMutation();
+
+const handleFileUpload = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  await uploadFileMutation.mutateAsync({
+    params: { entityId },
+    body: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+```
+
+## Error Handling
+
+### Global Error Handling
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const { data, error, isLoading } = api.invoices.getInvoices.useQuery(
+  { params: { entityId } },
+  {
+    onError: (error) => {
+      if (error.response?.status === 401) {
+        // Handle unauthorized
+        redirectToLogin();
+      } else if (error.response?.status === 403) {
+        // Handle forbidden
+        showPermissionError();
+      } else {
+        // Generic error handling
+        toast.error('Failed to load invoices');
+      }
+    },
+  }
+);
+```
+
+### Mutation Error Handling
+```typescript
+const { api, entityId } = useMoniteContext();
+
+const createMutation = api.payments.createPayment.useMutation({
+  onError: (error, variables, context) => {
+    const errorMessage = error.response?.data?.message || 'Operation failed';
+    toast.error(errorMessage);
+  },
+});
+
+// With try-catch
+const handleCreate = async (data: PaymentData) => {
+  try {
+    const result = await createMutation.mutateAsync({
+      params: { entityId },
+      body: data,
+    });
+    toast.success('Payment created');
+    return result;
+  } catch (error) {
+    // Error already handled in onError
+    console.error('Create failed:', error);
+  }
+};
+```
+
+## TypeScript Tips
+
+### Type Inference
+```typescript
+const { api, entityId } = useMoniteContext();
+
+// Types are automatically inferred from OpenAPI schema
+const { data } = api.invoices.getInvoiceById.useQuery({
+  params: { entityId, invoiceId },
+});
+
+// data is typed as Invoice | undefined
+```
+
+### Custom Types
+```typescript
+import type { Invoice, CreateInvoiceInput } from '@/types/api';
+
+const { api, entityId } = useMoniteContext();
+
+const createInvoice = async (input: CreateInvoiceInput): Promise<Invoice> => {
+  const result = await api.invoices.createInvoice.mutateAsync({
+    params: { entityId },
+    body: input,
+  });
+  return result;
+};
+```
+
+## Best Practices
+
+1. **Always check for entityId**: Most Monite API calls require entityId
+2. **Use `enabled` option**: Prevent queries from running when dependencies are missing
+3. **Invalidate queries after mutations**: Keep data in sync
+4. **Handle loading and error states**: Provide good UX
+5. **Use proper TypeScript types**: Leverage the type safety from OpenAPI schema
+6. **Implement proper error boundaries**: Catch and handle errors gracefully
+7. **Use query keys consistently**: Follow the pattern for cache management

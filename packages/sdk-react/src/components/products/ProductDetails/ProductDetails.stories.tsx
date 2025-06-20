@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import { Dialog } from '@/components/Dialog';
 import {
   ENTITY_ID_FOR_LOW_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
 import { productsListFixture } from '@/mocks/products';
+import { Dialog } from '@/ui/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';

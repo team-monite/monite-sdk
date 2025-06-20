@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Dialog } from '@/components/Dialog';
+import { Dialog } from '@/ui/Dialog';
 
 import { FinanceFaqDetails } from './FinanceFaqDetails';
 

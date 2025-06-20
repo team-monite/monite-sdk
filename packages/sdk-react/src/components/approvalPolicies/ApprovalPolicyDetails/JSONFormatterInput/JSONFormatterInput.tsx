@@ -1,7 +1,7 @@
 import { useCallback, useRef, FocusEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 
 export interface JSONFormatterInputProps {
   /** Name attribute of the input element. */

@@ -1,4 +1,4 @@
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
 import { t } from '@lingui/macro';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -2,8 +2,8 @@ import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useOnboardingEntity } from '@/components/onboarding/hooks/useOnboardingEntity';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { RHFTextFieldPhone } from '@/ui/RHF/RHFTextFieldPhone';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

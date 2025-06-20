@@ -1,9 +1,9 @@
 import { useId, useState } from 'react';
 
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { Dialog } from '@/ui/Dialog';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

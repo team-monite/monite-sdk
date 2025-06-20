@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
+import { useDialog } from '@/ui/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -1,0 +1,173 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: "Use shadcn/ui components as needed for any UI code"
+patterns: "*.tsx"
+---
+
+# Cursor Rules - shadcn/ui Project
+
+## Component Library Preferences
+
+### Primary UI Library: shadcn/ui
+- **Always use shadcn/ui components** when creating new UI elements
+- Import components from `@/ui/components/*`
+- shadcn/ui is already installed and configured in this project
+- Reference docs: https://ui.shadcn.com/docs/components/
+- All tailwind classes should have the prefix `mtw` (for example: `mtw:w-full`)
+
+### Styling: Tailwind CSS
+- Use Tailwind CSS utility classes for all styling
+- Avoid inline styles or styled-components
+- Follow Tailwind's mobile-first responsive design approach
+- Use Tailwind's color palette and spacing scale
+
+### Legacy Code: Material UI
+- Some existing components use Material UI (MUI)
+- **Do NOT use Material UI for new components**
+- When modifying files with Material UI:
+  - Only update to shadcn/ui if the component needs significant changes
+  - Otherwise, maintain existing MUI implementation
+  - Add TODO comments when MUI components should be migrated
+
+## Code Examples
+
+### ✅ CORRECT - New Component with shadcn/ui
+```tsx
+import { Button } from "@/ui/components/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/components/card"
+import { Input } from "@/ui/components/input"
+
+export function ExampleComponent() {
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Welcome</CardTitle>
+        <CardDescription>Enter your details below</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Input placeholder="Email" type="email" />
+        <Button className="w-full">Submit</Button>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+### ❌ INCORRECT - Using Material UI for new components
+```tsx
+// DO NOT DO THIS FOR NEW COMPONENTS
+import { Button, Card, TextField } from "@mui/material"
+
+export function ExampleComponent() {
+  return (
+    <Card>
+      <TextField label="Email" />
+      <Button variant="contained">Submit</Button>
+    </Card>
+  )
+}
+```
+
+## Common shadcn/ui Components
+
+Always prefer these shadcn/ui components:
+- `Button` from `@/ui/components/button`
+- `Input` from `@/ui/components/input`
+- `Card`, `CardHeader`, `CardContent`, etc. from `@/ui/components/card`
+- `Dialog` from `@/ui/components/dialog`
+- `Select` from `@/ui/components/select`
+- `Checkbox` from `@/ui/components/checkbox`
+- `RadioGroup` from `@/ui/components/radio-group`
+- `Switch` from `@/ui/components/switch`
+- `Textarea` from `@/ui/components/textarea`
+- `Label` from `@/ui/components/label`
+- `Alert` from `@/ui/components/alert`
+- `Badge` from `@/ui/components/badge`
+- `Toast` from `@/ui/components/toast`
+- `Tabs` from `@/ui/components/tabs`
+- `Table` from `@/ui/components/table`
+- `Form` components from `@/ui/components/form`
+- `DropdownMenu` from `@/ui/components/dropdown-menu`
+- `Sheet` from `@/ui/components/sheet`
+- `Skeleton` from `@/ui/components/skeleton`
+- `Separator` from `@/ui/components/separator`
+
+## Form Handling
+
+Use React Hook Form with shadcn/ui form components:
+```tsx
+import { useForm } from "react-hook-form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/ui/components/form"
+import { Input } from "@/ui/components/input"
+import { Button } from "@/ui/components/button"
+```
+
+## Icons
+
+- Use `lucide-react` for icons (comes with shadcn/ui)
+- Import icons like: `import { Search, Menu, X } from "lucide-react"`
+
+## Best Practices
+
+1. **Component Imports**: Always use named imports from the specific ui component file
+2. **Variants**: Use the variant prop for different styles (e.g., `variant="outline"` for buttons)
+3. **Sizes**: Use the size prop when available (e.g., `size="sm"` for smaller buttons)
+4. **Accessibility**: shadcn/ui components include proper ARIA attributes by default
+5. **Dark Mode**: Components support dark mode automatically via Tailwind
+6. **Customization**: Extend components with className prop using Tailwind utilities
+
+## Migration Guidelines
+
+When updating Material UI components to shadcn/ui:
+1. Map MUI component to shadcn/ui equivalent
+2. Convert sx props and makeStyles to Tailwind classes
+3. Update event handlers if API differs
+4. Test thoroughly, especially forms and modals
+5. Remove MUI imports only after confirming all usages are replaced
+
+## Adding New shadcn/ui Components
+
+If a required shadcn/ui component is not yet installed in the project:
+
+1. **Check if component exists** in `@/ui/components/`
+2. **If missing, add it using the CLI**:
+   ```bash
+   npx shadcn@latest add [component-name]
+   ```
+   Example: `npx shadcn@latest add dialog`
+
+3. **Common components to add**:
+   - `npx shadcn@latest add button`
+   - `npx shadcn@latest add card`
+   - `npx shadcn@latest add dialog`
+   - `npx shadcn@latest add select`
+   - `npx shadcn@latest add table`
+   - `npx shadcn@latest add form`
+   - `npx shadcn@latest add toast`
+
+4. **After adding**, the component will be available at `@/ui/components/[component-name]`
+
+5. **Never copy-paste component code** - always use the CLI to ensure proper dependencies and configuration
+
+## File Structure
+
+Assume shadcn/ui components are located at:
+```
+src/
+  ui/
+    components/
+      button.tsx
+      card.tsx
+      input.tsx
+      ... (other shadcn components)
+```
+
+## TypeScript
+
+- All shadcn/ui components are fully typed
+- Use TypeScript for all new components
+- Leverage component prop types for better IntelliSense

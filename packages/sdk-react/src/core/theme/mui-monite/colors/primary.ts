@@ -9,7 +9,7 @@ export const getPrimaryColors = (mainColor: string) => {
     20: '#311881',
     30: '#401da6',
     40: '#4a22bf',
-    50: '#562bd6',
+    50: '#3737FF',
     55: '#a594fa',
     60: chroma.mix(mainColor, '#ffffff', 0.4).desaturate(0.2).hex(), // #9999FF
     65: '#edebff',

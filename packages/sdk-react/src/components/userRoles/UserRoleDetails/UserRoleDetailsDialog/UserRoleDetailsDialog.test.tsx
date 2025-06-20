@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react';
 
 import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 
-jest.mock('@/components/Dialog', () => ({
+jest.mock('@/ui/Dialog', () => ({
   useDialog: jest.fn(() => ({
     openDialog: jest.fn(),
     closeDialog: jest.fn(),

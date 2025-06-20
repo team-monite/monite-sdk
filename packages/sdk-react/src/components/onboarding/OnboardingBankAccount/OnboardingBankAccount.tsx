@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 
 import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteCountry } from '@/ui/Country';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';

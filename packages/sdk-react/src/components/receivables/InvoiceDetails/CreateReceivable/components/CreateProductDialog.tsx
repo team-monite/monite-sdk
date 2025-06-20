@@ -1,7 +1,7 @@
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import { ProductDetails } from '@/components/products';
 import { ProductsTableDataTestId } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.types';
+import { Dialog } from '@/ui/Dialog';
 
 export interface CreateProductDialogProps {
   defaultCurrency?: CurrencyEnum;

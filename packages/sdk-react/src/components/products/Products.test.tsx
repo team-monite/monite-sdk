@@ -28,7 +28,7 @@ interface DialogProps {
   children: ReactNode;
 }
 
-jest.mock('@/components/Dialog', () => ({
+jest.mock('@/ui/Dialog', () => ({
   Dialog: ({ children }: DialogProps) => <>{children}</>,
   useDialog: jest.fn(() => ({
     openDialog: jest.fn(),

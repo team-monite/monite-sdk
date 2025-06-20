@@ -1,3 +1,4 @@
+/* eslint-disable lingui/no-unlocalized-strings */
 import { ThemeConfig } from '@/core/theme/types';
 
 export const getTheme = (theme: ThemeConfig) => {
@@ -24,7 +25,6 @@ export const getTheme = (theme: ThemeConfig) => {
     typography: {
       fontFamily:
         theme?.typography?.fontFamily ||
-        // eslint-disable-next-line lingui/no-unlocalized-strings
         '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
       fontSize: theme?.typography?.fontSize ?? 16,
 

@@ -1,5 +1,5 @@
-import { Dialog } from '@/components/Dialog';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
+import { Dialog } from '@/ui/Dialog';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 

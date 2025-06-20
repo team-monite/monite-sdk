@@ -4,10 +4,6 @@ import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 import type { FieldError } from 'react-hook-form';
 
 import { components } from '@/api';
-import {
-  RHFAutocompleteProps,
-  RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   type CurrencyType,
@@ -17,6 +13,10 @@ import {
   getGroupTitleForOption,
   sortCurrencyOptionsByGroup,
 } from '@/core/utils';
+import {
+  RHFAutocompleteProps,
+  RHFAutocomplete,
+} from '@/ui/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ListSubheader, Divider } from '@mui/material';
