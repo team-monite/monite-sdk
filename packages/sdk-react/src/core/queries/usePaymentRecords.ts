@@ -27,13 +27,12 @@ export const usePaymentRecords = (
  * Sorts the payment records by paid_at in descending order.
  *
  * @param payableIds - Array of payable IDs to fetch payment records for
- * @returns {Object} - Hook result containing:
- *   - payablesPaymentIntentsRecord: Payment intents with most recent record per intent, grouped by payable ID
- *   - isLoading: Loading state boolean
- *   - error: Error state if request fails
+ * @returns {Object}
+ *  - payablesPaymentIntentsRecord: Payment intents with most recent record per intent, grouped by payable ID
+ *  - isLoading: Loading state boolean
+ *  - error: Error state if request fails
  *
  * Example data returned in payablesPaymentIntentsRecord:
- * - Payment intents with most recent record per intent, grouped by payable ID:
  * ```
  * {
  *    "payable-id-1": [
