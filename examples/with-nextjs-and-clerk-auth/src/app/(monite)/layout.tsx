@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
+import { ClientSideMoniteProvider } from '@/components/DynamicMoniteProvider';
 import { Layout } from '@/components/Layout';
-import { MoniteProvider } from '@/components/MoniteComponents';
 // import { NoAccountEntity } from '@/components/NoAccountEntity';
 import { getCurrentUserEntity } from '@/lib/clerk-api/get-current-user-entity';
 import { getMoniteApiUrl } from '@/lib/monite-api/monite-client';
@@ -38,13 +38,13 @@ export default async function MoniteLayout({
 
   return (
     <Layout>
-      <MoniteProvider
+      <ClientSideMoniteProvider
         entityUserId={entity_user_id}
         entityId={entity_id}
         apiUrl={getMoniteApiUrl()}
       >
         {children}
-      </MoniteProvider>
+      </ClientSideMoniteProvider>
     </Layout>
   );
 }

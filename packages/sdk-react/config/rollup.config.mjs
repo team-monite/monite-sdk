@@ -1,24 +1,5 @@
-import { rollupConfigWithTypes as createRollupConfig } from '@team-monite/rollup-config';
+import { rollupConfig } from '@team-monite/rollup-config';
 
 import packageJson from '../package.json' with { type: 'json' };
 
-const sdkReactSwcOptions = {
-  exclude: ['**/*.css'],
-  sourceMaps: true,
-  jsc: {
-    parser: {
-      syntax: "typescript",
-      tsx: true,
-    },
-    transform: {
-      react: {
-        runtime: 'automatic',
-      },
-    },
-  },
-};
-
-// eslint-disable-next-line import/no-default-export
-export default createRollupConfig(packageJson, {
-  swc: sdkReactSwcOptions,
-});
+export default rollupConfig(packageJson);
