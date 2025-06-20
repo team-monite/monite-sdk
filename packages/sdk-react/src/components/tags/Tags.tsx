@@ -44,6 +44,12 @@ const TagsBase = () => {
       entityUserId: user?.id,
     });
 
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: 'delete',
+    entityUserId: user?.id,
+  });
+
   return (
     <>
       <PageHeader
@@ -67,7 +73,11 @@ const TagsBase = () => {
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && <TagsTable showCreationModal={showCreationModal} />}
-      <TagFormModal open={creationModalOpened} onClose={hideCreationModal} />
+      <TagFormModal
+        open={creationModalOpened}
+        onClose={hideCreationModal}
+        isDeleteAllowed={isDeleteAllowed ?? false}
+      />
     </>
   );
 };
