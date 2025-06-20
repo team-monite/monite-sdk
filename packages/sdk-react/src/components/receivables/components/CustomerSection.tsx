@@ -48,8 +48,9 @@ export const CustomerSection = ({
     if (!selectedBillingAddressId) {
       const billingAddressId =
         counterpart?.default_billing_address_id ||
-        counterpartAddresses.data[0].id ||
-        '';
+        (counterpartAddresses.data.length === 1
+          ? counterpartAddresses.data[0].id
+          : '');
       setValue('default_billing_address_id', billingAddressId);
     }
 

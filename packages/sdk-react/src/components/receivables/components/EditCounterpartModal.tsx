@@ -120,8 +120,9 @@ export const EditCounterpartModal = ({
       const billingAddressId =
         (isInitialBillingAddressValid && initialBillingAddressId) ||
         counterpart?.default_billing_address_id ||
-        counterpartAddresses.data[0].id ||
-        '';
+        (counterpartAddresses.data.length === 1
+          ? counterpartAddresses.data[0].id
+          : '');
       const shippingAddressId =
         (isInitialShippingAddressValid && initialShippingAddressId) ||
         counterpart?.default_shipping_address_id ||
@@ -334,7 +335,7 @@ export const EditCounterpartModal = ({
                 render={({ field, fieldState: { error } }) => (
                   <FormControl
                     variant="standard"
-                    sx={{ marginBottom: '1rem' }}
+                    sx={{ marginTop: '1rem' }}
                     fullWidth
                     error={Boolean(error)}
                     disabled={isAddressFormDisabled}
