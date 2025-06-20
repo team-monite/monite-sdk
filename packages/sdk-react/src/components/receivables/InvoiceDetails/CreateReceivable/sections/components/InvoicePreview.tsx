@@ -228,7 +228,7 @@ export const InvoicePreview = ({
               {entityData?.logo?.url ? (
                 <img src={entityData.logo.url} />
               ) : (
-                <div className="no-logo-placeholder">{t(i18n)`No logo`}</div>
+                <span>{t(i18n)`No logo`}</span>
               )}
             </div>
           </aside>
@@ -373,7 +373,7 @@ export const InvoicePreview = ({
               <tbody className="products">
                 {sanitizedItems.length > 0 ? (
                   sanitizedItems.map((item) => (
-                    <tr>
+                    <tr key={item.id}>
                       <td style={{ maxWidth: '120px' }}>
                         {item?.product?.name}
                       </td>
