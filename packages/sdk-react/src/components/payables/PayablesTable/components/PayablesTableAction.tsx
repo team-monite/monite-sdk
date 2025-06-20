@@ -176,17 +176,20 @@ export const PayablesTableAction = ({
       <Tooltip
         title={
           <Box>
-            {t(i18n)`Scheduled for ${formatCurrencyToDisplay(
-              earliestScheduledIntent.record.amount,
-              payable.currency || FALLBACK_CURRENCY
-            )} on ${formattedDate}`}
+            {i18n._('Scheduled for {amount} on {date}', {
+              amount: formatCurrencyToDisplay(
+                earliestScheduledIntent.record.amount,
+                payable.currency || FALLBACK_CURRENCY
+              ),
+              date: formattedDate,
+            })}
           </Box>
         }
         arrow
       >
         <Chip
           icon={<CalendarMonthOutlined fontSize="small" />}
-          label={t(i18n)`Scheduled ${formattedDate}`}
+          label={i18n._('Scheduled {date}', { date: formattedDate })}
           size="small"
           sx={{
             color: theme.palette.grey[700],
@@ -208,12 +211,13 @@ export const PayablesTableAction = ({
         title={
           processingData && (
             <Box>
-              {t(i18n)`${
-                processingData.count
-              } payment for ${formatCurrencyToDisplay(
-                processingData.sum,
-                payable.currency || FALLBACK_CURRENCY
-              )} processing`}
+              {i18n._('{count} payment for {amount} processing', {
+                count: processingData.count,
+                amount: formatCurrencyToDisplay(
+                  processingData.sum,
+                  payable.currency || FALLBACK_CURRENCY
+                ),
+              })}
             </Box>
           )
         }
@@ -221,7 +225,7 @@ export const PayablesTableAction = ({
       >
         <Chip
           icon={<AccessTimeRounded fontSize="small" />}
-          label={t(i18n)`${processingData.count} Processing`}
+          label={i18n._('{count} Processing', { count: processingData.count })}
           size="small"
           sx={{
             color: theme.palette.grey[700],

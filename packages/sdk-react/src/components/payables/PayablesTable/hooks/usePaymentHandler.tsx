@@ -138,11 +138,9 @@ export const usePaymentHandler = (
     } catch (error) {
       console.error('Payment link creation/retrieval error:', error);
       toast.error(
-        t(i18n)`Failed to ${
-          existingPaymentIntentId && existingPaymentIntent?.status === 'created'
-            ? 'retrieve'
-            : 'create'
-        } payment link. Please try again.`
+        existingPaymentIntentId && existingPaymentIntent?.status === 'created'
+          ? t(i18n)`Failed to retrieve payment link. Please try again.`
+          : t(i18n)`Failed to create payment link. Please try again.`
       );
       setModalOpen(false);
     } finally {
