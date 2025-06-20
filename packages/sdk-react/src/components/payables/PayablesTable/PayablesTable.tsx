@@ -483,7 +483,7 @@ const PayablesTableBase = ({
             <PayablesTableAction
               payable={payable}
               payableRecentPaymentRecordByIntent={
-                payablesPaymentIntentsRecord[payable.id] || []
+                payablesPaymentIntentsRecord?.[payable.id] || []
               }
               onPayableActionComplete={() => {
                 refetch();
