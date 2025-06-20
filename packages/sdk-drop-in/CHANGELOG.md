@@ -1,5 +1,17 @@
 # @monite/sdk-drop-in
 
+## 2.1.0
+
+### Minor Changes
+
+- 55393f1: New built-in PDF viewer
+- 979f92a: Custom VAT rates properties are added to the schema
+
+### Patch Changes
+
+- f557381: Fixed bugs on the Invoice Creation screen, specifically on the VAT and memo fields, and on the costumer modal. Improved design of the reminders component.
+- d5b8f4b: Removed ssn_last_4 in favor of id_number
+
 ## 2.0.3
 
 ### Patch Changes
