@@ -25,6 +25,7 @@ export const usePaymentHandler = (
   const [modalOpen, setModalOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [paymentLinkId, setPaymentLinkId] = useState<string | null>(null);
+  const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
 
   // Fetch existing payment intent if existingPaymentIntentId is provided
   const {
@@ -51,6 +52,7 @@ export const usePaymentHandler = (
     data: currentPaymentLink,
     refetch: refetchCurrentPaymentLink,
     isSuccess: isCurrentPaymentLinkSuccess,
+    isLoading: isCurrentPaymentLinkLoading,
   } = usePaymentLinkById(paymentLinkId ?? '');
 
   useEffect(() => {
@@ -85,12 +87,29 @@ export const usePaymentHandler = (
       return;
     }
 
+    // Prevent multiple simultaneous requests
+    if (isCreatingPaymentLink) {
+      return;
+    }
+
     try {
+      // Prevent creating duplicate payment links while loading
+      if (isCurrentPaymentLinkLoading) {
+        toast.error(
+          t(
+            i18n
+          )`Payment link is still loading. Please wait a moment and try again.`
+        );
+        return;
+      }
+
       if (
         !paymentLinkId ||
-        currentPaymentLink?.payment_intent?.status !== 'created'
+        (isCurrentPaymentLinkSuccess &&
+          currentPaymentLink?.payment_intent?.status !== 'created')
       ) {
         // A) Create new payment link
+        setIsCreatingPaymentLink(true);
         if (!payableId) throw new Error('Payable ID is undefined');
         const createdPaymentLink = await createPaymentLink(
           payableId,
@@ -126,11 +145,14 @@ export const usePaymentHandler = (
         } payment link. Please try again.`
       );
       setModalOpen(false);
+    } finally {
+      setIsCreatingPaymentLink(false);
     }
   };
 
   return {
     handlePay,
+    isCreatingPaymentLink,
     modalComponent: (
       <Modal open={modalOpen} onClose={handleCloseModal} container={root}>
         <Box
