@@ -8,6 +8,7 @@ import {
   parseElementAttribute,
   SlotConfig,
 } from '@/custom-elements/MoniteAppElementBase.tsx';
+import { kebabToCamelCase } from '@/utils/string-utils';
 import { APISchema } from '@monite/sdk-react';
 
 export class MoniteAppElement extends MoniteAppElementBase<
@@ -182,6 +183,3 @@ export class MoniteAppElement extends MoniteAppElementBase<
     );
   }
 }
-
-export const kebabToCamelCase = (s: string): string =>
-  s.replace(/-([a-z])/g, (g) => g[1].toUpperCase());

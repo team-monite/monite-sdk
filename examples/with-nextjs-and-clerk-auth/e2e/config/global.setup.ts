@@ -36,5 +36,7 @@ setup('authenticate', async ({ page }) => {
   });
 
   await page.goto('/');
+  // Add small wait for auth to complete
+  await page.waitForTimeout(2000);
   await page.context().storageState({ path: authFile });
 });
