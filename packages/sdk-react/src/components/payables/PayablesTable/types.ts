@@ -36,6 +36,7 @@ export type FieldValueTypes =
   | 'was_created_by_user_id'
   | 'created_at'
   | 'amount_paid'
+  | 'amount_to_pay'
   | 'status'
   | 'pay';
 

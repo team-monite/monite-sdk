@@ -169,11 +169,14 @@ export function usePayableDetails({
 
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-  const { handlePay, modalComponent, isPaymentLinkAvailable } =
-    usePaymentHandler(tempPayableID ?? id, payable?.counterpart_id, () => {
+  const { handlePay, modalComponent } = usePaymentHandler(
+    tempPayableID ?? id,
+    payable?.counterpart_id,
+    () => {
       setIsProcessingPayment(true);
       refetchPayable();
-    });
+    }
+  );
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -862,7 +865,6 @@ export function usePayableDetails({
       handlePay,
       updateTags,
       modalComponent,
-      isPaymentLinkAvailable,
     },
   };
 }

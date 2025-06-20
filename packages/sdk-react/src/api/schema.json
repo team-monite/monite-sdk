@@ -29875,15 +29875,138 @@
             "in": "query"
           },
           {
+            "description": "Identifies whether payment is from our rails or external system",
             "required": false,
             "schema": { "type": "boolean" },
             "name": "is_external",
             "in": "query"
           },
           {
+            "description": "ID of the object, that is connected to payment",
             "required": false,
             "schema": { "type": "string", "format": "uuid" },
             "name": "object_id",
+            "in": "query"
+          },
+          {
+            "description": "List of IDs of the objects, that are connected to payments",
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "object_id__in",
+            "in": "query"
+          },
+          {
+            "description": "Type of an object, which is connected with payment",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/ObjectTypeEnum" }]
+            },
+            "name": "object_type",
+            "in": "query"
+          },
+          {
+            "description": "Created after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Created before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "Updated after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "updated_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Updated before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "updated_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "Paid after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "paid_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Paid before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "paid_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "Optional date of the upcoming payment (equality)",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "name": "planned_payment_date",
+            "in": "query"
+          },
+          {
+            "description": "Planned after this date (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "name": "planned_payment_date__gt",
+            "in": "query"
+          },
+          {
+            "description": "Planned before this date (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "name": "planned_payment_date__lt",
+            "in": "query"
+          },
+          {
+            "description": "Planned at or after this date (inclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "name": "planned_payment_date__gte",
+            "in": "query"
+          },
+          {
+            "description": "Planned at or before this date (inclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "name": "planned_payment_date__lte",
+            "in": "query"
+          },
+          {
+            "description": "One of the payment record statuses",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/PaymentRecordStatusEnum" }
+              ]
+            },
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "description": "Payment intent status as a raw string",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "payment_intent_status",
+            "in": "query"
+          },
+          {
+            "description": "Payment method used for the transaction",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "payment_method",
             "in": "query"
           },
           {
@@ -30038,6 +30161,324 @@
             "in": "header"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRecordResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "patch": {
+        "tags": ["Payment records"],
+        "summary": "Update a payment record",
+        "operationId": "patch_payment_records_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payment_record_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRecordUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRecordResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/payment_records/{payment_record_id}/cancel": {
+      "post": {
+        "tags": ["Payment records"],
+        "summary": "Cancel a payment record",
+        "operationId": "post_payment_records_id_cancel",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payment_record_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRecordStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRecordResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/payment_records/{payment_record_id}/mark_as_succeeded": {
+      "post": {
+        "tags": ["Payment records"],
+        "summary": "Mark a payment record as succeeded",
+        "operationId": "post_payment_records_id_mark_as_succeeded",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payment_record_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRecordMarkAsSucceededRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRecordResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/payment_records/{payment_record_id}/start_processing": {
+      "post": {
+        "tags": ["Payment records"],
+        "summary": "Start processing a payment record",
+        "operationId": "post_payment_records_id_start_processing",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payment_record_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRecordStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -56773,6 +57214,35 @@
         "type": "string",
         "enum": ["paid_at", "amount", "overpaid_amount"]
       },
+      "PaymentRecordHistoryResponse": {
+        "properties": {
+          "entity_user_id": { "type": "string", "format": "uuid" },
+          "status": { "$ref": "#/components/schemas/PaymentRecordStatusEnum" },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the change in a history"
+          }
+        },
+        "type": "object",
+        "required": ["status", "timestamp"]
+      },
+      "PaymentRecordMarkAsSucceededRequest": {
+        "properties": {
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp marking when the payment was executed."
+          },
+          "payment_intent_status": {
+            "type": "string",
+            "description": "Raw status string of the external payment intent."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["paid_at"]
+      },
       "PaymentRecordObjectRequest": {
         "properties": {
           "id": {
@@ -56811,35 +57281,80 @@
         "properties": {
           "amount": {
             "type": "integer",
-            "description": "Positive amount in case of successful payment, negative amount in case of payment failure or refund"
+            "description": "Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents)."
           },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "entity_user_id": { "type": "string", "format": "uuid" },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code (ISO 4217) indicating the currency in which the payment was made."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user associated with the payment, if applicable."
+          },
           "object": {
-            "$ref": "#/components/schemas/PaymentRecordObjectRequest"
+            "allOf": [
+              { "$ref": "#/components/schemas/PaymentRecordObjectRequest" }
+            ],
+            "description": "Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier."
           },
-          "paid_at": { "type": "string", "format": "date-time" },
-          "payment_intent_id": { "type": "string", "format": "uuid" }
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp marking when the payment was executed. Null if payment hasn't occurred yet."
+          },
+          "payment_intent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier for an payment intent."
+          },
+          "payment_intent_status": {
+            "type": "string",
+            "description": "Raw status string of the external payment intent."
+          },
+          "payment_method": {
+            "type": "string",
+            "description": "Payment method used or planned for the transaction."
+          },
+          "planned_payment_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Scheduled date for future payments, required when the payment is planned but not yet executed."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["created", "processing", "succeeded"],
+            "description": "Status of the payment record indicating its current stage (e.g., created, processing, succeeded).",
+            "default": "succeeded"
+          }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": [
-          "amount",
-          "currency",
-          "object",
-          "paid_at",
-          "payment_intent_id"
-        ]
+        "required": ["amount", "currency", "object", "payment_intent_id"]
       },
       "PaymentRecordResponse": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "amount": {
             "type": "integer",
-            "description": "Positive amount in case of successful payment, negative amount in case of payment failure or refund"
+            "description": "Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents)."
           },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "entity_user_id": { "type": "string", "format": "uuid" },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code (ISO 4217) indicating the currency in which the payment was made."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user associated with the payment, if applicable."
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentRecordHistoryResponse"
+            },
+            "type": "array",
+            "description": "History of the payment record."
+          },
           "is_external": { "type": "boolean" },
           "object": {
             "$ref": "#/components/schemas/PaymentRecordObjectResponse"
@@ -56850,17 +57365,43 @@
             "description": "Filled in a case, if payment amount is more, than total_amount",
             "default": 0
           },
-          "paid_at": { "type": "string", "format": "date-time" },
-          "payment_intent_id": { "type": "string", "format": "uuid" }
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp marking when the payment was executed. Null if payment hasn't occurred yet."
+          },
+          "payment_intent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier for an payment intent."
+          },
+          "payment_intent_status": {
+            "type": "string",
+            "description": "Raw status string of the external payment intent."
+          },
+          "payment_method": {
+            "type": "string",
+            "description": "Payment method used or planned for the transaction."
+          },
+          "planned_payment_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Scheduled date for future payments, required when the payment is planned but not yet executed."
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the payment record. Possible values: `created`, `processing`, `succeeded`, `canceled`.",
+            "default": "succeeded"
+          }
         },
         "type": "object",
         "required": [
           "id",
           "amount",
           "currency",
+          "history",
           "is_external",
           "object",
-          "paid_at",
           "payment_intent_id"
         ]
       },
@@ -56882,6 +57423,68 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["data"]
+      },
+      "PaymentRecordStatusEnum": {
+        "type": "string",
+        "enum": ["created", "processing", "succeeded", "canceled"]
+      },
+      "PaymentRecordStatusUpdateRequest": {
+        "properties": {
+          "payment_intent_status": {
+            "type": "string",
+            "description": "Raw status string of the external payment intent."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "PaymentRecordUpdateRequest": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents)."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code (ISO 4217) indicating the currency in which the payment was made."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user associated with the payment, if applicable."
+          },
+          "object": {
+            "allOf": [
+              { "$ref": "#/components/schemas/PaymentRecordObjectRequest" }
+            ],
+            "description": "Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier."
+          },
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp marking when the payment was executed. Null if payment hasn't occurred yet."
+          },
+          "payment_intent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier for an payment intent."
+          },
+          "payment_intent_status": {
+            "type": "string",
+            "description": "Raw status string of the external payment intent."
+          },
+          "payment_method": {
+            "type": "string",
+            "description": "Payment method used or planned for the transaction."
+          },
+          "planned_payment_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Scheduled date for future payments, required when the payment is planned but not yet executed."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
       },
       "PaymentReminder": {
         "properties": {

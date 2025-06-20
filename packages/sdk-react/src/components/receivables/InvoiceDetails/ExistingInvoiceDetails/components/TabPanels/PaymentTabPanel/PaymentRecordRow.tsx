@@ -7,6 +7,8 @@ import { useLingui } from '@lingui/react';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { Box, Alert, Skeleton, Typography } from '@mui/material';
 
+import { isValid } from 'date-fns';
+
 export const PaymentRecordRow = ({
   invoice,
   record,
@@ -69,7 +71,9 @@ export const PaymentRecordRow = ({
           <Typography variant="body1">{recordTitle}</Typography>
         )}
         <Typography variant="body2" color="textSecondary">
-          {i18n.date(new Date(record.paid_at), locale.dateTimeFormat)}
+          {record.paid_at && isValid(new Date(record.paid_at))
+            ? i18n.date(new Date(record.paid_at), locale.dateTimeFormat)
+            : '-'}
         </Typography>
       </Box>
       <Box

@@ -15,6 +15,7 @@ export const DEFAULT_FIELD_ORDER: [FieldValueTypes, ...FieldValueTypes[]] = [
   'status',
   'amount',
   'amount_paid',
+  'amount_to_pay',
   'pay',
 ];
 
