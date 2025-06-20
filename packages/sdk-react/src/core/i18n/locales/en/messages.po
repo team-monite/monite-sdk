@@ -14,6 +14,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:179
+msgid "Scheduled for {amount} on {date}"
+msgstr "Scheduled for {amount} on {date}"
+
+#. js-lingui-explicit-id
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:192
+msgid "Scheduled {date}"
+msgstr "Scheduled {date}"
+
+#. js-lingui-explicit-id
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:214
+msgid "{count} payment for {amount} processing"
+msgstr "{count} payment for {amount} processing"
+
+#. js-lingui-explicit-id
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:228
+msgid "{count} Processing"
+msgstr "{count} Processing"
+
+#. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:34
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
@@ -64,7 +84,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:36
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:44
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:73
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:28
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:30
 msgid "{0}"
 msgstr "{0}"
 
@@ -104,12 +124,12 @@ msgid "{0} has been updated"
 msgstr "{0} has been updated"
 
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:211
-msgid "{0} payment for {1} processing"
-msgstr "{0} payment for {1} processing"
+#~ msgid "{0} payment for {1} processing"
+#~ msgstr "{0} payment for {1} processing"
 
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:224
-msgid "{0} Processing"
-msgstr "{0} Processing"
+#~ msgid "{0} Processing"
+#~ msgstr "{0} Processing"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:64
 msgid "{0}/{1} issued"
@@ -1431,7 +1451,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:58
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:340
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:141
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:143
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:144
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/UpdatePDF/UpdatePDFModal.tsx:140
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:270
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
@@ -1874,7 +1894,7 @@ msgstr "Condition type"
 msgid "Conditions"
 msgstr "Conditions"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:152
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:153
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -2061,7 +2081,7 @@ msgstr "Counterpart has been deleted."
 msgid "Counterpart not found"
 msgstr "Counterpart not found"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:83
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:85
 msgid "Counterpart not found. Please create a counterpart first."
 msgstr "Counterpart not found. Please create a counterpart first."
 
@@ -3129,7 +3149,7 @@ msgstr "Edit preset"
 msgid "Edit profile"
 msgstr "Edit profile"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:149
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/RecordManualPaymentModal.tsx:150
 msgid "Edit record"
 msgstr "Edit record"
 
@@ -3388,8 +3408,8 @@ msgid "Exterminating Services"
 msgstr "Exterminating Services"
 
 #: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:122
-msgid "Failed to {0} payment link. Please try again."
-msgstr "Failed to {0} payment link. Please try again."
+#~ msgid "Failed to {0} payment link. Please try again."
+#~ msgstr "Failed to {0} payment link. Please try again."
 
 #: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:97
 #~ msgid "Failed to a create payment link. Please try again."
@@ -3412,7 +3432,11 @@ msgstr "Failed to create Contact Person."
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
-#: src/core/queries/usePaymentRecords.ts:178
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:143
+msgid "Failed to create payment link. Please try again."
+msgstr "Failed to create payment link. Please try again."
+
+#: src/core/queries/usePaymentRecords.ts:180
 msgid "Failed to create payment record: {errorMessage}"
 msgstr "Failed to create payment record: {errorMessage}"
 
@@ -3464,6 +3488,10 @@ msgstr "Failed to load PDF Viewer"
 #: src/core/queries/useReceivables.ts:626
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
+
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:142
+msgid "Failed to retrieve payment link. Please try again."
+msgstr "Failed to retrieve payment link. Please try again."
 
 #: src/components/receivables/hooks/useSetDefaultBankAccount.ts:26
 msgid "Failed to set Bank Account as default."
@@ -4793,7 +4821,7 @@ msgstr "List all customers who have overdue payments for more than 60 days"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:169
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:189
 msgid "Loading payment page..."
 msgstr "Loading payment page..."
 
@@ -4903,7 +4931,7 @@ msgid "Manual Cash Disburse"
 msgstr "Manual Cash Disburse"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/ManualPaymentRecordDetails.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:34
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:36
 msgid "Manual payment record"
 msgstr "Manual payment record"
 
@@ -5403,7 +5431,7 @@ msgstr "No overdue reminders available"
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:111
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:115
 msgid "No payments yet"
 msgstr "No payments yet"
 
@@ -5744,7 +5772,7 @@ msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:213
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:119
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:281
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:285
 #: src/components/userRoles/consts.ts:75
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:167
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:200
@@ -5872,6 +5900,10 @@ msgstr "Payment Details"
 msgid "Payment due"
 msgstr "Payment due"
 
+#: src/components/payables/PayablesTable/hooks/usePaymentHandler.tsx:99
+msgid "Payment link is still loading. Please wait a moment and try again."
+msgstr "Payment link is still loading. Please wait a moment and try again."
+
 #: src/components/tags/helpers.ts:22
 msgid "Payment Method"
 msgstr "Payment Method"
@@ -5888,11 +5920,11 @@ msgstr "Payment processing services for {entityName} are provided by Stripe and 
 msgid "Payment record"
 msgstr "Payment record"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:37
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:39
 msgid "Payment record by"
 msgstr "Payment record by"
 
-#: src/core/queries/usePaymentRecords.ts:174
+#: src/core/queries/usePaymentRecords.ts:176
 msgid "Payment record was created"
 msgstr "Payment record was created"
 
@@ -6287,7 +6319,7 @@ msgstr "Price per unit"
 msgid "Processing file"
 msgstr "Processing file"
 
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:256
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:260
 msgid "Processing payment..."
 msgstr "Processing payment..."
 
@@ -6926,12 +6958,12 @@ msgid "Scheduled"
 msgstr "Scheduled"
 
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:189
-msgid "Scheduled {formattedDate}"
-msgstr "Scheduled {formattedDate}"
+#~ msgid "Scheduled {formattedDate}"
+#~ msgstr "Scheduled {formattedDate}"
 
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:179
-msgid "Scheduled for {0} on {formattedDate}"
-msgstr "Scheduled for {0} on {formattedDate}"
+#~ msgid "Scheduled for {0} on {formattedDate}"
+#~ msgstr "Scheduled for {0} on {formattedDate}"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:45
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:234
@@ -7112,9 +7144,9 @@ msgstr "Set your entity's {0} to issue invoice"
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:242
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:44
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:45
+#: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:246
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:46
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordRow.tsx:47
 msgid "Settled"
 msgstr "Settled"
 
