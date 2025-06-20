@@ -1,9 +1,13 @@
 import { ReactNode } from 'react';
 
-import { useMenuButton } from '@/core/hooks';
 import { CenteredContentBox } from '@/ui/box';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import NoDataIcon from '@mui/icons-material/Block';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import CountryUnsupportedIcon from '@mui/icons-material/HourglassEmpty';
@@ -11,7 +15,7 @@ import AccessRestrictedIcon from '@mui/icons-material/Lock';
 import ReceiptLong from '@mui/icons-material/ReceiptLong';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import { Box, Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 export interface BaseProps {
   onAction?: (option?: string) => void;
@@ -139,8 +143,6 @@ const ActionButton = ({
   type,
   className = 'Monite-DataGridEmptyState',
 }: ActionButtonProps) => {
-  const { buttonProps, menuProps } = useMenuButton();
-
   if (!actionButtonLabel) return null;
 
   const handleMenuItemClick = (option?: string) => {
@@ -149,48 +151,44 @@ const ActionButton = ({
     }
   };
 
-  return (
-    <>
-      <Button
-        {...buttonProps}
-        variant="contained"
-        color="primary"
-        sx={{ mt: 2 }}
-        onClick={(event) => {
-          event.preventDefault();
-          if (actionOptions.length === 1) {
-            handleMenuItemClick(actionOptions[0]);
-          } else {
-            buttonProps.onClick?.(event);
-          }
-        }}
-        startIcon={type === 'error' ? <RefreshIcon /> : undefined}
-        endIcon={
-          actionOptions.length > 1 ? (
-            menuProps.open ? (
-              <ArrowDropUpIcon />
-            ) : (
-              <ArrowDropDownIcon />
-            )
-          ) : undefined
-        }
-        className={`${className}-Button`}
-      >
-        {actionButtonLabel}
-      </Button>
-      {actionOptions.length > 1 && (
-        <Menu {...menuProps} className={`${className}-Menu`}>
-          {actionOptions.map((option) => (
-            <MenuItem
-              key={option}
-              onClick={() => handleMenuItemClick(option)}
-              className={`${className}-MenuItem`}
-            >
-              {option}
-            </MenuItem>
-          ))}
-        </Menu>
-      )}
-    </>
+  return actionOptions.length > 1 ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          startIcon={type === 'error' ? <RefreshIcon /> : undefined}
+          endIcon={<ArrowDropDownIcon />}
+          className={`${className}-Button`}
+        >
+          {actionButtonLabel}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {actionOptions.map((option) => (
+          <DropdownMenuItem
+            key={option}
+            onClick={() => handleMenuItemClick(option)}
+          >
+            {option}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      sx={{ mt: 2 }}
+      onClick={(event) => {
+        event.preventDefault();
+        handleMenuItemClick(actionOptions?.[0]);
+      }}
+      startIcon={type === 'error' ? <RefreshIcon /> : undefined}
+      className={`${className}-Button`}
+    >
+      {actionButtonLabel}
+    </Button>
   );
 };

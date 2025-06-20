@@ -28,3 +28,4 @@ export { ReminderDetails } from './ReminderDetails';
 export { ReminderSectionContent } from './ReminderSectionContent';
 export { ReminderSelectLayout } from './ReminderSelectLayout';
 export { RemindersSection } from './RemindersSection';
+export { VatModeMenu } from './VatModeMenu';
