@@ -28,10 +28,7 @@ export const EntitySection = ({
   const { control } = useFormContext<CreateReceivablesFormProps>();
 
   return (
-    <Box
-      sx={{ borderBottom: '1px solid', borderBottomColor: 'divider' }}
-      pb={10}
-    >
+    <Box>
       <Typography
         variant="caption"
         color="textSecondary"
@@ -44,7 +41,7 @@ export const EntitySection = ({
         control={control}
         render={({ field, fieldState: { error } }) => (
           <FormControl
-            variant="standard"
+            variant="outlined"
             fullWidth
             required
             disabled={disabled}
@@ -59,6 +56,11 @@ export const EntitySection = ({
               multiline
               minRows={2}
               fullWidth
+              sx={{
+                '& .MuiInputBase-root': {
+                  background: 'white',
+                },
+              }}
               error={Boolean(error)}
             />
           </FormControl>
