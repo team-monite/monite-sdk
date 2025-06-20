@@ -3,7 +3,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 
-import { MoniteLogo, OnboardingContainer } from '../../components';
+import { MoniteLogo } from '../../components/MoniteLogo';
+import { OnboardingContainer } from '../../components/OnboardingContainer';
 import {
   StyledFooter,
   StyledLink,

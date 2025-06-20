@@ -353,7 +353,7 @@ const PayableDetailsFormBase = forwardRef<
           enabled: Boolean(
             !payable?.counterpart_id && payable?.counterpart_raw_data?.name
           ),
-          select: (data) => data.data.at(0),
+          select: (data) => data.data[0],
         }
       );
     const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;

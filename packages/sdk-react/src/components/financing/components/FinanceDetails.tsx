@@ -1,6 +1,5 @@
 import { components } from '@/api';
-import { FinancedInvoiceStatusChip } from '@/components/financing/components';
-import { InvoiceStatusChip } from '@/components/receivables/components';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useKanmonContext } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -15,6 +14,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+
+import { FinancedInvoiceStatusChip } from './FinancedInvoiceStatusChip';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];

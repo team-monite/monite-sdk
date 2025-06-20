@@ -14,7 +14,22 @@ import { MoniteAppElement } from './MoniteAppElement';
 
 const MONITE_APP_ELEMENT_NAME = 'monite-app';
 
-customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
+if (
+  typeof customElements !== 'undefined' &&
+  typeof MoniteAppElement === 'function'
+) {
+  try {
+    customElements.define(MONITE_APP_ELEMENT_NAME, MoniteAppElement);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'NotSupportedError') {
+      console.warn(
+        `Custom element ${MONITE_APP_ELEMENT_NAME} is already defined`
+      );
+    } else {
+      throw error;
+    }
+  }
+}
 
 interface MoniteAppElementConfig {
   /**
@@ -68,6 +83,11 @@ class MoniteDropin {
 
   constructor(config: MoniteAppElementConfig) {
     this.config = { ...MoniteDropin.defaultConfig, ...config };
+
+    if (typeof document === 'undefined') {
+      throw new Error('MoniteDropin cannot be used in SSR environment');
+    }
+
     this.moniteAppElement = document.createElement(
       MONITE_APP_ELEMENT_NAME
     ) as MoniteAppElement;
@@ -81,6 +101,10 @@ class MoniteDropin {
 
     // Add fetch-token script
     this.moniteAppElement.fetchToken = this.config.fetchToken;
+
+    if (typeof document === 'undefined') {
+      throw new Error('MoniteDropin cannot be used in SSR environment');
+    }
 
     // Add locale script
     const localeScript = document.createElement('script');

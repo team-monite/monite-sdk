@@ -1,4 +1,4 @@
-import { kebabToCamelCase } from './MoniteAppElement';
+import { kebabToCamelCase } from './string-utils';
 
 describe('kebabToCamel', () => {
   it('converts kebab-case to camelCase', () => {

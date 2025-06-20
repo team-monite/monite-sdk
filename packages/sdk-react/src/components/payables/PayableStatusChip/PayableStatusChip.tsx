@@ -1,25 +1,16 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   getRowToStatusTextMap,
   PAYABLE_STATUS_TO_MUI_ICON_MAP,
 } from '@/components/payables/consts';
+import { MonitePayableStatusChipProps } from '@/core/theme/types';
 import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { lighten, styled, useTheme, useThemeProps } from '@mui/material/styles';
 
-export interface MonitePayableStatusChipProps {
-  /** The status of the payable. */
-  status: components['schemas']['PayableStateEnum'];
-  /** Display status icon? */
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-}
+export type { MonitePayableStatusChipProps };
 
 /**
  * Displays the status of a Payable.

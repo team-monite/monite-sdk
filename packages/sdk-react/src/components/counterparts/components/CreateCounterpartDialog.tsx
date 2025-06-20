@@ -1,8 +1,6 @@
 import { useCallback, useState } from 'react';
 
 import { components } from '@/api';
-import { CounterpartDetails } from '@/components';
-import { CounterpartTypeItem } from '@/components/counterparts/components';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
@@ -19,6 +17,9 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
+
+import { CounterpartDetails } from '../CounterpartDetails/CounterpartDetails';
+import { CounterpartTypeItem } from './CounterpartTypeItem';
 
 interface CreateCounterpartDialogProps {
   open: boolean;

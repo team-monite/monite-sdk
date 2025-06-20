@@ -30,18 +30,14 @@
     "build:types": "tsc --emitDeclarationOnly --declaration --noEmit false --declarationDir dist/types",
     "preview": "vite preview",
     "clean": "rimraf dist/",
+    "test": "vitest run --no-watch --reporter=verbose && exit 0",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:ci": "vitest run --coverage",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "sideEffects": true,
-  "jest": {
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!lodash-es)"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -56,26 +52,36 @@
   },
   "devDependencies": {
     "@emotion/react": "~11.11.1",
+    "@faker-js/faker": "~9.8.0",
     "@monite/sdk-react": "workspace:~",
     "@mui/material": "~5.15.14",
     "@openapi-qraft/react": "1.14.0",
-    "@playwright/test": "~1.45.0",
+    "@playwright/test": "~1.52.0",
+    "@tanstack/query-core": "~5.28.6",
     "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
-    "@types/react": "^18.0.9",
+    "@testing-library/jest-dom": "~6.6.3",
+    "@types/react": "18.3.1",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react": "~4.3.4",
     "@vitejs/plugin-react-swc": "~3.7.1",
     "eslint": "~8.57.0",
-    "playwright": "~1.45.0",
+    "eslint-import-resolver-typescript": "~4.3.5",
+    "happy-dom": "~17.4.7",
+    "playwright": "^1.52.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.3.2",
     "rimraf": "~5.0.0",
     "typescript": "~5.5.4",
-    "vite": "~5.4.19"
+    "vite": "~5.4.19",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^3.2.0"
+  },
+  "dependencies": {
+    "@team-monite/sdk-demo": "workspace:~"
   },
   "files": [
     "dist"

@@ -7,16 +7,16 @@ type IconVariant = 'info' | 'success' | 'critical';
 interface DashboardCardProps {
   title: string;
   action?: ReactNode;
-  renderIcon?: (props: SvgIconProps) => ReactNode;
   iconVariant?: IconVariant;
   children?: ReactNode;
   sx?: CSSProperties;
   backgroundColor?: string;
+  renderIcon?: (props: SvgIconProps) => ReactNode;
 }
 
 const getIconStyles = () => {
   const backgroundColor = '#F6F7F8';
-  const fill = '#292929';
+  // const fill = '#292929';
 
   return {
     icon: {

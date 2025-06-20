@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import { Dialog } from '@/components/Dialog/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -20,9 +19,9 @@ type BaseConfirmationModalProps = {
   title: string;
   confirmLabel: string;
   cancelLabel: string;
+  isLoading?: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  isLoading?: boolean;
 };
 
 type MessageConfirmationModalProps = BaseConfirmationModalProps & {
@@ -46,17 +45,15 @@ export const ConfirmationModal = ({
   children,
   confirmLabel,
   cancelLabel,
+  isLoading = false,
   onClose,
   onConfirm,
-  isLoading = false,
 }: ConfirmationModalProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
 
   return (
     <Dialog
       open={open}
-      container={root}
       onClose={onClose}
       aria-label={t(i18n)`Confirmation dialog`}
       fullWidth

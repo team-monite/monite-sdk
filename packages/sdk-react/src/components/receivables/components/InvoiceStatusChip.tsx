@@ -1,27 +1,17 @@
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
 import {
   INVOICE_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_TAG_STATUS_MUI_MAP,
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/utils';
+import { MoniteInvoiceStatusChipProps } from '@/core/theme/types';
 import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface MoniteInvoiceStatusChipProps {
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  /** The status of the invoice. */
-  status: components['schemas']['ReceivablesStatusEnum'];
-  /** The variant of the Chip. */
-}
+export type { MoniteInvoiceStatusChipProps };
 
 /**
  * Displays the status of an Invoice.

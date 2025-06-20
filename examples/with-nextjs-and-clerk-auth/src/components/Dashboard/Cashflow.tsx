@@ -5,7 +5,6 @@ import {
   Bar,
   CartesianGrid,
   ComposedChart,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -149,7 +148,9 @@ export const CashFlowCard = () => {
   return (
     <DashboardCard
       title="Total received"
-      renderIcon={(props) => <IconChart sx={{ height: 20, width: 20 }} />}
+      renderIcon={(props) => (
+        <IconChart sx={{ height: 20, width: 20 }} {...props} />
+      )}
     >
       <ResponsiveContainer width="100%" height={250}>
         <ComposedChart data={chartData}>

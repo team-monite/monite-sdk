@@ -1,9 +1,9 @@
-import { Component, createContext, ReactNode, useMemo } from 'react';
+import { Component, ReactNode, useMemo } from 'react';
 
 import { type APISchema, createAPIClient } from '@monite/sdk-react';
-import { type QraftContextValue } from '@openapi-qraft/react';
+import { QraftContext } from '@openapi-qraft/react';
 import { createSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
-import { QueryClient } from '@tanstack/react-query';
+import { useQueryClient, QueryClient } from '@tanstack/react-query';
 
 type EntityIdLoaderBaseProps = {
   apiUrl: string;
@@ -19,34 +19,25 @@ export const EntityIdLoader = ({
 }: EntityIdLoaderBaseProps & {
   children: (entityId: string) => ReactNode;
 }) => {
-  return (
-    <EntityIdLoaderProvider fetchToken={fetchToken} apiUrl={apiUrl}>
-      <ErrorBoundary>
-        <EntityIdLoaderRenderCallback>{children}</EntityIdLoaderRenderCallback>
-      </ErrorBoundary>
-    </EntityIdLoaderProvider>
-  );
-};
+  const queryClient = useQueryClient();
 
-const EntityIdLoaderProvider = ({
-  children,
-  apiUrl,
-  fetchToken,
-}: EntityIdLoaderBaseProps & { children: ReactNode }) => {
   const requestFn = useMemo(
-    () => createEntityUsersMyEntityRequestFn(fetchToken),
-    [fetchToken]
+    () => createEntityUsersMyEntityRequestFn(fetchToken, queryClient),
+    [fetchToken, queryClient]
   );
 
   return (
-    <EntityIdContext.Provider
+    <QraftContext.Provider
       value={{
         requestFn,
         baseUrl: apiUrl,
+        queryClient: queryClient,
       }}
     >
-      {children}
-    </EntityIdContext.Provider>
+      <ErrorBoundary>
+        <EntityIdLoaderRenderCallback>{children}</EntityIdLoaderRenderCallback>
+      </ErrorBoundary>
+    </QraftContext.Provider>
   );
 };
 
@@ -55,7 +46,8 @@ const EntityIdLoaderRenderCallback = ({
 }: {
   children: (entityId: string) => ReactNode;
 }) => {
-  const { api } = createAPIClient({ context: EntityIdContext });
+  const { api } = createAPIClient({ context: QraftContext });
+
   const getEntityUsersMeQuery =
     api.entityUsers.getEntityUsersMyEntity.useSuspenseQuery(
       {},
@@ -71,7 +63,8 @@ const EntityIdLoaderRenderCallback = ({
 };
 
 export const createEntityUsersMyEntityRequestFn = (
-  fetchToken: EntityIdLoaderBaseProps['fetchToken']
+  fetchToken: EntityIdLoaderBaseProps['fetchToken'],
+  queryClient: QueryClient
 ) => {
   const { requestFn: moniteRequestFn } = createAPIClient();
 
@@ -86,7 +79,7 @@ export const createEntityUsersMyEntityRequestFn = (
       },
     },
     moniteRequestFn,
-    new QueryClient()
+    queryClient
   );
 };
 
@@ -114,5 +107,3 @@ class ErrorBoundary extends Component<
     return this.props.children;
   }
 }
-
-const EntityIdContext = createContext<QraftContextValue>(undefined);

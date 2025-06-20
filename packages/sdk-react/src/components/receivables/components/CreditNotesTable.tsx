@@ -2,10 +2,8 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  InvoiceStatusChip,
-  ReceivableFilters,
-} from '@/components/receivables/components';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/components/ReceivableFilters';
 import { useReceivablesFilters } from '@/components/receivables/hooks';
 import {
   ReceivableFilterType,

@@ -4,8 +4,10 @@ import type { FieldErrors, FieldValues } from 'react-hook-form';
 const generateErrors = <T extends FieldValues>(
   fields: FieldErrors<T>,
   parentKey: string = ''
-): HTMLElement[] =>
-  Object.entries(fields)
+): HTMLElement[] => {
+  if (typeof document === 'undefined') return [];
+
+  return Object.entries(fields)
     .reduce<HTMLElement[]>((acc, [key, field]) => {
       const fullKey = parentKey ? `${parentKey}.${key}` : key;
       const element = document.getElementById(fullKey);
@@ -23,6 +25,7 @@ const generateErrors = <T extends FieldValues>(
       if (topA > topB) return 1;
       return 0;
     });
+};
 
 /**
  * Scrolls to the first error in a form.
