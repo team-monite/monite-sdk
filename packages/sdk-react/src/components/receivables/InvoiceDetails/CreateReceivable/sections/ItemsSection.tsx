@@ -98,12 +98,14 @@ interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
   isNonVatSupported: boolean;
+  isVatSelectionDisabled?: boolean;
 }
 
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
   isNonVatSupported,
+  isVatSelectionDisabled,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const {
@@ -470,7 +472,7 @@ export const ItemsSection = ({
                   }}
                 >
                   {t(i18n)`Price`}
-                  <VatModeMenu />
+                  <VatModeMenu disabled={isVatSelectionDisabled} />
                 </TableCell>
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
                   {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
