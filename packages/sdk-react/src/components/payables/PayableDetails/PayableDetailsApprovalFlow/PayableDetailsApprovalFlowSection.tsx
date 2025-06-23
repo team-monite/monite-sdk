@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
-
 import { components } from '@/api';
 import { UUserSquare } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/icons/UUserSquare';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -20,29 +19,69 @@ import {
   Skeleton,
 } from '@mui/material';
 
+import { useResolvedApprovalStepsWithPolicy } from './useResolvedApprovalSteps';
+
 interface RoleCellProps {
   roleId: string;
+  designVariant?: 'old' | 'new';
 }
 
-const RoleCell = ({ roleId }: RoleCellProps) => {
+const RoleCell = ({
+  roleId,
+  roleData,
+  designVariant = 'old',
+}: RoleCellProps & { roleData?: components['schemas']['RoleResponse'] }) => {
   const { api } = useMoniteContext();
 
-  const { data: role, isLoading } = api.roles.getRolesId.useQuery({
-    path: { role_id: roleId },
-  });
+  const { data: role, isLoading } = api.roles.getRolesId.useQuery(
+    {
+      path: { role_id: roleId },
+    },
+    {
+      enabled: !roleData,
+    }
+  );
 
-  if (!role) {
+  const displayRole = roleData ?? role;
+  const isRoleLoading = !roleData && isLoading;
+
+  if (!displayRole) {
     return null;
+  }
+
+  if (designVariant === 'new') {
+    return (
+      <Chip
+        label={
+          isRoleLoading ? (
+            <Skeleton height="50%" width={100} animation="wave" />
+          ) : (
+            displayRole.name
+          )
+        }
+        variant="filled"
+        sx={{
+          borderRadius: 2,
+          fontWeight: 600,
+          backgroundColor: '#f5f5f5',
+          color: '#333',
+          '& .MuiChip-label': {
+            px: 2,
+            py: 0.5,
+          },
+        }}
+      />
+    );
   }
 
   return (
     <Chip
       avatar={<UUserSquare width={18} />}
       label={
-        isLoading ? (
+        isRoleLoading ? (
           <Skeleton height="50%" width={100} animation="wave" />
         ) : (
-          role.name
+          displayRole.name
         )
       }
       variant="outlined"
@@ -57,109 +96,25 @@ const RoleCell = ({ roleId }: RoleCellProps) => {
   );
 };
 
-const mapApprovalStatusToPayableStatus = (
-  status: components['schemas']['ApprovalRequestStatus']
-): components['schemas']['PayableStateEnum'] => {
-  switch (status) {
-    case 'approved':
-      return 'waiting_to_be_paid';
-    case 'rejected':
-      return 'rejected';
-    case 'canceled':
-      return 'canceled';
-    case 'waiting':
-    default:
-      return 'approve_in_progress';
-  }
-};
-
 interface PayableApprovalFlowSectionProps {
   approvalPolicy: components['schemas']['ApprovalPolicyResource'];
   payableId: string;
   currentStatus: string;
+  showUserEmail?: boolean;
+  roleDesignVariant?: 'old' | 'new';
 }
 
-interface ApprovalStep {
-  stepNumber: number;
-  assignees: string[];
-  roleIds: string[];
-  assignee?: string;
-  type: string;
-  status: components['schemas']['ApprovalRequestStatus'];
-  payableStatus: components['schemas']['PayableStateEnum'];
-  isRoleBased: boolean;
-}
-
-export const PayableApprovalFlowSection: React.FC<
-  PayableApprovalFlowSectionProps
-> = ({
-  approvalPolicy: _approvalPolicy,
+export const PayableApprovalFlowSection = ({
+  approvalPolicy,
   payableId,
-  currentStatus: _currentStatus,
-}) => {
+  showUserEmail,
+  roleDesignVariant = 'old',
+}: PayableApprovalFlowSectionProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-
-  const { data: approvalRequests, isLoading: isLoadingRequests } =
-    api.approvalRequests.getApprovalRequests.useQuery({
-      query: {
-        object_id: payableId,
-        object_type: 'payable',
-        limit: 50,
-      },
-    });
-
-  const { data: approvalPolicyDetails, isLoading: isLoadingPolicy } =
-    api.approvalPolicies.getApprovalPoliciesId.useQuery({
-      path: { approval_policy_id: _approvalPolicy.id },
-    });
-
-  const requests = approvalRequests?.data || [];
-  const policyScript = useMemo(
-    () => approvalPolicyDetails?.script || [],
-    [approvalPolicyDetails]
+  const { steps, isLoading } = useResolvedApprovalStepsWithPolicy(
+    payableId,
+    approvalPolicy
   );
-
-  const allUserIds = useMemo(() => {
-    const userIds = new Set<string>();
-    policyScript.forEach((scriptStep: any) => {
-      const approvalCalls = scriptStep.all || [];
-      const userApprovalCall = approvalCalls.find(
-        (call: any) =>
-          call.call === 'ApprovalRequests.request_approval_by_users'
-      );
-      if (userApprovalCall?.params?.user_ids) {
-        userApprovalCall.params.user_ids.forEach((userId: string) =>
-          userIds.add(userId)
-        );
-      }
-    });
-    return Array.from(userIds);
-  }, [policyScript]);
-
-  const { data: entityUsers } = api.entityUsers.getEntityUsers.useQuery(
-    {
-      query: {
-        id__in: allUserIds.length > 0 ? allUserIds : undefined,
-        limit: 100,
-      },
-    },
-    {
-      enabled: allUserIds.length > 0,
-    }
-  );
-
-  const userDataMap = useMemo(() => {
-    const map = new Map<string, any>();
-    if (entityUsers?.data) {
-      entityUsers.data.forEach((user) => {
-        map.set(user.id, user);
-      });
-    }
-    return map;
-  }, [entityUsers]);
-
-  const isLoading = isLoadingRequests || isLoadingPolicy;
 
   if (isLoading) {
     return (
@@ -169,138 +124,6 @@ export const PayableApprovalFlowSection: React.FC<
     );
   }
 
-  const getApprovalRuleLabel = (
-    userApprovalCall: any,
-    roleApprovalCall: any
-  ) => {
-    if (userApprovalCall && userApprovalCall.params) {
-      const { user_ids, required_approval_count } = userApprovalCall.params;
-
-      if (user_ids && user_ids.length === 1) {
-        return t(i18n)`Single user`;
-      } else if (user_ids && user_ids.length > 1) {
-        if (required_approval_count === 1) {
-          return t(i18n)`Any user from the list`;
-        }
-        return t(i18n)`Any ${required_approval_count} users from the list`;
-      }
-    }
-
-    if (roleApprovalCall && roleApprovalCall.params) {
-      return t(i18n)`Any user with role`;
-    }
-
-    return '';
-  };
-
-  const approvalSteps: ApprovalStep[] = [];
-
-  policyScript.forEach((scriptStep: any, stepIndex: number) => {
-    const approvalCalls = scriptStep.all || [];
-
-    const userApprovalCall = approvalCalls.find(
-      (call: any) => call.call === 'ApprovalRequests.request_approval_by_users'
-    );
-
-    const roleApprovalCall = approvalCalls.find(
-      (call: any) => call.call === 'ApprovalRequests.request_approval_by_roles'
-    );
-
-    let assignees: string[] = [];
-    let roleIds: string[] = [];
-
-    if (userApprovalCall && userApprovalCall.params) {
-      const { user_ids } = userApprovalCall.params;
-      if (user_ids && user_ids.length > 0) {
-        assignees = user_ids;
-      }
-    }
-
-    if (roleApprovalCall && roleApprovalCall.params) {
-      const { role_ids } = roleApprovalCall.params;
-      if (role_ids && role_ids.length > 0) {
-        roleIds = role_ids;
-      }
-    }
-
-    if (
-      scriptStep.run_concurrently &&
-      assignees.length > 0 &&
-      roleIds.length > 0
-    ) {
-      const userRequests = requests.filter(
-        (req) =>
-          req.user_ids &&
-          req.user_ids.length > 0 &&
-          assignees.some((userId) => req.user_ids.includes(userId))
-      );
-      const userStepStatus =
-        userRequests.length > 0 ? userRequests[0].status : 'waiting';
-
-      approvalSteps.push({
-        stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(userApprovalCall, null),
-        assignee: undefined,
-        assignees: assignees,
-        roleIds: [],
-        status: userStepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(userStepStatus),
-        isRoleBased: false,
-      });
-
-      const roleRequests = requests.filter(
-        (req) =>
-          req.role_ids &&
-          req.role_ids.length > 0 &&
-          roleIds.some((roleId) => req.role_ids.includes(roleId))
-      );
-      const roleStepStatus =
-        roleRequests.length > 0 ? roleRequests[0].status : 'waiting';
-
-      approvalSteps.push({
-        stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(null, roleApprovalCall),
-        assignee: undefined,
-        assignees: [],
-        roleIds: roleIds,
-        status: roleStepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(roleStepStatus),
-        isRoleBased: true,
-      });
-    } else {
-      const isRoleBased = roleIds.length > 0 && assignees.length === 0;
-      const stepRequests = requests.filter((req) => {
-        if (isRoleBased) {
-          return (
-            req.role_ids &&
-            req.role_ids.length > 0 &&
-            roleIds.some((roleId) => req.role_ids.includes(roleId))
-          );
-        } else {
-          return (
-            req.user_ids &&
-            req.user_ids.length > 0 &&
-            assignees.some((userId) => req.user_ids.includes(userId))
-          );
-        }
-      });
-
-      const stepStatus =
-        stepRequests.length > 0 ? stepRequests[0].status : 'waiting';
-
-      approvalSteps.push({
-        stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(userApprovalCall, roleApprovalCall),
-        assignee: undefined,
-        assignees: assignees,
-        roleIds: roleIds,
-        status: stepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(stepStatus),
-        isRoleBased: isRoleBased,
-      });
-    }
-  });
-
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
@@ -308,9 +131,9 @@ export const PayableApprovalFlowSection: React.FC<
       </Typography>
 
       <Paper variant="outlined" sx={{ mt: 2 }}>
-        <Table>
+        <Table sx={{ tableLayout: 'fixed', width: '100%' }}>
           <TableBody>
-            {approvalSteps.map((step, index) => (
+            {steps.map((step, index) => (
               <TableRow key={index}>
                 <TableCell
                   sx={{ verticalAlign: 'middle', py: 2, width: '120px' }}
@@ -323,39 +146,86 @@ export const PayableApprovalFlowSection: React.FC<
                     {step.type}
                   </Typography>
                 </TableCell>
-                <TableCell sx={{ py: 2, verticalAlign: 'middle' }}>
+                <TableCell
+                  sx={{
+                    py: 2,
+                    verticalAlign: 'middle',
+                    minWidth: '52px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {step.isRoleBased ? (
                     step.roleIds.length > 0 ? (
                       <Stack
                         direction="row"
                         spacing={1}
-                        flexWrap="wrap"
+                        flexWrap="nowrap"
                         useFlexGap
+                        sx={{
+                          overflow: 'hidden',
+                          '& > *': {
+                            flexShrink: 0,
+                          },
+                        }}
                       >
-                        {step.roleIds.map((roleId: string) => (
-                          <RoleCell key={roleId} roleId={roleId} />
-                        ))}
+                        {step.resolvedRoles.map(
+                          (role) =>
+                            role && (
+                              <RoleCell
+                                key={role.id}
+                                roleId={role.id}
+                                roleData={role}
+                                designVariant={roleDesignVariant}
+                              />
+                            )
+                        )}
                       </Stack>
                     ) : (
                       <Typography variant="body2" color="text.secondary">
                         {t(i18n)`No roles assigned`}
                       </Typography>
                     )
-                  ) : step.assignees.length > 0 ? (
-                    <Stack direction="column" spacing={0.5}>
-                      {step.assignees.map((assigneeId: string) => {
-                        const entityUser = userDataMap.get(assigneeId);
-                        return (
-                          <Typography key={assigneeId} variant="body2">
-                            {entityUser?.email || '—'}
-                          </Typography>
-                        );
-                      })}
-                    </Stack>
                   ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      {t(i18n)`No users assigned`}
-                    </Typography>
+                    (() => {
+                      if (step.userNames.length > 0) {
+                        return (
+                          <Stack
+                            direction="column"
+                            spacing={0.5}
+                            sx={{
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {step.resolvedUsers.map((user) => {
+                              if (!user) return null;
+
+                              return (
+                                <UserDisplayCell
+                                  key={user.id}
+                                  user={user}
+                                  showUserEmail={showUserEmail}
+                                  showAvatar={false}
+                                  typographyVariant="body2"
+                                  sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                  }}
+                                />
+                              );
+                            })}
+                          </Stack>
+                        );
+                      }
+
+                      return (
+                        <Typography variant="body2" color="text.secondary">
+                          {t(i18n)`No users assigned`}
+                        </Typography>
+                      );
+                    })()
                   )}
                 </TableCell>
                 <TableCell
@@ -366,11 +236,7 @@ export const PayableApprovalFlowSection: React.FC<
                     width: '140px',
                   }}
                 >
-                  <PayableStatusChip
-                    status={step.payableStatus}
-                    size="small"
-                    icon={true}
-                  />
+                  <PayableStatusChip status={step.payableStatus} size="small" />
                 </TableCell>
               </TableRow>
             ))}

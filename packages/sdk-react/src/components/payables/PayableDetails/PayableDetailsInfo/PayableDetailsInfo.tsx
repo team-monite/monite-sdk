@@ -2,10 +2,7 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  getCounterpartName,
-  getIndividualName,
-} from '@/components/counterparts/helpers';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { PayableApprovalFlowSection } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection';
 import {
   isFieldRequired,
@@ -13,6 +10,7 @@ import {
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -109,6 +107,7 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 const PayableDetailsInfoBase = ({
   payable,
   updateTags,
+  roleDesignVariant = 'old',
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
@@ -451,6 +450,8 @@ const PayableDetailsInfoBase = ({
               approvalPolicy={approvalPolicy}
               payableId={payable.id}
               currentStatus={payable.status}
+              showUserEmail
+              roleDesignVariant={roleDesignVariant}
             />
           </Grid>
         )}
@@ -591,24 +592,17 @@ const PayableDetailsInfoBase = ({
                       {t(i18n)`Added by`}
                     </StyledLabelTableCell>
                     <TableCell>
-                      <Box
-                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                      >
-                        <UserAvatar
-                          sx={{ width: 24, height: 24 }}
-                          alt={getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                          fileId={addedByUser.userpic_file_id}
-                        />
-                        <Box>
-                          {getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                        </Box>
-                      </Box>
+                      <UserDisplayCell
+                        user={{
+                          id: addedByUser.id,
+                          first_name: addedByUser.first_name,
+                          last_name: addedByUser.last_name,
+                          userpic_file_id: addedByUser.userpic_file_id,
+                        }}
+                        showAvatar={true}
+                        avatarSize={24}
+                        typographyVariant="body2"
+                      />
                     </TableCell>
                   </TableRow>
                 )}

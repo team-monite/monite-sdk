@@ -20,7 +20,10 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { useApprovalPolicyScript, Rules } from '../../useApprovalPolicyScript';
+import {
+  type Rules,
+  useApprovalPolicyScript,
+} from '../../useApprovalPolicyScript';
 import { FormValues } from '../ApprovalPolicyForm';
 
 interface RulesTableProps {

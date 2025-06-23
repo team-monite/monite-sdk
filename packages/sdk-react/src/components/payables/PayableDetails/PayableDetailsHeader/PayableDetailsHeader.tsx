@@ -167,9 +167,9 @@ export const PayableDetailsHeader = ({
       return {
         key: permission,
         label: children,
-        onClick: (e: React.MouseEvent<HTMLElement>) => {
-          onClick?.(e as any);
-        },
+        onClick: onClick as
+          | ((event: React.MouseEvent<HTMLElement>) => void)
+          | undefined,
         sx: {
           color: permission === 'forceReject' ? 'error.main' : 'text.primary',
         },

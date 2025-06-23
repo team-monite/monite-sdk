@@ -3,9 +3,9 @@ import { toast } from 'react-hot-toast';
 import { components, Services } from '@/api';
 import {
   getCounterpartName,
-  getIndividualName,
   isIndividualCounterpart,
 } from '@/components/counterparts/helpers';
+import { getIndividualName } from '@/core/utils';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

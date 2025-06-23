@@ -4,8 +4,8 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import {
+  type Rules,
   useApprovalPolicyScript,
-  Rules,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
   ParsedTriggers,

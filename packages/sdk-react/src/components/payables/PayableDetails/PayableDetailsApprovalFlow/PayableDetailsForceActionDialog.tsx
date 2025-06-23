@@ -23,11 +23,6 @@ export const PayableDetailsForceActionDialog = ({
   onConfirm,
 }: PayableDetailsForceActionDialogProps) => {
   const { i18n } = useLingui();
-
-  const handleConfirm = () => {
-    onConfirm();
-  };
-
   const isApprove = type === 'approve';
 
   return (
@@ -76,17 +71,9 @@ export const PayableDetailsForceActionDialog = ({
           {t(i18n)`Cancel`}
         </Button>
         <Button
-          onClick={handleConfirm}
+          onClick={onConfirm}
           variant="contained"
           color={isApprove ? 'primary' : 'error'}
-          sx={{
-            fontWeight: 500,
-            textTransform: 'none',
-            fontSize: '16px',
-            px: 3,
-            py: 1.5,
-            borderRadius: 2,
-          }}
         >
           {isApprove ? t(i18n)`Force Approve` : t(i18n)`Force Reject`}
         </Button>
