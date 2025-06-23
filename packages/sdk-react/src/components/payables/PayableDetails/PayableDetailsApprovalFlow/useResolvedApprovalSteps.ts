@@ -62,7 +62,8 @@ function useResolvedApprovalStepsBase(payableId: string, policyId: string) {
     const userIds = new Set<string>();
 
     policyScript.forEach((scriptStep) => {
-      const approvalCalls = scriptStep.all || [];
+      const approvalCalls =
+        scriptStep.all || (scriptStep.if ? [scriptStep.if] : []) || [];
       const userApprovalCall = findUserApprovalCall(approvalCalls);
 
       if (userApprovalCall?.params?.user_ids) {

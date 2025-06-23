@@ -10,15 +10,19 @@ import {
   filterRequestsByUsers,
 } from './approvalStepUtils';
 
+export interface ApprovalCall {
+  call: string;
+  params?: {
+    user_ids?: string[];
+    role_ids?: string[];
+    required_approval_count?: number;
+  };
+}
+
 export interface ScriptStep {
-  all?: Array<{
-    call: string;
-    params?: {
-      user_ids?: string[];
-      role_ids?: string[];
-      required_approval_count?: number;
-    };
-  }>;
+  all?: ApprovalCall[];
+  then?: ApprovalCall[];
+  if?: ApprovalCall;
   run_concurrently?: boolean;
 }
 
@@ -41,7 +45,8 @@ export function buildApprovalSteps(
   const approvalSteps: ApprovalStep[] = [];
 
   policyScript.forEach((scriptStep, stepIndex) => {
-    const approvalCalls = scriptStep.all || [];
+    const approvalCalls =
+      scriptStep.all || (scriptStep.if ? [scriptStep.if] : []) || [];
 
     const userApprovalCall = findUserApprovalCall(approvalCalls);
     const roleApprovalCall = findRoleApprovalCall(approvalCalls);
@@ -94,7 +99,7 @@ export function buildApprovalSteps(
         type: getApprovalRuleLabel(null, roleApprovalCall || null, i18n),
         assignee: undefined,
         assignees: [],
-        roleIds: roleIds,
+        roleIds,
         status: roleStepStatus,
         payableStatus: mapApprovalStatusToPayableStatus(roleStepStatus),
         isRoleBased: true,

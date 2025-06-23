@@ -24,13 +24,14 @@ import { useResolvedApprovalStepsWithPolicy } from './useResolvedApprovalSteps';
 interface RoleCellProps {
   roleId: string;
   designVariant?: 'old' | 'new';
+  roleData?: components['schemas']['RoleResponse'];
 }
 
 const RoleCell = ({
   roleId,
   roleData,
   designVariant = 'old',
-}: RoleCellProps & { roleData?: components['schemas']['RoleResponse'] }) => {
+}: RoleCellProps) => {
   const { api } = useMoniteContext();
 
   const { data: role, isLoading } = api.roles.getRolesId.useQuery(
@@ -59,6 +60,7 @@ const RoleCell = ({
             displayRole.name
           )
         }
+        title={isRoleLoading ? '' : displayRole.name}
         variant="filled"
         sx={{
           borderRadius: 2,
@@ -84,6 +86,7 @@ const RoleCell = ({
           displayRole.name
         )
       }
+      title={isRoleLoading ? '' : displayRole.name}
       variant="outlined"
       sx={{
         borderRadius: 1,
