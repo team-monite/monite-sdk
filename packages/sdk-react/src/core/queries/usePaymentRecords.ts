@@ -2,7 +2,7 @@ import { useMemo, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
 import type { Services } from '@/api';
-import { components } from '@/api';
+import { type PaymentRecordWithIntent } from '@/components/payables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -98,13 +98,7 @@ export const usePayablePaymentIntentsAndRecords = (
       return {};
     }
 
-    const result: Record<
-      string,
-      Array<{
-        intent: string;
-        record: components['schemas']['PaymentRecordResponse'];
-      }>
-    > = {};
+    const result: Record<string, PaymentRecordWithIntent[]> = {};
 
     // Pre-initialize result structure
     memoizedPayableIds.forEach((id) => {

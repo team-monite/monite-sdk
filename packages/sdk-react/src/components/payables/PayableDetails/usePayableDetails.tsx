@@ -3,6 +3,7 @@ import { FieldNamesMarkedBoolean } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
+import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import {
   LineItem,
   PayableDetailsFormFields,
@@ -12,6 +13,7 @@ import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/use
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { usePayablePaymentIntentsAndRecords } from '@/core/queries/usePaymentRecords';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -169,13 +171,26 @@ export function usePayableDetails({
 
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
+  // Fetch payment records for the payable
+  const { payablesPaymentIntentsRecord } = usePayablePaymentIntentsAndRecords(
+    payableId ? [payableId] : []
+  );
+
+  // Determine pay button visibility
+  const { showPayButton, intentsAnalysis } = usePayButtonVisibility({
+    payable,
+    payableRecentPaymentRecordByIntent:
+      payablesPaymentIntentsRecord?.[payableId ?? ''] || [],
+  });
+
   const { handlePay, modalComponent } = usePaymentHandler(
     tempPayableID ?? id,
     payable?.counterpart_id,
     () => {
       setIsProcessingPayment(true);
       refetchPayable();
-    }
+    },
+    intentsAnalysis.idPaymentIntentInCreated
   );
 
   useEffect(() => {
@@ -850,6 +865,7 @@ export function usePayableDetails({
     isEdit,
     permissions,
     lineItems,
+    showPayButton,
     isProcessingPayment,
     actions: {
       setEdit,

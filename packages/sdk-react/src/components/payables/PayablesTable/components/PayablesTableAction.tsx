@@ -1,10 +1,11 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import { components } from '@/api';
+import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
+import { type PaymentRecordWithIntent } from '@/components/payables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -19,10 +20,7 @@ const FALLBACK_CURRENCY = 'USD';
 
 interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
-  payableRecentPaymentRecordByIntent: Array<{
-    intent: string;
-    record: components['schemas']['PaymentRecordResponse'];
-  }>;
+  payableRecentPaymentRecordByIntent: PaymentRecordWithIntent[];
   onPay?: (id: string) => void;
   onPayUS?: (id: string) => void;
   onPayableActionComplete?: (payableId: string, status: string) => void;
@@ -42,101 +40,10 @@ export const PayablesTableAction = ({
 
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-  const { data: isPayAllowed } = useIsActionAllowed({
-    method: 'payable',
-    action: 'pay',
-    entityUserId: payable.was_created_by_user_id,
+  const { showPayButton, intentsAnalysis } = usePayButtonVisibility({
+    payable,
+    payableRecentPaymentRecordByIntent,
   });
-
-  const payableStatusCanBePaid = useMemo(
-    () => ['waiting_to_be_paid', 'partially_paid'].includes(payable.status),
-    [payable.status]
-  );
-
-  const intentsAnalysis = useMemo(() => {
-    const scheduledIntents: typeof payableRecentPaymentRecordByIntent = [];
-    const processingIntents: typeof payableRecentPaymentRecordByIntent = [];
-    const succeededIntents: typeof payableRecentPaymentRecordByIntent = [];
-    const createdRecords: typeof payableRecentPaymentRecordByIntent = [];
-
-    let hasAnyIntentOtherThanCreated = false;
-
-    const aggregation: Record<
-      string,
-      {
-        count: number;
-        sum: number;
-        records: Array<components['schemas']['PaymentRecordResponse']>;
-      }
-    > = {};
-
-    // Aggregate the payment intents by status
-    payableRecentPaymentRecordByIntent.forEach((item) => {
-      const { record } = item;
-
-      // Collect for different status arrays
-      if (record.planned_payment_date) {
-        scheduledIntents.push(item);
-      }
-      if (record.status === 'processing') {
-        processingIntents.push(item);
-      }
-      if (record.status === 'succeeded') {
-        succeededIntents.push(item);
-      }
-      if (record.status === 'created') {
-        createdRecords.push(item);
-      }
-
-      if (record.status !== 'created') {
-        hasAnyIntentOtherThanCreated = true;
-      }
-
-      // Build aggregation
-      const status = record.planned_payment_date ? 'scheduled' : record.status;
-      if (!aggregation[status]) {
-        aggregation[status] = { count: 0, sum: 0, records: [] };
-      }
-      aggregation[status].count++;
-      aggregation[status].sum += record.amount;
-      aggregation[status].records.push(record);
-    });
-
-    return {
-      scheduledIntents,
-      processingIntents,
-      succeededIntents,
-      createdRecords,
-      hasAnyIntentOtherThanCreated,
-      aggregation,
-      idPaymentIntentInCreated:
-        createdRecords.length > 0 ? createdRecords[0].intent : undefined,
-    };
-  }, [payableRecentPaymentRecordByIntent]);
-
-  const showPayButton = useMemo(() => {
-    const hasAmountToPay = Number(payable.amount_to_pay) > 0;
-
-    // Has only intents on status 'created' or 'canceled'
-    const hasPaidIntents =
-      intentsAnalysis.scheduledIntents.length > 0 ||
-      intentsAnalysis.processingIntents.length > 0 ||
-      intentsAnalysis.succeededIntents.length > 0;
-
-    return (
-      isPayAllowed &&
-      payableStatusCanBePaid &&
-      hasAmountToPay &&
-      !hasPaidIntents
-    );
-  }, [
-    isPayAllowed,
-    payableStatusCanBePaid,
-    payable.amount_to_pay,
-    intentsAnalysis.scheduledIntents.length,
-    intentsAnalysis.processingIntents.length,
-    intentsAnalysis.succeededIntents.length,
-  ]);
 
   const handlePaymentComplete = useCallback(
     (payableId: string, status: string) => {
@@ -167,7 +74,7 @@ export const PayablesTableAction = ({
     [onPayUS, payable.currency, payable.id, onPay, handlePay]
   );
 
-  if (!payableStatusCanBePaid) {
+  if (!showPayButton) {
     return null;
   }
 
