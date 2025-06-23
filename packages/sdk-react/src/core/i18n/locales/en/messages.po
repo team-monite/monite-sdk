@@ -690,16 +690,20 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:82
+msgid "Any {0} users from the list"
+msgstr "Any {0} users from the list"
+
 #: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:83
-msgid "Any {required_approval_count} users from the list"
-msgstr "Any {required_approval_count} users from the list"
+#~ msgid "Any {required_approval_count} users from the list"
+#~ msgstr "Any {required_approval_count} users from the list"
 
 #: src/components/approvalPolicies/approvalPolicyUtils.ts:57
 msgid "Any {value} users from the list"
 msgstr "Any {value} users from the list"
 
 #: src/components/approvalPolicies/approvalPolicyUtils.ts:56
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:82
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:81
 msgid "Any user from the list"
 msgstr "Any user from the list"
 
@@ -709,7 +713,7 @@ msgid "Any user that has user role"
 msgstr "Any user that has user role"
 
 #: src/components/approvalPolicies/approvalPolicyUtils.ts:59
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:88
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:86
 msgid "Any user with role"
 msgstr "Any user with role"
 
@@ -738,7 +742,7 @@ msgstr "Approval chain"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:840
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1095
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:257
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:130
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:133
 msgid "Approval flow"
 msgstr "Approval flow"
 
@@ -1911,7 +1915,7 @@ msgstr "Construction Materials (Not Elsewhere Classified)"
 msgid "Consulting, Public Relations"
 msgstr "Consulting, Public Relations"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:260
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:261
 #: src/components/receivables/components/EditCounterpartModal.tsx:245
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:105
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
@@ -2714,7 +2718,7 @@ msgid "Description is required"
 msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:464
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:210
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -5458,7 +5462,7 @@ msgstr "No reminder"
 msgid "No Roles"
 msgstr "No Roles"
 
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:187
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:190
 msgid "No roles assigned"
 msgstr "No roles assigned"
 
@@ -5486,6 +5490,10 @@ msgstr "No Tax ID available"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/EditCounterpartModal.tsx:412
 #~ msgid "No TAX ID available"
 #~ msgstr "No TAX ID available"
+
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:228
+msgid "No users assigned"
+msgstr "No users assigned"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser/AutocompleteUser.tsx:56
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUsers/AutocompleteUsers.tsx:60
