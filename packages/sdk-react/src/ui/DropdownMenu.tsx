@@ -18,16 +18,18 @@ export interface DropdownMenuItem {
 }
 
 export interface DropdownMenuProps {
+  id?: string;
   items: DropdownMenuItem[];
   iconButtonProps?: IconButtonProps;
   menuProps?: Partial<MenuProps>;
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({
+export const DropdownMenu = ({
+  id = 'dropdown-menu-button',
   items,
   iconButtonProps,
   menuProps,
-}) => {
+}: DropdownMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -42,6 +44,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   return (
     <>
       <IconButton
+        id={id}
         onClick={handleMenuClick}
         sx={{
           border: '1px solid',
@@ -50,6 +53,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
           width: 40,
           height: 40,
         }}
+        aria-expanded={isMenuOpen}
+        aria-haspopup="true"
         {...iconButtonProps}
       >
         <MoreVertIcon />
@@ -61,10 +66,15 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         container={() => document.body}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        MenuListProps={{
+          'aria-labelledby': id,
+          role: 'menu',
+        }}
         {...menuProps}
       >
         {items.map(({ key, label, onClick, sx }) => (
           <MenuItem
+            id={key}
             key={key}
             onClick={(e) => {
               handleMenuClose();
