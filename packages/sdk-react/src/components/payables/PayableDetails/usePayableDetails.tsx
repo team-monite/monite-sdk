@@ -530,11 +530,11 @@ export function usePayableDetails({
       case 'approve_in_progress': {
         const permissions: PayableDetailsPermissions[] = [];
 
-        const isApprover =
-          activeApprovalRequest &&
-          activeApprovalRequest.user_ids?.includes(currentUser?.id ?? '');
+        const isApprover = activeApprovalRequest?.user_ids?.includes(
+          currentUser?.id ?? ''
+        );
 
-        if (isApproveAvailable && activeApprovalRequest && isApprover) {
+        if (isApproveAvailable && isApprover) {
           permissions.push('reject', 'approve');
         }
 
@@ -933,7 +933,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable “${payable.document_id}” has been force reopened`
+              t(i18n)`Payable “${payable.document_id}” has been reopened`
             );
           },
         }

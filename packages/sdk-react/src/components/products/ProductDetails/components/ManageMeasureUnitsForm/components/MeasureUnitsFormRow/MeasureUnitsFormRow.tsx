@@ -46,13 +46,13 @@ const buttonStyle = {
   borderRadius: '8px',
   height: '32px',
 };
-export const MeasureUnitsFormRow: React.FC<MeasureUnitFormRowProps> = ({
+export const MeasureUnitsFormRow = ({
   id,
   isEditMode,
   initialValues = defaultValues,
   onCancel,
   onEdit,
-}) => {
+}: MeasureUnitFormRowProps) => {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
 
