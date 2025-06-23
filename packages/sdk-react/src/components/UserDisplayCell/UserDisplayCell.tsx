@@ -51,6 +51,7 @@ export const UserDisplayCell = ({
         )}
         <Typography
           variant={typographyVariant}
+          title={displayName ?? ''}
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -75,6 +76,7 @@ export const UserDisplayCell = ({
       )}
       <Typography
         variant={typographyVariant}
+        title={displayName ?? ''}
         sx={{
           overflow: 'hidden',
           textOverflow: 'ellipsis',

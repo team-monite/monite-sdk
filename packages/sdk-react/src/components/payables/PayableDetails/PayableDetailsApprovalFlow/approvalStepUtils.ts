@@ -2,7 +2,7 @@ import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
-import { ScriptStep } from './buildApprovalSteps';
+import { type ApprovalCall } from './buildApprovalSteps';
 
 type ApprovalRequest =
   components['schemas']['ApprovalRequestResourceWithMetadata'];
@@ -29,15 +29,15 @@ export const mapApprovalStatusToPayableStatus = (
 };
 
 export const findUserApprovalCall = (
-  approvalCalls: NonNullable<ScriptStep['all']>
-): NonNullable<ScriptStep['all']>[0] | undefined =>
+  approvalCalls: ApprovalCall[]
+): ApprovalCall | undefined =>
   approvalCalls.find(
     (call) => call.call === APPROVAL_CALL_TYPES.REQUEST_APPROVAL_BY_USERS
   );
 
 export const findRoleApprovalCall = (
-  approvalCalls: NonNullable<ScriptStep['all']>
-): NonNullable<ScriptStep['all']>[0] | undefined =>
+  approvalCalls: ApprovalCall[]
+): ApprovalCall | undefined =>
   approvalCalls.find(
     (call) => call.call === APPROVAL_CALL_TYPES.REQUEST_APPROVAL_BY_ROLES
   );
@@ -66,8 +66,8 @@ export const filterRequestsByUsers = (
   );
 
 export const getApprovalRuleLabel = (
-  userApprovalCall: NonNullable<ScriptStep['all']>[0] | null,
-  roleApprovalCall: NonNullable<ScriptStep['all']>[0] | null,
+  userApprovalCall: ApprovalCall | null,
+  roleApprovalCall: ApprovalCall | null,
   i18n: I18n
 ): string => {
   if (userApprovalCall?.params) {
@@ -77,11 +77,9 @@ export const getApprovalRuleLabel = (
       return t(i18n)`Single user`;
     }
 
-    if (user_ids && user_ids.length > 1) {
-      return required_approval_count === 1
-        ? t(i18n)`Any user from the list`
-        : t(i18n)`Any ${required_approval_count} users from the list`;
-    }
+    return required_approval_count === 1
+      ? t(i18n)`Any user from the list`
+      : t(i18n)`Any ${required_approval_count ?? ''} users from the list`;
   }
 
   if (roleApprovalCall?.params) {
