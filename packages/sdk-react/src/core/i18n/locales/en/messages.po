@@ -2363,7 +2363,7 @@ msgstr "Created on"
 msgid "Credit note"
 msgstr "Credit note"
 
-#: src/core/componentSettings/index.ts:255
+#: src/core/componentSettings/index.ts:259
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -2890,6 +2890,10 @@ msgstr "Doctors"
 #~ msgid "Document design"
 #~ msgstr "Document design"
 
+#: src/components/templateSettings/TemplateSettings.tsx:86
+msgid "Document number"
+msgstr "Document number"
+
 #: src/components/templateSettings/components/PerDocumentBlock.tsx:76
 msgid "Document prefix must contain at least 1 symbol"
 msgstr "Document prefix must contain at least 1 symbol"
@@ -3225,8 +3229,8 @@ msgstr "Edit tags"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:519
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:257
-#: src/components/templateSettings/TemplateSettings.tsx:165
-#: src/components/templateSettings/TemplateSettings.tsx:174
+#: src/components/templateSettings/TemplateSettings.tsx:170
+#: src/components/templateSettings/TemplateSettings.tsx:179
 msgid "Edit template settings"
 msgstr "Edit template settings"
 
@@ -4443,7 +4447,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/components/InvoicesTable.tsx:503
-#: src/core/componentSettings/index.ts:247
+#: src/core/componentSettings/index.ts:251
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -5750,7 +5754,7 @@ msgstr "Orthopedic Goods - Prosthetic Devices"
 msgid "Osteopaths"
 msgstr "Osteopaths"
 
-#: src/components/templateSettings/TemplateSettings.tsx:93
+#: src/components/templateSettings/TemplateSettings.tsx:95
 msgid "Other settings"
 msgstr "Other settings"
 
@@ -6418,6 +6422,11 @@ msgstr "Preview"
 msgid "Preview email"
 msgstr "Preview email"
 
+#: src/components/templateSettings/components/LayoutAndLogo.tsx:50
+#: src/components/templateSettings/components/TemplateOption.tsx:62
+msgid "Preview of {0}"
+msgstr "Preview of {0}"
+
 #: src/ui/table/TablePagination.tsx:95
 #: src/ui/table/TablePagination.tsx:108
 msgid "Previous page"
@@ -6610,7 +6619,7 @@ msgid "Quote"
 msgstr "Quote"
 
 #: src/components/receivables/components/QuotesTable.tsx:302
-#: src/core/componentSettings/index.ts:251
+#: src/core/componentSettings/index.ts:255
 msgid "Quotes"
 msgstr "Quotes"
 

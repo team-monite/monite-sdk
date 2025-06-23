@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { Divider, CircularProgress } from '@mui/material';
 
 import { useDocumentTemplatesApi } from '../hooks';
 import { LogoSelection } from './LogoSelection';
-import { TemplatePreview } from './TemplatePreview';
 import { TemplatesSelection } from './TemplatesSelection';
 
 type DocumentTemplate = components['schemas']['TemplateReceivableResponse'];
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export const LayoutAndLogo = ({ isDialog }: Props) => {
+  const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
   const {
     invoiceTemplates,
@@ -43,7 +45,11 @@ export const LayoutAndLogo = ({ isDialog }: Props) => {
         componentSettings?.templateSettings?.showTemplatePreview && (
           <div className="mtw:w-[400px] mtw:h-auto mtw:min-w-[400px]">
             {selectedTemplate && (
-              <TemplatePreview template={selectedTemplate} />
+              <img
+                src={selectedTemplate?.preview?.url as string}
+                alt={t(i18n)`Preview of ${selectedTemplate.name || 'template'}`}
+                className="mtw:w-[400px] mtw:h-[566px] mtw:border mtw:border-gray-200 mtw:shadow-[0_3px_13px_rgba(17,17,17,0.16)]"
+              />
             )}
           </div>
         )}

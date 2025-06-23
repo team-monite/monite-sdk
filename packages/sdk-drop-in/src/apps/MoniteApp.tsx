@@ -124,6 +124,7 @@ export type WidgetType =
   | 'approval-policies'
   | 'onboarding'
   | 'user-roles'
+  | 'document-templates'
   | 'template-settings';
 
 const mapComponentTypeToWidget: Record<WidgetType, ElementType> = {
@@ -163,6 +164,11 @@ const mapComponentTypeToWidget: Record<WidgetType, ElementType> = {
   'user-roles': lazy(() =>
     import('@monite/sdk-react').then((module) => ({
       default: module.UserRoles,
+    }))
+  ),
+  'document-templates': lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.DocumentDesign,
     }))
   ),
   'template-settings': lazy(() =>

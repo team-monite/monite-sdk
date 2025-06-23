@@ -16,7 +16,7 @@ export const UploadBar = ({
   useEffect(() => {
     let intervalId: NodeJS.Timer;
 
-    if (!shouldStartProgress) {
+    if (shouldStartProgress) {
       intervalId = setInterval(() => {
         setProgress((prevState) => {
           if (prevState < 98) {

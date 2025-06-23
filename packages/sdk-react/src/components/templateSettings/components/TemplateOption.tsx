@@ -33,7 +33,7 @@ export const TemplateOption = ({
       className={`mtw:relative mtw:cursor-pointer mtw:w-[100px] mtw:h-[142px] mtw:rounded-[4px] mtw:border ${
         isSelected ? 'mtw:border-primary-50' : 'mtw:border-[#DEDEDE]'
       }`}
-      data-testId={`documentTemplate-${template.name}`}
+      data-testid={`documentTemplate-${template.name}`}
       type="button"
       onClick={onSelect}
     >
@@ -59,6 +59,7 @@ export const TemplateOption = ({
 
       <img
         src={template?.preview?.url}
+        alt={t(i18n)`Preview of ${template?.name || 'template'}`}
         className="mtw:w-full mtw:h-full mtw:rounded-[4px]"
       />
     </button>

@@ -1,0 +1,1 @@
+export { DocumentDesign } from './DocumentDesign';

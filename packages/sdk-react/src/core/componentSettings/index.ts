@@ -133,6 +133,10 @@ export interface TemplateSettings {
    */
   enableDocumentNumberCustomisationTab: boolean;
   /**
+   * Enables the other settings customisation tab if true or hides it if false, defaults to true.
+   */
+  enableOtherSettingsCustomisationTab: boolean;
+  /**
    * List of available AR documents for customisation, defaults to all of the documents.
    */
   availableARDocuments: ARDocumentType[];
@@ -290,11 +294,12 @@ export const getDefaultComponentSettings = (
       componentSettings?.templateSettings?.showTemplatePreview || true,
     showLogoSection:
       componentSettings?.templateSettings?.showLogoSection || true,
-    // enableDocumentNumberCustomisationTab:
-    //   componentSettings?.templateSettings
-    //     ?.enableDocumentNumberCustomisationTab || true,
-    // This is temporary until we have the new endpoint to fetch next numbers
-    enableDocumentNumberCustomisationTab: false,
+    enableDocumentNumberCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableDocumentNumberCustomisationTab || true,
+    enableOtherSettingsCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableOtherSettingsCustomisationTab || true,
     availableARDocuments: componentSettings?.templateSettings
       ?.availableARDocuments || [
       'invoice',

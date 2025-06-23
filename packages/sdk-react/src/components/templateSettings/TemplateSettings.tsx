@@ -5,7 +5,7 @@ import {
   DiscardChangesContextProvider,
   useDiscardChangesContext,
 } from '@/core/context/DiscardChangesContext';
-// import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -13,12 +13,12 @@ import { Close } from '@mui/icons-material';
 import { Box, Tab, Tabs, DialogContent } from '@mui/material';
 
 import { PageHeader } from '../PageHeader';
-import { LayoutAndLogo, OtherSettings } from './components';
+import { DocumentNumber, LayoutAndLogo, OtherSettings } from './components';
 import { DiscardChangesModal } from './components/DiscardChangesModal';
 
 type TabType = 'documentDesign' | 'documentNumber' | 'otherSettings';
 
-type TemplateSettingsProps = {
+export type TemplateSettingsProps = {
   /** Flag that controls whether settings are shown inside a fullscreen dialog or not */
   isDialog?: boolean;
   /** Flag that controls whether dialog is open or not. It's meant to be passed in when isDialog is true */
@@ -38,7 +38,7 @@ const TemplateSettingsBase = ({
   isOpen,
   handleCloseDialog,
 }: TemplateSettingsProps) => {
-  // const { componentSettings } = useMoniteContext();
+  const { componentSettings } = useMoniteContext();
   const { shouldShowChangesModal, handleShowModal } =
     useDiscardChangesContext();
   const { i18n } = useLingui();
@@ -78,21 +78,24 @@ const TemplateSettingsBase = ({
           label={t(i18n)`Layout and logo`}
           value="documentDesign"
         />
-        {/* {componentSettings?.templateSettings
-      ?.enableDocumentNumberCustomisationTab && (
-      <Tab
-        id="document-number-tab"
-        aria-controls="document-number-tabpanel"
-        label={t(i18n)`Document number`}
-        value="documentNumber"
-      />
-    )} */}
-        <Tab
-          id="other-settings-tab"
-          aria-controls="other-settings-tabpanel"
-          label={t(i18n)`Other settings`}
-          value="otherSettings"
-        />
+        {componentSettings?.templateSettings
+          ?.enableDocumentNumberCustomisationTab && (
+          <Tab
+            id="document-number-tab"
+            aria-controls="document-number-tabpanel"
+            label={t(i18n)`Document number`}
+            value="documentNumber"
+          />
+        )}
+        {componentSettings?.templateSettings
+          ?.enableOtherSettingsCustomisationTab && (
+          <Tab
+            id="other-settings-tab"
+            aria-controls="other-settings-tabpanel"
+            label={t(i18n)`Other settings`}
+            value="otherSettings"
+          />
+        )}
       </Tabs>
 
       {activeTabItem === 'documentDesign' && (
@@ -111,39 +114,41 @@ const TemplateSettingsBase = ({
         </Box>
       )}
 
-      {/* {activeTabItem === 'documentNumber' &&
-    componentSettings?.templateSettings
-      ?.enableDocumentNumberCustomisationTab && (
-      <Box
-        role="tabpanel"
-        id="document-number-tabpanel"
-        aria-labelledby="document-number-tab"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: 'inherit',
-          minHeight: '0',
-        }}
-      >
-        <DocumentNumber />
-      </Box>
-    )} */}
+      {activeTabItem === 'documentNumber' &&
+        componentSettings?.templateSettings
+          ?.enableDocumentNumberCustomisationTab && (
+          <Box
+            role="tabpanel"
+            id="document-number-tabpanel"
+            aria-labelledby="document-number-tab"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: 'inherit',
+              minHeight: '0',
+            }}
+          >
+            <DocumentNumber />
+          </Box>
+        )}
 
-      {activeTabItem === 'otherSettings' && (
-        <Box
-          role="tabpanel"
-          id="other-settings-tabpanel"
-          aria-labelledby="other-settings-tab"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: 'inherit',
-            minHeight: '0',
-          }}
-        >
-          <OtherSettings />
-        </Box>
-      )}
+      {activeTabItem === 'otherSettings' &&
+        componentSettings?.templateSettings
+          ?.enableOtherSettingsCustomisationTab && (
+          <Box
+            role="tabpanel"
+            id="other-settings-tabpanel"
+            aria-labelledby="other-settings-tab"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: 'inherit',
+              minHeight: '0',
+            }}
+          >
+            <OtherSettings />
+          </Box>
+        )}
     </div>
   );
 
