@@ -360,7 +360,8 @@ export const InvoicePreview = ({
                           {item.product?.price &&
                             formatCurrencyToDisplay(
                               isInclusivePricing
-                                ? totalAmount / (1 + taxRate / 100)
+                                ? item?.product?.price?.value /
+                                    (1 + taxRate / 100)
                                 : item.product.price.value,
                               item.product.price.currency,
                               false
@@ -372,8 +373,7 @@ export const InvoicePreview = ({
                             <td>
                               {item.product?.price &&
                                 formatCurrencyToDisplay(
-                                  totalAmount -
-                                    totalAmount / (1 + taxRate / 100),
+                                  item?.product?.price?.value,
                                   item.product.price.currency,
                                   false
                                 )}
