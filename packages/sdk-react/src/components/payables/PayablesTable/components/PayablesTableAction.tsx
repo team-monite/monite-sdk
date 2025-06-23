@@ -117,17 +117,25 @@ export const PayablesTableAction = ({
   const showPayButton = useMemo(() => {
     const hasAmountToPay = Number(payable.amount_to_pay) > 0;
 
+    // Has only intents on status 'created' or 'canceled'
+    const hasPaidIntents =
+      intentsAnalysis.scheduledIntents.length > 0 ||
+      intentsAnalysis.processingIntents.length > 0 ||
+      intentsAnalysis.succeededIntents.length > 0;
+
     return (
       isPayAllowed &&
       payableStatusCanBePaid &&
       hasAmountToPay &&
-      !intentsAnalysis.hasAnyIntentOtherThanCreated
+      !hasPaidIntents
     );
   }, [
     isPayAllowed,
     payableStatusCanBePaid,
     payable.amount_to_pay,
-    intentsAnalysis.hasAnyIntentOtherThanCreated,
+    intentsAnalysis.scheduledIntents.length,
+    intentsAnalysis.processingIntents.length,
+    intentsAnalysis.succeededIntents.length,
   ]);
 
   const handlePaymentComplete = useCallback(
