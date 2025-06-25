@@ -161,7 +161,7 @@ msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} o
 msgid "{issueDate}"
 msgstr "{issueDate}"
 
-#: src/components/templateSettings/hooks/useDocumentTemplatesApi.ts:54
+#: src/components/templateSettings/hooks/useDocumentTemplatesApi.ts:55
 msgid "{name} document template has been set as the default."
 msgstr "{name} document template has been set as the default."
 

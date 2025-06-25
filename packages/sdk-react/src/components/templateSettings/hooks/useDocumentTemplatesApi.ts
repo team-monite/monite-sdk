@@ -4,11 +4,12 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 export const useDocumentTemplatesApi = () => {
   const { api, queryClient, componentSettings } = useMoniteContext();
+  const { i18n } = useLingui();
   const { data: documentTemplates, isLoading } =
     api.documentTemplates.getDocumentTemplates.useQuery(
       {},
