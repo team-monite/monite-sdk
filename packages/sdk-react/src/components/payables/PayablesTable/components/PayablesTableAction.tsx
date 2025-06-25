@@ -74,10 +74,6 @@ export const PayablesTableAction = ({
     [onPayUS, payable.currency, payable.id, onPay, handlePay]
   );
 
-  if (!showPayButton) {
-    return null;
-  }
-
   if (intentsAnalysis.scheduledIntents.length > 0) {
     const earliestScheduledIntent = intentsAnalysis.scheduledIntents[0];
     const formattedDate = earliestScheduledIntent.record.planned_payment_date
@@ -175,6 +171,10 @@ export const PayablesTableAction = ({
     return t(i18n)`Processing payment...`;
   }
 
+  if (!showPayButton) {
+    return null;
+  }
+
   return (
     <Box
       sx={{
@@ -185,23 +185,18 @@ export const PayablesTableAction = ({
         alignItems: 'center',
       }}
     >
-      {showPayButton && (
-        <>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            sx={{
-              padding: '0',
-              borderRadius: '8px',
-            }}
-            onClick={handlePayClick}
-          >
-            {t(i18n)`Pay`}
-          </Button>
-        </>
-      )}
-
+      <Button
+        variant="outlined"
+        color="primary"
+        size="small"
+        sx={{
+          padding: '0',
+          borderRadius: '8px',
+        }}
+        onClick={handlePayClick}
+      >
+        {t(i18n)`Pay`}
+      </Button>
       {modalComponent}
     </Box>
   );
