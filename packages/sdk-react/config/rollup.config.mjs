@@ -1,5 +1,5 @@
-import { rollupConfig } from '@team-monite/rollup-config';
+import { rollupConfigWithTypes } from '@team-monite/rollup-config';
 
 import packageJson from '../package.json' with { type: 'json' };
 
-export default rollupConfig(packageJson);
+export default rollupConfigWithTypes(packageJson);

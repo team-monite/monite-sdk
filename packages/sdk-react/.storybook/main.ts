@@ -158,12 +158,6 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       '@': path.resolve(__dirname, '../src'),
-      'fs': path.resolve(__dirname, '../../../src/polyfills/fs.js'),
-      'stream': path.resolve(__dirname, '../../../src/polyfills/stream.js'),
-      'util': path.resolve(__dirname, '../../../src/polyfills/util.js'),
-      'path': path.resolve(__dirname, '../../../src/polyfills/path.js'),
-      'os': path.resolve(__dirname, '../../../src/polyfills/os.js'),
-      'tty': path.resolve(__dirname, '../../../src/polyfills/empty.js'),
       'jsdom': false,
       'canvas': false,
     };
@@ -194,13 +188,6 @@ const config: StorybookConfig = {
           syntax: 'typescript',
           tsx: true,
           dynamicImport: true,
-        },
-        experimental: {
-          ...(swcConfig?.jsc?.experimental || {}),
-          plugins: [
-            ...(swcConfig?.jsc?.experimental?.plugins || []),
-            ['@lingui/swc-plugin', {}],
-          ],
         },
         transform: {
           ...(swcConfig?.jsc?.transform || {}),

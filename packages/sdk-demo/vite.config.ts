@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
+
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -25,7 +26,7 @@ export default async function viteConfig() {
       react({
         jsxImportSource: '@emotion/react',
       }),
-      htmlPlugin(htmlPluginOpt)
+      htmlPlugin(htmlPluginOpt),
     ],
     optimizeDeps: {
       exclude: [
@@ -62,34 +63,6 @@ export default async function viteConfig() {
         {
           find: /^vite$/,
           replacement: resolve(__dirname, '../../node_modules/vite'),
-        },
-        {
-          find: /^fs(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/fs.js'),
-        },
-        {
-          find: /^stream(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/stream.js'),
-        },
-        {
-          find: /^util(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/util.js'),
-        },
-        {
-          find: /^path(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/path.js'),
-        },
-        {
-          find: /^os(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/os.js'),
-        },
-        {
-          find: /^tty(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: 'jsdom',
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
         },
       ],
     },
@@ -137,17 +110,26 @@ export default async function viteConfig() {
           },
         ],
         external: (id) => {
-          const external = [
+          const nodeModules = [
+            'fs',
+            'path',
+            'os',
+            'util',
+            'stream',
+            'tty',
+            'crypto',
             'acorn',
             'gulp-sourcemaps',
             'vinyl',
-            'cosmiconfig'
+            'cosmiconfig',
+            'jsdom',
           ];
 
-          return external.some(pkg => id.includes(pkg));
+          return nodeModules.some(
+            (pkg) => id === pkg || id.startsWith(`${pkg}/`) || id.includes(pkg)
+          );
         },
       },
     },
   });
 }
-

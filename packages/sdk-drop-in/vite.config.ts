@@ -72,54 +72,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
           find: /^react-dom$/,
           replacement: 'react-dom',
         },
-        {
-          find: /^fs(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/fs.js'),
-        },
-        {
-          find: /^stream(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/stream.js'),
-        },
-        {
-          find: /^util(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/util.js'),
-        },
-        {
-          find: /^path(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/path.js'),
-        },
-        {
-          find: /^os(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/os.js'),
-        },
-        {
-          find: /^crypto(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: /^http(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: /^https(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: /^buffer(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: /^canvas(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: /^tty(\/.*)?$/,
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
-        {
-          find: 'jsdom',
-          replacement: resolve(__dirname, '../../src/polyfills/empty.js'),
-        },
       ],
     },
     build: {
@@ -154,17 +106,31 @@ export default async function viteConfig({ mode }: ConfigEnv) {
       },
       rollupOptions: {
         external: (id) => {
-          const external = [
+          const nodeModules = [
+            'fs',
+            'path',
+            'os',
+            'util',
+            'stream',
+            'tty',
+            'crypto',
+            'http',
+            'https',
+            'buffer',
+            'canvas',
+            'jsdom',
             'react',
             'react-dom',
             'acorn',
             'gulp-sourcemaps',
             'vinyl',
             'cosmiconfig',
-            'jiti'
+            'jiti',
           ];
 
-          return external.some(pkg => id.includes(pkg));
+          return nodeModules.some(
+            (pkg) => id === pkg || id.startsWith(`${pkg}/`) || id.includes(pkg)
+          );
         },
         output: {
           globals: {

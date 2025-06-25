@@ -21,7 +21,7 @@ export const useLocalStorageFields = <T>(
 
   useEffect(() => {
     try {
-      if (hasLocalStorage) {
+      if (hasLocalStorage()) {
         const remembered = window.localStorage.getItem(rememberKey) === 'true';
         setIsRemembered(remembered);
 
@@ -43,7 +43,7 @@ export const useLocalStorageFields = <T>(
 
       setStoredValue(valueToStore);
 
-      if (hasLocalStorage && isRemembered) {
+      if (hasLocalStorage() && isRemembered) {
         window.localStorage.setItem(prefixedKey, JSON.stringify(valueToStore));
       }
     } catch (error) {
@@ -55,7 +55,7 @@ export const useLocalStorageFields = <T>(
     try {
       setIsRemembered(checked);
 
-      if (hasLocalStorage) {
+      if (hasLocalStorage()) {
         window.localStorage.setItem(rememberKey, String(checked));
 
         if (checked) {
