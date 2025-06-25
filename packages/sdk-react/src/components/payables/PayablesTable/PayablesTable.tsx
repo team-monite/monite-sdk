@@ -380,6 +380,7 @@ const PayablesTableBase = ({
             return null;
           }
 
+          // The truthiness check filters out zero values, returning null so the cell renders "0.00" with reduced opacity
           return payable.amount_to_pay && payable.currency
             ? payable.amount_to_pay
             : null;
@@ -425,6 +426,7 @@ const PayablesTableBase = ({
               : null;
           }
 
+          // The truthiness check filters out zero values, returning null so the cell renders "0.00" with reduced opacity
           return payable.amount_paid && payable.currency
             ? payable.amount_paid
             : null;
