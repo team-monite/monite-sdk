@@ -1,6 +1,10 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+import {
+  getSharedApprovalRuleLabel,
+  getUsersFromListLabel,
+} from './shared/approvalRuleLabels';
 import type { Rules } from './types';
 
 export type { Rules, ApprovalPolicyScriptType } from './types';
@@ -50,15 +54,13 @@ export const getRuleLabel = (
 ): string | undefined => {
   switch (ruleKey) {
     case APPROVAL_POLICY_RULE_TYPES.SINGLE_USER:
-      return t(i18n)`Single user`;
+      return getSharedApprovalRuleLabel.singleUser(i18n);
     case APPROVAL_POLICY_RULE_TYPES.USERS_FROM_LIST:
-      return value === 1
-        ? t(i18n)`Any user from the list`
-        : t(i18n)`Any ${value} users from the list`;
+      return getUsersFromListLabel(i18n, value);
     case APPROVAL_POLICY_RULE_TYPES.ROLES_FROM_LIST:
-      return t(i18n)`Any user with role`;
+      return getSharedApprovalRuleLabel.anyUserWithRole(i18n);
     case APPROVAL_POLICY_RULE_TYPES.APPROVAL_CHAIN:
-      return t(i18n)`All users from list, one by one`;
+      return getSharedApprovalRuleLabel.allUsersFromList(i18n);
     default:
       return undefined;
   }

@@ -891,10 +891,10 @@ export function usePayableDetails({
         },
         {
           onSuccess: () => {
-            if (!payable) return;
-
             toast.success(
-              t(i18n)`Payable “${payable.document_id}” has been approved`
+              t(i18n)`Payable “${
+                payable?.document_id ?? 'document id is unknown'
+              }” has been approved`
             );
           },
         }

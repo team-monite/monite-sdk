@@ -94,7 +94,7 @@ export class ApprovalStepResolver {
 
         approvalSteps.push({
           stepNumber: stepIndex + 1,
-          type: getApprovalRuleLabel(userApprovalCall || null, null, i18n),
+          type: getApprovalRuleLabel(userApprovalCall, undefined, i18n),
           assignee: undefined,
           assignees,
           roleIds: [],
@@ -114,7 +114,7 @@ export class ApprovalStepResolver {
 
         approvalSteps.push({
           stepNumber: stepIndex + 1,
-          type: getApprovalRuleLabel(null, roleApprovalCall || null, i18n),
+          type: getApprovalRuleLabel(undefined, roleApprovalCall, i18n),
           assignee: undefined,
           assignees: [],
           roleIds,
@@ -132,11 +132,7 @@ export class ApprovalStepResolver {
 
         approvalSteps.push({
           stepNumber: stepIndex + 1,
-          type: getApprovalRuleLabel(
-            userApprovalCall || null,
-            roleApprovalCall || null,
-            i18n
-          ),
+          type: getApprovalRuleLabel(userApprovalCall, roleApprovalCall, i18n),
           assignee: undefined,
           assignees,
           roleIds,
