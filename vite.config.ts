@@ -17,12 +17,6 @@ export default async function viteConfig({ mode }: ConfigEnv) {
     resolve: {
       alias: {
         '@': resolve(__dirname, './src'),
-        fs: resolve(__dirname, './src/polyfills/fs.js'),
-        stream: resolve(__dirname, './src/polyfills/stream.js'),
-        util: resolve(__dirname, './src/polyfills/util.js'),
-        path: resolve(__dirname, './src/polyfills/path.js'),
-        os: resolve(__dirname, './src/polyfills/os.js'),
-        jsdom: resolve(__dirname, './src/polyfills/empty.js'),
       },
     },
     optimizeDeps: {

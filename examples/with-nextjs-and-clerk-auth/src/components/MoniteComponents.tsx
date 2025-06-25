@@ -9,28 +9,21 @@ import React, {
 } from 'react';
 
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 import { useLingui } from '@lingui/react';
 import {
-  ApprovalPolicies as ApprovalPoliciesBase,
-  Counterparts as CounterpartsBase,
   Dialog,
   getCounterpartName,
   MoniteProvider as MoniteProviderBase,
-  Onboarding as OnboardingBase,
   Payables as PayablesBase,
-  Products as ProductsBase,
-  Receivables as ReceivablesBase,
-  RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
-  Tags as TagsBase,
   toast,
   useCounterpartById,
   useCurrencies,
   useMoniteContext,
   useRootElements,
-  UserRoles as UserRolesBase,
-  DocumentDesign as DocumentDesignBase,
 } from '@monite/sdk-react';
+import { LoadingPage } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
@@ -54,7 +47,17 @@ import {
   Typography,
 } from '@mui/material';
 
-/* eslint-disable */
+export {
+  ApprovalPolicies,
+  Counterparts,
+  Onboarding,
+  Products,
+  Receivables,
+  RolesAndApprovalPolicies,
+  Tags,
+  UserRoles,
+  DocumentDesign,
+} from '@monite/sdk-react';
 
 const MoniteProviderImpl = ({
   apiUrl,
@@ -168,7 +171,7 @@ const ChooseBankAccountPage = () => {
             sx={selectedValue == 'option1' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option1')}
           >
-            <img
+            <Image
               style={{
                 width: '40px',
                 height: 'auto',
@@ -191,7 +194,7 @@ const ChooseBankAccountPage = () => {
             sx={selectedValue == 'option2' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option2')}
           >
-            <img
+            <Image
               style={{
                 width: '40px',
                 height: 'auto',
@@ -214,7 +217,7 @@ const ChooseBankAccountPage = () => {
             sx={selectedValue == 'option3' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option3')}
           >
-            <img
+            <Image
               style={{
                 width: '40px',
                 height: 'auto',
@@ -516,6 +519,10 @@ export const Payables = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
 
+  if (typeof window === 'undefined' || !PayablesBase) {
+    return <LoadingPage />;
+  }
+
   const onCloseDialogClick = () => {
     setModalOpen(false);
   };
@@ -546,46 +553,13 @@ export const Payables = () => {
   );
 };
 
-export const Receivables = () => {
-  return <ReceivablesBase />;
-};
-
-export const Counterparts = () => {
-  return <CounterpartsBase />;
-};
-
-export const Products = () => {
-  return <ProductsBase />;
-};
-
-export const ApprovalPolicies = () => {
-  return <ApprovalPoliciesBase />;
-};
-
-export const Tags = () => {
-  return <TagsBase />;
-};
-
-export const UserRoles = () => {
-  return <UserRolesBase />;
-};
-
-export const RolesAndPolicies = () => {
-  return <RolesAndApprovalPoliciesBase />;
-};
-
-export const InvoiceDesign = () => {
-  return <DocumentDesignBase />;
-};
-
-export const Onboarding = () => {
-  return <OnboardingBase />;
-};
-
-export const MoniteProvider = dynamic(() => Promise.resolve(MoniteProviderImpl), {
-  ssr: false,
-  loading: () => <div>Loading...</div>
-});
+export const MoniteProvider = dynamic(
+  () => Promise.resolve({ default: MoniteProviderImpl }),
+  {
+    ssr: false,
+    loading: () => <LoadingPage />,
+  }
+);
 
 const amexIcon =
   'data:image/png;base64,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';

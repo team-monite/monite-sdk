@@ -7,7 +7,6 @@ import type DateFNSLocalesObject from 'date-fns/locale';
 // Renamed to avoid conflict
 import deepEqual from 'deep-eql';
 
-import { compileLinguiDynamicMessages } from '../../utils/compile-lingui-dynamic-messages';
 import { messages as enLocaleMessages } from '../i18n/locales/en/messages';
 
 // Types
@@ -182,7 +181,7 @@ const createDynamicI18nProvider = async (
 ) => {
   const [linguiCompiledMessages, dateFnsLocale] = await Promise.all([
     locale.messages
-      ? compileLinguiDynamicMessages(locale.messages)
+      ? Promise.resolve(locale.messages)
       : Promise.resolve(undefined), // Ensure it resolves with a value
     loadDateFnsLocale(locale.code),
   ]);
@@ -244,9 +243,14 @@ export const I18nLoader = ({
 export function getLocaleWithDefaults(
   locale: MoniteLocale | undefined
 ): MoniteLocaleWithRequired {
-  const code =
-    locale?.code ??
-    (typeof navigator === 'undefined' ? 'en' : navigator.language);
+  const getDefaultLocaleCode = () => {
+    if (typeof navigator === 'undefined') {
+      return 'en';
+    }
+    return navigator.language;
+  };
+
+  const code = locale?.code ?? getDefaultLocaleCode();
 
   return {
     ...locale,

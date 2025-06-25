@@ -8,8 +8,9 @@
 export const isServer = typeof window === 'undefined';
 export const isBrowser = !isServer;
 
-export const hasDocument = typeof document !== 'undefined';
-export const hasLocalStorage = isBrowser && typeof localStorage !== 'undefined';
+export const hasDocument = () => typeof document !== 'undefined';
+export const hasLocalStorage = () =>
+  isBrowser && typeof localStorage !== 'undefined';
 
-export const hasMatchMedia =
+export const hasMatchMedia = () =>
   isBrowser && typeof window.matchMedia === 'function';

@@ -8,7 +8,7 @@ export function useIsMobile() {
   const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    if (!hasMatchMedia) {
+    if (!hasMatchMedia()) {
       setIsMobile(false);
       return;
     }
