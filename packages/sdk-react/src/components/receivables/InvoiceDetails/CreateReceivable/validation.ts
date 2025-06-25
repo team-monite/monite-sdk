@@ -143,7 +143,9 @@ export const getCreateInvoiceValidationSchema = (
     default_billing_address_id: yup
       .string()
       .label(t(i18n)`Billing address`)
-      .required(),
+      .required(
+        t(i18n)`Set a billing address for this customer to issue invoice`
+      ),
     default_shipping_address_id: yup.string().label(t(i18n)`Shipping address`),
     vat_exemption_rationale: yup
       .string()
@@ -196,7 +198,9 @@ export const getUpdateInvoiceValidationSchema = (
     default_billing_address_id: yup
       .string()
       .label(t(i18n)`Billing address`)
-      .required(),
+      .required(
+        t(i18n)`Set a billing address for this customer to issue invoice`
+      ),
     default_shipping_address_id: yup.string().label(t(i18n)`Shipping address`),
     vat_exemption_rationale: yup
       .string()
