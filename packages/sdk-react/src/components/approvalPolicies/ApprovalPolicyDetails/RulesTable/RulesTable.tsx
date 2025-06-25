@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { Role } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/Role';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
@@ -20,7 +20,10 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { useApprovalPolicyScript, Rules } from '../../useApprovalPolicyScript';
+import {
+  type Rules,
+  useApprovalPolicyScript,
+} from '../../useApprovalPolicyScript';
 import { FormValues } from '../ApprovalPolicyForm';
 
 interface RulesTableProps {

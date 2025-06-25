@@ -1,17 +1,19 @@
 import { components } from '@/api';
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-export type ApprovalPolicyScriptType =
-  | 'single_user'
-  | 'users_from_list'
-  | 'roles_from_list'
-  | 'approval_chain';
+import {
+  type Rules,
+  type ApprovalRequestCallValues,
+  type ApprovalPolicyScriptType,
+  getRuleName,
+  getRuleLabel,
+  APPROVAL_REQUEST_CALLS,
+} from './approvalPolicyUtils';
+
+export type { Rules, ApprovalPolicyScriptType };
 
 interface ApprovalPolicyRule {
-  call:
-    | 'ApprovalRequests.request_approval_by_users'
-    | 'ApprovalRequests.request_approval_by_roles';
+  call: ApprovalRequestCallValues;
   params: {
     user_ids?: string[];
     role_ids?: string[];
@@ -31,23 +33,6 @@ type ApprovalPolicyScript = [
   }
 ];
 
-export interface Rules {
-  single_user?: {
-    userId: string;
-  };
-  users_from_list?: {
-    userIds: string[];
-    count: number;
-  };
-  roles_from_list?: {
-    roleIds: string[];
-    count: number;
-  };
-  approval_chain?: {
-    chainUserIds: string[];
-  };
-}
-
 interface UseApprovalPolicyScriptProps {
   approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
 }
@@ -64,11 +49,9 @@ export const useApprovalPolicyScript = ({
     if (!('call' in rule) || typeof rule.call !== 'string') return false;
     if (
       ![
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        'ApprovalRequests.request_approval_by_users',
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        'ApprovalRequests.request_approval_by_roles',
-      ].includes(rule.call)
+        APPROVAL_REQUEST_CALLS.REQUEST_APPROVAL_BY_USERS,
+        APPROVAL_REQUEST_CALLS.REQUEST_APPROVAL_BY_ROLES,
+      ].includes(rule.call as ApprovalRequestCallValues)
     ) {
       return false;
     }
@@ -140,7 +123,7 @@ export const useApprovalPolicyScript = ({
     rule: ApprovalPolicyRule
   ): rule is ApprovalPolicyRule & { params: { user_ids: [string] } } => {
     return (
-      rule.call === 'ApprovalRequests.request_approval_by_users' &&
+      rule.call === APPROVAL_REQUEST_CALLS.REQUEST_APPROVAL_BY_USERS &&
       Array.isArray(rule.params.user_ids) &&
       rule.params.user_ids.length === 1 &&
       rule.params.required_approval_count === 1
@@ -151,7 +134,7 @@ export const useApprovalPolicyScript = ({
     rule: ApprovalPolicyRule
   ): rule is ApprovalPolicyRule & { params: { user_ids: string[] } } => {
     return (
-      rule.call === 'ApprovalRequests.request_approval_by_users' &&
+      rule.call === APPROVAL_REQUEST_CALLS.REQUEST_APPROVAL_BY_USERS &&
       Array.isArray(rule.params.user_ids) &&
       rule.params.user_ids.length > 1 &&
       rule.params.required_approval_count > 0
@@ -162,7 +145,7 @@ export const useApprovalPolicyScript = ({
     rule: ApprovalPolicyRule
   ): rule is ApprovalPolicyRule & { params: { role_ids: string[] } } => {
     return (
-      rule.call === 'ApprovalRequests.request_approval_by_roles' &&
+      rule.call === APPROVAL_REQUEST_CALLS.REQUEST_APPROVAL_BY_ROLES &&
       Array.isArray(rule.params.role_ids) &&
       rule.params.role_ids.length >= 1 &&
       rule.params.required_approval_count > 0
@@ -181,34 +164,9 @@ export const useApprovalPolicyScript = ({
     );
   };
 
-  const getRuleName = (ruleType: string) => {
-    switch (ruleType) {
-      case 'single_user':
-        return t(i18n)`Single user`;
-      case 'users_from_list':
-        return t(i18n)`Users from the list`;
-      case 'roles_from_list':
-        return t(i18n)`Roles from the list`;
-      case 'approval_chain':
-        return t(i18n)`Approval chain`;
-    }
-  };
-
-  const getRuleLabel = (ruleKey: keyof Rules, value?: number) => {
-    switch (ruleKey) {
-      case 'single_user':
-        return t(i18n)`Single user`;
-      case 'users_from_list':
-        if (value === 1) {
-          return t(i18n)`Any user from the list`;
-        }
-        return t(i18n)`Any ${value} users from the list`;
-      case 'roles_from_list':
-        return t(i18n)`Any user with role`;
-      case 'approval_chain':
-        return t(i18n)`All users from list, one by one`;
-    }
-  };
+  const getRuleNameWithI18n = (ruleType: string) => getRuleName(ruleType, i18n);
+  const getRuleLabelWithI18n = (ruleKey: keyof Rules, value?: number) =>
+    getRuleLabel(ruleKey, i18n, value);
 
   if (isApprovalPolicyScript(approvalPolicy?.script)) {
     const rules = approvalPolicy?.script[0].all.reduce<Partial<Rules>>(
@@ -270,14 +228,14 @@ export const useApprovalPolicyScript = ({
 
     return {
       rules,
-      getRuleName,
-      getRuleLabel,
+      getRuleName: getRuleNameWithI18n,
+      getRuleLabel: getRuleLabelWithI18n,
     };
   }
 
   return {
     rules: undefined,
-    getRuleName,
-    getRuleLabel,
+    getRuleName: getRuleNameWithI18n,
+    getRuleLabel: getRuleLabelWithI18n,
   };
 };
