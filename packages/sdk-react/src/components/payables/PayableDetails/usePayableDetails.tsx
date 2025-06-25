@@ -169,12 +169,9 @@ export function usePayableDetails({
     }
   );
 
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-
   // Fetch payment records for the payable
-  const { payablesPaymentIntentsRecord } = usePayablePaymentIntentsAndRecords(
-    payableId ? [payableId] : []
-  );
+  const { payablesPaymentIntentsRecord, refetch: refetchPaymentRecords } =
+    usePayablePaymentIntentsAndRecords(payableId ? [payableId] : []);
 
   // Determine pay button visibility
   const { showPayButton, intentsAnalysis } = usePayButtonVisibility({
@@ -187,8 +184,8 @@ export function usePayableDetails({
     tempPayableID ?? id,
     payable?.counterpart_id,
     () => {
-      setIsProcessingPayment(true);
       refetchPayable();
+      refetchPaymentRecords();
     },
     intentsAnalysis.idPaymentIntentInCreated
   );
@@ -866,7 +863,6 @@ export function usePayableDetails({
     permissions,
     lineItems,
     showPayButton,
-    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,

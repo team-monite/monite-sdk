@@ -226,10 +226,13 @@ const PayablesTableBase = ({
       .map((payable) => payable.id);
   }, [payables?.data]);
   // Fetch payment records for payables in status [waiting_to_be_paid, partially_paid]
-  const { payablesPaymentIntentsRecord, isLoading: isPaymentRecordsLoading } =
-    usePayablePaymentIntentsAndRecords(
-      payableIdsInWaitingToBePaidOrPartiallyPaid || []
-    );
+  const {
+    payablesPaymentIntentsRecord,
+    isLoading: isPaymentRecordsLoading,
+    refetch: refetchPaymentRecords,
+  } = usePayablePaymentIntentsAndRecords(
+    payableIdsInWaitingToBePaidOrPartiallyPaid || []
+  );
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
@@ -485,6 +488,7 @@ const PayablesTableBase = ({
               payableRecentPaymentRecordByIntent={
                 payablesPaymentIntentsRecord?.[payable.id] || []
               }
+              refetchPaymentRecords={refetchPaymentRecords}
               onPayableActionComplete={() => {
                 refetch();
               }}
@@ -502,6 +506,7 @@ const PayablesTableBase = ({
     formatCurrencyToDisplay,
     isPaymentRecordsLoading,
     payablesPaymentIntentsRecord,
+    refetchPaymentRecords,
     onPay,
     onPayUS,
     refetch,

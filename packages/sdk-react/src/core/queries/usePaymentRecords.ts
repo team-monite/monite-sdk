@@ -49,7 +49,7 @@ export const usePaymentRecords = (
 export const usePayablePaymentIntentsAndRecords = (
   payableIds: string[] = []
 ) => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   // Memoize payable IDs to prevent unnecessary re-renders
   const memoizedPayableIds = useMemo(() => payableIds, [payableIds]);
@@ -151,6 +151,9 @@ export const usePayablePaymentIntentsAndRecords = (
     isLoading:
       memoizedPayableIds.length > 0 && (isLoading || isFetchingNextPage),
     error,
+    refetch: () => {
+      api.paymentRecords.getPaymentRecords.invalidateQueries(queryClient);
+    },
   };
 };
 

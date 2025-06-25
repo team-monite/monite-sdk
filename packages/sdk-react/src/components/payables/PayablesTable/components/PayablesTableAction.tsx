@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { components } from '@/api';
 import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
@@ -21,6 +21,7 @@ const FALLBACK_CURRENCY = 'USD';
 interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
   payableRecentPaymentRecordByIntent: PaymentRecordWithIntent[];
+  refetchPaymentRecords: () => void;
   onPay?: (id: string) => void;
   onPayUS?: (id: string) => void;
   onPayableActionComplete?: (payableId: string, status: string) => void;
@@ -29,6 +30,7 @@ interface PayablesTableActionProps {
 export const PayablesTableAction = ({
   payable,
   payableRecentPaymentRecordByIntent,
+  refetchPaymentRecords,
   onPay,
   onPayUS, // TODO: remove onPayUS prop
   onPayableActionComplete = () => {},
@@ -38,8 +40,6 @@ export const PayablesTableAction = ({
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
 
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-
   const { showPayButton, intentsAnalysis } = usePayButtonVisibility({
     payable,
     payableRecentPaymentRecordByIntent,
@@ -47,10 +47,10 @@ export const PayablesTableAction = ({
 
   const handlePaymentComplete = useCallback(
     (payableId: string, status: string) => {
-      setIsProcessingPayment(true);
       onPayableActionComplete(payableId, status);
+      refetchPaymentRecords();
     },
-    [onPayableActionComplete]
+    [onPayableActionComplete, refetchPaymentRecords]
   );
 
   const { handlePay, modalComponent } = usePaymentHandler(
@@ -165,10 +165,6 @@ export const PayablesTableAction = ({
         }}
       />
     );
-  }
-
-  if (showPayButton && isProcessingPayment) {
-    return t(i18n)`Processing payment...`;
   }
 
   if (!showPayButton) {
