@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { getIndividualName, getUserDisplayName } from '@/core/utils';
 import { type Theme } from '@monite/sdk-react/mui-styles';
@@ -29,7 +31,14 @@ export const UserDisplayCell = ({
   typographyVariant = 'body2',
   sx,
 }: UserDisplayCellProps) => {
-  const displayName = getUserDisplayName(user, showUserEmail);
+  const displayName = useMemo(
+    () => getUserDisplayName(user, showUserEmail),
+    [user, showUserEmail]
+  );
+  const altDisplayName = useMemo(
+    () => getIndividualName(user.first_name || '', user.last_name || ''),
+    [user.first_name, user.last_name]
+  );
 
   if (variant === 'stacked') {
     return (
@@ -45,7 +54,7 @@ export const UserDisplayCell = ({
         {showAvatar && (
           <UserAvatar
             sx={{ width: avatarSize, height: avatarSize }}
-            alt={getIndividualName(user.first_name || '', user.last_name || '')}
+            alt={altDisplayName}
             fileId={user.userpic_file_id}
           />
         )}
@@ -70,7 +79,7 @@ export const UserDisplayCell = ({
       {showAvatar && (
         <UserAvatar
           sx={{ width: avatarSize, height: avatarSize }}
-          alt={getIndividualName(user.first_name || '', user.last_name || '')}
+          alt={altDisplayName}
           fileId={user.userpic_file_id}
         />
       )}

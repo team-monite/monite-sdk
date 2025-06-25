@@ -2,12 +2,12 @@ import { components } from '@/api';
 import { I18n } from '@lingui/core';
 
 import {
-  mapApprovalStatusToPayableStatus,
-  getApprovalRuleLabel,
+  createApprovalStep,
+  createConcurrentApprovalSteps,
+} from './approvalStepHelpers';
+import {
   findUserApprovalCall,
   findRoleApprovalCall,
-  filterRequestsByRoles,
-  filterRequestsByUsers,
 } from './approvalStepUtils';
 
 export interface ApprovalCall {
@@ -67,66 +67,29 @@ export function buildApprovalSteps(
       assignees.length > 0 &&
       roleIds.length > 0
     ) {
-      const userRequests = requests.filter(
-        (req) =>
-          req.user_ids?.length > 0 &&
-          assignees.some((userId) => req.user_ids!.includes(userId))
-      );
-      const userStepStatus: components['schemas']['ApprovalRequestStatus'] =
-        userRequests.length > 0 ? userRequests[0].status : 'waiting';
-
-      approvalSteps.push({
+      const concurrentSteps = createConcurrentApprovalSteps({
         stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(userApprovalCall || null, null, i18n),
-        assignee: undefined,
         assignees,
-        roleIds: [],
-        status: userStepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(userStepStatus),
-        isRoleBased: false,
-      });
-
-      const roleRequests = requests.filter(
-        (req) =>
-          req.role_ids?.length > 0 &&
-          roleIds.some((roleId) => req.role_ids!.includes(roleId))
-      );
-      const roleStepStatus: components['schemas']['ApprovalRequestStatus'] =
-        roleRequests.length > 0 ? roleRequests[0].status : 'waiting';
-
-      approvalSteps.push({
-        stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(null, roleApprovalCall || null, i18n),
-        assignee: undefined,
-        assignees: [],
         roleIds,
-        status: roleStepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(roleStepStatus),
-        isRoleBased: true,
+        userApprovalCall,
+        roleApprovalCall,
+        requests,
+        i18n,
       });
+      approvalSteps.push(...concurrentSteps);
     } else {
       const isRoleBased = roleIds.length > 0 && assignees.length === 0;
-      const stepRequests = isRoleBased
-        ? filterRequestsByRoles(requests, roleIds)
-        : filterRequestsByUsers(requests, assignees);
-
-      const stepStatus: components['schemas']['ApprovalRequestStatus'] =
-        stepRequests.length > 0 ? stepRequests[0].status : 'waiting';
-
-      approvalSteps.push({
+      const step = createApprovalStep({
         stepNumber: stepIndex + 1,
-        type: getApprovalRuleLabel(
-          userApprovalCall || null,
-          roleApprovalCall || null,
-          i18n
-        ),
-        assignee: undefined,
         assignees,
         roleIds,
-        status: stepStatus,
-        payableStatus: mapApprovalStatusToPayableStatus(stepStatus),
+        userApprovalCall,
+        roleApprovalCall,
+        requests,
+        i18n,
         isRoleBased,
       });
+      approvalSteps.push(step);
     }
   });
 

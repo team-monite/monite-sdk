@@ -1,6 +1,9 @@
 import { components } from '@/api';
-import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import {
+  getSharedApprovalRuleLabel,
+  getUsersFromListLabel,
+} from '@/components/approvalPolicies/shared/approvalRuleLabels';
+import type { I18n } from '@lingui/core';
 
 import { type ApprovalCall } from './buildApprovalSteps';
 
@@ -66,24 +69,22 @@ export const filterRequestsByUsers = (
   );
 
 export const getApprovalRuleLabel = (
-  userApprovalCall: ApprovalCall | null,
-  roleApprovalCall: ApprovalCall | null,
+  userApprovalCall: ApprovalCall | undefined,
+  roleApprovalCall: ApprovalCall | undefined,
   i18n: I18n
 ): string => {
   if (userApprovalCall?.params) {
     const { user_ids, required_approval_count } = userApprovalCall.params;
 
     if (user_ids?.length === 1) {
-      return t(i18n)`Single user`;
+      return getSharedApprovalRuleLabel.singleUser(i18n);
     }
 
-    return required_approval_count === 1
-      ? t(i18n)`Any user from the list`
-      : t(i18n)`Any ${required_approval_count ?? ''} users from the list`;
+    return getUsersFromListLabel(i18n, required_approval_count);
   }
 
   if (roleApprovalCall?.params) {
-    return t(i18n)`Any user with role`;
+    return getSharedApprovalRuleLabel.anyUserWithRole(i18n);
   }
 
   return '';
