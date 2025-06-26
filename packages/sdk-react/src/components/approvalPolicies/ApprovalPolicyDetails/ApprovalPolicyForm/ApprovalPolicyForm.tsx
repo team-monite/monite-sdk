@@ -92,6 +92,158 @@ export interface FormValues {
   rolesFromListCount?: string | number;
 }
 
+/**
+ * Builds the approval policy payload from form values
+ */
+/* eslint-disable lingui/no-unlocalized-strings */
+const buildApprovalPolicyPayload = (values: FormValues) => {
+  return {
+    name: values.name,
+    description: values.description,
+    trigger: {
+      all: [
+        "{event_name == 'submitted_for_approval'}",
+        ...(values.triggers.was_created_by_user_id?.length &&
+        values.triggers.was_created_by_user_id?.length > 0
+          ? [
+              {
+                operator: 'in',
+                left_operand: {
+                  name: 'invoice.was_created_by_user_id',
+                },
+                right_operand: values.triggers.was_created_by_user_id.map(
+                  (user) => user.id
+                ),
+              },
+            ]
+          : []),
+        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
+          ? [
+              {
+                operator: 'in',
+                left_operand: {
+                  name: 'invoice.tags.id',
+                },
+                right_operand: values.triggers.tags.map((tag) => tag.id),
+              },
+            ]
+          : []),
+        ...(values.triggers.counterpart_id?.length &&
+        values.triggers.counterpart_id?.length > 0
+          ? [
+              {
+                operator: 'in',
+                left_operand: {
+                  name: 'invoice.counterpart_id',
+                },
+                right_operand: values.triggers.counterpart_id.map(
+                  (counterpart) => counterpart.id
+                ),
+              },
+            ]
+          : []),
+        ...(values.triggers.amount?.value?.length &&
+        values.triggers.amount?.value?.length > 0
+          ? [
+              ...values.triggers.amount.value.map((value) => ({
+                operator: value[0],
+                left_operand: {
+                  name: 'invoice.amount',
+                },
+                right_operand:
+                  typeof value[1] === 'number' ? value[1] : parseInt(value[1]),
+              })),
+              {
+                operator: '==',
+                left_operand: {
+                  name: 'invoice.currency',
+                },
+                right_operand: values.triggers.amount.currency,
+              },
+            ]
+          : []),
+      ],
+    },
+    script: [
+      {
+        run_concurrently: true,
+        all: [
+          ...(values.rules.single_user
+            ? [
+                {
+                  call: 'ApprovalRequests.request_approval_by_users',
+                  params: {
+                    user_ids: [values.rules.single_user.id],
+                    required_approval_count: 1,
+                  },
+                  then: ['{Payables.approve(invoice.id)}'],
+                  else: ['{Payables.reject(invoice.id)}'],
+                },
+              ]
+            : []),
+          ...(values.rules.users_from_list &&
+          values.rules.users_from_list?.length > 0
+            ? [
+                {
+                  call: 'ApprovalRequests.request_approval_by_users',
+                  params: {
+                    user_ids:
+                      values.rules.users_from_list.map((user) => user.id) || [],
+                    required_approval_count: values.usersFromListCount
+                      ? typeof values.usersFromListCount === 'number'
+                        ? values.usersFromListCount
+                        : parseInt(values.usersFromListCount)
+                      : 0,
+                  },
+                  then: ['{Payables.approve(invoice.id)}'],
+                  else: ['{Payables.reject(invoice.id)}'],
+                },
+              ]
+            : []),
+          ...(values.rules.roles_from_list &&
+          values.rules.roles_from_list?.length > 0
+            ? [
+                {
+                  call: 'ApprovalRequests.request_approval_by_roles',
+                  params: {
+                    role_ids:
+                      values.rules.roles_from_list.map((role) => role.id) || [],
+                    required_approval_count: values.rolesFromListCount
+                      ? typeof values.rolesFromListCount === 'number'
+                        ? values.rolesFromListCount
+                        : parseInt(values.rolesFromListCount)
+                      : 0,
+                  },
+                  then: ['{Payables.approve(invoice.id)}'],
+                  else: ['{Payables.reject(invoice.id)}'],
+                },
+              ]
+            : []),
+          ...(values.rules.approval_chain &&
+          values.rules.approval_chain?.length > 0
+            ? [
+                {
+                  run_concurrently: false,
+                  all: [
+                    ...(values.rules.approval_chain.map((user) => ({
+                      call: 'ApprovalRequests.request_approval_by_users',
+                      params: {
+                        user_ids: [user.id],
+                        required_approval_count: 1,
+                      },
+                    })) || []),
+                  ],
+                  then: ['{Payables.approve(invoice.id)}'],
+                  else: ['{Payables.reject(invoice.id)}'],
+                },
+              ]
+            : []),
+        ],
+      },
+    ],
+  };
+};
+
 export const ApprovalPolicyForm = ({
   approvalPolicy,
   setIsEdit,
@@ -641,170 +793,12 @@ export const ApprovalPolicyForm = ({
             id={formId}
             noValidate
             onSubmit={handleSubmit((values) => {
-              const body = {
-                name: values.name,
-                description: values.description,
-                trigger: {
-                  all: [
-                    "{event_name == 'submitted_for_approval'}",
-                    ...(values.triggers.was_created_by_user_id?.length &&
-                    values.triggers.was_created_by_user_id?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.was_created_by_user_id',
-                            },
-                            right_operand:
-                              values.triggers.was_created_by_user_id.map(
-                                (user) => user.id
-                              ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.tags?.length &&
-                    values.triggers.tags?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.tags.id',
-                            },
-                            right_operand: values.triggers.tags.map(
-                              (tag) => tag.id
-                            ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.counterpart_id?.length &&
-                    values.triggers.counterpart_id?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.counterpart_id',
-                            },
-                            right_operand: values.triggers.counterpart_id.map(
-                              (counterpart) => counterpart.id
-                            ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.amount?.value?.length &&
-                    values.triggers.amount?.value?.length > 0
-                      ? [
-                          ...values.triggers.amount.value.map((value) => ({
-                            operator: value[0],
-                            left_operand: {
-                              name: 'invoice.amount',
-                            },
-                            right_operand:
-                              typeof value[1] === 'number'
-                                ? value[1]
-                                : parseInt(value[1]),
-                          })),
-                          {
-                            operator: '==',
-                            left_operand: {
-                              name: 'invoice.currency',
-                            },
-                            right_operand: values.triggers.amount.currency,
-                          },
-                        ]
-                      : []),
-                  ],
-                },
-                script: [
-                  {
-                    run_concurrently: true,
-                    all: [
-                      ...(values.rules.single_user
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_users',
-                              params: {
-                                user_ids: [values.rules.single_user.id],
-                                required_approval_count: 1,
-                              },
-                              then: ['{Payables.approve(invoice.id)}'],
-                              else: ['{Payables.reject(invoice.id)}'],
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.users_from_list &&
-                      values.rules.users_from_list?.length > 0
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_users',
-                              params: {
-                                user_ids:
-                                  values.rules.users_from_list.map(
-                                    (user) => user.id
-                                  ) || [],
-                                required_approval_count:
-                                  values.usersFromListCount
-                                    ? typeof values.usersFromListCount ===
-                                      'number'
-                                      ? values.usersFromListCount
-                                      : parseInt(values.usersFromListCount)
-                                    : 0,
-                              },
-                              then: ['{Payables.approve(invoice.id)}'],
-                              else: ['{Payables.reject(invoice.id)}'],
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.roles_from_list &&
-                      values.rules.roles_from_list?.length > 0
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_roles',
-                              params: {
-                                role_ids:
-                                  values.rules.roles_from_list.map(
-                                    (role) => role.id
-                                  ) || [],
-                                required_approval_count:
-                                  values.rolesFromListCount
-                                    ? typeof values.rolesFromListCount ===
-                                      'number'
-                                      ? values.rolesFromListCount
-                                      : parseInt(values.rolesFromListCount)
-                                    : 0,
-                              },
-                              then: ['{Payables.approve(invoice.id)}'],
-                              else: ['{Payables.reject(invoice.id)}'],
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.approval_chain &&
-                      values.rules.approval_chain?.length > 0
-                        ? [
-                            {
-                              run_concurrently: false,
-                              all: [
-                                ...(values.rules.approval_chain.map((user) => ({
-                                  call: 'ApprovalRequests.request_approval_by_users',
-                                  params: {
-                                    user_ids: [user.id],
-                                    required_approval_count: 1,
-                                  },
-                                })) || []),
-                              ],
-                              then: ['{Payables.approve(invoice.id)}'],
-                              else: ['{Payables.reject(invoice.id)}'],
-                            },
-                          ]
-                        : []),
-                    ],
-                  },
-                ],
-              };
+              const approvalPolicyPayload = buildApprovalPolicyPayload(values);
               isEdit
                 ? // @ts-expect-error - `trigger` is not covered by the schema
-                  updateApprovalPolicy(approvalPolicy.id, body)
+                  updateApprovalPolicy(approvalPolicy.id, approvalPolicyPayload)
                 : // @ts-expect-error - `trigger` is not covered by the schema
-                  createApprovalPolicy(body);
+                  createApprovalPolicy(approvalPolicyPayload);
             })}
           >
             <Stack gap={3}>
