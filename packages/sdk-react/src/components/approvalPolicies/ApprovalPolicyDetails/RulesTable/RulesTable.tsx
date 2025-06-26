@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { Role } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/Role';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
