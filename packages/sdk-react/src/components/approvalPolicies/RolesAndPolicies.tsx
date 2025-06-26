@@ -15,6 +15,21 @@ import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
+import {
+  DropdownMenu,
+  DropdownMenuSubContent,
+  DropdownMenuGroup,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuSub,
+  DropdownMenuPortal,
+  DropdownMenuSubTrigger,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
 import { classNames } from '@/utils/css-utils';
@@ -24,13 +39,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Box,
-  Button,
   CircularProgress,
   Menu,
   MenuItem,
   Tab,
   Tabs,
 } from '@mui/material';
+
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
 /**
  * ApprovalPolicies component
@@ -144,8 +160,7 @@ const RolesAndApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
 
   const [activeTab, setActiveTab] = useState<PageTabEnum>(PageTabEnum.Roles);
-
-  const { open, menuProps, buttonProps } = useMenuButton();
+  const [open, setOpen] = useState(false);
 
   const [state, dispatch] = useReducer(rolesPoliciesReducer, initialState);
   const { root } = useRootElements();
@@ -208,28 +223,18 @@ const RolesAndApprovalPoliciesBase = () => {
           </>
         }
         extra={
-          <Box className={className + '-Actions'}>
-            <Button
-              {...buttonProps}
-              className={className + '-Actions-CreateNew'}
-              variant="contained"
-              endIcon={
-                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-              }
-              disabled={!isCreateRoleAllowed && !isCreatePolicyAllowed}
-            >
-              {t(i18n)`Create New`}
-            </Button>
-            <Menu
-              {...menuProps}
-              className={className + '-Actions-Menu'}
-              container={root}
-              MenuListProps={{
-                'aria-labelledby': 'actions',
-              }}
-            >
-              <MenuItem
-                className={className + '-Actions-CreateNew-Role'}
+          <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="lg"
+                disabled={!isCreateRoleAllowed && !isCreatePolicyAllowed}
+              >
+                {t(i18n)`Create new`}
+                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mtw:w-56" align="end">
+              <DropdownMenuItem
                 disabled={!isCreateRoleAllowed}
                 onClick={() => {
                   setActiveTab(PageTabEnum.Roles);
@@ -237,9 +242,8 @@ const RolesAndApprovalPoliciesBase = () => {
                 }}
               >
                 {t(i18n)`User role`}
-              </MenuItem>
-              <MenuItem
-                className={className + '-Actions-CreateNew-Policy'}
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 disabled={!isCreatePolicyAllowed}
                 onClick={() => {
                   setActiveTab(PageTabEnum.Policies);
@@ -247,9 +251,9 @@ const RolesAndApprovalPoliciesBase = () => {
                 }}
               >
                 {t(i18n)`Approval policy`}
-              </MenuItem>
-            </Menu>
-          </Box>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         }
       />
 

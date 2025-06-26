@@ -11,11 +11,12 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 import { ProductsTable } from './ProductsTable';
 
@@ -98,16 +99,15 @@ const ProductsBase = () => {
         extra={
           <>
             <Button
-              variant="text"
-              color="primary"
+              variant="ghost"
+              size="lg"
               onClick={() => setMeasureUnitsModalOpened(true)}
-              sx={{ mr: 2 }}
+              className="mtw:mr-2"
             >
               {t(i18n)`Manage measure units`}
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              size="lg"
               disabled={!isCreateAllowed}
               onClick={openCreateModal}
             >
