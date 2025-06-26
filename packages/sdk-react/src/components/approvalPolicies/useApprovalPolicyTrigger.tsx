@@ -11,11 +11,14 @@ export type ApprovalPoliciesTriggerKey =
   | 'tags';
 
 interface ApprovalPoliciesTrigger {
-  all: Array<{
-    operator?: string;
-    left_operand?: { name: ApprovalPoliciesTriggerKey };
-    right_operand?: string | string[] | number;
-  }>;
+  all: Array<
+    | {
+        operator?: string;
+        left_operand?: { name: ApprovalPoliciesTriggerKey };
+        right_operand?: string | string[] | number;
+      }
+    | string
+  >;
 }
 
 export type AmountTuple = [ApprovalPoliciesOperator, string | number];
@@ -148,6 +151,53 @@ export const useApprovalPolicyTrigger = ({
 
   const triggers = approvalPolicy.trigger?.all?.reduce<Triggers>(
     (acc, trigger) => {
+      // Handle string-based triggers (e.g.: for tags, counterpart, user)
+      // Parse string triggers like "{'id1' in invoice.tags.id}" or "{invoice.was_created_by_user_id in ['id1']}" or "{invoice.counterpart_id in ['id1', 'id2']}"
+      if (typeof trigger === 'string') {
+        // Parse string triggers like "{invoice.counterpart_id in ['id1', 'id2']}" or "{invoice.was_created_by_user_id in ['id1']}"
+        const arrayMatch = trigger.match(
+          /\{invoice\.([^.]+)\.?([^.]*)\s+in\s+\[([^\]]+)\]\}/
+        );
+        // Parse string triggers like "{'id1' in invoice.tags.id}"
+        const singleMatch = trigger.match(
+          /\{'([^']+)'\s+in\s+invoice\.([^.]+)\.?([^.]*)\}/
+        );
+
+        if (arrayMatch) {
+          // Handle array-based triggers (counterpart, user)
+          const [, field, idsString] = arrayMatch;
+          let triggerKey: ApprovalPoliciesTriggerKey;
+
+          if (field === 'counterpart_id') {
+            triggerKey = 'counterpart_id';
+          } else if (field === 'was_created_by_user_id') {
+            triggerKey = 'was_created_by_user_id';
+          } else {
+            return acc;
+          }
+
+          // Extract IDs from the string, removing quotes
+          const ids = idsString
+            .split(',')
+            .map((id: string) => id.trim().replace(/['"]/g, ''))
+            .filter((id: string) => id.length > 0);
+
+          acc[triggerKey] = ids;
+        } else if (singleMatch) {
+          // Handle single ID triggers (tags)
+          const [, id, field, subfield] = singleMatch;
+
+          if (field === 'tags' && subfield === 'id') {
+            if (!acc.tags) {
+              acc.tags = [];
+            }
+            acc.tags.push(id);
+          }
+        }
+        return acc;
+      }
+
+      // Handle object-based triggers (e.g.: for amount)
       if (
         trigger.left_operand &&
         trigger.hasOwnProperty('operator') &&
@@ -155,11 +205,7 @@ export const useApprovalPolicyTrigger = ({
         typeof trigger.left_operand === 'object' &&
         trigger.left_operand.hasOwnProperty('name')
       ) {
-        let rawTriggerKey = trigger.left_operand.name.replace('invoice.', '');
-
-        if (rawTriggerKey === 'tags.id') {
-          rawTriggerKey = 'tags';
-        }
+        const rawTriggerKey = trigger.left_operand.name.replace('invoice.', '');
 
         if (
           isValidTriggerKey(rawTriggerKey) &&

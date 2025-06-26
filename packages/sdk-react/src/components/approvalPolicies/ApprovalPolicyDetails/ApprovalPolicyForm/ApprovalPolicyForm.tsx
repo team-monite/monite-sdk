@@ -106,40 +106,22 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
         ...(values.triggers.was_created_by_user_id?.length &&
         values.triggers.was_created_by_user_id?.length > 0
           ? [
-              {
-                operator: 'in',
-                left_operand: {
-                  name: 'invoice.was_created_by_user_id',
-                },
-                right_operand: values.triggers.was_created_by_user_id.map(
-                  (user) => user.id
-                ),
-              },
+              `{invoice.was_created_by_user_id in [${values.triggers.was_created_by_user_id
+                .map((user) => `'${user.id}'`)
+                .join(', ')}]}`,
             ]
           : []),
         ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
-          ? [
-              {
-                operator: 'in',
-                left_operand: {
-                  name: 'invoice.tags.id',
-                },
-                right_operand: values.triggers.tags.map((tag) => tag.id),
-              },
-            ]
+          ? values.triggers.tags.map(
+              (tag) => `{'${tag.id}' in invoice.tags.id}`
+            )
           : []),
         ...(values.triggers.counterpart_id?.length &&
         values.triggers.counterpart_id?.length > 0
           ? [
-              {
-                operator: 'in',
-                left_operand: {
-                  name: 'invoice.counterpart_id',
-                },
-                right_operand: values.triggers.counterpart_id.map(
-                  (counterpart) => counterpart.id
-                ),
-              },
+              `{invoice.counterpart_id in [${values.triggers.counterpart_id
+                .map((counterpart) => `'${counterpart.id}'`)
+                .join(', ')}]}`,
             ]
           : []),
         ...(values.triggers.amount?.value?.length &&

@@ -27,32 +27,12 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         // @ts-expect-error - `trigger` is not covered by the schema
         trigger: {
           all: [
-            "{event_name == 'submit_for_approval'}",
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.was_created_by_user_id',
-              },
-              right_operand: [entityUserByIdFixture.id, entityUser2.id],
-            },
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.tags.id',
-              },
-              right_operand: [
-                tagListFixture[0].id,
-                tagListFixture[2].id,
-                tagListFixture[3].id,
-              ],
-            },
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.counterpart_id',
-              },
-              right_operand: [organizationId, individualId],
-            },
+            "{event_name == 'submitted_for_approval'}",
+            `{invoice.was_created_by_user_id in ['${entityUserByIdFixture.id}', '${entityUser2.id}']}`,
+            `{'${tagListFixture[0].id}' in invoice.tags.id}`,
+            `{'${tagListFixture[2].id}' in invoice.tags.id}`,
+            `{'${tagListFixture[3].id}' in invoice.tags.id}`,
+            `{invoice.counterpart_id in ['${organizationId}', '${individualId}']}`,
             {
               operator: '>=',
               left_operand: {
@@ -68,7 +48,7 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               right_operand: '50000',
             },
             {
-              operator: 'in',
+              operator: '==',
               left_operand: {
                 name: 'invoice.currency',
               },
@@ -151,14 +131,8 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         // @ts-expect-error - `trigger` is not covered by the schema
         trigger: {
           all: [
-            "{event_name == 'submit_for_approval'}",
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.was_created_by_user_id',
-              },
-              right_operand: [entityUserByIdFixture.id, entityUser2.id],
-            },
+            "{event_name == 'submitted_for_approval'}",
+            `{invoice.was_created_by_user_id in ['${entityUserByIdFixture.id}', '${entityUser2.id}']}`,
           ],
         },
         script: [
@@ -193,17 +167,10 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         // @ts-expect-error - `trigger` is not covered by the schema
         trigger: {
           all: [
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.tags.id',
-              },
-              right_operand: [
-                tagListFixture[0].id,
-                tagListFixture[2].id,
-                tagListFixture[3].id,
-              ],
-            },
+            "{event_name == 'submitted_for_approval'}",
+            `{'${tagListFixture[0].id}' in invoice.tags.id}`,
+            `{'${tagListFixture[2].id}' in invoice.tags.id}`,
+            `{'${tagListFixture[3].id}' in invoice.tags.id}`,
           ],
         },
         script: [
@@ -241,14 +208,8 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         // @ts-expect-error - `trigger` is not covered by the schema
         trigger: {
           all: [
-            "{event_name == 'submit_for_approval'}",
-            {
-              operator: 'in',
-              left_operand: {
-                name: 'invoice.counterpart_id',
-              },
-              right_operand: [organizationId, individualId],
-            },
+            "{event_name == 'submitted_for_approval'}",
+            `{invoice.counterpart_id in ['${organizationId}', '${individualId}']}`,
           ],
         },
         script: [
@@ -295,7 +256,7 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         // @ts-expect-error - `trigger` is not covered by the schema
         trigger: {
           all: [
-            "{event_name == 'submit_for_approval'}",
+            "{event_name == 'submitted_for_approval'}",
             {
               operator: '>=',
               left_operand: {
@@ -311,7 +272,7 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               right_operand: '50000',
             },
             {
-              operator: 'in',
+              operator: '==',
               left_operand: {
                 name: 'invoice.currency',
               },
