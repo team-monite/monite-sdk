@@ -116,7 +116,7 @@ interface ProductItem {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  measureUnit?: components['schemas']['LineItemProductMeasureUnit'];
   vat_rate_id?: string;
   vat_rate_value?: number;
 }

@@ -102,7 +102,13 @@ export const CommonSettingsBlock = ({ control }: Props) => {
                   padding: '0 !important',
                 },
               }}
-              control={<Checkbox {...field} size="small" />}
+              control={
+                <Checkbox
+                  {...field}
+                  checked={field.value ?? false}
+                  size="small"
+                />
+              }
               label={t(i18n)`Include current year prefix`}
             />
           )}

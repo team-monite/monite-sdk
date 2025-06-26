@@ -92,7 +92,6 @@ export const DocumentRow = ({ control, availableType }: Props) => {
               }}
               value={field.value.toString().padStart(minDigits, '0')}
               error={Boolean(error)}
-              helperText={error?.message}
               sx={{
                 width: '8rem',
                 minWidth: '8rem',

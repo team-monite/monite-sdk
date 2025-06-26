@@ -1409,7 +1409,15 @@ msgstr "Cameroon"
 msgid "Can't be a negative number"
 msgstr "Can't be a negative number"
 
-#: src/components/templateSettings/schemas.ts:11
+#: src/components/templateSettings/schemas.ts:21
+#: src/components/templateSettings/schemas.ts:28
+#: src/components/templateSettings/schemas.ts:33
+#: src/components/templateSettings/schemas.ts:39
+#: src/components/templateSettings/schemas.ts:46
+msgid "Can't be less than {0}"
+msgstr "Can't be less than {0}"
+
+#: src/components/templateSettings/schemas.ts:15
 msgid "Can't be less than 1"
 msgstr "Can't be less than 1"
 
@@ -1470,7 +1478,7 @@ msgstr "Canadian Dollar"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:223
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:217
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Cancel"
 msgstr "Cancel"
@@ -2016,7 +2024,7 @@ msgstr "Copied!"
 msgid "Copy"
 msgstr "Copy"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:219
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:213
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
@@ -2277,8 +2285,8 @@ msgstr "Create new counterpart"
 msgid "Create new counterpart:"
 msgstr "Create new counterpart:"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:446
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:481
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:445
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:480
 msgid "Create new item"
 msgstr "Create new item"
 
@@ -2583,7 +2591,7 @@ msgstr "Default currency switch"
 msgid "Delete"
 msgstr "Delete"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:231
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:225
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Delete"
 msgstr "Delete"
@@ -3112,7 +3120,7 @@ msgstr "Ecuador"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:227
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:221
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
@@ -3646,7 +3654,7 @@ msgstr "File is being processed..."
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:259
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:253
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Finance invoice"
 msgstr "Finance invoice"
@@ -4259,7 +4267,7 @@ msgstr "In range"
 msgid "In review"
 msgstr "In review"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:106
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:112
 msgid "Include current year prefix"
 msgstr "Include current year prefix"
 
@@ -4491,7 +4499,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:239
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:233
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
@@ -4883,7 +4891,7 @@ msgstr "Line 1"
 msgid "Line 2"
 msgstr "Line 2"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:509
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemSelector.tsx:508
 msgid "Line item"
 msgstr "Line item"
 
@@ -5029,7 +5037,7 @@ msgstr "Mark as uncollectible"
 msgid "Mark as uncollectible invoice"
 msgstr "Mark as uncollectible invoice"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:235
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:229
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
@@ -5763,7 +5771,7 @@ msgstr "Other settings"
 msgid "Overdue"
 msgstr "Overdue"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:255
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:249
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Overdue payment"
 msgstr "Overdue payment"
@@ -5867,7 +5875,7 @@ msgstr "Parking Lots, Garages"
 msgid "Partially Paid"
 msgstr "Partially Paid"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:247
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:241
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Partially pay"
 msgstr "Partially pay"
@@ -5889,7 +5897,7 @@ msgstr "Pawn Shops"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:251
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:245
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
@@ -6722,7 +6730,7 @@ msgstr "Recurrence was completed, all invoices were issued"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:243
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:237
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
@@ -7100,8 +7108,8 @@ msgstr "Save and continue"
 
 #: src/components/onboarding/hooks/useOnboardingActions.ts:128
 #: src/components/onboarding/hooks/useOnboardingActions.ts:138
-#: src/components/templateSettings/components/DocumentNumberForm.tsx:111
-#: src/components/templateSettings/components/OtherSettingsForm.tsx:116
+#: src/components/templateSettings/components/DocumentNumberForm.tsx:120
+#: src/components/templateSettings/components/OtherSettingsForm.tsx:124
 msgid "Save changes"
 msgstr "Save changes"
 
@@ -7191,7 +7199,7 @@ msgstr "Select invoices you would like to finance and send them for review."
 msgid "Select someone"
 msgstr "Select someone"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:215
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:209
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
@@ -8838,7 +8846,7 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:211
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:205
 msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"

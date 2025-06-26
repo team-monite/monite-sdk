@@ -17,6 +17,12 @@ export const usePatchEntitySettings = (entityId: string) => {
         },
         queryClient
       );
+      api.entities.getEntitiesIdSettingsNextDocumentNumbers.invalidateQueries(
+        {
+          parameters: { path: { entity_id: entityId } },
+        },
+        queryClient
+      );
     },
   });
 };

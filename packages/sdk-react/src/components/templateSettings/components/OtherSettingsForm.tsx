@@ -43,30 +43,38 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
     },
   });
 
-  const handleUpdateSettings = (values: OtherSettingsFormValues) => {
-    updateSettings({
-      path: { entity_id: entityId },
-      body: {
-        ...entitySettings,
-        document_rendering: {
-          invoice: {
-            display_entity_bank_account: values.invoice_bank_display,
-          },
-          credit_note: {
-            display_entity_bank_account: values.credit_note_bank_display,
-          },
-          quote: {
-            display_entity_bank_account: values.quote_bank_display,
-            display_signature: values.quote_signature_display,
-          },
-        },
-        generate_paid_invoice_pdf: values.update_paid_invoices,
-        quote_signature_required: values.quote_electronic_signature === 'true',
-      },
-    });
-  };
+  const { control, handleSubmit, formState, watch, reset } = methods;
 
-  const { control, handleSubmit, formState, watch } = methods;
+  const handleUpdateSettings = (values: OtherSettingsFormValues) => {
+    updateSettings(
+      {
+        path: { entity_id: entityId },
+        body: {
+          ...entitySettings,
+          document_rendering: {
+            invoice: {
+              display_entity_bank_account: values.invoice_bank_display,
+            },
+            credit_note: {
+              display_entity_bank_account: values.credit_note_bank_display,
+            },
+            quote: {
+              display_entity_bank_account: values.quote_bank_display,
+              display_signature: values.quote_signature_display,
+            },
+          },
+          generate_paid_invoice_pdf: values.update_paid_invoices,
+          quote_signature_required:
+            values.quote_electronic_signature === 'true',
+        },
+      },
+      {
+        onSuccess: () => {
+          reset(methods.getValues());
+        },
+      }
+    );
+  };
 
   const displayInvoiceBank = watch('invoice_bank_display');
   const displayCreditNoteBank = watch('credit_note_bank_display');
