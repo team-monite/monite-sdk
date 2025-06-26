@@ -8825,6 +8825,491 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/custom_vat_rates": {
+      "get": {
+        "tags": ["Custom VAT rates"],
+        "summary": "Get custom VAT rates",
+        "operationId": "get_custom_vat_rates",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomVatRateResponseList"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["Custom VAT rates"],
+        "summary": "Create a custom VAT rate",
+        "operationId": "post_custom_vat_rates",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CustomVatRateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomVatRateResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/custom_vat_rates/{custom_vat_rate_id}": {
+      "get": {
+        "tags": ["Custom VAT rates"],
+        "summary": "Get a custom VAT rate by ID",
+        "operationId": "get_custom_vat_rates_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "custom_vat_rate_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomVatRateResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "delete": {
+        "tags": ["Custom VAT rates"],
+        "summary": "Delete a custom VAT rate",
+        "operationId": "delete_custom_vat_rates_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "custom_vat_rate_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "patch": {
+        "tags": ["Custom VAT rates"],
+        "summary": "Update a custom VAT rate",
+        "operationId": "patch_custom_vat_rates_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "custom_vat_rate_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomVatRateUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomVatRateResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/data_exports": {
       "get": {
         "tags": ["Data export"],
@@ -47886,6 +48371,104 @@
         "type": "object",
         "required": ["data"]
       },
+      "CustomVatRateRequest": {
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the Custom VAT."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Custom VAT."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["components", "name"]
+      },
+      "CustomVatRateResponse": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the Custom VAT rate was created. Timestamps follow the ISO 8601 standard."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the Custom VAT rate was last updated. Timestamps follow the ISO 8601 standard."
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the Custom VAT."
+          },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user that created the Custom VAT rate"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Custom VAT."
+          },
+          "value": {
+            "type": "number",
+            "description": "Total sum of the Custom VAT rate including components. Percent multiplied by a 100. Example: 12.125% is 1212.5."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "components",
+          "name",
+          "value"
+        ]
+      },
+      "CustomVatRateResponseList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/CustomVatRateResponse" },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": ["data"]
+      },
+      "CustomVatRateUpdateRequest": {
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/package__receivables__v2024_05_25__shared__VatRateComponent"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Sub-taxes included in the Custom VAT."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Custom VAT."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
       "DNSRecord": {
         "properties": {
           "is_active": { "type": "boolean" },
@@ -51523,6 +52106,11 @@
             "format": "uuid",
             "description": "ID of the tax rate in the connected accounting system, to be used when pushing the invoice to that accounting system. Use `GET /accounting_tax_rates` to get these IDs. If omitted, Monite will attempt to match the tax rates based on their numeric value."
           },
+          "custom_vat_rate_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the user-defined vat rate object."
+          },
           "discount": {
             "allOf": [
               {
@@ -51880,6 +52468,11 @@
       },
       "LineItemUpdate": {
         "properties": {
+          "custom_vat_rate_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the user-defined vat rate object."
+          },
           "discount": {
             "allOf": [
               {
@@ -63614,6 +64207,43 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["amount", "taxable_amount", "value"]
+      },
+      "package__receivables__v2024_05_25__receivables__TotalVatAmountItemComponent": {
+        "properties": {
+          "name": { "type": "string" },
+          "value": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "Percent minor units. Example: 12.5% is 1250."
+          },
+          "amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units)."
+          }
+        },
+        "type": "object",
+        "required": ["name", "value", "amount"]
+      },
+      "package__receivables__v2024_05_25__shared__VatRateComponent": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Display name of the Tax."
+          },
+          "value": {
+            "type": "number",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "Percent multiplied by a 100. Example: 12.125% is 1212.5. Will be rounded to 2 decimal places"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["name", "value"]
       },
       "package__roles__head__schemas__ActionSchema": {
         "properties": {

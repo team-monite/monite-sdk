@@ -85,7 +85,9 @@ export const isOrganizationEntity = (
 export function prepareAddressView({
   address,
 }: {
-  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+  address:
+    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
+    | undefined;
 }) {
   if (address)
     return `${address.postal_code}, ${address.city}, ${address.line1}`;

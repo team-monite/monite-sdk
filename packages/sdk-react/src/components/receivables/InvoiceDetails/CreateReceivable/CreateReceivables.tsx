@@ -6,6 +6,8 @@ import { showErrorToast } from '@/components/onboarding/utils';
 import {
   BankAccountFormDialog,
   BankAccountSection,
+  RemindersSection,
+  CustomerSection,
 } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -52,10 +54,7 @@ import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
-import { YourVatDetailsForm } from './sections/components/Billing/YourVatDetailsForm';
 import { InvoicePreview } from './sections/components/InvoicePreview';
-import { ReminderSection } from './sections/components/ReminderSection/RemindersSection';
-import { CustomerSection } from './sections/CustomerSection';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import {
@@ -93,10 +92,9 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
-    api.entities.getEntitiesIdVatIds.useQuery({
-      path: { entity_id: entityId },
-    });
+  const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
+    path: { entity_id: entityId },
+  });
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -107,6 +105,8 @@ const CreateReceivablesBase = ({
     isNonCompliantFlow,
     data: entityData,
   } = useMyEntity();
+  const [isEditCounterpartModalOpen, setIsEditCounterpartModalOpen] =
+    useState(false);
   const [isBankFormOpen, setIsBankFormOpen] = useState(false);
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
@@ -135,11 +135,17 @@ const CreateReceivablesBase = ({
         entity_bank_account_id: '',
         overdue_reminder_id: '',
         payment_reminder_id: '',
-        memo: '',
+        memo: t(
+          i18n
+        )`Dear client, as discussed, please find attached our invoice:`,
       }),
-      [type]
+      [type, i18n]
     ),
   });
+
+  const handleEditCounterpartModalState = (isOpen: boolean) => {
+    setIsEditCounterpartModalOpen(isOpen);
+  };
 
   const {
     handleSubmit,
@@ -148,6 +154,7 @@ const CreateReceivablesBase = ({
     setValue,
     clearErrors,
     getFieldState,
+    formState,
   } = methods;
 
   const counterpartId = watch('counterpart_id');
@@ -170,8 +177,16 @@ const CreateReceivablesBase = ({
   );
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
-  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
-    useCounterpartVatList(counterpartId);
+  const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+
+  const billingAddressId = watch('default_billing_address_id');
+  const counterpartBillingAddress = useMemo(
+    () =>
+      counterpartAddresses?.data?.find(
+        (address) => address.id === billingAddressId
+      ) ?? null,
+    [billingAddressId, counterpartAddresses?.data]
+  );
 
   const createReceivable = useCreateReceivable();
   const { data: settings, isLoading: isSettingsLoading } =
@@ -187,24 +202,7 @@ const CreateReceivablesBase = ({
     Schemas['CurrencyEnum'] | undefined
   >(undefined);
 
-  const [counterpartBillingAddress, setCounterpartBillingAddress] = useState<
-    Schemas['CounterpartAddressResponseWithCounterpartID'] | null
-  >(null);
-
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
-
-  useEffect(() => {
-    const values = getValues();
-    const billingAddressId = values.default_billing_address_id;
-
-    if (billingAddressId) {
-      setCounterpartBillingAddress(
-        counterpartAddresses?.data?.find(
-          (address) => address.id === billingAddressId
-        ) ?? null
-      );
-    }
-  }, [counterpartAddresses, getValues]);
 
   // this is a workaround until we refactor this component, this component
   // should be broken down into multiple pieces to better position the logic to avoid these workarounds
@@ -236,8 +234,7 @@ const CreateReceivablesBase = ({
 
   const theme = useTheme();
 
-  const { data: counterpart, isLoading: isCounterpartLoading } =
-    useCounterpartById(counterpartId);
+  const { data: counterpart } = useCounterpartById(counterpartId);
 
   const className = 'Monite-CreateReceivable';
 
@@ -255,17 +252,6 @@ const CreateReceivablesBase = ({
       return;
     }
 
-    if (!counterpartBillingAddress) {
-      showErrorToast(new Error('`Billing address` is not provided'));
-      return;
-    }
-
-    const shippingAddressId = values.default_shipping_address_id;
-
-    const counterpartShippingAddress = counterpartAddresses?.data?.find(
-      (address) => address.id === shippingAddressId
-    );
-
     const invoicePayload: Omit<
       Schemas['ReceivableFacadeCreateInvoicePayload'],
       'is_einvoice'
@@ -273,9 +259,8 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: counterpartBillingAddress.id,
-      counterpart_shipping_address_id: counterpartShippingAddress?.id,
-
+      counterpart_billing_address_id: values.default_billing_address_id ?? '',
+      counterpart_shipping_address_id: values.default_shipping_address_id ?? '',
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -451,6 +436,12 @@ const CreateReceivablesBase = ({
     }
   }, [entityBankAccountId, bankAccountField, clearErrors]);
 
+  useEffect(() => {
+    if (entityVatIds && entityVatIds.data.length > 0) {
+      setValue('entity_vat_id_id', entityVatIds.data[0].id);
+    }
+  }, [entityVatIds, setValue]);
+
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
 
@@ -481,7 +472,6 @@ const CreateReceivablesBase = ({
                   event.preventDefault();
                   handleSettings(event);
                 }}
-                form={formName}
                 disabled={createReceivable.isPending}
               >
                 <SettingsOutlinedIcon />
@@ -528,7 +518,6 @@ const CreateReceivablesBase = ({
               </Menu>
               <Button
                 variant="contained"
-                key="next"
                 color="primary"
                 type="submit"
                 form={formName}
@@ -811,13 +800,33 @@ const CreateReceivablesBase = ({
             >
               <Stack direction="column" spacing={7}>
                 <Box>
+                  {Boolean(formState?.errors?.default_billing_address_id) && (
+                    <Alert severity="error" sx={{ mb: 5 }}>
+                      <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+                        <span>
+                          {
+                            formState?.errors?.default_billing_address_id
+                              ?.message
+                          }
+                        </span>
+
+                        <button
+                          className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+                          type="button"
+                          onClick={() => handleEditCounterpartModalState(true)}
+                        >
+                          {t(i18n)`Edit customer's profile`}
+                        </button>
+                      </div>
+                    </Alert>
+                  )}
+
                   <CustomerSection
                     disabled={createReceivable.isPending}
-                    counterpart={counterpart}
-                    counterpartVats={counterpartVats}
-                    isCounterpartVatsLoading={isCounterpartVatsLoading}
-                    isCounterpartLoading={isCounterpartLoading}
                     customerTypes={customerTypes}
+                    isEditModalOpen={isEditCounterpartModalOpen}
+                    handleEditModal={handleEditCounterpartModalState}
+                    counterpart={counterpart}
                   />
                 </Box>
 
@@ -836,16 +845,10 @@ const CreateReceivablesBase = ({
                     flexDirection: 'column',
                   }}
                 >
-                  <Box sx={{ mb: 2 }}>
-                    <Typography sx={{ mb: 2 }} variant="subtitle1">{t(
-                      i18n
-                    )`Details`}</Typography>
-                    <YourVatDetailsForm
-                      isEntityVatIdsLoading={isEntityVatIdsLoading}
-                      entityVatIds={entityVatIds}
-                      disabled={createReceivable.isPending}
-                    />
-                  </Box>
+                  <Typography sx={{ mb: 2 }} variant="subtitle1">
+                    {t(i18n)`Terms`}
+                  </Typography>
+
                   <FullfillmentSummary
                     paymentTerms={paymentTerms}
                     isPaymentTermsLoading={isPaymentTermsLoading}
@@ -866,17 +869,19 @@ const CreateReceivablesBase = ({
                   )}
                 </Box>
                 <Box>
+                  <RemindersSection
+                    disabled={createReceivable.isPending}
+                    onUpdateOverdueReminder={onEditOverdueReminder}
+                    onUpdatePaymentReminder={onEditPaymentReminder}
+                    onCreateReminder={onCreateReminder}
+                    handleEditCounterpartModal={handleEditCounterpartModalState}
+                  />
+
                   <EntitySection
                     visibleFields={visibleSettingsFields}
                     disabled={createReceivable.isPending}
                   />
                 </Box>
-                <ReminderSection
-                  disabled={createReceivable.isPending}
-                  onUpdateOverdueReminder={onEditOverdueReminder}
-                  onUpdatePaymentReminder={onEditPaymentReminder}
-                  onCreateReminder={onCreateReminder}
-                />
               </Stack>
             </form>
           </FormProvider>
