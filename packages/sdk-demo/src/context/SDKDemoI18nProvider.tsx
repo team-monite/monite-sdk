@@ -3,37 +3,15 @@ import { ReactNode, useEffect } from 'react';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 
-const loadEmptyFallback = () => {
-  i18n.load('en', {});
-  i18n.activate('en');
+import { messages as enMessages } from '../locales/en/messages.mjs';
+
+// Initialize with English locale synchronously to prevent null rendering
+i18n.load('en', enMessages);
+i18n.activate('en');
+
+const getLanguageCode = (locale: string): string => {
+  return locale.split('-')[0] || 'en';
 };
-
-const tryLoadCatalog = async (locale: string) => {
-  try {
-    return await import(`../locales/${locale}/messages.mjs`);
-  } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error);
-    return null;
-  }
-};
-
-async function loadMessages(locale: string) {
-  let catalog = await tryLoadCatalog(locale);
-  let actualLocale = locale;
-
-  if (!catalog && locale !== 'en') {
-    catalog = await tryLoadCatalog('en');
-    actualLocale = 'en';
-  }
-
-  if (!catalog) {
-    loadEmptyFallback();
-    return;
-  }
-
-  i18n.load(actualLocale, catalog.messages);
-  i18n.activate(actualLocale);
-}
 
 export const SDKDemoI18nProvider = ({
   children,
@@ -43,8 +21,27 @@ export const SDKDemoI18nProvider = ({
   localeCode: string;
 }) => {
   useEffect(() => {
+    const loadMessages = async () => {
+      const languageCode = getLanguageCode(localeCode);
+
+      if (i18n.locale === languageCode || languageCode === 'en') return;
+
+      try {
+        const catalog = await import(`../locales/${languageCode}/messages.mjs`);
+
+        i18n.load(languageCode, catalog.messages);
+        i18n.activate(languageCode);
+      } catch (error) {
+        console.error(
+          `Failed to load locale: ${languageCode}, falling back to English`,
+          error
+        );
+        i18n.activate('en');
+      }
+    };
+
     if (localeCode) {
-      loadMessages(localeCode);
+      loadMessages();
     }
   }, [localeCode]);
 
