@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, Divider } from '@mui/material';
@@ -20,6 +21,7 @@ type Props = {
 
 export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const { handleShowModal } = useDiscardChangesContext();
   const { mutate: updateSettings, isPending: isUpdating } =
     usePatchEntitySettings(entityId);
@@ -100,7 +102,9 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
 
         <Divider />
 
-        <DisplaySignatureSection control={control} />
+        {componentSettings?.templateSettings?.availableARDocuments?.includes(
+          'quote'
+        ) && <DisplaySignatureSection control={control} />}
 
         <Divider />
 

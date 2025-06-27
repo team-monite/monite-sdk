@@ -1437,11 +1437,15 @@ msgstr "Cameroon"
 msgid "Can't be a negative number"
 msgstr "Can't be a negative number"
 
-#: src/components/templateSettings/schemas.ts:21
-#: src/components/templateSettings/schemas.ts:28
-#: src/components/templateSettings/schemas.ts:33
-#: src/components/templateSettings/schemas.ts:39
-#: src/components/templateSettings/schemas.ts:46
+#: src/components/templateSettings/schemas.ts:16
+msgid "Can't be greater than 25"
+msgstr "Can't be greater than 25"
+
+#: src/components/templateSettings/schemas.ts:22
+#: src/components/templateSettings/schemas.ts:29
+#: src/components/templateSettings/schemas.ts:34
+#: src/components/templateSettings/schemas.ts:40
+#: src/components/templateSettings/schemas.ts:47
 msgid "Can't be less than {0}"
 msgstr "Can't be less than {0}"
 
@@ -2394,7 +2398,7 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:110
+#: src/components/templateSettings/components/DisplayBankSection.tsx:123
 #: src/components/templateSettings/utils.ts:11
 msgid "Credit note"
 msgstr "Credit note"
@@ -2886,11 +2890,11 @@ msgstr "Discount Stores"
 msgid "Discounted subtotal"
 msgstr "Discounted subtotal"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:27
+#: src/components/templateSettings/components/DisplayBankSection.tsx:29
 msgid "Display bank account details on PDF"
 msgstr "Display bank account details on PDF"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:49
+#: src/components/templateSettings/components/DisplayBankSection.tsx:51
 msgid "Display bank display options"
 msgstr "Display bank display options"
 
@@ -4419,7 +4423,7 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/receivables/components/QuotesTable.tsx:306
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:223
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:310
-#: src/components/templateSettings/components/DisplayBankSection.tsx:70
+#: src/components/templateSettings/components/DisplayBankSection.tsx:75
 #: src/components/templateSettings/utils.ts:9
 msgid "Invoice"
 msgstr "Invoice"
@@ -6671,7 +6675,7 @@ msgstr "Quick Copy, Repro, and Blueprint"
 msgid "Quit without saving"
 msgstr "Quit without saving"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:90
+#: src/components/templateSettings/components/DisplayBankSection.tsx:99
 #: src/components/templateSettings/utils.ts:13
 msgid "Quote"
 msgstr "Quote"
@@ -7159,7 +7163,7 @@ msgstr "Save and continue"
 #: src/components/onboarding/hooks/useOnboardingActions.ts:128
 #: src/components/onboarding/hooks/useOnboardingActions.ts:138
 #: src/components/templateSettings/components/DocumentNumberForm.tsx:120
-#: src/components/templateSettings/components/OtherSettingsForm.tsx:124
+#: src/components/templateSettings/components/OtherSettingsForm.tsx:128
 msgid "Save changes"
 msgstr "Save changes"
 
@@ -9229,7 +9233,7 @@ msgstr "Your application was approved"
 msgid "Your bank account must be a checking account."
 msgstr "Your bank account must be a checking account."
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:30
+#: src/components/templateSettings/components/DisplayBankSection.tsx:32
 msgid "Your customers can make direct bank transfers outside the payment links"
 msgstr "Your customers can make direct bank transfers outside the payment links"
 

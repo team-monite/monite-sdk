@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
@@ -17,6 +18,7 @@ export const DisplayBankSection = ({
   shouldShowBankOptionsByDefault,
 }: Props) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const { setValue } = useFormContext<OtherSettingsFormValues>();
   const [isShowing, setIsShowing] = useState(shouldShowBankOptionsByDefault);
 
@@ -52,65 +54,77 @@ export const DisplayBankSection = ({
 
       {isShowing && (
         <div className="mtw:flex mtw:flex-col">
-          <Controller
-            name="invoice_bank_display"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                sx={{
-                  mx: 0,
-                  alignItems: 'center !important',
-                  '& .MuiFormControlLabel-label': {
-                    padding: '0 !important',
-                  },
-                }}
-                control={
-                  <Checkbox {...field} size="small" checked={field.value} />
-                }
-                label={t(i18n)`Invoice`}
-              />
-            )}
-          />
+          {componentSettings?.templateSettings?.availableARDocuments?.includes(
+            'invoice'
+          ) && (
+            <Controller
+              name="invoice_bank_display"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  sx={{
+                    mx: 0,
+                    alignItems: 'center !important',
+                    '& .MuiFormControlLabel-label': {
+                      padding: '0 !important',
+                    },
+                  }}
+                  control={
+                    <Checkbox {...field} size="small" checked={field.value} />
+                  }
+                  label={t(i18n)`Invoice`}
+                />
+              )}
+            />
+          )}
 
-          <Controller
-            name="quote_bank_display"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                sx={{
-                  mx: 0,
-                  alignItems: 'center !important',
-                  '& .MuiFormControlLabel-label': {
-                    padding: '0 !important',
-                  },
-                }}
-                control={
-                  <Checkbox {...field} size="small" checked={field.value} />
-                }
-                label={t(i18n)`Quote`}
-              />
-            )}
-          />
+          {componentSettings?.templateSettings?.availableARDocuments?.includes(
+            'quote'
+          ) && (
+            <Controller
+              name="quote_bank_display"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  sx={{
+                    mx: 0,
+                    alignItems: 'center !important',
+                    '& .MuiFormControlLabel-label': {
+                      padding: '0 !important',
+                    },
+                  }}
+                  control={
+                    <Checkbox {...field} size="small" checked={field.value} />
+                  }
+                  label={t(i18n)`Quote`}
+                />
+              )}
+            />
+          )}
 
-          <Controller
-            name="credit_note_bank_display"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                sx={{
-                  mx: 0,
-                  alignItems: 'center !important',
-                  '& .MuiFormControlLabel-label': {
-                    padding: '0 !important',
-                  },
-                }}
-                control={
-                  <Checkbox {...field} size="small" checked={field.value} />
-                }
-                label={t(i18n)`Credit note`}
-              />
-            )}
-          />
+          {componentSettings?.templateSettings?.availableARDocuments?.includes(
+            'credit_note'
+          ) && (
+            <Controller
+              name="credit_note_bank_display"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  sx={{
+                    mx: 0,
+                    alignItems: 'center !important',
+                    '& .MuiFormControlLabel-label': {
+                      padding: '0 !important',
+                    },
+                  }}
+                  control={
+                    <Checkbox {...field} size="small" checked={field.value} />
+                  }
+                  label={t(i18n)`Credit note`}
+                />
+              )}
+            />
+          )}
         </div>
       )}
     </section>
