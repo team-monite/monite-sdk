@@ -73,6 +73,7 @@ export const useInvoiceDefaultValues = (
       /** Reminders section */
       payment_reminder_id: invoice.payment_reminder_id ?? '',
       overdue_reminder_id: invoice.overdue_reminder_id ?? '',
+      vat_mode: invoice.vat_mode ?? 'exclusive',
     }),
     [invoice, isNonVatSupported]
   );
