@@ -5,9 +5,8 @@ import { useDialog } from '@/ui/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
-import LockIcon from '@mui/icons-material/Lock';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+
+import { LockKeyhole, X } from 'lucide-react';
 
 export interface AccessRestrictionProps {
   title?: ReactNode;
@@ -30,29 +29,26 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
   return (
     <>
       {dialogContext && (
-        <Grid container padding={2} className={className + '-InDialog-Header'}>
-          <Grid item xs={11} />
-          <Grid item xs={1}>
-            <IconWrapper
-              onClick={dialogContext.onClose}
-              color="inherit"
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconWrapper>
-          </Grid>
-        </Grid>
+        <div
+          className={`mtw:flex mtw:justify-end mtw:p-4 ${className}-InDialog-Header`}
+        >
+          <IconWrapper
+            onClick={dialogContext.onClose}
+            color="inherit"
+            aria-label="close"
+          >
+            <X />
+          </IconWrapper>
+        </div>
       )}
       <CenteredContentBox className={className + '-Content'}>
-        <Stack alignItems="center" spacing={2}>
-          <Box>
-            <LockIcon fontSize="large" color="primary" />
-          </Box>
-          <Stack alignItems="center" spacing={1}>
-            <Typography variant="h3">{title}</Typography>
-            <Typography>{description}</Typography>
-          </Stack>
-        </Stack>
+        <div className="mtw:flex mtw:flex-col mtw:items-center mtw:space-y-4">
+          <LockKeyhole className="mtw:w-8 mtw:h-8 mtw:text-primary" />
+          <div className="mtw:flex mtw:flex-col mtw:items-center mtw:space-y-2">
+            <h3 className="mtw:text-2xl mtw:font-semibold">{title}</h3>
+            <p className="mtw:text-center">{description}</p>
+          </div>
+        </div>
       </CenteredContentBox>
     </>
   );
