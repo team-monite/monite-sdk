@@ -1,3 +1,5 @@
+import { components } from '@/api';
+
 export type OptionalFields = {
   invoiceDate?: boolean;
   tags?: boolean;
@@ -24,3 +26,8 @@ export type OcrRequiredField =
 export type OcrRequiredFields =
   | Partial<Record<OcrRequiredField, boolean>>
   | undefined;
+
+export type PaymentRecordWithIntent = {
+  intent: string;
+  record: components['schemas']['PaymentRecordResponse'];
+};
