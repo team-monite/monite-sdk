@@ -21,9 +21,17 @@
       }
     },
     {
-      "files": ["vite.config.ts"],
+      "files": ["vite.config.ts", "*.config.ts", "*.config.js"],
       "rules": {
-        "import/no-default-export": "off"
+        "import/no-default-export": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          { 
+            "devDependencies": true,
+            "peerDependencies": true,
+            "bundledDependencies": true
+          }
+        ]
       }
     }
   ],
