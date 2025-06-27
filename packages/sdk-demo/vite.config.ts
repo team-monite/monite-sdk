@@ -25,17 +25,26 @@ export default async function viteConfig() {
       }),
       react({
         jsxImportSource: '@emotion/react',
+        plugins: [['@lingui/swc-plugin', {}]],
       }),
       htmlPlugin(htmlPluginOpt),
     ],
     optimizeDeps: {
+      include: [
+        '@emotion/react',
+        '@emotion/styled',
+        '@mui/material',
+        'react',
+        'react-dom',
+      ],
       exclude: [
         '@monite/sdk-react',
-        'jiti',
-        'perf_hooks',
+        '@lingui/macro',
         'acorn',
         'gulp-sourcemaps',
+        'jiti',
         'cosmiconfig',
+        'vinyl',
       ],
     },
     resolve: {
@@ -67,30 +76,23 @@ export default async function viteConfig() {
       ],
     },
     define: {
-      'process.env': {},
-      'process.version': '""',
-      'process.versions': { node: '""' },
-      'process.stdout': {
-        fd: 1,
-        isTTY: false,
-        getColorDepth: () => 4,
-        hasColors: () => false,
-        write: () => true,
+      'process.env': JSON.stringify({}),
+      'process.env.NODE_ENV': JSON.stringify(
+        process.env.NODE_ENV || 'development'
+      ),
+      'process.platform': JSON.stringify('browser'),
+      'process.version': JSON.stringify(''),
+      global: 'globalThis',
+    },
+    server: {
+      fs: {
+        allow: ['../..'],
       },
-      'process.stderr': {
-        fd: 2,
-        isTTY: false,
-        getColorDepth: () => 4,
-        hasColors: () => false,
-        write: () => true,
-      },
-      'process.stdin': {
-        fd: 0,
-        isTTY: false,
-      },
-      global: 'window',
     },
     build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
       rollupOptions: {
         input: {
           ['index-html']: resolve(__dirname, 'index.html'),
@@ -118,16 +120,31 @@ export default async function viteConfig() {
             'stream',
             'tty',
             'crypto',
-            'acorn',
-            'gulp-sourcemaps',
-            'vinyl',
-            'cosmiconfig',
+            'module',
+            'perf_hooks',
             'jsdom',
+            'vinyl',
           ];
 
-          return nodeModules.some(
-            (pkg) => id === pkg || id.startsWith(`${pkg}/`) || id.includes(pkg)
+          const problematicPackages = [
+            'acorn',
+            'gulp-sourcemaps',
+            'cosmiconfig',
+            'jiti',
+          ];
+
+          const isNodeModule = nodeModules.some(
+            (pkg) => id === pkg || id.startsWith(`${pkg}/`)
           );
+
+          const isProblematicPackage = problematicPackages.some(
+            (pkg) =>
+              id === pkg ||
+              id.startsWith(`${pkg}/`) ||
+              id.includes(`node_modules/${pkg}`)
+          );
+
+          return isNodeModule || isProblematicPackage;
         },
       },
     },
