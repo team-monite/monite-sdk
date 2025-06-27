@@ -26,8 +26,12 @@ interface ApprovalPolicyNestedRule {
 
 type ApprovalPolicyScript = [
   {
-    run_concurrently: boolean;
-    all: (ApprovalPolicyRule | ApprovalPolicyNestedRule)[];
+    if: {
+      run_concurrently: boolean;
+      all: (ApprovalPolicyRule | ApprovalPolicyNestedRule)[];
+    };
+    then: string[];
+    else: string[];
   }
 ];
 
@@ -122,16 +126,31 @@ export const useApprovalPolicyScript = ({
 
     if (typeof scriptObject !== 'object' || scriptObject === null) return false;
 
-    // Check if 'run_concurrently' and 'all' properties exist
-    if (!('run_concurrently' in scriptObject) || !('all' in scriptObject))
+    // Check if 'if', 'then', and 'else' properties exist
+    if (
+      !('if' in scriptObject) ||
+      !('then' in scriptObject) ||
+      !('else' in scriptObject)
+    )
       return false;
 
-    const { run_concurrently, all } = scriptObject;
+    const { if: ifBlock, then: thenBlock, else: elseBlock } = scriptObject;
+
+    // Check if 'if' block is an object
+    if (typeof ifBlock !== 'object' || ifBlock === null) return false;
+
+    // Check if 'run_concurrently' and 'all' properties exist in the 'if' block
+    if (!('run_concurrently' in ifBlock) || !('all' in ifBlock)) return false;
+
+    const { run_concurrently, all: allBlock } = ifBlock;
 
     if (typeof run_concurrently !== 'boolean') return false;
-    if (!Array.isArray(all)) return false;
+    if (!Array.isArray(allBlock)) return false;
 
-    return all.every(
+    // Check if 'then' and 'else' are arrays
+    if (!Array.isArray(thenBlock) || !Array.isArray(elseBlock)) return false;
+
+    return allBlock.every(
       (item) => isApprovalPolicyRule(item) || isApprovalPolicyNestedRule(item)
     );
   };
@@ -211,7 +230,7 @@ export const useApprovalPolicyScript = ({
   };
 
   if (isApprovalPolicyScript(approvalPolicy?.script)) {
-    const rules = approvalPolicy?.script[0].all.reduce<Partial<Rules>>(
+    const rules = approvalPolicy?.script[0].if.all.reduce<Partial<Rules>>(
       (acc, rule) => {
         if (isApprovalPolicyNestedRule(rule)) {
           if (isApprovalChainRule(rule)) {
