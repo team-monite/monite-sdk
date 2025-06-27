@@ -57,7 +57,7 @@ const PayableDetailsBase = ({
     lineItems,
     isEdit,
     isLoading,
-    isProcessingPayment,
+    showPayButton,
     actions: {
       setEdit,
       createInvoice,
@@ -70,7 +70,6 @@ const PayableDetailsBase = ({
       reopenInvoice,
       deleteInvoice,
       updateTags,
-      isPaymentLinkAvailable,
       modalComponent,
     },
   } = usePayableDetails({
@@ -154,9 +153,8 @@ const PayableDetailsBase = ({
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
-          isPaymentLinkAvailable={isPaymentLinkAvailable}
-          isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
+          showPayButton={showPayButton}
         />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid container columnSpacing={4} height="100%">
