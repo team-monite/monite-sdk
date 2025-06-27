@@ -1,10 +1,10 @@
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
+import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { CounterpartDetails } from '../counterparts/CounterpartDetails';
-import { InvoiceDetails } from '../receivables/InvoiceDetails';
 import { Dialog } from './Dialog';
 
 const meta: Meta<typeof Dialog> = {

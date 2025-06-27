@@ -1,49 +1,31 @@
 import { components } from '@/api';
+import { Badge } from '@/ui/components/badge';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Stack, Chip } from '@mui/material';
 
-import { UBox } from '../../../ProductsTable/components/icons/UBox';
-import { UBusiness } from '../../../ProductsTable/components/icons/UBusiness';
+import { Box, BriefcaseBusiness } from 'lucide-react';
+
+type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];
 
 const getTypeComponent = (type: ProductServiceTypeEnum, i18n: I18n) => {
-  switch (type) {
-    case 'product':
-      return (
-        <>
-          <Chip
-            icon={<UBox width={16} />}
-            label={t(i18n)`Product`}
-            size="small"
-            sx={{
-              backgroundColor: '#F5F5F5',
-              color: '#707070',
-            }}
-          />
-        </>
-      );
-    case 'service':
-      return (
-        <>
-          <Chip
-            icon={<UBusiness width={16} />}
-            label={t(i18n)`Service`}
-            size="small"
-            sx={{
-              backgroundColor: '#F5F5F5',
-              color: '#707070',
-            }}
-          />
-        </>
-      );
-  }
+  const icon =
+    type === 'product' ? (
+      <Box width={16} height={16} />
+    ) : (
+      <BriefcaseBusiness width={16} height={16} />
+    );
+  const label = type === 'product' ? t(i18n)`Product` : t(i18n)`Service`;
+
+  return (
+    <Badge variant="secondary">
+      {icon} {label}
+    </Badge>
+  );
 };
 
 export const ProductType = ({ type }: { type: ProductServiceTypeEnum }) => {
   const { i18n } = useLingui();
 
-  return <Stack direction="row">{getTypeComponent(type, i18n)}</Stack>;
+  return getTypeComponent(type, i18n);
 };
-
-type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];

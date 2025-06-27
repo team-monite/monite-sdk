@@ -7,12 +7,12 @@ import {
 } from 'react-hook-form';
 
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { CountryType, getCountriesArray } from '@/core/utils/countries';
 import {
   RHFAutocompleteProps,
   RHFAutocomplete,
-} from '@/components/RHF/RHFAutocomplete';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { CountryType, getCountriesArray } from '@/core/utils/countries';
+} from '@/ui/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TextFieldProps } from '@mui/material';

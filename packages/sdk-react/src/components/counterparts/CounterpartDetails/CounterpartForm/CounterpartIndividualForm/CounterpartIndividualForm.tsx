@@ -9,10 +9,10 @@ import {
   CounterpartsFormProps,
 } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 import { type DefaultValuesOCRIndividual } from '@/components/counterparts/types';
-import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';

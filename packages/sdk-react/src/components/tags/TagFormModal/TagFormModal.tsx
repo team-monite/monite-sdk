@@ -3,9 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { Dialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { Dialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -58,6 +58,9 @@ interface TagFormModalProps {
   onCreate?: (tag: components['schemas']['TagReadSchema']) => void;
   onUpdate?: (tag: components['schemas']['TagReadSchema']) => void;
   onClose?: () => void;
+  onDelete?: (tag: components['schemas']['TagReadSchema']) => void;
+
+  isDeleteAllowed: boolean;
 
   /** Whether the modal is open or not */
   open: boolean;
@@ -85,8 +88,10 @@ const TagFormModalBase = ({
   tag,
   onCreate,
   onUpdate,
+  onDelete,
   onClose,
   open,
+  isDeleteAllowed,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
   const {
@@ -103,7 +108,7 @@ const TagFormModalBase = ({
     reset({
       name: tag?.name || '',
       category: tag?.category || '',
-      keywords: tag?.keywords || [],
+      keywords: Array.isArray(tag?.keywords) ? tag.keywords : [],
     });
   }, [reset, tag]);
 
@@ -251,6 +256,13 @@ const TagFormModalBase = ({
           </form>
         </DialogContent>
         <DialogFooter
+          deleteButton={{
+            label: t(i18n)`Delete`,
+            ...(tag ? { isDisabled: !isDeleteAllowed } : {}),
+            onClick: () => {
+              onDelete?.(tag as components['schemas']['TagReadSchema']);
+            },
+          }}
           primaryButton={{
             label: tag ? t(i18n)`Save` : t(i18n)`Create`,
             formId: formName,

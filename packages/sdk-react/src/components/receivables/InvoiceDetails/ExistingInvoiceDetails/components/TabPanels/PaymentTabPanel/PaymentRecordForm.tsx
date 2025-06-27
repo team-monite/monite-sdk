@@ -2,10 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { RHFTimePicker } from '@/components/RHF/RHFTimePicker';
 import { useCurrencies } from '@/core/hooks';
+import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { RHFTimePicker } from '@/ui/RHF/RHFTimePicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

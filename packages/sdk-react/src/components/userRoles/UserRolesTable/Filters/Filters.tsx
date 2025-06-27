@@ -1,10 +1,10 @@
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import {
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_SEARCH,
 } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

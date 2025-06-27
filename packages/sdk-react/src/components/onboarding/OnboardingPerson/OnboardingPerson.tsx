@@ -1,10 +1,10 @@
 import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
-import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
+import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { RHFTextFieldPhone } from '@/ui/RHF/RHFTextFieldPhone';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -1,7 +1,7 @@
+import { Dialog } from '@/ui/Dialog/Dialog';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 
-import { Dialog } from '../../components/Dialog/Dialog';
 import { FullScreenModalHeader } from './FullScreenModalHeader';
 
 describe('FullScreenModalHeader Component', () => {

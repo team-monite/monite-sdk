@@ -9,9 +9,9 @@ import {
 } from '@/components';
 import { AISidebar } from '@/components';
 import { ChatInput } from '@/components/aiAssistant/components/ChatInput/ChatInput';
-import { PageHeader } from '@/components/PageHeader';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

@@ -1,5 +1,5 @@
 import { Dialog } from '@/components';
-import { MoniteDialogProps } from '@/components/Dialog/DialogProps.types';
+import { MoniteDialogProps } from '@/ui/Dialog/DialogProps.types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';

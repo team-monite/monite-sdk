@@ -12,17 +12,11 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { TablePagination } from '@/ui/table/TablePagination';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridSortModel,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
@@ -79,7 +73,10 @@ const TagsTableBase = ({
   const closeEditModal = useCallback(() => {
     setEditModalOpened(false);
   }, []);
+
   const closeDeleteModal = useCallback(() => {
+    setSelectedTag(undefined);
+    setEditModalOpened(false);
     setDeleteModalOpened(false);
   }, []);
 
@@ -184,30 +181,6 @@ const TagsTableBase = ({
         renderCell: (params) =>
           params.value ? <UserCell id={params.value} /> : null,
       },
-      {
-        field: 'actions',
-        type: 'actions',
-        getActions: (params) => [
-          <GridActionsCellItem
-            onClick={() => {
-              setSelectedTag(params.row);
-              openEditModal();
-            }}
-            icon={<EditIcon />}
-            disabled={!isUpdateAllowed}
-            label={t(i18n)`Edit`}
-          />,
-          <GridActionsCellItem
-            onClick={() => {
-              setSelectedTag(params.row);
-              openDeleteModal();
-            }}
-            disabled={!isDeleteAllowed}
-            icon={<DeleteIcon />}
-            label={t(i18n)`Delete`}
-          />,
-        ],
-      },
     ];
   }, [
     locale.dateFormat,
@@ -254,6 +227,12 @@ const TagsTableBase = ({
           },
         }}
         rowSelection={false}
+        onRowClick={(params) => {
+          if (!hasSelectedText()) {
+            setSelectedTag(params.row);
+            openEditModal();
+          }
+        }}
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
@@ -296,6 +275,13 @@ const TagsTableBase = ({
         tag={selectedTag}
         open={editModalOpened}
         onClose={closeEditModal}
+        isDeleteAllowed={isDeleteAllowed ?? false}
+        onDelete={(tag: components['schemas']['TagReadSchema']) => {
+          if (isDeleteAllowed) {
+            setSelectedTag(tag);
+            openDeleteModal();
+          }
+        }}
       />
       {selectedTag && (
         <ConfirmDeleteModal

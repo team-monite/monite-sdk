@@ -1,9 +1,9 @@
 import { VirtuosoMockContext } from 'react-virtuoso';
 
-import { Dialog } from '@/components/Dialog';
 import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { receivableListFixture } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
+import { Dialog } from '@/ui/Dialog';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

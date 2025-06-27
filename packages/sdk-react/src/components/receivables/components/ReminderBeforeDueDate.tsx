@@ -6,8 +6,8 @@ import {
   useGetPaymentReminders,
 } from '@/components/receivables/hooks';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';

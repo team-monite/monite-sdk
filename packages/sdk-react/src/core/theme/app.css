@@ -4,6 +4,7 @@
 @import './tailwind/typography.css';
 
 @theme {
+  --color-primary: var(--mtw-color-primary-50);
   --color-primary-10: var(--mtw-color-primary-10);
   --color-primary-20: var(--mtw-color-primary-20);
   --color-primary-30: var(--mtw-color-primary-30);
@@ -67,7 +68,7 @@
   --mtw-card-foreground: oklch(0.145 0 0);
   --mtw-popover: oklch(1 0 0);
   --mtw-popover-foreground: oklch(0.145 0 0);
-  --mtw-primary: oklch(0.205 0 0);
+  --mtw-primary: var(--mtw-color-primary-50);
   --mtw-primary-foreground: oklch(0.985 0 0);
   --mtw-secondary: oklch(0.97 0 0);
   --mtw-secondary-foreground: oklch(0.205 0 0);
@@ -75,7 +76,7 @@
   --mtw-muted-foreground: oklch(0.556 0 0);
   --mtw-accent: oklch(0.97 0 0);
   --mtw-accent-foreground: oklch(0.205 0 0);
-  --mtw-destructive: oklch(0.577 0.245 27.325);
+  --mtw-destructive: var(--mtw-color-danger-50);
   --mtw-destructive-foreground: oklch(0.577 0.245 27.325);
   --mtw-border: oklch(0.922 0 0);
   --mtw-input: oklch(0.922 0 0);
@@ -150,31 +151,37 @@
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
+
   16.667% {
     box-shadow: 9984px -10px 0 0 var(--mtw-dot-loader-stress-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
+
   33.333% {
     box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
+
   50% {
     box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px -10px 0 0 var(--mtw-dot-loader-stress-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
+
   66.667% {
     box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
+
   83.333% {
     box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px -10px 0 0 var(--mtw-dot-loader-stress-color);
   }
+
   100% {
     box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),

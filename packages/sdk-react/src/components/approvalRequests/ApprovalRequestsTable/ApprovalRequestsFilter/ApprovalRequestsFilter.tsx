@@ -1,6 +1,6 @@
 import { components } from '@/api';
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
