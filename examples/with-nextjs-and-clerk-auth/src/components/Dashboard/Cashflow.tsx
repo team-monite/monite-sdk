@@ -5,7 +5,6 @@ import {
   Bar,
   CartesianGrid,
   ComposedChart,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -149,7 +148,9 @@ export const CashFlowCard = () => {
   return (
     <DashboardCard
       title="Total received"
-      renderIcon={(props) => <IconChart sx={{ height: 20, width: 20 }} />}
+      renderIcon={(props) => (
+        <IconChart sx={{ height: 20, width: 20 }} {...props} />
+      )}
     >
       <ResponsiveContainer width="100%" height={250}>
         <ComposedChart data={chartData}>
@@ -163,8 +164,8 @@ export const CashFlowCard = () => {
               gradientUnits="userSpaceOnUse"
               spreadMethod="pad"
             >
-              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.2" />
-              <stop offset="100%" stop-color="white" stop-opacity="0" />
+              <stop offset="0%" stopColor="#3737FF" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
             </linearGradient>
           </defs>
           <CartesianGrid stroke="#EAEAEA" vertical={false} />

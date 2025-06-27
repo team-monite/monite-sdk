@@ -1,11 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic",
+        "importSource": "@emotion/react"
+      }
+    },
     "experimental": {
       "plugins": [
-        ["@lingui/swc-plugin", {}],
-        ["@swc/plugin-emotion", {}]
+        ["@lingui/swc-plugin", {}]
       ]
     }
-  }
+  },
+  "sourceMaps": true
 }

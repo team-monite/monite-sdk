@@ -3,10 +3,20 @@ import { toast } from 'react-hot-toast';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import type { Hub } from '@sentry/react';
-import { MutationCache, QueryClient } from '@tanstack/react-query';
+import * as Sentry from '@sentry/react';
+import {
+  MutationCache,
+  QueryClient,
+  type DefaultOptions,
+  type QueryCache,
+} from '@tanstack/react-query';
 
-export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
+export const createQueryClient = (
+  i18n: I18n,
+  sentryInstance?: typeof Sentry,
+  defaultOptions?: DefaultOptions<Error>,
+  queryCache?: QueryCache
+) =>
   new QueryClient({
     mutationCache: new MutationCache({
       onError: (err, _variables, _context, mutation) => {
@@ -28,7 +38,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
           toast.error(t(i18n)`Unrecognized error. Please contact support.`);
         }
 
-        sentryHub?.captureException(err);
+        sentryInstance?.captureException(err);
       },
     }),
 
@@ -37,7 +47,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
      *
      * @see https://tanstack.com/query/v4/docs/react/reference/QueryClient
      */
-    defaultOptions: {
+    defaultOptions: defaultOptions ?? {
       queries: {
         /**
          * We want to refetch on window focus only
@@ -56,4 +66,5 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
         staleTime: 1000 * 60 * 1,
       },
     },
+    queryCache,
   });

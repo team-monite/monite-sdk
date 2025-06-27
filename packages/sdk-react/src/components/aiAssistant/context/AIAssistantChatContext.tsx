@@ -6,7 +6,8 @@ import {
 } from 'react';
 
 import { apiVersion } from '@/api/api-version';
-import { ConversationHistory, useAIAssistantOptions } from '@/components';
+import { ConversationHistory } from '@/components';
+import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { type UseChatHelpers } from '@ai-sdk/react';
 

@@ -3,11 +3,13 @@ import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
-import { getSampleFromArray } from '@/utils/storybook-utils';
 import {
+  generateRandomDate,
+  generateRandomId,
   getRandomItemFromArray,
   getRandomProperty,
-} from '@/utils/storybook-utils';
+  getSampleFromArray,
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
@@ -16,8 +18,8 @@ import { tagListFixture } from '../tags';
 
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
 
-const generateTags = () => {
-  const hasTags = Math.random() > 0.6;
+const getRandomTags = () => {
+  const hasTags = faker.datatype.boolean({ probability: 0.4 });
 
   return hasTags ? getSampleFromArray(tagListFixture) : [];
 };
@@ -25,20 +27,25 @@ const generateTags = () => {
 function generatePayable(
   payable?: Partial<components['schemas']['PayableResponseSchema']>
 ): components['schemas']['PayableResponseSchema'] {
+  const randomStatus = getRandomItemFromArray(PayableStateEnum);
+  const randomCurrency = getRandomItemFromArray(CurrencyEnum);
+  const randomApprovalPolicy = getRandomItemFromArray(
+    approvalPoliciesListFixture.data
+  );
+
   const createdPayable: components['schemas']['PayableResponseSchema'] = {
     id: faker.string.uuid(),
     credit_notes: [],
     entity_id: getRandomProperty(entityUsers).id,
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
-    status: getRandomItemFromArray(PayableStateEnum),
+    status: randomStatus === undefined ? 'draft' : randomStatus,
     source_of_payable_data: 'ocr',
-    currency: getRandomItemFromArray(CurrencyEnum),
+    currency: randomCurrency === undefined ? 'USD' : randomCurrency,
     amount_due: Number(faker.finance.amount()),
     amount_paid: Number(faker.finance.amount()),
     amount_to_pay: Number(faker.finance.amount()),
-    approval_policy_id: getRandomItemFromArray(approvalPoliciesListFixture.data)
-      .id,
+    approval_policy_id: randomApprovalPolicy?.id,
     description: faker.commerce.productDescription(),
     due_date: faker.date.soon().toString(),
     payment_terms: undefined,
@@ -73,7 +80,7 @@ function generatePayable(
         },
       ],
     },
-    tags: generateTags(),
+    tags: getRandomTags(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     other_extracted_data: {

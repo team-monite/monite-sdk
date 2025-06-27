@@ -22,7 +22,15 @@ test.describe('Dashboard', () => {
     await page.goto('/');
     await expect(page).toHaveURL('/');
 
-    // Verify some authenticated content is visible
-    await expect(page.locator('text=Total received')).toBeVisible();
+    // Wait for page to fully load
+    await page.waitForLoadState('networkidle');
+
+    // Add additional wait for API calls to complete
+    await page.waitForTimeout(3000);
+
+    // Verify dashboard content is visible - look for either state of the cash flow card
+    await expect(
+      page.locator('text=Total received').or(page.locator('text=Cashflow'))
+    ).toBeVisible({ timeout: 15000 });
   });
 });

@@ -1,0 +1,21 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    ["@babel/preset-react", {
+      "runtime": "automatic",
+      "importSource": "@emotion/react"
+    }],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    ["babel-plugin-module-resolver", {
+      "alias": {
+        "@lingui/conf": "./lingui-conf-shim.js",
+        "cosmiconfig": "./dummy-module.js"
+      }
+    }],
+    "babel-plugin-macros",
+    "@lingui/babel-plugin-lingui-macro",
+    ["@emotion/babel-plugin", { "sourceMap": true, "autoLabel": "dev-only" }]
+  ]
+} 

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
 import { List } from '@mui/material';
@@ -39,27 +38,27 @@ export const NavigationList = () => {
     <>
       <List className="NavigationList" disablePadding>
         <NavigationListItem href="/" icon={<IconApps />}>
-          {t(i18n)`Dashboard`}
+          {i18n._('Dashboard')}
         </NavigationListItem>
         <NavigationListItem href="/payables" icon={<IconUsdCircle />}>
-          {t(i18n)`Bill Pay`}
+          {i18n._('Bill Pay')}
         </NavigationListItem>
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
-          {t(i18n)`Invoicing`}
+          {i18n._('Invoicing')}
         </NavigationListItem>
         {isDevEnvironment && (
           <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
-            {t(i18n)`AI Assistant`}
+            {i18n._('AI Assistant')}
           </NavigationListItem>
         )}
         <NavigationListItem href="/projects" icon={<IconBag />}>
-          {t(i18n)`Projects`}
+          {i18n._('Projects')}
         </NavigationListItem>
         <NavigationListItem href="/counterparts" icon={<IconUniversity />}>
-          {t(i18n)`Counterparts`}
+          {i18n._('Counterparts')}
         </NavigationListItem>
         <NavigationListItem href="/products" icon={<IconBox />}>
-          {t(i18n)`Products & Services`}
+          {i18n._('Products & Services')}
         </NavigationListItem>
       </List>
 
@@ -74,18 +73,18 @@ export const NavigationList = () => {
           padding: '8px 16px 0 16px',
         }}
       >
-        {t(i18n)`Settings`}
+        {i18n._('Settings')}
       </Typography>
 
       <List className="NavigationList" disablePadding>
-        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
-          {t(i18n)`Document Design`}
+        <NavigationListItem href="/template-settings" icon={<IconBrush />}>
+          {i18n._('Document Design')}
         </NavigationListItem>
         <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
-          {t(i18n)`Roles & Approvals`}
+          {i18n._('Roles & Approvals')}
         </NavigationListItem>
         <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
-          {t(i18n)`Tags`}
+          {i18n._('Tags')}
         </NavigationListItem>
       </List>
       <Box
@@ -100,7 +99,7 @@ export const NavigationList = () => {
             target="_blank"
             icon={<IconQuestionCircle />}
           >
-            {t(i18n)`Get Help`}
+            {i18n._('Get Help')}
           </NavigationListItem>
         </List>
       </Box>

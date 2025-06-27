@@ -1,11 +1,11 @@
 import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { counterpartListFixture } from '@/mocks';
+import { counterpartListFixture } from '../counterpart/counterpartFixture';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 const genCounterpartContactFixture = (
@@ -28,7 +28,7 @@ const genCounterpartContactFixture = (
     phone: faker.phone.number('+ ### ### ## ##'),
     is_default: id === 0,
     address: {
-      country: getRandomItemFromArray(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -42,7 +42,7 @@ const genCounterpartContactFixture = (
  * Fixture for counterpart contacts grouped by counterpart id
  * The key is `counterpartId` and the value is `Array<CounterpartContactResponse>`
  */
-export const counterpartsContactsFixtures = counterpartListFixture.reduce<
+export const counterpartsContactsFixtures = (counterpartListFixture || []).reduce<
   Record<string, Array<components['schemas']['CounterpartContactResponse']>>
 >((acc, counterpart) => {
   if (counterpart.type === 'individual') return acc;

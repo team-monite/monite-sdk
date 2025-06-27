@@ -1,30 +1,54 @@
-import { ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { Error as ErrorComponent } from '@/ui/error';
-import { ErrorBoundary, Profiler } from '@sentry/react';
+import { useDialog } from '@/components/Dialog/DialogContext';
+import { ErrorComponent } from '@/ui/error';
+import { type IconWrapperSettings } from '@/ui/iconWrapper';
+import * as Sentry from '@sentry/react';
+
+interface SentryProviderProps {
+  config: {
+    enabled: boolean;
+    tags: Record<string, string>;
+  };
+  children: ReactNode;
+  iconWrapperSettings?: IconWrapperSettings;
+}
 
 /**
  * Attaches Sentry to the `ErrorBoundary`
  */
-export const SentryProvider = ({ children }: { children: ReactNode }) => {
-  const { sentryHub } = useMoniteContext();
+export const SentryProvider = ({
+  children,
+  config,
+  iconWrapperSettings,
+}: PropsWithChildren<SentryProviderProps>) => {
+  if (config.enabled) {
+    Sentry.getCurrentScope().update((scope) => {
+      scope.setTags(config.tags);
+      return scope;
+    });
+  }
+
+  const dialogContext = useDialog();
 
   return (
-    <ErrorBoundary
-      fallback={(props) => <ErrorComponent {...props} />}
-      onError={(error, componentStack, eventId) => {
-        sentryHub?.captureException(error, {
-          event_id: eventId,
-          captureContext: {
-            contexts: {
-              react: { componentStack },
-            },
+    <Sentry.ErrorBoundary
+      fallback={(props) => (
+        <ErrorComponent
+          iconWrapperSettings={iconWrapperSettings}
+          onClose={dialogContext?.onClose}
+          {...props}
+        />
+      )}
+      onError={(error, componentStack, _eventId) => {
+        Sentry.captureException(error, {
+          contexts: {
+            react: { componentStack },
           },
         });
       }}
     >
-      <Profiler>{children}</Profiler>
-    </ErrorBoundary>
+      <Sentry.Profiler>{children}</Sentry.Profiler>
+    </Sentry.ErrorBoundary>
   );
 };

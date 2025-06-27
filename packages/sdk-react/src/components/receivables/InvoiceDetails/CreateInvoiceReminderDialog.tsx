@@ -1,4 +1,4 @@
-import { Dialog } from '@/components';
+import { Dialog } from '@/components/Dialog';
 import { MoniteDialogProps } from '@/components/Dialog/DialogProps.types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

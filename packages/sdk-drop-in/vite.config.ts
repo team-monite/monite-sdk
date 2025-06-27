@@ -7,12 +7,73 @@ export default async function viteConfig({ mode }: ConfigEnv) {
   return defineConfig({
     define: {
       'process.env.NODE_ENV': JSON.stringify(mode),
+      'process.env': {},
+      'process.version': '""',
+      'process.versions': { node: '""' },
+      'process.platform': '"browser"',
+      'process.stdout': {
+        fd: 1,
+        isTTY: false,
+        getColorDepth: () => 4,
+        hasColors: () => false,
+        write: () => true,
+      },
+      'process.stderr': {
+        fd: 2,
+        isTTY: false,
+        getColorDepth: () => 4,
+        hasColors: () => false,
+        write: () => true,
+      },
+      'process.stdin': { fd: 0, isTTY: false },
+      global: 'window',
     },
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
       }),
     ],
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+      ],
+      exclude: [
+        '@monite/sdk-react',
+        'jiti',
+        'perf_hooks',
+        'acorn',
+        'gulp-sourcemaps',
+        'cosmiconfig',
+      ],
+    },
+    resolve: {
+      alias: [
+        {
+          find: '@',
+          replacement: resolve(__dirname, './src'),
+        },
+        // React module aliases (more specific patterns first)
+        {
+          find: /^react$/,
+          replacement: 'react',
+        },
+        {
+          find: /^react\/jsx-runtime$/,
+          replacement: 'react/jsx-runtime',
+        },
+        {
+          find: /^react\/jsx-dev-runtime$/,
+          replacement: 'react/jsx-dev-runtime',
+        },
+        {
+          find: /^react-dom$/,
+          replacement: 'react-dom',
+        },
+      ],
+    },
     build: {
       sourcemap: true,
       lib: {
@@ -44,12 +105,40 @@ export default async function viteConfig({ mode }: ConfigEnv) {
         name: 'Monite Drop-in',
       },
       rollupOptions: {
-        external: [],
+        external: (id) => {
+          const nodeModules = [
+            'fs',
+            'path',
+            'os',
+            'util',
+            'stream',
+            'tty',
+            'crypto',
+            'http',
+            'https',
+            'buffer',
+            'canvas',
+            'jsdom',
+            'react',
+            'react-dom',
+            'acorn',
+            'gulp-sourcemaps',
+            'vinyl',
+            'cosmiconfig',
+            'jiti',
+          ];
+
+          return nodeModules.some(
+            (pkg) => id === pkg || id.startsWith(`${pkg}/`) || id.includes(pkg)
+          );
+        },
         output: {
-          globals: {},
+          globals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+          },
         },
       },
     },
-    resolve: { alias: { '@': resolve(__dirname, './src') } },
   });
 }

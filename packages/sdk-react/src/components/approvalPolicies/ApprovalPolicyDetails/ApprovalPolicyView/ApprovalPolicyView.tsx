@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import {
   useApprovalPolicyScript,
   Rules,
@@ -12,6 +11,7 @@ import {
   useApprovalPolicyTrigger,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
+import { useDialog } from '@/components/Dialog/DialogContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';

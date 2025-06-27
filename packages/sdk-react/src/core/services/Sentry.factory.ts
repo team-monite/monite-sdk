@@ -1,17 +1,11 @@
 import { apiVersion } from '@/api/api-version';
-import { MoniteSettings } from '@/core/context/MoniteProvider';
+import type { MoniteSettings } from '@/core/context/MoniteProvider';
 import { packageVersion } from '@/packageVersion';
-import {
-  Hub,
-  BrowserClient,
-  makeFetchTransport,
-  defaultStackParser,
-  BrowserProfilingIntegration,
-  BrowserTracing,
-} from '@sentry/react';
+import * as Sentry from '@sentry/react';
+import { makeFetchTransport, defaultStackParser } from '@sentry/react';
 
 export interface ISentryService {
-  create(sdk: MoniteSettings): Hub;
+  create(sdk: MoniteSettings): void; // Create method will now initialize Sentry directly
 }
 
 interface ISentryConfig {
@@ -19,29 +13,38 @@ interface ISentryConfig {
   entityId: string;
 }
 
-export class SentryFactory implements ISentryService {
-  constructor(private config: ISentryConfig) {}
+const createNoopClient = (): Sentry.BrowserClient => {
+  return new Sentry.BrowserClient({
+    dsn: '',
+    transport: Sentry.makeFetchTransport,
+    stackParser: Sentry.defaultStackParser,
+    integrations: [],
+  });
+};
 
-  /**
-   * Initialize Sentry with all provided `tags` and `environment`
-   */
-  public create(): Hub {
+const getCommonSentryConfig = () => ({
+  dsn: 'https://6639ef68c6db10ad889794dbd6822dca@o310686.ingest.sentry.io/4505629057286144',
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
+  tracesSampleRate: 1.0,
+  profilesSampleRate: 1.0,
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+});
+
+export const SentryFactory = {
+  create(config: ISentryConfig): Sentry.BrowserClient {
     /**
      * We shouldn't enable `Sentry` for production until we are
      *  on 100% sure that all customer's data is ignored
      */
-    const sentryEnvironment = this.config.environment;
+    const sentryEnvironment = config.environment;
 
     const isLocalhost =
-      typeof document !== 'undefined' &&
-      document.location.hostname === 'localhost';
-
-    const isDevelopmentRuntime =
-      typeof process !== 'undefined' && typeof process.env === 'object'
-        ? process.env.NODE_ENV === 'development' ||
-          process.env.TESTS === 'true' ||
-          process.env.TESTS === '1'
-        : false;
+      typeof window !== 'undefined' && window.location.hostname === 'localhost';
+    const isDevelopmentRuntime = import.meta.env.MODE === 'development';
 
     const debug = sentryEnvironment === 'dev';
     const enabled =
@@ -49,30 +52,30 @@ export class SentryFactory implements ISentryService {
       !isDevelopmentRuntime &&
       !isLocalhost;
 
-    const client = new BrowserClient({
-      dsn: 'https://6639ef68c6db10ad889794dbd6822dca@o310686.ingest.sentry.io/4505629057286144',
+    if (!enabled) return createNoopClient();
+
+    Sentry.init({
+      ...getCommonSentryConfig(),
       environment: sentryEnvironment,
       release: packageVersion,
       transport: makeFetchTransport,
       stackParser: defaultStackParser,
-      integrations: [new BrowserProfilingIntegration(), new BrowserTracing()],
-      tracesSampleRate: 1.0,
-      replaysSessionSampleRate: 1.0,
-      replaysOnErrorSampleRate: 1.0,
       debug: debug,
-      enabled: enabled,
     });
 
-    const hub = new Hub(client);
-
-    hub.configureScope((scope) => {
+    Sentry.getCurrentScope().update((scope) => {
       scope.setTags({
-        entityId: this.config.entityId,
+        entityId: config.entityId,
         packageVersion,
         apiVersion,
       });
+      return scope;
     });
 
-    return hub;
-  }
-}
+    return new Sentry.BrowserClient({
+      ...getCommonSentryConfig(),
+      transport: Sentry.makeFetchTransport,
+      stackParser: Sentry.defaultStackParser,
+    });
+  },
+};

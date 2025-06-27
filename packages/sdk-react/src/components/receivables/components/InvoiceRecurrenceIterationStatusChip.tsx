@@ -1,6 +1,7 @@
 import { ElementType, forwardRef } from 'react';
 
 import { components } from '@/api';
+import type { MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/core/theme/types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -13,16 +14,7 @@ import {
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface MoniteInvoiceRecurrenceIterationStatusChipProps {
-  /** The status of the iteration. */
-  status: components['schemas']['IterationStatus'];
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  icon?: boolean;
-}
+export type { MoniteInvoiceRecurrenceIterationStatusChipProps };
 
 /**
  * Displays the status of an Invoice Recurrence Iteration.

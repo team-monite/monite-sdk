@@ -4,10 +4,8 @@ import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { ManageMeasureUnits } from '@/components/products/ProductDetails/components/ManageMeasureUnits';
-import {
-  ProductDetails,
-  ProductDetailsView,
-} from '@/components/products/ProductDetails/ProductDetails';
+import { ProductDetails } from '@/components/products/ProductDetails/ProductDetails';
+import { ProductDetailsView } from '@/components/products/ProductDetails/ProductDetails.types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';

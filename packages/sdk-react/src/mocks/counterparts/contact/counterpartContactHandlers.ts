@@ -1,6 +1,7 @@
 import { components } from '@/api';
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
 import { counterpartListFixture } from '@/mocks';
+import { generateRandomToken } from '@/utils/test-utils-random';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -77,7 +78,7 @@ export const counterpartContactHandlers = [
     const { counterpartId } = params;
 
     const response: components['schemas']['CounterpartContactResponse'] = {
-      id: (Math.random() + 1).toString(36).substring(7),
+      id: generateRandomToken(),
       counterpart_id: counterpartId,
       is_default: false,
       ...json,

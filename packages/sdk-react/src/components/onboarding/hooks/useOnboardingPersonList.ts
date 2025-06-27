@@ -116,7 +116,7 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
 
     const firstError = errors[0]?.message;
 
-    if (!firstError) return;
+    if (typeof document === 'undefined' || !firstError) return;
 
     const elements = document.querySelectorAll('td');
     const element = Array.from(elements).find(

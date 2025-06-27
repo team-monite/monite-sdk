@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
-import { getRandomItemFromArray } from '@/utils/storybook-utils';
+import { getRandomItemFromArray } from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 export const entityIds = ['be035ef1-dd47-4f47-a6ad-eef2e7f2e608'] as const;
@@ -36,8 +36,8 @@ function generateEntityVatIdResourceList(
     id: faker.string.uuid(),
     entity_id: entityId,
     value: faker.string.numeric(10),
-    type: getRandomItemFromArray(VatIDTypeEnum),
-    country: getRandomItemFromArray(AllowedCountries),
+    type: getRandomItemFromArray(VatIDTypeEnum) as components['schemas']['VatIDTypeEnum'],
+    country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
   }));
 }
 

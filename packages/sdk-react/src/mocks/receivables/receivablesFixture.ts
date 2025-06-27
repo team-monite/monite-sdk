@@ -22,7 +22,7 @@ import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 export type ReceivablesListFixture = {
@@ -87,7 +87,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
 
   const quantity = faker.number.int({ min: 1, max: 10 });
   const totalBeforeVat = faker.number.int({ min: 10, max: 30_000 });
-  const vatRateValue = productVatId.value / 100;
+  const vatRateValue = (productVatId?.value ?? 0) / 100;
 
   return {
     quantity,
@@ -106,9 +106,9 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         currency: 'EUR',
       },
       vat_rate: {
-        id: productVatId.id,
+        id: productVatId?.id ?? faker.string.uuid(),
         value: vatRateValue,
-        country: productVatId.country,
+        country: productVatId?.country as components['schemas']['AllowedCountries'] ?? 'US',
       },
       measure_unit: {
         id: faker.string.nanoid(),
@@ -121,17 +121,19 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
 }
 
 function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
-  return {
+  const dueDate = faker.date.future().toString();
+
+  const quote: components['schemas']['QuoteResponsePayload'] = {
     type: 'quote',
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     document_id: `quote--${faker.string.nanoid(20)}`,
-    expiry_date: faker.date.future().toString(),
+    expiry_date: dueDate,
     issue_date: faker.date.past().toString(),
-    currency: getRandomItemFromArray(CurrencyEnum),
-    file_language: getRandomItemFromArray(LanguageCodeEnum),
-    original_file_language: getRandomItemFromArray(LanguageCodeEnum),
+    currency: getRandomItemFromArray(CurrencyEnum) ?? 'USD',
+    file_language: getRandomItemFromArray(LanguageCodeEnum) ?? 'en',
+    original_file_language: getRandomItemFromArray(LanguageCodeEnum) ?? 'en',
     line_items: [],
     entity_address: {
       country: 'DE',
@@ -155,10 +157,12 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
     total_vat_amount: faker.number.int(),
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
-    status: getRandomItemFromArray(QuoteStateEnum),
+    status: getRandomItemFromArray(QuoteStateEnum) as components['schemas']['QuoteStateEnum'] ?? 'draft',
     tags: [],
     vat_mode: 'exclusive',
   };
+
+  return quote;
 }
 
 function createRandomInvoice(
@@ -172,14 +176,13 @@ function createRandomInvoice(
     throw new Error('No counterpart found');
   }
 
-  const status: components['schemas']['ReceivablesStatusEnum'] =
-    index === 0
+  const status = (index === 0
       ? 'draft'
       : index === 1
       ? 'issued' // 'not renders action menu if onRowAction property is not specified' test depends there is an invoice with a non-draft status on the first screen
-      : getRandomItemFromArray(ReceivablesStatusEnum);
+      : getRandomItemFromArray(ReceivablesStatusEnum)) as components['schemas']['ReceivablesStatusEnum'] ?? 'draft';
 
-  const counterpart_type = getRandomItemFromArray<
+  const counterpart_type_val = getRandomItemFromArray<
     components['schemas']['CounterpartType']
   >(['individual', 'organization']);
 
@@ -228,7 +231,7 @@ function createRandomInvoice(
 
   const id = faker.string.uuid();
 
-  return {
+  const invoice: components['schemas']['InvoiceResponsePayload'] = {
     type: 'invoice',
     id,
     amount_paid: faker.number.int(),
@@ -241,14 +244,14 @@ function createRandomInvoice(
     based_on: id,
     fulfillment_date: faker.date.future().toString(),
     payment_terms: getRandomItemFromArray(paymentTermsFixtures.data!),
-    currency: 'EUR',
+    currency: getRandomItemFromArray(CurrencyEnum) as components['schemas']['CurrencyEnum'] ?? 'USD',
     line_items: new Array(getRandomNumber(1, 15))
       .fill('_')
       .map(createRandomLineItem),
     counterpart_id: randomExistingCounterpart.id,
     counterpart_name:
-      counterpart_type === 'organization' ? faker.company.name() : undefined,
-    counterpart_type,
+      counterpart_type_val === 'organization' ? faker.company.name() : undefined,
+    counterpart_type: counterpart_type_val as components['schemas']['ReceivableCounterpartType'] ?? 'organization',
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
@@ -266,12 +269,12 @@ function createRandomInvoice(
           email: faker.internet.email(),
           phone: faker.phone.number(),
           address: {
-            country: getRandomItemFromArray(AllowedCountries),
             city: faker.location.city(),
+            line1: faker.location.street(),
+            line2: faker.location.secondaryAddress(),
             postal_code: faker.location.zipCode(),
             state: faker.location.state(),
-            line1: faker.location.street(),
-            line2: faker.location.streetAddress(),
+            country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'] ?? 'US',
           },
         }
       : undefined,
@@ -296,8 +299,8 @@ function createRandomInvoice(
     discounted_subtotal: discount,
     total_vat_amount: totalVatAmount,
     total_amount_with_credit_notes: total,
-    file_language: 'en',
-    original_file_language: 'en',
+    file_language: getRandomItemFromArray(LanguageCodeEnum) as components['schemas']['LanguageCodeEnum'] ?? 'en',
+    original_file_language: getRandomItemFromArray(LanguageCodeEnum) as components['schemas']['LanguageCodeEnum'] ?? 'en',
     total_amount: Number(faker.commerce.price()),
     overdue_reminder_id: overdueReminderListFixture[0].id,
     payment_reminder_id: paymentReminderListFixture[0].id,
@@ -305,19 +308,21 @@ function createRandomInvoice(
     vat_mode: 'exclusive',
     is_einvoice: false,
   };
+
+  return invoice;
 }
 
 function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayload'] {
-  return {
+  const creditNote: components['schemas']['CreditNoteResponsePayload'] = {
+    currency: getRandomItemFromArray(CurrencyEnum) as components['schemas']['CurrencyEnum'] ?? 'USD',
+    file_language: getRandomItemFromArray(LanguageCodeEnum) as components['schemas']['LanguageCodeEnum'] ?? 'en',
+    original_file_language: getRandomItemFromArray(LanguageCodeEnum) as components['schemas']['LanguageCodeEnum'] ?? 'en',
     type: 'credit_note',
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     document_id: `credit_note--${faker.string.nanoid(20)}`,
     issue_date: faker.date.past().toString(),
-    currency: getRandomItemFromArray(CurrencyEnum),
-    file_language: getRandomItemFromArray(LanguageCodeEnum),
-    original_file_language: getRandomItemFromArray(LanguageCodeEnum),
     line_items: [],
     entity_address: {
       country: 'DE',
@@ -341,10 +346,12 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     total_vat_amount: faker.number.int(),
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
-    status: getRandomItemFromArray(CreditNoteStateEnum),
+    status: getRandomItemFromArray(CreditNoteStateEnum) as components['schemas']['CreditNoteStateEnum'] ?? 'draft',
     tags: [],
     vat_mode: 'exclusive',
   };
+
+  return creditNote;
 }
 
 export const receivableListFixture: ReceivablesListFixture = {
@@ -363,7 +370,7 @@ function createRandomContact(): components['schemas']['CounterpartContactRespons
     is_default: faker.datatype.boolean(),
     counterpart_id: faker.string.uuid(),
     address: {
-      country: getRandomItemFromArray(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries) ?? 'US',
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),

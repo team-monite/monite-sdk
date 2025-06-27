@@ -1,9 +1,7 @@
 import { components } from '@/api';
-import {
-  FinanceBannerWrapper,
-  FinanceMenuButtons,
-  FinanceProgressBar,
-} from '@/components/financing/components';
+import { FinanceBannerWrapper } from '@/components/financing/components/FinanceBannerWrapper';
+import { FinanceMenuButtons } from '@/components/financing/components/FinanceMenuButtons';
+import { FinanceProgressBar } from '@/components/financing/components/FinanceProgressBar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';

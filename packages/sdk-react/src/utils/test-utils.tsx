@@ -2,26 +2,22 @@ import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { createAPIClient } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
-import {
-  MoniteAPIProvider,
-  MoniteQraftContext,
-} from '@/core/context/MoniteAPIProvider';
+import { getLocaleWithDefaults } from '@/core/context/i18nUtils';
+import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { MoniteContext, MoniteTheme } from '@/core/context/MoniteContext';
-import {
-  getLocaleWithDefaults,
-  MoniteI18nProvider,
-} from '@/core/context/MoniteI18nProvider';
+import { MoniteQraftContext } from '@/core/context/MoniteContext';
+import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import {
   MoniteProviderProps,
   MoniteSettings,
 } from '@/core/context/MoniteProvider';
+import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
 import {
   BrowserClient,
   defaultStackParser,
-  Hub,
   makeFetchTransport,
 } from '@sentry/react';
 import { QueryCache, QueryClient } from '@tanstack/react-query';
@@ -35,6 +31,7 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 import DateFnsDeLocale from 'date-fns/locale/de';
@@ -83,20 +80,29 @@ export const Provider = ({
   const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
   const dateFnsLocale = moniteProviderProps?.dateFnsLocale ?? DateFnsDeLocale;
 
+  const mockRootElement =
+    typeof document !== 'undefined' ? document.createElement('div') : undefined;
+  const mockStylesElement =
+    typeof document !== 'undefined' ? document.createElement('div') : undefined;
+
+  if (typeof document !== 'undefined') {
+    document.body.appendChild(mockRootElement!);
+    document.body.appendChild(mockStylesElement!);
+  }
+
   const i18n = setupI18n({
     locale: localeCode,
     messages: {
       [localeCode]: {},
     },
   });
-  const sentryClient = new BrowserClient({
+  const _sentryClient = new BrowserClient({
     dsn: undefined,
     debug: true,
     transport: makeFetchTransport,
     stackParser: defaultStackParser,
     integrations: [],
   });
-  const sentryHub = new Hub(sentryClient);
   const apiClient = createAPIClient({
     entityId: moniteSettings.entityId,
     context: MoniteQraftContext,
@@ -104,8 +110,17 @@ export const Provider = ({
 
   useEffect(() => {
     client.mount();
-    return () => client.unmount();
-  }, [client]);
+    return () => {
+      client.unmount();
+
+      if (mockRootElement && mockRootElement.parentNode) {
+        mockRootElement.parentNode.removeChild(mockRootElement);
+      }
+      if (mockStylesElement && mockStylesElement.parentNode) {
+        mockStylesElement.parentNode.removeChild(mockStylesElement);
+      }
+    };
+  }, [client, mockRootElement, mockStylesElement]);
 
   return (
     <MoniteContext.Provider
@@ -114,7 +129,6 @@ export const Provider = ({
         environment: 'dev',
         locale: getLocaleWithDefaults(moniteProviderProps?.locale),
         i18n,
-        sentryHub,
         queryClient: client,
         theme: createThemeWithDefaults(
           moniteProviderProps?.theme
@@ -129,11 +143,15 @@ export const Provider = ({
         ...apiClient,
       }}
     >
-      <MoniteI18nProvider>
-        <MoniteAPIProvider APIContext={MoniteQraftContext}>
-          {children}
-        </MoniteAPIProvider>
-      </MoniteI18nProvider>
+      <RootElementsProvider
+        elements={{ root: mockRootElement, styles: mockStylesElement }}
+      >
+        <MoniteI18nProvider>
+          <MoniteAPIProvider APIContext={MoniteQraftContext}>
+            {children}
+          </MoniteAPIProvider>
+        </MoniteI18nProvider>
+      </RootElementsProvider>
     </MoniteContext.Provider>
   );
 };
@@ -167,7 +185,12 @@ export function createRenderWithClient(props?: ICreateRenderWithClientProps) {
 }
 
 // for component testing
-export function renderWithClient(children: ReactElement, sdk?: MoniteSettings) {
+export function renderWithClient(
+  children: ReactElement,
+  sdk?: MoniteSettings
+): Omit<RenderResult, 'rerender'> & {
+  rerender: (children: ReactElement) => void;
+} {
   // const testQueryClient = createReactQueryClient();
   const testQueryClient = queryClient;
   testQueryClient.cancelQueries();

@@ -10,4 +10,5 @@ export const getValidationSchema = (i18n: I18n) =>
       .label(i18n._(t(i18n)`Name`))
       .max(255)
       .required(),
+    permissions: yup.array().of(yup.object().shape({})).optional(),
   });

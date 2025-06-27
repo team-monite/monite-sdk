@@ -4,6 +4,7 @@ import { apiVersion } from '@/api/api-version';
 import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider, MoniteSettings } from '@/core/context/MoniteProvider';
+import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
@@ -17,43 +18,21 @@ import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';
 
-export const generateRandomId = () =>
-  (Math.random() + 1).toString(36).substring(2);
-
-export const generateRandomDate = () =>
-  new Date(new Date().getDate() - Math.random() * 1e12).toString();
-
-export function getRandomProperty<T = unknown>(obj: Record<string, T>): T {
-  const keys = Object.keys(obj);
-
-  return obj[keys[(keys.length * Math.random()) << 0]];
-}
-
-export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
-  const randomIndex = Math.floor(Math.random() * array.length);
-
-  return array[randomIndex];
-}
-
-export function getSampleFromArray<T = unknown>(array: Array<T>): Array<T> {
-  const sampleSize = getRandomNumber(0, array.length - 1);
-
-  return array.slice(0, sampleSize);
-}
-
-export function getRandomBoolean(): boolean {
-  return Math.random() < 0.5;
-}
-
-export function getRandomNumber(min = 0, max = 100) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+export {
+  generateRandomId,
+  generateRandomDate,
+  getRandomProperty,
+  getRandomItemFromArray,
+  getSampleFromArray,
+  getRandomBoolean,
+  getRandomNumber,
+} from '@/utils/test-utils-random';
 
 export const withGlobalStorybookDecorator = (
   cb?: () => {
@@ -148,6 +127,11 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
+  const storybookRootElement =
+    typeof document !== 'undefined' ? document.body : undefined;
+  const storybookStylesElement =
+    typeof document !== 'undefined' ? document.head : undefined;
+
   return (
     <>
       <FallbackProviders theme={deepmerge(defaultThemeConfig, props.theme)}>
@@ -159,8 +143,15 @@ export const GlobalStorybookDecorator = (props: {
             props.componentSettings
           )}
         >
-          <MoniteReactQueryDevtools />
-          {props.children}
+          <RootElementsProvider
+            elements={{
+              root: storybookRootElement,
+              styles: storybookStylesElement,
+            }}
+          >
+            <MoniteReactQueryDevtools />
+            {props.children}
+          </RootElementsProvider>
         </MoniteProvider>
       </FallbackProviders>
     </>

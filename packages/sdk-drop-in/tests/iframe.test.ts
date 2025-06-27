@@ -25,20 +25,58 @@ test.beforeEach(async ({ page }) => {
         body: process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON,
       });
     } else {
-      await route.continue();
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({
+          stand: 'dev',
+          api_url: 'https://api.dev.monite.com',
+          app_basename: 'monite-iframe-app',
+          app_hostname: 'localhost',
+          entity_user_id: 'mocked_entity_id',
+          client_id: 'mocked_client_id',
+          client_secret: 'mocked_client_secret',
+        }),
+      });
     }
   });
+
+  if (!process.env.CI) {
+    await page.route('**/auth/token', async (route) => {
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({
+          access_token: 'mocked_access_token_for_e2e_tests',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        }),
+      });
+    });
+
+    await page.route('**/entity_users/my_entity', async (route) => {
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: 'mocked_entity_id',
+          name: 'Mocked Entity for E2E Tests',
+          type: 'organization',
+          created_at: '2023-01-01T00:00:00Z',
+          updated_at: '2023-01-01T00:00:00Z',
+        }),
+      });
+    });
+  }
 });
 
 test('test the Tags button under Settings', async ({ page }) => {
-  await page.goto(`${consumerPage}${routingPaths.receivables}`);
+  await page.goto(`${consumerPage}${routingPaths.receivables}?test=playwright`);
 
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Tags' })).toBeVisible();
   await page.getByRole('button', { name: 'Tags' }).click();
 
-  const iframe = page.frameLocator('iframe');
-  await expect(iframe.getByRole('heading', { name: 'Tags' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Tags', exact: true })
+  ).toBeVisible();
 });
 
 const widgetTests = [
@@ -49,9 +87,10 @@ const widgetTests = [
 
 widgetTests.forEach(({ path, name }) => {
   test(`should see the ${name.toLowerCase()} tab`, async ({ page }) => {
-    await page.goto(`${consumerPage}${path}`);
+    await page.goto(`${consumerPage}${path}?test=playwright`);
     await page.getByRole('button', { name }).click();
-    const iframe = page.frameLocator('iframe');
-    await expect(iframe.getByRole('heading', { name })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name, exact: true })
+    ).toBeVisible();
   });
 });

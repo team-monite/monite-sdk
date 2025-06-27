@@ -7,6 +7,7 @@
     "module": "ESNext",
     "target": "ES2019",
     "moduleResolution": "bundler",
+    "composite": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,

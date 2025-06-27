@@ -1,10 +1,10 @@
 import { components } from '@/api';
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { counterpartListFixture } from '@/mocks';
+import { counterpartListFixture } from '../counterpart/counterpartFixture';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-} from '@/utils/storybook-utils';
+} from '@/utils/test-utils-random';
 import { faker } from '@faker-js/faker';
 
 import { organizationId } from '../counterpart.mocks.types';
@@ -14,7 +14,7 @@ function generateRandomAddress(
 ): components['schemas']['CounterpartAddressResourceList'] {
   return {
     data: new Array(getRandomNumber(1, 5)).fill(1).map((_, index) => ({
-      country: getRandomItemFromArray(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -29,7 +29,7 @@ function generateRandomAddress(
 
 export function generateCounterpartAddress(): components['schemas']['CounterpartAddress'] {
   return {
-    country: getRandomItemFromArray(AllowedCountries),
+    country: getRandomItemFromArray(AllowedCountries) as components['schemas']['AllowedCountries'],
     city: faker.location.city(),
     postal_code: faker.location.zipCode(),
     state: faker.datatype.boolean() ? faker.location.state() : undefined,
@@ -40,7 +40,7 @@ export function generateCounterpartAddress(): components['schemas']['Counterpart
   };
 }
 
-export const counterpartsAddressesFixture = counterpartListFixture
+export const counterpartsAddressesFixture = (counterpartListFixture || [])
   .map((counterpart) => {
     return generateRandomAddress(counterpart.id);
   })

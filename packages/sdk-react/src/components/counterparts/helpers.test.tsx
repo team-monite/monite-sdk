@@ -7,6 +7,8 @@ import {
   counterpartOrganizationFixture,
 } from '@/mocks';
 
+import { describe, test, expect } from 'vitest';
+
 describe('counterparts helpers', () => {
   test('# getIndividualName(...) matches the expected behavior', () => {
     expect(getIndividualName(' ', ' ')).toBe('');

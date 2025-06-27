@@ -4,6 +4,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "composite": true,
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -18,14 +19,15 @@
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "include": ["src/**/*", "typings.d.ts", "vite.server.ts", "src"],
+  "include": ["src/**/*", "typings.d.ts", "vite.server.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
