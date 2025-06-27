@@ -32,7 +32,6 @@ export const MoniteApp = ({
   fetchToken,
   onMount,
   onUnmount,
-  onQueryClientReady,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
@@ -44,7 +43,6 @@ export const MoniteApp = ({
   >;
   onMount?: () => void;
   onUnmount?: () => void;
-  onQueryClientReady?: (queryClient: unknown) => void;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
   useEffect(() => {
@@ -85,7 +83,6 @@ export const MoniteApp = ({
         onThemeMounted={() => {
           onMount?.();
         }}
-        onQueryClientReady={onQueryClientReady}
       >
         <Global
           styles={css`

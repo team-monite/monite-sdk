@@ -228,10 +228,21 @@ const ContextProvider = ({
     [userTheme]
   );
 
+  const cleanup = useMemo(
+    () => async () => {
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      queryClient.unmount();
+    },
+    [queryClient]
+  );
+
   useEffect(() => {
     queryClient.mount();
-    return () => queryClient.unmount();
-  }, [queryClient]);
+    return () => {
+      cleanup();
+    };
+  }, [queryClient, cleanup]);
 
   return (
     <MoniteContext.Provider

@@ -11,15 +11,8 @@ import {
 import { cleanupDelay, safeAsync, clearElement } from '@/lib/utils';
 import { APISchema } from '@monite/sdk-react';
 
-interface QueryClientLike {
-  cancelQueries?: () => Promise<void>;
-  cancelMutations?: () => Promise<void>;
-  clear?: () => void;
-}
-
 interface CleanupConfig {
   executeCleanupHandlers?: boolean;
-  cleanupQueryClient?: boolean;
   cleanupReactRoot?: boolean;
   cleanupDOM?: boolean;
 }
@@ -30,11 +23,9 @@ export class MoniteAppElement extends MoniteAppElementBase<
   private reactAppRoot: Root | undefined;
   private styleTagId = 'monite-app-css-variables';
   private cleanupHandlers: Set<() => void> = new Set();
-  private queryClient: QueryClientLike | null = null;
 
   private cleanupConfig: CleanupConfig = {
     executeCleanupHandlers: true,
-    cleanupQueryClient: true,
     cleanupReactRoot: true,
     cleanupDOM: true,
   };
@@ -164,16 +155,6 @@ export class MoniteAppElement extends MoniteAppElementBase<
     this.cleanupHandlers.clear();
   }, 'Error during custom cleanup handlers execution');
 
-  private cleanupQueryClientResources = safeAsync(async (): Promise<void> => {
-    if (!this.queryClient) return;
-
-    await this.queryClient.cancelQueries?.();
-    await this.queryClient.cancelMutations?.();
-
-    this.queryClient.clear?.();
-    this.queryClient = null;
-  }, 'Error during QueryClient cleanup');
-
   private cleanupReactRootResources = safeAsync(async (): Promise<void> => {
     if (!this.reactAppRoot) return;
 
@@ -197,10 +178,6 @@ export class MoniteAppElement extends MoniteAppElementBase<
 
     if (this.cleanupConfig.executeCleanupHandlers) {
       await this.executeCustomCleanupHandlers();
-    }
-
-    if (this.cleanupConfig.cleanupQueryClient) {
-      await this.cleanupQueryClientResources();
     }
 
     if (this.cleanupConfig.cleanupReactRoot) {
@@ -253,15 +230,10 @@ export class MoniteAppElement extends MoniteAppElementBase<
       {}
     );
 
-    const onQueryClientReady = (queryClient: unknown) => {
-      this.queryClient = queryClient as QueryClientLike;
-    };
-
     const props = {
       fetchToken: this.fetchToken,
       ...attributesProperties,
       ...slotProperties,
-      onQueryClientReady,
     } as Omit<ComponentProps<typeof MoniteApp>, 'rootElements'>;
 
     this.reactAppRoot.render(
