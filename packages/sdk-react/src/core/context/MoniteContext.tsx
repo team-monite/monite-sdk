@@ -17,6 +17,7 @@ import {
   MoniteLocaleWithRequired,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
+import { useIsMounted } from '@/core/hooks';
 import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
@@ -228,17 +229,28 @@ const ContextProvider = ({
     [userTheme]
   );
 
+  const isMountedRef = useIsMounted();
+
   const cleanup = useMemo(
-    () => async () => {
-      await queryClient.cancelQueries();
-      queryClient.clear();
-      queryClient.unmount();
+    () => () => {
+      if (!isMountedRef.current) return;
+
+      (async () => {
+        try {
+          await queryClient.cancelQueries();
+          queryClient.clear();
+          queryClient.unmount();
+        } catch (error) {
+          console.warn(error);
+        }
+      })();
     },
-    [queryClient]
+    [queryClient, isMountedRef]
   );
 
   useEffect(() => {
     queryClient.mount();
+
     return () => {
       cleanup();
     };
