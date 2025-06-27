@@ -73,6 +73,12 @@ export const useFileInput = () => {
     ))
   );
 
+  const resetInput = () => {
+    if (fileInputRef?.current?.node) {
+      fileInputRef.current.node.value = '';
+    }
+  };
+
   const checkFileError = (file: File): string | null => {
     if (!file) {
       return t(i18n)`No file provided`;
@@ -97,5 +103,6 @@ export const useFileInput = () => {
       fileInputRef.current.node?.click();
     },
     checkFileError,
+    resetInput,
   };
 };

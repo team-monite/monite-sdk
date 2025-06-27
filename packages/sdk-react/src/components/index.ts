@@ -11,5 +11,6 @@ export * from './PageHeader';
 export * from './Dialog';
 export * from './integrations';
 export * from './documentDesign';
+export * from './templateSettings';
 export * from './financing';
 export * from './aiAssistant';

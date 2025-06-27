@@ -1,1 +1,1 @@
-export * from './DocumentDesign';
+export { DocumentDesign } from './DocumentDesign';

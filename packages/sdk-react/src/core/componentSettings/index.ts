@@ -9,6 +9,10 @@ import {
 } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
+import {
+  APDocumentType,
+  ARDocumentType,
+} from '@/components/templateSettings/types';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -111,6 +115,37 @@ export interface FinancingSettings {
   financeSteps: FinanceStep[];
 }
 
+export interface TemplateSettings {
+  /**
+   * Shows the template selection section if true or hides it if false, defaults to true.
+   */
+  showTemplateSection: boolean;
+  /**
+   * Shows the template PDF preview if true or hides it if false, defaults to true.
+   */
+  showTemplatePreview: boolean;
+  /**
+   * Shows the logo selection section if true or hides it if false, defaults to true.
+   */
+  showLogoSection: boolean;
+  /**
+   * Enables the document number customisation tab if true or hides it if false, defaults to true.
+   */
+  enableDocumentNumberCustomisationTab: boolean;
+  /**
+   * Enables the other settings customisation tab if true or hides it if false, defaults to true.
+   */
+  enableOtherSettingsCustomisationTab: boolean;
+  /**
+   * List of available AR documents for customisation, defaults to all of the documents.
+   */
+  availableARDocuments: ARDocumentType[];
+  /**
+   * List of available AP documents for customisation, defaults to all of the documents.
+   */
+  availableAPDocuments: APDocumentType[];
+}
+
 interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
@@ -149,6 +184,7 @@ export interface ComponentSettings {
   };
   onboarding: Partial<OnboardingSettings>;
   financing: Partial<FinancingSettings>;
+  templateSettings: Partial<TemplateSettings>;
 }
 
 const defaultPageSizeOptions = [20, 50, 100];
@@ -251,4 +287,27 @@ export const getDefaultComponentSettings = (
   },
   onboarding: componentSettings?.onboarding ?? {},
   financing: componentSettings?.financing ?? {},
+  templateSettings: {
+    showTemplateSection:
+      componentSettings?.templateSettings?.showTemplateSection || true,
+    showTemplatePreview:
+      componentSettings?.templateSettings?.showTemplatePreview || true,
+    showLogoSection:
+      componentSettings?.templateSettings?.showLogoSection || true,
+    enableDocumentNumberCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableDocumentNumberCustomisationTab || true,
+    enableOtherSettingsCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableOtherSettingsCustomisationTab || true,
+    availableARDocuments: componentSettings?.templateSettings
+      ?.availableARDocuments || [
+      'invoice',
+      'credit_note',
+      'quote',
+      'delivery_note',
+    ],
+    availableAPDocuments: componentSettings?.templateSettings
+      ?.availableAPDocuments || ['purchase_order'],
+  },
 });
