@@ -23,7 +23,6 @@ export const MoniteApp = ({
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
   fetchToken,
-  onQueryClientReady,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
@@ -33,7 +32,6 @@ export const MoniteApp = ({
   fetchToken?: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
-  onQueryClientReady?: (queryClient: unknown) => void;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
   if (disabled) return null;
@@ -65,7 +63,6 @@ export const MoniteApp = ({
           apiUrl,
           fetchToken,
         }}
-        onQueryClientReady={onQueryClientReady}
       >
         <Global
           styles={css`
