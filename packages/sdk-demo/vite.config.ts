@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react-swc';
-
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -16,137 +15,125 @@ const htmlPluginOpt = {
   ],
 };
 
-export default async function viteConfig() {
-  return defineConfig({
-    plugins: [
-      dts({
-        outDir: 'build',
-        entryRoot: 'src',
-      }),
-      react({
-        jsxImportSource: '@emotion/react',
-        plugins: [['@lingui/swc-plugin', {}]],
-      }),
-      htmlPlugin(htmlPluginOpt),
+export default defineConfig({
+  plugins: [
+    dts({
+      outDir: 'build',
+      entryRoot: 'src',
+    }),
+    react({
+      jsxImportSource: '@emotion/react',
+      plugins: [['@lingui/swc-plugin', {}]],
+    }),
+    htmlPlugin(htmlPluginOpt),
+  ],
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/material',
+      'react',
+      'react-dom',
     ],
-    optimizeDeps: {
-      include: [
-        '@emotion/react',
-        '@emotion/styled',
-        '@mui/material',
-        'react',
-        'react-dom',
-      ],
-      exclude: [
-        '@monite/sdk-react',
-        '@lingui/macro',
-        'acorn',
-        'gulp-sourcemaps',
-        'jiti',
-        'cosmiconfig',
-        'vinyl',
-      ],
-    },
-    resolve: {
-      alias: [
-        {
-          find: '@',
-          replacement: resolve(__dirname, './src'),
-        },
-        {
-          find: /^react$/,
-          replacement: resolve(__dirname, '../../node_modules/react'),
-        },
-        {
-          find: /^react-dom$/,
-          replacement: resolve(__dirname, '../../node_modules/react-dom'),
-        },
-        {
-          find: '@emotion/react',
-          replacement: resolve(__dirname, '../../node_modules/@emotion/react'),
-        },
-        {
-          find: '@emotion/styled',
-          replacement: resolve(__dirname, '../../node_modules/@emotion/styled'),
-        },
-        {
-          find: /^vite$/,
-          replacement: resolve(__dirname, '../../node_modules/vite'),
-        },
-      ],
-    },
-    define: {
-      'process.env': JSON.stringify({}),
-      'process.env.NODE_ENV': JSON.stringify(
-        process.env.NODE_ENV || 'development'
-      ),
-      'process.platform': JSON.stringify('browser'),
-      'process.version': JSON.stringify(''),
-      global: 'globalThis',
-    },
-    server: {
-      fs: {
-        allow: ['../..'],
+    exclude: [
+      '@monite/sdk-react',
+      '@lingui/macro',
+      'acorn',
+      'gulp-sourcemaps',
+      'jiti',
+      'cosmiconfig',
+      'vinyl',
+    ],
+  },
+  resolve: {
+    alias: [
+      {
+        find: '@',
+        replacement: resolve(__dirname, './src'),
       },
-    },
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true,
+      {
+        find: /^react$/,
+        replacement: resolve(__dirname, '../../node_modules/react'),
       },
-      rollupOptions: {
-        input: {
-          ['index-html']: resolve(__dirname, 'index.html'),
-          ['sdk-demo-app']: resolve(__dirname, 'src/sdk-demo-app.tsx'),
-        },
-        output: [
-          {
-            inlineDynamicImports: false,
-            format: 'es',
-            entryFileNames: (chunkInfo) => {
-              if (chunkInfo.name === 'sdk-demo-app') {
-                return `[name].js`;
-              } else {
-                return `[name].[hash].[format].js`;
-              }
-            },
+      {
+        find: /^react-dom$/,
+        replacement: resolve(__dirname, '../../node_modules/react-dom'),
+      },
+      {
+        find: '@emotion/react',
+        replacement: resolve(__dirname, '../../node_modules/@emotion/react'),
+      },
+      {
+        find: '@emotion/styled',
+        replacement: resolve(__dirname, '../../node_modules/@emotion/styled'),
+      },
+      {
+        find: /^vite$/,
+        replacement: resolve(__dirname, '../../node_modules/vite'),
+      },
+    ],
+  },
+  define: {
+    global: 'globalThis',
+  },
+  server: {
+    fs: {
+      allow: ['../..'],
+    },
+  },
+  build: {
+    sourcemap: false,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      input: {
+        ['index-html']: resolve(__dirname, 'index.html'),
+        ['sdk-demo-app']: resolve(__dirname, 'src/sdk-demo-app.tsx'),
+      },
+      output: [
+        {
+          inlineDynamicImports: false,
+          format: 'es',
+          entryFileNames: (chunkInfo) => {
+            if (chunkInfo.name === 'sdk-demo-app') {
+              return `[name].js`;
+            } else {
+              return `[name].[hash].[format].js`;
+            }
           },
-        ],
-        external: (id) => {
-          const nodeModules = [
-            'fs',
-            'path',
-            'os',
-            'util',
-            'stream',
-            'tty',
-            'crypto',
-            'module',
-            'perf_hooks',
-            'jsdom',
-            'vinyl',
-          ];
-
-          const problematicPackages = [
-            'acorn',
-            'gulp-sourcemaps',
-            'cosmiconfig',
-            'jiti',
-          ];
-
-          const isNodeModule = nodeModules.some(
-            (pkg) => id === pkg || id.startsWith(`${pkg}/`)
-          );
-
-          const isProblematicPackage = problematicPackages.some(
-            (pkg) =>
-              id === pkg ||
-              id.startsWith(`${pkg}/`) ||
-              id.includes(`node_modules/${pkg}`)
-          );
-
-          return isNodeModule || isProblematicPackage;
         },
+      ],
+      external: (id) => {
+        const external = [
+          'electron',
+          'child_process',
+          'worker_threads',
+          'cluster',
+          'dns',
+        ];
+
+        const problematicPackages = [
+          'acorn',
+          'gulp-sourcemaps',
+          'cosmiconfig',
+          'jiti',
+          'vinyl',
+        ];
+
+        const isExternal = external.some(
+          (pkg) => id === pkg || id.startsWith(`${pkg}/`)
+        );
+
+        const isProblematicPackage = problematicPackages.some(
+          (pkg) =>
+            id === pkg ||
+            id.startsWith(`${pkg}/`) ||
+            id.includes(`node_modules/${pkg}`)
+        );
+
+        return isExternal || isProblematicPackage;
       },
     },
-  });
-}
+  },
+});

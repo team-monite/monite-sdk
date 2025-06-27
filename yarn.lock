@@ -8086,6 +8086,7 @@ __metadata:
     "@types/react-helmet": "npm:^6.1.5"
     "@vitejs/plugin-react-swc": "npm:~3.5.0"
     babel-plugin-macros: "npm:^3.1.0"
+    buffer: "npm:~6.0.3"
     cookie-parser: "npm:~1.4.7"
     cross-env: "npm:^7.0.3"
     deepmerge: "npm:~4.3.1"
