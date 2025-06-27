@@ -15,6 +15,7 @@ import {
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
+import { usePayablePaymentIntentsAndRecords } from '@/core/queries/usePaymentRecords';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -214,6 +215,25 @@ const PayablesTableBase = ({
       : undefined,
   });
 
+  // Get IDs of payables in status [waiting_to_be_paid, partially_paid]
+  const payableIdsInWaitingToBePaidOrPartiallyPaid = useMemo(() => {
+    return payables?.data
+      ?.filter(
+        (payable) =>
+          payable.status === 'waiting_to_be_paid' ||
+          payable.status === 'partially_paid'
+      )
+      .map((payable) => payable.id);
+  }, [payables?.data]);
+  // Fetch payment records for payables in status [waiting_to_be_paid, partially_paid]
+  const {
+    payablesPaymentIntentsRecord,
+    isLoading: isPaymentRecordsLoading,
+    refetch: refetchPaymentRecords,
+  } = usePayablePaymentIntentsAndRecords(
+    payableIdsInWaitingToBePaidOrPartiallyPaid || []
+  );
+
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
@@ -324,21 +344,63 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Total" heading title',
         }),
         width: 120,
-        valueGetter: (_, payable) => {
-          const amount =
-            payable.status === 'paid'
-              ? payable.total_amount
-              : payable.amount_to_pay;
-
-          return amount && payable.currency
-            ? formatCurrencyToDisplay(amount, payable.currency)
-            : '';
+        valueGetter: (
+          _,
+          payable: components['schemas']['PayableResponseSchema']
+        ) => {
+          return payable.total_amount && payable.currency
+            ? formatCurrencyToDisplay(payable.total_amount, payable.currency)
+            : null;
         },
         renderCell: (params) => {
           if (!params.value) {
-            return <span style={{ opacity: 0.4 }}>-</span>;
+            return <span className="mtw:opacity-40">-</span>;
           }
           return params.value;
+        },
+      },
+      {
+        field: 'amount_to_pay',
+        sortable: false,
+        hideable: !requiredColumns?.includes('amount_to_pay'),
+        headerAlign: 'right',
+        align: 'right',
+        headerName: t(i18n)({
+          id: 'Due',
+          message: 'Due',
+          comment: 'Payables Table "Due" heading title',
+        }),
+        width: 120,
+        valueGetter: (
+          _,
+          payable: components['schemas']['PayableResponseSchema']
+        ) => {
+          // If the payable is paid, just return null.
+          if (payable.status === 'paid') {
+            return null;
+          }
+
+          // The truthiness check filters out zero values, returning null so the cell renders "0.00" with reduced opacity
+          return payable.amount_to_pay && payable.currency
+            ? payable.amount_to_pay
+            : null;
+        },
+        renderCell: (params) => {
+          const statusShowPaymentValues = [
+            'waiting_to_be_paid',
+            'partially_paid',
+            'paid',
+          ].includes(params.row.status);
+
+          if (statusShowPaymentValues) {
+            return params.value ? (
+              formatCurrencyToDisplay(params.value, params.row.currency)
+            ) : (
+              <span className="mtw:opacity-40">0.00</span>
+            );
+          }
+
+          return <span className="mtw:opacity-40">-</span>;
         },
       },
       {
@@ -353,33 +415,38 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Paid" heading title',
         }),
         width: 120,
-        valueGetter: (_, payable) => {
+        valueGetter: (
+          _,
+          payable: components['schemas']['PayableResponseSchema']
+        ) => {
+          // If the payable is paid, just return the total amount.
+          if (payable.status === 'paid') {
+            return payable.total_amount && payable.currency
+              ? payable.total_amount
+              : null;
+          }
+
+          // The truthiness check filters out zero values, returning null so the cell renders "0.00" with reduced opacity
           return payable.amount_paid && payable.currency
-            ? formatCurrencyToDisplay(payable.amount_paid, payable.currency)
+            ? payable.amount_paid
             : null;
         },
         renderCell: (params) => {
-          const statusCanBePaid = [
+          const statusShowPaymentValues = [
             'waiting_to_be_paid',
             'partially_paid',
+            'paid',
           ].includes(params.row.status);
 
-          if (params.row.status === 'paid') {
-            return formatCurrencyToDisplay(
-              params.row.total_amount,
-              params.row.currency
-            );
-          }
-
-          if (statusCanBePaid) {
+          if (statusShowPaymentValues) {
             return params.value ? (
-              params.value
+              formatCurrencyToDisplay(params.value, params.row.currency)
             ) : (
-              <span style={{ opacity: 0.4 }}>0.00</span>
+              <span className="mtw:opacity-40">0.00</span>
             );
           }
 
-          return <span style={{ opacity: 0.4 }}>-</span>;
+          return <span className="mtw:opacity-40">-</span>;
         },
       },
       // {
@@ -398,15 +465,32 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Payment`,
         sortable: false,
         hideable: !requiredColumns?.includes('pay'),
-        display: 'flex',
-        minWidth: 80,
-        width: 80,
+        width: 200,
+        minWidth: 150,
+        maxWidth: 450,
         renderCell: (params) => {
           const payable = params.row;
+
+          const statusShowPaymentActions = [
+            'waiting_to_be_paid',
+            'partially_paid',
+          ].includes(payable.status);
+
+          if (!statusShowPaymentActions) {
+            return null;
+          }
+
+          if (isPaymentRecordsLoading) {
+            return <CircularProgress size={22} sx={{ mr: 1 }} />;
+          }
 
           return (
             <PayablesTableAction
               payable={payable}
+              payableRecentPaymentRecordByIntent={
+                payablesPaymentIntentsRecord?.[payable.id] || []
+              }
+              refetchPaymentRecords={refetchPaymentRecords}
               onPayableActionComplete={() => {
                 refetch();
               }}
@@ -422,6 +506,9 @@ const PayablesTableBase = ({
     i18n,
     locale.dateFormat,
     formatCurrencyToDisplay,
+    isPaymentRecordsLoading,
+    payablesPaymentIntentsRecord,
+    refetchPaymentRecords,
     onPay,
     onPayUS,
     refetch,

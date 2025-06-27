@@ -86,6 +86,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
         },
         payment_intent_id: invoice.id,
         entity_user_id: user?.id,
+        status: 'created',
       },
       {
         onSuccess: () => {

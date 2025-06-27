@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { usePaymentIntentById } from '@/core/queries';
+import {
+  usePaymentLinkById,
+  useCreatePayablePaymentLink,
+} from '@/core/queries/usePaymentLinks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Modal, Box, CircularProgress } from '@mui/material';
@@ -11,29 +15,45 @@ import { Modal, Box, CircularProgress } from '@mui/material';
 export const usePaymentHandler = (
   payableId?: components['schemas']['PayableResponseSchema']['id'],
   counterpartId?: components['schemas']['PayableResponseSchema']['counterpart_id'],
-  onPaymentComplete?: (payableId: string, status: string) => void
+  onPaymentComplete?: (payableId: string, status: string) => void,
+  existingPaymentIntentId?: string
 ) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
   const { root } = useRootElements();
+  const createPaymentLink = useCreatePayablePaymentLink();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [paymentLinkId, setPaymentLinkId] = useState<string | null>(null);
+  const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
 
-  const createPaymentLinkMutation =
-    api.paymentLinks.postPaymentLinks.useMutation({});
+  // Fetch existing payment intent if existingPaymentIntentId is provided
+  const {
+    data: existingPaymentIntent,
+    isSuccess: isExistingPaymentIntentSuccess,
+  } = usePaymentIntentById(existingPaymentIntentId ?? '');
+
+  // Set payment link ID from existing payment intent
+  useEffect(() => {
+    if (
+      isExistingPaymentIntentSuccess &&
+      existingPaymentIntent?.payment_link_id &&
+      existingPaymentIntentId
+    ) {
+      setPaymentLinkId(existingPaymentIntent.payment_link_id);
+    }
+  }, [
+    isExistingPaymentIntentSuccess,
+    existingPaymentIntent,
+    existingPaymentIntentId,
+  ]);
 
   const {
     data: currentPaymentLink,
     refetch: refetchCurrentPaymentLink,
     isSuccess: isCurrentPaymentLinkSuccess,
-  } = api.paymentLinks.getPaymentLinksId.useQuery(
-    {
-      path: { payment_link_id: paymentLinkId ?? '' },
-    },
-    { enabled: !!paymentLinkId }
-  );
+    isLoading: isCurrentPaymentLinkLoading,
+  } = usePaymentLinkById(paymentLinkId ?? '');
 
   useEffect(() => {
     if (
@@ -67,45 +87,70 @@ export const usePaymentHandler = (
       return;
     }
 
-    setModalOpen(true);
+    // Prevent multiple simultaneous requests
+    if (isCreatingPaymentLink) {
+      return;
+    }
 
     try {
-      if (!payableId) throw new Error('Payable ID is undefined');
-      const paymentLink = await createPaymentLinkMutation.mutateAsync({
-        recipient: {
-          id: counterpartId,
-          type: 'counterpart',
-        },
-        object: {
-          id: payableId,
-          type: 'payable',
-        },
-        payment_methods: ['sepa_credit'],
-        expires_at: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
-      });
-
-      if (paymentLink.payment_page_url) {
-        setPaymentLinkId(paymentLink.id);
-        setIframeUrl(paymentLink.payment_page_url);
-      } else {
-        setPaymentLinkId(null);
-        setIframeUrl(null);
-        throw new Error('No payment page URL in response');
+      // Prevent creating duplicate payment links while loading
+      if (isCurrentPaymentLinkLoading) {
+        toast.error(
+          t(
+            i18n
+          )`Payment link is still loading. Please wait a moment and try again.`
+        );
+        return;
       }
-    } catch (error) {
-      console.error('Payment link creation error:', error);
-      toast.error(t(i18n)`Failed to a create payment link. Please try again.`);
-      setModalOpen(false);
-    }
-  };
 
-  const LoadingMessage = () => {
-    return t(i18n)`Loading payment page...`;
+      if (
+        !paymentLinkId ||
+        (isCurrentPaymentLinkSuccess &&
+          currentPaymentLink?.payment_intent?.status !== 'created')
+      ) {
+        // A) Create new payment link
+        setIsCreatingPaymentLink(true);
+        if (!payableId) throw new Error('Payable ID is undefined');
+        const createdPaymentLink = await createPaymentLink(
+          payableId,
+          counterpartId,
+          ['sepa_credit'],
+          60 // 60 days from now
+        );
+
+        if (createdPaymentLink.payment_page_url) {
+          setPaymentLinkId(createdPaymentLink.id);
+          setIframeUrl(createdPaymentLink.payment_page_url);
+        } else {
+          setPaymentLinkId(null);
+          setIframeUrl(null);
+          throw new Error('No payment page URL in response');
+        }
+      } else {
+        // B) Use existing payment link
+        if (currentPaymentLink?.payment_page_url) {
+          setIframeUrl(currentPaymentLink.payment_page_url);
+        } else {
+          throw new Error('No payment page URL in existing payment link');
+        }
+      }
+      setModalOpen(true);
+    } catch (error) {
+      console.error('Payment link creation/retrieval error:', error);
+      toast.error(
+        existingPaymentIntentId && existingPaymentIntent?.status === 'created'
+          ? t(i18n)`Failed to retrieve payment link. Please try again.`
+          : t(i18n)`Failed to create payment link. Please try again.`
+      );
+      setModalOpen(false);
+    } finally {
+      setIsCreatingPaymentLink(false);
+    }
   };
 
   return {
     handlePay,
-    isPaymentLinkAvailable: true,
+    isCreatingPaymentLink,
     modalComponent: (
       <Modal open={modalOpen} onClose={handleCloseModal} container={root}>
         <Box
@@ -141,9 +186,7 @@ export const usePaymentHandler = (
               }}
             >
               <CircularProgress />
-              <p>
-                <LoadingMessage />
-              </p>
+              <p>{t(i18n)`Loading payment page...`}</p>
             </Box>
           )}
         </Box>
