@@ -117,17 +117,6 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
               },
             ]
           : []),
-        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
-          ? [
-              {
-                operator: 'in',
-                left_operand: {
-                  name: 'invoice.tags.id',
-                },
-                right_operand: values.triggers.tags.map((tag) => tag.id),
-              },
-            ]
-          : []),
         ...(values.triggers.counterpart_id?.length &&
         values.triggers.counterpart_id?.length > 0
           ? [
@@ -141,6 +130,16 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
                 ),
               },
             ]
+          : []),
+        // Named value `tags.id` is a list. So in order to use the 'x in list' format, we need to build a trigger for each tag
+        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
+          ? values.triggers.tags.map((tag) => ({
+              operator: 'in',
+              left_operand: tag.id,
+              right_operand: {
+                name: 'invoice.tags.id',
+              },
+            }))
           : []),
         ...(values.triggers.amount?.value?.length &&
         values.triggers.amount?.value?.length > 0
