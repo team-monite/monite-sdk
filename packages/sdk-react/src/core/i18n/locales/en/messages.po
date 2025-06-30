@@ -382,7 +382,7 @@ msgstr "Add another owner"
 msgid "Add bank account"
 msgstr "Add bank account"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:613
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:763
 msgid "Add Condition"
 msgstr "Add Condition"
 
@@ -423,9 +423,12 @@ msgid "Add new bill"
 msgstr "Add new bill"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:157
-#: src/components/approvalPolicies/ApprovalPolicyDetails/RulesTable/RulesTable.tsx:153
 msgid "Add new condition"
 msgstr "Add new condition"
+
+#: src/components/approvalPolicies/ApprovalPolicyDetails/RulesTable/RulesTable.tsx:153
+msgid "Add new rule"
+msgstr "Add new rule"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:92
 msgid "Add number"
@@ -435,7 +438,7 @@ msgstr "Add number"
 msgid "Add reminder"
 msgstr "Add reminder"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:615
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:765
 msgid "Add Rule"
 msgstr "Add Rule"
 
@@ -615,7 +618,7 @@ msgstr "All types"
 msgid "All units"
 msgstr "All units"
 
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:209
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:228
 msgid "All users from list, one by one"
 msgstr "All users from list, one by one"
 
@@ -663,11 +666,11 @@ msgstr "Amount"
 msgid "Amount due"
 msgstr "Amount due"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:289
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:439
 msgid "Amount must be a number"
 msgstr "Amount must be a number"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:293
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:443
 msgid "Amount must be a positive number"
 msgstr "Amount must be a positive number"
 
@@ -723,11 +726,11 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:205
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:224
 msgid "Any {value} users from the list"
 msgstr "Any {value} users from the list"
 
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:203
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:222
 msgid "Any user from the list"
 msgstr "Any user from the list"
 
@@ -736,7 +739,7 @@ msgstr "Any user from the list"
 msgid "Any user that has user role"
 msgstr "Any user that has user role"
 
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:207
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:226
 msgid "Any user with role"
 msgstr "Any user with role"
 
@@ -758,7 +761,7 @@ msgid "Apply for loans"
 msgstr "Apply for loans"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:69
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:193
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:212
 msgid "Approval chain"
 msgstr "Approval chain"
 
@@ -787,7 +790,7 @@ msgstr "Approval policy"
 msgid "Approval Policy"
 msgstr "Approval Policy"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:221
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:371
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:42
 msgid "Approval policy created"
 msgstr "Approval policy created"
@@ -796,7 +799,7 @@ msgstr "Approval policy created"
 msgid "Approval policy has been deleted"
 msgstr "Approval policy has been deleted"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:245
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:395
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:67
 msgid "Approval policy updated"
 msgstr "Approval policy updated"
@@ -2187,8 +2190,8 @@ msgid "Create an item with this currency to add it"
 msgstr "Create an item with this currency to add it"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:135
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:618
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:625
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:768
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:775
 msgid "Create Approval Policy"
 msgstr "Create Approval Policy"
 
@@ -2726,7 +2729,7 @@ msgid "Description (optional)"
 msgstr "Description (optional)"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:42
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:286
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:436
 msgid "Description is required"
 msgstr "Description is required"
 
@@ -3085,8 +3088,8 @@ msgstr "Edit {0} profile"
 msgid "Edit address"
 msgstr "Edit address"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:617
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:624
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:767
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:774
 msgid "Edit Approval Policy"
 msgstr "Edit Approval Policy"
 
@@ -3103,7 +3106,7 @@ msgstr "Edit bill"
 msgid "Edit company"
 msgstr "Edit company"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:612
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:762
 msgid "Edit Condition"
 msgstr "Edit Condition"
 
@@ -3163,7 +3166,7 @@ msgstr "Edit record"
 msgid "Edit recurring settings"
 msgstr "Edit recurring settings"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:614
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:764
 msgid "Edit Rule"
 msgstr "Edit Rule"
 
@@ -3339,7 +3342,7 @@ msgstr "Equipment Rental"
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:225
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:375
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:46
 msgid "Error creating approval policy"
 msgstr "Error creating approval policy"
@@ -3348,7 +3351,7 @@ msgstr "Error creating approval policy"
 msgid "Error deleting payment term"
 msgstr "Error deleting payment term"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:249
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:399
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:71
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
@@ -5579,13 +5582,13 @@ msgstr "Not set"
 msgid "Number"
 msgstr "Number"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:298
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:303
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:448
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:453
 msgid "Number of approvals must be positive"
 msgstr "Number of approvals must be positive"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:297
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:302
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:447
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:452
 msgid "Number of approvals required must be a number"
 msgstr "Number of approvals required must be a number"
 
@@ -6249,7 +6252,7 @@ msgid "Policy Name"
 msgstr "Policy Name"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:37
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:285
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:435
 msgid "Policy name is required"
 msgstr "Policy name is required"
 
@@ -6807,7 +6810,7 @@ msgid "Roles and Policies tabs"
 msgstr "Roles and Policies tabs"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:77
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:191
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:210
 msgid "Roles from the list"
 msgstr "Roles from the list"
 
@@ -7218,8 +7221,8 @@ msgstr "Singapore Dollar"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:53
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:852
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:187
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:200
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:206
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:219
 msgid "Single user"
 msgstr "Single user"
 
@@ -8416,7 +8419,7 @@ msgstr "Users from list - One by one"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:26
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:79
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:61
-#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:189
+#: src/components/approvalPolicies/useApprovalPolicyScript.tsx:208
 msgid "Users from the list"
 msgstr "Users from the list"
 

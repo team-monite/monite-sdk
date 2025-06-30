@@ -291,7 +291,12 @@ const RolesAndApprovalPoliciesBase = () => {
         alignDialog="right"
         onClose={() => dispatch({ type: 'CLOSE_POLICY_DETAILS' })}
       >
-        <ApprovalPolicyDetails id={state.selectedApprovalPolicyId} />
+        <ApprovalPolicyDetails
+          id={state.selectedApprovalPolicyId}
+          onCreated={(id) => {
+            dispatch({ type: 'OPEN_POLICY_DETAILS', payload: id });
+          }}
+        />
       </Dialog>
 
       <Dialog

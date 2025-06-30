@@ -153,7 +153,7 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => {
-          const script = params.row.script?.[0]?.all?.[0]?.params;
+          const script = params.row.script?.[0]?.if?.all?.[0]?.params;
           const requiredApprovalCount =
             script?.required_approval_count || t(i18n)`N/A`;
           return (
