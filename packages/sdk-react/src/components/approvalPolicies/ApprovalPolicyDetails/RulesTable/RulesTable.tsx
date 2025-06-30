@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { Role } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/Role';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
@@ -150,7 +150,7 @@ export const RulesTable = ({
                   (rules.approval_chain?.length ?? 0) > 0
                 }
               >
-                {t(i18n)`Add new condition`}
+                {t(i18n)`Add new rule`}
               </Button>
             </TableCell>
           </TableRow>

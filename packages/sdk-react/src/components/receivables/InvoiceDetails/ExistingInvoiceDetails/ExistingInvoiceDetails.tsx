@@ -15,10 +15,14 @@ import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoic
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -33,13 +37,9 @@ import {
   Button,
   DialogContent,
   Grid,
-  Menu,
-  MenuItem,
-  MenuProps,
   Stack,
   CircularProgress,
 } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
 
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
@@ -48,48 +48,6 @@ import {
   ExistingInvoiceDetailsView,
   useExistingInvoiceDetails,
 } from './useExistingInvoiceDetails';
-
-export const StyledMenu = styled((props: MenuProps) => {
-  const { root } = useRootElements();
-
-  return (
-    <Menu
-      {...props}
-      elevation={0}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      container={root}
-    />
-  );
-})(({ theme }) => ({
-  '& .MuiPaper-root': {
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    boxShadow: `0px 4px 16px 0px ${alpha(theme.palette.secondary.main, 0.4)}`,
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity
-        ),
-      },
-    },
-  },
-}));
 
 enum InvoiceDetailsPresentation {
   Overview = 'overview',
@@ -110,8 +68,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
   );
-
-  const { buttonProps, menuProps } = useMenuButton();
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(
     DeliveryMethod.Email
@@ -234,28 +190,29 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         </Button>
       )}
       {buttons.isMoreButtonVisible && (
-        <>
-          <Button
-            {...buttonProps}
-            variant="text"
-            color="primary"
-            disableElevation
-            disabled={loading}
-            endIcon={<MoreVertIcon />}
-          >
-            {t(i18n)`More`}
-          </Button>
-          <StyledMenu {...menuProps}>
-            <MenuItem
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="text"
+              color="primary"
+              disableElevation
+              disabled={loading}
+              endIcon={<MoreVertIcon />}
+            >
+              {t(i18n)`More`}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
               onClick={() => {
                 setPresentation(InvoiceDetailsPresentation.Email);
               }}
             >
               <EmailIcon fontSize="small" />
               {t(i18n)`Send invoice`}
-            </MenuItem>
+            </DropdownMenuItem>
             {buttons.isCancelButtonVisible && (
-              <MenuItem
+              <DropdownMenuItem
                 onClick={(event) => {
                   event.preventDefault();
                   setCancelModalOpened(true);
@@ -263,11 +220,11 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 disabled={buttons.isCancelButtonDisabled}
               >
                 <CancelIcon fontSize="small" />
-                {t(i18n)`Cancel Invoice`}
-              </MenuItem>
+                {t(i18n)`Cancel invoice`}
+              </DropdownMenuItem>
             )}
-          </StyledMenu>
-        </>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
       {buttons.isDownloadPDFButtonVisible && (
         <Button

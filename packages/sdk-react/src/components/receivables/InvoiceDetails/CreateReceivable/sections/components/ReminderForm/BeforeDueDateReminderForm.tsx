@@ -4,8 +4,13 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useMenuButton } from '@/core/hooks';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -15,7 +20,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Box,
   Button,
@@ -24,9 +28,6 @@ import {
   DialogActions,
   Divider,
   InputLabel,
-  ListItemText,
-  Menu,
-  MenuItem,
   Stack,
   Typography,
 } from '@mui/material';
@@ -110,7 +111,6 @@ const CreateBeforeDueDateReminderComponent = ({
   }) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
-  const { buttonProps, menuProps, open } = useMenuButton();
 
   const defaultTerm = {
     days_before: 1,
@@ -400,47 +400,42 @@ const CreateBeforeDueDateReminderComponent = ({
               term1ReminderFieldValue &&
               term2ReminderFieldValue
             ) && (
-              <>
-                <Button
-                  {...buttonProps}
-                  sx={{ alignSelf: 'start' }}
-                  variant="contained"
-                  endIcon={
-                    open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-                  }
-                >{t(i18n)`Add reminder`}</Button>
-                <Menu {...menuProps}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    sx={{ alignSelf: 'start' }}
+                    variant="contained"
+                    endIcon={<KeyboardArrowDownIcon />}
+                  >
+                    {t(i18n)`Add reminder`}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
                   {!termFinalReminderFieldValue && (
-                    <MenuItem>
-                      <ListItemText
-                        onClick={() =>
-                          setValue('term_final_reminder', defaultTerm)
-                        }
-                      >
-                        {t(i18n)`Due date`}
-                      </ListItemText>
-                    </MenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        setValue('term_final_reminder', defaultTerm)
+                      }
+                    >
+                      {t(i18n)`Due date`}
+                    </DropdownMenuItem>
                   )}
                   {!term1ReminderFieldValue && (
-                    <MenuItem>
-                      <ListItemText
-                        onClick={() => setValue('term_1_reminder', defaultTerm)}
-                      >
-                        {t(i18n)`Discount date 1`}
-                      </ListItemText>
-                    </MenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setValue('term_1_reminder', defaultTerm)}
+                    >
+                      {t(i18n)`Discount date 1`}
+                    </DropdownMenuItem>
                   )}
                   {!term2ReminderFieldValue && (
-                    <MenuItem>
-                      <ListItemText
-                        onClick={() => setValue('term_2_reminder', defaultTerm)}
-                      >
-                        {t(i18n)`Discount date 2`}
-                      </ListItemText>
-                    </MenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setValue('term_2_reminder', defaultTerm)}
+                    >
+                      {t(i18n)`Discount date 2`}
+                    </DropdownMenuItem>
                   )}
-                </Menu>
-              </>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </Stack>
         </form>

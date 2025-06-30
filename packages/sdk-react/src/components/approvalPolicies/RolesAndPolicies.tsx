@@ -10,8 +10,6 @@ import {
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -163,7 +161,6 @@ const RolesAndApprovalPoliciesBase = () => {
   const [open, setOpen] = useState(false);
 
   const [state, dispatch] = useReducer(rolesPoliciesReducer, initialState);
-  const { root } = useRootElements();
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadPolicyAllowed, isLoading: isReadPolicyAllowedLoading } =
@@ -311,7 +308,12 @@ const RolesAndApprovalPoliciesBase = () => {
         alignDialog="right"
         onClose={() => dispatch({ type: 'CLOSE_POLICY_DETAILS' })}
       >
-        <ApprovalPolicyDetails id={state.selectedApprovalPolicyId} />
+        <ApprovalPolicyDetails
+          id={state.selectedApprovalPolicyId}
+          onCreated={(id) => {
+            dispatch({ type: 'OPEN_POLICY_DETAILS', payload: id });
+          }}
+        />
       </Dialog>
 
       <Dialog
