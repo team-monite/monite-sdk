@@ -1,16 +1,15 @@
-import { useMenuButton } from '@/core/hooks';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 
 export type ActionsPermissions = {
   isUpdateAllowed: boolean;
@@ -28,8 +27,6 @@ export const TableActions = ({
   onDelete,
   permissions,
 }: TableActionsProps) => {
-  const { buttonProps, menuProps } = useMenuButton();
-
   const { i18n } = useLingui();
 
   if (!(permissions.isUpdateAllowed || permissions.isDeleteAllowed)) {
@@ -37,29 +34,26 @@ export const TableActions = ({
   }
 
   return (
-    <>
-      <IconButton aria-label="actions-menu-button" {...buttonProps}>
-        <MoreVertIcon fontSize="small" />
-      </IconButton>
-      <Menu {...menuProps}>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <IconButton aria-label="actions-menu-button">
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
         {permissions.isUpdateAllowed && (
-          <MenuItem onClick={onEdit}>
-            <ListItemIcon>
-              <EditIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>{t(i18n)`Edit`}</ListItemText>
-          </MenuItem>
+          <DropdownMenuItem onClick={onEdit}>
+            <EditIcon fontSize="small" />
+            {t(i18n)`Edit`}
+          </DropdownMenuItem>
         )}
-
         {permissions.isDeleteAllowed && (
-          <MenuItem onClick={onDelete}>
-            <ListItemIcon>
-              <DeleteIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>{t(i18n)`Delete`}</ListItemText>
-          </MenuItem>
+          <DropdownMenuItem onClick={onDelete}>
+            <DeleteIcon fontSize="small" />
+            {t(i18n)`Delete`}
+          </DropdownMenuItem>
         )}
-      </Menu>
-    </>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
