@@ -7,13 +7,15 @@ import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
+  NamedValue,
+  OperatorOperation,
+} from '@/components/approvalPolicies/triggerUtils';
+import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
   useApprovalPolicyTrigger,
-  ApprovalPoliciesTriggerKey,
-  ApprovalPoliciesOperator,
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import {
@@ -61,11 +63,13 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
+type FormTriggerKey = Exclude<NamedValue, 'tags.id'> | 'tags';
+
 export interface FormValues {
   name: string;
   description: string;
 
-  triggerType: ApprovalPoliciesTriggerKey | null;
+  triggerType: FormTriggerKey | null;
   triggers: {
     was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
     tags?: components['schemas']['TagReadSchema'][];
@@ -75,7 +79,7 @@ export interface FormValues {
       value: AmountTuple[];
     };
   };
-  amountOperator?: ApprovalPoliciesOperator;
+  amountOperator?: OperatorOperation;
   amountValue?: string | number;
   amountRangeLeftValue?: string | number;
   amountRangeRightValue?: string | number;
@@ -262,8 +266,9 @@ export const ApprovalPolicyForm = ({
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
-  const [triggerInEdit, setTriggerInEdit] =
-    useState<ApprovalPoliciesTriggerKey | null>(null);
+  const [triggerInEdit, setTriggerInEdit] = useState<FormTriggerKey | null>(
+    null
+  );
 
   const [prevFormValues, setPrevFormValues] =
     useState<Partial<FormValues> | null>(null);
