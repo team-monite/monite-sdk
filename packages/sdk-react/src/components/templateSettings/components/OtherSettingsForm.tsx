@@ -104,9 +104,12 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
 
         {componentSettings?.templateSettings?.availableARDocuments?.includes(
           'quote'
-        ) && <DisplaySignatureSection control={control} />}
-
-        <Divider />
+        ) && (
+          <>
+            <DisplaySignatureSection control={control} />
+            <Divider />
+          </>
+        )}
 
         <UpdatePaidInvoiceSection control={control} />
 
