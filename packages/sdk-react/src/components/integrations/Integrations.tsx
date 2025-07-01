@@ -4,7 +4,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
 
-import { PageHeader } from '../PageHeader';
+import { PageHeader } from '../../ui/PageHeader';
 
 export function Integrations() {
   return (

@@ -1,5 +1,5 @@
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
+import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { Chip, Skeleton } from '@mui/material';
 
 interface UserCellProps {

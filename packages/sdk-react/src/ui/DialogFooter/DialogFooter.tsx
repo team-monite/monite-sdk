@@ -1,4 +1,4 @@
-import { useDialog } from '@/components/Dialog/Dialog';
+import { useDialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

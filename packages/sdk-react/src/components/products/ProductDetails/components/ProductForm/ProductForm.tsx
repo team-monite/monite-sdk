@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
-import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCurrency } from '@/ui/Currency';
+import { RHFRadioGroup } from '@/ui/RHF/RHFRadioGroup';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

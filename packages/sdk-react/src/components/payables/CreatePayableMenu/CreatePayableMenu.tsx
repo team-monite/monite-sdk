@@ -2,17 +2,22 @@ import { DragEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useFileInput } from '@/core/hooks';
+import { Button } from '@/ui/components/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/ui/components/dropdown-menu';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/ui/components/popover';
+import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import AddIcon from '@mui/icons-material/Add';
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { alpha, Box, Button, Stack, Typography } from '@mui/material';
+
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CloudUpload,
+  Plus,
+} from 'lucide-react';
 
 interface CreatePayableMenuProps {
   isCreateAllowed: boolean;
@@ -26,9 +31,9 @@ export const CreatePayableMenu = ({
   handleFileUpload,
 }: CreatePayableMenuProps) => {
   const { i18n } = useLingui();
+  const [open, setOpen] = useState(false);
   const { FileInput, openFileInput, checkFileError } = useFileInput();
   const [dragIsOver, setDragIsOver] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -56,109 +61,95 @@ export const CreatePayableMenu = ({
       handleFileUpload(file);
     });
 
-    setIsOpen(false);
+    setOpen(false);
   };
 
   return (
     <>
-      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="contained"
-            disabled={!isCreateAllowed}
-            endIcon={<KeyboardArrowDownIcon />}
-          >
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="default" size="lg" disabled={!isCreateAllowed}>
             {t(i18n)`Add new bill`}
+            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="mtw:w-[550px]" align="end">
-          <Stack
-            spacing={3}
-            flexDirection="column"
-            sx={{ p: 1.5, width: 550 }}
+        </PopoverTrigger>
+        <PopoverContent
+          align="end"
+          className="mtw:w-auto mtw:min-w-[550px] mtw:border-none"
+        >
+          <div
+            className="mtw:p-4 mtw:w-[550px]"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
             }}
           >
-            <Box>
-              <Typography variant="subtitle1" mb={1}>
+            <div>
+              <p className="mtw:text-xl mtw:font-bold mtw:mb-2">
                 {t(i18n)`Upload files`}
-              </Typography>
-              <Box
-                sx={{
-                  boxSizing: 'border-box',
-                  cursor: 'pointer',
-                  width: '100%',
-                  height: 170,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  border: 2,
-                  borderRadius: 2,
-                  borderStyle: 'dashed',
-                  borderColor: 'primary.main',
-                  ...(dragIsOver
-                    ? { backgroundColor: 'transparent' }
-                    : {
-                        backgroundColor: (theme) =>
-                          alpha(theme.palette.primary.main, 0.05),
-                      }),
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
-                }}
+              </p>
+              <div
+                className={cn(
+                  'mtw:box-border mtw:cursor-pointer mtw:w-full mtw:h-[170px] mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:border-2 mtw:rounded-xl mtw:border-dashed mtw:border-primary-50 mtw:bg-primary-50/5 mtw:hover:bg-transparent',
+                  dragIsOver && 'mtw:bg-transparent'
+                )}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onClick={() => openFileInput()}
+                onClick={openFileInput}
               >
-                <Box
-                  sx={{
-                    margin: 'auto',
-                  }}
-                >
-                  <CloudUploadOutlinedIcon color="primary" fontSize="large" />
-                  <Typography color="primary" variant="subtitle2">
+                <div className="mtw:mx-auto">
+                  <CloudUpload className="mtw:text-primary-50 mtw:w-10 mtw:h-10 mtw:mx-auto" />
+                  <p className="mtw:text-lg mtw:font-bold mtw:text-primary-50">
                     {t(i18n)`Drag and drop files or click to upload`}
-                  </Typography>
-                  <Typography color="text.secondary" variant="body2">
+                  </p>
+                  <p className="mtw:text-sm mtw:text-neutral-50">
                     {t(i18n)`(.pdf, .png, .jpg supported)`}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-            <Box>
-              <Typography variant="subtitle1" mb={1}>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="mtw:mt-4">
+              <p className="mtw:text-xl mtw:font-bold mtw:mb-2">
                 {t(i18n)`Or add bill manually`}
-              </Typography>
-              <Box flex={0}>
+              </p>
+              <div>
                 <Button
-                  startIcon={<AddIcon />}
-                  variant="outlined"
+                  variant="secondary"
                   onClick={() => {
-                    setIsOpen(false);
+                    setOpen(false);
                     onCreateInvoice();
                   }}
                 >
+                  <Plus />
                   {t(i18n)`Add new bill`}
                 </Button>
-              </Box>
-            </Box>
-          </Stack>
-        </DropdownMenuContent>
-      </DropdownMenu>
+              </div>
+            </div>
+          </div>
+          <FileInput
+            aria-label={t(i18n)`Upload payable files`}
+            multiple
+            onChange={(event) => {
+              const files = event.target.files;
+              if (files) handleFileUpload(files);
+              setOpen(false);
+            }}
+          />
+        </PopoverContent>
+      </Popover>
 
-      <FileInput
-        aria-label={t(i18n)`Upload payable files`}
-        multiple
-        onChange={(event) => {
-          const files = event.target.files;
-          if (files) handleFileUpload(files);
-          setIsOpen(false);
-        }}
-      />
+      {/* <Button
+        {...buttonProps}
+        variant="contained"
+        disabled={!isCreateAllowed}
+        endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      >
+        {t(i18n)`Add new bill`}
+      </Button>
+      <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: 550 } }}>
+        
+      </Menu>*/}
     </>
   );
 };

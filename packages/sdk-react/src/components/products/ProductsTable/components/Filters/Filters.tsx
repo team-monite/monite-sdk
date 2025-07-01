@@ -1,6 +1,6 @@
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
