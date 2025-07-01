@@ -24,6 +24,15 @@ export type OtherSettingsFormValues = {
   quote_electronic_signature: boolean | string;
 };
 
+export type TemplateName =
+  | 'classic'
+  | 'standard'
+  | 'simple'
+  | 'modern'
+  | 'stylish'
+  | 'default_monite'
+  | 'unknown';
+
 export type ARDocumentType =
   | 'invoice'
   | 'quote'

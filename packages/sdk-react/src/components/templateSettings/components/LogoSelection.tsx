@@ -12,10 +12,10 @@ import { useUploadEntityLogo, useDeleteEntityLogo } from '../hooks';
 import { DragAndDropBox } from './DragAndDropBox';
 
 type Props = {
-  isDialog: boolean;
+  shouldApplyDialogStyles?: boolean;
 };
 
-export const LogoSelection = ({ isDialog }: Props) => {
+export const LogoSelection = ({ shouldApplyDialogStyles }: Props) => {
   const { i18n } = useLingui();
   const { data: entity } = useMyEntity();
   const entityId = entity?.id ?? '';
@@ -60,7 +60,7 @@ export const LogoSelection = ({ isDialog }: Props) => {
       className={`${isDragging && 'mtw:bg-primary-95'} ${
         isDragging ? 'mtw:box-border!' : 'mtw:box-content!'
       } ${
-        isDialog
+        shouldApplyDialogStyles
           ? 'mtw:sm:flex-row mtw:h-30 mtw:md:flex-col mtw:md:h-auto mtw:lg:flex-row mtw:lg:h-30 mtw:lg:justify-between'
           : 'mtw:h-auto mtw:md:flex-row mtw:md:h-30 mtw:lg:flex-col mtw:lg:h-auto mtw:xl:flex-row mtw:xl:h-30 mtw:xl:justify-between'
       } mtw:flex mtw:flex-col mtw:gap-6 mtw:mb-8`}
@@ -144,7 +144,7 @@ export const LogoSelection = ({ isDialog }: Props) => {
       {entity?.logo && Boolean(!uploadingFileName) ? (
         <div
           className={`mtw:flex mtw:w-60 mtw:h-30 mtw:box-border mtw:justify-end ${
-            isDialog
+            shouldApplyDialogStyles
               ? 'mtw:md:justify-start mtw:lg:justify-end'
               : 'mtw:lg:justify-start mtw:xl:justify-end'
           }`}

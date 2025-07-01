@@ -96,7 +96,6 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
         onSubmit={handleSubmit(handleUpdateSettings)}
       >
         <DisplayBankSection
-          control={control}
           shouldShowBankOptionsByDefault={shouldShowBankOptionsByDefault}
         />
 

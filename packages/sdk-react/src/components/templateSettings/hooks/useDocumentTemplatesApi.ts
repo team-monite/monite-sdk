@@ -51,9 +51,7 @@ export const useDocumentTemplatesApi = () => {
       },
       {
         onSuccess: () => {
-          toast.success(
-            t(i18n)`${name} document template has been set as the default.`
-          );
+          toast.success(t(i18n)`${name} template has been set as the default.`);
         },
         onError: (error) => {
           toast.error(getAPIErrorMessage(i18n, error));

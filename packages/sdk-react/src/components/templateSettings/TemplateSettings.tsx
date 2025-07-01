@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-import { Dialog } from '@/components/Dialog';
 import {
   DiscardChangesContextProvider,
   useDiscardChangesContext,
 } from '@/core/context/DiscardChangesContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { Dialog } from '@/ui/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Close } from '@mui/icons-material';
 import { Box, Tab, Tabs, DialogContent } from '@mui/material';
 
-import { PageHeader } from '../PageHeader';
 import { DocumentNumber, LayoutAndLogo, OtherSettings } from './components';
 import { DiscardChangesModal } from './components/DiscardChangesModal';
 
@@ -110,7 +110,7 @@ const TemplateSettingsBase = ({
             minHeight: '0',
           }}
         >
-          <LayoutAndLogo isDialog={!!isDialog} />
+          <LayoutAndLogo shouldApplyDialogStyles={isDialog} />
         </Box>
       )}
 

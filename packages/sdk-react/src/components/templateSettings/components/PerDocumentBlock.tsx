@@ -7,7 +7,6 @@ import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import { Alert } from '@mui/material';
 
 import { DocumentNumberFormValues } from '../types';
-import { getDocumentLabel } from '../utils';
 import { DocumentRow } from './DocumentRow';
 
 type Props = {
@@ -36,29 +35,18 @@ export const PerDocumentBlock = ({ control }: Props) => {
   const { formState } = useFormContext<DocumentNumberFormValues>();
   const errorKeys = Object.keys(formState.errors);
 
-  function getDocumentTypesList() {
-    const currentAvailableTypes = [
-      ...new Set([
-        ...(componentSettings?.templateSettings?.availableARDocuments ?? []),
-        ...(componentSettings?.templateSettings?.availableAPDocuments ?? []),
-      ]),
-    ];
-
-    return currentAvailableTypes.map((type) => {
-      return {
-        name: type,
-        label: getDocumentLabel(i18n, type),
-      };
-    });
-  }
-
-  const availableTypes = getDocumentTypesList();
+  const availableTypes = [
+    ...new Set([
+      ...(componentSettings?.templateSettings?.availableARDocuments ?? []),
+      ...(componentSettings?.templateSettings?.availableAPDocuments ?? []),
+    ]),
+  ];
 
   return (
     <div className="mtw:flex mtw:flex-col mtw:gap-4">
       <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
         i18n
-      )`Per document`}</h2>
+      )`Document prefix and number`}</h2>
 
       {!!errorKeys.length &&
         errorKeys.some((key) => PREFIX_FIELDS.includes(key)) && (
@@ -94,34 +82,15 @@ export const PerDocumentBlock = ({ control }: Props) => {
           </Alert>
         )}
 
-      <table>
-        <thead>
-          <tr className="mtw:border-b mtw:border-neutral-80 mtw:text-sm mtw:font-medium mtw:leading-5 mtw:text-neutral-50">
-            <th className="mtw:pb-2 mtw:pr-1 mtw:text-left">
-              <span>{t(i18n)`Type`}</span>
-            </th>
-            <th className="mtw:pb-2 mtw:px-1 mtw:text-left">
-              <span>{t(i18n)`Prefix`}</span>
-            </th>
-            <th className="mtw:pb-2 mtw:px-1 mtw:text-left">
-              <span>{t(i18n)`Next order #`}</span>
-            </th>
-            <th className="mtw:pb-2 mtw:pl-1 mtw:text-left">
-              <span>{t(i18n)`Preview`}</span>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {availableTypes.map((availableType) => (
-            <DocumentRow
-              key={availableType.name}
-              control={control}
-              availableType={availableType}
-            />
-          ))}
-        </tbody>
-      </table>
+      <ul className="mtw:flex mtw:flex-col mtw:gap-2 mtw:list-none">
+        {availableTypes.map((availableType) => (
+          <DocumentRow
+            key={availableType}
+            control={control}
+            fieldName={availableType}
+          />
+        ))}
+      </ul>
     </div>
   );
 };

@@ -7,16 +7,18 @@ import { useLingui } from '@lingui/react';
 import { Divider, CircularProgress } from '@mui/material';
 
 import { useDocumentTemplatesApi } from '../hooks';
+import { TemplateName } from '../types';
+import { formatTemplateName } from '../utils';
 import { LogoSelection } from './LogoSelection';
 import { TemplatesSelection } from './TemplatesSelection';
 
 type DocumentTemplate = components['schemas']['TemplateReceivableResponse'];
 
 type Props = {
-  isDialog: boolean;
+  shouldApplyDialogStyles?: boolean;
 };
 
-export const LayoutAndLogo = ({ isDialog }: Props) => {
+export const LayoutAndLogo = ({ shouldApplyDialogStyles }: Props) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
   const {
@@ -38,7 +40,7 @@ export const LayoutAndLogo = ({ isDialog }: Props) => {
   return (
     <div
       className={`mtw:flex mtw:flex-col mtw:gap-10 mtw:xl:gap-20 ${
-        isDialog ? 'mtw:md:flex-row' : 'mtw:lg:flex-row'
+        shouldApplyDialogStyles ? 'mtw:md:flex-row' : 'mtw:lg:flex-row'
       }`}
     >
       {componentSettings?.templateSettings?.showTemplateSection &&
@@ -64,11 +66,13 @@ export const LayoutAndLogo = ({ isDialog }: Props) => {
                 defaultInvoiceTemplate?.id === selectedTemplate?.id
               }
               handleSetDefault={() => {
+                const formattedName = formatTemplateName(
+                  i18n,
+                  (selectedTemplate?.name ?? 'unknown') as TemplateName
+                );
+
                 selectedTemplate &&
-                  setDefaultTemplate(
-                    selectedTemplate.id,
-                    selectedTemplate.name
-                  );
+                  setDefaultTemplate(selectedTemplate.id, formattedName);
               }}
             />
 
@@ -77,7 +81,7 @@ export const LayoutAndLogo = ({ isDialog }: Props) => {
         )}
 
         {componentSettings?.templateSettings?.showLogoSection && (
-          <LogoSelection isDialog={isDialog} />
+          <LogoSelection shouldApplyDialogStyles={shouldApplyDialogStyles} />
         )}
       </div>
     </div>
