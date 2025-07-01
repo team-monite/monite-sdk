@@ -1,9 +1,8 @@
 import { Controller, FieldError } from 'react-hook-form';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
-import { TextFieldPhone } from '@/components/TextFieldPhone';
-import { Alert } from '@mui/material';
-import type { TextFieldProps } from '@mui/material';
+import { TextFieldPhone } from '@/ui/TextFieldPhone';
+import { Alert, TextFieldProps } from '@mui/material';
 
 export const RHFTextFieldPhone = <T extends FieldValues>({
   control,

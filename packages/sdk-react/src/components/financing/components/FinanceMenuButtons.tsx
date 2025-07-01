@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { Dialog } from '@/components/Dialog';
 import { FinanceHowItWorks } from '@/components/financing/components';
 import { useKanmonContext } from '@/core/context/KanmonContext';
+import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Stack, Button } from '@mui/material';

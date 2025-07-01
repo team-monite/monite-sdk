@@ -1,4 +1,3 @@
-import { useDialog } from '@/components/Dialog';
 import {
   InvoiceCounterpartName,
   InvoiceStatusChip,
@@ -10,6 +9,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useInvoiceDetails } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { useDialog } from '@/ui/Dialog';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';

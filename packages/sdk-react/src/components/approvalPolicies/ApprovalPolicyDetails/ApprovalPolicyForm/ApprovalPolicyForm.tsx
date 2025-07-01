@@ -21,12 +21,12 @@ import {
   CounterpartsAutocompleteOptionProps,
 } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';

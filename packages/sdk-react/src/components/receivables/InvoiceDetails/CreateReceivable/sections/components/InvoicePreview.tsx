@@ -5,7 +5,6 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useGetEntityBankAccountById } from '@/components/receivables/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -13,6 +12,7 @@ import {
   getRateValueForDisplay,
   rateMinorToMajor,
 } from '@/core/utils/vatUtils';
+import { MeasureUnit } from '@/ui/MeasureUnit/MeasureUnit';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
