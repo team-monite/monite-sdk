@@ -5,6 +5,7 @@ import {
   InvoiceStatusChip,
 } from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { useDuplicateInvoice } from '@/components/receivables/hooks';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
@@ -41,6 +42,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { Copy } from 'lucide-react';
+
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
 import {
@@ -75,6 +78,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { data: receivable, isLoading: isInvoiceLoading } = useReceivableById(
     props.id
   );
+  const { mutate: duplicateInvoice } = useDuplicateInvoice(props?.onDuplicate);
 
   const { data: recurrence } = useRecurrenceByInvoiceId(props.id);
 
@@ -96,6 +100,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   });
 
   const [isViewChanging, startViewChange] = useTransition();
+
+  const handleDuplicateInvoice = () => {
+    duplicateInvoice({
+      path: {
+        receivable_id: props.id,
+      },
+    });
+  };
 
   if (isInvoiceLoading || isViewChanging) {
     return <LoadingPage />;
@@ -189,20 +201,25 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           {t(i18n)`Edit invoice`}
         </Button>
       )}
-      {buttons.isMoreButtonVisible && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="text"
-              color="primary"
-              disableElevation
-              disabled={loading}
-              endIcon={<MoreVertIcon />}
-            >
-              {t(i18n)`More`}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="text"
+            color="primary"
+            disableElevation
+            disabled={loading}
+            endIcon={<MoreVertIcon />}
+          >
+            {t(i18n)`More`}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleDuplicateInvoice}>
+            <Copy className="w-4 h-4" />
+            {t(i18n)`Duplicate`}
+          </DropdownMenuItem>
+          {buttons.isSendEmailButtonVisible && (
             <DropdownMenuItem
               onClick={() => {
                 setPresentation(InvoiceDetailsPresentation.Email);
@@ -211,21 +228,21 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               <EmailIcon fontSize="small" />
               {t(i18n)`Send invoice`}
             </DropdownMenuItem>
-            {buttons.isCancelButtonVisible && (
-              <DropdownMenuItem
-                onClick={(event) => {
-                  event.preventDefault();
-                  setCancelModalOpened(true);
-                }}
-                disabled={buttons.isCancelButtonDisabled}
-              >
-                <CancelIcon fontSize="small" />
-                {t(i18n)`Cancel invoice`}
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+          )}
+          {buttons.isCancelButtonVisible && (
+            <DropdownMenuItem
+              onClick={(event) => {
+                event.preventDefault();
+                setCancelModalOpened(true);
+              }}
+              disabled={buttons.isCancelButtonDisabled}
+            >
+              <CancelIcon fontSize="small" />
+              {t(i18n)`Cancel invoice`}
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
       {buttons.isDownloadPDFButtonVisible && (
         <Button
           variant="outlined"

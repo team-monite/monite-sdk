@@ -1473,7 +1473,7 @@ msgstr "Canadian Dollar"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:223
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:225
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Cancel"
 msgstr "Cancel"
@@ -1490,7 +1490,7 @@ msgstr "Cancel bill"
 msgid "Cancel bill?"
 msgstr "Cancel bill?"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:223
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:241
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:264
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
@@ -1512,7 +1512,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:99
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:290
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:307
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1735,7 +1735,7 @@ msgstr "Close dialog"
 msgid "Close invoice creation"
 msgstr "Close invoice creation"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:328
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:345
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:182
 #: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
 msgid "Close invoice details"
@@ -1859,7 +1859,7 @@ msgstr "Completed"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:152
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:274
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:267
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:284
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -2012,7 +2012,7 @@ msgstr "Copied!"
 msgid "Copy"
 msgstr "Copy"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:219
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:221
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
@@ -2549,7 +2549,7 @@ msgstr "Default currency switch"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:84
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:38
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:57
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:176
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:188
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:281
 #: src/components/TableActions/TableActions.tsx:53
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2570,7 +2570,7 @@ msgstr "Default currency switch"
 msgid "Delete"
 msgstr "Delete"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:231
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:233
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Delete"
 msgstr "Delete"
@@ -2899,7 +2899,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:241
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:258
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -3003,6 +3003,15 @@ msgstr "Due to regulations, we’re required to collect information about a comp
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 msgstr "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:265
+msgctxt "InvoicesTableRowActionMenu"
+msgid "Duplicate"
+msgstr "Duplicate"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:220
+msgid "Duplicate"
+msgstr "Duplicate"
+
 #: src/components/onboarding/dicts/mccCodes.ts:545
 msgid "Durable Goods (Not Elsewhere Classified)"
 msgstr "Durable Goods (Not Elsewhere Classified)"
@@ -3068,7 +3077,7 @@ msgstr "Ecuador"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:227
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:229
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
@@ -3137,7 +3146,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:189
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:201
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -3486,6 +3495,10 @@ msgstr "Failed to delete Unit."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
+#: src/components/receivables/hooks/useDuplicateInvoice.ts:19
+msgid "Failed to duplicate invoice."
+msgstr "Failed to duplicate invoice."
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:417
 msgid "Failed to generate email preview"
 msgstr "Failed to generate email preview"
@@ -3595,7 +3608,7 @@ msgstr "File is being processed..."
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:259
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:261
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Finance invoice"
 msgstr "Finance invoice"
@@ -4330,7 +4343,7 @@ msgstr "Invoice {0}"
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:156
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:168
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -4351,6 +4364,10 @@ msgstr "Invoice date"
 #~ msgid "Invoice delete confirmation"
 #~ msgstr "Invoice delete confirmation"
 
+#: src/components/receivables/hooks/useDuplicateInvoice.ts:15
+msgid "Invoice duplicate has been created."
+msgstr "Invoice duplicate has been created."
+
 #: src/components/financing/components/FinanceIntegrationCard.tsx:58
 msgid "Invoice financing"
 msgstr "Invoice financing"
@@ -4363,7 +4380,7 @@ msgstr "Invoice from {entityName}"
 msgid "Invoice has been marked as paid"
 msgstr "Invoice has been marked as paid"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:107
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:119
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:146
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -4438,12 +4455,12 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:239
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:241
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:277
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:294
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:286
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:291
 msgid "Issue"
@@ -4968,7 +4985,7 @@ msgstr "Mark as uncollectible"
 msgid "Mark as uncollectible invoice"
 msgstr "Mark as uncollectible invoice"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:235
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:237
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
@@ -5154,7 +5171,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:202
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:214
 msgid "More"
 msgstr "More"
 
@@ -5674,7 +5691,7 @@ msgstr "Osteopaths"
 msgid "Overdue"
 msgstr "Overdue"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:255
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:257
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Overdue payment"
 msgstr "Overdue payment"
@@ -5778,7 +5795,7 @@ msgstr "Parking Lots, Garages"
 msgid "Partially Paid"
 msgstr "Partially Paid"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:247
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:249
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Partially pay"
 msgstr "Partially pay"
@@ -5800,7 +5817,7 @@ msgstr "Pawn Shops"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:251
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:253
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
@@ -6518,11 +6535,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:117
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:129
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:116
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:128
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -6544,7 +6561,7 @@ msgid "Reconciliation"
 msgstr "Reconciliation"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:252
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:269
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -6589,12 +6606,12 @@ msgstr "Recurrence was completed, all invoices were issued"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:243
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:245
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:155
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:167
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
@@ -7056,7 +7073,7 @@ msgstr "Select invoices you would like to finance and send them for review."
 msgid "Select someone"
 msgstr "Select someone"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:215
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:217
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
@@ -7069,7 +7086,7 @@ msgstr "Send"
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:212
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:229
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -7801,7 +7818,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:108
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:120
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -8696,7 +8713,7 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:211
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:213
 msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
@@ -8960,7 +8977,7 @@ msgstr "You don’t have any tags yet."
 #~ msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 #~ msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:348
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:365
 msgid "You don’t have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don’t have permission to issue this document. Please, contact your system administrator for details."
 
