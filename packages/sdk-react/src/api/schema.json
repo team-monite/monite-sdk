@@ -29089,6 +29089,206 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/payables/{payable_id}/suggestions": {
+      "get": {
+        "tags": ["Payables"],
+        "summary": "Get suggestions",
+        "description": "Get AI suggestions",
+        "operationId": "get_payables_id_suggestions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payable_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuggestedResponse" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "delete": {
+        "tags": ["Payables"],
+        "summary": "Delete suggestions",
+        "description": "Remove AI suggestions",
+        "operationId": "delete_payables_id_suggestions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "payable_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/payables/{payable_id}/validate": {
       "post": {
         "tags": ["Payables"],
@@ -61906,6 +62106,17 @@
         "properties": { "success": { "type": "boolean", "default": true } },
         "type": "object"
       },
+      "SuggestedCounterpartPayload": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "address_id": { "type": "string", "format": "uuid" },
+          "bank_account_id": { "type": "string", "format": "uuid" },
+          "vat_id_id": { "type": "string", "format": "uuid" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
+      },
       "SuggestedPaymentTerm": {
         "properties": {
           "date": { "type": "string", "format": "date" },
@@ -61915,6 +62126,16 @@
         "type": "object",
         "required": ["date"],
         "description": "Suggested payment date and corresponding discount"
+      },
+      "SuggestedResponse": {
+        "properties": {
+          "suggested_counterpart": {
+            "$ref": "#/components/schemas/SuggestedCounterpartPayload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["suggested_counterpart"]
       },
       "SupportedFieldNames": {
         "type": "string",
