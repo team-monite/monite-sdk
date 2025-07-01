@@ -182,14 +182,7 @@ const TagsTableBase = ({
           params.value ? <UserCell id={params.value} /> : null,
       },
     ];
-  }, [
-    locale.dateFormat,
-    i18n,
-    isDeleteAllowed,
-    isUpdateAllowed,
-    openDeleteModal,
-    openEditModal,
-  ]);
+  }, [locale.dateFormat, i18n]);
 
   if (!isLoading && tags?.data.length === 0) {
     return (

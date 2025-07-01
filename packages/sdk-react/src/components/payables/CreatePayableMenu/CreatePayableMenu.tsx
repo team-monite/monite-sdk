@@ -31,11 +31,9 @@ export const CreatePayableMenu = ({
   handleFileUpload,
 }: CreatePayableMenuProps) => {
   const { i18n } = useLingui();
-  // const { buttonProps, menuProps, open, closeMenu } = useMenuButton();
   const [open, setOpen] = useState(false);
   const { FileInput, openFileInput, checkFileError } = useFileInput();
   const [dragIsOver, setDragIsOver] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();

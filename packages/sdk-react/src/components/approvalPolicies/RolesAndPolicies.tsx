@@ -16,16 +16,8 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { Button } from '@/ui/components/button';
 import {
   DropdownMenu,
-  DropdownMenuSubContent,
-  DropdownMenuGroup,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuItem,
   DropdownMenuContent,
-  DropdownMenuSub,
-  DropdownMenuPortal,
-  DropdownMenuSubTrigger,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/ui/components/dropdown-menu';
 import { Dialog } from '@/ui/Dialog';
@@ -33,16 +25,7 @@ import { PageHeader } from '@/ui/PageHeader';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {
-  Box,
-  CircularProgress,
-  Menu,
-  MenuItem,
-  Tab,
-  Tabs,
-} from '@mui/material';
+import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
