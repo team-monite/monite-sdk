@@ -35,7 +35,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        'mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:fixed mtw:inset-0 mtw:z-50 mtw:bg-black/50',
+        'mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:fixed mtw:inset-0 mtw:z-1300 mtw:bg-black/50',
         className
       )}
       {...props}
@@ -57,11 +57,11 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:fixed mtw:z-50 mtw:flex mtw:flex-col mtw:gap-4 mtw:shadow-lg mtw:transition mtw:ease-in-out mtw:data-[state=closed]:duration-300 mtw:data-[state=open]:duration-500',
+          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:fixed mtw:z-1300 mtw:flex mtw:flex-col mtw:gap-4 mtw:shadow-lg mtw:transition mtw:ease-in-out mtw:data-[state=closed]:duration-300 mtw:data-[state=open]:duration-500',
           side === 'right' &&
-            'mtw:data-[state=closed]:slide-out-to-right mtw:data-[state=open]:slide-in-from-right mtw:inset-y-0 mtw:right-0 mtw:h-full mtw:w-3/4 mtw:border-l mtw:sm:max-w-sm',
+            'mtw:data-[state=closed]:slide-out-to-right mtw:data-[state=open]:slide-in-from-right mtw:inset-y-0 mtw:right-0 mtw:h-full mtw:w-3/4 mtw:sm:max-w-[600px]',
           side === 'left' &&
-            'mtw:data-[state=closed]:slide-out-to-left mtw:data-[state=open]:slide-in-from-left mtw:inset-y-0 mtw:left-0 mtw:h-full mtw:w-3/4 mtw:border-r mtw:sm:max-w-sm',
+            'mtw:data-[state=closed]:slide-out-to-left mtw:data-[state=open]:slide-in-from-left mtw:inset-y-0 mtw:left-0 mtw:h-full mtw:w-3/4 mtw:sm:max-w-[600px]',
           side === 'top' &&
             'mtw:data-[state=closed]:slide-out-to-top mtw:data-[state=open]:slide-in-from-top mtw:inset-x-0 mtw:top-0 mtw:h-auto mtw:border-b',
           side === 'bottom' &&

@@ -5,24 +5,58 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { Dialog } from '@/ui/Dialog';
-import { DialogFooter } from '@/ui/DialogFooter';
-import { DialogHeader } from '@/ui/DialogHeader';
+import { Button } from '@/ui/components/button';
+import {
+  Command,
+  CommandItem,
+  CommandGroup,
+  CommandList,
+  CommandEmpty,
+  CommandInput,
+} from '@/ui/components/command';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/ui/components/form';
+import { Input } from '@/ui/components/input';
+import { InputTags } from '@/ui/components/input-tags';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/ui/components/popover';
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+} from '@/ui/components/select';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from '@/ui/components/sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  DialogContent,
   TextField,
-  Select,
   InputLabel,
   MenuItem,
-  FormControl,
   Stack,
   Autocomplete,
 } from '@mui/material';
 
+import { Check, ChevronsUpDown } from 'lucide-react';
 import * as yup from 'yup';
 
 import { getTagCategoryLabel, tagCategories } from '../helpers';
@@ -50,7 +84,7 @@ interface ITag {
   id: string;
   name: string;
   category?: components['schemas']['ReceivableTagCategory'];
-  keywords?: string[];
+  keywords?: string[] | string;
 }
 
 interface TagFormModalProps {
@@ -94,21 +128,36 @@ const TagFormModalBase = ({
   isDeleteAllowed,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
+  const form = useForm<FormFields>({
+    resolver: yupResolver(getValidationSchema(i18n)),
+  });
+
   const {
     control,
     handleSubmit,
     reset,
     setError,
     formState: { errors },
-  } = useForm<FormFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
-  });
+  } = form;
 
   useEffect(() => {
+    let keywords: string[] = [];
+
+    if (tag?.keywords) {
+      if (Array.isArray(tag.keywords)) {
+        keywords = tag.keywords;
+      } else if (typeof tag.keywords === 'string') {
+        keywords = (tag.keywords as string)
+          .split(',')
+          .map((keyword: string) => keyword.trim())
+          .filter(Boolean);
+      }
+    }
+
     reset({
       name: tag?.name || '',
       category: tag?.category || '',
-      keywords: Array.isArray(tag?.keywords) ? tag.keywords : [],
+      keywords,
     });
   }, [reset, tag]);
 
@@ -143,136 +192,116 @@ const TagFormModalBase = ({
 
   return (
     <>
-      <Dialog
-        open={open}
-        container={root}
-        onClose={onClose}
-        alignDialog="right"
-        aria-label={t(i18n)`Edit tag`}
-      >
-        <DialogHeader
-          title={
-            tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`
-          }
-          closeButtonTooltip={t(i18n)`Close tag form`}
-        />
-        <DialogContent>
-          <form
-            id={formName}
-            name={formName}
-            onSubmit={handleSubmit(async (values) => {
-              const { keywords, name, category } = values;
-              const payload = { name, category: category || undefined };
+      <Sheet open={open} onOpenChange={onClose}>
+        <SheetContent className="mtw:w-[600px]">
+          <SheetHeader>
+            <SheetTitle>
+              {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
+            </SheetTitle>
+            <SheetDescription>
+              {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
+            </SheetDescription>
+          </SheetHeader>
 
-              const result = await (tag
-                ? updateTag(tag.id, payload)
-                : createTag(payload));
+          <Form {...form}>
+            <form
+              id={formName}
+              name={formName}
+              onSubmit={handleSubmit(async (values) => {
+                const { keywords, name, category } = values;
+                const payload = { name, category: category || undefined };
 
-              updateOcrAutoTagging(result.id, keywords);
-            })}
-          >
-            <Stack spacing={3}>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <TextField
-                    id={field.name}
-                    autoFocus
-                    label={t(i18n)`Name`}
-                    variant="standard"
-                    fullWidth
-                    error={Boolean(fieldState.error)}
-                    helperText={fieldState.error?.message}
-                    {...field}
-                  />
-                )}
-              />
-              <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                  <FormControl variant="standard" fullWidth>
-                    <InputLabel id={field.name}>{t(i18n)`Category`}</InputLabel>
-                    <Select
-                      labelId={field.name}
-                      MenuProps={{ container: root }}
-                      {...field}
-                    >
-                      <MenuItem value={''}>{t(i18n)`Not set`}</MenuItem>
-                      {tagCategories.map((category) => (
-                        <MenuItem key={category} value={category}>
-                          {getTagCategoryLabel(category, i18n)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-              <Controller
-                name="keywords"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <>
-                    <Autocomplete
-                      {...field}
-                      id={field.name}
-                      multiple
-                      options={[]}
-                      filterOptions={(_, params) =>
-                        params.inputValue ? [params.inputValue] : []
-                      }
-                      freeSolo
-                      onChange={(_, data) => {
-                        const words = data.flatMap((input) =>
-                          input.split(' ').filter(Boolean)
-                        );
+                const result = await (tag
+                  ? updateTag(tag.id, payload)
+                  : createTag(payload));
 
-                        field.onChange(words);
-                      }}
-                      slotProps={{
-                        popper: {
-                          container: root,
-                        },
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={t(i18n)`Keywords`}
-                          variant="standard"
-                          fullWidth
-                          error={Boolean(error)}
-                          helperText={
-                            errors.keywords?.find?.((error) => Boolean(error))
-                              ?.message
-                          }
-                        />
-                      )}
-                    />
-                  </>
-                )}
-              />
-            </Stack>
-          </form>
-        </DialogContent>
-        <DialogFooter
-          deleteButton={{
-            label: t(i18n)`Delete`,
-            ...(tag ? { isDisabled: !isDeleteAllowed } : {}),
-            onClick: () => {
-              onDelete?.(tag as components['schemas']['TagReadSchema']);
-            },
-          }}
-          primaryButton={{
-            label: tag ? t(i18n)`Save` : t(i18n)`Create`,
-            formId: formName,
-            isLoading: inProgress,
-          }}
-          cancelButton={{
-            onClick: onClose,
-          }}
-        />
-      </Dialog>
+                updateOcrAutoTagging(result.id, keywords);
+              })}
+            >
+              <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6 mtw:pt-8 mtw:pb-6">
+                <FormField
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t(i18n)`Name`}</FormLabel>
+                      <FormControl>
+                        <Input autoFocus {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="category"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t(i18n)`Category`}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="mtw:w-full">
+                            <SelectValue placeholder={t(i18n)`Not set`} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {tagCategories.map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {getTagCategoryLabel(category, i18n)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="keywords"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="mtw:flex mtw:flex-col">
+                      <FormLabel>{t(i18n)`Keywords`}</FormLabel>
+
+                      <InputTags {...field} />
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
+          <SheetFooter className="mtw:flex mtw:flex-row mtw:justify-end mtw:gap-2">
+            <Button
+              className="mtw:mr-auto"
+              variant="destructive"
+              size="lg"
+              onClick={onClose}
+              disabled={!isDeleteAllowed}
+            >
+              {t(i18n)`Delete`}
+            </Button>
+            <Button variant="outline" size="lg" onClick={onClose}>
+              {t(i18n)`Cancel`}
+            </Button>
+            <Button
+              type="submit"
+              form={formName}
+              size="lg"
+              disabled={inProgress}
+            >
+              {tag ? t(i18n)`Save` : t(i18n)`Create`}
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
