@@ -5,7 +5,7 @@ export const getSharedApprovalRuleLabel = {
   singleUser: (i18n: I18n) => t(i18n)`Single user`,
   anyUserFromList: (i18n: I18n) => t(i18n)`Any user from the list`,
   anyUsersFromList: (i18n: I18n, count: number) =>
-    t(i18n)`Any ${count} users from the list`,
+    t(i18n)`Any ${count.toString()} users from the list`,
   anyUserWithRole: (i18n: I18n) => t(i18n)`Any user with role`,
   allUsersFromList: (i18n: I18n) => t(i18n)`All users from list, one by one`,
 } as const;
