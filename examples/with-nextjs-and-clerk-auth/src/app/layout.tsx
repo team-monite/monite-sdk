@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import { ClerkProvider } from '@clerk/nextjs';
 import { currentUser } from '@clerk/nextjs/server';
+import '@monite/sdk-react/styles.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';

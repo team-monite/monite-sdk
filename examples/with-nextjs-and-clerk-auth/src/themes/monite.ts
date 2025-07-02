@@ -1,3 +1,4 @@
+import '@monite/sdk-react/mui-styles';
 import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,

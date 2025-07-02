@@ -8,11 +8,13 @@ import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { ThemeConfig } from '@/core/theme/types';
 
 import { GlobalToast } from '../GlobalToast';
+import tailwindApp from '../theme/app.css';
 import { MoniteThemeProvider } from '../theme/MoniteThemeProvider';
 import { MoniteLocale } from './i18nUtils';
 import { KanmonContextProvider } from './KanmonContext';
 import {
   MoniteContextProvider,
+  MoniteTheme,
   MoniteQraftContext,
 } from './MoniteContext';
 
@@ -72,3 +74,62 @@ export const MoniteProvider = ({
     </MoniteContextProvider>
   );
 };
+
+const getTailwindTheme = (theme: MoniteTheme) => css`
+  :root {
+    --mtw-color-foreground: ${theme.palette.text.primary};
+    --mtw-color-muted-foreground: ${theme.palette.text.secondary};
+    --mtw-color-muted: ${theme.palette.background.paper};
+    --mtw-color-background: ${theme.palette.background.default};
+    --mtw-color-border: ${theme.palette.divider};
+
+    --mtw-color-primary-10: ${theme.palette.primary[10]};
+    --mtw-color-primary-20: ${theme.palette.primary[20]};
+    --mtw-color-primary-30: ${theme.palette.primary[30]};
+    --mtw-color-primary-40: ${theme.palette.primary[40]};
+    --mtw-color-primary-50: ${theme.palette.primary[50]};
+    --mtw-color-primary-55: ${theme.palette.primary[55]};
+    --mtw-color-primary-60: ${theme.palette.primary[60]};
+    --mtw-color-primary-65: ${theme.palette.primary[65]};
+    --mtw-color-primary-80: ${theme.palette.primary[80]};
+    --mtw-color-primary-85: ${theme.palette.primary[85]};
+    --mtw-color-primary-90: ${theme.palette.primary[90]};
+    --mtw-color-primary-95: ${theme.palette.primary[95]};
+
+    --mtw-color-neutral-10: ${theme.palette.neutral[10]};
+    --mtw-color-neutral-30: ${theme.palette.neutral[30]};
+    --mtw-color-neutral-50: ${theme.palette.neutral[50]};
+    --mtw-color-neutral-70: ${theme.palette.neutral[70]};
+    --mtw-color-neutral-80: ${theme.palette.neutral[80]};
+    --mtw-color-neutral-90: ${theme.palette.neutral[90]};
+    --mtw-color-neutral-95: ${theme.palette.neutral[95]};
+
+    --mtw-color-danger-10: ${theme.palette.error[10]};
+    --mtw-color-danger-30: ${theme.palette.error[30]};
+    --mtw-color-danger-40: ${theme.palette.error[40]};
+    --mtw-color-danger-50: ${theme.palette.error[50]};
+    --mtw-color-danger-60: ${theme.palette.error[60]};
+    --mtw-color-danger-80: ${theme.palette.error[80]};
+    --mtw-color-danger-90: ${theme.palette.error[90]};
+    --mtw-color-danger-95: ${theme.palette.error[95]};
+
+    --mtw-color-success-10: ${theme.palette.success[10]};
+    --mtw-color-success-30: ${theme.palette.success[30]};
+    --mtw-color-success-50: ${theme.palette.success[50]};
+    --mtw-color-success-60: ${theme.palette.success[60]};
+    --mtw-color-success-80: ${theme.palette.success[80]};
+    --mtw-color-success-90: ${theme.palette.success[90]};
+    --mtw-color-success-95: ${theme.palette.success[95]};
+
+    --mtw-color-warning-10: ${theme.palette.warning[10]};
+    --mtw-color-warning-30: ${theme.palette.warning[30]};
+    --mtw-color-warning-50: ${theme.palette.warning[50]};
+    --mtw-color-warning-60: ${theme.palette.warning[60]};
+    --mtw-color-warning-80: ${theme.palette.warning[80]};
+    --mtw-color-warning-90: ${theme.palette.warning[90]};
+    --mtw-color-warning-95: ${theme.palette.warning[95]};
+  }
+
+  ${tailwindApp}
+`;
+

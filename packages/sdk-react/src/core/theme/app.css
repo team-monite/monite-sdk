@@ -1,8 +1,11 @@
-/* Import typography styles for markdown content BEFORE other directives */
-@import "./tailwind/typography.css";
+@import './tailwind/typography.css';
 
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+/* Tailwind CSS v4 - Single import with prefix to fix utility generation bug */
+@import "tailwindcss" prefix(mtw);
+
+/* Explicitly register source paths for class scanning */
+@source "../../components/**/*.{js,ts,jsx,tsx}";
+@source "../../**/*.{js,ts,jsx,tsx}";
 
 /* placeholder for tw-animate-css integration, if needed separately */
 /* e.g., @import "./path/to/tw-animate-css.css"; */
@@ -154,30 +157,4 @@
     --mtw-dot-loader-stress-color: #562bd6;
     animation: dot-typing 1.5s infinite linear;
   }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.visually-hidden-input {
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  white-space: nowrap;
-  width: 1px;
-  opacity: 0;
-  z-index: -1;
-  pointer-events: none;
 }

@@ -4,16 +4,17 @@ import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
-import tailwindcss from '@tailwindcss/postcss';
+import path from 'path';
 
 import fs from 'fs';
 import { RollupOptions } from 'rollup';
 import { dts } from 'rollup-plugin-dts';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
-import postcssImport from 'postcss-import';
 import swc from '@rollup/plugin-swc';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
+import postcssImport from 'postcss-import';
+import tailwindcss from '@tailwindcss/postcss';
 
 type Options = {
   url?: false | Parameters<typeof url>[0];
@@ -89,11 +90,16 @@ export const rollupConfig = (
             : {
                 extensions: ['.css'],
                 autoModules: true,
-                extract: true,
+                extract: path.resolve('dist/cjs/index.css'),
                 minimize: process.env.NODE_ENV === 'production',
                 plugins: [
-                  postcssImport(),
-                  tailwindcss(),
+                  // Use postcss-import first for @import processing
+                  postcssImport({
+                    path: [path.resolve('src/core/theme'), path.resolve('src/styles')],
+                  }),
+                  tailwindcss({
+                    optimize: process.env.NODE_ENV === 'production',
+                  }),
                 ],
               }
         ),
@@ -231,11 +237,16 @@ export const rollupConfig = (
             : {
                 extensions: ['.css'],
                 autoModules: true,
-                extract: true,
+                extract: path.resolve('dist/esm/index.css'),
                 minimize: process.env.NODE_ENV === 'production',
                 plugins: [
-                  postcssImport(),
-                  tailwindcss(),
+                  // Use postcss-import first for @import processing
+                  postcssImport({
+                    path: [path.resolve('src/core/theme'), path.resolve('src/styles')],
+                  }),
+                  tailwindcss({
+                    optimize: process.env.NODE_ENV === 'production',
+                  }),
                 ],
               }
         ),

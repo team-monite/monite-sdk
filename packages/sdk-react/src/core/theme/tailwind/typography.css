@@ -110,7 +110,7 @@
         content: counter(list-counter) '.';
         position: absolute;
         font-weight: 400;
-        color: theme("colors.gray.700");
+        color: var(--mtw-color-neutral-70);
       }
 
       ul > li {
@@ -121,7 +121,7 @@
       ul > li::before {
         content: '';
         position: absolute;
-        background-color: theme("colors.gray.700");
+        background-color: var(--mtw-color-neutral-70);
         border-radius: 50%;
         width: 0.375rem;
         height: 0.375rem;
@@ -138,7 +138,7 @@
       blockquote {
         font-weight: 500;
         font-style: italic;
-        color: theme("colors.gray.900");
+        color: var(--mtw-color-foreground);
         border-left-width: 0.25rem;
         quotes: '\201C''\201D''\2018''\2019';
         margin-top: 1.6em;
@@ -193,14 +193,14 @@
       }
 
       figure figcaption {
-        color: theme("colors.gray.600");
+        color: var(--mtw-color-muted-foreground);
         font-size: 0.875em;
         line-height: 1.4285714;
         margin-top: 0.8571429em;
       }
 
       code {
-        color: theme("colors.gray.900");
+        color: var(--mtw-color-foreground);
         font-weight: 600;
         font-size: 0.875em;
       }
@@ -214,8 +214,8 @@
       }
 
       pre {
-        color: theme("colors.gray.300");
-        background-color: theme("colors.gray.800");
+        color: var(--mtw-color-muted-foreground);
+        background-color: var(--mtw-color-muted);
         overflow-x: auto;
         font-size: 0.875em;
         line-height: 1.7142857;

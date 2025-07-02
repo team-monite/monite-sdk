@@ -58,7 +58,7 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
               cy="47.9374"
               r="20.6888"
               fill="#FFAEC7"
-              fill-opacity="0.7"
+              fillOpacity="0.7"
             />
           </g>
           <foreignObject
@@ -83,17 +83,17 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
         <path
           d="M32.1359 32.7523C46.0216 23.22 40.4951 10.0945 29.4302 5.9833C24.2697 4.0659 25.058 11.2162 18.6456 17.5455C12.2332 23.8748 4.02084 33.9538 12.5884 38.3315C21.1559 42.7092 26.2708 36.7786 32.1359 32.7523Z"
           fill="url(#paint2_radial_65_2657)"
-          fill-opacity="0.1"
+          fillOpacity="0.1"
         />
         <path
           d="M32.1359 32.7523C46.0216 23.22 40.4951 10.0945 29.4302 5.9833C24.2697 4.0659 25.058 11.2162 18.6456 17.5455C12.2332 23.8748 4.02084 33.9538 12.5884 38.3315C21.1559 42.7092 26.2708 36.7786 32.1359 32.7523Z"
           fill="url(#paint3_linear_65_2657)"
-          fill-opacity="0.1"
+          fillOpacity="0.1"
         />
         <path
           d="M32.1359 32.7523C46.0216 23.22 40.4951 10.0945 29.4302 5.9833C24.2697 4.0659 25.058 11.2162 18.6456 17.5455C12.2332 23.8748 4.02084 33.9538 12.5884 38.3315C21.1559 42.7092 26.2708 36.7786 32.1359 32.7523Z"
           fill="url(#paint4_radial_65_2657)"
-          fill-opacity="0.1"
+          fillOpacity="0.1"
         />
         <path
           d="M11.0531 23.3823C13.2814 16.2813 13.4011 5.95839 21.5299 5.95839C27.9473 5.95839 33.1899 8.66202 36.5039 14.0905C39.8179 19.5191 46.2165 20.6276 46.2165 24.638C46.2165 31.9142 33.3867 35.7217 25.5706 34.961C17.7545 34.2003 8.82494 30.4833 11.0531 23.3823Z"
@@ -238,8 +238,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(11.1426 23.2558) rotate(32.5356) scale(20.8514 21.3209)"
           >
-            <stop stop-color="#C1506B" />
-            <stop offset="1" stop-color="#F7BADE" stop-opacity="0" />
+            <stop stopColor="#C1506B" />
+            <stop offset="1" stopColor="#F7BADE" stopOpacity="0" />
           </radialGradient>
           <linearGradient
             id="paint3_linear_65_2657"
@@ -249,8 +249,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             y2="17.8199"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#C150A2" />
-            <stop offset="1" stop-color="#E0ADBC" stop-opacity="0" />
+            <stop stopColor="#C150A2" />
+            <stop offset="1" stopColor="#E0ADBC" stopOpacity="0" />
           </linearGradient>
           <radialGradient
             id="paint4_radial_65_2657"
@@ -260,8 +260,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(27.7137 25.3916) rotate(109.542) scale(12.423 11.2071)"
           >
-            <stop stop-color="#FF2E00" />
-            <stop offset="1" stop-color="#FFD6CD" stop-opacity="0" />
+            <stop stopColor="#FF2E00" />
+            <stop offset="1" stopColor="#FFD6CD" stopOpacity="0" />
           </radialGradient>
           <linearGradient
             id="paint5_linear_65_2657"
@@ -271,9 +271,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             y2="19.7274"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#EE518C" stop-opacity="0" />
-            <stop offset="0.665732" stop-color="#EE518C" />
-            <stop offset="0.911525" stop-color="#FF7DAE" />
+            <stop stopColor="#EE518C" stopOpacity="0" />
+            <stop offset="0.665732" stopColor="#EE518C" />
+            <stop offset="0.911525" stopColor="#FF7DAE" />
           </linearGradient>
           <radialGradient
             id="paint6_radial_65_2657"
@@ -283,8 +283,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(12.2982 24.3922) rotate(30.6997) scale(9.14702 11.1627)"
           >
-            <stop stop-color="#8F4791" />
-            <stop offset="1" stop-color="#8F4791" stop-opacity="0" />
+            <stop stopColor="#8F4791" />
+            <stop offset="1" stopColor="#8F4791" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint7_radial_65_2657"
@@ -294,8 +294,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(33.1899 43.3176) rotate(-102.011) scale(11.8105 15.1254)"
           >
-            <stop stop-color="#E375DF" stop-opacity="0" />
-            <stop offset="1" stop-color="#FF91B2" />
+            <stop stopColor="#E375DF" stopOpacity="0" />
+            <stop offset="1" stopColor="#FF91B2" />
           </radialGradient>
           <linearGradient
             id="paint8_linear_65_2657"
@@ -305,8 +305,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             y2="32.3081"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="white" />
-            <stop offset="1" stop-color="white" stop-opacity="0" />
+            <stop stopColor="white" />
+            <stop offset="1" stopColor="white" stopOpacity="0" />
           </linearGradient>
           <radialGradient
             id="paint10_radial_65_2657"
@@ -316,10 +316,10 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(25.7131 25.32) rotate(-180) scale(7.37354 7.37353)"
           >
-            <stop stop-color="white" />
-            <stop offset="0.165839" stop-color="white" />
-            <stop offset="0.335281" stop-color="#FFD18B" />
-            <stop offset="1" stop-color="#FF144D" stop-opacity="0" />
+            <stop stopColor="white" />
+            <stop offset="0.165839" stopColor="white" />
+            <stop offset="0.335281" stopColor="#FFD18B" />
+            <stop offset="1" stopColor="#FF144D" stopOpacity="0" />
           </radialGradient>
         </defs>
       </svg>
