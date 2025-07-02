@@ -34,10 +34,10 @@ export const CommonSettingsBlock = ({ control }: Props) => {
             <TextField
               {...field}
               id={field.name}
-              label={t(i18n)`Min digits (25 max)`}
+              label={t(i18n)`Min digits (20 max)`}
               onChange={(e) => {
-                if (+e.target.value > 25) {
-                  setValue('min_digits', 25, { shouldDirty: true });
+                if (+e.target.value > 20) {
+                  setValue('min_digits', 20, { shouldDirty: true });
                 } else {
                   field.onChange(e);
                 }
@@ -83,10 +83,10 @@ export const CommonSettingsBlock = ({ control }: Props) => {
             <TextField
               {...field}
               id={field.name}
-              label={t(i18n)`Custom prefix (50 chars max)`}
+              label={t(i18n)`Custom prefix (15 chars max)`}
               variant="outlined"
               fullWidth
-              inputProps={{ maxLength: 50 }}
+              inputProps={{ maxLength: 15 }}
               error={Boolean(error)}
               helperText={error?.message}
             />

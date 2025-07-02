@@ -1450,8 +1450,12 @@ msgid "Can't be a negative number"
 msgstr "Can't be a negative number"
 
 #: src/components/templateSettings/schemas.ts:16
-msgid "Can't be greater than 25"
-msgstr "Can't be greater than 25"
+msgid "Can't be greater than 20"
+msgstr "Can't be greater than 20"
+
+#: src/components/templateSettings/schemas.ts:16
+#~ msgid "Can't be greater than 25"
+#~ msgstr "Can't be greater than 25"
 
 #: src/components/templateSettings/schemas.ts:22
 #: src/components/templateSettings/schemas.ts:29
@@ -2477,8 +2481,12 @@ msgstr "Current status"
 #~ msgstr "Custom prefix"
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:86
-msgid "Custom prefix (50 chars max)"
-msgstr "Custom prefix (50 chars max)"
+msgid "Custom prefix (15 chars max)"
+msgstr "Custom prefix (15 chars max)"
+
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:86
+#~ msgid "Custom prefix (50 chars max)"
+#~ msgstr "Custom prefix (50 chars max)"
 
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:79
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:274
@@ -5221,8 +5229,12 @@ msgid "Micronesia, Federated States Of"
 msgstr "Micronesia, Federated States Of"
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:37
-msgid "Min digits (25 max)"
-msgstr "Min digits (25 max)"
+msgid "Min digits (20 max)"
+msgstr "Min digits (20 max)"
+
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:37
+#~ msgid "Min digits (25 max)"
+#~ msgstr "Min digits (25 max)"
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:36
 #~ msgid "Min number of digits"

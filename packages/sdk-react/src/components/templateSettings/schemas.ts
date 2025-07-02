@@ -13,7 +13,7 @@ export const getDocumentNumberFormSchema = (
       .number()
       .required()
       .min(1, t(i18n)`Can't be less than 1`)
-      .max(25, t(i18n)`Can't be greater than 25`),
+      .max(20, t(i18n)`Can't be greater than 20`),
     credit_note: yup.string().required(),
     credit_note_number: yup
       .number()
