@@ -3,8 +3,8 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ConfirmDeleteMeasureUnitDialogue } from '@/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue';
-import { TableActions } from '@/components/TableActions';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { TableActions } from '@/ui/TableActions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SearchIcon from '@mui/icons-material/Search';

@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteCountry } from '@/ui/Country';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 

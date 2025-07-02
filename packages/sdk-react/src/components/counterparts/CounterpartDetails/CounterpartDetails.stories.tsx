@@ -1,8 +1,8 @@
-import { Dialog } from '@/components/Dialog';
 import {
   individualId,
   organizationId,
 } from '@/mocks/counterparts/counterpart.mocks.types';
+import { Dialog } from '@/ui/Dialog';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 

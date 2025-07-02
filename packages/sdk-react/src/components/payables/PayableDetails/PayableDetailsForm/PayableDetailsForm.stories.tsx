@@ -1,4 +1,4 @@
-import { Dialog } from '@/components/Dialog';
+import { Dialog } from '@/ui/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';

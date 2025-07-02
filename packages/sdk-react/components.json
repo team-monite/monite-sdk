@@ -8,7 +8,7 @@
     "css": "src/core/theme/app.css",
     "baseColor": "neutral",
     "cssVariables": true,
-    "prefix": "mtw:"
+    "prefix": "mtw"
   },
   "aliases": {
     "components": "@/components",
