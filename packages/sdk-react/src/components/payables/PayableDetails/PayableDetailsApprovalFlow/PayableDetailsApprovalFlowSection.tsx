@@ -190,45 +190,37 @@ export const PayableApprovalFlowSection = ({
                         {t(i18n)`No roles assigned`}
                       </Typography>
                     )
-                  ) : (
-                    (() => {
-                      if (step.userNames.length > 0) {
+                  ) : step.userNames.length > 0 ? (
+                    <Stack
+                      direction="column"
+                      spacing={0.5}
+                      sx={{
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {step.resolvedUsers.map((user) => {
+                        if (!user) return null;
+
                         return (
-                          <Stack
-                            direction="column"
-                            spacing={0.5}
+                          <UserDisplayCell
+                            key={user.id}
+                            user={user}
+                            showUserEmail={showUserEmail}
+                            showAvatar={false}
+                            typographyVariant="body2"
                             sx={{
                               overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
                             }}
-                          >
-                            {step.resolvedUsers.map((user) => {
-                              if (!user) return null;
-
-                              return (
-                                <UserDisplayCell
-                                  key={user.id}
-                                  user={user}
-                                  showUserEmail={showUserEmail}
-                                  showAvatar={false}
-                                  typographyVariant="body2"
-                                  sx={{
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                  }}
-                                />
-                              );
-                            })}
-                          </Stack>
+                          />
                         );
-                      }
-
-                      return (
-                        <Typography variant="body2" color="text.secondary">
-                          {t(i18n)`No users assigned`}
-                        </Typography>
-                      );
-                    })()
+                      })}
+                    </Stack>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      {t(i18n)`No users assigned`}
+                    </Typography>
                   )}
                 </TableCell>
                 <TableCell

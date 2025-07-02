@@ -219,6 +219,7 @@ export function usePayableDetails({
         query: {
           object_id: payableId,
           object_type: 'payable',
+          order: 'desc',
         },
       },
       {
@@ -227,6 +228,13 @@ export function usePayableDetails({
     );
 
   const activeApprovalRequest = approvalRequests?.data?.[0];
+
+  const currentUserApprovalRequest = approvalRequests?.data?.find(
+    (request) =>
+      request.status === 'waiting' &&
+      request.user_ids?.includes(currentUser?.id ?? '') &&
+      !request.approved_by?.includes(currentUser?.id ?? '')
+  );
 
   const { data: isCancelAvailable } = useIsActionAllowed({
     method: 'payable',
@@ -545,14 +553,16 @@ export function usePayableDetails({
       case 'approve_in_progress': {
         const permissions: PayableDetailsPermissions[] = [];
 
-        const isApprover = activeApprovalRequest?.user_ids?.includes(
-          currentUser?.id ?? ''
-        );
+        const hasCurrentUserPendingRequest =
+          currentUserApprovalRequest !== undefined;
 
-        if (isApproveAvailable && isApprover) {
+        // Show approve/reject buttons if user has pending approval request
+        // (uses approval_requests endpoints, not payables endpoints)
+        if (hasCurrentUserPendingRequest) {
           permissions.push('reject', 'approve');
         }
 
+        // Check for force approval/rejection permissions (uses payables endpoints)
         const hasApprovePermission = () => {
           const payableObj = currentUserRole?.permissions?.objects?.find(
             (o) => o.object_type === 'payable'
@@ -615,6 +625,7 @@ export function usePayableDetails({
     payableId,
     payable?.amount_to_pay,
     activeApprovalRequest,
+    currentUserApprovalRequest,
     currentUser?.id,
     currentUserRole?.permissions,
   ]);
@@ -863,11 +874,11 @@ export function usePayableDetails({
   };
 
   const rejectInvoice = async () => {
-    if (payableId && activeApprovalRequest) {
+    if (payableId && currentUserApprovalRequest) {
       await rejectApprovalRequestMutation.mutateAsync(
         {
           body: undefined,
-          path: { approval_request_id: activeApprovalRequest.id },
+          path: { approval_request_id: currentUserApprovalRequest.id },
         },
         {
           onSuccess: () => {
@@ -884,10 +895,10 @@ export function usePayableDetails({
   };
 
   const approveInvoice = async () => {
-    if (payableId && activeApprovalRequest) {
+    if (payableId && currentUserApprovalRequest) {
       await approveApprovalRequestMutation.mutateAsync(
         {
-          path: { approval_request_id: activeApprovalRequest.id },
+          path: { approval_request_id: currentUserApprovalRequest.id },
         },
         {
           onSuccess: () => {
@@ -996,6 +1007,7 @@ export function usePayableDetails({
     lineItems,
     showPayButton,
     activeApprovalRequest,
+    currentUserApprovalRequest,
     actions: {
       setEdit,
       createInvoice,

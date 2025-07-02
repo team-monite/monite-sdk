@@ -22,9 +22,10 @@ export interface ResolvedApprovalStep extends EnhancedApprovalStep {
  * Base hook that handles the core logic for resolving approval steps
  * @param payableId - The payable ID for fetching approval requests
  * @param policyId - The approval policy ID for fetching policy details
+ * @param order - The order for fetching approval requests (default: 'desc')
  * @returns Resolved approval steps with user and role information
  */
-function useResolvedApprovalStepsBase(payableId: string, policyId: string) {
+function useResolvedApprovalStepsBase(payableId: string, policyId: string, order: 'asc' | 'desc' = 'desc') {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
@@ -34,6 +35,7 @@ function useResolvedApprovalStepsBase(payableId: string, policyId: string) {
         object_id: payableId,
         object_type: 'payable',
         limit: 50,
+        order,
       },
     });
 
@@ -178,7 +180,7 @@ function useResolvedApprovalStepsBase(payableId: string, policyId: string) {
  * @returns Resolved approval steps with user and role information
  */
 export function useResolvedApprovalSteps(payableId: string) {
-  return useResolvedApprovalStepsBase(payableId, payableId);
+  return useResolvedApprovalStepsBase(payableId, payableId, 'desc');
 }
 
 /**
@@ -191,7 +193,7 @@ export function useResolvedApprovalStepsWithPolicy(
   payableId: string,
   approvalPolicy: components['schemas']['ApprovalPolicyResource']
 ) {
-  return useResolvedApprovalStepsBase(payableId, approvalPolicy.id);
+  return useResolvedApprovalStepsBase(payableId, approvalPolicy.id, 'desc');
 }
 
 type EntityUser = components['schemas']['EntityUserResponse'];
