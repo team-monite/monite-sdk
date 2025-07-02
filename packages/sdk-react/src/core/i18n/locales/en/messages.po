@@ -2965,11 +2965,15 @@ msgstr "Doctors"
 msgid "Document number"
 msgstr "Document number"
 
-#: src/components/templateSettings/components/PerDocumentBlock.tsx:47
+#: src/components/templateSettings/components/PerDocumentBlock.tsx:51
+msgid "Document numbers, both current and future, must be a maximum of 21 characters"
+msgstr "Document numbers, both current and future, must be a maximum of 21 characters"
+
+#: src/components/templateSettings/components/PerDocumentBlock.tsx:48
 msgid "Document prefix and number"
 msgstr "Document prefix and number"
 
-#: src/components/templateSettings/components/PerDocumentBlock.tsx:64
+#: src/components/templateSettings/components/PerDocumentBlock.tsx:69
 msgid "Document prefix must contain at least 1 symbol"
 msgstr "Document prefix must contain at least 1 symbol"
 
@@ -5524,7 +5528,7 @@ msgstr "next on {0}"
 #~ msgid "Next order #"
 #~ msgstr "Next order #"
 
-#: src/components/templateSettings/components/PerDocumentBlock.tsx:81
+#: src/components/templateSettings/components/PerDocumentBlock.tsx:86
 msgid "Next order number must be more than the last issued"
 msgstr "Next order number must be more than the last issued"
 

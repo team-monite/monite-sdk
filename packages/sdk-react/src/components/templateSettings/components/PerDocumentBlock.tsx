@@ -44,9 +44,14 @@ export const PerDocumentBlock = ({ control }: Props) => {
 
   return (
     <div className="mtw:flex mtw:flex-col mtw:gap-4">
-      <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
-        i18n
-      )`Document prefix and number`}</h2>
+      <div className="mtw:flex mtw:flex-col mtw:gap-1">
+        <h2 className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">{t(
+          i18n
+        )`Document prefix and number`}</h2>
+        <p className="mtw:text-sm mtw:font-normal mtw:text-neutral-50">{t(
+          i18n
+        )`Document numbers, both current and future, must be a maximum of 21 characters`}</p>
+      </div>
 
       {!!errorKeys.length &&
         errorKeys.some((key) => PREFIX_FIELDS.includes(key)) && (
