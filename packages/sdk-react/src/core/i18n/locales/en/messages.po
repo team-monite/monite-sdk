@@ -766,7 +766,7 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils.ts:82
+#: src/components/approvalPolicies/shared/approvalRuleLabels.ts:8
 msgid "Any {0} users from the list"
 msgstr "Any {0} users from the list"
 
@@ -6056,7 +6056,7 @@ msgstr "No tags found"
 #~ msgid "No TAX ID available"
 #~ msgstr "No TAX ID available"
 
-#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:228
+#: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection.tsx:222
 msgid "No users assigned"
 msgstr "No users assigned"
 
@@ -6432,11 +6432,11 @@ msgstr "Payable “{0}” has been canceled"
 msgid "Payable “{0}” has been created"
 msgstr "Payable “{0}” has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:918
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:938
 msgid "Payable “{0}” has been force approved"
 msgstr "Payable “{0}” has been force approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:900
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:920
 msgid "Payable “{0}” has been force rejected"
 msgstr "Payable “{0}” has been force rejected"
 

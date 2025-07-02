@@ -553,16 +553,24 @@ export function usePayableDetails({
       case 'approve_in_progress': {
         const permissions: PayableDetailsPermissions[] = [];
 
-        const hasCurrentUserPendingRequest =
-          currentUserApprovalRequest !== undefined;
+        const hasWaitingApprovalRequests =
+          (approvalRequests?.data?.length ?? 0) > 0 &&
+          approvalRequests?.data?.[0]?.status === 'waiting';
 
-        // Show approve/reject buttons if user has pending approval request
-        // (uses approval_requests endpoints, not payables endpoints)
-        if (hasCurrentUserPendingRequest) {
-          permissions.push('reject', 'approve');
+        // Show regular approve/reject buttons only if there are waiting approval requests
+        // These buttons use /approval_requests endpoints and don't require payable-level permissions
+        if (hasWaitingApprovalRequests) {
+          const hasCurrentUserPendingRequest =
+            currentUserApprovalRequest !== undefined;
+
+          // Show approve/reject buttons if user has pending approval request
+          if (hasCurrentUserPendingRequest) {
+            permissions.push('reject', 'approve');
+          }
         }
 
-        // Check for force approval/rejection permissions (uses payables endpoints)
+        // Force buttons are available to super users regardless of approval request status
+        // These buttons DO require payable-level permissions (isApproveAvailable)
         const hasApprovePermission = () => {
           const payableObj = currentUserRole?.permissions?.objects?.find(
             (o) => o.object_type === 'payable'
@@ -628,6 +636,7 @@ export function usePayableDetails({
     currentUserApprovalRequest,
     currentUser?.id,
     currentUserRole?.permissions,
+    approvalRequests,
   ]);
 
   useEffect(() => {
