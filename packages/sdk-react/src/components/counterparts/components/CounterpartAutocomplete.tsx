@@ -19,6 +19,8 @@ import type {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
+import { Alert, AlertDescription } from '@/ui/components/alert';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,11 +30,7 @@ import {
   TextField,
   FormHelperText,
   createFilterOptions,
-  Button,
-  Alert,
-  Link,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -259,8 +257,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                               selectedCounterpartOption &&
                               currentValue && (
                                 <Button
-                                  size="small"
-                                  sx={{ minWidth: 0, px: 1, mr: 1 }}
+                                  size="sm"
+                                  variant="ghost"
+                                  className="mtw:min-w-0 mtw:px-1 mtw:mr-1"
                                   onClick={(event) => {
                                     event.preventDefault();
                                     setShowEditCounterpartDialog(true);
@@ -287,52 +286,52 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                           )`The specified counterpart has not been saved yet.`}
                           <br />
                           {t(i18n)`Create new counterpart:`}
-                          <StyledButtonLink
-                            as="button"
-                            sx={{ marginLeft: 0.5 }}
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="mtw:ml-0.5 mtw:p-0 mtw:h-auto mtw:font-medium"
                             onClick={(event) => {
                               event.preventDefault();
                               setIsCreateCounterpartOpened(true);
                             }}
                           >
                             {counterpartRawName}
-                          </StyledButtonLink>
+                          </Button>
                         </FormHelperText>
                       )}
+
                     {counterpartMatchingToOCRFound &&
                       currentValue == counterpartMatchingToOCRFound.id &&
                       !multiple &&
                       setShowEditCounterpartDialog && (
-                        <Alert
-                          severity="warning"
-                          icon={false}
-                          sx={{ marginTop: 1 }}
-                        >
-                          {t(
-                            i18n
-                          )`The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
-                          <br />
-                          <StyledButtonLink
-                            as="button"
-                            sx={{ marginRight: 1 }}
-                            inheritColor
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setShowEditCounterpartDialog(true);
-                            }}
-                          >{t(i18n)`Edit ${getCounterpartName(
-                            counterpartMatchingToOCRFound
-                          )}`}</StyledButtonLink>
-                          {t(i18n)` or `}
-                          <StyledButtonLink
-                            as="button"
-                            sx={{ marginLeft: 1 }}
-                            inheritColor
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setIsCreateCounterpartOpened(true);
-                            }}
-                          >{t(i18n)`Create new counterpart`}</StyledButtonLink>
+                        <Alert variant="warning" className="mtw:mt-4">
+                          <AlertDescription>
+                            {t(
+                              i18n
+                            )`The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one.`}
+                            <br />
+                            <Button
+                              variant="link"
+                              size="sm"
+                              className="mtw:mr-1 mtw:p-0 mtw:h-auto mtw:font-medium mtw:text-inherit mtw:underline"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setShowEditCounterpartDialog(true);
+                              }}
+                            >{t(i18n)`Edit ${getCounterpartName(
+                              counterpartMatchingToOCRFound
+                            )}`}</Button>
+                            {t(i18n)` or `}
+                            <Button
+                              variant="link"
+                              size="sm"
+                              className="mtw:ml-1 mtw:p-0 mtw:h-auto mtw:font-medium mtw:text-inherit mtw:underline"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setIsCreateCounterpartOpened(true);
+                              }}
+                            >{t(i18n)`Create new counterpart`}</Button>
+                          </AlertDescription>
                         </Alert>
                       )}
                   </>
@@ -341,15 +340,12 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                   return isCreateNewCounterpartOption(counterpartOption) ? (
                     <Button
                       key={counterpartOption.id}
-                      variant="text"
-                      startIcon={<AddIcon />}
-                      fullWidth
-                      sx={{
-                        justifyContent: 'flex-start',
-                        px: 2,
-                      }}
+                      variant="ghost"
+                      size="sm"
+                      className="mtw:justify-start mtw:px-2 mtw:w-full"
                       onClick={() => setIsCreateCounterpartOpened(true)}
                     >
+                      <AddIcon className="mtw:mr-2" />
                       {counterpartOption.label}
                     </Button>
                   ) : (
@@ -366,13 +362,3 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     </>
   );
 };
-
-const StyledButtonLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'inheritColor',
-})<{ inheritColor?: boolean }>(({ theme, inheritColor }) => ({
-  all: 'unset',
-  cursor: 'pointer',
-  color: inheritColor ? 'inherit' : theme.palette.primary.main,
-  textDecoration: 'underline',
-  fontWeight: 500,
-}));
