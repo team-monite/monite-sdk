@@ -1,4 +1,4 @@
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, useFormContext } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -21,6 +21,7 @@ type Props = {
 
 export const CommonSettingsBlock = ({ control }: Props) => {
   const { i18n } = useLingui();
+  const { setValue } = useFormContext<DocumentNumberFormValues>();
   const { root } = useRootElements();
 
   return (
@@ -33,7 +34,14 @@ export const CommonSettingsBlock = ({ control }: Props) => {
             <TextField
               {...field}
               id={field.name}
-              label={t(i18n)`Min number of digits`}
+              label={t(i18n)`Min digits (25 max)`}
+              onChange={(e) => {
+                if (+e.target.value > 25) {
+                  setValue('min_digits', 25, { shouldDirty: true });
+                } else {
+                  field.onChange(e);
+                }
+              }}
               type="number"
               variant="outlined"
               fullWidth
@@ -75,9 +83,10 @@ export const CommonSettingsBlock = ({ control }: Props) => {
             <TextField
               {...field}
               id={field.name}
-              label={t(i18n)`Custom prefix`}
+              label={t(i18n)`Custom prefix (50 chars max)`}
               variant="outlined"
               fullWidth
+              inputProps={{ maxLength: 50 }}
               error={Boolean(error)}
               helperText={error?.message}
             />

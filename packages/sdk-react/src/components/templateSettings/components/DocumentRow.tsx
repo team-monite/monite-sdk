@@ -1,15 +1,23 @@
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
+import { useLingui } from '@lingui/react';
 import { TextField } from '@mui/material';
 
 import { DocumentNumberFormValues, DocumentType } from '../types';
+import { getDocumentLabel } from '../utils';
 
 type Props = {
   control: Control<DocumentNumberFormValues>;
   fieldName: DocumentType;
+  isOnlyOneAvailable?: boolean;
 };
 
-export const DocumentRow = ({ control, fieldName }: Props) => {
+export const DocumentRow = ({
+  control,
+  fieldName,
+  isOnlyOneAvailable,
+}: Props) => {
+  const { i18n } = useLingui();
   const { watch } = useFormContext<DocumentNumberFormValues>();
 
   const minDigits = watch('min_digits');
@@ -31,6 +39,12 @@ export const DocumentRow = ({ control, fieldName }: Props) => {
 
   return (
     <li className="mtw:flex mtw:items-center mtw:gap-2">
+      {!isOnlyOneAvailable && (
+        <span className="mtw:w-44 mtw:min-w-44 mtw:text-base mtw:font-normal mtw:leading-5 mtw:text-neutral-10">
+          {getDocumentLabel(i18n, fieldName)}
+        </span>
+      )}
+
       <Controller
         name={fieldName}
         control={control}

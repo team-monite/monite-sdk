@@ -38,7 +38,7 @@ msgstr "{count} Processing"
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:61
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:69
 msgid "-"
 msgstr "-"
 
@@ -54,7 +54,7 @@ msgstr "- they are already overdue."
 msgid "- they are due within 7 days."
 msgstr "- they are due within 7 days."
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:63
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:71
 msgid "."
 msgstr "."
 
@@ -209,7 +209,7 @@ msgstr "{overdueDays} {0} overdue"
 msgid "{repaymentDate}"
 msgstr "{repaymentDate}"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:64
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:72
 msgid "/"
 msgstr "/"
 
@@ -217,7 +217,7 @@ msgstr "/"
 msgid "+ Add reminder"
 msgstr "+ Add reminder"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:62
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:70
 msgid "|"
 msgstr "|"
 
@@ -1749,7 +1749,7 @@ msgstr "City is required"
 msgid "Civic, Social, Fraternal Associations"
 msgstr "Civic, Social, Fraternal Associations"
 
-#: src/components/templateSettings/utils.ts:9
+#: src/components/templateSettings/utils.ts:24
 msgid "Classic"
 msgstr "Classic"
 
@@ -2415,10 +2415,10 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:123
+#: src/components/templateSettings/components/DisplayBankSection.tsx:154
 #: src/components/templateSettings/utils.ts:11
-#~ msgid "Credit note"
-#~ msgstr "Credit note"
+msgid "Credit note"
+msgstr "Credit note"
 
 #: src/core/componentSettings/index.ts:259
 msgid "Credit notes"
@@ -2473,8 +2473,12 @@ msgid "Current status"
 msgstr "Current status"
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:78
-msgid "Custom prefix"
-msgstr "Custom prefix"
+#~ msgid "Custom prefix"
+#~ msgstr "Custom prefix"
+
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:86
+msgid "Custom prefix (50 chars max)"
+msgstr "Custom prefix (50 chars max)"
 
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:79
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:274
@@ -2766,8 +2770,8 @@ msgid "Deliver invoice later or download PDF"
 msgstr "Deliver invoice later or download PDF"
 
 #: src/components/templateSettings/utils.ts:15
-#~ msgid "Delivery note"
-#~ msgstr "Delivery note"
+msgid "Delivery note"
+msgstr "Delivery note"
 
 #: src/core/utils/countries.ts:77
 msgid "Denmark"
@@ -2907,11 +2911,13 @@ msgstr "Discount Stores"
 msgid "Discounted subtotal"
 msgstr "Discounted subtotal"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:22
+#: src/components/templateSettings/components/DisplayBankSection.tsx:35
+#: src/components/templateSettings/components/DisplayBankSection.tsx:61
 msgid "Display bank account details on PDF"
 msgstr "Display bank account details on PDF"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:44
+#: src/components/templateSettings/components/DisplayBankSection.tsx:51
+#: src/components/templateSettings/components/DisplayBankSection.tsx:83
 msgid "Display bank display options"
 msgstr "Display bank display options"
 
@@ -4345,7 +4351,7 @@ msgstr "In review"
 msgid "Incl. tax"
 msgstr "Incl. tax"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:108
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:117
 msgid "Include current year prefix"
 msgstr "Include current year prefix"
 
@@ -4455,6 +4461,8 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/receivables/components/QuotesTable.tsx:306
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:175
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:310
+#: src/components/templateSettings/components/DisplayBankSection.tsx:106
+#: src/components/templateSettings/utils.ts:9
 msgid "Invoice"
 msgstr "Invoice"
 
@@ -5212,11 +5220,15 @@ msgstr "Mexico"
 msgid "Micronesia, Federated States Of"
 msgstr "Micronesia, Federated States Of"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:36
-msgid "Min number of digits"
-msgstr "Min number of digits"
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:37
+msgid "Min digits (25 max)"
+msgstr "Min digits (25 max)"
 
-#: src/components/templateSettings/utils.ts:11
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:36
+#~ msgid "Min number of digits"
+#~ msgstr "Min number of digits"
+
+#: src/components/templateSettings/utils.ts:26
 msgid "Minimalist"
 msgstr "Minimalist"
 
@@ -5283,7 +5295,7 @@ msgstr "Miscellaneous Specialty Retail"
 msgid "Mobile Home Dealers"
 msgstr "Mobile Home Dealers"
 
-#: src/components/templateSettings/utils.ts:13
+#: src/components/templateSettings/utils.ts:28
 msgid "Modern"
 msgstr "Modern"
 
@@ -5664,7 +5676,7 @@ msgstr "No roles found"
 msgid "No rules"
 msgstr "No rules"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:65
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:73
 msgid "No separator"
 msgstr "No separator"
 
@@ -6499,8 +6511,8 @@ msgstr "Precious Stones and Metals, Watches and Jewelry"
 #~ msgid "Prefix"
 #~ msgstr "Prefix"
 
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:52
-#: src/components/templateSettings/components/CommonSettingsBlock.tsx:58
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:60
+#: src/components/templateSettings/components/CommonSettingsBlock.tsx:66
 msgid "Prefix separator"
 msgstr "Prefix separator"
 
@@ -6673,6 +6685,7 @@ msgstr "Puerto Rico"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:141
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:202
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:37
+#: src/components/templateSettings/utils.ts:17
 msgid "Purchase order"
 msgstr "Purchase order"
 
@@ -6712,10 +6725,10 @@ msgstr "Quick Copy, Repro, and Blueprint"
 msgid "Quit without saving"
 msgstr "Quit without saving"
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:99
+#: src/components/templateSettings/components/DisplayBankSection.tsx:130
 #: src/components/templateSettings/utils.ts:13
-#~ msgid "Quote"
-#~ msgstr "Quote"
+msgid "Quote"
+msgstr "Quote"
 
 #: src/components/receivables/components/QuotesTable.tsx:302
 #: src/core/componentSettings/index.ts:255
@@ -7200,7 +7213,7 @@ msgstr "Save and continue"
 #: src/components/onboarding/hooks/useOnboardingActions.ts:128
 #: src/components/onboarding/hooks/useOnboardingActions.ts:138
 #: src/components/templateSettings/components/DocumentNumberForm.tsx:120
-#: src/components/templateSettings/components/OtherSettingsForm.tsx:130
+#: src/components/templateSettings/components/OtherSettingsForm.tsx:131
 msgid "Save changes"
 msgstr "Save changes"
 
@@ -7453,7 +7466,7 @@ msgstr "Sierra Leone"
 msgid "Sierra Leonean Leone"
 msgstr "Sierra Leonean Leone"
 
-#: src/components/templateSettings/utils.ts:15
+#: src/components/templateSettings/utils.ts:30
 msgid "Simple"
 msgstr "Simple"
 
@@ -7613,7 +7626,7 @@ msgstr "Sri Lankan Rupee"
 msgid "Stamp and Coin Stores"
 msgstr "Stamp and Coin Stores"
 
-#: src/components/templateSettings/utils.ts:19
+#: src/components/templateSettings/utils.ts:34
 msgid "Standard"
 msgstr "Standard"
 
@@ -7661,7 +7674,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 msgid "Status"
 msgstr "Status"
 
-#: src/components/templateSettings/utils.ts:17
+#: src/components/templateSettings/utils.ts:32
 msgid "Stylish"
 msgstr "Stylish"
 
@@ -8543,7 +8556,7 @@ msgstr "Units"
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:84
 #: src/components/receivables/components/InvoiceRecurrenceIterationStatusChip.tsx:106
 #: src/components/receivables/components/InvoiceRecurrenceStatusChip.tsx:99
-#: src/components/templateSettings/utils.ts:22
+#: src/components/templateSettings/utils.ts:37
 #: src/core/hooks/useVatTypes.ts:16
 #: src/core/hooks/useVatTypes.ts:18
 #: src/core/hooks/useVatTypes.ts:211
@@ -9295,7 +9308,8 @@ msgstr "Your application was approved"
 msgid "Your bank account must be a checking account."
 msgstr "Your bank account must be a checking account."
 
-#: src/components/templateSettings/components/DisplayBankSection.tsx:25
+#: src/components/templateSettings/components/DisplayBankSection.tsx:38
+#: src/components/templateSettings/components/DisplayBankSection.tsx:64
 msgid "Your customers can make direct bank transfers outside the payment links"
 msgstr "Your customers can make direct bank transfers outside the payment links"
 

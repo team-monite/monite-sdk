@@ -88,6 +88,7 @@ export const PerDocumentBlock = ({ control }: Props) => {
             key={availableType}
             control={control}
             fieldName={availableType}
+            isOnlyOneAvailable={availableTypes?.length === 1}
           />
         ))}
       </ul>
