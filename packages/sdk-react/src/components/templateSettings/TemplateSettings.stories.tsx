@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
 
-import { DocumentDesign as DocumentDesignComponent } from './DocumentDesign';
+import { TemplateSettings as TemplateSettingsComponent } from './TemplateSettings';
 
 const Story = {
-  title: 'Document design/Document design',
-  component: DocumentDesignComponent,
+  title: 'Template settings/Template settings',
+  component: TemplateSettingsComponent,
 };
 
-type Story = StoryObj<typeof DocumentDesignComponent>;
+type Story = StoryObj<typeof TemplateSettingsComponent>;
 
-export const DocumentDesign: Story = {
+export const TemplateSettings: Story = {
   args: {},
   render: () => (
     <div
@@ -22,7 +22,7 @@ export const DocumentDesign: Story = {
         padding: 20px;
       `}
     >
-      <DocumentDesignComponent />
+      <TemplateSettingsComponent />
     </div>
   ),
 };
