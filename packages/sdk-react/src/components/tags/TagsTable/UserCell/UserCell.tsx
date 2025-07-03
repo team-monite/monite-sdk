@@ -14,7 +14,7 @@ export const UserCell = ({ id }: { id: string }) => {
           sx={{ minWidth: '4em' }}
         />
       ) : (
-        !!user && `${user.first_name} ${user.last_name}`
+        !!user && `${user?.first_name || ''} ${user?.last_name || ''}`
       )}
     </span>
   );

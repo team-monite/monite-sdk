@@ -76,8 +76,8 @@
   --mtw-muted-foreground: oklch(0.556 0 0);
   --mtw-accent: oklch(0.97 0 0);
   --mtw-accent-foreground: oklch(0.205 0 0);
-  --mtw-destructive: var(--mtw-color-danger-50);
-  --mtw-destructive-foreground: oklch(0.577 0.245 27.325);
+  --mtw-destructive: var(--mtw-color-danger-10);
+  --mtw-destructive-foreground: var(--color-white);
   --mtw-border: oklch(0.922 0 0);
   --mtw-input: oklch(0.922 0 0);
   --mtw-ring: oklch(0.708 0 0);
