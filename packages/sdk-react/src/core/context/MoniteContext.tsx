@@ -91,13 +91,10 @@ export type MoniteTheme = Theme & {
     error: {
       main: string;
       '10': string;
-      '30': string;
-      '40': string;
+      '25': string;
       '50': string;
-      '60': string;
-      '80': string;
-      '90': string;
-      '95': string;
+      '75': string;
+      '100': string;
     };
   };
 };

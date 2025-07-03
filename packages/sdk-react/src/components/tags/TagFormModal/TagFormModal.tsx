@@ -198,7 +198,7 @@ const TagFormModalBase = ({
             <SheetTitle>
               {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
             </SheetTitle>
-            <SheetDescription>
+            <SheetDescription className="mtw:sr-only">
               {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
             </SheetDescription>
           </SheetHeader>
@@ -279,16 +279,18 @@ const TagFormModalBase = ({
             </form>
           </Form>
           <SheetFooter className="mtw:flex mtw:flex-row mtw:justify-end mtw:gap-2">
-            <Button
-              className="mtw:mr-auto"
-              variant="destructive"
-              size="lg"
-              onClick={onClose}
-              disabled={!isDeleteAllowed}
-            >
-              {t(i18n)`Delete`}
-            </Button>
-            <Button variant="outline" size="lg" onClick={onClose}>
+            {tag && (
+              <Button
+                className="mtw:mr-auto"
+                variant="destructive"
+                size="lg"
+                onClick={onClose}
+                disabled={!isDeleteAllowed}
+              >
+                {t(i18n)`Delete`}
+              </Button>
+            )}
+            <Button variant="ghost" size="lg" onClick={onClose}>
               {t(i18n)`Cancel`}
             </Button>
             <Button
