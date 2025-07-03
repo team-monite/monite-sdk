@@ -24,7 +24,6 @@ import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { TagsModal } from '@/ui/tagsModal';
-import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

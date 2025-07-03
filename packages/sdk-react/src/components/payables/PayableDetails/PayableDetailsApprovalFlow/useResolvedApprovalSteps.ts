@@ -25,7 +25,11 @@ export interface ResolvedApprovalStep extends EnhancedApprovalStep {
  * @param order - The order for fetching approval requests (default: 'desc')
  * @returns Resolved approval steps with user and role information
  */
-function useResolvedApprovalStepsBase(payableId: string, policyId: string, order: 'asc' | 'desc' = 'desc') {
+function useResolvedApprovalStepsBase(
+  payableId: string,
+  policyId: string,
+  order: 'asc' | 'desc' = 'desc'
+) {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
