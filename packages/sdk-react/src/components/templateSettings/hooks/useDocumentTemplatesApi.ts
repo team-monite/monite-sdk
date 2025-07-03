@@ -4,13 +4,19 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 export const useDocumentTemplatesApi = () => {
-  const { api, queryClient } = useMoniteContext();
+  const { api, queryClient, componentSettings } = useMoniteContext();
+  const { i18n } = useLingui();
   const { data: documentTemplates, isLoading } =
-    api.documentTemplates.getDocumentTemplates.useQuery({});
+    api.documentTemplates.getDocumentTemplates.useQuery(
+      {},
+      {
+        enabled: componentSettings?.templateSettings?.showTemplateSection,
+      }
+    );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
     const filtered =
@@ -45,9 +51,7 @@ export const useDocumentTemplatesApi = () => {
       },
       {
         onSuccess: () => {
-          toast.success(
-            t(i18n)`${name} document template has been set as the default.`
-          );
+          toast.success(t(i18n)`${name} template has been set as the default.`);
         },
         onError: (error) => {
           toast.error(getAPIErrorMessage(i18n, error));

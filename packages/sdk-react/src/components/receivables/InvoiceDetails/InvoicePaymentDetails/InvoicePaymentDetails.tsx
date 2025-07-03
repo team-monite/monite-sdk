@@ -15,7 +15,7 @@ export const InvoicePaymentDetails = ({
   iban,
   bic,
   bank_name,
-}: components['schemas']['package__receivables__latest__receivables__ReceivablesRepresentationOfEntityBankAccount']) => {
+}: components['schemas']['ReceivablesRepresentationOfEntityBankAccount']) => {
   const { i18n } = useLingui();
 
   return (

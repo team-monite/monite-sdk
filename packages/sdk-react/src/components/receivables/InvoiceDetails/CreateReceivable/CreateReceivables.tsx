@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
+import { TemplateSettings } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
 import {
   BankAccountFormDialog,
@@ -265,7 +266,8 @@ const CreateReceivablesBase = ({
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
       counterpart_billing_address_id: values.default_billing_address_id ?? '',
-      counterpart_shipping_address_id: values.default_shipping_address_id ?? '',
+      counterpart_shipping_address_id:
+        values.default_shipping_address_id || undefined,
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -335,6 +337,7 @@ const CreateReceivablesBase = ({
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
+  const [isEditTemplateModalOpen, setIsEditTemplateModalOpen] = useState(false);
 
   const handleFieldChange = (fieldName: string, value: boolean) => {
     setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
@@ -483,6 +486,11 @@ const CreateReceivablesBase = ({
                       <Typography>{t(i18n)`Currency`}</Typography>
                       <Typography>{actualCurrency}</Typography>
                     </Box>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsEditTemplateModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Edit template settings`}</Typography>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setIsEnableFieldsModalOpen(true)}
@@ -905,6 +913,14 @@ const CreateReceivablesBase = ({
           reminderId={editReminderDialog.reminderId}
           reminderType={editReminderDialog.reminderType}
           onClose={closeUpdateReminderDialog}
+        />
+      )}
+
+      {isEditTemplateModalOpen && (
+        <TemplateSettings
+          isDialog
+          isOpen={isEditTemplateModalOpen}
+          handleCloseDialog={() => setIsEditTemplateModalOpen(false)}
         />
       )}
 
