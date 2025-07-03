@@ -2,7 +2,6 @@ import { useCallback, useEffect, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
   transformPermissionsToComponentFormat,
   createInitialPermissionsState,
@@ -13,6 +12,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -16,7 +16,6 @@ import {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -28,6 +27,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
+import { Dialog } from '@/ui/Dialog';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -287,6 +287,7 @@ const PayableDetailsFormBase = forwardRef<
       resolver: yupResolver(getValidationSchema(i18n)),
       context: formContext,
       defaultValues,
+      mode: 'onTouched',
     });
     const {
       control,
@@ -401,8 +402,11 @@ const PayableDetailsFormBase = forwardRef<
     ]);
 
     useEffect(() => {
-      trigger();
-    }, [trigger]);
+      // Trigger validation for existing payables (not new ones)
+      if (payable?.id) {
+        trigger();
+      }
+    }, [trigger, payable?.id]);
 
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();

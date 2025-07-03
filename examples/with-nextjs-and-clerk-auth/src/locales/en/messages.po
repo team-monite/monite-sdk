@@ -44,9 +44,9 @@ msgstr "Counterparts"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/components/NavigationMenu/NavigationList.tsx:82
-msgid "Document Design"
-msgstr "Document Design"
+#: src/components/NavigationMenu/NavigationList.tsx:70
+#~ msgid "Document Design"
+#~ msgstr "Document Design"
 
 #: src/components/NavigationMenu/NavigationList.tsx:79
 #~ msgid "Email Templates"
@@ -149,6 +149,10 @@ msgstr "Tags"
 #: src/components/NavigationMenu/NavigationList.tsx:64
 #~ msgid "Team"
 #~ msgstr "Team"
+
+#: src/components/NavigationMenu/NavigationList.tsx:82
+msgid "Template settings"
+msgstr "Template settings"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:99
 #~ msgid "Theme"

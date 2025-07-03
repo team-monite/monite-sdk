@@ -4,18 +4,18 @@ import { CreateCounterpartDialog } from '@/components/counterparts/components';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { CustomerTypes } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
-import { PageHeader } from '@/components/PageHeader';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 type CounterPartProps = {
   /** @see {@link CustomerTypes} */
@@ -31,8 +31,6 @@ export const Counterparts = (props: CounterPartProps) => (
 const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
-
-  const { buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
   const [openDetailsDialog, setOpenDetailsDialog] = useState<boolean>(false);
@@ -106,17 +104,16 @@ const CounterpartsBase = ({ customerTypes }: CounterPartProps) => {
           </>
         }
         extra={
-          <Box className={className + '-Actions'}>
+          <div className={className + '-Actions'}>
             <Button
-              {...buttonProps}
+              size="lg"
               onClick={() => setOpenCreateDialog(true)}
               className={className + '-Actions-CreateNew'}
-              variant="contained"
               disabled={!isCreateAllowed}
             >
-              {t(i18n)`Create New`}
+              {t(i18n)`Create new`}
             </Button>
-          </Box>
+          </div>
         }
       />
 

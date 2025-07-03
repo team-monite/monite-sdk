@@ -15,7 +15,13 @@ describe('TagFormModal', () => {
   test('should NOT create tag if the field is empty', async () => {
     const onCreateMock = jest.fn();
 
-    renderWithClient(<TagFormModal open={true} onCreate={onCreateMock} />);
+    renderWithClient(
+      <TagFormModal
+        open={true}
+        onCreate={onCreateMock}
+        isDeleteAllowed={false}
+      />
+    );
 
     const createButton = screen.getByRole('button', {
       name: t`Create`,
@@ -48,7 +54,12 @@ describe('TagFormModal', () => {
       const onCloseMock = jest.fn();
 
       renderWithClient(
-        <TagFormModal open onCreate={onCreateMock} onClose={onCloseMock} />
+        <TagFormModal
+          open
+          onCreate={onCreateMock}
+          onClose={onCloseMock}
+          isDeleteAllowed={false}
+        />
       );
 
       const form = screen.getByRole('form');
@@ -78,6 +89,7 @@ describe('TagFormModal', () => {
           open={true}
           onCreate={onCreateMock}
           onClose={onCloseMock}
+          isDeleteAllowed={false}
         />
       );
 
@@ -110,6 +122,7 @@ describe('TagFormModal', () => {
           open={true}
           onCreate={onCreateMock}
           onClose={onCloseMock}
+          isDeleteAllowed={false}
         />
       );
 
@@ -148,6 +161,7 @@ describe('TagFormModal', () => {
           }}
           onUpdate={onUpdateMock}
           onClose={onCloseMock}
+          isDeleteAllowed={true}
         />
       );
 
@@ -182,6 +196,7 @@ describe('TagFormModal', () => {
           }}
           onUpdate={onUpdateMock}
           onClose={onCloseMock}
+          isDeleteAllowed={true}
         />
       );
 
@@ -213,8 +228,9 @@ describe('TagFormModal', () => {
             id: 'tag-1',
             name: 'Tag name',
           }}
-          onCreate={onUpdateMock}
+          onUpdate={onUpdateMock}
           onClose={onCloseMock}
+          isDeleteAllowed={true}
         />
       );
 

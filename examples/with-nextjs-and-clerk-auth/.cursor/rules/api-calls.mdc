@@ -1,0 +1,221 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rules - API Calls
+
+## API Call Pattern
+
+### Always Use Monite Context
+**Never create custom API services or direct fetch calls**. Always use the provided API instance from `useMoniteContext`.
+
+### Import Pattern
+```tsx
+import { useMoniteContext } from '@/contexts/MoniteContext';
+// or the appropriate import path in your project
+```
+
+### Basic Usage
+```tsx
+const { api, entityId } = useMoniteContext();
+```
+
+## API Call Examples
+
+### ✅ CORRECT - Using Monite API Context
+
+#### Query Example (GET requests)
+```tsx
+import { useMoniteContext } from '@/contexts/MoniteContext';
+
+export function EntitySettings() {
+  const { api, entityId } = useMoniteContext();
+  
+  const { data: entitySettings, isLoading, error } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: entityId },
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div>
+      {/* Use entitySettings data */}
+    </div>
+  );
+}
+```
+
+#### Mutation Example (POST/PUT/DELETE requests)
+```tsx
+import { useMoniteContext } from '@/contexts/MoniteContext';
+
+export function UpdateEntity() {
+  const { api, entityId } = useMoniteContext();
+  
+  const updateMutation = api.entities.patchEntitiesId.useMutation();
+  
+  const handleUpdate = async (data: UpdateData) => {
+    try {
+      await updateMutation.mutateAsync({
+        path: { entity_id: entityId },
+        body: data,
+      });
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+  
+  return (
+    <Button 
+      onClick={() => handleUpdate({ name: 'New Name' })}
+      disabled={updateMutation.isLoading}
+    >
+      Update
+    </Button>
+  );
+}
+```
+
+#### Query with Parameters
+```tsx
+const { api, entityId } = useMoniteContext();
+
+const { data: invoices } = api.invoices.getInvoices.useQuery({
+  path: { entity_id: entityId },
+  query: {
+    limit: 10,
+    offset: 0,
+    sort: 'created_at',
+    order: 'desc',
+  },
+});
+```
+
+### ❌ INCORRECT - Custom API Services
+
+```tsx
+// DO NOT DO THIS
+import axios from 'axios';
+
+const getEntitySettings = async (entityId: string) => {
+  const response = await axios.get(`/api/entities/${entityId}/settings`);
+  return response.data;
+};
+
+// DO NOT DO THIS
+const fetchData = async () => {
+  const response = await fetch('/api/entities');
+  return response.json();
+};
+```
+
+## Common API Patterns
+
+### List Queries with Pagination
+```tsx
+const [page, setPage] = useState(0);
+const { api, entityId } = useMoniteContext();
+
+const { data: items } = api.resourceName.getResources.useQuery({
+  path: { entity_id: entityId },
+  query: {
+    limit: 20,
+    offset: page * 20,
+  },
+});
+```
+
+### Dependent Queries
+```tsx
+const { api, entityId } = useMoniteContext();
+
+const { data: entity } = api.entities.getEntitiesId.useQuery({
+  path: { entity_id: entityId },
+});
+
+const { data: settings } = api.entities.getEntitiesIdSettings.useQuery({
+  path: { entity_id: entityId },
+  // Only run this query after entity is loaded
+  enabled: !!entity,
+});
+```
+
+### Invalidating Queries After Mutations
+```tsx
+const { api, entityId } = useMoniteContext();
+const queryClient = useQueryClient();
+
+const createMutation = api.resource.postResource.useMutation({
+  onSuccess: () => {
+    // Invalidate and refetch related queries
+    queryClient.invalidateQueries(['resource', entityId]);
+  },
+});
+```
+
+### Error Handling
+```tsx
+const { api, entityId } = useMoniteContext();
+
+const { data, error, isError } = api.resource.getResource.useQuery({
+  path: { entity_id: entityId },
+  onError: (error) => {
+    console.error('API Error:', error);
+    // Show toast notification, etc.
+  },
+});
+
+if (isError) {
+  return <ErrorComponent error={error} />;
+}
+```
+
+## API Structure Guidelines
+
+1. **Always destructure** `api` and `entityId` from `useMoniteContext`
+2. **Use the dot notation** to access API endpoints: `api.domain.operation.useQuery/useMutation`
+3. **Pass parameters** in the appropriate object:
+   - `path`: URL path parameters
+   - `query`: Query string parameters
+   - `body`: Request body (for mutations)
+4. **Handle loading states** using `isLoading`, `isPending`, or similar flags
+5. **Handle errors** appropriately with error boundaries or inline error handling
+
+## TypeScript Support
+
+The API client should be fully typed. Let TypeScript guide you:
+- Autocomplete will show available endpoints
+- Type checking will ensure correct parameter structure
+- Response types will be automatically inferred
+
+## Best Practices
+
+1. **Never bypass the API context** - always use the provided instance
+2. **Use React Query hooks** (`useQuery`, `useMutation`) provided by the API
+3. **Handle all states**: loading, error, and success
+4. **Leverage query invalidation** for data consistency
+5. **Use proper error boundaries** for unexpected errors
+6. **Avoid redundant API calls** by using React Query's caching
+
+## Common Endpoints Pattern
+
+Based on the example, endpoints typically follow this pattern:
+- `api.[domain].[operation].useQuery()` for GET requests
+- `api.[domain].[operation].useMutation()` for POST/PUT/PATCH/DELETE
+
+Examples:
+- `api.entities.getEntitiesId.useQuery()`
+- `api.entities.patchEntitiesId.useMutation()`
+- `api.invoices.getInvoices.useQuery()`
+- `api.invoices.postInvoices.useMutation()`
+
+## Do NOT:
+- Create axios instances
+- Use fetch() directly  
+- Build custom API service layers
+- Manually construct API URLs
+- Handle authentication manually (it's handled by the context)
+- Create custom hooks that bypass the API context

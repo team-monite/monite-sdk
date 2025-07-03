@@ -9,23 +9,25 @@ import {
 } from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { Dialog } from '@/components/Dialog';
-import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/ui/components/dropdown-menu';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, Button, CircularProgress, Tab, Tabs } from '@mui/material';
+import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
+
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
 /**
  * ApprovalPolicies component
@@ -139,6 +141,7 @@ const RolesAndApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
 
   const [activeTab, setActiveTab] = useState<PageTabEnum>(PageTabEnum.Roles);
+  const [open, setOpen] = useState(false);
 
   const [state, dispatch] = useReducer(rolesPoliciesReducer, initialState);
 
@@ -200,40 +203,37 @@ const RolesAndApprovalPoliciesBase = () => {
           </>
         }
         extra={
-          <Box className={className + '-Actions'}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  className={className + '-Actions-CreateNew'}
-                  variant="contained"
-                  endIcon={<KeyboardArrowDownIcon />}
-                  disabled={!isCreateRoleAllowed && !isCreatePolicyAllowed}
-                >
-                  {t(i18n)`Create New`}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  disabled={!isCreateRoleAllowed}
-                  onClick={() => {
-                    setActiveTab(PageTabEnum.Roles);
-                    dispatch({ type: 'OPEN_ROLE_CREATE' });
-                  }}
-                >
-                  {t(i18n)`User role`}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={!isCreatePolicyAllowed}
-                  onClick={() => {
-                    setActiveTab(PageTabEnum.Policies);
-                    dispatch({ type: 'OPEN_POLICY_CREATE' });
-                  }}
-                >
-                  {t(i18n)`Approval policy`}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Box>
+          <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="lg"
+                disabled={!isCreateRoleAllowed && !isCreatePolicyAllowed}
+              >
+                {t(i18n)`Create new`}
+                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mtw:w-56" align="end">
+              <DropdownMenuItem
+                disabled={!isCreateRoleAllowed}
+                onClick={() => {
+                  setActiveTab(PageTabEnum.Roles);
+                  dispatch({ type: 'OPEN_ROLE_CREATE' });
+                }}
+              >
+                {t(i18n)`User role`}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={!isCreatePolicyAllowed}
+                onClick={() => {
+                  setActiveTab(PageTabEnum.Policies);
+                  dispatch({ type: 'OPEN_POLICY_CREATE' });
+                }}
+              >
+                {t(i18n)`Approval policy`}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         }
       />
 
