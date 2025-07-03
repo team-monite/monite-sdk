@@ -57,9 +57,19 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
 export const CounterpartIndividualForm = ({
   ...props
 }: CounterpartIndividualFormProps) => {
-  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+
+  const {
+    id: counterpartId,
+    isInvoiceCreation,
+    showCategories,
+    defaultValuesOCR,
+    defaultValues,
+    onCancel,
+    onClose,
+  } = props;
+
   const {
     counterpart,
     formRef,
@@ -68,21 +78,21 @@ export const CounterpartIndividualForm = ({
     isLoading,
   } = useCounterpartForm(props);
 
+  const individualCounterpart = counterpart as
+    | components['schemas']['CounterpartIndividualRootResponse']
+    | undefined;
+
   const { data: isCreateAllowed } = useIsActionAllowed({
     method: 'counterpart',
     action: 'create',
     entityUserId: counterpart?.created_by_entity_user_id,
   });
 
-  const individualCounterpart = counterpart as
-    | components['schemas']['CounterpartIndividualRootResponse']
-    | undefined;
-
-  const { showCategories, defaultValuesOCR, defaultValues } = props;
+  const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
 
   const methods = useForm({
     resolver: yupResolver(
-      props.id || individualCounterpart
+      counterpartId || individualCounterpart
         ? getUpdateIndividualValidationSchema(i18n)
         : getCreateIndividualValidationSchema(i18n)
     ),
@@ -159,28 +169,26 @@ export const CounterpartIndividualForm = ({
     defaultValuesOCR,
   ]);
 
-  const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
-
-  if (!isCreateAllowed && !props.id) {
+  if (!isCreateAllowed && !counterpartId) {
     return <AccessRestriction />;
   }
 
   return (
     <>
-      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !counterpartId) || !isInvoiceCreation) && (
         <DialogHeader
           secondaryLevel
           title={
             isInvoiceCreation
               ? t(i18n)`Create customer`
-              : props?.id
+              : counterpartId
               ? t(i18n)`Edit individual`
               : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose
           }
           showDivider={!isInvoiceCreation}
         />
@@ -387,16 +395,16 @@ export const CounterpartIndividualForm = ({
       </DialogContent>
       <DialogFooter
         primaryButton={{
-          label: props.id ? t(i18n)`Save` : t(i18n)`Create`,
+          label: counterpartId ? t(i18n)`Save` : t(i18n)`Create`,
           formId: formName,
           isLoading: isLoading,
         }}
         cancelButton={{
           label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
           onClick:
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose,
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose,
         }}
       />
     </>
