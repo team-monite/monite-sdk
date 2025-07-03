@@ -368,6 +368,9 @@ const PayableDetailsFormBase = forwardRef<
           enabled: Boolean(payable?.id),
         }
       );
+    const counterpartEditShowInlineSuggestions =
+      payableAISuggestions?.suggested_counterpart &&
+      payableAISuggestions.suggested_counterpart.id === currentCounterpart;
 
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
@@ -907,6 +910,11 @@ const PayableDetailsFormBase = forwardRef<
             id={currentCounterpart}
             customerTypes={
               customerTypes || componentSettings?.counterparts?.customerTypes
+            }
+            payableCounterpartRawData={
+              counterpartEditShowInlineSuggestions
+                ? payable?.counterpart_raw_data
+                : undefined
             }
           />
         </Dialog>
