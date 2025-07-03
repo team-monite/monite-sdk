@@ -217,6 +217,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCROrganization
             }
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -234,6 +235,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     shouldShowCategories,
     showView,
     props.defaultValuesOCR,
+    props.payableCounterpartRawData,
     props.onClose,
     props.onReturn,
   ]);
