@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { getIndividualName, getUserDisplayName } from '@/core/utils';
+import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { type Theme } from '@monite/sdk-react/mui-styles';
 import { type SxProps, Box, Typography } from '@mui/material';
 

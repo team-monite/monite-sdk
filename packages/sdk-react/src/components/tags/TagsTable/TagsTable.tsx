@@ -117,12 +117,6 @@ const TagsTableBase = ({
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isUpdateAllowed } = useIsActionAllowed({
-    method: 'tag',
-    action: 'update',
-    entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
-  });
-
   const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'tag',
     action: 'delete',
