@@ -287,6 +287,7 @@ const PayableDetailsFormBase = forwardRef<
       resolver: yupResolver(getValidationSchema(i18n)),
       context: formContext,
       defaultValues,
+      mode: 'onTouched',
     });
     const {
       control,
@@ -401,8 +402,11 @@ const PayableDetailsFormBase = forwardRef<
     ]);
 
     useEffect(() => {
-      trigger();
-    }, [trigger]);
+      // Trigger validation for existing payables (not new ones)
+      if (payable?.id) {
+        trigger();
+      }
+    }, [trigger, payable?.id]);
 
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
