@@ -7,7 +7,7 @@ import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
-  ApprovalPolicyScriptType,
+  type ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {

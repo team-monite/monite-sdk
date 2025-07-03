@@ -2,7 +2,6 @@ import { FieldValue, FieldValues } from 'react-hook-form';
 
 import { components } from '@/api';
 import {
-  getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
@@ -13,6 +12,7 @@ import {
 } from '@/components/payables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
+import { getIndividualName } from '@/core/utils';
 
 import { format } from 'date-fns';
 
@@ -307,6 +307,7 @@ export interface MonitePayableDetailsInfoProps {
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
   isTagsDisabled?: boolean;
+  roleDesignVariant?: 'old' | 'new';
 }
 
 export const usePayableDetailsThemeProps = (
@@ -325,6 +326,7 @@ export const usePayableDetailsThemeProps = (
       componentSettings?.payables?.ocrMismatchFields,
     isTagsDisabled:
       inProps?.isTagsDisabled ?? componentSettings?.payables?.isTagsDisabled,
+    roleDesignVariant: inProps?.roleDesignVariant ?? 'old',
   };
 };
 

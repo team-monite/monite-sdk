@@ -4,14 +4,17 @@ import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useCounterpartById } from '@/core/queries';
+import { DropdownMenu } from '@/ui/DropdownMenu';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps, Box } from '@mui/material';
 
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { PayableDetailsCancelModal } from '../PayableDetailsCancelModal';
 import { PayableDetailsPermissions } from '../usePayableDetails';
+
+type ForcedActions = 'forceApprove' | 'forceReject';
 
 export interface PayablesDetailsHeaderProps {
   payable?: components['schemas']['PayableResponseSchema'];
@@ -21,6 +24,8 @@ export interface PayablesDetailsHeaderProps {
   submitInvoice: () => void;
   rejectInvoice: () => void;
   approveInvoice: () => void;
+  forceRejectInvoice: () => void;
+  forceApproveInvoice: () => void;
   cancelInvoice: () => void;
   reopenInvoice: () => void;
   deleteInvoice: () => void;
@@ -40,6 +45,8 @@ export const PayableDetailsHeader = ({
   submitInvoice,
   rejectInvoice,
   approveInvoice,
+  forceRejectInvoice,
+  forceApproveInvoice,
   cancelInvoice,
   reopenInvoice,
   deleteInvoice,
@@ -118,6 +125,17 @@ export const PayableDetailsHeader = ({
       disabled: !showPayButton,
       children: t(i18n)`Pay`,
     },
+    forceApprove: {
+      variant: 'outlined',
+      onClick: forceApproveInvoice,
+      children: t(i18n)`Force Approve`,
+    },
+    forceReject: {
+      variant: 'outlined',
+      color: 'error',
+      onClick: forceRejectInvoice,
+      children: t(i18n)`Force Reject`,
+    },
   };
 
   const className = 'Monite-PayableDetails-Header';
@@ -133,16 +151,61 @@ export const PayableDetailsHeader = ({
       : `${t(i18n)`Bill`} #${payable.document_id}`
     : t(i18n)`New incoming invoice`;
 
-  const actions =
-    (!payable || !isPayableInOCRProcessing(payable)) &&
-    permissions.map((permission) => {
-      const { children, ...restProps } = buttonsByPermissions[permission];
-      return (
-        <Button key={permission} {...restProps}>
-          {children}
-        </Button>
-      );
+  let actions: ReactNode = null;
+  if (!payable || !isPayableInOCRProcessing(payable)) {
+    const normalActions = permissions.filter(
+      (p) => p === 'approve' || p === 'reject'
+    );
+    const forceActions = permissions.filter(
+      (p) => p === 'forceApprove' || p === 'forceReject'
+    );
+    const forceActionsOrdered = (
+      ['forceApprove', 'forceReject'] as ForcedActions[]
+    ).filter((p) => forceActions.includes(p));
+    const forceDropdownItems = forceActionsOrdered.map((permission) => {
+      const { children, onClick } = buttonsByPermissions[permission];
+      return {
+        key: permission,
+        label: children,
+        onClick: onClick as
+          | ((event: React.MouseEvent<HTMLElement>) => void)
+          | undefined,
+        sx: {
+          color: permission === 'forceReject' ? 'error.main' : 'text.primary',
+        },
+      };
     });
+    const otherActions = permissions.filter(
+      (p) => !['approve', 'reject', 'forceApprove', 'forceReject'].includes(p)
+    );
+
+    actions = (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        {otherActions.map((permission) => {
+          const { children, ...restProps } = buttonsByPermissions[permission];
+          return (
+            <Button key={permission} {...restProps}>
+              {children}
+            </Button>
+          );
+        })}
+
+        {normalActions.length > 0 &&
+          normalActions.map((permission) => {
+            const { children, ...restProps } = buttonsByPermissions[permission];
+            return (
+              <Button key={permission} {...restProps}>
+                {children}
+              </Button>
+            );
+          })}
+
+        {forceActionsOrdered.length > 0 && (
+          <DropdownMenu items={forceDropdownItems} />
+        )}
+      </Box>
+    );
+  }
 
   return (
     <>

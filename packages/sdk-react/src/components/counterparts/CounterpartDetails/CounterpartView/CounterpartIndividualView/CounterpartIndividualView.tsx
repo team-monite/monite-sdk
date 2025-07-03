@@ -4,12 +4,12 @@ import {
   type CounterpartShowCategories,
   CounterpartDataTestId,
 } from '@/components/counterparts/types';
+import { getIndividualName } from '@/core/utils';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CardActions, Divider } from '@mui/material';
 
-import { getIndividualName } from '../../../helpers';
 import { CounterpartIndividualFields } from '../../CounterpartForm';
 import { printCounterpartType } from '../../helpers';
 
