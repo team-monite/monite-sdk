@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useDialog } from '@/components/Dialog';
+import { useDialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';

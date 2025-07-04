@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 
-import { TemplateSettings } from '@/components/MoniteComponents';
+import { DocumentDesign } from '@/components/MoniteComponents';
 
-export default function TemplateSettingsPage() {
+export default function DocumentDesignPage() {
   return (
     <Box className="Monite-PageContainer Monite-InvoiceDesign">
-      <TemplateSettings />
+      <DocumentDesign />
     </Box>
   );
 }

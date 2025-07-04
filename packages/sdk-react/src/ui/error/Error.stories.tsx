@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useDialog } from '@/components/Dialog';
+import { useDialog } from '@/ui/Dialog';
 import { Button } from '@mui/material';
 import { ErrorBoundary } from '@sentry/react';
 import { action } from '@storybook/addon-actions';

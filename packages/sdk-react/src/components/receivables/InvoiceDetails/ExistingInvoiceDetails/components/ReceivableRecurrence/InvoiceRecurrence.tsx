@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 
-import { Dialog } from '@/components/Dialog';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert, Button, Card, Grid, Skeleton, Typography } from '@mui/material';

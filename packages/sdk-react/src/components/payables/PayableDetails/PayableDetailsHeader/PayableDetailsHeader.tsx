@@ -21,8 +21,6 @@ export interface PayablesDetailsHeaderProps {
   submitInvoice: () => void;
   rejectInvoice: () => void;
   approveInvoice: () => void;
-  forceRejectInvoice: () => void;
-  forceApproveInvoice: () => void;
   cancelInvoice: () => void;
   reopenInvoice: () => void;
   deleteInvoice: () => void;
@@ -30,8 +28,6 @@ export interface PayablesDetailsHeaderProps {
   /** The "id" of the form used to edit the Payable */
   payableDetailsFormId: string;
   onClose?: () => void;
-  isPaymentLinkAvailable: boolean;
-  isProcessingPayment: boolean;
   modalComponent: ReactNode;
 }
 
@@ -43,15 +39,11 @@ export const PayableDetailsHeader = ({
   submitInvoice,
   rejectInvoice,
   approveInvoice,
-  forceRejectInvoice,
-  forceApproveInvoice,
   cancelInvoice,
   reopenInvoice,
   deleteInvoice,
   payInvoice,
   payableDetailsFormId,
-  isPaymentLinkAvailable,
-  isProcessingPayment,
   onClose,
   modalComponent,
 }: PayablesDetailsHeaderProps) => {
@@ -121,19 +113,7 @@ export const PayableDetailsHeader = ({
     pay: {
       variant: 'contained',
       onClick: payInvoice,
-      disabled: !isPaymentLinkAvailable || isProcessingPayment,
       children: t(i18n)`Pay`,
-    },
-    forceReject: {
-      variant: 'outlined',
-      color: 'error',
-      onClick: forceRejectInvoice,
-      children: t(i18n)`Force Reject`,
-    },
-    forceApprove: {
-      variant: 'outlined',
-      onClick: forceApproveInvoice,
-      children: t(i18n)`Force Approve`,
     },
   };
 

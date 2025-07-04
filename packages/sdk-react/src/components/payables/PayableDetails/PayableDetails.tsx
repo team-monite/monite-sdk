@@ -57,7 +57,6 @@ const PayableDetailsBase = ({
     lineItems,
     isEdit,
     isLoading,
-    isProcessingPayment,
     actions: {
       setEdit,
       createInvoice,
@@ -66,13 +65,10 @@ const PayableDetailsBase = ({
       payInvoice,
       rejectInvoice,
       approveInvoice,
-      forceRejectInvoice,
-      forceApproveInvoice,
       cancelInvoice,
       reopenInvoice,
       deleteInvoice,
       updateTags,
-      isPaymentLinkAvailable,
       modalComponent,
     },
   } = usePayableDetails({
@@ -150,16 +146,12 @@ const PayableDetailsBase = ({
           submitInvoice={submitInvoice}
           rejectInvoice={rejectInvoice}
           approveInvoice={approveInvoice}
-          forceRejectInvoice={forceRejectInvoice}
-          forceApproveInvoice={forceApproveInvoice}
           reopenInvoice={reopenInvoice}
           cancelInvoice={cancelInvoice}
           deleteInvoice={deleteInvoice}
           payInvoice={payInvoice}
           payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
-          isPaymentLinkAvailable={isPaymentLinkAvailable}
-          isProcessingPayment={isProcessingPayment}
           modalComponent={modalComponent}
         />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>

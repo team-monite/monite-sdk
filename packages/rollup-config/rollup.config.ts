@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
 import path from 'path';
@@ -75,6 +76,11 @@ export const rollupConfig = (
         inlineDynamicImports: true,
       },
       plugins: [
+        replace({
+          preventAssignment: true,
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+          'process.env.ENABLE_SENTRY': JSON.stringify(process.env.ENABLE_SENTRY),
+        }),
         json(),
         image(),
         options?.typescriptPaths && typescriptPaths(options.typescriptPaths),
@@ -222,6 +228,11 @@ export const rollupConfig = (
         inlineDynamicImports: true,
       },
       plugins: [
+        replace({
+          preventAssignment: true,
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+          'process.env.ENABLE_SENTRY': JSON.stringify(process.env.ENABLE_SENTRY),
+        }),
         json(),
         image(),
         options?.typescriptPaths && typescriptPaths(options.typescriptPaths),

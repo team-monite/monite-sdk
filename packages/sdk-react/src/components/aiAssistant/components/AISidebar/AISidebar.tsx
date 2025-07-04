@@ -5,9 +5,9 @@ import { AISidebarSkeleton } from '@/components/aiAssistant/components/AISidebar
 import { SearchChatModal } from '@/components/aiAssistant/components/SearchChatModal/SearchChatModal';
 import { Conversation } from '@/components/aiAssistant/types';
 import { createConversationGroups } from '@/components/aiAssistant/utils/aiAssistant';
-import { Dialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsMobile } from '@/core/hooks/useMobile';
+import { Dialog } from '@/ui/Dialog';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

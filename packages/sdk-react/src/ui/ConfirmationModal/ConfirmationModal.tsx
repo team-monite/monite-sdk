@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Dialog } from '@/components/Dialog/Dialog';
+import { Dialog } from '@/ui/Dialog/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

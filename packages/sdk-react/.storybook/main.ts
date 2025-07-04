@@ -8,6 +8,8 @@ import fs from 'fs';
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-interactions',
     '@storybook/addon-essentials',
     '@storybook/addon-docs',
     '@storybook/addon-actions',
@@ -36,7 +38,7 @@ const config: StorybookConfig = {
     if (providePlugin) {
       console.log('[Storybook webpackFinal for sdk-react] Found existing ProvidePlugin. Augmenting definitions.');
       providePlugin.definitions.Buffer = ['buffer', 'Buffer'];
-      providePlugin.definitions.process = providePlugin.definitions.process || 'process/browser'; 
+      providePlugin.definitions.process = providePlugin.definitions.process || 'process/browser';
     } else {
       console.log('[Storybook webpackFinal for sdk-react] No existing ProvidePlugin found. Adding a new one.');
       config.plugins.push(
@@ -46,36 +48,14 @@ const config: StorybookConfig = {
         })
       );
     }
- 
-    let definePlugin = config.plugins.find(
-      (plugin) => plugin && plugin.constructor && plugin.constructor.name === 'DefinePlugin'
-    ) as DefinePlugin | undefined;
 
-    const ourDefinitions = {
-      'process.versions': JSON.stringify({ node: undefined }),
-      'process.versions.node': undefined,
-      'process.platform': JSON.stringify('browser'),
-      'process.env': JSON.stringify(
-        definePlugin && definePlugin.definitions && definePlugin.definitions['process.env'] 
-        ? { ...(typeof definePlugin.definitions['process.env'] === 'object' ? definePlugin.definitions['process.env'] : {}), NODE_ENV: process.env.NODE_ENV || 'development' } 
-        : { NODE_ENV: process.env.NODE_ENV || 'development' }
-      ),
-      'window.JS_SHA256_NO_NODE_JS': JSON.stringify(true),
-      'global.JS_SHA256_NO_NODE_JS': JSON.stringify(true),
-      'self.JS_SHA256_NO_NODE_JS': JSON.stringify(true)
-    };
+    config.plugins.push(new DefinePlugin({
+      'process.env': JSON.stringify({
+        NODE_ENV: process.env.NODE_ENV || 'development',
+        ENABLE_SENTRY: process.env.ENABLE_SENTRY || '',
+      })
+    }));
 
-    if (definePlugin) {
-      console.log('[Storybook webpackFinal for sdk-react] Found existing DefinePlugin. Augmenting definitions.');
-      for (const key in ourDefinitions) {
-        // @ts-ignore 
-        definePlugin.definitions[key] = ourDefinitions[key];
-      }
-    } else {
-      console.log('[Storybook webpackFinal for sdk-react] No existing DefinePlugin found. Adding a new one.');
-      config.plugins.push(new webpack.DefinePlugin(ourDefinitions));
-    }
-    
     const initialPluginCount = config.plugins.length;
     config.plugins = config.plugins.filter(
       (plugin) => plugin && plugin.constructor && plugin.constructor.name !== 'NodePolyfillPlugin'
@@ -107,7 +87,6 @@ const config: StorybookConfig = {
         (field: string) => !['module', 'browser', 'main'].includes(field)
       ),
     ].filter((value, index, self) => self.indexOf(value) === index); // Ensure uniqueness
-
 
     const newFallbacks: { [index: string]: string | false } = {
       process: require.resolve('process/browser'),

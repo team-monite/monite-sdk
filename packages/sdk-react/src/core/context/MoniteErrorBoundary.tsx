@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { useDialog } from '@/components/Dialog/DialogContext';
+import { useDialog } from '@/ui/Dialog/DialogContext';
 import { ErrorComponent } from '@/ui/error/Error';
 import { ErrorBoundary } from '@sentry/react';
 

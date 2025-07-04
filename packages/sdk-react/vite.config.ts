@@ -20,6 +20,9 @@ export default defineConfig({
     linguiPlugin({ cwd: __dirname }),
     tsconfigPaths(),
   ],
+  define: {
+    'process.env.ENABLE_SENTRY': JSON.stringify(process.env.ENABLE_SENTRY),
+  },
   resolve: {
     alias: {
       '@/': path.resolve(__dirname, 'src'),

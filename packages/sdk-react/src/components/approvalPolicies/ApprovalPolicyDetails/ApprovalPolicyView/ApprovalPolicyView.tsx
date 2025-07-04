@@ -11,8 +11,8 @@ import {
   useApprovalPolicyTrigger,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { useDialog } from '@/components/Dialog/DialogContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useDialog } from '@/ui/Dialog/DialogContext';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t, Trans } from '@lingui/macro';
