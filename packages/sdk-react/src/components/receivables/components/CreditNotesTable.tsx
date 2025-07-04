@@ -58,7 +58,7 @@ type CreditNotesTableProps = {
 };
 
 export interface CreditNotesTableSortModel {
-  field: components['schemas']['api__v1__receivables__pagination__ReceivableCursorFields'];
+  field: components['schemas']['ReceivableCursorFields'];
   sort: NonNullable<GridSortDirection>;
 }
 
