@@ -66,7 +66,7 @@ export type FinancedInvoicesTableProps =
   | (UseInvoiceRowActionMenuCellProps & FinancedInvoicesTableBaseProps);
 
 export interface ReceivableGridSortModel {
-  field: components['schemas']['ReceivableCursorFields'];
+  field: components['schemas']['api__v1__receivables__pagination__ReceivableCursorFields'];
   sort: NonNullable<GridSortDirection>;
 }
 

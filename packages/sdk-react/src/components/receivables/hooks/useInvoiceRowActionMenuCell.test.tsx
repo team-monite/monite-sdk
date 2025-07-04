@@ -98,7 +98,7 @@ describe('useInvoiceRowActionMenuCell', () => {
       [key in InvoicesTableRowAction]: true;
     }) as InvoicesTableRowAction[];
 
-    const fullPermissions: components['schemas']['ActionSchema'][] = [
+    const fullPermissions: components['schemas']['PayableActionSchema'][] = [
       {
         action_name: 'create',
         permission: 'allowed',

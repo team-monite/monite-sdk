@@ -37,10 +37,11 @@ export const AIAssistantChatProvider = ({
   setIsNewChat,
 }: ChatProviderProps) => {
   const { apiUrl, fetchToken, api, queryClient } = useMoniteContext();
+
   const { data: conversation } =
-    api.ai.fetchConversationMessages.useQuery<ConversationHistory>(
+    api.ai.getAiConversationsId.useQuery<ConversationHistory>(
       {
-        path: { conversationId },
+        path: { conversation_id: conversationId },
       },
       { enabled: !isNewChat }
     );
@@ -69,7 +70,7 @@ export const AIAssistantChatProvider = ({
         return;
       }
 
-      await api.ai.fetchConversations.invalidateQueries(queryClient);
+      await api.ai.getAiConversations.invalidateQueries(queryClient);
       setIsNewChat(false);
     },
   });

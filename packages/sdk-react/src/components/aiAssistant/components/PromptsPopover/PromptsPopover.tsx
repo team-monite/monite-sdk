@@ -1,4 +1,4 @@
-import React, { type FC, type RefObject, useMemo } from 'react';
+import { type RefObject, useMemo } from 'react';
 
 import { getDefaultPrompts } from '@/components/aiAssistant/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -17,17 +17,17 @@ interface PromptsPopoverProps {
   onPromptInsert: (template: string) => void;
 }
 
-export const PromptsPopover: FC<PromptsPopoverProps> = ({
+export const PromptsPopover = ({
   editorRef,
   popoverAnchorEl,
   showPrompts,
   closePrompts,
   onPromptInsert,
-}) => {
+}: PromptsPopoverProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { data } = api.ai.fetchPrompts.useQuery<{
+  const { data } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 

@@ -78,7 +78,7 @@ function generatePayable(
     updated_at: faker.date.past().toString(),
     other_extracted_data: {
       type: 'invoice',
-      total: 290400,
+      total_raw: 290400,
       currency: 'NGN',
       total_paid_amount_raw: 290400,
       counterpart_name: 'Test IO',
@@ -90,29 +90,24 @@ function generatePayable(
       document_due_date: '2023-03-19',
       counterpart_address_object: {
         country: undefined,
-        original_country_name: undefined,
         city: 'Sydney',
         postal_code: undefined,
         state: undefined,
         line1: 'Sydney mr Street 123',
         line2: undefined,
       },
-      line_items: [
+      line_items_raw: [
         {
           description: 'price for product',
           quantity: 12,
           unit_price: 12000,
-          unit: undefined,
-          vat_percentage: undefined,
-          total_excl_vat: 158400,
+          item_adjusted: false,
         },
         {
           description: 'Services , Products & Goods | Export',
           quantity: 120,
           unit_price: 1100,
-          unit: undefined,
-          vat_percentage: undefined,
-          total_excl_vat: 132000,
+          item_adjusted: false,
         },
       ],
     },

@@ -114,7 +114,9 @@ const getInvoiceActionMenuItems = ({
 }: {
   invoice: components['schemas']['InvoiceResponsePayload'];
   actions?: Partial<InvoicesTableRowActionSchema>;
-  receivableActionSchema: components['schemas']['ActionSchema'][] | undefined;
+  receivableActionSchema:
+    | components['schemas']['PayableActionSchema'][]
+    | undefined;
   userIdFromAuthToken: string | undefined;
   i18n: I18n;
 }): InvoicesTableRowActionMenuItem[] => {
@@ -139,7 +141,7 @@ const getInvoiceActionMenuItems = ({
 };
 
 export const filterInvoiceActionMenuAllowedItems = (
-  actionSchema: components['schemas']['ActionSchema'][] | undefined,
+  actionSchema: components['schemas']['PayableActionSchema'][] | undefined,
   menuItemsToFilter: InvoicesTableRowAction[],
   invoice: components['schemas']['InvoiceResponsePayload'],
   userIdFromAuthToken: string | undefined
@@ -149,7 +151,9 @@ export const filterInvoiceActionMenuAllowedItems = (
   ) =>
     isActionAllowed({
       action,
-      actions: actionSchema as Array<components['schemas']['ActionSchema']>,
+      actions: actionSchema as Array<
+        components['schemas']['PayableActionSchema']
+      >,
       entityUserId: invoice.entity_user_id,
       entityUserIdFromAuthToken: userIdFromAuthToken,
     });

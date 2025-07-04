@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { type FC, type MouseEvent, useEffect, useState } from 'react';
+import { type MouseEvent, useEffect, useState } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
@@ -20,11 +19,11 @@ interface AssistantButtonsProps {
   content: string;
 }
 
-export const AssistantButtons: FC<AssistantButtonsProps> = ({
+export const AssistantButtons = ({
   showActionButtons,
   id,
   content,
-}) => {
+}: AssistantButtonsProps) => {
   const { i18n } = useLingui();
 
   const [isFeedbackFormOpen, setIsFeedbackFormOpen] = useState(false);
@@ -33,7 +32,7 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
 
   const { api } = useMoniteContext();
 
-  const { mutate: postFeedback } = api.ai.postFeedback.useMutation();
+  const { mutate: postFeedback } = api.ai.postAiMessageFeedbacks.useMutation();
 
   const handleCopyToClipboard = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -137,7 +136,10 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
       </div>
 
       {isFeedbackFormOpen && (
-        <FeedbackForm id={id} setIsFeedbackFormOpen={setIsFeedbackFormOpen} />
+        <FeedbackForm
+          conversationId={id}
+          onSuccess={() => setIsFeedbackFormOpen(false)}
+        />
       )}
     </>
   );

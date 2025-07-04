@@ -10,16 +10,14 @@ export const InvoiceRecurrenceDetails = ({
   viewAll,
   recurrence: {
     status,
-    start_year,
-    start_month,
-    end_year,
-    end_month,
+    start_date,
+    end_date,
     day_of_month,
     current_iteration,
     iterations,
   },
 }: {
-  recurrence: components['schemas']['Recurrence'];
+  recurrence: components['schemas']['RecurrenceResponse'];
   viewAll: ReactNode;
 }) => {
   const { i18n } = useLingui();
@@ -33,7 +31,7 @@ export const InvoiceRecurrenceDetails = ({
     <>
       <MoniteCardItem
         label={t(i18n)`Start date`}
-        value={t(i18n)`${i18n.date(new Date(start_year, start_month - 1, 1), {
+        value={t(i18n)`${i18n.date(new Date(start_date), {
           month: 'long',
           year: 'numeric',
         })}`}
@@ -41,10 +39,14 @@ export const InvoiceRecurrenceDetails = ({
 
       <MoniteCardItem
         label={t(i18n)`End date`}
-        value={t(i18n)`${i18n.date(new Date(end_year, end_month - 1, 1), {
-          month: 'long',
-          year: 'numeric',
-        })}`}
+        value={
+          end_date
+            ? t(i18n)`${i18n.date(new Date(end_date), {
+                month: 'long',
+                year: 'numeric',
+              })}`
+            : '–'
+        }
       />
 
       <MoniteCardItem

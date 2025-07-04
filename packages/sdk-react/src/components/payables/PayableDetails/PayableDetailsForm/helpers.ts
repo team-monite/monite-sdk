@@ -269,14 +269,14 @@ export const isOcrMismatch = (
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
 
-  if (!other_extracted_data || !('total' in other_extracted_data)) {
+  if (!other_extracted_data || !('total_raw' in other_extracted_data)) {
     return {
       isAmountMismatch: false,
       isBankAccountMismatch: false,
     };
   }
 
-  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
+  const { total_raw: ocrTotal, counterpart_account_id: ocrBankAccountId } =
     other_extracted_data;
 
   const isAmountMismatch = amount_to_pay !== ocrTotal;

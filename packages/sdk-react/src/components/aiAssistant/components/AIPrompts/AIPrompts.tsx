@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { PromptList } from '@/components/aiAssistant/components/PromptList/PromptList';
 import { PromptListSkeleton } from '@/components/aiAssistant/components/PromptListSkeleton/PromptListSkeleton';
 import { Prompt } from '@/components/aiAssistant/types';
@@ -8,10 +6,10 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 export const AIPrompts = ({ isConversationIdLoading = false }) => {
-  const { api } = useMoniteContext();
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
 
-  const { data, isLoading } = api.ai.fetchPrompts.useQuery<{
+  const { data, isLoading } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 

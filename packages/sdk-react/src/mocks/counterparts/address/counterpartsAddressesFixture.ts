@@ -20,7 +20,6 @@ function generateRandomAddress(
       state: faker.location.state(),
       line1: faker.location.street(),
       line2: faker.location.streetAddress(),
-      is_default: index === 0,
       counterpart_id: counterpartId,
       id: faker.string.uuid(),
     })),
@@ -55,7 +54,6 @@ export const counterpartsAddressesFixture = counterpartListFixture
         line2: faker.location.streetAddress(),
         id: 'aa5a332e-7af1-401f-a741-df2c494f6e47',
         counterpart_id: organizationId,
-        is_default: true,
       },
     ],
   });

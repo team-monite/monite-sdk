@@ -3,7 +3,8 @@ import { UseFormGetValues, UseFormReset } from 'react-hook-form';
 
 import { components } from '@/api';
 
-type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnit =
+  components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];
 
 interface ExtendedLineItem {
   product: {

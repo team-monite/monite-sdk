@@ -1,9 +1,7 @@
-import React from 'react';
-
-import { Prompt } from '@/components';
 import { AssistantLogo } from '@/components/aiAssistant/components/AssistantLogo/AssistantLogo';
 import { PromptList } from '@/components/aiAssistant/components/PromptList/PromptList';
 import { PromptListSkeleton } from '@/components/aiAssistant/components/PromptListSkeleton/PromptListSkeleton';
+import { type Prompt } from '@/components/aiAssistant/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,10 +9,10 @@ import { useLingui } from '@lingui/react';
 import { SquarePen } from 'lucide-react';
 
 export const AIStartScreen = ({ isConversationIdLoading = false }) => {
-  const { api } = useMoniteContext();
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
 
-  const { data, isLoading } = api.ai.fetchPrompts.useQuery<{
+  const { data, isLoading } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 

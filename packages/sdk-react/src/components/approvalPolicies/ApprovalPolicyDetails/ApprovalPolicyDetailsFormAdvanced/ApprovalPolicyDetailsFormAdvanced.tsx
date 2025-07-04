@@ -162,6 +162,7 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
                     ? values.script
                     : `[${values.script}]`
                 ),
+                priority: 0,
               };
 
               isUpdate

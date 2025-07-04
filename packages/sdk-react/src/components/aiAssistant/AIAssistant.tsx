@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   AIAssistantChatProvider,
@@ -30,10 +30,10 @@ const AIAssistantBase = () => {
   const [isNewChat, setIsNewChat] = useState(true);
 
   const { mutateAsync: fetchConversationId, isPending } =
-    api.ai.createConversation.useMutation();
+    api.ai.postAiConversations.useMutation();
 
   const getConversationId = useCallback(async () => {
-    const { id: conversationId } = await fetchConversationId({});
+    const { id: conversationId } = await fetchConversationId();
 
     if (!conversationId) {
       return;

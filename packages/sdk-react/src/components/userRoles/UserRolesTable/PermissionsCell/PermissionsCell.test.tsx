@@ -9,16 +9,17 @@ const NOT_ALLOWED_PERMISSION = '-';
 
 describe('PermissionsCell', () => {
   test("should render 'R' for allowed read permission and '-' for not allowed create permission", () => {
-    const actions: components['schemas']['ActionSchema'][] = [
-      {
-        action_name: 'read',
-        permission: 'allowed',
-      },
-      {
-        action_name: 'create',
-        permission: 'not_allowed',
-      },
-    ];
+    const actions: components['schemas']['package__roles__head__schemas__ActionSchema'][] =
+      [
+        {
+          action_name: 'read',
+          permission: 'allowed',
+        },
+        {
+          action_name: 'create',
+          permission: 'not_allowed',
+        },
+      ];
 
     const permissions: components['schemas']['BizObjectsSchema-Input'] = {
       objects: [
@@ -39,16 +40,17 @@ describe('PermissionsCell', () => {
   });
 
   test('tooltip should contain action names when a permission letter is hovered over', async () => {
-    const actions: components['schemas']['ActionSchema'][] = [
-      {
-        action_name: 'read',
-        permission: 'allowed',
-      },
-      {
-        action_name: 'create',
-        permission: 'not_allowed',
-      },
-    ];
+    const actions: components['schemas']['package__roles__head__schemas__ActionSchema'][] =
+      [
+        {
+          action_name: 'read',
+          permission: 'allowed',
+        },
+        {
+          action_name: 'create',
+          permission: 'not_allowed',
+        },
+      ];
 
     const permissions: components['schemas']['BizObjectsSchema-Input'] = {
       objects: [
