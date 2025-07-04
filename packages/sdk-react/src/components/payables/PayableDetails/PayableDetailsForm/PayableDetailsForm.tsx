@@ -308,12 +308,7 @@ const PayableDetailsFormBase = forwardRef<
     const currentLineItems = watch('lineItems');
     const currentDiscount = watch('discount');
 
-    const totals = calculateTotalsForPayable(
-      currentLineItems,
-      currentDiscount
-        ? formatFromMinorUnits(currentDiscount, currentCurrency)
-        : null
-    );
+    const totals = calculateTotalsForPayable(currentLineItems, currentDiscount);
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -437,12 +432,15 @@ const PayableDetailsFormBase = forwardRef<
                 isSubmittedByKeyboardRef.current = event.key === 'Enter';
               }}
               onSubmit={handleSubmit(async (values) => {
-                const invoiceData = prepareSubmit({
-                  ...values,
-                  counterpartAddressId: counterpartQuery.data?.data?.find(
-                    ({ id }) => id === values.counterpart
-                  )?.default_billing_address_id,
-                });
+                const invoiceData = prepareSubmit(
+                  {
+                    ...values,
+                    counterpartAddressId: counterpartQuery.data?.data?.find(
+                      ({ id }) => id === values.counterpart
+                    )?.default_billing_address_id,
+                  },
+                  formatToMinorUnits
+                );
 
                 if (payable) {
                   savePayable &&
@@ -826,9 +824,9 @@ const PayableDetailsFormBase = forwardRef<
                                       id={field.name}
                                       variant="standard"
                                       type="number"
-                                      inputProps={{ min: 0 }}
+                                      inputProps={{ min: 0, step: 0.01 }}
                                       error={Boolean(error)}
-                                      sx={{ width: 100 }}
+                                      sx={{ width: 150 }}
                                       InputProps={{
                                         endAdornment:
                                           getSymbolFromCurrency(

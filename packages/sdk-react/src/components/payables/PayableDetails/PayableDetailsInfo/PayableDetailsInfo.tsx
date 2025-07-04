@@ -445,12 +445,12 @@ const PayableDetailsInfoBase = ({
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
-                      {item.subtotal &&
-                        item.quantity &&
-                        formatFromMinorUnits(
-                          item.subtotal / item.quantity,
-                          payable.currency ?? 'EUR'
-                        )?.toFixed(2)}
+                      {item.unit_price
+                        ? formatCurrencyToDisplay(
+                            item.unit_price,
+                            payable.currency ?? 'EUR'
+                          )
+                        : '—'}
                     </TableCell>
                     <TableCell align="right">
                       {item.subtotal && payable.currency ? (
