@@ -2961,7 +2961,7 @@ msgstr "Doctors"
 #~ msgid "Document design"
 #~ msgstr "Document design"
 
-#: src/components/templateSettings/TemplateSettings.tsx:86
+#: src/components/templateSettings/TemplateSettings.tsx:93
 msgid "Document number"
 msgstr "Document number"
 
@@ -3322,8 +3322,7 @@ msgstr "Edit tags"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:493
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:230
-#: src/components/templateSettings/TemplateSettings.tsx:170
-#: src/components/templateSettings/TemplateSettings.tsx:179
+#: src/components/templateSettings/TemplateSettings.tsx:177
 msgid "Edit template settings"
 msgstr "Edit template settings"
 
@@ -4923,7 +4922,7 @@ msgstr "Laundries"
 msgid "Laundry, Cleaning Services"
 msgstr "Laundry, Cleaning Services"
 
-#: src/components/templateSettings/TemplateSettings.tsx:78
+#: src/components/templateSettings/TemplateSettings.tsx:85
 msgid "Layout and logo"
 msgstr "Layout and logo"
 
@@ -5895,7 +5894,7 @@ msgstr "Orthopedic Goods - Prosthetic Devices"
 msgid "Osteopaths"
 msgstr "Osteopaths"
 
-#: src/components/templateSettings/TemplateSettings.tsx:95
+#: src/components/templateSettings/TemplateSettings.tsx:102
 msgid "Other settings"
 msgstr "Other settings"
 
@@ -7960,7 +7959,11 @@ msgstr "Tell us more"
 msgid "Tell us more about your business"
 msgstr "Tell us more about your business"
 
-#: src/components/templateSettings/TemplateSettings.tsx:65
+#: src/components/templateSettings/TemplateSettings.tsx:186
+msgid "Template settings"
+msgstr "Template settings"
+
+#: src/components/templateSettings/TemplateSettings.tsx:72
 msgid "Template settings tabs"
 msgstr "Template settings tabs"
 
