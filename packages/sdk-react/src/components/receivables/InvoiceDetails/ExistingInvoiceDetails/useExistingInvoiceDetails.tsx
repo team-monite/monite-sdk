@@ -138,7 +138,7 @@ export function useExistingInvoiceDetails({
     [pdfQuery.isLoading, isPdfReady, mutationInProgress]
   );
 
-  const isMoreButtonVisible = useMemo(() => {
+  const isSendEmailButtonVisible = useMemo(() => {
     switch (receivable?.status) {
       case 'issued':
       case 'partially_paid':
@@ -202,7 +202,7 @@ export function useExistingInvoiceDetails({
     buttons: {
       isDownloadPDFButtonVisible,
       isDownloadPDFButtonDisabled,
-      isMoreButtonVisible,
+      isSendEmailButtonVisible,
       isDeleteButtonDisabled,
       isDeleteButtonVisible,
       isEditButtonVisible,

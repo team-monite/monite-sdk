@@ -13,6 +13,8 @@ import { useLingui } from '@lingui/react';
 import { Close } from '@mui/icons-material';
 import { Box, Tab, Tabs, DialogContent } from '@mui/material';
 
+import { twMerge } from 'tailwind-merge';
+
 import { DocumentNumber, LayoutAndLogo, OtherSettings } from './components';
 import { DiscardChangesModal } from './components/DiscardChangesModal';
 
@@ -58,7 +60,12 @@ const TemplateSettingsBase = ({
   };
 
   const content = (
-    <div className="mtw:flex mtw:flex-col mtw:w-full mtw:gap-10 mtw:place-self-center mtw:pb-8 mtw:max-w-[1080px]">
+    <div
+      className={twMerge(
+        'mtw:flex mtw:flex-col mtw:w-full mtw:gap-10 mtw:pb-8',
+        isDialog && 'mtw:max-w-[1080px] mtw:place-self-center'
+      )}
+    >
       <Tabs
         value={activeTabItem}
         variant="standard"
@@ -176,7 +183,7 @@ const TemplateSettingsBase = ({
         <>
           <PageHeader
             className="-Header"
-            title={<>{t(i18n)`Edit template settings`}</>}
+            title={<>{t(i18n)`Template settings`}</>}
           />
 
           {content}

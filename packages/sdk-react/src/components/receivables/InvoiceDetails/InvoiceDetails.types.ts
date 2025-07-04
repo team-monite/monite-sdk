@@ -21,6 +21,15 @@ export interface ExistingReceivableDetailsProps {
   onDelete?: (invoiceId: string) => void;
 
   /**
+   * Indicates that the invoice has been duplicated.
+   *
+   * @param {string} invoiceId Invoice ID
+   *
+   * @returns {void}
+   */
+  onDuplicate?: (invoiceId: string) => void;
+
+  /**
    * Indicates that the invoice has been updated.
    *
    * @param {string} invoiceId Invoice ID
