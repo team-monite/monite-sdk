@@ -1,7 +1,7 @@
 import type { components } from '@/api';
 import {
   useApprovalPolicyTrigger,
-  Triggers,
+  ParsedTriggers,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 
 import * as Styled from '../styles';
@@ -27,48 +27,50 @@ export const ApprovalPoliciesTriggers = ({
 
   return (
     <Styled.ColumnList>
-      {(Object.keys(triggers) as Array<keyof Triggers>).map((triggerKey) => {
-        switch (triggerKey) {
-          case 'amount': {
-            return (
-              <li key={triggerKey}>
-                <UMoneyBill width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+      {(Object.keys(triggers) as Array<keyof ParsedTriggers>).map(
+        (triggerKey) => {
+          switch (triggerKey) {
+            case 'amount': {
+              return (
+                <li key={triggerKey}>
+                  <UMoneyBill width={18} />
+                  {getTriggerName(triggerKey)}
+                </li>
+              );
+            }
 
-          case 'was_created_by_user_id': {
-            return (
-              <li key={triggerKey}>
-                <UUserCircle width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+            case 'was_created_by_user_id': {
+              return (
+                <li key={triggerKey}>
+                  <UUserCircle width={18} />
+                  {getTriggerName(triggerKey)}
+                </li>
+              );
+            }
 
-          case 'counterpart_id': {
-            return (
-              <li key={triggerKey}>
-                <UBuilding width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+            case 'counterpart_id': {
+              return (
+                <li key={triggerKey}>
+                  <UBuilding width={18} />
+                  {getTriggerName(triggerKey)}
+                </li>
+              );
+            }
 
-          case 'tags': {
-            return (
-              <li key={triggerKey}>
-                <ULabel width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+            case 'tags': {
+              return (
+                <li key={triggerKey}>
+                  <ULabel width={18} />
+                  {getTriggerName(triggerKey)}
+                </li>
+              );
+            }
 
-          default:
-            return null;
+            default:
+              return null;
+          }
         }
-      })}
+      )}
     </Styled.ColumnList>
   );
 };

@@ -20,7 +20,7 @@ import {
 
 import {
   useApprovalPolicyTrigger,
-  Triggers,
+  ParsedTriggers,
 } from '../../useApprovalPolicyTrigger';
 import { FormValues } from '../ApprovalPolicyForm';
 
@@ -41,7 +41,7 @@ export const ConditionsTable = ({
   const { getTriggerLabel, getAmountLabel } = useApprovalPolicyTrigger({});
 
   const triggersList = useMemo(() => {
-    return (Object.keys(triggers) as Array<keyof Triggers>).map(
+    return (Object.keys(triggers) as Array<keyof ParsedTriggers>).map(
       (triggerKey) => {
         const triggerLabel = getTriggerLabel(triggerKey);
         let triggerValue: ReactNode;

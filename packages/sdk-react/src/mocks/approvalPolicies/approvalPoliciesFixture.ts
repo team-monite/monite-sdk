@@ -37,14 +37,24 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
             },
             {
               operator: 'in',
-              left_operand: {
+              left_operand: tagListFixture[0].id,
+              right_operand: {
                 name: 'invoice.tags.id',
               },
-              right_operand: [
-                tagListFixture[0].id,
-                tagListFixture[2].id,
-                tagListFixture[3].id,
-              ],
+            },
+            {
+              operator: 'in',
+              left_operand: tagListFixture[2].id,
+              right_operand: {
+                name: 'invoice.tags.id',
+              },
+            },
+            {
+              operator: 'in',
+              left_operand: tagListFixture[3].id,
+              right_operand: {
+                name: 'invoice.tags.id',
+              },
             },
             {
               operator: 'in',
@@ -195,14 +205,24 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
           all: [
             {
               operator: 'in',
-              left_operand: {
+              left_operand: tagListFixture[0].id,
+              right_operand: {
                 name: 'invoice.tags.id',
               },
-              right_operand: [
-                tagListFixture[0].id,
-                tagListFixture[2].id,
-                tagListFixture[3].id,
-              ],
+            },
+            {
+              operator: 'in',
+              left_operand: tagListFixture[2].id,
+              right_operand: {
+                name: 'invoice.tags.id',
+              },
+            },
+            {
+              operator: 'in',
+              left_operand: tagListFixture[3].id,
+              right_operand: {
+                name: 'invoice.tags.id',
+              },
             },
           ],
         },

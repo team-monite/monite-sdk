@@ -8,7 +8,7 @@ import {
   Rules,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
-  Triggers,
+  ParsedTriggers,
   useApprovalPolicyTrigger,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
@@ -94,65 +94,65 @@ export const ApprovalPolicyView = ({
       },
     });
 
-  const triggersList = (Object.keys(triggers) as Array<keyof Triggers>).map(
-    (triggerKey) => {
-      const triggerLabel = getTriggerLabel(triggerKey);
-      let triggerValue: ReactNode;
+  const triggersList = (
+    Object.keys(triggers) as Array<keyof ParsedTriggers>
+  ).map((triggerKey) => {
+    const triggerLabel = getTriggerLabel(triggerKey);
+    let triggerValue: ReactNode;
 
-      switch (triggerKey) {
-        case 'was_created_by_user_id':
-          if (Array.isArray(triggers[triggerKey])) {
-            triggerValue = (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {triggers[triggerKey].map((userId) => (
-                  <User key={userId} userId={userId} />
-                ))}
-              </Stack>
-            );
-          }
-          break;
-        case 'tags':
+    switch (triggerKey) {
+      case 'was_created_by_user_id':
+        if (Array.isArray(triggers[triggerKey])) {
           triggerValue = (
             <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {tagsForTriggers?.data.map((tag) => (
-                <Chip key={tag.id} label={tag.name} />
+              {triggers[triggerKey].map((userId) => (
+                <User key={userId} userId={userId} />
               ))}
             </Stack>
           );
-          break;
-        case 'counterpart_id':
-          triggerValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {counterpartsForTriggers?.data.map((counterpart) => (
-                <Chip
-                  key={counterpart.id}
-                  label={getCounterpartName(counterpart)}
-                />
-              ))}
-            </Stack>
-          );
-          break;
-        case 'amount':
-          triggerValue = (
-            <p>
-              {getAmountLabel(
-                triggers.amount?.value ?? [],
-                triggers.amount?.currency ?? 'EUR'
-              )}
-            </p>
-          );
-          break;
-        default:
-          triggerValue = triggerKey;
-          break;
-      }
-
-      return {
-        label: triggerLabel,
-        value: triggerValue,
-      };
+        }
+        break;
+      case 'tags':
+        triggerValue = (
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            {tagsForTriggers?.data.map((tag) => (
+              <Chip key={tag.id} label={tag.name} />
+            ))}
+          </Stack>
+        );
+        break;
+      case 'counterpart_id':
+        triggerValue = (
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            {counterpartsForTriggers?.data.map((counterpart) => (
+              <Chip
+                key={counterpart.id}
+                label={getCounterpartName(counterpart)}
+              />
+            ))}
+          </Stack>
+        );
+        break;
+      case 'amount':
+        triggerValue = (
+          <p>
+            {getAmountLabel(
+              triggers.amount?.value ?? [],
+              triggers.amount?.currency ?? 'EUR'
+            )}
+          </p>
+        );
+        break;
+      default:
+        triggerValue = triggerKey;
+        break;
     }
-  );
+
+    return {
+      label: triggerLabel,
+      value: triggerValue,
+    };
+  });
 
   const approvalFlows =
     rules &&
