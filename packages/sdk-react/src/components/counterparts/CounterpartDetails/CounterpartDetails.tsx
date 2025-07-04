@@ -199,6 +199,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCRIndividual
             }
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 

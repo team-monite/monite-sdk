@@ -32,6 +32,11 @@ import {
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
+import { InlineSuggestionFill } from '../InlineSuggestionFill';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../usePayableCounterpartRawDataSuggestions';
 import {
   prepareCounterpartIndividual,
   prepareCounterpartIndividualCreate,
@@ -46,6 +51,12 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
   isInvoiceCreation?: boolean;
   defaultValuesOCR?: DefaultValuesOCRIndividual;
 }
+
+const individualFieldsMapping: CounterpartFormFieldsRawMapping = {
+  'individual.email': 'email',
+  'individual.phone': 'phone',
+  tax_id: 'tax_id',
+};
 
 /**
  * Counterpart Individual Form may be used to create or update counterpart
@@ -66,6 +77,7 @@ export const CounterpartIndividualForm = ({
     showCategories,
     defaultValuesOCR,
     defaultValues,
+    payableCounterpartRawData,
     onCancel,
     onClose,
   } = props;
@@ -108,7 +120,20 @@ export const CounterpartIndividualForm = ({
     },
   });
 
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, setValue, watch } = methods;
+
+  const values = watch();
+
+  const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
+    usePayableCounterpartRawDataSuggestions(
+      payableCounterpartRawData,
+      values,
+      setValue,
+      individualFieldsMapping
+    );
+
+  const showFillMatchBillButton =
+    !!payableCounterpartRawData && !allFieldsEqual;
 
   const handleSubmitWithoutPropagation = useCallback(
     (e: BaseSyntheticEvent) => {
@@ -319,17 +344,24 @@ export const CounterpartIndividualForm = ({
                   name="individual.email"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Email`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      required
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Email`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        required
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.email}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -344,16 +376,23 @@ export const CounterpartIndividualForm = ({
                   name="individual.phone"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Phone number`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Phone number`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.phone}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -376,16 +415,23 @@ export const CounterpartIndividualForm = ({
                   name="tax_id"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Tax ID`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Tax ID`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.tax_id}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -399,6 +445,15 @@ export const CounterpartIndividualForm = ({
           formId: formName,
           isLoading: isLoading,
         }}
+        secondaryButton={
+          showFillMatchBillButton
+            ? {
+                label: t(i18n)`Update to match bill`,
+                onTheLeft: true,
+                onClick: () => updateFormWithRawData(),
+              }
+            : undefined
+        }
         cancelButton={{
           label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
           onClick:
