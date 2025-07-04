@@ -170,6 +170,7 @@ export const filterInvoiceActionMenuAllowedItems = (
     financeInvoice:
       (invoice.status === 'partially_paid' || invoice.status === 'issued') &&
       isAllowedInvoiceAction('update'),
+    duplicate: isAllowedInvoiceAction('create'),
   };
 
   return menuItemsToFilter.filter(
@@ -178,22 +179,23 @@ export const filterInvoiceActionMenuAllowedItems = (
 };
 
 const DEFAULT_ACTION_LIST: InvoicesTableRowActionSchema = {
-  ['draft']: ['view', 'edit', 'delete'], // 'issue', 'recurrent' are not default
-  ['issued']: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment', 'financeInvoice' are not default
-  ['canceled']: ['view'],
+  ['draft']: ['view', 'edit', 'delete', 'duplicate'], // 'issue', 'recurrent' are not default
+  ['issued']: ['view', 'send', 'cancel', 'duplicate'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment', 'financeInvoice' are not default
+  ['canceled']: ['view', 'duplicate'],
   ['partially_paid']: [
     // 'copyPaymentLink', 'pay', 'overduePayment', 'financeInvoice' are not default
     'view',
     'send',
     'cancel',
+    'duplicate',
   ],
-  ['overdue']: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'pay','markUncollectible' are not default
-  ['paid']: ['view'],
-  ['uncollectible']: ['view'],
-  ['expired']: ['view'],
-  ['accepted']: ['view'],
-  ['declined']: ['view'],
-  ['recurring']: ['view'],
+  ['overdue']: ['view', 'send', 'cancel', 'duplicate'], // 'copyPaymentLink', 'pay','markUncollectible' are not default
+  ['paid']: ['view', 'duplicate'],
+  ['uncollectible']: ['view', 'duplicate'],
+  ['expired']: ['view', 'duplicate'],
+  ['accepted']: ['view', 'duplicate'],
+  ['declined']: ['view', 'duplicate'],
+  ['recurring']: ['view', 'duplicate'],
   ['deleted']: [],
   issuing: [],
   failed: [],
@@ -254,6 +256,10 @@ const getInvoiceActionMenuItemLabels = (
     message: 'Finance invoice',
     context: 'InvoicesTableRowActionMenu',
   }),
+  duplicate: t(i18n)({
+    message: 'Duplicate',
+    context: 'InvoicesTableRowActionMenu',
+  }),
 });
 
 interface InvoicesTableRowActionMenuItem {
@@ -277,6 +283,7 @@ interface InvoicesTableRowActionMenuItem {
  * @property {'copyPaymentLink'} copyPaymentLink - Copies the payment link of an invoice.
  * @property {'send'} send - Sends an invoice.
  * @property {'financeInvoice'} financeInvoice - Interacts with the invoice financing menu.
+ * @property {'duplicate'} duplicate - Duplicates an invoice.
  */
 export type InvoicesTableRowAction =
   | 'recurrent'
@@ -292,7 +299,8 @@ export type InvoicesTableRowAction =
   | 'edit'
   | 'copyPaymentLink'
   | 'send'
-  | 'financeInvoice';
+  | 'financeInvoice'
+  | 'duplicate';
 
 /**
  * Represents the possible actions that can be performed on an Invoice row for each status.
@@ -304,7 +312,9 @@ export interface InvoicesTableRowActionSchema
     components['schemas']['ReceivablesStatusEnum'],
     InvoicesTableRowAction[]
   > {
-  ['draft']: Array<'view' | 'edit' | 'issue' | 'recurrent' | 'delete'>;
+  ['draft']: Array<
+    'view' | 'edit' | 'issue' | 'recurrent' | 'delete' | 'duplicate'
+  >;
   ['issued']: Array<
     | 'view'
     | 'send'
@@ -314,8 +324,9 @@ export interface InvoicesTableRowActionSchema
     | 'overduePayment'
     | 'cancel'
     | 'financeInvoice'
+    | 'duplicate'
   >;
-  ['canceled']: Array<'view'>;
+  ['canceled']: Array<'view' | 'duplicate'>;
   ['partially_paid']: Array<
     | 'view'
     | 'send'
@@ -324,15 +335,22 @@ export interface InvoicesTableRowActionSchema
     | 'overduePayment'
     | 'cancel'
     | 'financeInvoice'
+    | 'duplicate'
   >;
   ['overdue']: Array<
-    'view' | 'send' | 'copyPaymentLink' | 'pay' | 'cancel' | 'markUncollectible'
+    | 'view'
+    | 'send'
+    | 'copyPaymentLink'
+    | 'pay'
+    | 'cancel'
+    | 'markUncollectible'
+    | 'duplicate'
   >;
-  ['paid']: Array<'view'>;
-  ['uncollectible']: Array<'view'>;
-  ['expired']: Array<'view'>;
-  ['accepted']: Array<'view'>;
-  ['declined']: Array<'view'>;
-  ['recurring']: Array<'view'>;
+  ['paid']: Array<'view' | 'duplicate'>;
+  ['uncollectible']: Array<'view' | 'duplicate'>;
+  ['expired']: Array<'view' | 'duplicate'>;
+  ['accepted']: Array<'view' | 'duplicate'>;
+  ['declined']: Array<'view' | 'duplicate'>;
+  ['recurring']: Array<'view' | 'duplicate'>;
   ['deleted']: Array<never>;
 }
