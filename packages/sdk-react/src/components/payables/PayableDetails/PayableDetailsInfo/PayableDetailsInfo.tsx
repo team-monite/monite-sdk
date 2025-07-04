@@ -446,10 +446,10 @@ const PayableDetailsInfoBase = ({
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
                       {item.unit_price
-                        ? formatFromMinorUnits(
+                        ? formatCurrencyToDisplay(
                             item.unit_price,
                             payable.currency ?? 'EUR'
-                          )?.toFixed(2)
+                          )
                         : '—'}
                     </TableCell>
                     <TableCell align="right">
