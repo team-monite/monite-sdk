@@ -1,12 +1,13 @@
 import { components } from '@/api';
 
-const filters: Record<
-  components['schemas']['ReceivableCursorFields'],
-  components['schemas']['ReceivableCursorFields']
-> = {
+const filters: {
+  [key in components['schemas']['ReceivableCursorFields']]: key;
+} = {
   counterpart_name: 'counterpart_name',
   counterpart_id: 'counterpart_id',
   amount: 'amount',
+  total_amount: 'total_amount',
+  discounted_subtotal: 'discounted_subtotal',
   status: 'status',
   due_date: 'due_date',
   issue_date: 'issue_date',

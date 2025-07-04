@@ -6,13 +6,14 @@ import { faker } from '@faker-js/faker';
 
 export const entityIds = ['be035ef1-dd47-4f47-a6ad-eef2e7f2e608'] as const;
 
-function getEntitySettings(): MergedSettingsResponse {
+function getEntitySettings(): SettingsResponse {
   return {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'compliant',
     generate_paid_invoice_pdf: false,
     quote_signature_required: false,
+    vat_inclusive_discount_mode: 'exclusive',
     payables_ocr_auto_tagging: [
       {
         tag_id: 'tag-1',
@@ -89,7 +90,7 @@ function generateEntityData(entityId: string): EntityResponse {
   };
 }
 
-export const entitySettingsById: Record<string, MergedSettingsResponse> = {
+export const entitySettingsById: Record<string, SettingsResponse> = {
   [entityIds[0]]: getEntitySettings(),
 };
 
@@ -131,6 +132,6 @@ export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
-type MergedSettingsResponse = components['schemas']['SettingsResponse'];
+type SettingsResponse = components['schemas']['SettingsResponse'];
 type OnboardingPaymentMethodsResponse =
   components['schemas']['OnboardingPaymentMethodsResponse'];

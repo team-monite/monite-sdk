@@ -49,16 +49,16 @@ const getValidationSchema = (i18n: I18n) =>
 interface ITag {
   id: string;
   name: string;
-  category?: components['schemas']['ReceivableTagCategory'];
+  category?: TagCategory;
   keywords?: string[];
 }
 
 interface TagFormModalProps {
   tag?: ITag;
-  onCreate?: (tag: components['schemas']['TagReadSchema']) => void;
-  onUpdate?: (tag: components['schemas']['TagReadSchema']) => void;
+  onCreate?: (tag: TagReadSchema) => void;
+  onUpdate?: (tag: TagReadSchema) => void;
   onClose?: () => void;
-  onDelete?: (tag: components['schemas']['TagReadSchema']) => void;
+  onDelete?: (tag: TagReadSchema) => void;
 
   isDeleteAllowed: boolean;
 
@@ -68,8 +68,8 @@ interface TagFormModalProps {
 
 interface FormFields {
   name: string;
-  category: components['schemas']['ReceivableTagCategory'] | '';
-  keywords: components['schemas']['OcrAutoTaggingSettingsRequest']['keywords'];
+  category: TagCategory | '';
+  keywords: OcrAutoTaggingSettingsKeywords;
 }
 
 /**
@@ -260,7 +260,7 @@ const TagFormModalBase = ({
             label: t(i18n)`Delete`,
             ...(tag ? { isDisabled: !isDeleteAllowed } : {}),
             onClick: () => {
-              onDelete?.(tag as components['schemas']['TagReadSchema']);
+              onDelete?.(tag as TagReadSchema);
             },
           }}
           primaryButton={{
@@ -276,3 +276,8 @@ const TagFormModalBase = ({
     </>
   );
 };
+
+type TagCategory = components['schemas']['TagCategory'];
+type TagReadSchema = components['schemas']['TagReadSchema'];
+type OcrAutoTaggingSettingsKeywords =
+  components['schemas']['OcrAutoTaggingSettingsRequest']['keywords'];

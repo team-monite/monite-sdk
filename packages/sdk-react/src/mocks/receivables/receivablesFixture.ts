@@ -109,6 +109,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         id: productVatId.id,
         value: vatRateValue,
         country: productVatId.country,
+        is_custom: false,
       },
       measure_unit: {
         id: faker.string.nanoid(),
@@ -158,6 +159,7 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
     status: getRandomItemFromArray(QuoteStateEnum),
     tags: [],
     vat_mode: 'exclusive',
+    vat_inclusive_discount_mode: 'exclusive',
   };
 }
 
@@ -303,6 +305,7 @@ function createRandomInvoice(
     payment_reminder_id: paymentReminderListFixture[0].id,
     tags: [],
     vat_mode: 'exclusive',
+    vat_inclusive_discount_mode: 'exclusive',
     is_einvoice: false,
   };
 }
@@ -344,6 +347,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     status: getRandomItemFromArray(CreditNoteStateEnum),
     tags: [],
     vat_mode: 'exclusive',
+    vat_inclusive_discount_mode: 'exclusive',
   };
 }
 

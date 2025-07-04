@@ -1,10 +1,10 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { components } from '@/api';
 import { AIPages, Dialog } from '@/components';
 import { AISidebarIconButton } from '@/components/aiAssistant/components/AISidebarIconButton/AISidebarIconButton';
 import { AISidebarSkeleton } from '@/components/aiAssistant/components/AISidebarSkeleton/AISidebarSkeleton';
 import { SearchChatModal } from '@/components/aiAssistant/components/SearchChatModal/SearchChatModal';
-import { Conversation } from '@/components/aiAssistant/types';
 import { createConversationGroups } from '@/components/aiAssistant/utils/aiAssistant';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsMobile } from '@/core/hooks/useMobile';
@@ -24,14 +24,13 @@ interface AISidebarProps {
   setConversationId: (id: string | null) => void;
   setIsNewChat: (isNewChat: boolean) => void;
 }
-
-export const AISidebar: FC<AISidebarProps> = ({
+export const AISidebar = ({
   page,
   setPage,
   conversationId,
   setConversationId,
   setIsNewChat,
-}) => {
+}: AISidebarProps) => {
   const isMobile = useIsMobile();
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -39,8 +38,8 @@ export const AISidebar: FC<AISidebarProps> = ({
   const [open, setOpen] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data, isLoading } = api.ai.fetchConversations.useQuery<{
-    data: Conversation[];
+  const { data, isLoading } = api.ai.getAiConversations.useQuery<{
+    data: ConversationResource[];
   }>();
 
   const { data: conversations = [] } = data || {};
@@ -199,3 +198,5 @@ export const AISidebar: FC<AISidebarProps> = ({
     </AISidebarWrapper>
   );
 };
+
+type ConversationResource = components['schemas']['ConversationResource'];

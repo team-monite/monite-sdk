@@ -1,7 +1,6 @@
 import {
   type ChangeEvent,
-  type FC,
-  FormEvent,
+  type FormEvent,
   useEffect,
   useMemo,
   useRef,
@@ -18,20 +17,20 @@ import { Button, IconButton, Input } from '@mui/material';
 import { X } from 'lucide-react';
 
 interface FeedbackFormProps {
-  id: string;
-  setIsFeedbackFormOpen: (isFeedbackFormOpen: boolean) => void;
+  conversationId: string;
+  onSuccess?: () => void;
 }
 
-export const FeedbackForm: FC<FeedbackFormProps> = ({
-  id,
-  setIsFeedbackFormOpen,
-}) => {
+export const FeedbackForm = ({
+  conversationId,
+  onSuccess,
+}: FeedbackFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const { i18n } = useLingui();
-
   const { api } = useMoniteContext();
+
   const { mutateAsync: postFeedbackMessage } =
-    api.ai.postFeedbackMessage.useMutation();
+    api.ai.postAiMessageFeedbacksCommentary.useMutation();
 
   const [input, setInput] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -39,13 +38,13 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
   const feedbackOptions = useMemo(() => getFeedbackOptions(i18n), [i18n]);
 
   const handleCloseForm = () => {
-    setIsFeedbackFormOpen(false);
+    onSuccess?.();
   };
 
   const handleSendFeedbackMessage = async (comment: string) => {
     await postFeedbackMessage({
       body: {
-        message_id: id,
+        message_id: conversationId,
         comment,
       },
     });
@@ -79,7 +78,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
 
     const timeoutId = setTimeout(() => {
       setIsSuccess(false);
-      setIsFeedbackFormOpen(false);
+      onSuccess?.();
     }, 2000);
 
     return () => {

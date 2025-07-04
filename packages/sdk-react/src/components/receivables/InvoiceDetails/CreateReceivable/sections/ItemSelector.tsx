@@ -37,7 +37,8 @@ interface ItemSelectorOptionProps {
   currency?: CurrencyEnum;
 }
 
-type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnit =
+  components['schemas']['LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
   disabled?: boolean;

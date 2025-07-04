@@ -5,6 +5,7 @@ import {
   PaidOutlined,
   ErrorOutline,
   CancelOutlined,
+  DraftsOutlined,
   BlockOutlined,
 } from '@mui/icons-material';
 import { type SvgIcon } from '@mui/material';
@@ -15,6 +16,7 @@ export const ROW_TO_TAG_FINANCE_STATUS_MUI_MAP: Record<
   components['schemas']['WCInvoiceStatus'],
   string
 > = {
+  DRAFT: '#6B7280',
   NEW: '#292929',
   DEFAULTED: '#CC394B',
   PAID: '#0DAA8E',
@@ -27,6 +29,7 @@ export const BACKGROUND_FINANCE_STATUS_MUI_MAP: Record<
   components['schemas']['WCInvoiceStatus'],
   string
 > = {
+  DRAFT: '#6B7280',
   NEW: '#F2F2F2',
   DEFAULTED: '#FFE0E4',
   PAID: '#EEFBF9',
@@ -39,6 +42,7 @@ export const FINANCE_INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   components['schemas']['WCInvoiceStatus'],
   typeof SvgIcon
 > = {
+  DRAFT: DraftsOutlined,
   NEW: AccessTime,
   DEFAULTED: BlockOutlined,
   PAID: PaidOutlined,

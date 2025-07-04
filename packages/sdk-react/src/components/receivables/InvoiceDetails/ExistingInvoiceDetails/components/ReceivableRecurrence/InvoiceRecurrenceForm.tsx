@@ -125,11 +125,9 @@ export const InvoiceRecurrenceForm = ({
     () => ({
       day_of_month: recurrence?.day_of_month ? recurrence.day_of_month : null,
       startDate: recurrence
-        ? new Date(recurrence.start_year, recurrence.start_month - 1, 1)
+        ? new Date(recurrence.start_year, (recurrence.start_month ?? 1) - 1, 1)
         : null,
-      endDate: recurrence
-        ? new Date(recurrence.end_year, recurrence.end_month - 1, 1)
-        : null,
+      endDate: recurrence?.end_date ? new Date(recurrence.end_date) : null,
       body_text: recurrence?.body_text ?? '',
       subject_text: recurrence?.subject_text ?? '',
     }),
@@ -233,6 +231,8 @@ export const InvoiceRecurrenceForm = ({
                 : await createRecurrenceMutation.mutateAsync({
                     body: {
                       invoice_id: invoiceId,
+                      frequency: 'month',
+                      interval: 1,
                       day_of_month,
                       end_month,
                       end_year,

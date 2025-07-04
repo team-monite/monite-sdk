@@ -69,6 +69,8 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
 
           await mutateAsync({
             vat_mode: entitySettings!.vat_mode,
+            vat_inclusive_discount_mode:
+              entitySettings!.vat_inclusive_discount_mode,
             allow_purchase_order_autolinking:
               entitySettings!.allow_purchase_order_autolinking,
             payment_priority: entitySettings!.payment_priority,

@@ -1,11 +1,6 @@
-import React, {
-  type FC,
-  useCallback,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 
+import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useDebounceCallback } from '@/core/hooks';
 import { cn } from '@/ui/lib/utils';
@@ -28,11 +23,11 @@ interface SearchChatModalProps {
   handleSetChatPage: (id: string) => void;
 }
 
-export const SearchChatModal: FC<SearchChatModalProps> = ({
+export const SearchChatModal = ({
   conversationGroups,
   handleDialogClose,
   handleSetChatPage,
-}) => {
+}: SearchChatModalProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
@@ -42,13 +37,13 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
   const [groups, setGroups] =
     useState<ConversationGroups[]>(conversationGroups);
 
-  const { data } = api.ai.fetchConversations.useQuery<{ data: Conversation[] }>(
-    {
-      query: {
-        title__icontains: search,
-      },
-    }
-  );
+  const { data } = api.ai.getAiConversations.useQuery<{
+    data: ConversationResource[];
+  }>({
+    query: {
+      title__icontains: search,
+    },
+  });
 
   const { data: conversations = [] } = data || {};
 
@@ -133,3 +128,5 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
     </>
   );
 };
+
+type ConversationResource = components['schemas']['ConversationResource'];

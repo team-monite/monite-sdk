@@ -74,6 +74,7 @@ const ITERATION_STATUS_TO_MUI_ICON_MAP: Record<
   canceled: CancelOutlined,
   issue_failed: ErrorOutline,
   send_failed: ErrorOutline,
+  skipped: CancelOutlined,
 };
 
 const ITERATION_STATUS_TO_MUI_COLOR_MAP: Record<
@@ -85,6 +86,7 @@ const ITERATION_STATUS_TO_MUI_COLOR_MAP: Record<
   canceled: 'error',
   issue_failed: 'error',
   send_failed: 'error',
+  skipped: 'warning',
 };
 
 const getIterationStatusLabel = (
@@ -102,6 +104,8 @@ const getIterationStatusLabel = (
       return t(i18n)`Issue failed`;
     case 'send_failed':
       return t(i18n)`Send failed`;
+    case 'skipped':
+      return t(i18n)`Skipped`;
     default:
       return t(i18n)`Unknown`;
   }

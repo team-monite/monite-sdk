@@ -119,6 +119,7 @@ export const approvalPoliciesHandlers = [
       updated_at: new Date().toISOString(),
       updated_by: entityUser2.id,
       status: 'active',
+      priority: 0,
     };
 
     approvalPoliciesListFixture.data.push(newApprovalPolicy);

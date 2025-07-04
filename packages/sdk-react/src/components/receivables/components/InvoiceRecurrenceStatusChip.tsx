@@ -8,6 +8,7 @@ import {
   CancelOutlined,
   CheckCircleOutline,
   Grading,
+  PauseCircleOutline,
 } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
@@ -71,6 +72,7 @@ const INVOICE_RECURRENCE_STATUS_TO_MUI_ICON_MAP: Record<
   ElementType<any>
 > = {
   active: CheckCircleOutline,
+  paused: PauseCircleOutline,
   completed: Grading,
   canceled: CancelOutlined,
 };
@@ -80,6 +82,7 @@ const INVOICE_RECURRENCE_STATUS_TO_MUI_COLOR_MAP: Record<
   ChipProps['color']
 > = {
   active: 'info',
+  paused: 'default',
   completed: 'success',
   canceled: 'warning',
 };
@@ -91,6 +94,8 @@ const getInvoiceRecurrenceStatusLabel = (
   switch (status) {
     case 'active':
       return t(i18n)`Active`;
+    case 'paused':
+      return t(i18n)`Paused`;
     case 'completed':
       return t(i18n)`Completed`;
     case 'canceled':
