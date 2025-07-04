@@ -33,12 +33,9 @@ interface ItemSelectorOptionProps {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];
+  measureUnit?: MeasureUnit;
   currency?: CurrencyEnum;
 }
-
-type MeasureUnit =
-  components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
   disabled?: boolean;
@@ -540,3 +537,6 @@ export const ItemSelector = ({
     />
   );
 };
+
+type MeasureUnit =
+  components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];

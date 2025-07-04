@@ -89,7 +89,7 @@ interface ProductItem {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];
+  measureUnit?: MeasureUnit;
   vat_rate_id?: string;
   vat_rate_value?: number;
 }
@@ -764,3 +764,6 @@ export const ItemsSection = ({
     </Stack>
   );
 };
+
+type MeasureUnit =
+  components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];

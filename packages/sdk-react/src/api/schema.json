@@ -1199,8 +1199,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1258,8 +1269,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1325,8 +1347,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1399,8 +1432,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "requestBody": {
@@ -1458,8 +1502,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "requestBody": {
@@ -1519,8 +1574,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "requestBody": {
@@ -1581,8 +1647,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1638,8 +1715,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "requestBody": {
@@ -1711,8 +1799,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1775,8 +1874,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
@@ -1831,8 +1941,19 @@
             "name": "Authorization",
             "in": "header",
             "required": false,
-            "schema": { "type": "string" },
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
             "description": "Bearer authentication of the form Bearer <token>, where token is your auth token."
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "requestBody": {
@@ -12387,6 +12508,17 @@
             "schema": { "$ref": "#/components/schemas/EinvoiceSchemaTypeEnum" },
             "name": "network_schema",
             "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
           }
         ],
         "responses": {
