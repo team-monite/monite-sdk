@@ -177,6 +177,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       >
         <InvoiceDetails
           id={invoiceId}
+          onDuplicate={openInvoiceModal}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
           customerTypes={
