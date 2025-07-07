@@ -9,7 +9,7 @@ export type ReceivableFilterType = Pick<
 >;
 
 export type Sort = {
-  sort: components['schemas']['api__v1__receivables__pagination__ReceivableCursorFields'];
+  sort: components['schemas']['ReceivableCursorFields'];
   order: components['schemas']['OrderEnum'];
 };
 

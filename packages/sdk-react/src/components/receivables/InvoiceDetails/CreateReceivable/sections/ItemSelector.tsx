@@ -538,5 +538,4 @@ export const ItemSelector = ({
   );
 };
 
-type MeasureUnit =
-  components['schemas']['package__receivables__v2024_05_25__receivables__LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];

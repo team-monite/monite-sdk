@@ -35,7 +35,7 @@ import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 export interface QuotesTableSortModel {
-  field: components['schemas']['api__v1__receivables__pagination__ReceivableCursorFields'];
+  field: components['schemas']['ReceivableCursorFields'];
   sort: NonNullable<GridSortDirection>;
 }
 

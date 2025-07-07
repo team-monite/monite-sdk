@@ -87,7 +87,7 @@ export type InvoicesTableProps =
   | (UseInvoiceRowActionMenuCellProps & InvoicesTableBaseProps);
 
 export interface ReceivableGridSortModel {
-  field: components['schemas']['api__v1__receivables__pagination__ReceivableCursorFields'];
+  field: components['schemas']['ReceivableCursorFields'];
   sort: NonNullable<GridSortDirection>;
 }
 
