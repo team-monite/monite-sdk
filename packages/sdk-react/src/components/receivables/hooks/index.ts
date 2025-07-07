@@ -10,3 +10,4 @@ export { useGetPaymentReminderById } from './useGetPaymentReminderById';
 export { useGetPaymentReminders } from './useGetPaymentReminders';
 export { useGetOverdueReminderById } from './useGetOverdueReminderById';
 export { useGetOverdueReminders } from './useGetOverdueReminders';
+export { useDuplicateInvoice } from './useDuplicateInvoice';
