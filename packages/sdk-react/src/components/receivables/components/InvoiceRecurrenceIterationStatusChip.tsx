@@ -9,6 +9,7 @@ import {
   CheckCircleOutline,
   ErrorOutline,
   AccessTimeOutlined,
+  SkipNextOutlined,
 } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
@@ -74,7 +75,7 @@ const ITERATION_STATUS_TO_MUI_ICON_MAP: Record<
   canceled: CancelOutlined,
   issue_failed: ErrorOutline,
   send_failed: ErrorOutline,
-  skipped: 'symbol',
+  skipped: SkipNextOutlined,
 };
 
 const ITERATION_STATUS_TO_MUI_COLOR_MAP: Record<
