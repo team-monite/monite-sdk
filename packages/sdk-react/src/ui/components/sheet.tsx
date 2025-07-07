@@ -22,9 +22,18 @@ function SheetClose({
 }
 
 function SheetPortal({
+  container,
   ...props
-}: React.ComponentProps<typeof SheetPrimitive.Portal>) {
-  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
+}: React.ComponentProps<typeof SheetPrimitive.Portal> & {
+  container?: Element;
+}) {
+  return (
+    <SheetPrimitive.Portal
+      data-slot="sheet-portal"
+      {...props}
+      container={container}
+    />
+  );
 }
 
 function SheetOverlay({
@@ -47,12 +56,14 @@ function SheetContent({
   className,
   children,
   side = 'right',
+  container = document.body,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: 'top' | 'right' | 'bottom' | 'left';
+  container?: Element;
 }) {
   return (
-    <SheetPortal>
+    <SheetPortal container={container}>
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"

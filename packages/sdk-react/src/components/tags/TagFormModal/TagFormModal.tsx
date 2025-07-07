@@ -1,19 +1,11 @@
 import { useEffect, useId } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Button } from '@/ui/components/button';
-import {
-  Command,
-  CommandItem,
-  CommandGroup,
-  CommandList,
-  CommandEmpty,
-  CommandInput,
-} from '@/ui/components/command';
 import {
   Form,
   FormControl,
@@ -24,11 +16,6 @@ import {
 } from '@/ui/components/form';
 import { Input } from '@/ui/components/input';
 import { InputTags } from '@/ui/components/input-tags';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/ui/components/popover';
 import {
   Select,
   SelectItem,
@@ -48,15 +35,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Stack,
-  Autocomplete,
-} from '@mui/material';
 
-import { Check, ChevronsUpDown } from 'lucide-react';
 import * as yup from 'yup';
 
 import { getTagCategoryLabel, tagCategories } from '../helpers';
@@ -132,13 +111,7 @@ const TagFormModalBase = ({
     resolver: yupResolver(getValidationSchema(i18n)),
   });
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors },
-  } = form;
+  const { control, handleSubmit, reset, setError } = form;
 
   useEffect(() => {
     let keywords: string[] = [];
@@ -193,7 +166,7 @@ const TagFormModalBase = ({
   return (
     <>
       <Sheet open={open} onOpenChange={onClose}>
-        <SheetContent className="mtw:w-[600px]">
+        <SheetContent container={root} className="mtw:w-[600px]">
           <SheetHeader>
             <SheetTitle>
               {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}
@@ -284,7 +257,10 @@ const TagFormModalBase = ({
                 className="mtw:mr-auto"
                 variant="destructive"
                 size="lg"
-                onClick={onClose}
+                onClick={() => {
+                  onDelete?.(tag as components['schemas']['TagReadSchema']);
+                  onClose?.();
+                }}
                 disabled={!isDeleteAllowed}
               >
                 {t(i18n)`Delete`}
