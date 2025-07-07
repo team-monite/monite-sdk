@@ -15,16 +15,14 @@ import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
 import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
 import {
   usePayableCounterpartRawDataSuggestions,
-  CounterpartFormFieldsRawMappingWithSubtypes,
+  CounterpartFormFieldsRawMapping,
 } from '../CounterpartForm/usePayableCounterpartRawDataSuggestions';
 import {
   useCounterpartAddressFormUpdate,
   CounterpartAddressFormUpdateProps,
 } from './useCounterpartAddressFormUpdate';
 
-const addressFieldsMapping: CounterpartFormFieldsRawMappingWithSubtypes<{
-  address?: components['schemas']['CounterpartRawAddress'];
-}> = {
+const addressFieldsMapping: CounterpartFormFieldsRawMapping = {
   line1: 'address.line1',
   line2: 'address.line2',
   city: 'address.city',
