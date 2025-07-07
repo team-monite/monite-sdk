@@ -78,7 +78,7 @@ function generatePayable(
     updated_at: faker.date.past().toString(),
     other_extracted_data: {
       type: 'invoice',
-      total: 290400,
+      total_raw: 290400,
       currency: 'NGN',
       total_paid_amount_raw: 290400,
       counterpart_name: 'Test IO',
@@ -99,20 +99,28 @@ function generatePayable(
       },
       line_items: [
         {
-          description: 'price for product',
-          quantity: 12,
-          unit_price: 12000,
-          unit: undefined,
-          vat_percentage: undefined,
-          total_excl_vat: 158400,
+          label: {
+            confidence: 1,
+            processed_text: 'price for product',
+            text: 'price for product',
+          },
+          value: {
+            confidence: 1,
+            processed_text: '12',
+            text: '12',
+          },
         },
         {
-          description: 'Services , Products & Goods | Export',
-          quantity: 120,
-          unit_price: 1100,
-          unit: undefined,
-          vat_percentage: undefined,
-          total_excl_vat: 132000,
+          label: {
+            confidence: 1,
+            processed_text: 'Services , Products & Goods | Export',
+            text: 'Services , Products & Goods | Export',
+          },
+          value: {
+            confidence: 1,
+            processed_text: '120',
+            text: '120',
+          },
         },
       ],
     },

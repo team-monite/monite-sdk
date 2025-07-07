@@ -5,13 +5,13 @@ import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 
 export const entityIds = ['be035ef1-dd47-4f47-a6ad-eef2e7f2e608'] as const;
-
 function getEntitySettings(): MergedSettingsResponse {
   return {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'compliant',
     generate_paid_invoice_pdf: false,
+    vat_inclusive_discount_mode: 'inclusive',
     quote_signature_required: false,
     payables_ocr_auto_tagging: [
       {

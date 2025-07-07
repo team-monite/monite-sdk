@@ -105,6 +105,7 @@ export const useTags = ({
           generate_paid_invoice_pdf: settings!.generate_paid_invoice_pdf,
           payables_ocr_auto_tagging: autoTagging,
           payables_skip_approval_flow: settings!.payables_skip_approval_flow,
+          vat_inclusive_discount_mode: settings!.vat_inclusive_discount_mode,
         });
       }
     },

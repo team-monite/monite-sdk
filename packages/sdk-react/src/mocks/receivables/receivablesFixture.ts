@@ -106,6 +106,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         currency: 'EUR',
       },
       vat_rate: {
+        is_custom: false,
         id: productVatId.id,
         value: vatRateValue,
         country: productVatId.country,
@@ -126,6 +127,7 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
+    vat_inclusive_discount_mode: 'inclusive',
     document_id: `quote--${faker.string.nanoid(20)}`,
     expiry_date: faker.date.future().toString(),
     issue_date: faker.date.past().toString(),
@@ -231,6 +233,7 @@ function createRandomInvoice(
   return {
     type: 'invoice',
     id,
+    vat_inclusive_discount_mode: 'inclusive',
     amount_paid: faker.number.int(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
@@ -311,6 +314,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
   return {
     type: 'credit_note',
     id: faker.string.uuid(),
+    vat_inclusive_discount_mode: 'inclusive',
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     document_id: `credit_note--${faker.string.nanoid(20)}`,
