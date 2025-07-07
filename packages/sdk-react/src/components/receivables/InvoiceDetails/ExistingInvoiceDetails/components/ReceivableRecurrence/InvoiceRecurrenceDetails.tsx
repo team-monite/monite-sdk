@@ -41,13 +41,17 @@ export const InvoiceRecurrenceDetails = ({
 
       <MoniteCardItem
         label={t(i18n)`End date`}
-        value={t(i18n)`${i18n.date(
-          new Date(end_year as number, (end_month as number) - 1, 1),
-          {
-            month: 'long',
-            year: 'numeric',
-          }
-        )}`}
+        value={
+          end_year && end_month
+            ? t(i18n)`${i18n.date(
+                new Date(end_year, end_month - 1, 1),
+                {
+                  month: 'long',
+                  year: 'numeric',
+                }
+              )}`
+            : t(i18n)`Not specified`
+        }
       />
 
       <MoniteCardItem
