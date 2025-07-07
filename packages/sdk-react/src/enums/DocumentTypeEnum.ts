@@ -3,13 +3,10 @@ import { components } from '@/api';
 const schema: {
   [key in components['schemas']['DocumentTypeEnum']]: key;
 } = {
-  quote: 'quote',
-  invoice: 'invoice',
-  credit_note: 'credit_note',
-  discount_reminder: 'discount_reminder',
-  final_reminder: 'final_reminder',
-  payables_purchase_order: 'payables_purchase_order',
-  overdue_reminder: 'overdue_reminder',
+  receivable: 'receivable',
+  delivery_note: 'delivery_note',
+  purchase_order: 'purchase_order',
+  payable: 'payable',
 };
 
 export const DocumentTypeEnum = Object.values(schema);

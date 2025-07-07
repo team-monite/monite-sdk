@@ -297,12 +297,24 @@ const PayablesTableBase = ({
         field: 'created_at',
         type: 'date',
         hideable: !requiredColumns?.includes('created_at'),
-        headerName: t(i18n)`Invoice date`,
+        headerName: t(i18n)`Added on`,
         width: 120,
         display: 'flex',
         renderCell: ({ formattedValue }) => formattedValue,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
+        ) => i18n.date(value, locale.dateFormat),
+      },
+      {
+        field: 'issued_at',
+        type: 'date',
+        hideable: !requiredColumns?.includes('issued_at'),
+        headerName: t(i18n)`Issued on`,
+        width: 120,
+        display: 'flex',
+        renderCell: ({ formattedValue }) => formattedValue,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['issued_at']
         ) => i18n.date(value, locale.dateFormat),
       },
       {
