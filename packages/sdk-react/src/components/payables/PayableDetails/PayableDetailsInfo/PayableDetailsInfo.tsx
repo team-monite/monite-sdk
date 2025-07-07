@@ -112,7 +112,7 @@ const PayableDetailsInfoBase = ({
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
-  const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
   const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
