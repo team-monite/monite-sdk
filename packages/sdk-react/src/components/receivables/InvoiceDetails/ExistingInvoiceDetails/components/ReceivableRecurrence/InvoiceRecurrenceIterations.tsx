@@ -25,7 +25,7 @@ export const InvoiceRecurrenceIterations = ({
   recurrence: { id, iterations, invoice_id },
 }: {
   recurrence: Pick<
-    components['schemas']['Recurrence'],
+    components['schemas']['RecurrenceResponse'],
     'id' | 'iterations' | 'invoice_id'
   >;
 }) => {
