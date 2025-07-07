@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartBankById,
@@ -24,6 +25,7 @@ export type CounterpartBankFormProps = {
   onCancel?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 };
 
 export function useCounterpartBankForm({
@@ -31,6 +33,7 @@ export function useCounterpartBankForm({
   bankId,
   onCreate,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartBankFormProps) {
   const formId = `Monite-CounterpartBankForm-${useId()}`;
 
@@ -112,5 +115,6 @@ export function useCounterpartBankForm({
       isCounterpartLoading ||
       isBankLoading,
     error: createBankMutation.error || updateBankMutation.error,
+    payableCounterpartRawData,
   };
 }

@@ -143,6 +143,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={onBankCancel}
             onCreate={onBankCreate}
             onUpdate={onBankUpdate}
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 

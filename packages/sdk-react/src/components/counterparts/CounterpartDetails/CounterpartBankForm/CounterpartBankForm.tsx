@@ -12,25 +12,59 @@ import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
+import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../CounterpartForm/usePayableCounterpartRawDataSuggestions';
 import {
   useCounterpartBankForm,
   CounterpartBankFormProps,
 } from './useCounterpartBankForm';
 
+const bankFieldsMapping: CounterpartFormFieldsRawMapping = {
+  account_holder_name: 'bank_account.account_holder_name',
+  account_number: 'bank_account.account_number',
+  sort_code: 'bank_account.sort_code',
+  bic: 'bank_account.bic',
+  iban: 'bank_account.iban',
+};
+
 export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { i18n } = useLingui();
   const {
-    methods: { control, handleSubmit, watch, clearErrors, resetField },
+    methods: {
+      control,
+      handleSubmit,
+      watch,
+      clearErrors,
+      resetField,
+      setValue,
+    },
     counterpart,
     bank,
     formId,
     saveBank,
     isLoading,
+    payableCounterpartRawData,
   } = useCounterpartBankForm(props);
   const country = watch('country');
 
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
+
+  const values = watch();
+
+  const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
+    usePayableCounterpartRawDataSuggestions(
+      payableCounterpartRawData,
+      values,
+      setValue,
+      bankFieldsMapping
+    );
+
+  const showFillMatchBillButton =
+    !!payableCounterpartRawData?.bank_account && !allFieldsEqual;
 
   useEffect(() => {
     if (country) {
@@ -90,60 +124,93 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               name="account_holder_name"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  label={t(i18n)`Bank account holder name`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  {...field}
-                />
+                <div>
+                  <TextField
+                    id={field.name}
+                    label={t(i18n)`Bank account holder name`}
+                    variant="standard"
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    {...field}
+                  />
+                  <InlineSuggestionFill
+                    rawData={
+                      payableCounterpartRawData?.bank_account
+                        ?.account_holder_name
+                    }
+                    isHidden={fieldsEqual[field.name]}
+                    fieldOnChange={field.onChange}
+                  />
+                </div>
               )}
             />
             <Controller
               name="iban"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  label={t(i18n)`IBAN`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  {...field}
-                />
+                <div>
+                  <TextField
+                    id={field.name}
+                    label={t(i18n)`IBAN`}
+                    variant="standard"
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    {...field}
+                  />
+                  <InlineSuggestionFill
+                    rawData={payableCounterpartRawData?.bank_account?.iban}
+                    isHidden={fieldsEqual[field.name]}
+                    fieldOnChange={field.onChange}
+                  />
+                </div>
               )}
             />
             <Controller
               name="account_number"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  label={t(i18n)`Account number`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  {...field}
-                />
+                <div>
+                  <TextField
+                    id={field.name}
+                    label={t(i18n)`Account number`}
+                    variant="standard"
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    {...field}
+                  />
+                  <InlineSuggestionFill
+                    rawData={
+                      payableCounterpartRawData?.bank_account?.account_number
+                    }
+                    isHidden={fieldsEqual[field.name]}
+                    fieldOnChange={field.onChange}
+                  />
+                </div>
               )}
             />
             <Controller
               name="sort_code"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  label={t(i18n)`Sort code`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  {...field}
-                />
+                <div>
+                  <TextField
+                    id={field.name}
+                    label={t(i18n)`Sort code`}
+                    variant="standard"
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    {...field}
+                  />
+                  <InlineSuggestionFill
+                    rawData={payableCounterpartRawData?.bank_account?.sort_code}
+                    isHidden={fieldsEqual[field.name]}
+                    fieldOnChange={field.onChange}
+                  />
+                </div>
               )}
             />
             <Controller
@@ -165,15 +232,22 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
               name="bic"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  label={t(i18n)`BIC`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  {...field}
-                />
+                <div>
+                  <TextField
+                    id={field.name}
+                    label={t(i18n)`BIC`}
+                    variant="standard"
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    {...field}
+                  />
+                  <InlineSuggestionFill
+                    rawData={payableCounterpartRawData?.bank_account?.bic}
+                    isHidden={fieldsEqual[field.name]}
+                    fieldOnChange={field.onChange}
+                  />
+                </div>
               )}
             />
             <MoniteCountry name="country" control={control} required />
@@ -193,6 +267,15 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           formId: formId,
           isLoading: isLoading,
         }}
+        secondaryButton={
+          showFillMatchBillButton
+            ? {
+                label: t(i18n)`Update to match bill`,
+                onTheLeft: true,
+                onClick: () => updateFormWithRawData(),
+              }
+            : undefined
+        }
         cancelButton={{
           onClick: props.onCancel,
         }}
