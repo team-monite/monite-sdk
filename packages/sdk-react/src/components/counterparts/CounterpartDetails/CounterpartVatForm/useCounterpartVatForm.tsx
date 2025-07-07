@@ -19,6 +19,7 @@ export type CounterpartVatFormProps = {
   onCancel?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 };
 
 export function useCounterpartVatForm({
@@ -26,6 +27,7 @@ export function useCounterpartVatForm({
   vatId,
   onCreate,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartVatFormProps) {
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -119,5 +121,6 @@ export function useCounterpartVatForm({
       isCounterpartLoading ||
       isVatLoading,
     error: createVatMutation.error || updateVatMutation.error,
+    payableCounterpartRawData,
   };
 }
