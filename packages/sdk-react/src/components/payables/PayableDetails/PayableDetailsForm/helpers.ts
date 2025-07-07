@@ -281,8 +281,11 @@ export const isOcrMismatch = (
     };
   }
 
-  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
-    other_extracted_data;
+  const { total: ocrTotal } = other_extracted_data;
+  const ocrBankAccountId =
+    'counterpart_account_id' in other_extracted_data
+      ? other_extracted_data.counterpart_account_id
+      : undefined;
 
   const isAmountMismatch = amount_to_pay !== ocrTotal;
 

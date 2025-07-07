@@ -15,7 +15,7 @@ const recurrencesPath: `*${Extract<
 const recurrenceByIdPath = `${recurrencesPath}/:recurrence_id`;
 
 export const recurrencesHandlers = [
-  http.get<{}, undefined, components['schemas']['GetAllRecurrences']>(
+  http.get<{}, undefined, components['schemas']['RecurrenceResponseList']>(
     recurrencesPath,
     async () => {
       await delay();
@@ -27,7 +27,7 @@ export const recurrencesHandlers = [
   http.post<
     {},
     components['schemas']['CreateRecurrencePayload'],
-    components['schemas']['Recurrence']
+    components['schemas']['RecurrenceResponse']
   >(recurrencesPath, async ({ request }) => {
     const payload = await request.json();
     await delay();
@@ -38,7 +38,7 @@ export const recurrencesHandlers = [
   http.get<
     { recurrence_id: string },
     undefined,
-    components['schemas']['Recurrence']
+    components['schemas']['RecurrenceResponse']
   >(recurrenceByIdPath, async ({ params: { recurrence_id } }) => {
     await delay();
 
@@ -51,7 +51,7 @@ export const recurrencesHandlers = [
   http.patch<
     { recurrence_id: string },
     components['schemas']['UpdateRecurrencePayload'],
-    components['schemas']['Recurrence']
+    components['schemas']['RecurrenceResponse']
   >(recurrenceByIdPath, async ({ request, params: { recurrence_id } }) => {
     const payload = await request.json();
 

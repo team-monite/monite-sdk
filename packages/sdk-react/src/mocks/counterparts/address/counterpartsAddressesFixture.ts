@@ -44,18 +44,19 @@ export const counterpartsAddressesFixture = counterpartListFixture
   .map((counterpart) => {
     return generateRandomAddress(counterpart.id);
   })
-  .concat({
-    data: [
-      {
-        country: 'GE',
-        city: faker.location.city(),
-        postal_code: faker.location.zipCode(),
-        state: faker.location.state(),
-        line1: faker.location.street(),
-        line2: faker.location.streetAddress(),
-        id: 'aa5a332e-7af1-401f-a741-df2c494f6e47',
-        counterpart_id: organizationId,
-        is_default: true,
-      },
-    ],
-  });
+  .concat([
+    {
+      data: [
+        {
+          country: 'GE',
+          city: faker.location.city(),
+          postal_code: faker.location.zipCode(),
+          state: faker.location.state(),
+          line1: faker.location.street(),
+          line2: faker.location.streetAddress(),
+          id: 'aa5a332e-7af1-401f-a741-df2c494f6e47',
+          counterpart_id: organizationId,
+        },
+      ],
+    },
+  ]);

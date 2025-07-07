@@ -21,6 +21,7 @@ export const ROW_TO_TAG_FINANCE_STATUS_MUI_MAP: Record<
   FUNDED: '#3737FF',
   LATE: '#E27E46',
   REJECTED: '#CC394B',
+  DRAFT: '',
 };
 
 export const BACKGROUND_FINANCE_STATUS_MUI_MAP: Record<
@@ -33,6 +34,7 @@ export const BACKGROUND_FINANCE_STATUS_MUI_MAP: Record<
   FUNDED: '#F4F4FE',
   LATE: '#FFF3E9',
   REJECTED: '#FFE0E4',
+  DRAFT: '',
 };
 
 export const FINANCE_INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
@@ -45,4 +47,5 @@ export const FINANCE_INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   FUNDED: CheckCircleOutline,
   LATE: ErrorOutline,
   REJECTED: CancelOutlined,
+  DRAFT: AccessTime,
 };
