@@ -43,13 +43,10 @@ export const InvoiceRecurrenceDetails = ({
         label={t(i18n)`End date`}
         value={
           end_year && end_month
-            ? t(i18n)`${i18n.date(
-                new Date(end_year, end_month - 1, 1),
-                {
-                  month: 'long',
-                  year: 'numeric',
-                }
-              )}`
+            ? t(i18n)`${i18n.date(new Date(end_year, end_month - 1, 1), {
+                month: 'long',
+                year: 'numeric',
+              })}`
             : t(i18n)`Not specified`
         }
       />
