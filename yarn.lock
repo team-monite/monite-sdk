@@ -4559,6 +4559,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:~5.1.1":
+  version: 5.1.1
+  resolution: "@hookform/resolvers@npm:5.1.1"
+  dependencies:
+    "@standard-schema/utils": "npm:^0.3.0"
+  peerDependencies:
+    react-hook-form: ^7.55.0
+  checksum: 10/4d686cd268786e1b56b5e6478e4298542ac7866ffe978de970399480dc42fddf57ebbb6c1df87a0b37c5f42e0fef26770843912639599b1419056ff5d99b4dcb
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -5409,7 +5420,7 @@ __metadata:
     "@faker-js/faker": "npm:~8.0.2"
     "@fontsource/roboto": "npm:~5.0.8"
     "@hookform/devtools": "npm:~4.3.1"
-    "@hookform/resolvers": "npm:~2.9.3"
+    "@hookform/resolvers": "npm:~5.1.1"
     "@lingui/cli": "npm:~4.7.0"
     "@lingui/core": "npm:~4.7.0"
     "@lingui/macro": "npm:~4.7.0"
@@ -5462,6 +5473,7 @@ __metadata:
     chroma-js: "npm:~3.1.2"
     class-variance-authority: "npm:~0.7.1"
     clsx: "npm:~2.1.1"
+    cmdk: "npm:~1.1.1"
     copy-to-clipboard: "npm:~3.3.3"
     cross-env: "npm:^7.0.3"
     date-fns: "npm:^2.28.0"
@@ -5487,7 +5499,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-hook-form: "npm:~7.48.2"
+    react-hook-form: "npm:~7.59.0"
     react-hot-toast: "npm:~2.2.0"
     react-imask: "npm:6.4.3"
     react-infinite-scroll-component: "npm:~6.1.0"
@@ -5508,7 +5520,7 @@ __metadata:
     tw-animate-css: "npm:~1.2.5"
     typescript: "npm:~5.5.4"
     yup: "npm:~0.32.11"
-    zod: "npm:~3.24.2"
+    zod: "npm:~3.25.67"
   peerDependencies:
     "@emotion/cache": ~11.11.0
     "@emotion/react": ~11.11.1
@@ -6350,7 +6362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-compose-refs@npm:1.1.2":
+"@radix-ui/react-compose-refs@npm:1.1.2, @radix-ui/react-compose-refs@npm:^1.1.1":
   version: 1.1.2
   resolution: "@radix-ui/react-compose-refs@npm:1.1.2"
   peerDependencies:
@@ -6391,7 +6403,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:~1.1.14":
+"@radix-ui/react-dialog@npm:^1.1.6, @radix-ui/react-dialog@npm:~1.1.14":
   version: 1.1.14
   resolution: "@radix-ui/react-dialog@npm:1.1.14"
   dependencies:
@@ -6610,7 +6622,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-id@npm:1.1.1":
+"@radix-ui/react-id@npm:1.1.1, @radix-ui/react-id@npm:^1.1.0":
   version: 1.1.1
   resolution: "@radix-ui/react-id@npm:1.1.1"
   dependencies:
@@ -6850,7 +6862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-primitive@npm:2.1.3":
+"@radix-ui/react-primitive@npm:2.1.3, @radix-ui/react-primitive@npm:^2.0.2":
   version: 2.1.3
   resolution: "@radix-ui/react-primitive@npm:2.1.3"
   dependencies:
@@ -8139,6 +8151,13 @@ __metadata:
   version: 1.0.1
   resolution: "@stablelib/base64@npm:1.0.1"
   checksum: 10/93f3edb05d5a828a775d23ebde49884abeb456b8946942acbe6a0815630e769c59c06c7275983031c8707bdcefc1c62917aaa99522ff1ec5f457704c83b686da
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 10/7084f875d322792f2e0a5904009434c8374b9345b09ba89828b68fd56fa3c2b366d35bf340d9e8c72736ef01793c2f70d350c372ed79845dc3566c58d34b4b51
   languageName: node
   linkType: hard
 
@@ -13465,6 +13484,21 @@ __metadata:
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: 10/cdfb57fa6c7649bbff98d9028c2f0de2f91c86f551179541cf784b1cfdc1562dcb951955f46d54d930a3879931a980e32a46b598acaea274728dbe068deca919
+  languageName: node
+  linkType: hard
+
+"cmdk@npm:~1.1.1":
+  version: 1.1.1
+  resolution: "cmdk@npm:1.1.1"
+  dependencies:
+    "@radix-ui/react-compose-refs": "npm:^1.1.1"
+    "@radix-ui/react-dialog": "npm:^1.1.6"
+    "@radix-ui/react-id": "npm:^1.1.0"
+    "@radix-ui/react-primitive": "npm:^2.0.2"
+  peerDependencies:
+    react: ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^18 || ^19 || ^19.0.0-rc
+  checksum: 10/8f52beee4a6289d67138bdeb3b9833fb67fb06cfea53968803f31b6a39b09ca3c8698a302c6bf8286ee6cc0c8f5dc2c4e5a398450f48db7b9f2d1657f3c4bde2
   languageName: node
   linkType: hard
 
@@ -24116,12 +24150,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:~7.48.2":
-  version: 7.48.2
-  resolution: "react-hook-form@npm:7.48.2"
+"react-hook-form@npm:~7.59.0":
+  version: 7.59.0
+  resolution: "react-hook-form@npm:7.59.0"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10/6cb494f359675e78c14c49a33d1c568df1a03db4c750eab18d6554e622fd64e04195c57efa138db03f8988587d132c57d2a7f5f3dd9157be996cc9acd4362170
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10/ff7a98e65f57b7468f4ea1b17435e69dcc68f276db6e0e10d513394c95d30dc6068333e3a453c8321627068dffcfacc49ff228c6ae7d8448c349469ab24457b2
   languageName: node
   linkType: hard
 
@@ -29119,10 +29153,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:~3.24.2":
-  version: 3.24.2
-  resolution: "zod@npm:3.24.2"
-  checksum: 10/604c62a8cf8e330d78b106a557f4b44f5d14845d20b1360a423ccc09b58cb8525ccf7e4b40cf1bd4852d22393d2c67774b5817ec5a2fedab25f543b36ed15943
+"zod@npm:~3.25.67":
+  version: 3.25.67
+  resolution: "zod@npm:3.25.67"
+  checksum: 10/0e35432dcca7f053e63f5dd491a87c78abe0d981817547252c3b6d05f0f58788695d1a69724759c6501dff3fd62929be24c9f314a3625179bee889150f7a61fa
   languageName: node
   linkType: hard
 
