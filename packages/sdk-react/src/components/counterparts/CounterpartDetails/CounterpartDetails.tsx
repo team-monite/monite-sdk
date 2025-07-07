@@ -109,6 +109,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             addressId={addressId}
             onCancel={onAddressCancel}
             onUpdate={onAddressUpdate}
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -174,6 +175,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     props.onContactDelete,
     props.onDelete,
     props.onVatDelete,
+    props.payableCounterpartRawData,
     showBankAccountForm,
     showBankAccounts,
     shouldShowCategories,

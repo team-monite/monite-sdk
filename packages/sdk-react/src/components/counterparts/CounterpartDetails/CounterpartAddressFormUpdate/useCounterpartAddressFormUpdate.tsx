@@ -23,11 +23,13 @@ export interface CounterpartAddressFormUpdateProps {
   addressId: string;
   onUpdate?: (id: string) => void;
   onCancel?: () => void | undefined;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 }
 export function useCounterpartAddressFormUpdate({
   counterpartId,
   addressId,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartAddressFormUpdateProps) {
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -77,5 +79,6 @@ export function useCounterpartAddressFormUpdate({
     submitForm,
     updateAddress,
     isLoading: addressUpdateMutation.isPending || isCounterpartLoading,
+    payableCounterpartRawData,
   };
 }
