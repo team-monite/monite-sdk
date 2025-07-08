@@ -96,17 +96,15 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const {
-    data: entityVatIds,
-    error: vatIdsError,
-  } = api.entities.getEntitiesIdVatIds.useQuery(
-    {
-      path: { entity_id: entityId },
-    },
-    {
-      enabled: !!entityId,
-    }
-  );
+  const { data: entityVatIds, error: vatIdsError } =
+    api.entities.getEntitiesIdVatIds.useQuery(
+      {
+        path: { entity_id: entityId },
+      },
+      {
+        enabled: !!entityId,
+      }
+    );
 
   if (vatIdsError) {
     const message = getAPIErrorMessage(i18n, vatIdsError);
