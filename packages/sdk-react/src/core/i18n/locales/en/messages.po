@@ -780,7 +780,7 @@ msgstr "Applied policy"
 msgid "Apply for a monthly plan loans to manage your business more efficiently"
 msgstr "Apply for a monthly plan loans to manage your business more efficiently"
 
-#: src/components/financing/hooks/useFinancing.ts:182
+#: src/components/financing/hooks/useFinancing.ts:183
 #: src/core/context/KanmonContext.tsx:125
 msgid "Apply for financing"
 msgstr "Apply for financing"
@@ -1232,7 +1232,7 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:196
+#: src/components/payables/Payables.tsx:217
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
@@ -2035,7 +2035,7 @@ msgstr "Contact support"
 
 #: src/components/onboarding/hooks/useOnboardingActions.ts:126
 #: src/components/onboarding/hooks/useOnboardingActions.ts:134
-#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:44
+#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:46
 msgid "Continue"
 msgstr "Continue"
 
@@ -2301,7 +2301,7 @@ msgstr "Create invoice"
 #: src/components/receivables/Receivables.test.tsx:34
 #: src/components/receivables/Receivables.test.tsx:75
 #: src/components/receivables/Receivables.test.tsx:112
-#: src/components/receivables/Receivables.tsx:156
+#: src/components/receivables/Receivables.tsx:146
 msgid "Create Invoice"
 msgstr "Create Invoice"
 
@@ -2427,7 +2427,7 @@ msgstr "Created on"
 msgid "Credit note"
 msgstr "Credit note"
 
-#: src/core/componentSettings/index.ts:259
+#: src/core/componentSettings/index.ts:318
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -3802,7 +3802,7 @@ msgid "Financing is not available for your business anymore. Please, contact the
 msgstr "Financing is not available for your business anymore. Please, contact the provider for further details."
 
 #: src/components/financing/components/FinanceMenuButtons.tsx:32
-#: src/components/financing/hooks/useFinancing.ts:209
+#: src/components/financing/hooks/useFinancing.ts:208
 msgid "Financing menu"
 msgstr "Financing menu"
 
@@ -4574,7 +4574,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/components/InvoicesTable.tsx:503
-#: src/core/componentSettings/index.ts:251
+#: src/core/componentSettings/index.ts:310
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -5849,7 +5849,7 @@ msgstr "Omani Rial"
 msgid "Onboarding"
 msgstr "Onboarding"
 
-#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:30
+#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:32
 msgid "Onboarding completed!"
 msgstr "Onboarding completed!"
 
@@ -6122,7 +6122,7 @@ msgstr "Payable “{0}” has been submitted"
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
-#: src/components/payables/Payables.tsx:111
+#: src/components/payables/Payables.tsx:132
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
@@ -6130,7 +6130,7 @@ msgstr "Payable {0} uploaded successfully"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:144
+#: src/components/payables/Payables.tsx:165
 msgid "Payables"
 msgstr "Payables"
 
@@ -6771,7 +6771,7 @@ msgid "Quote"
 msgstr "Quote"
 
 #: src/components/receivables/components/QuotesTable.tsx:302
-#: src/core/componentSettings/index.ts:255
+#: src/core/componentSettings/index.ts:314
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -7050,7 +7050,7 @@ msgstr "Required"
 msgid "Results per page"
 msgstr "Results per page"
 
-#: src/components/financing/hooks/useFinancing.ts:188
+#: src/components/financing/hooks/useFinancing.ts:189
 msgid "Resume application"
 msgstr "Resume application"
 
@@ -7058,8 +7058,8 @@ msgstr "Resume application"
 msgid "Reunion"
 msgstr "Reunion"
 
-#: src/components/financing/hooks/useFinancing.ts:186
-#: src/components/financing/hooks/useFinancing.ts:219
+#: src/components/financing/hooks/useFinancing.ts:187
+#: src/components/financing/hooks/useFinancing.ts:218
 msgid "Review terms and sign"
 msgstr "Review terms and sign"
 
@@ -7183,7 +7183,7 @@ msgstr "Saint Pierre And Miquelon"
 msgid "Saint Vincent And Grenadines"
 msgstr "Saint Vincent And Grenadines"
 
-#: src/components/receivables/Receivables.tsx:134
+#: src/components/receivables/Receivables.tsx:124
 msgid "Sales"
 msgstr "Sales"
 
@@ -8011,7 +8011,7 @@ msgstr "Thai Baht"
 msgid "Thailand"
 msgstr "Thailand"
 
-#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:31
+#: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:33
 msgid "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 msgstr "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 
@@ -8697,11 +8697,11 @@ msgid "Upload payable file"
 msgstr "Upload payable file"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
-#: src/components/payables/Payables.tsx:169
+#: src/components/payables/Payables.tsx:190
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/payables/Payables.tsx:110
+#: src/components/payables/Payables.tsx:131
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
