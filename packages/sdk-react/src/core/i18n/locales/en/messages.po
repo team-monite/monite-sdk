@@ -7835,8 +7835,8 @@ msgstr "Tag “{0}” was deleted"
 msgid "Tag “{0}” was updated”"
 msgstr "Tag “{0}” was updated”"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:889
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:69
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:895
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:48
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:727
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:369
 #: src/components/tags/Tags.tsx:59
