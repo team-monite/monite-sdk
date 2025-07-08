@@ -36,7 +36,7 @@ export const AIAssistantChatProvider = ({
   isNewChat,
   setIsNewChat,
 }: ChatProviderProps) => {
-  const { apiUrl, fetchToken, api, queryClient } = useMoniteContext();
+  const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
   const { data: conversation } =
     api.ai.getAiConversationsId.useQuery<ConversationHistory>(
       {
@@ -59,6 +59,7 @@ export const AIAssistantChatProvider = ({
         headers: {
           ...init?.headers,
           'x-monite-version': apiVersion,
+          'x-monite-entity-id': entityId,
           Authorization: `${tokenType} ${accessToken}`,
         },
       });
