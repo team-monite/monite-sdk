@@ -39,7 +39,7 @@ export const AISidebar: FC<AISidebarProps> = ({
   const [open, setOpen] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data, isLoading } = api.ai.fetchConversations.useQuery<{
+  const { data, isLoading } = api.ai.getAiConversations.useQuery<{
     data: Conversation[];
   }>();
 

@@ -16,7 +16,7 @@ const ChatMessageContainer: FC<ChatMessageContainerProps> = ({ content }) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { mutateAsync: savePrompt } = api.ai.savePrompt.useMutation();
+  const { mutateAsync: savePrompt } = api.ai.postAiPrompts.useMutation();
 
   const handleSavePrompt = async () => {
     await savePrompt({ body: { content } });
