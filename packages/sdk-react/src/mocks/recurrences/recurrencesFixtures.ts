@@ -6,9 +6,17 @@ export const recurrenceFixture = (
   payload?:
     | components['schemas']['CreateRecurrencePayload']
     | components['schemas']['UpdateRecurrencePayload']
-): components['schemas']['Recurrence'] => {
+): components['schemas']['RecurrenceResponse'] => {
   return {
     id: faker.string.uuid(),
+    automation_level: faker.helpers.arrayElement([
+      'draft',
+      'issue',
+      'issue_and_send',
+    ]),
+    frequency: 'month',
+    interval: faker.number.int({ min: 1, max: 12 }),
+    start_date: faker.date.past().toISOString(),
     body_text: faker.lorem.paragraph(),
     subject_text: faker.lorem.sentence(),
     created_at: faker.date.past().toISOString(),
@@ -57,7 +65,7 @@ export const recurrenceFixture = (
   };
 };
 
-export const recurrenceListFixture: components['schemas']['GetAllRecurrences'] =
+export const recurrenceListFixture: components['schemas']['RecurrenceResponseList'] =
   {
     data: new Array(faker.number.int({ min: 1, max: 10 }))
       .fill('')
