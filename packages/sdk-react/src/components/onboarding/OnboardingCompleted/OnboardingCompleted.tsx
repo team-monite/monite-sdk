@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
@@ -7,7 +8,7 @@ import { Button } from '@mui/material';
 import { OnboardingLayout, OnboardingTitle } from '../OnboardingLayout';
 
 interface OnboardingCompletedProps {
-  onComplete?: () => void;
+  onComplete?: (entityId: string) => void;
   onContinue?: () => void;
   showContinueButton?: boolean;
 }
@@ -18,10 +19,11 @@ export const OnboardingCompleted = ({
   showContinueButton = false,
 }: OnboardingCompletedProps = {}) => {
   const { i18n } = useLingui();
+  const { entityId } = useMoniteContext();
 
   useEffect(() => {
-    onComplete?.();
-  }, [onComplete]);
+    onComplete?.(entityId);
+  }, [entityId, onComplete]);
 
   return (
     <OnboardingLayout
