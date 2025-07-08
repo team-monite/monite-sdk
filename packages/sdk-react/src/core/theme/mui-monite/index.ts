@@ -94,7 +94,10 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   };
 
   const palette: MonitePalette = {
-    primary: getPrimaryColors(moniteTheme.colors.primary),
+    primary: getPrimaryColors(
+      moniteTheme.colors.primary,
+      moniteTheme.colors.primaryForeground
+    ),
     secondary: getSecondaryColors(moniteTheme.colors.secondary),
     neutral: getNeutralColors(moniteTheme.colors.neutral),
 
@@ -163,29 +166,34 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       fontSize: moniteTheme.typography.h1.fontSize,
       fontWeight: moniteTheme.typography.h1.fontWeight,
       lineHeight: moniteTheme.typography.h1.lineHeight,
+      textTransform: moniteTheme.typography.h1.textTransform,
       color: palette.text.primary,
     },
     h2: {
       fontSize: moniteTheme.typography.h2.fontSize,
       fontWeight: moniteTheme.typography.h2.fontWeight,
       lineHeight: moniteTheme.typography.h2.lineHeight,
+      textTransform: moniteTheme.typography.h2.textTransform,
       color: palette.text.primary,
     },
     h3: {
       fontSize: moniteTheme.typography.h3.fontSize,
       fontWeight: moniteTheme.typography.h3.fontWeight,
       lineHeight: moniteTheme.typography.h3.lineHeight,
+      textTransform: moniteTheme.typography.h3.textTransform,
       color: palette.text.primary,
     },
     subtitle1: {
       fontSize: moniteTheme.typography.subtitle1.fontSize,
       fontWeight: moniteTheme.typography.subtitle1.fontWeight,
       lineHeight: moniteTheme.typography.subtitle1.lineHeight,
+      textTransform: moniteTheme.typography.subtitle1.textTransform,
     },
     subtitle2: {
       fontSize: moniteTheme.typography.subtitle2.fontSize,
       fontWeight: moniteTheme.typography.subtitle2.fontWeight,
       lineHeight: moniteTheme.typography.subtitle2.lineHeight,
+      textTransform: moniteTheme.typography.subtitle2.textTransform,
     },
     body1: {
       fontSize: moniteTheme.typography.body1?.fontSize,
@@ -693,24 +701,25 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
         outlinedPrimary: {
           padding: '.75em 1.25em',
+          color: 'primary.30',
           backgroundColor: 'primary.90',
-          borderColor: 'primary.90',
+          border: 'none',
           borderRadius: moniteTheme.buttonBorderRadius,
           boxShadow: 'none',
           '&:hover': {
             backgroundColor: 'primary.80',
-            borderColor: 'primary.80',
+            border: 'none',
             boxShadow: 'none',
           },
           '&:active': {
-            backgroundColor: 'primary.60',
-            borderColor: 'primary.60',
+            backgroundColor: 'primary.70',
+            border: 'none',
             boxShadow: 'none',
           },
           '&:disabled': {
             color: 'neutral.70',
             backgroundColor: 'neutral.90',
-            borderColor: 'neutral.90',
+            border: 'none',
             boxShadow: 'none',
           },
         },

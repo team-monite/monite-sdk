@@ -5,6 +5,7 @@ type TypographyStyle = {
   fontSize?: string | number;
   fontWeight?: string | number;
   lineHeight?: string | number;
+  textTransform?: 'uppercase' | 'lowercase' | 'capitalize';
 };
 
 export type ThemeConfig = {
@@ -13,6 +14,7 @@ export type ThemeConfig = {
 
   colors?: {
     primary?: string;
+    primaryForeground?: string;
     secondary?: string;
     neutral?: string;
 

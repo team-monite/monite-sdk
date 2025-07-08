@@ -25,6 +25,7 @@ export const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-primary-85: ${theme.palette.primary[85]};
     --mtw-color-primary-90: ${theme.palette.primary[90]};
     --mtw-color-primary-95: ${theme.palette.primary[95]};
+    --mtw-color-primary-foreground: ${theme.palette.primary.foreground.main};
 
     --mtw-color-neutral-10: ${theme.palette.neutral[10]};
     --mtw-color-neutral-30: ${theme.palette.neutral[30]};
