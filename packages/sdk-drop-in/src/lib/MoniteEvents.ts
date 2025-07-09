@@ -24,6 +24,14 @@ export enum MoniteEventTypes {
   INVOICE_SENT = 'invoice.sent',
   ONBOARDING_COMPLETED = 'onboarding.completed',
   ONBOARDING_CONTINUE = 'onboarding.continue',
+  PAYABLE_SAVED = 'payable.saved',
+  PAYABLE_CANCELED = 'payable.canceled',
+  PAYABLE_SUBMITTED = 'payable.submitted',
+  PAYABLE_REJECTED = 'payable.rejected',
+  PAYABLE_APPROVED = 'payable.approved',
+  PAYABLE_REOPENED = 'payable.reopened',
+  PAYABLE_DELETED = 'payable.deleted',
+  PAYABLE_PAY = 'payable.pay',
 }
 
 export interface BaseEventPayload {
@@ -152,6 +160,7 @@ export function enhanceOnboardingSettings(
 ): ComponentSettings['onboarding'] {
   const {
     onWorkingCapitalOnboardingComplete,
+    onPaymentsOnboardingComplete,
     onComplete,
     onContinue,
     ...rest
@@ -174,7 +183,76 @@ export function enhanceOnboardingSettings(
       MoniteEventTypes.WORKING_CAPITAL_ONBOARDING_COMPLETED,
       (id) => ({ id })
     ),
+    onPaymentsOnboardingComplete: createEventHandler(
+      onPaymentsOnboardingComplete,
+      MoniteEventTypes.PAYMENTS_ONBOARDING_COMPLETED,
+      (id) => ({ id })
+    ),
   } as ComponentSettings['onboarding'];
+}
+
+/**
+ * Enhances payables settings with event handlers
+ *
+ * @param settings The original payables settings
+ * @returns Enhanced payables settings with event handlers
+ */
+export function enhancePayablesSettings(
+  settings: ComponentSettings['payables'] = {}
+): ComponentSettings['payables'] {
+  const {
+    onSaved,
+    onCanceled,
+    onSubmitted,
+    onRejected,
+    onApproved,
+    onReopened,
+    onDeleted,
+    onPay,
+    ...rest
+  } = settings;
+
+  return {
+    ...rest,
+    onSaved: createEventHandler(
+      onSaved,
+      MoniteEventTypes.PAYABLE_SAVED,
+      (id) => ({ id })
+    ),
+    onCanceled: createEventHandler(
+      onCanceled,
+      MoniteEventTypes.PAYABLE_CANCELED,
+      (id) => ({ id })
+    ),
+    onSubmitted: createEventHandler(
+      onSubmitted,
+      MoniteEventTypes.PAYABLE_SUBMITTED,
+      (id) => ({ id })
+    ),
+    onRejected: createEventHandler(
+      onRejected,
+      MoniteEventTypes.PAYABLE_REJECTED,
+      (id) => ({ id })
+    ),
+    onApproved: createEventHandler(
+      onApproved,
+      MoniteEventTypes.PAYABLE_APPROVED,
+      (id) => ({ id })
+    ),
+    onReopened: createEventHandler(
+      onReopened,
+      MoniteEventTypes.PAYABLE_REOPENED,
+      (id) => ({ id })
+    ),
+    onDeleted: createEventHandler(
+      onDeleted,
+      MoniteEventTypes.PAYABLE_DELETED,
+      (id) => ({ id })
+    ),
+    onPay: createEventHandler(onPay, MoniteEventTypes.PAYABLE_PAY, (id) => ({
+      id,
+    })),
+  } as ComponentSettings['payables'];
 }
 
 /**
@@ -190,6 +268,7 @@ export function enhanceComponentSettings(
     ...settings,
     receivables: enhanceReceivablesSettings(settings.receivables),
     onboarding: enhanceOnboardingSettings(settings.onboarding),
+    payables: enhancePayablesSettings(settings.payables),
   };
 }
 

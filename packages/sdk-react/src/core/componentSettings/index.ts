@@ -41,6 +41,38 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   bankAccountCurrencies?: components['schemas']['CurrencyEnum'][];
 }
 
+/**
+ * Configuration settings for the onboarding component.
+ *
+ * ## Onboarding Callback Architecture
+ *
+ * The Monite SDK supports different types of onboarding flows with corresponding callbacks:
+ *
+ * ### 1. General Onboarding (`onComplete`)
+ * - **Trigger**: When all onboarding requirements are fulfilled (requirements.length === 0)
+ * - **Use Case**: General onboarding completion, backward compatibility
+ * - **Business Logic**: Called when the onboarding component completes all required steps
+ *
+ * ### 2. Payments Onboarding (`onPaymentsOnboardingComplete`)
+ * - **Trigger**: When payments onboarding requirements are fulfilled
+ * - **Use Case**: Specific to payments onboarding completion
+ * - **Business Logic**: Called when entity can make/receive payments via Monite payment rails
+ * - **Note**: Currently triggered alongside `onComplete` as they represent the same flow
+ *
+ * ### 3. Working Capital Onboarding (`onWorkingCapitalOnboardingComplete`)
+ * - **Trigger**: When business status transitions from 'INPUT_REQUIRED' or 'NEW' to 'WAITING_FOR_OFFERS'
+ * - **Use Case**: Financing/working capital onboarding completion
+ * - **Business Logic**: Called when entity completes onboarding for working capital services
+ * - **Implementation**: Handled in the financing flow (useFinancing hook)
+ *
+ * ### Event Flow Architecture
+ *
+ * ```
+ * Component → useComponentSettings() → [domain]Callbacks → MoniteEvents.enhance[Domain]Settings() → EVENT emission
+ * ```
+ *
+ * All callbacks are enhanced with event emission capabilities in the drop-in package.
+ */
 export interface OnboardingSettings {
   /**
    * Custom footer logo URL for the Onboarding pages.
@@ -81,10 +113,12 @@ export interface OnboardingSettings {
 
   /**
    * Called when the onboarding process is completed.
+   * This happens when all onboarding requirements have been fulfilled.
    *
+   * @param {string} entityId - The ID of the entity
    * @returns {void}
    */
-  onComplete?: () => void;
+  onComplete?: (entityId: string) => void;
 
   /**
    * Called when the continue button is clicked on the onboarding completed page.
@@ -100,6 +134,15 @@ export interface OnboardingSettings {
    * @returns {void}
    */
   onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
+  /**
+   * Called when payments onboarding is completed.
+   * Note: This is currently triggered when all onboarding requirements are completed.
+   * Future versions may tie this to a specific payments onboarding status.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @returns {void}
+   */
+  onPaymentsOnboardingComplete?: (entityId: string) => void;
 }
 
 export interface FinancingSettings {
@@ -150,6 +193,14 @@ interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
   pageSizeOptions: number[];
+  onSaved?: (id: string) => void;
+  onCanceled?: (id: string) => void;
+  onSubmitted?: (id: string) => void;
+  onRejected?: (id: string) => void;
+  onApproved?: (id: string) => void;
+  onReopened?: (id: string) => void;
+  onDeleted?: (id: string) => void;
+  onPay?: (id: string) => void;
 }
 
 export interface ComponentSettings {
@@ -237,6 +288,14 @@ export const getDefaultComponentSettings = (
       counterpart_bank_account_id: false,
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
+    onSaved: componentSettings?.payables?.onSaved,
+    onCanceled: componentSettings?.payables?.onCanceled,
+    onSubmitted: componentSettings?.payables?.onSubmitted,
+    onRejected: componentSettings?.payables?.onRejected,
+    onApproved: componentSettings?.payables?.onApproved,
+    onReopened: componentSettings?.payables?.onReopened,
+    onDeleted: componentSettings?.payables?.onDeleted,
+    onPay: componentSettings?.payables?.onPay,
   },
   products: {
     pageSizeOptions:
@@ -264,10 +323,6 @@ export const getDefaultComponentSettings = (
         query: { type: 'financing' },
       },
     ],
-    onCreate: componentSettings?.receivables?.onCreate,
-    onUpdate: componentSettings?.receivables?.onUpdate,
-    onDelete: componentSettings?.receivables?.onDelete,
-    onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
     enableEntityBankAccount:
       componentSettings?.receivables?.enableEntityBankAccount || false,
     bankAccountCurrencies:
@@ -276,6 +331,10 @@ export const getDefaultComponentSettings = (
     bankAccountCountries:
       componentSettings?.receivables?.bankAccountCountries ||
       defaultAvailableCountries,
+    onCreate: componentSettings?.receivables?.onCreate,
+    onUpdate: componentSettings?.receivables?.onUpdate,
+    onDelete: componentSettings?.receivables?.onDelete,
+    onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
   },
   tags: {
     pageSizeOptions:
@@ -285,7 +344,20 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
-  onboarding: componentSettings?.onboarding ?? {},
+  onboarding: {
+    footerLogoUrl: componentSettings?.onboarding?.footerLogoUrl,
+    footerWebsiteUrl: componentSettings?.onboarding?.footerWebsiteUrl,
+    hideFooter: componentSettings?.onboarding?.hideFooter,
+    showContinueButton: componentSettings?.onboarding?.showContinueButton,
+    allowedCurrencies: componentSettings?.onboarding?.allowedCurrencies,
+    allowedCountries: componentSettings?.onboarding?.allowedCountries,
+    onComplete: componentSettings?.onboarding?.onComplete,
+    onContinue: componentSettings?.onboarding?.onContinue,
+    onWorkingCapitalOnboardingComplete:
+      componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete,
+    onPaymentsOnboardingComplete:
+      componentSettings?.onboarding?.onPaymentsOnboardingComplete,
+  },
   financing: componentSettings?.financing ?? {},
   templateSettings: {
     showTemplateSection:

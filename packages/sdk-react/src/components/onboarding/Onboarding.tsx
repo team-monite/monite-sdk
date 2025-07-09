@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
@@ -26,6 +28,22 @@ const OnboardingComponent = (props: OnboardingProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
 
+  const { onComplete: propsOnComplete } = props;
+  const { onPaymentsOnboardingComplete, onComplete: settingsOnComplete } =
+    componentSettings.onboarding;
+
+  const handleOnboardingComplete = useCallback(
+    (completedEntityId: string) => {
+      // We call onComplete from the props,
+      // onPaymentsOnboardingComplete from the component settings, and onComplete from the component settings
+      // TODO: We should probably deprecate onPaymentsOnboardingComplete and use onComplete instead
+      propsOnComplete?.(completedEntityId);
+      onPaymentsOnboardingComplete?.(completedEntityId);
+      settingsOnComplete?.(completedEntityId);
+    },
+    [propsOnComplete, onPaymentsOnboardingComplete, settingsOnComplete]
+  );
+
   if (error) {
     return <div>{getAPIErrorMessage(i18n, error)}</div>;
   }
@@ -36,7 +54,11 @@ const OnboardingComponent = (props: OnboardingProps) => {
 
   return (
     <OnboardingContextProvider>
-      <OnboardingContent {...componentSettings.onboarding} {...props} />
+      <OnboardingContent
+        {...componentSettings.onboarding}
+        {...props}
+        onComplete={handleOnboardingComplete}
+      />
     </OnboardingContextProvider>
   );
 };
