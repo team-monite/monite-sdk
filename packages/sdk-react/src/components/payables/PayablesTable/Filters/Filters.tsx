@@ -30,7 +30,11 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
-      sx={sx}
+      sx={{
+        borderTopLeftRadius: '12px',
+        borderTopRightRadius: '12px',
+        ...sx,
+      }}
       searchField={
         <SearchField
           placeholder={t(i18n)`Search by number or vendor`}
