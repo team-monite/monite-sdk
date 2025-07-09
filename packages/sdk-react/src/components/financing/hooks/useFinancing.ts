@@ -11,6 +11,7 @@ import {
   useKanmonContext,
 } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useComponentSettings } from '@/core/hooks';
 import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -39,10 +40,10 @@ export type UseFinancingReturnValues = {
 };
 
 export const useFinancing = () => {
-  const { apiUrl, api, queryClient, componentSettings, entityId } =
-    useMoniteContext();
+  const { apiUrl, api, queryClient, entityId } = useMoniteContext();
   const { isKanmonInitialized, toggleKanmon, handleButtonText, buttonText } =
     useKanmonContext();
+  const { onboardingCallbacks } = useComponentSettings();
   const { i18n } = useLingui();
   const getConnectToken = useGetFinancingConnectToken();
   const { data: finance } = useGetFinanceOffers();
@@ -191,12 +192,10 @@ export const useFinancing = () => {
             case 'WAITING_FOR_OFFERS':
               handleButtonText('');
               if (
-                (finance?.business_status === 'INPUT_REQUIRED' ||
-                  finance?.business_status === 'NEW') &&
-                componentSettings?.onboarding
-                  ?.onWorkingCapitalOnboardingComplete
+                finance?.business_status === 'INPUT_REQUIRED' ||
+                finance?.business_status === 'NEW'
               ) {
-                componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete(
+                onboardingCallbacks.onWorkingCapitalOnboardingComplete?.(
                   entityId
                 );
               }

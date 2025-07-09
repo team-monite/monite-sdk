@@ -130,7 +130,8 @@ export const prepareDefaultValues = (
     dueDate: due_date ? new Date(due_date) : undefined,
     currency: currency ?? 'EUR',
     tags: tagsToSelect(tags),
-    discount: discount || null,
+    discount:
+      discount && currency ? formatFromMinorUnits(discount, currency) : null,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -146,19 +147,23 @@ export const prepareDefaultValues = (
   };
 };
 
-export const prepareSubmit = ({
-  discount,
-  invoiceNumber,
-  counterpart,
-  counterpartBankAccount,
-  invoiceDate,
-  dueDate,
-  currency,
-  tags,
-  counterpartAddressId,
-}: SubmitPayload): components['schemas']['PayableUpdateSchema'] => ({
+export const prepareSubmit = (
+  {
+    discount,
+    invoiceNumber,
+    counterpart,
+    counterpartBankAccount,
+    invoiceDate,
+    dueDate,
+    currency,
+    tags,
+    counterpartAddressId,
+  }: SubmitPayload,
+  formatToMinorUnits: (amount: number, currency: string) => number | null
+): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
-  discount: discount ?? 0,
+  discount:
+    discount && currency ? formatToMinorUnits(discount, currency) ?? 0 : 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
@@ -276,8 +281,11 @@ export const isOcrMismatch = (
     };
   }
 
-  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
-    other_extracted_data;
+  const { total: ocrTotal } = other_extracted_data;
+  const ocrBankAccountId =
+    'counterpart_account_id' in other_extracted_data
+      ? other_extracted_data.counterpart_account_id
+      : undefined;
 
   const isAmountMismatch = amount_to_pay !== ocrTotal;
 

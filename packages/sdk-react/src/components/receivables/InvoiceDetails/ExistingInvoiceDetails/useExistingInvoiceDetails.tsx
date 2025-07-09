@@ -138,11 +138,12 @@ export function useExistingInvoiceDetails({
     [pdfQuery.isLoading, isPdfReady, mutationInProgress]
   );
 
-  const isMoreButtonVisible = useMemo(() => {
+  const isSendEmailButtonVisible = useMemo(() => {
     switch (receivable?.status) {
       case 'issued':
       case 'partially_paid':
       case 'overdue':
+      case 'draft':
         return true;
       default:
         return false;
@@ -173,6 +174,8 @@ export function useExistingInvoiceDetails({
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
 
+  const isEditTemplateButtonVisible = receivable?.status === 'draft';
+
   const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: entityId },
   });
@@ -199,7 +202,7 @@ export function useExistingInvoiceDetails({
     buttons: {
       isDownloadPDFButtonVisible,
       isDownloadPDFButtonDisabled,
-      isMoreButtonVisible,
+      isSendEmailButtonVisible,
       isDeleteButtonDisabled,
       isDeleteButtonVisible,
       isEditButtonVisible,
@@ -208,6 +211,7 @@ export function useExistingInvoiceDetails({
       isCancelButtonVisible,
       isCancelButtonDisabled,
       isCancelRecurrenceButtonDisabled,
+      isEditTemplateButtonVisible,
     },
   };
 }

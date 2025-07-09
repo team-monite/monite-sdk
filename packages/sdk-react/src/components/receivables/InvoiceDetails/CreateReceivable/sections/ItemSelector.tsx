@@ -33,12 +33,11 @@ interface ItemSelectorOptionProps {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  measureUnit?: components['schemas']['LineItemProductMeasureUnit'];
   currency?: CurrencyEnum;
 }
 
-type MeasureUnit =
-  components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
   disabled?: boolean;

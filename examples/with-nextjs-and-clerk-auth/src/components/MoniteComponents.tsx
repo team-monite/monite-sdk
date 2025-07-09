@@ -26,7 +26,7 @@ import {
   useMoniteContext,
   useRootElements,
   UserRoles as UserRolesBase,
-  DocumentDesign as DocumentDesignBase,
+  TemplateSettings as TemplateSettingsBase,
 } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
@@ -571,8 +571,8 @@ export const RolesAndPolicies = () => {
   return <RolesAndApprovalPoliciesBase />;
 };
 
-export const InvoiceDesign = () => {
-  return <DocumentDesignBase />;
+export const TemplateSettings = () => {
+  return <TemplateSettingsBase />;
 };
 
 const amexIcon =

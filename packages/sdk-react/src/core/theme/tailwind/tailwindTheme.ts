@@ -25,6 +25,7 @@ export const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-primary-85: ${theme.palette.primary[85]};
     --mtw-color-primary-90: ${theme.palette.primary[90]};
     --mtw-color-primary-95: ${theme.palette.primary[95]};
+    --mtw-color-primary-foreground: ${theme.palette.primary.foreground.main};
 
     --mtw-color-neutral-10: ${theme.palette.neutral[10]};
     --mtw-color-neutral-30: ${theme.palette.neutral[30]};
@@ -35,13 +36,10 @@ export const getTailwindTheme = (theme: MoniteTheme) => css`
     --mtw-color-neutral-95: ${theme.palette.neutral[95]};
 
     --mtw-color-danger-10: ${theme.palette.error[10]};
-    --mtw-color-danger-30: ${theme.palette.error[30]};
-    --mtw-color-danger-40: ${theme.palette.error[40]};
+    --mtw-color-danger-25: ${theme.palette.error[25]};
     --mtw-color-danger-50: ${theme.palette.error[50]};
-    --mtw-color-danger-60: ${theme.palette.error[60]};
-    --mtw-color-danger-80: ${theme.palette.error[80]};
-    --mtw-color-danger-90: ${theme.palette.error[90]};
-    --mtw-color-danger-95: ${theme.palette.error[95]};
+    --mtw-color-danger-75: ${theme.palette.error[75]};
+    --mtw-color-danger-100: ${theme.palette.error[100]};
 
     --mtw-color-success-10: ${theme.palette.success[10]};
     --mtw-color-success-30: ${theme.palette.success[30]};

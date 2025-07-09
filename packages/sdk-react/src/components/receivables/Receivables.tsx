@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
@@ -10,9 +10,9 @@ import {
   ReceivablesTableTabEnum,
 } from '@/components/receivables/components';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useComponentSettings } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -36,7 +36,7 @@ export const Receivables = (props: ReceivablesProps) => (
 
 const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
   const { i18n } = useLingui();
-  const { componentSettings } = useMoniteContext();
+  const { componentSettings, receivablesCallbacks } = useComponentSettings();
   const { isEnabled, isServicing } = useFinancing();
   const [invoiceId, setInvoiceId] = useState<string>('');
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
@@ -45,16 +45,6 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
     componentSettings.receivables.tab ?? ReceivablesTableTabEnum.Invoices
   );
   const activeTabItem = componentSettings?.receivables?.tabs?.[activeTab];
-
-  const receivableCallbacks = useMemo(
-    () => ({
-      onUpdate: componentSettings?.receivables?.onUpdate,
-      onDelete: componentSettings?.receivables?.onDelete,
-      onCreate: componentSettings?.receivables?.onCreate,
-      onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
-    }),
-    [componentSettings?.receivables]
-  );
 
   const openInvoiceModal = useCallback((id: string) => {
     setInvoiceId(id);
@@ -76,16 +66,16 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       receivableId: string,
       invoice?: components['schemas']['InvoiceResponsePayload']
     ) => {
-      receivableCallbacks.onUpdate?.(receivableId, invoice);
+      receivablesCallbacks.onUpdate?.(receivableId, invoice);
     },
-    [receivableCallbacks]
+    [receivablesCallbacks]
   );
 
   const handleDelete = useCallback(
     (receivableId: string) => {
-      receivableCallbacks.onDelete?.(receivableId);
+      receivablesCallbacks.onDelete?.(receivableId);
     },
-    [receivableCallbacks]
+    [receivablesCallbacks]
   );
 
   const handleCreate = useCallback(
@@ -93,16 +83,16 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       setIsCreateInvoiceDialogOpen(false);
       setActiveTab(ReceivablesTableTabEnum.Invoices);
       openInvoiceModal(receivableId);
-      receivableCallbacks.onCreate?.(receivableId);
+      receivablesCallbacks.onCreate?.(receivableId);
     },
-    [receivableCallbacks, openInvoiceModal, setActiveTab]
+    [receivablesCallbacks, openInvoiceModal, setActiveTab]
   );
 
   const handleSendEmail = useCallback(
     (invoiceId: string) => {
-      receivableCallbacks.onInvoiceSent?.(invoiceId);
+      receivablesCallbacks.onInvoiceSent?.(invoiceId);
     },
-    [receivableCallbacks]
+    [receivablesCallbacks]
   );
 
   const { root } = useRootElements();
@@ -177,6 +167,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       >
         <InvoiceDetails
           id={invoiceId}
+          onDuplicate={openInvoiceModal}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
           customerTypes={
