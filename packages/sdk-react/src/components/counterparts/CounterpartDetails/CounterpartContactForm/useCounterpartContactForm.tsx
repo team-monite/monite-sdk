@@ -1,6 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-
+import {
+  CounterpartContactFields,
+  prepareCounterpartContact,
+  prepareCounterpartContactSubmit,
+} from './mapper';
+import { getValidationSchema } from './validation';
 import { components } from '@/api';
 import {
   useCounterpartById,
@@ -8,15 +11,10 @@ import {
   useCreateCounterpartContact,
   useUpdateCounterpartContact,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
-
-import {
-  CounterpartContactFields,
-  prepareCounterpartContact,
-  prepareCounterpartContactSubmit,
-} from './mapper';
-import { getValidationSchema } from './validation';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 
 export type CounterpartContactFormProps = {
   counterpartId: string;
@@ -47,7 +45,7 @@ export function useCounterpartContactForm({
   const counterpart = counterpartResponse;
 
   const methods = useForm<CounterpartContactFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartContact(contact), [contact]),
   });
 

@@ -1,6 +1,13 @@
-import { BaseSyntheticEvent, useCallback, useEffect, useId } from 'react';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
-
+import { CounterpartIndividualFields } from '../../CounterpartForm';
+import {
+  prepareCounterpartIndividual,
+  prepareCounterpartIndividualCreate,
+  prepareCounterpartIndividualUpdate,
+} from './mapper';
+import {
+  getUpdateIndividualValidationSchema,
+  getCreateIndividualValidationSchema,
+} from './validation';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
@@ -11,11 +18,11 @@ import {
 import { type DefaultValuesOCRIndividual } from '@/components/counterparts/types';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -30,17 +37,8 @@ import {
   ListItemText,
   Grid,
 } from '@mui/material';
-
-import { CounterpartIndividualFields } from '../../CounterpartForm';
-import {
-  prepareCounterpartIndividual,
-  prepareCounterpartIndividualCreate,
-  prepareCounterpartIndividualUpdate,
-} from './mapper';
-import {
-  getUpdateIndividualValidationSchema,
-  getCreateIndividualValidationSchema,
-} from './validation';
+import { BaseSyntheticEvent, useCallback, useEffect, useId } from 'react';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 interface CounterpartIndividualFormProps extends CounterpartsFormProps {
   isInvoiceCreation?: boolean;
@@ -81,7 +79,7 @@ export const CounterpartIndividualForm = ({
   const { showCategories, defaultValuesOCR, defaultValues } = props;
 
   const methods = useForm({
-    resolver: yupResolver(
+    resolver: zodResolver(
       props.id || individualCounterpart
         ? getUpdateIndividualValidationSchema(i18n)
         : getCreateIndividualValidationSchema(i18n)
@@ -174,8 +172,8 @@ export const CounterpartIndividualForm = ({
             isInvoiceCreation
               ? t(i18n)`Create customer`
               : props?.id
-              ? t(i18n)`Edit individual`
-              : t(i18n)`Create new counterpart`
+                ? t(i18n)`Edit individual`
+                : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
             props?.id || isInvoiceCreation

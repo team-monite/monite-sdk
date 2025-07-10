@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-
+import { getValidationSchema } from './validation';
 import { components } from '@/api';
 import {
   useCounterpartById,
@@ -8,10 +6,10 @@ import {
   useCreateCounterpartVat,
   useUpdateCounterpartVat,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
-
-import { getValidationSchema } from './validation';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export type CounterpartVatFormProps = {
   counterpartId: string;
@@ -39,7 +37,7 @@ export function useCounterpartVatForm({
 
   const { i18n } = useLingui();
   const methods = useForm<components['schemas']['CounterpartVatID']>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => {
       return {
         country: vat?.country,

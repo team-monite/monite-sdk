@@ -1,22 +1,19 @@
-import { useCallback, useMemo, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-
+import {
+  CounterpartAddressFormFields,
+  prepareCounterpartAddress,
+} from '../CounterpartAddressForm';
+import { getAddressValidationSchema } from '../CounterpartAddressForm/validation';
 import { components } from '@/api';
 import {
   useCounterpartAddresses,
   useCounterpartById,
   useUpdateCounterpartAddress,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
-
-import * as yup from 'yup';
-
-import {
-  CounterpartAddressFormFields,
-  prepareCounterpartAddress,
-} from '../CounterpartAddressForm';
-import { getAddressValidationSchema } from '../CounterpartAddressForm/validation';
+import { useCallback, useMemo, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 export interface CounterpartAddressFormUpdateProps {
   counterpartId: string;
@@ -37,7 +34,7 @@ export function useCounterpartAddressFormUpdate({
 
   const { i18n } = useLingui();
   const methods = useForm<CounterpartAddressFormFields>({
-    resolver: yupResolver(yup.object().shape(getAddressValidationSchema(i18n))),
+    resolver: zodResolver(z.object(getAddressValidationSchema(i18n))),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),
       [address]

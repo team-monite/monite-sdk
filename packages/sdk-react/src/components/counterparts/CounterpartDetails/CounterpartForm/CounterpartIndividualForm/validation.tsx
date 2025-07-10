@@ -1,14 +1,11 @@
+import { getAddressValidationSchema } from '../../CounterpartAddressForm/validation';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import * as yup from 'yup';
-import type { SchemaOf } from 'yup';
-
-import { getAddressValidationSchema } from '../../CounterpartAddressForm/validation';
+import { z } from 'zod';
 
 export const getUpdateIndividualValidationSchema = (
   i18n: I18n
-): SchemaOf<{
+): z.ZodSchema<{
   tax_id?: string;
   remindersEnabled: boolean;
   individual: {
@@ -16,27 +13,29 @@ export const getUpdateIndividualValidationSchema = (
     lastName: string;
     email: string;
     phone?: string;
-    counterpartType?: 'vendor' | 'customer';
+    isCustomer: boolean;
+    isVendor: boolean;
   };
 }> =>
-  yup.object().shape({
-    tax_id: yup.string(),
-    remindersEnabled: yup.boolean().required(),
-    individual: yup.object().shape({
-      firstName: yup.string().required(t(i18n)`First name is required`),
-      lastName: yup.string().required(t(i18n)`Last name is required`),
-      email: yup
+  z.object({
+    tax_id: z.string().optional(),
+    remindersEnabled: z.boolean(),
+    individual: z.object({
+      firstName: z.string().min(1, t(i18n)`First name is required`),
+      lastName: z.string().min(1, t(i18n)`Last name is required`),
+      email: z
         .string()
         .email(t(i18n)`Email must be a valid email`)
-        .required(t(i18n)`Email is required`),
-      phone: yup.string(),
-      counterpartType: yup.mixed().oneOf(['vendor', 'customer']),
+        .min(1, t(i18n)`Email is required`),
+      phone: z.string().optional(),
+      isCustomer: z.boolean(),
+      isVendor: z.boolean(),
     }),
   });
 
 export const getCreateIndividualValidationSchema = (
   i18n: I18n
-): SchemaOf<{
+): z.ZodSchema<{
   tax_id?: string;
   remindersEnabled: boolean;
   individual: {
@@ -44,7 +43,8 @@ export const getCreateIndividualValidationSchema = (
     lastName: string;
     email: string;
     phone?: string;
-    counterpartType?: 'vendor' | 'customer';
+    isCustomer: boolean;
+    isVendor: boolean;
     line1?: string;
     line2?: string;
     city?: string;
@@ -53,18 +53,19 @@ export const getCreateIndividualValidationSchema = (
     postalCode?: string;
   };
 }> =>
-  yup.object().shape({
-    tax_id: yup.string(),
-    remindersEnabled: yup.boolean().required(),
-    individual: yup.object().shape({
-      firstName: yup.string().required(t(i18n)`First name is required`),
-      lastName: yup.string().required(t(i18n)`Last name is required`),
-      email: yup
+  z.object({
+    tax_id: z.string().optional(),
+    remindersEnabled: z.boolean(),
+    individual: z.object({
+      firstName: z.string().min(1, t(i18n)`First name is required`),
+      lastName: z.string().min(1, t(i18n)`Last name is required`),
+      email: z
         .string()
         .email(t(i18n)`Email must be a valid email`)
-        .required(t(i18n)`Email is required`),
-      phone: yup.string(),
-      counterpartType: yup.mixed().oneOf(['vendor', 'customer']),
+        .min(1, t(i18n)`Email is required`),
+      phone: z.string().optional(),
+      isCustomer: z.boolean(),
+      isVendor: z.boolean(),
       ...getAddressValidationSchema(i18n),
     }),
   });

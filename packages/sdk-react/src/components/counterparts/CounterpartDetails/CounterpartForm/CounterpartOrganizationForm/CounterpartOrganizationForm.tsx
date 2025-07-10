@@ -1,38 +1,3 @@
-import {
-  BaseSyntheticEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-} from 'react';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
-
-import { components } from '@/api';
-import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
-import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
-import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
-import { AccessRestriction } from '@/ui/accessRestriction';
-import { useDialog } from '@/ui/Dialog';
-import { DialogFooter } from '@/ui/DialogFooter';
-import { DialogHeader } from '@/ui/DialogHeader';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import {
-  DialogContent,
-  Divider,
-  Typography,
-  TextField,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Grid,
-} from '@mui/material';
-
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import {
   useCounterpartForm,
@@ -47,6 +12,39 @@ import {
   getUpdateCounterpartValidationSchema,
   getCreateCounterpartValidationSchema,
 } from './validation';
+import { components } from '@/api';
+import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
+import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
+import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
+import { useDialog } from '@/ui/Dialog';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import {
+  DialogContent,
+  Divider,
+  Typography,
+  TextField,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Grid,
+} from '@mui/material';
+import {
+  BaseSyntheticEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+} from 'react';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
   isInvoiceCreation?: boolean;
@@ -80,7 +78,7 @@ export const CounterpartOrganizationForm = (
     | undefined;
 
   const methods = useForm({
-    resolver: yupResolver(
+    resolver: zodResolver(
       props.id || counterpart
         ? getUpdateCounterpartValidationSchema(i18n)
         : getCreateCounterpartValidationSchema(i18n)
@@ -189,8 +187,8 @@ export const CounterpartOrganizationForm = (
             isInvoiceCreation
               ? t(i18n)`Create customer`
               : props?.id
-              ? t(i18n)`Edit company`
-              : t(i18n)`Create new counterpart`
+                ? t(i18n)`Edit company`
+                : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
             props?.id || isInvoiceCreation
