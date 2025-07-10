@@ -348,7 +348,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </Alert>
                       )}
 
-                    {!counterpartMatchingToOCRFound &&
+                    {!AICounterpartSuggestions &&
+                      !counterpartMatchingToOCRFound &&
                       counterpartRawName &&
                       !currentValue &&
                       !multiple && (
@@ -372,7 +373,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </FormHelperText>
                       )}
 
-                    {counterpartMatchingToOCRFound &&
+                    {!AICounterpartSuggestions &&
+                      counterpartMatchingToOCRFound &&
                       currentValue == counterpartMatchingToOCRFound.id &&
                       !multiple &&
                       setShowEditCounterpartDialog && (
