@@ -8,7 +8,7 @@ import {
   useCreateCounterpartVat,
   useUpdateCounterpartVat,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 
 import { getValidationSchema } from './validation';
@@ -19,6 +19,7 @@ export type CounterpartVatFormProps = {
   onCancel?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 };
 
 export function useCounterpartVatForm({
@@ -26,6 +27,7 @@ export function useCounterpartVatForm({
   vatId,
   onCreate,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartVatFormProps) {
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -39,7 +41,7 @@ export function useCounterpartVatForm({
 
   const { i18n } = useLingui();
   const methods = useForm<components['schemas']['CounterpartVatID']>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => {
       return {
         country: vat?.country,
@@ -119,5 +121,6 @@ export function useCounterpartVatForm({
       isCounterpartLoading ||
       isVatLoading,
     error: createVatMutation.error || updateVatMutation.error,
+    payableCounterpartRawData,
   };
 }

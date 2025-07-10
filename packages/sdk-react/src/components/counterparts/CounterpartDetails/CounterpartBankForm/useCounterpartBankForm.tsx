@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartBankById,
   useCreateCounterpartBank,
   useUpdateCounterpartBank,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 
 import {
@@ -24,6 +25,7 @@ export type CounterpartBankFormProps = {
   onCancel?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 };
 
 export function useCounterpartBankForm({
@@ -31,6 +33,7 @@ export function useCounterpartBankForm({
   bankId,
   onCreate,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartBankFormProps) {
   const formId = `Monite-CounterpartBankForm-${useId()}`;
 
@@ -46,7 +49,7 @@ export function useCounterpartBankForm({
 
   const { i18n } = useLingui();
   const methods = useForm<CounterpartBankFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 
@@ -112,5 +115,6 @@ export function useCounterpartBankForm({
       isCounterpartLoading ||
       isBankLoading,
     error: createBankMutation.error || updateBankMutation.error,
+    payableCounterpartRawData,
   };
 }

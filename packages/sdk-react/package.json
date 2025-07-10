@@ -34,7 +34,7 @@
   "dependencies": {
     "@ai-sdk/react": "~1.2.8",
     "@faker-js/faker": "~8.0.2",
-    "@hookform/resolvers": "~5.1.1",
+    "@hookform/resolvers": "^3.10.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
     "@lingui/message-utils": "~4.7.0",
