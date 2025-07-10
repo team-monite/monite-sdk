@@ -29788,7 +29788,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29798,7 +29798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29808,7 +29808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29818,7 +29818,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29828,7 +29828,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29885,7 +29885,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29895,7 +29895,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29905,7 +29905,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29915,7 +29915,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
@@ -29925,7 +29925,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/monite_server__responses__ErrorSchemaResponse"
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
                 }
               }
             }
