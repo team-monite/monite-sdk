@@ -30,7 +30,7 @@ const AIAssistantBase = () => {
   const [isNewChat, setIsNewChat] = useState(true);
 
   const { mutateAsync: fetchConversationId, isPending } =
-    api.ai.createConversation.useMutation();
+    api.ai.postAiConversations.useMutation();
 
   const getConversationId = useCallback(async () => {
     const { id: conversationId } = await fetchConversationId({});
