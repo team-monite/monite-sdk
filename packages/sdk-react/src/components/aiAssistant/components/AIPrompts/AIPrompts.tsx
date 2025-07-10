@@ -11,7 +11,7 @@ export const AIPrompts = ({ isConversationIdLoading = false }) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { data, isLoading } = api.ai.fetchPrompts.useQuery<{
+  const { data, isLoading } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 

@@ -31,7 +31,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
 
   const { api } = useMoniteContext();
   const { mutateAsync: postFeedbackMessage } =
-    api.ai.postFeedbackMessage.useMutation();
+    api.ai.postAiMessageFeedbacksCommentary.useMutation();
 
   const [input, setInput] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);

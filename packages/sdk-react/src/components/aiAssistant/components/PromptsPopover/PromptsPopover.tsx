@@ -27,7 +27,7 @@ export const PromptsPopover: FC<PromptsPopoverProps> = ({
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { data } = api.ai.fetchPrompts.useQuery<{
+  const { data } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 

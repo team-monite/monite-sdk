@@ -1169,6 +1169,755 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/ai/conversations": {
+      "get": {
+        "tags": ["Monite AI"],
+        "summary": "Get conversations",
+        "description": "Retrieve all historical conversations for the authenticated user.\n\n    This endpoint returns a paginated list of conversations sorted by recency.\n    Each conversation includes basic metadata such as ID, title, and creation timestamp.\n\n    You can control the number of results using the `limit` parameter.",
+        "operationId": "get_ai_conversations",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 100 }
+          },
+          {
+            "name": "title__icontains",
+            "in": "query",
+            "required": false,
+            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }] }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResourceList"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Monite AI"],
+        "summary": "Create conversation",
+        "description": "Create a new empty conversation for the authenticated user.\n\n    This endpoint initializes a conversation record that can be used with the chat endpoint.\n    The response includes the new conversation's unique ID which should be used in subsequent\n    chat API calls.",
+        "operationId": "post_ai_conversations",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResource"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/conversations/{conversation_id}": {
+      "get": {
+        "tags": ["Monite AI"],
+        "summary": "Get conversation by ID",
+        "description": "Retrieve a specific conversation and its messages by ID.\n\n    This endpoint returns the conversation metadata along with all messages exchanged\n    between the user and the assistant. Messages are ordered chronologically.\n    The conversation is only accessible to the user who created it.",
+        "operationId": "get_ai_conversations_id",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResource"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": { "description": "Conversation not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/conversations/{conversation_id}/messages": {
+      "post": {
+        "tags": ["Monite AI"],
+        "summary": "Chat with the Argon assistant",
+        "description": "Send a message to the Argon assistant to start a new chat or continue an existing conversation.\n\n    This endpoint allows:\n    - Continuing an existing conversation by providing a valid conversation_id\n    - Sending user messages to receive AI-generated responses\n    - Streaming responses back to the client in real-time\n\n    The response is a StreamingResponse that delivers chunks of the assistant's\n    message as they are generated. The stream contains JSON-formatted message parts,\n    token usage statistics, and completion indicators.",
+        "operationId": "post_ai_conversations_id_messages",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "x-entity-name",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "default": "Argon" }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ClientMessage" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/message_feedbacks": {
+      "post": {
+        "tags": ["Monite AI"],
+        "summary": "Mark a message as helpful or not",
+        "operationId": "post_ai_message_feedbacks",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageFeedbackPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/message_feedbacks/commentary": {
+      "post": {
+        "tags": ["Monite AI"],
+        "summary": "Post feedback commentary for a message",
+        "operationId": "post_ai_message_feedbacks_commentary",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageFeedbackCommentaryPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/prompts": {
+      "get": {
+        "tags": ["Monite AI"],
+        "summary": "Get user prompts",
+        "description": "Retrieve all saved prompts for the authenticated user. This endpoint returns a list of prompts saved by the user. Each prompt includes its ID, content, and creation timestamp.",
+        "operationId": "get_ai_prompts",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PromptResourceList" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Monite AI"],
+        "summary": "Create a prompt",
+        "description": "Save a new prompt to the user's prompt library.\n\n    This endpoint allows users to save frequently used prompts for later reuse.",
+        "operationId": "post_ai_prompts",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PromptCreateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PromptResource" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/prompts/{prompt_id}": {
+      "get": {
+        "tags": ["Monite AI"],
+        "summary": "Get prompt by ID",
+        "description": "Retrieve a specific prompt of entity user by prompt ID.",
+        "operationId": "get_ai_prompts_id",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PromptResource" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": { "description": "Prompt not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Monite AI"],
+        "summary": "Delete prompt by ID",
+        "description": "Delete a specific prompt of entity user by prompt ID.",
+        "operationId": "delete_ai_prompts_id",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Monite AI"],
+        "summary": "Update prompt by ID",
+        "description": "Update a specific prompt of entity user by prompt ID.",
+        "operationId": "patch_ai_prompts_id",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "x-monite-entity-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "description": "The ID of the entity that owns the requested resource."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PromptUpdateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": { "description": "Prompt not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/analytics/credit_notes": {
       "get": {
         "tags": ["Analytics"],
@@ -2047,7 +2796,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -3490,7 +4239,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -3500,7 +4249,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -3512,14 +4261,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -5449,7 +6198,7 @@
             "in": "query"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -5459,7 +6208,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -5471,14 +6220,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/CommentCursorFields" }]
@@ -9404,7 +10153,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -9414,7 +10163,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -9426,14 +10175,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -9681,7 +10430,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -9691,7 +10440,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -9703,14 +10452,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -10425,7 +11174,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -11630,6 +12379,79 @@
           },
           "500": {
             "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/einvoice_search": {
+      "get": {
+        "tags": ["E-invoicing Search"],
+        "summary": "Check if e-invoicing credentials exist in the network.",
+        "operationId": "get_einvoice_search",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "maxLength": 255, "minLength": 1 },
+            "name": "network_identifier",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": { "$ref": "#/components/schemas/EinvoiceSchemaTypeEnum" },
+            "name": "network_schema",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CounterpartEinvoicingCredentialExistenceResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -13130,7 +13952,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/FileSchema3" }
+                "schema": { "$ref": "#/components/schemas/FileSchema2" }
               }
             }
           },
@@ -16606,6 +17428,98 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/internal/counterparts/ai_suggestions": {
+      "get": {
+        "tags": ["Counterparts"],
+        "summary": "Find similar counterparts",
+        "operationId": "get_internal_counterparts_ai_suggestions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The address of the counterpart.",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 512 },
+            "name": "address",
+            "in": "query"
+          },
+          {
+            "description": "The bank account of the counterpart.",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 34 },
+            "name": "bank_account",
+            "in": "query"
+          },
+          {
+            "description": "The name of the counterpart.",
+            "required": true,
+            "schema": { "type": "string", "maxLength": 255 },
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "description": "The VAT ID of the counterpart.",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 32 },
+            "name": "vat",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CounterpartAiSuggestionsResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/internal/currencies": {
       "get": {
         "tags": ["Currencies internal", "Internal"],
@@ -19105,7 +20019,7 @@
             "in": "header"
           },
           {
-            "description": "Order by",
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
               "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
@@ -19115,7 +20029,7 @@
             "in": "query"
           },
           {
-            "description": "Max is 100",
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -19127,14 +20041,14 @@
             "in": "query"
           },
           {
-            "description": "A token, obtained from previous page. Prior over other filters",
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
             "required": false,
             "schema": { "type": "string" },
             "name": "pagination_token",
             "in": "query"
           },
           {
-            "description": "Allowed sort fields",
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
             "required": false,
             "schema": {
               "allOf": [
@@ -34117,6 +35031,226 @@
         "schema_name": "CompanyLogoUpdate"
       }
     },
+    "/portal/v1/dicts/currencies": {
+      "get": {
+        "tags": ["Project dictionaries"],
+        "summary": "Get Projects Currencies",
+        "operationId": "get__portal_v1_dicts_currencies",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DictsResponse" },
+                  "title": "Response Get  Portal V1 Dicts Currencies"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portal/v1/dicts/environments": {
+      "get": {
+        "tags": ["Project dictionaries"],
+        "summary": "Get Projects Environments",
+        "operationId": "get__portal_v1_dicts_environments",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DictsResponse" },
+                  "title": "Response Get  Portal V1 Dicts Environments"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portal/v1/dicts/features": {
+      "get": {
+        "tags": ["Project dictionaries"],
+        "summary": "Get Projects Features",
+        "operationId": "get__portal_v1_dicts_features",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/FeaturesResponse" },
+                  "title": "Response Get  Portal V1 Dicts Features"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portal/v1/dicts/regions": {
+      "get": {
+        "tags": ["Project dictionaries"],
+        "summary": "Get Projects Regions",
+        "operationId": "get__portal_v1_dicts_regions",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DictsResponse" },
+                  "title": "Response Get  Portal V1 Dicts Regions"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/portal/v1/email_exists": {
       "get": {
         "tags": ["Email exists"],
@@ -36326,7 +37460,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -37672,7 +38806,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -39279,7 +40413,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -39807,7 +40941,7 @@
             "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum2" }],
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
               "default": "asc"
             },
             "name": "order",
@@ -43930,7 +45064,6 @@
             "{$request.body.url}": {
               "post": {
                 "summary": "Webhook Notification",
-                "description": "Placeholder for webhook notification callback.\n\nThis endpoint is defined to illustrate the webhook callback mechanism in OpenAPI schema.\nIt is not intended for actual use and will always raise NotImplementedError.\n\nRaises:\n    NotImplementedError: Always, as this endpoint is not implemented.",
                 "operationId": "webhook_notification__request_body_url__post",
                 "requestBody": {
                   "required": true,
@@ -45516,6 +46649,13 @@
             "maxLength": 255,
             "description": "The name of the approval policy."
           },
+          "priority": {
+            "type": "integer",
+            "maximum": 32767.0,
+            "minimum": -32768.0,
+            "description": "The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.",
+            "default": 0
+          },
           "script": {
             "items": {
               "anyOf": [
@@ -45574,6 +46714,13 @@
             "type": "string",
             "maxLength": 255,
             "description": "The name of the approval policy."
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 32767.0,
+            "minimum": -32768.0,
+            "description": "The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority.",
+            "default": 0
           },
           "script": {
             "items": {
@@ -45661,6 +46808,12 @@
             "type": "string",
             "description": "The name of the approval policy."
           },
+          "priority": {
+            "type": "integer",
+            "maximum": 32767.0,
+            "minimum": -32768.0,
+            "description": "The priority controls which approval policy takes precedence when a payable matches multiple approval policies. A higher value mean higher priority."
+          },
           "script": {
             "items": {
               "anyOf": [
@@ -45710,6 +46863,7 @@
       },
       "ApprovalProcessStepResource": {
         "properties": {
+          "approval_request_id": { "type": "string", "format": "uuid" },
           "approved_by": {
             "items": { "type": "string", "format": "uuid" },
             "type": "array"
@@ -46324,6 +47478,23 @@
         },
         "type": "object"
       },
+      "ClientMessage": {
+        "properties": {
+          "attachments": {
+            "anyOf": [
+              {
+                "items": { "type": "string", "minLength": 1, "format": "uri" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ]
+          },
+          "text_prompt": { "type": "string" }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": ["text_prompt"]
+      },
       "CommentCreateRequest": {
         "properties": {
           "object_id": { "type": "string", "format": "uuid" },
@@ -46534,7 +47705,7 @@
           },
           "logo": {
             "anyOf": [
-              { "$ref": "#/components/schemas/FileSchema4" },
+              { "$ref": "#/components/schemas/FileSchema3" },
               { "type": "null" }
             ]
           },
@@ -46704,6 +47875,59 @@
           "FAILED"
         ]
       },
+      "ConversationResource": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the conversation"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time the conversation was created"
+          },
+          "is_starred": {
+            "type": "boolean",
+            "description": "Indicates if the conversation is starred by the user"
+          },
+          "messages": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Message" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "List of messages in the conversation. Filled only when conversation is retrieved individually"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the conversation generated by LLM"
+          }
+        },
+        "type": "object",
+        "required": ["id", "title", "created_at", "is_starred"]
+      },
+      "ConversationResourceList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/ConversationResource" },
+            "type": "array",
+            "description": "List of conversations"
+          },
+          "next_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Token to retrieve the next page of conversations"
+          },
+          "prev_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Token to retrieve the previous page of conversations"
+          }
+        },
+        "type": "object",
+        "required": ["data"]
+      },
       "CounterpartAddress": {
         "properties": {
           "city": {
@@ -46804,6 +48028,45 @@
           "postal_code"
         ],
         "description": "Address information."
+      },
+      "CounterpartAiSuggestion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The id of the counterpart."
+          },
+          "address_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The id of the address of the counterpart."
+          },
+          "bank_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The id of the bank account of the counterpart."
+          },
+          "vat_id_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The id of the VAT ID of the counterpart."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
+      },
+      "CounterpartAiSuggestionsResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/CounterpartAiSuggestion" },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"],
+        "description": "Payload for AI suggestions."
       },
       "CounterpartBankAccountResourceList": {
         "properties": {
@@ -46939,6 +48202,17 @@
       "CounterpartCursorFields": {
         "type": "string",
         "enum": ["counterpart_name"]
+      },
+      "CounterpartEinvoicingCredentialExistenceResponse": {
+        "properties": {
+          "exists": {
+            "type": "boolean",
+            "description": "Indicates if the e-invoicing credentials exist in the system"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["exists"]
       },
       "CounterpartEinvoicingCredentialResponse": {
         "properties": {
@@ -47168,6 +48442,11 @@
             "description": "`true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.",
             "default": false
           },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Entity user ID of counterpart creator."
+          },
           "default_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -47177,11 +48456,6 @@
             "type": "string",
             "format": "uuid",
             "description": "ID of the shipping address."
-          },
-          "created_by_entity_user_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Entity user ID of counterpart creator."
           },
           "external_reference": {
             "type": "string",
@@ -47430,6 +48704,11 @@
             "description": "`true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.",
             "default": false
           },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Entity user ID of counterpart creator."
+          },
           "default_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -47439,11 +48718,6 @@
             "type": "string",
             "format": "uuid",
             "description": "ID of the shipping address."
-          },
-          "created_by_entity_user_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Entity user ID of counterpart creator."
           },
           "external_reference": {
             "type": "string",
@@ -47810,18 +49084,6 @@
         ],
         "description": "A Counterpart object contains information about an organization (juridical person) or\nindividual (natural person) that provides goods and services to or buys them from an\n[SME](https://docs.monite.com/docs/glossary#sme)."
       },
-      "CounterpartTagCategory": {
-        "type": "string",
-        "enum": [
-          "document_type",
-          "department",
-          "project",
-          "cost_center",
-          "vendor_type",
-          "payment_method",
-          "approval_status"
-        ]
-      },
       "CounterpartTagSchema": {
         "properties": {
           "id": {
@@ -47843,9 +49105,7 @@
             "example": "2022-09-07T16:35:18.484507+00:00"
           },
           "category": {
-            "allOf": [
-              { "$ref": "#/components/schemas/CounterpartTagCategory" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/TagCategory" }],
             "description": "The tag category.",
             "example": "department"
           },
@@ -48161,12 +49421,53 @@
             "format": "email",
             "description": "An official email address of the entity"
           },
+          "individual": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/IndividualSchema" },
+              { "type": "null" }
+            ],
+            "description": "A set of meta data describing the individual"
+          },
+          "organization": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/OrganizationSchema" },
+              { "type": "null" }
+            ],
+            "description": "A set of meta data describing the organization"
+          },
           "phone": {
             "anyOf": [
               { "type": "string", "maxLength": 100 },
               { "type": "null" }
             ],
             "description": "The contact phone number of the entity. Required for US organizations to use payments."
+          },
+          "registration_authority": {
+            "anyOf": [
+              { "type": "string", "maxLength": 100, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "(Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.",
+            "examples": ["Amtsgericht Charlottenburg"]
+          },
+          "registration_number": {
+            "anyOf": [
+              { "type": "string", "maxLength": 100, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "(Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.",
+            "examples": ["HRB 202324"]
+          },
+          "tax_id": {
+            "anyOf": [
+              { "type": "string", "maxLength": 30, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered."
+          },
+          "type": {
+            "$ref": "#/components/schemas/EntityTypeEnum",
+            "description": "A type for an entity"
           },
           "website": {
             "anyOf": [
@@ -48179,47 +49480,6 @@
               { "type": "null" }
             ],
             "description": "A website of the entity"
-          },
-          "organization": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/OrganizationSchema" },
-              { "type": "null" }
-            ],
-            "description": "A set of meta data describing the organization"
-          },
-          "individual": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/IndividualSchema" },
-              { "type": "null" }
-            ],
-            "description": "A set of meta data describing the individual"
-          },
-          "tax_id": {
-            "anyOf": [
-              { "type": "string", "maxLength": 30, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered."
-          },
-          "registration_number": {
-            "anyOf": [
-              { "type": "string", "maxLength": 100, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "(Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.",
-            "examples": ["HRB 202324"]
-          },
-          "registration_authority": {
-            "anyOf": [
-              { "type": "string", "maxLength": 100, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "(Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.",
-            "examples": ["Amtsgericht Charlottenburg"]
-          },
-          "type": {
-            "$ref": "#/components/schemas/EntityTypeEnum",
-            "description": "A type for an entity"
           }
         },
         "additionalProperties": false,
@@ -48888,17 +50148,7 @@
         "required": ["data"],
         "description": "A paginated list of credit notes."
       },
-      "CreditNoteRenderingSettings": {
-        "properties": {
-          "display_entity_bank_account": {
-            "type": "boolean",
-            "description": "If set to `true`, the entity's bank account details will be displayed on the credit note PDF.",
-            "default": true
-          }
-        },
-        "additionalProperties": false,
-        "type": "object"
-      },
+      "CreditNoteRenderingSettings": { "properties": {}, "type": "object" },
       "CreditNoteResponse": {
         "properties": {
           "id": {
@@ -49186,9 +50436,7 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [
-              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
@@ -49220,6 +50468,12 @@
           "document_id": {
             "type": "string",
             "description": "The sequential code systematically assigned to invoices."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "due_date": {
             "type": "string",
@@ -50449,6 +51703,11 @@
         "type": "object",
         "description": "Delivery Note update request schema"
       },
+      "DictsResponse": {
+        "properties": { "name": { "type": "string" } },
+        "type": "object",
+        "required": ["name"]
+      },
       "Discount": {
         "properties": {
           "amount": {
@@ -50715,20 +51974,108 @@
       "DocumentRenderingSettings": {
         "properties": {
           "credit_note": {
+            "allOf": [
+              { "$ref": "#/components/schemas/CreditNoteRenderingSettings" }
+            ],
+            "description": "Credit note-specific rendering settings for PDF documents."
+          },
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the PDF documents. Defaults to `true`.",
+            "default": true
+          },
+          "display_line_items": {
+            "type": "boolean",
+            "description": "If set to `true`, the line items table will be displayed on the quote PDF. Defaults to `true`.",
+            "default": true
+          },
+          "invoice": {
+            "allOf": [
+              { "$ref": "#/components/schemas/InvoiceRenderingSettings" }
+            ],
+            "description": "Invoice-specific rendering settings for PDF documents."
+          },
+          "line_items": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemsRenderingSettings" }
+            ],
+            "description": "Settings for rendering line items in PDF documents. "
+          },
+          "quote": {
+            "allOf": [
+              { "$ref": "#/components/schemas/QuoteRenderingSettings" }
+            ],
+            "description": "Quote-specific rendering settings for PDF documents."
+          }
+        },
+        "type": "object",
+        "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
+      },
+      "DocumentRenderingSettings-Input": {
+        "properties": {
+          "credit_note": {
             "$ref": "#/components/schemas/CreditNoteRenderingSettings",
-            "description": "Settings for rendering credit notes in PDF documents."
+            "description": "Credit note-specific rendering settings for PDF documents."
+          },
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the PDF documents. Defaults to `true`.",
+            "default": true
+          },
+          "display_line_items": {
+            "type": "boolean",
+            "description": "If set to `true`, the line items table will be displayed on the quote PDF. Defaults to `true`.",
+            "default": true
           },
           "invoice": {
             "$ref": "#/components/schemas/InvoiceRenderingSettings",
-            "description": "Settings for rendering invoices in PDF documents."
+            "description": "Invoice-specific rendering settings for PDF documents."
+          },
+          "line_items": {
+            "$ref": "#/components/schemas/LineItemsRenderingSettings",
+            "description": "Settings for rendering line items in PDF documents. "
           },
           "quote": {
             "$ref": "#/components/schemas/QuoteRenderingSettings",
-            "description": "Settings for rendering quotes in PDF documents."
+            "description": "Quote-specific rendering settings for PDF documents."
           }
         },
         "additionalProperties": false,
-        "type": "object"
+        "type": "object",
+        "description": "Rendering settings that control how different parts of the PDF documents are displayed.\nIncludes common settings for all document types such as quotes, invoices, and credit notes and document\ntype-specific settings that are defined in their respective objects."
+      },
+      "DocumentRenderingSettings-Output": {
+        "properties": {
+          "credit_note": {
+            "$ref": "#/components/schemas/CreditNoteRenderingSettings",
+            "description": "Credit note-specific rendering settings for PDF documents."
+          },
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the PDF documents. Defaults to `true`.",
+            "default": true
+          },
+          "display_line_items": {
+            "type": "boolean",
+            "description": "If set to `true`, the line items table will be displayed on the quote PDF. Defaults to `true`.",
+            "default": true
+          },
+          "invoice": {
+            "$ref": "#/components/schemas/InvoiceRenderingSettings",
+            "description": "Invoice-specific rendering settings for PDF documents."
+          },
+          "line_items": {
+            "$ref": "#/components/schemas/LineItemsRenderingSettings",
+            "description": "Settings for rendering line items in PDF documents. "
+          },
+          "quote": {
+            "$ref": "#/components/schemas/QuoteRenderingSettings",
+            "description": "Quote-specific rendering settings for PDF documents."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "Rendering settings that control how different parts of the PDF documents are displayed.\nIncludes common settings for all document types such as quotes, invoices, and credit notes and document\ntype-specific settings that are defined in their respective objects."
       },
       "DocumentType": { "type": "string", "enum": ["receivable", "payable"] },
       "DocumentTypeEnum": {
@@ -51469,7 +52816,7 @@
           },
           "logo": {
             "anyOf": [
-              { "$ref": "#/components/schemas/FileSchema3" },
+              { "$ref": "#/components/schemas/FileSchema2" },
               { "type": "null" }
             ],
             "description": "A logo image of the entity"
@@ -51559,6 +52906,13 @@
               { "type": "null" }
             ],
             "description": "Details on the entity's acceptance of the service agreement."
+          },
+          "treasury_tos_acceptance": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/TermsOfServiceAcceptance-Input" },
+              { "type": "null" }
+            ],
+            "description": "Details on the entity's acceptance of the Stripe Treasury service agreement."
           }
         },
         "additionalProperties": false,
@@ -51588,6 +52942,15 @@
               { "type": "null" }
             ],
             "description": "Details on the entity's acceptance of the service agreement."
+          },
+          "treasury_tos_acceptance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TermsOfServiceAcceptance-Output"
+              },
+              { "type": "null" }
+            ],
+            "description": "Details on the entity's acceptance of the Stripe Treasury service agreement."
           }
         },
         "type": "object"
@@ -51670,7 +53033,7 @@
           },
           "logo": {
             "anyOf": [
-              { "$ref": "#/components/schemas/FileSchema3" },
+              { "$ref": "#/components/schemas/FileSchema2" },
               { "type": "null" }
             ],
             "description": "A logo image of the entity"
@@ -52088,14 +53451,14 @@
             "$ref": "#/components/schemas/CurrencyEnum",
             "examples": ["USD"]
           },
-          "to": {
-            "$ref": "#/components/schemas/CurrencyEnum",
-            "examples": ["EUR"]
-          },
           "rate": {
             "type": "number",
             "exclusiveMinimum": 0.0,
             "examples": [0.98]
+          },
+          "to": {
+            "$ref": "#/components/schemas/CurrencyEnum",
+            "examples": ["EUR"]
           }
         },
         "additionalProperties": false,
@@ -52296,17 +53659,6 @@
             "description": "The type of the business object associated with this file.",
             "example": "payables"
           },
-          "name": {
-            "type": "string",
-            "maxLength": 512,
-            "description": "The original file name (if available).",
-            "example": "invoice.pdf"
-          },
-          "region": {
-            "type": "string",
-            "description": "Geographical region of the data center where the file is stored.",
-            "example": "eu-central-1"
-          },
           "md5": {
             "type": "string",
             "description": "The MD5 hash of the file.",
@@ -52317,16 +53669,17 @@
             "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).",
             "example": "application/pdf"
           },
-          "url": {
+          "name": {
             "type": "string",
-            "description": "The URL to download the file.",
-            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
+            "maxLength": 512,
+            "description": "The original file name (if available).",
+            "example": "invoice.pdf"
           },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The file size in bytes.",
-            "example": 24381
+          "pages": {
+            "items": { "$ref": "#/components/schemas/PageSchema2" },
+            "type": "array",
+            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
+            "default": []
           },
           "previews": {
             "items": { "$ref": "#/components/schemas/PreviewSchema2" },
@@ -52334,11 +53687,21 @@
             "description": "Preview images generated for this file. There can be multiple images with different sizes.",
             "default": []
           },
-          "pages": {
-            "items": { "$ref": "#/components/schemas/PageSchema2" },
-            "type": "array",
-            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
-            "default": []
+          "region": {
+            "type": "string",
+            "description": "Geographical region of the data center where the file is stored.",
+            "example": "eu-central-1"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "The file size in bytes.",
+            "example": 24381
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to download the file.",
+            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
           }
         },
         "type": "object",
@@ -52365,56 +53728,66 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+            "description": "UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
           },
           "file_type": {
             "type": "string",
             "description": "The type of the business object associated with this file.",
-            "example": "payables"
+            "examples": ["payables"]
           },
           "md5": {
             "type": "string",
             "description": "The MD5 hash of the file.",
-            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
+            "examples": ["31d1a2dd1ad3dfc39be849d70a68dac0"]
           },
           "mimetype": {
             "type": "string",
             "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types).",
-            "example": "application/pdf"
+            "examples": ["application/pdf"]
           },
           "name": {
             "type": "string",
             "maxLength": 512,
             "description": "The original file name (if available).",
-            "example": "invoice.pdf"
+            "examples": ["invoice.pdf"]
           },
           "pages": {
-            "items": { "$ref": "#/components/schemas/PageSchema3" },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/PageSchema" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
             "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
             "default": []
           },
           "previews": {
-            "items": { "$ref": "#/components/schemas/PreviewSchema3" },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/PreviewSchema" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
             "description": "Preview images generated for this file. There can be multiple images with different sizes.",
             "default": []
           },
           "region": {
             "type": "string",
             "description": "Geographical region of the data center where the file is stored.",
-            "example": "eu-central-1"
+            "examples": ["eu-central-1"]
           },
           "size": {
             "type": "integer",
             "minimum": 0.0,
             "description": "The file size in bytes.",
-            "example": 24381
+            "examples": [24381]
           },
           "url": {
             "type": "string",
             "description": "The URL to download the file.",
-            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
+            "examples": ["https://bucketname.s3.amazonaws.com/12345/67890.pdf"]
           }
         },
         "type": "object",
@@ -52441,7 +53814,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
           },
           "file_type": {
             "type": "string",
@@ -52532,61 +53905,51 @@
           "file_type": {
             "type": "string",
             "description": "The type of the business object associated with this file.",
-            "examples": ["payables"]
+            "example": "payables"
           },
           "md5": {
             "type": "string",
             "description": "The MD5 hash of the file.",
-            "examples": ["31d1a2dd1ad3dfc39be849d70a68dac0"]
+            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
           },
           "mimetype": {
             "type": "string",
             "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types).",
-            "examples": ["application/pdf"]
+            "example": "application/pdf"
           },
           "name": {
             "type": "string",
             "maxLength": 512,
             "description": "The original file name (if available).",
-            "examples": ["invoice.pdf"]
+            "example": "invoice.pdf"
           },
           "pages": {
-            "anyOf": [
-              {
-                "items": { "$ref": "#/components/schemas/PageSchema" },
-                "type": "array"
-              },
-              { "type": "null" }
-            ],
+            "items": { "$ref": "#/components/schemas/PageSchema3" },
+            "type": "array",
             "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
             "default": []
           },
           "previews": {
-            "anyOf": [
-              {
-                "items": { "$ref": "#/components/schemas/PreviewSchema" },
-                "type": "array"
-              },
-              { "type": "null" }
-            ],
+            "items": { "$ref": "#/components/schemas/PreviewSchema3" },
+            "type": "array",
             "description": "Preview images generated for this file. There can be multiple images with different sizes.",
             "default": []
           },
           "region": {
             "type": "string",
             "description": "Geographical region of the data center where the file is stored.",
-            "examples": ["eu-central-1"]
+            "example": "eu-central-1"
           },
           "size": {
             "type": "integer",
             "minimum": 0.0,
             "description": "The file size in bytes.",
-            "examples": [24381]
+            "example": 24381
           },
           "url": {
             "type": "string",
             "description": "The URL to download the file.",
-            "examples": ["https://bucketname.s3.amazonaws.com/12345/67890.pdf"]
+            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
           }
         },
         "type": "object",
@@ -52616,18 +53979,23 @@
       },
       "FinancingInvoice": {
         "properties": {
-          "type": {
-            "allOf": [{ "$ref": "#/components/schemas/FinancingInvoiceType" }],
-            "description": "The type of the invoice i.e. receivable or payable."
+          "advance_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Amount after fees the business will receive in minor units."
           },
-          "status": {
-            "allOf": [{ "$ref": "#/components/schemas/WCInvoiceStatus" }],
-            "description": "Status of the invoice."
+          "advance_rate_percentage": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Advance rate percentage. 10000 means 100%"
           },
-          "invoice_id": {
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code."
+          },
+          "description": {
             "type": "string",
-            "format": "uuid",
-            "description": "Monite invoice ID."
+            "description": "Description of the invoice."
           },
           "document_id": {
             "type": "string",
@@ -52638,27 +54006,25 @@
             "format": "date",
             "description": "Monite invoice due date."
           },
+          "fee_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Fee amount in minor units."
+          },
+          "fee_percentage": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Fee percentage. 300 means 3%"
+          },
+          "invoice_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Monite invoice ID."
+          },
           "issue_date": {
             "type": "string",
             "format": "date",
             "description": "Monite invoice issue date."
-          },
-          "total_amount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Total amount of the invoice in minor units."
-          },
-          "currency": {
-            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "Currency code."
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the invoice."
-          },
-          "payer_type": {
-            "type": "string",
-            "description": "Payer type. BUSINESS or INDIVIDUAL"
           },
           "payer_business_name": {
             "type": "string",
@@ -52672,10 +54038,9 @@
             "type": "string",
             "description": "Payer last name. Only applicable for INDIVIDUAL payer type."
           },
-          "requested_amount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Amount the business requests to be financed in minor units."
+          "payer_type": {
+            "type": "string",
+            "description": "Payer type. BUSINESS or INDIVIDUAL"
           },
           "principal_amount": {
             "type": "integer",
@@ -52687,26 +54052,6 @@
             "minimum": 0.0,
             "description": "Amount the business will repay in minor units."
           },
-          "advance_amount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Amount after fees the business will receive in minor units."
-          },
-          "advance_rate_percentage": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Advance rate percentage. 10000 means 100%"
-          },
-          "fee_amount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Fee amount in minor units."
-          },
-          "fee_percentage": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Fee percentage. 300 means 3%"
-          },
           "repayment_schedule": {
             "allOf": [{ "$ref": "#/components/schemas/RepaymentSchedule" }],
             "description": "Repayment schedule of the invoice.",
@@ -52716,6 +54061,24 @@
               "repayment_fee_amount": 3000,
               "repayment_principal_amount": 97000
             }
+          },
+          "requested_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Amount the business requests to be financed in minor units."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/WCInvoiceStatus" }],
+            "description": "Status of the invoice."
+          },
+          "total_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Total amount of the invoice in minor units."
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/FinancingInvoiceType" }],
+            "description": "The type of the invoice i.e. receivable or payable."
           }
         },
         "type": "object",
@@ -52742,13 +54105,13 @@
             "type": "array",
             "description": "A list of invoices requested for financing."
           },
-          "prev_pagination_token": {
-            "type": "string",
-            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
-          },
           "next_pagination_token": {
             "type": "string",
             "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
           }
         },
         "type": "object",
@@ -52760,16 +54123,6 @@
       },
       "FinancingOffer": {
         "properties": {
-          "status": {
-            "allOf": [{ "$ref": "#/components/schemas/WCOfferStatus" }],
-            "description": "The status of the financing offer.",
-            "example": "CURRENT"
-          },
-          "total_amount": {
-            "type": "integer",
-            "description": "The total credit limit in minor units.",
-            "example": 1000000
-          },
           "available_amount": {
             "type": "integer",
             "description": "The available credit limit in minor units.",
@@ -52785,6 +54138,16 @@
             "type": "array",
             "minItems": 1,
             "description": "A list of pricing plans for the offer."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/WCOfferStatus" }],
+            "description": "The status of the financing offer.",
+            "example": "CURRENT"
+          },
+          "total_amount": {
+            "type": "integer",
+            "description": "The total credit limit in minor units.",
+            "example": 1000000
           }
         },
         "type": "object",
@@ -52792,15 +54155,15 @@
       },
       "FinancingOffersResponse": {
         "properties": {
-          "offers": {
-            "items": { "$ref": "#/components/schemas/FinancingOffer" },
-            "type": "array",
-            "description": "A list of financing offers extended to the business."
-          },
           "business_status": {
             "allOf": [{ "$ref": "#/components/schemas/WCBusinessStatus" }],
             "description": "The business's onboarding status.",
             "example": "ONBOARDED"
+          },
+          "offers": {
+            "items": { "$ref": "#/components/schemas/FinancingOffer" },
+            "type": "array",
+            "description": "A list of financing offers extended to the business."
           }
         },
         "type": "object",
@@ -53274,9 +54637,7 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [
-              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
             "description": "The type of the counterpart."
           },
           "counterpart_universal_address": {
@@ -53320,6 +54681,12 @@
           "document_id": {
             "type": "string",
             "description": "The sequential code systematically assigned to invoices."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "due_date": {
             "type": "string",
@@ -53593,17 +54960,7 @@
         "type": "object",
         "required": ["mimetype", "name", "url"]
       },
-      "InvoiceRenderingSettings": {
-        "properties": {
-          "display_entity_bank_account": {
-            "type": "boolean",
-            "description": "If set to `true`, the entity's bank account details will be displayed on the invoice PDF.",
-            "default": true
-          }
-        },
-        "additionalProperties": false,
-        "type": "object"
-      },
+      "InvoiceRenderingSettings": { "properties": {}, "type": "object" },
       "InvoiceResponsePayload": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -53698,9 +55055,7 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [
-              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
@@ -53732,6 +55087,12 @@
           "document_id": {
             "type": "string",
             "description": "The sequential code systematically assigned to invoices."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "due_date": {
             "type": "string",
@@ -54309,6 +55670,18 @@
         "type": "object",
         "required": ["quantity"]
       },
+      "LineItemColumnSettings": {
+        "properties": {
+          "display": { "type": "boolean", "default": true },
+          "label": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "description": "Line item table column header to override Monite's default. If not set, the Monite's default will be used."
+          }
+        },
+        "type": "object"
+      },
       "LineItemCursorFields": {
         "type": "string",
         "enum": ["created_at", "updated_at"]
@@ -54400,6 +55773,26 @@
         },
         "additionalProperties": false,
         "type": "object"
+      },
+      "LineItemNumericColumnSettings": {
+        "properties": {
+          "display": { "type": "boolean", "default": true },
+          "label": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "description": "Line item table column header to override Monite's default. If not set, the Monite's default will be used."
+          },
+          "precision": {
+            "type": "integer",
+            "maximum": 4.0,
+            "minimum": 0.0,
+            "description": "Number of decimal places to display for numeric values in this column. Defaults to 2, which is common for currency values.",
+            "default": 2
+          }
+        },
+        "type": "object",
+        "description": "Extended settings for numeric columns in line items."
       },
       "LineItemPaginationResponse": {
         "properties": {
@@ -54509,7 +55902,6 @@
             "default": "product"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["name", "price"]
       },
@@ -54766,6 +56158,71 @@
         "additionalProperties": false,
         "type": "object"
       },
+      "LineItemsRenderingSettings": {
+        "properties": {
+          "discount": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+            ],
+            "description": "Settings for the discount column in the line items table."
+          },
+          "measure_unit": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+            ],
+            "description": "Settings for the measure unit column in the line items table."
+          },
+          "name": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+            ],
+            "description": "Settings for the name column in the line items table."
+          },
+          "price": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
+            ],
+            "description": "Settings for the price column in the line items table."
+          },
+          "price_after_vat": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
+            ],
+            "description": "Settings for the price after VAT column in the line items table."
+          },
+          "quantity": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+            ],
+            "description": "Settings for the quantity column in the line items table."
+          },
+          "total_price": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
+            ],
+            "description": "Settings for the total price column in the line items table."
+          },
+          "total_price_after_vat": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
+            ],
+            "description": "Settings for the total price after VAT column in the line items table."
+          },
+          "vat_amount": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
+            ],
+            "description": "Settings for the VAT amount column in the line items table."
+          },
+          "vat_rate": {
+            "allOf": [
+              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+            ],
+            "description": "Settings for the VAT rate column in the line items table."
+          }
+        },
+        "type": "object"
+      },
       "LineItemsReplaceRequest": {
         "properties": {
           "data": {
@@ -54953,6 +56410,62 @@
         "type": "object",
         "required": ["source", "type"]
       },
+      "Message": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the message"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time the message was created"
+          },
+          "content": {
+            "type": "string",
+            "description": "Text content of the message, including charts and any other data attached with html tags"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["user", "assistant"],
+            "description": "Role of the message sender"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "role", "content"]
+      },
+      "MessageFeedbackCommentaryPayload": {
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "Commentary for the message"
+          },
+          "message_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the message"
+          }
+        },
+        "type": "object",
+        "required": ["message_id", "comment"]
+      },
+      "MessageFeedbackPayload": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": ["like", "dislike"],
+            "description": "Action to mark the message as helpful or not"
+          },
+          "message_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the message"
+          }
+        },
+        "type": "object",
+        "required": ["message_id", "action"]
+      },
       "MessageResponse": {
         "properties": { "message": { "type": "string" } },
         "type": "object",
@@ -55049,19 +56562,9 @@
       },
       "NextDocumentNumbers": {
         "properties": {
-          "invoice": {
-            "type": "integer",
-            "description": "Next invoice number",
-            "default": 1
-          },
           "credit_note": {
             "type": "integer",
             "description": "Next credit note number",
-            "default": 1
-          },
-          "quote": {
-            "type": "integer",
-            "description": "Next quote number",
             "default": 1
           },
           "delivery_note": {
@@ -55069,9 +56572,19 @@
             "description": "Next delivery note number",
             "default": 1
           },
+          "invoice": {
+            "type": "integer",
+            "description": "Next invoice number",
+            "default": 1
+          },
           "purchase_order": {
             "type": "integer",
             "description": "Next purchase order number",
+            "default": 1
+          },
+          "quote": {
+            "type": "integer",
+            "description": "Next quote number",
             "default": 1
           }
         },
@@ -55119,11 +56632,11 @@
       },
       "OCRAddressDetails": {
         "properties": {
-          "street_and_number": { "type": "string" },
           "city": { "type": "string" },
-          "postal_code": { "type": "string" },
           "country": { "$ref": "#/components/schemas/AllowedCountries" },
-          "state": { "type": "string" }
+          "postal_code": { "type": "string" },
+          "state": { "type": "string" },
+          "street_and_number": { "type": "string" }
         },
         "additionalProperties": false,
         "type": "object"
@@ -55139,12 +56652,12 @@
       },
       "OCRCounterpartDetails": {
         "properties": {
-          "vat_number": { "type": "string" },
-          "tax_number": { "type": "string" },
+          "address": { "$ref": "#/components/schemas/OCRAddressDetails" },
+          "bank_account": { "$ref": "#/components/schemas/OCRBankDetails" },
           "email": { "type": "string" },
           "name": { "type": "string" },
-          "address": { "$ref": "#/components/schemas/OCRAddressDetails" },
-          "bank_account": { "$ref": "#/components/schemas/OCRBankDetails" }
+          "tax_number": { "type": "string" },
+          "vat_number": { "type": "string" }
         },
         "additionalProperties": false,
         "type": "object",
@@ -55152,24 +56665,24 @@
       },
       "OCRCreditNote": {
         "properties": {
+          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
+          "document_number": { "type": "string" },
+          "issue_date": { "type": "string", "format": "date" },
+          "line_items": {
+            "items": { "$ref": "#/components/schemas/OCRLineItem" },
+            "type": "array"
+          },
+          "original_invoice_number": { "type": "string" },
+          "recipient": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
+          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
+          "subtotal": { "type": "number" },
+          "tax_amount": { "type": "number" },
+          "tax_rate": { "type": "number" },
+          "total_amount": { "type": "number" },
           "type": {
             "type": "string",
             "enum": ["credit_note"],
             "default": "credit_note"
-          },
-          "document_number": { "type": "string" },
-          "original_invoice_number": { "type": "string" },
-          "issue_date": { "type": "string", "format": "date" },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "subtotal": { "type": "number" },
-          "tax_rate": { "type": "number" },
-          "tax_amount": { "type": "number" },
-          "total_amount": { "type": "number" },
-          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
-          "recipient": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
-          "line_items": {
-            "items": { "$ref": "#/components/schemas/OCRLineItem" },
-            "type": "array"
           }
         },
         "additionalProperties": false,
@@ -55184,26 +56697,26 @@
       },
       "OCRInvoice": {
         "properties": {
+          "amount_paid": { "type": "number" },
+          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
+          "document_number": { "type": "string" },
+          "due_date": { "type": "string", "format": "date" },
+          "issue_date": { "type": "string", "format": "date" },
+          "line_items": {
+            "items": { "$ref": "#/components/schemas/OCRLineItem" },
+            "type": "array"
+          },
+          "payment_terms": { "type": "string" },
+          "recipient": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
+          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
+          "subtotal": { "type": "number" },
+          "tax_amount": { "type": "number" },
+          "tax_rate": { "type": "number" },
+          "total_amount": { "type": "number" },
           "type": {
             "type": "string",
             "enum": ["invoice"],
             "default": "invoice"
-          },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "due_date": { "type": "string", "format": "date" },
-          "issue_date": { "type": "string", "format": "date" },
-          "document_number": { "type": "string" },
-          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
-          "recipient": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
-          "subtotal": { "type": "number" },
-          "total_amount": { "type": "number" },
-          "tax_amount": { "type": "number" },
-          "tax_rate": { "type": "number" },
-          "amount_paid": { "type": "number" },
-          "payment_terms": { "type": "string" },
-          "line_items": {
-            "items": { "$ref": "#/components/schemas/OCRLineItem" },
-            "type": "array"
           }
         },
         "additionalProperties": false,
@@ -55212,41 +56725,41 @@
       },
       "OCRLineItem": {
         "properties": {
+          "description": { "type": "string" },
           "line_reference": { "type": "string" },
           "name": { "type": "string" },
-          "description": { "type": "string" },
           "quantity": { "type": "number" },
-          "unit_price": { "type": "number" },
-          "unit": { "type": "string" },
           "subtotal": { "type": "number" },
-          "tax_rate": { "type": "number" },
           "tax_amount": { "type": "number" },
-          "total_amount": { "type": "number" }
+          "tax_rate": { "type": "number" },
+          "total_amount": { "type": "number" },
+          "unit": { "type": "string" },
+          "unit_price": { "type": "number" }
         },
         "additionalProperties": false,
         "type": "object"
       },
       "OCRReceipt": {
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["receipt"],
-            "default": "receipt"
-          },
+          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
+          "discount": { "type": "number" },
           "document_number": { "type": "string" },
           "issued_at": { "type": "string", "format": "date-time" },
-          "currency": { "$ref": "#/components/schemas/CurrencyEnum" },
-          "subtotal": { "type": "number" },
-          "tax_rate": { "type": "number" },
-          "tax_amount": { "type": "number" },
-          "total_amount": { "type": "number" },
-          "discount": { "type": "number" },
-          "tax_type": { "type": "string" },
           "line_items": {
             "items": { "$ref": "#/components/schemas/OCRReceiptLineItem" },
             "type": "array"
           },
-          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" }
+          "sender": { "$ref": "#/components/schemas/OCRCounterpartDetails" },
+          "subtotal": { "type": "number" },
+          "tax_amount": { "type": "number" },
+          "tax_rate": { "type": "number" },
+          "tax_type": { "type": "string" },
+          "total_amount": { "type": "number" },
+          "type": {
+            "type": "string",
+            "enum": ["receipt"],
+            "default": "receipt"
+          }
         },
         "additionalProperties": false,
         "type": "object",
@@ -55254,31 +56767,106 @@
       },
       "OCRReceiptLineItem": {
         "properties": {
+          "description": { "type": "string" },
+          "discount_amount": { "type": "number" },
           "line_reference": { "type": "string" },
           "name": { "type": "string" },
-          "description": { "type": "string" },
           "quantity": { "type": "number" },
-          "unit_price": { "type": "number" },
-          "unit": { "type": "string" },
           "subtotal": { "type": "number" },
-          "tax_rate": { "type": "number" },
           "tax_amount": { "type": "number" },
+          "tax_rate": { "type": "number" },
           "total_amount": { "type": "number" },
-          "discount_amount": { "type": "number" }
+          "unit": { "type": "string" },
+          "unit_price": { "type": "number" }
         },
         "additionalProperties": false,
         "type": "object"
       },
       "OCRResponseInvoiceReceiptData": {
         "properties": {
-          "type": {
+          "counterpart_account_id": {
             "type": "string",
-            "enum": ["invoice"],
-            "default": "invoice"
+            "description": "Counterpart bank ID",
+            "example": "DEUTDEFF"
+          },
+          "counterpart_account_number": {
+            "type": "string",
+            "description": "The bank account number"
+          },
+          "counterpart_address": {
+            "type": "string",
+            "description": "Counterpart address"
+          },
+          "counterpart_address_object": {
+            "allOf": [{ "$ref": "#/components/schemas/OCRAddress" }],
+            "description": "Counterpart address as a json object compatible with counterparts service"
+          },
+          "counterpart_email": {
+            "type": "string",
+            "description": "Email address of the counterpart"
+          },
+          "counterpart_name": {
+            "type": "string",
+            "description": "Counterpart name",
+            "example": "Monite GMbH"
+          },
+          "counterpart_routing_number": {
+            "type": "string",
+            "description": "The bank routing number"
+          },
+          "counterpart_vat_id": {
+            "type": "string",
+            "description": "Counterpart VAT ID",
+            "example": "DE88939004"
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO 4217 currency code",
+            "example": "EUR"
           },
           "discount_raw": {
             "type": "number",
             "description": "Discount Raw amount"
+          },
+          "document_due_date": {
+            "type": "string",
+            "description": "Document due date in ISO format"
+          },
+          "document_id": {
+            "type": "string",
+            "description": "Invoice/receipt ID",
+            "example": "CST-13341"
+          },
+          "document_issued_at_date": {
+            "type": "string",
+            "description": "Document issuance date in ISO format"
+          },
+          "line_items_raw": {
+            "items": {
+              "$ref": "#/components/schemas/OCRResponseInvoiceReceiptLineItemRaw"
+            },
+            "type": "array",
+            "description": "List of line items from document raw, without minor units conversion."
+          },
+          "payment_terms_raw": {
+            "items": { "type": "string" },
+            "type": "array",
+            "description": "Raw payment terms parsed but not calculated."
+          },
+          "purchase_order_number": {
+            "type": "string",
+            "description": "Purchase Order Number",
+            "example": "1234"
+          },
+          "tax_payer_id": {
+            "type": "string",
+            "description": "Tax payer ID",
+            "example": "12345678901"
+          },
+          "total_excl_vat_raw": {
+            "type": "number",
+            "description": "Subtotal, without minor units",
+            "example": 77
           },
           "total_paid_amount_raw": {
             "type": "number",
@@ -55291,11 +56879,6 @@
             "description": "Total, without minor units",
             "example": 70
           },
-          "total_excl_vat_raw": {
-            "type": "number",
-            "description": "Subtotal, without minor units",
-            "example": 77
-          },
           "total_vat_amount_raw": {
             "type": "number",
             "description": "VAT amount, without minor units",
@@ -55306,90 +56889,16 @@
             "description": "VAT Percent raw, without minor units.",
             "example": 12.5
           },
-          "currency": {
+          "type": {
             "type": "string",
-            "description": "ISO 4217 currency code",
-            "example": "EUR"
-          },
-          "purchase_order_number": {
-            "type": "string",
-            "description": "Purchase Order Number",
-            "example": "1234"
-          },
-          "counterpart_name": {
-            "type": "string",
-            "description": "Counterpart name",
-            "example": "Monite GMbH"
-          },
-          "counterpart_email": {
-            "type": "string",
-            "description": "Email address of the counterpart"
-          },
-          "counterpart_address": {
-            "type": "string",
-            "description": "Counterpart address"
-          },
-          "counterpart_account_id": {
-            "type": "string",
-            "description": "Counterpart bank ID",
-            "example": "DEUTDEFF"
-          },
-          "document_id": {
-            "type": "string",
-            "description": "Invoice/receipt ID",
-            "example": "CST-13341"
-          },
-          "payment_terms_raw": {
-            "items": { "type": "string" },
-            "type": "array",
-            "description": "Raw payment terms parsed but not calculated."
-          },
-          "tax_payer_id": {
-            "type": "string",
-            "description": "Tax payer ID",
-            "example": "12345678901"
-          },
-          "counterpart_vat_id": {
-            "type": "string",
-            "description": "Counterpart VAT ID",
-            "example": "DE88939004"
-          },
-          "document_issued_at_date": {
-            "type": "string",
-            "description": "Document issuance date in ISO format"
-          },
-          "document_due_date": {
-            "type": "string",
-            "description": "Document due date in ISO format"
-          },
-          "counterpart_address_object": {
-            "allOf": [{ "$ref": "#/components/schemas/OCRAddress" }],
-            "description": "Counterpart address as a json object compatible with counterparts service"
-          },
-          "counterpart_account_number": {
-            "type": "string",
-            "description": "The bank account number"
-          },
-          "counterpart_routing_number": {
-            "type": "string",
-            "description": "The bank routing number"
-          },
-          "line_items_raw": {
-            "items": {
-              "$ref": "#/components/schemas/OCRResponseInvoiceReceiptLineItemRaw"
-            },
-            "type": "array",
-            "description": "List of line items from document raw, without minor units conversion."
+            "enum": ["invoice"],
+            "default": "invoice"
           }
         },
         "type": "object"
       },
       "OCRResponseInvoiceReceiptLineItemRaw": {
         "properties": {
-          "line_item_ocr_id": {
-            "type": "string",
-            "description": "OCR Id of line item"
-          },
           "description": {
             "type": "string",
             "description": "Human-readable line item description",
@@ -55400,30 +56909,14 @@
             "description": "Item Quantity/Unit Price adjusted",
             "default": false
           },
+          "line_item_ocr_id": {
+            "type": "string",
+            "description": "OCR Id of line item"
+          },
           "quantity": {
             "type": "number",
             "description": "Quantity",
             "example": 1.2
-          },
-          "unit_price": {
-            "type": "number",
-            "description": "Price as parsed",
-            "example": 100
-          },
-          "unit": {
-            "type": "string",
-            "description": "Unit",
-            "example": "meters"
-          },
-          "vat_percentage": {
-            "type": "number",
-            "description": "VAT Percent as parsed.",
-            "example": 12.5
-          },
-          "vat_amount": {
-            "type": "number",
-            "description": "VAT Amount as parsed.",
-            "example": 15
           },
           "total_excl_vat": {
             "type": "number",
@@ -55434,6 +56927,26 @@
             "type": "number",
             "description": "Total included VAT as parsed.",
             "example": 135
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit",
+            "example": "meters"
+          },
+          "unit_price": {
+            "type": "number",
+            "description": "Price as parsed",
+            "example": 100
+          },
+          "vat_amount": {
+            "type": "number",
+            "description": "VAT Amount as parsed.",
+            "example": 15
+          },
+          "vat_percentage": {
+            "type": "number",
+            "description": "VAT Percent as parsed.",
+            "example": 12.5
           }
         },
         "type": "object"
@@ -55448,13 +56961,13 @@
             "items": { "$ref": "#/components/schemas/OcrTaskResponseSchema" },
             "type": "array"
           },
-          "prev_pagination_token": {
-            "type": "string",
-            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
-          },
           "next_pagination_token": {
             "type": "string",
             "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
           }
         },
         "additionalProperties": false,
@@ -55595,15 +57108,15 @@
       },
       "OcrRecognitionResponse": {
         "properties": {
-          "summary": {
-            "items": { "$ref": "#/components/schemas/LabelNValue" },
-            "type": "array",
-            "description": "Invoice text content other than the line items. Such as the invoice issue and due dates, vendor name and address, and other general information."
-          },
           "line_items": {
             "items": { "$ref": "#/components/schemas/LabelNValue" },
             "type": "array",
             "description": "Text content of the invoice line items as recognized by OCR."
+          },
+          "summary": {
+            "items": { "$ref": "#/components/schemas/LabelNValue" },
+            "type": "array",
+            "description": "Invoice text content other than the line items. Such as the invoice issue and due dates, vendor name and address, and other general information."
           }
         },
         "type": "object",
@@ -55618,7 +57131,6 @@
           "id": { "type": "string", "format": "uuid" },
           "created_at": { "type": "string", "format": "date-time" },
           "updated_at": { "type": "string", "format": "date-time" },
-          "status": { "$ref": "#/components/schemas/OCRTaskStatus" },
           "document_type": {
             "$ref": "#/components/schemas/OCRDocumentTypeEnum"
           },
@@ -55628,7 +57140,8 @@
               { "$ref": "#/components/schemas/OCRCreditNote" },
               { "$ref": "#/components/schemas/OCRReceipt" }
             ]
-          }
+          },
+          "status": { "$ref": "#/components/schemas/OCRTaskStatus" }
         },
         "type": "object",
         "required": ["id", "created_at", "updated_at", "status"]
@@ -56062,8 +57575,8 @@
             "type": "string",
             "example": "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg"
           },
-          "token_type": { "type": "string", "example": "Bearer" },
-          "expires_in": { "type": "integer", "example": 86400 }
+          "expires_in": { "type": "integer", "example": 86400 },
+          "token_type": { "type": "string", "example": "Bearer" }
         },
         "type": "object",
         "required": ["access_token", "token_type", "expires_in"]
@@ -56774,9 +58287,7 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "OrderEnum": { "enum": ["asc", "desc"] },
-      "OrderEnum2": { "type": "string", "enum": ["asc", "desc"] },
-      "OrderEnum3": { "type": "string", "enum": ["asc", "desc"] },
+      "OrderEnum": { "type": "string", "enum": ["asc", "desc"] },
       "OrganizationResponseSchema": {
         "properties": {
           "business_structure": {
@@ -57010,17 +58521,17 @@
             "description": "The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.",
             "example": "image/png"
           },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Image file size, in bytes.",
-            "example": 21972
-          },
           "number": {
             "type": "integer",
             "minimum": 0.0,
             "description": "The page number in the PDF document, from 0.",
             "example": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Image file size, in bytes.",
+            "example": 21972
           },
           "url": {
             "type": "string",
@@ -57103,33 +58614,12 @@
       },
       "PartnerProjectSettingsPayload-Input": {
         "properties": {
-          "currency": {
+          "api_version": {
             "anyOf": [
-              { "$ref": "#/components/schemas/CurrencySettings-Input" },
+              { "$ref": "#/components/schemas/APIVersion" },
               { "type": "null" }
             ],
-            "description": "Custom currency exchange rates."
-          },
-          "payable": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/PayableSettings" },
-              { "type": "null" }
-            ],
-            "description": "Settings for the payables module."
-          },
-          "receivable": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/ReceivableSettings" },
-              { "type": "null" }
-            ],
-            "description": "Settings for the receivables module."
-          },
-          "mail": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/MailSettings" },
-              { "type": "null" }
-            ],
-            "description": "Settings for email and mailboxes."
+            "description": "Default API version for partner."
           },
           "commercial_conditions": {
             "anyOf": [
@@ -57138,23 +58628,33 @@
             ],
             "description": "Commercial conditions for receivables."
           },
-          "units": {
+          "currency": {
             "anyOf": [
-              {
-                "items": { "$ref": "#/components/schemas/Unit" },
-                "type": "array"
-              },
+              { "$ref": "#/components/schemas/CurrencySettings-Input" },
               { "type": "null" }
             ],
-            "description": "Measurement units."
+            "description": "Custom currency exchange rates."
           },
-          "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
           "default_role": {
             "anyOf": [
               { "additionalProperties": true, "type": "object" },
               { "type": "null" }
             ],
             "description": "A default role to provision upon new entity creation."
+          },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/MailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Settings for email and mailboxes."
+          },
+          "payable": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/PayableSettings" },
+              { "type": "null" }
+            ],
+            "description": "Settings for the payables module."
           },
           "payments": {
             "anyOf": [
@@ -57163,52 +58663,12 @@
             ],
             "description": "Settings for the payments module."
           },
-          "api_version": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/APIVersion" },
-              { "type": "null" }
-            ],
-            "description": "Default API version for partner."
-          }
-        },
-        "type": "object"
-      },
-      "PartnerProjectSettingsPayload-Output": {
-        "properties": {
-          "currency": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/CurrencySettings-Output" },
-              { "type": "null" }
-            ],
-            "description": "Custom currency exchange rates."
-          },
-          "payable": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/PayableSettings" },
-              { "type": "null" }
-            ],
-            "description": "Settings for the payables module."
-          },
           "receivable": {
             "anyOf": [
               { "$ref": "#/components/schemas/ReceivableSettings" },
               { "type": "null" }
             ],
             "description": "Settings for the receivables module."
-          },
-          "mail": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/MailSettings" },
-              { "type": "null" }
-            ],
-            "description": "Settings for email and mailboxes."
-          },
-          "commercial_conditions": {
-            "anyOf": [
-              { "items": { "type": "string" }, "type": "array" },
-              { "type": "null" }
-            ],
-            "description": "Commercial conditions for receivables."
           },
           "units": {
             "anyOf": [
@@ -57220,13 +58680,53 @@
             ],
             "description": "Measurement units."
           },
-          "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+          "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }
+        },
+        "type": "object"
+      },
+      "PartnerProjectSettingsPayload-Output": {
+        "properties": {
+          "api_version": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/APIVersion" },
+              { "type": "null" }
+            ],
+            "description": "Default API version for partner."
+          },
+          "commercial_conditions": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "description": "Commercial conditions for receivables."
+          },
+          "currency": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/CurrencySettings-Output" },
+              { "type": "null" }
+            ],
+            "description": "Custom currency exchange rates."
+          },
           "default_role": {
             "anyOf": [
               { "additionalProperties": true, "type": "object" },
               { "type": "null" }
             ],
             "description": "A default role to provision upon new entity creation."
+          },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/MailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Settings for email and mailboxes."
+          },
+          "payable": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/PayableSettings" },
+              { "type": "null" }
+            ],
+            "description": "Settings for the payables module."
           },
           "payments": {
             "anyOf": [
@@ -57235,13 +58735,24 @@
             ],
             "description": "Settings for the payments module."
           },
-          "api_version": {
+          "receivable": {
             "anyOf": [
-              { "$ref": "#/components/schemas/APIVersion" },
+              { "$ref": "#/components/schemas/ReceivableSettings" },
               { "type": "null" }
             ],
-            "description": "Default API version for partner."
-          }
+            "description": "Settings for the receivables module."
+          },
+          "units": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Unit" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "Measurement units."
+          },
+          "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }
         },
         "type": "object"
       },
@@ -57374,11 +58885,16 @@
       },
       "PatchSettingsPayload": {
         "properties": {
-          "language": {
+          "accounting": {
             "anyOf": [
-              { "$ref": "#/components/schemas/LanguageCodeEnum" },
+              { "$ref": "#/components/schemas/AccountingSettings" },
               { "type": "null" }
             ]
+          },
+          "allow_purchase_order_autolinking": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "Automatically attempt to find a corresponding purchase order for all incoming payables.",
+            "default": true
           },
           "currency": {
             "anyOf": [
@@ -57386,48 +58902,24 @@
               { "type": "null" }
             ]
           },
-          "reminder": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/RemindersSettings" },
-              { "type": "null" }
-            ]
-          },
-          "vat_mode": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/VatModeEnum" },
-              { "type": "null" }
-            ],
-            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
-            "default": "exclusive"
-          },
-          "vat_inclusive_discount_mode": {
-            "$ref": "#/components/schemas/VatModeEnum",
-            "description": "Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.",
-            "default": "exclusive"
-          },
-          "payment_priority": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/PaymentPriorityEnum" },
-              { "type": "null" }
-            ],
-            "description": "Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.",
-            "default": "working_capital"
-          },
-          "allow_purchase_order_autolinking": {
-            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
-            "description": "Automatically attempt to find a corresponding purchase order for all incoming payables.",
-            "default": true
-          },
-          "receivable_edit_flow": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/ReceivableEditFlow" },
-              { "type": "null" }
-            ],
-            "default": "compliant"
-          },
           "document_ids": {
             "anyOf": [
               { "$ref": "#/components/schemas/DocumentIDsSettingsRequest" },
+              { "type": "null" }
+            ]
+          },
+          "document_rendering": {
+            "$ref": "#/components/schemas/DocumentRenderingSettings-Input",
+            "description": "Settings for rendering documents in PDF format."
+          },
+          "generate_paid_invoice_pdf": {
+            "type": "boolean",
+            "description": "This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.\n\nThe PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.\n\nThis field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.",
+            "default": false
+          },
+          "language": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/LanguageCodeEnum" },
               { "type": "null" }
             ]
           },
@@ -57443,30 +58935,49 @@
             ],
             "description": "Auto tagging settings for all incoming OCR payable documents."
           },
-          "quote_signature_required": {
-            "type": "boolean",
-            "description": "Sets the default behavior of whether a signature is required to accept quotes.",
-            "default": false
-          },
-          "generate_paid_invoice_pdf": {
-            "type": "boolean",
-            "description": "This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.\n\nThe PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.\n\nThis field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.",
-            "default": false
-          },
-          "accounting": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/AccountingSettings" },
-              { "type": "null" }
-            ]
-          },
           "payables_skip_approval_flow": {
             "type": "boolean",
             "description": "If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.",
             "default": false
           },
-          "document_rendering": {
-            "$ref": "#/components/schemas/DocumentRenderingSettings",
-            "description": "Settings for rendering documents in PDF format."
+          "payment_priority": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/PaymentPriorityEnum" },
+              { "type": "null" }
+            ],
+            "description": "Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.",
+            "default": "working_capital"
+          },
+          "quote_signature_required": {
+            "type": "boolean",
+            "description": "Sets the default behavior of whether a signature is required to accept quotes.",
+            "default": false
+          },
+          "receivable_edit_flow": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ReceivableEditFlow" },
+              { "type": "null" }
+            ],
+            "default": "compliant"
+          },
+          "reminder": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/RemindersSettings" },
+              { "type": "null" }
+            ]
+          },
+          "vat_inclusive_discount_mode": {
+            "$ref": "#/components/schemas/VatModeEnum",
+            "description": "Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.",
+            "default": "exclusive"
+          },
+          "vat_mode": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/VatModeEnum" },
+              { "type": "null" }
+            ],
+            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
+            "default": "exclusive"
           }
         },
         "additionalProperties": false,
@@ -57714,7 +59225,7 @@
             "description": "A set of metadata describing an individual"
           },
           "logo": {
-            "allOf": [{ "$ref": "#/components/schemas/FileSchema2" }],
+            "allOf": [{ "$ref": "#/components/schemas/FileSchema4" }],
             "description": "A logo image of the entity"
           },
           "phone": {
@@ -57775,7 +59286,7 @@
             "description": "An official email address of the entity"
           },
           "logo": {
-            "allOf": [{ "$ref": "#/components/schemas/FileSchema2" }],
+            "allOf": [{ "$ref": "#/components/schemas/FileSchema4" }],
             "description": "A logo image of the entity"
           },
           "organization": {
@@ -59225,7 +60736,7 @@
         "properties": {
           "amount_due": {
             "type": "integer",
-            "description": "The remainimg amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250.",
+            "description": "The remaining amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250.",
             "examples": [0]
           },
           "amount_paid": {
@@ -60283,7 +61794,7 @@
           "id": { "type": "string", "format": "uuid" },
           "avatar": {
             "anyOf": [
-              { "$ref": "#/components/schemas/FileSchema4" },
+              { "$ref": "#/components/schemas/FileSchema3" },
               { "type": "null" }
             ]
           },
@@ -60329,6 +61840,11 @@
       },
       "PreviewSchema2": {
         "properties": {
+          "height": {
+            "type": "integer",
+            "description": "The image height in pixels.",
+            "example": 400
+          },
           "url": {
             "type": "string",
             "description": "The image URL.",
@@ -60338,11 +61854,6 @@
             "type": "integer",
             "description": "The image width in pixels.",
             "example": 200
-          },
-          "height": {
-            "type": "integer",
-            "description": "The image height in pixels.",
-            "example": 400
           }
         },
         "type": "object",
@@ -60466,13 +61977,13 @@
             "type": "integer",
             "description": "Transaction fee percentage. 300 means 3.00%"
           },
-          "repayment_type": {
-            "allOf": [{ "$ref": "#/components/schemas/WCRepaymentType" }],
-            "description": "Repayment type of the loan."
-          },
           "repayment_duration_days": {
             "type": "integer",
             "description": "This amount of days after which the repayment duration is due. This is only applicable for FIXED_DURATION repayment type"
+          },
+          "repayment_type": {
+            "allOf": [{ "$ref": "#/components/schemas/WCRepaymentType" }],
+            "description": "Repayment type of the loan."
           }
         },
         "type": "object",
@@ -60701,7 +62212,7 @@
       },
       "ProfileAvatarUpdateResponse": {
         "properties": {
-          "avatar": { "$ref": "#/components/schemas/FileSchema4" }
+          "avatar": { "$ref": "#/components/schemas/FileSchema3" }
         },
         "type": "object",
         "required": ["avatar"]
@@ -60917,6 +62428,58 @@
         "additionalProperties": false,
         "type": "object"
       },
+      "PromptCreateRequest": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "Text of the saved prompt"
+          }
+        },
+        "type": "object",
+        "required": ["content"]
+      },
+      "PromptResource": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "content": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "Text of the saved prompt"
+          }
+        },
+        "type": "object",
+        "required": ["id", "content", "created_at"]
+      },
+      "PromptResourceList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/PromptResource" },
+            "type": "array",
+            "description": "List of saved prompts"
+          },
+          "next_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }]
+          },
+          "prev_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }]
+          }
+        },
+        "type": "object",
+        "required": ["data", "prev_pagination_token", "next_pagination_token"]
+      },
+      "PromptUpdateRequest": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "Text of the saved prompt"
+          }
+        },
+        "type": "object",
+        "required": ["content"]
+      },
       "Provider": {
         "type": "string",
         "enum": ["stripe", "airwallex", "airwallex_component"]
@@ -61078,6 +62641,11 @@
             "description": "`true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.",
             "default": false
           },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Entity user ID of counterpart creator."
+          },
           "default_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -61087,11 +62655,6 @@
             "type": "string",
             "format": "uuid",
             "description": "ID of the shipping address."
-          },
-          "created_by_entity_user_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Entity user ID of counterpart creator."
           },
           "individual": {
             "$ref": "#/components/schemas/PurchaseOrderCounterpartIndividualResponse"
@@ -61168,6 +62731,11 @@
             "description": "`true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.",
             "default": false
           },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Entity user ID of counterpart creator."
+          },
           "default_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -61177,11 +62745,6 @@
             "type": "string",
             "format": "uuid",
             "description": "ID of the shipping address."
-          },
-          "created_by_entity_user_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Entity user ID of counterpart creator."
           },
           "language": {
             "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
@@ -61503,18 +63066,12 @@
       },
       "QuoteRenderingSettings": {
         "properties": {
-          "display_entity_bank_account": {
-            "type": "boolean",
-            "description": "If set to `true`, the entity's bank account details will be displayed on the quote PDF.",
-            "default": true
-          },
           "display_signature": {
             "type": "boolean",
             "description": "If set to `true`, the signature field will be displayed on the quote PDF.",
             "default": false
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
       "QuoteResponsePayload": {
@@ -61592,9 +63149,7 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [
-              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
@@ -61626,6 +63181,12 @@
           "document_id": {
             "type": "string",
             "description": "The sequential code systematically assigned to invoices."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "due_date": {
             "type": "string",
@@ -61899,10 +63460,6 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["address", "first_name", "last_name"]
-      },
-      "ReceivableCounterpartType": {
-        "type": "string",
-        "enum": ["individual", "organization"]
       },
       "ReceivableCounterpartVatIDResponse": {
         "properties": {
@@ -62367,6 +63924,12 @@
             "description": "The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.",
             "examples": ["INV-0001", "2024-027", "CUST/2024/00027"]
           },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
+          },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
@@ -62532,6 +64095,12 @@
             "minLength": 1,
             "description": "The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued.",
             "examples": ["INV-0001", "2024-027", "CUST/2024/00027"]
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
@@ -63085,18 +64654,6 @@
         "type": "object",
         "required": ["create_without_personal_info"]
       },
-      "ReceivableTagCategory": {
-        "type": "string",
-        "enum": [
-          "document_type",
-          "department",
-          "project",
-          "cost_center",
-          "vendor_type",
-          "payment_method",
-          "approval_status"
-        ]
-      },
       "ReceivableTemplatesVariable": {
         "properties": {
           "description": { "type": "string" },
@@ -63382,26 +64939,6 @@
       },
       "ReceivablesSearchRequest": {
         "properties": {
-          "discounted_subtotal": {
-            "type": "integer",
-            "description": "Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250."
-          },
-          "discounted_subtotal__gt": {
-            "type": "integer",
-            "description": "Return only receivables whose discounted subtotal (in minor units) is greater than the specified value."
-          },
-          "discounted_subtotal__gte": {
-            "type": "integer",
-            "description": "Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value."
-          },
-          "discounted_subtotal__lt": {
-            "type": "integer",
-            "description": "Return only receivables whose discounted subtotal (in minor units) is less than the specified value."
-          },
-          "discounted_subtotal__lte": {
-            "type": "integer",
-            "description": "Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value."
-          },
           "based_on": {
             "type": "string",
             "format": "uuid",
@@ -63443,6 +64980,26 @@
             "type": "string",
             "format": "date-time",
             "description": "Return only receivables created before or on the specified date and time."
+          },
+          "discounted_subtotal": {
+            "type": "integer",
+            "description": "Return only receivables with the exact specified discounted subtotal. The amount must be specified in the [minor units](https://docs.monite.com/references/currencies#minor-units) of currency. For example, $12.5 is represented as 1250."
+          },
+          "discounted_subtotal__gt": {
+            "type": "integer",
+            "description": "Return only receivables whose discounted subtotal (in minor units) is greater than the specified value."
+          },
+          "discounted_subtotal__gte": {
+            "type": "integer",
+            "description": "Return only receivables whose discounted subtotal (in minor units) is greater than or equal to the specified value."
+          },
+          "discounted_subtotal__lt": {
+            "type": "integer",
+            "description": "Return only receivables whose discounted subtotal (in minor units) is less than the specified value."
+          },
+          "discounted_subtotal__lte": {
+            "type": "integer",
+            "description": "Return only receivables whose discounted subtotal (in minor units) is less than or equal to the specified value."
           },
           "document_id": {
             "type": "string",
@@ -63516,7 +65073,7 @@
             "default": 100
           },
           "order": {
-            "allOf": [{ "$ref": "#/components/schemas/OrderEnum3" }],
+            "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
             "default": "asc"
           },
           "pagination_token": { "type": "string" },
@@ -63995,13 +65552,13 @@
       },
       "RepaymentSchedule": {
         "properties": {
-          "repayment_date": {
-            "type": "string",
-            "description": "Repayment date in ISO 8601 format"
-          },
           "repayment_amount": {
             "type": "integer",
             "description": "Repayment amount in minor units"
+          },
+          "repayment_date": {
+            "type": "string",
+            "description": "Repayment date in ISO 8601 format"
           },
           "repayment_fee_amount": {
             "type": "integer",
@@ -64113,13 +65670,13 @@
             "type": "array",
             "description": "array of records"
           },
-          "prev_pagination_token": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
-          },
           "next_pagination_token": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
           }
         },
         "additionalProperties": false,
@@ -64133,6 +65690,16 @@
             "format": "uuid",
             "description": "UUID role ID"
           },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC datetime"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC datetime"
+          },
           "name": {
             "type": "string",
             "minLength": 1,
@@ -64145,16 +65712,6 @@
           "status": {
             "$ref": "#/components/schemas/StatusEnum",
             "description": "record status, 'active' by default"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "UTC datetime"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "UTC datetime"
           }
         },
         "type": "object",
@@ -64377,11 +65934,16 @@
       },
       "SettingsResponse": {
         "properties": {
-          "language": {
+          "accounting": {
             "anyOf": [
-              { "$ref": "#/components/schemas/LanguageCodeEnum" },
+              { "$ref": "#/components/schemas/AccountingSettings" },
               { "type": "null" }
             ]
+          },
+          "allow_purchase_order_autolinking": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "Automatically attempt to find a corresponding purchase order for all incoming payables.",
+            "default": true
           },
           "currency": {
             "anyOf": [
@@ -64389,48 +65951,24 @@
               { "type": "null" }
             ]
           },
-          "reminder": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/RemindersSettings" },
-              { "type": "null" }
-            ]
-          },
-          "vat_mode": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/VatModeEnum" },
-              { "type": "null" }
-            ],
-            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
-            "default": "exclusive"
-          },
-          "vat_inclusive_discount_mode": {
-            "$ref": "#/components/schemas/VatModeEnum",
-            "description": "Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.",
-            "default": "exclusive"
-          },
-          "payment_priority": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/PaymentPriorityEnum" },
-              { "type": "null" }
-            ],
-            "description": "Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.",
-            "default": "working_capital"
-          },
-          "allow_purchase_order_autolinking": {
-            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
-            "description": "Automatically attempt to find a corresponding purchase order for all incoming payables.",
-            "default": true
-          },
-          "receivable_edit_flow": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/ReceivableEditFlow" },
-              { "type": "null" }
-            ],
-            "default": "compliant"
-          },
           "document_ids": {
             "anyOf": [
               { "$ref": "#/components/schemas/DocumentIDsSettings" },
+              { "type": "null" }
+            ]
+          },
+          "document_rendering": {
+            "$ref": "#/components/schemas/DocumentRenderingSettings-Output",
+            "description": "Settings for rendering documents in PDF format."
+          },
+          "generate_paid_invoice_pdf": {
+            "type": "boolean",
+            "description": "This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.\n\nThe PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.\n\nThis field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.",
+            "default": false
+          },
+          "language": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/LanguageCodeEnum" },
               { "type": "null" }
             ]
           },
@@ -64446,30 +65984,49 @@
             ],
             "description": "Auto tagging settings for all incoming OCR payable documents."
           },
-          "quote_signature_required": {
-            "type": "boolean",
-            "description": "Sets the default behavior of whether a signature is required to accept quotes.",
-            "default": false
-          },
-          "generate_paid_invoice_pdf": {
-            "type": "boolean",
-            "description": "This setting affects how PDF is generated for paid accounts receivable invoices. If set to `true`, once an invoice is fully paid its PDF version is updated to display the amount paid and the payment-related features are removed.\n\nThe PDF file gets regenerated at the moment when an invoice becomes paid. It is not issued as a separate document, and the original PDF invoice is no longer available.\n\nThis field is deprecated and will be replaced by `document_rendering.invoice.generate_paid_invoice_pdf`.",
-            "default": false
-          },
-          "accounting": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/AccountingSettings" },
-              { "type": "null" }
-            ]
-          },
           "payables_skip_approval_flow": {
             "type": "boolean",
             "description": "If enabled, the approval policy will be skipped and the payable will be moved to `waiting_to_be_paid` status.",
             "default": false
           },
-          "document_rendering": {
-            "$ref": "#/components/schemas/DocumentRenderingSettings",
-            "description": "Settings for rendering documents in PDF format."
+          "payment_priority": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/PaymentPriorityEnum" },
+              { "type": "null" }
+            ],
+            "description": "Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences.",
+            "default": "working_capital"
+          },
+          "quote_signature_required": {
+            "type": "boolean",
+            "description": "Sets the default behavior of whether a signature is required to accept quotes.",
+            "default": false
+          },
+          "receivable_edit_flow": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ReceivableEditFlow" },
+              { "type": "null" }
+            ],
+            "default": "compliant"
+          },
+          "reminder": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/RemindersSettings" },
+              { "type": "null" }
+            ]
+          },
+          "vat_inclusive_discount_mode": {
+            "$ref": "#/components/schemas/VatModeEnum",
+            "description": "Defines whether the amount discounts (for percentage discounts it does not matter) on VAT inclusive invoices will be applied on amounts including VAT or excluding VAT.",
+            "default": "exclusive"
+          },
+          "vat_mode": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/VatModeEnum" },
+              { "type": "null" }
+            ],
+            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
+            "default": "exclusive"
           }
         },
         "type": "object"
@@ -64633,11 +66190,11 @@
       "StorecoveEventType": { "type": "string", "enum": ["received_document"] },
       "StorecoveNewDocumentReceivedEventPayload": {
         "properties": {
-          "receive_guid": { "type": "string", "format": "uuid" },
           "document_guid": { "type": "string", "format": "uuid" },
-          "event_type": { "$ref": "#/components/schemas/StorecoveEventType" },
+          "event": { "$ref": "#/components/schemas/StorecoveEvent" },
           "event_group": { "$ref": "#/components/schemas/StorecoveEventGroup" },
-          "event": { "$ref": "#/components/schemas/StorecoveEvent" }
+          "event_type": { "$ref": "#/components/schemas/StorecoveEventType" },
+          "receive_guid": { "type": "string", "format": "uuid" }
         },
         "type": "object",
         "required": ["document_guid", "event_type", "event_group", "event"]
@@ -64720,16 +66277,16 @@
           "updated_at": { "type": "string", "format": "date-time" },
           "errors": { "type": "object" },
           "last_pulled_at": { "type": "string", "format": "date-time" },
-          "object_updated_at": { "type": "string", "format": "date-time" },
           "object_id": { "type": "string", "format": "uuid" },
+          "object_type": { "$ref": "#/components/schemas/ObjectMatchTypes" },
+          "object_updated_at": { "type": "string", "format": "date-time" },
           "platform": { "$ref": "#/components/schemas/Platform" },
-          "platform_updated_at": { "type": "string", "format": "date-time" },
           "platform_object_id": { "type": "string" },
+          "platform_updated_at": { "type": "string", "format": "date-time" },
           "provider": { "$ref": "#/components/schemas/ServiceProvidersEnum" },
-          "provider_updated_at": { "type": "string", "format": "date-time" },
           "provider_object_id": { "type": "string" },
-          "sync_status": { "$ref": "#/components/schemas/SyncStatus" },
-          "object_type": { "$ref": "#/components/schemas/ObjectMatchTypes" }
+          "provider_updated_at": { "type": "string", "format": "date-time" },
+          "sync_status": { "$ref": "#/components/schemas/SyncStatus" }
         },
         "type": "object",
         "required": [
@@ -64874,7 +66431,7 @@
             "example": "2022-09-07T16:35:18.484507+00:00"
           },
           "category": {
-            "allOf": [{ "$ref": "#/components/schemas/ReceivableTagCategory" }],
+            "allOf": [{ "$ref": "#/components/schemas/TagCategory" }],
             "description": "The tag category.",
             "example": "department"
           },
@@ -65236,18 +66793,18 @@
       },
       "TotalVatAmountItemComponent": {
         "properties": {
+          "amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units)."
+          },
           "name": { "type": "string" },
           "value": {
             "type": "number",
             "maximum": 10000.0,
             "minimum": 0.0,
             "description": "Percent minor units. Example: 12.5% is 1250."
-          },
-          "amount": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "minimum": 0.0,
-            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units)."
           }
         },
         "type": "object",
@@ -65255,18 +66812,18 @@
       },
       "TotalVatAmountItemComponent2": {
         "properties": {
+          "amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units)."
+          },
           "name": { "type": "string" },
           "value": {
             "type": "number",
             "maximum": 10000.0,
             "minimum": 0.0,
             "description": "Percent minor units. Example: 12.5% is 1250."
-          },
-          "amount": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "minimum": 0.0,
-            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units)."
           }
         },
         "type": "object",
@@ -65300,7 +66857,6 @@
           "description": { "type": "string", "maxLength": 200 },
           "name": { "type": "string", "maxLength": 100, "minLength": 1 }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["name"]
       },
@@ -65435,6 +66991,12 @@
             "type": "string",
             "format": "uuid",
             "description": "Address where goods were shipped / where services were provided."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "footer": {
@@ -65596,12 +67158,49 @@
             ],
             "description": "An official email address of the entity"
           },
+          "individual": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/OptionalIndividualSchema" },
+              { "type": "null" }
+            ],
+            "description": "A set of meta data describing the individual"
+          },
+          "organization": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/OptionalOrganizationSchema" },
+              { "type": "null" }
+            ],
+            "description": "A set of meta data describing the organization"
+          },
           "phone": {
             "anyOf": [
               { "type": "string", "maxLength": 100 },
               { "type": "null" }
             ],
             "description": "The contact phone number of the entity. Required for US organizations to use payments."
+          },
+          "registration_authority": {
+            "anyOf": [
+              { "type": "string", "maxLength": 100, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "(Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.",
+            "examples": ["Amtsgericht Charlottenburg"]
+          },
+          "registration_number": {
+            "anyOf": [
+              { "type": "string", "maxLength": 100, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "(Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.",
+            "examples": ["HRB 202324"]
+          },
+          "tax_id": {
+            "anyOf": [
+              { "type": "string", "maxLength": 30, "minLength": 1 },
+              { "type": "null" }
+            ],
+            "description": "The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered."
           },
           "website": {
             "anyOf": [
@@ -65614,43 +67213,6 @@
               { "type": "null" }
             ],
             "description": "A website of the entity"
-          },
-          "tax_id": {
-            "anyOf": [
-              { "type": "string", "maxLength": 30, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered."
-          },
-          "registration_number": {
-            "anyOf": [
-              { "type": "string", "maxLength": 100, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "(Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available.",
-            "examples": ["HRB 202324"]
-          },
-          "registration_authority": {
-            "anyOf": [
-              { "type": "string", "maxLength": 100, "minLength": 1 },
-              { "type": "null" }
-            ],
-            "description": "(Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided.",
-            "examples": ["Amtsgericht Charlottenburg"]
-          },
-          "organization": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/OptionalOrganizationSchema" },
-              { "type": "null" }
-            ],
-            "description": "A set of meta data describing the organization"
-          },
-          "individual": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/OptionalIndividualSchema" },
-              { "type": "null" }
-            ],
-            "description": "A set of meta data describing the individual"
           }
         },
         "additionalProperties": false,
@@ -65759,6 +67321,12 @@
           "discount": {
             "allOf": [{ "$ref": "#/components/schemas/Discount2" }],
             "description": "The discount for a receivable."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
@@ -65876,6 +67444,12 @@
             "type": "string",
             "format": "uuid",
             "description": "Counterpart VAT ID id"
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "due_date": {
             "type": "string",
@@ -66141,6 +67715,12 @@
           "discount": {
             "allOf": [{ "$ref": "#/components/schemas/Discount2" }],
             "description": "The discount for a receivable."
+          },
+          "document_rendering": {
+            "allOf": [
+              { "$ref": "#/components/schemas/DocumentRenderingSettings" }
+            ],
+            "description": "Settings for rendering documents in PDF format, including settings for line items and specific document types."
           },
           "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
@@ -67064,6 +68644,7 @@
     { "name": "Data export" },
     { "name": "Data export - extra data" },
     { "name": "Delivery notes" },
+    { "name": "E-invoicing Search" },
     { "name": "E-invoicing connections" },
     { "name": "Email exists" },
     { "name": "Entities" },
@@ -67082,6 +68663,7 @@
     { "name": "Mailbox domains" },
     { "name": "Mailboxes" },
     { "name": "Measure units" },
+    { "name": "Monite AI" },
     { "name": "OCR" },
     { "name": "Onboarding documents" },
     { "name": "Onboarding links" },
@@ -67102,6 +68684,7 @@
     { "name": "Payment terms" },
     { "name": "Products" },
     { "name": "Profile" },
+    { "name": "Project dictionaries" },
     { "name": "Projects" },
     { "name": "Projects settings" },
     { "name": "Purchase orders" },

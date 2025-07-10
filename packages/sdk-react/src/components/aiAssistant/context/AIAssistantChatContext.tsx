@@ -36,11 +36,11 @@ export const AIAssistantChatProvider = ({
   isNewChat,
   setIsNewChat,
 }: ChatProviderProps) => {
-  const { apiUrl, fetchToken, api, queryClient } = useMoniteContext();
+  const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
   const { data: conversation } =
-    api.ai.fetchConversationMessages.useQuery<ConversationHistory>(
+    api.ai.getAiConversationsId.useQuery<ConversationHistory>(
       {
-        path: { conversationId },
+        path: { conversation_id: conversationId },
       },
       { enabled: !isNewChat }
     );
@@ -59,6 +59,7 @@ export const AIAssistantChatProvider = ({
         headers: {
           ...init?.headers,
           'x-monite-version': apiVersion,
+          'x-monite-entity-id': entityId,
           Authorization: `${tokenType} ${accessToken}`,
         },
       });
@@ -69,7 +70,7 @@ export const AIAssistantChatProvider = ({
         return;
       }
 
-      await api.ai.fetchConversations.invalidateQueries(queryClient);
+      await api.ai.getAiConversationsId.invalidateQueries(queryClient);
       setIsNewChat(false);
     },
   });

@@ -42,7 +42,7 @@ export const SearchChatModal: FC<SearchChatModalProps> = ({
   const [groups, setGroups] =
     useState<ConversationGroups[]>(conversationGroups);
 
-  const { data } = api.ai.fetchConversations.useQuery<{ data: Conversation[] }>(
+  const { data } = api.ai.getAiConversations.useQuery<{ data: Conversation[] }>(
     {
       query: {
         title__icontains: search,
