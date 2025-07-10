@@ -17,6 +17,7 @@ import {
   usePayableCounterpartRawDataSuggestions,
   CounterpartFormFieldsRawMapping,
 } from '../CounterpartForm/usePayableCounterpartRawDataSuggestions';
+import { CounterpartBankFields } from './mapper';
 import {
   useCounterpartBankForm,
   CounterpartBankFormProps,
@@ -33,14 +34,7 @@ const bankFieldsMapping: CounterpartFormFieldsRawMapping = {
 export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { i18n } = useLingui();
   const {
-    methods: {
-      control,
-      handleSubmit,
-      watch,
-      clearErrors,
-      resetField,
-      setValue,
-    },
+    methods,
     counterpart,
     bank,
     formId,
@@ -48,15 +42,17 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     isLoading,
     payableCounterpartRawData,
   } = useCounterpartBankForm(props);
-  const country = watch('country');
+
+  const { control, handleSubmit, watch, clearErrors, resetField, setValue } =
+    methods;
+
+  const values = watch();
 
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
 
-  const values = watch();
-
   const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
-    usePayableCounterpartRawDataSuggestions(
+    usePayableCounterpartRawDataSuggestions<CounterpartBankFields>(
       payableCounterpartRawData,
       values,
       setValue,
@@ -67,7 +63,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     !!payableCounterpartRawData?.bank_account && !allFieldsEqual;
 
   useEffect(() => {
-    if (country) {
+    if (values.country) {
       /**
        * We have to clean all errors except `currency`
        *  because `currency` always required but other fields
@@ -86,7 +82,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       resetField('account_number');
       resetField('routing_number');
     }
-  }, [clearErrors, resetField, country]);
+  }, [clearErrors, resetField, values.country]);
 
   if (isLoading) {
     return <LoadingPage />;

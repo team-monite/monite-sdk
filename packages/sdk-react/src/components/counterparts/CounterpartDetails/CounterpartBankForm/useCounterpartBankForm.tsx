@@ -48,7 +48,7 @@ export function useCounterpartBankForm({
   const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartBankFields>({
+  const methods = useForm<CounterpartBankFields, any, CounterpartBankFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });

@@ -11,7 +11,10 @@ import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
 
 import { getCounterpartName } from '../../helpers';
-import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
+import {
+  CounterpartAddressFormFields,
+  prepareCounterpartAddressSubmit,
+} from '../CounterpartAddressForm';
 import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
 import {
   usePayableCounterpartRawDataSuggestions,
@@ -37,11 +40,13 @@ export const CounterpartAddressFormUpdate = (
   const { i18n } = useLingui();
   const {
     counterpart,
-    methods: { control, handleSubmit, setValue, watch },
+    methods,
     updateAddress,
     isLoading,
     payableCounterpartRawData,
   } = useCounterpartAddressFormUpdate(props);
+
+  const { control, handleSubmit, setValue, watch } = methods;
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-counterpartAddress-${useId()}`;
@@ -49,7 +54,7 @@ export const CounterpartAddressFormUpdate = (
   const values = watch();
 
   const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
-    usePayableCounterpartRawDataSuggestions(
+    usePayableCounterpartRawDataSuggestions<CounterpartAddressFormFields>(
       payableCounterpartRawData,
       values,
       setValue,

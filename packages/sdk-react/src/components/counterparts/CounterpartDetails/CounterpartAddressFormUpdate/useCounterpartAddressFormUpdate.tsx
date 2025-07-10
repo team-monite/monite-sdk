@@ -38,7 +38,11 @@ export function useCounterpartAddressFormUpdate({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartAddressFormFields>({
+  const methods = useForm<
+    CounterpartAddressFormFields,
+    any,
+    CounterpartAddressFormFields
+  >({
     resolver: yupResolver(yup.object().shape(getAddressValidationSchema(i18n))),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),
