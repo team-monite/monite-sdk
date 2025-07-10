@@ -67,6 +67,9 @@ export type MoniteTheme = Theme & {
       '85': string;
       '90': string;
       '95': string;
+      foreground: {
+        main: string;
+      };
     };
     success: {
       main: string;
