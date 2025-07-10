@@ -70,8 +70,8 @@
   --mtw-popover-foreground: oklch(0.145 0 0);
   --mtw-primary: var(--mtw-color-primary-50);
   --mtw-primary-foreground: var(--mtw-color-primary-foreground);
-  --mtw-secondary: oklch(0.97 0 0);
-  --mtw-secondary-foreground: oklch(0.205 0 0);
+  --mtw-secondary: var(--mtw-color-primary-90);
+  --mtw-secondary-foreground: var(--mtw-color-primary-20);
   --mtw-muted: oklch(0.97 0 0);
   --mtw-muted-foreground: oklch(0.556 0 0);
   --mtw-accent: oklch(0.97 0 0);

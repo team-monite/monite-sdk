@@ -57,6 +57,9 @@ export type MonitePalette = {
     dark: string;
     main: string;
     light: string;
+    '30': string;
+    '40': string;
+    '50': string;
     '60': string;
     '80': string;
     '90': string;

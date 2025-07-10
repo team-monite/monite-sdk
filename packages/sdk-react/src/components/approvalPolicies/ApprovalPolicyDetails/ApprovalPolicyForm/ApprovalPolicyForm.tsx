@@ -7,13 +7,17 @@ import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
+  NAMED_VALUES,
+  NamedValue,
+  OPERATOR_OPERATIONS,
+  OperatorOperation,
+} from '@/components/approvalPolicies/triggerUtils';
+import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
   useApprovalPolicyTrigger,
-  ApprovalPoliciesTriggerKey,
-  ApprovalPoliciesOperator,
   AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import {
@@ -61,11 +65,13 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
+type FormTriggerKey = Exclude<NamedValue, 'tags.id'> | 'tags';
+
 export interface FormValues {
   name: string;
   description: string;
 
-  triggerType: ApprovalPoliciesTriggerKey | null;
+  triggerType: FormTriggerKey | null;
   triggers: {
     was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
     tags?: components['schemas']['TagReadSchema'][];
@@ -75,7 +81,7 @@ export interface FormValues {
       value: AmountTuple[];
     };
   };
-  amountOperator?: ApprovalPoliciesOperator;
+  amountOperator?: OperatorOperation;
   amountValue?: string | number;
   amountRangeLeftValue?: string | number;
   amountRangeRightValue?: string | number;
@@ -107,9 +113,9 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
         values.triggers.was_created_by_user_id?.length > 0
           ? [
               {
-                operator: 'in',
+                operator: OPERATOR_OPERATIONS.IN,
                 left_operand: {
-                  name: 'invoice.was_created_by_user_id',
+                  name: `invoice.${NAMED_VALUES.WAS_CREATED_BY_USER_ID}`,
                 },
                 right_operand: values.triggers.was_created_by_user_id.map(
                   (user) => user.id
@@ -117,24 +123,13 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
               },
             ]
           : []),
-        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
-          ? [
-              {
-                operator: 'in',
-                left_operand: {
-                  name: 'invoice.tags.id',
-                },
-                right_operand: values.triggers.tags.map((tag) => tag.id),
-              },
-            ]
-          : []),
         ...(values.triggers.counterpart_id?.length &&
         values.triggers.counterpart_id?.length > 0
           ? [
               {
-                operator: 'in',
+                operator: OPERATOR_OPERATIONS.IN,
                 left_operand: {
-                  name: 'invoice.counterpart_id',
+                  name: `invoice.${NAMED_VALUES.COUNTERPART_ID}`,
                 },
                 right_operand: values.triggers.counterpart_id.map(
                   (counterpart) => counterpart.id
@@ -142,21 +137,31 @@ const buildApprovalPolicyPayload = (values: FormValues) => {
               },
             ]
           : []),
+        // Named value `tags.id` is a list. So in order to use the 'x in list' format, we need to build a trigger for each tag
+        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
+          ? values.triggers.tags.map((tag) => ({
+              operator: OPERATOR_OPERATIONS.IN,
+              left_operand: tag.id,
+              right_operand: {
+                name: `invoice.${NAMED_VALUES.TAGS}`,
+              },
+            }))
+          : []),
         ...(values.triggers.amount?.value?.length &&
         values.triggers.amount?.value?.length > 0
           ? [
               ...values.triggers.amount.value.map((value) => ({
                 operator: value[0],
                 left_operand: {
-                  name: 'invoice.amount',
+                  name: `invoice.${NAMED_VALUES.AMOUNT}`,
                 },
                 right_operand:
                   typeof value[1] === 'number' ? value[1] : parseInt(value[1]),
               })),
               {
-                operator: '==',
+                operator: OPERATOR_OPERATIONS.EQUALS,
                 left_operand: {
-                  name: 'invoice.currency',
+                  name: `invoice.${NAMED_VALUES.CURRENCY}`,
                 },
                 right_operand: values.triggers.amount.currency,
               },
@@ -263,8 +268,9 @@ export const ApprovalPolicyForm = ({
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
-  const [triggerInEdit, setTriggerInEdit] =
-    useState<ApprovalPoliciesTriggerKey | null>(null);
+  const [triggerInEdit, setTriggerInEdit] = useState<FormTriggerKey | null>(
+    null
+  );
 
   const [prevFormValues, setPrevFormValues] =
     useState<Partial<FormValues> | null>(null);
