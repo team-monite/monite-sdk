@@ -628,7 +628,7 @@ msgstr "All items with this measure unit will get deleted, too."
 msgid "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
 msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
 
-#: src/components/payables/PayablesTable/Filters/Filters.tsx:60
+#: src/components/payables/PayablesTable/Filters/Filters.tsx:64
 #: src/components/receivables/components/ReceivableFilters.tsx:85
 msgid "All statuses"
 msgstr "All statuses"
@@ -5554,8 +5554,8 @@ msgstr "Next order number must be more than the last issued"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:100
-#: src/ui/table/TablePagination.tsx:112
-#: src/ui/table/TablePagination.tsx:125
+#: src/ui/table/TablePagination.tsx:114
+#: src/ui/table/TablePagination.tsx:127
 msgid "Next page"
 msgstr "Next page"
 
@@ -6579,8 +6579,8 @@ msgstr "Preview email"
 msgid "Preview of {0}"
 msgstr "Preview of {0}"
 
-#: src/ui/table/TablePagination.tsx:95
-#: src/ui/table/TablePagination.tsx:108
+#: src/ui/table/TablePagination.tsx:97
+#: src/ui/table/TablePagination.tsx:110
 msgid "Previous page"
 msgstr "Previous page"
 
@@ -7046,7 +7046,7 @@ msgstr "Requested on"
 msgid "Required"
 msgstr "Required"
 
-#: src/ui/table/TablePagination.tsx:131
+#: src/ui/table/TablePagination.tsx:133
 msgid "Results per page"
 msgstr "Results per page"
 
@@ -7139,7 +7139,7 @@ msgstr "Routing number must be 9 digits"
 msgid "Row"
 msgstr "Row"
 
-#: src/ui/table/TablePagination.tsx:137
+#: src/ui/table/TablePagination.tsx:139
 msgid "Rows per page"
 msgstr "Rows per page"
 
@@ -7302,7 +7302,7 @@ msgstr "Search"
 msgid "Search by name"
 msgstr "Search by name"
 
-#: src/components/payables/PayablesTable/Filters/Filters.tsx:36
+#: src/components/payables/PayablesTable/Filters/Filters.tsx:40
 msgid "Search by number or vendor"
 msgstr "Search by number or vendor"
 
@@ -7705,7 +7705,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:216
 #: src/components/financing/components/FinanceDetails.tsx:164
 #: src/components/financing/components/FinancedInvoicesTable.tsx:171
-#: src/components/payables/PayablesTable/Filters/Filters.tsx:49
+#: src/components/payables/PayablesTable/Filters/Filters.tsx:53
 #: src/components/payables/PayablesTable/PayablesTable.tsx:340
 #: src/components/receivables/components/InvoicesTable.tsx:288
 #: src/components/receivables/components/QuotesTable.tsx:168
