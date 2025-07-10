@@ -1,0 +1,12 @@
+export { HomePage } from './HomePage';
+export { ComponentsPage } from './ComponentsPage';
+export { SettingsPage } from './SettingsPage';
+export { BillPayPage } from './BillPayPage';
+export { InvoicingPage } from './InvoicingPage';
+export { ApprovalRequestsPage } from './ApprovalRequestsPage';
+export { CounterpartsPage } from './CounterpartsPage';
+export { ProductsPage } from './ProductsPage';
+export { RolesApprovalsPage } from './RolesApprovalsPage';
+export { TagsPage } from './TagsPage';
+export { OnboardingPage } from './OnboardingPage';
+export { IntegrationsPage } from './IntegrationsPage';
