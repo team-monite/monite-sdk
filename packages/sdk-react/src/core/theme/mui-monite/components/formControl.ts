@@ -65,19 +65,19 @@ export const getFormControlStyles = (
         '&:hover': {
           '&.MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
             backgroundColor: palette.neutral['90'],
-            border: `1px solid ${palette.primary.main}`,
+            border: `1px solid ${palette.primary['40']}`,
           },
 
           '& .MuiFormLabel-root.MuiFormLabel-filled': {
             '+ .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
               backgroundColor: 'transparent',
-              border: `1px solid ${palette.primary.main}`,
+              border: `1px solid ${palette.primary['40']}`,
             },
           },
         },
         '&:not(.Monite-FilterControl):not(.Monite-Selector):hover': {
           '& .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)': {
-            border: `1px solid ${palette.primary.main}`,
+            border: `1px solid ${palette.primary['40']}`,
           },
 
           '& .MuiInputAdornment-root .MuiInputBase-root:not(.Mui-disabled):not(.Mui-focused)':
@@ -88,7 +88,7 @@ export const getFormControlStyles = (
           '& .MuiFormLabel-root': {
             '+ .MuiInputBase-root:not(.Mui-focused)': {
               backgroundColor: 'transparent',
-              border: `1px solid ${palette.primary.main}`,
+              border: `1px solid ${palette.primary['40']}`,
             },
           },
         },
