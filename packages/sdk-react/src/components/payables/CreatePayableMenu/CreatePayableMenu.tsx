@@ -85,12 +85,12 @@ export const CreatePayableMenu = ({
             }}
           >
             <div>
-              <p className="mtw:text-xl mtw:font-bold mtw:mb-2">
+              <p className="mtw:text-xl mtw:font-semibold mtw:mb-2">
                 {t(i18n)`Upload files`}
               </p>
               <div
                 className={cn(
-                  'mtw:box-border mtw:cursor-pointer mtw:w-full mtw:h-[170px] mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:border-2 mtw:rounded-xl mtw:border-dashed mtw:border-primary-50 mtw:bg-primary-50/5 mtw:hover:bg-transparent',
+                  'mtw:box-border mtw:cursor-pointer mtw:w-full mtw:h-[170px] mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:border-2 mtw:rounded-xl mtw:border-dashed mtw:border-neutral-80 mtw:bg-white mtw:hover:bg-neutral-95',
                   dragIsOver && 'mtw:bg-transparent'
                 )}
                 onDragOver={handleDragOver}
@@ -99,8 +99,8 @@ export const CreatePayableMenu = ({
                 onClick={openFileInput}
               >
                 <div className="mtw:mx-auto">
-                  <CloudUpload className="mtw:text-primary-50 mtw:w-10 mtw:h-10 mtw:mx-auto" />
-                  <p className="mtw:text-lg mtw:font-bold mtw:text-primary-50">
+                  <CloudUpload className="mtw:text-primary-30 mtw:w-10 mtw:h-10 mtw:mx-auto" />
+                  <p className="mtw:text-lg mtw:font-semibold mtw:text-neutral-30">
                     {t(i18n)`Drag and drop files or click to upload`}
                   </p>
                   <p className="mtw:text-sm mtw:text-neutral-50">
@@ -110,7 +110,7 @@ export const CreatePayableMenu = ({
               </div>
             </div>
             <div className="mtw:mt-4">
-              <p className="mtw:text-xl mtw:font-bold mtw:mb-2">
+              <p className="mtw:text-xl mtw:font-semibold mtw:mb-2">
                 {t(i18n)`Or add bill manually`}
               </p>
               <div>

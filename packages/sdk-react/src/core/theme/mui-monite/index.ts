@@ -725,6 +725,26 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
         textPrimary: {
           padding: '.75em 1.25em',
+          color: 'primary.30',
+          backgroundColor: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+          '&:hover': {
+            backgroundColor: 'primary.90',
+            border: 'none',
+            boxShadow: 'none',
+          },
+          '&:active': {
+            backgroundColor: 'primary.70',
+            border: 'none',
+            boxShadow: 'none',
+          },
+          '&:disabled': {
+            color: 'neutral.70',
+            backgroundColor: 'neutral.90',
+            border: 'none',
+            boxShadow: 'none',
+          },
         },
       },
     },
