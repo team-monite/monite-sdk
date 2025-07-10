@@ -1,5 +1,17 @@
 # @monite/sdk-drop-in
 
+## 2.2.0
+
+### Minor Changes
+
+- 7ef2451: Theme colors improved across components
+- 7f17198: Add primaryForeground color property. This can be used to customize the text/icons color on primary elements (e.g. buttons)
+
+### Patch Changes
+
+- 954ee35: Add payables custom event callbacks. A custom hook for managing component settings callbacks
+- 20d79d8: Fix inconsistencies with primary color generation
+
 ## 2.1.0
 
 ### Minor Changes

@@ -1,5 +1,20 @@
 # @monite/sdk-react
 
+## 4.3.0
+
+### Minor Changes
+
+- 7ef2451: Theme colors improved across components
+- 7f17198: Add primaryForeground color property. This can be used to customize the text/icons color on primary elements (e.g. buttons)
+
+### Patch Changes
+
+- 954ee35: Add payables custom event callbacks. A custom hook for managing component settings callbacks
+- 1d73a83: Fix Approval Policies with triggers for tags
+- e15a420: Fix Payable line items unit price display and calculation.
+- e3d9b8c: Fix Payable discount edit showing as minor units.
+- 20d79d8: Fix inconsistencies with primary color generation
+
 ## 4.2.0
 
 ### Minor Changes
