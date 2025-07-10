@@ -17,7 +17,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -103,7 +103,7 @@ export const CounterpartOrganizationForm = (
   const formName = `Monite-Form-counterpartOrganizationForm-${useId()}`;
 
   const methods = useForm({
-    resolver: yupResolver(
+    resolver: zodResolver(
       counterpartId || counterpart
         ? getUpdateCounterpartValidationSchema(i18n)
         : getCreateCounterpartValidationSchema(i18n)

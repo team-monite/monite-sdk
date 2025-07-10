@@ -7,10 +7,10 @@ import {
   useCounterpartById,
   useUpdateCounterpartAddress,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import {
   CounterpartAddressFormFields,
@@ -38,12 +38,8 @@ export function useCounterpartAddressFormUpdate({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { i18n } = useLingui();
-  const methods = useForm<
-    CounterpartAddressFormFields,
-    any,
-    CounterpartAddressFormFields
-  >({
-    resolver: yupResolver(yup.object().shape(getAddressValidationSchema(i18n))),
+  const methods = useForm<CounterpartAddressFormFields>({
+    resolver: zodResolver(z.object(getAddressValidationSchema(i18n))),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),
       [address]

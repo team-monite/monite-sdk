@@ -8,7 +8,7 @@ import {
   useCreateCounterpartBank,
   useUpdateCounterpartBank,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 
 import {
@@ -48,8 +48,8 @@ export function useCounterpartBankForm({
   const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartBankFields, any, CounterpartBankFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+  const methods = useForm<CounterpartBankFields>({
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 

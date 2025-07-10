@@ -8,7 +8,7 @@ import {
   useCreateCounterpartContact,
   useUpdateCounterpartContact,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 
 import {
@@ -47,7 +47,7 @@ export function useCounterpartContactForm({
   const counterpart = counterpartResponse;
 
   const methods = useForm<CounterpartContactFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartContact(contact), [contact]),
   });
 
