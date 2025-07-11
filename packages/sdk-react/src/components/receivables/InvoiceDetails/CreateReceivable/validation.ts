@@ -154,6 +154,10 @@ export const getCreateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Memo`)
       .optional(),
+    footer: yup
+      .string()
+      .label(t(i18n)`Note to customer`)
+      .optional(),
     payment_terms_id: yup
       .string()
       .label(t(i18n)`Payment terms`)
@@ -213,6 +217,10 @@ export const getUpdateInvoiceValidationSchema = (
     memo: yup
       .string()
       .label(t(i18n)`Memo`)
+      .optional(),
+    footer: yup
+      .string()
+      .label(t(i18n)`Note to customer`)
       .optional(),
     payment_terms_id: yup
       .string()

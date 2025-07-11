@@ -83,6 +83,7 @@ export const InvoicePreview = ({
   const fulfillmentDate = watch('fulfillment_date');
   const items = watch('line_items');
   const memo = watch('memo');
+  const footer = watch('footer');
   const entityBankAccountId = watch('entity_bank_account_id') ?? '';
   const vatMode = watch('vat_mode');
   const isInclusivePricing = vatMode === 'inclusive';
@@ -437,6 +438,11 @@ export const InvoicePreview = ({
                   </tr>
                 </tbody>
               </table>
+            )}
+            {footer && (
+              <div className="block-memo" style={{ marginTop: '20px' }}>
+                {footer}
+              </div>
             )}
           </div>
         </article>
