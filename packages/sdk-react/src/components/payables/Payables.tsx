@@ -212,7 +212,7 @@ const PayablesBase = ({
           onApproved={handleApproved}
           onReopened={handleReopened}
           onDeleted={(payableId) => {
-            handleDeleted(payableId);
+            handleDeleted?.(payableId);
             closeEditDialog();
             toast(t(i18n)`Bill #${payableId} has been deleted`, {
               duration: 5000,
