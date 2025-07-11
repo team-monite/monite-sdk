@@ -102,7 +102,7 @@ const getBaseInvoiceSchema = (
     memo: z.string().optional(),
     payment_terms_id: z
       .string()
-      .min(1, t(i18n)`Payment terms is a required field`),,
+      .min(1, t(i18n)`Payment terms is a required field`),
     footer: z
       .string()
       .optional(),
