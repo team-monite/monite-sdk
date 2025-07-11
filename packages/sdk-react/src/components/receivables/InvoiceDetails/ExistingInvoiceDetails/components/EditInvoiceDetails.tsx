@@ -251,6 +251,7 @@ const EditInvoiceDetailsContent = ({
                     values.counterpart_vat_id_id || undefined,
                   currency: actualCurrency,
                   memo: values.memo,
+                  footer: values.footer,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                   counterpart_shipping_address_id:
