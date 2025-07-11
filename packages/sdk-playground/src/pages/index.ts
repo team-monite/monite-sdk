@@ -1,6 +1,4 @@
 export { HomePage } from './HomePage';
-export { ComponentsPage } from './ComponentsPage';
-export { SettingsPage } from './SettingsPage';
 export { BillPayPage } from './BillPayPage';
 export { InvoicingPage } from './InvoicingPage';
 export { ApprovalRequestsPage } from './ApprovalRequestsPage';
