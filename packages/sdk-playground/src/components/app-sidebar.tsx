@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import {
@@ -23,6 +24,12 @@ import {
   TagIcon,
   ZapIcon,
 } from 'lucide-react';
+
+import { Button } from './ui/button';
+import { Dialog } from './ui/dialog';
+import { DialogContent } from './ui/dialog';
+import { DialogHeader } from './ui/dialog';
+import { DialogTitle } from './ui/dialog';
 
 const menuItems = [
   {
@@ -72,9 +79,22 @@ const menuItems = [
   },
 ];
 
+const dropinMenuItems = [
+  {
+    title: 'Bill Pay',
+    icon: ReceiptIcon,
+    url: '/dropin/bill-pay',
+  },
+  {
+    title: 'Invoicing',
+    icon: FileIcon,
+    url: '/dropin/invoicing',
+  },
+];
+
 export function AppSidebar() {
   const location = useLocation();
-
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   return (
     <Sidebar>
       <SidebarHeader>
@@ -84,7 +104,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Components</SidebarGroupLabel>
+          <SidebarGroupLabel>React Components</SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
@@ -104,9 +124,43 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Drop-in Components</SidebarGroupLabel>
+
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {dropinMenuItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location.pathname === item.url}
+                  >
+                    <Link to={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="p-4 text-sm text-gray-500">v1.0.0</div>
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => setIsLoginOpen(true)}
+        >
+          Use a different account
+        </Button>
+        <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Login</DialogTitle>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </SidebarFooter>
     </Sidebar>
   );

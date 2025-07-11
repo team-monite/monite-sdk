@@ -14,13 +14,17 @@ import {
   OnboardingPage,
   IntegrationsPage,
 } from './pages';
+import {
+  BillPayPage as DropinBillPayPage,
+  InvoicingPage as DropinInvoicingPage,
+} from './pages/Dropin';
 
 function App() {
   return (
     <Router>
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto p-4">
           <Routes>
             <Route path="/" element={<BillPayPage />} />
             <Route path="/bill-pay" element={<BillPayPage />} />
@@ -38,6 +42,8 @@ function App() {
             <Route path="/tags" element={<TagsPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/integrations" element={<IntegrationsPage />} />
+            <Route path="/dropin/bill-pay" element={<DropinBillPayPage />} />
+            <Route path="/dropin/invoicing" element={<DropinInvoicingPage />} />
             <Route
               path="*"
               element={
