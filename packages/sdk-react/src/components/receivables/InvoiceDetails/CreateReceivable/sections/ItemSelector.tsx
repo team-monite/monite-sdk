@@ -10,7 +10,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useDebounceCallback } from '@/core/hooks/useDebounce';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -91,7 +91,7 @@ export const ItemSelector = ({
   const [isTyping, setIsTyping] = useState(false);
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
-    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
         items: [],

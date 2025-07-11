@@ -7,6 +7,8 @@ export { CounterpartSelector } from './CounterpartSelector';
 export { CreditNotesTable } from './CreditNotesTable';
 export { CustomerSection } from './CustomerSection';
 export { EditCounterpartModal } from './EditCounterpartModal';
+export { EntityProfileFormContent } from './EntityProfileFormContent';
+export { EntityProfileModal } from './EntityProfileModal';
 export { InvoiceCounterpartName } from './InvoiceCounterpartName';
 export {
   InvoiceRecurrenceIterationStatusChip,
