@@ -1781,7 +1781,7 @@ msgstr "Choose document"
 msgid "Choose from device"
 msgstr "Choose from device"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:127
 msgid "Choose how to get paid."
 msgstr "Choose how to get paid."
 
@@ -2570,8 +2570,7 @@ msgstr "Custom prefix (15 chars max)"
 msgid "Customer"
 msgstr "Customer"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:87
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:127
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
 msgid "Customer is a required field"
 msgstr "Customer is a required field"
 
@@ -3561,8 +3560,7 @@ msgstr "Entity user"
 msgid "Entity VAT IDs"
 msgstr "Entity VAT IDs"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:94
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:132
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
 msgid "Entity VAT is a required field"
 msgstr "Entity VAT is a required field"
 
@@ -6524,8 +6522,7 @@ msgstr "Payment term updated"
 msgid "Payment terms"
 msgstr "Payment terms"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:110
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:147
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:105
 msgid "Payment terms is a required field"
 msgstr "Payment terms is a required field"
 
@@ -7729,8 +7726,7 @@ msgstr "Services"
 msgid "Set a {0} for this customer to issue invoice"
 msgstr "Set a {0} for this customer to issue invoice"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:103
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:140
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:98
 msgid "Set a billing address for this customer to issue invoice"
 msgstr "Set a billing address for this customer to issue invoice"
 

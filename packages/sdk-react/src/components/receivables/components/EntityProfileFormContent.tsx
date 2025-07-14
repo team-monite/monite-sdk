@@ -56,7 +56,7 @@ export const EntityProfileFormContent = ({
               <FormItem>
                 <FormLabel>{t(i18n)`Title`}</FormLabel>
                 <FormControl>
-                  <Input {...field} className="mtw:bg-white" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,7 +71,7 @@ export const EntityProfileFormContent = ({
                 <FormItem className="mtw:flex mtw:flex-col mtw:flex-1">
                   <FormLabel>{t(i18n)`Name`}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="mtw:bg-white" />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +85,7 @@ export const EntityProfileFormContent = ({
                 <FormItem className="mtw:flex mtw:flex-col mtw:flex-1">
                   <FormLabel>{t(i18n)`Surname`}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="mtw:bg-white" />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,7 +101,7 @@ export const EntityProfileFormContent = ({
             <FormItem>
               <FormLabel>{t(i18n)`Legal name`}</FormLabel>
               <FormControl>
-                <Input {...field} className="mtw:bg-white" />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,7 +132,7 @@ export const EntityProfileFormContent = ({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="mtw:w-18 mtw:rounded-br-none mtw:rounded-tr-none mtw:bg-white">
+                    <SelectTrigger className="mtw:w-18 mtw:rounded-br-none mtw:rounded-tr-none">
                       <SelectValue />
                     </SelectTrigger>
                   </FormControl>
@@ -160,7 +160,7 @@ export const EntityProfileFormContent = ({
                 <FormControl>
                   <Input
                     {...field}
-                    className="mtw:rounded-bl-none mtw:rounded-tl-none mtw:bg-white"
+                    className="mtw:rounded-bl-none mtw:rounded-tl-none"
                     placeholder={selectedVatType?.placeholderText}
                   />
                 </FormControl>
@@ -182,7 +182,7 @@ export const EntityProfileFormContent = ({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="mtw:w-full mtw:bg-white">
+                    <SelectTrigger className="mtw:w-full">
                       <SelectValue className="mtw:max-w-4/5 mtw:text-ellipsis mtw:whitespace-nowrap" />
                     </SelectTrigger>
                   </FormControl>
@@ -208,7 +208,7 @@ export const EntityProfileFormContent = ({
           <FormItem>
             <FormLabel>{t(i18n)`Tax ID`}</FormLabel>
             <FormControl>
-              <Input {...field} className="mtw:bg-white" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -222,7 +222,7 @@ export const EntityProfileFormContent = ({
           <FormItem>
             <FormLabel>{t(i18n)`Email`}</FormLabel>
             <FormControl>
-              <Input {...field} type="email" className="mtw:bg-white" />
+              <Input {...field} type="email" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -236,7 +236,7 @@ export const EntityProfileFormContent = ({
           <FormItem>
             <FormLabel>{t(i18n)`Contact phone number`}</FormLabel>
             <FormControl>
-              <Input {...field} type="email" className="mtw:bg-white" />
+              <Input {...field} type="tel" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -250,7 +250,7 @@ export const EntityProfileFormContent = ({
           <FormItem>
             <FormLabel>{t(i18n)`Website`}</FormLabel>
             <FormControl>
-              <Input {...field} type="email" className="mtw:bg-white" />
+              <Input {...field} type="url" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -268,7 +268,7 @@ export const EntityProfileFormContent = ({
               <FormItem>
                 <FormLabel>{t(i18n)`Address line 1`}</FormLabel>
                 <FormControl>
-                  <Input {...field} className="mtw:bg-white" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -282,7 +282,7 @@ export const EntityProfileFormContent = ({
               <FormItem>
                 <FormLabel>{t(i18n)`Address line 2`}</FormLabel>
                 <FormControl>
-                  <Input {...field} className="mtw:bg-white" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -297,7 +297,7 @@ export const EntityProfileFormContent = ({
                 <FormItem className="mtw:flex mtw:flex-col mtw:flex-1">
                   <FormLabel>{t(i18n)`City`}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="mtw:bg-white" />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -311,7 +311,7 @@ export const EntityProfileFormContent = ({
                 <FormItem className="mtw:flex mtw:flex-col mtw:flex-1">
                   <FormLabel>{t(i18n)`Postal code`}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="mtw:bg-white" />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -326,7 +326,7 @@ export const EntityProfileFormContent = ({
               <FormItem>
                 <FormLabel>{t(i18n)`State / Area / Province`}</FormLabel>
                 <FormControl>
-                  <Input {...field} className="mtw:bg-white" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
