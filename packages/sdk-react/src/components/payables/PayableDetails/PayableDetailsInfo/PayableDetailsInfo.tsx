@@ -106,7 +106,6 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 const PayableDetailsInfoBase = ({
   payable,
   updateTags,
-  roleDesignVariant = 'old',
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
@@ -449,8 +448,6 @@ const PayableDetailsInfoBase = ({
               approvalPolicy={approvalPolicy}
               payableId={payable.id}
               currentStatus={payable.status}
-              showUserEmail
-              roleDesignVariant={roleDesignVariant}
             />
           </Grid>
         )}

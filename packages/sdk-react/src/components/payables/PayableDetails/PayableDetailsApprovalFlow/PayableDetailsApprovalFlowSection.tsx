@@ -1,117 +1,34 @@
 import { components } from '@/api';
-import { UUserSquare } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/icons/UUserSquare';
+import { Role } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/Role';
+import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
   Typography,
   Paper,
-  Chip,
   Stack,
   CircularProgress,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Skeleton,
 } from '@mui/material';
 
 import { useResolvedApprovalStepsWithPolicy } from './useResolvedApprovalSteps';
 
-interface RoleCellProps {
-  roleId: string;
-  designVariant?: 'old' | 'new';
-  roleData?: components['schemas']['RoleResponse'];
-}
-
-const RoleCell = ({
-  roleId,
-  roleData,
-  designVariant = 'old',
-}: RoleCellProps) => {
-  const { api } = useMoniteContext();
-
-  const { data: role, isLoading } = api.roles.getRolesId.useQuery(
-    {
-      path: { role_id: roleId },
-    },
-    {
-      enabled: !roleData,
-    }
-  );
-
-  const displayRole = roleData ?? role;
-  const isRoleLoading = !roleData && isLoading;
-
-  if (!displayRole) {
-    return null;
-  }
-
-  if (designVariant === 'new') {
-    return (
-      <Chip
-        label={
-          isRoleLoading ? (
-            <Skeleton height="50%" width={100} animation="wave" />
-          ) : (
-            displayRole.name
-          )
-        }
-        title={isRoleLoading ? '' : displayRole.name}
-        variant="filled"
-        sx={{
-          borderRadius: 2,
-          fontWeight: 600,
-          backgroundColor: '#f5f5f5',
-          color: '#333',
-          '& .MuiChip-label': {
-            px: 2,
-            py: 0.5,
-          },
-        }}
-      />
-    );
-  }
-
-  return (
-    <Chip
-      avatar={<UUserSquare width={18} />}
-      label={
-        isRoleLoading ? (
-          <Skeleton height="50%" width={100} animation="wave" />
-        ) : (
-          displayRole.name
-        )
-      }
-      title={isRoleLoading ? '' : displayRole.name}
-      variant="outlined"
-      sx={{
-        borderRadius: 1,
-        fontWeight: 500,
-        '& .MuiChip-label': {
-          px: 1,
-        },
-      }}
-    />
-  );
-};
-
 interface PayableApprovalFlowSectionProps {
-  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
+  approvalPolicy: ApprovalPolicyResource;
   payableId: string;
   currentStatus: string;
-  showUserEmail?: boolean;
-  roleDesignVariant?: 'old' | 'new';
+  showUsersAsEmail?: boolean;
 }
 
 export const PayableApprovalFlowSection = ({
   approvalPolicy,
   payableId,
-  showUserEmail,
-  roleDesignVariant = 'old',
+  showUsersAsEmail = true,
 }: PayableApprovalFlowSectionProps) => {
   const { i18n } = useLingui();
   const { steps, isLoading } = useResolvedApprovalStepsWithPolicy(
@@ -127,6 +44,10 @@ export const PayableApprovalFlowSection = ({
     );
   }
 
+  if (!steps.length) {
+    return null;
+  }
+
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
@@ -139,12 +60,14 @@ export const PayableApprovalFlowSection = ({
             {steps.map((step, index) => (
               <TableRow key={index}>
                 <TableCell
-                  sx={{ verticalAlign: 'middle', py: 2, width: '120px' }}
+                  sx={{ verticalAlign: 'middle', py: 2, width: '160px' }}
                 >
                   <Typography
                     variant="body2"
-                    color="text.secondary"
-                    sx={{ fontWeight: 500 }}
+                    color="text.primary"
+                    sx={{
+                      fontWeight: 'normal',
+                    }}
                   >
                     {step.type}
                   </Typography>
@@ -154,9 +77,6 @@ export const PayableApprovalFlowSection = ({
                     py: 2,
                     verticalAlign: 'middle',
                     minWidth: '52px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
                   }}
                 >
                   {step.isRoleBased ? (
@@ -164,10 +84,9 @@ export const PayableApprovalFlowSection = ({
                       <Stack
                         direction="row"
                         spacing={1}
-                        flexWrap="nowrap"
+                        flexWrap="wrap"
                         useFlexGap
                         sx={{
-                          overflow: 'hidden',
                           '& > *': {
                             flexShrink: 0,
                           },
@@ -176,17 +95,23 @@ export const PayableApprovalFlowSection = ({
                         {step.resolvedRoles.map(
                           (role) =>
                             role && (
-                              <RoleCell
+                              <Role
                                 key={role.id}
                                 roleId={role.id}
                                 roleData={role}
-                                designVariant={roleDesignVariant}
+                                quoted={true}
                               />
                             )
                         )}
                       </Stack>
                     ) : (
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          fontWeight: 'medium',
+                        }}
+                      >
                         {t(i18n)`No roles assigned`}
                       </Typography>
                     )
@@ -202,23 +127,24 @@ export const PayableApprovalFlowSection = ({
                         if (!user) return null;
 
                         return (
-                          <UserDisplayCell
+                          <User
                             key={user.id}
                             user={user}
-                            showUserEmail={showUserEmail}
+                            variant="cell"
+                            showUsersAsEmail={showUsersAsEmail}
                             showAvatar={false}
-                            typographyVariant="body2"
-                            sx={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}
                           />
                         );
                       })}
                     </Stack>
                   ) : (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        fontWeight: 'medium',
+                      }}
+                    >
                       {t(i18n)`No users assigned`}
                     </Typography>
                   )}
@@ -241,3 +167,5 @@ export const PayableApprovalFlowSection = ({
     </Box>
   );
 };
+
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];

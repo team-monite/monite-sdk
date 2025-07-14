@@ -8,21 +8,21 @@ import {
 import {
   findUserApprovalCall,
   findRoleApprovalCall,
+  ApprovalStructureItem,
+  processApprovalStructure,
+  extractStructureItemsFromScriptStep,
 } from './approvalStepUtils';
+import { ApprovalCallParams } from './approvalStepUtils';
 
 export interface ApprovalCall {
   call: string;
-  params?: {
-    user_ids?: string[];
-    role_ids?: string[];
-    required_approval_count?: number;
-  };
+  params?: ApprovalCallParams;
 }
 
 export interface ScriptStep {
-  all?: ApprovalCall[];
-  then?: ApprovalCall[];
-  if?: ApprovalCall;
+  all?: ApprovalCall[] | ApprovalStructureItem[];
+  then?: ApprovalCall[] | ApprovalStructureItem[];
+  if?: ApprovalCall | ApprovalStructureItem;
   run_concurrently?: boolean;
 }
 
@@ -32,8 +32,8 @@ export interface ApprovalStep {
   roleIds: string[];
   assignee?: string;
   type: string;
-  status: components['schemas']['ApprovalRequestStatus'];
-  payableStatus: components['schemas']['PayableStateEnum'];
+  status: ApprovalRequestStatus;
+  payableStatus: PayableStateEnum;
   isRoleBased: boolean;
 }
 
@@ -45,9 +45,8 @@ export function buildApprovalSteps(
   const approvalSteps: ApprovalStep[] = [];
 
   policyScript.forEach((scriptStep, stepIndex) => {
-    const approvalCalls =
-      scriptStep.all || (scriptStep.if ? [scriptStep.if] : []) || [];
-
+    const structureItems = extractStructureItemsFromScriptStep(scriptStep);
+    const approvalCalls = processApprovalStructure(structureItems);
     const userApprovalCall = findUserApprovalCall(approvalCalls);
     const roleApprovalCall = findRoleApprovalCall(approvalCalls);
 
@@ -98,3 +97,5 @@ export function buildApprovalSteps(
 
 type ApprovalRequest =
   components['schemas']['ApprovalRequestResourceWithMetadata'];
+type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
+type PayableStateEnum = components['schemas']['PayableStateEnum'];

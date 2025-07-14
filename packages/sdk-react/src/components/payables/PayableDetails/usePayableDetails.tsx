@@ -232,8 +232,9 @@ export function usePayableDetails({
   const currentUserApprovalRequest = approvalRequests?.data?.find(
     (request) =>
       request.status === 'waiting' &&
-      request.user_ids?.includes(currentUser?.id ?? '') &&
-      !request.approved_by?.includes(currentUser?.id ?? '')
+      !request.approved_by?.includes(currentUser?.id ?? '') &&
+      (request.user_ids?.includes(currentUser?.id ?? '') ||
+        request.role_ids?.includes(currentUserRole?.id ?? ''))
   );
 
   const { data: isCancelAvailable } = useIsActionAllowed({
@@ -635,6 +636,7 @@ export function usePayableDetails({
     activeApprovalRequest,
     currentUserApprovalRequest,
     currentUser?.id,
+    currentUserRole?.id,
     currentUserRole?.permissions,
     approvalRequests,
   ]);

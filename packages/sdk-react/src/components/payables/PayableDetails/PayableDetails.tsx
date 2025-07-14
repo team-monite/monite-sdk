@@ -28,7 +28,6 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
-  roleDesignVariant?: 'old' | 'new';
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -41,7 +40,6 @@ const PayableDetailsBase = ({
   id,
   optionalFields,
   customerTypes,
-  roleDesignVariant = 'old',
   onClose,
   onSaved,
   onCanceled,
@@ -243,7 +241,6 @@ const PayableDetailsBase = ({
                     updateTags={(tags) => id && updateTags(id, tags || [])}
                     payable={payable}
                     optionalFields={optionalFields}
-                    roleDesignVariant={roleDesignVariant}
                   />
                 )
               )}

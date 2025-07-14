@@ -315,7 +315,6 @@ export interface MonitePayableDetailsInfoProps {
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
   isTagsDisabled?: boolean;
-  roleDesignVariant?: 'old' | 'new';
 }
 
 export const usePayableDetailsThemeProps = (
@@ -334,7 +333,6 @@ export const usePayableDetailsThemeProps = (
       componentSettings?.payables?.ocrMismatchFields,
     isTagsDisabled:
       inProps?.isTagsDisabled ?? componentSettings?.payables?.isTagsDisabled,
-    roleDesignVariant: inProps?.roleDesignVariant ?? 'old',
   };
 };
 

@@ -20,8 +20,6 @@ import { useLingui } from '@lingui/react';
 import {
   Chip,
   DialogContent,
-  List,
-  ListItem,
   Typography,
   Stack,
   Table,
@@ -169,7 +167,7 @@ export const ApprovalPolicyView = ({
           return {
             label: getRuleLabel(ruleKey, rules[ruleKey].count),
             value: (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              <Stack direction="column" gap={1} sx={{ flexWrap: 'wrap' }}>
                 {rules[ruleKey].userIds?.map((userId) => (
                   <User key={userId} userId={userId} />
                 ))}
@@ -182,7 +180,7 @@ export const ApprovalPolicyView = ({
             value: (
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
                 {rules[ruleKey].roleIds?.map((roleId) => (
-                  <Role key={roleId} roleId={roleId} />
+                  <Role key={roleId} roleId={roleId} quoted={true} />
                 ))}
               </Stack>
             ),
@@ -191,17 +189,13 @@ export const ApprovalPolicyView = ({
           return {
             label: getRuleLabel(ruleKey),
             value: (
-              <List>
+              <Stack direction="column" spacing={0.5}>
                 {rules[ruleKey].chainUserIds?.map((userId) => {
                   if (!userId) return null;
 
-                  return (
-                    <ListItem>
-                      <User key={userId} userId={userId} />
-                    </ListItem>
-                  );
+                  return <User key={userId} userId={userId} />;
                 })}
-              </List>
+              </Stack>
             ),
           };
       }

@@ -8,7 +8,11 @@ import {
   type EnhancedApprovalStep,
   ApprovalStepResolver,
 } from './ApprovalStepResolver';
-import { findUserApprovalCall } from './approvalStepUtils';
+import {
+  findUserApprovalCall,
+  processApprovalStructure,
+  extractStructureItemsFromScriptStep,
+} from './approvalStepUtils';
 import { type ScriptStep } from './buildApprovalSteps';
 
 export interface ResolvedApprovalStep extends EnhancedApprovalStep {
@@ -60,16 +64,17 @@ function useResolvedApprovalStepsBase(
   const enhancedSteps = useMemo(() => {
     if (!policyScript.length || !requests) return [];
 
-    const resolver = new ApprovalStepResolver(policyScript, requests);
-    return resolver.buildCompleteSteps(i18n);
+    const resolver = new ApprovalStepResolver(policyScript, requests, i18n);
+
+    return resolver.buildCompleteSteps();
   }, [policyScript, requests, i18n]);
 
   const allUserIds = useMemo(() => {
     const userIds = new Set<string>();
 
     policyScript.forEach((scriptStep) => {
-      const approvalCalls =
-        scriptStep.all || (scriptStep.if ? [scriptStep.if] : []) || [];
+      const structureItems = extractStructureItemsFromScriptStep(scriptStep);
+      const approvalCalls = processApprovalStructure(structureItems);
       const userApprovalCall = findUserApprovalCall(approvalCalls);
 
       if (userApprovalCall?.params?.user_ids) {
@@ -195,10 +200,11 @@ export function useResolvedApprovalSteps(payableId: string) {
  */
 export function useResolvedApprovalStepsWithPolicy(
   payableId: string,
-  approvalPolicy: components['schemas']['ApprovalPolicyResource']
+  approvalPolicy: ApprovalPolicyResource
 ) {
   return useResolvedApprovalStepsBase(payableId, approvalPolicy.id, 'desc');
 }
 
 type EntityUser = components['schemas']['EntityUserResponse'];
 type RoleResponse = components['schemas']['RoleResponse'];
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];
