@@ -1,7 +1,6 @@
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { FormHelperText } from '@mui/material';
 
 interface InlineSuggestionFillProps {
   rawData: string | undefined;
@@ -18,7 +17,7 @@ export const InlineSuggestionFill = ({
 
   if (rawData && !isHidden) {
     return (
-      <FormHelperText>
+      <span className="mtw:text-sm mtw:text-muted-foreground">
         {t(i18n)`Update to match bill: `}
         <Button
           variant="link"
@@ -31,7 +30,7 @@ export const InlineSuggestionFill = ({
         >
           {rawData}
         </Button>
-      </FormHelperText>
+      </span>
     );
   }
 
