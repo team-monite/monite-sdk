@@ -30,6 +30,21 @@ export type CounterpartFormFieldsRawMapping = {
 };
 
 /**
+ * Helper function to retrieve nested values from payableCounterpartRawData
+ * @param rawData - The raw counterpart data object
+ * @param rawKey - The key to retrieve (can be nested with dots)
+ * @returns The value at the specified key, or undefined if not found
+ */
+const getRawValue = (
+  rawData: PayableCounterpartRawData,
+  rawKey: ValidCounterpartRawDataKeys
+): any => {
+  return typeof rawKey === 'string' && rawKey.includes('.')
+    ? getNestedValue(rawData, rawKey)
+    : rawData[rawKey as keyof PayableCounterpartRawData];
+};
+
+/**
  * Hook for handling inline suggestions from raw counterpart data.
  * Compares form values with raw data and provides utilities for updating fields.
  *
@@ -92,14 +107,13 @@ export const usePayableCounterpartRawDataSuggestions = <
 
     const fieldsEqual: Record<string, boolean> = {};
     Object.entries(fieldsMapping).forEach(([formField, rawKey]) => {
-      const rawValue =
-        typeof rawKey === 'string' && rawKey.includes('.')
-          ? getNestedValue(payableCounterpartRawData, rawKey)
-          : payableCounterpartRawData[
-              rawKey as keyof PayableCounterpartRawData
-            ];
+      const rawValue = getRawValue(payableCounterpartRawData, rawKey);
 
-      if (rawValue === undefined || rawValue === null) return;
+      // Consider no value as equal to avoid showing suggestions
+      if (rawValue === undefined || rawValue === null) {
+        fieldsEqual[formField] = true;
+        return;
+      }
 
       const formValue = formField
         .split('.')
@@ -118,12 +132,7 @@ export const usePayableCounterpartRawDataSuggestions = <
     let anyChanged = false;
 
     Object.entries(fieldsMapping).forEach(([formField, rawKey]) => {
-      const rawValue =
-        typeof rawKey === 'string' && rawKey.includes('.')
-          ? getNestedValue(payableCounterpartRawData, rawKey)
-          : payableCounterpartRawData[
-              rawKey as keyof PayableCounterpartRawData
-            ];
+      const rawValue = getRawValue(payableCounterpartRawData, rawKey);
 
       const formValue = formField
         .split('.')
