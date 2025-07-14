@@ -7,6 +7,14 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
+const legacyTemplateNames = [
+  'classic',
+  'modern',
+  'simple',
+  'stylish',
+  'standard',
+];
+
 export const useDocumentTemplatesApi = () => {
   const { api, queryClient, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
@@ -19,13 +27,23 @@ export const useDocumentTemplatesApi = () => {
     );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
-    const filtered =
+    let filtered = [];
+    filtered =
       documentTemplates?.data?.filter((template) =>
         ['invoice', 'receivable'].includes(template.document_type)
       ) || [];
 
+    if (!componentSettings?.templateSettings?.showLegacyTemplateOptions) {
+      filtered = filtered.filter(
+        (template) => !legacyTemplateNames.includes(template?.name)
+      );
+    }
+
     return [filtered, filtered.find((template) => template.is_default)];
-  }, [documentTemplates]);
+  }, [
+    documentTemplates,
+    componentSettings?.templateSettings?.showLegacyTemplateOptions,
+  ]);
 
   const updateMutation =
     api.documentTemplates.postDocumentTemplatesIdMakeDefault.useMutation(
