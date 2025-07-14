@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api/schema';
@@ -38,8 +39,9 @@ export const EntityProfileFormContent = ({
 
   const vatType = watch('vat_type');
   const vatCountry = watch('vat_country');
-  const currentDisplayedVatTypes = vatTypeList.filter(
-    (vatType) => vatCountry === vatType?.countryCode
+  const currentDisplayedVatTypes = useMemo(
+    () => vatTypeList.filter((vatType) => vatCountry === vatType?.countryCode),
+    [vatTypeList, vatCountry]
   );
   const selectedVatType = currentDisplayedVatTypes.find(
     (type) => type.value === vatType

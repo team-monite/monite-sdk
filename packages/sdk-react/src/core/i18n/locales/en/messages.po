@@ -512,7 +512,7 @@ msgstr "Added on"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:197
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:153
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:75
-#: src/components/receivables/components/EntityProfileFormContent.tsx:261
+#: src/components/receivables/components/EntityProfileFormContent.tsx:263
 msgid "Address"
 msgstr "Address"
 
@@ -523,7 +523,7 @@ msgstr "Address “{0}” has been updated."
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:38
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:60
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:22
-#: src/components/receivables/components/EntityProfileFormContent.tsx:269
+#: src/components/receivables/components/EntityProfileFormContent.tsx:271
 msgid "Address line 1"
 msgstr "Address line 1"
 
@@ -534,7 +534,7 @@ msgstr "Address line 1 is required"
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:55
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:76
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:26
-#: src/components/receivables/components/EntityProfileFormContent.tsx:283
+#: src/components/receivables/components/EntityProfileFormContent.tsx:285
 msgid "Address line 2"
 msgstr "Address line 2"
 
@@ -1799,7 +1799,7 @@ msgstr "Cigar Stores and Stands"
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:64
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:29
 #: src/components/onboarding/validators/validationSchemas.ts:153
-#: src/components/receivables/components/EntityProfileFormContent.tsx:298
+#: src/components/receivables/components/EntityProfileFormContent.tsx:300
 msgid "City"
 msgstr "City"
 
@@ -2086,7 +2086,7 @@ msgstr "Contact Person has been made default."
 msgid "Contact persons"
 msgstr "Contact persons"
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:237
+#: src/components/receivables/components/EntityProfileFormContent.tsx:239
 msgid "Contact phone number"
 msgstr "Contact phone number"
 
@@ -2245,7 +2245,7 @@ msgstr "Counterparts"
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
 #: src/components/onboarding/validators/validationSchemas.ts:110
 #: src/components/onboarding/validators/validationSchemas.ts:150
-#: src/components/receivables/components/EntityProfileFormContent.tsx:341
+#: src/components/receivables/components/EntityProfileFormContent.tsx:343
 #: src/components/receivables/validation.ts:30
 #: src/ui/Country/MoniteCountry.tsx:69
 msgid "Country"
@@ -2255,7 +2255,7 @@ msgstr "Country"
 msgid "Country Clubs"
 msgstr "Country Clubs"
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:144
+#: src/components/receivables/components/EntityProfileFormContent.tsx:146
 msgid "Country flag"
 msgstr "Country flag"
 
@@ -3472,7 +3472,7 @@ msgstr "Elementary, Secondary Schools"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:201
 #: src/components/receivables/components/EditCounterpartModal.tsx:222
 #: src/components/receivables/components/EditCounterpartModal.tsx:228
-#: src/components/receivables/components/EntityProfileFormContent.tsx:223
+#: src/components/receivables/components/EntityProfileFormContent.tsx:225
 msgid "Email"
 msgstr "Email"
 
@@ -5196,7 +5196,7 @@ msgstr "Lebanon"
 msgid "Legal business name"
 msgstr "Legal business name"
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:102
+#: src/components/receivables/components/EntityProfileFormContent.tsx:104
 msgid "Legal name"
 msgstr "Legal name"
 
@@ -5718,7 +5718,7 @@ msgstr "N/A"
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:111
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:142
-#: src/components/receivables/components/EntityProfileFormContent.tsx:72
+#: src/components/receivables/components/EntityProfileFormContent.tsx:74
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:145
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:98
@@ -6833,7 +6833,7 @@ msgstr "Portugal"
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:83
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:31
 #: src/components/onboarding/validators/validationSchemas.ts:155
-#: src/components/receivables/components/EntityProfileFormContent.tsx:312
+#: src/components/receivables/components/EntityProfileFormContent.tsx:314
 msgid "Postal code"
 msgstr "Postal code"
 
@@ -8017,7 +8017,7 @@ msgstr "State"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:105
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:123
-#: src/components/receivables/components/EntityProfileFormContent.tsx:327
+#: src/components/receivables/components/EntityProfileFormContent.tsx:329
 msgid "State / Area / Province"
 msgstr "State / Area / Province"
 
@@ -8105,7 +8105,7 @@ msgstr "Suriname"
 msgid "Surinamese Dollar"
 msgstr "Surinamese Dollar"
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:86
+#: src/components/receivables/components/EntityProfileFormContent.tsx:88
 msgid "Surname"
 msgstr "Surname"
 
@@ -8224,7 +8224,7 @@ msgstr "Tax"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:382
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:62
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:96
-#: src/components/receivables/components/EntityProfileFormContent.tsx:209
+#: src/components/receivables/components/EntityProfileFormContent.tsx:211
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:50
 msgid "Tax ID"
 msgstr "Tax ID"
@@ -8621,7 +8621,7 @@ msgid "Tire Retreading and Repair"
 msgstr "Tire Retreading and Repair"
 
 #: src/components/onboarding/validators/validationSchemas.ts:32
-#: src/components/receivables/components/EntityProfileFormContent.tsx:57
+#: src/components/receivables/components/EntityProfileFormContent.tsx:59
 msgid "Title"
 msgstr "Title"
 
@@ -8830,7 +8830,7 @@ msgstr "Tuvalu"
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:150
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:53
 #: src/components/products/ProductsTable/ProductsTable.tsx:181
-#: src/components/receivables/components/EntityProfileFormContent.tsx:179
+#: src/components/receivables/components/EntityProfileFormContent.tsx:181
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:60
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:63
 msgid "Type"
@@ -9249,7 +9249,7 @@ msgstr "VAT has been deleted."
 #~ msgstr "Vat ID"
 
 #: src/components/receivables/components/EditCounterpartModal.tsx:256
-#: src/components/receivables/components/EntityProfileFormContent.tsx:120
+#: src/components/receivables/components/EntityProfileFormContent.tsx:122
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:223
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:470
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:49
@@ -9445,7 +9445,7 @@ msgstr "Watch/Jewelry Repair"
 msgid "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 msgstr "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:251
+#: src/components/receivables/components/EntityProfileFormContent.tsx:253
 msgid "Website"
 msgstr "Website"
 
@@ -9598,7 +9598,7 @@ msgstr "You can set a different period length and the date of issuance. The star
 msgid "You can set up to 2 early payment discounts per invoice."
 msgstr "You can set up to 2 early payment discounts per invoice."
 
-#: src/components/receivables/components/EntityProfileFormContent.tsx:349
+#: src/components/receivables/components/EntityProfileFormContent.tsx:351
 msgid "You can't change the country the entity is registered in"
 msgstr "You can't change the country the entity is registered in"
 
