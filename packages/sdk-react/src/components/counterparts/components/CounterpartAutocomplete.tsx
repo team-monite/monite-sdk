@@ -18,6 +18,7 @@ import type {
 } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useDebounce } from '@/core/hooks';
 import { useCounterpartList, useCounterpartById } from '@/core/queries';
 import { Alert, AlertDescription, AlertTitle } from '@/ui/components/alert';
 import { Button } from '@/ui/components/button';
@@ -91,18 +92,36 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     useState<boolean>(false);
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
   const [hasUserChangedValue, setHasUserChangedValue] = useState(false);
+  const [isFormInitialized, setIsFormInitialized] = useState(false);
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList({
       query: { is_vendor: true },
     });
 
+  // Get Counterpart data for the AI suggested counterpart
   const { data: aiSuggestedCounterpartData } = useCounterpartById(
     !multiple && AICounterpartSuggestions?.id
       ? AICounterpartSuggestions.id
       : undefined
   );
+  // Debounce the AI suggestions to prevent rapid changes
+  const debouncedAISuggestedData = useDebounce(aiSuggestedCounterpartData, 300);
 
+  // Get the current value of the field
+  const currentValue = getValues(name);
+
+  // Memoized check for whether the field has a meaningful value
+  const hasFieldValue = useMemo(() => {
+    if (multiple) {
+      return Array.isArray(currentValue) && currentValue.length > 0;
+    }
+    return (
+      currentValue !== undefined && currentValue !== null && currentValue !== ''
+    );
+  }, [currentValue, multiple]);
+
+  // Memoized autocomplete options
   const autocompleteOptions = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
   >(() => {
@@ -174,35 +193,60 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     i18n,
   ]);
 
+  // Track form initialization to prevent premature auto-selection
   useEffect(() => {
-    // Set the value to the AI suggested counterpart if there is an AI suggested counterpart and the user has not changed the value yet
+    if (hasFieldValue) {
+      setIsFormInitialized(true);
+    } else {
+      // Set a timeout to mark as initialized even if no value is set
+      // This prevents the form from never being initialized
+      const timeoutId = setTimeout(() => {
+        setIsFormInitialized(true);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [hasFieldValue]);
+
+  // Auto-select AI suggested counterpart with proper timing and debouncing
+  useEffect(() => {
+    // Only proceed if form is initialized and we have all required data
     if (
       !multiple &&
       AICounterpartSuggestions?.id &&
-      aiSuggestedCounterpartData &&
-      !getValues(name) &&
+      debouncedAISuggestedData &&
+      isFormInitialized &&
       !hasUserChangedValue
     ) {
-      setValue(
-        name,
-        AICounterpartSuggestions.id as PathValue<
-          TFieldValues,
-          FieldPath<TFieldValues>
-        >,
-        { shouldValidate: true }
-      );
+      // Only set if the field is actually empty (not just falsy)
+      if (!hasFieldValue) {
+        // Use setTimeout to ensure this runs after the current render cycle
+        const timeoutId = setTimeout(() => {
+          setValue(
+            name,
+            AICounterpartSuggestions.id as PathValue<
+              TFieldValues,
+              FieldPath<TFieldValues>
+            >,
+            { shouldValidate: true }
+          );
+        }, 100);
+
+        return () => clearTimeout(timeoutId);
+      }
     }
   }, [
     AICounterpartSuggestions,
-    aiSuggestedCounterpartData,
+    debouncedAISuggestedData,
     multiple,
     getValues,
     name,
     setValue,
     hasUserChangedValue,
+    isFormInitialized,
+    hasFieldValue,
   ]);
 
-  const currentValue = getValues(name);
   const selectedCounterpartOption = useMemo(() => {
     if (multiple) {
       return Array.isArray(currentValue) ? currentValue : [];
@@ -277,6 +321,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                 }}
                 onChange={(_, value) => {
                   setHasUserChangedValue(true);
+
                   if (multiple) {
                     setValue(
                       name,
