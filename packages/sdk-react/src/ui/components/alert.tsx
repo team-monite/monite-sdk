@@ -69,10 +69,10 @@ const AlertTitle = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <h3
     ref={ref}
     className={cn(
-      'mtw:mb-1 mtw:text-lg mtw:font-medium mtw:leading-none mtw:tracking-tight',
+      'mtw:mb-1 mtw:font-medium mtw:leading-none mtw:tracking-tight',
       className
     )}
     {...props}
@@ -84,7 +84,7 @@ const AlertDescription = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <p
     ref={ref}
     className={cn(
       'mtw:text-sm mtw:[&_p]:leading-relaxed mtw:font-normal',

@@ -19,7 +19,7 @@ import type {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList, useCounterpartById } from '@/core/queries';
-import { Alert, AlertDescription } from '@/ui/components/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/ui/components/alert';
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -30,7 +30,6 @@ import {
   TextField,
   FormHelperText,
   createFilterOptions,
-  AlertTitle,
 } from '@mui/material';
 
 import { Sparkles } from 'lucide-react';
