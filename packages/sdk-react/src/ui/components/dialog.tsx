@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 
 import { cn } from '@/ui/lib/utils';
@@ -39,7 +37,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:fixed mtw:inset-0 mtw:z-50 mtw:bg-black/50',
+        'mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:fixed mtw:inset-0 mtw:z-1300 mtw:bg-black/50',
         className
       )}
       {...props}
@@ -61,7 +59,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:fixed mtw:top-[50%] mtw:left-[50%] mtw:z-50 mtw:grid mtw:w-full mtw:max-w-[calc(100%-2rem)] mtw:translate-x-[-50%] mtw:translate-y-[-50%] mtw:gap-4 mtw:rounded-lg mtw:border mtw:p-6 mtw:shadow-lg mtw:duration-200 mtw:sm:max-w-lg',
+          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:fixed mtw:top-[50%] mtw:left-[50%] mtw:z-1300 mtw:grid mtw:w-full mtw:max-w-[calc(100%-2rem)] mtw:translate-x-[-50%] mtw:translate-y-[-50%] mtw:gap-4 mtw:rounded-lg mtw:border mtw:p-6 mtw:shadow-lg mtw:duration-200 mtw:sm:max-w-lg',
           className
         )}
         {...props}

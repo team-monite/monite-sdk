@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getIndividualName } from '@/core/utils';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
@@ -13,7 +14,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import StarIcon from '@mui/icons-material/Star';
 import { Button, CardActions, Divider } from '@mui/material';
 
-import { getIndividualName } from '../../../helpers';
 import { printAddress } from '../../CounterpartAddressForm';
 import { prepareCounterpartContact } from '../../CounterpartContactForm';
 import {

@@ -28,3 +28,26 @@ export type FilterTypes = {
 };
 
 export type FilterValue = Date | string | null;
+
+export type ApprovalPolicyScriptType =
+  | 'single_user'
+  | 'users_from_list'
+  | 'roles_from_list'
+  | 'approval_chain';
+
+export interface Rules {
+  single_user?: {
+    userId: string;
+  };
+  users_from_list?: {
+    userIds: string[];
+    count: number;
+  };
+  roles_from_list?: {
+    roleIds: string[];
+    count: number;
+  };
+  approval_chain?: {
+    chainUserIds: string[];
+  };
+}

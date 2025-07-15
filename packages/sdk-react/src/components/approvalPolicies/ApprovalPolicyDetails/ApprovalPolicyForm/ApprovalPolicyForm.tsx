@@ -516,6 +516,8 @@ export const ApprovalPolicyForm = ({
     currentAmountCurrency,
     currentTriggerType,
     currentScriptType,
+    currentUsersFromListCount,
+    currentRolesFromListCount,
   ] = watch([
     'triggers',
     'rules',
@@ -526,6 +528,8 @@ export const ApprovalPolicyForm = ({
     'amountCurrency',
     'triggerType',
     'scriptType',
+    'usersFromListCount',
+    'rolesFromListCount',
   ]);
 
   // setup default values for conditions and rules
@@ -1134,6 +1138,8 @@ export const ApprovalPolicyForm = ({
                       </Typography>
                       <RulesTable
                         rules={currentRules}
+                        usersFromListCount={currentUsersFromListCount}
+                        rolesFromListCount={currentRolesFromListCount}
                         onAddRule={() => {
                           setIsAddingRule(true);
                           setPrevFormValues({
