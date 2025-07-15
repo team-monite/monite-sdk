@@ -173,9 +173,54 @@ export class MoniteAppElement extends MoniteAppElementBase<
             root: appRootNode,
             styles: stylesRootNode ?? undefined,
           }}
+          onMount={() => {
+            this.propagateStyles();
+          }}
         />
       </StrictMode>
     );
+  }
+
+  public propagateStyles() {
+    requestAnimationFrame(() => {
+      if (!this.root) return;
+      const prefix = '--mtw-';
+
+      const cssVariables: Record<string, string> = {};
+
+      Array.from(this.root.styleSheets)
+        .filter(
+          (sheet) =>
+            sheet.href === null || sheet.href.startsWith(window.location.origin)
+        )
+        .forEach((sheet) => {
+          Array.from(sheet.cssRules).forEach((rule) => {
+            if (
+              rule instanceof CSSStyleRule &&
+              rule.selectorText === ':root, :host'
+            ) {
+              Array.from(rule.style)
+                .filter(
+                  (name) => typeof name === 'string' && name.startsWith(prefix)
+                )
+                .forEach((propertyName) => {
+                  const computedValue =
+                    rule.style.getPropertyValue(propertyName);
+
+                  if (computedValue) {
+                    cssVariables[propertyName] = computedValue;
+                  }
+                });
+            }
+          });
+        });
+
+      console.log('cssVariables', cssVariables);
+      // Apply CSS variables to the root of the host
+      Object.entries(cssVariables).forEach(([propertyName, value]) => {
+        document.documentElement.style.setProperty(propertyName, value);
+      });
+    });
   }
 }
 

@@ -3,7 +3,7 @@
 
 @import './tailwind/typography.css';
 
-@theme {
+@theme inline {
   --color-primary: var(--mtw-color-primary-50);
   --color-primary-10: var(--mtw-color-primary-10);
   --color-primary-20: var(--mtw-color-primary-20);
@@ -61,7 +61,8 @@
   --sidebar-ring: var(--mtw-sidebar-ring);
 }
 
-:root {
+:root,
+:host {
   --mtw-background: oklch(1 0 0);
   --mtw-foreground: oklch(0.145 0 0);
   --mtw-card: oklch(1 0 0);

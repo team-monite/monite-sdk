@@ -12,7 +12,8 @@ import tailwindApp from '../app.css';
  * @returns The Tailwind Theme variables
  */
 export const getTailwindTheme = (theme: MoniteTheme) => css`
-  :root {
+  :root,
+  :host {
     --mtw-color-primary-10: ${theme.palette.primary[10]};
     --mtw-color-primary-20: ${theme.palette.primary[20]};
     --mtw-color-primary-30: ${theme.palette.primary[30]};
