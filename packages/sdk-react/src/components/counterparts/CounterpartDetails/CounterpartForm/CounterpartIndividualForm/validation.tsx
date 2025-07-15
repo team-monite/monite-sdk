@@ -24,7 +24,6 @@ export const getUpdateIndividualValidationSchema = (
       firstName: z.string().min(1, t(i18n)`First name is required`),
       lastName: z.string().min(1, t(i18n)`Last name is required`),
       email: z
-        .string()
         .email(t(i18n)`Email must be a valid email`)
         .min(1, t(i18n)`Email is required`),
       phone: z.string().optional(),
@@ -60,7 +59,6 @@ export const getCreateIndividualValidationSchema = (
       firstName: z.string().min(1, t(i18n)`First name is required`),
       lastName: z.string().min(1, t(i18n)`Last name is required`),
       email: z
-        .string()
         .email(t(i18n)`Email must be a valid email`)
         .min(1, t(i18n)`Email is required`),
       phone: z.string().optional(),

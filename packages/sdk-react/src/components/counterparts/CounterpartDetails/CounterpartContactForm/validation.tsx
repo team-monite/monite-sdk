@@ -8,9 +8,8 @@ export const getValidationSchema = (i18n: I18n) =>
     firstName: z.string().min(1, t(i18n)`First name is required`),
     lastName: z.string().min(1, t(i18n)`Last name is required`),
     email: z
-      .string()
-      .min(1, t(i18n)`Email is required`)
-      .email(t(i18n)`Email must be a valid email`),
+      .email(t(i18n)`Email must be a valid email`)
+      .min(1, t(i18n)`Email is required`),
     phone: z.string().optional(),
     ...getAddressValidationSchema(i18n),
   });

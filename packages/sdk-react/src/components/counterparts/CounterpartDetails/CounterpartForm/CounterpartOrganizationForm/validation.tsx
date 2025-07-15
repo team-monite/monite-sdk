@@ -10,9 +10,8 @@ export const getUpdateCounterpartValidationSchema = (i18n: I18n) =>
     organization: z.object({
       companyName: z.string().min(1, t(i18n)`Company name is required`),
       email: z
-        .string()
-        .min(1, t(i18n)`Email is required`)
-        .email(t(i18n)`Email must be a valid email`),
+        .email(t(i18n)`Email must be a valid email`)
+        .min(1, t(i18n)`Email is required`),
       phone: z.string().optional(),
       isVendor: z.boolean().optional(),
       isCustomer: z.boolean().optional(),
@@ -26,9 +25,8 @@ export const getCreateCounterpartValidationSchema = (i18n: I18n) =>
     organization: z.object({
       companyName: z.string().min(1, t(i18n)`Company name is required`),
       email: z
-        .string()
-        .min(1, t(i18n)`Email is required`)
-        .email(t(i18n)`Email must be a valid email`),
+        .email(t(i18n)`Email must be a valid email`)
+        .min(1, t(i18n)`Email is required`),
       phone: z.string().optional(),
       isVendor: z.boolean().optional(),
       isCustomer: z.boolean().optional(),
