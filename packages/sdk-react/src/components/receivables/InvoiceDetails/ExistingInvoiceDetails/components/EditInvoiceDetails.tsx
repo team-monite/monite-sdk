@@ -12,7 +12,7 @@ import {
 } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -29,13 +29,15 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
-import * as yup from 'yup';
 
 import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
 import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
 import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
-import { getUpdateInvoiceValidationSchema } from '../../CreateReceivable/validation';
+import {
+  getUpdateInvoiceValidationSchema,
+  UpdateReceivablesFormProps,
+} from '../../CreateReceivable/validation';
 import { EditInvoiceReminderDialog } from '../../EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '../../useInvoiceReminderDialogs';
 import { useInvoiceDefaultValues } from '../hooks/useInvoiceDefaultValues';
@@ -71,17 +73,6 @@ interface ExtendedLineItem {
   };
 }
 
-type UpdateReceivablesFormProps = yup.InferType<
-  ReturnType<typeof getUpdateInvoiceValidationSchema>
-> & {
-  line_items: Array<
-    yup.InferType<
-      ReturnType<typeof getUpdateInvoiceValidationSchema>
-    >['line_items'][0] &
-      ExtendedLineItem
-  >;
-};
-
 const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
@@ -101,7 +92,7 @@ const EditInvoiceDetailsContent = ({
   const defaultValues = useInvoiceDefaultValues(invoice, isNonVatSupported);
 
   const methods = useForm<UpdateReceivablesFormProps>({
-    resolver: yupResolver(
+    resolver: zodResolver(
       getUpdateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
@@ -228,7 +219,8 @@ const EditInvoiceDetailsContent = ({
                         : undefined,
                       price: lineItem.product.price
                         ? {
-                            currency: lineItem.product.price.currency ?? 'USD',
+                            currency: (lineItem.product.price.currency ??
+                              'USD') as Schemas['CurrencyEnum'],
                             value: Math.round(
                               lineItem.product.price.value ?? 0
                             ),

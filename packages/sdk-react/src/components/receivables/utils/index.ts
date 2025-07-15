@@ -3,3 +3,4 @@ export {
   prepareBankAccountCreatePayload,
   prepareBankAccountUpdatePayload,
 } from './prepareBankAccountPayload';
+export { getVatTypeList } from './getVatTypeList';
