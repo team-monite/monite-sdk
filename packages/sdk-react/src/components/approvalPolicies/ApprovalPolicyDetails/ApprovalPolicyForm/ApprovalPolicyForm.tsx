@@ -31,7 +31,7 @@ import { MoniteCurrency } from '@/ui/Currency';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -44,7 +44,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
@@ -437,31 +437,59 @@ export const ApprovalPolicyForm = ({
     return response;
   };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(t(i18n)`Policy name is required`),
-    description: yup.string().required(t(i18n)`Description is required`),
-    amountValue: yup
-      .number()
-      .typeError(t(i18n)`Amount must be a number`)
-      .transform((value, originalValue) =>
-        originalValue === '' ? null : value
-      )
-      .positive(t(i18n)`Amount must be a positive number`)
-      .nullable(),
-    usersFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
-      .nullable(),
-    rolesFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
-      .nullable(),
+  const validationSchema = z.object({
+    name: z.string().min(1, t(i18n)`Policy name is required`),
+    description: z.string().min(1, t(i18n)`Description is required`),
+    amountValue: z
+      .union([z.string(), z.number()])
+      .optional()
+      .transform((val) => {
+        if (val === '' || val === undefined) return undefined;
+        const num = typeof val === 'string' ? parseFloat(val) : val;
+        return isNaN(num) ? undefined : num;
+      })
+      .refine(
+        (val) => val === undefined || (typeof val === 'number' && val > 0),
+        {
+          message: t(i18n)`Amount must be a positive number`,
+        }
+      ),
+    usersFromListCount: z
+      .union([z.string(), z.number()])
+      .optional()
+      .transform((val) => {
+        if (val === '' || val === undefined) return undefined;
+        const num = typeof val === 'string' ? parseFloat(val) : val;
+        return isNaN(num) ? undefined : num;
+      })
+      .refine(
+        (val) => val === undefined || (typeof val === 'number' && val >= 1),
+        {
+          message: t(
+            i18n
+          )`Minimum number of approvals required must be at least 1`,
+        }
+      ),
+    rolesFromListCount: z
+      .union([z.string(), z.number()])
+      .optional()
+      .transform((val) => {
+        if (val === '' || val === undefined) return undefined;
+        const num = typeof val === 'string' ? parseFloat(val) : val;
+        return isNaN(num) ? undefined : num;
+      })
+      .refine(
+        (val) => val === undefined || (typeof val === 'number' && val >= 1),
+        {
+          message: t(
+            i18n
+          )`Minimum number of approvals required must be at least 1`,
+        }
+      ),
   });
 
   const methods = useForm<FormValues>({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(validationSchema),
     mode: 'onChange',
     defaultValues: {
       name: approvalPolicy?.name || '',
