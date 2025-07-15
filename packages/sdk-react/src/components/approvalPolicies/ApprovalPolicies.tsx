@@ -16,6 +16,7 @@ import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
 /**
  * ApprovalPolicies component
+ * TODO: Check if this component is still needed
  *
  * This component renders the approval policies page. It includes a table of approval policies, a dialog for creating new approval policies,
  * and a header with a button for opening the create dialog.
@@ -34,13 +35,10 @@ const ApprovalPoliciesBase = () => {
   const [isCreateDialogOpened, setIsCreateDialogOpened] =
     useState<boolean>(false);
 
-  const onRowClick = useCallback(
-    (approvalPolicy: components['schemas']['ApprovalPolicyResource']) => {
-      setSelectedApprovalPolicyId(approvalPolicy.id);
-      setIsCreateDialogOpened(true);
-    },
-    []
-  );
+  const onRowClick = useCallback((approvalPolicy: ApprovalPolicyResource) => {
+    setSelectedApprovalPolicyId(approvalPolicy.id);
+    setIsCreateDialogOpened(true);
+  }, []);
 
   const onCreateClick = () => {
     setIsCreateDialogOpened(true);
@@ -105,3 +103,5 @@ const ApprovalPoliciesBase = () => {
     </>
   );
 };
+
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];

@@ -1,7 +1,5 @@
 import { ReactNode, useMemo } from 'react';
 
-import { Role } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/Role';
-import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -9,8 +7,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Button,
   IconButton,
-  List,
-  ListItem,
   Paper,
   Stack,
   Table,
@@ -20,11 +16,18 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { useApprovalPolicyScript, Rules } from '../../useApprovalPolicyScript';
+import {
+  type Rules,
+  useApprovalPolicyScript,
+} from '../../useApprovalPolicyScript';
 import { FormValues } from '../ApprovalPolicyForm';
+import { Role } from '../ApprovalPolicyView/Role';
+import { User } from '../ApprovalPolicyView/User';
 
 interface RulesTableProps {
   rules: FormValues['rules'];
+  usersFromListCount?: string | number;
+  rolesFromListCount?: string | number;
   onAddRule: () => void;
   onEditRule: (ruleKey: keyof FormValues['rules']) => void;
   onDeleteRule: (ruleKey: keyof FormValues['rules']) => void;
@@ -32,6 +35,8 @@ interface RulesTableProps {
 
 export const RulesTable = ({
   rules,
+  usersFromListCount,
+  rolesFromListCount,
   onAddRule,
   onEditRule,
   onDeleteRule,
@@ -41,13 +46,40 @@ export const RulesTable = ({
 
   const rulesList = useMemo(() => {
     return (Object.keys(rules) as Array<keyof Rules>).map((ruleKey) => {
-      const ruleLabel = getRuleLabel(ruleKey);
+      let ruleLabel: string | undefined;
       let ruleValue: ReactNode;
+
+      switch (ruleKey) {
+        case 'users_from_list':
+          ruleLabel = getRuleLabel(
+            ruleKey,
+            (typeof usersFromListCount === 'string'
+              ? parseInt(usersFromListCount)
+              : usersFromListCount) || 0
+          );
+          break;
+        case 'roles_from_list':
+          ruleLabel = getRuleLabel(
+            ruleKey,
+            typeof rolesFromListCount === 'string'
+              ? parseInt(rolesFromListCount)
+              : rolesFromListCount || 0
+          );
+          break;
+        default:
+          ruleLabel = getRuleLabel(ruleKey);
+      }
 
       switch (ruleKey) {
         case 'single_user':
           ruleValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            <Stack
+              direction="column"
+              spacing={0.5}
+              sx={{
+                overflow: 'hidden',
+              }}
+            >
               {rules.single_user?.id && (
                 <User
                   key={rules.single_user?.id}
@@ -59,7 +91,13 @@ export const RulesTable = ({
           break;
         case 'users_from_list':
           ruleValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            <Stack
+              direction="column"
+              spacing={0.5}
+              sx={{
+                overflow: 'hidden',
+              }}
+            >
               {rules?.users_from_list?.map((user) => (
                 <User key={user.id} userId={user.id} />
               ))}
@@ -68,7 +106,17 @@ export const RulesTable = ({
           break;
         case 'roles_from_list':
           ruleValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            <Stack
+              direction="row"
+              gap={1}
+              flexWrap="wrap"
+              useFlexGap
+              sx={{
+                '& > *': {
+                  flexShrink: 0,
+                },
+              }}
+            >
               {rules.roles_from_list?.map((role) => (
                 <Role key={role.id} roleId={role.id} />
               ))}
@@ -77,13 +125,17 @@ export const RulesTable = ({
           break;
         case 'approval_chain':
           ruleValue = (
-            <List>
+            <Stack
+              direction="column"
+              spacing={0.5}
+              sx={{
+                overflow: 'hidden',
+              }}
+            >
               {rules?.approval_chain?.map((user) => (
-                <ListItem>
-                  <User key={user.id} userId={user.id} />
-                </ListItem>
+                <User key={user.id} userId={user.id} />
               ))}
-            </List>
+            </Stack>
           );
           break;
       }
@@ -94,7 +146,7 @@ export const RulesTable = ({
         value: ruleValue,
       };
     });
-  }, [rules, getRuleLabel]);
+  }, [rules, usersFromListCount, getRuleLabel, rolesFromListCount]);
 
   return (
     <Paper variant="outlined">
