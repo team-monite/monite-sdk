@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CustomerTypes } from '@/components/counterparts/types';
@@ -19,6 +19,7 @@ import { useLingui } from '@lingui/react';
 import { Alert, Backdrop, Box, DialogContent, Grid } from '@mui/material';
 
 import { OptionalFields } from '../types';
+import { PayableDetailsForceActionDialog } from './PayableDetailsApprovalFlow/PayableDetailsForceActionDialog';
 import { PayableDetailsForm } from './PayableDetailsForm';
 import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 
@@ -38,6 +39,7 @@ export const PayableDetails = (props: PayablesDetailsProps) => (
 const PayableDetailsBase = ({
   id,
   optionalFields,
+  customerTypes,
   onClose,
   onSaved,
   onCanceled,
@@ -48,7 +50,6 @@ const PayableDetailsBase = ({
   onDeleted,
   onPay,
   onPayUS,
-  customerTypes,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -66,6 +67,8 @@ const PayableDetailsBase = ({
       payInvoice,
       rejectInvoice,
       approveInvoice,
+      forceRejectInvoice,
+      forceApproveInvoice,
       cancelInvoice,
       reopenInvoice,
       deleteInvoice,
@@ -84,6 +87,19 @@ const PayableDetailsBase = ({
     onPay,
     onPayUS,
   });
+
+  const [forceDialog, setForceDialog] = useState<null | 'approve' | 'reject'>(
+    null
+  );
+  const handleForceDialogClose = () => setForceDialog(null);
+  const handleForceApprove = async () => {
+    handleForceDialogClose();
+    await forceApproveInvoice();
+  };
+  const handleForceReject = async () => {
+    handleForceDialogClose();
+    await forceRejectInvoice();
+  };
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
 
@@ -147,6 +163,8 @@ const PayableDetailsBase = ({
           submitInvoice={submitInvoice}
           rejectInvoice={rejectInvoice}
           approveInvoice={approveInvoice}
+          forceRejectInvoice={() => setForceDialog('reject')}
+          forceApproveInvoice={() => setForceDialog('approve')}
           reopenInvoice={reopenInvoice}
           cancelInvoice={cancelInvoice}
           deleteInvoice={deleteInvoice}
@@ -155,6 +173,18 @@ const PayableDetailsBase = ({
           onClose={onClose}
           modalComponent={modalComponent}
           showPayButton={showPayButton}
+        />
+        <PayableDetailsForceActionDialog
+          open={forceDialog === 'approve'}
+          type="approve"
+          onClose={handleForceDialogClose}
+          onConfirm={handleForceApprove}
+        />
+        <PayableDetailsForceActionDialog
+          open={forceDialog === 'reject'}
+          type="reject"
+          onClose={handleForceDialogClose}
+          onConfirm={handleForceReject}
         />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid container columnSpacing={4} height="100%">

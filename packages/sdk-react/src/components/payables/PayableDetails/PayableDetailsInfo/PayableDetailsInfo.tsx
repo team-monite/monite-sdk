@@ -2,16 +2,15 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  getCounterpartName,
-  getIndividualName,
-} from '@/components/counterparts/helpers';
+import { getCounterpartName } from '@/components/counterparts/helpers';
+import { PayableApprovalFlowSection } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection';
 import {
   isFieldRequired,
   isOcrMismatch,
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -25,7 +24,6 @@ import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { TagsModal } from '@/ui/tagsModal';
-import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -156,6 +154,8 @@ const PayableDetailsInfoBase = ({
   );
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
+
+  const showApprovalFlow = Boolean(approvalPolicy?.id);
 
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),
@@ -417,14 +417,41 @@ const PayableDetailsInfoBase = ({
                     {t(i18n)`Applied policy`}
                   </StyledLabelTableCell>
                   <TableCell>
-                    {!isApprovalPolicyLoading &&
-                      (approvalPolicy?.name || t(i18n)`no policy`)}
+                    {!isApprovalPolicyLoading && approvalPolicy?.name ? (
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                      >
+                        <span>{approvalPolicy.name}</span>
+                        {(payable.status === 'waiting_to_be_paid' ||
+                          payable.status === 'paid' ||
+                          payable.status === 'partially_paid') && (
+                          <Chip
+                            label={t(i18n)`Approved`}
+                            color="success"
+                            size="small"
+                          />
+                        )}
+                      </Box>
+                    ) : (
+                      !isApprovalPolicyLoading && t(i18n)`no policy`
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </Paper>
         </Grid>
+
+        {showApprovalFlow && approvalPolicy && (
+          <Grid item xs={12}>
+            <PayableApprovalFlowSection
+              approvalPolicy={approvalPolicy}
+              payableId={payable.id}
+              currentStatus={payable.status}
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} className={className + '-Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
@@ -561,24 +588,17 @@ const PayableDetailsInfoBase = ({
                       {t(i18n)`Added by`}
                     </StyledLabelTableCell>
                     <TableCell>
-                      <Box
-                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                      >
-                        <UserAvatar
-                          sx={{ width: 24, height: 24 }}
-                          alt={getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                          fileId={addedByUser.userpic_file_id}
-                        />
-                        <Box>
-                          {getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                        </Box>
-                      </Box>
+                      <UserDisplayCell
+                        user={{
+                          id: addedByUser.id,
+                          first_name: addedByUser.first_name,
+                          last_name: addedByUser.last_name,
+                          userpic_file_id: addedByUser.userpic_file_id,
+                        }}
+                        showAvatar={true}
+                        avatarSize={24}
+                        typographyVariant="body2"
+                      />
                     </TableCell>
                   </TableRow>
                 )}
