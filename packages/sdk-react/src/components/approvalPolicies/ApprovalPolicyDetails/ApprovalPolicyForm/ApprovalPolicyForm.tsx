@@ -451,12 +451,12 @@ export const ApprovalPolicyForm = ({
     usersFromListCount: yup
       .number()
       .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
       .nullable(),
     rolesFromListCount: yup
       .number()
       .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
       .nullable(),
   });
 
@@ -473,8 +473,8 @@ export const ApprovalPolicyForm = ({
       amountCurrency: undefined,
       amountRangeLeftValue: undefined,
       amountRangeRightValue: undefined,
-      usersFromListCount: undefined,
-      rolesFromListCount: undefined,
+      usersFromListCount: 1,
+      rolesFromListCount: 1,
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
@@ -728,7 +728,7 @@ export const ApprovalPolicyForm = ({
         'rules.users_from_list',
         prevFormValues?.rules?.users_from_list || undefined
       );
-      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 0);
+      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'roles_from_list') {
@@ -736,7 +736,7 @@ export const ApprovalPolicyForm = ({
         'rules.roles_from_list',
         prevFormValues?.rules?.roles_from_list || undefined
       );
-      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 0);
+      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'approval_chain') {
@@ -992,6 +992,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="usersFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
@@ -1008,6 +1010,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="rolesFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
