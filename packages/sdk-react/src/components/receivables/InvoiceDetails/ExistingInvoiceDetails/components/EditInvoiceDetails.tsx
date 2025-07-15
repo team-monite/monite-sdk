@@ -310,7 +310,20 @@ const EditInvoiceDetailsContent = ({
                 actualCurrency={actualCurrency}
                 isVatSelectionDisabled
               />
-              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
+               * is defined and non-empty */}
+              <EntitySection
+                disabled={isLoading}
+                hidden={['purchase_order']}
+                visibleFields={{
+                  isFooterShown:
+                    typeof invoice.footer === 'string' &&
+                    invoice.footer?.trim() !== '',
+                  isPurchaseOrderShown:
+                    typeof invoice.purchase_order === 'string' &&
+                    invoice.purchase_order?.trim() !== '',
+                }}
+              />
               <RemindersSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}
