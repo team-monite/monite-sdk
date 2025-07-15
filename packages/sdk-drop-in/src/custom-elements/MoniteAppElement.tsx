@@ -215,7 +215,6 @@ export class MoniteAppElement extends MoniteAppElementBase<
           });
         });
 
-      console.log('cssVariables', cssVariables);
       // Apply CSS variables to the root of the host
       Object.entries(cssVariables).forEach(([propertyName, value]) => {
         document.documentElement.style.setProperty(propertyName, value);
