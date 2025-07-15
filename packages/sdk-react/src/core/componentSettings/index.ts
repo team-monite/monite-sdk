@@ -168,9 +168,10 @@ export interface TemplateSettings {
    */
   showTemplatePreview: boolean;
   /**
-   * Shows the legacy template options to select if true or hides it if false, defaults to true.
+   * List of available template IDs for template selection, if no list is provided,
+   * then all templates will be available, defaults to an empty list.
    */
-  showLegacyTemplateOptions: boolean;
+  availableTemplateIds: string[];
   /**
    * Shows the logo selection section if true or hides it if false, defaults to true.
    */
@@ -368,8 +369,8 @@ export const getDefaultComponentSettings = (
       componentSettings?.templateSettings?.showTemplateSection ?? true,
     showTemplatePreview:
       componentSettings?.templateSettings?.showTemplatePreview ?? true,
-    showLegacyTemplateOptions:
-      componentSettings?.templateSettings?.showLegacyTemplateOptions ?? true,
+    availableTemplateIds:
+      componentSettings?.templateSettings?.availableTemplateIds ?? [],
     showLogoSection:
       componentSettings?.templateSettings?.showLogoSection ?? true,
     enableDocumentNumberCustomisationTab:

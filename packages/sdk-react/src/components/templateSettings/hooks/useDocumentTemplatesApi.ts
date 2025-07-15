@@ -7,14 +7,6 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-const legacyTemplateNames = [
-  'classic',
-  'modern',
-  'simple',
-  'stylish',
-  'standard',
-];
-
 export const useDocumentTemplatesApi = () => {
   const { api, queryClient, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
@@ -27,22 +19,28 @@ export const useDocumentTemplatesApi = () => {
     );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
-    let filtered = [];
+    let filtered: components['schemas']['TemplateReceivableResponse'][] = [];
     filtered =
       documentTemplates?.data?.filter((template) =>
         ['invoice', 'receivable'].includes(template.document_type)
       ) || [];
 
-    if (!componentSettings?.templateSettings?.showLegacyTemplateOptions) {
+    if (
+      componentSettings?.templateSettings?.availableTemplateIds &&
+      componentSettings?.templateSettings?.availableTemplateIds?.length > 0
+    ) {
       filtered = filtered.filter(
-        (template) => !legacyTemplateNames.includes(template?.name)
+        (template) =>
+          componentSettings?.templateSettings?.availableTemplateIds?.includes(
+            template?.id
+          ) || template.is_default
       );
     }
 
     return [filtered, filtered.find((template) => template.is_default)];
   }, [
     documentTemplates,
-    componentSettings?.templateSettings?.showLegacyTemplateOptions,
+    componentSettings?.templateSettings?.availableTemplateIds,
   ]);
 
   const updateMutation =
