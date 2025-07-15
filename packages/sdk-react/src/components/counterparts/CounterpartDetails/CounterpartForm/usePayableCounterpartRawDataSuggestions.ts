@@ -136,7 +136,10 @@ export const usePayableCounterpartRawDataSuggestions = <
 
       const formValue = formField
         .split('.')
-        .reduce((acc: any, key) => acc?.[key], formValues);
+        .reduce(
+          (acc: TFormValues | Record<string, any>, key) => acc?.[key],
+          formValues
+        );
 
       if (!!rawValue && formValue !== rawValue) {
         setValue(formField as Path<TFormValues>, rawValue);
