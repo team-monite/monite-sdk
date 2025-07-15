@@ -440,6 +440,36 @@ export const ApprovalPolicyForm = ({
   const validationSchema = z.object({
     name: z.string().min(1, t(i18n)`Policy name is required`),
     description: z.string().min(1, t(i18n)`Description is required`),
+    triggerType: z.union([
+      z.literal('was_created_by_user_id'),
+      z.literal('counterpart_id'),
+      z.literal('amount'),
+      z.literal('currency'),
+      z.literal('tags'),
+      z.null(),
+    ]),
+    triggers: z.object({
+      was_created_by_user_id: z.array(z.any()).optional(),
+      tags: z.array(z.any()).optional(),
+      counterpart_id: z.array(z.any()).optional(),
+      amount: z
+        .object({
+          currency: z.any(),
+          value: z.array(z.any()),
+        })
+        .optional(),
+    }),
+    amountOperator: z
+      .union([
+        z.literal('range'),
+        z.literal('in'),
+        z.literal('<'),
+        z.literal('>'),
+        z.literal('=='),
+        z.literal('>='),
+        z.literal('<='),
+      ])
+      .optional(),
     amountValue: z
       .union([z.string(), z.number()])
       .optional()
@@ -454,6 +484,22 @@ export const ApprovalPolicyForm = ({
           message: t(i18n)`Amount must be a positive number`,
         }
       ),
+    amountRangeLeftValue: z.union([z.string(), z.number()]).optional(),
+    amountRangeRightValue: z.union([z.string(), z.number()]).optional(),
+    amountCurrency: z.any().optional(),
+    scriptType: z.union([
+      z.literal('single_user'),
+      z.literal('users_from_list'),
+      z.literal('roles_from_list'),
+      z.literal('approval_chain'),
+      z.null(),
+    ]),
+    rules: z.object({
+      single_user: z.any().optional(),
+      users_from_list: z.array(z.any()).optional(),
+      roles_from_list: z.array(z.any()).optional(),
+      approval_chain: z.array(z.any()).optional(),
+    }),
     usersFromListCount: z
       .union([z.string(), z.number()])
       .optional()
@@ -486,7 +532,7 @@ export const ApprovalPolicyForm = ({
           )`Minimum number of approvals required must be at least 1`,
         }
       ),
-  });
+  }) satisfies z.ZodType<FormValues>;
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
