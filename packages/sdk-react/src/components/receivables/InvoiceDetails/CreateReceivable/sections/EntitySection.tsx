@@ -15,9 +15,9 @@ interface EntitySectionProps extends SectionGeneralProps {
    */
   hidden?: ['purchase_order'];
   visibleFields?: {
-    isPurchaseOrderShown: boolean;
-    isTermsAndConditionsShown: boolean;
-    isFooterShown: boolean;
+    isPurchaseOrderShown?: boolean;
+    isTermsAndConditionsShown?: boolean;
+    isFooterShown?: boolean;
   };
 }
 
