@@ -93,7 +93,6 @@ function getUserVariantProps(
         showIcon: false,
       };
     case 'text':
-    case 'default':
     default:
       return {
         useBadge: false,
@@ -126,7 +125,6 @@ function getRoleVariantProps(
         showAvatar: false,
         showIcon: true,
       };
-    case 'default':
     default:
       return {
         useBadge: true,
