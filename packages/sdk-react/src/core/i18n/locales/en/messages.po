@@ -1135,9 +1135,6 @@ msgstr "Bangladeshi Taka"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:568
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:278
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:126
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:128
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:189
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:26
 msgid "Bank account"
 msgstr "Bank account"
@@ -3585,6 +3582,10 @@ msgstr "Entity user"
 msgid "Entity VAT IDs"
 msgstr "Entity VAT IDs"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
+msgid "Entity VAT is a required field"
+msgstr "Entity VAT is a required field"
+
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:931
 msgid "Equal to"
 msgstr "Equal to"
@@ -4580,6 +4581,10 @@ msgstr "Iceland"
 #: src/core/utils/currencies.ts:72
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
+
+#: src/components/receivables/utils/getVatTypeList.ts:219
+msgid "Icelandic VAT"
+msgstr "Icelandic VAT"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:917
 msgid "If amount is"
