@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { components } from '@/api/schema';
-import { defaultAvailableCountries, getCountries } from '@/core/utils';
+import { getCountries } from '@/core/utils';
 import {
   FormControl,
   FormField,
@@ -139,12 +139,10 @@ export const EntityProfileFormContent = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {defaultAvailableCountries.map((country) => (
+                    {Object.entries(countries).map(([country, label]) => (
                       <SelectItem key={country} value={country}>
-                        <CountryFlag
-                          code={country}
-                          label={t(i18n)`Country flag`}
-                        />
+                        <CountryFlag code={country} label={label} />
+                        {t(i18n)`${label}`}
                       </SelectItem>
                     ))}
                   </SelectContent>
