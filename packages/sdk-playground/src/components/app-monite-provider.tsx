@@ -23,7 +23,7 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
           client_secret: clientSecret,
         }),
     }),
-    [apiUrl, entityId, fetchToken]
+    [apiUrl, entityId, entityUserId, clientId, clientSecret]
   );
 
   return (

@@ -11,7 +11,7 @@ function readStorage() {
   return JSON.parse(data);
 }
 
-function writeStorage(value: any) {
+function writeStorage(value: Record<string, string>) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
 }
 
