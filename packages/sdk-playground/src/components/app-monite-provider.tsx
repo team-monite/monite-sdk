@@ -1,6 +1,7 @@
 import { type ComponentProps, type ReactNode, useMemo } from 'react';
 
 import { fetchToken } from '@/services/fetch-token';
+import { getLoginEnvData } from '@/services/login-env-data';
 import { MoniteProvider } from '@monite/sdk-react';
 
 type AppMoniteProvider = {
@@ -8,10 +9,8 @@ type AppMoniteProvider = {
 } & Pick<ComponentProps<typeof MoniteProvider>, 'locale' | 'theme'>;
 
 const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
-  const { entityId, apiUrl } = {
-    entityId: import.meta.env.VITE_MONITE_ENTITY_ID,
-    apiUrl: import.meta.env.VITE_MONITE_API_URL,
-  };
+  const { entityId, entityUserId, clientId, clientSecret, apiUrl } =
+    getLoginEnvData();
 
   const monite = useMemo(
     () => ({
@@ -19,9 +18,9 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
       apiUrl,
       fetchToken: () =>
         fetchToken(apiUrl, {
-          entity_user_id: import.meta.env.VITE_MONITE_ENTITY_USER_ID,
-          client_id: import.meta.env.VITE_MONITE_PROJECT_CLIENT_ID,
-          client_secret: import.meta.env.VITE_MONITE_PROJECT_CLIENT_SECRET,
+          entity_user_id: entityUserId,
+          client_id: clientId,
+          client_secret: clientSecret,
         }),
     }),
     [apiUrl, entityId, fetchToken]

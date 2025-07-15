@@ -5960,7 +5960,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@monite/sdk-drop-in@workspace:packages/sdk-drop-in":
+"@monite/sdk-drop-in@workspace:packages/sdk-drop-in, @monite/sdk-drop-in@workspace:~":
   version: 0.0.0-use.local
   resolution: "@monite/sdk-drop-in@workspace:packages/sdk-drop-in"
   dependencies:
@@ -25773,6 +25773,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:~7.60.0":
+  version: 7.60.0
+  resolution: "react-hook-form@npm:7.60.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10/cc86ef4029f7b06f82dff919c8933156683b70669a6306d2471706443192b8916afaa07bc64452b590ecb18ea94f3d156f3fb38d59ada3462f5b108e89e186c9
+  languageName: node
+  linkType: hard
+
 "react-hot-toast@npm:~2.2.0":
   version: 2.2.0
   resolution: "react-hot-toast@npm:2.2.0"
@@ -27409,7 +27418,11 @@ __metadata:
   resolution: "sdk-playground@workspace:packages/sdk-playground"
   dependencies:
     "@eslint/js": "npm:^9.30.1"
+    "@hookform/resolvers": "npm:~5.1.1"
+    "@monite/sdk-drop-in": "workspace:~"
+    "@monite/sdk-react": "workspace:~"
     "@radix-ui/react-dialog": "npm:~1.1.14"
+    "@radix-ui/react-label": "npm:~2.1.7"
     "@radix-ui/react-separator": "npm:~1.1.7"
     "@radix-ui/react-slot": "npm:~1.2.3"
     "@radix-ui/react-tooltip": "npm:~1.2.7"
@@ -27428,6 +27441,7 @@ __metadata:
     lucide-react: "npm:~0.525.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
+    react-hook-form: "npm:~7.60.0"
     react-router-dom: "npm:~7.6.3"
     tailwind-merge: "npm:~3.3.1"
     tailwindcss: "npm:~4.1.11"
@@ -27435,6 +27449,7 @@ __metadata:
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.35.1"
     vite: "npm:^7.0.4"
+    zod: "npm:~4.0.5"
   languageName: unknown
   linkType: soft
 
@@ -31093,6 +31108,13 @@ __metadata:
   version: 3.25.67
   resolution: "zod@npm:3.25.67"
   checksum: 10/0e35432dcca7f053e63f5dd491a87c78abe0d981817547252c3b6d05f0f58788695d1a69724759c6501dff3fd62929be24c9f314a3625179bee889150f7a61fa
+  languageName: node
+  linkType: hard
+
+"zod@npm:~4.0.5":
+  version: 4.0.5
+  resolution: "zod@npm:4.0.5"
+  checksum: 10/f057f46e685e91ea280039ecda026c91facabdcbf869b3bae482ed13d34dce2efe9ee1f513fb1c8c0fde3b32e5904391f5ca015ec50b0924abf83a2b6f9dba65
   languageName: node
   linkType: hard
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { fetchToken } from '@/services/fetch-token';
+import { getLoginEnvData } from '@/services/login-env-data';
 import { MoniteDropin } from '@monite/sdk-drop-in';
 
 type AppDropinProvider = {
@@ -8,10 +9,8 @@ type AppDropinProvider = {
 };
 
 const AppDropinProvider = ({ component }: AppDropinProvider) => {
-  const { entityId, apiUrl } = {
-    entityId: import.meta.env.VITE_MONITE_ENTITY_ID,
-    apiUrl: import.meta.env.VITE_MONITE_API_URL,
-  };
+  const { entityId, entityUserId, clientId, clientSecret, apiUrl } =
+    getLoginEnvData();
 
   const dropinRef = useRef<HTMLDivElement>(null);
 
@@ -20,9 +19,9 @@ const AppDropinProvider = ({ component }: AppDropinProvider) => {
     apiUrl,
     fetchToken: () =>
       fetchToken(apiUrl, {
-        entity_user_id: import.meta.env.VITE_MONITE_ENTITY_USER_ID,
-        client_id: import.meta.env.VITE_MONITE_PROJECT_CLIENT_ID,
-        client_secret: import.meta.env.VITE_MONITE_PROJECT_CLIENT_SECRET,
+        entity_user_id: entityUserId,
+        client_id: clientId,
+        client_secret: clientSecret,
       }),
   };
 

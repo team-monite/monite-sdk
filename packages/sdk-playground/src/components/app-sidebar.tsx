@@ -25,6 +25,7 @@ import {
   ZapIcon,
 } from 'lucide-react';
 
+import { LoginForm } from './login/login-form';
 import { Button } from './ui/button';
 import { Dialog } from './ui/dialog';
 import { DialogContent } from './ui/dialog';
@@ -95,6 +96,7 @@ const dropinMenuItems = [
 export function AppSidebar() {
   const location = useLocation();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -159,6 +161,15 @@ export function AppSidebar() {
             <DialogHeader>
               <DialogTitle>Login</DialogTitle>
             </DialogHeader>
+            <div className="flex flex-col gap-4">
+              <LoginForm
+                onSubmit={() => {
+                  setIsLoginOpen(false);
+                  window.location.reload();
+                }}
+                onCancel={() => setIsLoginOpen(false)}
+              />
+            </div>
           </DialogContent>
         </Dialog>
       </SidebarFooter>
