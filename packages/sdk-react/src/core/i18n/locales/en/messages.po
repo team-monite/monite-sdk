@@ -2923,7 +2923,7 @@ msgstr "Description is required"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:462
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:208
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:45
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:20
 msgid "Details"
 msgstr "Details"
 
@@ -4192,7 +4192,7 @@ msgstr "Fuel Dealers (Non Automotive)"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:661
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:153
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:246
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:31
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:198
 msgid "Fulfillment date"
 msgstr "Fulfillment date"
@@ -5554,7 +5554,7 @@ msgstr "Mens and Boys Clothing and Accessories Stores"
 msgid "Mens, Womens Clothing Stores"
 msgstr "Mens, Womens Clothing Stores"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:42
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:43
 msgid "Message"
 msgstr "Message"
 
@@ -6160,6 +6160,7 @@ msgstr "Not specified"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:716
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:730
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:78
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:48
 msgid "Note to customer"
 msgstr "Note to customer"
 
@@ -7108,7 +7109,7 @@ msgstr "Puerto Rico"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:680
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:697
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:119
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:37
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:38
 #: src/components/templateSettings/utils.ts:17
 msgid "Purchase order"
 msgstr "Purchase order"
@@ -9347,7 +9348,7 @@ msgid "VAT ID"
 msgstr "VAT ID"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:74
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:26
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:27
 msgid "VAT ID {0}"
 msgstr "VAT ID {0}"
 
@@ -9832,7 +9833,7 @@ msgstr "Your customers can make direct bank transfers outside the payment links"
 #~ msgid "Your Tax ID"
 #~ msgstr "Your Tax ID"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:25
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:26
 msgid "Your tax information"
 msgstr "Your tax information"
 
