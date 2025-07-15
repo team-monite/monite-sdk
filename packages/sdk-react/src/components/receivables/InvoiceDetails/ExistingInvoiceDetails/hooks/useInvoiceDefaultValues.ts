@@ -31,6 +31,7 @@ export const useInvoiceDefaultValues = (
         ? new Date(invoice.fulfillment_date)
         : null,
       purchase_order: invoice.purchase_order ?? '',
+      footer: invoice.footer ?? '',
 
       /** Items section */
       line_items: invoice.line_items.map((lineItem) => {

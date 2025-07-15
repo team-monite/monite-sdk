@@ -10,6 +10,7 @@ export const PreviewDetailsSection = ({
   fulfillment_date,
   purchase_order,
   memo,
+  footer,
 }: components['schemas']['InvoiceResponsePayload']) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
@@ -41,6 +42,11 @@ export const PreviewDetailsSection = ({
           {
             label: t(i18n)`Message`,
             value: memo,
+            withEmptyStateFiller: true,
+          },
+          {
+            label: t(i18n)`Note to customer`,
+            value: footer,
             withEmptyStateFiller: true,
           },
         ]}
