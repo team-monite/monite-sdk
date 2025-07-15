@@ -29,7 +29,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -145,7 +145,7 @@ export const ProductsTable = ({
 
   const { control, handleSubmit, watch } =
     useForm<CreateReceivablesProductsFormProps>({
-      resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+      resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
       defaultValues: useMemo(
         () => ({
           items: [],
@@ -180,7 +180,7 @@ export const ProductsTable = ({
     {
       query: {
         limit: 20,
-        currency,
+        currency: currency as CurrencyEnum,
         type: currentFilter[FILTER_TYPE_TYPE] || undefined,
         name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       },
@@ -236,7 +236,10 @@ export const ProductsTable = ({
       e.preventDefault();
       e.stopPropagation();
       handleSubmit((values) => {
-        onAdd(values);
+        onAdd({
+          items: values.items,
+          currency: values.currency as CurrencyEnum,
+        });
       })(e);
     },
     [handleSubmit, onAdd]
