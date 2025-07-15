@@ -1,4 +1,3 @@
-import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
@@ -14,6 +13,9 @@ import {
   processChainApprovalCalls,
   extractItemsFromScriptStep,
   type ProcessedApprovalStep,
+  type ApprovalRequest,
+  type ApprovalRequestStatus,
+  type PayableStateEnum,
 } from './approvalStepUtils';
 import { ScriptStep } from './buildApprovalSteps';
 
@@ -115,8 +117,3 @@ export class ApprovalStepResolver {
     return steps;
   }
 }
-
-type ApprovalRequest =
-  components['schemas']['ApprovalRequestResourceWithMetadata'];
-type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
-type PayableStateEnum = components['schemas']['PayableStateEnum'];
