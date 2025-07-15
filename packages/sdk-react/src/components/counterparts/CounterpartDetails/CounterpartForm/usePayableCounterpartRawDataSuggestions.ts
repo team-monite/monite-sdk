@@ -1,8 +1,7 @@
-import { useMemo, useCallback } from 'react';
-import { UseFormSetValue, FieldValues, Path } from 'react-hook-form';
-
 import { components } from '@/api';
 import { getNestedValue } from '@/core/utils/object';
+import { useMemo, useCallback } from 'react';
+import { UseFormSetValue, FieldValues, Path } from 'react-hook-form';
 
 type PayableCounterpartRawData = components['schemas']['CounterpartRawData'];
 
@@ -94,7 +93,7 @@ const getRawValue = (
  * ```
  */
 export const usePayableCounterpartRawDataSuggestions = <
-  TFormValues extends FieldValues = FieldValues
+  TFormValues extends FieldValues = FieldValues,
 >(
   payableCounterpartRawData: PayableCounterpartRawData | undefined,
   formValues: TFormValues,
@@ -117,7 +116,10 @@ export const usePayableCounterpartRawDataSuggestions = <
 
       const formValue = formField
         .split('.')
-        .reduce((acc: any, key) => acc?.[key], formValues);
+        .reduce(
+          (acc: TFormValues | Record<string, any>, key) => acc?.[key],
+          formValues
+        );
       fieldsEqual[formField] = formValue === rawValue;
     });
 
