@@ -17,10 +17,7 @@ import {
   TableRow,
 } from '@mui/material';
 
-import {
-  type Rules,
-  useApprovalPolicyScript,
-} from '../../useApprovalPolicyScript';
+import { useApprovalPolicyScript } from '../../useApprovalPolicyScript';
 import { Role } from '../ApprovalPolicyView/Role';
 import { User } from '../ApprovalPolicyView/User';
 
@@ -36,8 +33,8 @@ interface RulesTableProps {
   usersFromListCount?: string | number;
   rolesFromListCount?: string | number;
   onAddRule: () => void;
-  onEditRule: (ruleKey: keyof Rules) => void;
-  onDeleteRule: (ruleKey: keyof Rules) => void;
+  onEditRule: (ruleKey: keyof Rule) => void;
+  onDeleteRule: (ruleKey: keyof Rule) => void;
 }
 
 export const RulesTable = ({
@@ -52,7 +49,7 @@ export const RulesTable = ({
   const { getRuleLabel } = useApprovalPolicyScript({});
 
   const rulesList = useMemo(() => {
-    return (Object.keys(rules) as Array<keyof Rules>).map((ruleKey) => {
+    return (Object.keys(rules) as Array<keyof Rule>).map((ruleKey) => {
       let ruleLabel: string | undefined;
       let ruleValue: ReactNode;
 
