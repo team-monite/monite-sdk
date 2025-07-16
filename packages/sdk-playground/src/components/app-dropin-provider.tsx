@@ -32,6 +32,10 @@ const AppDropinProvider = ({ component }: AppDropinProvider) => {
     if (dropinRef.current) {
       componentInstance.mount(dropinRef.current);
     }
+
+    return () => {
+      componentInstance.unmount();
+    };
   }, [componentInstance, dropinRef]);
 
   return <div ref={dropinRef} />;
