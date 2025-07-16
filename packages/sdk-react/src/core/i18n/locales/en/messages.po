@@ -1272,6 +1272,10 @@ msgstr "Bill"
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
+#: src/components/payables/Payables.tsx:165
+msgid "Bill Pay"
+msgstr "Bill Pay"
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:61
 msgid "Bill to"
 msgstr "Bill to"
@@ -6493,8 +6497,8 @@ msgid "Payable not found"
 msgstr "Payable not found"
 
 #: src/components/payables/Payables.tsx:165
-msgid "Payables"
-msgstr "Payables"
+#~ msgid "Payables"
+#~ msgstr "Payables"
 
 #: src/components/userRoles/consts.ts:39
 msgid "Payables purchase order"
