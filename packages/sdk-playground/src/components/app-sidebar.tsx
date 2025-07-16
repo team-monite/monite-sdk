@@ -23,6 +23,7 @@ import {
   ReceiptIcon,
   TagIcon,
   ZapIcon,
+  Settings2Icon,
 } from 'lucide-react';
 
 import { LoginForm } from './login/login-form';
@@ -67,6 +68,11 @@ const menuItems = [
     title: 'Tags',
     icon: TagIcon,
     url: '/tags',
+  },
+  {
+    title: 'Template Settings',
+    icon: Settings2Icon,
+    url: '/template-settings',
   },
   {
     title: 'Onboarding',

@@ -12,6 +12,7 @@ import {
   TagsPage,
   OnboardingPage,
   IntegrationsPage,
+  TemplateSettingsPage,
 } from './pages';
 import {
   BillPayPage as DropinBillPayPage,
@@ -39,6 +40,10 @@ function App() {
               element={<RolesApprovalsPage />}
             />
             <Route path="/tags" element={<TagsPage />} />
+            <Route
+              path="/template-settings"
+              element={<TemplateSettingsPage />}
+            />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/integrations" element={<IntegrationsPage />} />
             <Route path="/dropin/bill-pay" element={<DropinBillPayPage />} />
