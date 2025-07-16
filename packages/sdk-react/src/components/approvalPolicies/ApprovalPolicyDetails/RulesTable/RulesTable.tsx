@@ -1,5 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
+import { components } from '@/api/schema';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -20,17 +21,23 @@ import {
   type Rules,
   useApprovalPolicyScript,
 } from '../../useApprovalPolicyScript';
-import { FormValues } from '../ApprovalPolicyForm';
 import { Role } from '../ApprovalPolicyView/Role';
 import { User } from '../ApprovalPolicyView/User';
 
+type Rule = {
+  single_user?: components['schemas']['EntityUserResponse'];
+  users_from_list?: components['schemas']['EntityUserResponse'][];
+  roles_from_list?: components['schemas']['RoleResponse'][];
+  approval_chain?: components['schemas']['EntityUserResponse'][];
+};
+
 interface RulesTableProps {
-  rules: FormValues['rules'];
+  rules: Rule;
   usersFromListCount?: string | number;
   rolesFromListCount?: string | number;
   onAddRule: () => void;
-  onEditRule: (ruleKey: keyof FormValues['rules']) => void;
-  onDeleteRule: (ruleKey: keyof FormValues['rules']) => void;
+  onEditRule: (ruleKey: keyof Rules) => void;
+  onDeleteRule: (ruleKey: keyof Rules) => void;
 }
 
 export const RulesTable = ({
