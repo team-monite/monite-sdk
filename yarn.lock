@@ -6100,7 +6100,7 @@ __metadata:
     tw-animate-css: "npm:~1.2.5"
     typescript: "npm:~5.5.4"
     yup: "npm:~0.32.11"
-    zod: "npm:~3.25.67"
+    zod: "npm:~4.0.5"
   peerDependencies:
     "@emotion/cache": ~11.11.0
     "@emotion/react": ~11.11.1
@@ -31130,13 +31130,6 @@ __metadata:
   peerDependencies:
     zod: ^3.24.1
   checksum: 10/1af291b4c429945c9568c2e924bdb7c66ab8d139cbeb9a99b6e9fc9e1b02863f85d07759b9303714f07ceda3993dcaf0ebcb80d2c18bb2aaf5502b2c1016affd
-  languageName: node
-  linkType: hard
-
-"zod@npm:~3.25.67":
-  version: 3.25.76
-  resolution: "zod@npm:3.25.76"
-  checksum: 10/f0c963ec40cd96858451d1690404d603d36507c1fc9682f2dae59ab38b578687d542708a7fdbf645f77926f78c9ed558f57c3d3aa226c285f798df0c4da16995
   languageName: node
   linkType: hard
 
