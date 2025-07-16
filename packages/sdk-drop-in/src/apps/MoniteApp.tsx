@@ -1,11 +1,4 @@
-import {
-  ComponentProps,
-  ElementType,
-  lazy,
-  ReactNode,
-  Suspense,
-  useEffect,
-} from 'react';
+import { ComponentProps, ElementType, lazy, ReactNode, Suspense } from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
@@ -32,7 +25,6 @@ export const MoniteApp = ({
   apiUrl = 'https://api.dev.monite.com/v1',
   fetchToken,
   onMount,
-  onUnmount,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
@@ -43,7 +35,6 @@ export const MoniteApp = ({
     APISchema.components['schemas']['AccessTokenResponse']
   >;
   onMount?: () => void;
-  onUnmount?: () => void;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
   if (disabled) return null;
