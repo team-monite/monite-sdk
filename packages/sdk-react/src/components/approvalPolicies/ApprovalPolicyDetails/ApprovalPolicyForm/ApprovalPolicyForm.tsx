@@ -19,6 +19,7 @@ import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { MoniteCurrency } from '@/ui/Currency';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
@@ -77,7 +78,7 @@ const createValidationSchema = () =>
       counterpart_id: z.array(z.any()).optional(),
       amount: z
         .object({
-          currency: z.any(),
+          currency: z.enum(CurrencyEnum),
           value: z.array(z.any()),
         })
         .optional(),
@@ -105,7 +106,7 @@ const createValidationSchema = () =>
       .number()
       .positive(t(i18n)`Amount must be a positive number`)
       .optional(),
-    amountCurrency: z.any().optional(),
+    amountCurrency: z.enum(CurrencyEnum).optional(),
     scriptType: z
       .union([
         z.literal('single_user'),
