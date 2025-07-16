@@ -201,7 +201,7 @@ msgstr "{label}"
 #~ msgid "{name} document template has been set as the default."
 #~ msgstr "{name} document template has been set as the default."
 
-#: src/components/templateSettings/hooks/useDocumentTemplatesApi.ts:54
+#: src/components/templateSettings/hooks/useDocumentTemplatesApi.ts:70
 msgid "{name} template has been set as the default."
 msgstr "{name} template has been set as the default."
 
@@ -1271,6 +1271,10 @@ msgstr "Bill"
 #: src/components/payables/Payables.tsx:217
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
+
+#: src/components/payables/Payables.tsx:165
+msgid "Bill Pay"
+msgstr "Bill Pay"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:61
 msgid "Bill to"
@@ -2511,7 +2515,7 @@ msgstr "Created on"
 msgid "Credit note"
 msgstr "Credit note"
 
-#: src/core/componentSettings/index.ts:318
+#: src/core/componentSettings/index.ts:323
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -4843,7 +4847,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/components/InvoicesTable.tsx:503
-#: src/core/componentSettings/index.ts:310
+#: src/core/componentSettings/index.ts:315
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -6498,8 +6502,8 @@ msgid "Payable not found"
 msgstr "Payable not found"
 
 #: src/components/payables/Payables.tsx:165
-msgid "Payables"
-msgstr "Payables"
+#~ msgid "Payables"
+#~ msgstr "Payables"
 
 #: src/components/userRoles/consts.ts:39
 msgid "Payables purchase order"
@@ -7141,7 +7145,7 @@ msgid "Quote"
 msgstr "Quote"
 
 #: src/components/receivables/components/QuotesTable.tsx:302
-#: src/core/componentSettings/index.ts:314
+#: src/core/componentSettings/index.ts:319
 msgid "Quotes"
 msgstr "Quotes"
 

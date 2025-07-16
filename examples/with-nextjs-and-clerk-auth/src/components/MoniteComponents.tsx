@@ -118,7 +118,6 @@ export const MoniteProvider = ({
       locale={{
         code: i18n.locale,
         messages: {
-          Payables: 'Bill Pay',
           Counterpart: 'Customer',
           Sales: 'Invoicing',
         },
