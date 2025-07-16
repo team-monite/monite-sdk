@@ -8,11 +8,23 @@ function readStorage() {
     return null;
   }
 
-  return JSON.parse(data);
+  try {
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Failed to parse stored data from localStorage:', error);
+    return null;
+  }
 }
 
 function writeStorage(value: Record<string, string>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+  } catch (error) {
+    console.error(
+      'Failed to save login environment data to localStorage:',
+      error
+    );
+  }
 }
 
 function getFieldFromStorage(field: string) {
