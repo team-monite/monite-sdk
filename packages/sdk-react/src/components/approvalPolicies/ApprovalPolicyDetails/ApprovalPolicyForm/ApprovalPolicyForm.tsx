@@ -8,22 +8,14 @@ import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyD
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
   NAMED_VALUES,
-  NamedValue,
   OPERATOR_OPERATIONS,
-  OperatorOperation,
 } from '@/components/approvalPolicies/triggerUtils';
 import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
-import {
-  useApprovalPolicyTrigger,
-  AmountTuple,
-} from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import {
-  CounterpartAutocomplete,
-  CounterpartsAutocompleteOptionProps,
-} from '@/components/counterparts/components';
+import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -32,6 +24,7 @@ import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -65,38 +58,79 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
-type FormTriggerKey = Exclude<NamedValue, 'tags.id'> | 'tags';
-
-export interface FormValues {
-  name: string;
-  description: string;
-
-  triggerType: FormTriggerKey | null;
-  triggers: {
-    was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
-    tags?: components['schemas']['TagReadSchema'][];
-    counterpart_id?: CounterpartsAutocompleteOptionProps[];
-    amount?: {
-      currency: components['schemas']['CurrencyEnum'];
-      value: AmountTuple[];
-    };
-  };
-  amountOperator?: OperatorOperation;
-  amountValue?: string | number;
-  amountRangeLeftValue?: string | number;
-  amountRangeRightValue?: string | number;
-  amountCurrency?: components['schemas']['CurrencyEnum'];
-
-  scriptType: ApprovalPolicyScriptType | null;
-  rules: {
-    single_user?: components['schemas']['EntityUserResponse'];
-    users_from_list?: components['schemas']['EntityUserResponse'][];
-    roles_from_list?: components['schemas']['RoleResponse'][];
-    approval_chain?: components['schemas']['EntityUserResponse'][];
-  };
-  usersFromListCount?: string | number;
-  rolesFromListCount?: string | number;
-}
+const createValidationSchema = () =>
+  z.object({
+    name: z.string().min(1, t(i18n)`Policy name is required`),
+    description: z.string().min(1, t(i18n)`Description is required`),
+    triggerType: z
+      .union([
+        z.literal('was_created_by_user_id'),
+        z.literal('counterpart_id'),
+        z.literal('amount'),
+        z.literal('currency'),
+        z.literal('tags'),
+      ])
+      .nullable(),
+    triggers: z.object({
+      was_created_by_user_id: z.array(z.any()).optional(),
+      tags: z.array(z.any()).optional(),
+      counterpart_id: z.array(z.any()).optional(),
+      amount: z
+        .object({
+          currency: z.any(),
+          value: z.array(z.any()),
+        })
+        .optional(),
+    }),
+    amountOperator: z
+      .union([
+        z.literal('range'),
+        z.literal('in'),
+        z.literal('=='),
+        z.literal('<'),
+        z.literal('<='),
+        z.literal('>'),
+        z.literal('>='),
+      ])
+      .optional(),
+    amountValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeLeftValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeRightValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountCurrency: z.any().optional(),
+    scriptType: z
+      .union([
+        z.literal('single_user'),
+        z.literal('users_from_list'),
+        z.literal('roles_from_list'),
+        z.literal('approval_chain'),
+      ])
+      .nullable(),
+    rules: z.object({
+      single_user: z.any().optional(),
+      users_from_list: z.array(z.any()).optional(),
+      roles_from_list: z.array(z.any()).optional(),
+      approval_chain: z.array(z.any()).optional(),
+    }),
+    usersFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+    rolesFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+  });
+const validationSchema = createValidationSchema();
+export type FormValues = z.infer<typeof validationSchema>;
 
 /**
  * Builds the approval policy payload from form values
@@ -268,9 +302,8 @@ export const ApprovalPolicyForm = ({
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
-  const [triggerInEdit, setTriggerInEdit] = useState<FormTriggerKey | null>(
-    null
-  );
+  const [triggerInEdit, setTriggerInEdit] =
+    useState<FormValues['triggerType']>(null);
 
   const [prevFormValues, setPrevFormValues] =
     useState<Partial<FormValues> | null>(null);
@@ -436,103 +469,6 @@ export const ApprovalPolicyForm = ({
 
     return response;
   };
-
-  const validationSchema = z.object({
-    name: z.string().min(1, t(i18n)`Policy name is required`),
-    description: z.string().min(1, t(i18n)`Description is required`),
-    triggerType: z.union([
-      z.literal('was_created_by_user_id'),
-      z.literal('counterpart_id'),
-      z.literal('amount'),
-      z.literal('currency'),
-      z.literal('tags'),
-      z.null(),
-    ]),
-    triggers: z.object({
-      was_created_by_user_id: z.array(z.any()).optional(),
-      tags: z.array(z.any()).optional(),
-      counterpart_id: z.array(z.any()).optional(),
-      amount: z
-        .object({
-          currency: z.any(),
-          value: z.array(z.any()),
-        })
-        .optional(),
-    }),
-    amountOperator: z
-      .union([
-        z.literal('range'),
-        z.literal('in'),
-        z.literal('<'),
-        z.literal('>'),
-        z.literal('=='),
-        z.literal('>='),
-        z.literal('<='),
-      ])
-      .optional(),
-    amountValue: z
-      .union([z.string(), z.number()])
-      .optional()
-      .transform((val) => {
-        if (val === '' || val === undefined) return undefined;
-        const num = typeof val === 'string' ? parseFloat(val) : val;
-        return isNaN(num) ? undefined : num;
-      })
-      .refine(
-        (val) => val === undefined || (typeof val === 'number' && val > 0),
-        {
-          message: t(i18n)`Amount must be a positive number`,
-        }
-      ),
-    amountRangeLeftValue: z.union([z.string(), z.number()]).optional(),
-    amountRangeRightValue: z.union([z.string(), z.number()]).optional(),
-    amountCurrency: z.any().optional(),
-    scriptType: z.union([
-      z.literal('single_user'),
-      z.literal('users_from_list'),
-      z.literal('roles_from_list'),
-      z.literal('approval_chain'),
-      z.null(),
-    ]),
-    rules: z.object({
-      single_user: z.any().optional(),
-      users_from_list: z.array(z.any()).optional(),
-      roles_from_list: z.array(z.any()).optional(),
-      approval_chain: z.array(z.any()).optional(),
-    }),
-    usersFromListCount: z
-      .union([z.string(), z.number()])
-      .optional()
-      .transform((val) => {
-        if (val === '' || val === undefined) return undefined;
-        const num = typeof val === 'string' ? parseFloat(val) : val;
-        return isNaN(num) ? undefined : num;
-      })
-      .refine(
-        (val) => val === undefined || (typeof val === 'number' && val >= 1),
-        {
-          message: t(
-            i18n
-          )`Minimum number of approvals required must be at least 1`,
-        }
-      ),
-    rolesFromListCount: z
-      .union([z.string(), z.number()])
-      .optional()
-      .transform((val) => {
-        if (val === '' || val === undefined) return undefined;
-        const num = typeof val === 'string' ? parseFloat(val) : val;
-        return isNaN(num) ? undefined : num;
-      })
-      .refine(
-        (val) => val === undefined || (typeof val === 'number' && val >= 1),
-        {
-          message: t(
-            i18n
-          )`Minimum number of approvals required must be at least 1`,
-        }
-      ),
-  }) satisfies z.ZodType<FormValues>;
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
