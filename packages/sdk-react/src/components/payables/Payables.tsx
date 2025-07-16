@@ -162,7 +162,7 @@ const PayablesBase = ({
         className={className + '-Header'}
         title={
           <>
-            {t(i18n)`Payables`}
+            {t(i18n)`Bill Pay`}
             {(isReadAllowedLoading || isCreateAllowedLoading) && (
               <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
             )}
