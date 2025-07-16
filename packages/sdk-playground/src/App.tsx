@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import './App.css';
 import { AppSidebar } from './components/app-sidebar';
 import { SidebarProvider } from './components/ui/sidebar';
 import {
