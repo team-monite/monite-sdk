@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
