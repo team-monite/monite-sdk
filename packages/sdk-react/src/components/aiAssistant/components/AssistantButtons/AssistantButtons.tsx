@@ -33,7 +33,7 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
 
   const { api } = useMoniteContext();
 
-  const { mutate: postFeedback } = api.ai.postFeedback.useMutation();
+  const { mutate: postFeedback } = api.ai.postAiMessageFeedbacks.useMutation();
 
   const handleCopyToClipboard = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

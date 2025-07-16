@@ -5,6 +5,7 @@ import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPol
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import { ApprovalStatusChip } from '@/components/approvalPolicies/ApprovalStatusChip';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { extractApprovalCallsForTable } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/approvalStepUtils';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -153,9 +154,22 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => {
-          const script = params.row.script?.[0]?.if?.all?.[0]?.params;
-          const requiredApprovalCount =
-            script?.required_approval_count || t(i18n)`N/A`;
+          const script = params.row.script?.[0]?.if?.all;
+          if (!script) {
+            return (
+              <span>
+                {t(i18n)`N/A`} {t(i18n)`approvals required`}
+              </span>
+            );
+          }
+
+          const allApprovalCalls = extractApprovalCallsForTable(script);
+          const totalRequiredApprovals = allApprovalCalls.reduce(
+            (sum, call) => sum + (call.params?.required_approval_count || 0),
+            0
+          );
+          const requiredApprovalCount = totalRequiredApprovals || t(i18n)`N/A`;
+
           return (
             <span>
               {requiredApprovalCount} {t(i18n)`approvals required`}

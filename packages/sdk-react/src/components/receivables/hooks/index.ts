@@ -11,3 +11,6 @@ export { useGetPaymentReminders } from './useGetPaymentReminders';
 export { useGetOverdueReminderById } from './useGetOverdueReminderById';
 export { useGetOverdueReminders } from './useGetOverdueReminders';
 export { useDuplicateInvoice } from './useDuplicateInvoice';
+export { useGetEntityVatIds } from './useGetEntityVatIds';
+export { usePatchEntityById } from './usePatchEntityById';
+export { usePatchEntityVatById } from './usePatchEntityVatById';

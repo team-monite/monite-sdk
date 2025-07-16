@@ -18,9 +18,10 @@ type PayableCallbackProps = Pick<
 /**
  * Custom hook that creates memoized payable callbacks.
  * Each callback calls both the direct prop callback and the component settings callback.
+ * Returns undefined for callbacks when neither the direct prop nor component settings callback is defined.
  *
  * @param props - Direct callback props from component props
- * @returns Object with memoized callback handlers
+ * @returns Object with memoized callback handlers (or undefined when no callbacks are defined)
  */
 export const usePayableCallbacks = (props: PayableCallbackProps) => {
   const { payablesCallbacks } = useComponentSettings();
@@ -36,69 +37,86 @@ export const usePayableCallbacks = (props: PayableCallbackProps) => {
     onPay,
   } = props;
 
-  const handleSaved = useCallback(
+  const savedCallback = useCallback(
     (id: string) => {
       onSaved?.(id);
       payablesCallbacks.onSaved?.(id);
     },
     [onSaved, payablesCallbacks]
   );
+  const handleSaved =
+    onSaved || payablesCallbacks.onSaved ? savedCallback : undefined;
 
-  const handleCanceled = useCallback(
+  const canceledCallback = useCallback(
     (id: string) => {
       onCanceled?.(id);
       payablesCallbacks.onCanceled?.(id);
     },
     [onCanceled, payablesCallbacks]
   );
+  const handleCanceled =
+    onCanceled || payablesCallbacks.onCanceled ? canceledCallback : undefined;
 
-  const handleSubmitted = useCallback(
+  const submittedCallback = useCallback(
     (id: string) => {
       onSubmitted?.(id);
       payablesCallbacks.onSubmitted?.(id);
     },
     [onSubmitted, payablesCallbacks]
   );
+  const handleSubmitted =
+    onSubmitted || payablesCallbacks.onSubmitted
+      ? submittedCallback
+      : undefined;
 
-  const handleRejected = useCallback(
+  const rejectedCallback = useCallback(
     (id: string) => {
       onRejected?.(id);
       payablesCallbacks.onRejected?.(id);
     },
     [onRejected, payablesCallbacks]
   );
+  const handleRejected =
+    onRejected || payablesCallbacks.onRejected ? rejectedCallback : undefined;
 
-  const handleApproved = useCallback(
+  const approvedCallback = useCallback(
     (id: string) => {
       onApproved?.(id);
       payablesCallbacks.onApproved?.(id);
     },
     [onApproved, payablesCallbacks]
   );
+  const handleApproved =
+    onApproved || payablesCallbacks.onApproved ? approvedCallback : undefined;
 
-  const handleReopened = useCallback(
+  const reopenedCallback = useCallback(
     (id: string) => {
       onReopened?.(id);
       payablesCallbacks.onReopened?.(id);
     },
     [onReopened, payablesCallbacks]
   );
+  const handleReopened =
+    onReopened || payablesCallbacks.onReopened ? reopenedCallback : undefined;
 
-  const handleDeleted = useCallback(
+  const deletedCallback = useCallback(
     (id: string) => {
       onDeleted?.(id);
       payablesCallbacks.onDeleted?.(id);
     },
     [onDeleted, payablesCallbacks]
   );
+  const handleDeleted =
+    onDeleted || payablesCallbacks.onDeleted ? deletedCallback : undefined;
 
-  const handlePay = useCallback(
+  const payCallback = useCallback(
     (id: string) => {
       onPay?.(id);
       payablesCallbacks.onPay?.(id);
     },
     [onPay, payablesCallbacks]
   );
+  const handlePay = onPay || payablesCallbacks.onPay ? payCallback : undefined;
 
   return {
     handleSaved,

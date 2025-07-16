@@ -168,6 +168,11 @@ export interface TemplateSettings {
    */
   showTemplatePreview: boolean;
   /**
+   * List of available template IDs for template selection, if no list is provided,
+   * then all templates will be available, defaults to an empty list.
+   */
+  availableTemplateIds: string[];
+  /**
    * Shows the logo selection section if true or hides it if false, defaults to true.
    */
   showLogoSection: boolean;
@@ -361,25 +366,27 @@ export const getDefaultComponentSettings = (
   financing: componentSettings?.financing ?? {},
   templateSettings: {
     showTemplateSection:
-      componentSettings?.templateSettings?.showTemplateSection || true,
+      componentSettings?.templateSettings?.showTemplateSection ?? true,
     showTemplatePreview:
-      componentSettings?.templateSettings?.showTemplatePreview || true,
+      componentSettings?.templateSettings?.showTemplatePreview ?? true,
+    availableTemplateIds:
+      componentSettings?.templateSettings?.availableTemplateIds ?? [],
     showLogoSection:
-      componentSettings?.templateSettings?.showLogoSection || true,
+      componentSettings?.templateSettings?.showLogoSection ?? true,
     enableDocumentNumberCustomisationTab:
       componentSettings?.templateSettings
-        ?.enableDocumentNumberCustomisationTab || true,
+        ?.enableDocumentNumberCustomisationTab ?? true,
     enableOtherSettingsCustomisationTab:
       componentSettings?.templateSettings
-        ?.enableOtherSettingsCustomisationTab || true,
+        ?.enableOtherSettingsCustomisationTab ?? true,
     availableARDocuments: componentSettings?.templateSettings
-      ?.availableARDocuments || [
+      ?.availableARDocuments ?? [
       'invoice',
       'credit_note',
       'quote',
       'delivery_note',
     ],
     availableAPDocuments: componentSettings?.templateSettings
-      ?.availableAPDocuments || ['purchase_order'],
+      ?.availableAPDocuments ?? ['purchase_order'],
   },
 });

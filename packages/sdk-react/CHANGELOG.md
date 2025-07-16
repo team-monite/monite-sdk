@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.3.1
+
+### Patch Changes
+
+- 102dc7e: Event handlers for payable actions (such as saved, canceled, submitted, etc.) are now only available when a corresponding callback is defined; otherwise, they will be undefined
+
 ## 4.3.0
 
 ### Minor Changes
