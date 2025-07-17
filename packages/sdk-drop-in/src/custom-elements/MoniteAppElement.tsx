@@ -184,7 +184,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
   public propagateStyles() {
     requestAnimationFrame(() => {
       if (!this.root) return;
-      const prefix = '--mtw-';
+      const prefixes = ['--mtw-', '--rpv-'];
 
       const cssVariables: Record<string, string> = {};
 
@@ -201,7 +201,9 @@ export class MoniteAppElement extends MoniteAppElementBase<
             ) {
               Array.from(rule.style)
                 .filter(
-                  (name) => typeof name === 'string' && name.startsWith(prefix)
+                  (name) =>
+                    typeof name === 'string' &&
+                    prefixes.some((prefix) => name.startsWith(prefix))
                 )
                 .forEach((propertyName) => {
                   const computedValue =
