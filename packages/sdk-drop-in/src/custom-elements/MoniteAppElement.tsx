@@ -173,22 +173,6 @@ export class MoniteAppElement extends MoniteAppElementBase<
     clearElement(stylesRoot, 'Error clearing styles root');
   }, 'Error during DOM cleanup');
 
-  async disconnectedCallback() {
-    super.disconnectedCallback();
-
-    if (this.cleanupConfig.executeCleanupHandlers) {
-      await this.executeCustomCleanupHandlers();
-    }
-
-    if (this.cleanupConfig.cleanupReactRoot) {
-      await this.cleanupReactRootResources();
-    }
-
-    if (this.cleanupConfig.cleanupDOM) {
-      await this.cleanupDOMResources();
-    }
-  }
-
   render() {
     if (!this.isMounted) return;
 
@@ -255,10 +239,17 @@ export class MoniteAppElement extends MoniteAppElementBase<
     );
   }
 
-  disconnectedCallback() {
-    if (this.reactAppRoot) {
-      this.reactAppRoot.unmount();
-      this.reactAppRoot = undefined;
+  async disconnectedCallback() {
+    if (this.cleanupConfig.executeCleanupHandlers) {
+      await this.executeCustomCleanupHandlers();
+    }
+
+    if (this.cleanupConfig.cleanupReactRoot) {
+      await this.cleanupReactRootResources();
+    }
+
+    if (this.cleanupConfig.cleanupDOM) {
+      await this.cleanupDOMResources();
     }
 
     super.disconnectedCallback();
