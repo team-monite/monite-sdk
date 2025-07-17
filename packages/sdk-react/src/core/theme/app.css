@@ -3,6 +3,11 @@
 
 @import './tailwind/typography.css';
 
+@import '@react-pdf-viewer/core/lib/styles/index.css';
+@import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
+@import '@react-pdf-viewer/zoom/lib/styles/index.css';
+@import '../../ui/FileViewer/FileViewer.css';
+
 @theme inline {
   --color-primary: var(--mtw-color-primary-50);
   --color-primary-10: var(--mtw-color-primary-10);
@@ -198,8 +203,3 @@
     animation: dot-typing 1.5s infinite linear;
   }
 }
-
-@import '@react-pdf-viewer/core/lib/styles/index.css';
-@import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
-@import '@react-pdf-viewer/zoom/lib/styles/index.css';
-@import '../../ui/FileViewer/FileViewer.css';
