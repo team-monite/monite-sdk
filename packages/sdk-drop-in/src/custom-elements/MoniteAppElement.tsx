@@ -14,6 +14,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private reactAppRoot: Root | undefined;
+  private styleTagId = 'monite-app-css-variables';
 
   /**
    * A record defining the types and allowed attributes that can be set on the element.
@@ -176,9 +177,21 @@ export class MoniteAppElement extends MoniteAppElementBase<
           onMount={() => {
             this.propagateStyles();
           }}
+          onUnmount={() => {
+            this.removeStyles();
+          }}
         />
       </StrictMode>
     );
+  }
+
+  disconnectedCallback() {
+    if (this.reactAppRoot) {
+      this.reactAppRoot.unmount();
+      this.reactAppRoot = undefined;
+    }
+
+    super.disconnectedCallback();
   }
 
   public propagateStyles() {
@@ -217,11 +230,31 @@ export class MoniteAppElement extends MoniteAppElementBase<
           });
         });
 
-      // Apply CSS variables to the root of the host
-      Object.entries(cssVariables).forEach(([propertyName, value]) => {
-        document.documentElement.style.setProperty(propertyName, value);
-      });
+      // Create or update style tag with CSS variables
+      let styleTag = document.getElementById(
+        this.styleTagId
+      ) as HTMLStyleElement;
+
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = this.styleTagId;
+        document.head.appendChild(styleTag);
+      }
+
+      // Build CSS rule with variables
+      const cssVariableDeclarations = Object.entries(cssVariables)
+        .map(([propertyName, value]) => `  ${propertyName}: ${value};`)
+        .join('\n');
+
+      styleTag.textContent = `:root, :host {\n${cssVariableDeclarations}\n}`;
     });
+  }
+
+  public removeStyles() {
+    const styleTag = document.getElementById(this.styleTagId);
+    if (styleTag) {
+      styleTag.remove();
+    }
   }
 }
 
