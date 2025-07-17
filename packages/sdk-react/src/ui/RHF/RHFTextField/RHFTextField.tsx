@@ -9,6 +9,7 @@ export const RHFTextField = <T extends FieldValues>({
   control,
   name,
   SelectProps,
+  type,
   ...other
 }: UseControllerProps<T> & TextFieldProps) => {
   const isErrorCustom = (error: FieldError | undefined) =>
@@ -27,6 +28,16 @@ export const RHFTextField = <T extends FieldValues>({
       }) => {
         const isInvalid = (isTouched || !isValid) && !isErrorCustom(error);
 
+        // Handle number conversion for number inputs
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const value = e.target.value;
+          if (type === 'number') {
+            field.onChange(value === '' ? '' : Number(value));
+          } else {
+            field.onChange(value);
+          }
+        };
+
         return (
           <>
             <TextField
@@ -34,7 +45,9 @@ export const RHFTextField = <T extends FieldValues>({
               {...other}
               id={name}
               variant="standard"
+              type={type}
               value={field.value ?? ''} // This makes component controlled https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled otherwise there are warnings in console
+              onChange={handleChange}
               error={isInvalid && !!error?.message}
               helperText={isInvalid && error?.message}
               SelectProps={{
