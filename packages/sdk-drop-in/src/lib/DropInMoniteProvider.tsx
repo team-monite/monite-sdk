@@ -1,13 +1,14 @@
-import { ComponentProps, ReactNode, useMemo } from 'react';
+import { type ComponentProps, type ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
-import { MoniteProvider, MoniteSettings } from '@monite/sdk-react';
+import { MoniteProvider, type MoniteSettings } from '@monite/sdk-react';
 
 import { enhanceComponentSettings } from './MoniteEvents';
 
 type DropInMoniteProvider = {
   sdkConfig: MoniteSettings;
   children: ReactNode;
+  onThemeMounted?: () => void;
 } & Pick<
   ComponentProps<typeof MoniteProvider>,
   'locale' | 'theme' | 'componentSettings'
@@ -19,6 +20,7 @@ export const DropInMoniteProvider = ({
   componentSettings,
   locale,
   sdkConfig: { entityId, apiUrl, fetchToken },
+  onThemeMounted = () => {},
 }: DropInMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
 
@@ -41,6 +43,9 @@ export const DropInMoniteProvider = ({
       locale={locale}
       theme={theme}
       componentSettings={enhancedComponentSettings}
+      onThemeMounted={() => {
+        onThemeMounted();
+      }}
     >
       {children}
     </MoniteProvider>

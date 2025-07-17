@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
-import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
+import { AppCircularProgress } from '@/lib/AppCircularProgress';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
