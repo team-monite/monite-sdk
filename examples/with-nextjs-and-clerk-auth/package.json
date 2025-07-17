@@ -12,6 +12,7 @@
     "test": "jest",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed",
     "typecheck": "tsc --noEmit",
     "extract-translations": "lingui extract --config lingui.config.cjs",
     "compile-translations": "lingui compile --config lingui.config.cjs",
