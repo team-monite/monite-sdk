@@ -25,7 +25,7 @@ import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { i18n } from '@lingui/core';
+import { I18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -59,7 +59,7 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
-const createValidationSchema = () =>
+const getApprovalPolicyValidationSchema = (i18n: I18n) =>
   z.object({
     name: z.string().min(1, t(i18n)`Policy name is required`),
     description: z.string().min(1, t(i18n)`Description is required`),
@@ -130,8 +130,9 @@ const createValidationSchema = () =>
       .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
       .optional(),
   });
-const validationSchema = createValidationSchema();
-export type FormValues = z.infer<typeof validationSchema>;
+export type FormValues = z.infer<
+  ReturnType<typeof getApprovalPolicyValidationSchema>
+>;
 
 /**
  * Builds the approval policy payload from form values
@@ -472,7 +473,7 @@ export const ApprovalPolicyForm = ({
   };
 
   const methods = useForm<FormValues>({
-    resolver: zodResolver(validationSchema),
+    resolver: zodResolver(getApprovalPolicyValidationSchema(i18n)),
     mode: 'onChange',
     defaultValues: {
       name: approvalPolicy?.name || '',
