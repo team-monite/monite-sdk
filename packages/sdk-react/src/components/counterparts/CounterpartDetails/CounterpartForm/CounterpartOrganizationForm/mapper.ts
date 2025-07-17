@@ -1,10 +1,9 @@
+import type { CounterpartAddressFormTypes } from '../../CounterpartAddressForm/validation';
 import { components } from '@/api';
 import type { CounterpartDefaultValues } from '@/components/counterparts/types';
 
-import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
-
 export interface CounterpartOrganizationFields
-  extends CounterpartAddressFormFields {
+  extends CounterpartAddressFormTypes {
   companyName: string;
   email: string;
   phone?: string;
@@ -12,6 +11,9 @@ export interface CounterpartOrganizationFields
   isCustomer: boolean;
 }
 
+/**
+ * Prepares the organization object from the API response for use in the form by normalizing its fields.
+ */
 export const prepareCounterpartOrganization = (
   organization?: components['schemas']['CounterpartOrganizationResponse'],
   defaultValues?: CounterpartDefaultValues
@@ -42,6 +44,9 @@ export const prepareCounterpartOrganization = (
   };
 };
 
+/**
+ * Prepares the organization object for submission by converting the form fields to the API format.
+ */
 export const prepareCounterpartOrganizationCreate = ({
   companyName,
   email,
@@ -50,7 +55,7 @@ export const prepareCounterpartOrganizationCreate = ({
   isVendor,
   ...address
 }: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationCreatePayload'] => {
-  const { postalCode, ...restAddress } = address;
+  const { postalCode, country, ...restAddress } = address;
   return {
     legal_name: companyName,
     is_customer: isCustomer,
@@ -60,10 +65,14 @@ export const prepareCounterpartOrganizationCreate = ({
     address: {
       ...restAddress,
       postal_code: postalCode,
+      country: country as components['schemas']['AllowedCountries'],
     },
   };
 };
 
+/**
+ * Prepares the organization object for update by converting the form fields to the API format.
+ */
 export const prepareCounterpartOrganizationUpdate = ({
   companyName,
   email,

@@ -1,29 +1,17 @@
+import type { CounterpartAddressFormTypes } from './validation';
 import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
 
-export interface CounterpartAddressFormFields {
-  line1: string;
-  line2?: string;
-  city: string;
-  state: string;
-  country: components['schemas']['AllowedCountries'];
-  postalCode: string;
-}
-
+/**
+ * Prepares the address object from the API response for use in the form by normalizing its fields.
+ */
 export const prepareCounterpartAddress = (
   address: components['schemas']['CounterpartAddress'] | undefined
-): CounterpartAddressFormFields => {
+): CounterpartAddressFormTypes => {
   return {
     city: address?.city ?? '',
     state: address?.state ?? '',
-    /**
-     * @todo: Anashev. We have to split this types into 2.
-     * More info in Jira task
-     * @see {@link https://monite.atlassian.net/browse/DEV-7254}
-     */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error - must be fixed in https://monite.atlassian.net/browse/DEV-7254
     country: address?.country ?? '',
     line1: address?.line1 ?? '',
     line2: address?.line2 ?? '',
@@ -31,6 +19,9 @@ export const prepareCounterpartAddress = (
   };
 };
 
+/**
+ * Prepares the address object for submission by converting the form fields to the API format.
+ */
 export const prepareCounterpartAddressSubmit = ({
   city,
   state,
@@ -38,17 +29,20 @@ export const prepareCounterpartAddressSubmit = ({
   line1,
   line2,
   postalCode: postal_code,
-}: CounterpartAddressFormFields): components['schemas']['CounterpartAddress'] => {
+}: CounterpartAddressFormTypes): components['schemas']['CounterpartAddress'] => {
   return {
     city,
     state,
-    country,
+    country: country as components['schemas']['AllowedCountries'],
     line1,
     line2,
     postal_code,
   };
 };
 
+/**
+ * Prints the address in a human-readable format.
+ */
 export function printAddress(
   {
     line1,
@@ -57,7 +51,7 @@ export function printAddress(
     city,
     country,
     state,
-  }: CounterpartAddressFormFields,
+  }: CounterpartAddressFormTypes,
   i18n: I18n
 ): string {
   const street2 = line2 ? `${line2}, ` : '';

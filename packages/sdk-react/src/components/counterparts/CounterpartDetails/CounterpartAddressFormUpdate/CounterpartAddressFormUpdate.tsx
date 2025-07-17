@@ -1,6 +1,9 @@
-import { useId } from 'react';
-import { Controller } from 'react-hook-form';
-
+import { getCounterpartName } from '../../helpers';
+import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
+import {
+  useCounterpartAddressFormUpdate,
+  CounterpartAddressFormUpdateProps,
+} from './useCounterpartAddressFormUpdate';
 import { MoniteCountry } from '@/ui/Country';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
@@ -8,13 +11,8 @@ import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
-
-import { getCounterpartName } from '../../helpers';
-import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
-import {
-  useCounterpartAddressFormUpdate,
-  CounterpartAddressFormUpdateProps,
-} from './useCounterpartAddressFormUpdate';
+import { useId } from 'react';
+import { Controller } from 'react-hook-form';
 
 export const CounterpartAddressFormUpdate = (
   props: CounterpartAddressFormUpdateProps

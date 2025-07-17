@@ -1,11 +1,9 @@
-import { Controller, FieldPath, useFormContext } from 'react-hook-form';
-
+import type { CounterpartAddressFormTypes } from './validation';
 import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Paper, Stack, TextField } from '@mui/material';
-
-import { CounterpartAddressFormFields } from './helpers';
+import { Controller, FieldPath, useFormContext } from 'react-hook-form';
 
 export const CounterpartAddressForm = ({
   parentField,
@@ -15,13 +13,13 @@ export const CounterpartAddressForm = ({
   const { i18n } = useLingui();
 
   type Form = typeof parentField extends string
-    ? { [key in typeof parentField]: CounterpartAddressFormFields }
-    : CounterpartAddressFormFields;
+    ? { [key in typeof parentField]: CounterpartAddressFormTypes }
+    : CounterpartAddressFormTypes;
 
   const { control } = useFormContext<Form>();
 
   const fieldPath = (
-    path: FieldPath<CounterpartAddressFormFields>
+    path: FieldPath<CounterpartAddressFormTypes>
   ): FieldPath<Form> => {
     if (parentField) return `${parentField}.${path}` as FieldPath<Form>;
     return path as FieldPath<Form>;

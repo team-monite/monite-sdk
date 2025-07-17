@@ -1,16 +1,14 @@
-import { ReactNode } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
-import { CounterpartAddressFormFields } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/helpers';
+import { CounterpartAddressForm } from './CounterpartAddressForm';
+import type { CounterpartAddressFormTypes } from './validation';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/dom';
-
-import { CounterpartAddressForm } from './CounterpartAddressForm';
+import { ReactNode } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 describe('CounterpartAddressForm', () => {
   it('works without nested form context `parentField`', async () => {
     const FormWithIndividual = ({ children }: { children: ReactNode }) => {
-      const methods = useForm<CounterpartAddressFormFields>({
+      const methods = useForm<CounterpartAddressFormTypes>({
         defaultValues: {
           city: 'city',
           country: 'DE',
@@ -48,7 +46,7 @@ describe('CounterpartAddressForm', () => {
   it('works with nested form context `parentField`', async () => {
     const FormWithIndividual = ({ children }: { children: ReactNode }) => {
       const methods = useForm<{
-        myCustomParentField: CounterpartAddressFormFields;
+        myCustomParentField: CounterpartAddressFormTypes;
       }>({
         defaultValues: {
           myCustomParentField: {

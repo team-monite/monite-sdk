@@ -1,18 +1,20 @@
-import { components } from '@/api';
-
 import {
-  CounterpartAddressFormFields,
   prepareCounterpartAddress,
   prepareCounterpartAddressSubmit,
 } from '../CounterpartAddressForm';
+import type { CounterpartAddressFormTypes } from '../CounterpartAddressForm/validation';
+import { components } from '@/api';
 
-export interface CounterpartContactFields extends CounterpartAddressFormFields {
+export interface CounterpartContactFields extends CounterpartAddressFormTypes {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
 }
 
+/**
+ * Prepares the contact object from the API response for use in the form by normalizing its fields.
+ */
 export const prepareCounterpartContact = (
   contact:
     | components['schemas']['CreateCounterpartContactPayload']
@@ -28,6 +30,9 @@ export const prepareCounterpartContact = (
   };
 };
 
+/**
+ * Prepares the contact object for submission by converting the form fields to the API format.
+ */
 export const prepareCounterpartContactSubmit = ({
   firstName,
   lastName,
