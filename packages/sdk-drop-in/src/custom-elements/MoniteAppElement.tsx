@@ -7,14 +7,28 @@ import {
   MoniteAppElementBase,
   parseElementAttribute,
   SlotConfig,
-} from '@/custom-elements/MoniteAppElementBase.tsx';
+} from '@/custom-elements/MoniteAppElementBase';
+import { cleanupDelay, safeAsync, clearElement } from '@/lib/utils';
 import { APISchema } from '@monite/sdk-react';
+
+interface CleanupConfig {
+  executeCleanupHandlers?: boolean;
+  cleanupReactRoot?: boolean;
+  cleanupDOM?: boolean;
+}
 
 export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private reactAppRoot: Root | undefined;
   private styleTagId = 'monite-app-css-variables';
+  private cleanupHandlers: Set<() => void> = new Set();
+
+  private cleanupConfig: CleanupConfig = {
+    executeCleanupHandlers: true,
+    cleanupReactRoot: true,
+    cleanupDOM: true,
+  };
 
   /**
    * A record defining the types and allowed attributes that can be set on the element.
@@ -119,6 +133,46 @@ export class MoniteAppElement extends MoniteAppElementBase<
     | (() => Promise<APISchema.components['schemas']['AccessTokenResponse']>)
     | null = null;
 
+  public registerCleanupHandler(handler: () => void): () => void {
+    this.cleanupHandlers.add(handler);
+
+    return () => this.cleanupHandlers.delete(handler);
+  }
+
+  public configureCleanup(config: Partial<CleanupConfig>): void {
+    this.cleanupConfig = { ...this.cleanupConfig, ...config };
+  }
+
+  private executeCustomCleanupHandlers = safeAsync(async (): Promise<void> => {
+    this.cleanupHandlers.forEach((handler) => {
+      try {
+        handler();
+      } catch (error) {
+        console.warn('Error during custom cleanup handler execution:', error);
+      }
+    });
+
+    this.cleanupHandlers.clear();
+  }, 'Error during custom cleanup handlers execution');
+
+  private cleanupReactRootResources = safeAsync(async (): Promise<void> => {
+    if (!this.reactAppRoot) return;
+
+    this.reactAppRoot.render(null);
+    await cleanupDelay();
+
+    this.reactAppRoot.unmount();
+    this.reactAppRoot = undefined;
+  }, 'Error during React cleanup');
+
+  private cleanupDOMResources = safeAsync(async (): Promise<void> => {
+    const appRoot = this.root?.querySelector('#monite-app-root');
+    const stylesRoot = this.root?.querySelector('#monite-app-styles');
+
+    clearElement(appRoot, 'Error clearing app root');
+    clearElement(stylesRoot, 'Error clearing styles root');
+  }, 'Error during DOM cleanup');
+
   render() {
     if (!this.isMounted) return;
 
@@ -185,10 +239,17 @@ export class MoniteAppElement extends MoniteAppElementBase<
     );
   }
 
-  disconnectedCallback() {
-    if (this.reactAppRoot) {
-      this.reactAppRoot.unmount();
-      this.reactAppRoot = undefined;
+  async disconnectedCallback() {
+    if (this.cleanupConfig.executeCleanupHandlers) {
+      await this.executeCustomCleanupHandlers();
+    }
+
+    if (this.cleanupConfig.cleanupReactRoot) {
+      await this.cleanupReactRootResources();
+    }
+
+    if (this.cleanupConfig.cleanupDOM) {
+      await this.cleanupDOMResources();
     }
 
     super.disconnectedCallback();

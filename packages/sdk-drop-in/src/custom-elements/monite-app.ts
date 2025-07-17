@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import { WidgetType } from '@/apps/MoniteApp';
+import type { WidgetType } from '@/apps/MoniteApp';
 import type { APISchema, MoniteProvider } from '@monite/sdk-react';
 
 import {
