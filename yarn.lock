@@ -4550,15 +4550,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:~2.9.3":
-  version: 2.9.8
-  resolution: "@hookform/resolvers@npm:2.9.8"
-  peerDependencies:
-    react-hook-form: ^7.0.0
-  checksum: 10/a10b007a38fb3c44234d60ef23d541acbae0464101acb70c9e6f859c77cd25a3510201086d995ad3daddd4928c2d15ae03fbeb0c75cd4a86425907f7c918b7ee
-  languageName: node
-  linkType: hard
-
 "@hookform/resolvers@npm:~5.1.1":
   version: 5.1.1
   resolution: "@hookform/resolvers@npm:5.1.1"
@@ -9981,7 +9972,7 @@ __metadata:
   dependencies:
     "@emotion/react": "npm:~11.11.1"
     "@emotion/styled": "npm:~11.11.0"
-    "@hookform/resolvers": "npm:~2.9.3"
+    "@hookform/resolvers": "npm:~5.1.1"
     "@lingui/cli": "npm:~4.14.1"
     "@lingui/core": "npm:~4.14.1"
     "@lingui/macro": "npm:~4.14.1"
@@ -10010,7 +10001,7 @@ __metadata:
     node-fetch: "npm:~3.3.1"
     react: "npm:^18.1.0"
     react-dom: "npm:^18.1.0"
-    react-hook-form: "npm:~7.33.0"
+    react-hook-form: "npm:~7.59.0"
     react-router-dom: "npm:^6.3.0"
     react-use: "npm:^17.3.2"
     rimraf: "npm:~5.0.0"
@@ -24167,15 +24158,6 @@ __metadata:
     react: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
     react-dom: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
   checksum: 10/9a874b2f16b4624a72c4b766b096d693a382b9dc7f2264f802395852ae3435ccde8e9e47bbe45cf5f30eba70f8126af6aca832190e285b0096af3ecade994df1
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:~7.33.0":
-  version: 7.33.1
-  resolution: "react-hook-form@npm:7.33.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10/c99dd840012cd415d3400ea860bb7bc1a2bcd360f28682a628aac0af6327bca87dcace6d71213945f21df48e994b3f5a63a2f7dac27e064e4fec93bfc1840b24
   languageName: node
   linkType: hard
 
