@@ -1,7 +1,7 @@
 export abstract class MoniteAppElementBase<
   TSlot extends string
 > extends HTMLElement {
-  protected root: ShadowRoot | HTMLElement;
+  protected root: ShadowRoot;
   protected slotsData: { [key in TSlot]?: object } | undefined;
   protected isMounted = false;
 

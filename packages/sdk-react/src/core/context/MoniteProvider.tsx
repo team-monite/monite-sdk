@@ -44,6 +44,11 @@ export interface MoniteProviderProps {
    * Component settings
    */
   componentSettings?: Partial<ComponentSettings>;
+
+  /**
+   * Callback function that is called when the theme is mounted
+   */
+  onThemeMounted?: () => void;
 }
 
 export const MoniteProvider = ({
@@ -52,6 +57,7 @@ export const MoniteProvider = ({
   componentSettings,
   children,
   locale,
+  onThemeMounted,
 }: MoniteProviderProps) => {
   return (
     <MoniteContextProvider
@@ -61,7 +67,11 @@ export const MoniteProvider = ({
       componentSettings={componentSettings}
     >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
-        <MoniteThemeProvider>
+        <MoniteThemeProvider
+          onThemeMounted={() => {
+            onThemeMounted?.();
+          }}
+        >
           <ContainerCssBaseline enableColorScheme />
           <GlobalToast />
         </MoniteThemeProvider>

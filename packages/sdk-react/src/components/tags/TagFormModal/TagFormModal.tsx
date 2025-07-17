@@ -62,7 +62,7 @@ const getValidationSchema = (i18n: I18n) =>
 interface ITag {
   id: string;
   name: string;
-  category?: components['schemas']['ReceivableTagCategory'];
+  category?: components['schemas']['TagCategory'];
   keywords?: string[] | string;
 }
 
@@ -81,7 +81,7 @@ interface TagFormModalProps {
 
 interface FormFields {
   name: string;
-  category: components['schemas']['ReceivableTagCategory'] | '';
+  category: components['schemas']['TagCategory'] | '';
   keywords: components['schemas']['OcrAutoTaggingSettingsRequest']['keywords'];
 }
 

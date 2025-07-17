@@ -14,6 +14,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale' | 'component-settings'
 > {
   private reactAppRoot: Root | undefined;
+  private styleTagId = 'monite-app-css-variables';
 
   /**
    * A record defining the types and allowed attributes that can be set on the element.
@@ -173,9 +174,87 @@ export class MoniteAppElement extends MoniteAppElementBase<
             root: appRootNode,
             styles: stylesRootNode ?? undefined,
           }}
+          onMount={() => {
+            this.propagateStyles();
+          }}
+          onUnmount={() => {
+            this.removeStyles();
+          }}
         />
       </StrictMode>
     );
+  }
+
+  disconnectedCallback() {
+    if (this.reactAppRoot) {
+      this.reactAppRoot.unmount();
+      this.reactAppRoot = undefined;
+    }
+
+    super.disconnectedCallback();
+  }
+
+  public propagateStyles() {
+    requestAnimationFrame(() => {
+      if (!this.root) return;
+      const prefixes = ['--mtw-', '--rpv-'];
+
+      const cssVariables: Record<string, string> = {};
+
+      Array.from(this.root.styleSheets)
+        .filter(
+          (sheet) =>
+            sheet.href === null || sheet.href.startsWith(window.location.origin)
+        )
+        .forEach((sheet) => {
+          Array.from(sheet.cssRules).forEach((rule) => {
+            if (
+              rule instanceof CSSStyleRule &&
+              rule.selectorText === ':root, :host'
+            ) {
+              Array.from(rule.style)
+                .filter(
+                  (name) =>
+                    typeof name === 'string' &&
+                    prefixes.some((prefix) => name.startsWith(prefix))
+                )
+                .forEach((propertyName) => {
+                  const computedValue =
+                    rule.style.getPropertyValue(propertyName);
+
+                  if (computedValue) {
+                    cssVariables[propertyName] = computedValue;
+                  }
+                });
+            }
+          });
+        });
+
+      // Create or update style tag with CSS variables
+      let styleTag = document.getElementById(
+        this.styleTagId
+      ) as HTMLStyleElement;
+
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = this.styleTagId;
+        document.head.appendChild(styleTag);
+      }
+
+      // Build CSS rule with variables
+      const cssVariableDeclarations = Object.entries(cssVariables)
+        .map(([propertyName, value]) => `  ${propertyName}: ${value};`)
+        .join('\n');
+
+      styleTag.textContent = `:root, :host {\n${cssVariableDeclarations}\n}`;
+    });
+  }
+
+  public removeStyles() {
+    const styleTag = document.getElementById(this.styleTagId);
+    if (styleTag) {
+      styleTag.remove();
+    }
   }
 }
 
