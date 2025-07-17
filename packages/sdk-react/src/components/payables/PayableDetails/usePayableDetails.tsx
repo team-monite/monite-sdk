@@ -277,20 +277,6 @@ export function usePayableDetails({
   const createMutation = api.payables.postPayables.useMutation(
     {},
     {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.payables.getPayablesIdLineItems.invalidateQueries(
-            {
-              parameters: { path: { payable_id: payable.id } },
-            },
-            queryClient
-          ),
-        ]),
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -770,10 +756,20 @@ export function usePayableDetails({
       await Promise.all(lineItemsMutation);
     }
 
-    await api.payables.getPayablesId.invalidateQueries(
-      { parameters: { path: { payable_id: payable.id } } },
-      queryClient
-    );
+    // Invalidate queries BEFORE calling onSaved to ensure they happen while component is still mounted
+    await Promise.all([
+      api.payables.getPayablesId.invalidateQueries(
+        { parameters: { path: { payable_id: payable.id } } },
+        queryClient
+      ),
+      api.payables.getPayables.invalidateQueries(queryClient),
+      api.payables.getPayablesIdLineItems.invalidateQueries(
+        {
+          parameters: { path: { payable_id: payable.id } },
+        },
+        queryClient
+      ),
+    ]);
 
     setPayableId(payable.id);
 
