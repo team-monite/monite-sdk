@@ -1,10 +1,12 @@
 import {
-  CounterpartBankFields,
   prepareCounterpartBank,
   prepareCreateCounterpartBankAccount,
   prepareUpdateCounterpartBankAccount,
 } from './mapper';
-import { getValidationSchema } from './validation';
+import {
+  type CounterpartBankFormFields,
+  getBankValidationSchema,
+} from './validation';
 import {
   useCounterpartById,
   useCounterpartBankById,
@@ -43,8 +45,8 @@ export function useCounterpartBankForm({
   const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartBankFields>({
-    resolver: zodResolver(getValidationSchema(i18n)),
+  const methods = useForm<CounterpartBankFormFields>({
+    resolver: zodResolver(getBankValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 
@@ -54,7 +56,7 @@ export function useCounterpartBankForm({
   }, [methods.reset, bank, i18n]);
 
   const saveBank = useCallback(
-    (values: CounterpartBankFields) => {
+    (values: CounterpartBankFormFields) => {
       if (bank) {
         const mutateUpdateBank = updateBankMutation.mutate;
         mutateUpdateBank(
