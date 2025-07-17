@@ -372,14 +372,28 @@ export function usePayableDetails({
   );
   const submitMutation =
     api.payables.postPayablesIdSubmitForApproval.useMutation(undefined, {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-        ]),
+      onSuccess: (payable) => {
+        // Return a Promise that resolves after the delay and invalidations
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          // Needed because the server doesn't return the Payable Approval Policy ID immediately
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payable.id } } },
+                queryClient
+              ),
+              api.approvalRequests.getApprovalRequests.invalidateQueries(
+                queryClient
+              ),
+              api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -387,17 +401,36 @@ export function usePayableDetails({
 
   const rejectApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdReject.useMutation(undefined, {
-      onSuccess: () =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payableId ?? '' } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.approvalRequests.getApprovalRequests.invalidateQueries(
-            queryClient
-          ),
-        ]),
+      onSuccess: () => {
+        // Immediately manipulate the Payable in cache to show the new status
+        // Needed because the server doesn't return the new Payable status immediately
+        queryClient.setQueryData(
+          api.payables.getPayablesId.getQueryKey({
+            path: { payable_id: payableId ?? '' },
+          }),
+          {
+            ...payable,
+            status: 'rejected' as components['schemas']['PayableStateEnum'],
+          }
+        );
+
+        // Invalidate the approval requests cache to show the new status
+        api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
+
+        // Return a Promise that resolves after the delay and invalidations
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payableId ?? '' } } },
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -405,17 +438,37 @@ export function usePayableDetails({
 
   const approveApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdApprove.useMutation(undefined, {
-      onSuccess: () =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payableId ?? '' } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.approvalRequests.getApprovalRequests.invalidateQueries(
-            queryClient
-          ),
-        ]),
+      onSuccess: () => {
+        // Immediately manipulate the Payable in cache to show the new status
+        // Needed because the server doesn't return the new Payable status immediately
+        queryClient.setQueryData(
+          api.payables.getPayablesId.getQueryKey({
+            path: { payable_id: payableId ?? '' },
+          }),
+          {
+            ...payable,
+            status:
+              'waiting_to_be_paid' as components['schemas']['PayableStateEnum'],
+          }
+        );
+
+        // Invalidate the approval requests cache to show the new status
+        api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
+
+        // Return a Promise that resolves after the delay and invalidations
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payableId ?? '' } } },
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
