@@ -388,22 +388,11 @@ export function usePayableDetails({
   const rejectApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdReject.useMutation(undefined, {
       onSuccess: () => {
-        // Immediately manipulate the Payable in cache to show the new status
-        // Needed because the server doesn't return the new Payable status immediately
-        queryClient.setQueryData(
-          api.payables.getPayablesId.getQueryKey({
-            path: { payable_id: payableId ?? '' },
-          }),
-          {
-            ...payable,
-            status: 'rejected' as components['schemas']['PayableStateEnum'],
-          }
-        );
-
         // Invalidate the approval requests cache to show the new status
         api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
 
         // Return a Promise that resolves after the delay and invalidations
+        // Needed because the server doesn't return the updated Payable status immediately
         return new Promise<void>((resolve) => {
           // Delay before invalidating queries to allow server processing
           setTimeout(() => {
@@ -425,23 +414,11 @@ export function usePayableDetails({
   const approveApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdApprove.useMutation(undefined, {
       onSuccess: () => {
-        // Immediately manipulate the Payable in cache to show the new status
-        // Needed because the server doesn't return the new Payable status immediately
-        queryClient.setQueryData(
-          api.payables.getPayablesId.getQueryKey({
-            path: { payable_id: payableId ?? '' },
-          }),
-          {
-            ...payable,
-            status:
-              'waiting_to_be_paid' as components['schemas']['PayableStateEnum'],
-          }
-        );
-
         // Invalidate the approval requests cache to show the new status
         api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
 
         // Return a Promise that resolves after the delay and invalidations
+        // Needed because the server doesn't return the updated Payable status immediately
         return new Promise<void>((resolve) => {
           // Delay before invalidating queries to allow server processing
           setTimeout(() => {
