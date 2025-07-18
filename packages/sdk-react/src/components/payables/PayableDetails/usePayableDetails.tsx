@@ -1,15 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { FieldNamesMarkedBoolean } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
 import { components } from '@/api';
-import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import {
   LineItem,
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
+import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -22,6 +18,9 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldNamesMarkedBoolean } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 export type PayableDetailsPermissions =
   | 'edit'
@@ -277,20 +276,6 @@ export function usePayableDetails({
   const createMutation = api.payables.postPayables.useMutation(
     {},
     {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.payables.getPayablesIdLineItems.invalidateQueries(
-            {
-              parameters: { path: { payable_id: payable.id } },
-            },
-            queryClient
-          ),
-        ]),
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -372,14 +357,28 @@ export function usePayableDetails({
   );
   const submitMutation =
     api.payables.postPayablesIdSubmitForApproval.useMutation(undefined, {
-      onSuccess: (payable) =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payable.id } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-        ]),
+      onSuccess: (payable) => {
+        // Return a Promise that resolves after the delay and invalidations
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          // Needed because the server doesn't return the Payable Approval Policy ID immediately
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payable.id } } },
+                queryClient
+              ),
+              api.approvalRequests.getApprovalRequests.invalidateQueries(
+                queryClient
+              ),
+              api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -387,17 +386,25 @@ export function usePayableDetails({
 
   const rejectApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdReject.useMutation(undefined, {
-      onSuccess: () =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payableId ?? '' } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.approvalRequests.getApprovalRequests.invalidateQueries(
-            queryClient
-          ),
-        ]),
+      onSuccess: () => {
+        // Invalidate the approval requests cache to show the new status
+        api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
+
+        // Return a Promise that resolves after the delay and invalidations
+        // Needed because the server doesn't return the updated Payable status immediately
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payableId ?? '' } } },
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -405,17 +412,25 @@ export function usePayableDetails({
 
   const approveApprovalRequestMutation =
     api.approvalRequests.postApprovalRequestsIdApprove.useMutation(undefined, {
-      onSuccess: () =>
-        Promise.all([
-          api.payables.getPayablesId.invalidateQueries(
-            { parameters: { path: { payable_id: payableId ?? '' } } },
-            queryClient
-          ),
-          api.payables.getPayables.invalidateQueries(queryClient),
-          api.approvalRequests.getApprovalRequests.invalidateQueries(
-            queryClient
-          ),
-        ]),
+      onSuccess: () => {
+        // Invalidate the approval requests cache to show the new status
+        api.approvalRequests.getApprovalRequests.invalidateQueries(queryClient);
+
+        // Return a Promise that resolves after the delay and invalidations
+        // Needed because the server doesn't return the updated Payable status immediately
+        return new Promise<void>((resolve) => {
+          // Delay before invalidating queries to allow server processing
+          setTimeout(() => {
+            Promise.all([
+              api.payables.getPayablesId.invalidateQueries(
+                { parameters: { path: { payable_id: payableId ?? '' } } },
+                queryClient
+              ),
+              api.payables.getPayables.invalidateQueries(queryClient),
+            ]).then(() => resolve());
+          }, 500);
+        });
+      },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
@@ -717,10 +732,20 @@ export function usePayableDetails({
       await Promise.all(lineItemsMutation);
     }
 
-    await api.payables.getPayablesId.invalidateQueries(
-      { parameters: { path: { payable_id: payable.id } } },
-      queryClient
-    );
+    // Invalidate queries BEFORE calling onSaved to ensure they happen while component is still mounted
+    await Promise.all([
+      api.payables.getPayablesId.invalidateQueries(
+        { parameters: { path: { payable_id: payable.id } } },
+        queryClient
+      ),
+      api.payables.getPayables.invalidateQueries(queryClient),
+      api.payables.getPayablesIdLineItems.invalidateQueries(
+        {
+          parameters: { path: { payable_id: payable.id } },
+        },
+        queryClient
+      ),
+    ]);
 
     setPayableId(payable.id);
 

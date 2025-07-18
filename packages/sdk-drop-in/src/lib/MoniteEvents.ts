@@ -3,13 +3,13 @@
  *
  * This module provides a centralized way to define, emit, and handle Monite events.
  */
+import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
+import { generateId } from './utils';
 import { APISchema } from '@monite/sdk-react';
 import type {
   ComponentSettings,
   MoniteReceivablesTableProps,
 } from '@monite/sdk-react';
-
-import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
 
 type ReceivableResponseType =
   | APISchema.components['schemas']['InvoiceResponsePayload']
@@ -79,7 +79,7 @@ export function emitMoniteEvent<T extends EventPayload>(
     `${MONITE_EVENT_PREFIX}:${type}`,
     {
       detail: {
-        id: generateEventId(),
+        id: generateId(),
         type,
         payload,
       },
@@ -329,16 +329,3 @@ export function getMoniteAppEventTarget(): Element | Document {
 
   return document;
 }
-
-function generateEventId(): string {
-  if (
-    typeof crypto !== 'undefined' &&
-    typeof crypto.randomUUID === 'function'
-  ) {
-    return crypto.randomUUID();
-  }
-
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-}
-
-export { generateEventId };
