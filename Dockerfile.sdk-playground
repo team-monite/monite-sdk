@@ -1,0 +1,16 @@
+FROM cimg/node:20.12.2
+
+USER root
+
+RUN groupadd -g 1000 app && \
+    useradd -m -u 1000 -g app -s /bin/bash app
+
+WORKDIR /app
+
+COPY . /app
+RUN chown -R app:app /app
+
+USER app
+
+RUN yarn install --immutable
+RUN yarn build --filter='sdk-playground'

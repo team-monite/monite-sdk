@@ -134,12 +134,14 @@ jobs:
           SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
           SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
+          SDK_PLAYGROUND_NGINX="sdk-playground-nginx-${{ github.sha }}"
           NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
           echo "normalized_branch_name=$NORMALIZED_GITHUB_BRANCH" >> "$GITHUB_OUTPUT"
 
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
           echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
+          echo "sdk-playground-nginx = $SDK_PLAYGROUND_NGINX"
           echo "$NORMALIZED_GITHUB_BRANCH"
 
           RESPONSE=$(curl --request POST \
@@ -149,6 +151,7 @@ jobs:
             --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
             --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
+            --form "variables[SDK_PLAYGROUND_NGINX]=${SDK_PLAYGROUND_NGINX}" \
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
             --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
@@ -170,6 +173,7 @@ jobs:
           message: |
             🚀 **Preview URLs are now available!** 🚀            
             - [SDK Demo](https://sdk-demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
+            - [SDK Playground](https://sdk-playground-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
             - [SDK Drop in](https://cdn-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
             - [SDK with NextJS](https://demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
           comment-tag: preview-comment

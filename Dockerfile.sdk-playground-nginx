@@ -1,0 +1,10 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} as base
+
+FROM nginx:1.25.1
+
+RUN ln -snf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && echo "Europe/Berlin" > /etc/timezone
+
+WORKDIR /app
+
+COPY --from=base /app/packages/sdk-playground/dist /app

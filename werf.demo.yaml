@@ -17,3 +17,16 @@ dependencies:
   imports:
   - type: ImageName
     targetBuildArg: BASE_IMAGE
+---
+image: sdk-playground
+dockerfile: ./Dockerfile.sdk-playground
+context: .
+---
+image: sdk-playground-nginx
+dockerfile: ./Dockerfile.sdk-playground-nginx
+context: .
+dependencies:
+- image: sdk-playground
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE
