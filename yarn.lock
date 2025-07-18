@@ -6038,8 +6038,6 @@ __metadata:
     "@types/deep-eql": "npm:~4.0.2"
     "@types/identity-obj-proxy": "npm:^3"
     "@types/jest": "npm:~29.5.11"
-    "@types/lodash": "npm:~4.17.16"
-    "@types/pdfobject": "npm:~2.2.5"
     babel-plugin-macros: "npm:~3.1.0"
     chroma-js: "npm:~3.1.2"
     class-variance-authority: "npm:~0.7.1"
@@ -6049,7 +6047,6 @@ __metadata:
     cross-env: "npm:^7.0.3"
     date-fns: "npm:^2.28.0"
     deep-eql: "npm:~4.1.3"
-    deepmerge: "npm:~4.3.1"
     eslint: "npm:~8.57.0"
     i18next: "npm:~21.8.10"
     ibantools: "npm:~4.2.2"
@@ -6065,7 +6062,6 @@ __metadata:
     msw: "npm:~2.4.11"
     msw-storybook-addon: "npm:~2.0.0"
     pdfjs-dist: "npm:3.4.120"
-    pdfobject: "npm:~2.3.0"
     prettier: "npm:^3.0.0"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
@@ -11541,13 +11537,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:~4.17.16":
-  version: 4.17.20
-  resolution: "@types/lodash@npm:4.17.20"
-  checksum: 10/8cd8ad3bd78d2e06a93ae8d6c9907981d5673655fec7cb274a4d9a59549aab5bb5b3017361280773b8990ddfccf363e14d1b37c97af8a9fe363de677f9a61524
-  languageName: node
-  linkType: hard
-
 "@types/mdast@npm:^4.0.0":
   version: 4.0.4
   resolution: "@types/mdast@npm:4.0.4"
@@ -11670,13 +11659,6 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: 10/4df9de98150d2978afc2161482a3a8e6617883effba3223324f079de97ba7eabd7d84b90ced11c3f82b0c08d4a8383f678c9f73e9c41258f769b3fa234a2bb4f
-  languageName: node
-  linkType: hard
-
-"@types/pdfobject@npm:~2.2.5":
-  version: 2.2.5
-  resolution: "@types/pdfobject@npm:2.2.5"
-  checksum: 10/1c97afc15c70074fa7122bd570fb595110370b55d2111f3282119a4a9ff688d4cadaf304eb245978a5e3ecd013e9f9644ada22d63dccdd4755d0834acc36fd04
   languageName: node
   linkType: hard
 
@@ -24519,13 +24501,6 @@ __metadata:
     canvas:
       optional: true
   checksum: 10/60730f0136ae1340ac8d4ffc97b20d0ba1eeab0071f4afcac8b69ae0462a1e0525f8385ef2149288f28833b7026ad988f4c697b4c27d5ebecf919c84a92a8601
-  languageName: node
-  linkType: hard
-
-"pdfobject@npm:~2.3.0":
-  version: 2.3.1
-  resolution: "pdfobject@npm:2.3.1"
-  checksum: 10/d771805b361ff14eb41d2a1b68f62e7eb9c084be65971ea9790d45841d9d47c0d0b0654ca4d44207725c2a7f52e07077fa33d714b852fc5db9e9471bd8f71fe5
   languageName: node
   linkType: hard
 

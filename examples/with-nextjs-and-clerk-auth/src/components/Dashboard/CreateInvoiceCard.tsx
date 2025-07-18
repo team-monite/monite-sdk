@@ -1,10 +1,8 @@
-import React from 'react';
-
-import { ArrowForward } from '@mui/icons-material';
-import { Box, Link } from '@mui/material';
-
 import DashboardCard from '@/components/DashboardCard';
 import { IconReceipt } from '@/icons';
+import { ArrowForward } from '@mui/icons-material';
+import { Box, Link } from '@mui/material';
+import React from 'react';
 
 export const CreateInvoiceCard = () => {
   return (

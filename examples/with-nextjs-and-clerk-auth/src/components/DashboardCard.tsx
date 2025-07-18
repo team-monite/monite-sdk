@@ -1,6 +1,5 @@
-import { CSSProperties, ReactNode } from 'react';
-
 import { Card, CardHeader, CardContent, SvgIconProps } from '@mui/material';
+import { CSSProperties, ReactNode } from 'react';
 
 type IconVariant = 'info' | 'success' | 'critical';
 

@@ -1,0 +1,11 @@
+build
+coverage
+dist
+.next
+node_modules
+*.yaml
+*.md
+.lock
+.yarn
+**/*.mjs
+**/tsconfig.json 

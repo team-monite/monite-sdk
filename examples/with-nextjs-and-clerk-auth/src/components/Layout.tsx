@@ -1,11 +1,9 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-
-import { Box, Drawer } from '@mui/material';
-
 import { NavigationList } from '@/components/NavigationMenu';
 import { UserMenu } from '@/components/UserMenu';
+import { Box, Drawer } from '@mui/material';
+import React, { ReactNode } from 'react';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (

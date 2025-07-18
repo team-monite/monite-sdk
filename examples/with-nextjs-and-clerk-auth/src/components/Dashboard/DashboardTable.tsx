@@ -1,5 +1,3 @@
-import React, { ReactNode } from 'react';
-
 import {
   Table,
   TableBody,
@@ -8,6 +6,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import React, { ReactNode } from 'react';
 
 export const DashboardTable = ({ children }: { children: ReactNode }) => {
   return (

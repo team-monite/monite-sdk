@@ -1,15 +1,7 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-} from 'react';
-
+import { MoniteSettings } from './MoniteProvider';
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import type { ComponentSettings } from '@/core/componentSettings';
-import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
   getLocaleWithDefaults,
@@ -17,6 +9,7 @@ import {
   MoniteLocaleWithRequired,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
+import { createQueryClient } from '@/core/context/createQueryClient';
 import { useIsMounted } from '@/core/hooks';
 import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
@@ -25,10 +18,14 @@ import type { I18n } from '@lingui/core';
 import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
-
 import type { Locale as DateFnsLocale } from 'date-fns';
-
-import { MoniteSettings } from './MoniteProvider';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 
 interface MoniteContextBaseValue {
   locale: MoniteLocaleWithRequired;

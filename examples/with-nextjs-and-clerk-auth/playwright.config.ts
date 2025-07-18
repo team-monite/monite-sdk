@@ -1,8 +1,7 @@
+import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-import { defineConfig, devices } from '@playwright/test';
 
 // Get the directory name in ESM
 const __filename = fileURLToPath(import.meta.url);

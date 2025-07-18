@@ -1,10 +1,9 @@
+import { components, paths } from './schema';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
-
-import { components, paths } from './schema';
 
 export const createEntity = async (
   entity: paths['/entities']['post']['requestBody']['content']['application/json'],

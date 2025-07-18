@@ -1,8 +1,9 @@
-import createClient from 'openapi-fetch';
-import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' with { type: 'json' };
-
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { paths } from '@/lib/monite-api/schema';
+import createClient from 'openapi-fetch';
+
+// Import the package.json file and extract the API version
+const apiPackage = require('sdk-demo-with-nextjs-and-clerk-auth/package.json');
 
 const apiVersion = apiPackage.apiVersion;
 

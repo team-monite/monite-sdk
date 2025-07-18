@@ -1,5 +1,9 @@
+import DashboardCard from '@/components/DashboardCard';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { IconChart } from '@/icons';
+import { useMoniteContext } from '@monite/sdk-react';
 import React, { useMemo } from 'react';
-
 import {
   Area,
   Bar,
@@ -12,13 +16,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { useMoniteContext } from '@monite/sdk-react';
-
-import DashboardCard from '@/components/DashboardCard';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { IconChart } from '@/icons';
 
 export const CashFlowCard = () => {
   const { api, entityId } = useMoniteContext();

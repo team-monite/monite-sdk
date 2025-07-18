@@ -1,13 +1,5 @@
 'use client';
 
-import React, {
-  ChangeEvent,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-
 import { useLingui } from '@lingui/react';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
@@ -50,6 +42,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 /* eslint-disable */
 
@@ -344,7 +343,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
 
   const counterpartName = counterpart
     ? getCounterpartName(counterpart)
-    : payable?.counterpart_raw_data?.name ?? '';
+    : (payable?.counterpart_raw_data?.name ?? '');
 
   return (
     <>
