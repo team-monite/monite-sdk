@@ -1,6 +1,5 @@
-import { ReactNode } from 'react';
-
 import { Box, SxProps, SvgIconProps, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface EmptyStateProps {
   children: ReactNode;

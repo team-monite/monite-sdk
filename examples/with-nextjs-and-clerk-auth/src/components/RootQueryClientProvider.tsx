@@ -1,8 +1,7 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactNode, useState } from 'react';
 
 /**
  * Provides the QueryClient to the Root Application's TansTack Query Hooks.

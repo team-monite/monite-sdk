@@ -11,7 +11,10 @@ describe('permissionsAdapter()', () => {
           create: 'allowed',
           update: 'allowed',
         },
-      } satisfies Pick<Parameters<typeof permissionsAdapter>[number], 'role'> as never)
+      } satisfies Pick<
+        Parameters<typeof permissionsAdapter>[number],
+        'role'
+      > as never)
     ).toEqual({
       objects: [
         {

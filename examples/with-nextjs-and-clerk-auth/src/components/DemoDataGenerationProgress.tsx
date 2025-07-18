@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { usePrevious } from 'react-use';
-
-import { useSearchParams } from 'next/navigation';
-
 import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { usePrevious } from 'react-use';
 
 export const DemoDataGenerationProgress = () => {
   const displayDemoDataGenerationProgress = useSearchParams().has(

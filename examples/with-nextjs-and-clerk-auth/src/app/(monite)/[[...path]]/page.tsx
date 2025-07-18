@@ -1,15 +1,13 @@
 'use client';
 
-import React from 'react';
-
-import { useUser } from '@clerk/nextjs';
-import { useMoniteContext } from '@monite/sdk-react';
-import { Box, Stack, Skeleton } from '@mui/material';
-
 import { CashFlowCard } from '@/components/Dashboard/Cashflow';
 import { CreateInvoiceCard } from '@/components/Dashboard/CreateInvoiceCard';
 import { DuePayablesCard } from '@/components/Dashboard/DuePayables';
 import { OutstandingInvoicesCard } from '@/components/Dashboard/OutstandingInvoices';
+import { useUser } from '@clerk/nextjs';
+import { useMoniteContext } from '@monite/sdk-react';
+import { Box, Stack, Skeleton } from '@mui/material';
+import React from 'react';
 
 export default function DefaultPage() {
   const { api } = useMoniteContext();
