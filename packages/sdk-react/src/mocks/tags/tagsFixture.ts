@@ -127,5 +127,5 @@ export const tagListFixture: components['schemas']['TagReadSchema'][] = [
   ...tag,
   category: tagCategories[
     getRandomNumber(0, tagCategories.length - 1)
-  ] as components['schemas']['ReceivableTagCategory'],
+  ] as components['schemas']['TagCategory'],
 }));

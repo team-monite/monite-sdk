@@ -8,30 +8,24 @@ import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyD
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
   NAMED_VALUES,
-  NamedValue,
   OPERATOR_OPERATIONS,
-  OperatorOperation,
 } from '@/components/approvalPolicies/triggerUtils';
 import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
-import {
-  useApprovalPolicyTrigger,
-  AmountTuple,
-} from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import {
-  CounterpartAutocomplete,
-  CounterpartsAutocompleteOptionProps,
-} from '@/components/counterparts/components';
+import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { MoniteCurrency } from '@/ui/Currency';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { I18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -44,7 +38,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
@@ -65,38 +59,80 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
-type FormTriggerKey = Exclude<NamedValue, 'tags.id'> | 'tags';
-
-export interface FormValues {
-  name: string;
-  description: string;
-
-  triggerType: FormTriggerKey | null;
-  triggers: {
-    was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
-    tags?: components['schemas']['TagReadSchema'][];
-    counterpart_id?: CounterpartsAutocompleteOptionProps[];
-    amount?: {
-      currency: components['schemas']['CurrencyEnum'];
-      value: AmountTuple[];
-    };
-  };
-  amountOperator?: OperatorOperation;
-  amountValue?: string | number;
-  amountRangeLeftValue?: string | number;
-  amountRangeRightValue?: string | number;
-  amountCurrency?: components['schemas']['CurrencyEnum'];
-
-  scriptType: ApprovalPolicyScriptType | null;
-  rules: {
-    single_user?: components['schemas']['EntityUserResponse'];
-    users_from_list?: components['schemas']['EntityUserResponse'][];
-    roles_from_list?: components['schemas']['RoleResponse'][];
-    approval_chain?: components['schemas']['EntityUserResponse'][];
-  };
-  usersFromListCount?: string | number;
-  rolesFromListCount?: string | number;
-}
+const getApprovalPolicyValidationSchema = (i18n: I18n) =>
+  z.object({
+    name: z.string().min(1, t(i18n)`Policy name is required`),
+    description: z.string().min(1, t(i18n)`Description is required`),
+    triggerType: z
+      .union([
+        z.literal('was_created_by_user_id'),
+        z.literal('counterpart_id'),
+        z.literal('amount'),
+        z.literal('currency'),
+        z.literal('tags'),
+      ])
+      .nullable(),
+    triggers: z.object({
+      was_created_by_user_id: z.array(z.any()).optional(),
+      tags: z.array(z.any()).optional(),
+      counterpart_id: z.array(z.any()).optional(),
+      amount: z
+        .object({
+          currency: z.enum(CurrencyEnum),
+          value: z.array(z.any()),
+        })
+        .optional(),
+    }),
+    amountOperator: z
+      .union([
+        z.literal('range'),
+        z.literal('in'),
+        z.literal('=='),
+        z.literal('<'),
+        z.literal('<='),
+        z.literal('>'),
+        z.literal('>='),
+      ])
+      .optional(),
+    amountValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeLeftValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeRightValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountCurrency: z.enum(CurrencyEnum).optional(),
+    scriptType: z
+      .union([
+        z.literal('single_user'),
+        z.literal('users_from_list'),
+        z.literal('roles_from_list'),
+        z.literal('approval_chain'),
+      ])
+      .nullable(),
+    rules: z.object({
+      single_user: z.any().optional(),
+      users_from_list: z.array(z.any()).optional(),
+      roles_from_list: z.array(z.any()).optional(),
+      approval_chain: z.array(z.any()).optional(),
+    }),
+    usersFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+    rolesFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+  });
+export type FormValues = z.infer<
+  ReturnType<typeof getApprovalPolicyValidationSchema>
+>;
 
 /**
  * Builds the approval policy payload from form values
@@ -268,9 +304,8 @@ export const ApprovalPolicyForm = ({
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
-  const [triggerInEdit, setTriggerInEdit] = useState<FormTriggerKey | null>(
-    null
-  );
+  const [triggerInEdit, setTriggerInEdit] =
+    useState<FormValues['triggerType']>(null);
 
   const [prevFormValues, setPrevFormValues] =
     useState<Partial<FormValues> | null>(null);
@@ -437,31 +472,8 @@ export const ApprovalPolicyForm = ({
     return response;
   };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(t(i18n)`Policy name is required`),
-    description: yup.string().required(t(i18n)`Description is required`),
-    amountValue: yup
-      .number()
-      .typeError(t(i18n)`Amount must be a number`)
-      .transform((value, originalValue) =>
-        originalValue === '' ? null : value
-      )
-      .positive(t(i18n)`Amount must be a positive number`)
-      .nullable(),
-    usersFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
-      .nullable(),
-    rolesFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
-      .nullable(),
-  });
-
   const methods = useForm<FormValues>({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(getApprovalPolicyValidationSchema(i18n)),
     mode: 'onChange',
     defaultValues: {
       name: approvalPolicy?.name || '',
@@ -473,8 +485,8 @@ export const ApprovalPolicyForm = ({
       amountCurrency: undefined,
       amountRangeLeftValue: undefined,
       amountRangeRightValue: undefined,
-      usersFromListCount: undefined,
-      rolesFromListCount: undefined,
+      usersFromListCount: 1,
+      rolesFromListCount: 1,
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
@@ -488,6 +500,8 @@ export const ApprovalPolicyForm = ({
     currentAmountCurrency,
     currentTriggerType,
     currentScriptType,
+    currentUsersFromListCount,
+    currentRolesFromListCount,
   ] = watch([
     'triggers',
     'rules',
@@ -498,6 +512,8 @@ export const ApprovalPolicyForm = ({
     'amountCurrency',
     'triggerType',
     'scriptType',
+    'usersFromListCount',
+    'rolesFromListCount',
   ]);
 
   // setup default values for conditions and rules
@@ -728,7 +744,7 @@ export const ApprovalPolicyForm = ({
         'rules.users_from_list',
         prevFormValues?.rules?.users_from_list || undefined
       );
-      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 0);
+      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'roles_from_list') {
@@ -736,7 +752,7 @@ export const ApprovalPolicyForm = ({
         'rules.roles_from_list',
         prevFormValues?.rules?.roles_from_list || undefined
       );
-      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 0);
+      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'approval_chain') {
@@ -992,6 +1008,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="usersFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
@@ -1008,6 +1026,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="rolesFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
@@ -1102,6 +1122,8 @@ export const ApprovalPolicyForm = ({
                       </Typography>
                       <RulesTable
                         rules={currentRules}
+                        usersFromListCount={currentUsersFromListCount}
+                        rolesFromListCount={currentRolesFromListCount}
                         onAddRule={() => {
                           setIsAddingRule(true);
                           setPrevFormValues({

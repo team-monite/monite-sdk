@@ -23,6 +23,7 @@ export enum TableTabEnum {
   ApprovalPolicies,
 }
 
+// TODO: Check if this component is still needed
 export const RolesAndPoliciesTable = (props: RolesAndPoliciesTableProps) => (
   <MoniteScopedProviders>
     <RolesAndPoliciesTableBase {...props} />

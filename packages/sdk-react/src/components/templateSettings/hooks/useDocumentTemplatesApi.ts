@@ -19,13 +19,29 @@ export const useDocumentTemplatesApi = () => {
     );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
-    const filtered =
+    let filtered: components['schemas']['TemplateReceivableResponse'][] = [];
+    filtered =
       documentTemplates?.data?.filter((template) =>
         ['invoice', 'receivable'].includes(template.document_type)
       ) || [];
 
+    if (
+      componentSettings?.templateSettings?.availableTemplateIds &&
+      componentSettings?.templateSettings?.availableTemplateIds?.length > 0
+    ) {
+      filtered = filtered.filter(
+        (template) =>
+          componentSettings?.templateSettings?.availableTemplateIds?.includes(
+            template?.id
+          ) || template.is_default
+      );
+    }
+
     return [filtered, filtered.find((template) => template.is_default)];
-  }, [documentTemplates]);
+  }, [
+    documentTemplates,
+    componentSettings?.templateSettings?.availableTemplateIds,
+  ]);
 
   const updateMutation =
     api.documentTemplates.postDocumentTemplatesIdMakeDefault.useMutation(

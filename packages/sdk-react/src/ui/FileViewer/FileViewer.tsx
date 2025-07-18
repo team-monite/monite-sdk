@@ -2,23 +2,19 @@ import { useRef } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+// react-pdf-viewer styles are imported in app.css to avoid conflicts when using Dropin
 import {
   Worker,
   Viewer,
   ScrollMode,
   SpecialZoomLevel,
 } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
 import { getFilePlugin } from '@react-pdf-viewer/get-file';
 import {
   pageNavigationPlugin,
   RenderCurrentPageLabelProps,
 } from '@react-pdf-viewer/page-navigation';
-import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
-import '@react-pdf-viewer/zoom/lib/styles/index.css';
-
-import './FileViewer.css';
 
 interface FileViewerProps {
   url: string;

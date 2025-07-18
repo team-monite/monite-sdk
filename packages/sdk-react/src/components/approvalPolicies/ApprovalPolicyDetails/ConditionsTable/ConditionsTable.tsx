@@ -1,6 +1,8 @@
 import { ReactNode, useMemo } from 'react';
 
+import { components } from '@/api';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
+import { CounterpartsAutocompleteOptionProps } from '@/components/counterparts/components';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -20,15 +22,24 @@ import {
 
 import {
   useApprovalPolicyTrigger,
-  ParsedTriggers,
+  AmountTuple,
 } from '../../useApprovalPolicyTrigger';
-import { FormValues } from '../ApprovalPolicyForm';
+
+type Triggers = {
+  was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
+  tags?: components['schemas']['TagReadSchema'][];
+  counterpart_id?: CounterpartsAutocompleteOptionProps[];
+  amount?: {
+    currency: components['schemas']['CurrencyEnum'];
+    value: AmountTuple[];
+  };
+};
 
 interface ConditionsTableProps {
-  triggers: FormValues['triggers'];
+  triggers: Triggers;
   onAddTrigger: () => void;
-  onEditTrigger: (triggerKey: keyof FormValues['triggers']) => void;
-  onDeleteTrigger: (triggerKey: keyof FormValues['triggers']) => void;
+  onEditTrigger: (triggerKey: keyof Triggers) => void;
+  onDeleteTrigger: (triggerKey: keyof Triggers) => void;
 }
 
 export const ConditionsTable = ({
@@ -41,7 +52,7 @@ export const ConditionsTable = ({
   const { getTriggerLabel, getAmountLabel } = useApprovalPolicyTrigger({});
 
   const triggersList = useMemo(() => {
-    return (Object.keys(triggers) as Array<keyof ParsedTriggers>).map(
+    return (Object.keys(triggers) as Array<keyof Triggers>).map(
       (triggerKey) => {
         const triggerLabel = getTriggerLabel(triggerKey);
         let triggerValue: ReactNode;

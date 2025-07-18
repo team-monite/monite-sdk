@@ -9,6 +9,7 @@ import {
   BankAccountSection,
   RemindersSection,
   CustomerSection,
+  EntityProfileModal,
 } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -32,7 +33,7 @@ import {
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -120,7 +121,7 @@ const CreateReceivablesBase = ({
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(
+    resolver: zodResolver(
       getCreateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
@@ -275,7 +276,8 @@ const CreateReceivablesBase = ({
         product: {
           name: item.product.name,
           price: {
-            currency: item.product.price.currency,
+            currency: item.product.price
+              .currency as components['schemas']['CurrencyEnum'],
             value: item.product.price.value,
           },
           measure_unit: item.product.measure_unit_id
@@ -323,7 +325,7 @@ const CreateReceivablesBase = ({
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
-    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
         items: [],
@@ -338,6 +340,8 @@ const CreateReceivablesBase = ({
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
   const [isEditTemplateModalOpen, setIsEditTemplateModalOpen] = useState(false);
+  const [isMyEntityProfileModalOpen, setIsMyEntityProfileModalOpen] =
+    useState(false);
 
   const handleFieldChange = (fieldName: string, value: boolean) => {
     setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
@@ -496,6 +500,11 @@ const CreateReceivablesBase = ({
                     onClick={() => setIsEnableFieldsModalOpen(true)}
                   >
                     <Typography>{t(i18n)`Enable more fields`}</Typography>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsMyEntityProfileModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`My entity profile`}</Typography>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -805,6 +814,26 @@ const CreateReceivablesBase = ({
                     </Alert>
                   )}
 
+                  {Boolean(formState?.errors?.entity_vat_id_id) && (
+                    <Alert severity="error" sx={{ mb: 5 }}>
+                      <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+                        <span>
+                          {t(
+                            i18n
+                          )`Add your entity's tax registration number to issue invoice`}
+                        </span>
+
+                        <button
+                          className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+                          type="button"
+                          onClick={() => setIsMyEntityProfileModalOpen(true)}
+                        >
+                          {t(i18n)`Edit my entity profile`}
+                        </button>
+                      </div>
+                    </Alert>
+                  )}
+
                   <CustomerSection
                     disabled={createReceivable.isPending}
                     customerTypes={customerTypes}
@@ -921,6 +950,13 @@ const CreateReceivablesBase = ({
           isDialog
           isOpen={isEditTemplateModalOpen}
           handleCloseDialog={() => setIsEditTemplateModalOpen(false)}
+        />
+      )}
+
+      {isMyEntityProfileModalOpen && (
+        <EntityProfileModal
+          open={isMyEntityProfileModalOpen}
+          onClose={() => setIsMyEntityProfileModalOpen(false)}
         />
       )}
 

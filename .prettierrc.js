@@ -6,4 +6,5 @@ module.exports = {
   importOrderSeparation: true,
   importOrder: ['^react(.*)$', '^@(.*)$', '<THIRD_PARTY_MODULES>', '^[./]'],
   importOrderParserPlugins: ['importAssertions', 'typescript', 'jsx'],
+  plugins: ['@trivago/prettier-plugin-sort-imports'],
 };

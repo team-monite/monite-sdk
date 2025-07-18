@@ -2,7 +2,6 @@ import { FieldValue, FieldValues } from 'react-hook-form';
 
 import { components } from '@/api';
 import {
-  getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
@@ -13,6 +12,7 @@ import {
 } from '@/components/payables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
+import { getIndividualName } from '@/core/utils';
 
 import { format } from 'date-fns';
 
