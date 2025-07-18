@@ -1,5 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
+import { components } from '@/api/schema';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -16,21 +17,24 @@ import {
   TableRow,
 } from '@mui/material';
 
-import {
-  type Rules,
-  useApprovalPolicyScript,
-} from '../../useApprovalPolicyScript';
-import { FormValues } from '../ApprovalPolicyForm';
+import { useApprovalPolicyScript } from '../../useApprovalPolicyScript';
 import { Role } from '../ApprovalPolicyView/Role';
 import { User } from '../ApprovalPolicyView/User';
 
+type Rule = {
+  single_user?: components['schemas']['EntityUserResponse'];
+  users_from_list?: components['schemas']['EntityUserResponse'][];
+  roles_from_list?: components['schemas']['RoleResponse'][];
+  approval_chain?: components['schemas']['EntityUserResponse'][];
+};
+
 interface RulesTableProps {
-  rules: FormValues['rules'];
+  rules: Rule;
   usersFromListCount?: string | number;
   rolesFromListCount?: string | number;
   onAddRule: () => void;
-  onEditRule: (ruleKey: keyof FormValues['rules']) => void;
-  onDeleteRule: (ruleKey: keyof FormValues['rules']) => void;
+  onEditRule: (ruleKey: keyof Rule) => void;
+  onDeleteRule: (ruleKey: keyof Rule) => void;
 }
 
 export const RulesTable = ({
@@ -45,7 +49,7 @@ export const RulesTable = ({
   const { getRuleLabel } = useApprovalPolicyScript({});
 
   const rulesList = useMemo(() => {
-    return (Object.keys(rules) as Array<keyof Rules>).map((ruleKey) => {
+    return (Object.keys(rules) as Array<keyof Rule>).map((ruleKey) => {
       let ruleLabel: string | undefined;
       let ruleValue: ReactNode;
 
