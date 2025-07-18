@@ -1,5 +1,5 @@
 import createClient from 'openapi-fetch';
-import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' assert { type: 'json' };
+import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' with { type: 'json' };
 
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { paths } from '@/lib/monite-api/schema';
