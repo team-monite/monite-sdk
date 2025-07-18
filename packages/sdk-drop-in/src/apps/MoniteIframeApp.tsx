@@ -1,6 +1,3 @@
-import { ComponentProps, Suspense, useMemo } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 import { AppCircularProgress } from '@/lib/AppCircularProgress';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { DropInMoniteProvider } from '@/lib/DropInMoniteProvider';
@@ -11,6 +8,8 @@ import { type APISchema } from '@monite/sdk-react';
 import { CssBaseline } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EntityIdLoader, SDKDemoAPIProvider } from '@team-monite/sdk-demo';
+import { ComponentProps, Suspense, useMemo } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export const MoniteIframeApp = () => {
   const queryClient = useMemo(() => new QueryClient(), []);

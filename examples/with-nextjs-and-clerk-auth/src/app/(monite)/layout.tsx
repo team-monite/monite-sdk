@@ -1,10 +1,9 @@
-import { ReactNode } from 'react';
-
 import { Layout } from '@/components/Layout';
 import { MoniteProvider } from '@/components/MoniteComponents';
 import { NoAccountEntity } from '@/components/NoAccountEntity';
 import { getCurrentUserEntity } from '@/lib/clerk-api/get-current-user-entity';
 import { getMoniteApiUrl } from '@/lib/monite-api/monite-client';
+import { ReactNode } from 'react';
 
 export default async function MoniteLayout({
   children,

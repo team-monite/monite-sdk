@@ -1,11 +1,9 @@
 'use server';
 
-import { NextResponse } from 'next/server';
-
-import { auth } from '@clerk/nextjs/server';
-
 import { getCurrentUserEntity } from '@/lib/clerk-api/get-current-user-entity';
 import { fetchTokenServer } from '@/lib/monite-api/fetch-token';
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   const { userId } = await auth();

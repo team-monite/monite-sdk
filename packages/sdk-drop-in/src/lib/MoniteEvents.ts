@@ -3,14 +3,13 @@
  *
  * This module provides a centralized way to define, emit, and handle Monite events.
  */
+import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
+import { generateId } from './utils';
 import { APISchema } from '@monite/sdk-react';
 import type {
   ComponentSettings,
   MoniteReceivablesTableProps,
 } from '@monite/sdk-react';
-
-import { MONITE_APP_ELEMENT_NAME } from '../custom-elements/monite-app';
-import { generateId } from './utils';
 
 type ReceivableResponseType =
   | APISchema.components['schemas']['InvoiceResponsePayload']

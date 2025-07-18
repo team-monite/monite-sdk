@@ -1,8 +1,7 @@
-import type { Organization } from '@clerk/clerk-sdk-node';
-
 import { OrganizationDomainEnrollmentMode } from '@/lib/clerk-api/types';
 import { roles_default_permissions } from '@/lib/monite-api/create-entity-role';
 import { nonNullable } from '@/lib/no-nullable';
+import type { Organization } from '@clerk/clerk-sdk-node';
 
 export const getOrganizationEntityData = (
   organization: Organization | null | undefined

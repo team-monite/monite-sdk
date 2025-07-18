@@ -27,7 +27,8 @@
           }
         ]
       }
-    ]
+    ],
+    "prettier/prettier": "off"
   },
   "settings": {
     "import/resolver": {

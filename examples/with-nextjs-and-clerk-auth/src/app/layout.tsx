@@ -1,17 +1,14 @@
 'use server';
 
-import { ReactNode } from 'react';
-
-import { ClerkProvider } from '@clerk/nextjs';
-import { currentUser } from '@clerk/nextjs/server';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-
+import './globals.css';
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { AppThemeProvider } from '@/components/ThemeRegistry/AppThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
-
-import './globals.css';
+import { ClerkProvider } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { ReactNode } from 'react';
 
 export async function generateMetadata() {
   return {

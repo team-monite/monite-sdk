@@ -1,8 +1,3 @@
-import { ComponentProps } from 'react';
-
-import type { WidgetType } from '@/apps/MoniteApp';
-import type { APISchema, MoniteProvider } from '@monite/sdk-react';
-
 import {
   MoniteEventTypes,
   addMoniteEventListener,
@@ -11,6 +6,9 @@ import {
   getMoniteAppEventTarget,
 } from '../lib/MoniteEvents';
 import { MoniteAppElement } from './MoniteAppElement';
+import type { WidgetType } from '@/apps/MoniteApp';
+import type { APISchema, MoniteProvider } from '@monite/sdk-react';
+import { ComponentProps } from 'react';
 
 const MONITE_APP_ELEMENT_NAME = 'monite-app';
 

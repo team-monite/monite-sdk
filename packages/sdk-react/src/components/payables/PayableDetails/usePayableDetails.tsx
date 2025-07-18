@@ -1,15 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { FieldNamesMarkedBoolean } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
 import { components } from '@/api';
-import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import {
   LineItem,
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
+import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -22,6 +18,9 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldNamesMarkedBoolean } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 export type PayableDetailsPermissions =
   | 'edit'

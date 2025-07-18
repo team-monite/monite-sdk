@@ -1,7 +1,6 @@
-import { test, expect } from '@playwright/test';
-
 // Import test setup to ensure auth file exists
 import { signInUser } from '../utils/auth-helpers';
+import { test, expect } from '@playwright/test';
 
 test.describe('Dashboard', () => {
   test('should redirect to sign-in when not authenticated', async ({

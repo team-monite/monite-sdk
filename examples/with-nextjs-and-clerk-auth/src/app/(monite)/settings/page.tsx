@@ -1,12 +1,9 @@
 'use client';
 
-import React from 'react';
-
-import Image from 'next/image';
-
-import { Box, Stack, Typography } from '@mui/material';
-
 import stubSvg from './stub.svg';
+import { Box, Stack, Typography } from '@mui/material';
+import Image from 'next/image';
+import React from 'react';
 
 export default function ProjectsPage() {
   return (

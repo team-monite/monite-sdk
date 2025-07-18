@@ -1,10 +1,9 @@
+import { paths } from './schema';
 import { fetchTokenServer } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
-
-import { paths } from './schema';
 
 export const updateEntity = async ({
   entity_id,

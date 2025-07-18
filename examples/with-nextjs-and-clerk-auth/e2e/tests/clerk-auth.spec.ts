@@ -1,6 +1,5 @@
-import { test, expect } from '@playwright/test';
-
 import { signInUser } from '../utils/auth-helpers';
+import { test, expect } from '@playwright/test';
 
 test('user can sign in', async ({ page }) => {
   // Sign in

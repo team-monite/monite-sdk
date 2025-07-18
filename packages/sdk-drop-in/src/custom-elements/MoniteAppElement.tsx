@@ -1,6 +1,3 @@
-import { StrictMode, ComponentProps } from 'react';
-import { Root, createRoot } from 'react-dom/client';
-
 import { MoniteApp } from '@/apps/MoniteApp';
 import {
   AttributeConfig,
@@ -10,6 +7,8 @@ import {
 } from '@/custom-elements/MoniteAppElementBase';
 import { cleanupDelay, safeAsync, clearElement } from '@/lib/utils';
 import { APISchema } from '@monite/sdk-react';
+import { StrictMode, ComponentProps } from 'react';
+import { Root, createRoot } from 'react-dom/client';
 
 interface CleanupConfig {
   executeCleanupHandlers?: boolean;

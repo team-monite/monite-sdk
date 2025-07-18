@@ -1,10 +1,9 @@
+import { paths } from './schema';
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
-
-import { paths } from './schema';
 
 export const updateEntityUser = async (
   {

@@ -1,9 +1,7 @@
+import { enhanceComponentSettings } from './MoniteEvents';
+import { MoniteProvider, type MoniteSettings } from '@monite/sdk-react';
 import { type ComponentProps, type ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
-
-import { MoniteProvider, type MoniteSettings } from '@monite/sdk-react';
-
-import { enhanceComponentSettings } from './MoniteEvents';
 
 type DropInMoniteProvider = {
   sdkConfig: MoniteSettings;

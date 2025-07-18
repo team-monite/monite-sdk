@@ -1,12 +1,11 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import {
   clerk,
   clerkSetup,
   setupClerkTestingToken,
 } from '@clerk/testing/playwright';
 import { test as setup } from '@playwright/test';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Define __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
