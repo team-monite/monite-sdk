@@ -8,7 +8,7 @@ import type {
 } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDebounce } from '@/core/hooks';
+import { useDebounce, useIsMounted } from '@/core/hooks';
 import { useCounterpartList, useCounterpartById } from '@/core/queries';
 import { Alert, AlertDescription, AlertTitle } from '@/ui/components/alert';
 import { Button } from '@/ui/components/button';
@@ -91,6 +91,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const [newCounterpartId, setNewCounterpartId] = useState<string | null>(null);
   const [hasUserChangedValue, setHasUserChangedValue] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
+  const isMountedRef = useIsMounted();
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList({
@@ -194,12 +195,14 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       // Set a timeout to mark as initialized even if no value is set
       // This prevents the form from never being initialized
       const timeoutId = setTimeout(() => {
-        setIsFormInitialized(true);
+        if (isMountedRef.current) {
+          setIsFormInitialized(true);
+        }
       }, 1000);
 
       return () => clearTimeout(timeoutId);
     }
-  }, [hasFieldValue]);
+  }, [hasFieldValue, isMountedRef]);
 
   // Auto-select AI suggested counterpart with proper timing and debouncing
   useEffect(() => {
@@ -215,14 +218,16 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       if (!hasFieldValue) {
         // Use setTimeout to ensure this runs after the current render cycle
         const timeoutId = setTimeout(() => {
-          setValue(
-            name,
-            AICounterpartSuggestions.id as PathValue<
-              TFieldValues,
-              FieldPath<TFieldValues>
-            >,
-            { shouldValidate: true }
-          );
+          if (isMountedRef.current) {
+            setValue(
+              name,
+              AICounterpartSuggestions.id as PathValue<
+                TFieldValues,
+                FieldPath<TFieldValues>
+              >,
+              { shouldValidate: true }
+            );
+          }
         }, 100);
 
         return () => clearTimeout(timeoutId);
@@ -238,6 +243,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     hasUserChangedValue,
     isFormInitialized,
     hasFieldValue,
+    isMountedRef,
   ]);
 
   const selectedCounterpartOption = useMemo(() => {
