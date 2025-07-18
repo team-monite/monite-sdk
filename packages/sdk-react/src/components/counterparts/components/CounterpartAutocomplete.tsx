@@ -1,13 +1,3 @@
-import { useState, useMemo, useEffect, SetStateAction } from 'react';
-import {
-  Controller,
-  Control,
-  useFormContext,
-  FieldValues,
-  FieldPath,
-  PathValue,
-} from 'react-hook-form';
-
 import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
@@ -32,8 +22,16 @@ import {
   FormHelperText,
   createFilterOptions,
 } from '@mui/material';
-
 import { Sparkles } from 'lucide-react';
+import { useState, useMemo, useEffect, SetStateAction } from 'react';
+import {
+  Controller,
+  Control,
+  useFormContext,
+  FieldValues,
+  FieldPath,
+  PathValue,
+} from 'react-hook-form';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;
@@ -99,19 +97,15 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       query: { is_vendor: true },
     });
 
-  // Get Counterpart data for the AI suggested counterpart
   const { data: aiSuggestedCounterpartData } = useCounterpartById(
     !multiple && AICounterpartSuggestions?.id
       ? AICounterpartSuggestions.id
       : undefined
   );
-  // Debounce the AI suggestions to prevent rapid changes
   const debouncedAISuggestedData = useDebounce(aiSuggestedCounterpartData, 300);
 
-  // Get the current value of the field
   const currentValue = getValues(name);
 
-  // Memoized check for whether the field has a meaningful value
   const hasFieldValue = useMemo(() => {
     if (multiple) {
       return Array.isArray(currentValue) && currentValue.length > 0;
@@ -121,7 +115,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     );
   }, [currentValue, multiple]);
 
-  // Memoized autocomplete options
   const autocompleteOptions = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
   >(() => {
