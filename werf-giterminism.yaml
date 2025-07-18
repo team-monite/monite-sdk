@@ -1,0 +1,6 @@
+giterminismConfigVersion: 1
+config:
+  dockerfile:
+    allowContextAddFiles:
+      - packages/sdk-playground/dist
+      - packages/sdk-playground/.env
