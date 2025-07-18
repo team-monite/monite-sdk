@@ -32,6 +32,11 @@ import {
 } from '@mui/material';
 
 import { CounterpartIndividualFields } from '../../CounterpartForm';
+import { InlineSuggestionFill } from '../InlineSuggestionFill';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../usePayableCounterpartRawDataSuggestions';
 import {
   prepareCounterpartIndividual,
   prepareCounterpartIndividualCreate,
@@ -47,6 +52,12 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
   defaultValuesOCR?: DefaultValuesOCRIndividual;
 }
 
+const individualFieldsMapping: CounterpartFormFieldsRawMapping = {
+  'individual.email': 'email',
+  'individual.phone': 'phone',
+  tax_id: 'tax_id',
+};
+
 /**
  * Counterpart Individual Form may be used to create or update counterpart
  *  for the type = individual
@@ -57,9 +68,20 @@ interface CounterpartIndividualFormProps extends CounterpartsFormProps {
 export const CounterpartIndividualForm = ({
   ...props
 }: CounterpartIndividualFormProps) => {
-  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+
+  const {
+    id: counterpartId,
+    isInvoiceCreation,
+    showCategories,
+    defaultValuesOCR,
+    defaultValues,
+    payableCounterpartRawData,
+    onCancel,
+    onClose,
+  } = props;
+
   const {
     counterpart,
     formRef,
@@ -68,21 +90,21 @@ export const CounterpartIndividualForm = ({
     isLoading,
   } = useCounterpartForm(props);
 
+  const individualCounterpart = counterpart as
+    | components['schemas']['CounterpartIndividualRootResponse']
+    | undefined;
+
   const { data: isCreateAllowed } = useIsActionAllowed({
     method: 'counterpart',
     action: 'create',
     entityUserId: counterpart?.created_by_entity_user_id,
   });
 
-  const individualCounterpart = counterpart as
-    | components['schemas']['CounterpartIndividualRootResponse']
-    | undefined;
-
-  const { showCategories, defaultValuesOCR, defaultValues } = props;
+  const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
 
   const methods = useForm({
     resolver: yupResolver(
-      props.id || individualCounterpart
+      counterpartId || individualCounterpart
         ? getUpdateIndividualValidationSchema(i18n)
         : getCreateIndividualValidationSchema(i18n)
     ),
@@ -98,7 +120,20 @@ export const CounterpartIndividualForm = ({
     },
   });
 
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, setValue, watch } = methods;
+
+  const values = watch();
+
+  const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
+    usePayableCounterpartRawDataSuggestions(
+      payableCounterpartRawData,
+      values,
+      setValue,
+      individualFieldsMapping
+    );
+
+  const showFillMatchBillButton =
+    !!payableCounterpartRawData && !allFieldsEqual;
 
   const handleSubmitWithoutPropagation = useCallback(
     (e: BaseSyntheticEvent) => {
@@ -159,28 +194,26 @@ export const CounterpartIndividualForm = ({
     defaultValuesOCR,
   ]);
 
-  const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
-
-  if (!isCreateAllowed && !props.id) {
+  if (!isCreateAllowed && !counterpartId) {
     return <AccessRestriction />;
   }
 
   return (
     <>
-      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !counterpartId) || !isInvoiceCreation) && (
         <DialogHeader
           secondaryLevel
           title={
             isInvoiceCreation
               ? t(i18n)`Create customer`
-              : props?.id
+              : counterpartId
               ? t(i18n)`Edit individual`
               : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose
           }
           showDivider={!isInvoiceCreation}
         />
@@ -311,17 +344,24 @@ export const CounterpartIndividualForm = ({
                   name="individual.email"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Email`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      required
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Email`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        required
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.email}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -336,16 +376,23 @@ export const CounterpartIndividualForm = ({
                   name="individual.phone"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Phone number`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Phone number`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.phone}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -368,16 +415,23 @@ export const CounterpartIndividualForm = ({
                   name="tax_id"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Tax ID`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Tax ID`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.tax_id}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -387,16 +441,25 @@ export const CounterpartIndividualForm = ({
       </DialogContent>
       <DialogFooter
         primaryButton={{
-          label: props.id ? t(i18n)`Save` : t(i18n)`Create`,
+          label: counterpartId ? t(i18n)`Save` : t(i18n)`Create`,
           formId: formName,
           isLoading: isLoading,
         }}
+        secondaryButton={
+          showFillMatchBillButton
+            ? {
+                label: t(i18n)`Update to match bill`,
+                onTheLeft: true,
+                onClick: () => updateFormWithRawData(),
+              }
+            : undefined
+        }
         cancelButton={{
           label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
           onClick:
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose,
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose,
         }}
       />
     </>
