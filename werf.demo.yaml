@@ -17,3 +17,22 @@ dependencies:
   imports:
   - type: ImageName
     targetBuildArg: BASE_IMAGE
+---
+image: sdk-playground
+dockerfile: ./Dockerfile.sdk-playground
+context: .
+args:
+  VITE_MONITE_ENTITY_ID: $VITE_MONITE_ENTITY_ID
+  VITE_MONITE_ENTITY_USER_ID: $VITE_MONITE_ENTITY_USER_ID
+  VITE_MONITE_PROJECT_CLIENT_ID: $VITE_MONITE_PROJECT_CLIENT_ID
+  VITE_MONITE_PROJECT_CLIENT_SECRET: $VITE_MONITE_PROJECT_CLIENT_SECRET
+  VITE_MONITE_API_URL: $VITE_MONITE_API_URL
+---
+image: sdk-playground-nginx
+dockerfile: ./Dockerfile.sdk-playground-nginx
+context: .
+dependencies:
+- image: sdk-playground
+  imports:
+  - type: ImageName
+    targetBuildArg: BASE_IMAGE

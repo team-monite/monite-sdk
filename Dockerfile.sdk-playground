@@ -1,0 +1,36 @@
+FROM cimg/node:20.12.2
+
+USER root
+
+RUN groupadd -g 1000 app && \
+    useradd -m -u 1000 -g app -s /bin/bash app
+
+WORKDIR /app
+
+COPY . /app
+RUN chown -R app:app /app
+
+USER app
+
+ARG VITE_MONITE_ENTITY_ID
+ARG VITE_MONITE_ENTITY_USER_ID
+ARG VITE_MONITE_PROJECT_CLIENT_ID
+ARG VITE_MONITE_PROJECT_CLIENT_SECRET
+ARG VITE_MONITE_API_URL
+
+# Debug: Check if build args are received
+RUN echo "Debug: VITE_MONITE_ENTITY_ID=${VITE_MONITE_ENTITY_ID}" && \
+    echo "Debug: VITE_MONITE_API_URL=${VITE_MONITE_API_URL}"
+
+# Create .env file from build arguments
+RUN echo "VITE_MONITE_ENTITY_ID=${VITE_MONITE_ENTITY_ID}" > /app/packages/sdk-playground/.env && \
+    echo "VITE_MONITE_ENTITY_USER_ID=${VITE_MONITE_ENTITY_USER_ID}" >> /app/packages/sdk-playground/.env && \
+    echo "VITE_MONITE_PROJECT_CLIENT_ID=${VITE_MONITE_PROJECT_CLIENT_ID}" >> /app/packages/sdk-playground/.env && \
+    echo "VITE_MONITE_PROJECT_CLIENT_SECRET=${VITE_MONITE_PROJECT_CLIENT_SECRET}" >> /app/packages/sdk-playground/.env && \
+    echo "VITE_MONITE_API_URL=${VITE_MONITE_API_URL}" >> /app/packages/sdk-playground/.env
+
+# Debug: Check if .env file was created correctly
+RUN echo "Debug: Contents of .env file:" && cat /app/packages/sdk-playground/.env
+
+RUN yarn install --immutable
+RUN yarn build --filter='sdk-playground'
