@@ -6,4 +6,3 @@ dockerfile: ./Dockerfile.sdk-playground
 context: .
 contextAddFiles:
   - packages/sdk-playground/dist
-  - packages/sdk-playground/.env
