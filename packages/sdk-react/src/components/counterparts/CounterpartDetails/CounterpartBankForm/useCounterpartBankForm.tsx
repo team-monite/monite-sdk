@@ -46,7 +46,7 @@ export function useCounterpartBankForm({
 
   const { i18n } = useLingui();
   const methods = useForm<CounterpartBankFormFields>({
-    resolver: zodResolver(getBankValidationSchema(i18n)),
+    resolver: zodResolver(getBankValidationSchema()),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 

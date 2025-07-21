@@ -1,10 +1,8 @@
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
-import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
 import { z } from 'zod';
 
-export const getBankValidationSchema = (i18n: I18n) =>
+export const getBankValidationSchema = () =>
   z.object({
     iban: z.string().optional(),
     bic: z.string().optional(),

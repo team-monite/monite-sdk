@@ -11,7 +11,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 export interface CounterpartAddressFormUpdateProps {
   counterpartId: string;
