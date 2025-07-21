@@ -13,6 +13,6 @@ export const getAddressValidationSchema = (i18n: I18n) =>
     postalCode: z.string().min(1, t(i18n)`Postal code is required`),
   });
 
-export type CounterpartAddressFormTypes = z.infer<
+export type CounterpartAddressFormFields = z.infer<
   ReturnType<typeof getAddressValidationSchema>
 >;

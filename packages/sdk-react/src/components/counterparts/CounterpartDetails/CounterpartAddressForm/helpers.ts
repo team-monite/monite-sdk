@@ -1,4 +1,4 @@
-import type { CounterpartAddressFormTypes } from './validation';
+import type { CounterpartAddressFormFields } from './validation';
 import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
@@ -8,7 +8,7 @@ import type { I18n } from '@lingui/core';
  */
 export const prepareCounterpartAddress = (
   address: components['schemas']['CounterpartAddress'] | undefined
-): CounterpartAddressFormTypes => {
+): CounterpartAddressFormFields => {
   return {
     city: address?.city ?? '',
     state: address?.state ?? '',
@@ -29,7 +29,7 @@ export const prepareCounterpartAddressSubmit = ({
   line1,
   line2,
   postalCode: postal_code,
-}: CounterpartAddressFormTypes): components['schemas']['CounterpartAddress'] => {
+}: CounterpartAddressFormFields): components['schemas']['CounterpartAddress'] => {
   return {
     city,
     state,
@@ -51,7 +51,7 @@ export function printAddress(
     city,
     country,
     state,
-  }: CounterpartAddressFormTypes,
+  }: CounterpartAddressFormFields,
   i18n: I18n
 ): string {
   const street2 = line2 ? `${line2}, ` : '';

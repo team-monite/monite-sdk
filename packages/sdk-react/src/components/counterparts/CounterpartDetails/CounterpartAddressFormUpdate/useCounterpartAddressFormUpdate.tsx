@@ -1,5 +1,5 @@
 import { prepareCounterpartAddress } from '../CounterpartAddressForm';
-import type { CounterpartAddressFormTypes } from '../CounterpartAddressForm/validation';
+import type { CounterpartAddressFormFields } from '../CounterpartAddressForm/validation';
 import { getAddressValidationSchema } from '../CounterpartAddressForm/validation';
 import { components } from '@/api';
 import {
@@ -30,7 +30,7 @@ export function useCounterpartAddressFormUpdate({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartAddressFormTypes>({
+  const methods = useForm<CounterpartAddressFormFields>({
     resolver: zodResolver(getAddressValidationSchema(i18n)),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),

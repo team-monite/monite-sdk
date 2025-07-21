@@ -2,10 +2,10 @@ import {
   prepareCounterpartAddress,
   prepareCounterpartAddressSubmit,
 } from '../CounterpartAddressForm';
-import type { CounterpartAddressFormTypes } from '../CounterpartAddressForm/validation';
+import type { CounterpartAddressFormFields } from '../CounterpartAddressForm/validation';
 import { components } from '@/api';
 
-export interface CounterpartContactFields extends CounterpartAddressFormTypes {
+export interface CounterpartContactFields extends CounterpartAddressFormFields {
   firstName: string;
   lastName: string;
   email: string;

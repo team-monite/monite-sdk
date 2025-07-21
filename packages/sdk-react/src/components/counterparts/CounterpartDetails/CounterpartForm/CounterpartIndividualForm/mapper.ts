@@ -1,9 +1,9 @@
-import type { CounterpartAddressFormTypes } from '../../CounterpartAddressForm/validation';
+import type { CounterpartAddressFormFields } from '../../CounterpartAddressForm/validation';
 import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/types';
 
 export interface CounterpartIndividualFields
-  extends CounterpartAddressFormTypes {
+  extends CounterpartAddressFormFields {
   firstName: string;
   lastName: string;
   email: string;

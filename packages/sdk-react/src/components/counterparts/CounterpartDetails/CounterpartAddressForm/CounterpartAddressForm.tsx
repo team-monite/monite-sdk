@@ -1,4 +1,4 @@
-import type { CounterpartAddressFormTypes } from './validation';
+import type { CounterpartAddressFormFields } from './validation';
 import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -13,13 +13,13 @@ export const CounterpartAddressForm = ({
   const { i18n } = useLingui();
 
   type Form = typeof parentField extends string
-    ? { [key in typeof parentField]: CounterpartAddressFormTypes }
-    : CounterpartAddressFormTypes;
+    ? { [key in typeof parentField]: CounterpartAddressFormFields }
+    : CounterpartAddressFormFields;
 
   const { control } = useFormContext<Form>();
 
   const fieldPath = (
-    path: FieldPath<CounterpartAddressFormTypes>
+    path: FieldPath<CounterpartAddressFormFields>
   ): FieldPath<Form> => {
     if (parentField) return `${parentField}.${path}` as FieldPath<Form>;
     return path as FieldPath<Form>;
