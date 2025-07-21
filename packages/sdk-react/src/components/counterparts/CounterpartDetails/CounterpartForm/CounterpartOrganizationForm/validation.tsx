@@ -18,6 +18,10 @@ export const getUpdateCounterpartValidationSchema = (i18n: I18n) =>
     }),
   });
 
+export type UpdateCounterpartOrganizationFormFields = z.infer<
+  ReturnType<typeof getUpdateCounterpartValidationSchema>
+>;
+
 export const getCreateCounterpartValidationSchema = (i18n: I18n) =>
   z.object({
     tax_id: z.string().optional(),
@@ -33,3 +37,7 @@ export const getCreateCounterpartValidationSchema = (i18n: I18n) =>
       ...getAddressValidationSchema(i18n),
     }),
   });
+
+export type CreateCounterpartOrganizationFormFields = z.infer<
+  ReturnType<typeof getCreateCounterpartValidationSchema>
+>;

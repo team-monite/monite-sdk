@@ -7,6 +7,8 @@ import {
 import {
   getUpdateIndividualValidationSchema,
   getCreateIndividualValidationSchema,
+  type CreateCounterpartIndividualFormFields,
+  type UpdateCounterpartIndividualFormFields,
 } from './validation';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm';
@@ -78,7 +80,10 @@ export const CounterpartIndividualForm = ({
 
   const { showCategories, defaultValuesOCR, defaultValues } = props;
 
-  const methods = useForm({
+  const methods = useForm<
+    | CreateCounterpartIndividualFormFields
+    | UpdateCounterpartIndividualFormFields
+  >({
     resolver: zodResolver(
       props.id || individualCounterpart
         ? getUpdateIndividualValidationSchema(i18n)

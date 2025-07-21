@@ -11,6 +11,8 @@ import {
 import {
   getUpdateCounterpartValidationSchema,
   getCreateCounterpartValidationSchema,
+  type UpdateCounterpartOrganizationFormFields,
+  type CreateCounterpartOrganizationFormFields,
 } from './validation';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
@@ -77,7 +79,10 @@ export const CounterpartOrganizationForm = (
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
 
-  const methods = useForm({
+  const methods = useForm<
+    | CreateCounterpartOrganizationFormFields
+    | UpdateCounterpartOrganizationFormFields
+  >({
     resolver: zodResolver(
       props.id || counterpart
         ? getUpdateCounterpartValidationSchema(i18n)

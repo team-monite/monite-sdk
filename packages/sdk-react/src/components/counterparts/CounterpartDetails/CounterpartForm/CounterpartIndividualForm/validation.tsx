@@ -3,20 +3,7 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
 
-export const getUpdateIndividualValidationSchema = (
-  i18n: I18n
-): z.ZodSchema<{
-  tax_id?: string;
-  remindersEnabled: boolean;
-  individual: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    isCustomer: boolean;
-    isVendor: boolean;
-  };
-}> =>
+export const getUpdateIndividualValidationSchema = (i18n: I18n) =>
   z.object({
     tax_id: z.string().optional(),
     remindersEnabled: z.boolean(),
@@ -32,26 +19,11 @@ export const getUpdateIndividualValidationSchema = (
     }),
   });
 
-export const getCreateIndividualValidationSchema = (
-  i18n: I18n
-): z.ZodSchema<{
-  tax_id?: string;
-  remindersEnabled: boolean;
-  individual: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    isCustomer: boolean;
-    isVendor: boolean;
-    line1?: string;
-    line2?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    postalCode?: string;
-  };
-}> =>
+export type UpdateCounterpartIndividualFormFields = z.infer<
+  ReturnType<typeof getUpdateIndividualValidationSchema>
+>;
+
+export const getCreateIndividualValidationSchema = (i18n: I18n) =>
   z.object({
     tax_id: z.string().optional(),
     remindersEnabled: z.boolean(),
@@ -67,3 +39,7 @@ export const getCreateIndividualValidationSchema = (
       ...getAddressValidationSchema(i18n),
     }),
   });
+
+export type CreateCounterpartIndividualFormFields = z.infer<
+  ReturnType<typeof getCreateIndividualValidationSchema>
+>;
