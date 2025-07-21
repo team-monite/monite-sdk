@@ -2,13 +2,13 @@ import { MoniteSettings } from './MoniteProvider';
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import type { ComponentSettings } from '@/core/componentSettings';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
   getLocaleWithDefaults,
   I18nLoader,
   MoniteLocaleWithRequired,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
+import { MoniteQraftContext } from '@/core/context/MoniteQraftContext';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { useIsMounted } from '@/core/hooks';
 import { SentryFactory } from '@/core/services';
