@@ -1,9 +1,11 @@
 import {
-  CounterpartContactFields,
   prepareCounterpartContact,
   prepareCounterpartContactSubmit,
 } from './mapper';
-import { getValidationSchema } from './validation';
+import {
+  type CounterpartContactFormFields,
+  getValidationSchema,
+} from './validation';
 import { components } from '@/api';
 import {
   useCounterpartById,
@@ -44,7 +46,7 @@ export function useCounterpartContactForm({
 
   const counterpart = counterpartResponse;
 
-  const methods = useForm<CounterpartContactFields>({
+  const methods = useForm<CounterpartContactFormFields>({
     resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => prepareCounterpartContact(contact), [contact]),
   });
@@ -105,7 +107,7 @@ export function useCounterpartContactForm({
   );
 
   const saveContact = useCallback(
-    (values: CounterpartContactFields) => {
+    (values: CounterpartContactFormFields) => {
       const payload = prepareCounterpartContactSubmit(values);
 
       return contact ? updateContact(payload) : createContact(payload);

@@ -11,5 +11,9 @@ export const getValidationSchema = (i18n: I18n) =>
       .email(t(i18n)`Email must be a valid email`)
       .min(1, t(i18n)`Email is required`),
     phone: z.string().optional(),
-    ...getAddressValidationSchema(i18n),
+    ...getAddressValidationSchema(i18n).shape,
   });
+
+export type CounterpartContactFormFields = z.infer<
+  ReturnType<typeof getValidationSchema>
+>;
