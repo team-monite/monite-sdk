@@ -1,4 +1,7 @@
-import { getValidationSchema } from './validation';
+import {
+  type CounterpartVatFormFields,
+  getValidationSchema,
+} from './validation';
 import { components } from '@/api';
 import {
   useCounterpartById,
@@ -36,7 +39,7 @@ export function useCounterpartVatForm({
   const updateVatMutation = useUpdateCounterpartVat();
 
   const { i18n } = useLingui();
-  const methods = useForm<components['schemas']['CounterpartVatID']>({
+  const methods = useForm<CounterpartVatFormFields>({
     resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => {
       return {
@@ -94,10 +97,11 @@ export function useCounterpartVatForm({
   );
 
   const saveVat = useCallback(
-    ({ country, type, value }: components['schemas']['CounterpartVatID']) => {
+    ({ country, type, value }: CounterpartVatFormFields) => {
       const payload: components['schemas']['CounterpartVatID'] = {
-        country,
-        type,
+        country:
+          country as components['schemas']['CounterpartVatID']['country'],
+        type: type as components['schemas']['CounterpartVatID']['type'],
         value,
       };
 

@@ -1,5 +1,8 @@
-import { useId } from 'react';
-
+import { getCounterpartName } from '../../helpers';
+import {
+  CounterpartVatFormProps,
+  useCounterpartVatForm,
+} from './useCounterpartVatForm';
 import { useVatTypes } from '@/core/hooks/useVatTypes';
 import { MoniteCountry } from '@/ui/Country';
 import { DialogFooter } from '@/ui/DialogFooter';
@@ -9,12 +12,7 @@ import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Stack, DialogContent } from '@mui/material';
-
-import { getCounterpartName } from '../../helpers';
-import {
-  CounterpartVatFormProps,
-  useCounterpartVatForm,
-} from './useCounterpartVatForm';
+import { useId } from 'react';
 
 export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
   const { i18n } = useLingui();
