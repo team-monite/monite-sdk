@@ -6018,6 +6018,7 @@ __metadata:
     "@react-pdf-viewer/page-navigation": "npm:3.12.0"
     "@react-pdf-viewer/scroll-mode": "npm:3.12.0"
     "@react-pdf-viewer/zoom": "npm:3.12.0"
+    "@rollup/plugin-typescript": "npm:~12.1.4"
     "@sentry/react": "npm:~7.119.1"
     "@storybook/addon-actions": "npm:~7.6.20"
     "@storybook/addon-essentials": "npm:~7.6.20"
@@ -6026,10 +6027,10 @@ __metadata:
     "@storybook/react": "npm:~7.6.20"
     "@storybook/react-webpack5": "npm:~7.6.20"
     "@swc/jest": "npm:~0.2.26"
+    "@tailwindcss/postcss": "npm:~4.1.11"
     "@tanstack/react-query": "npm:~5.28.6"
     "@tanstack/react-virtual": "npm:~3.13.6"
     "@team-monite/eslint-plugin": "workspace:~"
-    "@team-monite/rollup-config": "workspace:~"
     "@testing-library/dom": "npm:~9.3.1"
     "@testing-library/jest-dom": "npm:~5.16.5"
     "@testing-library/react": "npm:~14.1.0"
@@ -6038,6 +6039,7 @@ __metadata:
     "@types/deep-eql": "npm:~4.0.2"
     "@types/identity-obj-proxy": "npm:^3"
     "@types/jest": "npm:~29.5.11"
+    "@types/rollup-plugin-peer-deps-external": "npm:~2.2.5"
     babel-plugin-macros: "npm:~3.1.0"
     chroma-js: "npm:~3.1.2"
     class-variance-authority: "npm:~0.7.1"
@@ -6082,8 +6084,13 @@ __metadata:
     remark-gfm: "npm:~4.0.1"
     rimraf: "npm:~5.0.0"
     rollup: "npm:~3.29.5"
+    rollup-plugin-dts: "npm:~6.2.1"
+    rollup-plugin-peer-deps-external: "npm:~2.2.4"
+    rollup-plugin-postcss: "npm:~4.0.2"
+    rollup-plugin-swc3: "npm:~0.12.1"
     storybook: "npm:~7.6.7"
     tailwind-merge: "npm:~3.0.2"
+    tslib: "npm:~2.8.1"
     tw-animate-css: "npm:~1.2.5"
     typescript: "npm:~5.5.4"
     yup: "npm:~0.32.11"
@@ -8281,6 +8288,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-typescript@npm:~12.1.4":
+  version: 12.1.4
+  resolution: "@rollup/plugin-typescript@npm:12.1.4"
+  dependencies:
+    "@rollup/pluginutils": "npm:^5.1.0"
+    resolve: "npm:^1.22.1"
+  peerDependencies:
+    rollup: ^2.14.0||^3.0.0||^4.0.0
+    tslib: "*"
+    typescript: ">=3.7.0"
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+    tslib:
+      optional: true
+  checksum: 10/c2082e225fb445ee75ca4195fa6794bbcdfe8d2a88ad105121939072c9dc049d0d429a44e32ceb96d060200d507c217209b10c4e2b76a45da11c4181a0c6cf62
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-url@npm:~8.0.1":
   version: 8.0.2
   resolution: "@rollup/plugin-url@npm:8.0.2"
@@ -8310,6 +8336,22 @@ __metadata:
     rollup:
       optional: true
   checksum: 10/abb15eaec5b36f159ec351b48578401bedcefdfa371d24a914cfdbb1e27d0ebfbf895299ec18ccc343d247e71f2502cba21202bc1362d7ef27d5ded699e5c2b2
+  languageName: node
+  linkType: hard
+
+"@rollup/pluginutils@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "@rollup/pluginutils@npm:5.2.0"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+    estree-walker: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 10/15e98a9e7ebeb9fdbbf072ad40e72947654abf98bcd389d6e54dcffe28f7eb93d9653037d5e18b703b0160e04210a1995cf08fc2bf45601ce77b17e4461f55c0
   languageName: node
   linkType: hard
 
@@ -10727,6 +10769,19 @@ __metadata:
     postcss: "npm:^8.4.41"
     tailwindcss: "npm:4.0.17"
   checksum: 10/0f556ff515bccd73fd7d1a09299775f9d5744aa0be321f3bfb31237f6f39f4832a06dfa746ac422ffc30e8021de73e6f933e395ab433a07880fec4fef86d63b5
+  languageName: node
+  linkType: hard
+
+"@tailwindcss/postcss@npm:~4.1.11":
+  version: 4.1.11
+  resolution: "@tailwindcss/postcss@npm:4.1.11"
+  dependencies:
+    "@alloc/quick-lru": "npm:^5.2.0"
+    "@tailwindcss/node": "npm:4.1.11"
+    "@tailwindcss/oxide": "npm:4.1.11"
+    postcss: "npm:^8.4.41"
+    tailwindcss: "npm:4.1.11"
+  checksum: 10/658e3dc803e1999cce42c1c10d5423d697534d71c43b00b21787e4d4be3cf5ff9d4f77dc759fc36fd7a4aa7b58cb253c5b27a45796eaaf9f6062d21aac07cfb5
   languageName: node
   linkType: hard
 
@@ -26841,6 +26896,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-dts@npm:~6.2.1":
+  version: 6.2.1
+  resolution: "rollup-plugin-dts@npm:6.2.1"
+  dependencies:
+    "@babel/code-frame": "npm:^7.26.2"
+    magic-string: "npm:^0.30.17"
+  peerDependencies:
+    rollup: ^3.29.4 || ^4
+    typescript: ^4.5 || ^5.0
+  dependenciesMeta:
+    "@babel/code-frame":
+      optional: true
+  checksum: 10/bf101998eb26e6594ccada88545a83af992d3843737a805206f3d448b86c795b04958cfb43fb006b083f78c66e55da1b3780029cceebde3c48c7ff53be4ee7d9
+  languageName: node
+  linkType: hard
+
 "rollup-plugin-peer-deps-external@npm:~2.2.4":
   version: 2.2.4
   resolution: "rollup-plugin-peer-deps-external@npm:2.2.4"
@@ -26873,7 +26944,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-swc3@npm:0.12.1":
+"rollup-plugin-swc3@npm:0.12.1, rollup-plugin-swc3@npm:~0.12.1":
   version: 0.12.1
   resolution: "rollup-plugin-swc3@npm:0.12.1"
   dependencies:
@@ -29294,7 +29365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:^2.8.0":
+"tslib@npm:2.8.1, tslib@npm:^2.8.0, tslib@npm:~2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
