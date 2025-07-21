@@ -34,7 +34,7 @@ export const getCreateCounterpartValidationSchema = (i18n: I18n) =>
       phone: z.string().optional(),
       isVendor: z.boolean().optional(),
       isCustomer: z.boolean().optional(),
-      ...getAddressValidationSchema(i18n),
+      ...getAddressValidationSchema(i18n).shape,
     }),
   });
 

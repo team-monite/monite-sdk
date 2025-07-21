@@ -36,7 +36,7 @@ export const getCreateIndividualValidationSchema = (i18n: I18n) =>
       phone: z.string().optional(),
       isCustomer: z.boolean(),
       isVendor: z.boolean(),
-      ...getAddressValidationSchema(i18n),
+      ...getAddressValidationSchema(i18n).shape,
     }),
   });
 
