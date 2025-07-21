@@ -1,0 +1,8 @@
+project: sdkapp
+configVersion: 1
+---
+image: sdk-playground-nginx
+dockerfile: ./Dockerfile.sdk-playground
+context: .
+contextAddFiles:
+  - packages/sdk-playground/dist
