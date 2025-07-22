@@ -1,70 +1,19 @@
-import { components } from '@/api';
+import {
+  ProductDetailsProps,
+  ExistingProductDetailsProps,
+  ProductDetailsCreateProps,
+  ProductDetailsView,
+} from './types';
 import { ExistingProductDetails } from '@/components/products/ProductDetails/ExistingProductDetails';
 import { CreateProduct } from '@/components/products/ProductDetails/ProductCreate';
-import { ProductFormValues } from '@/components/products/ProductDetails/validation';
 
-/** View of the product details */
-export enum ProductDetailsView {
-  /** Read mode - the user is only viewing the product details */
-  Read = 'read',
-
-  /** Edit mode - the user is editing the product details */
-  Edit = 'edit',
-}
-
-/** Props for the product details component when the product already exists */
-export interface ExistingProductDetailsProps {
-  /** Product ID */
-  id: string;
-
-  /**
-   * Callback is fired when a product is updated and sync with server is successful
-   *
-   * @param product
-   */
-  onUpdated?: (product: ProductServiceResponse) => void;
-
-  /**
-   * Callback is fired when a product is deleted and sync with server is successful
-   *
-   * @param product
-   */
-  onDeleted?: (productId: ProductServiceResponse['id']) => void;
-
-  /**
-   * Initial view of the product details
-   * It might be `read` - when the user is only viewing
-   *  the product details
-   *  (but the user can click on the edit button to switch to edit mode)
-   *
-   *  or `edit` - when the user is editing the product details
-   *
-   * @default ProductDetailsView.Read
-   */
-  initialView?: ProductDetailsView;
-}
-
-/**
- * Props for the product details component when the product does not exist yet
- *  (we are creating a new product)
- */
-export interface ProductDetailsCreateProps {
-  id?: never;
-
-  /**
-   * Callback is fired when a product is created and sync with server is successful
-   *
-   * @param product
-   */
-  onCreated?: (product: ProductServiceResponse) => void;
-
-  /** Initial values for the product form */
-  defaultValues?: Partial<ProductFormValues>;
-}
-
-export type ProductDetailsProps =
-  | ExistingProductDetailsProps
-  | ProductDetailsCreateProps;
+// Re-export types for backward compatibility
+export type {
+  ProductDetailsProps,
+  ExistingProductDetailsProps,
+  ProductDetailsCreateProps,
+};
+export { ProductDetailsView };
 
 export const ProductDetails = (props: ProductDetailsProps) => {
   if (typeof props.id === 'string') {
@@ -73,5 +22,3 @@ export const ProductDetails = (props: ProductDetailsProps) => {
 
   return <CreateProduct {...props} />;
 };
-
-type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

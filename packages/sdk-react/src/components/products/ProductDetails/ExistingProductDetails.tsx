@@ -1,10 +1,7 @@
 import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
 import { ProductType } from './components/ProductType';
+import { ExistingProductDetailsProps, ProductDetailsView } from './types';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
-import {
-  ExistingProductDetailsProps,
-  ProductDetailsView,
-} from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
