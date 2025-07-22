@@ -1,5 +1,5 @@
-import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useDialog } from '@/ui/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
