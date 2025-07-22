@@ -4,7 +4,6 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
 } from './consts';
-// import * as Styled from './styles';
 import { Filters, FilterValue, Sort } from './types';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
