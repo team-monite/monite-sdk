@@ -1,17 +1,17 @@
-import { useId, useReducer, useState } from 'react';
-
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
+import { ApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails';
 import {
-  ApprovalPolicyDetails,
   UserRoleDeleteDialog,
   UserRoleDetailsDialog,
   UserRoleEditDialog,
   UserRolesTable,
-} from '@/components';
-import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
-import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+} from '@/components/userRoles';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { Button } from '@/ui/components/button';
 import {
@@ -20,14 +20,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/ui/components/dropdown-menu';
-import { Dialog } from '@/ui/Dialog';
-import { PageHeader } from '@/ui/PageHeader';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
-
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { useId, useReducer, useState } from 'react';
 
 /**
  * ApprovalPolicies component
