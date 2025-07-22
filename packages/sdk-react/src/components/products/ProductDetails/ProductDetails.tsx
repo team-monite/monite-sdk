@@ -1,8 +1,7 @@
 import { components } from '@/api';
+import { ExistingProductDetails } from '@/components/products/ProductDetails/ExistingProductDetails';
+import { CreateProduct } from '@/components/products/ProductDetails/ProductCreate';
 import { ProductFormValues } from '@/components/products/ProductDetails/validation';
-
-import { ExistingProductDetails } from './ExistingProductDetails';
-import { CreateProduct } from './ProductCreate';
 
 /** View of the product details */
 export enum ProductDetailsView {

@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 import {
   CounterpartIndividualForm,
   CounterpartOrganizationForm,
@@ -9,7 +7,7 @@ import {
   prepareAddressView,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { CounterpartSelector } from '@/components/receivables/components';
+import { CounterpartSelector } from '@/components/receivables/components/CounterpartSelector';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -41,8 +39,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
+import { useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 type FormValues = {
   billingAddressId: string;

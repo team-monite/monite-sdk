@@ -1,11 +1,7 @@
-import { useMemo, useState } from 'react';
-
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  InvoiceStatusChip,
-  ReceivableFilters,
-} from '@/components/receivables/components';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/components/ReceivableFilters';
 import { useReceivablesFilters } from '@/components/receivables/hooks';
 import {
   ReceivableFilterType,
@@ -32,6 +28,7 @@ import { useLingui } from '@lingui/react';
 import { Typography, Box, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
+import { useMemo, useState } from 'react';
 
 type CreditNotesTableProps = {
   /**

@@ -1,16 +1,14 @@
-import { toast } from 'react-hot-toast';
-
-import { PageHeader } from '@/components';
+import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { PageHeader } from '@/ui/PageHeader';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-
-import { ApprovalRequestsTable } from './ApprovalRequestsTable';
+import { toast } from 'react-hot-toast';
 
 export const ApprovalRequests = () => (
   <MoniteScopedProviders>
