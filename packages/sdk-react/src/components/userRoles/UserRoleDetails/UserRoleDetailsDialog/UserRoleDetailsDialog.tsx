@@ -26,8 +26,6 @@ import {
   styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,

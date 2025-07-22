@@ -1,6 +1,5 @@
 import { MoniteDialogProps } from './DialogProps.types';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { css } from '@emotion/react';
 import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
