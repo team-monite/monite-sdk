@@ -1,14 +1,14 @@
+import { apiVersion } from '@/api/api-version';
+import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
+import { ConversationHistory } from '@/components/aiAssistant/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { type UseChatHelpers } from '@ai-sdk/react';
 import {
   createContext,
   type PropsWithChildren,
   useContext,
   useMemo,
 } from 'react';
-
-import { apiVersion } from '@/api/api-version';
-import { ConversationHistory, useAIAssistantOptions } from '@/components';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { type UseChatHelpers } from '@ai-sdk/react';
 
 export interface ChatProviderProps extends PropsWithChildren {
   isNewChat: boolean;

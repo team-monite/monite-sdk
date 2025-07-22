@@ -14,13 +14,13 @@ import {
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
 import { components } from '@/api';
-import { TemplateSettings } from '@/components';
 import { showErrorToast } from '@/components/onboarding/utils';
 import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
 import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
 import { CustomerSection } from '@/components/receivables/components/CustomerSection';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';

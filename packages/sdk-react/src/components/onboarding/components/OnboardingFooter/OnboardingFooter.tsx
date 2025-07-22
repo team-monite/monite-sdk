@@ -1,9 +1,3 @@
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-
-import { MoniteLogo, OnboardingContainer } from '../../components';
 import {
   StyledFooter,
   StyledLink,
@@ -11,6 +5,12 @@ import {
   StyledList,
   StyledFooterWrapper,
 } from './OnboardingFooter.styled';
+import { MoniteLogo } from '@/components/onboarding/components/MoniteLogo';
+import { OnboardingContainer } from '@/components/onboarding/components/OnboardingContainer/OnboardingContainer';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 const DEFAULT_WEBSITE_URL = 'https://monite.com/';
 
