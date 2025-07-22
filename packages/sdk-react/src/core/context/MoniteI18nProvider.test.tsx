@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-
+import { I18nLoader, getLocaleWithDefaults } from './I18nLoader';
+import { MoniteI18nProvider } from './MoniteI18nProvider';
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { Provider, renderWithClient } from '@/utils/test-utils';
@@ -8,12 +8,7 @@ import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { QueryClient } from '@tanstack/react-query';
 import { act, renderHook, screen, waitFor } from '@testing-library/react';
-
-import {
-  MoniteI18nProvider,
-  I18nLoader,
-  getLocaleWithDefaults,
-} from './MoniteI18nProvider';
+import { ReactNode } from 'react';
 
 describe('MoniteI18nProvider Lingui', () => {
   const type = 'Gegenstück';

@@ -7,7 +7,7 @@ import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import type { ComponentSettings } from '@/core/componentSettings';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
-import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
+import { type MoniteLocale } from '@/core/context/MoniteI18nTypes';
 import { MoniteQraftContext } from '@/core/context/MoniteQraftContext';
 import { ThemeConfig } from '@/core/theme/types';
 import { ReactNode } from 'react';
