@@ -10,7 +10,7 @@ import {
 } from '@/core/context/MoniteI18nProvider';
 import { MoniteQraftContext } from '@/core/context/MoniteQraftContext';
 import { createQueryClient } from '@/core/context/createQueryClient';
-import { useIsMounted } from '@/core/hooks';
+import { useIsMounted } from '@/core/hooks/useIsMounted';
 import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
