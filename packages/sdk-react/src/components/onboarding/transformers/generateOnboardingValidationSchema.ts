@@ -1,10 +1,3 @@
-import { components } from '@/api';
-import { OnboardingFieldsType } from '@/components/onboarding/types';
-import { I18n } from '@lingui/core';
-
-import type { AnyObjectSchema } from 'yup';
-import { object } from 'yup';
-
 import {
   entityDocumentsSchema,
   personDocumentsSchema,
@@ -23,7 +16,12 @@ import {
   personSchema,
   relationshipSchema,
 } from '../validators/validationSchemas';
-import { isOnboardingField } from './index';
+import { isOnboardingField } from './commonDataTransformers';
+import { components } from '@/api';
+import { OnboardingFieldsType } from '@/components/onboarding/types';
+import { I18n } from '@lingui/core';
+import type { AnyObjectSchema } from 'yup';
+import { object } from 'yup';
 
 export type ValidationSchemasType =
   | 'entity'
@@ -69,34 +67,40 @@ export const generateOnboardingValidationSchema = ({
   );
 
   return object(
-    Object.entries(fields).reduce((acc: Record<string, any>, [key, item]) => {
-      const field = item as OnboardingFieldsType;
-      const schemaKey = key as keyof typeof schema;
-      const validator =
-        schemaKey in schema && (schema[schemaKey] as ValidatorType);
+    Object.entries(fields).reduce(
+      (acc: Record<string, any>, [key, item]) => {
+        const field = item as OnboardingFieldsType;
+        const schemaKey = key as keyof typeof schema;
+        const validator =
+          schemaKey in schema && (schema[schemaKey] as ValidatorType);
 
-      const subresourceType = getSubresourceTypeByKey(key);
+        const subresourceType = getSubresourceTypeByKey(key);
 
-      if (!subresourceType && validator) {
-        return { ...acc, ...{ [key]: getValidatorSettings(field, validator) } };
-      }
+        if (!subresourceType && validator) {
+          return {
+            ...acc,
+            ...{ [key]: getValidatorSettings(field, validator) },
+          };
+        }
 
-      if (!subresourceType) {
-        return acc;
-      }
+        if (!subresourceType) {
+          return acc;
+        }
 
-      return {
-        ...acc,
-        ...{
-          [key]: generateOnboardingValidationSchema({
-            fields: field,
-            type: subresourceType,
-            i18n,
-            country,
-          }),
-        },
-      };
-    }, {} as Record<string, any>)
+        return {
+          ...acc,
+          ...{
+            [key]: generateOnboardingValidationSchema({
+              fields: field,
+              type: subresourceType,
+              i18n,
+              country,
+            }),
+          },
+        };
+      },
+      {} as Record<string, any>
+    )
   );
 };
 

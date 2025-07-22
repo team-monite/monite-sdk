@@ -1,15 +1,5 @@
-import { useState, useMemo, useEffect, SetStateAction } from 'react';
-import {
-  Controller,
-  Control,
-  useFormContext,
-  FieldValues,
-  FieldPath,
-  PathValue,
-} from 'react-hook-form';
-
 import { components } from '@/api';
-import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CreateCounterpartModal } from '@/components/counterparts/components/CreateCounterpartModal';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
@@ -33,6 +23,15 @@ import {
   Link,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useState, useMemo, useEffect, SetStateAction } from 'react';
+import {
+  Controller,
+  Control,
+  useFormContext,
+  FieldValues,
+  FieldPath,
+  PathValue,
+} from 'react-hook-form';
 
 export interface CounterpartsAutocompleteOptionProps {
   id: string;

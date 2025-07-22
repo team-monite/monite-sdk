@@ -1,12 +1,10 @@
-import { useState, useTransition } from 'react';
-
-import { TemplateSettings } from '@/components';
+import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
+import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
 import {
-  InvoiceRecurrenceStatusChip,
-  InvoiceStatusChip,
-} from '@/components/receivables/components';
-import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
-import { useDuplicateInvoice } from '@/components/receivables/hooks';
+  DeliveryMethod,
+  ExistingInvoiceDetailsView,
+  useExistingInvoiceDetails,
+} from './useExistingInvoiceDetails';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
@@ -16,16 +14,21 @@ import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDe
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/components/InvoiceRecurrenceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { useDuplicateInvoice } from '@/components/receivables/hooks';
+import { TemplateSettings } from '@/components/templateSettings';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/components/dropdown-menu';
-import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
@@ -42,16 +45,8 @@ import {
   Stack,
   CircularProgress,
 } from '@mui/material';
-
 import { Copy } from 'lucide-react';
-
-import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
-import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
-import {
-  DeliveryMethod,
-  ExistingInvoiceDetailsView,
-  useExistingInvoiceDetails,
-} from './useExistingInvoiceDetails';
+import { useState, useTransition } from 'react';
 
 enum InvoiceDetailsPresentation {
   Overview = 'overview',

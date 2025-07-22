@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-import { ReminderSectionContent } from '@/components/receivables/components';
+import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
+import { ReminderSectionContent } from '@/components/receivables/components/ReminderSectionContent';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Switch } from '@mui/material';
-
-import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
-import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface ReminderSectionProps extends SectionGeneralProps {
   onCreateReminder: (type: 'payment' | 'overdue') => void;

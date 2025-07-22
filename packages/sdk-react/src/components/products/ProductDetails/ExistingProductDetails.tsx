@@ -1,22 +1,19 @@
-import { useState } from 'react';
-
+import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
+import { ProductType } from './components/ProductType';
+import { ExistingProductDetailsProps, ProductDetailsView } from './types';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
-import {
-  ExistingProductDetailsProps,
-  ProductDetailsView,
-} from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
-import { LoadingPage } from '@/ui/loadingPage';
 import { MeasureUnit } from '@/ui/MeasureUnit/MeasureUnit';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -28,9 +25,7 @@ import {
   TableBody,
   Typography,
 } from '@mui/material';
-
-import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
-import { ProductType } from './components/ProductType';
+import { useState } from 'react';
 
 export const ExistingProductDetails = (props: ExistingProductDetailsProps) => (
   <MoniteScopedProviders>

@@ -1,8 +1,6 @@
-import { ReactNode } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { Role } from './Role';
+import { User } from './User';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import {
   type Rules,
   useApprovalPolicyScript,
@@ -13,6 +11,7 @@ import {
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t, Trans } from '@lingui/macro';
@@ -29,9 +28,8 @@ import {
   TableBody,
   Paper,
 } from '@mui/material';
-
-import { Role } from './Role';
-import { User } from './User';
+import { ReactNode } from 'react';
+import { toast } from 'react-hot-toast';
 
 interface ApprovalPolicyViewProps {
   /** Approval policy to be displayed */

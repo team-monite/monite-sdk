@@ -1,16 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-
+import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { CustomerType } from '@/components/counterparts/types';
-import {
-  CounterpartSelector,
-  EditCounterpartModal,
-} from '@/components/receivables/components';
+import { CounterpartSelector } from '@/components/receivables/components/CounterpartSelector';
+import { EditCounterpartModal } from '@/components/receivables/components/EditCounterpartModal';
 import { useCounterpartAddresses, useCounterpartVatList } from '@/core/queries';
-
-import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface CustomerSectionProps {
   disabled: boolean;

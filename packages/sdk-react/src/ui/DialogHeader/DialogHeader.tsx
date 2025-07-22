@@ -1,6 +1,5 @@
-import { memo } from 'react';
-
-import { useDialog } from '@/components';
+import { IconWrapper } from '../iconWrapper';
+import { useDialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -13,8 +12,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-
-import { IconWrapper } from '../iconWrapper';
+import { memo } from 'react';
 
 type BaseDialogHeaderProps = {
   /** The title to display in the header */

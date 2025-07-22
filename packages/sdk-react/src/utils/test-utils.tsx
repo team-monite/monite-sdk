@@ -1,20 +1,14 @@
-import { ReactElement, ReactNode, useEffect } from 'react';
-
 import { createAPIClient } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
-import {
-  MoniteAPIProvider,
-  MoniteQraftContext,
-} from '@/core/context/MoniteAPIProvider';
+import { getLocaleWithDefaults } from '@/core/context/I18nLoader';
+import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { MoniteContext, MoniteTheme } from '@/core/context/MoniteContext';
-import {
-  getLocaleWithDefaults,
-  MoniteI18nProvider,
-} from '@/core/context/MoniteI18nProvider';
+import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import {
   MoniteProviderProps,
   MoniteSettings,
 } from '@/core/context/MoniteProvider';
+import { MoniteQraftContext } from '@/core/context/MoniteQraftContext';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
@@ -35,9 +29,9 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
-
 import type { Locale as DateFnsLocale } from 'date-fns';
 import DateFnsDeLocale from 'date-fns/locale/de';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
 const queryCache = new QueryCache();
 const queryClient = new QueryClient({

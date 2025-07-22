@@ -34,6 +34,18 @@ const rollupConfig = (packageJson, options) => {
             })
           : null,
       ].filter((output) => Boolean(output)),
+      onwarn(warning, warn) {
+        // Suppress "unresolved dependencies" warnings for external dependencies
+        if (warning.code === 'UNRESOLVED_IMPORT') {
+          return;
+        }
+        // Suppress unused external imports warnings (mainly React default imports)
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT') {
+          return;
+        }
+        // Use default warning handler for other warnings
+        warn(warning);
+      },
       plugins: [
         json(),
         image(),

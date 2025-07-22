@@ -1,12 +1,11 @@
+import { CreateReceivables } from './CreateReceivable/CreateReceivables';
+import { ExistingReceivableDetails } from './ExistingInvoiceDetails';
 import { InvoiceDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { CreateReceivables } from './CreateReceivable';
-import { ExistingReceivableDetails } from './ExistingInvoiceDetails';
 
 export const InvoiceDetails = ({
   customerTypes,
