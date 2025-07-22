@@ -1,4 +1,4 @@
-import { StyledTableCell } from '../UserRoleDetailsDialog/UserRoleDetailsDialog';
+import { StyledTableCell } from '../styles';
 import { CommonActions, PayableActions, PermissionRow } from '../types';
 import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
