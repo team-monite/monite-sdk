@@ -47,7 +47,7 @@ export const I18nLoader = ({
   }, [locale.code, stableLocaleMessages]);
 
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <Provider>{children}</Provider>
     </Suspense>
   );
