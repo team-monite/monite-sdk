@@ -1,11 +1,10 @@
-import { useState } from 'react';
-
-import { FinanceHowItWorks } from '@/components/financing/components';
+import { FinanceHowItWorks } from '@/components/financing/components/FinanceHowItWorks';
 import { useKanmonContext } from '@/core/context/KanmonContext';
 import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Stack, Button } from '@mui/material';
+import { useState } from 'react';
 
 export const FinanceMenuButtons = () => {
   const { i18n } = useLingui();

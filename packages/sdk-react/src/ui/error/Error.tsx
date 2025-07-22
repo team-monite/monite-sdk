@@ -1,5 +1,4 @@
-import { useDialog } from '@/components';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useDialog } from '@/ui/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
@@ -13,13 +12,7 @@ import type { FallbackRender } from '@sentry/react';
 
 type ErrorProps = Parameters<FallbackRender>[0];
 
-export const Error = (props: ErrorProps) => (
-  <MoniteScopedProviders>
-    <ErrorBase {...props} />
-  </MoniteScopedProviders>
-);
-
-const ErrorBase = (props: ErrorProps) => {
+export const Error = (props: ErrorProps) => {
   const dialogContext = useDialog();
   const { i18n } = useLingui();
 

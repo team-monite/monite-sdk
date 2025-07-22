@@ -1,9 +1,8 @@
-import { useId, useState, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { ConditionsTable } from '../ConditionsTable';
+import { RulesTable } from '../RulesTable';
+import { AutocompleteTags } from './AutocompleteTags';
+import { AutocompleteUsers } from './AutocompleteUsers';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
@@ -21,6 +20,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { MoniteCurrency } from '@/ui/Currency';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
@@ -37,13 +37,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
+import { useId, useState, useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { z } from 'zod';
-
-import { ConditionsTable } from '../ConditionsTable';
-import { RulesTable } from '../RulesTable';
-import { AutocompleteTags } from './AutocompleteTags';
-import { AutocompleteUsers } from './AutocompleteUsers';
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
@@ -1185,8 +1182,8 @@ export const ApprovalPolicyForm = ({
             triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
               ? resetFormTriggerOrScript
               : isEdit
-              ? () => setIsEdit(false)
-              : dialogContext?.onClose,
+                ? () => setIsEdit(false)
+                : dialogContext?.onClose,
         }}
       />
     </>

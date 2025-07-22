@@ -1,21 +1,17 @@
-import { useReducer } from 'react';
-
-import {
-  Dialog,
-  PageHeader,
-  UserRoleDeleteDialog,
-  UserRoleDetailsDialog,
-  UserRoleEditDialog,
-} from '@/components';
+import { UserRoleDeleteDialog } from '@/components/userRoles/UserRoleDetails/UserRoleDeleteDialog';
+import { UserRoleDetailsDialog } from '@/components/userRoles/UserRoleDetails/UserRoleDetailsDialog';
+import { UserRoleEditDialog } from '@/components/userRoles/UserRoleDetails/UserRoleEditDialog';
+import { UserRolesTable } from '@/components/userRoles/UserRolesTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
-
-import { UserRolesTable } from './UserRolesTable';
+import { useReducer } from 'react';
 
 export const UserRoles = () => (
   <MoniteScopedProviders>

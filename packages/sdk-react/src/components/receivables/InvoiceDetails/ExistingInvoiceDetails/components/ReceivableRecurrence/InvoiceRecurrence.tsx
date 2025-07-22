@@ -1,14 +1,12 @@
-import { ReactNode, useState } from 'react';
-
-import { Dialog } from '@/components';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Alert, Button, Card, Grid, Skeleton, Typography } from '@mui/material';
-
 import { InvoiceRecurrenceDetails } from './InvoiceRecurrenceDetails';
 import { InvoiceRecurrenceForm } from './InvoiceRecurrenceForm';
 import { useRecurrenceByInvoiceId } from './useInvoiceRecurrence';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { Dialog } from '@/ui/Dialog';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Alert, Button, Card, Grid, Skeleton, Typography } from '@mui/material';
+import { ReactNode, useState } from 'react';
 
 export const InvoiceRecurrence = ({
   invoiceId,

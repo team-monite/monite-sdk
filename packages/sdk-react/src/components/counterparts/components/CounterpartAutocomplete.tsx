@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { CreateCounterpartModal } from '@/components/counterparts/components';
+import { CreateCounterpartModal } from '@/components/counterparts/components/CreateCounterpartModal';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import type {
   CustomerTypes,
