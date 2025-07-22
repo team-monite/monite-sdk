@@ -1,18 +1,24 @@
-import { useEffect, useMemo, useState } from 'react';
-
+import { Filters as FiltersComponent } from './Filters';
+import {
+  FILTER_TYPE_IS_CUSTOMER,
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_TYPE,
+} from './consts';
+// import * as Styled from './styles';
+import { Filters, FilterValue, Sort } from './types';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { CounterpartStatusChip } from '@/components/counterparts/components';
+import { CounterpartStatusChip } from '@/components/counterparts/components/CounterpartStatusChip';
 import type { CounterpartShowCategories } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartNameCountryAddressCellById } from '@/ui/CounterpartCell/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
@@ -22,15 +28,7 @@ import { useLingui } from '@lingui/react';
 import { Box, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
-
-import {
-  FILTER_TYPE_IS_CUSTOMER,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_TYPE,
-} from './consts';
-import { Filters as FiltersComponent } from './Filters';
-// import * as Styled from './styles';
-import { Filters, FilterValue, Sort } from './types';
+import { useEffect, useMemo, useState } from 'react';
 
 interface CounterpartGridSortModel {
   field: components['schemas']['CounterpartCursorFields'];
