@@ -181,8 +181,8 @@ const getValidationSchema = (i18n: I18n) =>
       ),
       tags: yup.array(
         yup.object().shape({
-          value: yup.string().required(),
-          label: yup.string().required(),
+          id: yup.string().required(),
+          name: yup.string().required(),
         })
       ),
     })

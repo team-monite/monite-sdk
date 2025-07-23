@@ -11,7 +11,6 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
-import { tagsToSelect } from '@/ui/TagsAutocomplete';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
 
@@ -32,7 +31,7 @@ export interface PayableDetailsFormFields {
   invoiceDate?: Date;
   dueDate?: Date;
   currency: components['schemas']['CurrencyEnum'];
-  tags: Option[];
+  tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
 }
@@ -117,7 +116,7 @@ export const prepareDefaultValues = (
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
     currency: currency ?? 'EUR',
-    tags: tagsToSelect(tags),
+    tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
     lineItems: (lineItems || []).map((lineItem) => {
@@ -158,7 +157,7 @@ export const prepareSubmit = (
     invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
   due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
   currency,
-  tag_ids: tags.map((tag) => tag.value),
+  tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
 });
 
