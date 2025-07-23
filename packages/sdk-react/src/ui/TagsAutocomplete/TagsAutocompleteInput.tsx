@@ -1,5 +1,5 @@
 import { TagsAutocomplete } from './TagsAutocomplete';
-import { FormControl, FormHelperText } from '@mui/material';
+import { FormControl } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 
 type TagsAutocompleteInputProps = {
@@ -44,9 +44,6 @@ export const TagsAutocompleteInput = ({
             helperText={fieldError?.message || helperText}
             required={required}
           />
-          {(fieldError || helperText) && (
-            <FormHelperText>{fieldError?.message || helperText}</FormHelperText>
-          )}
         </FormControl>
       )}
     />
