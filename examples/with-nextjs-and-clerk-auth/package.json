@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "5.1.6",
-    "@clerk/nextjs": "6.11.1",
+    "@clerk/nextjs": "6.23.3",
     "@emotion/cache": "~11.11.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
