@@ -36,12 +36,7 @@ export const TagsAutocompleteInput = ({
             disabled={disabled}
             value={field.value || []}
             onChange={(tags) => {
-              // Convert TagReadSchema[] to Option[] for the form
-              const options = tags.map((tag) => ({
-                value: tag.id,
-                label: tag.name,
-              }));
-              field.onChange(options);
+              field.onChange(tags);
             }}
             label={label}
             variant={variant}

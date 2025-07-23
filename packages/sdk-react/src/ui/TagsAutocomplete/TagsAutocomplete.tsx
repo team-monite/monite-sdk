@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 
 type TagsAutocompleteProps = {
   disabled?: boolean;
-  value?: components['schemas']['TagReadSchema'][] | Option[];
+  value?: components['schemas']['TagReadSchema'][];
   onChange?: (value: components['schemas']['TagReadSchema'][]) => void;
   label?: string;
   variant?: 'filled' | 'standard';
@@ -41,17 +41,9 @@ export const TagsAutocomplete = ({
   const { root } = useRootElements();
   const { tagsQuery } = useTags();
 
-  // Convert value to Option[] format for internal use
   const normalizedValue = useMemo(() => {
     if (!value) return [];
-
-    // If value is already Option[], use it directly
-    if (Array.isArray(value) && value.length > 0 && 'label' in value[0]) {
-      return value as Option[];
-    }
-
-    // If value is TagReadSchema[], convert to Option[]
-    return tagsToSelect(value as components['schemas']['TagReadSchema'][]);
+    return tagsToSelect(value);
   }, [value]);
 
   const options = useMemo(() => {
