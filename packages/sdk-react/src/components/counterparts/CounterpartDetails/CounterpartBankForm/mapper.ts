@@ -1,16 +1,12 @@
+import { type CounterpartBankFormFields } from './validation';
 import { components } from '@/api';
 
-export type CounterpartBankFields = Omit<
-  components['schemas']['CreateCounterpartBankAccount'],
-  'country' | 'currency'
-> & {
-  country: components['schemas']['AllowedCountries'] | '';
-  currency: components['schemas']['CurrencyEnum'] | '';
-};
-
+/**
+ * Prepares the bank object from the API response for use in the form by normalizing its fields.
+ */
 export const prepareCounterpartBank = (
   bank: components['schemas']['CreateCounterpartBankAccount'] | undefined
-): CounterpartBankFields => {
+): CounterpartBankFormFields => {
   return {
     is_default_for_currency: bank?.is_default_for_currency ?? false,
     account_holder_name: bank?.account_holder_name ?? '',
@@ -25,11 +21,14 @@ export const prepareCounterpartBank = (
   };
 };
 
+/**
+ * Prepares the bank object for creation by converting the form fields to the API format.
+ */
 export const prepareCreateCounterpartBankAccount = (
-  bank: CounterpartBankFields
+  bank: CounterpartBankFormFields
 ): components['schemas']['CreateCounterpartBankAccount'] => {
   return {
-    is_default_for_currency: bank?.is_default_for_currency,
+    is_default_for_currency: bank?.is_default_for_currency ?? false,
     bic: bank?.bic,
     iban: bank?.iban,
     account_holder_name: bank?.account_holder_name,
@@ -43,8 +42,11 @@ export const prepareCreateCounterpartBankAccount = (
   };
 };
 
+/**
+ * Prepares the bank object for update by converting the form fields to the API format.
+ */
 export const prepareUpdateCounterpartBankAccount = (
-  bank: CounterpartBankFields
+  bank: CounterpartBankFormFields
 ): components['schemas']['UpdateCounterpartBankAccount'] => {
   return {
     bic: bank?.bic,

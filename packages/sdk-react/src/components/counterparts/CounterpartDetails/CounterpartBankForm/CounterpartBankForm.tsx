@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { Controller } from 'react-hook-form';
-
+import { getCounterpartName } from '../../helpers';
+import {
+  type CounterpartBankFormProps,
+  useCounterpartBankForm,
+} from './useCounterpartBankForm';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -10,12 +12,8 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
-
-import { getCounterpartName } from '../../helpers';
-import {
-  useCounterpartBankForm,
-  CounterpartBankFormProps,
-} from './useCounterpartBankForm';
+import { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
 
 export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { i18n } = useLingui();
