@@ -1,8 +1,6 @@
-import { useCallback, useState } from 'react';
-
 import { components } from '@/api';
-import { CounterpartDetails } from '@/components';
-import { CounterpartTypeItem } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails/CounterpartDetails';
+import { CounterpartTypeItem } from '@/components/counterparts/components/CounterpartTypeItem';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
@@ -14,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Grid, Modal, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
 
 interface CreateCounterpartModalProps {
   open: boolean;

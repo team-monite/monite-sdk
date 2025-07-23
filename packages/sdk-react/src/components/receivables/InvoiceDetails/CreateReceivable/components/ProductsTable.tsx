@@ -1,16 +1,5 @@
-import {
-  BaseSyntheticEvent,
-  forwardRef,
-  useCallback,
-  useId,
-  useMemo,
-  useState,
-} from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TableComponents, TableVirtuoso } from 'react-virtuoso';
-
+import { CreateProductDialog } from './CreateProductDialog';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
@@ -27,8 +16,9 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
-import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
+import { useDialog } from '@/ui/Dialog';
+import { CenteredContentBox } from '@/ui/box';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -57,8 +47,16 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
-
-import { CreateProductDialog } from './CreateProductDialog';
+import {
+  BaseSyntheticEvent,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
 interface OnAddOptions {
   items: Array<ProductServiceResponse>;

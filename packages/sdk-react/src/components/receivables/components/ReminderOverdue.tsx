@@ -1,17 +1,16 @@
-import { useFormContext } from 'react-hook-form';
-
-import { ReminderSelectLayout } from '@/components/receivables/components';
+import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { ReminderSelectLayout } from '@/components/receivables/components/ReminderSelectLayout';
 import {
   useGetOverdueReminderById,
   useGetOverdueReminders,
 } from '@/components/receivables/hooks';
-import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import { MenuItem } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   handleCreate: (type: 'payment' | 'overdue') => void;

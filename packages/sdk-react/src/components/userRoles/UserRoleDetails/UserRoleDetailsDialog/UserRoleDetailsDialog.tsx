@@ -1,3 +1,6 @@
+import { useUserRoleQuery } from '../../useUserRoles';
+import { UserRoleRow, UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
+import { StyledTableCell } from '../styles';
 import { components } from '@/api';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import {
@@ -23,16 +26,11 @@ import {
   styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
-
-import { useUserRoleQuery } from '../../useUserRoles';
-import { UserRoleRow, UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
 
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;
@@ -51,29 +49,6 @@ const StyledTableContainer = styled(TableContainer)`
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
   background: theme.palette.grey[300],
-}));
-
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.head}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9999',
-    minWidth: '180px',
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-  [`&.${tableCellClasses.body}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9998',
-    fontWeight: '600',
-    minWidth: '180px',
-    backgroundColor: theme.palette.background.default,
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
 }));
 
 interface UserRoleDetailsDialogProps {

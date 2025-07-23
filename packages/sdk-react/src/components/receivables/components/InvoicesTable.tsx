@@ -1,18 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
-
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { FinanceBanner } from '@/components/financing';
+import { FinanceBanner } from '@/components/financing/components/FinanceBanner';
 import {
   useFinanceAnInvoice,
   useGetFinancedInvoices,
   useGetFinanceOffers,
 } from '@/components/financing/hooks';
-import {
-  InvoiceRecurrenceStatusChip,
-  InvoiceStatusChip,
-  ReceivableFilters,
-} from '@/components/receivables/components';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/components/InvoiceRecurrenceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/components/ReceivableFilters';
 import { useReceivablesFilters } from '@/components/receivables/hooks';
 import {
   useInvoiceRowActionMenuCell,
@@ -57,6 +53,7 @@ import {
   GridSortDirection,
   GridSortModel,
 } from '@mui/x-data-grid';
+import { useCallback, useMemo, useState } from 'react';
 
 interface InvoicesTableBaseProps {
   /**

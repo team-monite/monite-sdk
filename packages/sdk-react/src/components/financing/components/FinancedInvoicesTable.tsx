@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
-
+import { FinanceDetails } from './FinanceDetails';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { FinancedInvoiceStatusChip } from '@/components/financing/components';
+import { FinancedInvoiceStatusChip } from '@/components/financing/components/FinancedInvoiceStatusChip';
 import { useGetFinancedInvoices } from '@/components/financing/hooks';
 import { UseInvoiceRowActionMenuCellProps } from '@/components/receivables/hooks';
 import {
@@ -33,8 +32,7 @@ import {
   GridSortDirection,
   GridSortModel,
 } from '@mui/x-data-grid';
-
-import { FinanceDetails } from './FinanceDetails';
+import { useMemo, useState } from 'react';
 
 interface FinancedInvoicesTableBaseProps {
   /**

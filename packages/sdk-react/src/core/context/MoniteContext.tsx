@@ -2,15 +2,14 @@ import { MoniteSettings } from './MoniteProvider';
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import type { ComponentSettings } from '@/core/componentSettings';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import { getLocaleWithDefaults, I18nLoader } from '@/core/context/I18nLoader';
 import {
-  getLocaleWithDefaults,
-  I18nLoader,
-  MoniteLocaleWithRequired,
+  type MoniteLocaleWithRequired,
   type MoniteLocale,
-} from '@/core/context/MoniteI18nProvider';
+} from '@/core/context/MoniteI18nTypes';
+import { MoniteQraftContext } from '@/core/context/MoniteQraftContext';
 import { createQueryClient } from '@/core/context/createQueryClient';
-import { useIsMounted } from '@/core/hooks';
+import { useIsMounted } from '@/core/hooks/useIsMounted';
 import { SentryFactory } from '@/core/services';
 import { type ThemeConfig } from '@/core/theme/types';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';

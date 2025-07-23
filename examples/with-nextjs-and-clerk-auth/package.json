@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "5.1.6",
-    "@clerk/nextjs": "6.11.1",
+    "@clerk/nextjs": "6.23.3",
     "@emotion/cache": "~11.11.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
@@ -68,8 +68,7 @@
     "jest": "~29.7.0",
     "jest-environment-jsdom": "~29.7.0",
     "prettier": "^3.0.0",
-    "smee-client": "~2.0.0",
-    "tsup": "~8.0.1"
+    "smee-client": "~2.0.0"
   },
   "packageManager": "yarn@3.6.4"
 }

@@ -1,15 +1,13 @@
-import { useCallback, useState } from 'react';
-
 import { components } from '@/api';
-import { CounterpartDetails } from '@/components';
-import { CounterpartTypeItem } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
+import { CounterpartTypeItem } from '@/components/counterparts/components/CounterpartTypeItem';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { Button } from '@/ui/components/button';
 import { Dialog } from '@/ui/Dialog';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -19,6 +17,7 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
+import { useCallback, useState } from 'react';
 
 interface CreateCounterpartDialogProps {
   open: boolean;

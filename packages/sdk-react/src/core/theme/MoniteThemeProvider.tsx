@@ -1,9 +1,8 @@
-import { ReactNode, useLayoutEffect, useMemo } from 'react';
-
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getTailwindTheme } from '@/core/theme/tailwind/tailwindTheme';
-import { useMoniteContext } from '@/index';
 import { Global } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { ReactNode, useLayoutEffect, useMemo } from 'react';
 
 /**
  * Provides the Material Theme and Tailwind Theme to the children components

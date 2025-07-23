@@ -1,5 +1,5 @@
-import { useFormContext } from 'react-hook-form';
-
+import { StyledTableCell } from '../styles';
+import { CommonActions, PayableActions, PermissionRow } from '../types';
 import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
@@ -9,9 +9,7 @@ import {
   CloseRounded as CloseRoundedIcon,
 } from '@mui/icons-material';
 import { TableRow } from '@mui/material';
-
-import { CommonActions, PayableActions, PermissionRow } from '../types';
-import { StyledTableCell } from '../UserRoleDetailsDialog/UserRoleDetailsDialog';
+import { useFormContext } from 'react-hook-form';
 
 /** View mode of the user role */
 export enum UserRoleViewMode {

@@ -1,16 +1,14 @@
-import { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-import { ReminderBeforeDueDate } from '@/components/receivables/components';
+import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
+import { ReminderOverdue } from './ReminderOverdue';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { ReminderBeforeDueDate } from '@/components/receivables/components/ReminderBeforeDueDate';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';
-
-import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
-import { ReminderOverdue } from './ReminderOverdue';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface ReminderSectionProps extends SectionGeneralProps {
   onCreateReminder: (type: 'payment' | 'overdue') => void;

@@ -1,16 +1,26 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-
-import { components } from '@/api';
-import { TemplateSettings } from '@/components';
-import { showErrorToast } from '@/components/onboarding/utils';
+import { useGetEntityBankAccounts } from '../../hooks';
+import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
+import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
+import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import { EntitySection } from './sections/EntitySection';
+import { ItemsSection } from './sections/ItemsSection';
+import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
+import { InvoicePreview } from './sections/components/InvoicePreview';
 import {
-  BankAccountFormDialog,
-  BankAccountSection,
-  RemindersSection,
-  CustomerSection,
-  EntityProfileModal,
-} from '@/components/receivables/components';
+  getCreateInvoiceValidationSchema,
+  CreateReceivablesFormProps,
+  CreateReceivablesProductsFormProps,
+  getCreateInvoiceProductsValidationSchema,
+} from './validation';
+import { components } from '@/api';
+import { showErrorToast } from '@/components/onboarding/utils';
+import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
+import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
+import { CustomerSection } from '@/components/receivables/components/CustomerSection';
+import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
+import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -24,14 +34,14 @@ import {
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
+import { MoniteCurrency } from '@/ui/Currency';
+import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/components/dropdown-menu';
-import { MoniteCurrency } from '@/ui/Currency';
-import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
@@ -51,24 +61,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-
 import { format } from 'date-fns';
-
-import { useGetEntityBankAccounts } from '../../hooks';
-import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
-import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
-import { InvoicePreview } from './sections/components/InvoicePreview';
-import { EntitySection } from './sections/EntitySection';
-import { ItemsSection } from './sections/ItemsSection';
-import {
-  getCreateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-  CreateReceivablesProductsFormProps,
-  getCreateInvoiceProductsValidationSchema,
-} from './validation';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 
 type Schemas = components['schemas'];
 

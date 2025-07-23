@@ -1,7 +1,6 @@
-import { useState } from 'react';
-
+import { FinanceDetails } from './FinanceDetails';
 import { components } from '@/api';
-import { FinancedInvoiceStatusChip } from '@/components/financing/components';
+import { FinancedInvoiceStatusChip } from '@/components/financing/components/FinancedInvoiceStatusChip';
 import { useGetFinancedInvoices } from '@/components/financing/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -9,8 +8,7 @@ import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
-
-import { FinanceDetails } from './FinanceDetails';
+import { useState } from 'react';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];

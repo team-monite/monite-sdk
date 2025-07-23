@@ -1,11 +1,6 @@
-import { useEffect, useState } from 'react';
-import useScript from 'react-script-hook';
-
 import { components } from '@/api';
-import {
-  useGetFinancingConnectToken,
-  useGetFinanceOffers,
-} from '@/components/financing/hooks';
+import { useGetFinanceOffers } from '@/components/financing/hooks/useGetFinanceOffers';
+import { useGetFinancingConnectToken } from '@/components/financing/hooks/useGetFinancingConnectToken';
 import {
   KanmonFinancedInvoice,
   useKanmonContext,
@@ -15,6 +10,8 @@ import { useComponentSettings } from '@/core/hooks';
 import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useEffect, useState } from 'react';
+import useScript from 'react-script-hook';
 
 const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
 const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.kanmon.dev/scripts/v2/kanmon-connect.js`;
