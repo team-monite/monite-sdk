@@ -1,6 +1,5 @@
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
-import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 import { components } from '@/api';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
