@@ -17,7 +17,7 @@ type TagsAutocompleteProps = {
 
 type Option = { label: string; value: string };
 
-const tagsToSelect = (
+export const tagsToSelect = (
   tags: components['schemas']['TagReadSchema'][] | undefined
 ): Option[] => {
   if (!tags) return [];

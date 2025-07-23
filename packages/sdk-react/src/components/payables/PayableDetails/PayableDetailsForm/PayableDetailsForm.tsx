@@ -9,7 +9,6 @@ import {
   PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
-  tagsToSelect,
   usePayableDetailsThemeProps,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
@@ -34,6 +33,7 @@ import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
+import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -42,7 +42,6 @@ import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -687,53 +686,13 @@ const PayableDetailsFormBase = forwardRef<
                         disabled={isLoadingCurrencyGroups}
                       />
                       {showTags && (
-                        <Controller
-                          name="tags"
+                        <TagsAutocompleteInput
                           control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              disabled={isTagsDisabled}
-                              required={isFieldRequired(
-                                'tags',
-                                ocrRequiredFields
-                              )}
-                              error={Boolean(error)}
-                            >
-                              <Autocomplete
-                                {...field}
-                                id={field.name}
-                                disabled={isTagsDisabled || !isTagsReadAllowed}
-                                multiple
-                                filterSelectedOptions
-                                getOptionLabel={(option) => option.label}
-                                options={tagsToSelect(tagQuery.data?.data)}
-                                slotProps={{
-                                  popper: { container: root },
-                                }}
-                                isOptionEqualToValue={(option, value) =>
-                                  option.value === value.value
-                                }
-                                onChange={(_, data) => {
-                                  field.onChange(data);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label={t(i18n)`Tags`}
-                                    variant="standard"
-                                    fullWidth
-                                    error={Boolean(error)}
-                                    helperText={error?.message}
-                                  />
-                                )}
-                              />
-                              {error && (
-                                <FormHelperText>{error.message}</FormHelperText>
-                              )}
-                            </FormControl>
-                          )}
+                          name="tags"
+                          label={t(i18n)`Tags`}
+                          variant="standard"
+                          disabled={isTagsDisabled || !isTagsReadAllowed}
+                          required={isFieldRequired('tags', ocrRequiredFields)}
                         />
                       )}
                     </Stack>
