@@ -29,6 +29,12 @@ export const TagsModal = ({
   const { i18n } = useLingui();
   const [updatedValue, setUpdatedValue] = useState(value);
 
+  const handleTagsChange = (
+    newTags: components['schemas']['TagReadSchema'][]
+  ) => {
+    setUpdatedValue(newTags);
+  };
+
   const onUpdate = () => {
     updateTags?.(updatedValue);
     onClose();
@@ -38,7 +44,7 @@ export const TagsModal = ({
     <Dialog open={opened} onClose={onClose} container={root} fullWidth>
       <DialogTitle>{t(i18n)`Edit tags`}</DialogTitle>
       <DialogContent dividers>
-        <TagsAutocomplete value={value} onChange={setUpdatedValue} />
+        <TagsAutocomplete value={updatedValue} onChange={handleTagsChange} />
       </DialogContent>
       <DialogActions>
         <Button variant="text" color="inherit" onClick={onClose}>{t(
