@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { TagsAutocomplete } from './TagsAutocomplete';
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -11,8 +10,7 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
-
-import { TagsAutocomplete } from './TagsAutocomplete';
+import { useState } from 'react';
 
 export type TagsModalProps = {
   opened: boolean;

@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { Control, Controller, useFormContext } from 'react-hook-form';
-
+import type { FormValues } from '../ApprovalPolicyForm';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -12,8 +10,8 @@ import {
   FormHelperText,
   TextField,
 } from '@mui/material';
-
-import type { FormValues } from '../ApprovalPolicyForm';
+import { useState } from 'react';
+import { Control, Controller, useFormContext } from 'react-hook-form';
 
 interface AutocompleteTagsProps {
   control: Control<FormValues>;

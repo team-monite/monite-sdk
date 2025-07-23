@@ -1,16 +1,22 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { OptionalFields } from '../../types';
+import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
-  Controller,
-  FieldNamesMarkedBoolean,
-  FormProvider,
-  useForm,
-  useFormState,
-} from 'react-hook-form';
-
+  calculateTotalsForPayable,
+  findDefaultBankAccount,
+  isFieldRequired,
+  LineItem,
+  MonitePayableDetailsInfoProps,
+  PayableDetailsFormFields,
+  prepareDefaultValues,
+  prepareSubmit,
+  tagsToSelect,
+  usePayableDetailsThemeProps,
+} from './helpers';
+import { usePayableDetailsForm } from './usePayableDetailsForm';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
@@ -56,24 +62,15 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
-
-import * as yup from 'yup';
-
-import { OptionalFields } from '../../types';
-import { PayableLineItemsForm } from '../PayableLineItemsForm';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  calculateTotalsForPayable,
-  findDefaultBankAccount,
-  isFieldRequired,
-  LineItem,
-  MonitePayableDetailsInfoProps,
-  PayableDetailsFormFields,
-  prepareDefaultValues,
-  prepareSubmit,
-  tagsToSelect,
-  usePayableDetailsThemeProps,
-} from './helpers';
-import { usePayableDetailsForm } from './usePayableDetailsForm';
+  Controller,
+  FieldNamesMarkedBoolean,
+  FormProvider,
+  useForm,
+  useFormState,
+} from 'react-hook-form';
+import * as yup from 'yup';
 
 export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];

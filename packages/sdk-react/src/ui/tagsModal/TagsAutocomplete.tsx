@@ -1,8 +1,7 @@
+import { useTags } from './useTags';
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Autocomplete, TextField } from '@mui/material';
-
-import { useTags } from './useTags';
 
 export type TagsAutocompleteProps = {
   disabled?: boolean;
