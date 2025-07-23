@@ -1,7 +1,5 @@
-import { useEffect, useId } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { getTagCategoryLabel, tagCategories } from '../helpers';
+import { useTags } from '../useTags';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -35,11 +33,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
+import { useEffect, useId } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
-
-import { getTagCategoryLabel, tagCategories } from '../helpers';
-import { useTags } from '../useTags';
 
 const getValidationSchema = (i18n: I18n) =>
   yup
@@ -180,16 +177,20 @@ const TagFormModalBase = ({
             <form
               id={formName}
               name={formName}
-              onSubmit={handleSubmit(async (values) => {
-                const { keywords, name, category } = values;
-                const payload = { name, category: category || undefined };
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleSubmit(async (values) => {
+                  const { keywords, name, category } = values;
+                  const payload = { name, category: category || undefined };
 
-                const result = await (tag
-                  ? updateTag(tag.id, payload)
-                  : createTag(payload));
+                  const result = await (tag
+                    ? updateTag(tag.id, payload)
+                    : createTag(payload));
 
-                updateOcrAutoTagging(result.id, keywords);
-              })}
+                  updateOcrAutoTagging(result.id, keywords);
+                })(e);
+              }}
             >
               <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6 mtw:pt-8 mtw:pb-6">
                 <FormField
