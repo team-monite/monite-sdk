@@ -309,7 +309,7 @@ const PayableDetailsFormBase = forwardRef<
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
 
-    const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
+    const { counterpartQuery, counterpartBankAccountQuery } =
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
