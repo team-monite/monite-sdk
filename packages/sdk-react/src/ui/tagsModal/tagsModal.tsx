@@ -1,6 +1,6 @@
-import { TagsAutocomplete } from './TagsAutocomplete';
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { TagsAutocomplete } from '@/ui/TagsAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

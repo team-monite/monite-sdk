@@ -3,15 +3,15 @@ import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Autocomplete, TextField } from '@mui/material';
 
-export type TagsAutocompleteProps = {
+type TagsAutocompleteProps = {
   disabled?: boolean;
   value?: components['schemas']['TagReadSchema'][];
   onChange?: (value: components['schemas']['TagReadSchema'][]) => void;
 };
 
-export type Option = { label: string; value: string };
+type Option = { label: string; value: string };
 
-export const tagsToSelect = (
+const tagsToSelect = (
   tags: components['schemas']['TagReadSchema'][] | undefined
 ): Option[] => {
   if (!tags) return [];
@@ -27,8 +27,8 @@ export const TagsAutocomplete = ({
   value,
   onChange,
 }: TagsAutocompleteProps) => {
-  const { tagsQuery } = useTags();
   const { root } = useRootElements();
+  const { tagsQuery } = useTags();
 
   const onAutocompleteChange = (value: Option[]) => {
     const selectedIds = value.map((option) => option.value);
