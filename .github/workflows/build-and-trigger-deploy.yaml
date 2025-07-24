@@ -111,6 +111,7 @@ jobs:
           VITE_MONITE_PROJECT_CLIENT_ID=${{ secrets.VITE_MONITE_PROJECT_CLIENT_ID }}
           VITE_MONITE_PROJECT_CLIENT_SECRET=${{ secrets.VITE_MONITE_PROJECT_CLIENT_SECRET }}
           VITE_MONITE_API_URL=${{ secrets.VITE_MONITE_API_URL }}
+          VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           EOF
 
           # Build SDK Playground with .env file
