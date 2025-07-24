@@ -172,7 +172,33 @@ export function usePayableDetails({
     { path: { payable_id: payableId ?? '' } },
     {
       enabled: !!payableId,
-      refetchInterval: isOcrProcessing ? 2_000 : 15_000,
+      refetchInterval: (data) => {
+        const payable = data.state.data;
+
+        // Payable is in OCR processing, refetch every 2 seconds.
+        if (isOcrProcessing) {
+          return 2_000;
+        }
+
+        // Payable is in approve_in_progress status and has no approval policy, refetch every 1 second, until
+        // 15 seconds after the last Payable update (the submit action).
+        // Needed because the server takes some time to apply the approval policy to the Payable.
+        if (
+          payable?.status === 'approve_in_progress' &&
+          !payable.approval_policy_id
+        ) {
+          const updatedAt = new Date(payable.updated_at);
+          const now = new Date();
+          const timeDifferenceMs = now.getTime() - updatedAt.getTime();
+
+          if (timeDifferenceMs < 15_000) {
+            return 1_000;
+          }
+        }
+
+        // Default refetch interval
+        return 15_000;
+      },
       refetchOnMount: true,
     }
   );
@@ -358,26 +384,12 @@ export function usePayableDetails({
   const submitMutation =
     api.payables.postPayablesIdSubmitForApproval.useMutation(undefined, {
       onSuccess: (payable) => {
-        // Return a Promise that resolves after the delay and invalidations
-        return new Promise<void>((resolve) => {
-          // Delay before invalidating queries to allow server processing
-          // Needed because the server doesn't return the Payable Approval Policy ID immediately
-          setTimeout(() => {
-            Promise.all([
-              api.payables.getPayablesId.invalidateQueries(
-                { parameters: { path: { payable_id: payable.id } } },
-                queryClient
-              ),
-              api.approvalRequests.getApprovalRequests.invalidateQueries(
-                queryClient
-              ),
-              api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
-                queryClient
-              ),
-              api.payables.getPayables.invalidateQueries(queryClient),
-            ]).then(() => resolve());
-          }, 500);
-        });
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+        ]);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
