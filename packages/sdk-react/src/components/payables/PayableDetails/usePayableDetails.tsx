@@ -389,6 +389,10 @@ export function usePayableDetails({
             { parameters: { path: { payable_id: payable.id } } },
             queryClient
           ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.approvalRequests.getApprovalRequests.invalidateQueries(
+            queryClient
+          ),
         ]);
       },
       onError: (error) => {
