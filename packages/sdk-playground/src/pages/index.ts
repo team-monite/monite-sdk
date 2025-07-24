@@ -9,3 +9,4 @@ export { TagsPage } from './TagsPage';
 export { TemplateSettingsPage } from './TemplateSettingsPage';
 export { OnboardingPage } from './OnboardingPage';
 export { IntegrationsPage } from './IntegrationsPage';
+export { SignInPage } from './SignInPage';
