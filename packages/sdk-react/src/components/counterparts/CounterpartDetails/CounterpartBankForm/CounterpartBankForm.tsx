@@ -1,6 +1,14 @@
-import { useEffect } from 'react';
-import { Controller } from 'react-hook-form';
-
+import { getCounterpartName } from '../../helpers';
+import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../CounterpartForm/usePayableCounterpartRawDataSuggestions';
+import {
+  type CounterpartBankFormProps,
+  useCounterpartBankForm,
+} from './useCounterpartBankForm';
+import { type CounterpartBankFormFields } from './validation';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -10,18 +18,8 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
-
-import { getCounterpartName } from '../../helpers';
-import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
-import {
-  usePayableCounterpartRawDataSuggestions,
-  CounterpartFormFieldsRawMapping,
-} from '../CounterpartForm/usePayableCounterpartRawDataSuggestions';
-import { CounterpartBankFields } from './mapper';
-import {
-  useCounterpartBankForm,
-  CounterpartBankFormProps,
-} from './useCounterpartBankForm';
+import { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
 
 const bankFieldsMapping: CounterpartFormFieldsRawMapping = {
   account_holder_name: 'bank_account.account_holder_name',
@@ -52,7 +50,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     useProductCurrencyGroups();
 
   const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
-    usePayableCounterpartRawDataSuggestions<CounterpartBankFields>(
+    usePayableCounterpartRawDataSuggestions<CounterpartBankFormFields>(
       payableCounterpartRawData,
       values,
       setValue,
@@ -77,10 +75,6 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         'sort_code',
         'routing_number',
       ]);
-
-      resetField('sort_code');
-      resetField('account_number');
-      resetField('routing_number');
     }
   }, [clearErrors, resetField, values.country]);
 

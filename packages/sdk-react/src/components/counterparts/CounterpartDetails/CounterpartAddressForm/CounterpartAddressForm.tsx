@@ -1,11 +1,9 @@
-import { Controller, FieldPath, useFormContext } from 'react-hook-form';
-
+import type { CounterpartAddressFormFields } from './validation';
 import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Paper, Stack, TextField } from '@mui/material';
-
-import { CounterpartAddressFormFields } from './helpers';
+import { Controller, FieldPath, useFormContext } from 'react-hook-form';
 
 export const CounterpartAddressForm = ({
   parentField,

@@ -1,16 +1,3 @@
-import { useId } from 'react';
-import { Controller } from 'react-hook-form';
-
-import { components } from '@/api';
-import { useVatTypes } from '@/core/hooks/useVatTypes';
-import { MoniteCountry } from '@/ui/Country';
-import { DialogFooter } from '@/ui/DialogFooter';
-import { DialogHeader } from '@/ui/DialogHeader';
-import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Stack, DialogContent, TextField } from '@mui/material';
-
 import { getCounterpartName } from '../../helpers';
 import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
 import {
@@ -21,6 +8,17 @@ import {
   CounterpartVatFormProps,
   useCounterpartVatForm,
 } from './useCounterpartVatForm';
+import { components } from '@/api';
+import { useVatTypes } from '@/core/hooks/useVatTypes';
+import { MoniteCountry } from '@/ui/Country';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader';
+import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Stack, DialogContent, TextField } from '@mui/material';
+import { useId } from 'react';
+import { Controller } from 'react-hook-form';
 
 const vatFieldsMapping: CounterpartFormFieldsRawMapping = {
   country: 'vat_id.country',

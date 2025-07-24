@@ -1,18 +1,18 @@
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { z } from 'zod';
 
-import * as yup from 'yup';
+export const getAddressValidationSchema = (i18n: I18n) =>
+  z.object({
+    line1: z.string().min(1, t(i18n)`Address line 1 is required`),
+    line2: z.string().optional(),
+    city: z.string().min(1, t(i18n)`City is required`),
+    state: z.string().min(1, t(i18n)`State / Area / Province is required`),
+    country: z.enum(AllowedCountries as [string, ...string[]]),
+    postalCode: z.string().min(1, t(i18n)`Postal code is required`),
+  });
 
-export const getAddressValidationSchema = (i18n: I18n) => ({
-  line1: yup.string().required(t(i18n)`Address line 1 is required`),
-
-  line2: yup.string(),
-
-  city: yup.string().required(t(i18n)`City is required`),
-
-  state: yup.string().required(t(i18n)`State / Area / Province is required`),
-
-  country: yup.string().required(t(i18n)`Country is required`),
-
-  postalCode: yup.string().required(t(i18n)`Postal code is required`),
-});
+export type CounterpartAddressFormFields = z.infer<
+  ReturnType<typeof getAddressValidationSchema>
+>;

@@ -1,65 +1,43 @@
 import { getAddressValidationSchema } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/validation';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { z } from 'zod';
 
-import * as yup from 'yup';
-import type { SchemaOf } from 'yup';
-
-export const getUpdateCounterpartValidationSchema = (
-  i18n: I18n
-): SchemaOf<{
-  tax_id?: string;
-  remindersEnabled: boolean;
-  organization: {
-    companyName: string;
-    email: string;
-    phone?: string;
-    counterpartType?: 'vendor' | 'customer';
-  };
-}> =>
-  yup.object().shape({
-    tax_id: yup.string(),
-    remindersEnabled: yup.boolean().required(),
-    organization: yup.object({
-      companyName: yup.string().required(t(i18n)`Company name is required`),
-      email: yup
-        .string()
+export const getUpdateCounterpartValidationSchema = (i18n: I18n) =>
+  z.object({
+    tax_id: z.string().optional(),
+    remindersEnabled: z.boolean(),
+    organization: z.object({
+      companyName: z.string().min(1, t(i18n)`Company name is required`),
+      email: z
         .email(t(i18n)`Email must be a valid email`)
-        .required(t(i18n)`Email is required`),
-      phone: yup.string(),
-      counterpartType: yup.mixed().oneOf(['vendor', 'customer']),
+        .min(1, t(i18n)`Email is required`),
+      phone: z.string().optional(),
+      isVendor: z.boolean().optional(),
+      isCustomer: z.boolean().optional(),
     }),
   });
 
-export const getCreateCounterpartValidationSchema = (
-  i18n: I18n
-): SchemaOf<{
-  tax_id?: string;
-  remindersEnabled: boolean;
-  organization: {
-    companyName: string;
-    email: string;
-    phone?: string;
-    counterpartType?: 'vendor' | 'customer';
-    line1?: string;
-    line2?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    postalCode?: string;
-  };
-}> =>
-  yup.object().shape({
-    tax_id: yup.string(),
-    remindersEnabled: yup.boolean().required(),
-    organization: yup.object({
-      companyName: yup.string().required(t(i18n)`Company name is required`),
-      email: yup
-        .string()
+export type UpdateCounterpartOrganizationFormFields = z.infer<
+  ReturnType<typeof getUpdateCounterpartValidationSchema>
+>;
+
+export const getCreateCounterpartValidationSchema = (i18n: I18n) =>
+  z.object({
+    tax_id: z.string().optional(),
+    remindersEnabled: z.boolean(),
+    organization: z.object({
+      companyName: z.string().min(1, t(i18n)`Company name is required`),
+      email: z
         .email(t(i18n)`Email must be a valid email`)
-        .required(t(i18n)`Email is required`),
-      phone: yup.string(),
-      counterpartType: yup.mixed().oneOf(['vendor', 'customer']),
-      ...getAddressValidationSchema(i18n),
+        .min(1, t(i18n)`Email is required`),
+      phone: z.string().optional(),
+      isVendor: z.boolean().optional(),
+      isCustomer: z.boolean().optional(),
+      ...getAddressValidationSchema(i18n).shape,
     }),
   });
+
+export type CreateCounterpartOrganizationFormFields = z.infer<
+  ReturnType<typeof getCreateCounterpartValidationSchema>
+>;

@@ -1,6 +1,9 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-
+import { LoginForm } from './login/login-form';
+import { Button } from './ui/button';
+import { Dialog } from './ui/dialog';
+import { DialogContent } from './ui/dialog';
+import { DialogHeader } from './ui/dialog';
+import { DialogTitle } from './ui/dialog';
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
+import { SignedIn, UserButton } from '@clerk/react-router';
 import {
   UserIcon,
   Building2Icon,
@@ -25,13 +28,8 @@ import {
   ZapIcon,
   Settings2Icon,
 } from 'lucide-react';
-
-import { LoginForm } from './login/login-form';
-import { Button } from './ui/button';
-import { Dialog } from './ui/dialog';
-import { DialogContent } from './ui/dialog';
-import { DialogHeader } from './ui/dialog';
-import { DialogTitle } from './ui/dialog';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const menuItems = [
   {
@@ -107,7 +105,12 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="p-4">
-          <h2 className="text-lg font-semibold">SDK Playground</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <SignedIn>
+              <UserButton />
+            </SignedIn>{' '}
+            SDK Playground
+          </h2>
         </div>
       </SidebarHeader>
       <SidebarContent>

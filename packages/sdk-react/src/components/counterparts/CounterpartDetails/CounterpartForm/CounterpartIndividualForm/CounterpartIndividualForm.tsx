@@ -1,6 +1,20 @@
-import { BaseSyntheticEvent, useCallback, useEffect, useId } from 'react';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
-
+import { type CounterpartIndividualFields } from '../../CounterpartForm';
+import { InlineSuggestionFill } from '../InlineSuggestionFill';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../usePayableCounterpartRawDataSuggestions';
+import {
+  prepareCounterpartIndividual,
+  prepareCounterpartIndividualCreate,
+  prepareCounterpartIndividualUpdate,
+} from './mapper';
+import {
+  getUpdateIndividualValidationSchema,
+  getCreateIndividualValidationSchema,
+  type CreateCounterpartIndividualFormFields,
+  type UpdateCounterpartIndividualFormFields,
+} from './validation';
 import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
@@ -11,11 +25,11 @@ import {
 import { type DefaultValuesOCRIndividual } from '@/components/counterparts/types';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -30,22 +44,8 @@ import {
   ListItemText,
   Grid,
 } from '@mui/material';
-
-import { CounterpartIndividualFields } from '../../CounterpartForm';
-import { InlineSuggestionFill } from '../InlineSuggestionFill';
-import {
-  usePayableCounterpartRawDataSuggestions,
-  CounterpartFormFieldsRawMapping,
-} from '../usePayableCounterpartRawDataSuggestions';
-import {
-  prepareCounterpartIndividual,
-  prepareCounterpartIndividualCreate,
-  prepareCounterpartIndividualUpdate,
-} from './mapper';
-import {
-  getUpdateIndividualValidationSchema,
-  getCreateIndividualValidationSchema,
-} from './validation';
+import { BaseSyntheticEvent, useCallback, useEffect, useId } from 'react';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 interface CounterpartIndividualFormProps extends CounterpartsFormProps {
   isInvoiceCreation?: boolean;
@@ -102,8 +102,11 @@ export const CounterpartIndividualForm = ({
 
   const formName = `Monite-Form-counterpartIndividualForm-${useId()}`;
 
-  const methods = useForm({
-    resolver: yupResolver(
+  const methods = useForm<
+    | CreateCounterpartIndividualFormFields
+    | UpdateCounterpartIndividualFormFields
+  >({
+    resolver: zodResolver(
       counterpartId || individualCounterpart
         ? getUpdateIndividualValidationSchema(i18n)
         : getCreateIndividualValidationSchema(i18n)
@@ -206,9 +209,9 @@ export const CounterpartIndividualForm = ({
           title={
             isInvoiceCreation
               ? t(i18n)`Create customer`
-              : counterpartId
-              ? t(i18n)`Edit individual`
-              : t(i18n)`Create new counterpart`
+              : props?.id
+                ? t(i18n)`Edit individual`
+                : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
             counterpartId || isInvoiceCreation

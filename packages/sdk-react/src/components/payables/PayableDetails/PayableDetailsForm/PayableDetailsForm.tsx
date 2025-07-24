@@ -1,16 +1,21 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { OptionalFields } from '../../types';
+import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
-  Controller,
-  FieldNamesMarkedBoolean,
-  FormProvider,
-  useForm,
-  useFormState,
-} from 'react-hook-form';
-
+  calculateTotalsForPayable,
+  findDefaultBankAccount,
+  isFieldRequired,
+  LineItem,
+  MonitePayableDetailsInfoProps,
+  PayableDetailsFormFields,
+  prepareDefaultValues,
+  prepareSubmit,
+  usePayableDetailsThemeProps,
+} from './helpers';
+import { usePayableDetailsForm } from './usePayableDetailsForm';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
@@ -28,6 +33,7 @@ import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
+import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -36,7 +42,6 @@ import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -56,24 +61,15 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
-
-import * as yup from 'yup';
-
-import { OptionalFields } from '../../types';
-import { PayableLineItemsForm } from '../PayableLineItemsForm';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  calculateTotalsForPayable,
-  findDefaultBankAccount,
-  isFieldRequired,
-  LineItem,
-  MonitePayableDetailsInfoProps,
-  PayableDetailsFormFields,
-  prepareDefaultValues,
-  prepareSubmit,
-  tagsToSelect,
-  usePayableDetailsThemeProps,
-} from './helpers';
-import { usePayableDetailsForm } from './usePayableDetailsForm';
+  Controller,
+  FieldNamesMarkedBoolean,
+  FormProvider,
+  useForm,
+  useFormState,
+} from 'react-hook-form';
+import * as yup from 'yup';
 
 export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];
@@ -185,8 +181,8 @@ const getValidationSchema = (i18n: I18n) =>
       ),
       tags: yup.array(
         yup.object().shape({
-          value: yup.string().required(),
-          label: yup.string().required(),
+          id: yup.string().required(),
+          name: yup.string().required(),
         })
       ),
     })
@@ -313,7 +309,7 @@ const PayableDetailsFormBase = forwardRef<
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
 
-    const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
+    const { counterpartQuery, counterpartBankAccountQuery } =
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
@@ -706,53 +702,13 @@ const PayableDetailsFormBase = forwardRef<
                         disabled={isLoadingCurrencyGroups}
                       />
                       {showTags && (
-                        <Controller
-                          name="tags"
+                        <TagsAutocompleteInput
                           control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <FormControl
-                              variant="standard"
-                              fullWidth
-                              disabled={isTagsDisabled}
-                              required={isFieldRequired(
-                                'tags',
-                                ocrRequiredFields
-                              )}
-                              error={Boolean(error)}
-                            >
-                              <Autocomplete
-                                {...field}
-                                id={field.name}
-                                disabled={isTagsDisabled || !isTagsReadAllowed}
-                                multiple
-                                filterSelectedOptions
-                                getOptionLabel={(option) => option.label}
-                                options={tagsToSelect(tagQuery.data?.data)}
-                                slotProps={{
-                                  popper: { container: root },
-                                }}
-                                isOptionEqualToValue={(option, value) =>
-                                  option.value === value.value
-                                }
-                                onChange={(_, data) => {
-                                  field.onChange(data);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label={t(i18n)`Tags`}
-                                    variant="standard"
-                                    fullWidth
-                                    error={Boolean(error)}
-                                    helperText={error?.message}
-                                  />
-                                )}
-                              />
-                              {error && (
-                                <FormHelperText>{error.message}</FormHelperText>
-                              )}
-                            </FormControl>
-                          )}
+                          name="tags"
+                          label={t(i18n)`Tags`}
+                          variant="standard"
+                          disabled={isTagsDisabled || !isTagsReadAllowed}
+                          required={isFieldRequired('tags', ocrRequiredFields)}
                         />
                       )}
                     </Stack>

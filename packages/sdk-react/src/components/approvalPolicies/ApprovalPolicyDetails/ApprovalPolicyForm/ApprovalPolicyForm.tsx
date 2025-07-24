@@ -1,6 +1,5 @@
 import { ConditionsTable } from '../ConditionsTable';
 import { RulesTable } from '../RulesTable';
-import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 import { components } from '@/api';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
@@ -24,6 +23,7 @@ import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { I18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
@@ -902,10 +902,12 @@ export const ApprovalPolicyForm = ({
               )}
               {(triggerInEdit === 'tags' ||
                 (isAddingTrigger && currentTriggerType === 'tags')) && (
-                <AutocompleteTags
+                <TagsAutocompleteInput
                   control={control}
                   name="triggers.tags"
                   label={t(i18n)`Tags`}
+                  variant="standard"
+                  required
                 />
               )}
               {(triggerInEdit === 'counterpart_id' ||

@@ -1,20 +1,6 @@
-import { useId } from 'react';
-import { Controller } from 'react-hook-form';
-
-import { components } from '@/api';
-import { MoniteCountry } from '@/ui/Country';
-import { DialogFooter } from '@/ui/DialogFooter';
-import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
-import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { DialogContent, Stack, TextField } from '@mui/material';
-
 import { getCounterpartName } from '../../helpers';
-import {
-  CounterpartAddressFormFields,
-  prepareCounterpartAddressSubmit,
-} from '../CounterpartAddressForm';
+import { prepareCounterpartAddressSubmit } from '../CounterpartAddressForm';
+import { CounterpartAddressFormFields } from '../CounterpartAddressForm/validation';
 import { InlineSuggestionFill } from '../CounterpartForm/InlineSuggestionFill';
 import {
   usePayableCounterpartRawDataSuggestions,
@@ -24,6 +10,16 @@ import {
   useCounterpartAddressFormUpdate,
   CounterpartAddressFormUpdateProps,
 } from './useCounterpartAddressFormUpdate';
+import { components } from '@/api';
+import { MoniteCountry } from '@/ui/Country';
+import { DialogFooter } from '@/ui/DialogFooter';
+import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
+import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { DialogContent, Stack, TextField } from '@mui/material';
+import { useId } from 'react';
+import { Controller } from 'react-hook-form';
 
 const addressFieldsMapping: CounterpartFormFieldsRawMapping = {
   line1: 'address.line1',

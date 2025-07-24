@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useId, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-
+import {
+  prepareCounterpartBank,
+  prepareCreateCounterpartBankAccount,
+  prepareUpdateCounterpartBankAccount,
+} from './mapper';
+import {
+  CounterpartBankFormFields,
+  getBankValidationSchema,
+} from './validation';
 import { components } from '@/api';
 import {
   useCounterpartById,
@@ -8,16 +14,10 @@ import {
   useCreateCounterpartBank,
   useUpdateCounterpartBank,
 } from '@/core/queries/useCounterpart';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLingui } from '@lingui/react';
-
-import {
-  CounterpartBankFields,
-  prepareCounterpartBank,
-  prepareCreateCounterpartBankAccount,
-  prepareUpdateCounterpartBankAccount,
-} from './mapper';
-import { getValidationSchema } from './validation';
+import { useCallback, useEffect, useId, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export type CounterpartBankFormProps = {
   counterpartId: string;
@@ -48,8 +48,12 @@ export function useCounterpartBankForm({
   const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartBankFields, any, CounterpartBankFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+  const methods = useForm<
+    CounterpartBankFormFields,
+    any,
+    CounterpartBankFormFields
+  >({
+    resolver: zodResolver(getBankValidationSchema()),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 
@@ -59,7 +63,7 @@ export function useCounterpartBankForm({
   }, [methods.reset, bank, i18n]);
 
   const saveBank = useCallback(
-    (values: CounterpartBankFields) => {
+    (values: CounterpartBankFormFields) => {
       if (bank) {
         const mutateUpdateBank = updateBankMutation.mutate;
         mutateUpdateBank(

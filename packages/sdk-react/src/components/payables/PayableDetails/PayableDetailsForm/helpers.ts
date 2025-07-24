@@ -1,5 +1,3 @@
-import { FieldValue, FieldValues } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
   isIndividualCounterpart,
@@ -13,8 +11,8 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
-
 import { format } from 'date-fns';
+import { FieldValue, FieldValues } from 'react-hook-form';
 
 export type Option = { label: string; value: string };
 
@@ -33,7 +31,7 @@ export interface PayableDetailsFormFields {
   invoiceDate?: Date;
   dueDate?: Date;
   currency: components['schemas']['CurrencyEnum'];
-  tags: Option[];
+  tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
 }
@@ -55,19 +53,8 @@ export const counterpartsToSelect = (
           counterpart.individual.last_name
         )
       : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
-      : '',
-  }));
-};
-
-export const tagsToSelect = (
-  tags: components['schemas']['TagReadSchema'][] | undefined
-): Option[] => {
-  if (!tags) return [];
-
-  return tags.map(({ id: value, name: label }) => ({
-    value,
-    label,
+        ? counterpart.organization.legal_name
+        : '',
   }));
 };
 
@@ -129,7 +116,7 @@ export const prepareDefaultValues = (
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
     currency: currency ?? 'EUR',
-    tags: tagsToSelect(tags),
+    tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
     lineItems: (lineItems || []).map((lineItem) => {
@@ -139,7 +126,7 @@ export const prepareDefaultValues = (
         quantity: lineItem.quantity ?? 1,
         price:
           lineItem.unit_price && currency
-            ? formatFromMinorUnits(lineItem.unit_price, currency) ?? 0
+            ? (formatFromMinorUnits(lineItem.unit_price, currency) ?? 0)
             : 0,
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
       };
@@ -163,14 +150,14 @@ export const prepareSubmit = (
 ): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
   discount:
-    discount && currency ? formatToMinorUnits(discount, currency) ?? 0 : 0,
+    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
     invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
   due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
   currency,
-  tag_ids: tags.map((tag) => tag.value),
+  tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
 });
 
@@ -300,11 +287,10 @@ export const isOcrMismatch = (
   };
 };
 
-export type OcrMismatchField =
-  | keyof Pick<
-      components['schemas']['PayableResponseSchema'],
-      'amount_to_pay' | 'counterpart_bank_account_id'
-    >;
+export type OcrMismatchField = keyof Pick<
+  components['schemas']['PayableResponseSchema'],
+  'amount_to_pay' | 'counterpart_bank_account_id'
+>;
 
 export type OcrMismatchFields =
   | Partial<Record<OcrMismatchField, boolean>>
