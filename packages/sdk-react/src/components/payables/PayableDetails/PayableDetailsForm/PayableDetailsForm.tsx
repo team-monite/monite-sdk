@@ -350,6 +350,19 @@ const PayableDetailsFormBase = forwardRef<
       );
     const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
 
+    const { data: payableAISuggestions } =
+      api.payables.getPayablesIdSuggestions.useQuery(
+        {
+          path: { payable_id: payable?.id ?? '' },
+        },
+        {
+          enabled: Boolean(payable?.id),
+        }
+      );
+    const counterpartEditShowInlineSuggestions =
+      payableAISuggestions?.suggested_counterpart &&
+      payableAISuggestions.suggested_counterpart.id === currentCounterpart;
+
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
@@ -539,6 +552,9 @@ const PayableDetailsFormBase = forwardRef<
                         showEditCounterpartButton
                         setShowEditCounterpartDialog={
                           setIsEditCounterpartOpened
+                        }
+                        AICounterpartSuggestions={
+                          payableAISuggestions?.suggested_counterpart
                         }
                       />
                       <Controller
@@ -848,6 +864,11 @@ const PayableDetailsFormBase = forwardRef<
             id={currentCounterpart}
             customerTypes={
               customerTypes || componentSettings?.counterparts?.customerTypes
+            }
+            payableCounterpartRawData={
+              counterpartEditShowInlineSuggestions
+                ? payable?.counterpart_raw_data
+                : undefined
             }
           />
         </Dialog>

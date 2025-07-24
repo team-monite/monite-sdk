@@ -23,6 +23,7 @@ interface ExistingCounterpartDetail extends CommonCounterpartDetailsProps {
   id: CounterpartId;
   type?: undefined;
   defaultValuesOCR?: DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 }
 
 /**
@@ -37,6 +38,7 @@ interface NewCounterpartDetail
   type: components['schemas']['CounterpartType'];
   onCreate?: (id: string) => void;
   defaultValuesOCR?: DefaultValuesOCRIndividual | DefaultValuesOCROrganization;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 }
 
 interface CommonCounterpartDetailsProps

@@ -4,9 +4,10 @@ import {
   prepareUpdateCounterpartBankAccount,
 } from './mapper';
 import {
-  type CounterpartBankFormFields,
+  CounterpartBankFormFields,
   getBankValidationSchema,
 } from './validation';
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartBankById,
@@ -24,6 +25,7 @@ export type CounterpartBankFormProps = {
   onCancel?: () => void;
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 };
 
 export function useCounterpartBankForm({
@@ -31,6 +33,7 @@ export function useCounterpartBankForm({
   bankId,
   onCreate,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartBankFormProps) {
   const formId = `Monite-CounterpartBankForm-${useId()}`;
 
@@ -45,7 +48,11 @@ export function useCounterpartBankForm({
   const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartBankFormFields>({
+  const methods = useForm<
+    CounterpartBankFormFields,
+    any,
+    CounterpartBankFormFields
+  >({
     resolver: zodResolver(getBankValidationSchema()),
     defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
@@ -112,5 +119,6 @@ export function useCounterpartBankForm({
       isCounterpartLoading ||
       isBankLoading,
     error: createBankMutation.error || updateBankMutation.error,
+    payableCounterpartRawData,
   };
 }

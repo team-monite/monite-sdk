@@ -27,6 +27,7 @@ export type CounterpartsFormProps = {
    * Default values for the form fields
    */
   defaultValues?: CounterpartDefaultValues;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 } & CounterpartShowCategories;
 
 export function useCounterpartForm({
