@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'react';
-
+import { OptionalFields } from '../../types';
+import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
+import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { PayableApprovalFlowSection } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection';
 import {
@@ -10,7 +12,6 @@ import {
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -21,8 +22,8 @@ import {
   useEntityUserById,
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
-import { CenteredContentBox } from '@/ui/box';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
+import { CenteredContentBox } from '@/ui/box';
 import { TagsModal } from '@/ui/tagsModal';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -49,10 +50,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-
-import { OptionalFields } from '../../types';
-import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
-import { usePayableDetailsInfo } from './usePayableDetailsInfo';
+import { useMemo, useState } from 'react';
 
 export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
@@ -338,8 +336,8 @@ const PayableDetailsInfoBase = ({
                               payable.currency
                             )
                           : payable.currency
-                          ? formatCurrencyToDisplay(0, payable.currency)
-                          : '—'}
+                            ? formatCurrencyToDisplay(0, payable.currency)
+                            : '—'}
                       </Box>
                       {payable.currency_exchange?.default_currency_code &&
                         payable.currency !==
@@ -518,8 +516,8 @@ const PayableDetailsInfoBase = ({
                           payable.currency
                         )
                       : payable.currency
-                      ? formatCurrencyToDisplay(0, payable.currency)
-                      : '—'}
+                        ? formatCurrencyToDisplay(0, payable.currency)
+                        : '—'}
                   </TableCell>
                 </TableRow>
                 {Boolean(payable.discount) && payable.currency && (
@@ -542,8 +540,8 @@ const PayableDetailsInfoBase = ({
                           payable.currency
                         )
                       : payable.currency
-                      ? formatCurrencyToDisplay(0, payable.currency)
-                      : '—'}
+                        ? formatCurrencyToDisplay(0, payable.currency)
+                        : '—'}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -560,8 +558,8 @@ const PayableDetailsInfoBase = ({
                             payable.currency
                           )
                         : payable.currency
-                        ? formatCurrencyToDisplay(0, payable.currency)
-                        : '—'}
+                          ? formatCurrencyToDisplay(0, payable.currency)
+                          : '—'}
                     </Typography>
                   </TableCell>
                 </TableRow>
