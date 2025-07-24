@@ -180,8 +180,8 @@ export function usePayableDetails({
           return 2_000;
         }
 
-        // Payable is in approve_in_progress status and has no approval policy, refetch every 1 second, until
-        // 15 seconds after the last Payable update (the submit action).
+        // Payable is in approve_in_progress status and has no approval policy, refetch every 1 second,
+        // until 10 seconds after the last Payable update (the submit action).
         // Needed because the server takes some time to apply the approval policy to the Payable.
         if (
           payable?.status === 'approve_in_progress' &&
@@ -191,7 +191,7 @@ export function usePayableDetails({
           const now = new Date();
           const timeDifferenceMs = now.getTime() - updatedAt.getTime();
 
-          if (timeDifferenceMs < 15_000) {
+          if (timeDifferenceMs < 10_000) {
             return 1_000;
           }
         }
