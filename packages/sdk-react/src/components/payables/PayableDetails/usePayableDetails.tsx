@@ -22,6 +22,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { FieldNamesMarkedBoolean } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+// Payable refetch intervals, in milliseconds
+const REFETCH_INTERVAL_DEFAULT = 15_000;
+const REFETCH_INTERVAL_OCR_PROCESSING = 2_000;
+const REFETCH_INTERVAL_APPROVE_IN_PROGRESS = 1_000;
+const REFETCH_APPROVE_IN_PROGRESS_WINDOW = 10_000;
+
 export type PayableDetailsPermissions =
   | 'edit'
   | 'save'
@@ -177,7 +183,7 @@ export function usePayableDetails({
 
         // Payable is in OCR processing, refetch every 2 seconds.
         if (isOcrProcessing) {
-          return 2_000;
+          return REFETCH_INTERVAL_OCR_PROCESSING;
         }
 
         // Payable is in approve_in_progress status and has no approval policy, refetch every 1 second,
@@ -191,13 +197,12 @@ export function usePayableDetails({
           const now = new Date();
           const timeDifferenceMs = now.getTime() - updatedAt.getTime();
 
-          if (timeDifferenceMs < 10_000) {
-            return 1_000;
+          if (timeDifferenceMs < REFETCH_APPROVE_IN_PROGRESS_WINDOW) {
+            return REFETCH_INTERVAL_APPROVE_IN_PROGRESS;
           }
         }
 
-        // Default refetch interval
-        return 15_000;
+        return REFETCH_INTERVAL_DEFAULT;
       },
       refetchOnMount: true,
     }
