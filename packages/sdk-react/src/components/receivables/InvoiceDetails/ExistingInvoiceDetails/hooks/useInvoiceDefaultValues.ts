@@ -44,7 +44,10 @@ export const useInvoiceDefaultValues = (
           vat_rate_value: lineItem.product.vat_rate.value,
           product: {
             name: lineItem.product.name,
-            price: lineItem.product.price,
+            price:
+              invoice.vat_mode === 'inclusive'
+                ? lineItem.product.price_after_vat
+                : lineItem.product.price,
             // Get measure_unit_id directly from the API response if available
             measure_unit_id:
               measureUnitId && measureUnitId !== '' ? measureUnitId : undefined,
@@ -73,6 +76,7 @@ export const useInvoiceDefaultValues = (
       /** Reminders section */
       payment_reminder_id: invoice.payment_reminder_id ?? '',
       overdue_reminder_id: invoice.overdue_reminder_id ?? '',
+      vat_mode: invoice.vat_mode ?? 'exclusive',
     }),
     [invoice, isNonVatSupported]
   );

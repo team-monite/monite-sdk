@@ -1,18 +1,17 @@
-import { useMemo, useState } from 'react';
-
+import { OptionalFields } from '../../types';
+import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
+import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  getCounterpartName,
-  getIndividualName,
-} from '@/components/counterparts/helpers';
+import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
+import { getCounterpartName } from '@/components/counterparts/helpers';
+import { PayableApprovalFlowSection } from '@/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsApprovalFlowSection';
 import {
   isFieldRequired,
   isOcrMismatch,
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -23,8 +22,8 @@ import {
   useEntityUserById,
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
-import { CenteredContentBox } from '@/ui/box';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
+import { CenteredContentBox } from '@/ui/box';
 import { TagsModal } from '@/ui/tagsModal';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -51,10 +50,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-
-import { OptionalFields } from '../../types';
-import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
-import { usePayableDetailsInfo } from './usePayableDetailsInfo';
+import { useMemo, useState } from 'react';
 
 export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
@@ -112,7 +108,7 @@ const PayableDetailsInfoBase = ({
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
-  const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
   const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
@@ -156,6 +152,8 @@ const PayableDetailsInfoBase = ({
   );
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
+
+  const showApprovalFlow = Boolean(approvalPolicy?.id);
 
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),
@@ -338,8 +336,8 @@ const PayableDetailsInfoBase = ({
                               payable.currency
                             )
                           : payable.currency
-                          ? formatCurrencyToDisplay(0, payable.currency)
-                          : '—'}
+                            ? formatCurrencyToDisplay(0, payable.currency)
+                            : '—'}
                       </Box>
                       {payable.currency_exchange?.default_currency_code &&
                         payable.currency !==
@@ -417,14 +415,41 @@ const PayableDetailsInfoBase = ({
                     {t(i18n)`Applied policy`}
                   </StyledLabelTableCell>
                   <TableCell>
-                    {!isApprovalPolicyLoading &&
-                      (approvalPolicy?.name || t(i18n)`no policy`)}
+                    {!isApprovalPolicyLoading && approvalPolicy?.name ? (
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                      >
+                        <span>{approvalPolicy.name}</span>
+                        {(payable.status === 'waiting_to_be_paid' ||
+                          payable.status === 'paid' ||
+                          payable.status === 'partially_paid') && (
+                          <Chip
+                            label={t(i18n)`Approved`}
+                            color="success"
+                            size="small"
+                          />
+                        )}
+                      </Box>
+                    ) : (
+                      !isApprovalPolicyLoading && t(i18n)`no policy`
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </Paper>
         </Grid>
+
+        {showApprovalFlow && approvalPolicy && (
+          <Grid item xs={12}>
+            <PayableApprovalFlowSection
+              approvalPolicy={approvalPolicy}
+              payableId={payable.id}
+              currentStatus={payable.status}
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} className={className + '-Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
@@ -445,12 +470,12 @@ const PayableDetailsInfoBase = ({
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
-                      {item.subtotal &&
-                        item.quantity &&
-                        formatFromMinorUnits(
-                          item.subtotal / item.quantity,
-                          payable.currency ?? 'EUR'
-                        )?.toFixed(2)}
+                      {item.unit_price
+                        ? formatCurrencyToDisplay(
+                            item.unit_price,
+                            payable.currency ?? 'EUR'
+                          )
+                        : '—'}
                     </TableCell>
                     <TableCell align="right">
                       {item.subtotal && payable.currency ? (
@@ -491,8 +516,8 @@ const PayableDetailsInfoBase = ({
                           payable.currency
                         )
                       : payable.currency
-                      ? formatCurrencyToDisplay(0, payable.currency)
-                      : '—'}
+                        ? formatCurrencyToDisplay(0, payable.currency)
+                        : '—'}
                   </TableCell>
                 </TableRow>
                 {Boolean(payable.discount) && payable.currency && (
@@ -515,8 +540,8 @@ const PayableDetailsInfoBase = ({
                           payable.currency
                         )
                       : payable.currency
-                      ? formatCurrencyToDisplay(0, payable.currency)
-                      : '—'}
+                        ? formatCurrencyToDisplay(0, payable.currency)
+                        : '—'}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -533,8 +558,8 @@ const PayableDetailsInfoBase = ({
                             payable.currency
                           )
                         : payable.currency
-                        ? formatCurrencyToDisplay(0, payable.currency)
-                        : '—'}
+                          ? formatCurrencyToDisplay(0, payable.currency)
+                          : '—'}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -561,24 +586,17 @@ const PayableDetailsInfoBase = ({
                       {t(i18n)`Added by`}
                     </StyledLabelTableCell>
                     <TableCell>
-                      <Box
-                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                      >
-                        <UserAvatar
-                          sx={{ width: 24, height: 24 }}
-                          alt={getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                          fileId={addedByUser.userpic_file_id}
-                        />
-                        <Box>
-                          {getIndividualName(
-                            addedByUser.first_name || '',
-                            addedByUser.last_name || ''
-                          )}
-                        </Box>
-                      </Box>
+                      <UserDisplayCell
+                        user={{
+                          id: addedByUser.id,
+                          first_name: addedByUser.first_name,
+                          last_name: addedByUser.last_name,
+                          userpic_file_id: addedByUser.userpic_file_id,
+                        }}
+                        showAvatar={true}
+                        avatarSize={24}
+                        typographyVariant="body2"
+                      />
                     </TableCell>
                   </TableRow>
                 )}

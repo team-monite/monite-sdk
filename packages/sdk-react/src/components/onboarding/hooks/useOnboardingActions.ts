@@ -1,11 +1,4 @@
-import { useMemo } from 'react';
-
-import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-
-import { useOnboardingRequirementsContext } from '../context';
+import { useOnboardingRequirementsContext } from '../context/OnboardingRequirementsContext';
 import {
   isRequirementPresentInPersonList,
   isDirectors,
@@ -16,6 +9,11 @@ import {
   isPersonList,
   isRepresentative,
 } from '../helpers';
+import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { useMemo } from 'react';
 
 type OnboardingActionCode =
   | 'finish'

@@ -1,13 +1,10 @@
-import { useId } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicyDetails/JSONFormatterInput';
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { useDialog } from '@/ui/Dialog';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -25,7 +22,8 @@ import {
   Link,
   Typography,
 } from '@mui/material';
-
+import { useId } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const getValidationSchema = (i18n: I18n) =>

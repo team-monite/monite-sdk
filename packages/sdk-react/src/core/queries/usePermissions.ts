@@ -82,7 +82,7 @@ type IsActionAllowedType = { entityUserId?: string } & (
 interface PermissionMap
   extends Record<
     CommonOperator['method'],
-    Array<components['schemas']['package__roles__head__schemas__ActionSchema']>
+    Array<components['schemas']['ActionSchema']>
   > {
   payable: Array<components['schemas']['PayableActionSchema']>;
 }
@@ -142,7 +142,7 @@ export function isActionAllowed({
   action: PayableOperator['action'] | CommonOperator['action'];
   actions:
     | Array<
-        | components['schemas']['package__roles__head__schemas__ActionSchema']
+        | components['schemas']['ActionSchema']
         | components['schemas']['PayableActionSchema']
       >
     | undefined;

@@ -1,6 +1,5 @@
-import { Box } from '@mui/material';
-
 import { AIPageContent } from '@/app/(monite)/ai-assistant/content';
+import { Box } from '@mui/material';
 
 export default async function AIAssistantPage() {
   return (

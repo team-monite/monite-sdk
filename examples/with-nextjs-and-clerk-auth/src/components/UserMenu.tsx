@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
-
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { usePathname, useSearchParams } from 'next/navigation';
-
-import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
 
 const SignedIn = dynamic(
   () => import('@clerk/nextjs').then((mod) => mod.SignedIn),

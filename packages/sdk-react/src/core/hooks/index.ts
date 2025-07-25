@@ -7,3 +7,5 @@ export * from './useFormPersist';
 export * from './useLocalStorageFields';
 export * from './useDebounce';
 export * from './useMobile';
+export * from './useComponentSettings';
+export * from './useIsMounted';

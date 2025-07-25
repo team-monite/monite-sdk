@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { CustomerTypes } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
-import { PageHeader } from '@/components/PageHeader';
+import { usePayableCallbacks } from '@/components/payables/hooks/usePayableCallbacks';
 import { PayableDetails } from '@/components/payables/PayableDetails';
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
 import { PayablesTable } from '@/components/payables/PayablesTable';
@@ -15,6 +14,8 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
@@ -59,6 +60,26 @@ const PayablesBase = ({
 }: PayablesProps) => {
   const { i18n } = useLingui();
   const { api, queryClient, componentSettings } = useMoniteContext();
+
+  const {
+    handleSaved,
+    handleCanceled,
+    handleSubmitted,
+    handleRejected,
+    handleApproved,
+    handleReopened,
+    handleDeleted,
+    handlePay,
+  } = usePayableCallbacks({
+    onSaved,
+    onCanceled,
+    onSubmitted,
+    onRejected,
+    onApproved,
+    onReopened,
+    onDeleted,
+    onPay,
+  });
 
   const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
     invoiceId: string | undefined;
@@ -141,7 +162,7 @@ const PayablesBase = ({
         className={className + '-Header'}
         title={
           <>
-            {t(i18n)`Payables`}
+            {t(i18n)`Bill Pay`}
             {(isReadAllowedLoading || isCreateAllowedLoading) && (
               <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
             )}
@@ -159,7 +180,7 @@ const PayablesBase = ({
       {isReadAllowed && (
         <PayablesTable
           onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
-          onPay={onPay}
+          onPay={handlePay}
           onPayUS={onPayUS}
           openFileInput={openFileInput}
           setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
@@ -184,20 +205,20 @@ const PayablesBase = ({
         <PayableDetails
           id={invoiceIdDialog.invoiceId}
           onClose={closeEditDialog}
-          onSaved={onSaved}
-          onCanceled={onCanceled}
-          onSubmitted={onSubmitted}
-          onRejected={onRejected}
-          onApproved={onApproved}
-          onReopened={onReopened}
+          onSaved={handleSaved}
+          onCanceled={handleCanceled}
+          onSubmitted={handleSubmitted}
+          onRejected={handleRejected}
+          onApproved={handleApproved}
+          onReopened={handleReopened}
           onDeleted={(payableId) => {
-            onDeleted?.(payableId);
+            handleDeleted?.(payableId);
             closeEditDialog();
             toast(t(i18n)`Bill #${payableId} has been deleted`, {
               duration: 5000,
             });
           }}
-          onPay={onPay}
+          onPay={handlePay}
           onPayUS={onPayUS}
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
@@ -214,7 +235,7 @@ const PayablesBase = ({
       >
         <PayableDetails
           onClose={() => setIsCreateInvoiceDialogOpen(false)}
-          onSaved={onSaved}
+          onSaved={handleSaved}
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }

@@ -13,6 +13,8 @@ const filters: Record<
   document_id: 'document_id',
   created_at: 'created_at',
   project_id: 'project_id',
+  total_amount: 'total_amount',
+  discounted_subtotal: 'discounted_subtotal',
 };
 
 export const ReceivableCursorFields = Object.values(filters);

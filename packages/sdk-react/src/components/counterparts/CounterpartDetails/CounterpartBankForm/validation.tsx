@@ -1,22 +1,22 @@
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { AllowedCountries } from '@/enums/AllowedCountries';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { z } from 'zod';
 
-import * as yup from 'yup';
-
-export const getValidationSchema = (i18n: I18n) =>
-  yup.object().shape({
-    iban: yup.string().label(t(i18n)`IBAN`),
-    bic: yup.string(),
-    name: yup.string(),
-    account_number: yup.string(),
-    sort_code: yup.string().label(t(i18n)`Sort code`),
-    routing_number: yup.string().label(t(i18n)`Routing number`),
-    country: yup
-      .string()
-      .label(t(i18n)`Country`)
-      .required(),
-    currency: yup
-      .string()
-      .label(t(i18n)`Currency`)
-      .required(),
+export const getBankValidationSchema = () =>
+  z.object({
+    iban: z.string().optional(),
+    bic: z.string().optional(),
+    name: z.string().optional(),
+    account_number: z.string().optional(),
+    account_holder_name: z.string().optional(),
+    sort_code: z.string().optional(),
+    routing_number: z.string().optional(),
+    country: z.enum(AllowedCountries as [string, ...string[]]),
+    currency: z.enum(CurrencyEnum as [string, ...string[]]),
+    partner_metadata: z.any().optional(),
+    is_default_for_currency: z.boolean().optional(),
   });
+
+export type CounterpartBankFormFields = z.infer<
+  ReturnType<typeof getBankValidationSchema>
+>;

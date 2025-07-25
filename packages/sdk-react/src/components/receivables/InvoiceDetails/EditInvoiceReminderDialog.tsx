@@ -1,11 +1,10 @@
-import { Dialog } from '@/components';
-import { MoniteDialogProps } from '@/components/Dialog/DialogProps.types';
+import { BeforeDueDateReminderForm } from './CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm';
+import { OverdueReminderForm } from './CreateReceivable/sections/components/ReminderForm/OverdueReminderForm';
+import { Dialog } from '@/ui/Dialog';
+import { MoniteDialogProps } from '@/ui/Dialog/DialogProps.types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';
-
-import { BeforeDueDateReminderForm } from './CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm';
-import { OverdueReminderForm } from './CreateReceivable/sections/components/ReminderForm/OverdueReminderForm';
 
 interface ReminderDetailsDialog extends MoniteDialogProps {
   reminderId: string;

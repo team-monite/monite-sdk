@@ -1,15 +1,12 @@
-import React from 'react';
-
-import { format } from 'date-fns';
-
-import { ArrowForward } from '@mui/icons-material';
-import { Link, TableCell, TableRow } from '@mui/material';
-
 import { CounterpartCellById } from '@/components/Dashboard/CounterpartCellById';
 import { DashboardTable } from '@/components/Dashboard/DashboardTable';
 import DashboardCard from '@/components/DashboardCard';
 import EmptyState from '@/components/EmptyState';
 import { IconPayable, IconSmilyFace } from '@/icons';
+import { ArrowForward } from '@mui/icons-material';
+import { Link, TableCell, TableRow } from '@mui/material';
+import { format } from 'date-fns';
+import React from 'react';
 
 export const DuePayablesCard = ({
   duePayables,

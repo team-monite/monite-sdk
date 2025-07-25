@@ -1,6 +1,6 @@
 import { CounterpartShowCategories } from '@/components/counterparts/types';
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

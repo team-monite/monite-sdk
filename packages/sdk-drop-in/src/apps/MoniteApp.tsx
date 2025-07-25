@@ -1,11 +1,16 @@
-import { ComponentProps, ElementType, lazy, ReactNode, Suspense } from 'react';
-import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
-
-import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
+import { AppCircularProgress } from '@/lib/AppCircularProgress';
+import { DropInMoniteProvider } from '@/lib/DropInMoniteProvider';
 import { css, Global } from '@emotion/react';
 import { type APISchema, RootElementsProvider } from '@monite/sdk-react';
-
-import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
+import {
+  ComponentProps,
+  ElementType,
+  lazy,
+  ReactNode,
+  Suspense,
+  useEffect,
+} from 'react';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
 type ProviderProps = Pick<
   ComponentProps<typeof DropInMoniteProvider>,
@@ -24,6 +29,8 @@ export const MoniteApp = ({
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
   fetchToken,
+  onMount,
+  onUnmount,
 }: {
   disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
@@ -33,8 +40,16 @@ export const MoniteApp = ({
   fetchToken?: () => Promise<
     APISchema.components['schemas']['AccessTokenResponse']
   >;
+  onMount?: () => void;
+  onUnmount?: () => void;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
+  useEffect(() => {
+    return () => {
+      onUnmount?.();
+    };
+  }, [onUnmount]);
+
   if (disabled) return null;
 
   if (router && !(router in supportedRouters))
@@ -63,6 +78,9 @@ export const MoniteApp = ({
           entityId,
           apiUrl,
           fetchToken,
+        }}
+        onThemeMounted={() => {
+          onMount?.();
         }}
       >
         <Global
@@ -124,7 +142,8 @@ export type WidgetType =
   | 'approval-policies'
   | 'onboarding'
   | 'user-roles'
-  | 'document-templates';
+  | 'document-templates'
+  | 'template-settings';
 
 const mapComponentTypeToWidget: Record<WidgetType, ElementType> = {
   payables: lazy(() =>
@@ -168,6 +187,11 @@ const mapComponentTypeToWidget: Record<WidgetType, ElementType> = {
   'document-templates': lazy(() =>
     import('@monite/sdk-react').then((module) => ({
       default: module.DocumentDesign,
+    }))
+  ),
+  'template-settings': lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.TemplateSettings,
     }))
   ),
 };

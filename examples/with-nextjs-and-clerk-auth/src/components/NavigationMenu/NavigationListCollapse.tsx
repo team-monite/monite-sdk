@@ -1,9 +1,7 @@
-import React, { ReactNode, useState } from 'react';
-
-import { Collapse, List } from '@mui/material';
-
 import { NavigationListItem } from '@/components/NavigationMenu/NavigationListItem';
 import { IconAngleDown, IconAngleUp } from '@/icons';
+import { Collapse, List } from '@mui/material';
+import React, { ReactNode, useState } from 'react';
 
 type NavigationListCollapseProps = {
   children: ReactNode;

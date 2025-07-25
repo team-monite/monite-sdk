@@ -1,10 +1,6 @@
-import { useState } from 'react';
-
 import { components } from '@/api';
-import {
-  FinanceBannerWrapper,
-  FinanceOverviewCard,
-} from '@/components/financing/components';
+import { FinanceBannerWrapper } from '@/components/financing/components/FinanceBannerWrapper';
+import { FinanceOverviewCard } from '@/components/financing/components/FinanceOverviewCard';
 import {
   useFinanceAnInvoice,
   useFinancing,
@@ -15,6 +11,7 @@ import { useKanmonContext } from '@/core/context/KanmonContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const SIX_DAYS_IN_MILLISECONDS = 6 * 24 * 60 * 60 * 1000;
 

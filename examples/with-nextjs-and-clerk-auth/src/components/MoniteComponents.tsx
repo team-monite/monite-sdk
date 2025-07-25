@@ -1,13 +1,5 @@
 'use client';
 
-import React, {
-  ChangeEvent,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-
 import { useLingui } from '@lingui/react';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
@@ -26,7 +18,7 @@ import {
   useMoniteContext,
   useRootElements,
   UserRoles as UserRolesBase,
-  DocumentDesign as DocumentDesignBase,
+  TemplateSettings as TemplateSettingsBase,
 } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
@@ -50,6 +42,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 /* eslint-disable */
 
@@ -118,7 +117,6 @@ export const MoniteProvider = ({
       locale={{
         code: i18n.locale,
         messages: {
-          Payables: 'Bill Pay',
           Counterpart: 'Customer',
           Sales: 'Invoicing',
         },
@@ -345,7 +343,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
 
   const counterpartName = counterpart
     ? getCounterpartName(counterpart)
-    : payable?.counterpart_raw_data?.name ?? '';
+    : (payable?.counterpart_raw_data?.name ?? '');
 
   return (
     <>
@@ -571,8 +569,8 @@ export const RolesAndPolicies = () => {
   return <RolesAndApprovalPoliciesBase />;
 };
 
-export const InvoiceDesign = () => {
-  return <DocumentDesignBase />;
+export const TemplateSettings = () => {
+  return <TemplateSettingsBase />;
 };
 
 const amexIcon =

@@ -1,6 +1,6 @@
-import { useDialog } from '@/components/Dialog';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
+import { useDialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogActions, DialogTitle } from '@mui/material';

@@ -9,6 +9,10 @@ import {
 } from '@/components/payables/PayablesTable/consts';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { MoniteReceivablesTableProps } from '@/components/receivables/components';
+import {
+  APDocumentType,
+  ARDocumentType,
+} from '@/components/templateSettings/types';
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -37,6 +41,38 @@ interface ReceivableSettings extends MoniteReceivablesTableProps {
   bankAccountCurrencies?: components['schemas']['CurrencyEnum'][];
 }
 
+/**
+ * Configuration settings for the onboarding component.
+ *
+ * ## Onboarding Callback Architecture
+ *
+ * The Monite SDK supports different types of onboarding flows with corresponding callbacks:
+ *
+ * ### 1. General Onboarding (`onComplete`)
+ * - **Trigger**: When all onboarding requirements are fulfilled (requirements.length === 0)
+ * - **Use Case**: General onboarding completion, backward compatibility
+ * - **Business Logic**: Called when the onboarding component completes all required steps
+ *
+ * ### 2. Payments Onboarding (`onPaymentsOnboardingComplete`)
+ * - **Trigger**: When payments onboarding requirements are fulfilled
+ * - **Use Case**: Specific to payments onboarding completion
+ * - **Business Logic**: Called when entity can make/receive payments via Monite payment rails
+ * - **Note**: Currently triggered alongside `onComplete` as they represent the same flow
+ *
+ * ### 3. Working Capital Onboarding (`onWorkingCapitalOnboardingComplete`)
+ * - **Trigger**: When business status transitions from 'INPUT_REQUIRED' or 'NEW' to 'WAITING_FOR_OFFERS'
+ * - **Use Case**: Financing/working capital onboarding completion
+ * - **Business Logic**: Called when entity completes onboarding for working capital services
+ * - **Implementation**: Handled in the financing flow (useFinancing hook)
+ *
+ * ### Event Flow Architecture
+ *
+ * ```
+ * Component → useComponentSettings() → [domain]Callbacks → MoniteEvents.enhance[Domain]Settings() → EVENT emission
+ * ```
+ *
+ * All callbacks are enhanced with event emission capabilities in the drop-in package.
+ */
 export interface OnboardingSettings {
   /**
    * Custom footer logo URL for the Onboarding pages.
@@ -77,10 +113,12 @@ export interface OnboardingSettings {
 
   /**
    * Called when the onboarding process is completed.
+   * This happens when all onboarding requirements have been fulfilled.
    *
+   * @param {string} entityId - The ID of the entity
    * @returns {void}
    */
-  onComplete?: () => void;
+  onComplete?: (entityId: string) => void;
 
   /**
    * Called when the continue button is clicked on the onboarding completed page.
@@ -96,6 +134,15 @@ export interface OnboardingSettings {
    * @returns {void}
    */
   onWorkingCapitalOnboardingComplete?: (entityId: string) => void;
+  /**
+   * Called when payments onboarding is completed.
+   * Note: This is currently triggered when all onboarding requirements are completed.
+   * Future versions may tie this to a specific payments onboarding status.
+   *
+   * @param {string} entityId - The ID of the entity
+   * @returns {void}
+   */
+  onPaymentsOnboardingComplete?: (entityId: string) => void;
 }
 
 export interface FinancingSettings {
@@ -111,10 +158,54 @@ export interface FinancingSettings {
   financeSteps: FinanceStep[];
 }
 
+export interface TemplateSettings {
+  /**
+   * Shows the template selection section if true or hides it if false, defaults to true.
+   */
+  showTemplateSection: boolean;
+  /**
+   * Shows the template PDF preview if true or hides it if false, defaults to true.
+   */
+  showTemplatePreview: boolean;
+  /**
+   * List of available template IDs for template selection, if no list is provided,
+   * then all templates will be available, defaults to an empty list.
+   */
+  availableTemplateIds: string[];
+  /**
+   * Shows the logo selection section if true or hides it if false, defaults to true.
+   */
+  showLogoSection: boolean;
+  /**
+   * Enables the document number customisation tab if true or hides it if false, defaults to true.
+   */
+  enableDocumentNumberCustomisationTab: boolean;
+  /**
+   * Enables the other settings customisation tab if true or hides it if false, defaults to true.
+   */
+  enableOtherSettingsCustomisationTab: boolean;
+  /**
+   * List of available AR documents for customisation, defaults to all of the documents.
+   */
+  availableARDocuments: ARDocumentType[];
+  /**
+   * List of available AP documents for customisation, defaults to all of the documents.
+   */
+  availableAPDocuments: APDocumentType[];
+}
+
 interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
   pageSizeOptions: number[];
+  onSaved?: (id: string) => void;
+  onCanceled?: (id: string) => void;
+  onSubmitted?: (id: string) => void;
+  onRejected?: (id: string) => void;
+  onApproved?: (id: string) => void;
+  onReopened?: (id: string) => void;
+  onDeleted?: (id: string) => void;
+  onPay?: (id: string) => void;
 }
 
 export interface ComponentSettings {
@@ -149,6 +240,7 @@ export interface ComponentSettings {
   };
   onboarding: Partial<OnboardingSettings>;
   financing: Partial<FinancingSettings>;
+  templateSettings: Partial<TemplateSettings>;
 }
 
 const defaultPageSizeOptions = [20, 50, 100];
@@ -201,6 +293,14 @@ export const getDefaultComponentSettings = (
       counterpart_bank_account_id: false,
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
+    onSaved: componentSettings?.payables?.onSaved,
+    onCanceled: componentSettings?.payables?.onCanceled,
+    onSubmitted: componentSettings?.payables?.onSubmitted,
+    onRejected: componentSettings?.payables?.onRejected,
+    onApproved: componentSettings?.payables?.onApproved,
+    onReopened: componentSettings?.payables?.onReopened,
+    onDeleted: componentSettings?.payables?.onDeleted,
+    onPay: componentSettings?.payables?.onPay,
   },
   products: {
     pageSizeOptions:
@@ -228,10 +328,6 @@ export const getDefaultComponentSettings = (
         query: { type: 'financing' },
       },
     ],
-    onCreate: componentSettings?.receivables?.onCreate,
-    onUpdate: componentSettings?.receivables?.onUpdate,
-    onDelete: componentSettings?.receivables?.onDelete,
-    onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
     enableEntityBankAccount:
       componentSettings?.receivables?.enableEntityBankAccount || false,
     bankAccountCurrencies:
@@ -240,6 +336,10 @@ export const getDefaultComponentSettings = (
     bankAccountCountries:
       componentSettings?.receivables?.bankAccountCountries ||
       defaultAvailableCountries,
+    onCreate: componentSettings?.receivables?.onCreate,
+    onUpdate: componentSettings?.receivables?.onUpdate,
+    onDelete: componentSettings?.receivables?.onDelete,
+    onInvoiceSent: componentSettings?.receivables?.onInvoiceSent,
   },
   tags: {
     pageSizeOptions:
@@ -249,6 +349,44 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
   },
-  onboarding: componentSettings?.onboarding ?? {},
+  onboarding: {
+    footerLogoUrl: componentSettings?.onboarding?.footerLogoUrl,
+    footerWebsiteUrl: componentSettings?.onboarding?.footerWebsiteUrl,
+    hideFooter: componentSettings?.onboarding?.hideFooter,
+    showContinueButton: componentSettings?.onboarding?.showContinueButton,
+    allowedCurrencies: componentSettings?.onboarding?.allowedCurrencies,
+    allowedCountries: componentSettings?.onboarding?.allowedCountries,
+    onComplete: componentSettings?.onboarding?.onComplete,
+    onContinue: componentSettings?.onboarding?.onContinue,
+    onWorkingCapitalOnboardingComplete:
+      componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete,
+    onPaymentsOnboardingComplete:
+      componentSettings?.onboarding?.onPaymentsOnboardingComplete,
+  },
   financing: componentSettings?.financing ?? {},
+  templateSettings: {
+    showTemplateSection:
+      componentSettings?.templateSettings?.showTemplateSection ?? true,
+    showTemplatePreview:
+      componentSettings?.templateSettings?.showTemplatePreview ?? true,
+    availableTemplateIds:
+      componentSettings?.templateSettings?.availableTemplateIds ?? [],
+    showLogoSection:
+      componentSettings?.templateSettings?.showLogoSection ?? true,
+    enableDocumentNumberCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableDocumentNumberCustomisationTab ?? true,
+    enableOtherSettingsCustomisationTab:
+      componentSettings?.templateSettings
+        ?.enableOtherSettingsCustomisationTab ?? true,
+    availableARDocuments: componentSettings?.templateSettings
+      ?.availableARDocuments ?? [
+      'invoice',
+      'credit_note',
+      'quote',
+      'delivery_note',
+    ],
+    availableAPDocuments: componentSettings?.templateSettings
+      ?.availableAPDocuments ?? ['purchase_order'],
+  },
 });

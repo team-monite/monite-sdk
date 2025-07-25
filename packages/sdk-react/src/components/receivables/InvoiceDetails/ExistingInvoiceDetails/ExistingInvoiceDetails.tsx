@@ -1,10 +1,10 @@
-import { useState, useTransition } from 'react';
-
+import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
+import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
 import {
-  InvoiceRecurrenceStatusChip,
-  InvoiceStatusChip,
-} from '@/components/receivables/components';
-import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+  DeliveryMethod,
+  ExistingInvoiceDetailsView,
+  useExistingInvoiceDetails,
+} from './useExistingInvoiceDetails';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
@@ -14,12 +14,21 @@ import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDe
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/components/InvoiceRecurrenceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { useDuplicateInvoice } from '@/components/receivables/hooks';
+import { TemplateSettings } from '@/components/templateSettings';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceivableById } from '@/core/queries/useReceivables';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
@@ -33,63 +42,11 @@ import {
   Button,
   DialogContent,
   Grid,
-  Menu,
-  MenuItem,
-  MenuProps,
   Stack,
   CircularProgress,
 } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
-
-import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
-import { RecordManualPaymentModal } from './components/TabPanels/PaymentTabPanel/RecordManualPaymentModal';
-import {
-  DeliveryMethod,
-  ExistingInvoiceDetailsView,
-  useExistingInvoiceDetails,
-} from './useExistingInvoiceDetails';
-
-export const StyledMenu = styled((props: MenuProps) => {
-  const { root } = useRootElements();
-
-  return (
-    <Menu
-      {...props}
-      elevation={0}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      container={root}
-    />
-  );
-})(({ theme }) => ({
-  '& .MuiPaper-root': {
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    boxShadow: `0px 4px 16px 0px ${alpha(theme.palette.secondary.main, 0.4)}`,
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity
-        ),
-      },
-    },
-  },
-}));
+import { Copy } from 'lucide-react';
+import { useState, useTransition } from 'react';
 
 enum InvoiceDetailsPresentation {
   Overview = 'overview',
@@ -111,14 +68,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     InvoiceDetailsPresentation.Overview
   );
 
-  const { buttonProps, menuProps } = useMenuButton();
-
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(
     DeliveryMethod.Email
   );
   const { data: receivable, isLoading: isInvoiceLoading } = useReceivableById(
     props.id
   );
+  const { mutate: duplicateInvoice } = useDuplicateInvoice(props?.onDuplicate);
 
   const { data: recurrence } = useRecurrenceByInvoiceId(props.id);
 
@@ -130,6 +86,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
   const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
+  const [editTemplateModalOpen, setEditTemplateModalOpen] =
+    useState<boolean>(false);
   const [cancelRecurrenceModalOpened, setCancelRecurrenceModalOpened] =
     useState(false);
 
@@ -140,6 +98,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   });
 
   const [isViewChanging, startViewChange] = useTransition();
+
+  const handleDuplicateInvoice = () => {
+    duplicateInvoice({
+      path: {
+        receivable_id: props.id,
+      },
+    });
+  };
 
   if (isInvoiceLoading || isViewChanging) {
     return <LoadingPage />;
@@ -210,16 +176,66 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const actions = (
     <>
-      {buttons.isDeleteButtonVisible && (
-        <Button
-          variant="text"
-          color="error"
-          onClick={() => setDeleteModalOpened(true)}
-          disabled={buttons.isDeleteButtonDisabled}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="text"
+            color="primary"
+            disableElevation
+            disabled={loading}
+            endIcon={<MoreVertIcon />}
+          >
+            {t(i18n)`More`}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleDuplicateInvoice}>
+            <Copy className="w-4 h-4" />
+            {t(i18n)`Duplicate`}
+          </DropdownMenuItem>
+          {buttons.isSendEmailButtonVisible && (
+            <DropdownMenuItem
+              onClick={() => {
+                setPresentation(InvoiceDetailsPresentation.Email);
+              }}
+            >
+              <EmailIcon fontSize="small" />
+              {t(i18n)`Send invoice`}
+            </DropdownMenuItem>
+          )}
+          {buttons.isCancelButtonVisible && (
+            <DropdownMenuItem
+              onClick={(event) => {
+                event.preventDefault();
+                setCancelModalOpened(true);
+              }}
+              disabled={buttons.isCancelButtonDisabled}
+            >
+              <CancelIcon fontSize="small" />
+              {t(i18n)`Cancel invoice`}
+            </DropdownMenuItem>
+          )}
+          {buttons.isEditTemplateButtonVisible && (
+            <DropdownMenuItem
+              onClick={(event) => {
+                event.preventDefault();
+                setEditTemplateModalOpen(true);
+              }}
+            >
+              {t(i18n)`Edit template settings`}
+            </DropdownMenuItem>
+          )}
+          {buttons.isDeleteButtonVisible && (
+            <DropdownMenuItem
+              onClick={() => setDeleteModalOpened(true)}
+              disabled={buttons.isDeleteButtonDisabled}
+              variant="destructive"
+            >
+              {t(i18n)`Delete`}
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
       {buttons.isEditButtonVisible && (
         <Button
           variant="outlined"
@@ -230,44 +246,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           }}
           disabled={loading}
         >
-          {t(i18n)`Edit invoice`}
+          {t(i18n)`Edit`}
         </Button>
-      )}
-      {buttons.isMoreButtonVisible && (
-        <>
-          <Button
-            {...buttonProps}
-            variant="text"
-            color="primary"
-            disableElevation
-            disabled={loading}
-            endIcon={<MoreVertIcon />}
-          >
-            {t(i18n)`More`}
-          </Button>
-          <StyledMenu {...menuProps}>
-            <MenuItem
-              onClick={() => {
-                setPresentation(InvoiceDetailsPresentation.Email);
-              }}
-            >
-              <EmailIcon fontSize="small" />
-              {t(i18n)`Send invoice`}
-            </MenuItem>
-            {buttons.isCancelButtonVisible && (
-              <MenuItem
-                onClick={(event) => {
-                  event.preventDefault();
-                  setCancelModalOpened(true);
-                }}
-                disabled={buttons.isCancelButtonDisabled}
-              >
-                <CancelIcon fontSize="small" />
-                {t(i18n)`Cancel Invoice`}
-              </MenuItem>
-            )}
-          </StyledMenu>
-        </>
       )}
       {buttons.isDownloadPDFButtonVisible && (
         <Button
@@ -362,6 +342,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           setCancelRecurrenceModalOpened(false);
         }}
       />
+
+      {editTemplateModalOpen && (
+        <TemplateSettings
+          isDialog
+          isOpen={editTemplateModalOpen}
+          handleCloseDialog={() => setEditTemplateModalOpen(false)}
+        />
+      )}
 
       <FullScreenModalHeader
         className={className + '-Title'}

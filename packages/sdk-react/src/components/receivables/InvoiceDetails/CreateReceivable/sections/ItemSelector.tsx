@@ -10,7 +10,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useDebounceCallback } from '@/core/hooks/useDebounce';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -33,12 +33,11 @@ interface ItemSelectorOptionProps {
     value: number;
   };
   smallestAmount?: number;
-  measureUnit?: components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  measureUnit?: components['schemas']['LineItemProductMeasureUnit'];
   currency?: CurrencyEnum;
 }
 
-type MeasureUnit =
-  components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
 
 type ItemSelectorProps = {
   disabled?: boolean;
@@ -92,7 +91,7 @@ export const ItemSelector = ({
   const [isTyping, setIsTyping] = useState(false);
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
-    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
         items: [],

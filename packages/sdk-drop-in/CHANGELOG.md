@@ -1,5 +1,43 @@
 # @monite/sdk-drop-in
 
+## 2.2.1
+
+### Patch Changes
+
+- 102dc7e: Event handlers for payable actions (such as saved, canceled, submitted, etc.) are now only available when a corresponding callback is defined; otherwise, they will be undefined
+
+## 2.2.0
+
+### Minor Changes
+
+- 7ef2451: Theme colors improved across components
+- 7f17198: Add primaryForeground color property. This can be used to customize the text/icons color on primary elements (e.g. buttons)
+
+### Patch Changes
+
+- 954ee35: Add payables custom event callbacks. A custom hook for managing component settings callbacks
+- 20d79d8: Fix inconsistencies with primary color generation
+
+## 2.1.0
+
+### Minor Changes
+
+- 55393f1: New built-in PDF viewer
+- 979f92a: Custom VAT rates properties are added to the schema
+- d9f6ba1: Added clone functionality for invoices
+- 3e50e05: Update columns on Account Payables Table
+- 2a0d029: Added functionality for selecting vat mode when creating an invoice
+- cb1028a: - Replaced current `DocumentDesign` component with `TemplateSettings`, a more complete component to edit template settings, giving more flexibility in customisation. It accepts 3 props: - `isDialog`, a boolean value that tells whether the component will be rendered inside a Dialog wrapper or not - `isOpen`, a boolean flag that controls the dialog state - `handleCloseDialog`, a callback function that is called to close the dialog
+
+  - Also added a new option in componentSettings: `templateSettings`
+    This option allows the user to further customise how the settings will be presented and it accepts the following props: - `showTemplateSection`, a boolean value that defines whether to display or not the template selection section, defaults to true. - `showTemplatePreview`, a boolean value that defines whether to display or not the template PDF preview, defaults to true. - `showLogoSection`, a boolean value that defines whether to display or not the logo selection section, defaults to true. - `enableDocumentNumberCustomisationTab`, a boolean value that enables the document number customisation tab if true or hides it if false, defaults to true. - `availableARDocuments`, list of available AR documents for customisation, defaults to all of the documents. - `availableAPDocuments`, list of available AP documents for customisation, defaults to all of the documents.
+
+### Patch Changes
+
+- 505e8b9: Fix validation triggering automatically when creating a new payable
+- f557381: Fixed bugs on the Invoice Creation screen, specifically on the VAT and memo fields, and on the costumer modal. Improved design of the reminders component.
+- d5b8f4b: Removed ssn_last_4 in favor of id_number
+
 ## 2.0.3
 
 ### Patch Changes

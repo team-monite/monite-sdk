@@ -1,11 +1,9 @@
 'use client';
 
-import { ComponentProps } from 'react';
-
+import { OrganizationSwitcher as OrganizationSwitcherBase } from '@clerk/nextjs';
 import { normalizePathTrailingSlash } from 'next/dist/client/normalize-trailing-slash';
 import { usePathname } from 'next/navigation';
-
-import { OrganizationSwitcher as OrganizationSwitcherBase } from '@clerk/nextjs';
+import { ComponentProps } from 'react';
 
 export const OrganizationSwitcher = ({
   hidePersonal = true,

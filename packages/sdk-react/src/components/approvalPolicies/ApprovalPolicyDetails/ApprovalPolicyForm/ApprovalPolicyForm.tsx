@@ -1,33 +1,31 @@
-import { useId, useState, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { ConditionsTable } from '../ConditionsTable';
+import { RulesTable } from '../RulesTable';
+import { AutocompleteUsers } from './AutocompleteUsers';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
 import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
+import {
+  NAMED_VALUES,
+  OPERATOR_OPERATIONS,
+} from '@/components/approvalPolicies/triggerUtils';
 import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
-import {
-  useApprovalPolicyTrigger,
-  ApprovalPoliciesTriggerKey,
-  ApprovalPoliciesOperator,
-  AmountTuple,
-} from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import {
-  CounterpartAutocomplete,
-  CounterpartsAutocompleteOptionProps,
-} from '@/components/counterparts/components';
+import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import { CounterpartAutocomplete } from '@/components/counterparts/components';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { MoniteCurrency } from '@/ui/Currency';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { I18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -39,13 +37,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-import * as yup from 'yup';
-
-import { ConditionsTable } from '../ConditionsTable';
-import { RulesTable } from '../RulesTable';
-import { AutocompleteTags } from './AutocompleteTags';
-import { AutocompleteUsers } from './AutocompleteUsers';
+import { useId, useState, useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { z } from 'zod';
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
@@ -61,36 +56,229 @@ interface ApprovalPolicyFormProps {
   onUpdated?: (id: string) => void;
 }
 
-export interface FormValues {
-  name: string;
-  description: string;
+const getApprovalPolicyValidationSchema = (i18n: I18n) =>
+  z.object({
+    name: z.string().min(1, t(i18n)`Policy name is required`),
+    description: z.string().min(1, t(i18n)`Description is required`),
+    triggerType: z
+      .union([
+        z.literal('was_created_by_user_id'),
+        z.literal('counterpart_id'),
+        z.literal('amount'),
+        z.literal('currency'),
+        z.literal('tags'),
+      ])
+      .nullable(),
+    triggers: z.object({
+      was_created_by_user_id: z.array(z.any()).optional(),
+      tags: z.array(z.any()).optional(),
+      counterpart_id: z.array(z.any()).optional(),
+      amount: z
+        .object({
+          currency: z.enum(CurrencyEnum),
+          value: z.array(z.any()),
+        })
+        .optional(),
+    }),
+    amountOperator: z
+      .union([
+        z.literal('range'),
+        z.literal('in'),
+        z.literal('=='),
+        z.literal('<'),
+        z.literal('<='),
+        z.literal('>'),
+        z.literal('>='),
+      ])
+      .optional(),
+    amountValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeLeftValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountRangeRightValue: z
+      .number()
+      .positive(t(i18n)`Amount must be a positive number`)
+      .optional(),
+    amountCurrency: z.enum(CurrencyEnum).optional(),
+    scriptType: z
+      .union([
+        z.literal('single_user'),
+        z.literal('users_from_list'),
+        z.literal('roles_from_list'),
+        z.literal('approval_chain'),
+      ])
+      .nullable(),
+    rules: z.object({
+      single_user: z.any().optional(),
+      users_from_list: z.array(z.any()).optional(),
+      roles_from_list: z.array(z.any()).optional(),
+      approval_chain: z.array(z.any()).optional(),
+    }),
+    usersFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+    rolesFromListCount: z
+      .number()
+      .min(1, t(i18n)`Minimum number of approvals required must be at least 1`)
+      .optional(),
+  });
+export type FormValues = z.infer<
+  ReturnType<typeof getApprovalPolicyValidationSchema>
+>;
 
-  triggerType: ApprovalPoliciesTriggerKey | null;
-  triggers: {
-    was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
-    tags?: components['schemas']['TagReadSchema'][];
-    counterpart_id?: CounterpartsAutocompleteOptionProps[];
-    amount?: {
-      currency: components['schemas']['CurrencyEnum'];
-      value: AmountTuple[];
-    };
+/**
+ * Builds the approval policy payload from form values
+ */
+/* eslint-disable lingui/no-unlocalized-strings */
+const buildApprovalPolicyPayload = (values: FormValues) => {
+  return {
+    name: values.name,
+    description: values.description,
+    trigger: {
+      all: [
+        "{event_name == 'submitted_for_approval'}",
+        ...(values.triggers.was_created_by_user_id?.length &&
+        values.triggers.was_created_by_user_id?.length > 0
+          ? [
+              {
+                operator: OPERATOR_OPERATIONS.IN,
+                left_operand: {
+                  name: `invoice.${NAMED_VALUES.WAS_CREATED_BY_USER_ID}`,
+                },
+                right_operand: values.triggers.was_created_by_user_id.map(
+                  (user) => user.id
+                ),
+              },
+            ]
+          : []),
+        ...(values.triggers.counterpart_id?.length &&
+        values.triggers.counterpart_id?.length > 0
+          ? [
+              {
+                operator: OPERATOR_OPERATIONS.IN,
+                left_operand: {
+                  name: `invoice.${NAMED_VALUES.COUNTERPART_ID}`,
+                },
+                right_operand: values.triggers.counterpart_id.map(
+                  (counterpart) => counterpart.id
+                ),
+              },
+            ]
+          : []),
+        // Named value `tags.id` is a list. So in order to use the 'x in list' format, we need to build a trigger for each tag
+        ...(values.triggers.tags?.length && values.triggers.tags?.length > 0
+          ? values.triggers.tags.map((tag) => ({
+              operator: OPERATOR_OPERATIONS.IN,
+              left_operand: tag.id,
+              right_operand: {
+                name: `invoice.${NAMED_VALUES.TAGS}`,
+              },
+            }))
+          : []),
+        ...(values.triggers.amount?.value?.length &&
+        values.triggers.amount?.value?.length > 0
+          ? [
+              ...values.triggers.amount.value.map((value) => ({
+                operator: value[0],
+                left_operand: {
+                  name: `invoice.${NAMED_VALUES.AMOUNT}`,
+                },
+                right_operand:
+                  typeof value[1] === 'number' ? value[1] : parseInt(value[1]),
+              })),
+              {
+                operator: OPERATOR_OPERATIONS.EQUALS,
+                left_operand: {
+                  name: `invoice.${NAMED_VALUES.CURRENCY}`,
+                },
+                right_operand: values.triggers.amount.currency,
+              },
+            ]
+          : []),
+      ],
+    },
+    script: [
+      {
+        if: {
+          run_concurrently: false,
+          all: [
+            ...(values.rules.single_user
+              ? [
+                  {
+                    call: 'ApprovalRequests.request_approval_by_users',
+                    params: {
+                      user_ids: [values.rules.single_user.id],
+                      required_approval_count: 1,
+                    },
+                  },
+                ]
+              : []),
+            ...(values.rules.users_from_list &&
+            values.rules.users_from_list?.length > 0
+              ? [
+                  {
+                    call: 'ApprovalRequests.request_approval_by_users',
+                    params: {
+                      user_ids:
+                        values.rules.users_from_list.map((user) => user.id) ||
+                        [],
+                      required_approval_count: values.usersFromListCount
+                        ? typeof values.usersFromListCount === 'number'
+                          ? values.usersFromListCount
+                          : parseInt(values.usersFromListCount)
+                        : 0,
+                    },
+                  },
+                ]
+              : []),
+            ...(values.rules.roles_from_list &&
+            values.rules.roles_from_list?.length > 0
+              ? [
+                  {
+                    call: 'ApprovalRequests.request_approval_by_roles',
+                    params: {
+                      role_ids:
+                        values.rules.roles_from_list.map((role) => role.id) ||
+                        [],
+                      required_approval_count: values.rolesFromListCount
+                        ? typeof values.rolesFromListCount === 'number'
+                          ? values.rolesFromListCount
+                          : parseInt(values.rolesFromListCount)
+                        : 0,
+                    },
+                  },
+                ]
+              : []),
+            ...(values.rules.approval_chain &&
+            values.rules.approval_chain?.length > 0
+              ? [
+                  {
+                    run_concurrently: false,
+                    all: [
+                      ...(values.rules.approval_chain.map((user) => ({
+                        call: 'ApprovalRequests.request_approval_by_users',
+                        params: {
+                          user_ids: [user.id],
+                          required_approval_count: 1,
+                        },
+                      })) || []),
+                    ],
+                  },
+                ]
+              : []),
+          ],
+        },
+        then: ['{Payables.approve(invoice.id)}'],
+        else: ['{Payables.reject(invoice.id)}'],
+      },
+    ],
   };
-  amountOperator?: ApprovalPoliciesOperator;
-  amountValue?: string | number;
-  amountRangeLeftValue?: string | number;
-  amountRangeRightValue?: string | number;
-  amountCurrency?: components['schemas']['CurrencyEnum'];
-
-  scriptType: ApprovalPolicyScriptType | null;
-  rules: {
-    single_user?: components['schemas']['EntityUserResponse'];
-    users_from_list?: components['schemas']['EntityUserResponse'][];
-    roles_from_list?: components['schemas']['RoleResponse'][];
-    approval_chain?: components['schemas']['EntityUserResponse'][];
-  };
-  usersFromListCount?: string | number;
-  rolesFromListCount?: string | number;
-}
+};
 
 export const ApprovalPolicyForm = ({
   approvalPolicy,
@@ -114,7 +302,7 @@ export const ApprovalPolicyForm = ({
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
-    useState<ApprovalPoliciesTriggerKey | null>(null);
+    useState<FormValues['triggerType']>(null);
 
   const [prevFormValues, setPrevFormValues] =
     useState<Partial<FormValues> | null>(null);
@@ -281,31 +469,8 @@ export const ApprovalPolicyForm = ({
     return response;
   };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(t(i18n)`Policy name is required`),
-    description: yup.string().required(t(i18n)`Description is required`),
-    amountValue: yup
-      .number()
-      .typeError(t(i18n)`Amount must be a number`)
-      .transform((value, originalValue) =>
-        originalValue === '' ? null : value
-      )
-      .positive(t(i18n)`Amount must be a positive number`)
-      .nullable(),
-    usersFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
-      .nullable(),
-    rolesFromListCount: yup
-      .number()
-      .typeError(t(i18n)`Number of approvals required must be a number`)
-      .positive(t(i18n)`Number of approvals must be positive`)
-      .nullable(),
-  });
-
   const methods = useForm<FormValues>({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(getApprovalPolicyValidationSchema(i18n)),
     mode: 'onChange',
     defaultValues: {
       name: approvalPolicy?.name || '',
@@ -317,8 +482,8 @@ export const ApprovalPolicyForm = ({
       amountCurrency: undefined,
       amountRangeLeftValue: undefined,
       amountRangeRightValue: undefined,
-      usersFromListCount: undefined,
-      rolesFromListCount: undefined,
+      usersFromListCount: 1,
+      rolesFromListCount: 1,
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
@@ -332,6 +497,8 @@ export const ApprovalPolicyForm = ({
     currentAmountCurrency,
     currentTriggerType,
     currentScriptType,
+    currentUsersFromListCount,
+    currentRolesFromListCount,
   ] = watch([
     'triggers',
     'rules',
@@ -342,6 +509,8 @@ export const ApprovalPolicyForm = ({
     'amountCurrency',
     'triggerType',
     'scriptType',
+    'usersFromListCount',
+    'rolesFromListCount',
   ]);
 
   // setup default values for conditions and rules
@@ -572,7 +741,7 @@ export const ApprovalPolicyForm = ({
         'rules.users_from_list',
         prevFormValues?.rules?.users_from_list || undefined
       );
-      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 0);
+      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'roles_from_list') {
@@ -580,7 +749,7 @@ export const ApprovalPolicyForm = ({
         'rules.roles_from_list',
         prevFormValues?.rules?.roles_from_list || undefined
       );
-      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 0);
+      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 1);
     }
 
     if (!isAddingRule && scriptInEdit === 'approval_chain') {
@@ -641,162 +810,12 @@ export const ApprovalPolicyForm = ({
             id={formId}
             noValidate
             onSubmit={handleSubmit((values) => {
-              const body = {
-                name: values.name,
-                description: values.description,
-                trigger: {
-                  all: [
-                    "{event_name == 'submitted_for_approval'}",
-                    ...(values.triggers.was_created_by_user_id?.length &&
-                    values.triggers.was_created_by_user_id?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.was_created_by_user_id',
-                            },
-                            right_operand:
-                              values.triggers.was_created_by_user_id.map(
-                                (user) => user.id
-                              ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.tags?.length &&
-                    values.triggers.tags?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.tags.id',
-                            },
-                            right_operand: values.triggers.tags.map(
-                              (tag) => tag.id
-                            ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.counterpart_id?.length &&
-                    values.triggers.counterpart_id?.length > 0
-                      ? [
-                          {
-                            operator: 'in',
-                            left_operand: {
-                              name: 'invoice.counterpart_id',
-                            },
-                            right_operand: values.triggers.counterpart_id.map(
-                              (counterpart) => counterpart.id
-                            ),
-                          },
-                        ]
-                      : []),
-                    ...(values.triggers.amount?.value?.length &&
-                    values.triggers.amount?.value?.length > 0
-                      ? [
-                          ...values.triggers.amount.value.map((value) => ({
-                            operator: value[0],
-                            left_operand: {
-                              name: 'invoice.amount',
-                            },
-                            right_operand:
-                              typeof value[1] === 'number'
-                                ? value[1]
-                                : parseInt(value[1]),
-                          })),
-                          {
-                            operator: '==',
-                            left_operand: {
-                              name: 'invoice.currency',
-                            },
-                            right_operand: values.triggers.amount.currency,
-                          },
-                        ]
-                      : []),
-                  ],
-                },
-                script: [
-                  {
-                    run_concurrently: true,
-                    all: [
-                      ...(values.rules.single_user
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_users',
-                              params: {
-                                user_ids: [values.rules.single_user.id],
-                                required_approval_count: 1,
-                              },
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.users_from_list &&
-                      values.rules.users_from_list?.length > 0
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_users',
-                              params: {
-                                user_ids:
-                                  values.rules.users_from_list.map(
-                                    (user) => user.id
-                                  ) || [],
-                                required_approval_count:
-                                  values.usersFromListCount
-                                    ? typeof values.usersFromListCount ===
-                                      'number'
-                                      ? values.usersFromListCount
-                                      : parseInt(values.usersFromListCount)
-                                    : 0,
-                              },
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.roles_from_list &&
-                      values.rules.roles_from_list?.length > 0
-                        ? [
-                            {
-                              call: 'ApprovalRequests.request_approval_by_roles',
-                              params: {
-                                role_ids:
-                                  values.rules.roles_from_list.map(
-                                    (role) => role.id
-                                  ) || [],
-                                required_approval_count:
-                                  values.rolesFromListCount
-                                    ? typeof values.rolesFromListCount ===
-                                      'number'
-                                      ? values.rolesFromListCount
-                                      : parseInt(values.rolesFromListCount)
-                                    : 0,
-                              },
-                            },
-                          ]
-                        : []),
-                      ...(values.rules.approval_chain &&
-                      values.rules.approval_chain?.length > 0
-                        ? [
-                            {
-                              run_concurrently: false,
-                              all: [
-                                ...(values.rules.approval_chain.map((user) => ({
-                                  call: 'ApprovalRequests.request_approval_by_users',
-                                  params: {
-                                    user_ids: [user.id],
-                                    required_approval_count: 1,
-                                  },
-                                })) || []),
-                              ],
-                            },
-                          ]
-                        : []),
-                    ],
-                  },
-                ],
-              };
+              const approvalPolicyPayload = buildApprovalPolicyPayload(values);
               isEdit
                 ? // @ts-expect-error - `trigger` is not covered by the schema
-                  updateApprovalPolicy(approvalPolicy.id, body)
+                  updateApprovalPolicy(approvalPolicy.id, approvalPolicyPayload)
                 : // @ts-expect-error - `trigger` is not covered by the schema
-                  createApprovalPolicy(body);
+                  createApprovalPolicy(approvalPolicyPayload);
             })}
           >
             <Stack gap={3}>
@@ -883,10 +902,12 @@ export const ApprovalPolicyForm = ({
               )}
               {(triggerInEdit === 'tags' ||
                 (isAddingTrigger && currentTriggerType === 'tags')) && (
-                <AutocompleteTags
+                <TagsAutocompleteInput
                   control={control}
                   name="triggers.tags"
                   label={t(i18n)`Tags`}
+                  variant="standard"
+                  required
                 />
               )}
               {(triggerInEdit === 'counterpart_id' ||
@@ -986,6 +1007,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="usersFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
@@ -1002,6 +1025,8 @@ export const ApprovalPolicyForm = ({
                     label={t(i18n)`Minimum number of approvals required`}
                     name="rolesFromListCount"
                     type="number"
+                    required
+                    inputProps={{ min: 1 }}
                   />
                 </>
               )}
@@ -1096,6 +1121,8 @@ export const ApprovalPolicyForm = ({
                       </Typography>
                       <RulesTable
                         rules={currentRules}
+                        usersFromListCount={currentUsersFromListCount}
+                        rolesFromListCount={currentRolesFromListCount}
                         onAddRule={() => {
                           setIsAddingRule(true);
                           setPrevFormValues({
@@ -1157,8 +1184,8 @@ export const ApprovalPolicyForm = ({
             triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule
               ? resetFormTriggerOrScript
               : isEdit
-              ? () => setIsEdit(false)
-              : dialogContext?.onClose,
+                ? () => setIsEdit(false)
+                : dialogContext?.onClose,
         }}
       />
     </>

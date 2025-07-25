@@ -1,6 +1,5 @@
-import { Box } from '@mui/material';
-
 import { Receivables } from '@/components/MoniteComponents';
+import { Box } from '@mui/material';
 
 export default async function PayablesPage() {
   return (

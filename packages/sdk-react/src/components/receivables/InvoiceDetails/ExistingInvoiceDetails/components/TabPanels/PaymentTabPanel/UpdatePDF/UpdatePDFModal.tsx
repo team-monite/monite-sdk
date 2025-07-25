@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { components } from '@/api';
-import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useMarkInvoiceAsPaid,
   usePatchEntitiesIdSettings,
 } from '@/core/queries';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -69,6 +69,8 @@ export const UpdatePDFModal = ({ invoice }: Props) => {
 
           await mutateAsync({
             vat_mode: entitySettings!.vat_mode,
+            vat_inclusive_discount_mode:
+              entitySettings!.vat_inclusive_discount_mode,
             allow_purchase_order_autolinking:
               entitySettings!.allow_purchase_order_autolinking,
             payment_priority: entitySettings!.payment_priority,

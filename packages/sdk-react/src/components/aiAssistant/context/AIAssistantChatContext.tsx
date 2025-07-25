@@ -1,14 +1,14 @@
+import { apiVersion } from '@/api/api-version';
+import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
+import { ConversationHistory } from '@/components/aiAssistant/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { type UseChatHelpers } from '@ai-sdk/react';
 import {
   createContext,
   type PropsWithChildren,
   useContext,
   useMemo,
 } from 'react';
-
-import { apiVersion } from '@/api/api-version';
-import { ConversationHistory, useAIAssistantOptions } from '@/components';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { type UseChatHelpers } from '@ai-sdk/react';
 
 export interface ChatProviderProps extends PropsWithChildren {
   isNewChat: boolean;
@@ -36,11 +36,11 @@ export const AIAssistantChatProvider = ({
   isNewChat,
   setIsNewChat,
 }: ChatProviderProps) => {
-  const { apiUrl, fetchToken, api, queryClient } = useMoniteContext();
+  const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
   const { data: conversation } =
-    api.ai.fetchConversationMessages.useQuery<ConversationHistory>(
+    api.ai.getAiConversationsId.useQuery<ConversationHistory>(
       {
-        path: { conversationId },
+        path: { conversation_id: conversationId },
       },
       { enabled: !isNewChat }
     );
@@ -59,6 +59,7 @@ export const AIAssistantChatProvider = ({
         headers: {
           ...init?.headers,
           'x-monite-version': apiVersion,
+          'x-monite-entity-id': entityId,
           Authorization: `${tokenType} ${accessToken}`,
         },
       });
@@ -69,7 +70,7 @@ export const AIAssistantChatProvider = ({
         return;
       }
 
-      await api.ai.fetchConversations.invalidateQueries(queryClient);
+      await api.ai.getAiConversationsId.invalidateQueries(queryClient);
       setIsNewChat(false);
     },
   });

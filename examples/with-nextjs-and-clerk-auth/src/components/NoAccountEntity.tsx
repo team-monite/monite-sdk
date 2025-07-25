@@ -1,15 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useTimeout } from 'react-use';
-
-import { useRouter } from 'next/navigation';
-
-import { useOrganization, useOrganizationList } from '@clerk/nextjs';
-import { Alert, Box, CircularProgress, Fade } from '@mui/material';
-
 import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
+import { useOrganization, useOrganizationList } from '@clerk/nextjs';
+import { Alert, Box, CircularProgress, Fade } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { useTimeout } from 'react-use';
 
 export const NoAccountEntity = ({
   entity_user_id,

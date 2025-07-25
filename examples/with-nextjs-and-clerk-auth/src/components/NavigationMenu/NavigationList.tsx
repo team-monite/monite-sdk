@@ -1,12 +1,5 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
-import { List } from '@mui/material';
-
 import { NavigationListItem } from '@/components/NavigationMenu/NavigationListItem';
 import {
   IconApps,
@@ -21,6 +14,11 @@ import {
   IconBolt,
   IconBrush,
 } from '@/icons';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Box, Typography } from '@mui/material';
+import { List } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 export const NavigationList = () => {
   const { i18n } = useLingui();
@@ -78,8 +76,8 @@ export const NavigationList = () => {
       </Typography>
 
       <List className="NavigationList" disablePadding>
-        <NavigationListItem href="/invoice-design" icon={<IconBrush />}>
-          {t(i18n)`Document Design`}
+        <NavigationListItem href="/template-settings" icon={<IconBrush />}>
+          {t(i18n)`Template settings`}
         </NavigationListItem>
         <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
           {t(i18n)`Roles & Approvals`}

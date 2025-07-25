@@ -1,10 +1,9 @@
+import type { components, paths } from './schema';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
-
-import type { components, paths } from './schema';
 
 export const createEntityRole = async (
   {
@@ -49,7 +48,7 @@ export const createEntityRole = async (
  * @returns Merged roles: the new roles with the previously existing roles
  */
 export const createEntityRoles = async <
-  Role extends keyof typeof roles_default_permissions
+  Role extends keyof typeof roles_default_permissions,
 >(
   entityId: string,
   roles: Array<Role>,
@@ -1637,7 +1636,7 @@ type BizObjects = NonNullable<
 
 type BizObject<
   T extends BizObjectType,
-  BizObjectItem extends { object_type: string }
+  BizObjectItem extends { object_type: string },
 > = BizObjectItem extends { object_type: infer ObjectType }
   ? ObjectType extends T
     ? BizObjectItem
@@ -1646,7 +1645,7 @@ type BizObject<
 
 type BizObjectAction<
   T extends BizObjectType,
-  BizObjectItem extends { object_type: T }
+  BizObjectItem extends { object_type: T },
 > = BizObjectItem extends {
   actions: Array<infer Actions>;
 }
@@ -1661,7 +1660,7 @@ type BizObjectAction<
 
 type BizObjectActions<
   T extends BizObjectType,
-  BizObjectItem = BizObject<T, BizObjects>
+  BizObjectItem = BizObject<T, BizObjects>,
 > = BizObjectItem extends { object_type: T }
   ? {
       [ActionNameKey in BizObjectAction<

@@ -1,19 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-
-import {
-  AIAssistantChatProvider,
-  AIChat,
-  AIPages,
-  AIPrompts,
-  AIStartScreen,
-} from '@/components';
-import { AISidebar } from '@/components';
+import { AIChat } from '@/components/aiAssistant/components/AIChat/AIChat';
+import { AIPrompts } from '@/components/aiAssistant/components/AIPrompts/AIPrompts';
+import { AISidebar } from '@/components/aiAssistant/components/AISidebar/AISidebar';
+import { AIStartScreen } from '@/components/aiAssistant/components/AIStartScreen/AIStartScreen';
 import { ChatInput } from '@/components/aiAssistant/components/ChatInput/ChatInput';
-import { PageHeader } from '@/components/PageHeader';
+import { AIAssistantChatProvider } from '@/components/aiAssistant/context/AIAssistantChatContext';
+import { AIPages } from '@/components/aiAssistant/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export const AIAssistant = () => (
   <MoniteScopedProviders>
@@ -30,7 +27,7 @@ const AIAssistantBase = () => {
   const [isNewChat, setIsNewChat] = useState(true);
 
   const { mutateAsync: fetchConversationId, isPending } =
-    api.ai.createConversation.useMutation();
+    api.ai.postAiConversations.useMutation();
 
   const getConversationId = useCallback(async () => {
     const { id: conversationId } = await fetchConversationId({});

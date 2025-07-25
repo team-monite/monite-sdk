@@ -1,8 +1,5 @@
-import { FieldValue, FieldValues } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
-  getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
@@ -13,8 +10,9 @@ import {
 } from '@/components/payables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
-
+import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';
+import { FieldValue, FieldValues } from 'react-hook-form';
 
 export type Option = { label: string; value: string };
 
@@ -33,7 +31,7 @@ export interface PayableDetailsFormFields {
   invoiceDate?: Date;
   dueDate?: Date;
   currency: components['schemas']['CurrencyEnum'];
-  tags: Option[];
+  tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
 }
@@ -55,19 +53,8 @@ export const counterpartsToSelect = (
           counterpart.individual.last_name
         )
       : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
-      : '',
-  }));
-};
-
-export const tagsToSelect = (
-  tags: components['schemas']['TagReadSchema'][] | undefined
-): Option[] => {
-  if (!tags) return [];
-
-  return tags.map(({ id: value, name: label }) => ({
-    value,
-    label,
+        ? counterpart.organization.legal_name
+        : '',
   }));
 };
 
@@ -129,8 +116,9 @@ export const prepareDefaultValues = (
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
     currency: currency ?? 'EUR',
-    tags: tagsToSelect(tags),
-    discount: discount || null,
+    tags: tags ?? [],
+    discount:
+      discount && currency ? formatFromMinorUnits(discount, currency) : null,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -138,7 +126,7 @@ export const prepareDefaultValues = (
         quantity: lineItem.quantity ?? 1,
         price:
           lineItem.unit_price && currency
-            ? formatFromMinorUnits(lineItem.unit_price, currency) ?? 0
+            ? (formatFromMinorUnits(lineItem.unit_price, currency) ?? 0)
             : 0,
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
       };
@@ -146,26 +134,30 @@ export const prepareDefaultValues = (
   };
 };
 
-export const prepareSubmit = ({
-  discount,
-  invoiceNumber,
-  counterpart,
-  counterpartBankAccount,
-  invoiceDate,
-  dueDate,
-  currency,
-  tags,
-  counterpartAddressId,
-}: SubmitPayload): components['schemas']['PayableUpdateSchema'] => ({
+export const prepareSubmit = (
+  {
+    discount,
+    invoiceNumber,
+    counterpart,
+    counterpartBankAccount,
+    invoiceDate,
+    dueDate,
+    currency,
+    tags,
+    counterpartAddressId,
+  }: SubmitPayload,
+  formatToMinorUnits: (amount: number, currency: string) => number | null
+): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
-  discount: discount ?? 0,
+  discount:
+    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
     invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
   due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
   currency,
-  tag_ids: tags.map((tag) => tag.value),
+  tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
 });
 
@@ -276,8 +268,11 @@ export const isOcrMismatch = (
     };
   }
 
-  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
-    other_extracted_data;
+  const { total: ocrTotal } = other_extracted_data;
+  const ocrBankAccountId =
+    'counterpart_account_id' in other_extracted_data
+      ? other_extracted_data.counterpart_account_id
+      : undefined;
 
   const isAmountMismatch = amount_to_pay !== ocrTotal;
 
@@ -292,11 +287,10 @@ export const isOcrMismatch = (
   };
 };
 
-export type OcrMismatchField =
-  | keyof Pick<
-      components['schemas']['PayableResponseSchema'],
-      'amount_to_pay' | 'counterpart_bank_account_id'
-    >;
+export type OcrMismatchField = keyof Pick<
+  components['schemas']['PayableResponseSchema'],
+  'amount_to_pay' | 'counterpart_bank_account_id'
+>;
 
 export type OcrMismatchFields =
   | Partial<Record<OcrMismatchField, boolean>>

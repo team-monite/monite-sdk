@@ -1,24 +1,23 @@
-import { useCallback, useState } from 'react';
-
 import { components } from '@/api';
-import { CounterpartDetails } from '@/components';
-import { CounterpartTypeItem } from '@/components/counterparts/components';
+import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
+import { CounterpartTypeItem } from '@/components/counterparts/components/CounterpartTypeItem';
 import {
   CustomerTypes,
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { Dialog } from '@/components/Dialog';
+import { Dialog } from '@/ui/Dialog';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Button,
   DialogActions,
   DialogContent,
   Divider,
   Typography,
 } from '@mui/material';
+import { useCallback, useState } from 'react';
 
 interface CreateCounterpartDialogProps {
   open: boolean;
@@ -136,7 +135,7 @@ export const CreateCounterpartDialog = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="ghost" size="lg" onClick={onClose}>
           {t(i18n)`Cancel`}
         </Button>
       </DialogActions>

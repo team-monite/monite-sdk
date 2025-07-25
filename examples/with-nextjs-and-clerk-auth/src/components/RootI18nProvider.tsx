@@ -1,11 +1,9 @@
 'use client';
 
-import { ReactNode, useMemo } from 'react';
-
+import { messages as defaultMessages } from '@/locales/en/messages';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-
-import { messages as defaultMessages } from '@/locales/en/messages';
+import { ReactNode, useMemo } from 'react';
 
 export const RootI18nProvider = ({ children }: { children: ReactNode }) => {
   const i18n = useMemo(() => {

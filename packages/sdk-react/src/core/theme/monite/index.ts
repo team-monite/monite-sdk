@@ -1,3 +1,4 @@
+/* eslint-disable lingui/no-unlocalized-strings */
 import { ThemeConfig } from '@/core/theme/types';
 
 export const getTheme = (theme: ThemeConfig) => {
@@ -8,6 +9,7 @@ export const getTheme = (theme: ThemeConfig) => {
 
     colors: {
       primary: theme.colors?.primary || '#3737FF',
+      primaryForeground: theme.colors?.primaryForeground || '#ffffff',
       secondary: theme.colors?.secondary || '#707070',
       neutral: theme.colors?.neutral || '#707070',
 
@@ -24,7 +26,6 @@ export const getTheme = (theme: ThemeConfig) => {
     typography: {
       fontFamily:
         theme?.typography?.fontFamily ||
-        // eslint-disable-next-line lingui/no-unlocalized-strings
         '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
       fontSize: theme?.typography?.fontSize ?? 16,
 
@@ -32,26 +33,31 @@ export const getTheme = (theme: ThemeConfig) => {
         fontSize: theme.typography?.h1?.fontSize ?? 48,
         fontWeight: theme.typography?.h1?.fontWeight ?? 600,
         lineHeight: theme.typography?.h1?.lineHeight ?? '68px',
+        textTransform: theme.typography?.h1?.textTransform ?? 'none',
       },
       h2: {
         fontSize: theme.typography?.h2?.fontSize ?? 34,
         fontWeight: theme.typography?.h2?.fontWeight ?? 640,
         lineHeight: theme.typography?.h2?.lineHeight ?? '40px',
+        textTransform: theme.typography?.h2?.textTransform ?? 'none',
       },
       h3: {
         fontSize: theme.typography?.h3?.fontSize ?? 24,
         fontWeight: theme.typography?.h3?.fontWeight ?? 600,
         lineHeight: theme.typography?.h3?.lineHeight ?? '32px',
+        textTransform: theme.typography?.h3?.textTransform ?? 'none',
       },
       subtitle1: {
-        fontSize: theme.typography?.h2?.fontSize ?? 20,
-        fontWeight: theme.typography?.h2?.fontWeight ?? 600,
-        lineHeight: theme.typography?.h2?.lineHeight ?? '24px',
+        fontSize: theme.typography?.subtitle1?.fontSize ?? 20,
+        fontWeight: theme.typography?.subtitle1?.fontWeight ?? 600,
+        lineHeight: theme.typography?.subtitle1?.lineHeight ?? '24px',
+        textTransform: theme.typography?.subtitle1?.textTransform ?? 'none',
       },
       subtitle2: {
-        fontSize: theme.typography?.h2?.fontSize ?? 18,
-        fontWeight: theme.typography?.h2?.fontWeight ?? 600,
-        lineHeight: theme.typography?.h2?.lineHeight ?? '24px',
+        fontSize: theme.typography?.subtitle2?.fontSize ?? 18,
+        fontWeight: theme.typography?.subtitle2?.fontWeight ?? 600,
+        lineHeight: theme.typography?.subtitle2?.lineHeight ?? '24px',
+        textTransform: theme.typography?.subtitle2?.textTransform ?? 'none',
       },
       body1: {
         fontSize: theme.typography?.body1?.fontSize ?? 16,

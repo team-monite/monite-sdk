@@ -1,7 +1,7 @@
 import type { components } from '@/api';
 import {
+  type Rules,
   useApprovalPolicyScript,
-  Rules,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 
 import { UListUiAlt } from '../components/icons/UListUiAlt';

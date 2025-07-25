@@ -1,5 +1,9 @@
+import DashboardCard from '@/components/DashboardCard';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { IconChart } from '@/icons';
+import { useMoniteContext } from '@monite/sdk-react';
 import React, { useMemo } from 'react';
-
 import {
   Area,
   Bar,
@@ -12,12 +16,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { useMoniteContext } from '@monite/sdk-react';
-import { Button, Skeleton } from '@mui/material';
-
-import DashboardCard from '@/components/DashboardCard';
-import { IconChart } from '@/icons';
 
 export const CashFlowCard = () => {
   const { api, entityId } = useMoniteContext();
@@ -33,34 +31,19 @@ export const CashFlowCard = () => {
         metric: 'total_amount',
         dimension: 'created_at',
         aggregation_function: 'summary',
-        date_dimension_breakdown: 'daily',
-        limit: 7,
-        status: 'paid',
-      },
-    });
-
-  const { data: totalPaid, isLoading: totalPaidLoading } =
-    api.analytics.getAnalyticsPayables.useQuery({
-      query: {
-        metric: 'total_amount',
-        dimension: 'created_at',
-        aggregation_function: 'summary',
-        date_dimension_breakdown: 'daily',
+        date_dimension_breakdown: 'monthly',
+        limit: 6,
         status: 'paid',
       },
     });
 
   // Process data for the chart
   const chartData = useMemo(() => {
-    if (!totalReceived?.data || !totalPaid?.data) return [];
+    if (!totalReceived?.data) return [];
 
     // total of dates to display
-    const dimensionValues = Array.from(
-      new Set(
-        [...totalReceived.data, ...totalPaid.data].map(
-          (item) => item.dimension_value
-        )
-      )
+    const dimensionValues = [...totalReceived.data].map(
+      (item) => item.dimension_value
     );
 
     // fill in dates with data
@@ -68,26 +51,19 @@ export const CashFlowCard = () => {
       const receivedData = totalReceived.data.find(
         (item) => item.dimension_value === dimensionValue
       );
-      const paidData = totalPaid.data.find(
-        (item) => item.dimension_value === dimensionValue
-      );
+
       const received = receivedData ? receivedData.metric_value : 0;
-      const paid = paidData ? -paidData.metric_value : 0;
-      const trend = received + paid;
 
       return {
         dimension_value: dimensionValue,
         received,
-        paid,
-        trend,
       };
     });
 
-    const minItems = 7;
+    const minItems = 6;
+
     const emptyValue = {
       received: 0,
-      paid: 0,
-      trend: 0,
       dimension_value: null,
     };
 
@@ -97,10 +73,10 @@ export const CashFlowCard = () => {
       ),
       ...dataByDimension.reverse(),
     ];
-  }, [totalReceived, totalPaid]);
+  }, [totalReceived]);
 
-  if (totalReceivedLoading || totalPaidLoading) {
-    return <Skeleton variant="rounded" width={'100%'} height={354} />;
+  if (totalReceivedLoading) {
+    return <Skeleton className="w-full h-[354px] rounded-lg" />;
   }
 
   if (chartData.length === 0) {
@@ -109,37 +85,17 @@ export const CashFlowCard = () => {
         title="Cashflow"
         renderIcon={(props) => <IconChart {...props} />}
       >
-        <div
-          style={{
-            height: '250px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <div className="h-[250px] flex flex-col justify-center items-center">
           <IconChart style={{ fill: '#B8B8B8' }} />
           <p>
             Invoice analysis will appear when enough transaction data is
             available
           </p>
           <Button
-            href={'/receivables'}
-            variant={'contained'}
-            size={'medium'}
-            sx={{
-              '&:hover': {
-                borderRadius: '8px',
-                background: '#F8F8FF',
-              },
-              background: '#EBEBFF',
-              color: '#3737FF',
-              borderRadius: '8px',
-              height: `40px`,
-              fontSize: `0.9rem`,
-            }}
+            asChild
+            className="bg-[#EBEBFF] text-[#3737FF] rounded-lg h-10 text-[0.9rem] font-medium transition-colors hover:bg-[#F8F8FF]"
           >
-            Create invoice
+            <a href="/receivables">Create invoice</a>
           </Button>
         </div>
       </DashboardCard>
@@ -163,7 +119,7 @@ export const CashFlowCard = () => {
               gradientUnits="userSpaceOnUse"
               spreadMethod="pad"
             >
-              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.2" />
+              <stop offset="0%" stop-color="#3737FF" stop-opacity="0.4" />
               <stop offset="100%" stop-color="white" stop-opacity="0" />
             </linearGradient>
           </defs>
@@ -177,10 +133,16 @@ export const CashFlowCard = () => {
             tickFormatter={(value) => {
               if (!value) return '-';
               const date = new Date(value);
-              return date.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              });
+              if (date.getFullYear() === new Date().getFullYear()) {
+                return date.toLocaleDateString('en-US', {
+                  month: 'long',
+                });
+              } else {
+                return date.toLocaleDateString('en-US', {
+                  month: 'long',
+                  year: 'numeric',
+                });
+              }
             }}
           />
           <Tooltip
@@ -218,11 +180,9 @@ export const CashFlowCard = () => {
           />
 
           <ReferenceLine y={0} stroke="#eee" />
-          <Bar dataKey="paid" fill="transparent" />
-          <Bar dataKey="received" fill="transparent" />
           <Area
             type="linear"
-            dataKey="trend"
+            dataKey="received"
             dot={{ stroke: '#3737FF', strokeWidth: 2, r: 3, fill: '#fff' }}
             strokeWidth={3}
             stroke="#3737FF"

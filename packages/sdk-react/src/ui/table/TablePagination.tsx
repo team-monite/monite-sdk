@@ -87,6 +87,8 @@ export const TablePagination = <T,>({
         item
         display="flex"
         justifyContent={hasPageSizeSelect ? 'space-between' : 'center'}
+        pt={0.5}
+        pb={1}
         alignItems="center"
       >
         <Box>

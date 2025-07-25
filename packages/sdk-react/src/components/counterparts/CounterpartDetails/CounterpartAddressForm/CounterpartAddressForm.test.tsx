@@ -1,11 +1,9 @@
-import { ReactNode } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
-import { CounterpartAddressFormFields } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/helpers';
+import { CounterpartAddressForm } from './CounterpartAddressForm';
+import type { CounterpartAddressFormFields } from './validation';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/dom';
-
-import { CounterpartAddressForm } from './CounterpartAddressForm';
+import { ReactNode } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 describe('CounterpartAddressForm', () => {
   it('works without nested form context `parentField`', async () => {

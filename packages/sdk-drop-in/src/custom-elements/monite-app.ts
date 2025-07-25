@@ -1,8 +1,3 @@
-import { ComponentProps } from 'react';
-
-import { WidgetType } from '@/apps/MoniteApp';
-import type { APISchema, MoniteProvider } from '@monite/sdk-react';
-
 import {
   MoniteEventTypes,
   addMoniteEventListener,
@@ -11,6 +6,9 @@ import {
   getMoniteAppEventTarget,
 } from '../lib/MoniteEvents';
 import { MoniteAppElement } from './MoniteAppElement';
+import type { WidgetType } from '@/apps/MoniteApp';
+import type { APISchema, MoniteProvider } from '@monite/sdk-react';
+import { ComponentProps } from 'react';
 
 const MONITE_APP_ELEMENT_NAME = 'monite-app';
 
@@ -86,14 +84,14 @@ class MoniteDropin {
     const localeScript = document.createElement('script');
     localeScript.setAttribute('slot', 'locale');
     localeScript.setAttribute('type', 'application/json');
-    localeScript.textContent = JSON.stringify(this.config.locale);
+    localeScript.textContent = JSON.stringify(this.config.locale ?? {});
     this.moniteAppElement.appendChild(localeScript);
 
     // Add theme script
     const themeScript = document.createElement('script');
     themeScript.setAttribute('slot', 'theme');
     themeScript.setAttribute('type', 'application/json');
-    themeScript.textContent = JSON.stringify(this.config.theme);
+    themeScript.textContent = JSON.stringify(this.config.theme ?? {});
     this.moniteAppElement.appendChild(themeScript);
 
     // Add component settings script

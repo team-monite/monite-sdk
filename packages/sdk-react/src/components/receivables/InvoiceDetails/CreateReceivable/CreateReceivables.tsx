@@ -1,14 +1,26 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { useGetEntityBankAccounts } from '../../hooks';
+import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
+import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
+import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import { EntitySection } from './sections/EntitySection';
+import { ItemsSection } from './sections/ItemsSection';
+import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
+import { InvoicePreview } from './sections/components/InvoicePreview';
+import {
+  getCreateInvoiceValidationSchema,
+  CreateReceivablesFormProps,
+  CreateReceivablesProductsFormProps,
+  getCreateInvoiceProductsValidationSchema,
+} from './validation';
 import { components } from '@/api';
 import { showErrorToast } from '@/components/onboarding/utils';
-import {
-  BankAccountFormDialog,
-  BankAccountSection,
-  RemindersSection,
-  CustomerSection,
-} from '@/components/receivables/components';
+import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
+import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
+import { CustomerSection } from '@/components/receivables/components/CustomerSection';
+import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
+import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -24,12 +36,17 @@ import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/dropdown-menu';
 import { LoadingPage } from '@/ui/loadingPage';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { Menu } from '@mui/material';
 import {
   Alert,
   Box,
@@ -38,31 +55,15 @@ import {
   DialogContent,
   FormControlLabel,
   Grid,
-  MenuItem,
   Modal,
   Stack,
   Switch,
   Typography,
   useTheme,
 } from '@mui/material';
-
 import { format } from 'date-fns';
-
-import { useGetEntityBankAccounts } from '../../hooks';
-import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
-import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
-import { InvoicePreview } from './sections/components/InvoicePreview';
-import { EntitySection } from './sections/EntitySection';
-import { ItemsSection } from './sections/ItemsSection';
-import {
-  getCreateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-  CreateReceivablesProductsFormProps,
-  getCreateInvoiceProductsValidationSchema,
-} from './validation';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 
 type Schemas = components['schemas'];
 
@@ -95,6 +96,10 @@ const CreateReceivablesBase = ({
   const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
     path: { entity_id: entityId },
   });
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: entityId },
+    });
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -111,7 +116,7 @@ const CreateReceivablesBase = ({
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(
+    resolver: zodResolver(
       getCreateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
@@ -138,8 +143,9 @@ const CreateReceivablesBase = ({
         memo: t(
           i18n
         )`Dear client, as discussed, please find attached our invoice:`,
+        vat_mode: settings?.vat_mode ?? 'exclusive',
       }),
-      [type, i18n]
+      [type, i18n, settings?.vat_mode]
     ),
   });
 
@@ -189,10 +195,6 @@ const CreateReceivablesBase = ({
   );
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isLoading: isSettingsLoading } =
-    api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: entityId },
-    });
 
   const [actualCurrency, setActualCurrency] = useState<
     Schemas['CurrencyEnum'] | undefined
@@ -260,7 +262,8 @@ const CreateReceivablesBase = ({
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
       counterpart_billing_address_id: values.default_billing_address_id ?? '',
-      counterpart_shipping_address_id: values.default_shipping_address_id ?? '',
+      counterpart_shipping_address_id:
+        values.default_shipping_address_id || undefined,
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -268,7 +271,8 @@ const CreateReceivablesBase = ({
         product: {
           name: item.product.name,
           price: {
-            currency: item.product.price.currency,
+            currency: item.product.price
+              .currency as components['schemas']['CurrencyEnum'],
             value: item.product.price.value,
           },
           measure_unit: item.product.measure_unit_id
@@ -301,7 +305,8 @@ const CreateReceivablesBase = ({
       currency: actualCurrency,
       payment_reminder_id: values.payment_reminder_id || undefined,
       overdue_reminder_id: values.overdue_reminder_id || undefined,
-      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id)
+      tag_ids: [], // TODO: add support for tags, ideally should be values.tags?.map((tag) => tag.id),
+      vat_mode: values.vat_mode || 'exclusive',
     };
 
     createReceivable.mutate(
@@ -315,7 +320,7 @@ const CreateReceivablesBase = ({
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
-    resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+    resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
         items: [],
@@ -329,6 +334,9 @@ const CreateReceivablesBase = ({
 
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
   const [isEnableFieldsModalOpen, setIsEnableFieldsModalOpen] = useState(false);
+  const [isEditTemplateModalOpen, setIsEditTemplateModalOpen] = useState(false);
+  const [isMyEntityProfileModalOpen, setIsMyEntityProfileModalOpen] =
+    useState(false);
 
   const handleFieldChange = (fieldName: string, value: boolean) => {
     setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
@@ -342,12 +350,10 @@ const CreateReceivablesBase = ({
 
   const handleCloseCurrencyModal = () => {
     setIsCurrencyModalOpen(false);
-    setAnchorEl(null);
   };
 
   const handleCloseEnableFieldsModal = () => {
     setIsEnableFieldsModalOpen(false);
-    setAnchorEl(null);
   };
 
   const lineItems = watch('line_items');
@@ -406,16 +412,6 @@ const CreateReceivablesBase = ({
     }
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleSettings = (event: any) => {
-    if (anchorEl) {
-      setAnchorEl(null);
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
   const handleSelectBankAfterDeletion = (bankId: string) => {
     setValue('entity_bank_account_id', bankId);
   };
@@ -464,58 +460,50 @@ const CreateReceivablesBase = ({
           title={t(i18n)`Create invoice`}
           actions={
             <>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ marginRight: '.5em' }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleSettings(event);
-                }}
-                disabled={createReceivable.isPending}
-              >
-                <SettingsOutlinedIcon />
-              </Button>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                container={root}
-              >
-                <MenuItem
-                  onClick={() => {
-                    setIsCurrencyModalOpen(true);
-                    setAnchorEl(null);
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    }}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{ marginRight: '.5em' }}
+                    disabled={createReceivable.isPending}
                   >
-                    <Typography>{t(i18n)`Currency`}</Typography>
-                    <Typography>{actualCurrency}</Typography>
-                  </Box>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setIsEnableFieldsModalOpen(true);
-                    setAnchorEl(null);
-                  }}
-                >
-                  <Typography>{t(i18n)`Enable more fields`}</Typography>
-                </MenuItem>
-              </Menu>
+                    <SettingsOutlinedIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => setIsCurrencyModalOpen(true)}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}
+                    >
+                      <Typography>{t(i18n)`Currency`}</Typography>
+                      <Typography>{actualCurrency}</Typography>
+                    </Box>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsEditTemplateModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Edit template settings`}</Typography>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsEnableFieldsModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`Enable more fields`}</Typography>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setIsMyEntityProfileModalOpen(true)}
+                  >
+                    <Typography>{t(i18n)`My entity profile`}</Typography>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Button
                 variant="contained"
                 color="primary"
@@ -821,6 +809,26 @@ const CreateReceivablesBase = ({
                     </Alert>
                   )}
 
+                  {Boolean(formState?.errors?.entity_vat_id_id) && (
+                    <Alert severity="error" sx={{ mb: 5 }}>
+                      <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+                        <span>
+                          {t(
+                            i18n
+                          )`Add your entity's tax registration number to issue invoice`}
+                        </span>
+
+                        <button
+                          className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+                          type="button"
+                          onClick={() => setIsMyEntityProfileModalOpen(true)}
+                        >
+                          {t(i18n)`Edit my entity profile`}
+                        </button>
+                      </div>
+                    </Alert>
+                  )}
+
                   <CustomerSection
                     disabled={createReceivable.isPending}
                     customerTypes={customerTypes}
@@ -929,6 +937,21 @@ const CreateReceivablesBase = ({
           reminderId={editReminderDialog.reminderId}
           reminderType={editReminderDialog.reminderType}
           onClose={closeUpdateReminderDialog}
+        />
+      )}
+
+      {isEditTemplateModalOpen && (
+        <TemplateSettings
+          isDialog
+          isOpen={isEditTemplateModalOpen}
+          handleCloseDialog={() => setIsEditTemplateModalOpen(false)}
+        />
+      )}
+
+      {isMyEntityProfileModalOpen && (
+        <EntityProfileModal
+          open={isMyEntityProfileModalOpen}
+          onClose={() => setIsMyEntityProfileModalOpen(false)}
         />
       )}
 

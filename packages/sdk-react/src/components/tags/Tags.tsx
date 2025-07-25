@@ -1,15 +1,16 @@
 import { useCallback, useState } from 'react';
 
-import { PageHeader } from '@/components/PageHeader';
 import { TagFormModal } from '@/components/tags/TagFormModal';
 import { TagsTable } from '@/components/tags/TagsTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 export const Tags = () => (
   <MoniteScopedProviders>
@@ -44,6 +45,12 @@ const TagsBase = () => {
       entityUserId: user?.id,
     });
 
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: 'delete',
+    entityUserId: user?.id,
+  });
+
   return (
     <>
       <PageHeader
@@ -57,17 +64,21 @@ const TagsBase = () => {
         }
         extra={
           <Button
-            variant="contained"
+            size="lg"
             disabled={!isCreateAllowed}
             onClick={showCreationModal}
           >
-            {t(i18n)`Create new tag`}
+            {t(i18n)`Create new`}
           </Button>
         }
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && <TagsTable showCreationModal={showCreationModal} />}
-      <TagFormModal open={creationModalOpened} onClose={hideCreationModal} />
+      <TagFormModal
+        open={creationModalOpened}
+        onClose={hideCreationModal}
+        isDeleteAllowed={isDeleteAllowed ?? false}
+      />
     </>
   );
 };

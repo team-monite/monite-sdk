@@ -2,11 +2,11 @@ import { useCallback, useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { IconWrapper } from '@/ui/iconWrapper';
+import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -128,7 +128,11 @@ export const InvoiceRecurrenceForm = ({
         ? new Date(recurrence.start_year, recurrence.start_month - 1, 1)
         : null,
       endDate: recurrence
-        ? new Date(recurrence.end_year, recurrence.end_month - 1, 1)
+        ? new Date(
+            recurrence.end_year as number,
+            (recurrence.end_month as number) - 1,
+            1
+          )
         : null,
       body_text: recurrence?.body_text ?? '',
       subject_text: recurrence?.subject_text ?? '',
@@ -240,6 +244,8 @@ export const InvoiceRecurrenceForm = ({
                       start_year,
                       body_text,
                       subject_text,
+                      frequency: 'month',
+                      interval: 0,
                     },
                   });
 

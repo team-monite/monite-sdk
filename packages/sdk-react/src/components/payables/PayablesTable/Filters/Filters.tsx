@@ -1,6 +1,6 @@
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
+import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -30,7 +30,11 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
-      sx={sx}
+      sx={{
+        borderTopLeftRadius: '12px',
+        borderTopRightRadius: '12px',
+        ...sx,
+      }}
       searchField={
         <SearchField
           placeholder={t(i18n)`Search by number or vendor`}

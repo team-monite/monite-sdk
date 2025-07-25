@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { Controller } from 'react-hook-form';
-
+import { getCounterpartName } from '../../helpers';
+import {
+  type CounterpartBankFormProps,
+  useCounterpartBankForm,
+} from './useCounterpartBankForm';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -10,23 +12,16 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogContent, Stack, TextField } from '@mui/material';
-
-import { getCounterpartName } from '../../helpers';
-import {
-  useCounterpartBankForm,
-  CounterpartBankFormProps,
-} from './useCounterpartBankForm';
+import { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
 
 export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { i18n } = useLingui();
-  const {
-    methods: { control, handleSubmit, watch, clearErrors, resetField },
-    counterpart,
-    bank,
-    formId,
-    saveBank,
-    isLoading,
-  } = useCounterpartBankForm(props);
+  const { methods, counterpart, bank, formId, saveBank, isLoading } =
+    useCounterpartBankForm(props);
+
+  const { control, handleSubmit, watch, clearErrors } = methods;
+
   const country = watch('country');
 
   const { currencyGroups, isLoadingCurrencyGroups } =
@@ -47,12 +42,8 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         'sort_code',
         'routing_number',
       ]);
-
-      resetField('sort_code');
-      resetField('account_number');
-      resetField('routing_number');
     }
-  }, [clearErrors, resetField, country]);
+  }, [clearErrors, country]);
 
   if (isLoading) {
     return <LoadingPage />;

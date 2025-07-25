@@ -1,21 +1,19 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-
-import { AIPages, Dialog } from '@/components';
+import { SidebarMenuItem } from '../AISidebarMenuButton/AISidebarMenuButton';
+import { AISidebarWrapper } from '../AISidebarWrapper/AISidebarWrapper';
 import { AISidebarIconButton } from '@/components/aiAssistant/components/AISidebarIconButton/AISidebarIconButton';
 import { AISidebarSkeleton } from '@/components/aiAssistant/components/AISidebarSkeleton/AISidebarSkeleton';
 import { SearchChatModal } from '@/components/aiAssistant/components/SearchChatModal/SearchChatModal';
+import { AIPages } from '@/components/aiAssistant/types';
 import { Conversation } from '@/components/aiAssistant/types';
 import { createConversationGroups } from '@/components/aiAssistant/utils/aiAssistant';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsMobile } from '@/core/hooks/useMobile';
+import { Dialog } from '@/ui/Dialog';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { Folder, PanelLeft, Search, SquarePen } from 'lucide-react';
-
-import { SidebarMenuItem } from '../AISidebarMenuButton/AISidebarMenuButton';
-import { AISidebarWrapper } from '../AISidebarWrapper/AISidebarWrapper';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface AISidebarProps {
   page: AIPages;
@@ -39,7 +37,7 @@ export const AISidebar: FC<AISidebarProps> = ({
   const [open, setOpen] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data, isLoading } = api.ai.fetchConversations.useQuery<{
+  const { data, isLoading } = api.ai.getAiConversations.useQuery<{
     data: Conversation[];
   }>();
 

@@ -1,8 +1,8 @@
-import { useId, useState } from 'react';
-
+import { DeletePaymentTerms } from './DeletePaymentTerms';
+import { PaymentTermsForm } from './PaymentTermsForm';
 import { components } from '@/api';
-import { Dialog } from '@/components';
 import { useHandleDialogCloseFocus } from '@/core/hooks/useHandleDialogCloseFocus';
+import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -13,9 +13,7 @@ import {
   Button,
   Stack,
 } from '@mui/material';
-
-import { DeletePaymentTerms } from './DeletePaymentTerms';
-import { PaymentTermsForm } from './PaymentTermsForm';
+import { useId, useState } from 'react';
 
 export interface PaymentTermsDialogProps {
   show: boolean;

@@ -5,7 +5,6 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { useGetEntityBankAccountById } from '@/components/receivables/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -13,6 +12,7 @@ import {
   getRateValueForDisplay,
   rateMinorToMajor,
 } from '@/core/utils/vatUtils';
+import { MeasureUnit } from '@/ui/MeasureUnit/MeasureUnit';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -84,6 +84,8 @@ export const InvoicePreview = ({
   const items = watch('line_items');
   const memo = watch('memo');
   const entityBankAccountId = watch('entity_bank_account_id') ?? '';
+  const vatMode = watch('vat_mode');
+  const isInclusivePricing = vatMode === 'inclusive';
   const counterpartName = counterpart ? getCounterpartName(counterpart) : '';
   const { data: bankAccount } =
     useGetEntityBankAccountById(entityBankAccountId);
@@ -98,12 +100,14 @@ export const InvoicePreview = ({
 
   const sanitizedItems = sanitizeLineItems(items);
 
-  const { subtotalPrice, totalPrice } = useCreateInvoiceProductsTable({
-    lineItems: sanitizedItems,
-    formatCurrencyToDisplay,
-    isNonVatSupported,
-    actualCurrency: currency,
-  });
+  const { subtotalPrice, totalPrice, taxesByVatRate } =
+    useCreateInvoiceProductsTable({
+      lineItems: sanitizedItems,
+      formatCurrencyToDisplay,
+      isNonVatSupported,
+      actualCurrency: currency,
+      isInclusivePricing,
+    });
 
   const getRateValueForItem = (
     item: CreateReceivablesFormBeforeValidationLineItemProps
@@ -113,55 +117,6 @@ export const InvoicePreview = ({
       item.vat_rate_value ?? 0,
       item.tax_rate_value ?? 0
     );
-  };
-
-  const formatTaxRate = (
-    item: CreateReceivablesFormBeforeValidationLineItemProps
-  ): number => {
-    const taxRate = getRateValueForItem(item);
-    if (taxRate < 100) {
-      //when the tax value is 19, it should be displayed as 19
-      return taxRate;
-    }
-    return taxRate / 100; //when the tax value is 1900 it should be displayed as 19
-  };
-
-  const groupItemsByTaxRate = (
-    items: Array<CreateReceivablesFormBeforeValidationLineItemProps>
-  ): Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]> => {
-    return items.reduce((acc, item) => {
-      const taxRate = formatTaxRate(item); // This is already converted to percentage
-      if (taxRate === 0) {
-        return acc;
-      }
-      if (!acc[taxRate]) {
-        acc[taxRate] = [];
-      }
-      acc[taxRate].push(item);
-      return acc;
-    }, {} as Record<number, CreateReceivablesFormBeforeValidationLineItemProps[]>);
-  };
-
-  // This function calculates the tax amount based on the percentage and item values
-  const calculateTotalTaxesByRate = (
-    groupedItems: Record<
-      number,
-      CreateReceivablesFormBeforeValidationLineItemProps[]
-    >
-  ): Array<{ taxRate: number; totalTax: number }> => {
-    return Object.keys(groupedItems).map((taxRateKey) => {
-      const taxRate = Number(taxRateKey); // This is already a percentage (e.g., 0.19 for 0.19%)
-      const items = groupedItems[taxRate];
-      const totalTax = items.reduce((sum, item) => {
-        const itemPrice = item.product?.price?.value || 0;
-        // taxRate is already a percentage (e.g., 0.19 for 0.19%),
-        // so we need to multiply by itemPrice * quantity and divide by 100
-        const itemTax = (itemPrice * item.quantity * taxRate) / 100;
-
-        return sum + itemTax;
-      }, 0);
-      return { taxRate, totalTax };
-    });
   };
 
   const renderBankAccountDetails = () => {
@@ -211,9 +166,6 @@ export const InvoicePreview = ({
       </div>
     );
   };
-
-  const groupedItems = groupItemsByTaxRate(sanitizedItems);
-  const totalTaxesByRate = calculateTotalTaxesByRate(groupedItems);
 
   return (
     <StyledInvoicePreview>
@@ -364,7 +316,18 @@ export const InvoicePreview = ({
                   <th>
                     {t(i18n)`Price`} ({currencySymbol})
                   </th>
-                  <th>{t(i18n)`Tax`} (%)</th>
+                  {isInclusivePricing && (
+                    <>
+                      <th>{t(i18n)`Tax`} (%)</th>
+                      <th>
+                        {t(i18n)`Incl. tax`} ({currencySymbol})
+                      </th>
+                    </>
+                  )}
+                  <th>
+                    {t(i18n)`Amount`} ({currencySymbol})
+                  </th>
+                  {!isInclusivePricing && <th>{t(i18n)`Tax`} (%)</th>}
                 </tr>
                 <tr className="spacer">
                   <td colSpan={7} />
@@ -372,33 +335,66 @@ export const InvoicePreview = ({
               </thead>
               <tbody className="products">
                 {sanitizedItems.length > 0 ? (
-                  sanitizedItems.map((item) => (
-                    <tr key={item.id}>
-                      <td style={{ maxWidth: '120px' }}>
-                        {item?.product?.name}
-                      </td>
-                      <td>{item?.quantity}</td>
-                      <td>
-                        {item?.product?.measure_unit_id ? (
-                          <MeasureUnit unitId={item.product.measure_unit_id} />
-                        ) : item?.measure_unit?.name ? (
-                          item.measure_unit.name
-                        ) : null}
-                      </td>
-                      <td>
-                        {item.product?.price &&
-                          formatCurrencyToDisplay(
-                            item.product.price.value,
-                            item.product.price.currency,
-                            false
-                          )}
-                      </td>
-                      <td>{formatTaxRate(item)}%</td>
-                    </tr>
-                  ))
+                  sanitizedItems.map((item) => {
+                    const taxRate = getRateValueForItem(item);
+                    const totalAmount =
+                      (item?.product?.price?.value || 0) *
+                      (item?.quantity || 1);
+
+                    return (
+                      <tr key={item.id}>
+                        <td style={{ maxWidth: '120px' }}>
+                          {item?.product?.name}
+                        </td>
+                        <td>{item?.quantity}</td>
+                        <td>
+                          {item?.product?.measure_unit_id ? (
+                            <MeasureUnit
+                              unitId={item.product.measure_unit_id}
+                            />
+                          ) : item?.measure_unit?.name ? (
+                            item.measure_unit.name
+                          ) : null}
+                        </td>
+                        <td>
+                          {item.product?.price &&
+                            formatCurrencyToDisplay(
+                              isInclusivePricing
+                                ? item?.product?.price?.value /
+                                    (1 + taxRate / 100)
+                                : item.product.price.value,
+                              item.product.price.currency,
+                              false
+                            )}
+                        </td>
+                        {isInclusivePricing && (
+                          <>
+                            <td>{taxRate}%</td>
+                            <td>
+                              {item.product?.price &&
+                                formatCurrencyToDisplay(
+                                  item?.product?.price?.value,
+                                  item.product.price.currency,
+                                  false
+                                )}
+                            </td>
+                          </>
+                        )}
+                        <td>
+                          {item.product?.price &&
+                            formatCurrencyToDisplay(
+                              totalAmount,
+                              item.product.price.currency,
+                              false
+                            )}
+                        </td>
+                        {!isInclusivePricing && <td>{taxRate}%</td>}
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr className="no-items">
-                    <td colSpan={6}>
+                    <td colSpan={isInclusivePricing ? 7 : 6}>
                       <p className="not-set"> {t(i18n)`No items`}</p>
                     </td>
                   </tr>
@@ -410,23 +406,27 @@ export const InvoicePreview = ({
                 <tbody>
                   <tr className="subtotal">
                     <td colSpan={4}>
-                      <span>{t(i18n)`Subtotal`}</span>
+                      <span>{t(i18n)`Subtotal${
+                        isInclusivePricing ? ' excl. tax' : ''
+                      }`}</span>
                     </td>
                     <td>{subtotalPrice?.toString()}</td>
                   </tr>
-                  {totalTaxesByRate.map((tax, index) => (
-                    <tr key={index}>
-                      <td colSpan={4}>
-                        <span>
-                          {t(i18n)`Total Tax`} ({tax.taxRate}%)
-                        </span>
-                      </td>
-                      <td>
-                        {currency &&
-                          formatCurrencyToDisplay(tax.totalTax, currency, true)}
-                      </td>
-                    </tr>
-                  ))}
+                  {Object.entries(taxesByVatRate).map(
+                    ([rate, totalTax], index) => (
+                      <tr key={index}>
+                        <td colSpan={4}>
+                          <span>
+                            {t(i18n)`Total Tax`} ({rate}%)
+                          </span>
+                        </td>
+                        <td>
+                          {currency &&
+                            formatCurrencyToDisplay(totalTax, currency, true)}
+                        </td>
+                      </tr>
+                    )
+                  )}
                   <tr className="total">
                     <td colSpan={4}>
                       <span>{t(i18n)`Total`}</span>

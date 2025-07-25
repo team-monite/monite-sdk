@@ -1,18 +1,17 @@
-import { ReactNode } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { Role } from './Role';
+import { User } from './User';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import {
+  type Rules,
   useApprovalPolicyScript,
-  Rules,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
-  Triggers,
+  ParsedTriggers,
   useApprovalPolicyTrigger,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useDialog } from '@/ui/Dialog';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
 import { t, Trans } from '@lingui/macro';
@@ -20,8 +19,6 @@ import { useLingui } from '@lingui/react';
 import {
   Chip,
   DialogContent,
-  List,
-  ListItem,
   Typography,
   Stack,
   Table,
@@ -31,9 +28,8 @@ import {
   TableBody,
   Paper,
 } from '@mui/material';
-
-import { Role } from './Role';
-import { User } from './User';
+import { ReactNode } from 'react';
+import { toast } from 'react-hot-toast';
 
 interface ApprovalPolicyViewProps {
   /** Approval policy to be displayed */
@@ -94,65 +90,65 @@ export const ApprovalPolicyView = ({
       },
     });
 
-  const triggersList = (Object.keys(triggers) as Array<keyof Triggers>).map(
-    (triggerKey) => {
-      const triggerLabel = getTriggerLabel(triggerKey);
-      let triggerValue: ReactNode;
+  const triggersList = (
+    Object.keys(triggers) as Array<keyof ParsedTriggers>
+  ).map((triggerKey) => {
+    const triggerLabel = getTriggerLabel(triggerKey);
+    let triggerValue: ReactNode;
 
-      switch (triggerKey) {
-        case 'was_created_by_user_id':
-          if (Array.isArray(triggers[triggerKey])) {
-            triggerValue = (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {triggers[triggerKey].map((userId) => (
-                  <User key={userId} userId={userId} />
-                ))}
-              </Stack>
-            );
-          }
-          break;
-        case 'tags':
+    switch (triggerKey) {
+      case 'was_created_by_user_id':
+        if (Array.isArray(triggers[triggerKey])) {
           triggerValue = (
             <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {tagsForTriggers?.data.map((tag) => (
-                <Chip key={tag.id} label={tag.name} />
+              {triggers[triggerKey].map((userId) => (
+                <User key={userId} userId={userId} />
               ))}
             </Stack>
           );
-          break;
-        case 'counterpart_id':
-          triggerValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {counterpartsForTriggers?.data.map((counterpart) => (
-                <Chip
-                  key={counterpart.id}
-                  label={getCounterpartName(counterpart)}
-                />
-              ))}
-            </Stack>
-          );
-          break;
-        case 'amount':
-          triggerValue = (
-            <p>
-              {getAmountLabel(
-                triggers.amount?.value ?? [],
-                triggers.amount?.currency ?? 'EUR'
-              )}
-            </p>
-          );
-          break;
-        default:
-          triggerValue = triggerKey;
-          break;
-      }
-
-      return {
-        label: triggerLabel,
-        value: triggerValue,
-      };
+        }
+        break;
+      case 'tags':
+        triggerValue = (
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            {tagsForTriggers?.data.map((tag) => (
+              <Chip key={tag.id} label={tag.name} />
+            ))}
+          </Stack>
+        );
+        break;
+      case 'counterpart_id':
+        triggerValue = (
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            {counterpartsForTriggers?.data.map((counterpart) => (
+              <Chip
+                key={counterpart.id}
+                label={getCounterpartName(counterpart)}
+              />
+            ))}
+          </Stack>
+        );
+        break;
+      case 'amount':
+        triggerValue = (
+          <p>
+            {getAmountLabel(
+              triggers.amount?.value ?? [],
+              triggers.amount?.currency ?? 'EUR'
+            )}
+          </p>
+        );
+        break;
+      default:
+        triggerValue = triggerKey;
+        break;
     }
-  );
+
+    return {
+      label: triggerLabel,
+      value: triggerValue,
+    };
+  });
 
   const approvalFlows =
     rules &&
@@ -169,7 +165,7 @@ export const ApprovalPolicyView = ({
           return {
             label: getRuleLabel(ruleKey, rules[ruleKey].count),
             value: (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              <Stack direction="column" gap={1} sx={{ flexWrap: 'wrap' }}>
                 {rules[ruleKey].userIds?.map((userId) => (
                   <User key={userId} userId={userId} />
                 ))}
@@ -182,7 +178,7 @@ export const ApprovalPolicyView = ({
             value: (
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
                 {rules[ruleKey].roleIds?.map((roleId) => (
-                  <Role key={roleId} roleId={roleId} />
+                  <Role key={roleId} roleId={roleId} quoted={true} />
                 ))}
               </Stack>
             ),
@@ -191,17 +187,13 @@ export const ApprovalPolicyView = ({
           return {
             label: getRuleLabel(ruleKey),
             value: (
-              <List>
+              <Stack direction="column" spacing={0.5}>
                 {rules[ruleKey].chainUserIds?.map((userId) => {
                   if (!userId) return null;
 
-                  return (
-                    <ListItem>
-                      <User key={userId} userId={userId} />
-                    </ListItem>
-                  );
+                  return <User key={userId} userId={userId} />;
                 })}
-              </List>
+              </Stack>
             ),
           };
       }

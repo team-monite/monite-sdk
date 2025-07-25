@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
-import useScript from 'react-script-hook';
-
 import { components } from '@/api';
-import {
-  useGetFinancingConnectToken,
-  useGetFinanceOffers,
-} from '@/components/financing/hooks';
+import { useGetFinanceOffers } from '@/components/financing/hooks/useGetFinanceOffers';
+import { useGetFinancingConnectToken } from '@/components/financing/hooks/useGetFinancingConnectToken';
 import {
   KanmonFinancedInvoice,
   useKanmonContext,
 } from '@/core/context/KanmonContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useComponentSettings } from '@/core/hooks';
 import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useEffect, useState } from 'react';
+import useScript from 'react-script-hook';
 
 const KANMON_CONNECT_SCRIPT_URL_SANDBOX = `https://cdn.sandbox.kanmon.dev/scripts/v2/kanmon-connect.js`;
 const KANMON_CONNECT_SCRIPT_URL_PRODUCTION = `https://cdn.kanmon.dev/scripts/v2/kanmon-connect.js`;
@@ -39,10 +37,10 @@ export type UseFinancingReturnValues = {
 };
 
 export const useFinancing = () => {
-  const { apiUrl, api, queryClient, componentSettings, entityId } =
-    useMoniteContext();
+  const { apiUrl, api, queryClient, entityId } = useMoniteContext();
   const { isKanmonInitialized, toggleKanmon, handleButtonText, buttonText } =
     useKanmonContext();
+  const { onboardingCallbacks } = useComponentSettings();
   const { i18n } = useLingui();
   const getConnectToken = useGetFinancingConnectToken();
   const { data: finance } = useGetFinanceOffers();
@@ -191,12 +189,10 @@ export const useFinancing = () => {
             case 'WAITING_FOR_OFFERS':
               handleButtonText('');
               if (
-                (finance?.business_status === 'INPUT_REQUIRED' ||
-                  finance?.business_status === 'NEW') &&
-                componentSettings?.onboarding
-                  ?.onWorkingCapitalOnboardingComplete
+                finance?.business_status === 'INPUT_REQUIRED' ||
+                finance?.business_status === 'NEW'
               ) {
-                componentSettings?.onboarding?.onWorkingCapitalOnboardingComplete(
+                onboardingCallbacks.onWorkingCapitalOnboardingComplete?.(
                   entityId
                 );
               }

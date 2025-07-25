@@ -2,12 +2,12 @@ import { useState, useCallback } from 'react';
 
 import { components } from '@/api';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
-import { Dialog } from '@/components/Dialog';
-import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Dialog } from '@/ui/Dialog';
+import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, CircularProgress } from '@mui/material';
@@ -16,6 +16,7 @@ import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
 /**
  * ApprovalPolicies component
+ * TODO: Check if this component is still needed
  *
  * This component renders the approval policies page. It includes a table of approval policies, a dialog for creating new approval policies,
  * and a header with a button for opening the create dialog.
@@ -34,13 +35,10 @@ const ApprovalPoliciesBase = () => {
   const [isCreateDialogOpened, setIsCreateDialogOpened] =
     useState<boolean>(false);
 
-  const onRowClick = useCallback(
-    (approvalPolicy: components['schemas']['ApprovalPolicyResource']) => {
-      setSelectedApprovalPolicyId(approvalPolicy.id);
-      setIsCreateDialogOpened(true);
-    },
-    []
-  );
+  const onRowClick = useCallback((approvalPolicy: ApprovalPolicyResource) => {
+    setSelectedApprovalPolicyId(approvalPolicy.id);
+    setIsCreateDialogOpened(true);
+  }, []);
 
   const onCreateClick = () => {
     setIsCreateDialogOpened(true);
@@ -105,3 +103,5 @@ const ApprovalPoliciesBase = () => {
     </>
   );
 };
+
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];

@@ -1,16 +1,5 @@
-import {
-  BaseSyntheticEvent,
-  forwardRef,
-  useCallback,
-  useId,
-  useMemo,
-  useState,
-} from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TableComponents, TableVirtuoso } from 'react-virtuoso';
-
+import { CreateProductDialog } from './CreateProductDialog';
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
@@ -27,9 +16,10 @@ import {
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
-import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useDialog } from '@/ui/Dialog';
+import { CenteredContentBox } from '@/ui/box';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -57,8 +47,16 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
-
-import { CreateProductDialog } from './CreateProductDialog';
+import {
+  BaseSyntheticEvent,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
 interface OnAddOptions {
   items: Array<ProductServiceResponse>;
@@ -145,7 +143,7 @@ export const ProductsTable = ({
 
   const { control, handleSubmit, watch } =
     useForm<CreateReceivablesProductsFormProps>({
-      resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
+      resolver: zodResolver(getCreateInvoiceProductsValidationSchema(i18n)),
       defaultValues: useMemo(
         () => ({
           items: [],
@@ -180,7 +178,7 @@ export const ProductsTable = ({
     {
       query: {
         limit: 20,
-        currency,
+        currency: currency as CurrencyEnum,
         type: currentFilter[FILTER_TYPE_TYPE] || undefined,
         name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       },
@@ -236,7 +234,10 @@ export const ProductsTable = ({
       e.preventDefault();
       e.stopPropagation();
       handleSubmit((values) => {
-        onAdd(values);
+        onAdd({
+          items: values.items,
+          currency: values.currency as CurrencyEnum,
+        });
       })(e);
     },
     [handleSubmit, onAdd]

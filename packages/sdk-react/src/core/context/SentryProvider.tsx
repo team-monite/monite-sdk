@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
-
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { Error as ErrorComponent } from '@/ui/error';
+import { Error as ErrorComponent } from '@/ui/error/Error';
 import { ErrorBoundary, Profiler } from '@sentry/react';
+import { ReactNode } from 'react';
 
 /**
  * Attaches Sentry to the `ErrorBoundary`
