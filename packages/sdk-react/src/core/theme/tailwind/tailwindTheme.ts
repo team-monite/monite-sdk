@@ -1,8 +1,7 @@
-import { MoniteTheme } from '@/core/context/MoniteContext';
-import { css } from '@emotion/react';
-
 // @ts-expect-error - This is a global css file
 import tailwindApp from '../app.css';
+import { MoniteTheme } from '@/core/context/MoniteContext';
+import { css } from '@emotion/react';
 
 /**
  * Sets the Tailwind Theme variables to the :root element
@@ -14,6 +13,8 @@ import tailwindApp from '../app.css';
 export const getTailwindTheme = (theme: MoniteTheme) => css`
   :root,
   :host {
+    --mtw-font-family: ${theme.typography.fontFamily};
+
     --mtw-color-primary-10: ${theme.palette.primary[10]};
     --mtw-color-primary-20: ${theme.palette.primary[20]};
     --mtw-color-primary-30: ${theme.palette.primary[30]};
