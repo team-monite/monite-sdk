@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root,
+:host {
+  --font-size-invoice-title: 3rem; /* 48px */
+  --font-size-invoice-number: 1.248rem; /* 19.9667px */
+  --font-size-header: 0.624rem; /* 9.9834px */
+  --font-size-total-label: 0.83195rem; /* 13.3112px */
+  --font-size-total-value: 1.125rem; /* 18px */
+  --line-height-header: 1.333; /* 13.3112px / 9.9834px */
+  --font-weight-header: 700;
+  --font-size-body: 0.6239625rem; /* 9.9834px */
+  --font-size-small: 0.554rem; /* 8.8741px */
+  --line-height-body: 0.83195rem; /* 13.3112px */
+  
+  --spacing-xxs: 0.139rem; /* 2.219px */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-xs-sm: 0.41625rem; /* 6.66px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 0.75rem; /* 12px */
+  --spacing-lg: 1rem; /* 16px */
+  --spacing-xl: 1.5rem; /* 24px */
+  --spacing-xxl: 2rem; /* 32px */
+
+  --padding-xs: 0.208125rem; /* 3.33px */
+  --padding-sm: 0.2775rem; /* 4.44px */
+  --padding-md: 0.554rem; /* 8.874px */
+  
+  --logo-width: 8.875rem; /* ~142px */
+  --logo-height: 4.4375rem; /* ~71px */
+  --totals-table-width: 18.75rem; /* 300px */
+  --payment-section-gap: 1.875rem; /* 30px */
+  --payment-details-width: 12.5rem; /* 200px */
+  --qr-code-size: 5rem; /* 80px */
+  
+  --col-number-width: 1.25rem;
+  --col-product-min-width: 15rem;
+  --col-qty-width: 4rem;
+  --col-price-width: 6rem;
+  --col-discount-width: 4rem;
+  --col-amount-width: 6.5rem;
+  --col-tax-width: 3rem;
+  
+  --text-primary: #101011;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: #F2F2F2;
+  --bg-header: #FAFAFA;
+  --accent-color: #3737FF;
+
+  --border-radius: var(--spacing-xs);
+}
+
+.invoicePreviewMonite {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 29.7cm;
+  padding: 2.5rem;
+  font-family: 'Inter', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  isolation: isolate;
+  box-sizing: border-box;
+}
+
+.invoicePreviewMonite *,
+.invoicePreviewMonite *::before,
+.invoicePreviewMonite *::after {
+  box-sizing: border-box;
+}
+
+.invoicePreviewMonite .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xxl);
+  padding-bottom: var(--spacing-lg);
+}
+
+.invoicePreviewMonite .invoiceTitle {
+  font-size: var(--font-size-invoice-title);
+  font-weight: 300;
+  margin: 0;
+  line-height: 1;
+}
+
+.invoicePreviewMonite .invoiceNumber {
+  font-weight: 300;
+  font-size: var(--font-size-invoice-number);
+  line-height: 1;
+}
+
+.invoicePreviewMonite .logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--logo-width);
+  min-height: var(--logo-height);
+  background-color: var(--bg-header);
+}
+
+.invoicePreviewMonite .logoWrapper img {
+  max-width: var(--logo-width);
+  max-height: var(--logo-height);
+  object-fit: contain;
+}
+
+.invoicePreviewMonite .mainInfoSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.invoicePreviewMonite .infoColumn {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-xs) var(--padding-sm);
+}
+
+.invoicePreviewMonite .columnHeaderTitle {
+  font-size: var(--font-size-header);
+  font-weight: var(--font-weight-header);
+  line-height: var(--line-height-header);
+  background-color: var(--bg-header);
+  text-transform: none;
+  border-radius: var(--border-radius);
+  padding: var(--padding-xs) var(--padding-sm);
+}
+
+.invoicePreviewMonite .columnContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--padding-sm);
+}
+
+.invoicePreviewMonite .columnText {
+  margin: 0;
+}
+
+.invoicePreviewMonite .memoSection {
+  margin-bottom: var(--spacing-xxl);
+}
+
+.invoicePreviewMonite .sectionHeaderTitle {
+  font-size: var(--font-size-header);
+  font-weight: var(--font-weight-header);
+  line-height: var(--line-height-header);
+  background-color: var(--bg-header);
+  margin-bottom: var(--spacing-sm);
+  text-transform: none;
+  border-radius: var(--border-radius);
+  padding: var(--padding-xs) var(--padding-sm);
+}
+
+.invoicePreviewMonite .sectionText {
+  margin: 0;
+}
+
+.invoicePreviewMonite .lineItemsSection {
+  margin-bottom: var(--spacing-xxl);
+}
+
+.invoicePreviewMonite .lineItemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.invoicePreviewMonite .lineItemsTable thead tr {
+  background-color: var(--bg-header);
+}
+
+.invoicePreviewMonite .lineItemsTable th {
+  font-weight: var(--font-weight-header);
+  line-height: var(--line-height-header);
+  text-align: left;
+  padding: var(--padding-xs) var(--padding-sm);
+}
+
+.invoicePreviewMonite .lineItemsTable td {
+  padding: var(--padding-md) var(--padding-sm);
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+.invoicePreviewMonite .lineItemsTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.invoicePreviewMonite .colProduct {
+  min-width: var(--col-product-min-width);
+  max-width: 20rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.invoicePreviewMonite .colQty {
+  width: var(--col-qty-width);
+  text-align: right;
+}
+
+.invoicePreviewMonite .colPrice {
+  width: var(--col-price-width);
+  text-align: right;
+}
+
+.invoicePreviewMonite .colDiscount {
+  width: var(--col-discount-width);
+  text-align: right;
+}
+
+.invoicePreviewMonite .colAmount {
+  width: var(--col-amount-width);
+  text-align: right;
+}
+
+.invoicePreviewMonite .colTax {
+  width: var(--col-tax-width);
+  text-align: right;
+}
+
+.invoicePreviewMonite .productName {
+  margin-bottom: var(--spacing-xxs);
+}
+
+.invoicePreviewMonite .productDescription {
+  font-size: var(--font-size-small);
+}
+
+.invoicePreviewMonite .noItemsRow .noItemsCell {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--spacing-xl);
+}
+
+.invoicePreviewMonite .itemRow td {
+  vertical-align: top;
+}
+
+.invoicePreviewMonite .totalsSection {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-xxl);
+}
+
+.invoicePreviewMonite .totalsTable {
+  width: var(--totals-table-width);
+  max-width: 100%;
+  border-spacing: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs-sm);
+}
+
+.invoicePreviewMonite .totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--padding-sm);
+}
+
+.invoicePreviewMonite .totalValue {
+  text-align: right;
+  min-width: 6rem;
+}
+
+.invoicePreviewMonite .finalTotal {
+  margin-top: var(--spacing-xxs);
+  padding: var(--padding-sm);
+  background-color: var(--bg-header);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-total-label);
+  font-weight: 700;
+}
+
+.invoicePreviewMonite .footerSection {
+  margin-top: auto;
+  border-top: 1px solid var(--text-primary);
+  padding-top: var(--spacing-lg);
+}
+
+.invoicePreviewMonite .footerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--payment-section-gap);
+  flex-wrap: wrap;
+}
+
+.invoicePreviewMonite .companyInfo {
+  flex: 1;
+}
+
+.invoicePreviewMonite .companyText {
+  margin: var(--spacing-xxs) 0;
+}
+
+.invoicePreviewMonite .paymentSection {
+  display: flex;
+  gap: var(--payment-section-gap);
+  align-items: flex-start;
+}
+
+.invoicePreviewMonite .paymentDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  min-width: var(--payment-details-width);
+}
+
+.invoicePreviewMonite .qrCodeSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invoicePreviewMonite .qrCodeData {
+  display: inline-flex;
+  flex-flow: column;
+  height: 85px;
+  width: 85px;
+  background-image: url('data:image/svg+xml,<svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(%23filter0_f_23098_280990)"><path d="M3.8291 3.87793V6.48663V9.09532V11.704V14.3127V16.9214V19.5301V22.1388H6.4378H9.04649H11.6552H14.2639H16.8726H19.4813H22.09V19.5301V16.9214V14.3127V11.704V9.09532V6.48663V3.87793H19.4813H16.8726H14.2639H11.6552H9.04649H6.4378H3.8291ZM24.6987 3.87793V6.48663V9.09532H27.3074V6.48663H29.9161V3.87793H27.3074H24.6987ZM29.9161 6.48663V9.09532H32.5248V6.48663H29.9161ZM32.5248 9.09532V11.704H35.1334H37.7421V9.09532V6.48663V3.87793H35.1334V6.48663V9.09532H32.5248ZM32.5248 11.704H29.9161H27.3074H24.6987V14.3127H27.3074H29.9161V16.9214H27.3074V19.5301H29.9161V22.1388H32.5248V19.5301H35.1334V22.1388H32.5248V24.7475H29.9161V27.3562H32.5248H35.1334V29.9649H37.7421V27.3562V24.7475V22.1388V19.5301V16.9214H35.1334V14.3127H32.5248V11.704ZM35.1334 29.9649H32.5248V32.5736H29.9161V35.1823V37.791H32.5248V40.3997V43.0084H29.9161H27.3074V40.3997H29.9161V37.791H27.3074V35.1823V32.5736H24.6987V29.9649H27.3074V32.5736H29.9161V29.9649V27.3562H27.3074H24.6987V24.7475H22.09H19.4813H16.8726V27.3562H14.2639V29.9649H11.6552V27.3562H14.2639V24.7475H11.6552H9.04649V27.3562H6.4378V29.9649V32.5736V35.1823H9.04649V32.5736H11.6552H14.2639H16.8726V29.9649H19.4813V27.3562H22.09V29.9649H19.4813V32.5736H22.09V35.1823H19.4813V37.791H22.09H24.6987V40.3997V43.0084V45.6171H27.3074V48.2258H29.9161H32.5248H35.1334V50.8344H32.5248H29.9161H27.3074V48.2258H24.6987V50.8344V53.4431H27.3074V56.0518H24.6987V58.6605H27.3074H29.9161V56.0518H32.5248V58.6605H35.1334H37.7421H40.3508H42.9595V56.0518H45.5682V58.6605H48.1769H50.7856H53.3943V56.0518H50.7856H48.1769V53.4431H45.5682V50.8344H42.9595V53.4431H40.3508H37.7421V56.0518H35.1334V53.4431H37.7421V50.8344V48.2258V45.6171H40.3508V43.0084H37.7421H35.1334V40.3997H37.7421V37.791V35.1823V32.5736H35.1334V29.9649ZM42.9595 50.8344V48.2258H40.3508V50.8344H42.9595ZM48.1769 53.4431H50.7856H53.3943V50.8344H50.7856H48.1769V53.4431ZM53.3943 50.8344H56.003V48.2258V45.6171V43.0084V40.3997H53.3943H50.7856H48.1769V37.791H45.5682V40.3997H42.9595V43.0084V45.6171H45.5682V43.0084H48.1769V45.6171V48.2258H50.7856H53.3943V50.8344ZM45.5682 37.791V35.1823H42.9595H40.3508V37.791H42.9595H45.5682ZM48.1769 37.791H50.7856V35.1823V32.5736V29.9649H53.3943V32.5736H56.003V35.1823H58.6117V32.5736V29.9649H56.003V27.3562H58.6117V24.7475H56.003H53.3943V27.3562H50.7856V24.7475H48.1769V27.3562H45.5682V29.9649H48.1769V32.5736V35.1823V37.791ZM45.5682 29.9649H42.9595V32.5736H45.5682V29.9649ZM56.003 35.1823H53.3943V37.791H56.003V35.1823ZM19.4813 35.1823V32.5736H16.8726V35.1823H19.4813ZM16.8726 35.1823H14.2639H11.6552H9.04649V37.791H11.6552H14.2639H16.8726V35.1823ZM6.4378 35.1823H3.8291V37.791H6.4378V35.1823ZM6.4378 27.3562V24.7475H3.8291V27.3562H6.4378ZM24.6987 24.7475H27.3074V22.1388V19.5301H24.6987V22.1388V24.7475ZM40.3508 3.87793V6.48663V9.09532V11.704V14.3127V16.9214V19.5301V22.1388H42.9595H45.5682H48.1769H50.7856H53.3943H56.003H58.6117V19.5301V16.9214V14.3127V11.704V9.09532V6.48663V3.87793H56.003H53.3943H50.7856H48.1769H45.5682H42.9595H40.3508ZM6.4378 6.48663H9.04649H11.6552H14.2639H16.8726H19.4813V9.09532V11.704V14.3127V16.9214V19.5301H16.8726H14.2639H11.6552H9.04649H6.4378V16.9214V14.3127V11.704V9.09532V6.48663ZM42.9595 6.48663H45.5682H48.1769H50.7856H53.3943H56.003V9.09532V11.704V14.3127V16.9214V19.5301H53.3943H50.7856H48.1769H45.5682H42.9595V16.9214V14.3127V11.704V9.09532V6.48663ZM9.04649 9.09532V11.704V14.3127V16.9214H11.6552H14.2639H16.8726V14.3127V11.704V9.09532H14.2639H11.6552H9.04649ZM45.5682 9.09532V11.704V14.3127V16.9214H48.1769H50.7856H53.3943V14.3127V11.704V9.09532H50.7856H48.1769H45.5682ZM40.3508 24.7475V27.3562H42.9595V24.7475H40.3508ZM3.8291 40.3997V43.0084V45.6171V48.2258V50.8344V53.4431V56.0518V58.6605H6.4378H9.04649H11.6552H14.2639H16.8726H19.4813H22.09V56.0518V53.4431V50.8344V48.2258V45.6171V43.0084V40.3997H19.4813H16.8726H14.2639H11.6552H9.04649H6.4378H3.8291ZM6.4378 43.0084H9.04649H11.6552H14.2639H16.8726H19.4813V45.6171V48.2258V50.8344V53.4431V56.0518H16.8726H14.2639H11.6552H9.04649H6.4378V53.4431V50.8344V48.2258V45.6171V43.0084ZM9.04649 45.6171V48.2258V50.8344V53.4431H11.6552H14.2639H16.8726V50.8344V48.2258V45.6171H14.2639H11.6552H9.04649ZM56.003 53.4431V56.0518H58.6117V53.4431H56.003Z" fill="black"/></g><defs><filter id="filter0_f_23098_280990" x="-2.04017" y="-1.99134" width="66.5217" height="66.5217" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="1.63043" result="effect1_foregroundBlur_23098_280990"/></filter></defs></svg>');
+  border-radius: var(--border-radius);
+}
+
+.invoicePreviewMonite .pageInfo {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+}
+
+.invoicePreviewMonite .pageText {
+  font-size: var(--font-size-small);
+  color: var(--text-muted);
+}
+
+.invoicePreviewMonite .notSet {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.invoicePreviewMonite .documentTitle {
+  flex: 1;
+  padding: var(--spacing-md) 0;
+}
+
+.invoicePreviewMonite .columnHeader {
+  margin-bottom: var(--spacing-sm);
+}
+
+.invoicePreviewMonite .sectionHeader {
+  margin-bottom: var(--spacing-sm);
+}
+
+.invoicePreviewMonite .sectionContent {
+  padding: var(--padding-xs) var(--padding-sm);
+}
+
+.invoicePreviewMonite .paymentLink {
+  font-weight: 700;
+  color: var(--accent-color);
+  text-decoration: underline;
+}
