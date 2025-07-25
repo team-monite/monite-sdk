@@ -23,10 +23,12 @@ export type CreateReceivablesProductsFormProps = z.infer<
 const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
   const baseLineItemSchema = z
     .object({
+      id: z.string().optional(),
       quantity: z.number().min(0.1, t(i18n)`Quantity is a required field`),
       product_id: z.string().optional(),
       product: z.object({
         name: z.string().min(1, t(i18n)`Name is a required field`),
+        description: z.string().optional(),
         price: z.object({
           currency: z.enum(CurrencyEnum as [string, ...string[]]),
           value: z.number(),
@@ -162,6 +164,7 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   measure_unit_id?: string;
   product?: {
     name: string;
+    description?: string;
     price?: components['schemas']['PriceFloat'];
     measure_unit_id?: string;
     measure_unit_name?: string;

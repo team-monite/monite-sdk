@@ -84,6 +84,7 @@ type CurrencyEnum = components['schemas']['CurrencyEnum'];
 interface ProductItem {
   id: string;
   label: string;
+  description?: string;
   price?: {
     currency: components['schemas']['CurrencyEnum'];
     value: number;
@@ -174,6 +175,7 @@ export const ItemsSection = ({
       const product: CreateReceivablesFormBeforeValidationLineItemProps['product'] =
         {
           name: template?.product?.name || '',
+          description: template?.product?.description || '',
           price: {
             currency: actualCurrency || defaultCurrency || 'USD',
             value: template?.product?.price?.value || 0,
@@ -277,7 +279,7 @@ export const ItemsSection = ({
   const measureUnits = measureUnitsData?.data;
 
   const setValueWithValidationLocal = useCallback(
-    (name: string, value: any, shouldValidate = true) => {
+    (name: string, value: unknown, shouldValidate = true) => {
       setValueWithValidation(name, value, shouldValidate, setValue);
     },
     [setValue]
@@ -295,6 +297,14 @@ export const ItemsSection = ({
           item.label,
           false
         );
+
+        if (item.description) {
+          setValueWithValidationLocal(
+            `line_items.${index}.product.description`,
+            item.description,
+            false
+          );
+        }
 
         const currentPrice = getValues(
           // if user manually typed a price it is unlikely they want the price of the catalogue to overwrite it

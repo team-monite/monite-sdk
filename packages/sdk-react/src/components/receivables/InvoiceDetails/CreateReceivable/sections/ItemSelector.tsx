@@ -28,6 +28,7 @@ type CurrencyEnum = components['schemas']['CurrencyEnum'];
 interface ItemSelectorOptionProps {
   id: string;
   label: string;
+  description?: string;
   price?: {
     currency: components['schemas']['CurrencyEnum'];
     value: number;
@@ -153,6 +154,7 @@ export const ItemSelector = ({
       return {
         id: item.id,
         label: item.name,
+        description: item.description,
         price: item.price,
         smallestAmount: item.smallest_amount,
         measureUnit: unit,

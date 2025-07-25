@@ -1,7 +1,8 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  type FieldNamesMarkedBoolean,
+  type Resolver,
   Controller,
-  FieldNamesMarkedBoolean,
   FormProvider,
   useForm,
   useFormState,
@@ -106,8 +107,40 @@ export const isFieldRequiredByValidations = (
   return false;
 };
 
-const getValidationSchema = (i18n: I18n) =>
-  yup
+const getValidationSchema = (i18n: I18n) => {
+  const lineItemSchema = yup.object().shape({
+    id: yup.string().required(),
+    name: yup
+      .string()
+      .label(t(i18n)`Item name`)
+      .required(),
+    quantity: yup
+      .number()
+      .label(t(i18n)`Item quantity`)
+      .positive()
+      .required()
+      .typeError(t(i18n)`Item quantity must be a number`),
+    price: yup
+      .number()
+      .label(t(i18n)`Item price`)
+      .required()
+      .min(0)
+      .typeError(t(i18n)`Item price must be a number`),
+    tax: yup
+      .number()
+      .label(t(i18n)`Item tax`)
+      .required()
+      .min(0)
+      .max(100)
+      .typeError(t(i18n)`Item tax must be a number between 0 and 100`),
+  });
+
+  const tagSchema = yup.object().shape({
+    value: yup.string().required(),
+    label: yup.string().required(),
+  });
+
+  return yup
     .object({
       invoiceNumber: yup
         .string()
@@ -123,6 +156,7 @@ const getValidationSchema = (i18n: I18n) =>
         ),
       counterpartBankAccount: yup
         .string()
+        .optional()
         .label(t(i18n)`Counterpart bank account`)
         .when('$payablesValidations', (payablesValidations, schema) =>
           isFieldRequiredByValidations(
@@ -134,6 +168,7 @@ const getValidationSchema = (i18n: I18n) =>
         ),
       invoiceDate: yup
         .date()
+        .optional()
         .typeError(t(i18n)`Invalid date`)
         .label(t(i18n)`Invoice date`)
         .when('$payablesValidations', (payablesValidations, schema) =>
@@ -143,6 +178,7 @@ const getValidationSchema = (i18n: I18n) =>
         ),
       dueDate: yup
         .date()
+        .optional()
         .typeError(t(i18n)`Invalid date`)
         .label(t(i18n)`Due date`)
         .nullable()
@@ -155,42 +191,12 @@ const getValidationSchema = (i18n: I18n) =>
             ? schema.required()
             : schema
         ),
-      discount: yup.number().nullable().min(0),
-      lineItems: yup.array().of(
-        yup.object().shape({
-          name: yup
-            .string()
-            .label(t(i18n)`Item name`)
-            .required(),
-          quantity: yup
-            .number()
-            .label(t(i18n)`Item quantity`)
-            .positive()
-            .required()
-            .typeError(t(i18n)`Item quantity must be a number`),
-          price: yup
-            .number()
-            .label(t(i18n)`Item price`)
-            .required()
-            .min(0)
-            .typeError(t(i18n)`Item price must be a number`),
-          tax: yup
-            .number()
-            .label(t(i18n)`Item tax`)
-            .required()
-            .min(0)
-            .max(100)
-            .typeError(t(i18n)`Item tax must be a number between 0 and 100`),
-        })
-      ),
-      tags: yup.array(
-        yup.object().shape({
-          value: yup.string().required(),
-          label: yup.string().required(),
-        })
-      ),
+      discount: yup.number().optional().nullable().min(0),
+      lineItems: yup.array().of(lineItemSchema).required(),
+      tags: yup.array().of(tagSchema).required(),
     })
     .required();
+};
 
 /**
  * PayableDetailsForm component.
@@ -283,8 +289,9 @@ const PayableDetailsFormBase = forwardRef<
       }),
       [payablesValidations]
     );
+    const validationSchema = getValidationSchema(i18n);
     const methods = useForm<PayableDetailsFormFields>({
-      resolver: yupResolver(getValidationSchema(i18n)),
+      resolver: yupResolver(validationSchema) as unknown as Resolver<PayableDetailsFormFields>,
       context: formContext,
       defaultValues,
       mode: 'onTouched',
