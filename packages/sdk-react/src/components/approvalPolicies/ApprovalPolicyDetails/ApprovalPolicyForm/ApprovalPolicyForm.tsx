@@ -441,6 +441,9 @@ export const ApprovalPolicyForm = ({
   const createApprovalPolicy = async (
     values: components['schemas']['ApprovalPolicyCreate']
   ) => {
+    // Set default priority 1 on new approval policies.
+    values.priority = 1;
+
     const response = await createMutation.mutateAsync(values);
 
     if (response) {
