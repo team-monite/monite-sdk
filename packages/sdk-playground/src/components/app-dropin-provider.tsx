@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
-
 import { fetchToken } from '@/services/fetch-token';
 import { getLoginEnvData } from '@/services/login-env-data';
 import { MoniteDropin } from '@monite/sdk-drop-in';
+import { useEffect, useRef } from 'react';
 
 type AppDropinProvider = {
   component: string;
@@ -25,10 +24,10 @@ const AppDropinProvider = ({ component }: AppDropinProvider) => {
       }),
   };
 
-  const dropin = new MoniteDropin(dropinConfig);
-  const componentInstance = dropin.create(component);
-
   useEffect(() => {
+    const dropin = new MoniteDropin(dropinConfig);
+    const componentInstance = dropin.create(component);
+
     if (dropinRef.current) {
       componentInstance.mount(dropinRef.current);
     }
@@ -36,7 +35,7 @@ const AppDropinProvider = ({ component }: AppDropinProvider) => {
     return () => {
       componentInstance.unmount();
     };
-  }, [componentInstance, dropinRef]);
+  }, [component, dropinRef, dropinConfig]);
 
   return <div ref={dropinRef} />;
 };
