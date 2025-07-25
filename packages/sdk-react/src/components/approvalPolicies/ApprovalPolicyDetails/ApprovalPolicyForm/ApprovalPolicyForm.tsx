@@ -68,7 +68,7 @@ const getApprovalPolicyValidationSchema = (i18n: I18n) =>
         z.literal('currency'),
         z.literal('tags'),
       ])
-      .nullable(),
+      .nullish(),
     triggers: z.object({
       was_created_by_user_id: z.array(z.any()).optional(),
       tags: z.array(z.any()).optional(),
@@ -111,7 +111,7 @@ const getApprovalPolicyValidationSchema = (i18n: I18n) =>
         z.literal('roles_from_list'),
         z.literal('approval_chain'),
       ])
-      .nullable(),
+      .nullish(),
     rules: z.object({
       single_user: z.any().optional(),
       users_from_list: z.array(z.any()).optional(),
@@ -478,6 +478,8 @@ export const ApprovalPolicyForm = ({
     defaultValues: {
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
+      scriptType: undefined,
+      triggerType: undefined,
       triggers: {},
       rules: {},
       amountOperator: undefined,
@@ -490,6 +492,7 @@ export const ApprovalPolicyForm = ({
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
+
   const [
     currentTriggers,
     currentRules,
