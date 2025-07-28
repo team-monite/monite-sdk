@@ -94,7 +94,7 @@ export const getPayableDetailsValidationSchema = (
     dueDate: z.date()
       .optional(),
     
-    currency: z.enum(CurrencyEnum as [string, ...string[]])
+    currency: z.enum(CurrencyEnum as [components['schemas']['CurrencyEnum'], ...components['schemas']['CurrencyEnum'][]])
       .meta({ 
         title: t(i18n)`Invoice currency`,
         description: t(i18n)`Currency for the invoice amount`,
@@ -109,6 +109,8 @@ export const getPayableDetailsValidationSchema = (
     lineItems: z.array(lineItemSchema),
     
     tags: z.array(tagSchema),
+
+    counterpartAddressId: z.string().optional(),
   });
 
   return baseSchema

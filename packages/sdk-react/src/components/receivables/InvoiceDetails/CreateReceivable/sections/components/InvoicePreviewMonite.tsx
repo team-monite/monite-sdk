@@ -91,9 +91,9 @@ export const InvoicePreviewMonite = ({
             </span>
           </h1>
         </div>
-        <div className={styles.logoWrapper}>
+        <div className={cn(styles.logoWrapper, !entityData?.logo?.url && styles.noLogo)}>
           {entityData?.logo?.url ? (
-            <img src={entityData.logo.url} alt={t(i18n)`Logo`} />
+            <img className={styles.logoImage} src={entityData.logo.url} alt={t(i18n)`Logo`} />
           ) : (
             <span className={styles.logoText}>{t(i18n)`Logo`}</span>
           )}

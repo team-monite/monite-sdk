@@ -101,10 +101,13 @@
   justify-content: center;
   min-width: var(--logo-width);
   min-height: var(--logo-height);
+}
+
+.invoicePreviewMonite .logoWrapper .no-logo {
   background-color: var(--bg-header);
 }
 
-.invoicePreviewMonite .logoWrapper img {
+.invoicePreviewMonite .logoImage {
   max-width: var(--logo-width);
   max-height: var(--logo-height);
   object-fit: contain;
