@@ -1,3 +1,4 @@
+import { usePayableDetailsThemeProps } from '../../hooks';
 import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
@@ -9,7 +10,6 @@ import {
   PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
-  usePayableDetailsThemeProps,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import { components } from '@/api';

@@ -1,3 +1,4 @@
+import { usePayableDetailsThemeProps } from '../../hooks';
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
@@ -10,7 +11,6 @@ import {
   isFieldRequired,
   isOcrMismatch,
   MonitePayableDetailsInfoProps,
-  usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
