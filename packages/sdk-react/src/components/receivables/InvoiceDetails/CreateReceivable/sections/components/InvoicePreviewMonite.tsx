@@ -1,5 +1,6 @@
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems, type SanitizableLineItem } from '../../utils';
+import { sanitizeLineItems } from '../utils';
+import type { SanitizableLineItem } from '../types';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
 import type { InvoicePreviewBaseProps } from './InvoicePreview.types';
 import {
@@ -19,11 +20,12 @@ import { useGetEntityBankAccountById } from '@/components/receivables/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
+import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { isValid } from 'date-fns';
 
-export const MoniteTemplate = ({
+export const InvoicePreviewMonite = ({
   address,
   counterpart,
   currency,
@@ -52,6 +54,7 @@ export const MoniteTemplate = ({
     (term) => term.id === paymentTermsId
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
+  const discount = getPaymentTermsDiscount(selectedPaymentTerm);
 
   const sanitizedItems = sanitizeLineItems(items as SanitizableLineItem[]).map(
     (item, index) => ({
@@ -70,7 +73,7 @@ export const MoniteTemplate = ({
   const { subtotalPrice, totalPrice, taxesByVatRate } =
     useCreateInvoiceProductsTable({
       lineItems:
-        sanitizedItems as CreateReceivablesFormBeforeValidationLineItemProps[], // Use enhanced items with descriptions
+        sanitizedItems as CreateReceivablesFormBeforeValidationLineItemProps[],
       formatCurrencyToDisplay,
       isNonVatSupported,
       actualCurrency: currency,
@@ -104,16 +107,16 @@ export const MoniteTemplate = ({
           </div>
           <div className={styles.columnContent}>
             {!counterpartName ? (
-              <p className={`${styles.columnText} ${styles.notSet}`}>{t(
+              <p className={cn(styles.columnText, styles.notSet)}>{t(
                 i18n
               )`Not set`}</p>
             ) : (
               <>
-                <p className={`${styles.columnText} ${styles.companyName}`}>
+                <p className={cn(styles.columnText, styles.companyName)}>
                   {counterpartName}
                 </p>
                 {address && (
-                  <p className={`${styles.columnText} ${styles.address}`}>
+                  <p className={cn(styles.columnText, styles.address)}>
                     {address.line1}
                     {address.line2 && ` ${address.line2}`}
                     {address.postal_code && `, ${address.postal_code}`}
@@ -124,14 +127,14 @@ export const MoniteTemplate = ({
                 {counterpart &&
                   isOrganizationCounterpart(counterpart) &&
                   counterpart.organization.email && (
-                    <p className={`${styles.columnText} ${styles.email}`}>
+                    <p className={cn(styles.columnTextm, styles.email)}>
                       {counterpart.organization.email}
                     </p>
                   )}
                 {counterpart &&
                   isIndividualCounterpart(counterpart) &&
                   counterpart.individual.email && (
-                    <p className={`${styles.columnText} ${styles.email}`}>
+                    <p className={cn(styles.columnTextm, styles.email)}>
                       {counterpart.individual.email}
                     </p>
                   )}
@@ -186,7 +189,7 @@ export const MoniteTemplate = ({
             {selectedPaymentTerm ? (
               <>
                 {selectedPaymentTerm.term_1 && (
-                  <p className={`${styles.columnText} ${styles.paymentTerm}`}>
+                  <p className={cn(styles.columnText, styles.paymentTerm)}>
                     {t(
                       i18n
                     )`Pay in the first ${selectedPaymentTerm.term_1.number_of_days} days`}
@@ -200,7 +203,7 @@ export const MoniteTemplate = ({
                   </p>
                 )}
                 {selectedPaymentTerm.term_2 && (
-                  <p className={`${styles.columnText} ${styles.paymentTerm}`}>
+                  <p className={cn(styles.columnText, styles.paymentTerm)}>
                     {t(
                       i18n
                     )`Pay in the first ${selectedPaymentTerm.term_2.number_of_days} days`}
@@ -214,7 +217,7 @@ export const MoniteTemplate = ({
                   </p>
                 )}
                 {selectedPaymentTerm.term_final && (
-                  <p className={`${styles.columnText} ${styles.paymentTerm}`}>
+                  <p className={cn(styles.columnText, styles.paymentTerm)}>
                     {t(i18n)`NET`}{' '}
                     {selectedPaymentTerm.term_final.number_of_days}{' '}
                     {t(i18n)`days`}
@@ -222,7 +225,7 @@ export const MoniteTemplate = ({
                 )}
               </>
             ) : (
-              <p className={`${styles.columnText} ${styles.notSet}`}>{t(
+              <p className={cn(styles.columnText, styles.notSet)}>{t(
                 i18n
               )`Not set`}</p>
             )}
@@ -260,7 +263,6 @@ export const MoniteTemplate = ({
                 const taxRate = getRateValueForItem(item, isNonVatSupported);
                 const quantity = item?.quantity || 1;
                 const price = item?.product?.price?.value || 0;
-                const discount = getPaymentTermsDiscount(selectedPaymentTerm);
                 const priceAfterDiscount = price * (1 - discount / 100);
                 const totalAmount = priceAfterDiscount * quantity;
 
@@ -287,7 +289,7 @@ export const MoniteTemplate = ({
                             )
                           : item?.measure_unit?.name
                             ? item.measure_unit.name
-                            : t(i18n)`item`}
+                            : null}
                       </span>
                     </td>
                     <td className={styles.colPrice}>
@@ -356,7 +358,7 @@ export const MoniteTemplate = ({
               </div>
             ))}
 
-            <div className={`${styles.totalRow} ${styles.finalTotal}`}>
+            <div className={cn(styles.totalRow, styles.finalTotal)}>
               <span className={styles.totalLabel}>
                 {t(i18n)`TOTAL`} ({currency})
               </span>
@@ -379,12 +381,12 @@ export const MoniteTemplate = ({
             {entityData &&
               'organization' in entityData &&
               entityData.organization?.legal_name && (
-                <p className={`${styles.companyText} ${styles.companyName}`}>
+                <p className={cn(styles.companyText, styles.companyName)}>
                   {entityData.organization.legal_name}
                 </p>
               )}
             {entityData?.address && (
-              <p className={`${styles.companyText} ${styles.companyAddress}`}>
+              <p className={cn(styles.companyText, styles.companyAddress)}>
                 {entityData.address.line1}
                 {entityData.address.line2 && ` ${entityData.address.line2}`}
                 {entityData.address.city && `, ${entityData.address.city}`}
@@ -393,12 +395,12 @@ export const MoniteTemplate = ({
               </p>
             )}
             {entityData?.phone && (
-              <p className={`${styles.companyText} ${styles.companyPhone}`}>
+              <p className={cn(styles.companyText, styles.companyPhone)}>
                 {entityData.phone}
               </p>
             )}
             {entityData?.email && (
-              <p className={`${styles.companyText} ${styles.companyEmail}`}>
+              <p className={cn(styles.companyText, styles.companyEmail)}>
                 {entityData.email}
               </p>
             )}

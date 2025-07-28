@@ -1,4 +1,6 @@
 import { components } from '@/api';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 import { getRateValueForDisplay, rateMinorToMajor } from '@/core/utils/vatUtils';
 import type { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
 
@@ -31,7 +33,34 @@ export const getMeasureUnitName = (
   measureUnits: UnitResponse[]
 ): string | null => {
   const unit = measureUnits.find((u) => u.id === measureUnitId);
-  return unit?.name || null;
+  
+  return unit?.name ?? null;
+};
+
+/**
+ * Gets the display name for a measure unit from a line item
+ * Handles both product-based measure units and direct measure unit references
+ * @param item The line item containing measure unit information
+ * @param measureUnits Array of available measure units for lookup
+ * @param i18n Internationalization instance for fallback text
+ * @returns The measure unit display name or fallback text
+ */
+export const getMeasureUnitDisplay = (
+  item: CreateReceivablesFormBeforeValidationLineItemProps,
+  measureUnits: UnitResponse[] | undefined,
+  i18n: I18n
+): string => {
+  if (measureUnits && item?.product?.measure_unit_id) {
+    const unitName = getMeasureUnitName(item.product.measure_unit_id, measureUnits);
+    
+    if (unitName) return unitName;
+  }
+  
+  if (item?.measure_unit?.name) {
+    return item.measure_unit.name;
+  }
+  
+  return t(i18n)`item`;
 };
 
 /**
@@ -47,7 +76,7 @@ export const getRateValueForItem = (
     item.vat_rate_value ?? 0,
     item.tax_rate_value ?? 0
   );
-}; 
+};
 
-type PaymentTermsResponse = components['schemas']['PaymentTermsResponse'];
 type UnitResponse = components['schemas']['UnitResponse'];
+type PaymentTermsResponse = components['schemas']['PaymentTermsResponse'];

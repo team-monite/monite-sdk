@@ -1,20 +1,25 @@
+import type { OptionalFields } from '../../types';
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
 } from '../../hooks';
-import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   type MonitePayableDetailsInfoProps,
+  type SubmitPayload,
   calculateTotalsForPayable,
   findDefaultBankAccount,
   isFieldRequired,
-  LineItem,
-  PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
 } from './helpers';
+import type { LineItem } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
+import {
+  type PayableDetailsValidationFields,
+  getPayableDetailsValidationSchema,
+  isFieldRequiredByValidations,
+} from './validation';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
@@ -38,8 +43,7 @@ import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import type { I18n } from '@lingui/core';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -67,13 +71,11 @@ import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type FieldNamesMarkedBoolean,
-  type Resolver,
   Controller,
   FormProvider,
   useForm,
   useFormState,
 } from 'react-hook-form';
-import * as yup from 'yup';
 
 export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];
@@ -81,7 +83,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
     id: string,
     payable: components['schemas']['PayableUpdateSchema'],
     lineItems?: Array<LineItem>,
-    dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
+    dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsValidationFields>
   ) => void;
   createPayable?: (
     payable: components['schemas']['PayableUploadWithDataSchema'],
@@ -92,110 +94,6 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
 }
-
-export const isFieldRequiredByValidations = (
-  fieldName: components['schemas']['PayablesFieldsAllowedForValidate'],
-  payablesValidations:
-    | components['schemas']['PayableValidationsResource']
-    | undefined
-): boolean => {
-  if (payablesValidations && payablesValidations.required_fields) {
-    return payablesValidations.required_fields.includes(fieldName);
-  }
-
-  return false;
-};
-
-const getValidationSchema = (i18n: I18n) => {
-  const lineItemSchema = yup.object().shape({
-    id: yup.string().required(),
-    name: yup
-      .string()
-      .label(t(i18n)`Item name`)
-      .required(),
-    quantity: yup
-      .number()
-      .label(t(i18n)`Item quantity`)
-      .positive()
-      .required()
-      .typeError(t(i18n)`Item quantity must be a number`),
-    price: yup
-      .number()
-      .label(t(i18n)`Item price`)
-      .required()
-      .min(0)
-      .typeError(t(i18n)`Item price must be a number`),
-    tax: yup
-      .number()
-      .label(t(i18n)`Item tax`)
-      .required()
-      .min(0)
-      .max(100)
-      .typeError(t(i18n)`Item tax must be a number between 0 and 100`),
-  });
-
-  const tagSchema = yup.object().shape({
-    value: yup.string().required(),
-    label: yup.string().required(),
-  });
-
-  return yup
-    .object({
-      invoiceNumber: yup
-        .string()
-        .label(t(i18n)`Invoice Number`)
-        .required(),
-      counterpart: yup
-        .string()
-        .label(t(i18n)`Counterpart`)
-        .when('$payablesValidations', (payablesValidations, schema) =>
-          isFieldRequiredByValidations('counterpart_id', payablesValidations)
-            ? schema.required()
-            : schema
-        ),
-      counterpartBankAccount: yup
-        .string()
-        .optional()
-        .label(t(i18n)`Counterpart bank account`)
-        .when('$payablesValidations', (payablesValidations, schema) =>
-          isFieldRequiredByValidations(
-            'counterpart_bank_account_id',
-            payablesValidations
-          )
-            ? schema.required()
-            : schema
-        ),
-      invoiceDate: yup
-        .date()
-        .optional()
-        .typeError(t(i18n)`Invalid date`)
-        .label(t(i18n)`Invoice date`)
-        .when('$payablesValidations', (payablesValidations, schema) =>
-          isFieldRequiredByValidations('issued_at', payablesValidations)
-            ? schema.required()
-            : schema
-        ),
-      dueDate: yup
-        .date()
-        .optional()
-        .typeError(t(i18n)`Invalid date`)
-        .label(t(i18n)`Due date`)
-        .nullable()
-        .required(),
-      currency: yup
-        .string()
-        .label(t(i18n)`Currency`)
-        .when('$payablesValidations', (payablesValidations, schema) =>
-          isFieldRequiredByValidations('currency', payablesValidations)
-            ? schema.required()
-            : schema
-        ),
-      discount: yup.number().optional().nullable().min(0),
-      lineItems: yup.array().of(lineItemSchema).required(),
-      tags: yup.array().of(tagSchema).required(),
-    })
-    .required();
-};
 
 /**
  * PayableDetailsForm component.
@@ -282,16 +180,11 @@ const PayableDetailsFormBase = forwardRef<
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
     );
-    const formContext = useMemo(
-      () => ({
-        payablesValidations,
-      }),
-      [payablesValidations]
-    );
-    const validationSchema = getValidationSchema(i18n);
-    const methods = useForm<PayableDetailsFormFields>({
-      resolver: yupResolver(validationSchema) as unknown as Resolver<PayableDetailsFormFields>,
-      context: formContext,
+
+    const methods = useForm<PayableDetailsValidationFields>({
+      resolver: zodResolver(
+        getPayableDetailsValidationSchema(i18n, payablesValidations)
+      ),
       defaultValues,
       mode: 'onTouched',
     });
@@ -310,7 +203,7 @@ const PayableDetailsFormBase = forwardRef<
     const currentCounterpartBankAccount = watch('counterpartBankAccount');
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
-    const currentCurrency = watch('currency');
+    const currentCurrency = watch('currency') as CurrencyEnum;
     const currentLineItems = watch('lineItems');
     const currentDiscount = watch('discount');
 
@@ -433,13 +326,15 @@ const PayableDetailsFormBase = forwardRef<
                 isSubmittedByKeyboardRef.current = event.key === 'Enter';
               }}
               onSubmit={handleSubmit(async (values) => {
+                const submitPayload: SubmitPayload = {
+                  ...values,
+                  currency: values.currency as CurrencyEnum,
+                  counterpartAddressId: counterpartQuery.data?.data?.find(
+                    ({ id }) => id === values.counterpart
+                  )?.default_billing_address_id,
+                };
                 const invoiceData = prepareSubmit(
-                  {
-                    ...values,
-                    counterpartAddressId: counterpartQuery.data?.data?.find(
-                      ({ id }) => id === values.counterpart
-                    )?.default_billing_address_id,
-                  },
+                  submitPayload,
                   formatToMinorUnits
                 );
 
@@ -486,7 +381,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <CounterpartAutocomplete
+                      <CounterpartAutocomplete<PayableDetailsValidationFields>
                         control={control}
                         disabled={isCounterpartLoading}
                         name="counterpart"
@@ -684,7 +579,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency
+                      <MoniteCurrency<PayableDetailsValidationFields, "currency">
                         name="currency"
                         control={control}
                         required={
@@ -796,10 +691,9 @@ const PayableDetailsFormBase = forwardRef<
                                       error={Boolean(error)}
                                       sx={{ width: 150 }}
                                       InputProps={{
-                                        endAdornment:
-                                          getSymbolFromCurrency(
-                                            currentCurrency
-                                          ),
+                                        endAdornment: getSymbolFromCurrency(
+                                          currentCurrency
+                                        ),
                                       }}
                                     />
                                   )}
@@ -872,3 +766,5 @@ const PayableDetailsFormBase = forwardRef<
     );
   }
 );
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

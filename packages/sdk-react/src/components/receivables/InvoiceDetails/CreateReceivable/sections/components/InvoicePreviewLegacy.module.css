@@ -17,8 +17,7 @@
   --totals-table-font-size: 10pt;
   --totals-table-accent-font-size: 12pt;
 
-  font-family: 'Inter', 'Helvetica Neue', 'Helvetica', Helvetica, Arial,
-    sans-serif;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   color: #111111;
   font-size: 10px;
@@ -182,6 +181,7 @@ th.lineItemsTableFixedItem {
   background: var(--totals-table-total-cell-background, transparent);
   color: var(--totals-table-total-cell-color, inherit);
 }
+
 .totalsTable:has(.amountDue) .total td {
   font-weight: 400;
   background: transparent;

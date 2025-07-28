@@ -1,6 +1,6 @@
 import type { InvoicePreviewBaseProps } from './InvoicePreview.types';
-import { InvoicePreview as LegacyTemplate } from './InvoicePreviewLegacy';
-import { MoniteTemplate } from './InvoicePreviewMonite';
+import { InvoicePreviewLegacy } from './InvoicePreviewLegacy';
+import { InvoicePreviewMonite } from './InvoicePreviewMonite';
 import { useDocumentTemplatesApi } from '@/components/templateSettings/hooks/useDocumentTemplatesApi';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useAdaptiveScale } from '@/hooks/useAdaptiveScale';
@@ -92,9 +92,9 @@ export const InvoicePreview = ({
           )}
         >
           {isMoniteTemplate ? (
-            <MoniteTemplate {...templateProps} />
+            <InvoicePreviewMonite {...templateProps} />
           ) : (
-            <LegacyTemplate {...templateProps} />
+            <InvoicePreviewLegacy {...templateProps} />
           )}
         </div>
       </AspectRatio>

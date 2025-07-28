@@ -21,7 +21,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { isValid } from 'date-fns';
 
-export const InvoicePreview = ({
+export const InvoicePreviewLegacy = ({
   address,
   counterpart,
   counterpartVats,
