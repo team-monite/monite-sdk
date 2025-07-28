@@ -1,4 +1,7 @@
-import { usePayableDetailsThemeProps } from '../../hooks';
+import {
+  useGetPayableCounterpart,
+  usePayableDetailsThemeProps,
+} from '../../hooks';
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
@@ -16,11 +19,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
-import {
-  useApprovalPolicyById,
-  useCounterpartById,
-  useEntityUserById,
-} from '@/core/queries';
+import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { CenteredContentBox } from '@/ui/box';
@@ -50,6 +49,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import { Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 export interface PayablesDetailsInfoProps
@@ -118,9 +118,18 @@ const PayableDetailsInfoBase = ({
       showTags: true,
     }
   );
+
+  const {
+    counterpart,
+    counterpartRawName,
+    isCounterpartLoading,
+    isCounterpartAIMatched,
+    isCounterpartMatchingToOCRFound,
+  } = useGetPayableCounterpart({ payable });
+
   const { counterpartBankAccountQuery, lineItemsQuery } = usePayableDetailsInfo(
     {
-      currentCounterpartId: payable.counterpart_id,
+      currentCounterpartId: counterpart?.id,
       payableId: payable.id,
     }
   );
@@ -146,7 +155,7 @@ const PayableDetailsInfoBase = ({
 
   const lineItems = lineItemsData?.data;
 
-  const { data: contacts } = useCounterpartContactList(payable.counterpart_id);
+  const { data: contacts } = useCounterpartContactList(counterpart?.id);
   const { data: addedByUser } = useEntityUserById(
     payable.was_created_by_user_id
   );
@@ -244,7 +253,15 @@ const PayableDetailsInfoBase = ({
                     {t(i18n)`Vendor`}
                   </StyledLabelTableCell>
                   <TableCell>
-                    <PayableCounterpartName payable={payable} />
+                    <PayableCounterpartName
+                      counterpart={counterpart}
+                      counterpartRawName={counterpartRawName}
+                      isCounterpartAIMatched={isCounterpartAIMatched}
+                      isCounterpartMatchingToOCRFound={
+                        isCounterpartMatchingToOCRFound
+                      }
+                      isCounterpartLoading={isCounterpartLoading}
+                    />
                   </TableCell>
                 </TableRow>
                 {defaultContact && (
@@ -652,70 +669,65 @@ const PayableDetailsInfoBase = ({
 };
 
 const PayableCounterpartName = ({
-  payable,
+  counterpart,
+  counterpartRawName,
+  isCounterpartAIMatched,
+  isCounterpartMatchingToOCRFound,
+  isCounterpartLoading,
 }: {
-  payable: components['schemas']['PayableResponseSchema'];
+  counterpart: components['schemas']['CounterpartResponse'] | undefined;
+  counterpartRawName: string | undefined;
+  isCounterpartAIMatched: boolean;
+  isCounterpartMatchingToOCRFound: boolean;
+  isCounterpartLoading: boolean;
 }) => {
   const { i18n } = useLingui();
-  const { data: counterpart } = useCounterpartById(payable.counterpart_id);
 
-  const { api } = useMoniteContext();
-  const {
-    data: isCounterpartMatchingToOCRFound,
-    isLoading: isCounterpartMatchingToOCRLoading,
-  } = api.counterparts.getCounterparts.useQuery(
-    {
-      query: {
-        counterpart_name__icontains: payable.counterpart_raw_data?.name,
-        is_vendor: true,
-        limit: 1,
-      },
-    },
-    {
-      enabled: Boolean(
-        !payable.counterpart_id && payable.counterpart_raw_data?.name
-      ),
-      select: (data) => Boolean(data.data.at(0)),
-    }
-  );
+  if (isCounterpartLoading) {
+    return <CircularProgress size={14} color="secondary" />;
+  }
 
   const counterpartName = getCounterpartName(counterpart);
 
   if (counterpartName) {
-    return <>{counterpartName}</>;
+    return (
+      <Stack component="span" gap={1} direction="row">
+        {counterpartName}
+        {isCounterpartAIMatched && (
+          <Tooltip
+            title={t(
+              i18n
+            )`Vendor auto-matched by AI. The vendor name on the bill doesn’t exactly match the saved counterpart, so AI selected the closest option.`}
+          >
+            <Sparkles className="mtw:text-blue-600" />
+          </Tooltip>
+        )}
+      </Stack>
+    );
   }
 
-  if (!payable.counterpart_raw_data?.name) {
+  if (!counterpartRawName) {
     return <>—</>;
   }
 
   return (
     <Stack component="span" gap={1} direction="row">
-      {payable.counterpart_raw_data.name}
-      {isCounterpartMatchingToOCRLoading && (
-        <CircularProgress
-          size={14}
-          color="secondary"
+      {counterpartRawName}
+      <Tooltip
+        title={
+          isCounterpartMatchingToOCRFound
+            ? t(
+                i18n
+              )`The vendor details in the bill don’t fully match the saved counterpart.`
+            : t(i18n)`The specified vendor has not been saved yet.`
+        }
+      >
+        <WarningAmberRounded
+          color="warning"
+          fontSize="small"
           sx={{ alignSelf: 'center' }}
         />
-      )}
-      {!isCounterpartMatchingToOCRLoading && (
-        <Tooltip
-          title={
-            isCounterpartMatchingToOCRFound
-              ? t(
-                  i18n
-                )`The vendor details in the bill don’t fully match the saved counterpart.`
-              : t(i18n)`The specified vendor has not been saved yet.`
-          }
-        >
-          <WarningAmberRounded
-            color="warning"
-            fontSize="small"
-            sx={{ alignSelf: 'center' }}
-          />
-        </Tooltip>
-      )}
+      </Tooltip>
     </Stack>
   );
 };
