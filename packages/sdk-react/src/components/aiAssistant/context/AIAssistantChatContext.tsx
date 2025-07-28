@@ -51,8 +51,10 @@ export const AIAssistantChatProvider = ({
     );
 
   const { messages } = conversation || {};
+
   const entityName = useMemo(() => {
-    return getEntityName(entity);
+    const name = entity ? getEntityName(entity) : '';
+    return sanitizeEntityName(name);
   }, [entity]);
 
   const values = useAIAssistantOptions({
@@ -60,7 +62,6 @@ export const AIAssistantChatProvider = ({
     fetch: async (_, init) => {
       const token = await fetchToken();
       const { access_token: accessToken, token_type: tokenType } = token;
-      const name = sanitizeEntityName(entityName);
 
       return fetch(`${apiUrl}/ai/conversations/${conversationId}/messages`, {
         ...(init || {}),
@@ -69,7 +70,7 @@ export const AIAssistantChatProvider = ({
           ...init?.headers,
           'x-monite-version': apiVersion,
           'x-monite-entity-id': entityId,
-          'x-entity-name': name,
+          'x-entity-name': entityName,
           Authorization: `${tokenType} ${accessToken}`,
         },
       });
