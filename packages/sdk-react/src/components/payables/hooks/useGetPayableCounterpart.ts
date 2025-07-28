@@ -10,13 +10,18 @@ export const useGetPayableCounterpart = ({
 }) => {
   // Heuristic to get the Counterpart (data or name) for the Payable
   // A) Get Counterpart data from Payable data, if payable.counterpart_id
+  // also, if Payable status is 'draft' or 'new':
   // B) Get Cunterpart data from AI suggestions, if !payable.counterpart_id
   // C) Get Counterpart matching name from raw OCR, if !payable.counterpart_id && !aiSuggestions?.suggested_counterpart?.id
+
   const { api } = useMoniteContext();
 
   // Get AI suggestions for the Payable, if not set payable.counterpart_id
   const shouldFetchAISuggestions = useMemo(
-    () => payable && !payable.counterpart_id,
+    () =>
+      payable &&
+      !payable.counterpart_id &&
+      (payable.status === 'draft' || payable.status === 'new'),
     [payable]
   );
   const { data: AISuggestions, isLoading: isAISuggestionsLoading } =
@@ -25,7 +30,7 @@ export const useGetPayableCounterpart = ({
         path: { payable_id: payable?.id ?? '' },
       },
       {
-        enabled: shouldFetchAISuggestions && !!payable?.id,
+        enabled: !!shouldFetchAISuggestions && !!payable?.id,
       }
     );
 
@@ -48,8 +53,13 @@ export const useGetPayableCounterpart = ({
     [payable?.counterpart_raw_data?.name]
   );
   const shouldCheckOCRMatching = useMemo(
-    () => Boolean(!counterpartId && counterpartRawName),
-    [counterpartId, counterpartRawName]
+    () =>
+      Boolean(!counterpartId) &&
+      Boolean(counterpartRawName) &&
+      !isAISuggestionsLoading &&
+      payable &&
+      (payable.status === 'draft' || payable.status === 'new'),
+    [payable, counterpartId, counterpartRawName, isAISuggestionsLoading]
   );
   const {
     data: counterpartMatchingToOCR,
@@ -69,12 +79,14 @@ export const useGetPayableCounterpart = ({
   );
 
   const isCounterpartAIMatched = useMemo(
-    () => Boolean(AISuggestions?.suggested_counterpart?.id),
-    [AISuggestions?.suggested_counterpart?.id]
+    () =>
+      Boolean(AISuggestions?.suggested_counterpart?.id) &&
+      shouldFetchAISuggestions,
+    [AISuggestions?.suggested_counterpart?.id, shouldFetchAISuggestions]
   );
   const isCounterpartMatchingToOCRFound = useMemo(
-    () => Boolean(counterpartMatchingToOCR?.id),
-    [counterpartMatchingToOCR?.id]
+    () => Boolean(counterpartMatchingToOCR?.id) && shouldCheckOCRMatching,
+    [counterpartMatchingToOCR?.id, shouldCheckOCRMatching]
   );
   const isCounterpartLoadingCombined = useMemo(
     () =>
