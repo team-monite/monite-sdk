@@ -689,7 +689,7 @@ const PayableCounterpartName = ({
 
   const counterpartName = getCounterpartName(counterpart);
 
-  if (counterpartName) {
+  if (counterpartName && !isCounterpartMatchingToOCRFound) {
     return (
       <Stack component="span" gap={1} direction="row">
         {counterpartName}

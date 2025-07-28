@@ -11,7 +11,7 @@ export const useGetPayableCounterpart = ({
   // Heuristic to get the Counterpart (data or name) for the Payable
   // A) Get Counterpart data from Payable data, if payable.counterpart_id
   // B) Get Cunterpart data from AI suggestions, if !payable.counterpart_id
-  // C) Get just Counterpart name from raw OCR, if !payable.counterpart_id && !aiSuggestions?.suggested_counterpart?.id
+  // C) Get Counterpart matching name from raw OCR, if !payable.counterpart_id && !aiSuggestions?.suggested_counterpart?.id
   const { api } = useMoniteContext();
 
   // Get AI suggestions for the Payable, if not set payable.counterpart_id
@@ -42,7 +42,7 @@ export const useGetPayableCounterpart = ({
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId ?? undefined);
 
-  // Check if the Counterpart raw OCR data name matches an existing Counterpart
+  // Get Counterpart that matches raw OCR data name
   const counterpartRawName = useMemo(
     () => payable?.counterpart_raw_data?.name,
     [payable?.counterpart_raw_data?.name]
@@ -52,7 +52,7 @@ export const useGetPayableCounterpart = ({
     [counterpartId, counterpartRawName]
   );
   const {
-    data: isCounterpartMatchingToOCRFound,
+    data: counterpartMatchingToOCR,
     isLoading: isCounterpartMatchingToOCRLoading,
   } = api.counterparts.getCounterparts.useQuery(
     {
@@ -64,7 +64,7 @@ export const useGetPayableCounterpart = ({
     },
     {
       enabled: shouldCheckOCRMatching,
-      select: (data) => Boolean(data.data.at(0)),
+      select: (data) => data.data.at(0),
     }
   );
 
@@ -72,9 +72,9 @@ export const useGetPayableCounterpart = ({
     () => Boolean(AISuggestions?.suggested_counterpart?.id),
     [AISuggestions?.suggested_counterpart?.id]
   );
-  const isCounterpartMatchingToOCRFoundBoolean = useMemo(
-    () => Boolean(isCounterpartMatchingToOCRFound),
-    [isCounterpartMatchingToOCRFound]
+  const isCounterpartMatchingToOCRFound = useMemo(
+    () => Boolean(counterpartMatchingToOCR?.id),
+    [counterpartMatchingToOCR?.id]
   );
   const isCounterpartLoadingCombined = useMemo(
     () =>
@@ -89,10 +89,10 @@ export const useGetPayableCounterpart = ({
   );
 
   return {
-    counterpart,
+    counterpart: counterpartMatchingToOCR ?? counterpart,
     counterpartRawName,
     isCounterpartAIMatched,
-    isCounterpartMatchingToOCRFound: isCounterpartMatchingToOCRFoundBoolean,
+    isCounterpartMatchingToOCRFound,
     isCounterpartLoading: isCounterpartLoadingCombined,
   };
 };
