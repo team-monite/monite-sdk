@@ -1,7 +1,10 @@
 import { apiVersion } from '@/api/api-version';
 import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
 import { ConversationHistory } from '@/components/aiAssistant/types';
+import { sanitizeEntityName } from '@/components/aiAssistant/utils/aiAssistant';
+import { getEntityName } from '@/components/onboarding/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useMyEntity } from '@/core/queries';
 import { type UseChatHelpers } from '@ai-sdk/react';
 import {
   createContext,
@@ -37,6 +40,8 @@ export const AIAssistantChatProvider = ({
   setIsNewChat,
 }: ChatProviderProps) => {
   const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
+  const { data: entity } = useMyEntity();
+
   const { data: conversation } =
     api.ai.getAiConversationsId.useQuery<ConversationHistory>(
       {
@@ -46,12 +51,16 @@ export const AIAssistantChatProvider = ({
     );
 
   const { messages } = conversation || {};
+  const entityName = useMemo(() => {
+    return getEntityName(entity);
+  }, [entity]);
 
   const values = useAIAssistantOptions({
     id: conversationId,
     fetch: async (_, init) => {
       const token = await fetchToken();
       const { access_token: accessToken, token_type: tokenType } = token;
+      const name = sanitizeEntityName(entityName);
 
       return fetch(`${apiUrl}/ai/conversations/${conversationId}/messages`, {
         ...(init || {}),
@@ -60,6 +69,7 @@ export const AIAssistantChatProvider = ({
           ...init?.headers,
           'x-monite-version': apiVersion,
           'x-monite-entity-id': entityId,
+          'x-entity-name': name,
           Authorization: `${tokenType} ${accessToken}`,
         },
       });

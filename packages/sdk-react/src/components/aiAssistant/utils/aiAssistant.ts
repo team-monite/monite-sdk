@@ -139,3 +139,6 @@ export const getChatTotalHeight = ({
 export const fixMarkdownListIndentation = (text: string) => {
   return text.replace(/(^|\n)( {3})- /g, '$1    - ');
 };
+
+export const sanitizeEntityName = (str: string) =>
+  str.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
