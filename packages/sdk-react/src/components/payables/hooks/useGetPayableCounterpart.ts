@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 export const useGetPayableCounterpart = ({
   payable,
 }: {
-  payable: components['schemas']['PayableResponseSchema'];
+  payable?: components['schemas']['PayableResponseSchema'];
 }) => {
   // Heuristic to get the Counterpart (data or name) for the Payable
   // A) Get Counterpart data from Payable data, if payable.counterpart_id
@@ -16,26 +16,26 @@ export const useGetPayableCounterpart = ({
 
   // Get AI suggestions for the Payable, if not set payable.counterpart_id
   const shouldFetchAISuggestions = useMemo(
-    () => !payable.counterpart_id,
-    [payable.counterpart_id]
+    () => payable && !payable.counterpart_id,
+    [payable]
   );
   const { data: AISuggestions, isLoading: isAISuggestionsLoading } =
     api.payables.getPayablesIdSuggestions.useQuery(
       {
-        path: { payable_id: payable.id },
+        path: { payable_id: payable?.id ?? '' },
       },
       {
-        enabled: shouldFetchAISuggestions,
+        enabled: shouldFetchAISuggestions && !!payable?.id,
       }
     );
 
   // Determine the Counterpart ID to use, based on the AI suggestions and the Payable data
   const counterpartId = useMemo(
     () =>
-      payable.counterpart_id ??
+      payable?.counterpart_id ??
       AISuggestions?.suggested_counterpart?.id ??
       null,
-    [payable.counterpart_id, AISuggestions?.suggested_counterpart?.id]
+    [payable?.counterpart_id, AISuggestions?.suggested_counterpart?.id]
   );
 
   // Get the Counterpart data, based on the determined Counterpart ID
@@ -44,8 +44,8 @@ export const useGetPayableCounterpart = ({
 
   // Check if the Counterpart raw OCR data name matches an existing Counterpart
   const counterpartRawName = useMemo(
-    () => payable.counterpart_raw_data?.name,
-    [payable.counterpart_raw_data?.name]
+    () => payable?.counterpart_raw_data?.name,
+    [payable?.counterpart_raw_data?.name]
   );
   const shouldCheckOCRMatching = useMemo(
     () => Boolean(!counterpartId && counterpartRawName),
