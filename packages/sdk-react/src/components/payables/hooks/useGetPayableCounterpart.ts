@@ -11,7 +11,7 @@ export const useGetPayableCounterpart = ({
   // Heuristic to get the Counterpart for the Payable, potentially with AI suggestions or OCR matching.
   // A) Get Counterpart data from Payable data, if payable.counterpart_id
   // also, if Payable status is 'draft' or 'new':
-  // B) Get Cunterpart data from AI suggestions, if !payable.counterpart_id
+  // B) Get Counterpart data from AI suggestions, if !payable.counterpart_id
   // C) Get Counterpart matching name from raw OCR, if !payable.counterpart_id && !aiSuggestions?.suggested_counterpart?.id
 
   const { api } = useMoniteContext();
