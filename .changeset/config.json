@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "origin/main",
   "updateInternalDependencies": "patch",
-  "ignore": ["sdk-demo-with-nextjs-and-clerk-auth"]
+  "ignore": ["sdk-demo-with-nextjs-and-clerk-auth", "sdk-playground"]
 }
