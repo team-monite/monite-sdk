@@ -706,28 +706,28 @@ const PayableCounterpartName = ({
     );
   }
 
-  if (!counterpartRawName) {
-    return <>—</>;
+  if (isCounterpartMatchingToOCRFound && counterpartRawName) {
+    return (
+      <Stack component="span" gap={1} direction="row">
+        {counterpartRawName}
+        <Tooltip
+          title={
+            isCounterpartMatchingToOCRFound
+              ? t(
+                  i18n
+                )`The vendor details in the bill don’t fully match the saved counterpart.`
+              : t(i18n)`The specified vendor has not been saved yet.`
+          }
+        >
+          <WarningAmberRounded
+            color="warning"
+            fontSize="small"
+            sx={{ alignSelf: 'center' }}
+          />
+        </Tooltip>
+      </Stack>
+    );
   }
 
-  return (
-    <Stack component="span" gap={1} direction="row">
-      {counterpartRawName}
-      <Tooltip
-        title={
-          isCounterpartMatchingToOCRFound
-            ? t(
-                i18n
-              )`The vendor details in the bill don’t fully match the saved counterpart.`
-            : t(i18n)`The specified vendor has not been saved yet.`
-        }
-      >
-        <WarningAmberRounded
-          color="warning"
-          fontSize="small"
-          sx={{ alignSelf: 'center' }}
-        />
-      </Tooltip>
-    </Stack>
-  );
+  return <>—</>;
 };
