@@ -1,7 +1,5 @@
-import type { UseChatHelpers, UseChatOptions } from '@ai-sdk/react';
+import type { UseChatOptions } from '@ai-sdk/react';
 import type { JSONValue, UIMessage, Message } from '@ai-sdk/ui-utils';
-import React, { FC } from 'react';
-import type { UrlObject } from 'url';
 
 export interface ChartData {
   field_value: number;
