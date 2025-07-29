@@ -36,14 +36,12 @@ export default async function MoniteLayout({
   }
 
   return (
-    <Layout>
-      <MoniteProvider
-        entityUserId={entity_user_id}
-        entityId={entity_id}
-        apiUrl={getMoniteApiUrl()}
-      >
-        {children}
-      </MoniteProvider>
-    </Layout>
+    <MoniteProvider
+      entityUserId={entity_user_id}
+      entityId={entity_id}
+      apiUrl={getMoniteApiUrl()}
+    >
+      <Layout>{children}</Layout>
+    </MoniteProvider>
   );
 }

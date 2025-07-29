@@ -1,8 +1,6 @@
-import React, { FC } from 'react';
-
 import type { UseChatHelpers, UseChatOptions } from '@ai-sdk/react';
 import type { JSONValue, UIMessage, Message } from '@ai-sdk/ui-utils';
-
+import React, { FC } from 'react';
 import type { UrlObject } from 'url';
 
 export interface ChartData {
@@ -60,16 +58,6 @@ export interface Prompt {
 
 export type Feedback = 'like' | 'dislike';
 
-export type ChatValues = UseChatHelpers & {
-  addToolResult: ({
-    toolCallId,
-    result,
-  }: {
-    toolCallId: string;
-    result: any;
-  }) => void;
-};
-
 export type ChatOptions = UseChatOptions & {
   experimental_prepareRequestBody?: (options: {
     id: string;
@@ -79,15 +67,7 @@ export type ChatOptions = UseChatOptions & {
   }) => unknown;
 };
 
-type Url = string | UrlObject;
-
-export type LocationLinkType = FC<{
-  children?: React.ReactNode;
-  href: Url;
-  className?: string;
-}>;
-
-export type AIPages = 'start' | 'chat' | 'prompt';
+export type AIView = 'start' | 'chat' | 'history';
 export type AIChatStatus = 'ready' | 'submitted' | 'streaming' | 'error';
 export type SortDirection = 'asc' | 'desc';
 
