@@ -1,3 +1,4 @@
+import { AssistantTrigger } from '@/components/AssistantTrigger';
 import { Layout } from '@/components/Layout';
 import { MoniteProvider } from '@/components/MoniteComponents';
 import { NoAccountEntity } from '@/components/NoAccountEntity';
@@ -36,12 +37,16 @@ export default async function MoniteLayout({
   }
 
   return (
-    <MoniteProvider
-      entityUserId={entity_user_id}
-      entityId={entity_id}
-      apiUrl={getMoniteApiUrl()}
-    >
-      <Layout>{children}</Layout>
-    </MoniteProvider>
+    <Layout>
+      <MoniteProvider
+        entityUserId={entity_user_id}
+        entityId={entity_id}
+        apiUrl={getMoniteApiUrl()}
+      >
+        {children}
+
+        <AssistantTrigger />
+      </MoniteProvider>
+    </Layout>
   );
 }

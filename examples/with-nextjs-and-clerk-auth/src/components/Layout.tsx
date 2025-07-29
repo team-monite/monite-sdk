@@ -2,7 +2,6 @@
 
 import { NavigationList } from '@/components/NavigationMenu';
 import { UserMenu } from '@/components/UserMenu';
-import { AIAssistant } from '@monite/sdk-react';
 import { Box, Drawer } from '@mui/material';
 import React, { ReactNode } from 'react';
 
@@ -47,8 +46,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       >
         {children}
       </Box>
-
-      <AIAssistant />
     </Box>
   );
 };
