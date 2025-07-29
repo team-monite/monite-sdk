@@ -47,8 +47,7 @@ export const AIChatHistory: FC<AIChatHistoryProps> = ({
     <div
       className={cn(
         'mtw:min-h-0 mtw:h-full mtw:overflow-auto',
-        'mtw:text-sm mtw:flex mtw:flex-1 mtw:flex-col mtw:gap-4',
-        !open && 'mtw:hidden'
+        'mtw:text-sm mtw:flex mtw:flex-1 mtw:flex-col mtw:gap-4'
       )}
     >
       {isLoading && <AISidebarSkeleton />}
