@@ -112,29 +112,48 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const autocompleteOptions = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
   >(() => {
+    // Create options from props, to be shown immediately
+    const propOptions: Array<CounterpartsAutocompleteOptionProps> = [];
+
+    // Base options with counterparts from the API
     const baseOptions =
       counterparts?.data.map((counterpart) => ({
         id: counterpart.id,
         label: getCounterpartName(counterpart),
       })) ?? [];
 
-    // If the AI suggested counterpart is not in the list of counterparts, add it to the list
+    // Add counterpartMatchingToOCR if it exists and isn't already in baseOptions
+    if (
+      !multiple &&
+      counterpartMatchingToOCR &&
+      !baseOptions.some((c) => c.id === counterpartMatchingToOCR.id)
+    ) {
+      propOptions.push({
+        id: counterpartMatchingToOCR.id,
+        label: getCounterpartName(counterpartMatchingToOCR),
+      });
+    }
+    // Add counterpartAISuggested if it exists and isn't already in baseOptions or propOptions
     if (
       !multiple &&
       counterpartAISuggested &&
-      !baseOptions.some((c) => c.id === counterpartAISuggested.id)
+      !baseOptions.some((c) => c.id === counterpartAISuggested.id) &&
+      !propOptions.some((c) => c.id === counterpartAISuggested.id)
     ) {
-      return [
-        {
-          id: counterpartAISuggested.id,
-          label: getCounterpartName(counterpartAISuggested),
-        },
-        ...baseOptions,
-      ];
+      propOptions.push({
+        id: counterpartAISuggested.id,
+        label: getCounterpartName(counterpartAISuggested),
+      });
     }
-    // Else, return the base options
-    return baseOptions;
-  }, [counterparts, multiple, counterpartAISuggested]);
+
+    // Return prop options first (for immediate display), then base options
+    return [...propOptions, ...baseOptions];
+  }, [
+    counterparts,
+    multiple,
+    counterpartMatchingToOCR,
+    counterpartAISuggested,
+  ]);
 
   useEffect(() => {
     if (newCounterpartId) {
@@ -182,7 +201,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
 
   // Track form initialization to prevent premature auto-selection
   useEffect(() => {
-    if (hasFieldValue) {
+    if (hasFieldValue || counterpartAISuggested?.id) {
       setIsFormInitialized(true);
     } else {
       // Set a timeout to mark as initialized even if no value is set
@@ -191,50 +210,51 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         if (isMountedRef.current) {
           setIsFormInitialized(true);
         }
-      }, 200);
+      }, 50);
 
       return () => clearTimeout(timeoutId);
     }
-  }, [hasFieldValue, isMountedRef]);
+  }, [hasFieldValue, counterpartAISuggested?.id, isMountedRef]);
 
-  // Auto-select AI suggested counterpart with proper timing and debouncing
   useEffect(() => {
-    // Only proceed if form is initialized and we have all required data
     if (
       !multiple &&
-      counterpartAISuggested?.id &&
-      isFormInitialized &&
-      !hasUserChangedValue
+      !hasFieldValue &&
+      !hasUserChangedValue &&
+      isMountedRef.current
     ) {
-      // Only set if the field is actually empty (not just falsy)
-      if (!hasFieldValue) {
-        // Use setTimeout to ensure this runs after the current render cycle
-        const timeoutId = setTimeout(() => {
-          if (isMountedRef.current) {
-            setValue(
-              name,
-              counterpartAISuggested.id as PathValue<
-                TFieldValues,
-                FieldPath<TFieldValues>
-              >,
-              { shouldValidate: true }
-            );
-          }
-        }, 200);
+      const propCounterpartToSet =
+        counterpartAISuggested || counterpartMatchingToOCR;
 
-        return () => clearTimeout(timeoutId);
+      if (propCounterpartToSet?.id) {
+        // For AI suggested, wait for form initialization to prevent premature setting
+        if (
+          propCounterpartToSet === counterpartAISuggested &&
+          !isFormInitialized
+        ) {
+          return;
+        }
+
+        setValue(
+          name,
+          propCounterpartToSet.id as PathValue<
+            TFieldValues,
+            FieldPath<TFieldValues>
+          >,
+          { shouldValidate: true }
+        );
       }
     }
   }, [
+    counterpartMatchingToOCR,
     counterpartAISuggested,
     multiple,
-    getValues,
+    hasFieldValue,
+    hasUserChangedValue,
     name,
     setValue,
-    hasUserChangedValue,
-    isFormInitialized,
-    hasFieldValue,
     isMountedRef,
+    isFormInitialized,
   ]);
 
   const selectedCounterpartOption = useMemo(() => {
@@ -246,7 +266,10 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     );
   }, [currentValue, autocompleteOptions, multiple]);
 
-  if (isCounterpartsLoading) {
+  const hasCounterpartFromProps =
+    Boolean(counterpartMatchingToOCR) || Boolean(counterpartAISuggested);
+
+  if (isCounterpartsLoading && !hasCounterpartFromProps) {
     return (
       <TextField
         label={label}
@@ -283,7 +306,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                 multiple={multiple}
                 autoComplete
                 includeInputInList
-                disabled={disabled}
+                disabled={disabled || isCounterpartsLoading}
                 filterSelectedOptions
                 noOptionsText={t(i18n)`No users found`}
                 slotProps={{
@@ -340,6 +363,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         ...params.InputProps,
                         endAdornment: (
                           <>
+                            {isCounterpartsLoading && (
+                              <CircularProgress size={20} />
+                            )}
                             {showEditCounterpartButton &&
                               setShowEditCounterpartDialog &&
                               !multiple &&
