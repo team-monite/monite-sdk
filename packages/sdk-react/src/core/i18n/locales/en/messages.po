@@ -3899,8 +3899,8 @@ msgid "Failed to set Bank Account as default."
 msgstr "Failed to set Bank Account as default."
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:926
-msgid "Failed to submit Payable with AI suggested Counterpart. Try editing the Payable and re-submit."
-msgstr "Failed to submit Payable with AI suggested Counterpart. Try editing the Payable and re-submit."
+msgid "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
+msgstr "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
 
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:80
 msgid "Failed to update"

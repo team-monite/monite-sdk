@@ -925,7 +925,7 @@ export function usePayableDetails({
           toast.error(
             t(
               i18n
-            )`Failed to submit Payable with AI suggested Counterpart. Try editing the Payable and re-submit.`
+            )`Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit.`
           );
           return; // Return early, don't proceed to submit
         }
