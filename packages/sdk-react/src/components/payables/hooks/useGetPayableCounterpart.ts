@@ -8,7 +8,7 @@ export const useGetPayableCounterpart = ({
 }: {
   payable?: components['schemas']['PayableResponseSchema'];
 }) => {
-  // Heuristic to get the Counterpart (data or name) for the Payable
+  // Heuristic to get the Counterpart for the Payable, potentially with AI suggestions or OCR matching.
   // A) Get Counterpart data from Payable data, if payable.counterpart_id
   // also, if Payable status is 'draft' or 'new':
   // B) Get Cunterpart data from AI suggestions, if !payable.counterpart_id
@@ -106,5 +106,6 @@ export const useGetPayableCounterpart = ({
     isCounterpartAIMatched,
     isCounterpartMatchingToOCRFound,
     isCounterpartLoading: isCounterpartLoadingCombined,
+    AISuggestions: AISuggestions,
   };
 };
