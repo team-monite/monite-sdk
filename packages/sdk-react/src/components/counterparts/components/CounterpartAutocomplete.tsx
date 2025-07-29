@@ -8,8 +8,8 @@ import type {
 } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDebounce, useIsMounted } from '@/core/hooks';
-import { useCounterpartList, useCounterpartById } from '@/core/queries';
+import { useIsMounted } from '@/core/hooks';
+import { useCounterpartList } from '@/core/queries';
 import { Alert, AlertDescription, AlertTitle } from '@/ui/components/alert';
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
@@ -60,11 +60,11 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   multiple?: boolean;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
-  counterpartMatchingToOCRFound?: components['schemas']['CounterpartResponse'];
   counterpartRawName?: string;
+  counterpartMatchingToOCR?: components['schemas']['CounterpartResponse'];
+  counterpartAISuggested?: components['schemas']['CounterpartResponse'];
   setShowEditCounterpartDialog?: (value: SetStateAction<boolean>) => void;
   showEditCounterpartButton?: boolean;
-  AICounterpartSuggestions?: components['schemas']['SuggestedCounterpartPayload'];
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -76,11 +76,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   multiple = false,
   disabled = false,
   customerTypes,
-  counterpartMatchingToOCRFound,
   counterpartRawName,
+  counterpartMatchingToOCR,
+  counterpartAISuggested,
   setShowEditCounterpartDialog,
   showEditCounterpartButton = false,
-  AICounterpartSuggestions,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -97,13 +97,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     useCounterpartList({
       query: { is_vendor: true },
     });
-
-  const { data: aiSuggestedCounterpartData } = useCounterpartById(
-    !multiple && AICounterpartSuggestions?.id
-      ? AICounterpartSuggestions.id
-      : undefined
-  );
-  const debouncedAISuggestedData = useDebounce(aiSuggestedCounterpartData, 300);
 
   const currentValue = getValues(name);
 
@@ -128,20 +121,20 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     // If the AI suggested counterpart is not in the list of counterparts, add it to the list
     if (
       !multiple &&
-      aiSuggestedCounterpartData &&
-      !baseOptions.some((c) => c.id === aiSuggestedCounterpartData.id)
+      counterpartAISuggested &&
+      !baseOptions.some((c) => c.id === counterpartAISuggested.id)
     ) {
       return [
         {
-          id: aiSuggestedCounterpartData.id,
-          label: getCounterpartName(aiSuggestedCounterpartData),
+          id: counterpartAISuggested.id,
+          label: getCounterpartName(counterpartAISuggested),
         },
         ...baseOptions,
       ];
     }
     // Else, return the base options
     return baseOptions;
-  }, [counterparts, multiple, aiSuggestedCounterpartData]);
+  }, [counterparts, multiple, counterpartAISuggested]);
 
   useEffect(() => {
     if (newCounterpartId) {
@@ -198,7 +191,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         if (isMountedRef.current) {
           setIsFormInitialized(true);
         }
-      }, 1000);
+      }, 200);
 
       return () => clearTimeout(timeoutId);
     }
@@ -209,8 +202,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     // Only proceed if form is initialized and we have all required data
     if (
       !multiple &&
-      AICounterpartSuggestions?.id &&
-      debouncedAISuggestedData &&
+      counterpartAISuggested?.id &&
       isFormInitialized &&
       !hasUserChangedValue
     ) {
@@ -221,21 +213,20 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
           if (isMountedRef.current) {
             setValue(
               name,
-              AICounterpartSuggestions.id as PathValue<
+              counterpartAISuggested.id as PathValue<
                 TFieldValues,
                 FieldPath<TFieldValues>
               >,
               { shouldValidate: true }
             );
           }
-        }, 100);
+        }, 200);
 
         return () => clearTimeout(timeoutId);
       }
     }
   }, [
-    AICounterpartSuggestions,
-    debouncedAISuggestedData,
+    counterpartAISuggested,
     multiple,
     getValues,
     name,
@@ -375,8 +366,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       <FormHelperText error>{error.message}</FormHelperText>
                     )}
 
-                    {AICounterpartSuggestions &&
-                      currentValue == AICounterpartSuggestions.id && (
+                    {counterpartAISuggested &&
+                      currentValue == counterpartAISuggested.id && (
                         <Alert
                           variant="info"
                           className="mtw:mt-2"
@@ -391,8 +382,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </Alert>
                       )}
 
-                    {!AICounterpartSuggestions &&
-                      !counterpartMatchingToOCRFound &&
+                    {!counterpartAISuggested &&
+                      !counterpartMatchingToOCR &&
                       counterpartRawName &&
                       !currentValue &&
                       !multiple && (
@@ -416,9 +407,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </FormHelperText>
                       )}
 
-                    {!AICounterpartSuggestions &&
-                      counterpartMatchingToOCRFound &&
-                      currentValue == counterpartMatchingToOCRFound.id &&
+                    {!counterpartAISuggested &&
+                      counterpartMatchingToOCR &&
+                      currentValue == counterpartMatchingToOCR.id &&
                       !multiple &&
                       setShowEditCounterpartDialog && (
                         <Alert variant="warning" className="mtw:mt-2">
@@ -436,7 +427,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                                 setShowEditCounterpartDialog(true);
                               }}
                             >{t(i18n)`Edit ${getCounterpartName(
-                              counterpartMatchingToOCRFound
+                              counterpartMatchingToOCR
                             )}`}</Button>
                             {t(i18n)` or `}
                             <Button
