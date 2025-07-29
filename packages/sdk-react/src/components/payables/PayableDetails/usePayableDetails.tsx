@@ -1,3 +1,4 @@
+import { useGetPayableCounterpart } from '../hooks/useGetPayableCounterpart';
 import { components } from '@/api';
 import {
   LineItem,
@@ -197,6 +198,9 @@ export function usePayableDetails({
     },
     intentsAnalysis.idPaymentIntentInCreated
   );
+
+  const { counterpart, isCounterpartAIMatched, AISuggestions } =
+    useGetPayableCounterpart({ payable });
 
   useEffect(() => {
     if (isOcrProcessing)
@@ -892,6 +896,42 @@ export function usePayableDetails({
 
   const submitInvoice = async () => {
     if (payableId) {
+      // Update Payable with AI suggested Counterpart, if it exists
+      if (counterpart?.id && isCounterpartAIMatched) {
+        try {
+          await updateMutation.mutateAsync({
+            path: { payable_id: payableId },
+            body: {
+              counterpart_id: counterpart.id,
+              ...(AISuggestions?.suggested_counterpart?.bank_account_id && {
+                counterpart_bank_account_id:
+                  AISuggestions.suggested_counterpart.bank_account_id,
+              }),
+              ...(AISuggestions?.suggested_counterpart?.address_id && {
+                counterpart_address_id:
+                  AISuggestions.suggested_counterpart.address_id,
+              }),
+              ...(AISuggestions?.suggested_counterpart?.vat_id_id && {
+                counterpart_vat_id_id:
+                  AISuggestions.suggested_counterpart.vat_id_id,
+              }),
+            },
+          });
+        } catch (error) {
+          console.error(
+            'Error updating Payable with AI suggested Counterpart',
+            error
+          );
+          toast.error(
+            t(
+              i18n
+            )`Failed to submit Payable with AI suggested Counterpart. Try editing the Payable and re-submit.`
+          );
+          return; // Return early, don't proceed to submit
+        }
+      }
+
+      // Submit Payable
       await submitMutation.mutateAsync(
         {
           path: { payable_id: payableId },
