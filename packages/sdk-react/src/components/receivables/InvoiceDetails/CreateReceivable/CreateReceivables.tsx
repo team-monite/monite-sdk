@@ -143,6 +143,7 @@ const CreateReceivablesBase = ({
         memo: t(
           i18n
         )`Dear client, as discussed, please find attached our invoice:`,
+        footer: '',
         vat_mode: settings?.vat_mode ?? 'exclusive',
       }),
       [type, i18n, settings?.vat_mode]
@@ -169,6 +170,7 @@ const CreateReceivablesBase = ({
     isFulfillmentDateShown: false,
     isPurchaseOrderShown: false,
     isTermsAndConditionsShown: false,
+    isFooterShown: false,
   };
 
   const [
@@ -290,6 +292,7 @@ const CreateReceivablesBase = ({
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
+      footer: values.footer,
       vat_exemption_rationale: values.vat_exemption_rationale,
       ...(!isNonVatSupported && values.entity_vat_id_id
         ? { entity_vat_id_id: values.entity_vat_id_id }
@@ -692,6 +695,39 @@ const CreateReceivablesBase = ({
                       }
                       color="primary"
                       aria-label={t(i18n)`Purchase order`}
+                    />
+                  </Box>
+                  {/* note to customer (footer) */}
+                  <Box
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="space-between"
+                    sx={{
+                      pb: 4,
+                      pt: 4,
+                      borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
+                      >
+                        {t(i18n)`Note to customer`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(
+                          i18n
+                        )`Add a note that will be displayed below the line items`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isFooterShown}
+                      onChange={(e) =>
+                        handleFieldChange('isFooterShown', e.target.checked)
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Note to customer`}
                     />
                   </Box>
                   {/* terms and conditions */}

@@ -103,6 +103,9 @@ const getBaseInvoiceSchema = (
     payment_terms_id: z
       .string()
       .min(1, t(i18n)`Payment terms is a required field`),
+    footer: z
+      .string()
+      .optional(),
     line_items: getLineItemsSchema(i18n, isNonVatSupported),
     overdue_reminder_id: z.string().nullable().optional(),
     payment_reminder_id: z.string().nullable().optional(),

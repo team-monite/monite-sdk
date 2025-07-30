@@ -251,6 +251,7 @@ const EditInvoiceDetailsContent = ({
                     values.counterpart_vat_id_id || undefined,
                   currency: actualCurrency,
                   memo: values.memo,
+                  footer: values.footer,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                   counterpart_shipping_address_id:
@@ -309,7 +310,20 @@ const EditInvoiceDetailsContent = ({
                 actualCurrency={actualCurrency}
                 isVatSelectionDisabled
               />
-              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
+               * is defined and non-empty */}
+              <EntitySection
+                disabled={isLoading}
+                hidden={['purchase_order']}
+                visibleFields={{
+                  isFooterShown:
+                    typeof invoice.footer === 'string' &&
+                    invoice.footer?.trim() !== '',
+                  isPurchaseOrderShown:
+                    typeof invoice.purchase_order === 'string' &&
+                    invoice.purchase_order?.trim() !== '',
+                }}
+              />
               <RemindersSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}
