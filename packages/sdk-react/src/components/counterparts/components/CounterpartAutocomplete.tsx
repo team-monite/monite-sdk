@@ -422,7 +422,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                           <Button
                             variant="link"
                             size="sm"
-                            className="mtw:ml-0.5 mtw:p-0 mtw:h-auto mtw:font-medium"
+                            className="mtw:ml-0.5 mtw:p-0 mtw:h-auto mtw:text-xs mtw:underline"
                             onClick={(event) => {
                               event.preventDefault();
                               setIsCreateCounterpartOpened(true);
