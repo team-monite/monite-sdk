@@ -19,9 +19,11 @@ export const useGetPayableCounterpart = ({
   // Get AI suggestions for the Payable, if not set payable.counterpart_id
   const shouldFetchAISuggestions = useMemo(
     () =>
-      payable &&
-      !payable.counterpart_id &&
-      (payable.status === 'draft' || payable.status === 'new'),
+      Boolean(
+        payable &&
+          !payable.counterpart_id &&
+          (payable.status === 'draft' || payable.status === 'new')
+      ),
     [payable]
   );
   const { data: AISuggestions, isLoading: isAISuggestionsLoading } =
@@ -57,8 +59,9 @@ export const useGetPayableCounterpart = ({
       Boolean(!counterpartId) &&
       Boolean(counterpartRawName) &&
       !isAISuggestionsLoading &&
-      payable &&
-      (payable.status === 'draft' || payable.status === 'new'),
+      Boolean(
+        payable && (payable.status === 'draft' || payable.status === 'new')
+      ),
     [payable, counterpartId, counterpartRawName, isAISuggestionsLoading]
   );
   const {
