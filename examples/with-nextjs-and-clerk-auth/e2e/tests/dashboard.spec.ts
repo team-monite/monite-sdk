@@ -1,9 +1,8 @@
-import { test } from '@playwright/test';
-
+import { test } from '../fixtures/Fixture';
 import { dashboardPage } from '../pages/DashboardPage';
 import { invoicingPage } from '../pages/InvoicingPage';
-import { signInUser } from '../utils/auth-helpers';
 import { checkURL } from '../utils/URLChecker';
+import { signInUser } from '../utils/auth-helpers';
 
 test.describe('Dashboard', () => {
   test('should redirect to sign-in when not authenticated', async ({

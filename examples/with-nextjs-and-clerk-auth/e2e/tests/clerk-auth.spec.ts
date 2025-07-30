@@ -1,9 +1,8 @@
-import { test } from '@playwright/test';
-
+import { test } from '../fixtures/Fixture';
 import { payablesPage } from '../pages/PayablesPage';
 import { receivablesPage } from '../pages/ReceivablesPage';
-import { signInUser } from '../utils/auth-helpers';
 import { checkURL, checkURLNot } from '../utils/URLChecker';
+import { signInUser } from '../utils/auth-helpers';
 
 test('user can sign in', async ({ page }) => {
   await signInUser(page);

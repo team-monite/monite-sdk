@@ -1,6 +1,5 @@
-import { test as base } from '@playwright/test';
-
 import { sessionStorage } from '../utils/SessionStorage';
+import { test as base } from '@playwright/test';
 
 type MyFixtures = {};
 
