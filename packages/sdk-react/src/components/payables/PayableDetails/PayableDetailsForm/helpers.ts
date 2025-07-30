@@ -8,33 +8,12 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
+import type { LineItem, PayableDetailsFormFields } from './types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
-
-export type Option = { label: string; value: string };
-
-export type LineItem = {
-  id: string;
-  name: string;
-  quantity: number;
-  price: number;
-  tax: number;
-};
-
-export interface PayableDetailsFormFields {
-  invoiceNumber: string;
-  counterpart: string;
-  counterpartBankAccount?: string;
-  invoiceDate?: Date;
-  dueDate?: Date;
-  currency: components['schemas']['CurrencyEnum'];
-  tags: components['schemas']['TagReadSchema'][];
-  lineItems: LineItem[];
-  discount?: number | null;
-}
 
 export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
@@ -42,7 +21,7 @@ export interface SubmitPayload extends PayableDetailsFormFields {
 
 export const counterpartsToSelect = (
   counterparts: CounterpartResponse[] | undefined
-): Option[] => {
+) => {
   if (!counterparts) return [];
 
   return counterparts.map((counterpart) => ({
@@ -71,7 +50,7 @@ export const dateToString = (date: Date): string => {
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
-    currency: components['schemas']['CurrencyEnum'] | string
+    currency: CurrencyEnum | string
   ) => number | null,
   payable?: components['schemas']['PayableResponseSchema'],
   lineItems?: components['schemas']['LineItemResponse'][]
@@ -83,7 +62,7 @@ export const prepareDefaultValues = (
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: 'EUR',
+      currency: 'EUR' as CurrencyEnum,
       tags: [],
       discount: null,
       lineItems: [
@@ -115,7 +94,7 @@ export const prepareDefaultValues = (
     counterpartBankAccount: counterpart_bank_account_id ?? '',
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
-    currency: currency ?? 'EUR',
+    currency: (currency ?? 'EUR') as CurrencyEnum,
     tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
@@ -156,7 +135,7 @@ export const prepareSubmit = (
   issued_at:
     invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
   due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
-  currency,
+  currency: currency as CurrencyEnum,
   tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
 });
@@ -211,7 +190,7 @@ export const calculateTotalsForPayable = (
 };
 
 export const prepareLineItemSubmit = (
-  currency: components['schemas']['CurrencyEnum'],
+  currency: CurrencyEnum,
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
 ): components['schemas']['LineItemRequest'] => {
@@ -324,10 +303,12 @@ export const usePayableDetailsThemeProps = (
 
 export const findDefaultBankAccount = (
   accounts: components['schemas']['CounterpartBankAccountResponse'][],
-  currentCurrency: components['schemas']['CurrencyEnum']
+  currentCurrency: CurrencyEnum
 ): string => {
   const defaultAccount = accounts.find(
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
   return defaultAccount?.id || '';
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

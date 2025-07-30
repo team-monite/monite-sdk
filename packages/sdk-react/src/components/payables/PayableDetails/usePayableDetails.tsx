@@ -1,9 +1,11 @@
 import { components } from '@/api';
 import {
-  LineItem,
-  PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import type {
+  LineItem,
+  PayableDetailsFormFields,
+} from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
