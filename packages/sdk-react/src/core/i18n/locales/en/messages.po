@@ -491,8 +491,8 @@ msgid "Add text"
 msgstr "Add text"
 
 #: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:41
-msgid "Add to prompts"
-msgstr "Add to prompts"
+#~ msgid "Add to prompts"
+#~ msgstr "Add to prompts"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:39
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:231
@@ -571,7 +571,7 @@ msgstr "Agree & Submit"
 msgid "Agricultural Cooperative"
 msgstr "Agricultural Cooperative"
 
-#: src/components/aiAssistant/AIAssistant.tsx:58
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:70
 msgid "AI Assistant"
 msgstr "AI Assistant"
 
@@ -978,6 +978,14 @@ msgstr "Aruba"
 msgid "Aruban Florin"
 msgstr "Aruban Florin"
 
+#: src/components/aiAssistant/AIAssistant.tsx:84
+msgid "Ask AI"
+msgstr "Ask AI"
+
+#: src/components/aiAssistant/components/AIRichEditor/AIRichEditor.tsx:71
+msgid "Ask AI..."
+msgstr "Ask AI..."
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:52
 msgid "At least 1 reminder is required"
 msgstr "At least 1 reminder is required"
@@ -1249,6 +1257,10 @@ msgstr "Bermuda"
 #: src/core/utils/currencies.ts:29
 msgid "Bermudian Dollar"
 msgstr "Bermudian Dollar"
+
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:80
+msgid "Beta"
+msgstr "Beta"
 
 #: src/components/onboarding/dicts/mccCodes.ts:149
 msgid "Betting/Casino Gambling"
@@ -1758,10 +1770,14 @@ msgstr "Change document currency"
 msgid "Charitable and Social Service Organizations - Fundraising"
 msgstr "Charitable and Social Service Organizations - Fundraising"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:187
+#: src/components/aiAssistant/components/AIChatHistory/AIChatHistory.tsx:72
 #: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:123
 msgid "Chat {id}"
 msgstr "Chat {id}"
+
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:93
+msgid "Chat history"
+msgstr "Chat history"
 
 #: src/components/onboarding/dicts/mccCodes.ts:263
 msgid "Chemicals and Allied Products (Not Elsewhere Classified)"
@@ -1866,8 +1882,8 @@ msgid "Close"
 msgstr "Close"
 
 #: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:132
-msgid "Close AI Sidebar"
-msgstr "Close AI Sidebar"
+#~ msgid "Close AI Sidebar"
+#~ msgstr "Close AI Sidebar"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:140
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:206
@@ -2931,7 +2947,7 @@ msgstr "Details"
 msgid "Detective Agencies"
 msgstr "Detective Agencies"
 
-#: src/components/aiAssistant/consts.ts:69
+#: src/components/aiAssistant/consts.ts:62
 msgid "Didn’t follow prompt input"
 msgstr "Didn’t follow prompt input"
 
@@ -3797,8 +3813,8 @@ msgid "Expired"
 msgstr "Expired"
 
 #: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:146
-msgid "Explore"
-msgstr "Explore"
+#~ msgid "Explore"
+#~ msgstr "Explore"
 
 #: src/components/userRoles/consts.ts:34
 msgid "Export"
@@ -4313,8 +4329,8 @@ msgid "Give me all invoices I still have unpaid"
 msgstr "Give me all invoices I still have unpaid"
 
 #: src/components/aiAssistant/consts.ts:55
-msgid "Give me the total amount of receivables overdue by more than 30 days"
-msgstr "Give me the total amount of receivables overdue by more than 30 days"
+#~ msgid "Give me the total amount of receivables overdue by more than 30 days"
+#~ msgstr "Give me the total amount of receivables overdue by more than 30 days"
 
 #: src/components/onboarding/dicts/mccCodes.ts:692
 msgid "Glass, Paint, and Wallpaper Stores"
@@ -5849,8 +5865,8 @@ msgid "New Caledonia"
 msgstr "New Caledonia"
 
 #: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:101
-msgid "New chat"
-msgstr "New chat"
+#~ msgid "New chat"
+#~ msgstr "New chat"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:125
 msgid "New counterpart"
@@ -7071,8 +7087,8 @@ msgid "Project"
 msgstr "Project"
 
 #: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:156
-msgid "Prompt Library"
-msgstr "Prompt Library"
+#~ msgid "Prompt Library"
+#~ msgstr "Prompt Library"
 
 #: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:23
 msgid "Prompts"
@@ -7662,8 +7678,8 @@ msgid "Save for later"
 msgstr "Save for later"
 
 #: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:43
-msgid "Save to prompt library"
-msgstr "Save to prompt library"
+#~ msgid "Save to prompt library"
+#~ msgstr "Save to prompt library"
 
 #: src/components/receivables/components/InvoiceRecurrenceIterationStatusChip.tsx:99
 msgid "Scheduled"
@@ -7707,8 +7723,8 @@ msgid "Search by number or vendor"
 msgstr "Search by number or vendor"
 
 #: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:108
-msgid "Search chats"
-msgstr "Search chats"
+#~ msgid "Search chats"
+#~ msgstr "Search chats"
 
 #: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:95
 msgid "Search chats..."
@@ -7983,7 +7999,7 @@ msgstr "Somalia"
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/components/aiAssistant/components/AssistantMessage/AssistantMessage.tsx:58
+#: src/components/aiAssistant/components/AssistantMessage/AssistantMessage.tsx:50
 msgid ""
 "Something went wrong. If this issue persists please contact us through\n"
 "the chat icon in the bottom right or email us at help@getargon.ai"
@@ -8644,7 +8660,7 @@ msgstr "This can be a website, social media profile link or any other unique rea
 msgid "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 msgstr "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 
-#: src/components/aiAssistant/consts.ts:68
+#: src/components/aiAssistant/consts.ts:61
 msgid "This information is not correct"
 msgstr "This information is not correct"
 
@@ -9561,14 +9577,14 @@ msgid "What can I help with?"
 msgstr "What can I help with?"
 
 #: src/components/aiAssistant/components/AIRichEditor/AIRichEditor.tsx:72
-msgid "What can I help you with?"
-msgstr "What can I help you with?"
+#~ msgid "What can I help you with?"
+#~ msgstr "What can I help you with?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:266
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 msgstr "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 
-#: src/components/aiAssistant/consts.ts:62
+#: src/components/aiAssistant/consts.ts:55
 msgid "Who are my customers?"
 msgstr "Who are my customers?"
 
