@@ -6,7 +6,7 @@ class DashboardPage extends AbstractPage {
   mainTextLabel = new Element('text=Welcome, E2E!');
 
   // side menu items
-  sideBarInvoicing = new Element('a[href="/invoicing"]');
+  sideBarInvoicing = new Element('a[href="/receivables"]');
 
   public async open() {
     await sessionStorage.get().goto('/');

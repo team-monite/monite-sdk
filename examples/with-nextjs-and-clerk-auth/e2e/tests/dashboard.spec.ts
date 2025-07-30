@@ -22,7 +22,7 @@ test.describe('Dashboard', () => {
     await signInUser(page);
     await dashboardPage.open();
     await dashboardPage.sideBarInvoicing.click();
-    await checkURL(page, '/invoicing');
+    await checkURL(page, '/receivables');
     await invoicingPage.createInvoiceButton.waitForElementPresent();
   });
 });
