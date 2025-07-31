@@ -1,13 +1,11 @@
-import React, { type FC } from 'react';
-
 import { cn } from '@/ui/lib/utils';
-
+import React, { type FC } from 'react';
 import type { Props } from 'recharts/types/component/DefaultLegendContent';
 
-export const ChartLegend: FC<Props> = ({ payload }) => (
-  <div className="mtw:flex mtw:flex-col mtw:justify-start mtw:gap-4">
-    {!!payload?.length &&
-      payload.map(({ color, value, payload }, index) => (
+export const ChartLegend: FC<Props> = ({ payload: labels }) => (
+  <div className="mtw:flex mtw:flex-col mtw:justify-start mtw:gap-2 mtw:h-[300px] mtw:overflow-y-auto mtw:[scrollbar-width:thin]">
+    {!!labels?.length &&
+      labels.map(({ color, value, payload }, index) => (
         <div
           key={`item-${index}`}
           className={cn(
@@ -24,7 +22,7 @@ export const ChartLegend: FC<Props> = ({ payload }) => (
             <span
               className={cn(
                 'mtw:mx-2 mtw:text-gray-700 mtw:inline-block',
-                'mtw:text-xs mtw:md:text-sm mtw:truncate'
+                'mtw:text-xs mtw:md:text-xs mtw:truncate'
               )}
             >
               {value}

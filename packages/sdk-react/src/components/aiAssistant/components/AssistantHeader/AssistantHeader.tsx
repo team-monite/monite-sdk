@@ -1,6 +1,6 @@
 import { AIView } from '@/components';
+import { AssistantIconButton } from '@/components/aiAssistant/components/AssistantIconButton/AssistantIconButton';
 import { AssistantLogo } from '@/components/aiAssistant/components/AssistantLogo/AssistantLogo';
-import { HeaderIconButton } from '@/components/aiAssistant/components/HeaderIconButton/HeaderIconButton';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -57,9 +57,12 @@ export const AssistantHeader: FC<AssistantHeaderProps> = ({
       {showChatHeader && (
         <div className="mtw:gap-2 mtw:flex mtw:items-center">
           {!isEnlarged && (
-            <HeaderIconButton onClick={handleSetHistoryView}>
+            <AssistantIconButton
+              onClick={handleSetHistoryView}
+              aria-label={t(i18n)`Menu`}
+            >
               <Menu className="mtw:size-4 mtw:text-gray-500" />
-            </HeaderIconButton>
+            </AssistantIconButton>
           )}
 
           <div className="mtw:flex mtw:items-center mtw:gap-1.5">
@@ -95,17 +98,23 @@ export const AssistantHeader: FC<AssistantHeaderProps> = ({
       )}
 
       <div className="mtw:flex mtw:items-center">
-        <HeaderIconButton onClick={handleChangeEnlarge}>
+        <AssistantIconButton
+          onClick={handleChangeEnlarge}
+          aria-label={isEnlarged ? t(i18n)`Minimize` : t(i18n)`Maximize`}
+        >
           {isEnlarged ? (
             <Minimize2 className="mtw:size-4 mtw:text-gray-500" />
           ) : (
             <Maximize2 className="mtw:size-4 mtw:text-gray-500" />
           )}
-        </HeaderIconButton>
+        </AssistantIconButton>
 
-        <HeaderIconButton onClick={handleStartChat}>
+        <AssistantIconButton
+          onClick={handleStartChat}
+          aria-label={t(i18n)`New chat`}
+        >
           <SquarePen className="mtw:size-4 mtw:text-gray-500" />
-        </HeaderIconButton>
+        </AssistantIconButton>
       </div>
     </div>
   );

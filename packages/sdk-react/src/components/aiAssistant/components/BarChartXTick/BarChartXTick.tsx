@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-
 import { Text, type TextProps } from 'recharts';
 
 interface Payload {
@@ -32,7 +31,7 @@ export const BarChartXTick: FC<BarChartXTickProps> = ({
       textAnchor={textAnchor}
       width={150}
       maxLines={1}
-      className="mtw:text-sm"
+      className="mtw:text-xs"
     >
       {value}
     </Text>

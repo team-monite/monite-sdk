@@ -161,8 +161,7 @@
   }
 
   16.667% {
-    box-shadow:
-      9984px -10px 0 0 var(--mtw-dot-loader-stress-color),
+    box-shadow: 9984px -10px 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
@@ -175,9 +174,8 @@
   }
 
   50% {
-    box-shadow:
-      9984px 0 0 0 var(--mtw-dot-loader-color),
-      9999px -10px 0 0 var(--mtw-dot-loader-stress-color),
+    box-shadow: 9984px 0 0 0 var(--mtw-dot-loader-color),
+      9999px -10px 0 0 var(--mtw-dot-loader-color),
       10014px 0 0 0 var(--mtw-dot-loader-color);
   }
 
@@ -192,7 +190,7 @@
     box-shadow:
       9984px 0 0 0 var(--mtw-dot-loader-color),
       9999px 0 0 0 var(--mtw-dot-loader-color),
-      10014px -10px 0 0 var(--mtw-dot-loader-stress-color);
+      10014px -10px 0 0 var(--mtw-dot-loader-color);
   }
 
   100% {
@@ -205,8 +203,7 @@
 
 @layer utilities {
   .animate-dot-typing {
-    --mtw-dot-loader-color: #d6cdfe;
-    --mtw-dot-loader-stress-color: #562bd6;
+    --mtw-dot-loader-color: #111827;
 
     animation: dot-typing 1.5s infinite linear;
   }

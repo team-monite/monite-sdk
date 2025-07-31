@@ -1,8 +1,8 @@
 import { AISidebarWrapper } from './components/AISidebarWrapper/AISidebarWrapper';
 import { AIChat } from '@/components/aiAssistant/components/AIChat/AIChat';
-import { AIChatHistory } from '@/components/aiAssistant/components/AIChatHistory/AIChatHistory';
 import { AssistantHeader } from '@/components/aiAssistant/components/AssistantHeader/AssistantHeader';
 import { AssistantLogo } from '@/components/aiAssistant/components/AssistantLogo/AssistantLogo';
+import { ChatHistory } from '@/components/aiAssistant/components/ChatHistory/ChatHistory';
 import { ChatInput } from '@/components/aiAssistant/components/ChatInput/ChatInput';
 import { AIAssistantChatProvider } from '@/components/aiAssistant/context/AIAssistantChatContext';
 import { AIView } from '@/components/aiAssistant/types';
@@ -86,18 +86,19 @@ const AIAssistantBase = () => {
           )}
         </Button>
       </PopoverTrigger>
+
       <PopoverContent
         align="end"
         className={cn(
           'mtw:rounded-3xl mtw:shadow-xl mtw:p-0 mtw:border-border',
           'mtw:flex mtw:w-[400px] mtw:h-[640px] mtw:!z-[1205]',
-          'mtw:transition-[width,height] mtw:duration-150 mtw:ease-linear',
+          'mtw:transition-[width,height] mtw:duration-300 mtw:ease-linear',
           isEnlarged && 'mtw:w-[calc(100vw-50px)] mtw:h-[calc(100vh-64px)]'
         )}
       >
         {isEnlarged && !isMobile && (
           <AISidebarWrapper>
-            <AIChatHistory
+            <ChatHistory
               isEnlarged
               conversationId={conversationId}
               setConversationId={setConversationId}
@@ -126,7 +127,7 @@ const AIAssistantBase = () => {
               {view === 'chat' && <AIChat isEnlarged={isEnlarged} />}
 
               {view === 'history' && (
-                <AIChatHistory
+                <ChatHistory
                   conversationId={conversationId}
                   setConversationId={setConversationId}
                   setIsNewChat={setIsNewChat}
@@ -135,19 +136,26 @@ const AIAssistantBase = () => {
                 />
               )}
 
-              <ChatInput
-                view={view}
-                isEnlarged={isEnlarged}
-                isNewChat={isNewChat}
-                onStartConversation={handleStartConversation}
-              />
+              {view !== 'history' && (
+                <ChatInput
+                  view={view}
+                  isEnlarged={isEnlarged}
+                  isNewChat={isNewChat}
+                  onStartConversation={handleStartConversation}
+                />
+              )}
             </AIAssistantChatProvider>
           )}
         </div>
       </PopoverContent>
 
       {withOverlay && (
-        <div className="mtw:absolute mtw:w-screen mtw:h-screen mtw:bg-black mtw:opacity-30 mtw:z-[1204]" />
+        <div
+          className={cn(
+            'mtw:absolute mtw:w-screen mtw:h-screen mtw:z-[1204]',
+            'mtw:bg-black mtw:opacity-30 mtw:top-0 mtw:left-0'
+          )}
+        />
       )}
     </Popover>
   );

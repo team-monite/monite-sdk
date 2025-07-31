@@ -1,18 +1,15 @@
-import * as React from 'react';
-import { type FC, type MouseEvent, useEffect, useState } from 'react';
-
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { cn } from '@/ui/lib/utils';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-
-import copy from 'copy-to-clipboard';
-import { Copy, ThumbsDown, ThumbsUp } from 'lucide-react';
-
 import { Feedback } from '../../types';
 import { removeTags } from '../../utils/aiAssistant';
 import { AIButtonTooltip } from '../AIButtonTooltip/AIButtonTooltip';
 import { FeedbackForm } from '../FeedbackForm/FeedbackForm';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { cn } from '@/ui/lib/utils';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import copy from 'copy-to-clipboard';
+import { Copy, ThumbsDown, ThumbsUp } from 'lucide-react';
+import * as React from 'react';
+import { type FC, type MouseEvent, useEffect, useRef, useState } from 'react';
 
 interface AssistantButtonsProps {
   showActionButtons: boolean;
@@ -26,6 +23,7 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
   content,
 }) => {
   const { i18n } = useLingui();
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
 
   const [isFeedbackFormOpen, setIsFeedbackFormOpen] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
@@ -82,9 +80,28 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
     };
   }, [isCopied]);
 
+  useEffect(() => {
+    if (!isFeedbackFormOpen) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      if (!buttonsContainerRef.current) {
+        return;
+      }
+
+      buttonsContainerRef.current.scrollIntoView();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isFeedbackFormOpen]);
+
   return (
     <>
       <div
+        ref={buttonsContainerRef}
         className={cn(
           'mtw:flex mtw:items-center mtw:gap-2.5 mtw:invisible',
           'mtw:opacity-0 mtw:transition-[opacity] mtw:duration-300 mtw:delay-2500',
@@ -92,7 +109,7 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
         )}
       >
         <AIButtonTooltip
-          icon={<Copy size={16} className="mtw:text-primary-50" />}
+          icon={<Copy size={16} className="mtw:text-gray-500" />}
           onClick={handleCopyToClipboard}
           ariaLabel={t(i18n)`copy text`}
         >
@@ -105,8 +122,8 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
               <ThumbsUp
                 size={16}
                 className={cn(
-                  'mtw:text-primary-50',
-                  feedback === 'like' && 'mtw:fill-primary-50 '
+                  ' mtw:text-gray-500',
+                  feedback === 'like' && 'mtw:fill-gray-500'
                 )}
               />
             }
@@ -123,8 +140,8 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
               <ThumbsDown
                 size={16}
                 className={cn(
-                  'mtw:text-primary-50',
-                  feedback === 'dislike' && 'mtw:fill-primary-50'
+                  'mtw:text-gray-500',
+                  feedback === 'dislike' && 'mtw:fill-gray-500'
                 )}
               />
             }
@@ -136,9 +153,14 @@ export const AssistantButtons: FC<AssistantButtonsProps> = ({
         )}
       </div>
 
-      {isFeedbackFormOpen && (
+      <div
+        className={cn(
+          'mtw:transition-[height] mtw:ease-in-out mtw:duration-1000 mtw:mt-4 mtw:h-[320px]',
+          !isFeedbackFormOpen && 'mtw:h-0 mtw:overflow-y-hidden'
+        )}
+      >
         <FeedbackForm id={id} setIsFeedbackFormOpen={setIsFeedbackFormOpen} />
-      )}
+      </div>
     </>
   );
 };

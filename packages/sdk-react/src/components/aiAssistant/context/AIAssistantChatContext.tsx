@@ -1,6 +1,6 @@
 import { apiVersion } from '@/api/api-version';
 import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
-import { ConversationHistory } from '@/components/aiAssistant/types';
+import { Conversation } from '@/components/aiAssistant/types';
 import { sanitizeEntityName } from '@/components/aiAssistant/utils/aiAssistant';
 import { getEntityName } from '@/components/onboarding/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -43,7 +43,7 @@ export const AIAssistantChatProvider = ({
   const { data: entity } = useMyEntity();
 
   const { data: conversation } =
-    api.ai.getAiConversationsId.useQuery<ConversationHistory>(
+    api.ai.getAiConversationsId.useQuery<Conversation>(
       {
         path: { conversation_id: conversationId },
       },

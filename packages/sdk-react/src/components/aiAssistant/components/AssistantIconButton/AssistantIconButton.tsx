@@ -6,7 +6,7 @@ interface HeaderIconButtonProps
   className?: string;
 }
 
-export const HeaderIconButton: FC<HeaderIconButtonProps> = ({
+export const AssistantIconButton: FC<HeaderIconButtonProps> = ({
   className,
   children,
   ...props

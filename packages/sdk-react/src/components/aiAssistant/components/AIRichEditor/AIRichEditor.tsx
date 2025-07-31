@@ -76,7 +76,7 @@ export const AIRichEditor = forwardRef<HTMLDivElement, AIRichEditorProps>(
           'mtw:w-full mtw:min-h-[92px] mtw:max-h-[192px] mtw:grow mtw:overflow-y-auto',
           'mtw:text-sm-normal mtw:[&_*]:!whitespace-break-spaces',
           'mtw:bg-gray-100 mtw:box-content mtw:border-none',
-          'mtw:focus-visible:outline-none'
+          'mtw:focus-visible:outline-none mtw:[scrollbar-width:thin]'
         )}
       />
     );
