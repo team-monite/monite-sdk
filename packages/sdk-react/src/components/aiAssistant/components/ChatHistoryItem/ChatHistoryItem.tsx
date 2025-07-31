@@ -3,7 +3,7 @@ import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ChevronRight } from 'lucide-react';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 interface ChatHistoryItemProps {
   isEnlarged: boolean;
