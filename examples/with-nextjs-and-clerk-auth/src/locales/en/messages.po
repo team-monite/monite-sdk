@@ -12,8 +12,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/components/NavigationMenu/NavigationList.tsx:50
-msgid "AI Assistant"
-msgstr "AI Assistant"
+#~ msgid "AI Assistant"
+#~ msgstr "AI Assistant"
 
 #: src/components/NavigationMenu/NavigationList.tsx:43
 msgid "Bill Pay"
@@ -31,7 +31,7 @@ msgstr "Bill Pay"
 #~ msgid "Continue"
 #~ msgstr "Continue"
 
-#: src/components/NavigationMenu/NavigationList.tsx:57
+#: src/components/NavigationMenu/NavigationList.tsx:52
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -56,7 +56,7 @@ msgstr "Dashboard"
 #~ msgid "English"
 #~ msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:101
+#: src/components/NavigationMenu/NavigationList.tsx:96
 msgid "Get Help"
 msgstr "Get Help"
 
@@ -114,11 +114,11 @@ msgstr "Invoicing"
 #~ msgid "Payable \"{0}\" has been paid"
 #~ msgstr "Payable \"{0}\" has been paid"
 
-#: src/components/NavigationMenu/NavigationList.tsx:60
+#: src/components/NavigationMenu/NavigationList.tsx:55
 msgid "Products & Services"
 msgstr "Products & Services"
 
-#: src/components/NavigationMenu/NavigationList.tsx:54
+#: src/components/NavigationMenu/NavigationList.tsx:49
 msgid "Projects"
 msgstr "Projects"
 
@@ -126,7 +126,7 @@ msgstr "Projects"
 #~ msgid "Purchases"
 #~ msgstr "Purchases"
 
-#: src/components/NavigationMenu/NavigationList.tsx:83
+#: src/components/NavigationMenu/NavigationList.tsx:78
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
@@ -134,7 +134,7 @@ msgstr "Roles & Approvals"
 #~ msgid "Sales"
 #~ msgstr "Sales"
 
-#: src/components/NavigationMenu/NavigationList.tsx:75
+#: src/components/NavigationMenu/NavigationList.tsx:70
 msgid "Settings"
 msgstr "Settings"
 
@@ -142,7 +142,7 @@ msgstr "Settings"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:86
+#: src/components/NavigationMenu/NavigationList.tsx:81
 msgid "Tags"
 msgstr "Tags"
 
@@ -150,7 +150,7 @@ msgstr "Tags"
 #~ msgid "Team"
 #~ msgstr "Team"
 
-#: src/components/NavigationMenu/NavigationList.tsx:80
+#: src/components/NavigationMenu/NavigationList.tsx:75
 msgid "Template settings"
 msgstr "Template settings"
 

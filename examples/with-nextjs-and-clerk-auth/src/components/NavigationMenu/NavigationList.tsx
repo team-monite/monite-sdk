@@ -46,11 +46,6 @@ export const NavigationList = () => {
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
           {t(i18n)`Invoicing`}
         </NavigationListItem>
-        {isDevEnvironment && (
-          <NavigationListItem href="/ai-assistant" icon={<IconBolt />}>
-            {t(i18n)`AI Assistant`}
-          </NavigationListItem>
-        )}
         <NavigationListItem href="/projects" icon={<IconBag />}>
           {t(i18n)`Projects`}
         </NavigationListItem>

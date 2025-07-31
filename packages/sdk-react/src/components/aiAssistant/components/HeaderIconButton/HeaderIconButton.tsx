@@ -1,13 +1,12 @@
+import { cn } from '@/ui/lib/utils';
 import React, { type ButtonHTMLAttributes, type FC } from 'react';
 
-import { cn } from '@/ui/lib/utils';
-
-interface AISidebarIconButtonProps
+interface HeaderIconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-export const AISidebarIconButton: FC<AISidebarIconButtonProps> = ({
+export const HeaderIconButton: FC<HeaderIconButtonProps> = ({
   className,
   children,
   ...props
@@ -15,7 +14,7 @@ export const AISidebarIconButton: FC<AISidebarIconButtonProps> = ({
   return (
     <button
       className={cn(
-        'mtw:hover:bg-sidebar-accent mtw:p-1 mtw:rounded mtw:cursor-pointer',
+        'mtw:hover:bg-sidebar-accent mtw:p-2 mtw:rounded-md mtw:cursor-pointer',
         className
       )}
       {...props}

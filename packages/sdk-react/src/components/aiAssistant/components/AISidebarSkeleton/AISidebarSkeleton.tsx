@@ -11,6 +11,12 @@ export const AISidebarSkeleton = () => {
         <div className="mtw:bg-gray-200 mtw:h-9 mtw:rounded" />
 
         <div className="mtw:bg-gray-200 mtw:h-9 mtw:rounded" />
+
+        <div className="mtw:bg-gray-200 mtw:h-9 mtw:rounded" />
+
+        <div className="mtw:bg-gray-200 mtw:h-9 mtw:rounded" />
+
+        <div className="mtw:bg-gray-200 mtw:h-9 mtw:rounded" />
       </div>
     </div>
   );

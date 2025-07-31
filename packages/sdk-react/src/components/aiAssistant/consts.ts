@@ -52,13 +52,6 @@ export const getDefaultPrompts = (i18n: I18n) => [
   },
   {
     id: '3',
-    content: t(
-      i18n
-    )`Give me the total amount of receivables overdue by more than 30 days`,
-    created_at: '2025-03-10T09:33:53.715Z',
-  },
-  {
-    id: '4',
     content: t(i18n)`Who are my customers?`,
     created_at: '2025-03-10T09:33:53.715Z',
   },
