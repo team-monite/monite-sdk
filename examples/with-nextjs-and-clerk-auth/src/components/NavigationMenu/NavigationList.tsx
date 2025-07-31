@@ -28,7 +28,8 @@ export const NavigationList = () => {
     if (typeof window !== 'undefined') {
       setIsDevEnvironment(
         window.location.hostname.includes('localhost') ||
-          window.location.hostname.includes('dev')
+          window.location.hostname.includes('dev') ||
+          window.location.hostname.includes('sandbox')
       );
     }
   }, []);
