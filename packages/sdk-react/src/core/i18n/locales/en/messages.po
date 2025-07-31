@@ -63,8 +63,8 @@ msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
 #: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:147
-msgid "(Optional) Feel free to add specific details"
-msgstr "(Optional) Feel free to add specific details"
+#~ msgid "(Optional) Feel free to add specific details"
+#~ msgstr "(Optional) Feel free to add specific details"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:80
 msgid "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
@@ -490,6 +490,10 @@ msgstr "Add someone new"
 msgid "Add text"
 msgstr "Add text"
 
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:142
+msgid "Add specific details"
+msgstr "Add specific details"
+
 #: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:41
 #~ msgid "Add to prompts"
 #~ msgstr "Add to prompts"
@@ -571,7 +575,7 @@ msgstr "Agree & Submit"
 msgid "Agricultural Cooperative"
 msgstr "Agricultural Cooperative"
 
-#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:70
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:73
 msgid "AI Assistant"
 msgstr "AI Assistant"
 
@@ -983,6 +987,7 @@ msgid "Ask AI"
 msgstr "Ask AI"
 
 #: src/components/aiAssistant/components/AIRichEditor/AIRichEditor.tsx:71
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:53
 msgid "Ask AI..."
 msgstr "Ask AI..."
 
@@ -1111,7 +1116,7 @@ msgstr "Back of your identity document"
 msgid "Back to edit"
 msgstr "Back to edit"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:134
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:151
 msgid "Bad response"
 msgstr "Bad response"
 
@@ -1258,7 +1263,7 @@ msgstr "Bermuda"
 msgid "Bermudian Dollar"
 msgstr "Bermudian Dollar"
 
-#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:80
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:83
 msgid "Beta"
 msgstr "Beta"
 
@@ -1770,12 +1775,12 @@ msgstr "Change document currency"
 msgid "Charitable and Social Service Organizations - Fundraising"
 msgstr "Charitable and Social Service Organizations - Fundraising"
 
-#: src/components/aiAssistant/components/AIChatHistory/AIChatHistory.tsx:72
+#: src/components/aiAssistant/components/ChatHistoryItem/ChatHistoryItem.tsx:48
 #: src/components/aiAssistant/components/SearchChatModal/SearchChatModal.tsx:123
 msgid "Chat {id}"
 msgstr "Chat {id}"
 
-#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:93
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:96
 msgid "Chat history"
 msgstr "Chat history"
 
@@ -2188,11 +2193,11 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:99
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:116
 msgid "Copied!"
 msgstr "Copied!"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:99
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:116
 msgid "Copy"
 msgstr "Copy"
 
@@ -2201,7 +2206,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:97
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:114
 msgid "copy text"
 msgstr "copy text"
 
@@ -3793,8 +3798,8 @@ msgid "Example: NET 30, –2%/10 days, –1%/20 days"
 msgstr "Example: NET 30, –2%/10 days, –1%/20 days"
 
 #: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:36
-msgid "Examples"
-msgstr "Examples"
+#~ msgid "Examples"
+#~ msgstr "Examples"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:507
 msgid "excl. Tax"
@@ -4359,7 +4364,7 @@ msgstr "Go to Docs"
 msgid "Golf Courses - Public"
 msgstr "Golf Courses - Public"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:116
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:133
 msgid "Good response"
 msgstr "Good response"
 
@@ -5538,6 +5543,10 @@ msgstr "Mauritian Rupee"
 msgid "Mauritius"
 msgstr "Mauritius"
 
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:103
+msgid "Maximize"
+msgstr "Maximize"
+
 #: src/core/utils/countries.ts:159
 msgid "Mayotte"
 msgstr "Mayotte"
@@ -5582,6 +5591,10 @@ msgstr "Mens, Womens Clothing Stores"
 msgid "Message"
 msgstr "Message"
 
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:62
+msgid "Menu"
+msgstr "Menu"
+
 #: src/components/onboarding/dicts/mccCodes.ts:879
 msgid "Metal Service Centers"
 msgstr "Metal Service Centers"
@@ -5622,6 +5635,10 @@ msgstr "Minimalist"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1031
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
+
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:103
+msgid "Minimize"
+msgstr "Minimize"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:123
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:127
@@ -5872,9 +5889,14 @@ msgstr "New"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-#: src/components/aiAssistant/components/AISidebar/AISidebar.tsx:101
-#~ msgid "New chat"
-#~ msgstr "New chat"
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:114
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:83
+msgid "New chat"
+msgstr "New chat"
+
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:50
+msgid "New Chat"
+msgstr "New Chat"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:180
 msgid "New counterpart"
@@ -8192,6 +8214,11 @@ msgstr "Submit invoice"
 msgid "Subtotal"
 msgstr "Subtotal"
 
+#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:206
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:161
+msgid "Submit message"
+msgstr "Submit message"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:408
 msgid "Subtotal{0}"
 msgstr "Subtotal{0}"
@@ -8415,7 +8442,7 @@ msgstr "Telecommunication Services"
 msgid "Telegraph Services"
 msgstr "Telegraph Services"
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:125
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:112
 msgid "Tell us more"
 msgstr "Tell us more"
 
@@ -8475,7 +8502,7 @@ msgstr "Thailand"
 msgid "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 msgstr "Thank you for completing onboarding for payments services. We will review the information submitted, and notify you when complete."
 
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:99
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:86
 msgid "Thank you for your feedback!"
 msgstr "Thank you for your feedback!"
 
@@ -8698,7 +8725,8 @@ msgstr "This invoice can’t be financed"
 msgid "This invoice doesn’t have a file attached."
 msgstr "This invoice doesn’t have a file attached."
 
-#: src/components/aiAssistant/utils/aiAssistant.ts:19
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:38
+#: src/components/aiAssistant/utils/aiAssistant.ts:21
 msgid "This month"
 msgstr "This month"
 
@@ -8714,11 +8742,11 @@ msgstr "This person is an executive or senior manager with significant managemen
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:132
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:149
 msgid "thumb down"
 msgstr "thumb down"
 
-#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:114
+#: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:131
 msgid "thumb up"
 msgstr "thumb up"
 
@@ -9605,8 +9633,8 @@ msgid "Western Sahara"
 msgstr "Western Sahara"
 
 #: src/components/aiAssistant/components/AIStartScreen/AIStartScreen.tsx:29
-msgid "What can I help with?"
-msgstr "What can I help with?"
+#~ msgid "What can I help with?"
+#~ msgstr "What can I help with?"
 
 #: src/components/aiAssistant/components/AIRichEditor/AIRichEditor.tsx:72
 #~ msgid "What can I help you with?"
@@ -9676,6 +9704,10 @@ msgstr "Yes"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:683
 msgid "You can add a document number to have it in the PDF"
 msgstr "You can add a document number to have it in the PDF"
+
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:70
+msgid "You AI Assistant chat history will be shown here"
+msgstr "You AI Assistant chat history will be shown here"
 
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:89
 msgid "You can continue to the next step"
@@ -9827,6 +9859,10 @@ msgstr "You don’t have permissions to view this page.<0/>Contact your system a
 #: src/core/hooks/useProductCurrencyGroups.ts:24
 msgid "You have items in"
 msgstr "You have items in"
+
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:66
+msgid "You have no chats yet"
+msgstr "You have no chats yet"
 
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:21
 #: src/components/templateSettings/components/DiscardChangesModal.tsx:25
