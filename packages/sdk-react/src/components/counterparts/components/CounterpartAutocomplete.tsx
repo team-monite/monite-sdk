@@ -393,7 +393,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                     )}
 
                     {counterpartAISuggested &&
-                      currentValue == counterpartAISuggested.id && (
+                      currentValue === counterpartAISuggested.id && (
                         <Alert
                           variant="info"
                           className="mtw:mt-2"
