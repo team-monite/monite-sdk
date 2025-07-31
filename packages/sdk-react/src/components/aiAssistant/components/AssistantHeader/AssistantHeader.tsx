@@ -111,7 +111,7 @@ export const AssistantHeader: FC<AssistantHeaderProps> = ({
 
         <AssistantIconButton
           onClick={handleStartChat}
-          aria-label={t(i18n)`New chat`}
+          aria-label={t(i18n)`New Chat`}
         >
           <SquarePen className="mtw:size-4 mtw:text-gray-500" />
         </AssistantIconButton>

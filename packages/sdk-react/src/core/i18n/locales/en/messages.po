@@ -494,6 +494,10 @@ msgstr "Add text"
 msgid "Add specific details"
 msgstr "Add specific details"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:166
+msgid "Add text"
+msgstr "Add text"
+
 #: src/components/aiAssistant/components/UserMessage/UserMessage.tsx:41
 #~ msgid "Add to prompts"
 #~ msgstr "Add to prompts"
@@ -5587,13 +5591,13 @@ msgstr "Mens and Boys Clothing and Accessories Stores"
 msgid "Mens, Womens Clothing Stores"
 msgstr "Mens, Womens Clothing Stores"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:43
-msgid "Message"
-msgstr "Message"
-
 #: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:62
 msgid "Menu"
 msgstr "Menu"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:43
+msgid "Message"
+msgstr "Message"
 
 #: src/components/onboarding/dicts/mccCodes.ts:879
 msgid "Metal Service Centers"
@@ -5631,14 +5635,14 @@ msgstr "Min digits (20 max)"
 msgid "Minimalist"
 msgstr "Minimalist"
 
+#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:103
+msgid "Minimize"
+msgstr "Minimize"
+
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1013
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1031
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
-
-#: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:103
-msgid "Minimize"
-msgstr "Minimize"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:123
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:127
@@ -5890,11 +5894,8 @@ msgid "New Caledonia"
 msgstr "New Caledonia"
 
 #: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:114
-#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:83
-msgid "New chat"
-msgstr "New chat"
-
 #: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:50
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:83
 msgid "New Chat"
 msgstr "New Chat"
 
@@ -8726,7 +8727,7 @@ msgid "This invoice doesn’t have a file attached."
 msgstr "This invoice doesn’t have a file attached."
 
 #: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:38
-#: src/components/aiAssistant/utils/aiAssistant.ts:21
+#: src/components/aiAssistant/utils/aiAssistant.ts:19
 msgid "This month"
 msgstr "This month"
 
@@ -9705,10 +9706,6 @@ msgstr "Yes"
 msgid "You can add a document number to have it in the PDF"
 msgstr "You can add a document number to have it in the PDF"
 
-#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:70
-msgid "You AI Assistant chat history will be shown here"
-msgstr "You AI Assistant chat history will be shown here"
-
 #: src/components/onboarding/OnboardingPersonDocumentList/OnboardingPersonDocumentList.tsx:89
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
@@ -9889,6 +9886,10 @@ msgstr "You haven’t accepted the offer and it has expired"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:29
 msgid "You won’t be able to use it to create new invoices, but it won’t affect the existing invoices with this term and their future copies."
 msgstr "You won’t be able to use it to create new invoices, but it won’t affect the existing invoices with this term and their future copies."
+
+#: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:70
+msgid "Your AI Assistant chat history will be shown here"
+msgstr "Your AI Assistant chat history will be shown here"
 
 #: src/components/financing/components/FinanceLimits.tsx:42
 msgid "Your amount available for financing additional invoices."

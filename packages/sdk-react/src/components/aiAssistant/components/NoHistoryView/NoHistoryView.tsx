@@ -35,7 +35,7 @@ export const NoHistoryView: FC<NoHistoryViewProps> = ({
         className="mtw:text-sm mtw:p-2 mtw:flex mtw:flex-col mtw:gap-2"
       >
         <h5 className="mtw:px-4 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
-          {t(i18n)`This month`}`
+          {t(i18n)`This month`}
         </h5>
 
         <div
@@ -69,7 +69,7 @@ export const NoHistoryView: FC<NoHistoryViewProps> = ({
 
             <p className="mtw:text-center mtw:text-sm">{t(
               i18n
-            )`You AI Assistant chat history will be shown here`}</p>
+            )`Your AI Assistant chat history will be shown here`}</p>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ export const NoHistoryView: FC<NoHistoryViewProps> = ({
       >
         <SquarePen className="mtw:size-4 mtw:text-white" />
 
-        {t(i18n)`New chat`}
+        {t(i18n)`New Chat`}
       </Button>
     </div>
   );

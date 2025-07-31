@@ -8,7 +8,7 @@ import { cn } from '@/ui/lib/utils';
 import { useLingui } from '@lingui/react';
 import React, { FC, useCallback, useMemo } from 'react';
 
-interface AIChatHistoryProps {
+interface ChatHistoryProps {
   conversationId: string | null;
   setConversationId: (id: string | null) => void;
   setIsNewChat: (isNewChat: boolean) => void;
@@ -16,7 +16,7 @@ interface AIChatHistoryProps {
   isEnlarged: boolean;
 }
 
-export const ChatHistory: FC<AIChatHistoryProps> = ({
+export const ChatHistory: FC<ChatHistoryProps> = ({
   conversationId,
   setConversationId,
   setIsNewChat,
