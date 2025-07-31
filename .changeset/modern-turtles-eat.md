@@ -3,4 +3,4 @@
 '@monite/sdk-drop-in': patch
 ---
 
-Add payables approval flow components and logic
+Implemented footer field for customer notes in invoice

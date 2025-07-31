@@ -1,3 +1,11 @@
+import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
+import { sanitizeLineItems } from '../../utils';
+import type {
+  CreateReceivablesFormProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '../../validation';
+// @ts-expect-error Importing css file from a different package is not supported
+import invoicePreviewStyles from './InvoicePreview.css';
 import { components } from '@/api';
 import {
   calculateDueDate,
@@ -16,17 +24,7 @@ import { MeasureUnit } from '@/ui/MeasureUnit/MeasureUnit';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { isValid } from 'date-fns';
-
-import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../../utils';
-import type {
-  CreateReceivablesFormProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../../validation';
-// @ts-expect-error Importing css file from a different package is not supported
-import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {
   address:
@@ -83,6 +81,7 @@ export const InvoicePreview = ({
   const fulfillmentDate = watch('fulfillment_date');
   const items = watch('line_items');
   const memo = watch('memo');
+  const footer = watch('footer');
   const entityBankAccountId = watch('entity_bank_account_id') ?? '';
   const vatMode = watch('vat_mode');
   const isInclusivePricing = vatMode === 'inclusive';
@@ -209,8 +208,8 @@ export const InvoicePreview = ({
                 {counterpart && isOrganizationCounterpart(counterpart)
                   ? counterpart.organization.email
                   : counterpart && isIndividualCounterpart(counterpart)
-                  ? counterpart.individual.email
-                  : ''}
+                    ? counterpart.individual.email
+                    : ''}
               </div>
 
               {counterpart?.tax_id && (
@@ -437,6 +436,11 @@ export const InvoicePreview = ({
                   </tr>
                 </tbody>
               </table>
+            )}
+            {footer && (
+              <div className="block-memo" style={{ marginTop: '20px' }}>
+                {footer}
+              </div>
             )}
           </div>
         </article>

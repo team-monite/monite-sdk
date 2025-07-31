@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
-
 import { components } from '@/api';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
+import { useMemo } from 'react';
 
 type Schemas = components['schemas'];
 
@@ -31,6 +30,7 @@ export const useInvoiceDefaultValues = (
         ? new Date(invoice.fulfillment_date)
         : null,
       purchase_order: invoice.purchase_order ?? '',
+      footer: invoice.footer ?? '',
 
       /** Items section */
       line_items: invoice.line_items.map((lineItem) => {
