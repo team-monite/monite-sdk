@@ -40,6 +40,10 @@ export interface CounterpartsAutocompleteOptionProps {
 
 const COUNTERPART_CREATE_NEW_ID = '__create-new__';
 
+// Delay to wait for form initialization,
+// to prevent premature auto-selection of counterpart in form input
+const FORM_INIT_TIMEOUT = 50;
+
 const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
 function isCreateNewCounterpartOption(
@@ -210,7 +214,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         if (isMountedRef.current) {
           setIsFormInitialized(true);
         }
-      }, 50);
+      }, FORM_INIT_TIMEOUT);
 
       return () => clearTimeout(timeoutId);
     }
