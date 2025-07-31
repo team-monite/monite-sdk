@@ -19,12 +19,9 @@ export const useGetPayableCounterpart = ({
   // Get AI suggestions for the Payable, if not set payable.counterpart_id
   const shouldFetchAISuggestions = useMemo(
     () =>
-      Boolean(
-        payable &&
-          !payable.counterpart_id &&
-          (payable.status === 'draft' || payable.status === 'new')
-      ),
-    [payable]
+      Boolean(!payable?.counterpart_id) &&
+      Boolean(payable?.status === 'draft' || payable?.status === 'new'),
+    [payable?.counterpart_id, payable?.status]
   );
   const { data: AISuggestions, isLoading: isAISuggestionsLoading } =
     api.payables.getPayablesIdSuggestions.useQuery(
@@ -59,10 +56,8 @@ export const useGetPayableCounterpart = ({
       Boolean(!counterpartId) &&
       Boolean(counterpartRawName) &&
       !isAISuggestionsLoading &&
-      Boolean(
-        payable && (payable.status === 'draft' || payable.status === 'new')
-      ),
-    [payable, counterpartId, counterpartRawName, isAISuggestionsLoading]
+      Boolean(payable?.status === 'draft' || payable?.status === 'new'),
+    [counterpartId, counterpartRawName, isAISuggestionsLoading, payable?.status]
   );
   const {
     data: counterpartMatchingToOCR,
