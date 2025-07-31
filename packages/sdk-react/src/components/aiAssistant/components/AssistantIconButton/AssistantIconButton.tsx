@@ -1,12 +1,12 @@
 import { cn } from '@/ui/lib/utils';
 import React, { type ButtonHTMLAttributes, type FC } from 'react';
 
-interface HeaderIconButtonProps
+interface AssistantIconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-export const AssistantIconButton: FC<HeaderIconButtonProps> = ({
+export const AssistantIconButton: FC<AssistantIconButtonProps> = ({
   className,
   children,
   ...props
