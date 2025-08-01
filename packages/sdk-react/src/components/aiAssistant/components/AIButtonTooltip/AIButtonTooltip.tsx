@@ -1,7 +1,6 @@
-import type { FC, PropsWithChildren, MouseEvent, ReactNode } from 'react';
-
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { IconButton, Tooltip } from '@mui/material';
+import type { FC, PropsWithChildren, MouseEvent, ReactNode } from 'react';
 
 interface AIButtonTooltipProps extends PropsWithChildren {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void | Promise<void>;
@@ -28,10 +27,10 @@ export const AIButtonTooltip: FC<AIButtonTooltipProps> = ({
           disablePortal: false,
         },
         tooltip: {
-          className: 'mtw:!bg-primary-50 mtw:!text-white',
+          className: 'mtw:!bg-gray-800 mtw:!text-white',
         },
         arrow: {
-          className: 'mtw:!text-primary-50',
+          className: 'mtw:!text-gray-800',
         },
       }}
     >

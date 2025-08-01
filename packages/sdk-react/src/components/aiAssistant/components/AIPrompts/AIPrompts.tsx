@@ -1,17 +1,15 @@
-import React from 'react';
-
 import { PromptList } from '@/components/aiAssistant/components/PromptList/PromptList';
-import { PromptListSkeleton } from '@/components/aiAssistant/components/PromptListSkeleton/PromptListSkeleton';
 import { Prompt } from '@/components/aiAssistant/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import React from 'react';
 
-export const AIPrompts = ({ isConversationIdLoading = false }) => {
+export const AIPrompts = () => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const { data, isLoading } = api.ai.getAiPrompts.useQuery<{
+  const { data } = api.ai.getAiPrompts.useQuery<{
     data: Prompt[];
   }>();
 
@@ -23,11 +21,7 @@ export const AIPrompts = ({ isConversationIdLoading = false }) => {
         {t(i18n)`Prompts`} <br />
       </h1>
 
-      {isLoading || isConversationIdLoading ? (
-        <PromptListSkeleton />
-      ) : (
-        <PromptList userPrompts={userPrompts} />
-      )}
+      <PromptList userPrompts={userPrompts} />
     </div>
   );
 };

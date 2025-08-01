@@ -1,19 +1,17 @@
-import type { FC } from 'react';
-
+import { COLORS } from '../../consts';
+import { ChartData } from '../../types';
+import { BarChartXTick } from '../BarChartXTick/BarChartXTick';
 import { ChartLegend } from '@/components/aiAssistant/components/ChartLegend/ChartLegend';
-
+import React, { FC } from 'react';
 import {
   Bar,
   BarChart,
   Legend,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { COLORS } from '../../consts';
-import { ChartData } from '../../types';
-import { BarChartXTick } from '../BarChartXTick/BarChartXTick';
 
 interface AIBarChartProps {
   data: ChartData[];
@@ -32,9 +30,9 @@ export const AIBarChart: FC<AIBarChartProps> = ({
         data={data}
         margin={{
           top: 5,
-          right: 30,
-          left: 20,
-          bottom: 10,
+          right: parentWidth > 383 ? 30 : 5,
+          left: parentWidth > 383 ? 20 : 5,
+          bottom: 5,
         }}
       >
         <Bar
@@ -48,12 +46,14 @@ export const AIBarChart: FC<AIBarChartProps> = ({
           interval={0}
           textAnchor="end"
           height={100}
-          angle={-15}
+          angle={-30}
           dataKey="field_name"
           tickMargin={12}
           tick={<BarChartXTick />}
         />
         <YAxis />
+
+        <Tooltip isAnimationActive={false} />
 
         {parentWidth > 383 && (
           <Legend

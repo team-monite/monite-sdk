@@ -1,21 +1,18 @@
-import {
-  type ChangeEvent,
-  type FC,
-  FormEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-
 import { getFeedbackOptions } from '@/components/aiAssistant/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, IconButton, Input } from '@mui/material';
-
-import { X } from 'lucide-react';
+import { ArrowUp, X } from 'lucide-react';
+import React, {
+  type ChangeEvent,
+  type FC,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 interface FeedbackFormProps {
   id: string;
@@ -26,7 +23,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
   id,
   setIsFeedbackFormOpen,
 }) => {
-  const formRef = useRef<HTMLFormElement | null>(null);
   const { i18n } = useLingui();
 
   const { api } = useMoniteContext();
@@ -64,15 +60,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
   };
 
   useEffect(() => {
-    if (!formRef.current) {
-      return;
-    }
-
-    formRef.current.focus();
-    formRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
-  useEffect(() => {
     if (!isSuccess) {
       return;
     }
@@ -92,7 +79,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
     return (
       <div
         className={cn(
-          'mtw:p-4 mtw:min-h-[110px] mtw:border mtw:border-solid mtw:border-border mtw:mt-4',
+          'mtw:p-4 mtw:min-h-[110px] mtw:border mtw:border-solid mtw:border-border',
           'mtw:flex mtw:items-center mtw:justify-center mtw:rounded-md'
         )}
       >
@@ -105,7 +92,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
 
   return (
     <form
-      ref={formRef}
       onSubmit={handleSubmit}
       className={cn(
         'mtw:relative mtw:p-4 mtw:mt-4 mtw:border mtw:border-solid mtw:border-border',
@@ -122,7 +108,9 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
         <X />
       </IconButton>
 
-      <h5 className="mtw:text-sm mtw:font-normal">{t(i18n)`Tell us more`}:</h5>
+      <h5 className="mtw:text-sm mtw:font-normal mtw:text-gray-500">
+        {t(i18n)`Tell us more`}:
+      </h5>
 
       <div className="mtw:flex mtw:flex-wrap mtw:gap-2">
         {feedbackOptions.map(({ feedback }) => (
@@ -132,7 +120,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
             key={feedback}
             className={cn(
               'mtw:!px-3 mtw:!py-2.5 mtw:!font-normal mtw:!text-sm mtw:!text-inherit',
-              'mtw:border mtw:border-solid mtw:!border-border mtw:!bg-transparent'
+              'mtw:!border mtw:!border-solid mtw:!border-border mtw:!bg-transparent mtw:!font-medium'
             )}
             variant="outlined"
           >
@@ -141,17 +129,41 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({
         ))}
       </div>
 
-      <Input
-        value={input}
-        onChange={handleInputValue}
-        placeholder={t(i18n)`(Optional) Feel free to add specific details`}
+      <div
         className={cn(
-          'mtw:w-full mtw:focus-visible:ring-0 mtw:focus-visible:ring-offset-0',
-          'mtw:resize-none mtw:border mtw:border-solid mtw:!border-border',
-          'mtw:!rounded-md mtw:px-3.5 mtw:!text-sm'
+          'mtw:w-full',
+          'mtw:border mtw:border-solid mtw:!border-border',
+          'mtw:!rounded-md mtw:px-3.5 mtw:h-[92px]'
         )}
-        slotProps={{ input: { className: 'mtw:!px-0' } }}
-      />
+      >
+        <Input
+          value={input}
+          onChange={handleInputValue}
+          placeholder={t(i18n)`Add specific details`}
+          className={cn(
+            'mtw:w-full mtw:focus-visible:ring-0 mtw:focus-visible:ring-offset-0',
+            'mtw:border-0 mtw:!text-sm'
+          )}
+          slotProps={{ input: { className: 'mtw:!px-0' } }}
+        />
+
+        <div className="mtw:flex mtw:justify-end">
+          <button
+            className={cn(
+              'mtw:shrink-0 mtw:bg-black mtw:h-9 mtw:w-9 mtw:rounded-full',
+              'mtw:flex mtw:justify-center mtw:items-center mtw:text-end',
+              !input
+                ? 'mtw:cursor-default mtw:bg-gray-500'
+                : 'mtw:cursor-pointer'
+            )}
+            disabled={!input}
+            type="submit"
+            aria-label={t(i18n)`Submit message`}
+          >
+            <ArrowUp className="mtw:text-white" size={16} />
+          </button>
+        </div>
+      </div>
     </form>
   );
 };

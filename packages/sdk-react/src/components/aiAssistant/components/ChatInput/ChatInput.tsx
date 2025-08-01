@@ -5,7 +5,9 @@ import { AIView } from '@/components';
 import { PromptSuggestions } from '@/components/aiAssistant/components/PromptSuggestions/PromptSuggestions';
 import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
 import { cn } from '@/ui/lib/utils';
-import { SendHorizontal } from 'lucide-react';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { ArrowUp } from 'lucide-react';
 import React, {
   type ChangeEvent,
   FC,
@@ -31,6 +33,7 @@ export const ChatInput: FC<ChatInputProps> = ({
   view,
 }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const { i18n } = useLingui();
 
   const [showPrompts, setShowPrompts] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
@@ -169,7 +172,7 @@ export const ChatInput: FC<ChatInputProps> = ({
 
       <form
         className={cn(
-          'mtw:flex mtw:items-center mtw:gap-2 mtw:rounded-xl mtw:px-5 mtw:py-4 mtw:w-full',
+          'mtw:flex mtw:items-center mtw:gap-2 mtw:rounded-xl mtw:p-3 mtw:w-full',
           'mtw:border mtw:border-transparent mtw:border-solid mtw:bg-gray-100',
           'mtw:hover:border-primary-50 mtw:relative'
         )}
@@ -192,15 +195,17 @@ export const ChatInput: FC<ChatInputProps> = ({
 
         <button
           className={cn(
-            isDisabled ? 'mtw:cursor-default' : 'mtw:cursor-pointer'
+            'mtw:shrink-0 mtw:bg-black mtw:h-9 mtw:w-9 mtw:rounded-full',
+            'mtw:flex mtw:justify-center mtw:items-center mtw:self-end',
+            isDisabled
+              ? 'mtw:cursor-default mtw:bg-gray-500'
+              : 'mtw:cursor-pointer'
           )}
           disabled={isDisabled}
           type="submit"
+          aria-label={t(i18n)`Submit message`}
         >
-          <SendHorizontal
-            className={cn(isDisabled && 'mtw:text-gray-200')}
-            size={17}
-          />
+          <ArrowUp className="mtw:text-white" size={16} />
         </button>
       </form>
     </div>
