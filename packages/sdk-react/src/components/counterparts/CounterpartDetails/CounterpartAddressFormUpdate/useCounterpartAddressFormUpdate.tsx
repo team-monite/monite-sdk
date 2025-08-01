@@ -17,11 +17,13 @@ export interface CounterpartAddressFormUpdateProps {
   addressId: string;
   onUpdate?: (id: string) => void;
   onCancel?: () => void | undefined;
+  payableCounterpartRawData?: components['schemas']['CounterpartRawData'];
 }
 export function useCounterpartAddressFormUpdate({
   counterpartId,
   addressId,
   onUpdate,
+  payableCounterpartRawData,
 }: CounterpartAddressFormUpdateProps) {
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -30,7 +32,11 @@ export function useCounterpartAddressFormUpdate({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartAddressFormFields>({
+  const methods = useForm<
+    CounterpartAddressFormFields,
+    any,
+    CounterpartAddressFormFields
+  >({
     resolver: zodResolver(getAddressValidationSchema(i18n)),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),
@@ -71,5 +77,6 @@ export function useCounterpartAddressFormUpdate({
     submitForm,
     updateAddress,
     isLoading: addressUpdateMutation.isPending || isCounterpartLoading,
+    payableCounterpartRawData,
   };
 }

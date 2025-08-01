@@ -1,3 +1,11 @@
+import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
+import { sanitizeLineItems } from '../../utils';
+import type {
+  CreateReceivablesFormProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '../../validation';
+// @ts-expect-error Importing css file from a different package is not supported
+import invoicePreviewStyles from './InvoicePreview.css';
 import { components } from '@/api';
 import {
   calculateDueDate,
@@ -16,17 +24,7 @@ import { MeasureUnit } from '@/ui/MeasureUnit/MeasureUnit';
 import styled from '@emotion/styled';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { isValid } from 'date-fns';
-
-import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../../utils';
-import type {
-  CreateReceivablesFormProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../../validation';
-// @ts-expect-error Importing css file from a different package is not supported
-import invoicePreviewStyles from './InvoicePreview.css';
 
 interface InvoicePreviewProps {
   address:
@@ -210,8 +208,8 @@ export const InvoicePreview = ({
                 {counterpart && isOrganizationCounterpart(counterpart)
                   ? counterpart.organization.email
                   : counterpart && isIndividualCounterpart(counterpart)
-                  ? counterpart.individual.email
-                  : ''}
+                    ? counterpart.individual.email
+                    : ''}
               </div>
 
               {counterpart?.tax_id && (

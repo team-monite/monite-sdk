@@ -41,7 +41,7 @@ type DialogFooterProps = {
   /** Primary action button configuration (submit button or normal button). */
   primaryButton?: ActionButtonProps | SubmitButtonProps;
   /** Secondary action button configuration */
-  secondaryButton?: ActionButtonProps;
+  secondaryButton?: ActionButtonProps & { onTheLeft?: boolean };
   /** Delete action button configuration */
   deleteButton?: ActionButtonProps;
   /** Cancel action button configuration */
@@ -57,8 +57,10 @@ type DialogFooterProps = {
  * and form submission capabilities.
  *
  * Layout:
- * - Left: Delete button (if configured)
+ * - Left: Delete button (if configured) | Secondary button (if configured)
  * - Right: Cancel (if not hidden) | Secondary (if configured) | Primary (if configured)
+ *
+ * The secondary button can be placed on right (default) or left side of the footer.
  *
  * @component
  * @example
@@ -72,6 +74,7 @@ type DialogFooterProps = {
  *   secondaryButton={{
  *     label: "Preview",
  *     onClick: handlePreview
+ *     onTheLeft: true
  *   }}
  *   cancelButton={{
  *     onClick: handleClose
@@ -110,7 +113,7 @@ export const DialogFooter = ({
           width: '100%',
         }}
       >
-        <div>
+        <Stack direction="row" spacing={2}>
           {deleteButton && (
             <Button
               variant="text"
@@ -125,7 +128,21 @@ export const DialogFooter = ({
               )}
             </Button>
           )}
-        </div>
+          {secondaryButton?.onTheLeft && (
+            <Button
+              variant="text"
+              color="primary"
+              onClick={secondaryButton.onClick}
+              disabled={secondaryButton.isDisabled || secondaryButton.isLoading}
+            >
+              {secondaryButton.isLoading ? (
+                <CircularProgress color="inherit" size={20} />
+              ) : (
+                secondaryButton.label
+              )}
+            </Button>
+          )}
+        </Stack>
         <Stack direction="row" spacing={2}>
           {!cancelButton?.hideCancel && (
             <Button
@@ -141,7 +158,7 @@ export const DialogFooter = ({
               {cancelButton?.label || t(i18n)`Cancel`}
             </Button>
           )}
-          {secondaryButton && (
+          {secondaryButton && !secondaryButton.onTheLeft && (
             <Button
               variant="text"
               color="primary"

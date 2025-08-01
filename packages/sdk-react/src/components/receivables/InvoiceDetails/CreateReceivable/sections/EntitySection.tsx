@@ -1,11 +1,9 @@
-import { Controller, useFormContext } from 'react-hook-form';
-
+import type { SectionGeneralProps } from './Section.types';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, FormControl, TextField, Typography } from '@mui/material';
-
-import type { SectionGeneralProps } from './Section.types';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface EntitySectionProps extends SectionGeneralProps {
   /**

@@ -1,8 +1,13 @@
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
+import { InlineSuggestionFill } from '../InlineSuggestionFill';
 import {
   useCounterpartForm,
   CounterpartsFormProps,
 } from '../useCounterpartForm';
+import {
+  usePayableCounterpartRawDataSuggestions,
+  CounterpartFormFieldsRawMapping,
+} from '../usePayableCounterpartRawDataSuggestions';
 import {
   prepareCounterpartOrganization,
   prepareCounterpartOrganizationUpdate,
@@ -53,12 +58,30 @@ interface CounterpartOrganizationFormProps extends CounterpartsFormProps {
   defaultValuesOCR?: DefaultValuesOCROrganization;
 }
 
+const organizationFieldsMapping: CounterpartFormFieldsRawMapping = {
+  'organization.companyName': 'name',
+  'organization.email': 'email',
+  'organization.phone': 'phone',
+  tax_id: 'tax_id',
+};
+
 export const CounterpartOrganizationForm = (
   props: CounterpartOrganizationFormProps
 ) => {
-  const isInvoiceCreation = props.isInvoiceCreation;
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+
+  const {
+    id: counterpartId,
+    isInvoiceCreation,
+    showCategories,
+    defaultValuesOCR,
+    defaultValues,
+    payableCounterpartRawData,
+    onCancel,
+    onClose,
+  } = props;
+
   const {
     counterpart,
     formRef,
@@ -67,24 +90,24 @@ export const CounterpartOrganizationForm = (
     isLoading,
   } = useCounterpartForm(props);
 
+  const organizationCounterpart = counterpart as
+    | components['schemas']['CounterpartOrganizationRootResponse']
+    | undefined;
+
   const { data: isCreateAllowed } = useIsActionAllowed({
     method: 'counterpart',
     action: 'create',
     entityUserId: counterpart?.created_by_entity_user_id,
   });
 
-  const { showCategories, defaultValuesOCR, defaultValues } = props;
-
-  const organizationCounterpart = counterpart as
-    | components['schemas']['CounterpartOrganizationRootResponse']
-    | undefined;
+  const formName = `Monite-Form-counterpartOrganizationForm-${useId()}`;
 
   const methods = useForm<
     | CreateCounterpartOrganizationFormFields
     | UpdateCounterpartOrganizationFormFields
   >({
     resolver: zodResolver(
-      props.id || counterpart
+      counterpartId || counterpart
         ? getUpdateCounterpartValidationSchema(i18n)
         : getCreateCounterpartValidationSchema(i18n)
     ),
@@ -109,7 +132,20 @@ export const CounterpartOrganizationForm = (
     ),
   });
 
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, setValue, watch } = methods;
+
+  const values = watch();
+
+  const { fieldsEqual, allFieldsEqual, updateFormWithRawData } =
+    usePayableCounterpartRawDataSuggestions(
+      payableCounterpartRawData,
+      values,
+      setValue,
+      organizationFieldsMapping
+    );
+
+  const showFillMatchBillButton =
+    !!payableCounterpartRawData && !allFieldsEqual;
 
   const handleSubmitWithoutPropagation = useCallback(
     (e: BaseSyntheticEvent) => {
@@ -177,15 +213,13 @@ export const CounterpartOrganizationForm = (
     reset,
   ]);
 
-  const formName = `Monite-Form-counterpartOrganizationForm-${useId()}`;
-
-  if (!isCreateAllowed && !props.id) {
+  if (!isCreateAllowed && !counterpartId) {
     return <AccessRestriction />;
   }
 
   return (
     <>
-      {((isInvoiceCreation && !props?.id) || !isInvoiceCreation) && (
+      {((isInvoiceCreation && !counterpartId) || !isInvoiceCreation) && (
         <DialogHeader
           secondaryLevel
           title={
@@ -196,9 +230,9 @@ export const CounterpartOrganizationForm = (
                 : t(i18n)`Create new counterpart`
           }
           closeSecondaryLevelDialog={
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose
           }
           showDivider={!isInvoiceCreation}
         />
@@ -219,17 +253,24 @@ export const CounterpartOrganizationForm = (
                   name="organization.companyName"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Company name`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      required
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Company name`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        required
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.name}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -305,17 +346,24 @@ export const CounterpartOrganizationForm = (
                   name="organization.email"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Email`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      required
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Email`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        required
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.email}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -330,15 +378,22 @@ export const CounterpartOrganizationForm = (
                   name="organization.phone"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Phone number`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Phone number`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.phone}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -380,16 +435,23 @@ export const CounterpartOrganizationForm = (
                   name="tax_id"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      id={field.name}
-                      label={t(i18n)`Tax ID`}
-                      variant="standard"
-                      fullWidth
-                      error={Boolean(error)}
-                      helperText={error?.message}
-                      {...field}
-                      value={field.value ?? ''}
-                    />
+                    <>
+                      <TextField
+                        id={field.name}
+                        label={t(i18n)`Tax ID`}
+                        variant="standard"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        {...field}
+                        value={field.value ?? ''}
+                      />
+                      <InlineSuggestionFill
+                        rawData={payableCounterpartRawData?.tax_id}
+                        isHidden={fieldsEqual[field.name]}
+                        fieldOnChange={field.onChange}
+                      />
+                    </>
                   )}
                 />
               </Grid>
@@ -399,16 +461,25 @@ export const CounterpartOrganizationForm = (
       </DialogContent>
       <DialogFooter
         primaryButton={{
-          label: props?.id ? t(i18n)`Save` : t(i18n)`Create`,
+          label: counterpartId ? t(i18n)`Save` : t(i18n)`Create`,
           formId: formName,
           isLoading: isLoading,
         }}
+        secondaryButton={
+          showFillMatchBillButton
+            ? {
+                label: t(i18n)`Update to match bill`,
+                onTheLeft: true,
+                onClick: () => updateFormWithRawData(),
+              }
+            : undefined
+        }
         cancelButton={{
           label: isInvoiceCreation ? t(i18n)`Back` : t(i18n)`Cancel`,
           onClick:
-            props?.id || isInvoiceCreation
-              ? props.onCancel
-              : props.onClose || dialogContext?.onClose,
+            counterpartId || isInvoiceCreation
+              ? onCancel
+              : onClose || dialogContext?.onClose,
         }}
       />
     </>

@@ -109,6 +109,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             addressId={addressId}
             onCancel={onAddressCancel}
             onUpdate={onAddressUpdate}
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -131,6 +132,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={onVatCancel}
             onCreate={onVatCreate}
             onUpdate={onVatUpdate}
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -142,6 +144,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             onCancel={onBankCancel}
             onCreate={onBankCreate}
             onUpdate={onBankUpdate}
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -174,6 +177,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     props.onContactDelete,
     props.onDelete,
     props.onVatDelete,
+    props.payableCounterpartRawData,
     showBankAccountForm,
     showBankAccounts,
     shouldShowCategories,
@@ -199,6 +203,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCRIndividual
             }
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -217,6 +222,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
             defaultValuesOCR={
               props.defaultValuesOCR as DefaultValuesOCROrganization
             }
+            payableCounterpartRawData={props.payableCounterpartRawData}
           />
         );
 
@@ -234,6 +240,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     shouldShowCategories,
     showView,
     props.defaultValuesOCR,
+    props.payableCounterpartRawData,
     props.onClose,
     props.onReturn,
   ]);
