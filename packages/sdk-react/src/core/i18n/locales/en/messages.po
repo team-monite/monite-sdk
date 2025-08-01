@@ -486,15 +486,11 @@ msgstr "Add Rule"
 msgid "Add someone new"
 msgstr "Add someone new"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:164
-msgid "Add text"
-msgstr "Add text"
-
 #: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:142
 msgid "Add specific details"
 msgstr "Add specific details"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:166
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:164
 msgid "Add text"
 msgstr "Add text"
 
@@ -7121,7 +7117,7 @@ msgstr "Project"
 #~ msgid "Prompt Library"
 #~ msgstr "Prompt Library"
 
-#: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:23
+#: src/components/aiAssistant/components/AIPrompts/AIPrompts.tsx:21
 msgid "Prompts"
 msgstr "Prompts"
 
@@ -8207,6 +8203,11 @@ msgstr "Submit"
 msgid "Submit invoice"
 msgstr "Submit invoice"
 
+#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:206
+#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:161
+msgid "Submit message"
+msgstr "Submit message"
+
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:723
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:528
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:725
@@ -8214,11 +8215,6 @@ msgstr "Submit invoice"
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:31
 msgid "Subtotal"
 msgstr "Subtotal"
-
-#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:206
-#: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:161
-msgid "Submit message"
-msgstr "Submit message"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:408
 msgid "Subtotal{0}"
