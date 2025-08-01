@@ -2437,8 +2437,8 @@ msgstr "Create new"
 msgid "Create New"
 msgstr "Create New"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:330
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:467
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:334
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:471
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:214
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:230
 #: src/components/receivables/components/CounterpartSelector.tsx:184
@@ -2449,7 +2449,7 @@ msgstr "Create new counterpart"
 #~ msgid "Create new Counterpart"
 #~ msgstr "Create new Counterpart"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:421
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:425
 msgid "Create new counterpart:"
 msgstr "Create new counterpart:"
 
@@ -3283,7 +3283,7 @@ msgstr "Ecuador"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:281
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:187
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:383
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:387
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:43
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:63
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:87
@@ -3327,7 +3327,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:455
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:459
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:146
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:170
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:173
@@ -3922,9 +3922,13 @@ msgstr "Failed to retrieve payment link. Please try again."
 msgid "Failed to set Bank Account as default."
 msgstr "Failed to set Bank Account as default."
 
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:947
+msgid "Failed to submit Payable with AI suggestion. Please try editing the Payable and submit again."
+msgstr "Failed to submit Payable with AI suggestion. Please try editing the Payable and submit again."
+
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:926
-msgid "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
-msgstr "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
+#~ msgid "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
+#~ msgstr "Failed to submit Payable with AI suggestion. Plese try editing the Payable and re-submit."
 
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:80
 msgid "Failed to update"
@@ -5872,7 +5876,7 @@ msgstr "New Caledonia"
 #~ msgid "New chat"
 #~ msgstr "New chat"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:176
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:180
 msgid "New counterpart"
 msgstr "New counterpart"
 
@@ -6107,7 +6111,7 @@ msgstr "No users assigned"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser/AutocompleteUser.tsx:56
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUsers/AutocompleteUsers.tsx:60
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:47
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:311
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:315
 msgid "No users found"
 msgstr "No users found"
 
@@ -6165,7 +6169,7 @@ msgstr "NOT allowed"
 msgid "Not available"
 msgstr "Not available"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:392
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:409
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:193
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:238
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:257
@@ -6260,7 +6264,7 @@ msgstr "Opticians, Eyeglasses"
 msgid "Optometrists, Ophthalmologist"
 msgstr "Optometrists, Ophthalmologist"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:458
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:462
 msgid "or"
 msgstr "or"
 
@@ -6463,7 +6467,7 @@ msgstr "Payable"
 #~ msgid "Payable \"{0}\" has been approved"
 #~ msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:963
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:1003
 msgid "Payable “{0}” has been approved"
 msgstr "Payable “{0}” has been approved"
 
@@ -6471,7 +6475,7 @@ msgstr "Payable “{0}” has been approved"
 #~ msgid "Payable \"{0}\" has been canceled"
 #~ msgstr "Payable \"{0}\" has been canceled"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:905
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:909
 msgid "Payable “{0}” has been canceled"
 msgstr "Payable “{0}” has been canceled"
 
@@ -6479,15 +6483,15 @@ msgstr "Payable “{0}” has been canceled"
 #~ msgid "Payable \"{0}\" has been created"
 #~ msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:727
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:731
 msgid "Payable “{0}” has been created"
 msgstr "Payable “{0}” has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:1001
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:1041
 msgid "Payable “{0}” has been force approved"
 msgstr "Payable “{0}” has been force approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:983
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:1023
 msgid "Payable “{0}” has been force rejected"
 msgstr "Payable “{0}” has been force rejected"
 
@@ -6499,7 +6503,7 @@ msgstr "Payable “{0}” has been force rejected"
 #~ msgid "Payable \"{0}\" has been rejected"
 #~ msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:945
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:985
 msgid "Payable “{0}” has been rejected"
 msgstr "Payable “{0}” has been rejected"
 
@@ -6507,7 +6511,7 @@ msgstr "Payable “{0}” has been rejected"
 #~ msgid "Payable \"{0}\" has been reopened"
 #~ msgstr "Payable \"{0}\" has been reopened"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:1019
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:1059
 msgid "Payable “{0}” has been reopened"
 msgstr "Payable “{0}” has been reopened"
 
@@ -6515,7 +6519,7 @@ msgstr "Payable “{0}” has been reopened"
 #~ msgid "Payable \"{0}\" has been submitted"
 #~ msgstr "Payable \"{0}\" has been submitted"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:923
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:963
 msgid "Payable “{0}” has been submitted"
 msgstr "Payable “{0}” has been submitted"
 
@@ -6523,7 +6527,7 @@ msgstr "Payable “{0}” has been submitted"
 #~ msgid "Payable \"{0}\" has been updated"
 #~ msgstr "Payable \"{0}\" has been updated"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:791
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:795
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
@@ -8495,7 +8499,7 @@ msgstr "The bill will receive the “Canceled” status and will require no paym
 #~ msgid "The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 #~ msgstr "The counterpart details in the bill don't fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:443
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:447
 msgid "The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 msgstr "The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 
@@ -8544,11 +8548,11 @@ msgstr "The review for the persons has been completed. You can proceed to the ne
 msgid "The setting will apply to all your future documents"
 msgstr "The setting will apply to all your future documents"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:417
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:421
 msgid "The specified counterpart has not been saved yet."
 msgstr "The specified counterpart has not been saved yet."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:719
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:722
 msgid "The specified vendor has not been saved yet."
 msgstr "The specified vendor has not been saved yet."
 
@@ -8568,11 +8572,11 @@ msgstr "The start date for the recurrence shouldn’t be in the past"
 #~ msgid "The vendor details in the bill don't fully match the saved counterpart."
 #~ msgstr "The vendor details in the bill don't fully match the saved counterpart."
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:716
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:719
 msgid "The vendor details in the bill don’t fully match the saved counterpart."
 msgstr "The vendor details in the bill don’t fully match the saved counterpart."
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:405
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:409
 msgid "The vendor name on the bill doesn’t exactly match the saved counterpart, so AI selected the closest option."
 msgstr "The vendor name on the bill doesn’t exactly match the saved counterpart, so AI selected the closest option."
 
@@ -8797,9 +8801,9 @@ msgstr "Tonga"
 msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:831
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:323
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:549
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:820
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:340
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:566
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:431
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:752
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
@@ -9479,7 +9483,7 @@ msgstr "VAT Value is required"
 msgid "Vendor"
 msgstr "Vendor"
 
-#: src/components/counterparts/components/CounterpartAutocomplete.tsx:402
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:406
 msgid "Vendor auto-matched by AI"
 msgstr "Vendor auto-matched by AI"
 
