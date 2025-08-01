@@ -1,3 +1,7 @@
+import {
+  useGetPayableCounterpart,
+  usePayableDetailsThemeProps,
+} from '../../hooks';
 import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
@@ -9,7 +13,6 @@ import {
   PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
-  usePayableDetailsThemeProps,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import { components } from '@/api';
@@ -332,36 +335,18 @@ const PayableDetailsFormBase = forwardRef<
 
     const isSubmittedByKeyboardRef = useRef(false);
 
-    const { data: matchingToOCRCounterpart } =
-      api.counterparts.getCounterparts.useQuery(
-        {
-          query: {
-            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
-            is_vendor: true,
-            limit: 1,
-          },
-        },
-        {
-          enabled: Boolean(
-            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
-          ),
-          select: (data) => data.data.at(0),
-        }
-      );
-    const matchingToOCRCounterpartId = matchingToOCRCounterpart?.id;
+    const {
+      counterpart,
+      counterpartRawName,
+      isCounterpartAIMatched,
+      isCounterpartMatchingToOCRFound,
+      isCounterpartLoading,
+    } = useGetPayableCounterpart({ payable });
 
-    const { data: payableAISuggestions } =
-      api.payables.getPayablesIdSuggestions.useQuery(
-        {
-          path: { payable_id: payable?.id ?? '' },
-        },
-        {
-          enabled: Boolean(payable?.id),
-        }
-      );
     const counterpartEditShowInlineSuggestions =
-      payableAISuggestions?.suggested_counterpart &&
-      payableAISuggestions.suggested_counterpart.id === currentCounterpart;
+      counterpart &&
+      isCounterpartAIMatched &&
+      counterpart.id === currentCounterpart;
 
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
@@ -374,10 +359,10 @@ const PayableDetailsFormBase = forwardRef<
     }, [currentCounterpart, currentCounterpartBankAccount, setValue]);
 
     useEffect(() => {
-      if (!matchingToOCRCounterpartId) return;
+      if (!isCounterpartMatchingToOCRFound || !counterpart) return;
       if (getFieldState('counterpart').isTouched) return;
-      setValue('counterpart', matchingToOCRCounterpartId);
-    }, [matchingToOCRCounterpartId, getFieldState, setValue]);
+      setValue('counterpart', counterpart.id);
+    }, [counterpart, getFieldState, isCounterpartMatchingToOCRFound, setValue]);
 
     useEffect(() => {
       if (
@@ -496,7 +481,7 @@ const PayableDetailsFormBase = forwardRef<
                       />
                       <CounterpartAutocomplete
                         control={control}
-                        disabled={false}
+                        disabled={isCounterpartLoading}
                         name="counterpart"
                         label={t(i18n)`Vendor`}
                         customerTypes={customerTypes}
@@ -547,14 +532,18 @@ const PayableDetailsFormBase = forwardRef<
                             },
                           };
                         }}
-                        counterpartMatchingToOCRFound={matchingToOCRCounterpart}
-                        counterpartRawName={payable?.counterpart_raw_data?.name}
+                        counterpartMatchingToOCR={
+                          isCounterpartMatchingToOCRFound
+                            ? counterpart
+                            : undefined
+                        }
+                        counterpartRawName={counterpartRawName}
                         showEditCounterpartButton
                         setShowEditCounterpartDialog={
                           setIsEditCounterpartOpened
                         }
-                        AICounterpartSuggestions={
-                          payableAISuggestions?.suggested_counterpart
+                        counterpartAISuggested={
+                          isCounterpartAIMatched ? counterpart : undefined
                         }
                       />
                       <Controller

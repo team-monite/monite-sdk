@@ -1,5 +1,4 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useCounterpartById } from '@/core/queries/useCounterpart';
 import { useCounterpartsBankAccountsList } from '@/core/queries/useCouterpartsBankAccounts';
 
 export function usePayableDetailsInfo({
@@ -11,7 +10,6 @@ export function usePayableDetailsInfo({
 }) {
   const { api } = useMoniteContext();
 
-  const counterpartQuery = useCounterpartById(currentCounterpartId);
   const counterpartBankAccountQuery =
     useCounterpartsBankAccountsList(currentCounterpartId);
   const lineItemsQuery = api.payables.getPayablesIdLineItems.useQuery({
@@ -19,7 +17,6 @@ export function usePayableDetailsInfo({
   });
 
   return {
-    counterpartQuery,
     counterpartBankAccountQuery,
     lineItemsQuery,
   };

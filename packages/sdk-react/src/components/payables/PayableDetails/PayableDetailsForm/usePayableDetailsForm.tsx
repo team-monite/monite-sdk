@@ -8,7 +8,9 @@ export type UsePayableDetailsFormProps = {
 export function usePayableDetailsForm({
   currentCounterpartId,
 }: UsePayableDetailsFormProps) {
-  const counterpartQuery = useCounterpartList();
+  const counterpartQuery = useCounterpartList({
+    query: { is_vendor: true },
+  });
 
   const counterpartBankAccountQuery =
     useCounterpartsBankAccountsList(currentCounterpartId);

@@ -8,8 +8,8 @@ import type {
 } from '@/components/counterparts/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDebounce, useIsMounted } from '@/core/hooks';
-import { useCounterpartList, useCounterpartById } from '@/core/queries';
+import { useIsMounted } from '@/core/hooks';
+import { useCounterpartList } from '@/core/queries';
 import { Alert, AlertDescription, AlertTitle } from '@/ui/components/alert';
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
@@ -40,6 +40,10 @@ export interface CounterpartsAutocompleteOptionProps {
 
 const COUNTERPART_CREATE_NEW_ID = '__create-new__';
 
+// Delay to wait for form initialization,
+// to prevent premature auto-selection of counterpart in form input
+const FORM_INIT_TIMEOUT = 50;
+
 const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
 function isCreateNewCounterpartOption(
@@ -60,11 +64,11 @@ interface CounterpartAutocompleteProps<TFieldValues extends FieldValues> {
   multiple?: boolean;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
-  counterpartMatchingToOCRFound?: components['schemas']['CounterpartResponse'];
   counterpartRawName?: string;
+  counterpartMatchingToOCR?: components['schemas']['CounterpartResponse'];
+  counterpartAISuggested?: components['schemas']['CounterpartResponse'];
   setShowEditCounterpartDialog?: (value: SetStateAction<boolean>) => void;
   showEditCounterpartButton?: boolean;
-  AICounterpartSuggestions?: components['schemas']['SuggestedCounterpartPayload'];
 }
 
 export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
@@ -76,11 +80,11 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   multiple = false,
   disabled = false,
   customerTypes,
-  counterpartMatchingToOCRFound,
   counterpartRawName,
+  counterpartMatchingToOCR,
+  counterpartAISuggested,
   setShowEditCounterpartDialog,
   showEditCounterpartButton = false,
-  AICounterpartSuggestions,
 }: CounterpartAutocompleteProps<TFieldValues>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -98,13 +102,6 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
       query: { is_vendor: true },
     });
 
-  const { data: aiSuggestedCounterpartData } = useCounterpartById(
-    !multiple && AICounterpartSuggestions?.id
-      ? AICounterpartSuggestions.id
-      : undefined
-  );
-  const debouncedAISuggestedData = useDebounce(aiSuggestedCounterpartData, 300);
-
   const currentValue = getValues(name);
 
   const hasFieldValue = useMemo(() => {
@@ -119,29 +116,48 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
   const autocompleteOptions = useMemo<
     Array<CounterpartsAutocompleteOptionProps>
   >(() => {
+    // Create options from props, to be shown immediately
+    const propOptions: Array<CounterpartsAutocompleteOptionProps> = [];
+
+    // Base options with counterparts from the API
     const baseOptions =
       counterparts?.data.map((counterpart) => ({
         id: counterpart.id,
         label: getCounterpartName(counterpart),
       })) ?? [];
 
-    // If the AI suggested counterpart is not in the list of counterparts, add it to the list
+    // Add counterpartMatchingToOCR if it exists and isn't already in baseOptions
     if (
       !multiple &&
-      aiSuggestedCounterpartData &&
-      !baseOptions.some((c) => c.id === aiSuggestedCounterpartData.id)
+      counterpartMatchingToOCR &&
+      !baseOptions.some((c) => c.id === counterpartMatchingToOCR.id)
     ) {
-      return [
-        {
-          id: aiSuggestedCounterpartData.id,
-          label: getCounterpartName(aiSuggestedCounterpartData),
-        },
-        ...baseOptions,
-      ];
+      propOptions.push({
+        id: counterpartMatchingToOCR.id,
+        label: getCounterpartName(counterpartMatchingToOCR),
+      });
     }
-    // Else, return the base options
-    return baseOptions;
-  }, [counterparts, multiple, aiSuggestedCounterpartData]);
+    // Add counterpartAISuggested if it exists and isn't already in baseOptions or propOptions
+    if (
+      !multiple &&
+      counterpartAISuggested &&
+      !baseOptions.some((c) => c.id === counterpartAISuggested.id) &&
+      !propOptions.some((c) => c.id === counterpartAISuggested.id)
+    ) {
+      propOptions.push({
+        id: counterpartAISuggested.id,
+        label: getCounterpartName(counterpartAISuggested),
+      });
+    }
+
+    // Return prop options first (for immediate display), then base options
+    return [...propOptions, ...baseOptions];
+  }, [
+    counterparts,
+    multiple,
+    counterpartMatchingToOCR,
+    counterpartAISuggested,
+  ]);
 
   useEffect(() => {
     if (newCounterpartId) {
@@ -189,7 +205,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
 
   // Track form initialization to prevent premature auto-selection
   useEffect(() => {
-    if (hasFieldValue) {
+    if (hasFieldValue || counterpartAISuggested?.id) {
       setIsFormInitialized(true);
     } else {
       // Set a timeout to mark as initialized even if no value is set
@@ -198,52 +214,51 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
         if (isMountedRef.current) {
           setIsFormInitialized(true);
         }
-      }, 1000);
+      }, FORM_INIT_TIMEOUT);
 
       return () => clearTimeout(timeoutId);
     }
-  }, [hasFieldValue, isMountedRef]);
+  }, [hasFieldValue, counterpartAISuggested?.id, isMountedRef]);
 
-  // Auto-select AI suggested counterpart with proper timing and debouncing
   useEffect(() => {
-    // Only proceed if form is initialized and we have all required data
     if (
       !multiple &&
-      AICounterpartSuggestions?.id &&
-      debouncedAISuggestedData &&
-      isFormInitialized &&
-      !hasUserChangedValue
+      !hasFieldValue &&
+      !hasUserChangedValue &&
+      isMountedRef.current
     ) {
-      // Only set if the field is actually empty (not just falsy)
-      if (!hasFieldValue) {
-        // Use setTimeout to ensure this runs after the current render cycle
-        const timeoutId = setTimeout(() => {
-          if (isMountedRef.current) {
-            setValue(
-              name,
-              AICounterpartSuggestions.id as PathValue<
-                TFieldValues,
-                FieldPath<TFieldValues>
-              >,
-              { shouldValidate: true }
-            );
-          }
-        }, 100);
+      const propCounterpartToSet =
+        counterpartAISuggested || counterpartMatchingToOCR;
 
-        return () => clearTimeout(timeoutId);
+      if (propCounterpartToSet?.id) {
+        // For AI suggested, wait for form initialization to prevent premature setting
+        if (
+          propCounterpartToSet === counterpartAISuggested &&
+          !isFormInitialized
+        ) {
+          return;
+        }
+
+        setValue(
+          name,
+          propCounterpartToSet.id as PathValue<
+            TFieldValues,
+            FieldPath<TFieldValues>
+          >,
+          { shouldValidate: true }
+        );
       }
     }
   }, [
-    AICounterpartSuggestions,
-    debouncedAISuggestedData,
+    counterpartMatchingToOCR,
+    counterpartAISuggested,
     multiple,
-    getValues,
+    hasFieldValue,
+    hasUserChangedValue,
     name,
     setValue,
-    hasUserChangedValue,
-    isFormInitialized,
-    hasFieldValue,
     isMountedRef,
+    isFormInitialized,
   ]);
 
   const selectedCounterpartOption = useMemo(() => {
@@ -255,7 +270,10 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
     );
   }, [currentValue, autocompleteOptions, multiple]);
 
-  if (isCounterpartsLoading) {
+  const hasCounterpartFromProps =
+    Boolean(counterpartMatchingToOCR) || Boolean(counterpartAISuggested);
+
+  if (isCounterpartsLoading && !hasCounterpartFromProps) {
     return (
       <TextField
         label={label}
@@ -292,7 +310,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                 multiple={multiple}
                 autoComplete
                 includeInputInList
-                disabled={disabled}
+                disabled={disabled || isCounterpartsLoading}
                 filterSelectedOptions
                 noOptionsText={t(i18n)`No users found`}
                 slotProps={{
@@ -349,6 +367,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         ...params.InputProps,
                         endAdornment: (
                           <>
+                            {isCounterpartsLoading && (
+                              <CircularProgress size={20} />
+                            )}
                             {showEditCounterpartButton &&
                               setShowEditCounterpartDialog &&
                               !multiple &&
@@ -375,8 +396,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                       <FormHelperText error>{error.message}</FormHelperText>
                     )}
 
-                    {AICounterpartSuggestions &&
-                      currentValue == AICounterpartSuggestions.id && (
+                    {counterpartAISuggested &&
+                      currentValue === counterpartAISuggested.id && (
                         <Alert
                           variant="info"
                           className="mtw:mt-2"
@@ -391,8 +412,8 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </Alert>
                       )}
 
-                    {!AICounterpartSuggestions &&
-                      !counterpartMatchingToOCRFound &&
+                    {!counterpartAISuggested &&
+                      !counterpartMatchingToOCR &&
                       counterpartRawName &&
                       !currentValue &&
                       !multiple && (
@@ -405,7 +426,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                           <Button
                             variant="link"
                             size="sm"
-                            className="mtw:ml-0.5 mtw:p-0 mtw:h-auto mtw:font-medium"
+                            className="mtw:ml-0.5 mtw:p-0 mtw:h-auto mtw:text-xs mtw:underline"
                             onClick={(event) => {
                               event.preventDefault();
                               setIsCreateCounterpartOpened(true);
@@ -416,9 +437,9 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                         </FormHelperText>
                       )}
 
-                    {!AICounterpartSuggestions &&
-                      counterpartMatchingToOCRFound &&
-                      currentValue == counterpartMatchingToOCRFound.id &&
+                    {!counterpartAISuggested &&
+                      counterpartMatchingToOCR &&
+                      currentValue == counterpartMatchingToOCR.id &&
                       !multiple &&
                       setShowEditCounterpartDialog && (
                         <Alert variant="warning" className="mtw:mt-2">
@@ -436,7 +457,7 @@ export const CounterpartAutocomplete = <TFieldValues extends FieldValues>({
                                 setShowEditCounterpartDialog(true);
                               }}
                             >{t(i18n)`Edit ${getCounterpartName(
-                              counterpartMatchingToOCRFound
+                              counterpartMatchingToOCR
                             )}`}</Button>
                             {t(i18n)` or `}
                             <Button
