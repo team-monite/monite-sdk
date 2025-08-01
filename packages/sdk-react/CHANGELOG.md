@@ -1,5 +1,16 @@
 # @monite/sdk-react
 
+## 4.5.0
+
+### Minor Changes
+
+- a1fbd0b: AI suggested Counterparts available on Payable details screen.
+- 98ac11b: Added feature to auto-link a Counterpart to a Payable based on AI suggestions. Enhanced Counterpart edit forms with inline suggestions from raw Payable data
+
+### Patch Changes
+
+- ec9113e: Implemented footer field for customer notes in invoice
+
 ## 4.4.0
 
 ### Minor Changes
