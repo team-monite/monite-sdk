@@ -1,5 +1,19 @@
 # @monite/sdk-drop-in
 
+## 2.3.0
+
+### Minor Changes
+
+- 17e46dd: Added a new componentSettings property for templateSettings availableTemplateIds that allows the partner to customise which templates will be available for selection on the template selection component
+- f9c0497: Added entity profile modal in invoice creation screen
+
+### Patch Changes
+
+- fe155c6: Improved cleanup handling for fixing memory leaks
+- 9a3b6a1: Apply font-family from Theme to tailwind fonts
+- a415f2d: Rename Payables default title to Bill Pay
+- cfa6cb9: Add payables approval flow components and logic
+
 ## 2.2.1
 
 ### Patch Changes
@@ -28,7 +42,6 @@
 - 3e50e05: Update columns on Account Payables Table
 - 2a0d029: Added functionality for selecting vat mode when creating an invoice
 - cb1028a: - Replaced current `DocumentDesign` component with `TemplateSettings`, a more complete component to edit template settings, giving more flexibility in customisation. It accepts 3 props: - `isDialog`, a boolean value that tells whether the component will be rendered inside a Dialog wrapper or not - `isOpen`, a boolean flag that controls the dialog state - `handleCloseDialog`, a callback function that is called to close the dialog
-
   - Also added a new option in componentSettings: `templateSettings`
     This option allows the user to further customise how the settings will be presented and it accepts the following props: - `showTemplateSection`, a boolean value that defines whether to display or not the template selection section, defaults to true. - `showTemplatePreview`, a boolean value that defines whether to display or not the template PDF preview, defaults to true. - `showLogoSection`, a boolean value that defines whether to display or not the logo selection section, defaults to true. - `enableDocumentNumberCustomisationTab`, a boolean value that enables the document number customisation tab if true or hides it if false, defaults to true. - `availableARDocuments`, list of available AR documents for customisation, defaults to all of the documents. - `availableAPDocuments`, list of available AP documents for customisation, defaults to all of the documents.
 
@@ -63,7 +76,6 @@
 
 - 646c7ac: Bump Drop-in (v4)
 - 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
-
   - FinanceApplicationCard has been renamed to FinanceIntegrationCard
   - FinanceBanner accepts 2 props:
     - enableServicingBanner
@@ -84,10 +96,8 @@
 - 143072a: Default styles refresh across all components
 - c5d39e5: Line item units management added
 - 9d52e3b: - Added entity bank account creation flow
-
   - Receivables now exports `BankAccountFormDialog`, a Dialog component for the entity bank account creation flow
     This component has the following props:
-
     - `entityBankAccountId` id of the selected bank account, if passed, dialog will be edit mode and if not it will be the create one.
     - `isOpen` determines the state of the dialog
     - `bankAccounts` list of available entity bank accounts
@@ -173,7 +183,6 @@
 ### Major Changes
 
 - 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
-
   - FinanceApplicationCard has been renamed to FinanceIntegrationCard
   - FinanceBanner accepts 2 props:
     - enableServicingBanner

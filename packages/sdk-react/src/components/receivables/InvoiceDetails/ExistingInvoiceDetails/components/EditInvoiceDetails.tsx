@@ -1,6 +1,15 @@
-import { useCallback, useId, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
+import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
+import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
+import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
+import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
+import {
+  getUpdateInvoiceValidationSchema,
+  UpdateReceivablesFormProps,
+} from '../../CreateReceivable/validation';
+import { EditInvoiceReminderDialog } from '../../EditInvoiceReminderDialog';
+import { useInvoiceReminderDialogs } from '../../useInvoiceReminderDialogs';
+import { useInvoiceDefaultValues } from '../hooks/useInvoiceDefaultValues';
+import { useMeasureUnitsMapping } from '../hooks/useMeasureUnitsMapping';
 import { components } from '@/api';
 import { RemindersSection } from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
@@ -27,21 +36,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-
 import { format } from 'date-fns';
-
-import { CreateInvoiceReminderDialog } from '../../CreateInvoiceReminderDialog';
-import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
-import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
-import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
-import {
-  getUpdateInvoiceValidationSchema,
-  UpdateReceivablesFormProps,
-} from '../../CreateReceivable/validation';
-import { EditInvoiceReminderDialog } from '../../EditInvoiceReminderDialog';
-import { useInvoiceReminderDialogs } from '../../useInvoiceReminderDialogs';
-import { useInvoiceDefaultValues } from '../hooks/useInvoiceDefaultValues';
-import { useMeasureUnitsMapping } from '../hooks/useMeasureUnitsMapping';
+import { useCallback, useId, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 type Schemas = components['schemas'];
 
@@ -251,6 +248,7 @@ const EditInvoiceDetailsContent = ({
                     values.counterpart_vat_id_id || undefined,
                   currency: actualCurrency,
                   memo: values.memo,
+                  footer: values.footer,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                   counterpart_shipping_address_id:
@@ -309,7 +307,20 @@ const EditInvoiceDetailsContent = ({
                 actualCurrency={actualCurrency}
                 isVatSelectionDisabled
               />
-              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
+               * is defined and non-empty */}
+              <EntitySection
+                disabled={isLoading}
+                hidden={['purchase_order']}
+                visibleFields={{
+                  isFooterShown:
+                    typeof invoice.footer === 'string' &&
+                    invoice.footer?.trim() !== '',
+                  isPurchaseOrderShown:
+                    typeof invoice.purchase_order === 'string' &&
+                    invoice.purchase_order?.trim() !== '',
+                }}
+              />
               <RemindersSection
                 disabled={isLoading}
                 onUpdateOverdueReminder={onEditOverdueReminder}

@@ -2,6 +2,6 @@
 
 import { AIAssistant } from '@monite/sdk-react';
 
-export const AIPageContent = () => {
+export const AssistantTrigger = () => {
   return <AIAssistant />;
 };

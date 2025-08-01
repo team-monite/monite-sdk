@@ -1,5 +1,26 @@
 # @monite/sdk-react
 
+## 4.4.0
+
+### Minor Changes
+
+- 17e46dd: Added a new componentSettings property for templateSettings availableTemplateIds that allows the partner to customise which templates will be available for selection on the template selection component
+- f9c0497: Added entity profile modal in invoice creation screen
+
+### Patch Changes
+
+- fe155c6: Improved cleanup handling for fixing memory leaks
+- 9a3b6a1: Apply font-family from Theme to tailwind fonts
+- 4f3600f: Remove unused dependencies from sdk-react
+- e8b2dc4: New Approval Policies have default priority 1
+- 9bd7999: Fix pool Payable data to update UI after Payable submitted.
+- a415f2d: Rename Payables default title to Bill Pay
+- db12f8e: Fix UI data not updating instantly after Payable created, submitted, or approved/rejected.
+- 09b356d: Add feature to create new tag on tags selection inputs
+- cfa6cb9: Add payables approval flow components and logic
+- 6cc6719: Fix Approval Policy form: minimum approvals count now defaults to 1
+- 3e5cd08: Fix to not reset Bank Account form fields when selected currency changes.
+
 ## 4.3.1
 
 ### Patch Changes
@@ -32,7 +53,6 @@
 - 73a5e60: Payables Table now has Total, Due, and Paid columns. Also, the payment actions are based on Payment Intents
 - 2a0d029: Added functionality for selecting vat mode when creating an invoice
 - cb1028a: - Replaced current `DocumentDesign` component with `TemplateSettings`, a more complete component to edit template settings, giving more flexibility in customisation. It accepts 3 props: - `isDialog`, a boolean value that tells whether the component will be rendered inside a Dialog wrapper or not - `isOpen`, a boolean flag that controls the dialog state - `handleCloseDialog`, a callback function that is called to close the dialog
-
   - Also added a new option in componentSettings: `templateSettings`
     This option allows the user to further customise how the settings will be presented and it accepts the following props: - `showTemplateSection`, a boolean value that defines whether to display or not the template selection section, defaults to true. - `showTemplatePreview`, a boolean value that defines whether to display or not the template PDF preview, defaults to true. - `showLogoSection`, a boolean value that defines whether to display or not the logo selection section, defaults to true. - `enableDocumentNumberCustomisationTab`, a boolean value that enables the document number customisation tab if true or hides it if false, defaults to true. - `availableARDocuments`, list of available AR documents for customisation, defaults to all of the documents. - `availableAPDocuments`, list of available AP documents for customisation, defaults to all of the documents.
 
@@ -85,7 +105,6 @@
 - 8d0ea89: feat(DEV-12955): add new styling approach for the SDK
 - 1cb86af: refactor(DEV-12028): remove deprecated methods for payable details
 - 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
-
   - FinanceApplicationCard has been renamed to FinanceIntegrationCard
   - FinanceBanner accepts 2 props:
     - enableServicingBanner
@@ -111,10 +130,8 @@
 - ad63579: feat(DEV-13434): new styles for display components and form controls
 - 876aaa8: New line items
 - 9d52e3b: - Added entity bank account creation flow
-
   - Receivables now exports `BankAccountFormDialog`, a Dialog component for the entity bank account creation flow
     This component has the following props:
-
     - `entityBankAccountId` id of the selected bank account, if passed, dialog will be edit mode and if not it will be the create one.
     - `isOpen` determines the state of the dialog
     - `bankAccounts` list of available entity bank accounts
@@ -225,7 +242,6 @@
 ### Major Changes
 
 - 595e63a: Financing components have been redesigned and improved, FinanceBanner is now the main component to display financing outside of FinancingTab
-
   - FinanceApplicationCard has been renamed to FinanceIntegrationCard
   - FinanceBanner accepts 2 props:
     - enableServicingBanner
@@ -535,7 +551,6 @@
   The `<ReceivablesTable/>` component interface has changed. Instead of using `ReceivablesTableTabEnum` for the active
   tab, you now need to pass a `number` representing the tab index. Additionally, the default tab indices have been
   updated:
-
   - **Invoices**: 0 (previously 1)
   - **Quotes**: 1 (previously 0)
   - **Credit Notes**: 2 (unchanged)
@@ -612,7 +627,6 @@
 - 47e6e95e: feat(DEV-12417): cover no data grid logic for receivalbes and tags
 - 01e91e0d: feat(DEV-12181): configure custom fields that need to be mandatory after OCR for user to check
 - 8964658c: feat(DEV-11928): introduced icon states to indicate the status of Counterparts for Payables processed via OCR.
-
   - **State 1**: Counterpart not found in the system.
   - **State 2**: Counterpart found but not selected in the document.
   - Note: If a Counterpart is already selected for the Payable, no icon will be displayed.
@@ -637,7 +651,6 @@
 - 47e6e95e: Fix table filters layout, fix 'Status' filter font size
 - 47e6e95e: feat(DEV-12179): custom Tabs for Payables
 - 8d3fd461: feat(DEV-11928): implemented automatic selection of Counterparts for Payables processed via OCR in the editing form.
-
   - If a Counterpart is not selected for a Payable after file upload and OCR processing, it will be auto-selected if available.
 
 - 47e6e95e: Table empty state (filters applied, not content to display)
@@ -765,7 +778,6 @@
 
 - a975061b: feat(DEV-11865): add payment reminders selection for invoice
 - 8964658c: feat(DEV-11928): introduced icon states to indicate the status of Counterparts for Payables processed via OCR.
-
   - **State 1**: Counterpart not found in the system.
   - **State 2**: Counterpart found but not selected in the document.
   - Note: If a Counterpart is already selected for the Payable, no icon will be displayed.
@@ -774,7 +786,6 @@
   OverviewReminders during the creation and editing of invoices.
 - d6e715a0: feat(11876): Added a dialog for creating and editing both payment and overdue invoice reminders.
 - 8d3fd461: feat(DEV-11928): implemented automatic selection of Counterparts for Payables processed via OCR in the editing form.
-
   - If a Counterpart is not selected for a Payable after file upload and OCR processing, it will be auto-selected if available.
 
 ### Patch Changes
@@ -803,7 +814,6 @@
 
   We've updated the file preview logic to skip calling `PDFObject.embed()` when the URL points to an image. This fix
   addresses an issue where attempting to embed image files as PDFs was causing errors or unexpected behavior.
-
   - @monite/sdk-api@3.14.1
 
 ## 3.14.0
@@ -811,13 +821,11 @@
 ### Minor Changes
 
 - b48b887a: fix(DEV-11166): rewrite <FileViewer /> component to use native PDF rendering
-
   - Fixed a bug with PDF rendering caused by SSR rendering by changing to a more native approach.
   - Switched from `react-pdf` to native iframe.
 
 - ee976e67: feat(DEV-8691): add validation for `smallest_amount` field for the Products in AR
 - 6c20fcd3: feat(DEV-9680): add new features to UserRoleDetails component
-
   - add a feature to create a new role with permissions
   - add a feature to modify permissions for an existing role
 
@@ -833,7 +841,6 @@
 - 7347a1fc: fix(DEV-11222): add filter by direction to avoid duplicated payment methods for AR
 - 7e39ce8e: feat(DEV-10959): fix counterpart_vat_id_id default value to edit an invoice
 - b2c3d366: fix(ESLINT-2024): Update ESLint Rule 'mui-require-container-property' for `useMenuButton(...)` Hook
-
   - Added logic in `mui-require-container-property.ts` to specifically handle cases where `useMenuButton(...)` is used to spread props into MUI components, ensuring the `container` property is included if missing.
   - Expanded test coverage in `mui-require-container-property.test.ts` to include scenarios with `useMenuButton(...)` hook, particularly checking for the presence of the `container` property in spread operations.
   - Modified ESLint configurations in `.eslintrc.json` within `sdk-react` package to switch the rule from "off" to "error", enforcing strict compliance across the codebase.
@@ -885,7 +892,6 @@
 
 - b05f3448: enhanced the `<TablePagination/>` component with extended customization options via MUI theming, ensuring it fits seamlessly across different application contexts
 - d180bf4d: 1. Providers that may affect the customer's context have been moved to `<MoniteScopedProviders/>`. 2. All exported components and all components opening in `<Portal/>` receive `Monite-ContainerCssBaseline` class name. It provides styles for the color scheme of native controls _(dark/light)_ and default colors for components. > Backgrounds will not be added (neither for dark nor light themes), to minimize conflicts with embedding in customer applications. 3. The `<MoniteContext/>` interface has been updated to include:
-
   - `theme`: Moved from `<MoniteThemeContext/>`.
   - `i18n`: Added instead of `code`, pre-created via Suspense to contain all necessary data for components and hooks.
   - `dateFnsLocale`: Added for DatePicker functionality, pre-created via Suspense.
@@ -1269,7 +1275,6 @@
 - 46aa3d16: Show `NotFound` page for CounterpartDetails component, if there is no counterpart by provided `id`
 - 7214b090: Disable AR invoice
 - a743ef0e: Add Bank Account to Counterpart form depends on the selected country:
-
   - `account_number` and `sort_code` fields have been added for GB
   - `account_number` and `routing_number` fields have been added for US
 
@@ -1297,7 +1302,6 @@
 - 46aa3d16: Show `NotFound` page for CounterpartDetails component, if there is no counterpart by provided `id`
 - 7214b090: Disable AR invoice
 - a743ef0e: Add Bank Account to Counterpart form depends on the selected country:
-
   - `account_number` and `sort_code` fields have been added for GB
   - `account_number` and `routing_number` fields have been added for US
 

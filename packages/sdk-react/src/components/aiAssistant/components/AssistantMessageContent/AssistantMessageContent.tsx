@@ -1,15 +1,13 @@
-import React, { type FC, useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-
-import { AIBarChart } from '@/components/aiAssistant/components/AIBarChart/AIBarChart';
-import { MarkdownTable } from '@/components/aiAssistant/components/MarkdownTable/MarkdownTable';
-import { cn } from '@/ui/lib/utils';
-
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-
 import { Part } from '../../types';
 import { AIPieChart } from '../AIPieChart/AIPieChart';
+import { AIBarChart } from '@/components/aiAssistant/components/AIBarChart/AIBarChart';
+import { MarkdownTable } from '@/components/aiAssistant/components/MarkdownTable/MarkdownTable';
+import { fixMarkdownListIndentation } from '@/components/aiAssistant/utils/aiAssistant';
+import { cn } from '@/ui/lib/utils';
+import React, { type FC, useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 interface AssistantMessageContentProps {
   part: Part;
@@ -42,6 +40,8 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
 
   switch (type) {
     case 'text': {
+      const text = fixMarkdownListIndentation(content);
+
       return (
         <div className={cn(['markdown', 'mtw:[&_td]:p-2.5 mtw:[&_th]:p-2.5'])}>
           <ReactMarkdown
@@ -51,7 +51,7 @@ export const AssistantMessageContent: FC<AssistantMessageContentProps> = ({
               table: ({ node, ...props }) => <MarkdownTable {...props} />,
             }}
           >
-            {content}
+            {text}
           </ReactMarkdown>
         </div>
       );

@@ -1,13 +1,12 @@
+import { cn } from '@/ui/lib/utils';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import React, {
   type ChangeEvent,
   forwardRef,
   type KeyboardEvent,
   type ClipboardEvent,
 } from 'react';
-
-import { cn } from '@/ui/lib/utils';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
 
 interface AIRichEditorProps {
   handleInput: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -69,14 +68,14 @@ export const AIRichEditor = forwardRef<HTMLDivElement, AIRichEditorProps>(
       <div
         ref={editorRef}
         contentEditable
-        data-placeholder={t(i18n)`What can I help you with?`}
+        data-placeholder={t(i18n)`Ask AI...`}
         onKeyDown={onKeyDown}
         onInput={onInput}
         onPaste={onPaste}
         className={cn(
-          'mtw:w-full mtw:min-h-[24px] mtw:grow',
+          'mtw:w-full mtw:min-h-[92px] mtw:max-h-[192px] mtw:grow mtw:overflow-y-auto',
           'mtw:text-sm-normal mtw:[&_*]:!whitespace-break-spaces',
-          'mtw:bg-primary-85 mtw:box-content mtw:border-none mtw:resize-non',
+          'mtw:bg-gray-100 mtw:box-content mtw:border-none',
           'mtw:focus-visible:outline-none'
         )}
       />

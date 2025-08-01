@@ -1,17 +1,14 @@
-import { useCallback, useEffect, useRef } from 'react';
-
+import { useAIAssistantChat } from '../../context/AIAssistantChatContext';
+import { getChatTotalHeight } from '../../utils/aiAssistant';
+import { AssistantMessage } from '../AssistantMessage/AssistantMessage';
+import { ChatMessage } from '../ChatMessage/ChatMessage';
 import { AIChatStatus } from '@/components';
 import { useIsMobile } from '@/core/hooks/useMobile';
 import { cn } from '@/ui/lib/utils';
 import type { UIMessage } from '@ai-sdk/ui-utils';
 import { useVirtualizer } from '@tanstack/react-virtual';
-
 import clsx from 'clsx';
-
-import { useAIAssistantChat } from '../../context/AIAssistantChatContext';
-import { getChatTotalHeight } from '../../utils/aiAssistant';
-import { AssistantMessage } from '../AssistantMessage/AssistantMessage';
-import { ChatMessage } from '../ChatMessage/ChatMessage';
+import { FC, useCallback, useEffect, useRef } from 'react';
 
 const POSSIBLE_ITEM_SIZE = 100;
 const MESSAGE_ID = 'message-id';
@@ -22,7 +19,11 @@ const MOCK_MESSAGE = {
   parts: [],
 } as UIMessage;
 
-export const MessageList = () => {
+interface MessageListProps {
+  isEnlarged: boolean;
+}
+
+export const MessageList: FC<MessageListProps> = ({ isEnlarged }) => {
   const parentRef = useRef<null | HTMLDivElement>(null);
   const isScrolledToEnd = useRef(false);
   const prevStatusRef = useRef<AIChatStatus>('ready');
@@ -101,12 +102,13 @@ export const MessageList = () => {
   return (
     <div
       ref={parentRef}
-      className="mtw:h-[calc(100vh-250px)] mtw:w-full mtw:overflow-y-auto mtw:mt-3"
+      className="mtw:size-full mtw:overflow-y-auto mtw:p-4 mtw:pt-0"
     >
       <div
         className={cn(
           'mtw:max-w-sm mtw:sm:max-w-md mtw:md:max-w-lg mtw:lg:max-w-2xl mtw:xl:max-w-3xl',
-          'mtw:mx-auto mtw:w-full'
+          'mtw:mx-auto mtw:w-full',
+          isEnlarged && 'mtw:size-full'
         )}
       >
         <div

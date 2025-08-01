@@ -1,11 +1,9 @@
-import { Controller, useFormContext } from 'react-hook-form';
-
+import type { SectionGeneralProps } from './Section.types';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, FormControl, TextField, Typography } from '@mui/material';
-
-import type { SectionGeneralProps } from './Section.types';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface EntitySectionProps extends SectionGeneralProps {
   /**
@@ -15,8 +13,9 @@ interface EntitySectionProps extends SectionGeneralProps {
    */
   hidden?: ['purchase_order'];
   visibleFields?: {
-    isPurchaseOrderShown: boolean;
-    isTermsAndConditionsShown: boolean;
+    isPurchaseOrderShown?: boolean;
+    isTermsAndConditionsShown?: boolean;
+    isFooterShown?: boolean;
   };
 }
 
@@ -66,7 +65,49 @@ export const EntitySection = ({
           </FormControl>
         )}
       />
-      {visibleFields && visibleFields.isPurchaseOrderShown && (
+
+      {visibleFields?.isFooterShown && (
+        <>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            sx={{ lineHeight: 2 }}
+          >
+            {t(i18n)`Note to customer`}
+          </Typography>
+          <Controller
+            name="footer"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl
+                variant="outlined"
+                fullWidth
+                disabled={disabled}
+                sx={{ mb: 2 }}
+                error={Boolean(error)}
+              >
+                <TextField
+                  {...field}
+                  placeholder={t(
+                    i18n
+                  )`Add a note to be displayed below the line items`}
+                  multiline
+                  minRows={2}
+                  fullWidth
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      background: 'white',
+                    },
+                  }}
+                  error={Boolean(error)}
+                />
+              </FormControl>
+            )}
+          />
+        </>
+      )}
+
+      {visibleFields?.isPurchaseOrderShown && (
         <>
           <Typography
             variant="caption"
@@ -98,7 +139,7 @@ export const EntitySection = ({
           />
         </>
       )}
-      {visibleFields && visibleFields.isTermsAndConditionsShown && (
+      {visibleFields?.isTermsAndConditionsShown && (
         <>
           <Typography
             variant="caption"

@@ -1,10 +1,8 @@
+import { Chart, Conversation, Conversations, Part } from '../types';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
 import { format } from 'date-fns';
 import isThisMonth from 'date-fns/isThisMonth';
-
-import { Chart, Conversation, Conversations, Part } from '../types';
 
 export const createConversationGroups = (
   conversations: Conversation[],
@@ -137,3 +135,10 @@ export const getChatTotalHeight = ({
 
   return `${height}px`;
 };
+
+export const fixMarkdownListIndentation = (text: string) => {
+  return text.replace(/(^|\n)( {3})- /g, '$1    - ');
+};
+
+export const sanitizeEntityName = (str: string) =>
+  str.replace(/[^\p{L}\p{N}\s]/gu, '').trim();

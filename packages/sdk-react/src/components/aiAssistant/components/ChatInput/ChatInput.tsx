@@ -1,3 +1,11 @@
+import { useAIAssistantChat } from '../../context/AIAssistantChatContext';
+import { setCursorAtTheEnd } from '../../utils/aiAssistant';
+import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
+import { AIView } from '@/components';
+import { PromptSuggestions } from '@/components/aiAssistant/components/PromptSuggestions/PromptSuggestions';
+import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
+import { cn } from '@/ui/lib/utils';
+import { SendHorizontal } from 'lucide-react';
 import React, {
   type ChangeEvent,
   FC,
@@ -9,23 +17,18 @@ import React, {
   useState,
 } from 'react';
 
-import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
-import { cn } from '@/ui/lib/utils';
-
-import { SendHorizontal } from 'lucide-react';
-
-import { useAIAssistantChat } from '../../context/AIAssistantChatContext';
-import { setCursorAtTheEnd } from '../../utils/aiAssistant';
-import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
-
 interface ChatInputProps {
   isNewChat: boolean;
   onStartConversation: () => void;
+  isEnlarged: boolean;
+  view: AIView;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({
   isNewChat,
   onStartConversation,
+  isEnlarged,
+  view,
 }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
 
@@ -156,14 +159,18 @@ export const ChatInput: FC<ChatInputProps> = ({
         setPopoverAnchorEl(node);
       }}
       className={cn(
-        'mtw:2xl:max-w-4xl mtw:lg:max-w-2xl mtw:md:max-w-lg mtw:sm:max-w-md mtw:max-w-xs mtw:mt-auto',
-        'mtw:w-full mtw:mx-auto mtw:flex mtw:flex-col mtw:gap-2 mtw:sticky mtw:bottom-0 mtw:pb-15 mtw:bg-background'
+        'mtw:w-full mtw:mx-auto mtw:flex mtw:flex-col mtw:gap-2 mtw:p-4',
+        'mtw:sticky mtw:bottom-0 mtw:mt-auto',
+        isEnlarged &&
+          'mtw:2xl:max-w-4xl mtw:lg:max-w-2xl mtw:md:max-w-lg mtw:sm:max-w-md mtw:max-w-xs'
       )}
     >
+      {view === 'start' && <PromptSuggestions isEnlarged={isEnlarged} />}
+
       <form
         className={cn(
           'mtw:flex mtw:items-center mtw:gap-2 mtw:rounded-xl mtw:px-5 mtw:py-4 mtw:w-full',
-          'mtw:border mtw:border-transparent mtw:border-solid mtw:bg-primary-85',
+          'mtw:border mtw:border-transparent mtw:border-solid mtw:bg-gray-100',
           'mtw:hover:border-primary-50 mtw:relative'
         )}
         onSubmit={handleInputSubmit}
