@@ -43,6 +43,8 @@ export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
 }
 
+const DEFAULT_CURRENCY = 'EUR';
+
 export const counterpartsToSelect = (
   counterparts: CounterpartResponse[] | undefined
 ): Option[] => {
@@ -86,7 +88,7 @@ export const prepareDefaultValues = (
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: 'EUR',
+      currency: DEFAULT_CURRENCY,
       tags: [],
       discount: null,
       subtotal: null,
@@ -125,7 +127,7 @@ export const prepareDefaultValues = (
     counterpartBankAccount: counterpart_bank_account_id ?? '',
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
-    currency: currency ?? 'EUR',
+    currency: currency ?? DEFAULT_CURRENCY,
     tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
