@@ -9,7 +9,6 @@ import {
 } from '../PayableDetailsInfo';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
-  calculateTotalsForPayable,
   findDefaultBankAccount,
   isFieldRequired,
   LineItem,
@@ -48,6 +47,7 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   Box,
   Button,
@@ -55,6 +55,7 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -69,7 +70,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
-import { AlertCircleIcon, CalculatorIcon, Trash2Icon } from 'lucide-react';
+import { AlertCircleIcon } from 'lucide-react';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Controller,
@@ -270,12 +271,8 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
     const className = 'Monite-PayableDetailsForm';
 
-    const {
-      formatFromMinorUnits,
-      formatToMinorUnits,
-      formatCurrencyToDisplay,
-      getSymbolFromCurrency,
-    } = useCurrencies();
+    const { formatFromMinorUnits, formatToMinorUnits, getSymbolFromCurrency } =
+      useCurrencies();
 
     const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
 
@@ -320,26 +317,6 @@ const PayableDetailsFormBase = forwardRef<
     const currentTax = watch('tax_amount');
     const currentTotal = watch('total_amount');
     const currentUseManualTotals = watch('useManualTotals'); // TODO: remove this field once partner setting is implemented
-
-    const calculatedTotals = calculateTotalsForPayable(
-      currentLineItems,
-      currentDiscount
-    );
-
-    // Use manual totals if enabled, otherwise use calculated totals
-    const displayTotals = currentUseManualTotals
-      ? calculatedTotals
-      : {
-          subtotal: currentSubtotal ?? 0,
-          taxes: currentTax ?? 0,
-          total: currentTotal ?? 0,
-        };
-
-    // Check if the totals are different from the calculated totals
-    const areTotalsDifferent =
-      (displayTotals.subtotal && currentSubtotal != displayTotals.subtotal) ||
-      (displayTotals.taxes && currentTax != displayTotals.taxes) ||
-      (displayTotals.total && currentTotal != displayTotals.total);
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -431,6 +408,24 @@ const PayableDetailsFormBase = forwardRef<
 
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
+
+    // Check if line items or totals have changed from their original values
+    const areLineItemsChanged =
+      currentLineItems.length !== defaultValues.lineItems.length ||
+      currentLineItems.some((lineItem, index) => {
+        const defaultLineItem = defaultValues.lineItems[index];
+        return (
+          lineItem.quantity != defaultLineItem.quantity ||
+          lineItem.price != defaultLineItem.price ||
+          lineItem.tax != defaultLineItem.tax
+        );
+      });
+    const areTotalsChanged =
+      currentSubtotal != defaultValues.subtotal ||
+      currentTax != defaultValues.tax_amount ||
+      currentTotal != defaultValues.total_amount ||
+      currentDiscount != defaultValues.discount;
+    const areTotalsDifferent = areLineItemsChanged || areTotalsChanged;
 
     return (
       <>
@@ -775,7 +770,7 @@ const PayableDetailsFormBase = forwardRef<
                         <Alert variant="warning" icon={<AlertCircleIcon />}>
                           {t(
                             i18n
-                          )`The amounts have been modified from what was recognized in the document. Check all fields carefully before saving.`}
+                          )`The amounts have been modified. Check all fields carefully before saving.`}
                         </Alert>
                       </Grid>
                     )}
@@ -788,28 +783,25 @@ const PayableDetailsFormBase = forwardRef<
                             >
                               <TableCell>{t(i18n)`Subtotal`}</TableCell>
                               <TableCell align="right">
-                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
-                                  <div
-                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
-                                    onClick={() => {
-                                      setValue(
-                                        'subtotal',
-                                        calculatedTotals.subtotal
-                                      );
-                                    }}
-                                  >
-                                    <CalculatorIcon className="mtw:size-4" />
-                                    {calculatedTotals.subtotal &&
-                                    currentCurrency
-                                      ? formatCurrencyToDisplay(
-                                          formatToMinorUnits(
-                                            calculatedTotals.subtotal,
-                                            currentCurrency
-                                          ) || 0,
-                                          currentCurrency
-                                        )
-                                      : '—'}
-                                  </div>
+                                <Box
+                                  gap={0.5}
+                                  alignItems="center"
+                                  justifyContent="flex-end"
+                                  display="flex"
+                                >
+                                  {currentDiscount === null && (
+                                    <Button
+                                      startIcon={<AddIcon />}
+                                      size="small"
+                                      sx={{ pl: 1.25, pr: 2, py: 0 }}
+                                      onClick={() => {
+                                        const setValue = methods.setValue;
+                                        setValue('discount', 0);
+                                      }}
+                                    >
+                                      {t(i18n)`Add Discount`}
+                                    </Button>
+                                  )}
                                   <Controller
                                     name="subtotal"
                                     control={control}
@@ -835,77 +827,68 @@ const PayableDetailsFormBase = forwardRef<
                                       />
                                     )}
                                   />
-                                </div>
+                                </Box>
                               </TableCell>
                             </TableRow>
-                            <TableRow
-                              className={className + '-Totals-Discount'}
-                            >
-                              <TableCell>{t(i18n)`Discount`}</TableCell>
-                              <TableCell align="right">
-                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
-                                  {currentDiscount && currentDiscount > 0 ? (
-                                    <button
-                                      className="mtw:flex mtw:items-center mtw:text-muted-foreground mtw:cursor-pointer"
+                            {currentDiscount !== null && (
+                              <TableRow
+                                className={className + '-Totals-Discount'}
+                              >
+                                <TableCell>{t(i18n)`Discount`}</TableCell>
+                                <TableCell align="right">
+                                  <Box
+                                    gap={0.5}
+                                    alignItems="center"
+                                    justifyContent="flex-end"
+                                    display="flex"
+                                  >
+                                    <IconButton
                                       aria-label="delete"
                                       onClick={() => {
-                                        setValue('discount', 0);
+                                        const setValue = methods.setValue;
+                                        setValue('discount', null);
                                       }}
                                     >
-                                      <Trash2Icon className="mtw:size-4" />
-                                    </button>
-                                  ) : null}
-                                  <Controller
-                                    name="discount"
-                                    control={control}
-                                    render={({
-                                      field,
-                                      fieldState: { error },
-                                    }) => (
-                                      <TextField
-                                        {...field}
-                                        id={field.name}
-                                        variant="standard"
-                                        type="number"
-                                        inputProps={{ min: 0, step: 0.01 }}
-                                        error={Boolean(error)}
-                                        sx={{ width: 150 }}
-                                        InputProps={{
-                                          endAdornment:
-                                            getSymbolFromCurrency(
-                                              currentCurrency
-                                            ),
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                </div>
-                              </TableCell>
-                            </TableRow>
+                                      <DeleteIcon />
+                                    </IconButton>
+
+                                    <Controller
+                                      name="discount"
+                                      control={control}
+                                      render={({
+                                        field,
+                                        fieldState: { error },
+                                      }) => (
+                                        <TextField
+                                          {...field}
+                                          id={field.name}
+                                          variant="standard"
+                                          type="number"
+                                          inputProps={{ min: 0, step: 0.01 }}
+                                          error={Boolean(error)}
+                                          sx={{ width: 150 }}
+                                          InputProps={{
+                                            endAdornment:
+                                              getSymbolFromCurrency(
+                                                currentCurrency
+                                              ),
+                                          }}
+                                        />
+                                      )}
+                                    />
+                                  </Box>
+                                </TableCell>
+                              </TableRow>
+                            )}
                             <TableRow className={className + '-Totals-Taxes'}>
                               <TableCell>{t(i18n)`VAT total`}</TableCell>
                               <TableCell align="right">
-                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
-                                  <div
-                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
-                                    onClick={() => {
-                                      setValue(
-                                        'tax_amount',
-                                        calculatedTotals.taxes
-                                      );
-                                    }}
-                                  >
-                                    <CalculatorIcon className="mtw:size-4" />
-                                    {calculatedTotals.taxes && currentCurrency
-                                      ? formatCurrencyToDisplay(
-                                          formatToMinorUnits(
-                                            calculatedTotals.taxes,
-                                            currentCurrency
-                                          ) || 0,
-                                          currentCurrency
-                                        )
-                                      : '—'}
-                                  </div>
+                                <Box
+                                  gap={0.5}
+                                  alignItems="center"
+                                  justifyContent="flex-end"
+                                  display="flex"
+                                >
                                   <Controller
                                     name="tax_amount"
                                     control={control}
@@ -930,7 +913,7 @@ const PayableDetailsFormBase = forwardRef<
                                       />
                                     )}
                                   />
-                                </div>
+                                </Box>
                               </TableCell>
                             </TableRow>
                             <TableRow className={className + '-Totals-Total'}>
@@ -940,27 +923,12 @@ const PayableDetailsFormBase = forwardRef<
                                 )`Total`}</Typography>
                               </TableCell>
                               <TableCell align="right">
-                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
-                                  <span
-                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
-                                    onClick={() => {
-                                      setValue(
-                                        'total_amount',
-                                        calculatedTotals.total
-                                      );
-                                    }}
-                                  >
-                                    <CalculatorIcon className="mtw:size-4" />
-                                    {calculatedTotals.total && currentCurrency
-                                      ? formatCurrencyToDisplay(
-                                          formatToMinorUnits(
-                                            calculatedTotals.total,
-                                            currentCurrency
-                                          ) || 0,
-                                          currentCurrency
-                                        )
-                                      : '—'}
-                                  </span>
+                                <Box
+                                  gap={0.5}
+                                  alignItems="center"
+                                  justifyContent="flex-end"
+                                  display="flex"
+                                >
                                   <Controller
                                     name="total_amount"
                                     control={control}
@@ -985,7 +953,7 @@ const PayableDetailsFormBase = forwardRef<
                                       />
                                     )}
                                   />
-                                </div>
+                                </Box>
                               </TableCell>
                             </TableRow>
                           </TableBody>
