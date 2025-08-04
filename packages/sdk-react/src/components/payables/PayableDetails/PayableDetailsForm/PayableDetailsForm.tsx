@@ -3,6 +3,10 @@ import {
   usePayableDetailsThemeProps,
 } from '../../hooks';
 import { OptionalFields } from '../../types';
+import {
+  DisplayPayableLineItems,
+  DisplayPayableTotals,
+} from '../PayableDetailsInfo';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   calculateTotalsForPayable,
@@ -37,25 +41,26 @@ import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
+import { Alert } from '@/ui/components/alert';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   Grid,
-  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -64,6 +69,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
+import { AlertCircleIcon, CalculatorIcon, Trash2Icon } from 'lucide-react';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Controller,
@@ -314,6 +320,26 @@ const PayableDetailsFormBase = forwardRef<
     const currentTax = watch('tax_amount');
     const currentTotal = watch('total_amount');
     const currentUseManualTotals = watch('useManualTotals'); // TODO: remove this field once partner setting is implemented
+
+    const calculatedTotals = calculateTotalsForPayable(
+      currentLineItems,
+      currentDiscount
+    );
+
+    // Use manual totals if enabled, otherwise use calculated totals
+    const displayTotals = currentUseManualTotals
+      ? calculatedTotals
+      : {
+          subtotal: currentSubtotal ?? 0,
+          taxes: currentTax ?? 0,
+          total: currentTotal ?? 0,
+        };
+
+    // Check if the totals are different from the calculated totals
+    const areTotalsDifferent =
+      (displayTotals.subtotal && currentSubtotal != displayTotals.subtotal) ||
+      (displayTotals.taxes && currentTax != displayTotals.taxes) ||
+      (displayTotals.total && currentTotal != displayTotals.total);
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -709,142 +735,283 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
-                  <Paper
-                    variant="outlined"
-                    sx={{ p: 3 }}
-                    className={className + '-Items'}
-                  >
-                    <Typography variant="subtitle2" mb={2}>
-                      {t(i18n)`Items`}
-                    </Typography>
-                    <PayableLineItemsForm />
-                  </Paper>
-                </Grid>
-                <Grid item xs={12} className={className + '-Totals'}>
-                  <Paper variant="outlined">
-                    <Table>
-                      <TableBody>
-                        <TableRow className={className + '-Totals-Subtotal'}>
-                          <TableCell>{t(i18n)`Subtotal`}</TableCell>
-                          <TableCell align="right">
-                            <Box
-                              gap={0.5}
-                              alignItems="center"
-                              justifyContent="flex-end"
-                              display="flex"
-                            >
-                              {currentDiscount === null && (
-                                <Button
-                                  startIcon={<AddIcon />}
-                                  size="small"
-                                  sx={{ pl: 1.25, pr: 2, py: 0 }}
-                                  onClick={() => {
-                                    const setValue = methods.setValue;
-                                    setValue('discount', 0);
-                                  }}
-                                >
-                                  {t(i18n)`Add Discount`}
-                                </Button>
-                              )}
-                              {totals.subtotal && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.subtotal,
-                                      currentCurrency
-                                    ) || 0,
-                                    currentCurrency
-                                  )
-                                : '—'}
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                        {currentDiscount !== null && (
-                          <TableRow className={className + '-Totals-Discount'}>
-                            <TableCell>{t(i18n)`Discount`}</TableCell>
-                            <TableCell align="right">
-                              <Box
-                                gap={0.5}
-                                alignItems="center"
-                                justifyContent="flex-end"
-                                display="flex"
-                              >
-                                <IconButton
-                                  aria-label="delete"
-                                  onClick={() => {
-                                    const setValue = methods.setValue;
-                                    setValue('discount', null);
-                                  }}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
 
-                                <Controller
-                                  name="discount"
-                                  control={control}
-                                  render={({
-                                    field,
-                                    fieldState: { error },
-                                  }) => (
-                                    <TextField
-                                      {...field}
-                                      id={field.name}
-                                      variant="standard"
-                                      type="number"
-                                      inputProps={{ min: 0, step: 0.01 }}
-                                      error={Boolean(error)}
-                                      sx={{ width: 150 }}
-                                      InputProps={{
-                                        endAdornment:
-                                          getSymbolFromCurrency(
+                {/* TODO: remove this field once partner setting is implemented */}
+                <Controller
+                  name="useManualTotals"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControl component="fieldset">
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={field.value}
+                            onChange={field.onChange}
+                            size="small"
+                          />
+                        }
+                        label={t(i18n)`Use manual totals`}
+                      />
+                    </FormControl>
+                  )}
+                />
+
+                {currentUseManualTotals || !payable ? (
+                  <>
+                    <Grid item xs={12}>
+                      <Paper
+                        variant="outlined"
+                        sx={{ p: 3 }}
+                        className={className + '-Items'}
+                      >
+                        <Typography variant="subtitle2" mb={2}>
+                          {t(i18n)`Items`}
+                        </Typography>
+                        <PayableLineItemsForm />
+                      </Paper>
+                    </Grid>
+                    {areTotalsDifferent && (
+                      <Grid item xs={12}>
+                        <Alert variant="warning" icon={<AlertCircleIcon />}>
+                          {t(
+                            i18n
+                          )`The amounts have been modified from what was recognized in the document. Check all fields carefully before saving.`}
+                        </Alert>
+                      </Grid>
+                    )}
+                    <Grid item xs={12} className={className + '-Totals'}>
+                      <Paper variant="outlined">
+                        <Table>
+                          <TableBody>
+                            <TableRow
+                              className={className + '-Totals-Subtotal'}
+                            >
+                              <TableCell>{t(i18n)`Subtotal`}</TableCell>
+                              <TableCell align="right">
+                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
+                                  <div
+                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
+                                    onClick={() => {
+                                      setValue(
+                                        'subtotal',
+                                        calculatedTotals.subtotal
+                                      );
+                                    }}
+                                  >
+                                    <CalculatorIcon className="mtw:size-4" />
+                                    {calculatedTotals.subtotal &&
+                                    currentCurrency
+                                      ? formatCurrencyToDisplay(
+                                          formatToMinorUnits(
+                                            calculatedTotals.subtotal,
                                             currentCurrency
-                                          ),
+                                          ) || 0,
+                                          currentCurrency
+                                        )
+                                      : '—'}
+                                  </div>
+                                  <Controller
+                                    name="subtotal"
+                                    control={control}
+                                    render={({
+                                      field,
+                                      fieldState: { error },
+                                    }) => (
+                                      <TextField
+                                        {...field}
+                                        id={field.name}
+                                        variant="standard"
+                                        size="small"
+                                        type="number"
+                                        inputProps={{ min: 0, step: 0.01 }}
+                                        error={Boolean(error)}
+                                        sx={{ width: 150 }}
+                                        InputProps={{
+                                          endAdornment:
+                                            getSymbolFromCurrency(
+                                              currentCurrency
+                                            ),
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow
+                              className={className + '-Totals-Discount'}
+                            >
+                              <TableCell>{t(i18n)`Discount`}</TableCell>
+                              <TableCell align="right">
+                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
+                                  {currentDiscount && currentDiscount > 0 ? (
+                                    <button
+                                      className="mtw:flex mtw:items-center mtw:text-muted-foreground mtw:cursor-pointer"
+                                      aria-label="delete"
+                                      onClick={() => {
+                                        setValue('discount', 0);
                                       }}
-                                    />
-                                  )}
-                                />
-                              </Box>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                        <TableRow className={className + '-Totals-Taxes'}>
-                          <TableCell>{t(i18n)`VAT total`}</TableCell>
-                          <TableCell align="right">
-                            {totals.taxes && currentCurrency
-                              ? formatCurrencyToDisplay(
-                                  formatToMinorUnits(
-                                    totals.taxes,
-                                    currentCurrency
-                                  ) || 0,
-                                  currentCurrency
-                                )
-                              : '—'}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className={className + '-Totals-Total'}>
-                          <TableCell>
-                            <Typography variant="subtitle1">{t(
-                              i18n
-                            )`Total`}</Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Typography variant="subtitle1">
-                              {totals.total && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.total,
-                                      currentCurrency
-                                    ) || 0,
-                                    currentCurrency
-                                  )
-                                : '—'}
-                            </Typography>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </Paper>
-                </Grid>
+                                    >
+                                      <Trash2Icon className="mtw:size-4" />
+                                    </button>
+                                  ) : null}
+                                  <Controller
+                                    name="discount"
+                                    control={control}
+                                    render={({
+                                      field,
+                                      fieldState: { error },
+                                    }) => (
+                                      <TextField
+                                        {...field}
+                                        id={field.name}
+                                        variant="standard"
+                                        type="number"
+                                        inputProps={{ min: 0, step: 0.01 }}
+                                        error={Boolean(error)}
+                                        sx={{ width: 150 }}
+                                        InputProps={{
+                                          endAdornment:
+                                            getSymbolFromCurrency(
+                                              currentCurrency
+                                            ),
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow className={className + '-Totals-Taxes'}>
+                              <TableCell>{t(i18n)`VAT total`}</TableCell>
+                              <TableCell align="right">
+                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
+                                  <div
+                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
+                                    onClick={() => {
+                                      setValue(
+                                        'tax_amount',
+                                        calculatedTotals.taxes
+                                      );
+                                    }}
+                                  >
+                                    <CalculatorIcon className="mtw:size-4" />
+                                    {calculatedTotals.taxes && currentCurrency
+                                      ? formatCurrencyToDisplay(
+                                          formatToMinorUnits(
+                                            calculatedTotals.taxes,
+                                            currentCurrency
+                                          ) || 0,
+                                          currentCurrency
+                                        )
+                                      : '—'}
+                                  </div>
+                                  <Controller
+                                    name="tax_amount"
+                                    control={control}
+                                    render={({
+                                      field,
+                                      fieldState: { error },
+                                    }) => (
+                                      <TextField
+                                        {...field}
+                                        id={field.name}
+                                        variant="standard"
+                                        type="number"
+                                        inputProps={{ min: 0, step: 0.01 }}
+                                        error={Boolean(error)}
+                                        sx={{ width: 150 }}
+                                        InputProps={{
+                                          endAdornment:
+                                            getSymbolFromCurrency(
+                                              currentCurrency
+                                            ),
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow className={className + '-Totals-Total'}>
+                              <TableCell>
+                                <Typography variant="subtitle1">{t(
+                                  i18n
+                                )`Total`}</Typography>
+                              </TableCell>
+                              <TableCell align="right">
+                                <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:justify-end">
+                                  <span
+                                    className="mtw:flex mtw:items-center mtw:gap-1 mtw:text-xs mtw:text-muted-foreground mtw:tabular-nums mtw:cursor-pointer"
+                                    onClick={() => {
+                                      setValue(
+                                        'total_amount',
+                                        calculatedTotals.total
+                                      );
+                                    }}
+                                  >
+                                    <CalculatorIcon className="mtw:size-4" />
+                                    {calculatedTotals.total && currentCurrency
+                                      ? formatCurrencyToDisplay(
+                                          formatToMinorUnits(
+                                            calculatedTotals.total,
+                                            currentCurrency
+                                          ) || 0,
+                                          currentCurrency
+                                        )
+                                      : '—'}
+                                  </span>
+                                  <Controller
+                                    name="total_amount"
+                                    control={control}
+                                    render={({
+                                      field,
+                                      fieldState: { error },
+                                    }) => (
+                                      <TextField
+                                        {...field}
+                                        id={field.name}
+                                        variant="standard"
+                                        type="number"
+                                        inputProps={{ min: 0, step: 0.01 }}
+                                        error={Boolean(error)}
+                                        sx={{ width: 150 }}
+                                        InputProps={{
+                                          endAdornment:
+                                            getSymbolFromCurrency(
+                                              currentCurrency
+                                            ),
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Paper>
+                    </Grid>
+                  </>
+                ) : (
+                  <>
+                    <Grid item xs={12} className={className + '-Items'}>
+                      <Typography variant="subtitle2" mb={2}>
+                        {t(i18n)`Items`}
+                      </Typography>
+                      <DisplayPayableLineItems
+                        lineItems={lineItems}
+                        currency={currentCurrency}
+                      />
+                    </Grid>
+                    <Grid item xs={12} className={className + '-Totals'}>
+                      <DisplayPayableTotals
+                        payable={payable}
+                        currency={currentCurrency}
+                      />
+                    </Grid>
+                  </>
+                )}
               </Grid>
             </form>
           </FormProvider>
