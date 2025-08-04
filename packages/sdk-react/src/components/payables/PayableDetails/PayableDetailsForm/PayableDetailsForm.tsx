@@ -154,7 +154,10 @@ const getValidationSchema = (i18n: I18n) =>
             ? schema.required()
             : schema
         ),
+      subtotal: yup.number().nullable().min(0),
+      tax_amount: yup.number().nullable().min(0),
       discount: yup.number().nullable().min(0),
+      total_amount: yup.number().nullable().min(0),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
@@ -188,6 +191,7 @@ const getValidationSchema = (i18n: I18n) =>
           name: yup.string().required(),
         })
       ),
+      useManualTotals: yup.boolean(), // TODO: remove this field once partner setting is implemented
     })
     .required();
 
@@ -305,9 +309,11 @@ const PayableDetailsFormBase = forwardRef<
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
     const currentLineItems = watch('lineItems');
+    const currentSubtotal = watch('subtotal');
     const currentDiscount = watch('discount');
-
-    const totals = calculateTotalsForPayable(currentLineItems, currentDiscount);
+    const currentTax = watch('tax_amount');
+    const currentTotal = watch('total_amount');
+    const currentUseManualTotals = watch('useManualTotals'); // TODO: remove this field once partner setting is implemented
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);

@@ -33,6 +33,10 @@ export interface PayableDetailsFormFields {
   tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
+  subtotal?: number | null;
+  tax_amount?: number | null;
+  total_amount?: number | null;
+  useManualTotals?: boolean; // TODO: remove this field once partner setting is implemented
 }
 
 export interface SubmitPayload extends PayableDetailsFormFields {
@@ -85,6 +89,9 @@ export const prepareDefaultValues = (
       currency: 'EUR',
       tags: [],
       discount: null,
+      subtotal: null,
+      tax_amount: null,
+      total_amount: null,
       lineItems: [
         {
           id: '',
@@ -94,6 +101,7 @@ export const prepareDefaultValues = (
           tax: 19,
         },
       ],
+      useManualTotals: false, // TODO: remove this field once partner setting is implemented
     };
   }
 
@@ -105,7 +113,10 @@ export const prepareDefaultValues = (
     due_date,
     currency,
     tags,
+    subtotal,
+    tax_amount,
     discount,
+    total_amount,
   } = payable;
 
   return {
@@ -118,6 +129,16 @@ export const prepareDefaultValues = (
     tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
+    subtotal:
+      subtotal && currency ? formatFromMinorUnits(subtotal, currency) : null,
+    tax_amount:
+      tax_amount && currency
+        ? formatFromMinorUnits(tax_amount, currency)
+        : null,
+    total_amount:
+      total_amount && currency
+        ? formatFromMinorUnits(total_amount, currency)
+        : null,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -130,12 +151,12 @@ export const prepareDefaultValues = (
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
       };
     }),
+    useManualTotals: false, // TODO: remove this field once partner setting is implemented
   };
 };
 
 export const prepareSubmit = (
   {
-    discount,
     invoiceNumber,
     counterpart,
     counterpartBankAccount,
@@ -144,12 +165,14 @@ export const prepareSubmit = (
     currency,
     tags,
     counterpartAddressId,
+    subtotal,
+    tax_amount,
+    discount,
+    total_amount,
   }: SubmitPayload,
   formatToMinorUnits: (amount: number, currency: string) => number | null
 ): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
-  discount:
-    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
@@ -158,6 +181,18 @@ export const prepareSubmit = (
   currency,
   tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
+  subtotal:
+    subtotal && currency ? (formatToMinorUnits(subtotal, currency) ?? 0) : 0,
+  tax_amount:
+    tax_amount && currency
+      ? (formatToMinorUnits(tax_amount, currency) ?? 0)
+      : 0,
+  discount:
+    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
+  total_amount:
+    total_amount && currency
+      ? (formatToMinorUnits(total_amount, currency) ?? 0)
+      : 0,
 });
 
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
