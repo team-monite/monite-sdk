@@ -231,9 +231,9 @@ export const calculateTotalsForPayable = (
       const newTotal = calculateLineItemTotal(newSubtotal, lineItem.tax || 0);
 
       return {
-        subtotal: result.subtotal + newSubtotal,
-        taxes: result.taxes + (newTotal - newSubtotal),
-        total: result.total + newTotal,
+        subtotal: parseFloat((result.subtotal + newSubtotal).toFixed(2)),
+        taxes: parseFloat((result.taxes + (newTotal - newSubtotal)).toFixed(2)),
+        total: parseFloat((result.total + newTotal).toFixed(2)),
       };
     },
     { subtotal: 0, taxes: 0, total: 0 }
@@ -242,7 +242,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total: total - (discount ?? 0),
+    total: parseFloat((total - (discount ?? 0)).toFixed(2)),
   };
 };
 
