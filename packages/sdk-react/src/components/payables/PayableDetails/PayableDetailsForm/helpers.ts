@@ -183,18 +183,10 @@ export const prepareSubmit = (
   currency,
   tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
-  subtotal:
-    subtotal && currency ? (formatToMinorUnits(subtotal, currency) ?? 0) : 0,
-  tax_amount:
-    tax_amount && currency
-      ? (formatToMinorUnits(tax_amount, currency) ?? 0)
-      : 0,
-  discount:
-    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
-  total_amount:
-    total_amount && currency
-      ? (formatToMinorUnits(total_amount, currency) ?? 0)
-      : 0,
+  subtotal: formatToMinorUnits(subtotal ?? 0, currency) ?? 0,
+  tax_amount: formatToMinorUnits(tax_amount ?? 0, currency) ?? 0,
+  discount: formatToMinorUnits(discount ?? 0, currency) ?? 0,
+  total_amount: formatToMinorUnits(total_amount ?? 0, currency) ?? 0,
 });
 
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
