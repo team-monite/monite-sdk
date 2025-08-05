@@ -4,6 +4,7 @@ import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
 import { AIView } from '@/components';
 import { PromptSuggestions } from '@/components/aiAssistant/components/PromptSuggestions/PromptSuggestions';
 import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -24,6 +25,7 @@ interface ChatInputProps {
   onStartConversation: () => void;
   isEnlarged: boolean;
   view: AIView;
+  setInitialInput: (initialInput: string) => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({
@@ -31,19 +33,45 @@ export const ChatInput: FC<ChatInputProps> = ({
   onStartConversation,
   isEnlarged,
   view,
+  setInitialInput,
 }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
 
   const [showPrompts, setShowPrompts] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
     null
   );
 
-  const { input, status, setInput, handleSubmit } = useAIAssistantChat();
+  const { id, input, status, setInput, handleSubmit } = useAIAssistantChat();
 
   const isStreaming = status === 'streaming';
   const isDisabled = !input || isStreaming;
+
+  const updateHistory = () => {
+    api.ai.getAiConversations.setQueryData(
+      api.ai.getAiConversations.getQueryKey(),
+      (data) => {
+        const currentData = data?.data ? data.data : [];
+
+        return {
+          ...data,
+          data: [
+            {
+              id,
+              title: t(i18n)`New Chat`,
+              created_at: new Date().toISOString(),
+              is_starred: false,
+              messages: [],
+            },
+            ...currentData,
+          ],
+        };
+      },
+      queryClient
+    );
+  };
 
   const handleClearInput = () => {
     if (!editorRef.current) {
@@ -52,9 +80,11 @@ export const ChatInput: FC<ChatInputProps> = ({
 
     editorRef.current.innerHTML = '';
     setInput('');
+    setInitialInput('');
 
     if (isNewChat) {
       onStartConversation();
+      updateHistory();
     }
   };
 
@@ -152,9 +182,16 @@ export const ChatInput: FC<ChatInputProps> = ({
     }
 
     editorRef.current.innerHTML = input;
+
     editorRef.current.focus();
     setCursorAtTheEnd(editorRef.current);
-  }, [input]);
+
+    if (!input) {
+      return;
+    }
+
+    setInitialInput(input);
+  }, [input, setInitialInput]);
 
   return (
     <div

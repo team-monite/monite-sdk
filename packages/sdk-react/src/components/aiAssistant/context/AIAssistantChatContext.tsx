@@ -17,6 +17,7 @@ export interface ChatProviderProps extends PropsWithChildren {
   isNewChat: boolean;
   setIsNewChat: (isNewChat: boolean) => void;
   conversationId: string;
+  initialInput: string;
 }
 
 const AIAssistantChatContext = createContext<UseChatHelpers | undefined>(
@@ -38,6 +39,7 @@ export const AIAssistantChatProvider = ({
   conversationId,
   isNewChat,
   setIsNewChat,
+  initialInput,
 }: ChatProviderProps) => {
   const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
   const { data: entity } = useMyEntity();
@@ -76,12 +78,15 @@ export const AIAssistantChatProvider = ({
       });
     },
     initialMessages: messages,
+    initialInput,
     onFinish: async () => {
       if (!isNewChat) {
         return;
       }
 
       await api.ai.getAiConversationsId.invalidateQueries(queryClient);
+      await api.ai.getAiConversations.invalidateQueries(queryClient);
+
       setIsNewChat(false);
     },
   });
