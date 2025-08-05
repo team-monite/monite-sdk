@@ -419,6 +419,8 @@ const PayableDetailsFormBase = forwardRef<
       currentDiscount != defaultValues.discount;
     const areTotalsDifferent = areLineItemsChanged || areTotalsChanged;
 
+    const showAlertChangedValues = !!payable && areTotalsDifferent;
+
     return (
       <>
         <Box
@@ -740,7 +742,7 @@ const PayableDetailsFormBase = forwardRef<
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
-                {areTotalsDifferent && (
+                {showAlertChangedValues && (
                   <Grid item xs={12}>
                     <Alert variant="warning" icon={<AlertCircleIcon />}>
                       {t(
