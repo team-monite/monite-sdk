@@ -53,20 +53,21 @@ export const ChatInput: FC<ChatInputProps> = ({
     api.ai.getAiConversations.setQueryData(
       api.ai.getAiConversations.getQueryKey(),
       (data) => {
-        const currentData = data?.data ? data.data : [];
+        if (!data?.data || !Array.isArray(data.data)) {
+          return data;
+        }
+
+        const newConversation = {
+          id,
+          title: t(i18n)`New Chat`,
+          created_at: new Date().toISOString(),
+          is_starred: false,
+          messages: [],
+        };
 
         return {
           ...data,
-          data: [
-            {
-              id,
-              title: t(i18n)`New Chat`,
-              created_at: new Date().toISOString(),
-              is_starred: false,
-              messages: [],
-            },
-            ...currentData,
-          ],
+          data: [newConversation, ...data.data],
         };
       },
       queryClient
