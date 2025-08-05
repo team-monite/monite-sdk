@@ -189,13 +189,13 @@ export const prepareSubmit = (
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
   const subtotal = price * quantity;
 
-  return parseFloat(subtotal.toFixed(2));
+  return roundUpWithTwoDecimals(subtotal);
 };
 
 const calculateLineItemTotal = (subtotal: number, taxRate: number): number => {
   const total = subtotal + (taxRate * subtotal) / 100;
 
-  return parseFloat(total.toFixed(2));
+  return roundUpWithTwoDecimals(total);
 };
 
 export const calculateTotalPriceForLineItem = (lineItem: LineItem): number => {
@@ -220,9 +220,9 @@ export const calculateTotalsForPayable = (
       const newTotal = calculateLineItemTotal(newSubtotal, lineItem.tax || 0);
 
       return {
-        subtotal: parseFloat((result.subtotal + newSubtotal).toFixed(2)),
-        taxes: parseFloat((result.taxes + (newTotal - newSubtotal)).toFixed(2)),
-        total: parseFloat((result.total + newTotal).toFixed(2)),
+        subtotal: roundUpWithTwoDecimals(result.subtotal + newSubtotal),
+        taxes: roundUpWithTwoDecimals(result.taxes + (newTotal - newSubtotal)),
+        total: roundUpWithTwoDecimals(result.total + newTotal),
       };
     },
     { subtotal: 0, taxes: 0, total: 0 }
@@ -231,7 +231,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total: parseFloat((total - (discount ?? 0)).toFixed(2)),
+    total: roundUpWithTwoDecimals(total - (discount ?? 0)),
   };
 };
 
@@ -245,8 +245,9 @@ export const prepareLineItemSubmit = (
   return {
     name,
     quantity,
-    tax: formatTaxToMinorUnits(tax),
-    unit_price: formatToMinorUnits(price, currency) ?? 0,
+    tax: formatTaxToMinorUnits(roundUpWithTwoDecimals(tax)),
+    unit_price:
+      formatToMinorUnits(roundUpWithTwoDecimals(price), currency) ?? 0,
   };
 };
 
@@ -336,4 +337,10 @@ export const findDefaultBankAccount = (
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
   return defaultAccount?.id || '';
+};
+
+const roundUpWithTwoDecimals = (value: number): number => {
+  // NOTE: see https://stackoverflow.com/a/11832950/7564579
+  // Examples: 1.004 -> 1.00; 1.005 -> 1.01
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 };
