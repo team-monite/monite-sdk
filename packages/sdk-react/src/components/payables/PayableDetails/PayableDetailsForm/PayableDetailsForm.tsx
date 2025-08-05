@@ -456,13 +456,18 @@ const PayableDetailsFormBase = forwardRef<
                 );
 
                 if (payable) {
-                  savePayable &&
-                    savePayable(
-                      payable.id,
-                      invoiceData,
-                      values.lineItems,
-                      dirtyFields
-                    );
+                  if (savePayable) {
+                    if (areLineItemsChanged) {
+                      savePayable(
+                        payable.id,
+                        invoiceData,
+                        values.lineItems,
+                        dirtyFields
+                      );
+                    } else {
+                      savePayable(payable.id, invoiceData);
+                    }
+                  }
                 } else {
                   createPayable && createPayable(invoiceData, values.lineItems);
                 }
