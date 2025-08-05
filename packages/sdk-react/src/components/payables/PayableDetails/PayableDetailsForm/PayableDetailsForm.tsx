@@ -52,7 +52,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -61,7 +60,6 @@ import {
   Paper,
   Select,
   Stack,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -80,6 +78,10 @@ import {
   useFormState,
 } from 'react-hook-form';
 import * as yup from 'yup';
+
+// TODO: once partner setting is implemented remove this constant and replace with get setting request
+// const to emulate the partner setting. default fallback is true
+const PARTNER_SETTING__ENABLE_LINE_ITEMS = true;
 
 export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];
@@ -198,7 +200,6 @@ const getValidationSchema = (i18n: I18n) =>
           name: yup.string().required(),
         })
       ),
-      useManualTotals: yup.boolean(), // TODO: remove this field once partner setting is implemented
     })
     .required();
 
@@ -316,7 +317,6 @@ const PayableDetailsFormBase = forwardRef<
     const currentDiscount = watch('discount');
     const currentTax = watch('tax_amount');
     const currentTotal = watch('total_amount');
-    const currentUseManualTotals = watch('useManualTotals'); // TODO: remove this field once partner setting is implemented
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -408,6 +408,9 @@ const PayableDetailsFormBase = forwardRef<
 
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
+
+    const isEditLineItemsAndTotalsEnabled =
+      !PARTNER_SETTING__ENABLE_LINE_ITEMS || !payable;
 
     // Check if line items or totals have changed from their original values
     const areLineItemsChanged =
@@ -731,27 +734,7 @@ const PayableDetailsFormBase = forwardRef<
                   </Paper>
                 </Grid>
 
-                {/* TODO: remove this field once partner setting is implemented */}
-                <Controller
-                  name="useManualTotals"
-                  control={control}
-                  render={({ field }) => (
-                    <FormControl component="fieldset">
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={field.value}
-                            onChange={field.onChange}
-                            size="small"
-                          />
-                        }
-                        label={t(i18n)`Use manual totals`}
-                      />
-                    </FormControl>
-                  )}
-                />
-
-                {currentUseManualTotals || !payable ? (
+                {isEditLineItemsAndTotalsEnabled ? (
                   <>
                     <Grid item xs={12}>
                       <Paper

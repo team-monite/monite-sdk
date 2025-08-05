@@ -36,7 +36,6 @@ export interface PayableDetailsFormFields {
   subtotal?: number | null;
   tax_amount?: number | null;
   total_amount?: number | null;
-  useManualTotals?: boolean; // TODO: remove this field once partner setting is implemented
 }
 
 export interface SubmitPayload extends PayableDetailsFormFields {
@@ -103,7 +102,6 @@ export const prepareDefaultValues = (
           tax: 19,
         },
       ],
-      useManualTotals: false, // TODO: remove this field once partner setting is implemented
     };
   }
 
@@ -153,7 +151,6 @@ export const prepareDefaultValues = (
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
       };
     }),
-    useManualTotals: false, // TODO: remove this field once partner setting is implemented
   };
 };
 
