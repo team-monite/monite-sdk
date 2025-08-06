@@ -788,6 +788,9 @@ const PayableDetailsFormBase = forwardRef<
                                     variant="standard"
                                     size="small"
                                     type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
                                     inputProps={{ min: 0 }}
                                     error={Boolean(error)}
                                     sx={{ width: 150 }}
@@ -833,6 +836,11 @@ const PayableDetailsFormBase = forwardRef<
                                       id={field.name}
                                       variant="standard"
                                       type="number"
+                                      onChange={(event) =>
+                                        field.onChange(
+                                          Number(event.target.value)
+                                        )
+                                      }
                                       inputProps={{ min: 0 }}
                                       error={Boolean(error)}
                                       sx={{ width: 150 }}
@@ -867,6 +875,9 @@ const PayableDetailsFormBase = forwardRef<
                                     id={field.name}
                                     variant="standard"
                                     type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
                                     inputProps={{ min: 0 }}
                                     error={Boolean(error)}
                                     sx={{ width: 150 }}
@@ -902,6 +913,9 @@ const PayableDetailsFormBase = forwardRef<
                                     id={field.name}
                                     variant="standard"
                                     type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
                                     inputProps={{ min: 0 }}
                                     error={Boolean(error)}
                                     sx={{ width: 150 }}

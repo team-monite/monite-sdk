@@ -61,6 +61,9 @@ export const PayableLineItemsForm = () => {
                     label={t(i18n)`Quantity`}
                     variant="standard"
                     type="number"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
                     inputProps={{ min: 1 }}
                     error={Boolean(error)}
                     helperText={error?.message}
@@ -106,6 +109,9 @@ export const PayableLineItemsForm = () => {
                     label={t(i18n)`Price`}
                     variant="standard"
                     type="number"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
                     inputProps={{ min: 0 }}
                     error={Boolean(error)}
                     helperText={error?.message}
@@ -128,6 +134,9 @@ export const PayableLineItemsForm = () => {
                     label={t(i18n)`VAT`}
                     variant="standard"
                     type="number"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
                     inputProps={{ min: 0, max: 100 }}
                     error={Boolean(error)}
                     helperText={error?.message}
