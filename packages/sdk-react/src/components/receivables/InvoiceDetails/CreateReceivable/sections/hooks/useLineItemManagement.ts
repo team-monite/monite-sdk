@@ -13,12 +13,12 @@ import { useCurrencies, useDebounceCallback } from '@/core/hooks';
 import { useIsMounted } from '@/core/hooks/useIsMounted';
 import { generateUniqueId } from '@/utils/uuid';
 
-import { useCreateInvoiceProductsTable } from '../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../utils';
+import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import type {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../validation';
+} from '../../validation';
+import { sanitizeLineItems } from '../utils';
 
 interface UseLineItemManagementProps {
   actualCurrency?: CurrencyEnum;
@@ -70,9 +70,10 @@ export const useLineItemManagement = ({
     [watchedLineItems]
   );
 
-  const sanitizedLineItemsForTable = useMemo(() => {
-    return sanitizeLineItems(currentLineItems);
-  }, [currentLineItems]);
+  const sanitizedLineItemsForTable = useMemo(
+    () => sanitizeLineItems(currentLineItems),
+    [currentLineItems]
+  );
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -341,17 +342,22 @@ export const useLineItemManagement = ({
     [getValues]
   );
 
+  const lineItemErrorsContentHash = JSON.stringify(formErrors.line_items);
+
   const lineItemErrors = useMemo(() => {
-    if (formErrors.line_items && Array.isArray(formErrors.line_items)) {
+    if (Array.isArray(formErrors.line_items)) {
       return fields.map((_field, index) => {
         const error = formErrors.line_items?.[index] as
           | DeepPartial<CreateReceivablesFormBeforeValidationLineItemProps>
           | undefined;
+
         return error ?? {};
       });
     }
+
     return fields.map(() => ({}));
-  }, [formErrors.line_items, fields]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formErrors.line_items, lineItemErrorsContentHash, fields]);
 
   return {
     fields,

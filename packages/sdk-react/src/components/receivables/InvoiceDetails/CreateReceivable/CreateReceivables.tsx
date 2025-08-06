@@ -286,6 +286,12 @@ const CreateReceivablesBase = ({
       return;
     }
 
+    const shippingAddressId = values.default_shipping_address_id;
+
+    const counterpartShippingAddress = counterpartAddresses?.data?.find(
+      (address) => address.id === shippingAddressId
+    );
+
     const invoicePayload: Omit<
       Schemas['ReceivableFacadeCreateInvoicePayload'],
       'is_einvoice'
@@ -293,9 +299,9 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: values.default_billing_address_id ?? '',
-      counterpart_shipping_address_id:
-        values.default_shipping_address_id || undefined,
+      counterpart_billing_address_id: counterpartBillingAddress.id,
+      counterpart_shipping_address_id: counterpartShippingAddress?.id,
+
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -557,15 +563,6 @@ const CreateReceivablesBase = ({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                form={formName}
-                disabled={createReceivable.isPending}
-              >
-                {t(i18n)`Save and continue`}
-              </Button>
               <Button
                 variant="contained"
                 key="next"

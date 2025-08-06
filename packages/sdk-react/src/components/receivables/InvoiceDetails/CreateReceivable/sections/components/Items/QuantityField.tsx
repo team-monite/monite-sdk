@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Controller, Control, FieldError } from 'react-hook-form';
 
 import { components } from '@/api';
-import { parseLocaleNumericString } from '@/components/receivables/InvoiceDetails/CreateReceivable/utils';
-import type { LineItemPath } from '@/components/receivables/InvoiceDetails/CreateReceivable/utils';
+import type { LineItemPath } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/types';
 import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useLingui } from '@lingui/react';
 import { TextField, FormControl, InputAdornment } from '@mui/material';
 
+import { parseLocaleNumericString } from '../../utils';
 import { MeasureUnitField } from './MeasureUnitField';
 
 type MeasureUnitListResponseType = components['schemas']['UnitListResponse'];
@@ -56,7 +56,7 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
         >
           <TextField
             {...quantityControllerField}
-            error={hasQuantityError}
+            error={hasQuantityError || Boolean(measureUnitFieldError)}
             InputProps={{
               endAdornment: (measureUnitsData?.data?.length ?? 0) > 0 && (
                 <InputAdornment position="end">
@@ -73,7 +73,6 @@ export const QuantityField: React.FC<QuantityFieldProps> = ({
                       onLineItemManuallyChanged();
                     }}
                     availableMeasureUnits={measureUnitsData?.data || []}
-                    error={Boolean(measureUnitFieldError)}
                     fieldError={measureUnitFieldError}
                     skipDefaultAssignment={
                       Boolean(onRequestLineItemValue('product.name')) ||

@@ -13,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import { PaymentSection } from '../../PaymentSection';
-import { SectionGeneralProps } from '../../Section.types';
+import type { SectionGeneralProps } from '../../types';
 
 interface FullfillmentSummaryProps extends SectionGeneralProps {
   paymentTerms:

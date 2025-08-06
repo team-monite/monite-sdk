@@ -1,4 +1,4 @@
-import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
+import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/types';
 import { ReminderOverdue } from './ReminderOverdue';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { ReminderBeforeDueDate } from '@/components/receivables/components/ReminderBeforeDueDate';

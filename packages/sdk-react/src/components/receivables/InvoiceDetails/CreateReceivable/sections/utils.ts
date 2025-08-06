@@ -1,15 +1,29 @@
-import { UseFormSetValue } from 'react-hook-form';
-
-import { DeepKeys } from '@/core/types/utils';
 import { rateMinorToMajor, rateMajorToMinor } from '@/core/utils/currencies';
+import { generateUniqueId } from '@/utils/uuid';
 
-import {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../validation';
+import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
+import type { CurrencyEnum, LineItemPath, SanitizableLineItem } from './types';
 
-export type LineItemPath =
-  DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
+const extractFromObject = (
+  obj: Record<string, unknown>,
+  pathKeys: string[]
+): string | undefined => {
+  let current: Record<string, unknown> = obj;
+
+  for (const k of pathKeys) {
+    if (typeof current !== 'object' || current === null || !(k in current)) {
+      return undefined;
+    }
+    current = current[k] as Record<string, unknown>;
+  }
+
+  return typeof current === 'object' &&
+    current !== null &&
+    'message' in current &&
+    typeof current.message === 'string'
+    ? String(current.message)
+    : undefined;
+};
 
 /**
  * Retrieves a specific error message from an error object or array based on a path.
@@ -26,27 +40,26 @@ export function getErrorMessage(
     return undefined;
   }
 
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
+  const isObject = typeof error === 'object';
+
+  if (isObject && 'message' in error && typeof error.message === 'string') {
     return error.message;
   }
 
-  if (!Array.isArray(error)) {
-    return undefined;
+  const keys = path.split('.');
+  const notArray = !Array.isArray(error);
+
+  if (notArray && isObject) {
+    return extractFromObject(error as Record<string, unknown>, keys);
   }
 
-  const keys = path.split('.');
+  if (notArray) return undefined;
 
   const specificError = error.find((item: unknown) => {
-    if (!item) return false;
-
-    if (typeof item !== 'object' || item === null) return false;
+    if (!item || typeof item !== 'object' || item === null) return false;
 
     let current: Record<string, unknown> = item as Record<string, unknown>;
+
     for (const k of keys) {
       if (typeof current !== 'object' || current === null || !(k in current)) {
         return false;
@@ -67,19 +80,7 @@ export function getErrorMessage(
     return undefined;
   }
 
-  let result: Record<string, unknown> = specificError as Record<
-    string,
-    unknown
-  >;
-  for (const k of keys) {
-    if (!result || typeof result !== 'object' || result === null)
-      return undefined;
-    result = result[k] as Record<string, unknown>;
-  }
-
-  return result && typeof result === 'object' && 'message' in result
-    ? String(result.message)
-    : undefined;
+  return extractFromObject(specificError as Record<string, unknown>, keys);
 }
 
 /**
@@ -90,39 +91,14 @@ export function getErrorMessage(
  * @param path The LineItemPath (type-safe path) to the line item's error message.
  * @returns The error message string if found, otherwise undefined.
  */
-export function getLineItemErrorMessage(
-  error: unknown,
-  path: LineItemPath
-): string | undefined {
-  return getErrorMessage(error, path);
-}
+export const getLineItemErrorMessage = (error: unknown, path: LineItemPath) =>
+  getErrorMessage(error, path);
 
 /**
- * Sets a value in the form with optional validation using React Hook Form's setValue.
+ * Handles tax/VAT rate input value
  *
- * @param name The name of the field to set.
- * @param value The value to set for the field.
- * @param shouldValidate Optional. Whether to trigger validation after setting the value. Defaults to true.
- * @param setValue The setValue function provided by React Hook Form's useForm.
- */
-export const setValueWithValidation = (
-  name: string,
-  value: unknown,
-  shouldValidate = true,
-  setValue: UseFormSetValue<CreateReceivablesFormBeforeValidationProps>
-) => {
-  // Need to use any due to React Hook Form's typing limitations
-  setValue(name as any, value, {
-    shouldValidate,
-    shouldDirty: true,
-  });
-};
-
-/**
- * Processes a string input value for a tax/VAT rate to ensure it's a number between 0 and 100.
- *
- * @param inputValue The raw input string, typically from a text field.
- * @returns A number representing the tax/VAT rate, constrained between 0 and 100. Returns 0 for empty or invalid inputs.
+ * @param inputValue The raw input string from the TextField
+ * @returns A number between 0 and 100 suitable for tax/VAT rates
  */
 export const processTaxRateValue = (inputValue: string): number => {
   if (inputValue === '') {
@@ -145,7 +121,6 @@ export const processTaxRateValue = (inputValue: string): number => {
  * @param inputElement The HTMLInputElement whose value needs to be formatted.
  */
 export const formatTaxRate = (inputElement: HTMLInputElement): void => {
-  // Remove leading zeros (but keep values like 0.5)
   if (
     inputElement.value.startsWith('0') &&
     inputElement.value.length > 1 &&
@@ -172,6 +147,7 @@ export const formatMinorToMajorCurrency = (
   if (minorValue === undefined || isNaN(minorValue)) return '';
 
   const majorValue = rateMinorToMajor(minorValue);
+
   return numberFormatter.format(majorValue);
 };
 
@@ -209,4 +185,103 @@ export const parseMajorToMinorCurrency = (
   if (isNaN(numValue)) return 0;
 
   return rateMajorToMinor(numValue);
+};
+
+const COMMON_DECIMAL_SEPARATOR = '.';
+
+const escapeRegexChars = (str: string) =>
+  str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+
+const getLocaleSeparators = (locale?: string) => {
+  if (typeof Intl === 'undefined' || typeof Intl.NumberFormat === 'undefined') {
+    return { decimal: '.', group: ',' };
+  }
+
+  try {
+    const parts = Intl.NumberFormat(locale).formatToParts(12345.6);
+    const decimal = parts.find((part) => part.type === 'decimal')?.value || '.';
+    const group = parts.find((part) => part.type === 'group')?.value || ',';
+
+    return { decimal, group };
+  } catch (error) {
+    console.error('Error getting locale separators:', error);
+
+    return { decimal: '.', group: ',' };
+  }
+};
+
+/**
+ * Parses a string that might contain locale-specific formatting (e.g., commas for decimals)
+ * into a standard number.
+ *
+ * @param inputValue The raw input string.
+ * @param locale Optional: The BCP 47 language tag for the locale to use for parsing (e.g., "en-US", "de-DE"). Defaults to browser's locale.
+ * @returns A number, or 0 if parsing fails.
+ */
+export const parseLocaleNumericString = (
+  inputValue: string,
+  locale?: string
+): number => {
+  if (typeof inputValue !== 'string' || !inputValue.trim()) {
+    return 0;
+  }
+
+  const { decimal: localeDecimalSeparator, group: localeGroupSeparator } =
+    getLocaleSeparators(locale);
+  const cleanedString = inputValue.replace(
+    new RegExp(escapeRegexChars(localeGroupSeparator), 'g'),
+    ''
+  );
+
+  let resultString = '';
+  let hasSeparator = false;
+
+  for (const char of cleanedString) {
+    if (/\d/.test(char)) {
+      resultString += char;
+    } else if (char === localeDecimalSeparator && !hasSeparator) {
+      resultString += COMMON_DECIMAL_SEPARATOR;
+      hasSeparator = true;
+    }
+  }
+
+  const numValue = parseFloat(resultString);
+
+  return isNaN(numValue) ? 0 : numValue;
+};
+
+/**
+ * Sanitizes line items for use in invoice creation
+ * Formats the data consistently and handles type conversions
+ */
+export const sanitizeLineItems = (
+  items: ReadonlyArray<SanitizableLineItem> | undefined
+): CreateReceivablesFormBeforeValidationLineItemProps[] => {
+  if (!items || !Array.isArray(items)) return [];
+
+  return items
+    .filter((item) => Boolean(item?.product?.name))
+    .map((item) => ({
+      ...item,
+      id: item.product_id || generateUniqueId(),
+      quantity: item.quantity ?? 1,
+      product: {
+        ...item.product,
+        type: item.product?.type as 'product' | 'service',
+        price: {
+          ...(item.product?.price || {}),
+          value: item.product?.price?.value ?? 0,
+          currency: (item.product?.price?.currency || 'USD') as CurrencyEnum,
+        },
+        measure_unit_id: item.product?.measure_unit_id || '',
+      },
+      ...(item.measure_unit?.name
+        ? {
+            measure_unit: {
+              name: item.measure_unit.name,
+              id: null,
+            },
+          }
+        : {}),
+    }));
 };

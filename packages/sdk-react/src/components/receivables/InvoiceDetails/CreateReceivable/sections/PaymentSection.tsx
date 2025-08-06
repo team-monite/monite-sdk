@@ -13,7 +13,7 @@ import {
   PaymentTermsSummary,
   PaymentTermsDialog,
 } from './components/PaymentTerms';
-import type { SectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from './types';
 
 type Props = SectionGeneralProps & {
   paymentTerms:

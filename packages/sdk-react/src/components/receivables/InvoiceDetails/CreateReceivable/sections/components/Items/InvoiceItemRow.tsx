@@ -2,11 +2,11 @@ import { memo } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
 
 import { components } from '@/api';
-import type { LineItemPath } from '@/components/receivables/InvoiceDetails/CreateReceivable/utils';
 import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { TableCell, TableRow, IconButton, FormControl } from '@mui/material';
 
+import type { LineItemPath } from '../../types';
 import { ItemSelector, ProductItem } from './ItemSelector';
 import { PriceField } from './PriceField';
 import { QuantityField } from './QuantityField';

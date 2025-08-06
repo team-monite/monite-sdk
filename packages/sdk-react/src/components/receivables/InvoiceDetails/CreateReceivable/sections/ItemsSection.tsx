@@ -1,13 +1,14 @@
 import { CreateProductDialog } from '../components/CreateProductDialog';
+import { CreateReceivablesFormBeforeValidationProps } from '../validation';
 import {
   FormErrorDisplay,
   useFormErrors,
-} from '../components/FormErrorDisplay';
-import { useLineItemManagement } from '../hooks/useLineItemManagement';
-import { CreateReceivablesFormBeforeValidationProps } from '../validation';
+} from './components/Items/FormErrorDisplay';
 import { InvoiceItemRow } from './components/Items/InvoiceItemRow';
 import { InvoiceTotals } from './components/Items/InvoiceTotals';
 import { CUSTOM_ID, ProductItem } from './components/Items/ItemSelector';
+import { useLineItemManagement } from './hooks/useLineItemManagement';
+import type { FormLineItemPath } from './types';
 import { components } from '@/api';
 import { VatModeMenu } from '@/components/receivables/components';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -37,8 +38,6 @@ import {
   FieldPathValue,
 } from 'react-hook-form';
 
-type LineItemPath = FieldPath<CreateReceivablesFormBeforeValidationProps>;
-
 interface CreateInvoiceProductsTableProps {
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
@@ -55,7 +54,7 @@ export const ItemsSection = ({
   registerLineItemCleanupFn,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
-  const { control, formState, getValues, trigger, clearErrors, watch } =
+  const { control, formState, getValues, trigger, watch } =
     useFormContext<CreateReceivablesFormBeforeValidationProps>();
 
   const isInclusivePricing = watch('vat_mode') === 'inclusive';
@@ -162,6 +161,15 @@ export const ItemsSection = ({
           `line_items.${index}.measure_unit`,
           undefined
         );
+
+                 if (itemMeasureUnitId || currentMeasureUnitId) {
+           const fieldPath = `line_items.${index}` as FormLineItemPath;
+           const currentValue = getValues(`line_items.${index}`) || {};
+
+           setValueWithValidationLocal(fieldPath, currentValue, {
+             shouldValidate: true,
+           });
+         }
       } else if (measureUnitsData?.data?.length) {
         const defaultUnitId = measureUnitsData.data[0]?.id;
         if (defaultUnitId) {
@@ -169,10 +177,21 @@ export const ItemsSection = ({
             `line_items.${index}.product.measure_unit_id`,
             defaultUnitId
           );
+                     const fieldPath = `line_items.${index}` as FormLineItemPath;
+           const currentValue = getValues(`line_items.${index}`) || {};
+
+           setValueWithValidationLocal(fieldPath, currentValue, {
+             shouldValidate: true,
+           });
         }
       }
     },
-    [measureUnitsData, setValueWithoutValidation]
+    [
+      measureUnitsData?.data,
+      setValueWithoutValidation,
+      getValues,
+      setValueWithValidationLocal,
+    ]
   );
 
   const handleItemUpdate = useCallback(
@@ -181,10 +200,6 @@ export const ItemsSection = ({
 
       const itemName = item.label ?? '';
       setValueWithoutValidation(`line_items.${index}.product.name`, itemName);
-
-      if (itemName.trim()) {
-        clearErrors(`line_items.${index}.product.name` as LineItemPath);
-      }
 
       const isActualCatalogItem =
         item.id !== '' && item.id !== CUSTOM_ID && isCatalogItem;
@@ -254,7 +269,6 @@ export const ItemsSection = ({
       setValueWithoutValidation,
       handleAutoAddRow,
       updateLineItemMeasureUnit,
-      clearErrors,
     ]
   );
 
@@ -328,7 +342,7 @@ export const ItemsSection = ({
                     fieldPathSuffix: string
                   ) =>
                     getValues(
-                      `line_items.${index}.${fieldPathSuffix}` as LineItemPath
+                      `line_items.${index}.${fieldPathSuffix}` as FormLineItemPath
                     );
 
                   const setLineItemFieldValueForCurrentRow = (
@@ -337,12 +351,12 @@ export const ItemsSection = ({
                     options?: { shouldValidate?: boolean }
                   ) => {
                     const specificPath =
-                      `line_items.${index}.${fieldPathSuffix}` as LineItemPath;
+                      `line_items.${index}.${fieldPathSuffix}` as FormLineItemPath;
                     setValueWithValidationLocal(
                       specificPath,
                       value as FieldPathValue<
                         CreateReceivablesFormBeforeValidationProps,
-                        LineItemPath
+                        FormLineItemPath
                       >,
                       options
                     );
@@ -357,8 +371,8 @@ export const ItemsSection = ({
                   ) => {
                     trigger(
                       fieldPathSuffix
-                        ? (`line_items.${index}.${fieldPathSuffix}` as LineItemPath)
-                        : (`line_items.${index}` as LineItemPath)
+                        ? (`line_items.${index}.${fieldPathSuffix}` as FormLineItemPath)
+                        : (`line_items.${index}` as FormLineItemPath)
                     );
                   };
 
