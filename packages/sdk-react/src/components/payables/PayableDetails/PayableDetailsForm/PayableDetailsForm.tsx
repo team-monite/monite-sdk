@@ -397,8 +397,24 @@ const PayableDetailsFormBase = forwardRef<
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
 
-    // Check if Line Items or Totals values have changed
-    const areLineItemsValuesChanged = !!dirtyFields.lineItems;
+    // Check if Line Items values have changed
+    const areLineItemsValuesChanged = (() => {
+      if (!dirtyFields.lineItems) return false;
+      const hasLengthChanged =
+        dirtyFields.lineItems.length !== (lineItems?.length || 0);
+      const hasRelevantFieldsChanged = dirtyFields.lineItems.some(
+        (lineItemDirtyFields) => {
+          if (!lineItemDirtyFields) return false;
+          return !!(
+            lineItemDirtyFields.quantity ||
+            lineItemDirtyFields.price ||
+            lineItemDirtyFields.tax
+          );
+        }
+      );
+      return hasLengthChanged || hasRelevantFieldsChanged;
+    })();
+    // Check if Totals values have changed
     const areTotalsValuesChanged =
       !!dirtyFields.subtotal ||
       !!dirtyFields.discount ||
