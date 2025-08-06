@@ -304,11 +304,7 @@ const PayableDetailsFormBase = forwardRef<
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
-    const currentLineItems = watch('lineItems');
-    const currentSubtotal = watch('subtotal');
     const currentDiscount = watch('discount');
-    const currentTax = watch('tax_amount');
-    const currentTotal = watch('total_amount');
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
