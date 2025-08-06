@@ -80,7 +80,15 @@ export const MessageList: FC<MessageListProps> = ({ isEnlarged }) => {
       return;
     }
 
-    setMessages((prev) => [...prev, MOCK_MESSAGE]);
+    setMessages((prev) => {
+      const isInMessages = prev.find(({ id }) => id === MESSAGE_ID);
+
+      if (isInMessages) {
+        return prev;
+      }
+
+      return [...prev, MOCK_MESSAGE];
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStreaming]);
 

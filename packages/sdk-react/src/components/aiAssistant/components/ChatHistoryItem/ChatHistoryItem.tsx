@@ -49,7 +49,7 @@ export const ChatHistoryItem: FC<ChatHistoryItemProps> = ({
         </h5>
 
         <p className="mtw:line-clamp-2 mtw:font-normal mtw:whitespace-break-spaces mtw:h-10">
-          {text}
+          {text || t(i18n)`No info`}
         </p>
       </div>
 
