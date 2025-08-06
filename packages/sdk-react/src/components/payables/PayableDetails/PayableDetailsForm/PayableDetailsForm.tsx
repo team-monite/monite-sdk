@@ -402,6 +402,7 @@ const PayableDetailsFormBase = forwardRef<
       useProductCurrencyGroups();
 
     // Check if line items or totals have changed from their original values
+    // NOTE: using loose equality because form current values have type string
     const areLineItemsChanged =
       currentLineItems.length !== defaultValues.lineItems.length ||
       currentLineItems.some((lineItem, index) => {
