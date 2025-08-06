@@ -90,9 +90,9 @@ export const prepareDefaultValues = (
       currency: DEFAULT_CURRENCY,
       tags: [],
       discount: null,
-      subtotal: null,
-      tax_amount: null,
-      total_amount: null,
+      subtotal: 0,
+      tax_amount: 0,
+      total_amount: 0,
       lineItems: [
         {
           id: '',
@@ -130,15 +130,13 @@ export const prepareDefaultValues = (
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
     subtotal:
-      subtotal && currency ? formatFromMinorUnits(subtotal, currency) : null,
+      subtotal && currency ? formatFromMinorUnits(subtotal, currency) : 0,
     tax_amount:
-      tax_amount && currency
-        ? formatFromMinorUnits(tax_amount, currency)
-        : null,
+      tax_amount && currency ? formatFromMinorUnits(tax_amount, currency) : 0,
     total_amount:
       total_amount && currency
         ? formatFromMinorUnits(total_amount, currency)
-        : null,
+        : 0,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',

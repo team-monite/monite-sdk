@@ -401,26 +401,17 @@ const PayableDetailsFormBase = forwardRef<
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
 
-    // Check if line items or totals have changed from their original values
-    // NOTE: using loose equality because form current values have type string
-    const areLineItemsChanged =
-      currentLineItems.length !== defaultValues.lineItems.length ||
-      currentLineItems.some((lineItem, index) => {
-        const defaultLineItem = defaultValues.lineItems[index];
-        return (
-          lineItem.quantity != defaultLineItem.quantity ||
-          lineItem.price != defaultLineItem.price ||
-          lineItem.tax != defaultLineItem.tax
-        );
-      });
-    const areTotalsChanged =
-      currentSubtotal != defaultValues.subtotal ||
-      currentTax != defaultValues.tax_amount ||
-      currentTotal != defaultValues.total_amount ||
-      currentDiscount != defaultValues.discount;
-    const areTotalsDifferent = areLineItemsChanged || areTotalsChanged;
+    // Check if Line Items or Totals values have changed
+    const areLineItemsValuesChanged = !!dirtyFields.lineItems;
+    const areTotalsValuesChanged =
+      !!dirtyFields.subtotal ||
+      !!dirtyFields.discount ||
+      !!dirtyFields.tax_amount ||
+      !!dirtyFields.total_amount;
+    const areValuesDifferent =
+      areLineItemsValuesChanged || areTotalsValuesChanged;
 
-    const showAlertChangedValues = !!payable && areTotalsDifferent;
+    const showAlertChangedValues = !!payable && areValuesDifferent;
 
     return (
       <>
@@ -459,18 +450,13 @@ const PayableDetailsFormBase = forwardRef<
                 );
 
                 if (payable) {
-                  if (savePayable) {
-                    if (areLineItemsChanged) {
-                      savePayable(
-                        payable.id,
-                        invoiceData,
-                        values.lineItems,
-                        dirtyFields
-                      );
-                    } else {
-                      savePayable(payable.id, invoiceData);
-                    }
-                  }
+                  savePayable &&
+                    savePayable(
+                      payable.id,
+                      invoiceData,
+                      values.lineItems,
+                      dirtyFields
+                    );
                 } else {
                   createPayable && createPayable(invoiceData, values.lineItems);
                 }
