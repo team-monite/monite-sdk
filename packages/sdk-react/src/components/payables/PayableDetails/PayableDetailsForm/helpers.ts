@@ -189,13 +189,13 @@ export const prepareSubmit = (
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
   const subtotal = price * quantity;
 
-  return roundUpWithTwoDecimals(subtotal);
+  return roundWithTwoDecimals(subtotal);
 };
 
 const calculateLineItemTotal = (subtotal: number, taxRate: number): number => {
   const total = subtotal + (taxRate * subtotal) / 100;
 
-  return roundUpWithTwoDecimals(total);
+  return roundWithTwoDecimals(total);
 };
 
 export const calculateTotalPriceForLineItem = (lineItem: LineItem): number => {
@@ -220,9 +220,9 @@ export const calculateTotalsForPayable = (
       const newTotal = calculateLineItemTotal(newSubtotal, lineItem.tax || 0);
 
       return {
-        subtotal: roundUpWithTwoDecimals(result.subtotal + newSubtotal),
-        taxes: roundUpWithTwoDecimals(result.taxes + (newTotal - newSubtotal)),
-        total: roundUpWithTwoDecimals(result.total + newTotal),
+        subtotal: roundWithTwoDecimals(result.subtotal + newSubtotal),
+        taxes: roundWithTwoDecimals(result.taxes + (newTotal - newSubtotal)),
+        total: roundWithTwoDecimals(result.total + newTotal),
       };
     },
     { subtotal: 0, taxes: 0, total: 0 }
@@ -231,7 +231,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total: roundUpWithTwoDecimals(total - (discount ?? 0)),
+    total: roundWithTwoDecimals(total - (discount ?? 0)),
   };
 };
 
@@ -245,9 +245,8 @@ export const prepareLineItemSubmit = (
   return {
     name,
     quantity,
-    tax: formatTaxToMinorUnits(roundUpWithTwoDecimals(tax)),
-    unit_price:
-      formatToMinorUnits(roundUpWithTwoDecimals(price), currency) ?? 0,
+    tax: formatTaxToMinorUnits(roundWithTwoDecimals(tax)),
+    unit_price: formatToMinorUnits(roundWithTwoDecimals(price), currency) ?? 0,
   };
 };
 
@@ -339,7 +338,7 @@ export const findDefaultBankAccount = (
   return defaultAccount?.id || '';
 };
 
-const roundUpWithTwoDecimals = (value: number): number => {
+const roundWithTwoDecimals = (value: number): number => {
   // NOTE: see https://stackoverflow.com/a/11832950/7564579
   // Examples: 1.004 -> 1.00; 1.005 -> 1.01
   return Math.round((value + Number.EPSILON) * 100) / 100;
