@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.3.1
+
+### Patch Changes
+
+- ec9113e: Implemented footer field for customer notes in invoice
+- ba35d0e: Save input upon chat closure. Add chat to chat history right away. Fix UI problem with buttons.
+
 ## 2.3.0
 
 ### Minor Changes
