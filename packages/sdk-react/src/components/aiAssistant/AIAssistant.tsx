@@ -32,11 +32,12 @@ const AIAssistantBase = () => {
   const { api } = useMoniteContext();
   const isMobile = useIsMobile();
 
-  const [conversationId, setConversationId] = useState<string | null>('');
+  const [conversationId, setConversationId] = useState('');
   const [view, setView] = useState<AIView>('start');
   const [isNewChat, setIsNewChat] = useState(true);
   const [open, setOpen] = useState(false);
   const [isEnlarged, setIsEnlarged] = useState(false);
+  const [initialInput, setInitialInput] = useState('');
 
   const withOverlay = open && isEnlarged;
 
@@ -67,7 +68,7 @@ const AIAssistantBase = () => {
 
   return (
     <Popover modal open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={!conversationId} asChild>
         <Button
           className={cn(
             'mtw:absolute mtw:bottom-0 mtw:right-6 mtw:bg-black',
@@ -108,44 +109,47 @@ const AIAssistantBase = () => {
           </AISidebarWrapper>
         )}
 
-        <div className="mtw:grow mtw:flex mtw:flex-col mtw:gap-6 mtw:w-full">
-          {conversationId && (
-            <AIAssistantChatProvider
-              isNewChat={isNewChat}
+        <div
+          key={conversationId}
+          className="mtw:grow mtw:flex mtw:flex-col mtw:gap-6 mtw:w-full"
+        >
+          <AIAssistantChatProvider
+            isNewChat={isNewChat}
+            setIsNewChat={setIsNewChat}
+            conversationId={conversationId}
+            initialInput={initialInput}
+          >
+            <AssistantHeader
+              isEnlarged={isEnlarged}
+              setIsEnlarged={setIsEnlarged}
+              view={view}
+              setView={setView}
+              setConversationId={setConversationId}
               setIsNewChat={setIsNewChat}
-              conversationId={conversationId}
-            >
-              <AssistantHeader
-                isEnlarged={isEnlarged}
-                setIsEnlarged={setIsEnlarged}
-                view={view}
-                setView={setView}
+            />
+
+            {view === 'chat' && <AIChat isEnlarged={isEnlarged} />}
+
+            {view === 'history' && (
+              <ChatHistory
+                conversationId={conversationId}
                 setConversationId={setConversationId}
                 setIsNewChat={setIsNewChat}
+                setView={setView}
+                isEnlarged={false}
               />
+            )}
 
-              {view === 'chat' && <AIChat isEnlarged={isEnlarged} />}
-
-              {view === 'history' && (
-                <ChatHistory
-                  conversationId={conversationId}
-                  setConversationId={setConversationId}
-                  setIsNewChat={setIsNewChat}
-                  setView={setView}
-                  isEnlarged={false}
-                />
-              )}
-
-              {view !== 'history' && (
-                <ChatInput
-                  view={view}
-                  isEnlarged={isEnlarged}
-                  isNewChat={isNewChat}
-                  onStartConversation={handleStartConversation}
-                />
-              )}
-            </AIAssistantChatProvider>
-          )}
+            {view !== 'history' && (
+              <ChatInput
+                view={view}
+                isEnlarged={isEnlarged}
+                isNewChat={isNewChat}
+                setInitialInput={setInitialInput}
+                onStartConversation={handleStartConversation}
+              />
+            )}
+          </AIAssistantChatProvider>
         </div>
       </PopoverContent>
 
