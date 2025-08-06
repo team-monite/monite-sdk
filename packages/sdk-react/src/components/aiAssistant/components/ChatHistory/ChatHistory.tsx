@@ -1,22 +1,22 @@
-import { SidebarMenuItem } from '../AISidebarMenuButton/AISidebarMenuButton';
-import { AISidebarSkeleton } from '@/components/aiAssistant/components/AISidebarSkeleton/AISidebarSkeleton';
+import { ChatHistoryItem } from '@/components/aiAssistant/components/ChatHistoryItem/ChatHistoryItem';
+import { ChatHistorySkeleton } from '@/components/aiAssistant/components/ChatHistorySkeleton/ChatHistorySkeleton';
+import { NoHistoryView } from '@/components/aiAssistant/components/NoHistoryView/NoHistoryView';
 import { AIView, Conversation } from '@/components/aiAssistant/types';
 import { createConversationGroups } from '@/components/aiAssistant/utils/aiAssistant';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import React, { FC, useCallback, useMemo } from 'react';
 
-interface AIChatHistoryProps {
+interface ChatHistoryProps {
   conversationId: string | null;
-  setConversationId: (id: string | null) => void;
+  setConversationId: (id: string) => void;
   setIsNewChat: (isNewChat: boolean) => void;
   setView: (view: AIView) => void;
   isEnlarged: boolean;
 }
 
-export const AIChatHistory: FC<AIChatHistoryProps> = ({
+export const ChatHistory: FC<ChatHistoryProps> = ({
   conversationId,
   setConversationId,
   setIsNewChat,
@@ -36,12 +36,23 @@ export const AIChatHistory: FC<AIChatHistoryProps> = ({
     return createConversationGroups(conversations, i18n);
   }, [conversations, i18n]);
 
-  const handleSetConversation = useCallback((id: string) => {
+  const onSetConversation = useCallback((id: string) => {
     setView('chat');
     setConversationId(id);
     setIsNewChat(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!isLoading && !conversations.length) {
+    return (
+      <NoHistoryView
+        isEnlarged={isEnlarged}
+        setView={setView}
+        setIsNewChat={setIsNewChat}
+        setConversationId={setConversationId}
+      />
+    );
+  }
 
   return (
     <div
@@ -50,28 +61,27 @@ export const AIChatHistory: FC<AIChatHistoryProps> = ({
         'mtw:text-sm mtw:flex mtw:flex-1 mtw:flex-col mtw:gap-4'
       )}
     >
-      {isLoading && <AISidebarSkeleton />}
+      {isLoading && <ChatHistorySkeleton />}
 
       {conversationGroups.map(({ title, conversations }) => {
         return (
-          <div key={title} className="mtw:flex mtw:flex-col mtw:gap-3">
-            <h5 className="mtw:px-5 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
+          <div key={title} className="mtw:flex mtw:flex-col mtw:gap-2 mtw:p-2">
+            <h5 className="mtw:px-4 mtw:text-sm mtw:text-gray-500 mtw:font-normal">
               {title}
             </h5>
 
             <ul className="mtw:flex mtw:flex-col mtw:items-start">
-              {conversations.map(({ title, id }) => {
+              {conversations.map(({ title, id, messages }) => {
                 return (
-                  <SidebarMenuItem
-                    className="mtw:truncate mtw:w-full mtw:inline-block"
-                    onClick={() => handleSetConversation(id)}
-                    isActive={isEnlarged && conversationId === id}
+                  <ChatHistoryItem
                     key={id}
-                  >
-                    <span key={id} className="mtw:truncate">
-                      {title || t(i18n)`Chat ${id}`}
-                    </span>
-                  </SidebarMenuItem>
+                    isEnlarged={isEnlarged}
+                    id={id}
+                    conversationId={conversationId}
+                    title={title}
+                    onSetConversation={onSetConversation}
+                    messages={messages}
+                  />
                 );
               })}
             </ul>

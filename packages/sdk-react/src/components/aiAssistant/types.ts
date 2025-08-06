@@ -31,14 +31,11 @@ export interface Conversation {
   title: string;
   created_at: string;
   is_starred: boolean;
+  messages: AIMessage[];
 }
 
 export interface Conversations {
   [title: string]: Conversation[];
-}
-
-export interface ConversationHistory extends Conversation {
-  messages: AIMessage[];
 }
 
 export interface AIMessage {

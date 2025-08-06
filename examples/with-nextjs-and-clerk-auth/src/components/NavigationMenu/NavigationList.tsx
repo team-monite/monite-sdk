@@ -18,21 +18,10 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
 import { List } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export const NavigationList = () => {
   const { i18n } = useLingui();
-  const [isDevEnvironment, setIsDevEnvironment] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsDevEnvironment(
-        window.location.hostname.includes('localhost') ||
-          window.location.hostname.includes('dev') ||
-          window.location.hostname.includes('sandbox')
-      );
-    }
-  }, []);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { apiVersion } from '@/api/api-version';
 import { useAIAssistantOptions } from '@/components/aiAssistant/hooks/useAIAssistantOptions';
-import { ConversationHistory } from '@/components/aiAssistant/types';
+import { Conversation } from '@/components/aiAssistant/types';
 import { sanitizeEntityName } from '@/components/aiAssistant/utils/aiAssistant';
 import { getEntityName } from '@/components/onboarding/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -17,6 +17,7 @@ export interface ChatProviderProps extends PropsWithChildren {
   isNewChat: boolean;
   setIsNewChat: (isNewChat: boolean) => void;
   conversationId: string;
+  initialInput: string;
 }
 
 const AIAssistantChatContext = createContext<UseChatHelpers | undefined>(
@@ -38,12 +39,13 @@ export const AIAssistantChatProvider = ({
   conversationId,
   isNewChat,
   setIsNewChat,
+  initialInput,
 }: ChatProviderProps) => {
   const { apiUrl, fetchToken, api, queryClient, entityId } = useMoniteContext();
   const { data: entity } = useMyEntity();
 
   const { data: conversation } =
-    api.ai.getAiConversationsId.useQuery<ConversationHistory>(
+    api.ai.getAiConversationsId.useQuery<Conversation>(
       {
         path: { conversation_id: conversationId },
       },
@@ -76,12 +78,15 @@ export const AIAssistantChatProvider = ({
       });
     },
     initialMessages: messages,
+    initialInput,
     onFinish: async () => {
       if (!isNewChat) {
         return;
       }
 
       await api.ai.getAiConversationsId.invalidateQueries(queryClient);
+      await api.ai.getAiConversations.invalidateQueries(queryClient);
+
       setIsNewChat(false);
     },
   });

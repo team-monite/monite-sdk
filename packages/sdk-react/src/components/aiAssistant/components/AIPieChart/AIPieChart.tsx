@@ -1,11 +1,15 @@
-import React, { type FC } from 'react';
-
-import { ChartLegend } from '@/components/aiAssistant/components/ChartLegend/ChartLegend';
-
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
-
 import { COLORS } from '../../consts';
 import { ChartData } from '../../types';
+import { ChartLegend } from '@/components/aiAssistant/components/ChartLegend/ChartLegend';
+import React, { type FC } from 'react';
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from 'recharts';
 
 interface AIPieChartProps {
   data: ChartData[];
@@ -13,15 +17,15 @@ interface AIPieChartProps {
 }
 
 export const AIPieChart: FC<AIPieChartProps> = ({ data, parentWidth }) => {
-  const innerRadius = parentWidth > 511 ? 60 : parentWidth > 383 ? 40 : 20;
+  const innerRadius = parentWidth > 511 ? 60 : 40;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart
         margin={{
           top: 5,
-          right: 30,
-          left: 20,
+          right: parentWidth > 383 ? 30 : 5,
+          left: parentWidth > 383 ? 20 : 5,
           bottom: 5,
         }}
       >
@@ -41,12 +45,16 @@ export const AIPieChart: FC<AIPieChartProps> = ({ data, parentWidth }) => {
           ))}
         </Pie>
 
-        <Legend
-          content={<ChartLegend />}
-          width={parentWidth > 447 ? 200 : 150}
-          verticalAlign="middle"
-          align="right"
-        />
+        <Tooltip isAnimationActive={false} />
+
+        {parentWidth > 383 && (
+          <Legend
+            content={<ChartLegend />}
+            width={parentWidth > 447 ? 200 : 150}
+            verticalAlign="middle"
+            align="right"
+          />
+        )}
       </PieChart>
     </ResponsiveContainer>
   );

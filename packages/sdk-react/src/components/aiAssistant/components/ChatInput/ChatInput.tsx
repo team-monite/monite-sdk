@@ -4,8 +4,11 @@ import { AIRichEditor } from '../AIRichEditor/AIRichEditor';
 import { AIView } from '@/components';
 import { PromptSuggestions } from '@/components/aiAssistant/components/PromptSuggestions/PromptSuggestions';
 import { PromptsPopover } from '@/components/aiAssistant/components/PromptsPopover/PromptsPopover';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { cn } from '@/ui/lib/utils';
-import { SendHorizontal } from 'lucide-react';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { ArrowUp } from 'lucide-react';
 import React, {
   type ChangeEvent,
   FC,
@@ -22,6 +25,7 @@ interface ChatInputProps {
   onStartConversation: () => void;
   isEnlarged: boolean;
   view: AIView;
+  setInitialInput: (initialInput: string) => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({
@@ -29,18 +33,46 @@ export const ChatInput: FC<ChatInputProps> = ({
   onStartConversation,
   isEnlarged,
   view,
+  setInitialInput,
 }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
 
   const [showPrompts, setShowPrompts] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
     null
   );
 
-  const { input, status, setInput, handleSubmit } = useAIAssistantChat();
+  const { id, input, status, setInput, handleSubmit } = useAIAssistantChat();
 
   const isStreaming = status === 'streaming';
   const isDisabled = !input || isStreaming;
+
+  const updateHistory = () => {
+    api.ai.getAiConversations.setQueryData(
+      api.ai.getAiConversations.getQueryKey(),
+      (data) => {
+        if (!data?.data || !Array.isArray(data.data)) {
+          return data;
+        }
+
+        const newConversation = {
+          id,
+          title: t(i18n)`New Chat`,
+          created_at: new Date().toISOString(),
+          is_starred: false,
+          messages: [],
+        };
+
+        return {
+          ...data,
+          data: [newConversation, ...data.data],
+        };
+      },
+      queryClient
+    );
+  };
 
   const handleClearInput = () => {
     if (!editorRef.current) {
@@ -49,9 +81,11 @@ export const ChatInput: FC<ChatInputProps> = ({
 
     editorRef.current.innerHTML = '';
     setInput('');
+    setInitialInput('');
 
     if (isNewChat) {
       onStartConversation();
+      updateHistory();
     }
   };
 
@@ -149,9 +183,16 @@ export const ChatInput: FC<ChatInputProps> = ({
     }
 
     editorRef.current.innerHTML = input;
+
     editorRef.current.focus();
     setCursorAtTheEnd(editorRef.current);
-  }, [input]);
+
+    if (!input) {
+      return;
+    }
+
+    setInitialInput(input);
+  }, [input, setInitialInput]);
 
   return (
     <div
@@ -169,7 +210,7 @@ export const ChatInput: FC<ChatInputProps> = ({
 
       <form
         className={cn(
-          'mtw:flex mtw:items-center mtw:gap-2 mtw:rounded-xl mtw:px-5 mtw:py-4 mtw:w-full',
+          'mtw:flex mtw:items-center mtw:gap-2 mtw:rounded-xl mtw:p-3 mtw:w-full',
           'mtw:border mtw:border-transparent mtw:border-solid mtw:bg-gray-100',
           'mtw:hover:border-primary-50 mtw:relative'
         )}
@@ -192,15 +233,17 @@ export const ChatInput: FC<ChatInputProps> = ({
 
         <button
           className={cn(
-            isDisabled ? 'mtw:cursor-default' : 'mtw:cursor-pointer'
+            'mtw:shrink-0 mtw:bg-black mtw:h-9 mtw:w-9 mtw:rounded-full',
+            'mtw:flex mtw:justify-center mtw:items-center mtw:self-end',
+            isDisabled
+              ? 'mtw:cursor-default mtw:bg-gray-500'
+              : 'mtw:cursor-pointer'
           )}
           disabled={isDisabled}
           type="submit"
+          aria-label={t(i18n)`Submit message`}
         >
-          <SendHorizontal
-            className={cn(isDisabled && 'mtw:text-gray-200')}
-            size={17}
-          />
+          <ArrowUp className="mtw:text-white" size={16} />
         </button>
       </form>
     </div>
