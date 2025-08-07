@@ -10,7 +10,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 
 interface ChatHistoryProps {
   conversationId: string | null;
-  setConversationId: (id: string | null) => void;
+  setConversationId: (id: string) => void;
   setIsNewChat: (isNewChat: boolean) => void;
   setView: (view: AIView) => void;
   isEnlarged: boolean;

@@ -1,5 +1,4 @@
 import { MessageList } from '@/components/aiAssistant/components/MessageList/MessageList';
-import { useAIAssistantChat } from '@/components/aiAssistant/context/AIAssistantChatContext';
 import { FC } from 'react';
 
 interface AIChatProps {
@@ -7,7 +6,5 @@ interface AIChatProps {
 }
 
 export const AIChat: FC<AIChatProps> = ({ isEnlarged }) => {
-  const { id } = useAIAssistantChat();
-
-  return <MessageList isEnlarged={isEnlarged} key={id} />;
+  return <MessageList isEnlarged={isEnlarged} />;
 };

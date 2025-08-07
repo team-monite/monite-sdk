@@ -1009,7 +1009,7 @@ msgstr "Aruba"
 msgid "Aruban Florin"
 msgstr "Aruban Florin"
 
-#: src/components/aiAssistant/AIAssistant.tsx:84
+#: src/components/aiAssistant/AIAssistant.tsx:85
 msgid "Ask AI"
 msgstr "Ask AI"
 
@@ -5953,6 +5953,7 @@ msgid "New Caledonia"
 msgstr "New Caledonia"
 
 #: src/components/aiAssistant/components/AssistantHeader/AssistantHeader.tsx:114
+#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:62
 #: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:50
 #: src/components/aiAssistant/components/NoHistoryView/NoHistoryView.tsx:83
 msgid "New Chat"
@@ -6090,6 +6091,10 @@ msgstr "No Credit Notes"
 #: src/core/hooks/useFileInput.tsx:84
 msgid "No file provided"
 msgstr "No file provided"
+
+#: src/components/aiAssistant/components/ChatHistoryItem/ChatHistoryItem.tsx:52
+msgid "No info"
+msgstr "No info"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.tsx:397
 msgid "No items"
@@ -8303,7 +8308,7 @@ msgstr "Submit"
 msgid "Submit invoice"
 msgstr "Submit invoice"
 
-#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:206
+#: src/components/aiAssistant/components/ChatInput/ChatInput.tsx:244
 #: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:161
 msgid "Submit message"
 msgstr "Submit message"
