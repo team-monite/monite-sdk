@@ -13,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import { PaymentSection } from '../../PaymentSection';
-import { SectionGeneralProps } from '../../Section.types';
+import type { SectionGeneralProps } from '../../types';
 
 interface FullfillmentSummaryProps extends SectionGeneralProps {
   paymentTerms:
@@ -61,8 +61,14 @@ export const FullfillmentSummary = ({
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
   const handlePaymentTermsChange = async (newId: string = '') => {
-    await refetch();
-    setValue('payment_terms_id', newId);
+    try {
+      await refetch();
+      await Promise.resolve();
+
+      setValue('payment_terms_id', newId);
+    } catch (error) {
+      console.error('Error changing payment terms:', error);
+    }
   };
 
   return (

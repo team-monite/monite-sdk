@@ -62,7 +62,9 @@ export const useInvoiceDefaultValues = (
               ? { name: measureUnitName, id: null }
               : undefined,
           tax_rate_value: isNonVatSupported
-            ? rateMinorToMajor(lineItem.product.vat_rate.value)
+            ? lineItem.product.vat_rate.value !== undefined
+              ? rateMinorToMajor(lineItem.product.vat_rate.value)
+              : undefined
             : undefined,
         };
       }),

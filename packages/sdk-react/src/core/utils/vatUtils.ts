@@ -1,23 +1,6 @@
-/**
- * Converts a rate from minor units (API format) to major units (UI display format)
- * Example: 2000 -> 20
- * @param rateMinor The rate value in minor units (as received from API)
- * @returns The rate value in major units (for UI display)
- */
-export const rateMinorToMajor = (rateMinor: number): number => {
-  return rateMinor / 100;
-};
+import { rateMinorToMajor, rateMajorToMinor } from './currencies';
 
-/**
- * Converts a rate from major units (UI display format) to minor units (API format)
- * Example: 20 -> 2000
- * @param rateMajor The rate value in major units (from UI)
- * @returns The rate value in minor units (for API)
- */
-export const rateMajorToMinor = (rateMajor: number): number => {
-  return rateMajor * 100;
-};
-
+export { rateMinorToMajor, rateMajorToMinor };
 /**
  * Gets the appropriate rate value based on whether VAT is supported,
  * converting to major units for display
@@ -45,5 +28,7 @@ export const getRateValueForDisplay = (
 export const formatVatRateForDisplay = (rateValue: number): string => {
   return (rateMinorToMajor(rateValue) / 100).toLocaleString(undefined, {
     style: 'percent',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 };

@@ -9,11 +9,11 @@ import { getRateValueForDisplay } from '@/core/utils/vatUtils';
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
   lineItems: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
+  isInclusivePricing: boolean;
+  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
-  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
-  isInclusivePricing: boolean;
 }
 
 interface UseCreateInvoiceProductsTableProps {
@@ -30,10 +30,10 @@ interface UseCreateInvoiceProductsTableProps {
  */
 export const useCreateInvoiceProductsTable = ({
   lineItems,
-  formatCurrencyToDisplay,
   isNonVatSupported,
-  actualCurrency,
   isInclusivePricing,
+  actualCurrency,
+  formatCurrencyToDisplay,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const getPriceAndQuantity = (
     field: CreateReceivablesFormBeforeValidationLineItemProps
