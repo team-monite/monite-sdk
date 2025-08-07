@@ -64,7 +64,7 @@ export const VatRateField = ({
         currentTaxRateValue === undefined ? 0 : currentTaxRateValue;
     }
 
-    if (defaultVatId !== value || defaultTaxRate !== currentTaxRateValue) {
+    if (defaultVatId !== value || (isNonVatSupported && defaultTaxRate !== currentTaxRateValue)) {
       onInitializeDefaults(defaultVatId, defaultVatValue, defaultTaxRate);
     }
     setHasInitialized(true);

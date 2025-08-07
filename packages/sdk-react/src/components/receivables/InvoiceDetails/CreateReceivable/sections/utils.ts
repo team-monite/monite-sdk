@@ -190,7 +190,7 @@ export const parseMajorToMinorCurrency = (
 const COMMON_DECIMAL_SEPARATOR = '.';
 
 const escapeRegexChars = (str: string) =>
-  str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+  str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const getLocaleSeparators = (locale?: string) => {
   if (typeof Intl === 'undefined' || typeof Intl.NumberFormat === 'undefined') {

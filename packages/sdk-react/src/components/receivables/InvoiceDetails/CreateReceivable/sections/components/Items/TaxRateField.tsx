@@ -22,8 +22,16 @@ export const TaxRateField = ({
   onBlur,
 }: TaxRateFieldProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const processedValue = processTaxRateValue(e.target.value);
-
+    const inputValue = e.target.value;
+    
+    // If the field is empty, pass undefined to trigger required validation
+    if (inputValue === '') {
+      onChange(undefined);
+      onModified?.();
+      return;
+    }
+    
+    const processedValue = processTaxRateValue(inputValue);
     onChange(processedValue);
     onModified?.();
   };

@@ -12,7 +12,7 @@ import {
 } from '@/core/utils/countries';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Switch, TextField, Typography } from '@mui/material';
@@ -86,7 +86,7 @@ export const BankAccountFormContent = ({
 
   const { watch, control, handleSubmit, setValue, clearErrors } =
     useForm<EntityBankAccountFields>({
-      resolver: yupResolver(
+      resolver: zodResolver(
         getEntityBankAccountValidationSchema(i18n, !!bankAccount)
       ),
       defaultValues,

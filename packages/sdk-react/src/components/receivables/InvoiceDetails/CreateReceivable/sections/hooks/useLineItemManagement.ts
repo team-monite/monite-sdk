@@ -1,3 +1,14 @@
+import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
+import type {
+  CreateReceivablesFormBeforeValidationProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '../../validation';
+import type { CurrencyEnum } from '../types';
+import { sanitizeLineItems } from '../utils';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useCurrencies, useDebounceCallback } from '@/core/hooks';
+import { useIsMounted } from '@/core/hooks/useIsMounted';
+import { generateUniqueId } from '@/utils/uuid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   useFieldArray,
@@ -6,19 +17,6 @@ import {
   type FieldPathValue,
   type DeepPartial,
 } from 'react-hook-form';
-
-import type { components } from '@/api';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useCurrencies, useDebounceCallback } from '@/core/hooks';
-import { useIsMounted } from '@/core/hooks/useIsMounted';
-import { generateUniqueId } from '@/utils/uuid';
-
-import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import type {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../../validation';
-import { sanitizeLineItems } from '../utils';
 
 interface UseLineItemManagementProps {
   actualCurrency?: CurrencyEnum;
@@ -221,7 +219,7 @@ export const useLineItemManagement = ({
     if (!isAddingRow.current) return;
 
     Promise.resolve().then(() => {
-      if (!mounted) return;
+      if (!mounted.current) return;
 
       isAddingRow.current = false;
     });
@@ -379,5 +377,3 @@ export const useLineItemManagement = ({
     handleRequestLineItemValue,
   };
 };
-
-type CurrencyEnum = components['schemas']['CurrencyEnum'];

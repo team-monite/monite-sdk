@@ -551,4 +551,4 @@ export const ItemSelector = ({
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type MeasureUnit =
-  components['schemas']['package__receivables__latest__receivables__LineItemProductMeasureUnit'];
+  components['schemas']['LineItemProductMeasureUnit'];

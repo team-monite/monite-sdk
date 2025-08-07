@@ -1,115 +1,290 @@
 import { AllowedCountries } from '@/enums/AllowedCountries';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
-import * as yup from 'yup';
 import { z } from 'zod';
 
 export const getEntityBankAccountValidationSchema = (
   i18n: I18n,
   isUpdateSchema?: boolean
 ) => {
-  if (isUpdateSchema) {
-    return yup.object().shape({
-      display_name: yup
-        .string()
-        .label(t(i18n)`Display name`)
-        .optional()
-        .max(200),
-      account_holder_name: yup
-        .string()
-        .label(t(i18n)`Account holder name`)
-        .optional(),
-    });
-  }
-
-  return yup.object().shape({
-    country: yup
+  const baseSchema = z.object({
+    country: z.enum([...AllowedCountries, ''] as const).meta({ title: t(i18n)`Country` }),
+    
+    currency: z.enum([...CurrencyEnum, ''] as const).meta({ title: t(i18n)`Currency` }),
+    
+    account_holder_name: z
       .string()
-      .label(t(i18n)`Country`)
-      .required(),
-    currency: yup
-      .string()
-      .label(t(i18n)`Currency`)
-      .required(),
-    bank_name: yup
-      .string()
-      .label(t(i18n)`Bank name`)
       .optional()
-      .max(100),
-    display_name: yup
+      .meta({ 
+        title: t(i18n)`Account holder name`,
+        description: t(i18n)`Required for USD and GBP currencies`
+      }),
+    
+    account_number: z
       .string()
-      .label(t(i18n)`Display name`)
       .optional()
-      .max(200),
-    account_number: yup
-      .string()
-      .label(t(i18n)`Account number`)
-      .when('currency', {
-        is: 'EUR',
-        then: yup.string().notRequired(),
-        otherwise: yup.string().required(),
+      .meta({ 
+        title: t(i18n)`Account number`,
+        description: t(i18n)`Bank account number (not required for EUR)`
       }),
-    account_holder_name: yup
+    
+    bank_name: z
       .string()
-      .label(t(i18n)`Account holder name`)
-      .when('currency', {
-        is: (value: string) => value === 'USD' || value === 'GBP',
-        then: yup.string().required(),
-        otherwise: yup.string().optional(),
-      }),
-    routing_number: yup
-      .string()
-      .label(t(i18n)`Routing number`)
       .optional()
-      .when('currency', {
-        is: (value: string) => value !== 'EUR' && value !== 'GBP',
-        then: yup.string().required(),
-        otherwise: yup.string().notRequired(),
+      .meta({ 
+        title: t(i18n)`Bank name`,
+        description: t(i18n)`The name of the bank institution`
       }),
-    sort_code: yup
+    
+    bic: z
       .string()
-      .label(t(i18n)`Sort code`)
       .optional()
-      .when('currency', {
-        is: (value: string) => value !== 'EUR' && value !== 'USD',
-        then: yup.string().required().length(6),
-        otherwise: yup.string().notRequired(),
+      .meta({ 
+        title: t(i18n)`SWIFT / BIC`,
+        description: t(i18n)`Bank Identifier Code for international transfers`
       }),
-    iban: yup
+    
+    display_name: z
       .string()
-      .label(t(i18n)`IBAN`)
-      .when('currency', {
-        is: (value: string) => value === 'EUR',
-        then: yup.string().required(),
-        otherwise: yup.string().notRequired(),
+      .optional()
+      .meta({ 
+        title: t(i18n)`Display name`,
+        description: t(i18n)`A friendly name for this bank account`
       }),
-    bic: yup
+    
+    iban: z
       .string()
-      .label(t(i18n)`SWIFT / BIC`)
-      .optional(),
+      .optional()
+      .meta({ 
+        title: t(i18n)`IBAN`,
+        description: t(i18n)`International Bank Account Number (required for EUR)`
+      }),
+    
+    is_default_for_currency: z.boolean(),
+    
+    routing_number: z
+      .string()
+      .optional()
+      .meta({ 
+        title: t(i18n)`Routing number`,
+        description: t(i18n)`Required for non-EUR and non-GBP currencies`
+      }),
+    
+    sort_code: z
+      .string()
+      .optional()
+      .meta({ 
+        title: t(i18n)`Sort code`,
+        description: t(i18n)`6-digit code required for non-EUR and non-USD currencies`
+      }),
   });
+
+  const schemaWithValidation = baseSchema
+    .refine(
+      (data) => {
+        if (isUpdateSchema) return true;
+        return data.country !== '';
+      },
+      {
+        message: t(i18n)`Country is required`,
+        path: ['country'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (isUpdateSchema) return true;
+        return data.currency !== '';
+      },
+      {
+        message: t(i18n)`Currency is required`,
+        path: ['currency'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.currency === 'EUR' || data.currency === '') {
+          return true;
+        }
+        return data.account_number && data.account_number.length > 0;
+      },
+      {
+        message: t(i18n)`Account number is required`,
+        path: ['account_number'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.currency === 'USD' || data.currency === 'GBP') {
+          return data.account_holder_name && data.account_holder_name.length > 0;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`Account holder name is required`,
+        path: ['account_holder_name'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.currency !== 'EUR' && data.currency !== 'GBP' && data.currency !== '') {
+          return data.routing_number && data.routing_number.length > 0;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`Routing number is required`,
+        path: ['routing_number'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.currency !== 'EUR' && data.currency !== 'USD' && data.currency !== '') {
+          return data.sort_code && data.sort_code.length === 6;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`Sort code is required and must be exactly 6 characters`,
+        path: ['sort_code'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.currency === 'EUR') {
+          return data.iban && data.iban.length > 0;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`IBAN is required`,
+        path: ['iban'],
+      }
+    );
+
+  return schemaWithValidation;
+};
+
+export type EntityBankAccountFormValues = z.infer<
+  ReturnType<typeof getEntityBankAccountValidationSchema>
+>;
+
+/**
+ * Utility function to extract field title from a Zod schema
+ * Usage: getFieldTitle(schema, 'fieldName') -> returns the title from .meta()
+ */
+export const getFieldTitle = (schema: z.ZodTypeAny, fieldName: string): string | undefined => {
+  try {
+    if ('shape' in schema && schema.shape && typeof schema.shape === 'object') {
+      const shape = schema.shape as Record<string, any>;
+      const field = shape[fieldName];
+      if (field && 'meta' in field && typeof field.meta === 'function') {
+        const metadata = field.meta();
+        return metadata?.title;
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console, lingui/no-unlocalized-strings
+    console.warn('Could not extract title for field:', fieldName, error);
+  }
+  return undefined;
+};
+
+/**
+ * Utility function to extract field description from a Zod schema
+ * Usage: getFieldDescription(schema, 'fieldName') -> returns the description from .meta()
+ */
+export const getFieldDescription = (schema: z.ZodTypeAny, fieldName: string): string | undefined => {
+  try {
+    if ('shape' in schema && schema.shape && typeof schema.shape === 'object') {
+      const shape = schema.shape as Record<string, any>;
+      const field = shape[fieldName];
+      if (field && 'meta' in field && typeof field.meta === 'function') {
+        const metadata = field.meta();
+        return metadata?.description;
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console, lingui/no-unlocalized-strings
+    console.warn('Could not extract description for field:', fieldName, error);
+  }
+  return undefined;
 };
 
 export const getEntityProfileValidationSchema = (i18n: I18n) => {
   return z.object({
-    title: z.string().optional(),
-    name: z.string().optional(),
-    surname: z.string().optional(),
-    email: z.email(t(i18n)`Invalid email format`).optional(),
-    tax_id: z.string().optional(),
-    vat_id: z.string().optional(),
-    vat_type: z.enum(VatIDTypeEnum as [string, ...string[]]).optional(),
-    vat_country: z.enum(AllowedCountries as [string, ...string[]]).optional(),
-    address_line_1: z.string().min(1, t(i18n)`Address line 1 is required`),
-    address_line_2: z.string().optional(),
-    city: z.string().min(1, t(i18n)`City is required`),
-    postal_code: z.string().min(1, t(i18n)`Postal code is required`),
-    state: z.string().optional(),
-    country: z.enum(AllowedCountries as [string, ...string[]]).optional(),
-    phone: z.string().optional(),
-    website: z.url().optional(),
+    title: z.string().optional().meta({ title: t(i18n)`Title` }),
+    name: z.string().optional().meta({ title: t(i18n)`Name` }),
+    surname: z.string().optional().meta({ title: t(i18n)`Surname` }),
+    email: z
+      .email(t(i18n)`Invalid email format`)
+      .optional()
+      .meta({ 
+        title: t(i18n)`Email`,
+        description: t(i18n)`Email address for notifications and communication`
+      }),
+    tax_id: z.string().optional().meta({ 
+      title: t(i18n)`Tax ID`,
+      description: t(i18n)`Tax identification number`
+    }),
+    vat_id: z.string().optional().meta({ 
+      title: t(i18n)`VAT ID`,
+      description: t(i18n)`Value Added Tax identification number`
+    }),
+    vat_type: z
+      .enum(VatIDTypeEnum as [string, ...string[]])
+      .optional()
+      .meta({ 
+        title: t(i18n)`VAT Type`,
+        description: t(i18n)`Type of VAT identification`
+      }),
+    vat_country: z
+      .enum(AllowedCountries as [string, ...string[]])
+      .optional()
+      .meta({ 
+        title: t(i18n)`VAT Country`,
+        description: t(i18n)`Country where VAT is registered`
+      }),
+    address_line_1: z
+      .string()
+      .min(1, t(i18n)`Address line 1 is required`)
+      .meta({ 
+        title: t(i18n)`Address Line 1`,
+        description: t(i18n)`Primary address line`
+      }),
+    address_line_2: z.string().optional().meta({ 
+      title: t(i18n)`Address Line 2`,
+      description: t(i18n)`Secondary address line (optional)`
+    }),
+    city: z
+      .string()
+      .min(1, t(i18n)`City is required`)
+      .meta({ title: t(i18n)`City` }),
+    postal_code: z
+      .string()
+      .min(1, t(i18n)`Postal code is required`)
+      .meta({ 
+        title: t(i18n)`Postal Code`,
+        description: t(i18n)`ZIP or postal code`
+      }),
+    state: z.string().optional().meta({ 
+      title: t(i18n)`State`,
+      description: t(i18n)`State or province (if applicable)`
+    }),
+    country: z
+      .enum(AllowedCountries as [string, ...string[]])
+      .optional()
+      .meta({ title: t(i18n)`Country` }),
+    phone: z.string().optional().meta({ 
+      title: t(i18n)`Phone`,
+      description: t(i18n)`Contact phone number`
+    }),
+    website: z.url().optional().meta({ 
+      title: t(i18n)`Website`,
+      description: t(i18n)`Company or personal website URL`
+    }),
   });
 };
 
