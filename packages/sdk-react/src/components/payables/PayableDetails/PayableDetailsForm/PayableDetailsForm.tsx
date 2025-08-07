@@ -171,7 +171,6 @@ const getValidationSchema = (i18n: I18n) =>
             .number()
             .label(t(i18n)`Item price`)
             .required()
-            .min(0)
             .typeError(t(i18n)`Item price must be a number`),
           tax: yup
             .number()
