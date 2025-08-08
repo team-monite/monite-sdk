@@ -415,11 +415,12 @@ const PayableDetailsFormBase = forwardRef<
       return hasLengthChanged || hasRelevantFieldsChanged;
     })();
     // Check if Totals values have changed
-    const areTotalsValuesChanged =
-      !!dirtyFields.subtotal ||
-      !!dirtyFields.discount ||
-      !!dirtyFields.tax_amount ||
-      !!dirtyFields.total_amount;
+    const areTotalsValuesChanged = !!(
+      dirtyFields.subtotal ||
+      dirtyFields.discount ||
+      dirtyFields.tax_amount ||
+      dirtyFields.total_amount
+    );
     const areValuesDifferent =
       areLineItemsValuesChanged || areTotalsValuesChanged;
 
