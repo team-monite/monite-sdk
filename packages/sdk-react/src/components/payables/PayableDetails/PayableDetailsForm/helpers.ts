@@ -33,11 +33,16 @@ export interface PayableDetailsFormFields {
   tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
+  subtotal?: number | null;
+  tax_amount?: number | null;
+  total_amount?: number | null;
 }
 
 export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
 }
+
+const DEFAULT_CURRENCY = 'EUR';
 
 export const counterpartsToSelect = (
   counterparts: CounterpartResponse[] | undefined
@@ -82,9 +87,12 @@ export const prepareDefaultValues = (
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: 'EUR',
+      currency: DEFAULT_CURRENCY,
       tags: [],
       discount: null,
+      subtotal: 0,
+      tax_amount: 0,
+      total_amount: 0,
       lineItems: [
         {
           id: '',
@@ -105,7 +113,10 @@ export const prepareDefaultValues = (
     due_date,
     currency,
     tags,
+    subtotal,
+    tax_amount,
     discount,
+    total_amount,
   } = payable;
 
   return {
@@ -114,10 +125,18 @@ export const prepareDefaultValues = (
     counterpartBankAccount: counterpart_bank_account_id ?? '',
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
-    currency: currency ?? 'EUR',
+    currency: currency ?? DEFAULT_CURRENCY,
     tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
+    subtotal:
+      subtotal && currency ? formatFromMinorUnits(subtotal, currency) : 0,
+    tax_amount:
+      tax_amount && currency ? formatFromMinorUnits(tax_amount, currency) : 0,
+    total_amount:
+      total_amount && currency
+        ? formatFromMinorUnits(total_amount, currency)
+        : 0,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -135,7 +154,6 @@ export const prepareDefaultValues = (
 
 export const prepareSubmit = (
   {
-    discount,
     invoiceNumber,
     counterpart,
     counterpartBankAccount,
@@ -144,12 +162,14 @@ export const prepareSubmit = (
     currency,
     tags,
     counterpartAddressId,
+    subtotal,
+    tax_amount,
+    discount,
+    total_amount,
   }: SubmitPayload,
   formatToMinorUnits: (amount: number, currency: string) => number | null
 ): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
-  discount:
-    discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
   issued_at:
@@ -158,18 +178,22 @@ export const prepareSubmit = (
   currency,
   tag_ids: tags.map((tag) => tag.id),
   counterpart_address_id: counterpartAddressId,
+  subtotal: formatToMinorUnits(subtotal ?? 0, currency) ?? 0,
+  tax_amount: formatToMinorUnits(tax_amount ?? 0, currency) ?? 0,
+  discount: formatToMinorUnits(discount ?? 0, currency) ?? 0,
+  total_amount: formatToMinorUnits(total_amount ?? 0, currency) ?? 0,
 });
 
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
   const subtotal = price * quantity;
 
-  return parseFloat(subtotal.toFixed(2));
+  return roundWithTwoDecimals(subtotal);
 };
 
 const calculateLineItemTotal = (subtotal: number, taxRate: number): number => {
   const total = subtotal + (taxRate * subtotal) / 100;
 
-  return parseFloat(total.toFixed(2));
+  return roundWithTwoDecimals(total);
 };
 
 export const calculateTotalPriceForLineItem = (lineItem: LineItem): number => {
@@ -194,9 +218,9 @@ export const calculateTotalsForPayable = (
       const newTotal = calculateLineItemTotal(newSubtotal, lineItem.tax || 0);
 
       return {
-        subtotal: result.subtotal + newSubtotal,
-        taxes: result.taxes + (newTotal - newSubtotal),
-        total: result.total + newTotal,
+        subtotal: roundWithTwoDecimals(result.subtotal + newSubtotal),
+        taxes: roundWithTwoDecimals(result.taxes + (newTotal - newSubtotal)),
+        total: roundWithTwoDecimals(result.total + newTotal),
       };
     },
     { subtotal: 0, taxes: 0, total: 0 }
@@ -205,7 +229,7 @@ export const calculateTotalsForPayable = (
   return {
     subtotal,
     taxes,
-    total: total - (discount ?? 0),
+    total: roundWithTwoDecimals(total - (discount ?? 0)),
   };
 };
 
@@ -219,8 +243,8 @@ export const prepareLineItemSubmit = (
   return {
     name,
     quantity,
-    tax: formatTaxToMinorUnits(tax),
-    unit_price: formatToMinorUnits(price, currency) ?? 0,
+    tax: formatTaxToMinorUnits(roundWithTwoDecimals(tax)),
+    unit_price: formatToMinorUnits(roundWithTwoDecimals(price), currency) ?? 0,
   };
 };
 
@@ -310,4 +334,10 @@ export const findDefaultBankAccount = (
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
   return defaultAccount?.id || '';
+};
+
+const roundWithTwoDecimals = (value: number): number => {
+  // NOTE: see https://stackoverflow.com/a/11832950/7564579
+  // Examples: 1.004 -> 1.00; 1.005 -> 1.01
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 };

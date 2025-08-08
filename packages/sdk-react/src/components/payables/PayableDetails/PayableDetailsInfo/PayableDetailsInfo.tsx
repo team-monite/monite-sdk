@@ -4,6 +4,8 @@ import {
 } from '../../hooks';
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
+import { DisplayPayableLineItems } from './DisplayPayableLineItems';
+import { DisplayPayableTotals } from './DisplayPayableTotals';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -42,7 +44,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableRow,
   Tooltip,
   Typography,
@@ -471,118 +472,18 @@ const PayableDetailsInfoBase = ({
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
           </Typography>
-          <Paper variant="outlined">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{t(i18n)`Name`}</TableCell>
-                  <TableCell>{t(i18n)`Quantity`}</TableCell>
-                  <TableCell>{t(i18n)`Price`}</TableCell>
-                  <TableCell align="right">{t(i18n)`Total, tax`}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {lineItems?.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>
-                      {item.unit_price
-                        ? formatCurrencyToDisplay(
-                            item.unit_price,
-                            payable.currency ?? 'EUR'
-                          )
-                        : '—'}
-                    </TableCell>
-                    <TableCell align="right">
-                      {item.subtotal && payable.currency ? (
-                        <>
-                          <Box>
-                            {formatCurrencyToDisplay(
-                              item.subtotal ?? 0,
-                              payable.currency
-                            )}
-                          </Box>
-                          <Box sx={{ color: 'secondary.main' }}>
-                            {t(i18n)`excl. Tax`}{' '}
-                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
-                          </Box>
-                        </>
-                      ) : payable.currency ? (
-                        formatCurrencyToDisplay(0, payable.currency)
-                      ) : (
-                        '—'
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>
+
+          <DisplayPayableLineItems
+            lineItems={lineItems}
+            currency={payable.currency ?? 'EUR'}
+          />
         </Grid>
+
         <Grid item xs={12} className={className + '-Totals'}>
-          <Paper variant="outlined">
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>{t(i18n)`Subtotal`}</TableCell>
-                  <TableCell align="right">
-                    {payable.subtotal && payable.currency
-                      ? formatCurrencyToDisplay(
-                          payable.subtotal,
-                          payable.currency
-                        )
-                      : payable.currency
-                        ? formatCurrencyToDisplay(0, payable.currency)
-                        : '—'}
-                  </TableCell>
-                </TableRow>
-                {Boolean(payable.discount) && payable.currency && (
-                  <TableRow>
-                    <TableCell>{t(i18n)`Discount`}</TableCell>
-                    <TableCell align="right">
-                      {formatCurrencyToDisplay(
-                        payable.discount ?? 0,
-                        payable.currency
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )}
-                <TableRow>
-                  <TableCell>{t(i18n)`VAT Total`}</TableCell>
-                  <TableCell align="right">
-                    {payable.tax_amount && payable.currency
-                      ? formatCurrencyToDisplay(
-                          payable.tax_amount,
-                          payable.currency
-                        )
-                      : payable.currency
-                        ? formatCurrencyToDisplay(0, payable.currency)
-                        : '—'}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="subtitle1">{t(
-                      i18n
-                    )`Total`}</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="subtitle1">
-                      {payable.total_amount && payable.currency
-                        ? formatCurrencyToDisplay(
-                            payable.total_amount,
-                            payable.currency
-                          )
-                        : payable.currency
-                          ? formatCurrencyToDisplay(0, payable.currency)
-                          : '—'}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
+          <DisplayPayableTotals
+            payable={payable}
+            currency={payable.currency ?? 'EUR'}
+          />
         </Grid>
 
         <Grid item xs={12} className={className + '-History'}>

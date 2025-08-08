@@ -5,7 +5,6 @@ import {
 import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
-  calculateTotalsForPayable,
   findDefaultBankAccount,
   isFieldRequired,
   LineItem,
@@ -37,6 +36,7 @@ import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
+import { Alert } from '@/ui/components/alert';
 import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -64,6 +64,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
+import { AlertCircleIcon } from 'lucide-react';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Controller,
@@ -154,7 +155,10 @@ const getValidationSchema = (i18n: I18n) =>
             ? schema.required()
             : schema
         ),
+      subtotal: yup.number().nullable().min(0),
+      tax_amount: yup.number().nullable().min(0),
       discount: yup.number().nullable().min(0),
+      total_amount: yup.number().nullable().min(0),
       lineItems: yup.array().of(
         yup.object().shape({
           name: yup
@@ -260,12 +264,8 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
     const className = 'Monite-PayableDetailsForm';
 
-    const {
-      formatFromMinorUnits,
-      formatToMinorUnits,
-      formatCurrencyToDisplay,
-      getSymbolFromCurrency,
-    } = useCurrencies();
+    const { formatFromMinorUnits, formatToMinorUnits, getSymbolFromCurrency } =
+      useCurrencies();
 
     const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
 
@@ -304,10 +304,7 @@ const PayableDetailsFormBase = forwardRef<
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
-    const currentLineItems = watch('lineItems');
     const currentDiscount = watch('discount');
-
-    const totals = calculateTotalsForPayable(currentLineItems, currentDiscount);
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -399,6 +396,35 @@ const PayableDetailsFormBase = forwardRef<
 
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
+
+    // Check if Line Items values have changed
+    const areLineItemsValuesChanged = (() => {
+      if (!dirtyFields.lineItems) return false;
+      const hasLengthChanged =
+        dirtyFields.lineItems.length !== (lineItems?.length || 0);
+      const hasRelevantFieldsChanged = dirtyFields.lineItems.some(
+        (lineItemDirtyFields) => {
+          if (!lineItemDirtyFields) return false;
+          return !!(
+            lineItemDirtyFields.quantity ||
+            lineItemDirtyFields.price ||
+            lineItemDirtyFields.tax
+          );
+        }
+      );
+      return hasLengthChanged || hasRelevantFieldsChanged;
+    })();
+    // Check if Totals values have changed
+    const areTotalsValuesChanged = !!(
+      dirtyFields.subtotal ||
+      dirtyFields.discount ||
+      dirtyFields.tax_amount ||
+      dirtyFields.total_amount
+    );
+    const areValuesDifferent =
+      areLineItemsValuesChanged || areTotalsValuesChanged;
+
+    const showAlertChangedValues = !!payable && areValuesDifferent;
 
     return (
       <>
@@ -703,6 +729,7 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
+
                 <Grid item xs={12}>
                   <Paper
                     variant="outlined"
@@ -715,6 +742,15 @@ const PayableDetailsFormBase = forwardRef<
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
+                {showAlertChangedValues && (
+                  <Grid item xs={12}>
+                    <Alert variant="warning" icon={<AlertCircleIcon />}>
+                      {t(
+                        i18n
+                      )`The amounts have been modified. Check all fields carefully before saving.`}
+                    </Alert>
+                  </Grid>
+                )}
                 <Grid item xs={12} className={className + '-Totals'}>
                   <Paper variant="outlined">
                     <Table>
@@ -741,15 +777,29 @@ const PayableDetailsFormBase = forwardRef<
                                   {t(i18n)`Add Discount`}
                                 </Button>
                               )}
-                              {totals.subtotal && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.subtotal,
-                                      currentCurrency
-                                    ) || 0,
-                                    currentCurrency
-                                  )
-                                : '—'}
+                              <Controller
+                                name="subtotal"
+                                control={control}
+                                render={({ field, fieldState: { error } }) => (
+                                  <TextField
+                                    {...field}
+                                    id={field.name}
+                                    variant="standard"
+                                    size="small"
+                                    type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
+                                    inputProps={{ min: 0 }}
+                                    error={Boolean(error)}
+                                    sx={{ width: 150 }}
+                                    InputProps={{
+                                      endAdornment:
+                                        getSymbolFromCurrency(currentCurrency),
+                                    }}
+                                  />
+                                )}
+                              />
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -785,7 +835,12 @@ const PayableDetailsFormBase = forwardRef<
                                       id={field.name}
                                       variant="standard"
                                       type="number"
-                                      inputProps={{ min: 0, step: 0.01 }}
+                                      onChange={(event) =>
+                                        field.onChange(
+                                          Number(event.target.value)
+                                        )
+                                      }
+                                      inputProps={{ min: 0 }}
                                       error={Boolean(error)}
                                       sx={{ width: 150 }}
                                       InputProps={{
@@ -804,15 +859,35 @@ const PayableDetailsFormBase = forwardRef<
                         <TableRow className={className + '-Totals-Taxes'}>
                           <TableCell>{t(i18n)`VAT total`}</TableCell>
                           <TableCell align="right">
-                            {totals.taxes && currentCurrency
-                              ? formatCurrencyToDisplay(
-                                  formatToMinorUnits(
-                                    totals.taxes,
-                                    currentCurrency
-                                  ) || 0,
-                                  currentCurrency
-                                )
-                              : '—'}
+                            <Box
+                              gap={0.5}
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              display="flex"
+                            >
+                              <Controller
+                                name="tax_amount"
+                                control={control}
+                                render={({ field, fieldState: { error } }) => (
+                                  <TextField
+                                    {...field}
+                                    id={field.name}
+                                    variant="standard"
+                                    type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
+                                    inputProps={{ min: 0 }}
+                                    error={Boolean(error)}
+                                    sx={{ width: 150 }}
+                                    InputProps={{
+                                      endAdornment:
+                                        getSymbolFromCurrency(currentCurrency),
+                                    }}
+                                  />
+                                )}
+                              />
+                            </Box>
                           </TableCell>
                         </TableRow>
                         <TableRow className={className + '-Totals-Total'}>
@@ -822,17 +897,35 @@ const PayableDetailsFormBase = forwardRef<
                             )`Total`}</Typography>
                           </TableCell>
                           <TableCell align="right">
-                            <Typography variant="subtitle1">
-                              {totals.total && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.total,
-                                      currentCurrency
-                                    ) || 0,
-                                    currentCurrency
-                                  )
-                                : '—'}
-                            </Typography>
+                            <Box
+                              gap={0.5}
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              display="flex"
+                            >
+                              <Controller
+                                name="total_amount"
+                                control={control}
+                                render={({ field, fieldState: { error } }) => (
+                                  <TextField
+                                    {...field}
+                                    id={field.name}
+                                    variant="standard"
+                                    type="number"
+                                    onChange={(event) =>
+                                      field.onChange(Number(event.target.value))
+                                    }
+                                    inputProps={{ min: 0 }}
+                                    error={Boolean(error)}
+                                    sx={{ width: 150 }}
+                                    InputProps={{
+                                      endAdornment:
+                                        getSymbolFromCurrency(currentCurrency),
+                                    }}
+                                  />
+                                )}
+                              />
+                            </Box>
                           </TableCell>
                         </TableRow>
                       </TableBody>
