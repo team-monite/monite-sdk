@@ -3,6 +3,7 @@ import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
 import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
 import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
@@ -33,6 +34,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
@@ -64,6 +66,7 @@ import {
 import { format } from 'date-fns';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 type Schemas = components['schemas'];
 
@@ -79,8 +82,8 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
 
 const CreateReceivablesBase = ({
   type,
-  onCreate,
   customerTypes,
+  onCreate,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const { api, entityId, componentSettings } = useMoniteContext();
@@ -93,13 +96,29 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
+  const { data: entityVatIds, error: vatIdsError } =
+    api.entities.getEntitiesIdVatIds.useQuery(
+      {
+        path: { entity_id: entityId },
+      },
+      {
+        enabled: !!entityId,
+      }
+    );
+
+  if (vatIdsError) {
+    const message = getAPIErrorMessage(i18n, vatIdsError);
+
+    if (message) {
+      toast.error(message);
+    }
+  }
+
+  const { data: settings, isLoading: isSettingsLoading } =
+  api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: entityId },
   });
-  const { data: settings, isLoading: isSettingsLoading } =
-    api.entities.getEntitiesIdSettings.useQuery({
-      path: { entity_id: entityId },
-    });
+
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -163,6 +182,9 @@ const CreateReceivablesBase = ({
     getFieldState,
     formState,
   } = methods;
+
+  const { registerLineItemCleanupFn, runLineItemCleanup } =
+    useLineItemSubmitCleanup();
 
   const counterpartId = watch('counterpart_id');
 
@@ -248,13 +270,27 @@ const CreateReceivablesBase = ({
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+
       return;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
+
       return;
     }
+
+    if (!counterpartBillingAddress) {
+      showErrorToast(new Error('`Billing address` is not provided'));
+
+      return;
+    }
+
+    const shippingAddressId = values.default_shipping_address_id;
+
+    const counterpartShippingAddress = counterpartAddresses?.data?.find(
+      (address) => address.id === shippingAddressId
+    );
 
     const invoicePayload: Omit<
       Schemas['ReceivableFacadeCreateInvoicePayload'],
@@ -263,9 +299,9 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: values.default_billing_address_id ?? '',
-      counterpart_shipping_address_id:
-        values.default_shipping_address_id || undefined,
+      counterpart_billing_address_id: counterpartBillingAddress.id,
+      counterpart_shipping_address_id: counterpartShippingAddress?.id,
+
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -288,7 +324,11 @@ const CreateReceivablesBase = ({
           type: 'product',
         },
         ...(isNonVatSupported
-          ? { tax_rate_value: rateMajorToMinor(item?.tax_rate_value ?? 0) }
+          ? {
+              tax_rate_value: item?.tax_rate_value
+                ? rateMajorToMinor(item.tax_rate_value)
+                : undefined,
+            }
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
@@ -402,7 +442,7 @@ const CreateReceivablesBase = ({
 
         if (
           newAccounts?.newDefault &&
-          newAccounts?.currentlySelected?.id !== newAccounts?.newDefault?.id &&
+          newAccounts?.currentlySelected?.id !== newAccounts.newDefault.id &&
           newAccounts?.currentlySelected?.is_default_for_currency
         ) {
           setValue('entity_bank_account_id', newAccounts?.newDefault?.id);
@@ -434,6 +474,22 @@ const CreateReceivablesBase = ({
       clearErrors('entity_bank_account_id');
     }
   }, [entityBankAccountId, bankAccountField, clearErrors]);
+
+  useEffect(() => {
+    if (entityBankAccountId && bankAccounts?.data) {
+      const selectedBankAccount = bankAccounts.data.find(
+        (bank) => bank.id === entityBankAccountId
+      );
+
+      if (!selectedBankAccount?.currency) return;
+
+      const newCurrency = selectedBankAccount.currency;
+
+      if (newCurrency !== actualCurrency) {
+        setActualCurrency(newCurrency);
+      }
+    }
+  }, [entityBankAccountId, bankAccounts?.data, actualCurrency]);
 
   useEffect(() => {
     if (entityVatIds && entityVatIds.data.length > 0) {
@@ -509,6 +565,7 @@ const CreateReceivablesBase = ({
 
               <Button
                 variant="contained"
+                key="next"
                 color="primary"
                 type="submit"
                 form={formName}
@@ -819,7 +876,11 @@ const CreateReceivablesBase = ({
             <form
               id={formName}
               noValidate
-              onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                runLineItemCleanup();
+                await handleSubmit(handleCreateReceivable)(e);
+              }}
               style={{ marginBottom: theme.spacing(7) }}
             >
               <Stack direction="column" spacing={7}>
@@ -875,6 +936,7 @@ const CreateReceivablesBase = ({
                 </Box>
 
                 <ItemsSection
+                  registerLineItemCleanupFn={registerLineItemCleanupFn}
                   defaultCurrency={
                     settings?.currency?.default || fallbackCurrency
                   }

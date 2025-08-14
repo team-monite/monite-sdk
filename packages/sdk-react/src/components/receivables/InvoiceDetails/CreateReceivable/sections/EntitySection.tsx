@@ -1,4 +1,4 @@
-import type { SectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from './types';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
