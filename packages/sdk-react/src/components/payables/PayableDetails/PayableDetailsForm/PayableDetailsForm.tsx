@@ -7,8 +7,6 @@ import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   type MonitePayableDetailsInfoProps,
   type SubmitPayload,
-  type LineItem,
-  type MonitePayableDetailsInfoProps,
   calculateTotalsForPayable,
   findDefaultBankAccount,
   isFieldRequired,
@@ -19,8 +17,8 @@ import type { LineItem, PayableDetailsFormFields } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import {
   type PayableDetailsValidationFields,
-  getPayableDetailsValidationSchema,
   isFieldRequiredByValidations,
+  getPayableDetailsFormSchema,
 } from './validation';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -46,7 +44,6 @@ import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -97,19 +94,6 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
 }
-
-export const isFieldRequiredByValidations = (
-  fieldName: components['schemas']['PayablesFieldsAllowedForValidate'],
-  payablesValidations:
-    | components['schemas']['PayableValidationsResource']
-    | undefined
-): boolean => {
-  if (payablesValidations && payablesValidations.required_fields) {
-    return payablesValidations.required_fields.includes(fieldName);
-  }
-
-  return false;
-};
 
 /**
  * PayableDetailsForm component.

@@ -7,6 +7,13 @@ import { z } from 'zod';
 
 export type Option = { label: string; value: string };
 
+export const isFieldRequiredByValidations = (
+  fieldName: PayablesFieldsAllowedForValidate,
+  payablesValidations?: PayableValidationsResource
+): boolean => {
+  return Boolean(payablesValidations?.required_fields?.includes(fieldName));
+};
+
 const getCurrencyEnum = () => z.enum(CurrencyEnum);
 
 const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
@@ -40,18 +47,6 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
     ),
     discount: z.union([z.coerce.number().min(0), z.null()]).optional(),
   });
-
-const isFieldRequiredByValidations = (
-  fieldName: components['schemas']['PayablesFieldsAllowedForValidate'],
-  payablesValidations:
-    | components['schemas']['PayableValidationsResource']
-    | undefined
-): boolean => {
-  if (payablesValidations && payablesValidations.required_fields) {
-    return payablesValidations.required_fields.includes(fieldName);
-  }
-  return false;
-};
 
 export const getPayableDetailsFormSchema = (
   i18n: I18n,
@@ -100,3 +95,8 @@ export const getPayableDetailsFormSchema = (
         message: t(i18n)`Currency is required`,
       }
     ) satisfies z.ZodType<PayableDetailsFormFields>;
+
+export type PayableDetailsValidationFields = z.infer<ReturnType<typeof getPayableDetailsFormSchema>>;
+
+type PayablesFieldsAllowedForValidate = components['schemas']['PayablesFieldsAllowedForValidate'];
+type PayableValidationsResource = components['schemas']['PayableValidationsResource'];

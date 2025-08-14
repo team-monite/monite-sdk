@@ -7,6 +7,9 @@ export type LineItem = {
   price: number;
   tax: number;
 };
+
+type PayableTag = { id: string; name: string } & Record<string, unknown>;
+
 export interface PayableDetailsFormFields {
   invoiceNumber: string;
   counterpart: string;
@@ -14,7 +17,7 @@ export interface PayableDetailsFormFields {
   invoiceDate?: Date;
   dueDate?: Date;
   currency: components['schemas']['CurrencyEnum'];
-  tags: components['schemas']['TagReadSchema'][];
+  tags: PayableTag[];
   lineItems: LineItem[];
   discount?: number | null;
 }
