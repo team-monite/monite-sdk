@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CheckIcon from '@mui/icons-material/Check';
@@ -18,7 +18,7 @@ import {
   TextField,
 } from '@mui/material';
 
-import * as yup from 'yup';
+import { z } from 'zod';
 
 interface MeasureUnitsForm {
   id?: string;
@@ -56,15 +56,15 @@ export const MeasureUnitsFormRow = ({
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(t(i18n)`Unit label is required`),
-    description: yup.string(),
+  const validationSchema = z.object({
+    name: z.string().min(1, t(i18n)`Unit label is required`),
+    description: z.string().optional(),
   });
 
   const { getValues, handleSubmit, control, reset, setError } =
     useForm<MeasureUnitsForm>({
       defaultValues: initialValues,
-      resolver: yupResolver(validationSchema),
+      resolver: zodResolver(validationSchema),
     });
 
   const createMutation = api.measureUnits.postMeasureUnits.useMutation(

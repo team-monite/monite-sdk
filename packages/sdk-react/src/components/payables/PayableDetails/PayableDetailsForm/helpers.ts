@@ -14,6 +14,7 @@ import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
 
+export type Option = { label: string; value: string };
 export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
 }
@@ -51,8 +52,8 @@ export const prepareDefaultValues = (
     amount: number,
     currency: CurrencyEnum | string
   ) => number | null,
-  payable?: components['schemas']['PayableResponseSchema'],
-  lineItems?: components['schemas']['LineItemResponse'][]
+  payable?: PayableResponseSchema,
+  lineItems?: LineItemResponse[]
 ): PayableDetailsFormFields => {
   if (!payable) {
     return {
@@ -125,7 +126,7 @@ export const prepareSubmit = (
     counterpartAddressId,
   }: SubmitPayload,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['PayableUpdateSchema'] => ({
+): PayableUpdateSchema => ({
   document_id: invoiceNumber,
   discount:
     discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
@@ -192,7 +193,7 @@ export const prepareLineItemSubmit = (
   currency: CurrencyEnum,
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['LineItemRequest'] => {
+): LineItemRequest => {
   const { name, quantity, price, tax } = lineItem;
 
   return {
@@ -234,7 +235,7 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
 };
 
 export const isOcrMismatch = (
-  payableData: components['schemas']['PayableResponseSchema']
+  payableData: PayableResponseSchema
 ) => {
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
@@ -266,7 +267,7 @@ export const isOcrMismatch = (
 };
 
 export type OcrMismatchField = keyof Pick<
-  components['schemas']['PayableResponseSchema'],
+  PayableResponseSchema,
   'amount_to_pay' | 'counterpart_bank_account_id'
 >;
 
@@ -282,7 +283,7 @@ export interface MonitePayableDetailsInfoProps {
 }
 
 export const findDefaultBankAccount = (
-  accounts: components['schemas']['CounterpartBankAccountResponse'][],
+  accounts: CounterpartBankAccountResponse[],
   currentCurrency: CurrencyEnum
 ): string => {
   const defaultAccount = accounts.find(
@@ -291,4 +292,9 @@ export const findDefaultBankAccount = (
   return defaultAccount?.id || '';
 };
 
-type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type PayableUpdateSchema = components['schemas']['PayableUpdateSchema'];
+type CurrencyEnum = components['schemas']['CurrencyEnum']
+type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
+type LineItemResponse = components['schemas']['LineItemResponse'];
+type CounterpartBankAccountResponse = components['schemas']['CounterpartBankAccountResponse'];
+type LineItemRequest= components['schemas']['LineItemRequest'];

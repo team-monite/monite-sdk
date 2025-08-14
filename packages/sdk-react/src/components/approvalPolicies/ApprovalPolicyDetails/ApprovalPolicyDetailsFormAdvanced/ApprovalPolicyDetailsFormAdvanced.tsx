@@ -6,7 +6,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useDialog } from '@/ui/Dialog';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { IconWrapper } from '@/ui/iconWrapper';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -24,25 +24,23 @@ import {
 } from '@mui/material';
 import { useId } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { z } from 'zod';
 
 const getValidationSchema = (i18n: I18n) =>
-  yup.object({
-    name: yup
+  z.object({
+    name: z
       .string()
-      .label(i18n._(t(i18n)`Policy Name`))
-      .max(255)
-      .required(t(i18n)`Policy name is required`),
-    description: yup
+      .max(255, t(i18n)`Policy name cannot exceed 255 characters`)
+      .min(1, t(i18n)`Policy name is required`),
+    description: z
       .string()
-      .label(i18n._(t(i18n)`Description`))
-      .max(255)
-      .required(t(i18n)`Description is required`),
-    trigger: yup
+      .max(255, t(i18n)`Description cannot exceed 255 characters`)
+      .min(1, t(i18n)`Description is required`),
+    trigger: z
       .string()
-      .label(i18n._(t(i18n)`Script in Monite Script`))
-      .required(t(i18n)`Trigger in Monite Script is required`),
-    script: yup.string().required(t(i18n)`Script in Monite Script is required`),
+      .min(1, t(i18n)`Trigger in Monite Script is required`),
+    script: z.string().min(1, t(i18n)`Script in Monite Script is required`),
+    priority: z.number().min(1, t(i18n)`Priority is required`),
   });
 
 export interface ApprovalPolicyFormFields {
@@ -50,6 +48,7 @@ export interface ApprovalPolicyFormFields {
   description: string;
   trigger: string;
   script: string;
+  priority: number;
 }
 
 interface ApprovalPolicyDetailsFormProps {
@@ -92,7 +91,7 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const methods = useForm<ApprovalPolicyFormFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: {
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
@@ -102,6 +101,7 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
       script: approvalPolicy?.script
         ? JSON.stringify(approvalPolicy?.script, null, 2)
         : '',
+      priority: approvalPolicy?.priority,
     },
   });
   const { control, handleSubmit, formState } = methods;
@@ -160,6 +160,7 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
                     ? values.script
                     : `[${values.script}]`
                 ),
+                priority: values.priority,
               };
 
               isUpdate
@@ -188,6 +189,17 @@ export const ApprovalPolicyDetailsFormAdvancedBase = ({
               required
               multiline
               rows={4}
+            />
+            <Typography variant="subtitle2" mt={2} mb={1}>
+              {t(i18n)`Priority`}
+            </Typography>
+            <RHFTextField
+              label={t(i18n)`Priority`}
+              name="priority"
+              control={control}
+              type="number"
+              required
+              sx={{ maxWidth: 200 }}
             />
             <Typography
               variant="subtitle2"
