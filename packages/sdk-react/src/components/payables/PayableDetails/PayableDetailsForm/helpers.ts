@@ -12,6 +12,7 @@ import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
+import type { PayableDetailsFormFields } from './validation';
 
 export type Option = { label: string; value: string };
 
@@ -22,18 +23,6 @@ export type LineItem = {
   price: number;
   tax: number;
 };
-
-export interface PayableDetailsFormFields {
-  invoiceNumber: string;
-  counterpart: string;
-  counterpartBankAccount?: string;
-  invoiceDate?: Date;
-  dueDate?: Date;
-  currency: components['schemas']['CurrencyEnum'];
-  tags: components['schemas']['TagReadSchema'][];
-  lineItems: LineItem[];
-  discount?: number | null;
-}
 
 export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
@@ -70,10 +59,10 @@ export const dateToString = (date: Date): string => {
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
-    currency: components['schemas']['CurrencyEnum'] | string
+    currency: CurrencyEnum | string
   ) => number | null,
-  payable?: components['schemas']['PayableResponseSchema'],
-  lineItems?: components['schemas']['LineItemResponse'][]
+  payable?: PayableResponseSchema,
+  lineItems?: LineItemResponse[]
 ): PayableDetailsFormFields => {
   if (!payable) {
     return {
@@ -146,7 +135,7 @@ export const prepareSubmit = (
     counterpartAddressId,
   }: SubmitPayload,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['PayableUpdateSchema'] => ({
+): PayableUpdateSchema => ({
   document_id: invoiceNumber,
   discount:
     discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
@@ -210,10 +199,10 @@ export const calculateTotalsForPayable = (
 };
 
 export const prepareLineItemSubmit = (
-  currency: components['schemas']['CurrencyEnum'],
+  currency: CurrencyEnum,
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['LineItemRequest'] => {
+): LineItemRequest => {
   const { name, quantity, price, tax } = lineItem;
 
   return {
@@ -255,7 +244,7 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
 };
 
 export const isOcrMismatch = (
-  payableData: components['schemas']['PayableResponseSchema']
+  payableData: PayableResponseSchema
 ) => {
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
@@ -287,7 +276,7 @@ export const isOcrMismatch = (
 };
 
 export type OcrMismatchField = keyof Pick<
-  components['schemas']['PayableResponseSchema'],
+  PayableResponseSchema,
   'amount_to_pay' | 'counterpart_bank_account_id'
 >;
 
@@ -303,11 +292,18 @@ export interface MonitePayableDetailsInfoProps {
 }
 
 export const findDefaultBankAccount = (
-  accounts: components['schemas']['CounterpartBankAccountResponse'][],
-  currentCurrency: components['schemas']['CurrencyEnum']
+  accounts: CounterpartBankAccountResponse[],
+  currentCurrency: CurrencyEnum
 ): string => {
   const defaultAccount = accounts.find(
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
   return defaultAccount?.id || '';
 };
+
+type PayableUpdateSchema = components['schemas']['PayableUpdateSchema'];
+type CurrencyEnum = components['schemas']['CurrencyEnum']
+type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
+type LineItemResponse = components['schemas']['LineItemResponse'];
+type CounterpartBankAccountResponse = components['schemas']['CounterpartBankAccountResponse'];
+type LineItemRequest= components['schemas']['LineItemRequest'];

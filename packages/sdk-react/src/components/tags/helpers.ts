@@ -9,9 +9,9 @@ export const tagCategories = [
   'vendor_type',
   'payment_method',
   'approval_status',
-];
+] as const;
 
-type TagCategory = (typeof tagCategories)[number];
+export type TagCategory = (typeof tagCategories)[number];
 
 const getTagCategoryLabels = (i18n: I18n): Record<TagCategory, string> => ({
   document_type: t(i18n)`Document Type`,

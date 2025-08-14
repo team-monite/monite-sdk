@@ -1,20 +1,10 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import * as yup from 'yup';
+import { z } from 'zod';
 
 export const getEmailInvoiceDetailsSchema = (i18n: I18n) =>
-  yup.object({
-    to: yup
-      .string()
-      .label(t(i18n)`To`)
-      .required(),
-    subject: yup
-      .string()
-      .label(t(i18n)`Subject`)
-      .required(),
-    body: yup
-      .string()
-      .label(t(i18n)`Body`)
-      .required(),
+  z.object({
+    to: z.string().min(1, t(i18n)`To is required`),
+    subject: z.string().min(1, t(i18n)`Subject is required`),
+    body: z.string().min(1, t(i18n)`Body is required`),
   });

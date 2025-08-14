@@ -1,4 +1,4 @@
-import { getTagCategoryLabel, tagCategories } from '../helpers';
+import { getTagCategoryLabel, tagCategories, type TagCategory } from '../helpers';
 import { useTags } from '../useTags';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -29,32 +29,29 @@ import {
   SheetTitle,
   SheetFooter,
 } from '@/ui/components/sheet';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useEffect, useId } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import * as yup from 'yup';
+import { z } from 'zod';
 
 const getValidationSchema = (i18n: I18n) =>
-  yup
-    .object()
-    .shape({
-      name: yup
+  z.object({
+    name: z
+      .string()
+      .min(1, t(i18n)`Required`)
+      .max(255, t(i18n)`Value must be at most '255' characters`),
+    category: z.union([z.literal(''), z.enum(tagCategories)]),
+    keywords: z.array(
+      z
         .string()
-        .required()
-        .max(255, t(i18n)`Value must be at most '255' characters`),
-      category: yup.string().optional().oneOf(tagCategories),
-      keywords: yup.array().of(
-        yup
-          .string()
-          .min(2, t(i18n)`Keyword should be at least 2 characters long`)
-          .max(25, t(i18n)`Keyword should be at most 25 characters long`)
-      ),
-    })
-    .required();
+        .min(2, t(i18n)`Keyword should be at least 2 characters long`)
+        .max(25, t(i18n)`Keyword should be at most 25 characters long`)
+    ),
+  });
 
 interface ITag {
   id: string;
@@ -76,11 +73,11 @@ interface TagFormModalProps {
   open: boolean;
 }
 
-interface FormFields {
+type FormFields = {
   name: string;
-  category: components['schemas']['TagCategory'] | '';
+  category: TagCategory | '';
   keywords: components['schemas']['OcrAutoTaggingSettingsRequest']['keywords'];
-}
+};
 
 /**
  * `TagFormModal` is responsible for creating or updating
@@ -104,9 +101,9 @@ const TagFormModalBase = ({
   isDeleteAllowed,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const form = useForm<FormFields>({
-    resolver: yupResolver(getValidationSchema(i18n)),
-  });
+  const schema = getValidationSchema(i18n);
+
+  const form = useForm<FormFields>({ resolver: zodResolver(schema) });
 
   const { control, handleSubmit, reset, setError } = form;
 
@@ -182,7 +179,7 @@ const TagFormModalBase = ({
                 e.stopPropagation();
                 handleSubmit(async (values) => {
                   const { keywords, name, category } = values;
-                  const payload = { name, category: category || undefined };
+                  const payload = { name, category: category as TagCategory };
 
                   const result = await (tag
                     ? updateTag(tag.id, payload)
@@ -240,10 +237,10 @@ const TagFormModalBase = ({
                   name="keywords"
                   control={control}
                   render={({ field }) => (
-                    <FormItem className="mtw:flex mtw:flex-col">
+                  <FormItem className="mtw:flex mtw:flex-col">
                       <FormLabel>{t(i18n)`Keywords`}</FormLabel>
 
-                      <InputTags {...field} />
+                      <InputTags {...field} value={field.value ?? []} />
 
                       <FormMessage />
                     </FormItem>

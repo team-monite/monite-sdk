@@ -18,7 +18,7 @@ import { Box, DialogContent, Stack, Typography } from '@mui/material';
 import { ProductCancelEditModal } from '../../ProductCancelEditModal';
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
-import { IProductFormSubmitValues } from '../validation';
+import { type ProductFormValues } from '../validation';
 
 type IProductEditFormProps = Pick<
   ExistingProductDetailsProps,
@@ -110,7 +110,12 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
     ]
   );
 
-  const handleSubmit = async (values: IProductFormSubmitValues) => {
+  const handleSubmit = async (values: ProductFormValues) => {
+    if (!values.name || !values.currency || values.pricePerUnit === undefined) {
+      toast.error(t(i18n)`Please fill in all required fields`);
+      return;
+    }
+
     const payload: ProductServiceRequest = {
       name: values.name,
       type: values.type,
@@ -120,7 +125,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         value:
           formatToMinorUnits(values.pricePerUnit, values.currency) ??
           values.pricePerUnit,
-        currency: values.currency,
+        currency: values.currency as CurrencyEnum,
       },
       description: values.description,
     };

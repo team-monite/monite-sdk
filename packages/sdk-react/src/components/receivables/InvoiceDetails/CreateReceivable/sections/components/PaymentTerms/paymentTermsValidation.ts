@@ -1,94 +1,107 @@
+import { PaymentTermsFields } from './types';
 import { type I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { z } from 'zod';
 
-import * as yup from 'yup';
-
-const lessThanDue = (value: number | undefined, getFormState: () => any) => {
-  const form = getFormState();
-  const termFinalDays = form?.term_final?.number_of_days;
-
-  if (!value || !termFinalDays) {
-    return true;
-  }
-
-  return value < termFinalDays;
-};
-
-const largerThanPreviousDiscount = (
-  value: number | undefined,
-  getFormState: () => any
-) => {
-  const form = getFormState();
-  const previousTermDays = form?.term_1?.number_of_days;
-
-  if (!value || !previousTermDays) {
-    return true;
-  }
-
-  return value > previousTermDays;
-};
-
-export const getValidation = (i18n: I18n, getFormState: () => any) =>
-  yup.object({
-    name: yup.string().max(100).required(),
-    term_final: yup.object().shape({
-      number_of_days: yup.number().required(),
-    }),
-    description: yup.string().max(250).optional(),
-    term_1: yup
-      .object()
-      .nullable()
-      .shape({
-        number_of_days: yup
-          .number()
-          .default(null)
-          .typeError(
-            t(i18n)`To add a discount you need to fill out all the fields`
-          )
-          .test(
-            'less-than-due',
-            t(
-              i18n
-            )`The number of days in Discount must be less than of Due days`,
-            (value) => lessThanDue(value, getFormState)
-          ),
-        discount: yup
-          .number()
-          .typeError(
-            t(i18n)`To add a discount you need to fill out all the fields`
-          ),
-      })
-      .default(undefined)
-      .optional(),
-    term_2: yup
-      .object()
-      .nullable()
-      .shape({
-        number_of_days: yup
-          .number()
-          .typeError(
-            t(i18n)`To add a discount you need to fill out all the fields`
-          )
-          .test(
-            'less-than-due',
-            t(
-              i18n
-            )`The number of days in Discount must be less than of Due days`,
-            (value) => lessThanDue(value, getFormState)
-          )
-          .test(
-            'larger-than-previous',
-            t(
-              i18n
-            )`The number of days in Discount 2 must be more than the number of Discount 1 days`,
-            (value) => largerThanPreviousDiscount(value, getFormState)
-          ),
-        discount: yup
-          .number()
-          .typeError(
-            t(i18n)`To add a discount you need to fill out all the fields`
-          ),
-      })
-      .default(undefined)
-      .optional(),
-  });
+export const getValidation = (i18n: I18n) =>
+  z
+    .object({
+      name: z
+        .string()
+        .max(100, t(i18n)`Name must be 100 characters or less`)
+        .min(1, t(i18n)`Name is required`),
+      term_final: z.object({
+        number_of_days: z.coerce.number().min(1, t(i18n)`Number of days is required`),
+      }),
+      description: z
+        .string()
+        .max(250, t(i18n)`Description must be 250 characters or less`)
+        .optional(),
+      term_1: z
+        .object({
+          number_of_days: z.union([z.coerce.number(), z.null()]),
+          discount: z.union([z.coerce.number(), z.null()]),
+        })
+        .nullable()
+        .optional(),
+      term_2: z
+        .object({
+          number_of_days: z.union([z.coerce.number(), z.null()]),
+          discount: z.union([z.coerce.number(), z.null()]),
+        })
+        .nullable()
+        .optional(),
+    })
+    .refine(
+      (data) => {
+        // Check that term_1 days is less than term_final days
+        if (data.term_1?.number_of_days && data.term_final.number_of_days) {
+          return data.term_1.number_of_days < data.term_final.number_of_days;
+        }
+        return true;
+      },
+      {
+        message: t(
+          i18n
+        )`The number of days in Discount must be less than of Due days`,
+        path: ['term_1', 'number_of_days'],
+      }
+    )
+    .refine(
+      (data) => {
+        // Check that term_2 days is less than term_final days
+        if (data.term_2?.number_of_days && data.term_final.number_of_days) {
+          return data.term_2.number_of_days < data.term_final.number_of_days;
+        }
+        return true;
+      },
+      {
+        message: t(
+          i18n
+        )`The number of days in Discount must be less than of Due days`,
+        path: ['term_2', 'number_of_days'],
+      }
+    )
+    .refine(
+      (data) => {
+        // Check that term_2 days is greater than term_1 days
+        if (data.term_2?.number_of_days && data.term_1?.number_of_days) {
+          return data.term_2.number_of_days > data.term_1.number_of_days;
+        }
+        return true;
+      },
+      {
+        message: t(
+          i18n
+        )`The number of days in Discount 2 must be more than the number of Discount 1 days`,
+        path: ['term_2', 'number_of_days'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.term_1) {
+          const hasNumberOfDays = data.term_1.number_of_days !== null;
+          const hasDiscount = data.term_1.discount !== null;
+          return hasNumberOfDays === hasDiscount;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`To add a discount you need to fill out all the fields`,
+        path: ['term_1', 'number_of_days'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.term_2) {
+          const hasNumberOfDays = data.term_2.number_of_days !== null;
+          const hasDiscount = data.term_2.discount !== null;
+          return hasNumberOfDays === hasDiscount;
+        }
+        return true;
+      },
+      {
+        message: t(i18n)`To add a discount you need to fill out all the fields`,
+        path: ['term_2', 'number_of_days'],
+      }
+    ) satisfies z.ZodType<PaymentTermsFields>;

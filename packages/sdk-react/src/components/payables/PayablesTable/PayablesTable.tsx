@@ -315,7 +315,7 @@ const PayablesTableBase = ({
         renderCell: ({ formattedValue }) => formattedValue,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => i18n.date(value, locale.dateFormat),
+        ) => value ? i18n.date(value, locale.dateFormat) : '',
       },
       {
         field: 'due_date',

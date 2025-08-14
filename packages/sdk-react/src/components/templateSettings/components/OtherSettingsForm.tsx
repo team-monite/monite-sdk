@@ -1,23 +1,36 @@
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
+import { usePatchEntitySettings } from '../hooks';
+import type { OtherSettingsFormValues } from '../types';
+import { DisplayBankSection } from './DisplayBankSection';
+import { DisplaySignatureSection } from './DisplaySignatureSection';
+import { UpdatePaidInvoiceSection } from './UpdatePaidInvoiceSection';
 import { components } from '@/api';
 import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, Divider } from '@mui/material';
-
-import { usePatchEntitySettings } from '../hooks';
-import { OtherSettingsFormValues } from '../types';
-import { DisplayBankSection } from './DisplayBankSection';
-import { DisplaySignatureSection } from './DisplaySignatureSection';
-import { UpdatePaidInvoiceSection } from './UpdatePaidInvoiceSection';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 type Props = {
   entityId: string;
   entitySettings: components['schemas']['SettingsResponse'];
 };
+
+type DocumentRendering =
+  components['schemas']['SettingsResponse']['document_rendering'];
+type QuoteRendering = NonNullable<DocumentRendering>['quote'];
+
+type QuoteRenderingCompat = QuoteRendering & {
+  display_entity_bank_account?: boolean;
+};
+
+const hasBankDisplay = (
+  value: unknown
+): value is { display_entity_bank_account?: boolean } =>
+  !!value &&
+  typeof value === 'object' &&
+  'display_entity_bank_account' in value;
 
 export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
   const { i18n } = useLingui();
@@ -29,14 +42,45 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
   const methods = useForm<OtherSettingsFormValues>({
     defaultValues: {
       invoice_bank_display:
-        entitySettings?.document_rendering?.invoice
-          ?.display_entity_bank_account ?? false,
+        (hasBankDisplay(entitySettings?.document_rendering?.invoice)
+          ? Boolean(
+              (
+                entitySettings.document_rendering!.invoice as {
+                  display_entity_bank_account?: boolean;
+                }
+              ).display_entity_bank_account
+            )
+          : undefined) ??
+        Boolean(
+          entitySettings?.document_rendering?.display_entity_bank_account ??
+            false
+        ),
       credit_note_bank_display:
-        entitySettings?.document_rendering?.credit_note
-          ?.display_entity_bank_account ?? false,
+        (hasBankDisplay(entitySettings?.document_rendering?.credit_note)
+          ? Boolean(
+              (
+                entitySettings.document_rendering!.credit_note as {
+                  display_entity_bank_account?: boolean;
+                }
+              ).display_entity_bank_account
+            )
+          : undefined) ??
+        Boolean(
+          entitySettings?.document_rendering?.display_entity_bank_account
+        ),
       quote_bank_display:
-        entitySettings?.document_rendering?.quote
-          ?.display_entity_bank_account ?? false,
+        (hasBankDisplay(entitySettings?.document_rendering?.quote)
+          ? Boolean(
+              (
+                entitySettings.document_rendering!.quote as {
+                  display_entity_bank_account?: boolean;
+                }
+              ).display_entity_bank_account
+            )
+          : undefined) ??
+        Boolean(
+          entitySettings?.document_rendering?.display_entity_bank_account
+        ),
       update_paid_invoices: entitySettings?.generate_paid_invoice_pdf ?? false,
       quote_signature_display:
         entitySettings?.document_rendering?.quote?.display_signature ?? false,
@@ -51,24 +95,37 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
     updateSettings(
       {
         path: { entity_id: entityId },
-        body: {
-          ...entitySettings,
-          document_rendering: {
-            invoice: {
-              display_entity_bank_account: values.invoice_bank_display,
+        body: (() => {
+          const displayEntityBankAccount = Boolean(
+            values.invoice_bank_display ||
+              values.credit_note_bank_display ||
+              values.quote_bank_display
+          );
+
+          const displayLineItems = Boolean(
+            entitySettings?.document_rendering?.display_line_items
+          );
+
+          const quoteCompat: QuoteRenderingCompat = {
+            display_signature: values.quote_signature_display,
+          };
+          if (typeof values.quote_bank_display === 'boolean') {
+            quoteCompat.display_entity_bank_account = values.quote_bank_display;
+          }
+          const quote: QuoteRendering = quoteCompat;
+
+          return {
+            ...entitySettings,
+            document_rendering: {
+              display_entity_bank_account: displayEntityBankAccount,
+              display_line_items: displayLineItems,
+              quote,
             },
-            credit_note: {
-              display_entity_bank_account: values.credit_note_bank_display,
-            },
-            quote: {
-              display_entity_bank_account: values.quote_bank_display,
-              display_signature: values.quote_signature_display,
-            },
-          },
-          generate_paid_invoice_pdf: values.update_paid_invoices,
-          quote_signature_required:
-            values.quote_electronic_signature === 'true',
-        },
+            generate_paid_invoice_pdf: values.update_paid_invoices,
+            quote_signature_required:
+              values.quote_electronic_signature === 'true',
+          };
+        })(),
       },
       {
         onSuccess: () => {

@@ -230,6 +230,7 @@ describe('useApprovalPolicyTrigger', () => {
         created_by: 'user-1',
         updated_by: 'user-1',
         script: [],
+        priority: 1,
       };
 
       const { result } = renderHook(() =>

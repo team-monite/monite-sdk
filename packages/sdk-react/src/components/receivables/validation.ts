@@ -6,109 +6,43 @@ import { t } from '@lingui/macro';
 
 import { z } from 'zod';
 
-export const getEntityBankAccountValidationSchema = (
-  i18n: I18n,
-  isUpdateSchema?: boolean
-) => {
-  const baseSchema = z.object({
-    country: z.enum([...AllowedCountries, ''] as const).meta({ title: t(i18n)`Country` }),
-    
-    currency: z.enum([...CurrencyEnum, ''] as const).meta({ title: t(i18n)`Currency` }),
-    
-    account_holder_name: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Account holder name`,
-        description: t(i18n)`Required for USD and GBP currencies`
-      }),
-    
-    account_number: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Account number`,
-        description: t(i18n)`Bank account number (not required for EUR)`
-      }),
-    
-    bank_name: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Bank name`,
-        description: t(i18n)`The name of the bank institution`
-      }),
-    
-    bic: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`SWIFT / BIC`,
-        description: t(i18n)`Bank Identifier Code for international transfers`
-      }),
-    
-    display_name: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Display name`,
-        description: t(i18n)`A friendly name for this bank account`
-      }),
-    
-    iban: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`IBAN`,
-        description: t(i18n)`International Bank Account Number (required for EUR)`
-      }),
-    
-    is_default_for_currency: z.boolean(),
-    
-    routing_number: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Routing number`,
-        description: t(i18n)`Required for non-EUR and non-GBP currencies`
-      }),
-    
-    sort_code: z
-      .string()
-      .optional()
-      .meta({ 
-        title: t(i18n)`Sort code`,
-        description: t(i18n)`6-digit code required for non-EUR and non-USD currencies`
-      }),
-  });
+export type { EntityBankAccountFields } from './types';
 
-  const schemaWithValidation = baseSchema
+export const getCurrencyEnum = (_i18n: I18n) =>
+  z.enum(CurrencyEnum as [string, ...string[]]);
+
+const entityBankAccountSchema = z.object({
+  account_holder_name: z.string().optional(),
+  account_number: z.string().optional(),
+  bank_name: z.string().optional(),
+  bic: z.string().optional(),
+  country: z.string(),
+  currency: z.enum(CurrencyEnum),
+  display_name: z.string().optional(),
+  iban: z.string().optional(),
+  is_default_for_currency: z.boolean(),
+  routing_number: z.string().optional(),
+  sort_code: z.string().optional(),
+});
+
+const getCreateBankAccountSchema = (i18n: I18n) =>
+  entityBankAccountSchema
+    .extend({
+      country: z.string().min(1, t(i18n)`Country is required`),
+      currency: z.enum(CurrencyEnum),
+      is_default_for_currency: z.boolean(),
+      display_name: z
+        .string()
+        .max(200, t(i18n)`Display name must be 200 characters or less`)
+        .optional(),
+    })
     .refine(
       (data) => {
-        if (isUpdateSchema) return true;
-        return data.country !== '';
-      },
-      {
-        message: t(i18n)`Country is required`,
-        path: ['country'],
-      }
-    )
-    .refine(
-      (data) => {
-        if (isUpdateSchema) return true;
-        return data.currency !== '';
-      },
-      {
-        message: t(i18n)`Currency is required`,
-        path: ['currency'],
-      }
-    )
-    .refine(
-      (data) => {
-        if (data.currency === 'EUR' || data.currency === '') {
+        // Account number: required for all currencies except EUR
+        if (data.currency === 'EUR') {
           return true;
         }
-        return data.account_number && data.account_number.length > 0;
+        return Boolean(data.account_number?.length);
       },
       {
         message: t(i18n)`Account number is required`,
@@ -117,8 +51,9 @@ export const getEntityBankAccountValidationSchema = (
     )
     .refine(
       (data) => {
+        // Account holder name: required for USD and GBP
         if (data.currency === 'USD' || data.currency === 'GBP') {
-          return data.account_holder_name && data.account_holder_name.length > 0;
+          return Boolean(data.account_holder_name?.length);
         }
         return true;
       },
@@ -129,10 +64,11 @@ export const getEntityBankAccountValidationSchema = (
     )
     .refine(
       (data) => {
-        if (data.currency !== 'EUR' && data.currency !== 'GBP' && data.currency !== '') {
-          return data.routing_number && data.routing_number.length > 0;
+        // Routing number: required for all currencies except EUR and GBP
+        if (data.currency === 'EUR' || data.currency === 'GBP') {
+          return true;
         }
-        return true;
+        return Boolean(data.routing_number?.length);
       },
       {
         message: t(i18n)`Routing number is required`,
@@ -141,20 +77,23 @@ export const getEntityBankAccountValidationSchema = (
     )
     .refine(
       (data) => {
-        if (data.currency !== 'EUR' && data.currency !== 'USD' && data.currency !== '') {
-          return data.sort_code && data.sort_code.length === 6;
+        // Sort code: required for all currencies except EUR and USD (must be 6 characters)
+        if (data.currency === 'EUR' || data.currency === 'USD') {
+          return Boolean(data.sort_code?.length === 6);
         }
+
         return true;
       },
       {
-        message: t(i18n)`Sort code is required and must be exactly 6 characters`,
+        message: t(i18n)`Sort code must be 6 characters`,
         path: ['sort_code'],
       }
     )
     .refine(
       (data) => {
+        // IBAN: required for EUR
         if (data.currency === 'EUR') {
-          return data.iban && data.iban.length > 0;
+          return Boolean(data.iban?.length);
         }
         return true;
       },
@@ -164,54 +103,28 @@ export const getEntityBankAccountValidationSchema = (
       }
     );
 
-  return schemaWithValidation;
+const getUpdateBankAccountSchema = (i18n: I18n) => {
+  return z
+    .object({
+      display_name: z
+        .string()
+        .max(200, t(i18n)`Display name must be 200 characters or less`)
+        .optional(),
+      account_holder_name: z.string().optional(),
+    })
+    .loose();
 };
 
-export type EntityBankAccountFormValues = z.infer<
-  ReturnType<typeof getEntityBankAccountValidationSchema>
->;
-
-/**
- * Utility function to extract field title from a Zod schema
- * Usage: getFieldTitle(schema, 'fieldName') -> returns the title from .meta()
- */
-export const getFieldTitle = (schema: z.ZodTypeAny, fieldName: string): string | undefined => {
-  try {
-    if ('shape' in schema && schema.shape && typeof schema.shape === 'object') {
-      const shape = schema.shape as Record<string, any>;
-      const field = shape[fieldName];
-      if (field && 'meta' in field && typeof field.meta === 'function') {
-        const metadata = field.meta();
-        return metadata?.title;
-      }
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console, lingui/no-unlocalized-strings
-    console.warn('Could not extract title for field:', fieldName, error);
-  }
-  return undefined;
+export const getEntityBankAccountValidationSchema = (
+  i18n: I18n,
+  isUpdateSchema?: boolean
+) => {
+  return isUpdateSchema
+    ? getUpdateBankAccountSchema(i18n)
+    : getCreateBankAccountSchema(i18n);
 };
 
-/**
- * Utility function to extract field description from a Zod schema
- * Usage: getFieldDescription(schema, 'fieldName') -> returns the description from .meta()
- */
-export const getFieldDescription = (schema: z.ZodTypeAny, fieldName: string): string | undefined => {
-  try {
-    if ('shape' in schema && schema.shape && typeof schema.shape === 'object') {
-      const shape = schema.shape as Record<string, any>;
-      const field = shape[fieldName];
-      if (field && 'meta' in field && typeof field.meta === 'function') {
-        const metadata = field.meta();
-        return metadata?.description;
-      }
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console, lingui/no-unlocalized-strings
-    console.warn('Could not extract description for field:', fieldName, error);
-  }
-  return undefined;
-};
+export { getCreateBankAccountSchema, getUpdateBankAccountSchema };
 
 export const getEntityProfileValidationSchema = (i18n: I18n) => {
   return z.object({

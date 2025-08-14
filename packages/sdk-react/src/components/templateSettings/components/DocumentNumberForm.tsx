@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
@@ -31,7 +31,7 @@ export const DocumentNumberForm = ({
     usePatchEntitySettings(entityId);
 
   const methods = useForm<DocumentNumberFormValues>({
-    resolver: yupResolver(getDocumentNumberFormSchema(i18n, nextNumbers)),
+    resolver: zodResolver(getDocumentNumberFormSchema(i18n, nextNumbers)),
     defaultValues: {
       credit_note:
         entitySettings?.document_ids?.document_type_prefix?.credit_note ?? 'CN',
