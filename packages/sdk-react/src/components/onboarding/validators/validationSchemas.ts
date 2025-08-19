@@ -1,6 +1,7 @@
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { z } from 'zod';
 
 import { getIdentificationLabel } from '../helpers';
 import {
@@ -10,34 +11,34 @@ import {
   numberValidator,
   phoneValidator,
   stringValidator,
+  emailValidator,
+  urlValidator,
 } from './validators';
 import type { ValidationSchema } from './validators';
 
 export const entitySchema = (
   i18n: I18n
 ): ValidationSchema<UpdateEntityRequest> => ({
-  email: stringValidator()
-    .label(t(i18n)`Email address`)
-    .email(),
-  phone: phoneValidator(i18n).label(t(i18n)`Business phone number`),
-  tax_id: stringValidator().label(t(i18n)`Tax number`),
+  email: emailValidator(i18n).describe(t(i18n)`Email address`),
+  phone: phoneValidator(i18n).describe(t(i18n)`Business phone number`),
+  tax_id: stringValidator().describe(t(i18n)`Tax number`),
 });
 
 export const entityIndividualSchema = (
   i18n: I18n,
   country?: AllowedCountries | null
 ): ValidationSchema<OptionalIndividualSchema> => ({
-  first_name: stringValidator().label(t(i18n)`First name`),
-  last_name: stringValidator().label(t(i18n)`Last name`),
-  title: stringValidator().label(t(i18n)`Title`),
-  date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(getIdentificationLabel(i18n, country)),
+  first_name: stringValidator().describe(t(i18n)`First name`),
+  last_name: stringValidator().describe(t(i18n)`Last name`),
+  title: stringValidator().describe(t(i18n)`Title`),
+  date_of_birth: dateOfBirthValidator(i18n).describe(t(i18n)`Date of birth`),
+  id_number: stringValidator().describe(getIdentificationLabel(i18n, country)),
 });
 
 export const entityOrganizationSchema = (
   i18n: I18n
 ): ValidationSchema<OptionalOrganizationSchema> => ({
-  legal_name: stringValidator().label(t(i18n)`Legal business name`),
+  legal_name: stringValidator().describe(t(i18n)`Legal business name`),
 });
 
 export type EntityDocumentsSchema = Pick<
@@ -51,16 +52,16 @@ export type EntityDocumentsSchema = Pick<
 export const entityDocumentsSchema = (
   i18n: I18n
 ): ValidationSchema<EntityDocumentsSchema> => ({
-  verification_document_front: stringValidator().label(
+  verification_document_front: stringValidator().describe(
     t(i18n)`Front of your identify document`
   ),
-  verification_document_back: stringValidator().label(
+  verification_document_back: stringValidator().describe(
     t(i18n)`Back of your identify document`
   ),
-  additional_verification_document_front: stringValidator().label(
+  additional_verification_document_front: stringValidator().describe(
     t(i18n)`Front of your additional identify document`
   ),
-  additional_verification_document_back: stringValidator().label(
+  additional_verification_document_back: stringValidator().describe(
     t(i18n)`Back of your additional identify document`
   ),
 });
@@ -76,16 +77,16 @@ export type PersonDocumentsSchema = Pick<
 export const personDocumentsSchema = (
   i18n: I18n
 ): ValidationSchema<PersonDocumentsSchema> => ({
-  verification_document_front: stringValidator().label(
+  verification_document_front: stringValidator().describe(
     t(i18n)`Front of your identify document`
   ),
-  verification_document_back: stringValidator().label(
+  verification_document_back: stringValidator().describe(
     t(i18n)`Back of your identify document`
   ),
-  additional_verification_document_front: stringValidator().label(
+  additional_verification_document_front: stringValidator().describe(
     t(i18n)`Front of your additional identify document`
   ),
-  additional_verification_document_back: stringValidator().label(
+  additional_verification_document_back: stringValidator().describe(
     t(i18n)`Back of your additional identify document`
   ),
 });
@@ -94,50 +95,46 @@ export const personSchema = (
   i18n: I18n,
   country?: AllowedCountries | null
 ): ValidationSchema<OptionalPersonRequest> => ({
-  first_name: stringValidator().label(t(i18n)`First name`),
-  last_name: stringValidator().label(t(i18n)`Last name`),
-  email: stringValidator()
-    .label(t(i18n)`Email address`)
-    .email(),
-  phone: phoneValidator(i18n).label(t(i18n)`Phone number`),
-  date_of_birth: dateOfBirthValidator(i18n).label(t(i18n)`Date of birth`),
-  id_number: stringValidator().label(getIdentificationLabel(i18n, country)),
+  first_name: stringValidator().describe(t(i18n)`First name`),
+  last_name: stringValidator().describe(t(i18n)`Last name`),
+  email: emailValidator(i18n).describe(t(i18n)`Email address`),
+  phone: phoneValidator(i18n).describe(t(i18n)`Phone number`),
+  date_of_birth: dateOfBirthValidator(i18n).describe(t(i18n)`Date of birth`),
+  id_number: stringValidator().describe(getIdentificationLabel(i18n, country)),
 });
 
 export const bankAccountSchema = (
   i18n: I18n
 ): ValidationSchema<CreateEntityBankAccountRequest> => ({
-  country: stringValidator().label(t(i18n)`Country`),
-  currency: stringValidator().label(t(i18n)`Currency`),
-  account_holder_name: stringValidator().label(t(i18n)`Account holder name`),
-  account_number: stringValidator().label(t(i18n)`Account number`),
+  country: stringValidator().describe(t(i18n)`Country`),
+  currency: stringValidator().describe(t(i18n)`Currency`),
+  account_holder_name: stringValidator().describe(t(i18n)`Account holder name`),
+  account_number: stringValidator().describe(t(i18n)`Account number`),
   sort_code: stringValidator()
-    .length(6, t(i18n)`Sort code must be 6 digits`)
-    .label(t(i18n)`Sort code`),
-  iban: ibanValidator(i18n).label(t(i18n)`IBAN`),
+    .describe(t(i18n)`Sort code`)
+    .refine((val) => !val || val.length === 6, {
+      message: t(i18n)`Sort code must be 6 digits`,
+    }),
+  iban: ibanValidator(i18n).describe(t(i18n)`IBAN`),
   routing_number: stringValidator()
-    .length(9, t(i18n)`Routing number must be 9 digits`)
-    .label(t(i18n)`Routing number`),
+    .describe(t(i18n)`Routing number`)
+    .refine((val) => !val || val.length === 9, {
+      message: t(i18n)`Routing number must be 9 digits`,
+    }),
 });
 
 export const businessProfileSchema = (
   i18n: I18n
 ): ValidationSchema<BusinessProfile> => ({
-  mcc: stringValidator().label(t(i18n)`Industry`),
-  url: stringValidator()
-    .label(t(i18n)`Business URL`)
-    .url(
-      t(
-        i18n
-      )`Invalid URL. Please ensure it starts with 'http://' or 'https://'.`
-    ),
+  mcc: stringValidator().describe(t(i18n)`Industry`),
+  url: urlValidator(i18n).describe(t(i18n)`Business URL`),
 });
 
 export const relationshipSchema = (
   i18n: I18n
 ): ValidationSchema<OptionalPersonRelationship> => ({
-  title: stringValidator().label(t(i18n)`Job title`),
-  percent_ownership: numberValidator().label(t(i18n)`Percent ownership`),
+  title: stringValidator().describe(t(i18n)`Job title`),
+  percent_ownership: numberValidator().describe(t(i18n)`Percent ownership`),
   representative: booleanValidator(),
   owner: booleanValidator(),
   executive: booleanValidator(),
@@ -147,12 +144,12 @@ export const relationshipSchema = (
 export const addressSchema = (
   i18n: I18n
 ): ValidationSchema<EntityAddressSchema | OptionalPersonAddress> => ({
-  country: stringValidator().label(t(i18n)`Country`),
-  line1: stringValidator().label(t(i18n)`Line 1`),
-  line2: stringValidator().label(t(i18n)`Line 2`),
-  city: stringValidator().label(t(i18n)`City`),
-  state: stringValidator().label(t(i18n)`State`),
-  postal_code: stringValidator().label(t(i18n)`Postal code`),
+  country: stringValidator().describe(t(i18n)`Country`),
+  line1: stringValidator().describe(t(i18n)`Line 1`),
+  line2: stringValidator().describe(t(i18n)`Line 2`),
+  city: stringValidator().describe(t(i18n)`City`),
+  state: stringValidator().describe(t(i18n)`State`),
+  postal_code: stringValidator().describe(t(i18n)`Postal code`),
 });
 
 export type OnboardingAgreementsSchema = {
@@ -163,12 +160,18 @@ export type OnboardingAgreementsSchema = {
 export const agreementsSchema = (
   i18n: I18n
 ): ValidationSchema<OnboardingAgreementsSchema> => ({
-  tos_acceptance: booleanValidator()
-    .oneOf([true], t(i18n)`Please accept Service Agreement to proceed.`)
-    .label(t(i18n)`Terms of Service`),
-  ownership_declaration: booleanValidator()
-    .oneOf([true], t(i18n)`Please accept Ownership Declaration to proceed.`)
-    .label(t(i18n)`Ownership declaration`),
+  tos_acceptance: z
+    .boolean()
+    .describe(t(i18n)`Terms of Service`)
+    .refine((v) => v === true, {
+      message: t(i18n)`Please accept Service Agreement to proceed.`,
+    }),
+  ownership_declaration: z
+    .boolean()
+    .describe(t(i18n)`Ownership declaration`)
+    .refine((v) => v === true, {
+      message: t(i18n)`Please accept Ownership Declaration to proceed.`,
+    }),
 });
 
 type BusinessProfile = components['schemas']['BusinessProfile-Input'];

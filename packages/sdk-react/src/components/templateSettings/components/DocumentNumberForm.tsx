@@ -1,18 +1,16 @@
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
-import { components } from '@/api';
-import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Button } from '@mui/material';
-
 import { usePatchEntitySettings } from '../hooks';
 import { getDocumentNumberFormSchema } from '../schemas';
 import { DocumentNumberFormValues } from '../types';
 import { CommonSettingsBlock } from './CommonSettingsBlock';
 import { PerDocumentBlock } from './PerDocumentBlock';
+import { components } from '@/api';
+import { useDiscardChangesContext } from '@/core/context/DiscardChangesContext';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Button } from '@mui/material';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 type Props = {
   entityId: string;
@@ -31,7 +29,9 @@ export const DocumentNumberForm = ({
     usePatchEntitySettings(entityId);
 
   const methods = useForm<DocumentNumberFormValues>({
-    resolver: zodResolver(getDocumentNumberFormSchema(i18n, nextNumbers)),
+    resolver: safeZodResolver<DocumentNumberFormValues>(
+      getDocumentNumberFormSchema(i18n, nextNumbers)
+    ),
     defaultValues: {
       credit_note:
         entitySettings?.document_ids?.document_type_prefix?.credit_note ?? 'CN',

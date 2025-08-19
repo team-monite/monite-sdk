@@ -20,8 +20,8 @@ import { isOnboardingField } from './commonDataTransformers';
 import { components } from '@/api';
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { I18n } from '@lingui/core';
-import type { AnyObjectSchema } from 'yup';
-import { object } from 'yup';
+import { z, type ZodType, type ZodObject, type ZodRawShape } from 'zod';
+import { withIbanCountryConsistency } from '../validators/validators';
 
 export type ValidationSchemasType =
   | 'entity'
@@ -60,48 +60,45 @@ export const generateOnboardingValidationSchema = ({
   type,
   i18n,
   country,
-}: GenerateValidationSchemaType): AnyObjectSchema => {
+}: GenerateValidationSchemaType) => {
   const schema: ValidationSchema<UnifiedSchemaType> = getSchemaByType(type)(
     i18n,
     country
   );
 
-  return object(
-    Object.entries(fields).reduce(
-      (acc: Record<string, any>, [key, item]) => {
-        const field = item as OnboardingFieldsType;
-        const schemaKey = key as keyof typeof schema;
-        const validator =
-          schemaKey in schema && (schema[schemaKey] as ValidatorType);
+  const shape = Object.entries(fields).reduce(
+    (acc: Record<string, ZodType>, [key, item]) => {
+      const field = item as OnboardingFieldsType;
+      const schemaKey = key as keyof typeof schema;
+      const validator = schemaKey in schema ? (schema[schemaKey] as ValidatorType) : undefined;
 
-        const subresourceType = getSubresourceTypeByKey(key);
+      const subresourceType = getSubresourceTypeByKey(key);
 
-        if (!subresourceType && validator) {
-          return {
-            ...acc,
-            ...{ [key]: getValidatorSettings(field, validator) },
-          };
-        }
+      if (!subresourceType && validator) {
+        acc[key] = getValidatorSettings(field, validator) as ZodType;
+        return acc;
+      }
 
-        if (!subresourceType) {
-          return acc;
-        }
+      if (!subresourceType) {
+        return acc;
+      }
 
-        return {
-          ...acc,
-          ...{
-            [key]: generateOnboardingValidationSchema({
-              fields: field,
-              type: subresourceType,
-              i18n,
-              country,
-            }),
-          },
-        };
-      },
-      {} as Record<string, any>
-    )
+      const nested = generateOnboardingValidationSchema({
+        fields: field,
+        type: subresourceType,
+        i18n,
+        country,
+      });
+      acc[key] = nested as ZodObject<ZodRawShape>;
+      return acc;
+    },
+    {} as Record<string, ZodType>
   );
+
+  const objectSchema = z.object(shape);
+  return type === 'bankAccount'
+    ? withIbanCountryConsistency(objectSchema, i18n)
+    : objectSchema;
 };
 
 const getSchemaByType = (type: ValidationSchemasType) => {
@@ -149,10 +146,12 @@ const getSubresourceTypeByKey = (
 const getValidatorSettings = (
   field: OnboardingFieldsType,
   validator: ValidatorType
-): ValidatorType => {
+): ZodType => {
   if (!isOnboardingField(field)) return validator;
-  if (!field.required) return validator;
-  return validator.required();
+  // Make field optional when not required; allow null for optional fields
+  if (field.required) return validator;
+  // optional + nullable for non-required fields
+  return (validator as ZodType).optional().nullable();
 };
 
 type BusinessProfile = components['schemas']['BusinessProfile-Input'];

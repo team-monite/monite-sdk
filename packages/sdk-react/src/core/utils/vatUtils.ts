@@ -1,6 +1,25 @@
-import { rateMinorToMajor, rateMajorToMinor } from './currencies';
+/**
+ * Converts a rate from minor units (API format) to major units (UI display format)
+ * Example: 2000 -> 20
+ * @param rateMinor The rate value in minor units (as received from API)
+ * @returns The rate value in major units (for UI display)
+ */
+import { fromMinorUnits, toMinorUnits } from '@/core/utils/currency';
 
-export { rateMinorToMajor, rateMajorToMinor };
+export const rateMinorToMajor = (rateMinor: number): number => {
+  return fromMinorUnits(rateMinor);
+};
+
+/**
+ * Converts a rate from major units (UI display format) to minor units (API format)
+ * Example: 20 -> 2000
+ * @param rateMajor The rate value in major units (from UI)
+ * @returns The rate value in minor units (for API)
+ */
+export const rateMajorToMinor = (rateMajor: number): number => {
+  return toMinorUnits(rateMajor);
+};
+
 /**
  * Gets the appropriate rate value based on whether VAT is supported,
  * converting to major units for display

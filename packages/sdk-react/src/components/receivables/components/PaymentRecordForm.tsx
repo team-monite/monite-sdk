@@ -4,10 +4,10 @@ import {
 } from '../validation';
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { RHFTimePicker } from '@/ui/RHF/RHFTimePicker';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -42,8 +42,8 @@ export const PaymentRecordForm = ({
 
   const { control, handleSubmit, reset, setValue } =
     useForm<ManualPaymentRecordFormValues>({
-      resolver: zodResolver(
-        manualPaymentRecordValidationSchema(i18n, invoice.amount_due / 100)
+      resolver: safeZodResolver<ManualPaymentRecordFormValues>(
+        manualPaymentRecordValidationSchema(i18n, invoice.amount_due)
       ),
       defaultValues: useMemo(
         () =>

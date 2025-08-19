@@ -55,7 +55,7 @@ export const OnboardingPersonDocumentList = () => {
       });
 
       const areFieldsValid = errors.length === 0;
-      const areValuesValid = validationSchema.isValidSync(values);
+      const areValuesValid = validationSchema.safeParse(values).success;
 
       return areFieldsValid && areValuesValid;
     },

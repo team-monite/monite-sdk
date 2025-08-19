@@ -5713,7 +5713,6 @@ __metadata:
     tslib: "npm:~2.8.1"
     tw-animate-css: "npm:~1.2.5"
     typescript: "npm:~5.5.4"
-    yup: "npm:~0.32.11"
     zod: "npm:~4.0.5"
   peerDependencies:
     "@emotion/cache": ~11.11.0
