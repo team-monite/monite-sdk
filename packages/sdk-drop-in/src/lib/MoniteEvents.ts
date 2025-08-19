@@ -46,7 +46,15 @@ export interface ReceivableEventPayload extends BaseEventPayload {
   response?: APISchema.components['schemas']['EntityBankAccountResponse'];
 }
 
-export type EventPayload = InvoiceEventPayload | ReceivableEventPayload;
+export interface PayablePayEventPayload extends BaseEventPayload {
+  // Carries resolve/reject handlers for custom payment flows
+  actions?: unknown;
+}
+
+export type EventPayload =
+  | InvoiceEventPayload
+  | ReceivableEventPayload
+  | PayablePayEventPayload;
 
 export interface MoniteEvent<T extends EventPayload = EventPayload> {
   id: string;
@@ -54,11 +62,16 @@ export interface MoniteEvent<T extends EventPayload = EventPayload> {
   payload: T;
 }
 
-export type EntityHandler<D = unknown> = (id: string, data?: D) => void;
-export type EventPayloadCreator<T extends BaseEventPayload, D = unknown> = (
+export type EntityHandler<D = unknown, A = unknown> = (
   id: string,
-  data?: D
-) => T;
+  data?: D,
+  actions?: A
+) => void;
+export type EventPayloadCreator<
+  T extends BaseEventPayload,
+  D = unknown,
+  A = unknown,
+> = (id: string, data?: D, actions?: A) => T;
 
 export const MONITE_EVENT_PREFIX = 'monite.event';
 
@@ -100,15 +113,19 @@ export function emitMoniteEvent<T extends EventPayload>(
  * @param createPayload A function that creates the event payload
  * @returns A wrapped handler that emits an event when called
  */
-export function createEventHandler<T extends BaseEventPayload, D = unknown>(
-  originalHandler: EntityHandler<D> | undefined,
+export function createEventHandler<
+  T extends BaseEventPayload,
+  D = unknown,
+  A = unknown,
+>(
+  originalHandler: EntityHandler<D, A> | undefined,
   eventType: MoniteEventTypes,
-  createPayload: EventPayloadCreator<T, D>
-): EntityHandler<D> {
-  return (id: string, data?: D) => {
-    const payload = createPayload(id, data);
+  createPayload: EventPayloadCreator<T, D, A>
+): EntityHandler<D, A> {
+  return (id: string, data?: D, actions?: A) => {
+    const payload = createPayload(id, data, actions);
     emitMoniteEvent(eventType, payload);
-    originalHandler?.(id, data);
+    originalHandler?.(id, data, actions);
   };
 }
 
@@ -249,10 +266,12 @@ export function enhancePayablesSettings(
       MoniteEventTypes.PAYABLE_DELETED,
       (id) => ({ id })
     ),
-    onPay: createEventHandler(onPay, MoniteEventTypes.PAYABLE_PAY, (id) => ({
-      id,
-    })),
-  } as ComponentSettings['payables'];
+    onPay: createEventHandler(
+      onPay,
+      MoniteEventTypes.PAYABLE_PAY,
+      (id, _data, actions): PayablePayEventPayload => ({ id, actions })
+    ),
+  };
 }
 
 /**

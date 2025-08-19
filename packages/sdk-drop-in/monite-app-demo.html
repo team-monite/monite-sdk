@@ -73,6 +73,22 @@
               );
             },
           },
+          {
+            eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.PAYABLE_PAY}`,
+            handler: (event) => {
+              const { payload: { id, actions } } = event.detail;
+
+                console.log('[Manual Event Listener] onPay called for payable id:', id);
+                const confirmed = window.confirm(
+                  `Start custom payment flow for payable ${id}?\nOK = resolve, Cancel = reject`
+                );
+                if (confirmed) {
+                  actions?.resolve({ showToast: true });
+                } else {
+                  actions?.reject(new Error('User cancelled custom payment flow'));
+                }
+              },
+          },
         ];
 
         handlers.forEach(({ eventName, handler }) => {
