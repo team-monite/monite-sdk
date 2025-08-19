@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { CreatePayableMenu } from './CreatePayableMenu';
 import { CustomerTypes } from '@/components/counterparts/types';
-import { usePayableCallbacks } from '@/components/payables/hooks/usePayableCallbacks';
 import { PayableDetails } from '@/components/payables/PayableDetails';
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
 import { PayablesTable } from '@/components/payables/PayablesTable';
+import { usePayableCallbacks } from '@/components/payables/hooks/usePayableCallbacks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -13,14 +11,14 @@ import { useFileInput } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-
-import { CreatePayableMenu } from './CreatePayableMenu';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export type PayablesProps = {
   /** @see {@link CustomerTypes} */
