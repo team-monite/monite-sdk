@@ -334,7 +334,7 @@ msgid "Access Restricted"
 msgstr "Access Restricted"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:98
-#: src/components/onboarding/validators/validationSchemas.ts:112
+#: src/components/onboarding/validators/validationSchemas.ts:111
 #: src/components/receivables/components/BankAccountCustomFields.tsx:115
 #: src/components/receivables/components/BankAccountCustomFields.tsx:175
 msgid "Account holder name"
@@ -355,7 +355,7 @@ msgstr "Account holder name is required"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:167
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:94
-#: src/components/onboarding/validators/validationSchemas.ts:113
+#: src/components/onboarding/validators/validationSchemas.ts:112
 #: src/components/receivables/components/BankAccountCustomFields.tsx:79
 #: src/components/receivables/components/BankAccountCustomFields.tsx:139
 #: src/components/receivables/components/BankAccountCustomFields.tsx:238
@@ -400,7 +400,7 @@ msgstr "Active"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1171
 #: src/components/onboarding/hooks/useOnboardingActions.ts:134
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:216
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:202
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:551
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:142
@@ -800,11 +800,11 @@ msgstr "Amount due<<<<<<< HEAD"
 
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:139
 msgid "Amount due ({0})"
-msgstr "Amount due ({0})======="
+msgstr "Amount due ({0})=======<<<<<<< HEAD"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:13
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:14
 #~ msgid "Amount is required"
-#~ msgstr "Amount is required>>>>>>> ecebd06b4 (fix(DEV-15955): i18n)"
+#~ msgstr "Amount is required>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:445
 #~ msgid "Amount must be a number"
@@ -1195,8 +1195,8 @@ msgstr "Back"
 msgid "Back of your additional document"
 msgstr "Back of your additional document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:64
-#: src/components/onboarding/validators/validationSchemas.ts:89
+#: src/components/onboarding/validators/validationSchemas.ts:65
+#: src/components/onboarding/validators/validationSchemas.ts:90
 msgid "Back of your additional identify document"
 msgstr "Back of your additional identify document"
 
@@ -1205,8 +1205,8 @@ msgstr "Back of your additional identify document"
 msgid "Back of your additional identity document"
 msgstr "Back of your additional identity document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:58
-#: src/components/onboarding/validators/validationSchemas.ts:83
+#: src/components/onboarding/validators/validationSchemas.ts:59
+#: src/components/onboarding/validators/validationSchemas.ts:84
 msgid "Back of your identify document"
 msgstr "Back of your identify document"
 
@@ -1606,7 +1606,7 @@ msgid "Business owners"
 msgstr "Business owners"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:42
-#: src/components/onboarding/validators/validationSchemas.ts:22
+#: src/components/onboarding/validators/validationSchemas.ts:23
 msgid "Business phone number"
 msgstr "Business phone number"
 
@@ -1619,7 +1619,7 @@ msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:82
-#: src/components/onboarding/validators/validationSchemas.ts:128
+#: src/components/onboarding/validators/validationSchemas.ts:130
 msgid "Business URL"
 msgstr "Business URL"
 
@@ -1657,13 +1657,13 @@ msgstr "Camera and Photographic Supply Stores"
 
 #: src/core/utils/countries.ts:56
 msgid "Cameroon"
-msgstr "Cameroon<<<<<<< HEAD"
+msgstr "Cameroon<<<<<<< HEAD<<<<<<< HEAD"
 
 #: src/components/receivables/validation.ts:216
 msgid "Can't be a negative number"
-msgstr "Can't be a negative number"
+msgstr "Can't be a negative number>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
-#: src/components/templateSettings/schemas.ts:15
+#: src/components/templateSettings/schemas.ts:16
 msgid "Can't be greater than 20"
 msgstr "Can't be greater than 20"
 
@@ -1671,17 +1671,17 @@ msgstr "Can't be greater than 20"
 #~ msgid "Can't be greater than 25"
 #~ msgstr "Can't be greater than 25"
 
-#: src/components/templateSettings/schemas.ts:21
-#: src/components/templateSettings/schemas.ts:28
-#: src/components/templateSettings/schemas.ts:33
-#: src/components/templateSettings/schemas.ts:39
-#: src/components/templateSettings/schemas.ts:46
+#: src/components/templateSettings/schemas.ts:23
+#: src/components/templateSettings/schemas.ts:31
+#: src/components/templateSettings/schemas.ts:37
+#: src/components/templateSettings/schemas.ts:44
+#: src/components/templateSettings/schemas.ts:52
 msgid "Can't be less than {0}"
 msgstr "Can't be less than {0}"
 
-#: src/components/templateSettings/schemas.ts:14
+#: src/components/templateSettings/schemas.ts:15
 msgid "Can't be less than 1"
-msgstr "Can't be less than 1"
+msgstr "Can't be less than 1<<<<<<< HEAD"
 
 #: src/components/receivables/validation.ts:217
 msgid "Can't be more than the amount due"
@@ -1755,7 +1755,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:231
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:77
-#: src/components/tags/TagFormModal/TagFormModal.tsx:268
+#: src/components/tags/TagFormModal/TagFormModal.tsx:271
 #: src/components/templateSettings/components/DiscardChangesModal.tsx:46
 #: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:73
@@ -1872,7 +1872,7 @@ msgstr "Carpet/Upholstery Cleaning"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:45
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:79
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:174
-#: src/components/tags/TagFormModal/TagFormModal.tsx:212
+#: src/components/tags/TagFormModal/TagFormModal.tsx:215
 #: src/components/tags/TagsTable/TagsTable.tsx:141
 msgid "Category"
 msgstr "Category"
@@ -1992,7 +1992,7 @@ msgstr "Cigar Stores and Stands"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:30
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:64
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:29
-#: src/components/onboarding/validators/validationSchemas.ts:153
+#: src/components/onboarding/validators/validationSchemas.ts:150
 #: src/components/receivables/components/EntityProfileFormContent.tsx:298
 #: src/components/receivables/validation.ts:177
 msgid "City"
@@ -2458,8 +2458,8 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
-#: src/components/onboarding/validators/validationSchemas.ts:110
-#: src/components/onboarding/validators/validationSchemas.ts:150
+#: src/components/onboarding/validators/validationSchemas.ts:109
+#: src/components/onboarding/validators/validationSchemas.ts:147
 #: src/components/receivables/components/EntityProfileFormContent.tsx:341
 #: src/components/receivables/validation.ts:192
 #: src/ui/Country/MoniteCountry.tsx:69
@@ -2500,14 +2500,14 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:447
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:464
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:152
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:147
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:464
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:27
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:97
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:130
-#: src/components/tags/TagFormModal/TagFormModal.tsx:276
+#: src/components/tags/TagFormModal/TagFormModal.tsx:279
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:122
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:180
@@ -2627,8 +2627,8 @@ msgstr "Create new counterpart:"
 msgid "Create new item"
 msgstr "Create new item"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:118
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:122
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:113
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:117
 msgid "Create new product or service"
 msgstr "Create new product or service"
 
@@ -2762,7 +2762,7 @@ msgstr "Cuba"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:114
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:77
-#: src/components/onboarding/validators/validationSchemas.ts:111
+#: src/components/onboarding/validators/validationSchemas.ts:110
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:752
 #: src/ui/Currency/MoniteCurrency.tsx:75
 msgid "Currency"
@@ -2850,7 +2850,7 @@ msgstr "Dance Hall, Studios, Schools"
 
 #: src/core/utils/currencies.ts:48
 msgid "Danish Krone"
-msgstr "Danish Krone<<<<<<< HEAD"
+msgstr "Danish Krone<<<<<<< HEAD<<<<<<< HEAD"
 
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:89
 #: src/components/receivables/components/PaymentRecordForm.tsx:111
@@ -2858,15 +2858,15 @@ msgstr "Danish Krone<<<<<<< HEAD"
 msgid "Date"
 msgstr "Date"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:26
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:28
 #~ msgid "Date is required"
-#~ msgstr "Date is required"
+#~ msgstr "Date is required>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:64
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:239
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:64
-#: src/components/onboarding/validators/validationSchemas.ts:33
-#: src/components/onboarding/validators/validationSchemas.ts:103
+#: src/components/onboarding/validators/validationSchemas.ts:34
+#: src/components/onboarding/validators/validationSchemas.ts:102
 msgid "Date of birth"
 msgstr "Date of birth"
 
@@ -2893,8 +2893,12 @@ msgid "Days after must be at least 1"
 msgstr "Days after must be at least 1"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:33
-msgid "Days after must be at most 9999"
-msgstr "Days after must be at most 9999"
+msgid "Days after must be at most 10000"
+msgstr "Days after must be at most 10000"
+
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:33
+#~ msgid "Days after must be at most 9999"
+#~ msgstr "Days after must be at most 9999"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:310
 msgid "days before discount date 1"
@@ -2914,7 +2918,7 @@ msgstr "Days before must be at least 1"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:21
 msgid "Days before must be at most 10000"
-msgstr "Days before must be at most 10000"
+msgstr "Days before must be at most 10000<<<<<<< HEAD"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:52
@@ -2977,7 +2981,7 @@ msgstr "Default currency switch"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:84
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:76
-#: src/components/tags/TagFormModal/TagFormModal.tsx:264
+#: src/components/tags/TagFormModal/TagFormModal.tsx:267
 #: src/components/tags/TagsTable/TagsTable.test.tsx:304
 #: src/components/tags/TagsTable/TagsTable.test.tsx:380
 #: src/components/tags/TagsTable/TagsTable.test.tsx:411
@@ -3378,8 +3382,8 @@ msgid "Don’t wait for your client to pay"
 msgstr "Don’t wait for your client to pay"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:28
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:142
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:203
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:137
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:198
 msgid "Done"
 msgstr "Done"
 
@@ -3593,9 +3597,9 @@ msgid "Edit"
 msgstr "Edit"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:459
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:151
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:175
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:178
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:146
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:170
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:173
 msgid "Edit {0}"
 msgstr "Edit {0}"
 
@@ -3807,7 +3811,7 @@ msgstr "Email"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:73
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:113
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:61
-#: src/components/onboarding/validators/validationSchemas.ts:20
+#: src/components/onboarding/validators/validationSchemas.ts:22
 #: src/components/onboarding/validators/validationSchemas.ts:100
 msgid "Email address"
 msgstr "Email address"
@@ -3860,7 +3864,7 @@ msgstr "Enable update paid invoices pdf"
 
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:116
 msgid "End"
-msgstr "End"
+msgstr "End<<<<<<< HEAD"
 
 #~ msgid "End date"
 #~ msgstr "End date>>>>>>> ecebd06b4 (fix(DEV-15955): i18n)"
@@ -3868,6 +3872,11 @@ msgstr "End"
 #: src/components/receivables/components/RecurrenceFormContent.tsx:55
 msgid "End of the month"
 msgstr "End of the month"
+
+#: src/components/receivables/components/PaymentRecordForm.tsx:96
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:7
+#~ msgid "Enter a valid email address"
+#~ msgstr "Enter a valid email address"
 
 #: src/components/receivables/components/PaymentRecordForm.tsx:96
 msgid "Enter full amount due of"
@@ -4400,8 +4409,8 @@ msgstr "Fireplace, Fireplace Screens, and Accessories Stores<<<<<<< HEAD"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:37
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:95
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:55
-#: src/components/onboarding/validators/validationSchemas.ts:30
-#: src/components/onboarding/validators/validationSchemas.ts:97
+#: src/components/onboarding/validators/validationSchemas.ts:31
+#: src/components/onboarding/validators/validationSchemas.ts:98
 msgid "First name"
 msgstr "First name"
 
@@ -4508,8 +4517,8 @@ msgstr "from {0}"
 msgid "Front of your additional document"
 msgstr "Front of your additional document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:61
-#: src/components/onboarding/validators/validationSchemas.ts:86
+#: src/components/onboarding/validators/validationSchemas.ts:62
+#: src/components/onboarding/validators/validationSchemas.ts:87
 msgid "Front of your additional identify document"
 msgstr "Front of your additional identify document"
 
@@ -4518,8 +4527,8 @@ msgstr "Front of your additional identify document"
 msgid "Front of your additional identity document"
 msgstr "Front of your additional identity document"
 
-#: src/components/onboarding/validators/validationSchemas.ts:55
-#: src/components/onboarding/validators/validationSchemas.ts:80
+#: src/components/onboarding/validators/validationSchemas.ts:56
+#: src/components/onboarding/validators/validationSchemas.ts:81
 msgid "Front of your identify document"
 msgstr "Front of your identify document"
 
@@ -4928,12 +4937,16 @@ msgstr "I own 25% or more of the company."
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:145
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:105
-#: src/components/onboarding/validators/validationSchemas.ts:117
+#: src/components/onboarding/validators/validationSchemas.ts:118
 #: src/components/receivables/components/BankAccountCustomFields.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:415
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:445
 msgid "IBAN"
-msgstr "IBAN"
+msgstr "IBAN<<<<<<< HEAD======="
+
+#: src/components/onboarding/validators/validators.ts:254
+msgid "IBAN country code must match the selected country."
+msgstr "IBAN country code must match the selected country.>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
 #: src/components/receivables/validation.ts:101
 msgid "IBAN is required"
@@ -5063,7 +5076,7 @@ msgid "Industrial Supplies (Not Elsewhere Classified)"
 msgstr "Industrial Supplies (Not Elsewhere Classified)"
 
 #: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:71
-#: src/components/onboarding/validators/validationSchemas.ts:126
+#: src/components/onboarding/validators/validationSchemas.ts:129
 msgid "Industry"
 msgstr "Industry"
 
@@ -5114,8 +5127,8 @@ msgstr "INV-auto<<<<<<< HEAD"
 msgid "Invalid email format"
 msgstr "Invalid email format"
 
-#: src/components/onboarding/validators/validators.ts:60
-#: src/components/onboarding/validators/validators.ts:63
+#: src/components/onboarding/validators/validators.ts:86
+#: src/components/onboarding/validators/validators.ts:95
 msgid "Invalid IBAN"
 msgstr "Invalid IBAN"
 
@@ -5123,7 +5136,7 @@ msgstr "Invalid IBAN"
 #~ msgid "Invalid issuance"
 #~ msgstr "Invalid issuance"
 
-#: src/components/onboarding/validators/validationSchemas.ts:130
+#: src/components/onboarding/validators/validators.ts:44
 msgid "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 
@@ -5391,7 +5404,7 @@ msgstr "It is a non-human legal entity, i.e. an organisation recognised by law a
 msgid "It is an entity having legal status as an individual."
 msgstr "It is an entity having legal status as an individual."
 
-#: src/components/onboarding/validators/validators.ts:153
+#: src/components/onboarding/validators/validators.ts:223
 msgid "It looks like the phone number is too short."
 msgstr "It looks like the phone number is too short."
 
@@ -5422,7 +5435,7 @@ msgstr "Italy"
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:167
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:64
 msgid "item"
-msgstr "item<<<<<<< HEAD"
+msgstr "item<<<<<<< HEAD<<<<<<< HEAD"
 
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:78
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:298
@@ -5548,7 +5561,7 @@ msgstr "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:55
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:211
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:58
-#: src/components/onboarding/validators/validationSchemas.ts:139
+#: src/components/onboarding/validators/validationSchemas.ts:136
 msgid "Job title"
 msgstr "Job title"
 
@@ -5588,7 +5601,7 @@ msgstr "Keyword should be at least 2 characters long"
 msgid "Keyword should be at most 25 characters long"
 msgstr "Keyword should be at most 25 characters long"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:241
+#: src/components/tags/TagFormModal/TagFormModal.tsx:244
 #: src/components/tags/TagsTable/TagsTable.tsx:150
 msgid "Keywords"
 msgstr "Keywords"
@@ -5654,8 +5667,8 @@ msgstr "Laotian Kip"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:46
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:104
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:56
-#: src/components/onboarding/validators/validationSchemas.ts:31
-#: src/components/onboarding/validators/validationSchemas.ts:98
+#: src/components/onboarding/validators/validationSchemas.ts:32
+#: src/components/onboarding/validators/validationSchemas.ts:99
 msgid "Last name"
 msgstr "Last name"
 
@@ -5706,7 +5719,7 @@ msgid "Lebanon"
 msgstr "Lebanon"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityOrganization/OnboardingEntityOrganization.tsx:30
-#: src/components/onboarding/validators/validationSchemas.ts:40
+#: src/components/onboarding/validators/validationSchemas.ts:41
 msgid "Legal business name"
 msgstr "Legal business name"
 
@@ -5772,13 +5785,13 @@ msgstr "Liechtensteinian UID number"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:46
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:27
-#: src/components/onboarding/validators/validationSchemas.ts:151
+#: src/components/onboarding/validators/validationSchemas.ts:148
 msgid "Line 1"
 msgstr "Line 1"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:55
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:28
-#: src/components/onboarding/validators/validationSchemas.ts:152
+#: src/components/onboarding/validators/validationSchemas.ts:149
 msgid "Line 2"
 msgstr "Line 2"
 
@@ -5917,17 +5930,17 @@ msgstr "Malta"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:20
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:177
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:117
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:174
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:112
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:169
 #: src/components/products/Products.tsx:107
 msgid "Manage measure units"
 msgstr "Manage measure units"
 
-#: src/components/onboarding/validators/validators.ts:117
+#: src/components/onboarding/validators/validators.ts:163
 msgid "Managers and owners must be at least 18 years old to use this service."
 msgstr "Managers and owners must be at least 18 years old to use this service."
 
-#: src/components/onboarding/validators/validators.ts:125
+#: src/components/onboarding/validators/validators.ts:173
 msgid "Managers and owners must be under 120 years old."
 msgstr "Managers and owners must be under 120 years old."
 
@@ -6241,6 +6254,10 @@ msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 #~ msgid "Must be a reachable, unique URL that describes the account's business."
 #~ msgstr "Must be a reachable, unique URL that describes the account's business."
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:15
+#~ msgid "Must be at least 0.01"
+#~ msgstr "Must be at least 0.01"
+
 #: src/components/receivables/components/BankAccountCustomFields.tsx:120
 #: src/components/receivables/components/BankAccountCustomFields.tsx:180
 msgid "Must match the name on your bank account exactly."
@@ -6275,7 +6292,7 @@ msgstr "N/A"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:121
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:145
 #: src/components/receivables/validation.ts:132
-#: src/components/tags/TagFormModal/TagFormModal.tsx:198
+#: src/components/tags/TagFormModal/TagFormModal.tsx:201
 #: src/components/tags/TagsTable/TagsTable.tsx:135
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:298
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:151
@@ -6286,7 +6303,7 @@ msgstr "Name"
 msgid "Name & description"
 msgstr "Name & description<<<<<<< HEAD"
 
-#: src/components/userRoles/UserRoleDetails/validation.ts:10
+#: src/components/userRoles/UserRoleDetails/validation.ts:11
 msgid "Name cannot exceed 255 characters"
 msgstr "Name cannot exceed 255 characters"
 
@@ -6295,7 +6312,7 @@ msgid "Name is a required field"
 msgstr "Name is a required field"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/paymentTermsValidation.ts:12
-#: src/components/userRoles/UserRoleDetails/validation.ts:11
+#: src/components/userRoles/UserRoleDetails/validation.ts:12
 msgid "Name is required"
 msgstr "Name is required"
 
@@ -6688,7 +6705,7 @@ msgstr "Not available"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:192
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:255
-#: src/components/tags/TagFormModal/TagFormModal.tsx:219
+#: src/components/tags/TagFormModal/TagFormModal.tsx:222
 msgid "Not set"
 msgstr "Not set"
 
@@ -7228,7 +7245,7 @@ msgstr "Pending"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:220
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:68
-#: src/components/onboarding/validators/validationSchemas.ts:140
+#: src/components/onboarding/validators/validationSchemas.ts:137
 msgid "Percent ownership"
 msgstr "Percent ownership<<<<<<< HEAD"
 
@@ -7304,7 +7321,7 @@ msgstr "Phone"
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:43
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:230
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:62
-#: src/components/onboarding/validators/validationSchemas.ts:102
+#: src/components/onboarding/validators/validationSchemas.ts:101
 msgid "Phone number"
 msgstr "Phone number"
 
@@ -7345,7 +7362,7 @@ msgstr "Pitcairn"
 msgid "Platform/Monite"
 msgstr "Platform/Monite"
 
-#: src/components/onboarding/validators/validationSchemas.ts:170
+#: src/components/onboarding/validators/validationSchemas.ts:173
 msgid "Please accept Ownership Declaration to proceed."
 msgstr "Please accept Ownership Declaration to proceed."
 
@@ -7370,22 +7387,26 @@ msgstr "Please correct the errors in persons information."
 #~ msgid "Please enter a number"
 #~ msgstr "Please enter a number"
 
-#: src/components/onboarding/validators/validators.ts:139
+#: src/components/onboarding/validators/validators.ts:203
 msgid "Please enter a phone number."
 msgstr "Please enter a phone number."
 
-#: src/components/onboarding/validators/validators.ts:148
+#: src/components/onboarding/validators/validators.ts:39
+msgid "Please enter a valid email address."
+msgstr "Please enter a valid email address."
+
+#: src/components/onboarding/validators/validators.ts:215
 msgid "Please enter a valid phone number."
 msgstr "Please enter a valid phone number."
 
-#: src/components/onboarding/validators/validators.ts:53
+#: src/components/onboarding/validators/validators.ts:75
 msgid "Please enter your IBAN number."
 msgstr "Please enter your IBAN number.<<<<<<< HEAD"
 
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:86
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:115
-msgid "Please fill in all required fields"
-msgstr "Please fill in all required fields"
+#~ msgid "Please fill in all required fields"
+#~ msgstr "Please fill in all required fields"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:83
 msgid ""
@@ -7409,8 +7430,8 @@ msgstr "Please list all business executives from the company."
 msgid "Please list all individuals who are members of the governing board of the company."
 msgstr "Please list all individuals who are members of the governing board of the company."
 
-#: src/components/onboarding/validators/validators.ts:103
-#: src/components/onboarding/validators/validators.ts:111
+#: src/components/onboarding/validators/validators.ts:143
+#: src/components/onboarding/validators/validators.ts:154
 msgid "Please provide a valid date."
 msgstr "Please provide a valid date."
 
@@ -7528,7 +7549,7 @@ msgstr "Portugal"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:34
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:83
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:31
-#: src/components/onboarding/validators/validationSchemas.ts:155
+#: src/components/onboarding/validators/validationSchemas.ts:152
 #: src/components/receivables/components/EntityProfileFormContent.tsx:312
 msgid "Postal code"
 msgstr "Postal code"
@@ -7879,7 +7900,7 @@ msgstr "Recipients"
 
 #: src/components/userRoles/consts.ts:46
 msgid "Reconciliation"
-msgstr "Reconciliation"
+msgstr "Reconciliation<<<<<<< HEAD"
 
 #: src/components/receivables/components/InvoiceDetailsActions.tsx:198
 #: src/components/receivables/components/InvoiceDetailsTabPayments.tsx:171
@@ -8207,7 +8228,7 @@ msgstr "Routing Number"
 msgid "Routing number is required"
 msgstr "Routing number is required"
 
-#: src/components/onboarding/validators/validationSchemas.ts:119
+#: src/components/onboarding/validators/validationSchemas.ts:122
 msgid "Routing number must be 9 digits"
 msgstr "Routing number must be 9 digits"
 
@@ -8333,7 +8354,7 @@ msgstr "Saudi Riyal"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:169
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:238
-#: src/components/tags/TagFormModal/TagFormModal.tsx:276
+#: src/components/tags/TagFormModal/TagFormModal.tsx:279
 #: src/components/tags/TagsTable/TagsTable.test.tsx:283
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:251
 msgid "Save"
@@ -8346,7 +8367,7 @@ msgstr "Save and continue"
 #: src/components/onboarding/hooks/useOnboardingActions.ts:126
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/templateSettings/components/DocumentNumberForm.tsx:120
-#: src/components/templateSettings/components/OtherSettingsForm.tsx:188
+#: src/components/templateSettings/components/OtherSettingsForm.tsx:180
 msgid "Save changes"
 msgstr "Save changes"
 
@@ -8750,13 +8771,13 @@ msgstr ""
 "Something went wrong. If this issue persists please contact us through\n"
 "the chat icon in the bottom right or email us at help@getargon.ai"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:158
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:153
 msgid "Something went wrong. Please try again"
 msgstr "Something went wrong. Please try again"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:191
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:102
-#: src/components/onboarding/validators/validationSchemas.ts:116
+#: src/components/onboarding/validators/validationSchemas.ts:114
 #: src/components/receivables/components/BankAccountCustomFields.tsx:159
 #: src/components/receivables/components/BankAccountCustomFields.tsx:279
 #: src/components/receivables/components/BankAccountCustomFields.tsx:309
@@ -8773,7 +8794,7 @@ msgstr "Sort Code"
 msgid "Sort code must be 6 characters"
 msgstr "Sort code must be 6 characters"
 
-#: src/components/onboarding/validators/validationSchemas.ts:115
+#: src/components/onboarding/validators/validationSchemas.ts:116
 msgid "Sort code must be 6 digits"
 msgstr "Sort code must be 6 digits"
 
@@ -8863,7 +8884,7 @@ msgstr "Start of the month======="
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:38
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:73
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:30
-#: src/components/onboarding/validators/validationSchemas.ts:154
+#: src/components/onboarding/validators/validationSchemas.ts:151
 #: src/components/receivables/validation.ts:186
 msgid "State"
 msgstr "State"
@@ -9141,7 +9162,7 @@ msgid "Tax is a required field"
 msgstr "Tax is a required field"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:91
-#: src/components/onboarding/validators/validationSchemas.ts:23
+#: src/components/onboarding/validators/validationSchemas.ts:24
 msgid "Tax number"
 msgstr "Tax number"
 
@@ -9245,7 +9266,7 @@ msgstr "Terms and conditions"
 #~ msgid "Terms and Conditions"
 #~ msgstr "Terms and Conditions"
 
-#: src/components/onboarding/validators/validationSchemas.ts:168
+#: src/components/onboarding/validators/validationSchemas.ts:165
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -9321,7 +9342,7 @@ msgstr "The following fields are required:"
 msgid "The full sum will be withdrawn from your bank account automatically on the date specified in the selected offer. You can also pay out the sum earlier via the 'Pay out' button."
 msgstr "The full sum will be withdrawn from your bank account automatically on the date specified in the selected offer. You can also pay out the sum earlier via the 'Pay out' button."
 
-#: src/components/onboarding/validators/validators.ts:72
+#: src/components/onboarding/validators/validators.ts:108
 msgid "The IBAN should correspond to the chosen country - {country}."
 msgstr "The IBAN should correspond to the chosen country - {country}."
 
@@ -9528,16 +9549,16 @@ msgstr "thumb down"
 
 #: src/components/aiAssistant/components/AssistantButtons/AssistantButtons.tsx:131
 msgid "thumb up"
-msgstr "thumb up<<<<<<< HEAD"
+msgstr "thumb up<<<<<<< HEAD<<<<<<< HEAD"
 
 #: src/components/receivables/components/PaymentRecordForm.tsx:118
 #: src/components/receivables/validation.ts:219
 msgid "Time"
 msgstr "Time"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:29
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:31
 #~ msgid "Time is required"
-#~ msgstr "Time is required"
+#~ msgstr "Time is required>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1315
 msgid "Timeshares"
@@ -9551,7 +9572,7 @@ msgstr "Timor-Leste"
 msgid "Tire Retreading and Repair"
 msgstr "Tire Retreading and Repair"
 
-#: src/components/onboarding/validators/validationSchemas.ts:32
+#: src/components/onboarding/validators/validationSchemas.ts:33
 #: src/components/receivables/components/EntityProfileFormContent.tsx:59
 #: src/components/receivables/validation.ts:131
 msgid "Title"
@@ -9581,11 +9602,11 @@ msgstr "To delete this role, remove it from all users"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:97
 msgid "to get discount"
-msgstr "to get discount<<<<<<< HEAD"
+msgstr "to get discount<<<<<<< HEAD<<<<<<< HEAD"
 
 #: src/components/receivables/validation.ts:228
 msgid "To is required"
-msgstr "To is required"
+msgstr "To is required>>>>>>> 700b6edbf (fix(DEV-15955): post rebase updates)"
 
 #: src/components/userRoles/consts.ts:50
 msgid "Todo task"
@@ -9855,7 +9876,7 @@ msgstr "Unique Entity Number (Singapore)"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:75
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:64
 msgid "Unit {0} was added to the list"
 msgstr "Unit {0} was added to the list"
 
@@ -9863,7 +9884,7 @@ msgstr "Unit {0} was added to the list"
 msgid "Unit {0} was deleted from the list."
 msgstr "Unit {0} was deleted from the list."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:105
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:94
 msgid "Unit {0} was updated"
 msgstr "Unit {0} was updated"
 
@@ -9871,7 +9892,7 @@ msgstr "Unit {0} was updated"
 msgid "Unit label"
 msgstr "Unit label"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:60
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/validation.ts:15
 msgid "Unit label is required"
 msgstr "Unit label is required"
 
@@ -9949,7 +9970,7 @@ msgstr "Unsupported file type for {0}"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:290
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1171
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:213
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:208
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:464
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:240
