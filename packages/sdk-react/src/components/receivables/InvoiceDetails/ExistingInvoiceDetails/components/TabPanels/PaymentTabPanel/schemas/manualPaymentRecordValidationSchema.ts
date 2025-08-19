@@ -1,6 +1,7 @@
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { type PaymentRecordFormValues } from '../PaymentRecordForm';
+import { toMinorUnits } from '@/core/utils/currency';
 
 import { z } from 'zod';
 
@@ -9,12 +10,13 @@ export const manualPaymentRecordValidationSchema = (
   amount_due: number
 ) =>
   z.object({
-    amount: z
+    amount: z.coerce
       .number({ error: t(i18n)`Amount is required` })
-      .min(0.01, t(i18n)`Can't be a negative number`)
+      .min(0.01, t(i18n)`Must be at least 0.01`)
       .refine(
         (value) => {
-          const currencyAmount = value * 100;
+          const currencyAmount = toMinorUnits(value);
+
           return currencyAmount <= amount_due;
         },
         {
@@ -22,10 +24,10 @@ export const manualPaymentRecordValidationSchema = (
         }
       )
       .nullable(),
-    payment_date: z
+    payment_date: z.coerce
       .date({ error: t(i18n)`Date is required` })
       .nullable(),
-    payment_time: z
+    payment_time: z.coerce
       .date({ error: t(i18n)`Time is required` })
       .nullable(),
   }) satisfies z.ZodType<PaymentRecordFormValues>;

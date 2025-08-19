@@ -78,8 +78,8 @@ const getCreateBankAccountSchema = (i18n: I18n) =>
     .refine(
       (data) => {
         // Sort code: required for all currencies except EUR and USD (must be 6 characters)
-        if (data.currency === 'EUR' || data.currency === 'USD') {
-          return Boolean(data.sort_code?.length === 6);
+        if (data.currency !== 'EUR' && data.currency !== 'USD') {
+          return data.sort_code?.length === 6;
         }
 
         return true;

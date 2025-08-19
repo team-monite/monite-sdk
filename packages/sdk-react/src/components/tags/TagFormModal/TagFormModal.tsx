@@ -179,7 +179,10 @@ const TagFormModalBase = ({
                 e.stopPropagation();
                 handleSubmit(async (values) => {
                   const { keywords, name, category } = values;
-                  const payload = { name, category: category as TagCategory };
+                  const payload = {
+                    name,
+                    ...(category ? { category: category as TagCategory } : {}),
+                  };
 
                   const result = await (tag
                     ? updateTag(tag.id, payload)

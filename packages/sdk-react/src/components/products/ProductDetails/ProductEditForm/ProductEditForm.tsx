@@ -111,11 +111,6 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
   );
 
   const handleSubmit = async (values: ProductFormValues) => {
-    if (!values.name || !values.currency || values.pricePerUnit === undefined) {
-      toast.error(t(i18n)`Please fill in all required fields`);
-      return;
-    }
-
     const payload: ProductServiceRequest = {
       name: values.name,
       type: values.type,

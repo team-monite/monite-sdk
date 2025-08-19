@@ -5,12 +5,12 @@ import { z } from 'zod';
 import { CurrencyEnum as currencies } from '@/enums/CurrencyEnum';
 
 export interface ProductFormValues {
-  name?: string;
+  name: string;
   type: ProductServiceTypeEnum;
-  units?: string;
-  smallestAmount?: number;
-  pricePerUnit?: number;
-  currency?: CurrencyEnum;
+  units: string;
+  smallestAmount: number;
+  pricePerUnit: number;
+  currency: CurrencyEnum;
   description?: string;
 }
 

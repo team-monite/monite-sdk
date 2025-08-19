@@ -8,7 +8,7 @@ import {
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import { getMockPagination } from '../utils';
 
@@ -23,20 +23,18 @@ const receivableSendPath = `${receivableDetailPath}/send`;
 const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
-const createInvoiceValidationSchema = yup.object({
-  type: yup.string().required(),
-  currency: yup.string().required(),
-  line_items: yup
-    .array()
-    .of(
-      yup.object({
-        quantity: yup.number().required(),
-        product_id: yup.string().required(),
-        vat_rate_id: yup.string().required(),
+const createInvoiceValidationSchema = z.object({
+  type: z.string(),
+  currency: z.string(),
+  line_items: z
+    .array(
+      z.object({
+        quantity: z.number(),
+        product_id: z.string(),
+        vat_rate_id: z.string(),
       })
-    )
-    .required(),
-  counterpart_id: yup.string().required(),
+    ),
+  counterpart_id: z.string(),
 });
 
 interface IReceivableByIdParams {
@@ -105,7 +103,7 @@ export const receivableHandlers = [
   >(receivablePath, async ({ request }) => {
     const jsonBody = await request.json();
     try {
-      await createInvoiceValidationSchema.validate(jsonBody);
+      createInvoiceValidationSchema.parse(jsonBody);
 
       await delay();
 

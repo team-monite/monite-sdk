@@ -17,23 +17,16 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
+import { type FormValues, getValidationSchema } from './validation';
 
-import { z } from 'zod';
-
-interface MeasureUnitsForm {
-  id?: string;
-  name: string;
-  description?: string;
-}
-
-const defaultValues: MeasureUnitsForm = {
+const defaultValues: FormValues = {
   name: '',
   description: '',
 };
 
 interface MeasureUnitFormRowProps {
   isEditMode: boolean;
-  initialValues?: MeasureUnitsForm;
+  initialValues?: Partial<FormValues>;
   onCancel?: () => void;
   onEdit?: () => void;
   id?: string;
@@ -55,14 +48,10 @@ export const MeasureUnitsFormRow = ({
 }: MeasureUnitFormRowProps) => {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
+  const validationSchema = getValidationSchema(i18n);
 
-  const validationSchema = z.object({
-    name: z.string().min(1, t(i18n)`Unit label is required`),
-    description: z.string().optional(),
-  });
-
-  const { getValues, handleSubmit, control, reset, setError } =
-    useForm<MeasureUnitsForm>({
+  const { handleSubmit, control, reset, setError } =
+    useForm<FormValues>({
       defaultValues: initialValues,
       resolver: zodResolver(validationSchema),
     });
@@ -117,15 +106,12 @@ export const MeasureUnitsFormRow = ({
     }
   );
 
-  const handleEdit = () => {
-    updateMutation.mutate({
-      name: getValues().name,
-      description: getValues().description,
-    });
+  const handleEdit = (values: FormValues) => {
+    updateMutation.mutate(values);
   };
 
-  const handleCreate = () => {
-    createMutation.mutate(getValues());
+  const handleCreate = (values: FormValues) => {
+    createMutation.mutate(values);
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;

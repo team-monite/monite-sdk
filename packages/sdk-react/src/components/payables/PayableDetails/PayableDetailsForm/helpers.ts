@@ -302,7 +302,7 @@ export const findDefaultBankAccount = (
 };
 
 type PayableUpdateSchema = components['schemas']['PayableUpdateSchema'];
-type CurrencyEnum = components['schemas']['CurrencyEnum']
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
 type LineItemResponse = components['schemas']['LineItemResponse'];
 type CounterpartBankAccountResponse = components['schemas']['CounterpartBankAccountResponse'];

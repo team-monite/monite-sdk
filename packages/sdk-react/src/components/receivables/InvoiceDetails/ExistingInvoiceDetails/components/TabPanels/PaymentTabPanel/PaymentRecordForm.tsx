@@ -1,12 +1,11 @@
-import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-
+import { PaymentRecordDetails } from './RecordManualPaymentModal';
+import { manualPaymentRecordValidationSchema } from './schemas/manualPaymentRecordValidationSchema';
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { RHFTimePicker } from '@/ui/RHF/RHFTimePicker';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -18,9 +17,8 @@ import {
   FormHelperText,
   Grid,
 } from '@mui/material';
-
-import { PaymentRecordDetails } from './RecordManualPaymentModal';
-import { manualPaymentRecordValidationSchema } from './schemas/manualPaymentRecordValidationSchema';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export type PaymentRecordFormValues = Omit<PaymentRecordDetails, 'created_by'>;
 type Props = {
@@ -43,7 +41,7 @@ export const PaymentRecordForm = ({
 
   const { control, handleSubmit, reset, setValue } =
     useForm<PaymentRecordFormValues>({
-      resolver: zodResolver(
+      resolver: safeZodResolver<PaymentRecordFormValues>(
         manualPaymentRecordValidationSchema(i18n, invoice.amount_due)
       ),
       defaultValues: useMemo(

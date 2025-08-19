@@ -30,7 +30,7 @@ const getOverdueReminderValidationSchema = (i18n: I18n) => {
     days_after: z
       .number()
       .min(1, t(i18n)`Days after must be at least 1`)
-      .max(9999, t(i18n)`Days after must be at most 9999`),
+      .max(10000, t(i18n)`Days after must be at most 10000`),
     subject: z.string().min(1, t(i18n)`Subject is required`),
     body: z.string().min(1, t(i18n)`Body is required`),
   });
