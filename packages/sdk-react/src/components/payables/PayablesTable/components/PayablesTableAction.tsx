@@ -1,9 +1,8 @@
-import { useCallback } from 'react';
-
 import { components } from '@/api';
-import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
+import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { type PaymentRecordWithIntent } from '@/components/payables/types';
+import type { PayActionHandlers } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
@@ -15,6 +14,7 @@ import {
 } from '@mui/icons-material';
 import { Button, Chip, Box, Tooltip } from '@mui/material';
 import { lighten, useTheme } from '@mui/material/styles';
+import { useCallback } from 'react';
 
 const FALLBACK_CURRENCY = 'USD';
 
@@ -22,7 +22,7 @@ interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
   payableRecentPaymentRecordByIntent: PaymentRecordWithIntent[];
   refetchPaymentRecords: () => void;
-  onPay?: (id: string) => void;
+  onPay?: (id: string, actions?: PayActionHandlers) => void;
   onPayUS?: (id: string) => void;
   onPayableActionComplete?: (payableId: string, status: string) => void;
 }
@@ -68,10 +68,28 @@ export const PayablesTableAction = ({
       if (onPayUS && payable.currency === 'USD') {
         onPayUS?.(payable.id);
       } else {
-        onPay ? onPay?.(payable.id) : handlePay();
+        if (!onPay) return handlePay();
+
+        if (onPay.length < 2) return onPay(payable.id);
+
+        return onPay(payable.id, {
+          resolve: () => {
+            handlePaymentComplete(payable.id, 'success');
+          },
+          reject: () => {
+            handlePaymentComplete(payable.id, 'failed');
+          },
+        });
       }
     },
-    [onPayUS, payable.currency, payable.id, onPay, handlePay]
+    [
+      onPayUS,
+      payable.currency,
+      payable.id,
+      onPay,
+      handlePay,
+      handlePaymentComplete,
+    ]
   );
 
   if (intentsAnalysis.scheduledIntents.length > 0) {

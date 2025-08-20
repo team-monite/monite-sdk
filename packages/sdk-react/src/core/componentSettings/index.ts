@@ -194,6 +194,13 @@ export interface TemplateSettings {
   availableAPDocuments: APDocumentType[];
 }
 
+export type PayActionHandlers = {
+  /** Call when a custom payment flow has been successfully initiated/completed */
+  resolve: (options?: { showToast?: boolean }) => void;
+  /** Call when a custom payment flow failed or was cancelled */
+  reject: (error?: unknown, options?: { showToast?: boolean }) => void;
+};
+
 interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
@@ -205,7 +212,12 @@ interface PayableSettings
   onApproved?: (id: string) => void;
   onReopened?: (id: string) => void;
   onDeleted?: (id: string) => void;
-  onPay?: (id: string) => void;
+  /**
+   * Called when the user clicks Pay. If provided, you can implement a
+   * custom payment flow and then signal SDK to update UI/state by
+   * calling actions.resolve() or actions.reject().
+   */
+  onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
 }
 
 export interface ComponentSettings {

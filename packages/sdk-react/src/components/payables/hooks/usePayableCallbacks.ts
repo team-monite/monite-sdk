@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
+import type { PayActionHandlers } from '@/core/componentSettings';
 import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 
 type PayableCallbackProps = Pick<
@@ -110,9 +111,9 @@ export const usePayableCallbacks = (props: PayableCallbackProps) => {
     onDeleted || payablesCallbacks.onDeleted ? deletedCallback : undefined;
 
   const payCallback = useCallback(
-    (id: string) => {
-      onPay?.(id);
-      payablesCallbacks.onPay?.(id);
+    (id: string, actions?: PayActionHandlers) => {
+      onPay?.(id, undefined, actions);
+      payablesCallbacks.onPay?.(id, undefined, actions);
     },
     [onPay, payablesCallbacks]
   );
