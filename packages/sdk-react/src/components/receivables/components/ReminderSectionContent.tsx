@@ -2,7 +2,7 @@ import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sec
 import { ReminderOverdue } from './ReminderOverdue';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { ReminderBeforeDueDate } from '@/components/receivables/components/ReminderBeforeDueDate';
-import { useMoniteContext } from '@/core/context/MoniteContext';
+// import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -15,6 +15,7 @@ interface ReminderSectionProps extends SectionGeneralProps {
   onUpdatePaymentReminder: () => void;
   onUpdateOverdueReminder: () => void;
   handleEditCounterpartModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
 }
 
 export const ReminderSectionContent = ({
@@ -23,8 +24,9 @@ export const ReminderSectionContent = ({
   onUpdatePaymentReminder,
   onCreateReminder,
   handleEditCounterpartModal,
+  handleEditProfileState,
 }: ReminderSectionProps) => {
-  const { api } = useMoniteContext();
+  // const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
@@ -35,31 +37,31 @@ export const ReminderSectionContent = ({
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
 
-  const {
-    data: hasCounterpartDefaultContactEmail,
-    isLoading: isCounterpartDefaultContactEmailLoading,
-  } = api.counterparts.getCounterpartsIdContacts.useQuery(
-    {
-      path: { counterpart_id: counterpartId ?? '' },
-    },
-    {
-      enabled: Boolean(counterpart?.type === 'organization'),
-      select: (data) =>
-        Boolean(data.data.find((contact) => contact.is_default)?.email),
-    }
-  );
+  // const {
+  //   data: hasCounterpartDefaultContactEmail,
+  //   isLoading: isCounterpartDefaultContactEmailLoading,
+  // } = api.counterparts.getCounterpartsIdContacts.useQuery(
+  //   {
+  //     path: { counterpart_id: counterpartId ?? '' },
+  //   },
+  //   {
+  //     enabled: Boolean(counterpart?.type === 'organization'),
+  //     select: (data) =>
+  //       Boolean(data.data.find((contact) => contact.is_default)?.email),
+  //   }
+  // );
 
-  const hasValidReminderEmail =
-    counterpart && 'individual' in counterpart
-      ? Boolean(counterpart.individual.email)
-      : hasCounterpartDefaultContactEmail;
+  // const hasValidReminderEmail =
+  //   counterpart && 'individual' in counterpart
+  //     ? Boolean(counterpart.individual.email)
+  //     : hasCounterpartDefaultContactEmail;
 
-  const hasValidReminderEmailLoading =
-    isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
+  const hasValidReminderEmailLoading = isCounterpartLoading;
+    // isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
 
   const shouldShowAlert =
-    !hasValidReminderEmailLoading &&
-    (!hasValidReminderEmail || !counterpart?.reminders_enabled);
+    !hasValidReminderEmailLoading && !counterpart?.reminders_enabled;
+    // (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
   useEffect(() => {
     if (shouldShowAlert && paymentReminderId) {
@@ -81,19 +83,25 @@ export const ReminderSectionContent = ({
             )`Reminders are disabled for this customer. You can enable them in the customer's details.`}
           </span>
         )}
-        {!hasValidReminderEmail && (
+        {/* TODO: uncomment when BE fix is addressed */}
+        {/* {!hasValidReminderEmail && (
           <span>
             {t(
               i18n
             )`There's no default email address added for the selected customer. Please, add it to send reminders.`}
           </span>
-        )}
+        )} */}
 
         {handleEditCounterpartModal && (
           <button
             className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
             type="button"
-            onClick={() => handleEditCounterpartModal(true)}
+            onClick={() => {
+              if (handleEditProfileState && !counterpart?.reminders_enabled) {
+                handleEditProfileState(true);
+              }
+              handleEditCounterpartModal(true);
+            }}
           >
             {t(i18n)`Edit customer's profile`}
           </button>

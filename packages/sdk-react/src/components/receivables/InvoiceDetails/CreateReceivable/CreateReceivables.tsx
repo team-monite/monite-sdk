@@ -131,6 +131,8 @@ const CreateReceivablesBase = ({
   } = useMyEntity();
   const [isEditCounterpartModalOpen, setIsEditCounterpartModalOpen] =
     useState(false);
+  const [isEditCounterpartProfileOpen, setIsEditCounterpartProfileOpen] =
+    useState(false);
   const [isBankFormOpen, setIsBankFormOpen] = useState(false);
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
@@ -169,6 +171,10 @@ const CreateReceivablesBase = ({
     ),
   });
 
+  const handleEditCounterpartProfileState = (isOpen: boolean) => {
+    setIsEditCounterpartProfileOpen(isOpen);
+  };
+  
   const handleEditCounterpartModalState = (isOpen: boolean) => {
     setIsEditCounterpartModalOpen(isOpen);
   };
@@ -930,7 +936,9 @@ const CreateReceivablesBase = ({
                     disabled={createReceivable.isPending}
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
+                    isEditProfileOpen={isEditCounterpartProfileOpen}
                     handleEditModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                     counterpart={counterpart}
                   />
                 </Box>
@@ -981,6 +989,7 @@ const CreateReceivablesBase = ({
                     onUpdatePaymentReminder={onEditPaymentReminder}
                     onCreateReminder={onCreateReminder}
                     handleEditCounterpartModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                   />
 
                   <EntitySection
