@@ -96,6 +96,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
             },
             queryClient
           );
+          api.receivables.getReceivables.invalidateQueries(queryClient);
           closeModal();
           resetForm();
         },
