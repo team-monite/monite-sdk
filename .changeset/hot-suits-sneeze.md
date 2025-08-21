@@ -3,4 +3,4 @@
 '@monite/sdk-drop-in': patch
 ---
 
-Added some minor improvements to invoice creation, fixed a bug with record payments
+Fixed bug with record payments setting wrong status. Also fixed a bug on dialog for editing customer's profile not opening correctly when "Edit customer's profile" warning is clicked.
