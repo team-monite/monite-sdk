@@ -1,0 +1,341 @@
+import { cn } from '../lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './dropdown-menu';
+import { Input } from './input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './select';
+import { Button } from '@/ui/components/button';
+import { plural, t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import {
+  Column,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  Table as ReactTableTable,
+  ColumnFiltersState,
+  getFilteredRowModel,
+} from '@tanstack/react-table';
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronsUpDown,
+  EyeOff,
+} from 'lucide-react';
+import { useState } from 'react';
+
+const PAGES_SIZES: number[] = [20, 50, 100] as const;
+const DEFAULT_PAGE_SIZE: number = 20 as const;
+
+interface DataTableColumnHeaderProps<TData, TValue>
+  extends React.HTMLAttributes<HTMLDivElement> {
+  column: Column<TData, TValue>;
+  title: string;
+  canHideColumn?: boolean;
+}
+
+export function DataTableColumnHeader<TData, TValue>({
+  column,
+  title,
+  className,
+  canHideColumn = true,
+}: DataTableColumnHeaderProps<TData, TValue>) {
+  const { i18n } = useLingui();
+
+  if (!column.getCanSort()) {
+    return <div className={cn(className)}>{title}</div>;
+  }
+
+  return (
+    <div className={cn('mtw:flex mtw:items-center mtw:gap-2', className)}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="data-[state=open]:mtw:bg-accent -mtw:ml-3 mtw:h-8"
+          >
+            <span>{title}</span>
+            {column.getIsSorted() === 'desc' ? (
+              <ArrowDown />
+            ) : column.getIsSorted() === 'asc' ? (
+              <ArrowUp />
+            ) : (
+              <ChevronsUpDown />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+            <ArrowUp />
+            {t(i18n)`Ascending`}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <ArrowDown />
+            {t(i18n)`Descending`}
+          </DropdownMenuItem>
+          {canHideColumn && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+                <EyeOff />
+                {t(i18n)`Hide`}
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
+
+interface DataTablePaginationProps<TData> {
+  table: ReactTableTable<TData>;
+}
+
+export function DataTablePagination<TData>({
+  table,
+}: DataTablePaginationProps<TData>) {
+  const { i18n } = useLingui();
+
+  return (
+    <div className="mtw:flex mtw:items-center mtw:justify-between mtw:px-2">
+      <div className="mtw:text-muted-foreground mtw:text-sm mtw:max-w-4/5 mtw:flex-1">
+        {t(i18n)`${table.getFilteredRowModel().rows.length} ${plural(
+          table.getFilteredRowModel().rows.length,
+          {
+            one: 'result',
+            other: 'results',
+          }
+        )}`}
+      </div>
+      <div className="mtw:flex mtw:items-center mtw:space-x-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="mtw:hidden mtw:size-8 lg:mtw:flex"
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <span className="mtw:sr-only">{t(i18n)`Go to first page`}</span>
+          <ChevronsLeft />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="mtw:size-8"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <span className="mtw:sr-only">{t(i18n)`Go to previous page`}</span>
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="mtw:size-8"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <span className="mtw:sr-only">{t(i18n)`Go to next page`}</span>
+          <ChevronRight />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="mtw:hidden mtw:size-8 lg:mtw:flex"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          <span className="mtw:sr-only">{t(i18n)`Go to last page`}</span>
+          <ChevronsRight />
+        </Button>
+      </div>
+      <div className="mtw:flex mtw:items-center mtw:space-x-2 mtw:max-w-4/5 mtw:flex-1 mtw:justify-end">
+        <p className="mtw:text-muted-foreground mtw:text-sm">{t(
+          i18n
+        )`Rows per page`}</p>
+        <Select
+          value={`${table.getState().pagination.pageSize}`}
+          onValueChange={(value) => {
+            table.setPageSize(Number(value));
+          }}
+        >
+          <SelectTrigger className="mtw:h-8 mtw:w-[70px]">
+            <SelectValue placeholder={table.getState().pagination.pageSize} />
+          </SelectTrigger>
+          <SelectContent side="top">
+            {PAGES_SIZES.map((pageSize) => (
+              <SelectItem key={pageSize} value={`${pageSize}`}>
+                {pageSize}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
+
+interface DataTableSearchProps<TData> {
+  column: string;
+  placeholder?: string;
+  table: ReactTableTable<TData>;
+}
+
+export function DataTableSearch<TData>({
+  column,
+  placeholder,
+  table,
+}: DataTableSearchProps<TData>) {
+  const { i18n } = useLingui();
+
+  return (
+    <div className="mtw:flex mtw:items-center mtw:py-4">
+      <Input
+        placeholder={placeholder || t(i18n)`Search...`}
+        value={table.getColumn(column)?.getFilterValue() as string}
+        onChange={(event) =>
+          table.getColumn(column)?.setFilterValue(event.target.value)
+        }
+        className="mtw:max-w-sm"
+      />
+    </div>
+  );
+}
+
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  searchColumn?: string;
+  searchPlaceholder?: string;
+}
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  searchColumn,
+  searchPlaceholder,
+}: DataTableProps<TData, TValue>) {
+  const { i18n } = useLingui();
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      columnFilters,
+      sorting,
+      pagination,
+    },
+  });
+
+  return (
+    <div className="mtw:flex mtw:flex-col mtw:h-full">
+      {searchColumn && (
+        <div className="mtw:flex-shrink-0">
+          <DataTableSearch
+            column={searchColumn}
+            placeholder={searchPlaceholder}
+            table={table}
+          />
+        </div>
+      )}
+      <div className="mtw:flex mtw:flex-col mtw:flex-1 mtw:min-h-0">
+        <div className="mtw:relative mtw:overflow-auto mtw:flex-1">
+          <table className="mtw:w-full mtw:caption-bottom mtw:text-sm mtw:border-collapse mtw:separate mtw:border-spacing-0">
+            <thead className="mtw:[&_tr]:border-b mtw:[&_tr]:border-border">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="mtw:hover:bg-muted/50 mtw:data-[state=selected]:bg-muted mtw:border-b mtw:border-border mtw:transition-colors"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        key={header.id}
+                        className="mtw:sticky mtw:top-0 mtw:z-10 mtw:bg-background mtw:text-foreground mtw:h-10 mtw:px-3 mtw:text-left mtw:align-middle mtw:font-bold mtw:whitespace-nowrap mtw:border-b mtw:border-border mtw:after:content-[''] mtw:after:absolute mtw:after:bottom-0 mtw:after:left-0 mtw:after:right-0 mtw:after:border-b mtw:after:border-border"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="mtw:[&_tr:last-child]:border-0">
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className="mtw:hover:bg-muted/50 mtw:data-[state=selected]:bg-muted mtw:border-b mtw:border-border mtw:transition-colors"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="mtw:p-3 mtw:align-middle mtw:whitespace-nowrap"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr className="mtw:hover:bg-muted/50 mtw:data-[state=selected]:bg-muted mtw:border-b mtw:border-border mtw:transition-colors">
+                  <td
+                    colSpan={columns.length}
+                    className="mtw:h-24 mtw:text-center mtw:p-3 mtw:align-middle mtw:whitespace-nowrap"
+                  >
+                    {t(i18n)`No results.`}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="mtw:flex-shrink-0 mtw:mt-4">
+        <DataTablePagination table={table} />
+      </div>
+    </div>
+  );
+}
