@@ -29,6 +29,8 @@ import {
   Table as ReactTableTable,
   ColumnFiltersState,
   getFilteredRowModel,
+  PaginationState,
+  OnChangeFn,
 } from '@tanstack/react-table';
 import {
   ArrowDown,
@@ -61,7 +63,7 @@ export function DataTableColumnHeader<TData, TValue>({
   const { i18n } = useLingui();
 
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return <span className={cn('mtw:font-bold', className)}>{title}</span>;
   }
 
   return (
@@ -71,7 +73,7 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="data-[state=open]:mtw:bg-accent -mtw:ml-3 mtw:h-8"
+            className="data-[state=open]:mtw:bg-accent mtw:h-8 mtw:font-bold"
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
@@ -109,23 +111,31 @@ export function DataTableColumnHeader<TData, TValue>({
 
 interface DataTablePaginationProps<TData> {
   table: ReactTableTable<TData>;
+  isControlledPagination?: boolean;
 }
 
 export function DataTablePagination<TData>({
   table,
+  isControlledPagination,
 }: DataTablePaginationProps<TData>) {
   const { i18n } = useLingui();
 
   return (
     <div className="mtw:flex mtw:items-center mtw:justify-between mtw:px-2">
-      <div className="mtw:text-muted-foreground mtw:text-sm mtw:max-w-4/5 mtw:flex-1">
-        {t(i18n)`${table.getFilteredRowModel().rows.length} ${plural(
-          table.getFilteredRowModel().rows.length,
-          {
-            one: 'result',
-            other: 'results',
-          }
-        )}`}
+      <div className="mtw:max-w-4/5 mtw:flex-1">
+        {isControlledPagination ? (
+          <div></div>
+        ) : (
+          <p className="mtw:text-muted-foreground mtw:text-sm">{t(
+            i18n
+          )`${table.getFilteredRowModel().rows.length} ${plural(
+            table.getFilteredRowModel().rows.length,
+            {
+              one: 'result',
+              other: 'results',
+            }
+          )}`}</p>
+        )}
       </div>
       <div className="mtw:flex mtw:items-center mtw:space-x-2">
         <Button
@@ -172,7 +182,7 @@ export function DataTablePagination<TData>({
       <div className="mtw:flex mtw:items-center mtw:space-x-2 mtw:max-w-4/5 mtw:flex-1 mtw:justify-end">
         <p className="mtw:text-muted-foreground mtw:text-sm">{t(
           i18n
-        )`Rows per page`}</p>
+        )`Results per page`}</p>
         <Select
           value={`${table.getState().pagination.pageSize}`}
           onValueChange={(value) => {
@@ -225,34 +235,63 @@ export function DataTableSearch<TData>({
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchColumn?: string;
-  searchPlaceholder?: string;
+  // Controlled pagination state
+  pagination?: PaginationState;
+  onPaginationChange?: OnChangeFn<PaginationState>;
+  // Manual pagination props
+  pageCount?: number;
+  // Controlled sorting state
+  sorting?: SortingState;
+  onSortingChange?: OnChangeFn<SortingState>;
+  // Controlled column filters state
+  columnFilters?: ColumnFiltersState;
+  onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  searchColumn,
-  searchPlaceholder,
+  pagination: controlledPagination,
+  onPaginationChange: controlledOnPaginationChange,
+  pageCount,
+  sorting: controlledSorting,
+  onSortingChange: controlledOnSortingChange,
+  columnFilters: controlledColumnFilters,
+  onColumnFiltersChange: controlledOnColumnFiltersChange,
 }: DataTableProps<TData, TValue>) {
   const { i18n } = useLingui();
-  const [pagination, setPagination] = useState({
+
+  // Internal state (fallback when controlled state is not provided)
+  const [internalPagination, setInternalPagination] = useState({
     pageIndex: 0,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [internalSorting, setInternalSorting] = useState<SortingState>([]);
+  const [internalColumnFilters, setInternalColumnFilters] =
+    useState<ColumnFiltersState>([]);
+
+  // Use controlled state if provided, otherwise use internal state
+  const pagination = controlledPagination ?? internalPagination;
+  const onPaginationChange =
+    controlledOnPaginationChange ?? setInternalPagination;
+  const sorting = controlledSorting ?? internalSorting;
+  const onSortingChange = controlledOnSortingChange ?? setInternalSorting;
+  const columnFilters = controlledColumnFilters ?? internalColumnFilters;
+  const onColumnFiltersChange =
+    controlledOnColumnFiltersChange ?? setInternalColumnFilters;
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange,
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange,
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
+    onPaginationChange,
+    manualPagination: !!controlledPagination, // Use manual pagination when state is controlled
+    pageCount: pageCount ?? -1, // -1 means unknown page count for manual pagination
     state: {
       columnFilters,
       sorting,
@@ -262,17 +301,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="mtw:flex mtw:flex-col mtw:h-full">
-      {searchColumn && (
-        <div className="mtw:flex-shrink-0">
-          <DataTableSearch
-            column={searchColumn}
-            placeholder={searchPlaceholder}
-            table={table}
-          />
-        </div>
-      )}
       <div className="mtw:flex mtw:flex-col mtw:flex-1 mtw:min-h-0">
-        <div className="mtw:relative mtw:overflow-auto mtw:flex-1">
+        <div className="mtw:relative mtw:overflow-auto mtw:flex-1 mtw:h-full">
           <table className="mtw:w-full mtw:caption-bottom mtw:text-sm mtw:border-collapse mtw:separate mtw:border-spacing-0">
             <thead className="mtw:[&_tr]:border-b mtw:[&_tr]:border-border">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -284,14 +314,14 @@ export function DataTable<TData, TValue>({
                     return (
                       <th
                         key={header.id}
-                        className="mtw:sticky mtw:top-0 mtw:z-10 mtw:bg-background mtw:text-foreground mtw:h-10 mtw:px-3 mtw:text-left mtw:align-middle mtw:font-bold mtw:whitespace-nowrap mtw:border-b mtw:border-border mtw:after:content-[''] mtw:after:absolute mtw:after:bottom-0 mtw:after:left-0 mtw:after:right-0 mtw:after:border-b mtw:after:border-border"
+                        className="mtw:sticky mtw:top-0 mtw:z-10 mtw:bg-background mtw:text-foreground mtw:h-10 mtw:px-3 mtw:text-left mtw:align-middle mtw:whitespace-nowrap mtw:border-b mtw:border-border mtw:after:content-[''] mtw:after:absolute mtw:after:bottom-0 mtw:after:left-0 mtw:after:right-0 mtw:after:border-b mtw:after:border-border"
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                        {header.isPlaceholder ? null : (
+                          <DataTableColumnHeader
+                            column={header.column}
+                            title={header.column.columnDef.header as string}
+                          />
+                        )}
                       </th>
                     );
                   })}
@@ -309,7 +339,7 @@ export function DataTable<TData, TValue>({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="mtw:p-3 mtw:align-middle mtw:whitespace-nowrap"
+                        className="mtw:p-3 mtw:align-middle mtw:whitespace-nowrap mtw:font-normal"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -334,7 +364,10 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
       <div className="mtw:flex-shrink-0 mtw:mt-4">
-        <DataTablePagination table={table} />
+        <DataTablePagination
+          table={table}
+          isControlledPagination={!!controlledPagination}
+        />
       </div>
     </div>
   );
