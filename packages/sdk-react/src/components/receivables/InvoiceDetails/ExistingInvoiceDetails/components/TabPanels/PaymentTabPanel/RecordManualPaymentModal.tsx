@@ -30,12 +30,14 @@ export type PaymentRecordDetails = {
   amount: number | null;
   payment_date: Date | null;
   payment_time: Date | null;
+  created_by: string;
 };
 
 const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
   amount: 0,
   payment_date: new Date(),
   payment_time: new Date(),
+  created_by: '',
 };
 
 export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
@@ -56,7 +58,11 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const { data: user, isLoading: isLoadingUser } = useEntityUserByAuthToken();
 
   const showConfirmation = (data: PaymentRecordFormValues) => {
-    setFormValues({ ...data, amount: (data?.amount ?? 0) * 100 });
+    setFormValues({ 
+      ...data, 
+      amount: (data?.amount ?? 0) * 100,
+      created_by: user?.id ?? '',
+    });
     setConfirmSubmission(true);
   };
 

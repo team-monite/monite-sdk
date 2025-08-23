@@ -22,7 +22,7 @@ const createProductValidationSchema = z.object({
   name: z.string(),
   price: z.object({
     value: z.number(),
-    currency: z.string(),
+    currency: z.enum(CurrencyEnum),
   }),
   type: z.string(),
   measure_unit_id: z.string(),

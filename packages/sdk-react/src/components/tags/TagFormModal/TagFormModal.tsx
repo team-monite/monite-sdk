@@ -103,7 +103,14 @@ const TagFormModalBase = ({
   const { i18n } = useLingui();
   const schema = getValidationSchema(i18n);
 
-  const form = useForm<FormFields>({ resolver: zodResolver(schema) });
+  const form = useForm<FormFields>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      category: '',
+      keywords: [],
+    },
+  });
 
   const { control, handleSubmit, reset, setError } = form;
 

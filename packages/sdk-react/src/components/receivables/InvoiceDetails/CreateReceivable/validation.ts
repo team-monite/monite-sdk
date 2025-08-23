@@ -1,12 +1,12 @@
 import { components } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { getCurrencyEnum } from '@/components/receivables/validation';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
 
 export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
   z.object({
-    currency: z.enum(CurrencyEnum as [string, ...string[]]),
+    currency: getCurrencyEnum(i18n),
     items: z
       .array(z.any())
       .min(
@@ -27,7 +27,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
       product: z.object({
         name: z.string().min(1, t(i18n)`Name is a required field`),
         price: z.object({
-          currency: z.enum(CurrencyEnum as [string, ...string[]]),
+          currency: getCurrencyEnum(i18n),
           value: z.number(),
         }),
         measure_unit_id: z

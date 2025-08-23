@@ -24,13 +24,21 @@ const defaultValues: FormValues = {
   description: '',
 };
 
-interface MeasureUnitFormRowProps {
-  isEditMode: boolean;
-  initialValues?: Partial<FormValues>;
-  onCancel?: () => void;
-  onEdit?: () => void;
-  id?: string;
-}
+type MeasureUnitFormRowProps =
+  | {
+      isEditMode: true;
+      id: string;
+      initialValues?: Partial<FormValues>;
+      onCancel?: () => void;
+      onEdit?: () => void;
+    }
+  | {
+      isEditMode: false;
+      id?: undefined;
+      initialValues?: Partial<FormValues>;
+      onCancel?: () => void;
+      onEdit?: () => void;
+    };
 
 const buttonStyle = {
   '&:hover': { borderRadius: '8px', background: '#F8F8FF' },
@@ -79,7 +87,7 @@ export const MeasureUnitsFormRow = ({
   const updateMutation = api.measureUnits.patchMeasureUnitsId.useMutation(
     {
       path: {
-        unit_id: id as string,
+        unit_id: id!,
       },
     },
     {
@@ -87,7 +95,7 @@ export const MeasureUnitsFormRow = ({
         await Promise.all([
           api.measureUnits.getMeasureUnits.invalidateQueries(queryClient),
           api.measureUnits.getMeasureUnitsId.invalidateQueries(
-            { parameters: { path: { unit_id: id } } },
+            { parameters: { path: { unit_id: id! } } },
             queryClient
           ),
         ]);
@@ -107,6 +115,10 @@ export const MeasureUnitsFormRow = ({
   );
 
   const handleEdit = (values: FormValues) => {
+    if (!isEditMode || !id) {
+      console.error('handleEdit called without valid id or edit mode');
+      return;
+    }
     updateMutation.mutate(values);
   };
 

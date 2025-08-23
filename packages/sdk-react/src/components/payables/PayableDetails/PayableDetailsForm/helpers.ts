@@ -293,11 +293,12 @@ export interface MonitePayableDetailsInfoProps {
 
 export const findDefaultBankAccount = (
   accounts: CounterpartBankAccountResponse[],
-  currentCurrency: CurrencyEnum
+  currentCurrency?: CurrencyEnum
 ): string => {
   const defaultAccount = accounts.find(
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
+
   return defaultAccount?.id || '';
 };
 

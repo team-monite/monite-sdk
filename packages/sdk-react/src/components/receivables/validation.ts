@@ -9,7 +9,7 @@ import { z } from 'zod';
 export type { EntityBankAccountFields } from './types';
 
 export const getCurrencyEnum = (_i18n: I18n) =>
-  z.enum(CurrencyEnum as [string, ...string[]]);
+  z.enum(CurrencyEnum);
 
 const entityBankAccountSchema = z.object({
   account_holder_name: z.string().optional(),
@@ -17,7 +17,7 @@ const entityBankAccountSchema = z.object({
   bank_name: z.string().optional(),
   bic: z.string().optional(),
   country: z.string(),
-  currency: z.enum(CurrencyEnum),
+  currency: getCurrencyEnum({} as I18n),
   display_name: z.string().optional(),
   iban: z.string().optional(),
   is_default_for_currency: z.boolean(),
@@ -29,7 +29,7 @@ const getCreateBankAccountSchema = (i18n: I18n) =>
   entityBankAccountSchema
     .extend({
       country: z.string().min(1, t(i18n)`Country is required`),
-      currency: z.enum(CurrencyEnum),
+      currency: getCurrencyEnum(i18n),
       is_default_for_currency: z.boolean(),
       display_name: z
         .string()

@@ -5,6 +5,7 @@ import {
   receivableContactsFixture,
   receivablePreviewFixture,
 } from '@/mocks';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
@@ -24,17 +25,20 @@ const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
 const createInvoiceValidationSchema = z.object({
-  type: z.string(),
-  currency: z.string(),
+  type: z.string().refine((v) => v in receivableListFixture, {
+    message: 'Unsupported receivable type',
+  }),
+  currency: z.enum(CurrencyEnum),
   line_items: z
     .array(
       z.object({
-        quantity: z.number(),
-        product_id: z.string(),
-        vat_rate_id: z.string(),
+        quantity: z.coerce.number().min(0, 'Quantity is required'),
+        product_id: z.string().min(1, 'product_id is required'),
+        vat_rate_id: z.string().min(1, 'vat_rate_id is required'),
       })
-    ),
-  counterpart_id: z.string(),
+    )
+    .nonempty('At least one line item is required'),
+  counterpart_id: z.string().min(1, 'counterpart_id is required'),
 });
 
 interface IReceivableByIdParams {

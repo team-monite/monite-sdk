@@ -22,12 +22,9 @@ export const manualPaymentRecordValidationSchema = (
         {
           message: t(i18n)`Can't be more than the amount due`,
         }
-      )
-      .nullable(),
+      ),
     payment_date: z.coerce
-      .date({ error: t(i18n)`Date is required` })
-      .nullable(),
+      .date({ error: t(i18n)`Date is required` }),
     payment_time: z.coerce
-      .date({ error: t(i18n)`Time is required` })
-      .nullable(),
+      .date({ error: t(i18n)`Time is required` }),
   }) satisfies z.ZodType<PaymentRecordFormValues>;
