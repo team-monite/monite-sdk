@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { components } from '@/api';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 
 import deepEqual from 'deep-eql';
 
@@ -76,7 +76,7 @@ export function useOnboardingForm<
   });
 
   const methods = useForm<V>({
-    resolver: validationSchema && yupResolver(validationSchema),
+    resolver: validationSchema && safeZodResolver(validationSchema),
     mode: 'onChange',
     defaultValues: incomingFields
       ? generateValuesByFields<DefaultValues<V>>(incomingFields)

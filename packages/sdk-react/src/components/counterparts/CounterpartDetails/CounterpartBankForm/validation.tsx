@@ -1,5 +1,6 @@
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import type { I18n } from '@lingui/core';
+import { getCurrencyEnum } from '@/components/receivables/validation';
 import { z } from 'zod';
 
 export const getBankValidationSchema = () =>
@@ -12,7 +13,7 @@ export const getBankValidationSchema = () =>
     sort_code: z.string().optional(),
     routing_number: z.string().optional(),
     country: z.enum(AllowedCountries as [string, ...string[]]),
-    currency: z.enum(CurrencyEnum as [string, ...string[]]),
+    currency: getCurrencyEnum({} as I18n),
     partner_metadata: z.any().optional(),
     is_default_for_currency: z.boolean().optional(),
   });

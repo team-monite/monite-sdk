@@ -1,5 +1,6 @@
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook } from '@testing-library/react';
+import type { ZodObject, ZodRawShape } from 'zod';
 
 import { useOnboardingValidationSchema } from './hooks';
 import { ValidationSchemasType } from './transformers';
@@ -19,6 +20,18 @@ export const getOnboardingValidationSchema = (
       wrapper: createRenderWithClient(),
     }
   );
+  const schema = result.current as ZodObject<ZodRawShape> | undefined;
 
-  return result.current;
+  if (!schema) return undefined;
+
+  return {
+    isValidSync: (values: unknown) => {
+      try {
+        schema.parse(values);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+  } as const;
 };

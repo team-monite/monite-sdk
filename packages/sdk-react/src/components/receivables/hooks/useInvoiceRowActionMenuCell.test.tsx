@@ -94,6 +94,7 @@ describe('useInvoiceRowActionMenuCell', () => {
       partiallyPay: true,
       recurrent: true,
       financeInvoice: true,
+      duplicate: true,
     } satisfies {
       [key in InvoicesTableRowAction]: true;
     }) as InvoicesTableRowAction[];

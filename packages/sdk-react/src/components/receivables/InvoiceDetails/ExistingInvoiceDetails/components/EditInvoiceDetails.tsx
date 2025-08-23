@@ -58,7 +58,7 @@ interface ExtendedLineItem {
   product: {
     name: string;
     price?: {
-      currency: string;
+      currency: components['schemas']['CurrencyEnum'];
       value: number;
     };
     measure_unit_id: string;
@@ -224,7 +224,7 @@ const EditInvoiceDetailsContent = ({
                         price: lineItem.product.price
                           ? {
                               currency:
-                                lineItem.product.price.currency ?? 'USD',
+                                (lineItem.product.price.currency ?? 'USD') as components['schemas']['CurrencyEnum'],
                               value: Math.round(
                                 lineItem.product.price.value ?? 0
                               ),

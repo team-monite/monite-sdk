@@ -5,10 +5,11 @@ import {
   receivableContactsFixture,
   receivablePreviewFixture,
 } from '@/mocks';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { faker } from '@faker-js/faker';
 
 import { http, HttpResponse, delay } from 'msw';
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import { getMockPagination } from '../utils';
 
@@ -23,20 +24,21 @@ const receivableSendPath = `${receivableDetailPath}/send`;
 const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
-const createInvoiceValidationSchema = yup.object({
-  type: yup.string().required(),
-  currency: yup.string().required(),
-  line_items: yup
-    .array()
-    .of(
-      yup.object({
-        quantity: yup.number().required(),
-        product_id: yup.string().required(),
-        vat_rate_id: yup.string().required(),
+const createInvoiceValidationSchema = z.object({
+  type: z.string().refine((v) => v in receivableListFixture, {
+    message: 'Unsupported receivable type',
+  }),
+  currency: z.enum(CurrencyEnum),
+  line_items: z
+    .array(
+      z.object({
+        quantity: z.coerce.number().min(0, 'Quantity is required'),
+        product_id: z.string().min(1, 'product_id is required'),
+        vat_rate_id: z.string().min(1, 'vat_rate_id is required'),
       })
     )
-    .required(),
-  counterpart_id: yup.string().required(),
+    .nonempty('At least one line item is required'),
+  counterpart_id: z.string().min(1, 'counterpart_id is required'),
 });
 
 interface IReceivableByIdParams {
@@ -105,7 +107,7 @@ export const receivableHandlers = [
   >(receivablePath, async ({ request }) => {
     const jsonBody = await request.json();
     try {
-      await createInvoiceValidationSchema.validate(jsonBody);
+      createInvoiceValidationSchema.parse(jsonBody);
 
       await delay();
 

@@ -19,7 +19,7 @@ import {
 } from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -131,7 +131,7 @@ export const EmailInvoiceDetailsBase = ({
   const { api, entityId } = useMoniteContext();
 
   const { control, handleSubmit, getValues, trigger, reset } = useForm({
-    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
+    resolver: zodResolver(getEmailInvoiceDetailsSchema(i18n)),
     defaultValues: useMemo(
       () => ({
         subject,

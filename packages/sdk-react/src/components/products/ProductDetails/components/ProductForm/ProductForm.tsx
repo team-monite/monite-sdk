@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-
+import { type ProductFormValues, getValidationSchema } from '../../validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { MoniteCurrency } from '@/ui/Currency';
 import { RHFRadioGroup } from '@/ui/RHF/RHFRadioGroup';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -18,21 +16,17 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-
-import {
-  ProductFormValues,
-  IProductFormSubmitValues,
-  getValidationSchema,
-} from '../../validation';
+import { useEffect } from 'react';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 interface ProductFormProps {
   /** Triggered when the form is submitted */
-  onSubmit: (values: IProductFormSubmitValues) => void;
+  onSubmit: (values: ProductFormValues) => void;
 
   /**
    * Default values for the form fields
    */
-  defaultValues: ProductFormValues;
+  defaultValues: Partial<ProductFormValues>;
 
   /** The `<form />` id attribute to submit the form using external button */
   formId: string;
@@ -70,8 +64,8 @@ export const ProductForm = ({
   const { currencyGroups, isLoadingCurrencyGroups } =
     useProductCurrencyGroups();
 
-  const methods = useForm<IProductFormSubmitValues>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+  const methods = useForm<ProductFormValues>({
+    resolver: safeZodResolver<ProductFormValues>(getValidationSchema(i18n)),
     defaultValues,
   });
 
