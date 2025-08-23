@@ -303,7 +303,7 @@ export const defaultAvailableCurrencies: CurrencyEnum[] = [
   'YER',
   'ZAR',
   'ZMW',
-];
+] as const;
 
 export const getCurrenciesArray = (i18n: I18n): Array<CurrencyType> =>
   Object.entries(getCurrencies(i18n)).map(([code, label]) => ({

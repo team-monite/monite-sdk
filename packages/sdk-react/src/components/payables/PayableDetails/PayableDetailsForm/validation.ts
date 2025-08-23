@@ -1,9 +1,9 @@
 import type { PayableDetailsFormFields } from './types';
 import { components } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
+import { getCurrencyEnum } from '@/components/receivables/validation';
 
 export type Option = { label: string; value: string };
 
@@ -13,8 +13,6 @@ export const isFieldRequiredByValidations = (
 ): boolean => {
   return Boolean(payablesValidations?.required_fields?.includes(fieldName));
 };
-
-const getCurrencyEnum = () => z.enum(CurrencyEnum);
 
 const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
   z.object({
@@ -27,8 +25,8 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
     dueDate: z
       .preprocess((v) => (v === null ? undefined : v), z.date())
       .optional(),
-    currency: getCurrencyEnum(),
-    tags: z.array(z.object({ id: z.string(), name: z.string() }).loose()),
+    currency: getCurrencyEnum(i18n).optional(),
+    tags: z.array(z.object({ id: z.string(), name: z.string() }).passthrough()),
     lineItems: z.array(
       z.object({
         id: z.string(),

@@ -27,15 +27,17 @@ type Props = {
 };
 
 export type PaymentRecordDetails = {
-  amount: number;
-  payment_date: Date;
-  payment_time: Date;
+  amount: number | null;
+  payment_date: Date | null;
+  payment_time: Date | null;
+  created_by: string;
 };
 
 const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
   amount: 0,
   payment_date: new Date(),
   payment_time: new Date(),
+  created_by: '',
 };
 
 export const RecordManualPaymentModal = ({ children, invoice }: Props) => {

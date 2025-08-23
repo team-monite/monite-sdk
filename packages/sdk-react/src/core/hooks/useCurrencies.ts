@@ -40,8 +40,9 @@ export const useCurrencies = () => {
    * const dollarSign = getSymbolFromCurrency(CurrencyEnum.USD);
    * ```
    */
-  const getSymbolFromCurrency = (currency: CurrencyEnum | string) => {
-    if (!currencyList || !currencyList[currency]) return currency;
+  const getSymbolFromCurrency = (currency?: CurrencyEnum | string) => {
+    if (typeof currency !== 'string' || !currencyList || !currencyList[currency]) return currency;
+
     return currencyList[currency]?.symbol;
   };
 

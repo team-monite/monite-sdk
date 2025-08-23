@@ -16,7 +16,7 @@ export interface PayableDetailsFormFields {
   counterpartBankAccount?: string;
   invoiceDate?: Date;
   dueDate?: Date;
-  currency: components['schemas']['CurrencyEnum'];
+  currency?: components['schemas']['CurrencyEnum'];
   tags: PayableTag[];
   lineItems: LineItem[];
   discount?: number | null;
