@@ -6,6 +6,7 @@ export const ROUTES = {
   approvalRequests: '/approval-requests',
   roles: '/settings/roles',
   tags: '/settings/tags',
+  expenses: '/expenses',
   receivables: '/receivables',
   products: '/products',
   onboarding: '/onboarding',

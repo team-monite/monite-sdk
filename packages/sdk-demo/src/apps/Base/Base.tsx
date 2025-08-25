@@ -1,6 +1,4 @@
-import { ReactNode } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-
+import { ROUTES } from './consts';
 import {
   ApprovalRequests,
   Counterparts,
@@ -8,13 +6,14 @@ import {
   Receivables,
   Products,
   Tags,
+  Expenses,
   Onboarding,
   Integrations,
   RolesAndApprovalPolicies,
 } from '@monite/sdk-react';
 import { Box } from '@mui/material';
-
-import { ROUTES } from './consts';
+import { ReactNode } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 export const Base = () => {
   return (
@@ -75,6 +74,14 @@ export const Base = () => {
         element={
           <Gutter>
             <Tags />
+          </Gutter>
+        }
+      />
+      <Route
+        path={ROUTES.expenses}
+        element={
+          <Gutter>
+            <Expenses />
           </Gutter>
         }
       />

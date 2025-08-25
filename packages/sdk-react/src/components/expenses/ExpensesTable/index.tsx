@@ -1,0 +1,1 @@
+export { ExpensesTable } from './ExpensesTable';
