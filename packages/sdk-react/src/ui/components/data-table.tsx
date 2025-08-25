@@ -6,7 +6,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './dropdown-menu';
-import { Input } from './input';
 import {
   Select,
   SelectContent,
@@ -201,33 +200,6 @@ export function DataTablePagination<TData>({
           </SelectContent>
         </Select>
       </div>
-    </div>
-  );
-}
-
-interface DataTableSearchProps<TData> {
-  column: string;
-  placeholder?: string;
-  table: ReactTableTable<TData>;
-}
-
-export function DataTableSearch<TData>({
-  column,
-  placeholder,
-  table,
-}: DataTableSearchProps<TData>) {
-  const { i18n } = useLingui();
-
-  return (
-    <div className="mtw:flex mtw:items-center mtw:py-4">
-      <Input
-        placeholder={placeholder || t(i18n)`Search...`}
-        value={table.getColumn(column)?.getFilterValue() as string}
-        onChange={(event) =>
-          table.getColumn(column)?.setFilterValue(event.target.value)
-        }
-        className="mtw:max-w-sm"
-      />
     </div>
   );
 }
