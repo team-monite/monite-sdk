@@ -1,4 +1,4 @@
-import { ExpensesTable } from './ExpensesTable/ExpensesTable';
+import { UserTransactionsTable } from './ExpensesTable/UserTransactionsTable';
 import { PageHeader } from '@/ui/PageHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -12,7 +12,7 @@ export const Expenses = () => {
         <PageHeader title={t(i18n)`Expenses`} />
       </div>
       <div className="mtw:flex-1 mtw:min-h-0">
-        <ExpensesTable />
+        <UserTransactionsTable />
       </div>
     </div>
   );

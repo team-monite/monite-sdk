@@ -18,7 +18,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useEffect, useMemo } from 'react';
 
-export const ExpensesTable = () => {
+export const UserTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -75,6 +75,7 @@ export const ExpensesTable = () => {
         filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
           ? undefined
           : currentPaginationToken || undefined,
+      entity_user_id__in: user?.id ? [user.id] : undefined,
       merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
       started_at__gt: filters[FILTER_TYPE_STARTED_AT]
         ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
@@ -93,12 +94,6 @@ export const ExpensesTable = () => {
   const columns: ColumnDef<components['schemas']['TransactionResponse']>[] =
     useMemo(
       () => [
-        {
-          header: t(i18n)`Employee`,
-          accessorKey: 'employee',
-          cell: ({ row }) => row.original.entity_user_id, // TODO: show employee name
-          enableSorting: false,
-        },
         {
           header: t(i18n)`Merchant`,
           accessorKey: 'merchant',
@@ -129,6 +124,7 @@ export const ExpensesTable = () => {
           cell: ({ row }) => row.getValue('payment_method'),
           enableSorting: false,
         },
+        // TODO: show linked receipt image
         {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
@@ -169,7 +165,6 @@ export const ExpensesTable = () => {
             if (error.validationError) {
               return;
             }
-
             onFilterChange(FILTER_TYPE_STARTED_AT, value as Date | null);
           }}
           slotProps={{
