@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from './select';
 import { Button } from '@/ui/components/button';
+import { Skeleton } from '@/ui/components/skeleton';
 import { plural, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -207,6 +208,8 @@ export function DataTablePagination<TData>({
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  // Loading state
+  loading?: boolean;
   // Controlled pagination state
   pagination?: PaginationState;
   onPaginationChange?: OnChangeFn<PaginationState>;
@@ -218,11 +221,14 @@ interface DataTableProps<TData, TValue> {
   // Controlled column filters state
   columnFilters?: ColumnFiltersState;
   onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
+  // Custom no rows overlay component
+  noRowsOverlay?: React.ComponentType;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  loading = false,
   pagination: controlledPagination,
   onPaginationChange: controlledOnPaginationChange,
   pageCount,
@@ -230,6 +236,7 @@ export function DataTable<TData, TValue>({
   onSortingChange: controlledOnSortingChange,
   columnFilters: controlledColumnFilters,
   onColumnFiltersChange: controlledOnColumnFiltersChange,
+  noRowsOverlay: NoRowsOverlay,
 }: DataTableProps<TData, TValue>) {
   const { i18n } = useLingui();
 
@@ -301,7 +308,25 @@ export function DataTable<TData, TValue>({
               ))}
             </thead>
             <tbody className="mtw:[&_tr:last-child]:border-0">
-              {table.getRowModel().rows?.length ? (
+              {loading ? (
+                Array.from({ length: 10 }).map((_, index) => (
+                  <tr
+                    key={`loading-row-${index}`}
+                    className="mtw:border-b mtw:border-border"
+                  >
+                    {Array.from({ length: columns.length }).map(
+                      (_, cellIndex) => (
+                        <td
+                          key={`loading-cell-${index}-${cellIndex}`}
+                          className="mtw:p-3 mtw:align-middle mtw:whitespace-nowrap"
+                        >
+                          <Skeleton className="mtw:h-4 mtw:w-full" />
+                        </td>
+                      )
+                    )}
+                  </tr>
+                ))
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <tr
                     key={row.id}
@@ -322,12 +347,12 @@ export function DataTable<TData, TValue>({
                   </tr>
                 ))
               ) : (
-                <tr className="mtw:hover:bg-muted/50 mtw:data-[state=selected]:bg-muted mtw:border-b mtw:border-border mtw:transition-colors">
+                <tr>
                   <td
                     colSpan={columns.length}
-                    className="mtw:h-24 mtw:text-center mtw:p-3 mtw:align-middle mtw:whitespace-nowrap"
+                    className="mtw:p-3 mtw:align-middle mtw:whitespace-nowrap mtw:font-normal mtw:text-center"
                   >
-                    {t(i18n)`No results.`}
+                    {NoRowsOverlay ? <NoRowsOverlay /> : t(i18n)`No results.`}
                   </td>
                 </tr>
               )}
