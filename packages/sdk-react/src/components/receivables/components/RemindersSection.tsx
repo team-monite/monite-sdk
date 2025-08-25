@@ -12,6 +12,7 @@ interface ReminderSectionProps extends SectionGeneralProps {
   onUpdatePaymentReminder: () => void;
   onUpdateOverdueReminder: () => void;
   handleEditCounterpartModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
 }
 
 export const RemindersSection = (props: ReminderSectionProps) => {

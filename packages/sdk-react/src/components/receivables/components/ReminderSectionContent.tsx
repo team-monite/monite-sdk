@@ -15,6 +15,7 @@ interface ReminderSectionProps extends SectionGeneralProps {
   onUpdatePaymentReminder: () => void;
   onUpdateOverdueReminder: () => void;
   handleEditCounterpartModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
 }
 
 export const ReminderSectionContent = ({
@@ -23,6 +24,7 @@ export const ReminderSectionContent = ({
   onUpdatePaymentReminder,
   onCreateReminder,
   handleEditCounterpartModal,
+  handleEditProfileState,
 }: ReminderSectionProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -54,12 +56,9 @@ export const ReminderSectionContent = ({
       ? Boolean(counterpart.individual.email)
       : hasCounterpartDefaultContactEmail;
 
-  const hasValidReminderEmailLoading =
-    isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
+  const hasValidReminderEmailLoading = isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
 
-  const shouldShowAlert =
-    !hasValidReminderEmailLoading &&
-    (!hasValidReminderEmail || !counterpart?.reminders_enabled);
+  const shouldShowAlert = !hasValidReminderEmailLoading && (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
   useEffect(() => {
     if (shouldShowAlert && paymentReminderId) {
@@ -93,7 +92,12 @@ export const ReminderSectionContent = ({
           <button
             className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
             type="button"
-            onClick={() => handleEditCounterpartModal(true)}
+            onClick={() => {
+              if (handleEditProfileState) {
+                handleEditProfileState(true);
+              }
+              handleEditCounterpartModal(true);
+            }}
           >
             {t(i18n)`Edit customer's profile`}
           </button>
