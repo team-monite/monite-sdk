@@ -61,6 +61,7 @@
     "@react-pdf-viewer/zoom": "3.12.0",
     "@sentry/react": "~7.119.1",
     "@tanstack/react-query": "~5.28.6",
+    "@tanstack/react-table": "~8.21.3",
     "@tanstack/react-virtual": "~3.13.6",
     "chroma-js": "~3.1.2",
     "class-variance-authority": "~0.7.1",

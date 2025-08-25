@@ -1,3 +1,4 @@
+import { MenuItemType } from './types';
 import { ROUTES } from '@/apps/Base';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -10,9 +11,8 @@ import {
   Tab as TabIcon,
   Label as LabelIcon,
   DoneOutline as DoneOutlineIcon,
+  Storefront as StorefrontIcon,
 } from '@mui/icons-material';
-
-import { MenuItemType } from './types';
 
 export const getNavigationData = (
   i18n: I18n
@@ -31,6 +31,11 @@ export const getNavigationData = (
     label: t(i18n)`Sales`,
     url: ROUTES.receivables,
     renderIcon: (props) => <ReceiptIcon {...props} />,
+  },
+  expenses: {
+    label: t(i18n)`Expenses`,
+    url: ROUTES.expenses,
+    renderIcon: (props) => <StorefrontIcon {...props} />,
   },
   counterparts: {
     label: t(i18n)`Counterparts`,
