@@ -164,7 +164,12 @@ export const ManagerTransactionsTable = () => {
       if (!userData) return <span>-</span>;
 
       return (
-        <UserDisplayCell user={userData} showAvatar={false} variant="inline" />
+        <UserDisplayCell
+          user={userData}
+          showAvatar={false}
+          variant="inline"
+          typographyVariant="inherit"
+        />
       );
     };
   }, [userDataMap]);

@@ -1,9 +1,8 @@
-import { useMemo } from 'react';
-
 import { getIndividualName, getUserDisplayName } from '@/core/utils';
 import { UserAvatar } from '@/ui/UserAvatar/UserAvatar';
 import { type Theme } from '@monite/sdk-react/mui-styles';
 import { type SxProps, Box, Typography } from '@mui/material';
+import { useMemo } from 'react';
 
 interface UserDisplayCellProps {
   user: {
@@ -18,7 +17,7 @@ interface UserDisplayCellProps {
   showAvatar?: boolean;
   avatarSize?: number;
   variant?: 'inline' | 'stacked';
-  typographyVariant?: 'body1' | 'body2';
+  typographyVariant?: 'body1' | 'body2' | 'inherit';
   sx?: SxProps<Theme>;
 }
 
