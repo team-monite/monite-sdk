@@ -359,7 +359,7 @@ export const ManagerTransactionsTable = () => {
               refetch={refetch}
               entityName={t(i18n)`Expenses`}
               noDataTitle={t(i18n)`No expenses yet`}
-              noDataDescription1={t(i18n)`You don't have any expenses yet`}
+              noDataDescription1={t(i18n)`You don’t have any expenses yet`}
               noDataDescription2={t(i18n)`Your expenses will appear here`}
               filterTitle={t(i18n)`No expenses found`}
               filterDescription1={t(
