@@ -1,3 +1,7 @@
+import {
+  defaultAvailableCountries,
+  defaultAvailableCurrencies,
+} from '../utils';
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FINANCING_LABEL } from '@/components/financing/consts';
@@ -16,11 +20,6 @@ import {
 import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import {
-  defaultAvailableCountries,
-  defaultAvailableCurrencies,
-} from '../utils';
 
 interface ReceivableSettings extends MoniteReceivablesTableProps {
   pageSizeOptions: number[];
@@ -227,6 +226,9 @@ export interface ComponentSettings {
      */
     customerTypes?: CustomerTypes;
   };
+  expenses: {
+    pageSizeOptions: number[];
+  };
   payables: Partial<PayableSettings>;
   products: {
     pageSizeOptions: number[];
@@ -275,6 +277,10 @@ export const getDefaultComponentSettings = (
       'customer',
       'vendor',
     ],
+  },
+  expenses: {
+    pageSizeOptions:
+      componentSettings?.expenses?.pageSizeOptions || defaultPageSizeOptions,
   },
   payables: {
     pageSizeOptions:
