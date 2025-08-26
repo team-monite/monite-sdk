@@ -26,6 +26,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
+import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useEffect, useMemo } from 'react';
@@ -78,28 +79,34 @@ export const ManagerTransactionsTable = () => {
     isLoading,
     error,
     refetch,
-  } = api.transactions.getTransactions.useQuery({
-    query: {
-      sort: sortModel.field,
-      order: sortModel.sort,
-      limit: pagination.pageSize,
-      // Don't use pagination token when we have a search term and we're on the first page
-      pagination_token:
-        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
-          ? undefined
-          : currentPaginationToken || undefined,
-      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
-      started_at__gt: filters[FILTER_TYPE_STARTED_AT]
-        ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
-        : undefined,
-      started_at__lt: filters[FILTER_TYPE_STARTED_AT]
-        ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
-        : undefined,
-      entity_user_id__in: filters[FILTER_TYPE_USER]
-        ? [filters[FILTER_TYPE_USER]]
-        : undefined,
+  } = api.transactions.getTransactions.useQuery(
+    {
+      query: {
+        sort: sortModel.field,
+        order: sortModel.sort,
+        limit: pagination.pageSize,
+        // Don't use pagination token when we have a search term and we're on the first page
+        pagination_token:
+          filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+            ? undefined
+            : currentPaginationToken || undefined,
+        merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+        started_at__gt: filters[FILTER_TYPE_STARTED_AT]
+          ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
+          : undefined,
+        started_at__lt: filters[FILTER_TYPE_STARTED_AT]
+          ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
+          : undefined,
+        entity_user_id__in: filters[FILTER_TYPE_USER]
+          ? [filters[FILTER_TYPE_USER]]
+          : undefined,
+      },
     },
-  });
+    {
+      enabled: isReadSupported === true,
+      placeholderData: keepPreviousData,
+    }
+  );
 
   // Update the pagination hook with the latest API response
   useEffect(() => {
