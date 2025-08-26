@@ -178,6 +178,7 @@ export function useDataTableState<
         setPageTokens([null]);
         setCurrentPageIndex(0);
         setPaginationState({ pageIndex: 0, pageSize: newPagination.pageSize });
+        setApiResponse(undefined);
         return;
       }
 
@@ -222,6 +223,7 @@ export function useDataTableState<
       setPageTokens([null]);
       setCurrentPageIndex(0);
       setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
+      setApiResponse(undefined);
     },
     [sorting]
   );
@@ -238,6 +240,7 @@ export function useDataTableState<
       setPageTokens([null]);
       setCurrentPageIndex(0);
       setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
+      setApiResponse(undefined);
     },
     []
   );
@@ -253,6 +256,7 @@ export function useDataTableState<
     setPageTokens([null]);
     setCurrentPageIndex(0);
     setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
+    setApiResponse(undefined);
   }, []);
 
   // Calculate page count for TanStack Table
