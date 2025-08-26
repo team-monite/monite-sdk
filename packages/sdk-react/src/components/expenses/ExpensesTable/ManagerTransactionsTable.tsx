@@ -194,9 +194,8 @@ export const ManagerTransactionsTable = () => {
         },
         {
           header: t(i18n)`Merchant`,
-          accessorKey: 'merchant',
-          cell: ({ row }) => row.original.merchant_name,
-          enableSorting: false,
+          accessorKey: 'merchant_name',
+          cell: ({ row }) => row.getValue('merchant_name'),
         },
         {
           header: t(i18n)`Date`,
@@ -214,10 +213,22 @@ export const ManagerTransactionsTable = () => {
           id: 'payment_method',
           accessorFn: (row) => {
             const paymentMethod = row.payment_method;
-            if (paymentMethod?.type === 'card') {
-              return t(i18n)`Card ••••${paymentMethod.details.last4}`;
+            if (!paymentMethod) {
+              return '-';
             }
-            return t(i18n)`Bank ${paymentMethod.details.iban}`;
+            if (paymentMethod?.type === 'card') {
+              const last4 = paymentMethod.details?.last4 ?? '••••';
+              return t(i18n)`Card ••••${last4}`;
+            }
+            if (paymentMethod.type === 'bank_account') {
+              const iban = paymentMethod.details?.iban;
+              const maskedIban =
+                typeof iban === 'string' && iban.length > 4
+                  ? `••••${iban.slice(-4)}`
+                  : '—';
+              return t(i18n)`Bank ${maskedIban}`;
+            }
+            return '—';
           },
           cell: ({ row }) => row.getValue('payment_method'),
           enableSorting: false,
