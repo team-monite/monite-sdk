@@ -19,7 +19,10 @@ export const useEntityUserByAuthToken = () => {
   return api.entityUsers.getEntityUsersMe.useQuery(
     {},
     {
-      refetchInterval: 60_000,
+      retry: false,
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -30,7 +33,10 @@ export const useEntityUserRoleByAuthToken = () => {
   return api.entityUsers.getEntityUsersMyRole.useQuery(
     {},
     {
-      refetchInterval: 60_000,
+      retry: false,
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
