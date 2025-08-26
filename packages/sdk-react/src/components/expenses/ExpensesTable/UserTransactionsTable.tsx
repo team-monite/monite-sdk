@@ -50,7 +50,7 @@ export const UserTransactionsTable = () => {
     components['schemas']['TransactionCursorFields'],
     FilterTypes
   >({
-    initialPageSize: componentSettings.expenses.pageSizeOptions[0],
+    initialPageSize: componentSettings.expenses.pageSizeOptions[0] ?? 20,
     initialSort: {
       field: 'started_at',
       direction: 'desc',
