@@ -38,9 +38,19 @@ export const ManagerTransactionsTable = () => {
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
+  const {
+    data: isTransactionReadSupported,
+    isLoading: isTransaxtionReadSupportedLoading,
+  } = useIsActionAllowed({
+    method: 'transaction',
+    action: 'read',
+    entityUserId: user?.id,
+  });
+
+  // TODO: refactor to use proper check of Expense Management manager
+  const { data: isUserReadSupported, isLoading: isUserReadSupportedLoading } =
     useIsActionAllowed({
-      method: 'transaction',
+      method: 'entity_user',
       action: 'read',
       entityUserId: user?.id,
     });
@@ -103,7 +113,8 @@ export const ManagerTransactionsTable = () => {
       },
     },
     {
-      enabled: isReadSupported === true,
+      enabled:
+        isTransactionReadSupported === true && isUserReadSupported === true,
       placeholderData: keepPreviousData,
     }
   );
@@ -248,11 +259,11 @@ export const ManagerTransactionsTable = () => {
       [UserCell, i18n, locale.dateTimeFormat]
     );
 
-  if (isReadSupportedLoading) {
+  if (isTransaxtionReadSupportedLoading || isUserReadSupportedLoading) {
     return <LoadingPage />;
   }
 
-  if (!isReadSupported) {
+  if (!isTransactionReadSupported || !isUserReadSupported) {
     return <AccessRestriction />;
   }
 
