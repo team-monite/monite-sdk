@@ -6,10 +6,12 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDataTableState } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { useReceiptsByTransactionIds } from '@/core/queries/useReceiptsByTransactionIds';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
+import { Skeleton } from '@/ui/components/skeleton';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -98,6 +100,16 @@ export const UserTransactionsTable = () => {
     updateApiResponse(transactions);
   }, [transactions, updateApiResponse]);
 
+  // Extract transaction IDs for receipts query
+  const transactionIds = useMemo(() => {
+    if (!transactions?.data) return [];
+    return transactions.data.map((transaction) => transaction.id);
+  }, [transactions?.data]);
+
+  // Fetch receipts for the transaction IDs
+  const { receiptsByTransactionId, isLoading: isReceiptsLoading } =
+    useReceiptsByTransactionIds(transactionIds);
+
   const columns: ColumnDef<components['schemas']['TransactionResponse']>[] =
     useMemo(
       () => [
@@ -142,7 +154,49 @@ export const UserTransactionsTable = () => {
           cell: ({ row }) => row.getValue('payment_method'),
           enableSorting: false,
         },
-        // TODO: show linked receipt image
+        {
+          header: t(i18n)`Receipt`,
+          id: 'receipt',
+          accessorFn: (row) => {
+            const receipt = receiptsByTransactionId[row.id];
+            return receipt ? receipt.file_url || receipt.file_id : null;
+          },
+          cell: ({ row }) => {
+            const receipt = receiptsByTransactionId[row.original.id];
+
+            if (isReceiptsLoading) {
+              return <Skeleton className="mtw:w-full mtw:h-4" />;
+            }
+
+            if (!receipt) {
+              return (
+                <span className="mtw:text-neutral-70">{t(
+                  i18n
+                )`Not matched`}</span>
+              );
+            }
+
+            if (receipt.file_url) {
+              return (
+                <a
+                  href={receipt.file_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mtw:text-primary mtw:hover:underline"
+                >
+                  {t(i18n)`View Receipt ${receipt.document_id}`}
+                </a>
+              );
+            }
+
+            return (
+              <span className="">
+                {t(i18n)`Receipt ${receipt.document_id}`}
+              </span>
+            );
+          },
+          enableSorting: false,
+        },
         {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
@@ -155,7 +209,7 @@ export const UserTransactionsTable = () => {
           },
         },
       ],
-      [i18n, locale.dateTimeFormat]
+      [i18n, locale.dateTimeFormat, receiptsByTransactionId, isReceiptsLoading]
     );
 
   if (isReadSupportedLoading) {
