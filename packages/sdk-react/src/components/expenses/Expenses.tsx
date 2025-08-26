@@ -7,7 +7,10 @@ export const Expenses = () => {
   const { i18n } = useLingui();
 
   return (
-    <div className="mtw:flex mtw:flex-col mtw:h-full">
+    <div
+      className="mtw:flex mtw:flex-col mtw:h-full Monite-ExpensesPage"
+      data-testid="Monite-ExpensesPage"
+    >
       <div className="mtw:flex-shrink-0">
         <PageHeader title={t(i18n)`Expenses`} />
       </div>
