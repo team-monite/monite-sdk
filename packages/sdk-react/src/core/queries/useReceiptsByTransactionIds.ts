@@ -23,9 +23,10 @@ export const useReceiptsByTransactionIds = (transactionIds: string[] = []) => {
     data: receiptsPages,
     isLoading,
     error,
-    fetchNextPage: fetchReceiptsNextPage,
-    hasNextPage: hasReceiptsNextPage,
-    isFetchingNextPage: isReceiptsFetchingNextPage,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = api.receipts.getReceipts.useInfiniteQuery(
     {
       query: {
@@ -48,12 +49,12 @@ export const useReceiptsByTransactionIds = (transactionIds: string[] = []) => {
 
   // Automatically fetch next page when available
   useEffect(() => {
-    if (hasReceiptsNextPage && !isReceiptsFetchingNextPage) {
-      fetchReceiptsNextPage().catch((error) => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage().catch((error) => {
         console.error('Error fetching next page of receipts:', error);
       });
     }
-  }, [hasReceiptsNextPage, isReceiptsFetchingNextPage, fetchReceiptsNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Flatten all receipts from all pages and create mapping by transaction ID
   const receiptsByTransactionId = useMemo(() => {
@@ -76,6 +77,7 @@ export const useReceiptsByTransactionIds = (transactionIds: string[] = []) => {
     receiptsByTransactionId,
     isLoading,
     error,
-    refetch: () => fetchReceiptsNextPage(),
+    refetch,
+    fetchNextPage,
   };
 };
