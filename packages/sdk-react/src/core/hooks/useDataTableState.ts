@@ -44,7 +44,10 @@ interface DataTableStateReturn<
 
   // Filter functionality (includes search)
   filters: TFilters;
-  onFilterChange: (field: keyof TFilters, value: any) => void;
+  onFilterChange: <TField extends keyof TFilters>(
+    field: TField,
+    value: TFilters[TField]
+  ) => void;
   onFiltersChange: (filters: Partial<TFilters>) => void;
 
   // Computed values for API
@@ -230,7 +233,7 @@ export function useDataTableState<
 
   // Handle filter changes (including search)
   const handleFilterChange = useCallback(
-    (field: keyof TFilters, value: any) => {
+    <TField extends keyof TFilters>(field: TField, value: TFilters[TField]) => {
       setFiltersState((prev: TFilters) => ({
         ...prev,
         [field]: value,
