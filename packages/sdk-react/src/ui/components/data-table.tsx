@@ -73,7 +73,7 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="data-[state=open]:mtw:bg-accent mtw:h-8 mtw:font-bold"
+            className="mtw:data-[state=open]:bg-accent mtw:h-8 mtw:font-bold"
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
@@ -122,7 +122,7 @@ export function DataTablePagination<TData>({
 
   return (
     <div className="mtw:flex mtw:items-center mtw:justify-between mtw:px-2">
-      <div className="mtw:max-w-4/5 mtw:flex-1">
+      <div className="mtw:max-w-[80%] mtw:flex-1">
         {isControlledPagination ? (
           <div></div>
         ) : (
@@ -179,7 +179,7 @@ export function DataTablePagination<TData>({
           <ChevronsRight />
         </Button>
       </div>
-      <div className="mtw:flex mtw:items-center mtw:space-x-2 mtw:max-w-4/5 mtw:flex-1 mtw:justify-end">
+      <div className="mtw:flex mtw:items-center mtw:space-x-2 mtw:max-w-[80%] mtw:flex-1 mtw:justify-end">
         <p className="mtw:text-muted-foreground mtw:text-sm">{t(
           i18n
         )`Results per page`}</p>
@@ -309,7 +309,7 @@ export function DataTable<TData, TValue>({
             </thead>
             <tbody className="mtw:[&_tr:last-child]:border-0">
               {loading ? (
-                Array.from({ length: 10 }).map((_, index) => (
+                Array.from({ length: pagination.pageSize }).map((_, index) => (
                   <tr
                     key={`loading-row-${index}`}
                     className="mtw:border-b mtw:border-border"
