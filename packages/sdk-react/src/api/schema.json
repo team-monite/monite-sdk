@@ -38933,6 +38933,21 @@
             "in": "query"
           },
           {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "transaction_id__in",
+            "in": "query"
+          },
+          {
             "description": "The ID of the entity that owns the requested resource.",
             "required": true,
             "schema": {
@@ -49472,39 +49487,43 @@
         "properties": {
           "account_holder_name": {
             "type": "string",
-            "description": "The name of the person or business that owns this bank account. Required for US bank accounts to accept ACH payments.",
-            "example": "Bob Jones"
+            "description": "The name of the person or business that owns this bank account.",
+            "examples": ["Bob Jones"]
           },
           "account_number": {
             "type": "string",
-            "description": "The bank account number. Required for US bank accounts to accept ACH payments. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits.",
-            "example": "12345678"
+            "description": "The bank account number. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits.",
+            "examples": ["12345678"]
           },
           "bic": {
             "type": "string",
             "maxLength": 11,
-            "description": "The BIC/SWIFT code of the bank.",
-            "example": "DEUTDEFFXXX"
+            "description": "The SWIFT/BIC code of the bank. Can be either 8 or 11 characters long.",
+            "examples": ["DEUTDEFFXXX"]
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code"
+            "description": "ISO currency code of the bank account."
           },
           "iban": {
             "type": "string",
             "maxLength": 34,
-            "description": "The IBAN of the bank account.",
-            "example": "DE74500700100100000900"
+            "description": "The IBAN of the bank account, up to 34 characters.",
+            "examples": ["DE74500700100100000900"]
           },
-          "name": { "type": "string", "maxLength": 200 },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "The name of the bank account, if available. For example, \"Primary account\" or \"Savings account\"."
+          },
           "routing_number": {
             "type": "string",
-            "description": "The bank's routing transit number (RTN). Required for US bank accounts to accept ACH payments. US routing numbers consist of 9 digits."
+            "description": "The bank's routing transit number (RTN). US routing numbers consist of 9 digits."
           },
           "sort_code": {
             "type": "string",
             "description": "The bank's sort code.",
-            "example": "123456"
+            "examples": ["123456"]
           }
         },
         "type": "object"
@@ -49735,24 +49754,30 @@
           "brand": {
             "type": "string",
             "maxLength": 32,
-            "description": "The brand name of the card number."
+            "description": "The card brand name."
           },
-          "card_type": { "$ref": "#/components/schemas/CardTypeEnum" },
+          "card_type": {
+            "allOf": [{ "$ref": "#/components/schemas/CardTypeEnum" }],
+            "description": "The card type"
+          },
           "expiry_month": {
             "type": "integer",
-            "exclusiveMaximum": 13.0,
-            "exclusiveMinimum": 0.0
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "description": "The card's expiration month (1 - January, 12 - December)."
           },
           "expiry_year": {
             "type": "integer",
-            "exclusiveMaximum": 2100.0,
-            "exclusiveMinimum": 2000.0
+            "maximum": 2099.0,
+            "exclusiveMinimum": 2001.0,
+            "description": "The card's expiration year."
           },
           "last4": {
             "type": "string",
             "maxLength": 4,
             "minLength": 4,
-            "description": "The last-four digits of the card number."
+            "description": "The last four digits of the card number.",
+            "examples": [1234]
           }
         },
         "type": "object",
@@ -69521,14 +69546,21 @@
         "required": ["name", "value", "amount"]
       },
       "TransactionBulkObject": {
-        "properties": { "id": { "type": "string", "format": "uuid" } },
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique Monite-generated ID assigned to the created transaction."
+          }
+        },
         "type": "object"
       },
       "TransactionBulkRequest": {
         "properties": {
           "data": {
             "items": { "$ref": "#/components/schemas/TransactionRequest" },
-            "type": "array"
+            "type": "array",
+            "description": "A list of transactions to create."
           }
         },
         "type": "object",
@@ -69542,7 +69574,12 @@
             "maxItems": 5000,
             "minItems": 1
           },
-          "status": { "$ref": "#/components/schemas/TransactionBulkStatusEnum" }
+          "status": {
+            "allOf": [
+              { "$ref": "#/components/schemas/TransactionBulkStatusEnum" }
+            ],
+            "description": "The overall status of the bulk creation operation."
+          }
         },
         "type": "object",
         "required": ["data", "status"]
@@ -69582,11 +69619,12 @@
         "properties": {
           "amount": {
             "type": "integer",
-            "description": "The transaction amount in minor units. Positive for in-flow, negative for out-flow"
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code"
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
           },
           "description": {
             "type": "string",
@@ -69596,7 +69634,7 @@
           "entity_user_id": {
             "type": "string",
             "format": "uuid",
-            "description": "Identifier for the employee who made the payment, if applicable"
+            "description": "ID of the entity user who made the transaction, if applicable."
           },
           "external_id": {
             "type": "string",
@@ -69605,18 +69643,28 @@
           },
           "merchant_amount": {
             "type": "integer",
-            "description": "Original merchant transaction amount in minor units"
+            "description": "Original merchant transaction amount in minor units."
           },
           "merchant_currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code for the 'merchant_amount'."
+            "description": "ISO currency code for the `merchant_amount`."
           },
-          "merchant_location": { "type": "string", "maxLength": 128 },
-          "merchant_name": { "type": "string", "maxLength": 128 },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
           "partner_metadata": {
             "additionalProperties": { "type": "string" },
             "type": "object",
-            "description": "Extensible key-value pairs for storing additional, custom information."
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
           },
           "payment_method": {
             "$ref": "#/components/schemas/TransactionPaymentMethod"
@@ -69624,16 +69672,16 @@
           "started_at": {
             "type": "string",
             "format": "date-time",
-            "description": "The time when the transaction started"
+            "description": "Date and time when the transaction was initiated."
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
-            "description": "The current processing status of the transaction: 'created', 'pending', 'succeeded', 'refunded', 'failed', 'declined'.",
+            "description": "The current processing status of the transaction.",
             "default": "created"
           },
           "type": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
-            "description": "The nature of the transaction. e.g., 'capture', 'refund', 'cash_withdrawal', 'fee', 'adjustment', 'reversal'."
+            "description": "The nature of the transaction."
           }
         },
         "type": "object",
@@ -69650,25 +69698,34 @@
       },
       "TransactionResponse": {
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique Monite-generated ID assigned to this transaction."
+          },
           "amount": {
             "type": "integer",
-            "description": "The transaction amount in minor units. Positive for in-flow, negative for out-flow"
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code"
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
           },
           "description": {
             "type": "string",
             "maxLength": 255,
             "description": "A human-readable description of the transaction."
           },
-          "entity_id": { "type": "string", "format": "uuid" },
+          "entity_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity that owns this resource."
+          },
           "entity_user_id": {
             "type": "string",
             "format": "uuid",
-            "description": "Identifier for the employee who made the payment, if applicable"
+            "description": "ID of the entity user who made the transaction, if applicable."
           },
           "external_id": {
             "type": "string",
@@ -69677,18 +69734,28 @@
           },
           "merchant_amount": {
             "type": "integer",
-            "description": "Original merchant transaction amount in minor units"
+            "description": "Original merchant transaction amount in minor units."
           },
           "merchant_currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code for the 'merchant_amount'."
+            "description": "ISO currency code for the `merchant_amount`."
           },
-          "merchant_location": { "type": "string", "maxLength": 128 },
-          "merchant_name": { "type": "string", "maxLength": 128 },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
           "partner_metadata": {
             "additionalProperties": { "type": "string" },
             "type": "object",
-            "description": "Extensible key-value pairs for storing additional, custom information."
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
           },
           "payment_method": {
             "$ref": "#/components/schemas/TransactionPaymentMethod"
@@ -69696,16 +69763,16 @@
           "started_at": {
             "type": "string",
             "format": "date-time",
-            "description": "The time when the transaction started"
+            "description": "Date and time when the transaction was initiated."
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
-            "description": "The current processing status of the transaction: 'created', 'pending', 'succeeded', 'refunded', 'failed', 'declined'.",
+            "description": "The current processing status of the transaction.",
             "default": "created"
           },
           "type": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
-            "description": "The nature of the transaction. e.g., 'capture', 'refund', 'cash_withdrawal', 'fee', 'adjustment', 'reversal'."
+            "description": "The nature of the transaction."
           }
         },
         "type": "object",
@@ -69719,6 +69786,7 @@
           "merchant_location",
           "merchant_name",
           "payment_method",
+          "started_at",
           "type"
         ]
       },
@@ -69738,7 +69806,8 @@
           }
         },
         "type": "object",
-        "required": ["data"]
+        "required": ["data"],
+        "description": "A paginated list of transactions."
       },
       "TransactionStatusEnum": {
         "type": "string",
@@ -69766,11 +69835,12 @@
         "properties": {
           "amount": {
             "type": "integer",
-            "description": "The transaction amount in minor units. Positive for in-flow, negative for out-flow"
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code"
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
           },
           "description": {
             "type": "string",
@@ -69780,7 +69850,7 @@
           "entity_user_id": {
             "type": "string",
             "format": "uuid",
-            "description": "Identifier for the employee who made the payment, if applicable"
+            "description": "ID of the entity user who made the transaction, if applicable."
           },
           "external_id": {
             "type": "string",
@@ -69789,18 +69859,28 @@
           },
           "merchant_amount": {
             "type": "integer",
-            "description": "Original merchant transaction amount in minor units"
+            "description": "Original merchant transaction amount in minor units."
           },
           "merchant_currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "ISO currency code for the 'merchant_amount'."
+            "description": "ISO currency code for the `merchant_amount`."
           },
-          "merchant_location": { "type": "string", "maxLength": 128 },
-          "merchant_name": { "type": "string", "maxLength": 128 },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
           "partner_metadata": {
             "additionalProperties": { "type": "string" },
             "type": "object",
-            "description": "Extensible key-value pairs for storing additional, custom information."
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
           },
           "payment_method": {
             "$ref": "#/components/schemas/TransactionPaymentMethod"
@@ -69808,16 +69888,16 @@
           "started_at": {
             "type": "string",
             "format": "date-time",
-            "description": "The time when the transaction started"
+            "description": "Date and time when the transaction was initiated."
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
-            "description": "The current processing status of the transaction: 'created', 'pending', 'succeeded', 'refunded', 'failed', 'declined'.",
+            "description": "The current processing status of the transaction.",
             "default": "created"
           },
           "type": {
             "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
-            "description": "The nature of the transaction. e.g., 'capture', 'refund', 'cash_withdrawal', 'fee', 'adjustment', 'reversal'."
+            "description": "The nature of the transaction."
           }
         },
         "type": "object"
