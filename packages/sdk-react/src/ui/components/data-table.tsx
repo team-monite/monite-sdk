@@ -44,8 +44,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-const PAGES_SIZES: number[] = [20, 50, 100] as const;
-const DEFAULT_PAGE_SIZE: number = 20 as const;
+const PAGES_SIZES: number[] = [20, 50, 100];
+const DEFAULT_PAGE_SIZE: number = 20;
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
