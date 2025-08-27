@@ -221,6 +221,8 @@ interface DataTableProps<TData, TValue> {
   // Controlled column filters state
   columnFilters?: ColumnFiltersState;
   onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
+  // Row click handler
+  onRowClick?: (row: TData) => void;
   // Custom no rows overlay component
   noRowsOverlay?: React.ComponentType;
 }
@@ -236,6 +238,7 @@ export function DataTable<TData, TValue>({
   onSortingChange: controlledOnSortingChange,
   columnFilters: controlledColumnFilters,
   onColumnFiltersChange: controlledOnColumnFiltersChange,
+  onRowClick,
   noRowsOverlay: NoRowsOverlay,
 }: DataTableProps<TData, TValue>) {
   const { i18n } = useLingui();
@@ -332,6 +335,7 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
                     className="mtw:hover:bg-muted/50 mtw:data-[state=selected]:bg-muted mtw:border-b mtw:border-border mtw:transition-colors"
+                    onClick={() => onRowClick?.(row.original)}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td
