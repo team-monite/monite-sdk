@@ -74,7 +74,7 @@ export const useTags = ({
         },
         body: values,
       }),
-    updateOcrAutoTagging: (tag_id: string, keywords: string[]) => {
+    updateOcrAutoTagging: (tag_id: string, keywords: string[] = []) => {
       const filteredTags = tagsWithKeywords.filter(
         (tag) => tag.tag_id !== tag_id
       );

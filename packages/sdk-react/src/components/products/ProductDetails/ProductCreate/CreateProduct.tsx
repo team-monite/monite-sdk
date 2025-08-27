@@ -14,9 +14,9 @@ import { DialogContent } from '@mui/material';
 
 import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
 import { ProductForm } from '../components/ProductForm';
-import { IProductFormSubmitValues, ProductFormValues } from '../validation';
+import { type ProductFormValues } from '../validation';
 
-const initialValues: ProductFormValues = {
+const initialValues: Partial<ProductFormValues> = {
   name: '',
   type: 'product',
   units: '',
@@ -46,7 +46,7 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       path: { entity_id: entityId },
     });
 
-  const defaultValues = useMemo<ProductFormValues>(() => {
+  const defaultValues = useMemo<Partial<ProductFormValues>>(() => {
     if (isLoadingUnits || isLoadingSettings) {
       return initialValues;
     }
@@ -81,7 +81,7 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       },
     });
 
-  const handleSubmit = async (values: IProductFormSubmitValues) => {
+  const handleSubmit = async (values: ProductFormValues) => {
     const payload: ProductServiceRequest = {
       name: values.name,
       type: values.type,
@@ -91,7 +91,7 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
         value:
           formatToMinorUnits(values.pricePerUnit, values.currency) ??
           values.pricePerUnit,
-        currency: values.currency,
+        currency: values.currency as CurrencyEnum,
       },
       description: values.description,
     };
@@ -154,4 +154,5 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
   );
 };
 
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type ProductServiceRequest = components['schemas']['ProductServiceRequest'];
