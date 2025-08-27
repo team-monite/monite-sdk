@@ -1,3 +1,4 @@
+import { TransactionDetails } from '../TransactionDetails';
 import { FILTER_TYPE_SEARCH, FILTER_TYPE_STARTED_AT } from './consts';
 import type { FilterTypes } from './types';
 import { components } from '@/api';
@@ -13,18 +14,24 @@ import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
 import { Skeleton } from '@/ui/components/skeleton';
 import { LoadingPage } from '@/ui/loadingPage';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const UserTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
+
+  const [selectedTransaction, setSelectedTransaction] = useState<
+    components['schemas']['TransactionResponse'] | undefined
+  >(undefined);
+  const [detailsModalOpened, setDetailsModalOpened] = useState<boolean>(false);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -212,6 +219,22 @@ export const UserTransactionsTable = () => {
       [i18n, locale.dateTimeFormat, receiptsByTransactionId, isReceiptsLoading]
     );
 
+  const openDetailsModal = useCallback(
+    (transaction: components['schemas']['TransactionResponse']) => {
+      if (hasSelectedText()) {
+        return;
+      }
+      setSelectedTransaction(transaction);
+      setDetailsModalOpened(true);
+    },
+    []
+  );
+
+  const closeDetailsModal = useCallback(() => {
+    setSelectedTransaction(undefined);
+    setDetailsModalOpened(false);
+  }, []);
+
   if (isReadSupportedLoading) {
     return <LoadingPage />;
   }
@@ -280,6 +303,7 @@ export const UserTransactionsTable = () => {
           sorting={sorting}
           onSortingChange={onSortingChange}
           pageCount={pageCount}
+          onRowClick={openDetailsModal}
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
@@ -301,6 +325,11 @@ export const UserTransactionsTable = () => {
           )}
         />
       </div>
+      <TransactionDetails
+        transaction={selectedTransaction}
+        open={detailsModalOpened}
+        onClose={closeDetailsModal}
+      />
     </div>
   );
 };
