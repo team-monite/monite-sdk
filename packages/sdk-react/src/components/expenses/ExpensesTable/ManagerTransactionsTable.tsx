@@ -1,3 +1,4 @@
+import { TransactionDetails } from '../TransactionDetails';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STARTED_AT,
@@ -23,18 +24,24 @@ import {
   SelectValue,
 } from '@/ui/components/select';
 import { LoadingPage } from '@/ui/loadingPage';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const ManagerTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
+
+  const [selectedTransaction, setSelectedTransaction] = useState<
+    components['schemas']['TransactionResponse'] | undefined
+  >(undefined);
+  const [detailsModalOpened, setDetailsModalOpened] = useState<boolean>(false);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -259,6 +266,22 @@ export const ManagerTransactionsTable = () => {
       [UserCell, i18n, locale.dateTimeFormat]
     );
 
+  const openDetailsModal = useCallback(
+    (transaction: components['schemas']['TransactionResponse']) => {
+      if (hasSelectedText()) {
+        return;
+      }
+      setSelectedTransaction(transaction);
+      setDetailsModalOpened(true);
+    },
+    []
+  );
+
+  const closeDetailsModal = useCallback(() => {
+    setSelectedTransaction(undefined);
+    setDetailsModalOpened(false);
+  }, []);
+
   if (isTransaxtionReadSupportedLoading || isUserReadSupportedLoading) {
     return <LoadingPage />;
   }
@@ -347,6 +370,7 @@ export const ManagerTransactionsTable = () => {
           sorting={sorting}
           onSortingChange={onSortingChange}
           pageCount={pageCount}
+          onRowClick={openDetailsModal}
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
@@ -370,6 +394,11 @@ export const ManagerTransactionsTable = () => {
           )}
         />
       </div>
+      <TransactionDetails
+        transaction={selectedTransaction}
+        open={detailsModalOpened}
+        onClose={closeDetailsModal}
+      />
     </div>
   );
 };
