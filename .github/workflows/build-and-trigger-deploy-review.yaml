@@ -25,12 +25,14 @@ jobs:
             echo "pullpreview label not found, skipping build and deploy"
           fi
 
-  build-sdk-react:
-    name: Build and Push sdk-react
+
+
+
+  build-sdk-demo-with-nextjs-and-clerk-auth:
+    name: Build and Push sdk-demo-with-nextjs-and-clerk-auth
     needs: check-label
     if: needs.check-label.outputs.has_label == 'true'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -50,37 +52,7 @@ jobs:
         run: |
           . $(werf ci-env github --as-file)
           werf export \
-            --config werf.react.yaml \
-            --parallel-tasks-limit=-1 \
-            --repo registry.monite.com/monite/frontend/sdkapp \
-            --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
-
-  build-sdk-demo:
-    name: Build and Push sdk-demo
-    needs: check-label
-    if: needs.check-label.outputs.has_label == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: werf/actions/install@v2
-        with:
-          version: v2.16.2
-
-      - name: Log in to GitLab Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: registry.monite.com
-          username: ${{ vars.GITLAB_BOT_USERNAME }}
-          password: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}
-
-      - name: Build and Push All Images
-        run: |
-          . $(werf ci-env github --as-file)
-          werf export \
-            --config werf.demo.yaml \
+            --config werf.nextjs-clerk.yaml \
             --parallel-tasks-limit=-1 \
             --repo registry.monite.com/monite/frontend/sdkapp \
             --tag registry.monite.com/monite/frontend/sdkapp:%image%-${{ github.sha }}
@@ -171,7 +143,7 @@ jobs:
     name: Trigger GitLab Deployment to Review
     runs-on: ubuntu-latest
     needs:
-      - build-sdk-demo
+      - build-sdk-demo-with-nextjs-and-clerk-auth
       - build-sdk-drop-in
       - build-sdk-playground
       - check-label
@@ -185,14 +157,12 @@ jobs:
           GITLAB_TOKEN="${{ secrets.GITLAB_TRIGGER_TOKEN }}"
 
           SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH="sdk-demo-with-nextjs-and-clerk-auth-${{ github.sha }}"
-          SDK_DEMO_NGINX="sdk-demo-nginx-${{ github.sha }}"
           SDK_DROP_IN_NGINX="sdk-drop-in-nginx-${{ github.sha }}"
           SDK_PLAYGROUND_NGINX="sdk-playground-nginx-${{ github.sha }}"
           NORMALIZED_GITHUB_BRANCH=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | cut -c1-63)
           echo "normalized_branch_name=$NORMALIZED_GITHUB_BRANCH" >> "$GITHUB_OUTPUT"
 
           echo "sdk-demo-with-nextjs-and-clerk-auth = $SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH"
-          echo "sdk-demo-nginx = $SDK_DEMO_NGINX"
           echo "sdk-drop-in-nginx = $SDK_DROP_IN_NGINX"
           echo "sdk-playground-nginx = $SDK_PLAYGROUND_NGINX"
           echo "$NORMALIZED_GITHUB_BRANCH"
@@ -202,7 +172,6 @@ jobs:
             --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
-            --form "variables[SDK_DEMO_NGINX]=${SDK_DEMO_NGINX}" \
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
             --form "variables[SDK_PLAYGROUND_NGINX]=${SDK_PLAYGROUND_NGINX}" \
             --form "variables[NORMALIZED_GITHUB_BRANCH]=${NORMALIZED_GITHUB_BRANCH}" \
@@ -225,7 +194,6 @@ jobs:
         with:
           message: |
             🚀 **Preview URLs are now available!** 🚀
-            - [SDK Demo](https://sdk-demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
             - [SDK Playground](https://sdk-pg-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
             - [SDK Drop in](https://cdn-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
             - [SDK with NextJS](https://demo-${{ env.NORMALIZED_GITHUB_BRANCH }}.review.monite.com)
