@@ -216,6 +216,6 @@ jobs:
 
           # Update pipeline name for better visibility
           curl --request PUT \
-            --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_BOT_ACCESS_TOKEN }}" \
+            --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
             --data "name=📚 Deploy Storybook from ${{ github.ref_name }}" \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/pipelines/${PIPELINE_ID}/metadata"
