@@ -19,4 +19,4 @@ USER app
 
 # Install dependencies and build storybook
 RUN yarn install --immutable
-RUN yarn build-storybook --filter='@monite/sdk-react'
+RUN yarn storybook:build --filter='@monite/sdk-react'
