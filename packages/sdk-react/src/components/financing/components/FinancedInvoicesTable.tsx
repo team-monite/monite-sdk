@@ -16,7 +16,7 @@ import {
   useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivableById } from '@/core/queries';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { Dialog } from '@/ui/Dialog';
@@ -86,7 +86,7 @@ const FinancedInvoicesTableBase = ({
   const [financedInvoice, setFinancedInvoice] = useState<
     components['schemas']['FinancingInvoice'] | null
   >(null);
-  const { data: invoice } = useReceivableById(
+  const { data: invoice } = useGetReceivableById(
     financedInvoice?.invoice_id ?? '',
     Boolean(financedInvoice?.invoice_id)
   );

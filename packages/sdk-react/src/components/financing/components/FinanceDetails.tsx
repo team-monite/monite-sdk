@@ -229,7 +229,7 @@ export const FinanceDetails = ({
             )`For ${invoiceAmount} | Issued ${issueDate}`}</Typography>
           </Box>
           <Box>
-            <InvoiceStatusChip icon status={invoice.status} />
+            <InvoiceStatusChip status={invoice.status} />
           </Box>
         </Box>
       </Box>

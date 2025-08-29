@@ -1,19 +1,17 @@
 import { ReactNode } from 'react';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  DialogContentText,
-  Stack,
-  styled,
-  CircularProgress,
-} from '@mui/material';
+import { Button } from '@/ui/components/button';
+import { LoadingSpinner } from '../loading';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from '@/ui/components/dialog';
 
 type BaseConfirmationModalProps = {
   open: boolean;
@@ -51,56 +49,34 @@ export const ConfirmationModal = ({
   isLoading = false,
 }: ConfirmationModalProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
 
   return (
     <Dialog
       open={open}
-      container={root}
-      onClose={onClose}
+      onOpenChange={onClose}
       aria-label={t(i18n)`Confirmation dialog`}
-      fullWidth
-      maxWidth="sm"
     >
-      <MoniteDialogTitle>{title}</MoniteDialogTitle>
-      <MoniteDialogContent>
-        {message ? <DialogContentText>{message}</DialogContentText> : children}
-      </MoniteDialogContent>
-      <MoniteDialogActions>
-        <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} autoFocus>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+
+        <DialogDescription>{message ? message : children}</DialogDescription>
+
+        <DialogFooter>
+          <Button onClick={onClose} variant="outline">
             {cancelLabel}
           </Button>
           <Button
-            color="error"
-            variant="contained"
             onClick={onConfirm}
             disabled={isLoading}
-            startIcon={
-              isLoading ? (
-                <CircularProgress size={20} color="inherit" />
-              ) : undefined
-            }
+            variant="destructive"
           >
+            {isLoading && <LoadingSpinner className="mtw:w-5 mtw:h-5 mtw:border-inherit mtw:border-t-transparent" />}
             {confirmLabel}
           </Button>
-        </Stack>
-      </MoniteDialogActions>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };
-
-const MoniteDialogTitle = styled(DialogTitle)(({ theme }) => ({
-  '&.MuiDialogTitle-root.MuiTypography-root': {
-    ...theme.typography.h3, // MUI v5 styles DialogTitle as H2. This is a workaround to apply H3 styles
-    padding: '2rem 2rem 1.5rem',
-  },
-}));
-
-const MoniteDialogContent = styled(DialogContent)(() => ({
-  padding: '1rem 2rem',
-}));
-
-const MoniteDialogActions = styled(DialogActions)(() => ({
-  padding: '1.7rem 2rem',
-}));

@@ -3,7 +3,6 @@ import { VirtuosoMockContext } from 'react-virtuoso';
 import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { receivableListFixture } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
-import { Dialog } from '@/ui/Dialog';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -29,13 +28,12 @@ const renderEmailInvoiceDetails = (props = {}) => {
       value={{ viewportHeight: 300, itemHeight: 50 }}
     >
       <RootElementsProvider>
-        <Dialog open={true}>
-          <EmailInvoiceDetails
-            invoiceId={mockInvoiceId}
-            onClose={jest.fn()}
-            {...props}
-          />
-        </Dialog>
+        <EmailInvoiceDetails
+          invoiceId={mockInvoiceId}
+          onClose={jest.fn()}
+          isOpen
+          {...props}
+        />
       </RootElementsProvider>
     </VirtuosoMockContext.Provider>,
     moniteSettings
