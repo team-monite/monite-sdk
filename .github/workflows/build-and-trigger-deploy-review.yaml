@@ -178,14 +178,16 @@ jobs:
             --form "variables[GITHUB_BRANCH]=${{ github.head_ref }}" \
             --form "variables[CI_PIPELINE_SOURCE]=pipeline" \
             --form "variables[CI_ACTION]=review_deploy" \
-            --write-out "%{http_code}" --silent --output /dev/null \
             "https://${REPO}/api/v4/projects/${PROJECT_ID}/trigger/pipeline")
 
-          echo "GitLab API response code: $RESPONSE"
-          if [[ "$RESPONSE" -ne 201 ]]; then
-            echo "GitLab pipeline trigger failed with response code $RESPONSE"
-            exit 1
-          fi
+          PIPELINE_ID=$(echo "$RESPONSE" | jq -r '.id')
+          echo "Created pipeline ID: $PIPELINE_ID"
+
+          # Update pipeline name for better visibility
+          curl --request PUT \
+            --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PUT_TOKEN }}" \
+            --data "name=🔄 Review Deploy from PR ${{ github.head_ref }}" \
+            "https://${REPO}/api/v4/projects/${PROJECT_ID}/pipelines/${PIPELINE_ID}/metadata"
 
       - name: Comment on PR with Preview URLs
         uses: thollander/actions-comment-pull-request@v3
