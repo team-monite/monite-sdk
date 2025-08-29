@@ -25,7 +25,7 @@ const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
       </h3>
       <p
         className={twMerge(
-          'mtw:text-sm mtw:font-regular mtw:leading-5',
+          'mtw:text-sm mtw:font-normal mtw:leading-5',
           status && status === 'overdue'
             ? 'mtw:text-danger-10'
             : 'mtw:text-neutral-50'
@@ -117,10 +117,10 @@ export const InvoiceDetailsTabContent = ({
             </thead>
             <tbody>
               {invoice?.line_items?.length > 0 &&
-                invoice?.line_items?.map((item) => {
+                invoice?.line_items?.map((item, index) => {
                   return (
                     <tr
-                      key={item?.product?.id}
+                      key={`${item?.product?.id}-${index}`}
                       className="mtw:border-b-1 mtw:border-border mtw:h-10 mtw:text-neutral-10 mtw:text-sm mtw:leading-5"
                     >
                       <td className="mtw:py-4 mtw:pr-2 mtw:font-medium">

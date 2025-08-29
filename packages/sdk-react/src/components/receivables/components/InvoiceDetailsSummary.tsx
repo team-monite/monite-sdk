@@ -20,7 +20,7 @@ const SummaryLine = ({
   return (
     <li
       className={twMerge(
-        'mtw:w-full mtw:flex mtw:gap-4 mtw:justify-between mtw:text-neutral-50 mtw:font-regular mtw:text-sm mtw:leading-5',
+        'mtw:w-full mtw:flex mtw:gap-4 mtw:justify-between mtw:text-neutral-50 mtw:font-normal mtw:text-sm mtw:leading-5',
         isBold && 'mtw:font-medium mtw:text-neutral-10'
       )}
     >
@@ -62,7 +62,7 @@ export const InvoiceDetailsSummary = ({
           return (
             <div
               key={vatRate?.id}
-              className="mtw:w-full mtw:flex mtw:gap-4 mtw:justify-between mtw:text-neutral-50 mtw:font-regular mtw:text-sm mtw:leading-5"
+              className="mtw:w-full mtw:flex mtw:gap-4 mtw:justify-between mtw:text-neutral-50 mtw:font-normal mtw:text-sm mtw:leading-5"
             >
               <span>{t(i18n)`Total tax (${rateMinorToMajor(
                 vatRate?.value
@@ -81,7 +81,7 @@ export const InvoiceDetailsSummary = ({
       <SummaryLine
         label={t(i18n)`Total (${invoice?.currency})`}
         value={formatCurrencyToDisplay(
-          invoice?.total_amount,
+          invoice?.total_amount ?? 0,
           invoice?.currency
         )}
         isBold
@@ -99,7 +99,7 @@ export const InvoiceDetailsSummary = ({
                     : '-'
                 }`}
                 value={formatCurrencyToDisplay(
-                  paymentRecord?.amount,
+                  paymentRecord?.amount ?? 0,
                   invoice?.currency
                 )}
               />
@@ -109,7 +109,7 @@ export const InvoiceDetailsSummary = ({
           <SummaryLine
             label={t(i18n)`Amount due (${invoice?.currency})`}
             value={formatCurrencyToDisplay(
-              invoice?.amount_due,
+              invoice?.amount_due ?? 0,
               invoice?.currency
             )}
             isBold

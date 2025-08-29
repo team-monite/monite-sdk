@@ -60,7 +60,7 @@ const PaymentCard = ({
           <h3 className="mtw:font-medium mtw:text-sm mtw:leading-5 mtw:text-neutral-10">
             {t(i18n)`Payment received`}
           </h3>
-          <p className="mtw:text-sm mtw:font-regular mtw:leading-5 mtw:text-neutral-50">
+          <p className="mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-50">
             {getPayedByText()} • {issueDate ? i18n.date(issueDate, locale.dateFormat) : t(i18n)`Unknown date`}
           </p>
         </div>
@@ -69,7 +69,7 @@ const PaymentCard = ({
           <h3 className="mtw:font-medium mtw:text-sm mtw:leading-5 mtw:text-neutral-10">
             {formatCurrencyToDisplay(totalAmount, currency)}
           </h3>
-          <p className="mtw:text-sm mtw:font-regular mtw:inline-flex mtw:items-center mtw:gap-1 mtw:leading-5 mtw:text-green-500">
+          <p className="mtw:text-sm mtw:font-normal mtw:inline-flex mtw:items-center mtw:gap-1 mtw:leading-5 mtw:text-green-500">
             {t(i18n)`Settled`}
             <CheckCircle className="mtw:text-inherit mtw:w-3.5 mtw:h-3.5" />
           </p>
@@ -157,7 +157,7 @@ export const InvoicePaymentsTabContent = ({
               })}
             </>
           ) : (
-            <p className="mtw:text-sm mtw:text-neutral-50 mtw:font-regular mtw:leading-5">
+            <p className="mtw:text-sm mtw:text-neutral-50 mtw:font-normal mtw:leading-5">
               {t(i18n)`No payments have been received for this invoice.`}
               <br />
               {getEmptyListMessage()}

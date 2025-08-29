@@ -1,6 +1,6 @@
 import { components, Services } from '@/api';
 import { API } from '@/api/client';
-import { GenericCounterpartContact } from '@/core/queries';
+import type { GenericCounterpartContact } from '@/core/queries';
 
 export type ReceivableFilterType = Pick<
   NonNullable<

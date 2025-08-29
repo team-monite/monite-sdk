@@ -42,7 +42,7 @@ export const PaymentRecordForm = ({
   const { control, handleSubmit, reset, setValue } =
     useForm<ManualPaymentRecordFormValues>({
       resolver: zodResolver(
-        manualPaymentRecordValidationSchema(i18n, invoice.amount_due)
+        manualPaymentRecordValidationSchema(i18n, invoice.amount_due / 100)
       ),
       defaultValues: useMemo(
         () =>
@@ -75,6 +75,7 @@ export const PaymentRecordForm = ({
                 name="amount"
                 placeholder="0"
                 control={control}
+                type="number"
                 sx={{
                   '::after': {
                     content: `"${currencySymbol}"`,

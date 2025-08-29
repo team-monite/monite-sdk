@@ -79,10 +79,10 @@ export const PreviewEmail = ({ invoiceId, body, subject }: PreviewEmailProps) =>
                                         {t(i18n)`Failed to generate email preview`}
                                     </h2>
                                     <div className="mtw:items-center">
-                                        <p className="mtw:text-sm mtw:font-regular mtw:leading-5">
+                                        <p className="mtw:text-sm mtw:font-normal mtw:leading-5">
                                             {t(i18n)`Please try to reload.`}
                                         </p>
-                                        <p className="mtw:text-sm mtw:font-regular mtw:leading-5">
+                                        <p className="mtw:text-sm mtw:font-normal mtw:leading-5">
                                             {t(i18n)`If the error recurs, contact support, please.`}
                                         </p>
                                     </div>

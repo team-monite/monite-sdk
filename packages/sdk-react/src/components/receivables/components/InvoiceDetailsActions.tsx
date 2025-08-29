@@ -44,8 +44,6 @@ type InvoiceDetailsActionsProps = {
   isPDFViewerOpen: boolean;
 };
 
-const PERMISSION_ERROR_MESSAGE = "You don't have permission to update this document. Please, contact your system administrator for details.";
-
 export const InvoiceDetailsActions = ({
   invoice,
   actions,
@@ -54,6 +52,8 @@ export const InvoiceDetailsActions = ({
   const { i18n } = useLingui();
   const [markAsUncollectibleModalOpen, setMarkAsUncollectibleModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const PERMISSION_ERROR_MESSAGE = t(i18n)`You don't have permission to update this document. Please, contact your system administrator for details.`;
 
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } = useIsActionAllowed({
     method: 'receivable',

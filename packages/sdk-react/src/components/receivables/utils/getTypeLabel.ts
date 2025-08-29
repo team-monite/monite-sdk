@@ -13,5 +13,7 @@ export const getTypeLabel = (
       return t(i18n)`Credit note`;
     case 'quote':
       return t(i18n)`Quote`;
+    default:
+      return t(i18n)`Receivable`;
   }
 };

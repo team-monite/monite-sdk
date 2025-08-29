@@ -56,7 +56,7 @@ export const InvoiceTotals = ({
       <TotalTableItem
         label={t(i18n)`Subtotal`}
         value={subtotalPrice}
-        className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
+        className="mtw:text-sm mtw:font-normal mtw:text-neutral-50"
       />
 
       {Object.entries(taxesByVatRate)?.length > 0 ? (
@@ -69,14 +69,14 @@ export const InvoiceTotals = ({
               actualCurrency || defaultCurrency || 'USD',
               true
             )?.toString()}
-            className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
+            className="mtw:text-sm mtw:font-normal mtw:text-neutral-50"
           />
         ))
       ) : (
         <TotalTableItem
           label={t(i18n)`Taxes total`}
           value={totalTaxes}
-          className="mtw:text-sm mtw:font-regular mtw:text-neutral-50"
+          className="mtw:text-sm mtw:font-normal mtw:text-neutral-50"
         />
       )}
 

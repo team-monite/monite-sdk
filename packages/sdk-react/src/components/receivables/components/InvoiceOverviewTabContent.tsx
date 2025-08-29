@@ -35,7 +35,7 @@ const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
       </h3>
       <p
         className={twMerge(
-          'mtw:text-sm mtw:font-regular mtw:leading-5',
+          'mtw:text-sm mtw:font-normal mtw:leading-5',
           status && status === 'overdue'
             ? 'mtw:text-danger-10'
             : 'mtw:text-neutral-50'
@@ -74,10 +74,10 @@ const DocumentCard = ({
         <div className="mtw:flex mtw:items-center mtw:gap-3 mtw:flex-1">
           <File />
           <div className="mtw:flex mtw:flex-col mtw:gap-0.5">
-            <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-regular mtw:leading-5">
+            <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-normal mtw:leading-5">
               {getTypeLabel(i18n, type)} {documentId}
             </h3>
-            <p className="mtw:text-neutral-50 mtw:text-sm mtw:font-regular mtw:leading-5">
+            <p className="mtw:text-neutral-50 mtw:text-sm mtw:font-normal mtw:leading-5">
               {formatCurrencyToDisplay(totalAmount, currency)} •{' '}
               {t(i18n)`${status === 'draft' ? 'Created' : 'Issued'}`}{' '}
               {i18n.date(issueDate, locale.dateFormat)}
@@ -163,7 +163,7 @@ export const InvoiceOverviewTabContent = ({
 
       <FinanceInvoice invoice={invoice} />
 
-      <Accordion type="multiple" className="w-full">
+      <Accordion type="multiple" className="mtw:w-full">
         <AccordionItem
           value="item-1"
           disabled={!creditNoteQuery?.data?.length}

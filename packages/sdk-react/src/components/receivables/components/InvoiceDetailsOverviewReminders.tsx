@@ -43,7 +43,7 @@ const TermItem = ({
             <div className="mtw:w-px mtw:h-1.5 mtw:bg-neutral-80" />
           )}
         </div>
-        <span className="mtw:text-neutral-10 mtw:text-sm mtw:font-regular mtw:leading-5">
+        <span className="mtw:text-neutral-10 mtw:text-sm mtw:font-normal mtw:leading-5">
           {term.reminderTerm}
         </span>
       </div>
@@ -168,7 +168,7 @@ export const InvoiceDetailsOverviewReminders = ({
             <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
               {t(i18n)`Recipients`}
             </h3>
-            <span className="mtw:text-sm mtw:font-regular mtw:leading-5">{defaultContact?.email ?? '-'}</span>
+            <span className="mtw:text-sm mtw:font-normal mtw:leading-5">{defaultContact?.email ?? '-'}</span>
           </div>
 
           <div className="mtw:flex mtw:flex-col mtw:flex-1">
@@ -197,7 +197,7 @@ export const InvoiceDetailsOverviewReminders = ({
                       <Calendar className="mtw:size-4 mtw:text-neutral-50" />
                       <div className="mtw:w-px mtw:h-1.5 mtw:bg-neutral-80" />
                     </div>
-                    <span className="mtw:text-neutral-50 mtw:text-sm mtw:font-regular mtw:leading-5">
+                    <span className="mtw:text-neutral-50 mtw:text-sm mtw:font-normal mtw:leading-5">
                       {t(i18n)`Due date`}
                     </span>
                   </div>

@@ -1713,7 +1713,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/components/InvoiceCancelModal.tsx:51
 #: src/components/receivables/components/InvoiceDeleteModal.tsx:75
 #: src/components/receivables/components/MarkAsUncollectibleModal.tsx:70
-#: src/components/receivables/components/PaymentRecordForm.tsx:139
+#: src/components/receivables/components/PaymentRecordForm.tsx:140
 #: src/components/receivables/components/RecordManualPaymentModal.tsx:144
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:548
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:684
@@ -2788,7 +2788,7 @@ msgstr "Dance Hall, Studios, Schools"
 msgid "Danish Krone"
 msgstr "Danish Krone"
 
-#: src/components/receivables/components/PaymentRecordForm.tsx:109
+#: src/components/receivables/components/PaymentRecordForm.tsx:110
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:60
 #: src/components/receivables/validation.ts:305
 msgid "Date"
@@ -3729,7 +3729,7 @@ msgstr "Enable update paid invoices pdf"
 msgid "End date"
 msgstr "End date"
 
-#: src/components/receivables/components/PaymentRecordForm.tsx:94
+#: src/components/receivables/components/PaymentRecordForm.tsx:95
 msgid "Enter full amount due of"
 msgstr "Enter full amount due of"
 
@@ -7521,6 +7521,7 @@ msgstr "Real Estate Agents and Managers - Rentals"
 msgid "Reason for Payment Code (Russia)"
 msgstr "Reason for Payment Code (Russia)"
 
+#: src/components/receivables/utils/getTypeLabel.ts:17
 #: src/components/userRoles/consts.ts:45
 msgid "Receivable"
 msgstr "Receivable"
@@ -7998,7 +7999,7 @@ msgstr "Saudi Riyal"
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/components/EditCounterpartModal.tsx:437
 #: src/components/receivables/components/EntityProfileModal.tsx:171
-#: src/components/receivables/components/PaymentRecordForm.tsx:148
+#: src/components/receivables/components/PaymentRecordForm.tsx:149
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:687
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:898
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
@@ -9142,7 +9143,7 @@ msgstr "thumb down"
 msgid "thumb up"
 msgstr "thumb up"
 
-#: src/components/receivables/components/PaymentRecordForm.tsx:116
+#: src/components/receivables/components/PaymentRecordForm.tsx:117
 #: src/components/receivables/validation.ts:306
 msgid "Time"
 msgstr "Time"
@@ -10273,6 +10274,10 @@ msgstr "You don't have permission to delete this document. Please, contact your 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:381
 #~ msgid "You don’t have permission to issue this document. Please, contact your system administrator for details."
 #~ msgstr "You don’t have permission to issue this document. Please, contact your system administrator for details."
+
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:56
+msgid "You don't have permission to update this document. Please, contact your system administrator for details."
+msgstr "You don't have permission to update this document. Please, contact your system administrator for details."
 
 #: src/ui/accessRestriction/AccessRestrictionModal.tsx:30
 msgid "You don't have permissions to view this page."

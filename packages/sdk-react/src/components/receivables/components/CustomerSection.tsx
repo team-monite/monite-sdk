@@ -57,6 +57,7 @@ export const CustomerSection = ({
     }
 
     if (selectedBillingAddressId && counterpartIdRef.current !== counterpart?.id) {
+      counterpartIdRef.current = counterpart?.id;
       const billingAddressId =
         counterpart?.default_billing_address_id ||
         (counterpartAddresses.data.length === 1
@@ -66,6 +67,7 @@ export const CustomerSection = ({
     }
 
     if (selectedShippingAddressId && counterpartIdRef.current !== counterpart?.id) {
+      counterpartIdRef.current = counterpart?.id;
       const shippingAddressId = counterpart?.default_shipping_address_id || '';
       setValue('default_shipping_address_id', shippingAddressId);
     }
