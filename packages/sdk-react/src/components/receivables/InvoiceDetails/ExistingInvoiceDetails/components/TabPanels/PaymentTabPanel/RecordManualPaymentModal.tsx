@@ -86,7 +86,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
         },
         payment_intent_id: invoice.id,
         entity_user_id: user?.id,
-        status: 'created',
+        status: 'succeeded',
       },
       {
         onSuccess: () => {
@@ -96,6 +96,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
             },
             queryClient
           );
+          api.receivables.getReceivables.invalidateQueries(queryClient);
           closeModal();
           resetForm();
         },

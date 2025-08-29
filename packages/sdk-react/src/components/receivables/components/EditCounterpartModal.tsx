@@ -54,6 +54,7 @@ export interface EditCounterpartModalProps {
   initialShippingAddressId?: string;
   open: boolean;
   onClose: () => void;
+  isEditProfileOpen?: boolean;
 }
 
 export const EditCounterpartModal = ({
@@ -63,11 +64,12 @@ export const EditCounterpartModal = ({
   disabled,
   open,
   onClose,
+  isEditProfileOpen = false,
 }: EditCounterpartModalProps) => {
   const { i18n } = useLingui();
   const { control, setValue } = useFormContext<CreateReceivablesFormProps>();
   const { root } = useRootElements();
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(isEditProfileOpen);
   const [currentCounterpartId, setCurrentCounterpartId] =
     useState(initialCounterpartId);
   const [formValues, setFormValues] = useState<FormValues>({
