@@ -17,6 +17,6 @@ RUN chown -R app:app /app
 # Switch to non-root user
 USER app
 
-# Install dependencies and build storybook
+# Install dependencies and build demo necessary for storybook
 RUN yarn install --immutable
-RUN yarn storybook:build --filter='@monite/sdk-react'
+RUN yarn build --filter='@team-monite/sdk-demo'
