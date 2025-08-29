@@ -1,4 +1,4 @@
-# Dockerfile.sdk-demo
+# Dockerfile.sdk-storybook
 FROM cimg/node:20.12.2
 
 # Temporarily switch to root to set up a non-root user
@@ -17,6 +17,6 @@ RUN chown -R app:app /app
 # Switch to non-root user
 USER app
 
-# Install dependencies and build
+# Install dependencies and build demo necessary for storybook
 RUN yarn install --immutable
 RUN yarn build --filter='@team-monite/sdk-demo'
