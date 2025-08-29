@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - DEV-16076-sdk-demo-remove
 
 jobs:
 
@@ -165,7 +164,7 @@ jobs:
 
           RESPONSE=$(curl --request POST \
             --form token="${GITLAB_TOKEN}" \
-            --form ref="DEV-16076-remove-sdk-demo" \
+            --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH]=${SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH}" \
             --form "variables[SDK_DROP_IN_NGINX]=${SDK_DROP_IN_NGINX}" \
@@ -203,7 +202,7 @@ jobs:
 
           RESPONSE=$(curl --request POST \
             --form token="${GITLAB_TOKEN}" \
-            --form ref="DEV-16076-remove-sdk-demo" \
+            --form ref="master" \
             --form "variables[GITHUB_SHA]=${{ github.sha }}" \
             --form "variables[SDK_STORYBOOK]=${SDK_STORYBOOK}" \
             --form "variables[GITHUB_BRANCH]=${{ github.ref_name }}" \
