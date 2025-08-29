@@ -1,5 +1,6 @@
 import { components, Services } from '@/api';
 import { API } from '@/api/client';
+import { GenericCounterpartContact } from '@/core/queries';
 
 export type ReceivableFilterType = Pick<
   NonNullable<
@@ -29,3 +30,8 @@ export type EntityBankAccountFields = Omit<
   country: components['schemas']['AllowedCountries'] | '';
   currency: components['schemas']['CurrencyEnum'] | '';
 };
+
+export type CounterpartOrganizationRootResponse =
+  components['schemas']['CounterpartOrganizationRootResponse'];
+
+export type Contact = GenericCounterpartContact;

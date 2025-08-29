@@ -291,3 +291,32 @@ export const getEntityProfileValidationSchema = (i18n: I18n) => {
 export type EntityProfileFormValues = z.infer<
   ReturnType<typeof getEntityProfileValidationSchema>
 >;
+
+export const manualPaymentRecordValidationSchema = (
+  i18n: I18n,
+  amount_due: number
+) =>
+  z.object({
+    amount: z
+      .number()
+      .meta({ title: t(i18n)`Amount` })
+      .min(0, t(i18n)`Can't be a negative number`)
+      .max(amount_due, t(i18n)`Can't be more than the amount due`),
+    payment_date: z.date().meta({ title: t(i18n)`Date` }),
+    payment_time: z.date().meta({ title: t(i18n)`Time` }),
+  });
+
+export type ManualPaymentRecordFormValues = z.infer<
+  ReturnType<typeof manualPaymentRecordValidationSchema>
+>;
+
+export const getEmailInvoiceDetailsSchema = (i18n: I18n) =>
+  z.object({
+    to: z.string().min(1, t(i18n)`To is required`),
+    subject: z.string().min(1, t(i18n)`Subject is required`),
+    body: z.string().min(1, t(i18n)`Body is required`),
+  });
+
+export type EmailInvoiceDetailsFormValues = z.infer<
+  ReturnType<typeof getEmailInvoiceDetailsSchema>
+>;

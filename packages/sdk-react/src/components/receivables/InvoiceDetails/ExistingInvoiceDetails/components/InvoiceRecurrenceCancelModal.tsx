@@ -3,7 +3,6 @@ import { usePreviousDistinct } from 'react-use';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useReceivableById } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { plural, t, Trans } from '@lingui/macro';
@@ -11,6 +10,7 @@ import { useLingui } from '@lingui/react';
 import { Typography } from '@mui/material';
 
 import deepEqual from 'deep-eql';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 
 export const InvoiceRecurrenceCancelModal = ({
   receivableId,
@@ -23,7 +23,7 @@ export const InvoiceRecurrenceCancelModal = ({
 }) => {
   const { i18n } = useLingui();
   const { data: receivable, isLoading: isReceivableLoading } =
-    useReceivableById(receivableId);
+    useGetReceivableById(receivableId);
 
   const { api, queryClient } = useMoniteContext();
 
