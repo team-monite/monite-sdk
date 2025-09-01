@@ -5,10 +5,11 @@ import {
   FILTER_TYPE_MERCHANT,
 } from './consts';
 import type { FilterTypes } from './types';
-import { components } from '@/api';
+import { type components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDataTableState } from '@/core/hooks';
+import { useDebounce } from '@/core/hooks/useDebounce';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceiptsByTransactionIds } from '@/core/queries/useReceiptsByTransactionIds';
@@ -30,7 +31,7 @@ import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export const UserTransactionsTable = () => {
   const { componentSettings, locale } = useMoniteContext();
@@ -74,6 +75,26 @@ export const UserTransactionsTable = () => {
       },
     },
   });
+
+  // Local state for search input (immediate UI update)
+  const [searchInputValue, setSearchInputValue] = useState(
+    filters[FILTER_TYPE_SEARCH] || ''
+  );
+
+  // Debounced search value (delayed API call)
+  const debouncedSearchValue = useDebounce(searchInputValue, 300);
+
+  // Update the actual filter when debounced value changes
+  useEffect(() => {
+    onFilterChange(FILTER_TYPE_SEARCH, debouncedSearchValue);
+  }, [debouncedSearchValue, onFilterChange]);
+
+  // Sync local input value with filter value when filter changes externally
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    setSearchInputValue(filters[FILTER_TYPE_SEARCH] || '');
+  }, [filters[FILTER_TYPE_SEARCH]]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const {
     transactions,
@@ -211,7 +232,7 @@ export const UserTransactionsTable = () => {
 
             if (!receipt) {
               return (
-                <span className="mtw:text-neutral-70">{t(
+                <span className="mtw:text-muted-foreground">{t(
                   i18n
                 )`Not matched`}</span>
               );
@@ -266,10 +287,8 @@ export const UserTransactionsTable = () => {
       <div className="mtw:flex mtw:items-center mtw:flex-shrink-0 mtw:gap-4 mtw:justify-between">
         <Input
           placeholder={t(i18n)`Search by merchant`}
-          value={filters[FILTER_TYPE_SEARCH] || ''}
-          onChange={(event) =>
-            onFilterChange(FILTER_TYPE_SEARCH, event.target.value)
-          }
+          value={searchInputValue}
+          onChange={(event) => setSearchInputValue(event.target.value)}
           className="mtw:max-w-sm"
         />
         <div className="mtw:flex mtw:items-center mtw:shrink mtw:gap-2 mtw:justify-between">
