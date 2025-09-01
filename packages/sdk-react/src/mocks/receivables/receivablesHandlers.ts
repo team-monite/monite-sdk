@@ -1,17 +1,15 @@
+import { getMockPagination } from '../utils';
 import { components } from '@/api';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import {
   receivableListFixture,
   ReceivablesListFixture,
   receivableContactsFixture,
   receivablePreviewFixture,
 } from '@/mocks';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { faker } from '@faker-js/faker';
-
 import { http, HttpResponse, delay } from 'msw';
 import { z } from 'zod';
-
-import { getMockPagination } from '../utils';
 
 const RECEIVABLES_ENDPOINT = 'receivables';
 
@@ -25,7 +23,7 @@ const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
 const createInvoiceValidationSchema = z.object({
-  type: z.string().refine((v) => v in receivableListFixture, {
+  type: z.string().refine((v) => receivableListFixture.hasOwnProperty(v), {
     message: 'Unsupported receivable type',
   }),
   currency: z.enum(CurrencyEnum),
