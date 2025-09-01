@@ -3,7 +3,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
-import { FileViewer } from '@/ui/FileViewer';
+import { ImageFileViewer } from '@/ui/FileViewer';
 import {
   SheetContent,
   SheetHeader,
@@ -32,7 +32,8 @@ export const TransactionDetails = (props: TagFormModalProps) => (
  * Helper function to determine mimetype from file URL
  */
 const getMimetypeFromUrl = (url: string): string => {
-  const extension = url.split('.').pop()?.toLowerCase();
+  const clean = url.split('#')[0].split('?')[0];
+  const extension = clean.split('.').pop()?.toLowerCase();
   switch (extension) {
     case 'pdf':
       return 'application/pdf';
@@ -138,11 +139,15 @@ const TransactionDetailsBase = ({
                 {receipt ? (
                   <div className="mtw:border mtw:border-gray-200 mtw:rounded-xl mtw:p-4 mtw:flex mtw:items-center mtw:gap-6">
                     {receipt.file_url && (
-                      <div className="mtw:w-14 mtw:h-14 mtw:overflow-hidden mtw:rounded-lg mtw:border mtw:border-gray-200 mtw:flex mtw:items-center mtw:justify-center">
-                        <FileViewer
-                          url={receipt.file_url}
-                          mimetype={getMimetypeFromUrl(receipt.file_url)}
-                        />
+                      <div className="mtw:w-14 mtw:h-14 mtw:overflow-hidden mtw:rounded-lg mtw:border mtw:bg-gray-200 mtw:border-gray-200 mtw:flex mtw:items-center mtw:justify-center">
+                        {/* // TODO: only show image if not pdf; once PDF image previews are implemented, refactor the condition */}
+                        {getMimetypeFromUrl(receipt.file_url) !==
+                          'application/pdf' && (
+                          <ImageFileViewer
+                            url={receipt.file_url}
+                            name={receipt.document_id || ''}
+                          />
+                        )}
                       </div>
                     )}
                     <div className="mtw:flex mtw:flex-col mtw:gap-1 mtw:flex-1">
