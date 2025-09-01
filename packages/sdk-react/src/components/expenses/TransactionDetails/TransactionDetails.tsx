@@ -69,7 +69,14 @@ const TransactionDetailsBase = ({
 
   return (
     <>
-      <Sheet open={open} onOpenChange={onClose}>
+      <Sheet
+        open={open}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            onClose?.();
+          }
+        }}
+      >
         <SheetContent container={root} className="mtw:w-[600px]">
           <SheetHeader>
             <SheetTitle>{t(i18n)`Expense`}</SheetTitle>
