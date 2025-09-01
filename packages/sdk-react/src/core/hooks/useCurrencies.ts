@@ -3,6 +3,10 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { 
+  fromMinorUnitsWithCurrency, 
+  toMinorUnitsWithCurrency 
+} from '@/core/utils/currency';
 import { useLingui } from '@lingui/react';
 
 import { useMoniteContext } from '../context/MoniteContext';
@@ -57,17 +61,7 @@ export const useCurrencies = () => {
    */
   const formatFromMinorUnits = useCallback(
     (amount: number, currency: CurrencyEnum | string): number | null => {
-      const currencyData = currencyList && currencyList[currency];
-
-      if (currencyData) {
-        return Number(
-          (amount / Math.pow(10, currencyData.minor_units)).toFixed(
-            currencyData.minor_units
-          )
-        );
-      }
-
-      return null;
+      return fromMinorUnitsWithCurrency(amount, currency, currencyList);
     },
     [currencyList]
   );
@@ -81,15 +75,9 @@ export const useCurrencies = () => {
   const formatToMinorUnits = useCallback(
     (
       amount: string | number,
-      currency: CurrencyEnum | string
+      currency: CurrencyEnum
     ): number | null => {
-      const currencyData = currencyList && currencyList[currency];
-
-      if (currencyData) {
-        return Number(amount) * Math.pow(10, currencyData.minor_units);
-      }
-
-      return null;
+      return toMinorUnitsWithCurrency(amount, currency, currencyList);
     },
     [currencyList]
   );

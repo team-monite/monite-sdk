@@ -1,11 +1,11 @@
+import { fromMinorUnits, toMinorUnits } from '@/core/utils/currency';
+
 /**
  * Converts a rate from minor units (API format) to major units (UI display format)
  * Example: 2000 -> 20
  * @param rateMinor The rate value in minor units (as received from API)
  * @returns The rate value in major units (for UI display)
  */
-import { fromMinorUnits, toMinorUnits } from '@/core/utils/currency';
-
 export const rateMinorToMajor = (rateMinor: number): number => {
   return fromMinorUnits(rateMinor);
 };

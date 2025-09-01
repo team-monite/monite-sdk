@@ -2,6 +2,8 @@ import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+import { fromMinorUnits, toMinorUnits } from './currency';
+
 export type CurrenciesType = Record<CurrencyEnum, string>;
 
 export type CurrencyType = {
@@ -378,21 +380,25 @@ export const sortCurrencyOptionsByGroup = (
 };
 
 /**
- * Converts a rate from minor units (API format) to major units (UI display format)
+ * Converts a currency rate from minor units (API format) to major units (UI display format)
  * Example: 2000 -> 20
+ * Uses core currency conversion utilities for consistency and precision.
+ * Rates always use 2 decimal places.
  * @param rateMinor The rate value in minor units (as received from API)
  * @returns The rate value in major units (for UI display)
  */
 export const rateMinorToMajor = (rateMinor: number): number => {
-  return rateMinor / 100;
+  return fromMinorUnits(rateMinor, 2);
 };
 
 /**
- * Converts a rate from major units (UI display format) to minor units (API format)
+ * Converts a currency rate from major units (UI display format) to minor units (API format)
  * Example: 20 -> 2000
+ * Uses core currency conversion utilities for consistency and precision.
+ * Rates always use 2 decimal places.
  * @param rateMajor The rate value in major units (from UI)
  * @returns The rate value in minor units (for API)
  */
 export const rateMajorToMinor = (rateMajor: number): number => {
-  return rateMajor * 100;
+  return toMinorUnits(rateMajor, 2);
 };
