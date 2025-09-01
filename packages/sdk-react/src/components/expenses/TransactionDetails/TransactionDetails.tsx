@@ -2,6 +2,7 @@ import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useCurrencies } from '@/core/hooks';
 import { FileViewer } from '@/ui/FileViewer';
 import {
   SheetContent,
@@ -53,6 +54,7 @@ const TransactionDetailsBase = ({
   const { i18n } = useLingui();
   const { api, locale } = useMoniteContext();
   const { root } = useRootElements();
+  const { formatFromMinorUnits } = useCurrencies();
 
   const { data: receiptsResponse } = api.receipts.getReceipts.useQuery(
     {
@@ -113,10 +115,16 @@ const TransactionDetailsBase = ({
                     {
                       label: t(i18n)`Amount`,
                       value: transaction?.amount
-                        ? i18n.number(transaction?.amount, {
-                            style: 'currency',
-                            currency: transaction?.currency || 'USD',
-                          })
+                        ? i18n.number(
+                            formatFromMinorUnits(
+                              transaction?.amount,
+                              transaction?.currency
+                            ) || 0,
+                            {
+                              style: 'currency',
+                              currency: transaction?.currency,
+                            }
+                          )
                         : '-',
                     },
                   ]}
