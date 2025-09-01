@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 // react-pdf-viewer styles are imported in app.css to avoid conflicts when using Dropin
@@ -15,18 +13,27 @@ import {
   RenderCurrentPageLabelProps,
 } from '@react-pdf-viewer/page-navigation';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
+import { useRef } from 'react';
 
 interface FileViewerProps {
   url: string;
   mimetype: string;
   name?: string;
-  pdfHeight?: number | string;
-  showPdfToolbar?: number;
 }
 
 export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
   if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
 
+  return <ImageFileViewer url={url} name={name || ''} />;
+};
+
+export const ImageFileViewer = ({
+  url,
+  name,
+}: {
+  url: string;
+  name: string;
+}) => {
   return (
     <img
       className="Monite-ImageFileViewer"
@@ -38,7 +45,7 @@ export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
   );
 };
 
-const PdfFileViewer = ({ url }: { url: string }) => {
+export const PdfFileViewer = ({ url }: { url: string }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
