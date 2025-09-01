@@ -4,7 +4,7 @@ import { keepPreviousData } from '@tanstack/react-query';
 
 export const useGetTransactions = (
   query: Services['transactions']['getTransactions']['types']['parameters']['query'],
-  enabled: boolean
+  enabled: boolean = true
 ) => {
   const { api } = useMoniteContext();
 
