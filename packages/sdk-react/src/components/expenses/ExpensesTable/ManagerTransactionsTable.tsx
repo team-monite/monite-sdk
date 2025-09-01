@@ -9,7 +9,7 @@ import { components } from '@/api';
 import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDataTableState } from '@/core/hooks';
+import { useCurrencies, useDataTableState } from '@/core/hooks';
 import { useDebounce } from '@/core/hooks/useDebounce';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -36,6 +36,7 @@ export const ManagerTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { formatFromMinorUnits } = useCurrencies();
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -264,10 +265,16 @@ export const ManagerTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(row.original.amount, {
-              style: 'currency',
-              currency: row.original.currency || 'USD',
-            });
+            const formattedAmount = i18n.number(
+              formatFromMinorUnits(
+                row.original.amount,
+                row.original.currency
+              ) || 0,
+              {
+                style: 'currency',
+                currency: row.original.currency,
+              }
+            );
             return formattedAmount;
           },
         },
