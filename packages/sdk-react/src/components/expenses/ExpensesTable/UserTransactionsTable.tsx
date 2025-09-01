@@ -1,3 +1,4 @@
+import { useGetTransactions } from '../hooks/useTransactions';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STARTED_AT,
@@ -27,13 +28,12 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
-import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useEffect, useMemo } from 'react';
 
 export const UserTransactionsTable = () => {
-  const { api, componentSettings, locale } = useMoniteContext();
+  const { componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -76,41 +76,37 @@ export const UserTransactionsTable = () => {
   });
 
   const {
-    data: transactions,
+    transactions,
+    response: transactionsResponse,
     isLoading,
     error,
     refetch,
-  } = api.transactions.getTransactions.useQuery(
+  } = useGetTransactions(
     {
-      query: {
-        sort: sortModel.field,
-        order: sortModel.sort,
-        limit: pagination.pageSize,
-        // Don't use pagination token when we have a search term and we're on the first page
-        pagination_token:
-          filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
-            ? undefined
-            : currentPaginationToken || undefined,
-        entity_user_id__in: user?.id ? [user.id] : undefined,
-        merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
-        started_at__gt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
-          : undefined,
-        started_at__lt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
-          : undefined,
-      },
+      sort: sortModel.field,
+      order: sortModel.sort,
+      limit: pagination.pageSize,
+      // Don't use pagination token when we have a search term and we're on the first page
+      pagination_token:
+        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+          ? undefined
+          : currentPaginationToken || undefined,
+      entity_user_id__in: user?.id ? [user.id] : undefined,
+      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+      started_at__gt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
+        : undefined,
+      started_at__lt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
+        : undefined,
     },
-    {
-      enabled: isReadSupported === true,
-      placeholderData: keepPreviousData,
-    }
+    isReadSupported === true
   );
 
   // Update the pagination hook with the latest API response
   useEffect(() => {
-    updateApiResponse(transactions);
-  }, [transactions, updateApiResponse]);
+    updateApiResponse(transactionsResponse);
+  }, [transactionsResponse, updateApiResponse]);
 
   // Clear merchant filter when other filters change
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -127,29 +123,29 @@ export const UserTransactionsTable = () => {
 
   // Extract transaction IDs for receipts query
   const transactionIds = useMemo(() => {
-    if (!transactions?.data) return [];
-    return transactions.data.map((transaction) => transaction.id);
-  }, [transactions?.data]);
+    if (!transactions) return [];
+    return transactions.map((transaction) => transaction.id);
+  }, [transactions]);
 
   // Extract unique merchants from transactions for the filter dropdown
   const uniqueMerchants = useMemo(() => {
-    if (!transactions?.data) return [];
-    const merchants = transactions.data
+    if (!transactions) return [];
+    const merchants = transactions
       .map((transaction) => transaction.merchant_name)
       .filter((name): name is string => !!name);
     return [...new Set(merchants)].sort();
-  }, [transactions?.data]);
+  }, [transactions]);
 
   // Filter transactions by merchant if merchant filter is applied
   const filteredTransactions = useMemo(() => {
-    if (!transactions?.data || !filters[FILTER_TYPE_MERCHANT]) {
-      return transactions?.data || [];
+    if (!transactions || !filters[FILTER_TYPE_MERCHANT]) {
+      return transactions || [];
     }
-    return transactions.data.filter(
+    return transactions.filter(
       (transaction) =>
         transaction.merchant_name === filters[FILTER_TYPE_MERCHANT]
     );
-  }, [filters, transactions?.data]);
+  }, [filters, transactions]);
 
   // Fetch receipts for the transaction IDs
   const { receiptsByTransactionId, isLoading: isReceiptsLoading } =

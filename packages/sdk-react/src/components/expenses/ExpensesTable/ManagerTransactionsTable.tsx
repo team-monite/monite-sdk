@@ -1,3 +1,4 @@
+import { useGetTransactions } from '../hooks/useTransactions';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STARTED_AT,
@@ -26,7 +27,6 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
-import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useEffect, useMemo } from 'react';
@@ -85,59 +85,54 @@ export const ManagerTransactionsTable = () => {
   });
 
   const {
-    data: transactions,
+    transactions,
+    response: transactionsResponse,
     isLoading,
     error,
     refetch,
-  } = api.transactions.getTransactions.useQuery(
+  } = useGetTransactions(
     {
-      query: {
-        sort: sortModel.field,
-        order: sortModel.sort,
-        limit: pagination.pageSize,
-        // Don't use pagination token when we have a search term and we're on the first page
-        pagination_token:
-          filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
-            ? undefined
-            : currentPaginationToken || undefined,
-        merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
-        started_at__gt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
-          : undefined,
-        started_at__lt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
-          : undefined,
-        entity_user_id__in: filters[FILTER_TYPE_USER]
-          ? [filters[FILTER_TYPE_USER]]
-          : undefined,
-      },
+      sort: sortModel.field,
+      order: sortModel.sort,
+      limit: pagination.pageSize,
+      // Don't use pagination token when we have a search term and we're on the first page
+      pagination_token:
+        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+          ? undefined
+          : currentPaginationToken || undefined,
+      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+      started_at__gt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
+        : undefined,
+      started_at__lt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
+        : undefined,
+      entity_user_id__in: filters[FILTER_TYPE_USER]
+        ? [filters[FILTER_TYPE_USER]]
+        : undefined,
     },
-    {
-      enabled:
-        isTransactionReadSupported === true && isUserReadSupported === true,
-      placeholderData: keepPreviousData,
-    }
+    isTransactionReadSupported === true && isUserReadSupported === true
   );
 
   // Update the pagination hook with the latest API response
   useEffect(() => {
-    updateApiResponse(transactions);
-  }, [transactions, updateApiResponse]);
+    updateApiResponse(transactionsResponse);
+  }, [transactionsResponse, updateApiResponse]);
 
   // Extract unique user IDs from transactions data
   const uniqueUserIds = useMemo(() => {
-    if (!transactions?.data) return [];
+    if (!transactions) return [];
 
     const userIds = new Set<string>();
 
-    transactions.data.forEach((transaction) => {
+    transactions.forEach((transaction) => {
       if (transaction.entity_user_id) {
         userIds.add(transaction.entity_user_id);
       }
     });
 
     return Array.from(userIds);
-  }, [transactions?.data]);
+  }, [transactions]);
 
   // Fetch user details for the unique user IDs
   const { data: usersData } = api.entityUsers.getEntityUsers.useQuery(
@@ -340,7 +335,7 @@ export const ManagerTransactionsTable = () => {
       <div className="mtw:flex-1 mtw:min-h-0">
         <DataTable
           columns={columns}
-          data={transactions?.data || []}
+          data={transactions || []}
           loading={isLoading}
           pagination={pagination}
           onPaginationChange={onPaginationChange}
@@ -350,7 +345,7 @@ export const ManagerTransactionsTable = () => {
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
-              dataLength={transactions?.data.length || 0}
+              dataLength={transactions?.length || 0}
               isFiltering={
                 !!filters[FILTER_TYPE_STARTED_AT] || !!filters[FILTER_TYPE_USER]
               }
