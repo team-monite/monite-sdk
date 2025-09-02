@@ -53,16 +53,16 @@ export const entityDocumentsSchema = (
   i18n: I18n
 ): ValidationSchema<EntityDocumentsSchema> => ({
   verification_document_front: stringValidator().describe(
-    t(i18n)`Front of your identify document`
+    t(i18n)`Front of your identity document`
   ),
   verification_document_back: stringValidator().describe(
-    t(i18n)`Back of your identify document`
+    t(i18n)`Back of your identity document`
   ),
   additional_verification_document_front: stringValidator().describe(
-    t(i18n)`Front of your additional identify document`
+    t(i18n)`Front of your additional identity document`
   ),
   additional_verification_document_back: stringValidator().describe(
-    t(i18n)`Back of your additional identify document`
+    t(i18n)`Back of your additional identity document`
   ),
 });
 
@@ -78,16 +78,16 @@ export const personDocumentsSchema = (
   i18n: I18n
 ): ValidationSchema<PersonDocumentsSchema> => ({
   verification_document_front: stringValidator().describe(
-    t(i18n)`Front of your identify document`
+    t(i18n)`Front of your identity document`
   ),
   verification_document_back: stringValidator().describe(
-    t(i18n)`Back of your identify document`
+    t(i18n)`Back of your identity document`
   ),
   additional_verification_document_front: stringValidator().describe(
-    t(i18n)`Front of your additional identify document`
+    t(i18n)`Front of your additional identity document`
   ),
   additional_verification_document_back: stringValidator().describe(
-    t(i18n)`Back of your additional identify document`
+    t(i18n)`Back of your additional identity document`
   ),
 });
 
