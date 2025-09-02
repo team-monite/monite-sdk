@@ -66,14 +66,14 @@ export const ReminderSectionContent = ({
             <span>
               {t(
                 i18n
-              )`You can't set reminders because they are disabled for this customer. You can enable them in the customer details.`}
+              )`Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`}
             </span>
           )}
           {!hasValidReminderEmail && (
             <span>
               {t(
                 i18n
-              )`There's no default email address added for the selected customer. Please, add it to send reminders.`}
+              )`No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`}
             </span>
           )}
 

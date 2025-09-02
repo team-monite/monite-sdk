@@ -6087,6 +6087,10 @@ msgstr "No Credit Notes"
 #~ msgid "No default email for selected Counterpart. Reminders will not be sent."
 #~ msgstr "No default email for selected Counterpart. Reminders will not be sent."
 
+#: src/components/receivables/components/ReminderSectionContent.tsx:74
+msgid "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
+msgstr "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
+
 #: src/core/hooks/useFileInput.tsx:84
 msgid "No file provided"
 msgstr "No file provided"
@@ -6693,6 +6697,10 @@ msgstr "Payment reminder error"
 #: src/components/receivables/components/RemindersSection.tsx:44
 msgid "Payment reminders"
 msgstr "Payment reminders"
+
+#: src/components/receivables/components/ReminderSectionContent.tsx:67
+msgid "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
+msgstr "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle.tsx:30
 msgid "Payment reminders will be sent automatically to this counterpart."
@@ -8789,8 +8797,8 @@ msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
 
 #: src/components/receivables/components/ReminderSectionContent.tsx:74
-msgid "There's no default email address added for the selected customer. Please, add it to send reminders."
-msgstr "There's no default email address added for the selected customer. Please, add it to send reminders."
+#~ msgid "There's no default email address added for the selected customer. Please, add it to send reminders."
+#~ msgstr "There's no default email address added for the selected customer. Please, add it to send reminders."
 
 #: src/components/financing/components/FinanceBanner.tsx:208
 msgid "They will contact you if your credit score improves and you can reapply."
@@ -9920,8 +9928,8 @@ msgid "You can’t delete a default account. To delete a default bank account, y
 msgstr "You can’t delete a default account. To delete a default bank account, you must first assign a new default account for the same currency."
 
 #: src/components/receivables/components/ReminderSectionContent.tsx:67
-msgid "You can't set reminders because they are disabled for this customer. You can enable them in the customer details."
-msgstr "You can't set reminders because they are disabled for this customer. You can enable them in the customer details."
+#~ msgid "You can't set reminders because they are disabled for this customer. You can enable them in the customer details."
+#~ msgstr "You can't set reminders because they are disabled for this customer. You can enable them in the customer details."
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:71
 msgid "You can't undo this action."

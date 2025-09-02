@@ -298,13 +298,13 @@ const CreateReceivablesBase = ({
     }
     
     if (!customerHasRemindersEnabled && (values.payment_reminder_id || values.overdue_reminder_id)) {
-      showErrorToast(new Error("Selected customer doesn't have reminders enabled. Please turn off payment reminders or enable it for the selected customer to proceed."));
+      showErrorToast(new Error("Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."));
 
       return;
     }
 
     if (!customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
-      showErrorToast(new Error("Selected customer doesn't have a default email address. Please turn off payment reminders or add a default email address to proceed."));
+      showErrorToast(new Error("No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."));
 
       return;
     }
