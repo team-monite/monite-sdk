@@ -1,3 +1,4 @@
+import { ReceiptPreview } from '../ReceiptPreview';
 import { TransactionDetails } from '../TransactionDetails';
 import { useGetTransactions } from '../hooks/useTransactions';
 import {
@@ -16,6 +17,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceiptsByTransactionIds } from '@/core/queries/useReceiptsByTransactionIds';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
 import {
@@ -45,6 +47,9 @@ export const UserTransactionsTable = () => {
     components['schemas']['TransactionResponse'] | undefined
   >(undefined);
   const [detailsModalOpened, setDetailsModalOpened] = useState<boolean>(false);
+  const [receiptPreviewReceipt, setReceiptPreviewReceipt] = useState<
+    components['schemas']['ReceiptResponseSchema'] | undefined
+  >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -248,22 +253,21 @@ export const UserTransactionsTable = () => {
 
             if (receipt.file_url) {
               return (
-                <a
-                  href={receipt.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mtw:text-primary mtw:hover:underline"
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setReceiptPreviewReceipt(receipt);
+                  }}
+                  className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:p-0 mtw:h-5"
                 >
-                  {t(i18n)`View Receipt ${receipt.document_id}`}
-                </a>
+                  {t(i18n)`Receipt ${receipt.document_id}`}
+                </Button>
               );
             }
 
-            return (
-              <span className="">
-                {t(i18n)`Receipt ${receipt.document_id}`}
-              </span>
-            );
+            return <span>{t(i18n)`Receipt ${receipt.document_id}`}</span>;
           },
           enableSorting: false,
         },
@@ -429,6 +433,17 @@ export const UserTransactionsTable = () => {
         open={detailsModalOpened}
         onClose={closeDetailsModal}
       />
+      {receiptPreviewReceipt && (
+        <ReceiptPreview
+          receipt={receiptPreviewReceipt}
+          isOpen={!!receiptPreviewReceipt}
+          setIsOpen={(isOpen) => {
+            if (!isOpen) {
+              setReceiptPreviewReceipt(undefined);
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
