@@ -52,7 +52,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const closeModal = () => setModalOpen(false);
 
   const { api, queryClient } = useMoniteContext();
-  const createPaymentRecord = useCreatePaymentRecord();
+  const { mutate: createPaymentRecord, isPending: isCreatingPaymentRecord } = useCreatePaymentRecord();
   const { data: user, isLoading: isLoadingUser } = useEntityUserByAuthToken();
 
   const showConfirmation = (data: PaymentRecordFormValues) => {
@@ -75,7 +75,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
 
     const paid_at = new Date(dateTimeWithReplacedTime);
 
-    createPaymentRecord.mutate(
+    createPaymentRecord(
       {
         amount: formValues?.amount ?? 0,
         currency: invoice.currency,
@@ -103,7 +103,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
       }
     );
   };
-  const isLoading = createPaymentRecord.isPending || isLoadingUser;
+  const isLoading = isCreatingPaymentRecord || isLoadingUser;
 
   if (
     [
@@ -146,11 +146,12 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
                   variant="outlined"
+                  disabled={isLoading}
                   onClick={() => setConfirmSubmission(false)}
                 >
                   {t(i18n)`Edit record`}
                 </Button>
-                <Button variant="contained" onClick={createManualPaymentRecord}>
+                <Button variant="contained" disabled={isLoading} onClick={createManualPaymentRecord}>
                   {t(i18n)`Confirm`}
                 </Button>
               </Box>

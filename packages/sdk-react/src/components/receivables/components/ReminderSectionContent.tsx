@@ -62,18 +62,26 @@ export const ReminderSectionContent = ({
     {shouldShowAlert && (
       <Alert severity="warning">
         <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
-          {!counterpart?.reminders_enabled && (
+          {!counterpart?.reminders_enabled && hasValidReminderEmail && (
             <span>
               {t(
                 i18n
               )`Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`}
             </span>
           )}
-          {!hasValidReminderEmail && (
+          {!hasValidReminderEmail && counterpart?.reminders_enabled && (
             <span>
               {t(
                 i18n
               )`No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`}
+            </span>
+          )}
+          
+          {!hasValidReminderEmail && !counterpart?.reminders_enabled && (
+            <span>
+              {t(
+                i18n
+              )`Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.`}
             </span>
           )}
 
