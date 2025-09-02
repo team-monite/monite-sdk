@@ -32,7 +32,6 @@
     "@mui/material": "~5.15.14",
     "@mui/material-nextjs": "^5.15.11",
     "@radix-ui/react-select": "~2.2.5",
-    "@team-monite/sdk-demo": "workspace:~",
     "@types/node": "20.3.1",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
