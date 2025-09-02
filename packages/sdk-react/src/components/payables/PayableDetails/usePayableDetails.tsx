@@ -1098,8 +1098,7 @@ export function usePayableDetails({
             refetchPayable();
             refetchPaymentRecords();
           },
-          reject: (error?: unknown, options?: { showToast?: boolean }) => {
-            if (error) console.error('Custom pay rejected', error);
+          reject: (_error?: unknown, options?: { showToast?: boolean }) => {
             if (options?.showToast) toast.error(t(i18n)`Payment failed or cancelled`);
 
             refetchPayable();

@@ -46,8 +46,31 @@ export interface ReceivableEventPayload extends BaseEventPayload {
   response?: APISchema.components['schemas']['EntityBankAccountResponse'];
 }
 
+/**
+ * Event payload for payable payment operations.
+ * 
+ * This interface extends the base event payload to include action handlers for custom payment flows.
+ * 
+ * @see {@link PayActionHandlers} in @monite/sdk-react for comprehensive documentation on custom payment flows,
+ * usage patterns, integration examples, and method signatures.
+ * 
+ * @example Listening for payable pay events with custom actions:
+ * ```javascript
+ * window.addEventListener('monite.event:PAYABLE_PAY', (event) => {
+ *   const { id, actions } = event.detail.payload;
+ *   
+ *   // See PayActionHandlers documentation for detailed implementation patterns
+ *   processCustomPayment(id)
+ *     .then(() => actions?.resolve({ showToast: true }))
+ *     .catch(err => actions?.reject(err, { showToast: true }));
+ * });
+ * ```
+ */
 export interface PayablePayEventPayload extends BaseEventPayload {
-  // Carries resolve/reject handlers for custom payment flows
+  /** 
+   * Action handlers for custom payment flows.
+   * @see {@link PayActionHandlers} for complete API documentation and usage examples.
+   */
   actions?: unknown;
 }
 
@@ -106,12 +129,26 @@ export function emitMoniteEvent<T extends EventPayload>(
 }
 
 /**
- * Creates a wrapped handler that calls the original handler and emits an event
+ * Creates a wrapped handler that calls the original handler and emits an event.
+ * 
+ * Enhanced to support passing through action handlers for custom payment flows.
+ * @see {@link PayActionHandlers} for complete documentation on custom payment workflows.
  *
  * @param originalHandler The original callback function to wrap
  * @param eventType The type of event to emit
- * @param createPayload A function that creates the event payload
+ * @param createPayload A function that creates the event payload (now supports actions parameter)
  * @returns A wrapped handler that emits an event when called
+ * 
+ * @example Usage with payment actions:
+ * ```typescript
+ * const wrappedHandler = createEventHandler(
+ *   originalOnPay,
+ *   MoniteEventTypes.PAYABLE_PAY,
+ *   (id, _data, actions) => ({ id, actions })
+ * );
+ * // Actions parameter contains PayActionHandlers - see that type for usage details
+ * wrappedHandler('payable-123', undefined, payActionHandlers);
+ * ```
  */
 export function createEventHandler<
   T extends BaseEventPayload,
