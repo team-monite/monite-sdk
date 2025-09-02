@@ -2,18 +2,23 @@ import { getRegionName } from '../utils';
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { differenceInCalendarYears, isValid } from 'date-fns';
+import { differenceInYears, isAfter, isValid } from 'date-fns';
 import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { z, type ZodObject, type ZodRawShape } from 'zod';
 
-interface ZodCustomIssue {
-  code: 'custom';
-  message: string;
-  path?: (string | number)[];
-  input?: unknown;
-  params?: Record<string, unknown>;
-}
+type ValidationPayload = {
+  issues: Array<{
+    code: string;
+    message?: string;
+    input?: unknown;
+    path?: PropertyKey[];
+    params?: Record<string, unknown>;
+  }>;
+  value: string | null;
+};
+
+
 
 export type ValidatorType =
   | ReturnType<typeof stringValidator>
@@ -49,46 +54,26 @@ export const ibanValidator = (
   i18n: I18n,
   countryCode?: components['schemas']['AllowedCountries']
 ) =>
-  stringValidator().refine(
-    (value) => {
-      if (!value) return true; // Let other validators handle null/empty values
-
-      const issues: Array<Record<string, unknown>> = [];
-      const payload = { value, issues };
-
-      validateIBAN(i18n, countryCode, payload, value);
-
-      return issues.length === 0;
-    },
-    {
-      message: t(i18n)`Invalid IBAN`,
-    }
-  );
+  stringValidator().check((payload) => {
+    if (!payload.value) return;
+    validateIBAN(payload.value, i18n, countryCode, payload);
+  });
 
 /**
  * Validates the IBAN string based on format, validity and country consistency.
  *
+ * @param iban - The IBAN string to be validated.
  * @param i18n - LinguiJS i18n instance for localized error messages.
  * @param countryCode - Expected country code for IBAN validation.
- * @param payload - The Zod check payload with value and issues array.
- * @param iban - The IBAN string to be validated.
- * @returns void - Issues are added to the payload.
+ * @param payload - Zod ParsePayload for adding issues.
+ * @returns void - Issues are added to payload.issues.
  */
 function validateIBAN(
+  iban: string,
   i18n: I18n,
   countryCode: components['schemas']['AllowedCountries'] | undefined,
-  payload: { value: string | null; issues: Array<Record<string, unknown>> },
-  iban?: string | null
+  payload: ValidationPayload
 ): void {
-  if (!iban) {
-    payload.issues.push({
-      code: 'custom',
-      message: t(i18n)`Please enter your IBAN number.`,
-      input: iban,
-    } satisfies ZodCustomIssue);
-    return;
-  }
-
   const formattedIban = electronicFormatIBAN(iban);
 
   if (!formattedIban) {
@@ -96,7 +81,8 @@ function validateIBAN(
       code: 'custom',
       message: t(i18n)`Invalid IBAN`,
       input: iban,
-    } satisfies ZodCustomIssue);
+      path: [],
+    });
     return;
   }
 
@@ -105,7 +91,8 @@ function validateIBAN(
       code: 'custom',
       message: t(i18n)`Invalid IBAN`,
       input: iban,
-    } satisfies ZodCustomIssue);
+      path: [],
+    });
     return;
   }
 
@@ -120,127 +107,93 @@ function validateIBAN(
         i18n
       )`The IBAN should correspond to the chosen country - ${country}.`,
       input: iban,
+      path: [],
       params: { countryCode, expectedCountry: country },
-    } satisfies ZodCustomIssue);
+    });
   }
 }
 
 export const dateOfBirthValidator = (i18n: I18n) =>
-  stringValidator().refine(
-    (value) => {
-      if (!value) return true; // Let other validators handle null/empty values
-
-      const issues: Array<Record<string, unknown>> = [];
-      const payload = { value, issues };
-
-      validateDateOfBirth(payload, value, i18n);
-
-      return issues.length === 0;
-    },
-    {
-      message: t(i18n)`Please provide a valid date.`,
-    }
-  );
+  stringValidator().check((payload) => {
+    if (!payload.value) return;
+    validateDateOfBirth(payload.value, i18n, payload);
+  });
 
 /**
- * Validates the date of birth string based on the business profile validation context.
+ * Validates the date of birth string using Zod's modern check API.
  *
- * @param payload - The Zod check payload with value and issues array.
  * @param value - The date of birth string to be validated.
  * @param i18n - LinguiJS i18n instance for localized error messages.
- * @returns void - Issues are added to the payload.
+ * @param payload - Zod ParsePayload for adding issues.
+ * @returns void - Issues are added to payload.issues.
  */
 function validateDateOfBirth(
-  payload: { value: string | null; issues: Record<string, unknown>[] },
-  value: string | null | undefined,
-  i18n: I18n
+  value: string,
+  i18n: I18n,
+  ctx: ValidationPayload
 ): void {
-  if (!value) return;
-
-  const currentDate = new Date();
   const valueDate = new Date(value);
+  const currentDate = new Date();
 
   if (!isValid(valueDate)) {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(i18n)`Please provide a valid date.`,
       input: value,
-    } satisfies ZodCustomIssue);
+    });
     return;
   }
 
-  const difference = differenceInCalendarYears(currentDate, valueDate);
-
-  if (difference === null) {
-    payload.issues.push({
+  if (isAfter(valueDate, currentDate)) {
+    ctx.issues.push({
       code: 'custom',
-      message: t(i18n)`Please provide a valid date.`,
+      message: t(i18n)`Date of birth cannot be in the future.`,
       input: value,
-    } satisfies ZodCustomIssue);
+    });
     return;
   }
+
+  const difference = differenceInYears(currentDate, valueDate);
 
   if (difference < 18) {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
-      message: t(
-        i18n
-      )`Managers and owners must be at least 18 years old to use this service.`,
+      message: t(i18n)`Managers and owners must be at least 18 years old to use this service.`,
       input: value,
       params: { minimumAge: 18, actualAge: difference },
-    } satisfies ZodCustomIssue);
+    });
     return;
   }
 
   if (difference > 120) {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(i18n)`Managers and owners must be under 120 years old.`,
       input: value,
       params: { maximumAge: 120, actualAge: difference },
-    } satisfies ZodCustomIssue);
+    });
   }
 }
 
 export const phoneValidator = (i18n: I18n) =>
-  stringValidator().refine(
-    (value) => {
-      if (!value) return true; // Let other validators handle null/empty values
-
-      const issues: Array<Record<string, unknown>> = [];
-      const payload = { value, issues };
-
-      validatePhone(i18n, payload, value);
-
-      return issues.length === 0;
-    },
-    {
-      message: t(i18n)`Invalid phone number`,
-    }
-  );
+  stringValidator().check((payload) => {
+    if (!payload.value) return;
+    validatePhone(payload.value, i18n, payload);
+  });
 
 /**
- * Validates the phone number string for proper format and possibility.
+ * Validates the phone number string using Zod's modern check API.
  *
- * @param i18n - LinguiJS i18n instance for localized error messages.
- * @param payload - The Zod check payload with value and issues array.
  * @param value - The phone number string to be validated.
- * @returns void - Issues are added to the payload.
+ * @param i18n - LinguiJS i18n instance for localized error messages.
+ * @param payload - Zod ParsePayload for adding issues.
+ * @returns void - Issues are added to payload.issues.
  */
 function validatePhone(
+  value: string,
   i18n: I18n,
-  payload: { value: string | null; issues: Array<Record<string, unknown>> },
-  value: string | null | undefined
+  payload: ValidationPayload
 ): void {
-  if (value === null || value === undefined) {
-    payload.issues.push({
-      code: 'custom',
-      message: t(i18n)`Please enter a phone number.`,
-      input: value,
-    } satisfies ZodCustomIssue);
-    return;
-  }
-
   try {
     const phoneNumber = parsePhoneNumber(value);
 
@@ -249,16 +202,18 @@ function validatePhone(
         code: 'custom',
         message: t(i18n)`Please enter a valid phone number.`,
         input: value,
+        path: [],
         params: { isPossible: false },
-      } satisfies ZodCustomIssue);
+      });
     }
   } catch {
     payload.issues.push({
       code: 'custom',
       message: t(i18n)`It looks like the phone number is too short.`,
       input: value,
+      path: [],
       params: { parseError: true },
-    } satisfies ZodCustomIssue);
+    });
   }
 }
 
