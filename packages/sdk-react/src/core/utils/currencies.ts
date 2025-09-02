@@ -159,7 +159,7 @@ export const getCurrencies = (i18n: I18n): CurrenciesType => ({
   ZMW: t(i18n)`Zambian Kwacha`,
 });
 
-export const defaultAvailableCurrencies: CurrencyEnum[] = [
+export const defaultAvailableCurrencies: readonly CurrencyEnum[] = [
   'AED',
   'AFN',
   'ALL',

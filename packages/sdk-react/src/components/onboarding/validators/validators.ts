@@ -1,7 +1,7 @@
+import { getRegionName } from '../utils';
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
 import { differenceInCalendarYears, isValid } from 'date-fns';
 import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';
 import { parsePhoneNumber } from 'libphonenumber-js';
@@ -14,8 +14,6 @@ interface ZodCustomIssue {
   input?: unknown;
   params?: Record<string, unknown>;
 }
-
-import { getRegionName } from '../utils';
 
 export type ValidatorType =
   | ReturnType<typeof stringValidator>
@@ -47,12 +45,25 @@ export const urlValidator = (i18n: I18n) =>
     )
     .nullable();
 
+export const ibanValidator = (
+  i18n: I18n,
+  countryCode?: components['schemas']['AllowedCountries']
+) =>
+  stringValidator().refine(
+    (value) => {
+      if (!value) return true; // Let other validators handle null/empty values
 
+      const issues: Array<Record<string, unknown>> = [];
+      const payload = { value, issues };
 
-export const ibanValidator = (i18n: I18n, countryCode?: components['schemas']['AllowedCountries']) =>
-  stringValidator().check((payload) => {
-    validateIBAN(i18n, countryCode, payload, payload.value);
-  });
+      validateIBAN(i18n, countryCode, payload, value);
+
+      return issues.length === 0;
+    },
+    {
+      message: t(i18n)`Invalid IBAN`,
+    }
+  );
 
 /**
  * Validates the IBAN string based on format, validity and country consistency.
@@ -105,19 +116,31 @@ function validateIBAN(
 
     payload.issues.push({
       code: 'custom',
-      message: t(i18n)`The IBAN should correspond to the chosen country - ${country}.`,
+      message: t(
+        i18n
+      )`The IBAN should correspond to the chosen country - ${country}.`,
       input: iban,
       params: { countryCode, expectedCountry: country },
     } satisfies ZodCustomIssue);
   }
 }
 
-
-
 export const dateOfBirthValidator = (i18n: I18n) =>
-  stringValidator().check((payload) => {
-    validateDateOfBirth(payload, payload.value, i18n);
-  });
+  stringValidator().refine(
+    (value) => {
+      if (!value) return true; // Let other validators handle null/empty values
+
+      const issues: Array<Record<string, unknown>> = [];
+      const payload = { value, issues };
+
+      validateDateOfBirth(payload, value, i18n);
+
+      return issues.length === 0;
+    },
+    {
+      message: t(i18n)`Please provide a valid date.`,
+    }
+  );
 
 /**
  * Validates the date of birth string based on the business profile validation context.
@@ -160,7 +183,9 @@ function validateDateOfBirth(
   if (difference < 18) {
     payload.issues.push({
       code: 'custom',
-      message: t(i18n)`Managers and owners must be at least 18 years old to use this service.`,
+      message: t(
+        i18n
+      )`Managers and owners must be at least 18 years old to use this service.`,
       input: value,
       params: { minimumAge: 18, actualAge: difference },
     } satisfies ZodCustomIssue);
@@ -177,12 +202,22 @@ function validateDateOfBirth(
   }
 }
 
-
-
 export const phoneValidator = (i18n: I18n) =>
-  stringValidator().check((payload) => {
-    validatePhone(i18n, payload, payload.value);
-  });
+  stringValidator().refine(
+    (value) => {
+      if (!value) return true; // Let other validators handle null/empty values
+
+      const issues: Array<Record<string, unknown>> = [];
+      const payload = { value, issues };
+
+      validatePhone(i18n, payload, value);
+
+      return issues.length === 0;
+    },
+    {
+      message: t(i18n)`Invalid phone number`,
+    }
+  );
 
 /**
  * Validates the phone number string for proper format and possibility.

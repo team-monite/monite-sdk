@@ -60,7 +60,7 @@ export const useCurrencies = () => {
    * @returns Main currency or `null` if this currency is not in the list
    */
   const formatFromMinorUnits = useCallback(
-    (amount: number, currency: CurrencyEnum | string): number | null => {
+    (amount: number, currency: CurrencyEnum): number | null => {
       return fromMinorUnitsWithCurrency(amount, currency, currencyList);
     },
     [currencyList]
@@ -106,7 +106,7 @@ export const useCurrencies = () => {
   const formatCurrencyToDisplay = useCallback(
     (
       amountInMinorUnits: string | number,
-      currency: CurrencyEnum | string,
+      currency: CurrencyEnum,
       isCurrencyDisplayed: boolean = true
     ): string | null => {
       const amount = Number(amountInMinorUnits);

@@ -1,4 +1,5 @@
 import { useCurrencies } from '@/core/hooks';
+import { components } from '@/api';
 
 export const usePriceHelper = () => {
   const { formatCurrencyToDisplay, formatToMinorUnits } = useCurrencies();
@@ -23,7 +24,7 @@ export const usePriceHelper = () => {
     }
 
     const parsedValue = parseFloat(sanitizedValue.replace(/[^0-9.-]/g, ''));
-    const formattedToMinorUnits = formatToMinorUnits(sanitizedValue, currency);
+    const formattedToMinorUnits = formatToMinorUnits(sanitizedValue, currency as CurrencyEnum);
 
     if (
       inputValue === '' ||
@@ -31,13 +32,13 @@ export const usePriceHelper = () => {
       (formattedToMinorUnits && isNaN(formattedToMinorUnits))
     ) {
       return {
-        displayValue: formatCurrencyToDisplay(0, currency, false) || '',
+        displayValue: formatCurrencyToDisplay(0, currency as CurrencyEnum, false) || '',
         minorUnitsValue: 0,
       };
     } else {
       const newValue = formatCurrencyToDisplay(
         formattedToMinorUnits || 0,
-        currency,
+        currency as CurrencyEnum,
         false
       );
       return {
@@ -49,3 +50,5 @@ export const usePriceHelper = () => {
 
   return { sanitizeAndFormatValue };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
