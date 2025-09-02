@@ -2,18 +2,18 @@ import { Controller, useForm } from 'react-hook-form';
 
 import type { AuthCredentialsProviderForwardProps } from '@/components/AuthCredentialsProvider';
 import { AuthCredentials } from '@/core/fetchToken';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import * as yup from 'yup';
+import { z } from 'zod';
 
-const validationSchema = yup.object().shape({
-  entity_user_id: yup.string().required('Entity User ID is required'),
-  client_id: yup.string().required('Client ID is required'),
-  client_secret: yup.string().required('Client Secret is required'),
+const validationSchema = z.object({
+  entity_user_id: z.string().min(1, 'Entity User ID is required'),
+  client_id: z.string().min(1, 'Client ID is required'),
+  client_secret: z.string().min(1, 'Client Secret is required'),
 });
 
 const StyledLogo = styled('img')(() => ({
@@ -25,7 +25,7 @@ export const LoginForm = ({
   login,
 }: Pick<AuthCredentialsProviderForwardProps, 'login'>) => {
   const { handleSubmit, control } = useForm<AuthCredentials>({
-    resolver: yupResolver(validationSchema),
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       entity_user_id: '',
       client_id: '',

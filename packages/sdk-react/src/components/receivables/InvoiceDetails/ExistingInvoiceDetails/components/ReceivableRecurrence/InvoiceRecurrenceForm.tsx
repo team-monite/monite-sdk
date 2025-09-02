@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useId, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { useRecurrenceByInvoiceId } from './useInvoiceRecurrence';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { IconWrapper } from '@/ui/iconWrapper';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,12 +21,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
 import { addMonths, getMonth, getYear, startOfMonth } from 'date-fns';
-import * as yup from 'yup';
-import type { SchemaOf } from 'yup';
+import { useCallback, useEffect, useId, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { z } from 'zod';
 
-import { useRecurrenceByInvoiceId } from './useInvoiceRecurrence';
+interface FormValues {
+  day_of_month: 'first_day' | 'last_day' | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  body_text: string;
+  subject_text: string;
+}
 
 export const InvoiceRecurrenceForm = ({
   invoiceId,
@@ -140,10 +144,11 @@ export const InvoiceRecurrenceForm = ({
     [recurrence]
   );
 
-  const { control, handleSubmit, watch, setValue, reset, trigger } = useForm({
-    resolver: yupResolver(useValidationSchema()),
-    defaultValues: getDefaultValues(),
-  });
+  const { control, handleSubmit, watch, setValue, reset, trigger } =
+    useForm<FormValues>({
+      resolver: safeZodResolver<FormValues>(useValidationSchema()),
+      defaultValues: getDefaultValues(),
+    });
 
   useEffect(() => void reset(getDefaultValues()), [reset, getDefaultValues]);
 
@@ -364,49 +369,42 @@ export const InvoiceRecurrenceForm = ({
   );
 };
 
-const useValidationSchema = () => {
+const useValidationSchema = (): z.ZodType<FormValues> => {
   const { i18n } = useLingui();
 
-  const shape: SchemaOf<{
-    startDate: Date | null;
-    endDate: Date | null;
-    day_of_month: 'first_day' | 'last_day' | null;
-  }> = yup.object({
-    startDate: yup
+  const baseSchema = z.object({
+    startDate: z
       .date()
       .nullable()
-      .required(t(i18n)`Required`)
-      .label(t(i18n)`Start date`),
-    endDate: yup
+      .refine((val) => val !== null, { message: t(i18n)`Required` }),
+    endDate: z
       .date()
       .nullable()
-      .required(t(i18n)`Required`)
-      .label(t(i18n)`End date`),
-    day_of_month: yup
-      .mixed()
+      .refine((val) => val !== null, { message: t(i18n)`Required` }),
+    day_of_month: z
+      .enum(['first_day', 'last_day'])
       .nullable()
-      .oneOf(['first_day', 'last_day'], t(i18n)`Invalid issuance`)
-      .required(t(i18n)`Required`)
-      .when('startDate', {
-        is: (startDate: Date | null) =>
-          startDate
-            ? new Date(startDate) < addMonths(startOfMonth(new Date()), 1)
-            : false,
-        then: () =>
-          yup
-            .mixed()
-            .oneOf(
-              ['last_day', null],
-              t(
-                i18n
-              )`The start date for the recurrence shouldn’t be in the past`
-            )
-            .required(t(i18n)`Required`),
-      })
-      .label(t(i18n)`Issue at`),
-    body_text: yup.string().label(t(i18n)`Body`),
-    subject_text: yup.string().label(t(i18n)`Subject`),
+      .refine((val) => val !== null, { message: t(i18n)`Required` }),
+    body_text: z.string(),
+    subject_text: z.string(),
   });
 
-  return shape;
+  return baseSchema.refine(
+    (data) => {
+      if (!data.startDate || !data.day_of_month) {
+        return true;
+      }
+
+      const isStartDateInPast =
+        new Date(data.startDate) < addMonths(startOfMonth(new Date()), 1);
+
+      return !isStartDateInPast || data.day_of_month === 'last_day';
+    },
+    {
+      message: t(
+        i18n
+      )`The start date for the recurrence shouldn’t be in the past`,
+      path: ['day_of_month'],
+    }
+  ) as z.ZodType<FormValues>;
 };
