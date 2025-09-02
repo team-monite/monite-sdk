@@ -107,9 +107,10 @@ export const InvoiceDetailsSummary = ({
             return (
               <SummaryLine
                 key={paymentRecord?.id}
-                label={t(i18n)`Amount paid ${
-                  paymentRecord?.paid_at && `on ${i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)}`
-                }`}
+                label={paymentRecord?.paid_at ? 
+                  t(i18n)`Amount paid on ${i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)}` : 
+                  t(i18n)`Amount paid`
+                }
                 value={formatCurrencyToDisplay(
                   paymentRecord?.amount ?? 0,
                   invoice?.currency
@@ -122,9 +123,10 @@ export const InvoiceDetailsSummary = ({
             return (
               <SummaryLine
                 key={creditNote?.id}
-                label={t(i18n)`Credit applied ${
-                  creditNote?.issue_date && `on ${i18n.date(creditNote?.issue_date, locale.dateTimeFormat)}`
-                }`}
+                label={creditNote?.issue_date ? 
+                  t(i18n)`Credit applied on ${i18n.date(creditNote?.issue_date, locale.dateTimeFormat)}` : 
+                  t(i18n)`Credit applied`
+                }
                 value={formatCurrencyToDisplay(
                   creditNote?.total_amount ?? 0,
                   invoice?.currency

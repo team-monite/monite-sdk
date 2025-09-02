@@ -778,7 +778,7 @@ msgstr "Amount"
 msgid "Amount due"
 msgstr "Amount due"
 
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:137
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:139
 msgid "Amount due ({0})"
 msgstr "Amount due ({0})"
 
@@ -792,17 +792,18 @@ msgstr "Amount due ({0})"
 msgid "Amount must be a positive number"
 msgstr "Amount must be a positive number"
 
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:112
 #: src/components/receivables/components/InvoicePaymentsTabContent.tsx:195
 msgid "Amount paid"
 msgstr "Amount paid"
 
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:110
-msgid "Amount paid {0}"
-msgstr "Amount paid {0}"
+#~ msgid "Amount paid {0}"
+#~ msgstr "Amount paid {0}"
 
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:96
-#~ msgid "Amount paid on {0}"
-#~ msgstr "Amount paid on {0}"
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:111
+msgid "Amount paid on {0}"
+msgstr "Amount paid on {0}"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:101
 #~ msgid "Amount, (excl.) tax"
@@ -2666,9 +2667,17 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:128
+msgid "Credit applied"
+msgstr "Credit applied"
+
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:125
-msgid "Credit applied {0}"
-msgstr "Credit applied {0}"
+#~ msgid "Credit applied {0}"
+#~ msgstr "Credit applied {0}"
+
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:127
+msgid "Credit applied on {0}"
+msgstr "Credit applied on {0}"
 
 #: src/components/receivables/utils/getTypeLabel.ts:13
 #: src/components/templateSettings/components/DisplayBankSection.tsx:154
