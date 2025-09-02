@@ -1,3 +1,4 @@
+import { ReceiptPreview } from '../ReceiptPreview';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -5,6 +6,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { getMimetypeFromUrl } from '@/core/utils/files';
 import { ImageFileViewer } from '@/ui/FileViewer';
+import { Button } from '@/ui/components/button';
 import {
   SheetContent,
   SheetHeader,
@@ -16,6 +18,7 @@ import {
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DownloadIcon, EyeIcon } from 'lucide-react';
+import { useState } from 'react';
 
 interface TagFormModalProps {
   transaction?: components['schemas']['TransactionResponse'];
@@ -38,6 +41,8 @@ const TransactionDetailsBase = ({
   const { api, locale } = useMoniteContext();
   const { root } = useRootElements();
   const { formatFromMinorUnits } = useCurrencies();
+
+  const [isReceiptViewerOpen, setIsReceiptViewerOpen] = useState(false);
 
   const { data: receiptsResponse } = api.receipts.getReceipts.useQuery(
     {
@@ -121,7 +126,10 @@ const TransactionDetailsBase = ({
                 {receipt ? (
                   <div className="mtw:border mtw:border-gray-200 mtw:rounded-xl mtw:p-4 mtw:flex mtw:items-center mtw:gap-6">
                     {receipt.file_url && (
-                      <div className="mtw:w-14 mtw:h-14 mtw:overflow-hidden mtw:rounded-lg mtw:border mtw:bg-gray-200 mtw:border-gray-200 mtw:flex mtw:items-center mtw:justify-center">
+                      <div
+                        className="mtw:w-14 mtw:h-14 mtw:overflow-hidden mtw:rounded-lg mtw:border mtw:bg-gray-200 mtw:border-gray-200 mtw:flex mtw:items-center mtw:justify-center mtw:cursor-pointer"
+                        onClick={() => setIsReceiptViewerOpen(true)}
+                      >
                         {/* // TODO: only show image if not pdf; once PDF image previews are implemented, refactor the condition */}
                         {getMimetypeFromUrl(receipt.file_url) !==
                           'application/pdf' && (
@@ -140,21 +148,20 @@ const TransactionDetailsBase = ({
                     </div>
                     {receipt.file_url ? (
                       <div className="mtw:flex mtw:gap-6">
-                        {/* TODO: Replace with button link to inline preview overlay, once implemented */}
-                        <a
-                          href={receipt.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setIsReceiptViewerOpen(true)}
                           className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1"
                         >
                           <EyeIcon className="mtw:size-4" /> {t(i18n)`View`}
-                        </a>
+                        </Button>
                         <a
                           href={receipt.file_url}
                           download
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1"
+                          className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1 mtw:hover:bg-gray-100 mtw:rounded-md mtw:p-1"
                         >
                           <DownloadIcon className="mtw:size-4" />
                           {t(i18n)`Download`}
@@ -190,6 +197,14 @@ const TransactionDetailsBase = ({
           </SheetContentWrapper>
         </SheetContent>
       </Sheet>
+
+      {receipt && (
+        <ReceiptPreview
+          receipt={receipt}
+          isOpen={isReceiptViewerOpen}
+          setIsOpen={setIsReceiptViewerOpen}
+        />
+      )}
     </>
   );
 };
