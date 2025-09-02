@@ -286,7 +286,7 @@ export const ManagerTransactionsTable = () => {
           },
         },
       ],
-      [UserCell, i18n, locale.dateTimeFormat]
+      [UserCell, formatFromMinorUnits, i18n, locale.dateTimeFormat]
     );
 
   const openDetailsModal = useCallback(
