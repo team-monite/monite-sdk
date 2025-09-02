@@ -1,4 +1,5 @@
 import { TransactionDetails } from '../TransactionDetails';
+import { useGetTransactions } from '../hooks/useTransactions';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STARTED_AT,
@@ -9,7 +10,8 @@ import { components } from '@/api';
 import { UserDisplayCell } from '@/components/UserDisplayCell/UserDisplayCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDataTableState } from '@/core/hooks';
+import { useCurrencies, useDataTableState } from '@/core/hooks';
+import { useDebounce } from '@/core/hooks/useDebounce';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
@@ -28,7 +30,6 @@ import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
-import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -37,6 +38,7 @@ export const ManagerTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { formatFromMinorUnits } = useCurrencies();
 
   const [selectedTransaction, setSelectedTransaction] = useState<
     components['schemas']['TransactionResponse'] | undefined
@@ -91,60 +93,75 @@ export const ManagerTransactionsTable = () => {
     },
   });
 
+  // Local state for search input (immediate UI update)
+  const [searchInputValue, setSearchInputValue] = useState(
+    filters[FILTER_TYPE_SEARCH] || ''
+  );
+
+  // Debounced search value (delayed API call)
+  const debouncedSearchValue = useDebounce(searchInputValue, 300);
+
+  // Update the actual filter when debounced value changes
+  useEffect(() => {
+    onFilterChange(FILTER_TYPE_SEARCH, debouncedSearchValue);
+  }, [debouncedSearchValue, onFilterChange]);
+
+  // Sync local input value with filter value when filter changes externally
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    setSearchInputValue(filters[FILTER_TYPE_SEARCH] || '');
+  }, [filters[FILTER_TYPE_SEARCH]]);
+  /* eslint-enable react-hooks/exhaustive-deps */
+
   const {
-    data: transactions,
+    transactions,
+    response: transactionsResponse,
     isLoading,
     error,
     refetch,
-  } = api.transactions.getTransactions.useQuery(
+  } = useGetTransactions(
     {
-      query: {
-        sort: sortModel.field,
-        order: sortModel.sort,
-        limit: pagination.pageSize,
-        // Don't use pagination token when we have a search term and we're on the first page
-        pagination_token:
-          filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
-            ? undefined
-            : currentPaginationToken || undefined,
-        merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
-        started_at__gt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
-          : undefined,
-        started_at__lt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
-          : undefined,
-        entity_user_id__in: filters[FILTER_TYPE_USER]
-          ? [filters[FILTER_TYPE_USER]]
-          : undefined,
-      },
+      sort: sortModel.field,
+      order: sortModel.sort,
+      limit: pagination.pageSize,
+      // Don't use pagination token when we have a search term and we're on the first page
+      pagination_token:
+        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+          ? undefined
+          : currentPaginationToken || undefined,
+      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+      started_at__gt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
+        : undefined,
+      started_at__lt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
+        : undefined,
+      entity_user_id__in: filters[FILTER_TYPE_USER]
+        ? [filters[FILTER_TYPE_USER]]
+        : undefined,
     },
-    {
-      enabled:
-        isTransactionReadSupported === true && isUserReadSupported === true,
-      placeholderData: keepPreviousData,
-    }
+    isTransactionReadSupported === true && isUserReadSupported === true
   );
 
   // Update the pagination hook with the latest API response
   useEffect(() => {
-    updateApiResponse(transactions);
-  }, [transactions, updateApiResponse]);
+    updateApiResponse(transactionsResponse);
+  }, [transactionsResponse, updateApiResponse]);
 
   // Extract unique user IDs from transactions data
   const uniqueUserIds = useMemo(() => {
-    if (!transactions?.data) return [];
+    if (!transactions) return [];
 
     const userIds = new Set<string>();
 
-    transactions.data.forEach((transaction) => {
+    transactions.forEach((transaction) => {
       if (transaction.entity_user_id) {
         userIds.add(transaction.entity_user_id);
       }
     });
 
     return Array.from(userIds);
-  }, [transactions?.data]);
+  }, [transactions]);
 
   // Fetch user details for the unique user IDs
   const { data: usersData } = api.entityUsers.getEntityUsers.useQuery(
@@ -255,10 +272,16 @@ export const ManagerTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(row.original.amount, {
-              style: 'currency',
-              currency: row.original.currency || 'USD',
-            });
+            const formattedAmount = i18n.number(
+              formatFromMinorUnits(
+                row.original.amount,
+                row.original.currency
+              ) || 0,
+              {
+                style: 'currency',
+                currency: row.original.currency,
+              }
+            );
             return formattedAmount;
           },
         },
@@ -295,10 +318,8 @@ export const ManagerTransactionsTable = () => {
       <div className="mtw:flex mtw:items-center mtw:flex-shrink-0 mtw:gap-4 mtw:justify-between">
         <Input
           placeholder={t(i18n)`Search by merchant`}
-          value={filters[FILTER_TYPE_SEARCH] || ''}
-          onChange={(event) =>
-            onFilterChange(FILTER_TYPE_SEARCH, event.target.value)
-          }
+          value={searchInputValue}
+          onChange={(event) => setSearchInputValue(event.target.value)}
           className="mtw:max-w-sm"
         />
         <div className="mtw:flex mtw:items-center mtw:gap-4">
@@ -363,7 +384,7 @@ export const ManagerTransactionsTable = () => {
       <div className="mtw:flex-1 mtw:min-h-0">
         <DataTable
           columns={columns}
-          data={transactions?.data || []}
+          data={transactions || []}
           loading={isLoading}
           pagination={pagination}
           onPaginationChange={onPaginationChange}
@@ -374,7 +395,7 @@ export const ManagerTransactionsTable = () => {
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
-              dataLength={transactions?.data.length || 0}
+              dataLength={transactions?.length || 0}
               isFiltering={
                 !!filters[FILTER_TYPE_STARTED_AT] || !!filters[FILTER_TYPE_USER]
               }

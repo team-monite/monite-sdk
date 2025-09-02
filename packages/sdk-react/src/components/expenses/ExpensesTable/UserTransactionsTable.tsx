@@ -1,10 +1,16 @@
 import { TransactionDetails } from '../TransactionDetails';
-import { FILTER_TYPE_SEARCH, FILTER_TYPE_STARTED_AT } from './consts';
+import { useGetTransactions } from '../hooks/useTransactions';
+import {
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_STARTED_AT,
+  FILTER_TYPE_MERCHANT,
+} from './consts';
 import type { FilterTypes } from './types';
-import { components } from '@/api';
+import { type components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDataTableState } from '@/core/hooks';
+import { useCurrencies, useDataTableState } from '@/core/hooks';
+import { useDebounce } from '@/core/hooks/useDebounce';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceiptsByTransactionIds } from '@/core/queries/useReceiptsByTransactionIds';
@@ -12,21 +18,28 @@ import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/components/select';
 import { Skeleton } from '@/ui/components/skeleton';
 import { LoadingPage } from '@/ui/loadingPage';
 import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
-import { keepPreviousData } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const UserTransactionsTable = () => {
-  const { api, componentSettings, locale } = useMoniteContext();
+  const { componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { formatFromMinorUnits } = useCurrencies();
 
   const [selectedTransaction, setSelectedTransaction] = useState<
     components['schemas']['TransactionResponse'] | undefined
@@ -66,52 +79,102 @@ export const UserTransactionsTable = () => {
       initialValue: {
         [FILTER_TYPE_SEARCH]: '',
         [FILTER_TYPE_STARTED_AT]: null,
+        [FILTER_TYPE_MERCHANT]: null,
       },
     },
   });
 
+  // Local state for search input (immediate UI update)
+  const [searchInputValue, setSearchInputValue] = useState(
+    filters[FILTER_TYPE_SEARCH] || ''
+  );
+
+  // Debounced search value (delayed API call)
+  const debouncedSearchValue = useDebounce(searchInputValue, 300);
+
+  // Update the actual filter when debounced value changes
+  useEffect(() => {
+    onFilterChange(FILTER_TYPE_SEARCH, debouncedSearchValue);
+  }, [debouncedSearchValue, onFilterChange]);
+
+  // Sync local input value with filter value when filter changes externally
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    setSearchInputValue(filters[FILTER_TYPE_SEARCH] || '');
+  }, [filters[FILTER_TYPE_SEARCH]]);
+  /* eslint-enable react-hooks/exhaustive-deps */
+
   const {
-    data: transactions,
+    transactions,
+    response: transactionsResponse,
     isLoading,
     error,
     refetch,
-  } = api.transactions.getTransactions.useQuery(
+  } = useGetTransactions(
     {
-      query: {
-        sort: sortModel.field,
-        order: sortModel.sort,
-        limit: pagination.pageSize,
-        // Don't use pagination token when we have a search term and we're on the first page
-        pagination_token:
-          filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
-            ? undefined
-            : currentPaginationToken || undefined,
-        entity_user_id__in: user?.id ? [user.id] : undefined,
-        merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
-        started_at__gt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
-          : undefined,
-        started_at__lt: filters[FILTER_TYPE_STARTED_AT]
-          ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
-          : undefined,
-      },
+      sort: sortModel.field,
+      order: sortModel.sort,
+      limit: pagination.pageSize,
+      // Don't use pagination token when we have a search term and we're on the first page
+      pagination_token:
+        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+          ? undefined
+          : currentPaginationToken || undefined,
+      entity_user_id__in: user?.id ? [user.id] : undefined,
+      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+      started_at__gt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
+        : undefined,
+      started_at__lt: filters[FILTER_TYPE_STARTED_AT]
+        ? formatISO(addDays(filters[FILTER_TYPE_STARTED_AT] as Date, 1))
+        : undefined,
     },
-    {
-      enabled: isReadSupported === true,
-      placeholderData: keepPreviousData,
-    }
+    isReadSupported === true
   );
 
   // Update the pagination hook with the latest API response
   useEffect(() => {
-    updateApiResponse(transactions);
-  }, [transactions, updateApiResponse]);
+    updateApiResponse(transactionsResponse);
+  }, [transactionsResponse, updateApiResponse]);
+
+  // Clear merchant filter when other filters change
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (filters[FILTER_TYPE_MERCHANT]) {
+      onFilterChange(FILTER_TYPE_MERCHANT, null);
+    }
+  }, [
+    filters[FILTER_TYPE_SEARCH],
+    filters[FILTER_TYPE_STARTED_AT],
+    onFilterChange,
+  ]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   // Extract transaction IDs for receipts query
   const transactionIds = useMemo(() => {
-    if (!transactions?.data) return [];
-    return transactions.data.map((transaction) => transaction.id);
-  }, [transactions?.data]);
+    if (!transactions) return [];
+    return transactions.map((transaction) => transaction.id);
+  }, [transactions]);
+
+  // Extract unique merchants from transactions for the filter dropdown
+  const uniqueMerchants = useMemo(() => {
+    if (!transactions) return [];
+    const merchants = transactions
+      .map((transaction) => transaction.merchant_name)
+      .filter((name): name is string => !!name);
+    return [...new Set(merchants)].sort();
+  }, [transactions]);
+
+  // Filter transactions by merchant if merchant filter is applied
+  const filteredTransactions = useMemo(() => {
+    if (!transactions || !filters[FILTER_TYPE_MERCHANT]) {
+      return transactions || [];
+    }
+    return transactions.filter(
+      (transaction) =>
+        transaction.merchant_name === filters[FILTER_TYPE_MERCHANT]
+    );
+  }, [filters, transactions]);
 
   // Fetch receipts for the transaction IDs
   const { receiptsByTransactionId, isLoading: isReceiptsLoading } =
@@ -177,7 +240,7 @@ export const UserTransactionsTable = () => {
 
             if (!receipt) {
               return (
-                <span className="mtw:text-neutral-70">{t(
+                <span className="mtw:text-muted-foreground">{t(
                   i18n
                 )`Not matched`}</span>
               );
@@ -208,15 +271,27 @@ export const UserTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(row.original.amount, {
-              style: 'currency',
-              currency: row.original.currency || 'USD',
-            });
+            const formattedAmount = i18n.number(
+              formatFromMinorUnits(
+                row.original.amount,
+                row.original.currency
+              ) || 0,
+              {
+                style: 'currency',
+                currency: row.original.currency,
+              }
+            );
             return formattedAmount;
           },
         },
       ],
-      [i18n, locale.dateTimeFormat, receiptsByTransactionId, isReceiptsLoading]
+      [
+        i18n,
+        locale.dateTimeFormat,
+        receiptsByTransactionId,
+        isReceiptsLoading,
+        formatFromMinorUnits,
+      ]
     );
 
   const openDetailsModal = useCallback(
@@ -248,55 +323,76 @@ export const UserTransactionsTable = () => {
       <div className="mtw:flex mtw:items-center mtw:flex-shrink-0 mtw:gap-4 mtw:justify-between">
         <Input
           placeholder={t(i18n)`Search by merchant`}
-          value={filters[FILTER_TYPE_SEARCH] || ''}
-          onChange={(event) =>
-            onFilterChange(FILTER_TYPE_SEARCH, event.target.value)
-          }
+          value={searchInputValue}
+          onChange={(event) => setSearchInputValue(event.target.value)}
           className="mtw:max-w-sm"
         />
-        <DatePicker
-          className="Monite-ExpensesStartedAtFilter Monite-FilterControl Monite-DateFilterControl"
-          onChange={(value, error) => {
-            if (error.validationError) {
-              return;
+        <div className="mtw:flex mtw:items-center mtw:shrink mtw:gap-2 mtw:justify-between">
+          <Select
+            value={filters[FILTER_TYPE_MERCHANT] || 'all'}
+            onValueChange={(value) =>
+              onFilterChange(
+                FILTER_TYPE_MERCHANT,
+                value === 'all' ? null : value
+              )
             }
-            onFilterChange(FILTER_TYPE_STARTED_AT, value as Date | null);
-          }}
-          slotProps={{
-            textField: {
-              variant: 'standard',
-              placeholder: t(i18n)`Filter by date`,
-              InputProps: {
-                sx: {
-                  '&::placeholder': {
-                    opacity: 1,
-                    color: 'text.primary',
-                  },
-                  '& input::placeholder': {
-                    opacity: 1,
-                    color: 'text.primary',
+          >
+            <SelectTrigger className="mtw:w-[180px]">
+              <SelectValue placeholder={t(i18n)`All merchants`} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t(i18n)`All merchants`}</SelectItem>
+              {uniqueMerchants.map((merchant) => (
+                <SelectItem key={merchant} value={merchant}>
+                  {merchant}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <DatePicker
+            className="Monite-ExpensesStartedAtFilter Monite-FilterControl Monite-DateFilterControl"
+            onChange={(value, error) => {
+              if (error.validationError) {
+                return;
+              }
+              onFilterChange(FILTER_TYPE_STARTED_AT, value as Date | null);
+            }}
+            slotProps={{
+              textField: {
+                variant: 'standard',
+                placeholder: t(i18n)`Filter by date`,
+                InputProps: {
+                  sx: {
+                    '&::placeholder': {
+                      opacity: 1,
+                      color: 'text.primary',
+                    },
+                    '& input::placeholder': {
+                      opacity: 1,
+                      color: 'text.primary',
+                    },
                   },
                 },
               },
-            },
-            popper: {
-              container: root,
-            },
-            dialog: {
-              container: root,
-            },
-            actionBar: {
-              actions: ['clear', 'today'],
-            },
-          }}
-          views={['year', 'month', 'day']}
-        />
+              popper: {
+                container: root,
+              },
+              dialog: {
+                container: root,
+              },
+              actionBar: {
+                actions: ['clear', 'today'],
+              },
+            }}
+            views={['year', 'month', 'day']}
+          />
+        </div>
       </div>
 
       <div className="mtw:flex-1 mtw:min-h-0">
         <DataTable
           columns={columns}
-          data={transactions?.data || []}
+          data={filteredTransactions || []}
           loading={isLoading}
           pagination={pagination}
           onPaginationChange={onPaginationChange}
@@ -307,8 +403,11 @@ export const UserTransactionsTable = () => {
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
-              dataLength={transactions?.data.length || 0}
-              isFiltering={!!filters[FILTER_TYPE_STARTED_AT]}
+              dataLength={filteredTransactions?.length || 0}
+              isFiltering={
+                !!filters[FILTER_TYPE_STARTED_AT] ||
+                !!filters[FILTER_TYPE_MERCHANT]
+              }
               isSearching={!!filters[FILTER_TYPE_SEARCH]}
               isError={!!error}
               refetch={refetch}

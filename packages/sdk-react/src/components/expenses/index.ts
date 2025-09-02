@@ -1,1 +1,2 @@
-export * from './Expenses';
+export { Expenses } from './Expenses';
+export * from './ExpensesTable';
