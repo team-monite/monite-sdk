@@ -7,18 +7,8 @@ import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { z, type ZodObject, type ZodRawShape } from 'zod';
 
-type ValidationPayload = {
-  issues: Array<{
-    code: string;
-    message?: string;
-    input?: unknown;
-    path?: PropertyKey[];
-    params?: Record<string, unknown>;
-  }>;
-  value: string | null;
-};
 
-
+type CheckContext = z.core.ParsePayload<string | null>;
 
 export type ValidatorType =
   | ReturnType<typeof stringValidator>
@@ -72,12 +62,12 @@ function validateIBAN(
   iban: string,
   i18n: I18n,
   countryCode: components['schemas']['AllowedCountries'] | undefined,
-  payload: ValidationPayload
+  ctx: CheckContext
 ): void {
   const formattedIban = electronicFormatIBAN(iban);
 
   if (!formattedIban) {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(i18n)`Invalid IBAN`,
       input: iban,
@@ -87,7 +77,7 @@ function validateIBAN(
   }
 
   if (!isValidIBAN(formattedIban)) {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(i18n)`Invalid IBAN`,
       input: iban,
@@ -101,7 +91,7 @@ function validateIBAN(
   if (countryCode && extractedIBAN.countryCode !== countryCode) {
     const country = getRegionName(countryCode);
 
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(
         i18n
@@ -130,7 +120,7 @@ export const dateOfBirthValidator = (i18n: I18n) =>
 function validateDateOfBirth(
   value: string,
   i18n: I18n,
-  ctx: ValidationPayload
+  ctx: CheckContext
 ): void {
   const valueDate = new Date(value);
   const currentDate = new Date();
@@ -192,13 +182,13 @@ export const phoneValidator = (i18n: I18n) =>
 function validatePhone(
   value: string,
   i18n: I18n,
-  payload: ValidationPayload
+  ctx: CheckContext
 ): void {
   try {
     const phoneNumber = parsePhoneNumber(value);
 
     if (phoneNumber && !phoneNumber.isPossible()) {
-      payload.issues.push({
+      ctx.issues.push({
         code: 'custom',
         message: t(i18n)`Please enter a valid phone number.`,
         input: value,
@@ -207,7 +197,7 @@ function validatePhone(
       });
     }
   } catch {
-    payload.issues.push({
+    ctx.issues.push({
       code: 'custom',
       message: t(i18n)`It looks like the phone number is too short.`,
       input: value,

@@ -101,7 +101,7 @@ export const prepareDefaultValues = (
     currency: (currency ?? 'EUR') as CurrencyEnum,
     tags: tags ?? [],
     discount:
-      discount && currency ? formatFromMinorUnits(discount, currency as CurrencyEnum) : null,
+      discount && currency ? formatFromMinorUnits(discount, currency) : null,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -109,7 +109,7 @@ export const prepareDefaultValues = (
         quantity: lineItem.quantity ?? 1,
         price:
           lineItem.unit_price && currency
-            ? (formatFromMinorUnits(lineItem.unit_price, currency as CurrencyEnum) ?? 0)
+            ? (formatFromMinorUnits(lineItem.unit_price, currency) ?? 0)
             : 0,
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
       };

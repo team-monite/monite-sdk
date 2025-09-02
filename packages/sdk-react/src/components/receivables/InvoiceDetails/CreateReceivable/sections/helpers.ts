@@ -4,7 +4,7 @@ import { components } from '@/api';
 export const usePriceHelper = () => {
   const { formatCurrencyToDisplay, formatToMinorUnits } = useCurrencies();
 
-  const sanitizeAndFormatValue = (inputValue: string, currency: string) => {
+  const sanitizeAndFormatValue = (inputValue: string, currency: CurrencyEnum) => {
     let sanitizedValue = inputValue.replace(/[^0-9.,]/g, '');
 
     // Handle comma and dot formatting for decimals
@@ -24,7 +24,7 @@ export const usePriceHelper = () => {
     }
 
     const parsedValue = parseFloat(sanitizedValue.replace(/[^0-9.-]/g, ''));
-    const formattedToMinorUnits = formatToMinorUnits(sanitizedValue, currency as CurrencyEnum);
+    const formattedToMinorUnits = formatToMinorUnits(sanitizedValue, currency);
 
     if (
       inputValue === '' ||
@@ -32,13 +32,13 @@ export const usePriceHelper = () => {
       (formattedToMinorUnits && isNaN(formattedToMinorUnits))
     ) {
       return {
-        displayValue: formatCurrencyToDisplay(0, currency as CurrencyEnum, false) || '',
+        displayValue: formatCurrencyToDisplay(0, currency, false) || '',
         minorUnitsValue: 0,
       };
     } else {
       const newValue = formatCurrencyToDisplay(
         formattedToMinorUnits || 0,
-        currency as CurrencyEnum,
+        currency,
         false
       );
       return {
