@@ -30,6 +30,7 @@ import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups'
 import {
   useCounterpartAddresses,
   useCounterpartById,
+  useCounterpartContactList,
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
@@ -214,6 +215,7 @@ const CreateReceivablesBase = ({
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+  const { data: counterpartContacts } = useCounterpartContactList(counterpartId);
 
   const billingAddressId = watch('default_billing_address_id');
   const counterpartBillingAddress = useMemo(
@@ -274,6 +276,9 @@ const CreateReceivablesBase = ({
     api.measureUnits.getMeasureUnits.useQuery();
 
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    const customerHasRemindersEnabled = counterpart && counterpart?.reminders_enabled;
+    const customerHasDefaultEmail = counterpart && counterpartContacts?.find((contact) => contact.is_default)?.email;
+
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
 
@@ -291,7 +296,19 @@ const CreateReceivablesBase = ({
 
       return;
     }
+    
+    if (!customerHasRemindersEnabled && (values.payment_reminder_id || values.overdue_reminder_id)) {
+      showErrorToast(new Error("Selected customer doesn't have reminders enabled. Please turn off payment reminders or enable it for the selected customer to proceed."));
 
+      return;
+    }
+
+    if (!customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
+      showErrorToast(new Error("Selected customer doesn't have a default email address. Please turn off payment reminders or add a default email address to proceed."));
+
+      return;
+    }
+    
     const shippingAddressId = values.default_shipping_address_id;
 
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
