@@ -3,6 +3,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
+import { getMimetypeFromUrl } from '@/core/utils/files';
 import { ImageFileViewer } from '@/ui/FileViewer';
 import {
   SheetContent,
@@ -27,25 +28,6 @@ export const TransactionDetails = (props: TagFormModalProps) => (
     <TransactionDetailsBase {...props} />
   </MoniteScopedProviders>
 );
-
-/**
- * Helper function to determine mimetype from file URL
- */
-const getMimetypeFromUrl = (url: string): string => {
-  const clean = url.split('#')[0].split('?')[0];
-  const extension = clean.split('.').pop()?.toLowerCase();
-  switch (extension) {
-    case 'pdf':
-      return 'application/pdf';
-    case 'jpg':
-    case 'jpeg':
-      return 'image/jpeg';
-    case 'png':
-      return 'image/png';
-    default:
-      return 'image/jpeg';
-  }
-};
 
 const TransactionDetailsBase = ({
   transaction,
