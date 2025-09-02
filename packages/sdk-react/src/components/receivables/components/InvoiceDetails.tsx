@@ -36,7 +36,6 @@ import { components } from '@/api';
 import { DialogTitle } from '@/ui/components/dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
-import { InvoiceCancelModal } from './InvoiceCancelModal';
 
 export interface InvoiceDetailsProps {
   open: boolean;
@@ -68,7 +67,6 @@ const InvoiceDetailsBase = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editTemplateModalOpen, setEditTemplateModalOpen] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [showPDF, setShowPDF] = useState(false);
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } = useIsActionAllowed({
     method: 'receivable',
@@ -82,7 +80,6 @@ const InvoiceDetailsBase = ({
       onTemplateSettingsButtonClick: () => setEditTemplateModalOpen(true),
       onIssueAndSendButtonClick: () => setShowEmail(true),
       onViewPDFButtonClick: () => setShowPDF((prevState) => !prevState),
-      onCancelInvoiceButtonClick: () => setCancelModalOpen(true),
       onDelete: () => onCloseInvoiceDetails(),
       onDuplicate: onDuplicate,
       onMarkAsUncollectible: onMarkAsUncollectible,
@@ -95,14 +92,12 @@ const InvoiceDetailsBase = ({
     open &&
     !isEditing &&
     !editTemplateModalOpen &&
-    !showEmail &&
-    !cancelModalOpen;
+    !showEmail;
   const isPDFOpen =
     showPDF &&
     !isEditing &&
     !editTemplateModalOpen &&
-    !showEmail &&
-    !cancelModalOpen;
+    !showEmail;
 
   const shouldDisplayCloseButton = !invoice || invoice?.type !== 'invoice';
 
@@ -236,14 +231,6 @@ const InvoiceDetailsBase = ({
 
   return (
     <>
-      {cancelModalOpen && (
-        <InvoiceCancelModal
-          invoiceId={invoice?.id ?? ''}
-          open={cancelModalOpen}
-          onClose={() => setCancelModalOpen(false)}
-        />
-      )}
-      
       {showEmail && (
         <EmailInvoiceDetails
           invoiceId={invoice?.id ?? ''}
@@ -278,33 +265,36 @@ const InvoiceDetailsBase = ({
         />
       )}
 
-      <Sheet open={isPDFOpen} modal={false}>
-        <SheetContent
-          className="mtw:w-full mtw:flex-row mtw:xl:max-w-[1200px] mtw:xl:z-1299"
-          showCloseButton={false}
-        >
-          <SheetTitle hidden>{t(i18n)`PDF Viewer`}</SheetTitle>
-          <SheetDescription hidden>{t(i18n)`PDF Viewer`}</SheetDescription>
-          <div className="mtw:w-full mtw:xl:w-1/2 mtw:bg-white">
-            <InvoicePDFViewer
-              receivable_id={invoice?.id ?? ''}
-              showCloseButton={!isLargeDesktop}
-              onClose={() => setShowPDF(false)}
-            />
-          </div>
-
-          <div className="mtw:w-0 mtw:xl:w-1/2" />
-        </SheetContent>
-      </Sheet>
-
       <Sheet 
         open={isSheetOpen} 
         modal={false} 
-        {...(shouldDisplayCloseButton ? ({ onOpenChange: onCloseInvoiceDetails }) : ({}))}
+        onOpenChange={() => {
+          onCloseInvoiceDetails();
+          if (showPDF) setShowPDF(false);
+        }}
       >
         <SheetContent className="mtw:gap-0 mtw:pb-12" showCloseButton={shouldDisplayCloseButton}>
           <SheetDescription hidden>{t(i18n)`Invoice details`}</SheetDescription>
           {handleSheetContent()}
+
+          <Sheet open={isPDFOpen} modal={false}>
+            <SheetContent
+              className="mtw:w-full mtw:flex-row mtw:xl:max-w-[1200px] mtw:xl:z-1299"
+              showCloseButton={false}
+            >
+              <SheetTitle hidden>{t(i18n)`PDF Viewer`}</SheetTitle>
+              <SheetDescription hidden>{t(i18n)`PDF Viewer`}</SheetDescription>
+              <div className="mtw:w-full mtw:xl:w-1/2 mtw:bg-white">
+                <InvoicePDFViewer
+                  receivable_id={invoice?.id ?? ''}
+                  showCloseButton={!isLargeDesktop}
+                  onClose={() => setShowPDF(false)}
+                />
+              </div>
+
+              <div className="mtw:w-0 mtw:xl:w-1/2" />
+            </SheetContent>
+          </Sheet>
         </SheetContent>
       </Sheet>
     </>

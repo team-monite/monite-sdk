@@ -28,6 +28,8 @@ import { toast } from 'react-hot-toast';
 import { MarkAsUncollectibleModal } from './MarkAsUncollectibleModal';
 import { useState } from 'react';
 import { InvoiceDeleteModal } from './InvoiceDeleteModal';
+import { InvoiceCancelModal } from './InvoiceCancelModal';
+import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
 
 type InvoiceDetailsActionsProps = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -36,7 +38,6 @@ type InvoiceDetailsActionsProps = {
     onTemplateSettingsButtonClick: () => void;
     onIssueAndSendButtonClick: () => void;
     onViewPDFButtonClick: () => void;
-    onCancelInvoiceButtonClick: () => void;
     onDelete: () => void;
     onDuplicate?: (invoiceId: string) => void;
     onMarkAsUncollectible?: (invoiceId: string) => void;
@@ -50,8 +51,10 @@ export const InvoiceDetailsActions = ({
   isPDFViewerOpen,
 }: InvoiceDetailsActionsProps) => {
   const { i18n } = useLingui();
+  const isMobileScreen = useIsMobileScreen();
   const [markAsUncollectibleModalOpen, setMarkAsUncollectibleModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
 
   const PERMISSION_ERROR_MESSAGE = t(i18n)`You don't have permission to update this document. Please, contact your system administrator for details.`;
 
@@ -72,6 +75,8 @@ export const InvoiceDetailsActions = ({
   const isOverdue = invoice.status === 'overdue';
   const isPartiallyPaid = invoice.status === 'partially_paid';
   const isUncollectible = invoice.status === 'uncollectible';
+  const allowRecordPayment = isIssued || isOverdue || isPartiallyPaid;
+  const hideSendAndPdfButtons = allowRecordPayment && isMobileScreen;
 
   const handleDuplicateInvoice = () => {
     duplicateInvoice({
@@ -119,6 +124,14 @@ export const InvoiceDetailsActions = ({
         />
       )}
 
+      {cancelModalOpen && (
+        <InvoiceCancelModal
+          invoiceId={invoice?.id ?? ''}
+          open={cancelModalOpen}
+          onClose={() => setCancelModalOpen(false)}
+        />
+      )}
+
       {isDraft && (
         <>
           <Button 
@@ -129,27 +142,31 @@ export const InvoiceDetailsActions = ({
           >
             {t(i18n)`Issue and send`}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={isIssuingInvoice || isUpdateAllowedLoading}
-            onClick={() => handleButtonClick(issueInvoice)}
-          >
-            <FileCheck /> {t(i18n)`Issue`}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => handleButtonClick(actions.onEditButtonClick)}
-            disabled={isUpdateAllowedLoading}
-          >
-            <SquarePen /> {t(i18n)`Edit`}
-          </Button>
+          {!isMobileScreen && (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={isIssuingInvoice || isUpdateAllowedLoading}
+                onClick={() => handleButtonClick(issueInvoice)}
+              >
+                <FileCheck /> {t(i18n)`Issue`}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleButtonClick(actions.onEditButtonClick)}
+                disabled={isUpdateAllowedLoading}
+              >
+                <SquarePen /> {t(i18n)`Edit`}
+              </Button>
+            </>
+          )}
         </>
       )}
-      {(isIssued || isOverdue || isPartiallyPaid) && (
+      {allowRecordPayment && (
         <RecordManualPaymentModal invoice={invoice}>
           {({ openModal }) => (
             <Button type="button" size="sm" disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(openModal)}>
@@ -158,7 +175,7 @@ export const InvoiceDetailsActions = ({
           )}
         </RecordManualPaymentModal>
       )}
-      {!isDraft && !isUncollectible && (
+      {!isDraft && !isUncollectible && !hideSendAndPdfButtons && (
         <Button
           type="button"
           variant="outline"
@@ -169,7 +186,7 @@ export const InvoiceDetailsActions = ({
           <Mail /> {t(i18n)`Send`}
         </Button>
       )}
-      {!isDraft && (
+      {!isDraft && !hideSendAndPdfButtons && (
         <Button
           type="button"
           variant="outline"
@@ -188,11 +205,21 @@ export const InvoiceDetailsActions = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          {isDraft && isMobileScreen && (
+            <>
+              <DropdownMenuItem disabled={isIssuingInvoice || isUpdateAllowedLoading} onClick={() => handleButtonClick(issueInvoice)}>
+                {t(i18n)`Issue`}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(actions.onEditButtonClick)}>
+                {t(i18n)`Edit`}
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuItem onClick={() => handleButtonClick(handleDuplicateInvoice)}>
             {t(i18n)`Duplicate`}
           </DropdownMenuItem>
           
-          {isDraft && (
+          {(isDraft || hideSendAndPdfButtons) && (
             <>
               <DropdownMenuItem onClick={() => handleButtonClick(actions.onIssueAndSendButtonClick)}>
                 {t(i18n)`Send draft`}
@@ -218,7 +245,7 @@ export const InvoiceDetailsActions = ({
           
           {(isIssued || isOverdue) && (
             <DropdownMenuItem
-              onClick={() => handleButtonClick(actions.onCancelInvoiceButtonClick)}
+              onClick={() => handleButtonClick(() => setCancelModalOpen(true))}
             >
               {t(i18n)`Cancel invoice`}
             </DropdownMenuItem>
@@ -240,7 +267,7 @@ export const InvoiceDetailsActions = ({
         size="sm"
         onClick={actions.onViewPDFButtonClick}
       >
-        {isPDFViewerOpen ? <Eye /> : <EyeOff />} {t(i18n)`PDF view`}
+        {isPDFViewerOpen ? <EyeOff /> : <Eye />} {t(i18n)`PDF view`}
       </Button>
     </div>
   );

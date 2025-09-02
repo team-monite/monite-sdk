@@ -65,10 +65,12 @@ export const InvoiceDetailsTabContent = ({
             label={t(i18n)`Name`}
             value={invoice?.counterpart_name ?? '-'}
           />
-          <OverviewBlock
-            label={t(i18n)`Tax ID`}
-            value={invoice?.counterpart_vat_id?.value ?? '-'}
-          />
+          {invoice?.counterpart_vat_id?.value && (
+            <OverviewBlock
+              label={t(i18n)`Tax ID`}
+              value={invoice?.counterpart_vat_id?.value}
+            />
+          )}
           <OverviewBlock
             label={t(i18n)`Billing address`}
             value={`${invoice?.counterpart_billing_address?.line1}${
@@ -107,10 +109,10 @@ export const InvoiceDetailsTabContent = ({
                 <th className="mtw:text-left mtw:px-2 mtw:whitespace-nowrap mtw:font-medium">
                   {t(i18n)`Qty x Price`}
                 </th>
-                <th className="mtw:text-left mtw:px-2 mtw:whitespace-nowrap mtw:font-medium">
+                <th className="mtw:text-right mtw:px-2 mtw:whitespace-nowrap mtw:font-medium">
                   {t(i18n)`Amount`}
                 </th>
-                <th className="mtw:text-left mtw:pl-2 mtw:whitespace-nowrap mtw:font-medium">
+                <th className="mtw:text-right mtw:pl-2 mtw:whitespace-nowrap mtw:font-medium">
                   {t(i18n)`Sales tax`}
                 </th>
               </tr>
@@ -123,22 +125,22 @@ export const InvoiceDetailsTabContent = ({
                       key={`${item?.product?.id}-${index}`}
                       className="mtw:border-b-1 mtw:border-border mtw:h-10 mtw:text-neutral-10 mtw:text-sm mtw:leading-5"
                     >
-                      <td className="mtw:py-4 mtw:pr-2 mtw:font-medium">
+                      <td className="mtw:py-4 mtw:pr-2 mtw:font-normal">
                         {item?.product?.name}
                       </td>
-                      <td className="mtw:py-4 mtw:px-2 mtw:font-medium mtw:whitespace-nowrap">
+                      <td className="mtw:py-4 mtw:px-2 mtw:font-normal mtw:whitespace-nowrap">
                         {t(i18n)`${item?.quantity} x ${formatCurrencyToDisplay(
                           isInclusivePricing ? item?.product?.price_after_vat?.value : item?.product?.price?.value,
                           item?.product?.price?.currency
                         )}`}
                       </td>
-                      <td className="mtw:py-4 mtw:px-2 mtw:font-medium mtw:whitespace-nowrap">
+                      <td className="mtw:py-4 mtw:px-2 mtw:font-normal mtw:text-right mtw:whitespace-nowrap">
                         {formatCurrencyToDisplay(
                           isInclusivePricing ? item?.total_after_vat : item?.product?.price?.value * item?.quantity,
                           item?.product?.price?.currency
                         )}
                       </td>
-                      <td className="mtw:py-4 mtw:pl-2 mtw:font-medium mtw:text-right">
+                      <td className="mtw:py-4 mtw:pl-2 mtw:font-normal mtw:text-right">
                         {rateMinorToMajor(item?.product?.vat_rate?.value)}%
                       </td>
                     </tr>

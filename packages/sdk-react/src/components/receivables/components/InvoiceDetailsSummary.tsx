@@ -7,6 +7,7 @@ import { useLingui } from '@lingui/react';
 
 import { twMerge } from 'tailwind-merge';
 import { useGetPaymentRecords } from '../hooks/useGetPaymentRecords';
+import { useGetReceivables } from '../hooks/useGetReceivables';
 
 const SummaryLine = ({
   label,
@@ -41,6 +42,19 @@ export const InvoiceDetailsSummary = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { locale } = useMoniteContext();
   const { data: paymentRecords } = useGetPaymentRecords(invoice?.id);
+
+  const creditNoteIds =
+    invoice?.type === 'invoice'
+      ? invoice?.related_documents?.credit_note_ids
+      : undefined;
+
+  const { data: creditNoteQuery } = useGetReceivables(
+    {
+      id__in: creditNoteIds,
+      type: 'credit_note',
+    },
+    Boolean(creditNoteIds?.length)
+  );
 
   const isPaid = invoice?.status === 'paid';
   const isPartiallyPaid = invoice?.status === 'partially_paid';
@@ -93,13 +107,26 @@ export const InvoiceDetailsSummary = ({
             return (
               <SummaryLine
                 key={paymentRecord?.id}
-                label={t(i18n)`Amount paid on ${
-                  paymentRecord?.paid_at
-                    ? i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)
-                    : '-'
+                label={t(i18n)`Amount paid ${
+                  paymentRecord?.paid_at && `on ${i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)}`
                 }`}
                 value={formatCurrencyToDisplay(
                   paymentRecord?.amount ?? 0,
+                  invoice?.currency
+                )}
+              />
+            );
+          })}
+          
+          {creditNoteQuery?.data?.map((creditNote) => {
+            return (
+              <SummaryLine
+                key={creditNote?.id}
+                label={t(i18n)`Credit applied ${
+                  creditNote?.issue_date && `on ${i18n.date(creditNote?.issue_date, locale.dateTimeFormat)}`
+                }`}
+                value={formatCurrencyToDisplay(
+                  creditNote?.total_amount ?? 0,
                   invoice?.currency
                 )}
               />

@@ -61,7 +61,7 @@ const PaymentCard = ({
             {t(i18n)`Payment received`}
           </h3>
           <p className="mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-50">
-            {getPayedByText()} • {issueDate ? i18n.date(issueDate, locale.dateFormat) : t(i18n)`Unknown date`}
+            {getPayedByText()} {issueDate && `• ${i18n.date(issueDate, locale.dateFormat)}`}
           </p>
         </div>
 
@@ -191,10 +191,10 @@ export const InvoicePaymentsTabContent = ({
             </div>
 
             <div className="mtw:flex mtw:flex-col mtw:font-medium mtw:text-neutral-10">
-              <span className="mtw:text-sm mtw:leading-5">
+              <span className="mtw:text-sm mtw:leading-5 mtw:text-right">
                 {t(i18n)`Amount paid`}
               </span>
-              <span className="mtw:text-base mtw:leading-6">
+              <span className="mtw:text-base mtw:leading-6 mtw:text-right">
                 {formatCurrencyToDisplay(invoice?.amount_paid, invoice?.currency)}
               </span>
             </div>

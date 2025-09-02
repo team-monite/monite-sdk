@@ -35,10 +35,9 @@ const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
       </h3>
       <p
         className={twMerge(
-          'mtw:text-sm mtw:font-normal mtw:leading-5',
-          status && status === 'overdue'
-            ? 'mtw:text-danger-10'
-            : 'mtw:text-neutral-50'
+          'mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-10',
+          status && status === 'overdue' && 'mtw:text-danger-10',
+          status && status === 'draft' && 'mtw:text-neutral-50',
         )}
       >
         {value}
