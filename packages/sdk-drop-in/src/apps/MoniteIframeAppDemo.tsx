@@ -1,3 +1,9 @@
+import {
+  DefaultLayout,
+  EntityIdLoader,
+  SDKDemoAPIProvider,
+  SDKDemoI18nProvider,
+} from '../utils/sdk-demo-components';
 import { AppCircularProgress } from '@/lib/AppCircularProgress';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
@@ -5,12 +11,6 @@ import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { type APISchema } from '@monite/sdk-react';
 import { CssBaseline } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {
-  DefaultLayout,
-  EntityIdLoader,
-  SDKDemoAPIProvider,
-  SDKDemoI18nProvider,
-} from '@team-monite/sdk-demo';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
