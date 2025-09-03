@@ -5553,6 +5553,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/core@npm:4.14.1, @lingui/core@npm:~4.14.1":
+  version: 4.14.1
+  resolution: "@lingui/core@npm:4.14.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@lingui/message-utils": "npm:4.14.1"
+    unraw: "npm:^3.0.0"
+  checksum: 10/034fb98434ec65f4a5e58c80eb19e746bfb73270bf58e9e3390f344041179d0fe60722d2a2a5b2b850d4b2795f7aafd0ce62b7c952489f9c794fef111dc3a215
+  languageName: node
+  linkType: hard
+
 "@lingui/core@npm:4.7.0, @lingui/core@npm:~4.7.0":
   version: 4.7.0
   resolution: "@lingui/core@npm:4.7.0"
@@ -5592,6 +5603,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/message-utils@npm:4.14.1":
+  version: 4.14.1
+  resolution: "@lingui/message-utils@npm:4.14.1"
+  dependencies:
+    "@messageformat/parser": "npm:^5.0.0"
+    js-sha256: "npm:^0.10.1"
+  checksum: 10/d1bcca72e8eabbe2c526673662a3e8689be2752a142a41de0e7b2320b1de9fb025b9ce63baf41cbca887d3993efade720bfcf71c1d4260ed57819ca2f85b0c2b
+  languageName: node
+  linkType: hard
+
 "@lingui/message-utils@npm:4.7.0, @lingui/message-utils@npm:~4.7.0":
   version: 4.7.0
   resolution: "@lingui/message-utils@npm:4.7.0"
@@ -5599,6 +5620,18 @@ __metadata:
     "@messageformat/parser": "npm:^5.0.0"
     js-sha256: "npm:^0.10.1"
   checksum: 10/fc1db7a8250ad9d583fc8ba361a44c4dd56b4c1e48567168423b2c95de072e6202c222ceab7287afadfb0bbab15a8764bfe83cd45c9281056aad2b71ea88778d
+  languageName: node
+  linkType: hard
+
+"@lingui/react@npm:~4.14.1":
+  version: 4.14.1
+  resolution: "@lingui/react@npm:4.14.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@lingui/core": "npm:4.14.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/b448eb9fc83415428b5cff501497993c2d0f40768f5ae10d9cf6e5d4ae6f711a08c573380165fda277c0a9805447d7b9aff901a33705abf1eaadde97d330adf4
   languageName: node
   linkType: hard
 
@@ -5722,6 +5755,8 @@ __metadata:
   resolution: "@monite/sdk-drop-in@workspace:packages/sdk-drop-in"
   dependencies:
     "@emotion/react": "npm:~11.11.1"
+    "@lingui/core": "npm:~4.14.1"
+    "@lingui/react": "npm:~4.14.1"
     "@monite/sdk-react": "workspace:~"
     "@mui/material": "npm:~5.15.14"
     "@openapi-qraft/react": "npm:1.14.0"
@@ -5793,6 +5828,7 @@ __metadata:
     "@swc/jest": "npm:~0.2.26"
     "@tailwindcss/postcss": "npm:~4.1.11"
     "@tanstack/react-query": "npm:~5.28.6"
+    "@tanstack/react-query-devtools": "npm:~5.28.6"
     "@tanstack/react-virtual": "npm:~3.13.6"
     "@team-monite/eslint-plugin": "workspace:~"
     "@testing-library/dom": "npm:~9.3.1"
@@ -10461,6 +10497,25 @@ __metadata:
   version: 5.28.6
   resolution: "@tanstack/query-core@npm:5.28.6"
   checksum: 10/e9ae8d80a86890899604b4816cdff76b1c6d496fe627f8b726f5515f1f48632233394c98567ea54ac18498f2f69d01f4307116d6d1329edabba920c73c21a3bf
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.28.10":
+  version: 5.28.10
+  resolution: "@tanstack/query-devtools@npm:5.28.10"
+  checksum: 10/3caa49e83507abc1fb5d44283738d6c5d88fd4b7d6f6ec2c26aa77d938157679fc99da51e1f832295e76940d9d90f793549ae927d11bfba67fcc2dfeaf0d5a43
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:~5.28.6":
+  version: 5.28.14
+  resolution: "@tanstack/react-query-devtools@npm:5.28.14"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.28.10"
+  peerDependencies:
+    "@tanstack/react-query": ^5.28.14
+    react: ^18.0.0
+  checksum: 10/47f342d28758552a866821d127ebf1bf99631cadbe78438f062fec3dd44a3906a607e2e870384836709a898cbd063389bcad4c370e3d167b1d4addffec48d202
   languageName: node
   linkType: hard
 
