@@ -108,13 +108,17 @@ export const UserTransactionsTable = () => {
       sort: sortModel.field,
       order: sortModel.sort,
       limit: pagination.pageSize,
-      // Don't use pagination token when we have a search term and we're on the first page
+      // Don't use pagination token when we have a search term or merchant filter and we're on the first page
       pagination_token:
-        filters[FILTER_TYPE_SEARCH] && pagination.pageIndex === 0
+        (filters[FILTER_TYPE_SEARCH] || filters[FILTER_TYPE_MERCHANT]) &&
+        pagination.pageIndex === 0
           ? undefined
           : currentPaginationToken || undefined,
       entity_user_id__in: user?.id ? [user.id] : undefined,
-      merchant_name__icontains: filters[FILTER_TYPE_SEARCH] || undefined,
+      merchant_name__icontains:
+        filters[FILTER_TYPE_SEARCH] ||
+        filters[FILTER_TYPE_MERCHANT] ||
+        undefined,
       started_at__gt: filters[FILTER_TYPE_STARTED_AT]
         ? formatISO(filters[FILTER_TYPE_STARTED_AT] as Date)
         : undefined,
@@ -130,15 +134,27 @@ export const UserTransactionsTable = () => {
     updateApiResponse(transactionsResponse);
   }, [transactionsResponse, updateApiResponse]);
 
-  // Clear merchant filter when other filters change
+  // Clear search filter when merchant filter is applied, and vice versa
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    if (filters[FILTER_TYPE_MERCHANT]) {
+    if (filters[FILTER_TYPE_MERCHANT] && filters[FILTER_TYPE_SEARCH]) {
+      onFilterChange(FILTER_TYPE_SEARCH, '');
+      setSearchInputValue('');
+    }
+  }, [
+    filters[FILTER_TYPE_MERCHANT],
+    filters[FILTER_TYPE_SEARCH],
+    onFilterChange,
+  ]);
+  /* eslint-enable react-hooks/exhaustive-deps */
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (filters[FILTER_TYPE_SEARCH] && filters[FILTER_TYPE_MERCHANT]) {
       onFilterChange(FILTER_TYPE_MERCHANT, null);
     }
   }, [
     filters[FILTER_TYPE_SEARCH],
-    filters[FILTER_TYPE_STARTED_AT],
+    filters[FILTER_TYPE_MERCHANT],
     onFilterChange,
   ]);
   /* eslint-enable react-hooks/exhaustive-deps */
@@ -150,6 +166,7 @@ export const UserTransactionsTable = () => {
   }, [transactions]);
 
   // Extract unique merchants from transactions for the filter dropdown
+  // Note: This will show merchants from the current page/search results
   const uniqueMerchants = useMemo(() => {
     if (!transactions) return [];
     const merchants = transactions
@@ -157,17 +174,6 @@ export const UserTransactionsTable = () => {
       .filter((name): name is string => !!name);
     return [...new Set(merchants)].sort();
   }, [transactions]);
-
-  // Filter transactions by merchant if merchant filter is applied
-  const filteredTransactions = useMemo(() => {
-    if (!transactions || !filters[FILTER_TYPE_MERCHANT]) {
-      return transactions || [];
-    }
-    return transactions.filter(
-      (transaction) =>
-        transaction.merchant_name === filters[FILTER_TYPE_MERCHANT]
-    );
-  }, [filters, transactions]);
 
   // Fetch receipts for the transaction IDs
   const { receiptsByTransactionId, isLoading: isReceiptsLoading } =
@@ -369,7 +375,7 @@ export const UserTransactionsTable = () => {
       <div className="mtw:flex-1 mtw:min-h-0">
         <DataTable
           columns={columns}
-          data={filteredTransactions || []}
+          data={transactions || []}
           loading={isLoading}
           pagination={pagination}
           onPaginationChange={onPaginationChange}
@@ -379,7 +385,7 @@ export const UserTransactionsTable = () => {
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
-              dataLength={filteredTransactions?.length || 0}
+              dataLength={transactions?.length || 0}
               isFiltering={
                 !!filters[FILTER_TYPE_STARTED_AT] ||
                 !!filters[FILTER_TYPE_MERCHANT]
