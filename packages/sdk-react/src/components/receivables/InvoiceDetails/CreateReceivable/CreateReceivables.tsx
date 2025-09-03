@@ -28,6 +28,7 @@ import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups'
 import {
   useCounterpartAddresses,
   useCounterpartById,
+  useCounterpartContactList,
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
@@ -161,6 +162,8 @@ const CreateReceivablesBase = ({
   } = useMyEntity();
   const [isEditCounterpartModalOpen, setIsEditCounterpartModalOpen] =
     useState(false);
+  const [isEditCounterpartProfileOpen, setIsEditCounterpartProfileOpen] =
+    useState(false);
   const [isBankFormOpen, setIsBankFormOpen] = useState(false);
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
@@ -199,6 +202,10 @@ const CreateReceivablesBase = ({
     ),
   });
 
+  const handleEditCounterpartProfileState = (isOpen: boolean) => {
+    setIsEditCounterpartProfileOpen(isOpen);
+  };
+  
   const handleEditCounterpartModalState = (isOpen: boolean) => {
     setIsEditCounterpartModalOpen(isOpen);
   };
@@ -238,6 +245,7 @@ const CreateReceivablesBase = ({
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+  const { data: counterpartContacts } = useCounterpartContactList(counterpartId);
 
   const billingAddressId = watch('default_billing_address_id');
   const counterpartBillingAddress = useMemo(
@@ -298,6 +306,9 @@ const CreateReceivablesBase = ({
     api.measureUnits.getMeasureUnits.useQuery();
 
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    const customerHasRemindersEnabled = counterpart && counterpart?.reminders_enabled;
+    const customerHasDefaultEmail = counterpart && counterpartContacts?.find((contact) => contact.is_default)?.email;
+
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
 
@@ -315,7 +326,25 @@ const CreateReceivablesBase = ({
 
       return;
     }
+    
+    if (!customerHasRemindersEnabled && customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
+      showErrorToast(new Error("Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."));
 
+      return;
+    }
+
+    if (!customerHasDefaultEmail && customerHasRemindersEnabled && (values.payment_reminder_id || values.overdue_reminder_id)) {
+      showErrorToast(new Error("No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."));
+
+      return;
+    }
+    
+    if (!customerHasRemindersEnabled && !customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
+      showErrorToast(new Error("Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."));
+
+      return;
+    }
+    
     const shippingAddressId = values.default_shipping_address_id;
 
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
@@ -960,7 +989,9 @@ const CreateReceivablesBase = ({
                     disabled={createReceivable.isPending}
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
+                    isEditProfileOpen={isEditCounterpartProfileOpen}
                     handleEditModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                     counterpart={counterpart}
                   />
                 </Box>
@@ -1011,6 +1042,7 @@ const CreateReceivablesBase = ({
                     onUpdatePaymentReminder={onEditPaymentReminder}
                     onCreateReminder={onCreateReminder}
                     handleEditCounterpartModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                   />
 
                   <EntitySection

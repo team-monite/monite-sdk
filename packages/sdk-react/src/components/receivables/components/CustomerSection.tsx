@@ -12,7 +12,9 @@ export interface CustomerSectionProps {
   disabled: boolean;
   customerTypes?: CustomerType[];
   isEditModalOpen?: boolean;
+  isEditProfileOpen?: boolean;
   handleEditModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
   counterpart?: components['schemas']['CounterpartResponse'];
 }
 
@@ -20,7 +22,9 @@ export const CustomerSection = ({
   disabled,
   customerTypes,
   isEditModalOpen,
+  isEditProfileOpen,
   handleEditModal,
+  handleEditProfileState,
   counterpart,
 }: CustomerSectionProps) => {
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
@@ -112,11 +116,17 @@ export const CustomerSection = ({
           initialBillingAddressId={selectedBillingAddressId}
           initialShippingAddressId={selectedShippingAddressId}
           disabled={disabled}
+          isEditProfileOpen={isEditProfileOpen}
           open={isEditModalOpen || isEditCounterpartOpened}
           onClose={() => {
             if (handleEditModal) {
               handleEditModal(false);
             }
+
+            if (handleEditProfileState) {
+              handleEditProfileState(false);
+            }
+
             setIsEditCounterpartOpened(false);
           }}
         />
