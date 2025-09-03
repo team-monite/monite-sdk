@@ -202,7 +202,7 @@ export const SDKDemoI18nProvider = ({
 }: {
   children: ReactNode;
   localeCode: string;
-  messages?: Record<string, any>;
+  messages?: Record<string, unknown>;
 }) => {
   const sdkDemoI18n = useMemo(() => {
     return setupI18n({
