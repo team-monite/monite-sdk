@@ -19,4 +19,7 @@ export {
   type CreateMoniteAPIClientResult,
   type CreateMoniteAPIClientOptions,
 } from '@/api/client';
-export type { ComponentSettings } from './core/componentSettings';
+export type {
+  ComponentSettings,
+  PayActionHandlers,
+} from './core/componentSettings';

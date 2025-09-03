@@ -4,7 +4,6 @@ set -o errexit
 # Setup locale file list to check for uncommitted changes
 ##################################
 locale_files=$(find "packages/sdk-react/src/core/i18n/locales" -maxdepth 2 -name 'messages.po')
-locale_files+=" $(find "packages/sdk-demo/src/locales" -maxdepth 2 -name 'messages.po')"
 locale_files+=" $(find "examples/with-nextjs-and-clerk-auth/src/locales" -maxdepth 2 -name 'messages.po')"
 ##################################
 

@@ -1,11 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
+import { Filters as FiltersComponent } from './Filters';
+import { PayablesTableAction } from './components/PayablesTableAction';
+import {
+  DEFAULT_FIELD_ORDER,
+  FILTER_TYPE_SUMMARY_CARD,
+  FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_STATUS,
+} from './consts';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { MoniteCustomFilters } from '@/components/payables/PayablesTable/Filters/MoniteCustomFilters';
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
-import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { type PayActionHandlers } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -18,10 +27,10 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { usePayablePaymentIntentsAndRecords } from '@/core/queries/usePaymentRecords';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { DueDateCell } from '@/ui/DueDateCell';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
@@ -35,20 +44,9 @@ import {
   GridSortDirection,
   GridSortModel,
 } from '@mui/x-data-grid';
-
 import { formatISO } from 'date-fns';
-
-import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
-import { PayablesTableAction } from './components/PayablesTableAction';
-import {
-  DEFAULT_FIELD_ORDER,
-  FILTER_TYPE_SUMMARY_CARD,
-  FILTER_TYPE_DUE_DATE,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-} from './consts';
-import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 interface PayablesTableProps extends MonitePayableTableProps {
   /**
@@ -62,7 +60,7 @@ interface PayablesTableProps extends MonitePayableTableProps {
    *
    * @param id - The identifier of the row to perform the pay action on, a string.
    */
-  onPay?: (id: string) => void;
+  onPay?: (id: string, actions?: PayActionHandlers) => void;
   /**
    * The event handler for the pay action in US
    *
