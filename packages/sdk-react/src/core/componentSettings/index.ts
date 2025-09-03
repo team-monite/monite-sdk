@@ -194,6 +194,51 @@ export interface TemplateSettings {
   availableAPDocuments: APDocumentType[];
 }
 
+/**
+ * Action handlers for custom payment flows in payable operations.
+ * 
+ * These handlers provide fine-grained control over payment workflows, allowing customers to:
+ * - Integrate external payment providers
+ * - Implement custom approval processes or multi-step authentication
+ * - Add specialized banking solutions or enterprise payment workflows
+ * - Control UI feedback and data refresh timing after payment completion
+ * 
+ * @example Custom payment provider integration:
+ * ```typescript
+ * const onPay = (id: string, _data?: unknown, actions?: PayActionHandlers) => {
+ *   // Start custom payment flow
+ *   initiatePayment(id)
+ *     .then(() => {
+ *       // Payment successful - update SDK state and show success message
+ *       actions?.resolve({ showToast: true });
+ *     })
+ *     .catch((error) => {
+ *       // Payment failed - update SDK state and show error message
+ *       actions?.reject(error, { showToast: true });
+ *     });
+ * };
+ * ```
+ */
+export type PayActionHandlers = {
+  /** 
+   * Call when a custom payment flow has been successfully initiated/completed.
+   * This triggers SDK's built-in state management: refreshes payable data, 
+   * payment records, and optionally displays success feedback to the user.
+   * 
+   * @param options.showToast - Whether to display a success toast notification
+   */
+  resolve: (options?: { showToast?: boolean }) => void;
+  /** 
+   * Call when a custom payment flow failed or was cancelled by the user.
+   * This triggers SDK's built-in state management: refreshes payable data,
+   * payment records, and optionally displays error feedback to the user.
+   * 
+   * @param error - Optional error details from the failed payment attempt
+   * @param options.showToast - Whether to display an error toast notification
+   */
+  reject: (error?: unknown, options?: { showToast?: boolean }) => void;
+};
+
 interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
@@ -205,7 +250,33 @@ interface PayableSettings
   onApproved?: (id: string) => void;
   onReopened?: (id: string) => void;
   onDeleted?: (id: string) => void;
-  onPay?: (id: string) => void;
+  /**
+   * Called when the user clicks Pay button on a payable.
+   * 
+   * **Legacy Usage (Backward Compatible):**
+   * ```typescript
+   * onPay: (id: string) => {
+   *   console.log('Payment initiated for:', id);
+   * }
+   * ```
+   * 
+   * **Enhanced Usage (Custom Payment Flow):**
+   * ```typescript
+   * onPay: (id: string, _data?: unknown, actions?: PayActionHandlers) => {
+   *   // Custom payment implementation
+   *   processPaymentWithCustomProvider(id)
+   *     .then(() => actions?.resolve({ showToast: true }))
+   *     .catch(err => actions?.reject(err, { showToast: true }));
+   * }
+   * ```
+   * 
+   * @param id - The payable ID being paid
+   * @param _data - Reserved for future use (currently undefined)
+   * @param actions - Optional handlers for custom payment flows. When provided,
+   *                  enables custom payment integration. Call actions.resolve() 
+   *                  on success or actions.reject() on failure to update SDK state.
+   */
+  onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
 }
 
 export interface ComponentSettings {
