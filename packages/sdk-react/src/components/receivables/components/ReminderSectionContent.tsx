@@ -53,69 +53,73 @@ export const ReminderSectionContent = ({
       ? Boolean(counterpart.individual.email)
       : hasCounterpartDefaultContactEmail;
 
-  const hasValidReminderEmailLoading = isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
+  const hasValidReminderEmailLoading =
+    isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
 
-  const shouldShowAlert = !hasValidReminderEmailLoading && Boolean(counterpartId) && (!hasValidReminderEmail || !counterpart?.reminders_enabled);
+  const shouldShowAlert =
+    !hasValidReminderEmailLoading &&
+    Boolean(counterpartId) &&
+    (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
   return (
     <>
-    {shouldShowAlert && (
-      <Alert severity="warning">
-        <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
-          {!counterpart?.reminders_enabled && hasValidReminderEmail && (
-            <span>
-              {t(
-                i18n
-              )`Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`}
-            </span>
-          )}
-          {!hasValidReminderEmail && counterpart?.reminders_enabled && (
-            <span>
-              {t(
-                i18n
-              )`No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`}
-            </span>
-          )}
-          
-          {!hasValidReminderEmail && !counterpart?.reminders_enabled && (
-            <span>
-              {t(
-                i18n
-              )`Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.`}
-            </span>
-          )}
+      {shouldShowAlert && (
+        <Alert severity="warning">
+          <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+            {!counterpart?.reminders_enabled && hasValidReminderEmail && (
+              <span>
+                {t(
+                  i18n
+                )`Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`}
+              </span>
+            )}
+            {!hasValidReminderEmail && counterpart?.reminders_enabled && (
+              <span>
+                {t(
+                  i18n
+                )`No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`}
+              </span>
+            )}
 
-          {handleEditCounterpartModal && (
-            <button
-              className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
-              type="button"
-              onClick={() => {
-                if (handleEditProfileState) {
-                  handleEditProfileState(true);
-                }
-                handleEditCounterpartModal(true);
-              }}
-            >
-              {t(i18n)`Edit customer`}
-            </button>
-          )}
-        </div>
-      </Alert>
-    )}
+            {!hasValidReminderEmail && !counterpart?.reminders_enabled && (
+              <span>
+                {t(
+                  i18n
+                )`Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.`}
+              </span>
+            )}
 
-    <div className="mtw:flex mtw:gap-6 mtw:space-between mtw:w-full">
-      <ReminderBeforeDueDate
-        handleCreate={onCreateReminder}
-        onUpdatePaymentReminder={onUpdatePaymentReminder}
-        disabled={disabled || isCounterpartLoading}
-      />
+            {handleEditCounterpartModal && (
+              <button
+                className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+                type="button"
+                onClick={() => {
+                  if (handleEditProfileState) {
+                    handleEditProfileState(true);
+                  }
+                  handleEditCounterpartModal(true);
+                }}
+              >
+                {t(i18n)`Edit customer`}
+              </button>
+            )}
+          </div>
+        </Alert>
+      )}
 
-      <ReminderOverdue
-        handleCreate={onCreateReminder}
-        onUpdateOverdueReminder={onUpdateOverdueReminder}
-        disabled={disabled || isCounterpartLoading}
-      />
-    </div>
+      <div className="mtw:flex mtw:gap-6 mtw:space-between mtw:w-full">
+        <ReminderBeforeDueDate
+          handleCreate={onCreateReminder}
+          onUpdatePaymentReminder={onUpdatePaymentReminder}
+          disabled={disabled || isCounterpartLoading}
+        />
+
+        <ReminderOverdue
+          handleCreate={onCreateReminder}
+          onUpdateOverdueReminder={onUpdateOverdueReminder}
+          disabled={disabled || isCounterpartLoading}
+        />
+      </div>
     </>
   );
 };

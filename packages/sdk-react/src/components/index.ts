@@ -3,6 +3,7 @@ export * from './approvalPolicies';
 export * from './approvalRequests';
 export * from './payables';
 export * from './receivables';
+export * from './expenses';
 export * from './onboarding';
 export * from './products';
 export * from './tags';
