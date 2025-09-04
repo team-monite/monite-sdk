@@ -1,5 +1,16 @@
 # @monite/sdk-drop-in
 
+## 2.5.0
+
+### Minor Changes
+
+- 669a095: Reworked InvoiceDetails design, new modern look and more aligned with our latest API version
+
+### Patch Changes
+
+- a29b838: Fixed bug with record payments setting wrong status. Also fixed a bug on dialog for editing customer's profile not opening correctly when "Edit customer's profile" warning is clicked.
+- 558419d: Enhanced onPay callback with actions
+
 ## 2.4.0
 
 ### Minor Changes
