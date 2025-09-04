@@ -19,4 +19,4 @@ USER app
 
 # Install dependencies and build demo necessary for storybook
 RUN yarn install --immutable
-RUN yarn build --filter='@team-monite/sdk-demo'
+RUN yarn build --filter='@monite/sdk-react'
