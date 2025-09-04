@@ -1,5 +1,6 @@
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems, type SanitizableLineItem } from '../../utils';
+import { sanitizeLineItems } from '../utils';
+import type { SanitizableLineItem } from '../types';
 import type { InvoicePreviewBaseProps } from './InvoicePreview.types';
 import {
   getPaymentTermsDiscount,
@@ -32,7 +33,6 @@ export const InvoicePreviewLegacy = ({
   isNonVatSupported,
   paymentTerms,
   measureUnits = [],
-  footer,
 }: InvoicePreviewBaseProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
@@ -43,6 +43,7 @@ export const InvoicePreviewLegacy = ({
     fulfillment_date: fulfillmentDate,
     line_items: items,
     memo,
+    footer,
     entity_bank_account_id: entityBankAccountId = '',
     vat_mode: vatMode,
     payment_terms_id: paymentTermsId,

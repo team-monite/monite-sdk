@@ -12,6 +12,7 @@ export interface InvoicePreviewData {
   line_items: CreateReceivablesFormBeforeValidationLineItemProps[];
   fulfillment_date?: string | Date | null;
   memo?: string;
+  footer?: string;
   entity_bank_account_id?: string;
   vat_mode?: 'inclusive' | 'exclusive';
 }
@@ -31,5 +32,4 @@ export interface InvoicePreviewBaseProps {
   paymentTerms?: components['schemas']['PaymentTermsListResponse'];
   templateName?: string;
   measureUnits?: components['schemas']['UnitResponse'][];
-  footer?: string;
 }

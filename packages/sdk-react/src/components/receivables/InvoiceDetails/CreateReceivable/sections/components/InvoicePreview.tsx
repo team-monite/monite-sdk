@@ -18,8 +18,7 @@ export const InvoicePreview = ({
   entityVatIds,
   isNonVatSupported,
   paymentTerms,
-  footer,
-  templateName = 'default_monite',
+  templateName,
 }: InvoicePreviewBaseProps) => {
   const { defaultInvoiceTemplate } = useDocumentTemplatesApi();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,26 +56,37 @@ export const InvoicePreview = ({
       ref={containerRef}
       className={cn(
         // Container layout
-        'mtw:flex mtw:justify-center mtw:items-start',
-        'mtw:w-full mtw:h-full mtw:overflow-auto mtw:relative',
-        'mtw:p-12', // 48px padding (12 * 4px)
-        'mtw:bg-gradient-to-br mtw:from-slate-50 mtw:to-slate-200'
+        'mtw:flex mtw:overflow-auto mtw:relative',
+        'mtw:w-full mtw:h-full mtw:min-h-0',
+        'mtw:p-12', // 48px padding
+        'mtw:bg-gradient-to-br mtw:from-slate-50 mtw:to-slate-200',
+        // Force pixel-snapping for zoom stability
+        'mtw:[transform:translateZ(0)]'
       )}
+      style={{
+        justifyContent: 'safe center',
+        alignItems: 'safe center',
+      }}
     >
       <AspectRatio
         ratio={21 / 29.7}
         className={cn(
           // Maximum width constraints for A4
           'mtw:max-w-[21cm]',
-          // Minimum dimensions for proper scaling
+          // Minimum dimensions for proper scaling (A4: 794×1123px = 21cm × 29.7cm)
           'mtw:min-w-[794px] mtw:min-h-[1123px]',
           // Responsive scaling with our adaptive scale hook
           'mtw:transition-transform mtw:duration-200 mtw:ease-in-out',
-          'mtw:origin-top',
-          // Ensure proper sizing
-          'mtw:flex-shrink-0'
+          // Respect reduced motion preferences
+          'motion-reduce:mtw:transition-none',
+          'mtw:origin-center',
+          // Prevent unwanted shrinking and layout shifts
+          'mtw:flex-shrink-0',
+          // CSS containment for layout stability
+          'mtw:[contain:"layout style"]'
         )}
         style={{
+          // Dynamic transform must stay as inline style due to variable
           transform: `scale(${scale})`,
         }}
       >
@@ -86,8 +96,7 @@ export const InvoicePreview = ({
             // Full size within aspect ratio container
             'mtw:w-full mtw:h-full',
             'mtw:bg-white mtw:flex-shrink-0',
-            'mtw:shadow-md mtw:rounded-sm',
-            // Remove overflow-auto to prevent inner scrolling
+            'mtw:shadow-md',
             'mtw:overflow-hidden'
           )}
         >

@@ -464,6 +464,7 @@ const CreateReceivablesBase = ({
   const paymentTermsId = watch('payment_terms_id');
   const fulfillmentDate = watch('fulfillment_date');
   const memo = watch('memo');
+  const footer = watch('footer');
   const vatMode = watch('vat_mode');
   const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
@@ -1077,7 +1078,8 @@ const CreateReceivablesBase = ({
               id: item.id || `temp-${Math.random().toString(36).substr(2, 9)}`,
             })) as CreateReceivablesFormBeforeValidationLineItemProps[],
             fulfillment_date: fulfillmentDate,
-            memo: memo,
+            memo,
+            footer,
             entity_bank_account_id: entityBankAccountId,
             vat_mode: vatMode,
           }}

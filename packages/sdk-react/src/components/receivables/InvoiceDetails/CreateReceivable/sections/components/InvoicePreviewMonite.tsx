@@ -34,7 +34,6 @@ export const InvoicePreviewMonite = ({
   isNonVatSupported,
   paymentTerms,
   measureUnits = [],
-  footer,
 }: InvoicePreviewBaseProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
@@ -46,6 +45,7 @@ export const InvoicePreviewMonite = ({
     line_items: items,
     fulfillment_date: fulfillmentDate,
     memo,
+    footer,
     entity_bank_account_id: entityBankAccountId = '',
     vat_mode: vatMode,
   } = invoiceData;
