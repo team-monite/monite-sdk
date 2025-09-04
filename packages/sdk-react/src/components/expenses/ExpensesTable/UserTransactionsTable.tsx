@@ -1,11 +1,7 @@
 import { ReceiptPreview } from '../ReceiptPreview';
 import { TransactionDetails } from '../TransactionDetails';
 import { useGetTransactions } from '../hooks/useTransactions';
-import {
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STARTED_AT,
-  FILTER_TYPE_MERCHANT,
-} from './consts';
+import { FILTER_TYPE_SEARCH, FILTER_TYPE_STARTED_AT } from './consts';
 import type { FilterTypes } from './types';
 import { type components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -20,13 +16,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { Button } from '@/ui/components/button';
 import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/ui/components/select';
 import { Skeleton } from '@/ui/components/skeleton';
 import { LoadingPage } from '@/ui/loadingPage';
 import { hasSelectedText } from '@/utils/text-selection';
@@ -84,7 +73,6 @@ export const UserTransactionsTable = () => {
       initialValue: {
         [FILTER_TYPE_SEARCH]: '',
         [FILTER_TYPE_STARTED_AT]: null,
-        [FILTER_TYPE_MERCHANT]: null,
       },
     },
   });
@@ -142,44 +130,11 @@ export const UserTransactionsTable = () => {
     updateApiResponse(transactionsResponse);
   }, [transactionsResponse, updateApiResponse]);
 
-  // Clear merchant filter when other filters change
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    if (filters[FILTER_TYPE_MERCHANT]) {
-      onFilterChange(FILTER_TYPE_MERCHANT, null);
-    }
-  }, [
-    filters[FILTER_TYPE_SEARCH],
-    filters[FILTER_TYPE_STARTED_AT],
-    onFilterChange,
-  ]);
-  /* eslint-enable react-hooks/exhaustive-deps */
-
   // Extract transaction IDs for receipts query
   const transactionIds = useMemo(() => {
     if (!transactions) return [];
     return transactions.map((transaction) => transaction.id);
   }, [transactions]);
-
-  // Extract unique merchants from transactions for the filter dropdown
-  const uniqueMerchants = useMemo(() => {
-    if (!transactions) return [];
-    const merchants = transactions
-      .map((transaction) => transaction.merchant_name)
-      .filter((name): name is string => !!name);
-    return [...new Set(merchants)].sort();
-  }, [transactions]);
-
-  // Filter transactions by merchant if merchant filter is applied
-  const filteredTransactions = useMemo(() => {
-    if (!transactions || !filters[FILTER_TYPE_MERCHANT]) {
-      return transactions || [];
-    }
-    return transactions.filter(
-      (transaction) =>
-        transaction.merchant_name === filters[FILTER_TYPE_MERCHANT]
-    );
-  }, [filters, transactions]);
 
   // Fetch receipts for the transaction IDs
   const { receiptsByTransactionId, isLoading: isReceiptsLoading } =
@@ -277,12 +232,12 @@ export const UserTransactionsTable = () => {
           cell: ({ row }) => {
             const formattedAmount = i18n.number(
               formatFromMinorUnits(
-                row.original.amount,
-                row.original.currency
+                row.original.merchant_amount,
+                row.original.merchant_currency
               ) || 0,
               {
                 style: 'currency',
-                currency: row.original.currency,
+                currency: row.original.merchant_currency,
               }
             );
             return formattedAmount;
@@ -332,27 +287,6 @@ export const UserTransactionsTable = () => {
           className="mtw:max-w-sm"
         />
         <div className="mtw:flex mtw:items-center mtw:shrink mtw:gap-2 mtw:justify-between">
-          <Select
-            value={filters[FILTER_TYPE_MERCHANT] || 'all'}
-            onValueChange={(value) =>
-              onFilterChange(
-                FILTER_TYPE_MERCHANT,
-                value === 'all' ? null : value
-              )
-            }
-          >
-            <SelectTrigger className="mtw:w-[180px]">
-              <SelectValue placeholder={t(i18n)`All merchants`} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t(i18n)`All merchants`}</SelectItem>
-              {uniqueMerchants.map((merchant) => (
-                <SelectItem key={merchant} value={merchant}>
-                  {merchant}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           <DatePicker
             className="Monite-ExpensesStartedAtFilter Monite-FilterControl Monite-DateFilterControl"
             onChange={(value, error) => {
@@ -396,7 +330,7 @@ export const UserTransactionsTable = () => {
       <div className="mtw:flex-1 mtw:min-h-0">
         <DataTable
           columns={columns}
-          data={filteredTransactions || []}
+          data={transactions || []}
           loading={isLoading}
           pagination={pagination}
           onPaginationChange={onPaginationChange}
@@ -407,11 +341,8 @@ export const UserTransactionsTable = () => {
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
-              dataLength={filteredTransactions?.length || 0}
-              isFiltering={
-                !!filters[FILTER_TYPE_STARTED_AT] ||
-                !!filters[FILTER_TYPE_MERCHANT]
-              }
+              dataLength={transactions?.length || 0}
+              isFiltering={!!filters[FILTER_TYPE_STARTED_AT]}
               isSearching={!!filters[FILTER_TYPE_SEARCH]}
               isError={!!error}
               refetch={refetch}

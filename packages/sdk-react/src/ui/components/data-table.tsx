@@ -5,6 +5,12 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuGroup,
 } from './dropdown-menu';
 import {
   Select,
@@ -17,6 +23,7 @@ import { Button } from '@/ui/components/button';
 import { Skeleton } from '@/ui/components/skeleton';
 import { plural, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { DropdownMenuPortal } from '@radix-ui/react-dropdown-menu';
 import {
   Column,
   ColumnDef,
@@ -40,7 +47,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   ChevronsUpDown,
-  EyeOff,
+  Settings2,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -51,20 +58,25 @@ interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
-  canHideColumn?: boolean;
+  table?: ReactTableTable<TData>;
 }
 
 export function DataTableColumnHeader<TData, TValue>({
   column,
   title,
   className,
-  canHideColumn = true,
+  table,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   const { i18n } = useLingui();
 
-  if (!column.getCanSort()) {
-    return <span className={cn('mtw:font-bold', className)}>{title}</span>;
-  }
+  const columnIcon = !column.getCanSort() ? null : column.getIsSorted() ===
+    'desc' ? (
+    <ArrowDown />
+  ) : column.getIsSorted() === 'asc' ? (
+    <ArrowUp />
+  ) : (
+    <ChevronsUpDown />
+  );
 
   return (
     <div className={cn('mtw:flex mtw:items-center mtw:gap-2', className)}>
@@ -76,31 +88,72 @@ export function DataTableColumnHeader<TData, TValue>({
             className="mtw:data-[state=open]:bg-accent mtw:h-8 mtw:font-bold"
           >
             <span>{title}</span>
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDown />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUp />
-            ) : (
-              <ChevronsUpDown />
-            )}
+            {columnIcon}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp />
-            {t(i18n)`Ascending`}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown />
-            {t(i18n)`Descending`}
-          </DropdownMenuItem>
-          {canHideColumn && (
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>{t(i18n)`Sort column`}</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(false)}
+              disabled={!column.getCanSort()}
+            >
+              <ArrowUp />
+              {t(i18n)`Ascending`}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(true)}
+              disabled={!column.getCanSort()}
+            >
+              <ArrowDown />
+              {t(i18n)`Descending`}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          {table && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-                <EyeOff />
-                {t(i18n)`Hide`}
-              </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  {/* <EyeOff /> */}
+                  <Settings2 />
+                  {t(i18n)`Visible columns`}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    {table
+                      .getAllColumns()
+                      .filter(
+                        (column) =>
+                          typeof column.accessorFn !== 'undefined' &&
+                          column.getCanHide()
+                      )
+                      .map((column) => {
+                        const columnDef = column.columnDef as ColumnDef<
+                          TData,
+                          any
+                        >;
+                        const title =
+                          typeof columnDef.header === 'string'
+                            ? columnDef.header
+                            : column.id;
+
+                        return (
+                          <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="mtw:capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) =>
+                              column.toggleVisibility(!!value)
+                            }
+                          >
+                            {title}
+                          </DropdownMenuCheckboxItem>
+                        );
+                      })}
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
             </>
           )}
         </DropdownMenuContent>
@@ -302,6 +355,7 @@ export function DataTable<TData, TValue>({
                           <DataTableColumnHeader
                             column={header.column}
                             title={header.column.columnDef.header as string}
+                            table={table}
                           />
                         )}
                       </th>

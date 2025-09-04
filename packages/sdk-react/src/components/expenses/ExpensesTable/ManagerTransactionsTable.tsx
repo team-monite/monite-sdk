@@ -274,12 +274,12 @@ export const ManagerTransactionsTable = () => {
           cell: ({ row }) => {
             const formattedAmount = i18n.number(
               formatFromMinorUnits(
-                row.original.amount,
-                row.original.currency
+                row.original.merchant_amount,
+                row.original.merchant_currency
               ) || 0,
               {
                 style: 'currency',
-                currency: row.original.currency,
+                currency: row.original.merchant_currency,
               }
             );
             return formattedAmount;
