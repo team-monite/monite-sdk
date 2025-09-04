@@ -40,7 +40,13 @@ export const ImageFileViewer = ({
       src={url}
       alt={name}
       loading="lazy"
-      style={{ width: '100%', objectFit: 'contain' }}
+      style={{
+        maxWidth: '100%',
+        maxHeight: '100%',
+        width: 'auto',
+        height: 'auto',
+        objectFit: 'contain',
+      }}
     />
   );
 };
@@ -61,6 +67,8 @@ export const PdfFileViewer = ({ url }: { url: string }) => {
         height: '100%',
         maxHeight: '100%',
         border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <div
@@ -68,7 +76,8 @@ export const PdfFileViewer = ({ url }: { url: string }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          margin: '0 8px',
+          margin: '0 8px 8px 8px',
+          flexShrink: 0,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -92,9 +101,11 @@ export const PdfFileViewer = ({ url }: { url: string }) => {
       </div>
       <div
         style={{
-          height: '100%',
+          flex: 1,
           backgroundColor: '#F0F2F4',
           borderRadius: '8px',
+          minHeight: 0,
+          overflow: 'hidden',
         }}
       >
         <Worker workerUrl="https://js.monite.com/libs/pdf.js/3.4.120/pdf.worker.min.js">
