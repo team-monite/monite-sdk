@@ -90,13 +90,13 @@ const DocumentCard = ({
   );
 };
 
-type InvoiceOverviewTabContentProps = {
+type InvoiceDetailsTabOverviewProps = {
   invoice?: components['schemas']['ReceivableResponse'];
 };
 
-export const InvoiceOverviewTabContent = ({
+export const InvoiceDetailsTabOverview = ({
   invoice,
-}: InvoiceOverviewTabContentProps) => {
+}: InvoiceDetailsTabOverviewProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();

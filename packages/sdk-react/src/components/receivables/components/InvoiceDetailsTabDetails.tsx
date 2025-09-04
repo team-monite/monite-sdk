@@ -37,13 +37,13 @@ const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
   );
 };
 
-type InvoiceDetailsTabContentProps = {
+type InvoiceDetailsTabDetailsProps = {
   invoice?: components['schemas']['ReceivableResponse'];
 };
 
-export const InvoiceDetailsTabContent = ({
+export const InvoiceDetailsTabDetails = ({
   invoice,
-}: InvoiceDetailsTabContentProps) => {
+}: InvoiceDetailsTabDetailsProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
 

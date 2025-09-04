@@ -12,9 +12,9 @@ export { EntityProfileModal } from './EntityProfileModal';
 export { InvoiceDetails } from './InvoiceDetails';
 export { InvoiceDetailsActions } from './InvoiceDetailsActions';
 export { InvoiceDetailsSummary } from './InvoiceDetailsSummary';
-export { InvoiceOverviewTabContent } from './InvoiceOverviewTabContent';
-export { InvoiceDetailsTabContent } from './InvoiceDetailsTabContent';
-export { InvoicePaymentsTabContent } from './InvoicePaymentsTabContent';
+export { InvoiceDetailsTabOverview } from './InvoiceDetailsTabOverview';
+export { InvoiceDetailsTabDetails } from './InvoiceDetailsTabDetails';
+export { InvoiceDetailsTabPayments } from './InvoiceDetailsTabPayments';
 export { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
 export {
   InvoiceRecurrenceIterationStatusChip,

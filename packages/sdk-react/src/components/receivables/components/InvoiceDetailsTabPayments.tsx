@@ -13,7 +13,7 @@ import { CheckCircle } from 'lucide-react';
 import { LoadingSpinner } from '@/ui/loading';
 import { getPaymentMethodName, PaymentMethod } from '../utils';
 
-type InvoicePaymentsTabContentProps = {
+type InvoiceDetailsTabPaymentsProps = {
   invoice?: components['schemas']['ReceivableResponse'];
 };
 
@@ -66,7 +66,7 @@ const PaymentCard = ({
         </div>
 
         <div className="mtw:flex mtw:flex-col mtw:gap-0.5">
-          <h3 className="mtw:font-medium mtw:text-sm mtw:leading-5 mtw:text-neutral-10">
+          <h3 className="mtw:font-medium mtw:text-sm mtw:text-right mtw:leading-5 mtw:text-neutral-10">
             {formatCurrencyToDisplay(totalAmount, currency)}
           </h3>
           <p className="mtw:text-sm mtw:font-normal mtw:inline-flex mtw:items-center mtw:gap-1 mtw:leading-5 mtw:text-green-500">
@@ -79,9 +79,9 @@ const PaymentCard = ({
   );
 };
 
-export const InvoicePaymentsTabContent = ({
+export const InvoiceDetailsTabPayments = ({
   invoice,
-}: InvoicePaymentsTabContentProps) => {
+}: InvoiceDetailsTabPaymentsProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
   const { data: paymentRecords, isLoading: isLoadingPaymentRecords } = useGetPaymentRecords(invoice?.id);

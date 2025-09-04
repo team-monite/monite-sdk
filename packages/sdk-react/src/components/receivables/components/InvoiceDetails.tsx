@@ -7,7 +7,6 @@ import {
   useCurrencies,
   useIsLargeDesktopScreen,
 } from '@/core/hooks';
-import { Button } from '@/ui/components/button';
 import {
   Sheet,
   SheetContent,
@@ -20,16 +19,14 @@ import { LoadingSpinner } from '@/ui/loading';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-import { X } from 'lucide-react';
-
 import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { EditInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { EmailInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
 import { InvoicePDFViewer } from './InvoicePDFViewer';
 import { InvoiceDetailsActions } from './InvoiceDetailsActions';
-import { InvoiceDetailsTabContent } from './InvoiceDetailsTabContent';
-import { InvoiceOverviewTabContent } from './InvoiceOverviewTabContent';
-import { InvoicePaymentsTabContent } from './InvoicePaymentsTabContent';
+import { InvoiceDetailsTabDetails } from './InvoiceDetailsTabDetails';
+import { InvoiceDetailsTabOverview } from './InvoiceDetailsTabOverview';
+import { InvoiceDetailsTabPayments } from './InvoiceDetailsTabPayments';
 import { InvoiceStatusChip } from './InvoiceStatusChip';
 import { NotFound } from '@/ui/notFound';
 import { components } from '@/api';
@@ -99,8 +96,6 @@ const InvoiceDetailsBase = ({
     !editTemplateModalOpen &&
     !showEmail;
 
-  const shouldDisplayCloseButton = !invoice || invoice?.type !== 'invoice';
-
   const handleSheetContent = () => {
     if (isLoadingInvoiceDetails || isReadAllowedLoading) {
       return (
@@ -155,16 +150,6 @@ const InvoiceDetailsBase = ({
             <InvoiceStatusChip status={invoice?.status} />
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              onCloseInvoiceDetails();
-              setShowPDF(false);
-            }}
-          >
-            <X />
-          </Button>
           <SheetDescription hidden>{t(
             i18n
           )`Invoice details`}</SheetDescription>
@@ -208,19 +193,19 @@ const InvoiceDetailsBase = ({
                 value="overview"
                 className="mtw:flex mtw:flex-col mtw:gap-8"
               >
-                <InvoiceOverviewTabContent invoice={invoice} />
+                <InvoiceDetailsTabOverview invoice={invoice} />
               </TabsContent>
               <TabsContent
                 value="details"
                 className="mtw:flex mtw:flex-col mtw:gap-8"
               >
-                <InvoiceDetailsTabContent invoice={invoice} />
+                <InvoiceDetailsTabDetails invoice={invoice} />
               </TabsContent>
               <TabsContent
                 value="payments"
                 className="mtw:flex mtw:flex-col mtw:gap-8"
               >
-                <InvoicePaymentsTabContent invoice={invoice} />
+                <InvoiceDetailsTabPayments invoice={invoice} />
               </TabsContent>
             </Tabs>
           </section>
@@ -273,7 +258,7 @@ const InvoiceDetailsBase = ({
           if (showPDF) setShowPDF(false);
         }}
       >
-        <SheetContent className="mtw:gap-0 mtw:pb-12" showCloseButton={shouldDisplayCloseButton}>
+        <SheetContent className="mtw:gap-0 mtw:pb-12">
           <SheetDescription hidden>{t(i18n)`Invoice details`}</SheetDescription>
           {handleSheetContent()}
 
