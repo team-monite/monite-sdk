@@ -38,7 +38,7 @@ export const ManagerTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const [selectedTransaction, setSelectedTransaction] = useState<
     components['schemas']['TransactionResponse'] | undefined
@@ -272,21 +272,16 @@ export const ManagerTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(
-              formatFromMinorUnits(
+            return (
+              formatCurrencyToDisplay(
                 row.original.merchant_amount,
                 row.original.merchant_currency
-              ) || 0,
-              {
-                style: 'currency',
-                currency: row.original.merchant_currency,
-              }
+              ) || '-'
             );
-            return formattedAmount;
           },
         },
       ],
-      [UserCell, formatFromMinorUnits, i18n, locale.dateTimeFormat]
+      [UserCell, formatCurrencyToDisplay, i18n, locale.dateTimeFormat]
     );
 
   const openDetailsModal = useCallback(

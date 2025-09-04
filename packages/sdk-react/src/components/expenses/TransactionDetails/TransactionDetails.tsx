@@ -44,7 +44,7 @@ const TransactionDetailsBase = ({
   const { i18n } = useLingui();
   const { api, locale } = useMoniteContext();
   const { root } = useRootElements();
-  const { formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const [isReceiptViewerOpen, setIsReceiptViewerOpen] = useState(false);
 
@@ -68,14 +68,10 @@ const TransactionDetailsBase = ({
   const formattedAmount = useMemo(() => {
     if (!transaction?.amount || !transaction?.currency) return '-';
 
-    return i18n.number(
-      formatFromMinorUnits(transaction.amount, transaction.currency) || 0,
-      {
-        style: 'currency',
-        currency: transaction.currency,
-      }
+    return (
+      formatCurrencyToDisplay(transaction.amount, transaction.currency) || '-'
     );
-  }, [transaction?.amount, transaction?.currency, i18n, formatFromMinorUnits]);
+  }, [transaction?.amount, transaction?.currency, formatCurrencyToDisplay]);
 
   const details = useMemo(() => {
     const baseDetails = [
