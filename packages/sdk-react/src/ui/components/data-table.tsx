@@ -115,7 +115,6 @@ export function DataTableColumnHeader<TData, TValue>({
               <DropdownMenuSeparator />
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  {/* <EyeOff /> */}
                   <Settings2 />
                   {t(i18n)`Visible columns`}
                 </DropdownMenuSubTrigger>
