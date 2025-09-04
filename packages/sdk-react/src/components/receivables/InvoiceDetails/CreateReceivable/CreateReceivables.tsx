@@ -1,8 +1,4 @@
-import { useGetEntityBankAccounts } from '../../hooks';
-import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import { useGetEntityBankAccounts, useInvoiceReminderDialogs } from '../../hooks';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
@@ -21,6 +17,8 @@ import { BankAccountSection } from '@/components/receivables/components/BankAcco
 import { CustomerSection } from '@/components/receivables/components/CustomerSection';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -34,7 +32,7 @@ import {
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
-import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -68,18 +66,50 @@ import { format } from 'date-fns';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
+import { CustomerTypes } from '@/components/counterparts/types';
 
 type Schemas = components['schemas'];
+
+export interface InvoiceDetailsCreateProps {
+  id?: never;
+
+  /** The type of the receivable */
+  type: components['schemas']['ReceivableResponse']['type'];
+
+  /**
+   * Indicates that the invoice has been successfuly created.
+   *
+   * @param {string} receivableId Invoice ID
+   *
+   * @returns {void}
+   */
+  onCreate?: (receivableId: string) => void;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+}
 
 /**
  * A component for creating a new Receivable
  * Supported only `invoice` type
  */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
-  <MoniteScopedProviders>
-    <CreateReceivablesBase {...props} />
-  </MoniteScopedProviders>
-);
+export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
+  const { i18n } = useLingui();
+
+  return (
+    <MoniteScopedProviders>
+      {props.type === 'invoice' ? (
+        <CreateReceivablesBase {...props} />
+      ) : (
+        <AccessRestriction
+          description={t(
+            i18n
+          )`You can not create receivable with a type other than “${'invoice'}”`}
+        />
+      )}
+    </MoniteScopedProviders>
+  )
+};
 
 const CreateReceivablesBase = ({
   type,
@@ -328,7 +358,7 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: counterpartBillingAddress.id,
+      counterpart_billing_address_id: counterpartBillingAddress?.id,
       counterpart_shipping_address_id: counterpartShippingAddress?.id,
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
