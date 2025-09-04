@@ -658,7 +658,7 @@ msgstr "All customers"
 msgid "All documents are provided"
 msgstr "All documents are provided"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:313
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:336
 msgid "All employees"
 msgstr "All employees"
 
@@ -697,8 +697,8 @@ msgstr "All loans are subject to credit approval. Your terms may vary. Flourish 
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:324
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:327
-msgid "All merchants"
-msgstr "All merchants"
+#~ msgid "All merchants"
+#~ msgstr "All merchants"
 
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:64
 #: src/components/receivables/components/ReceivableFilters.tsx:85
@@ -752,8 +752,9 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:42
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:57
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:225
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:265
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:270
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:272
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:230
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:97
 #: src/components/receivables/components/CreditNotesTable.tsx:168
 #: src/components/receivables/components/InvoicesTable.tsx:338
 #: src/components/receivables/components/QuotesTable.tsx:204
@@ -1211,8 +1212,8 @@ msgstr "Bangladeshi Taka"
 #~ msgid "Bank {0}"
 #~ msgstr "Bank {0}"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:257
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:219
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:264
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:180
 msgid "Bank {maskedIban}"
 msgstr "Bank {maskedIban}"
 
@@ -1796,8 +1797,8 @@ msgstr "Car Washes"
 #~ msgid "Card ••••{0}"
 #~ msgstr "Card ••••{0}"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:249
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:211
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:256
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:172
 msgid "Card ••••{last4}"
 msgstr "Card ••••{last4}"
 
@@ -2756,8 +2757,9 @@ msgstr "Dance Hall, Studios, Schools"
 msgid "Danish Krone"
 msgstr "Danish Krone"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:229
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:191
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:236
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:152
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:87
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:60
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/PaymentRecordForm.tsx:111
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/schemas/manualPaymentRecordValidationSchema.ts:30
@@ -3026,7 +3028,7 @@ msgstr "Descending"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1060
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:210
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:190
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:217
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:121
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:141
 #: src/components/products/ProductDetails/validation.ts:53
@@ -3242,7 +3244,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:167
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:194
 msgid "Download"
 msgstr "Download"
 
@@ -3664,7 +3666,8 @@ msgstr "Email is required"
 msgid "Email must be a valid email"
 msgstr "Email must be a valid email"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:216
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:223
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:105
 msgid "Employee"
 msgstr "Employee"
 
@@ -3926,21 +3929,21 @@ msgstr "Excluding tax"
 msgid "Executive"
 msgstr "Executive"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:72
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:134
 msgid "Expense"
 msgstr "Expense"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:74
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:136
 msgid "Expense {0} details"
 msgstr "Expense {0} details"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:185
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:212
 msgid "Expense details"
 msgstr "Expense details"
 
 #: src/components/expenses/Expenses.tsx:15
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:381
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:396
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:405
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:349
 msgid "Expenses"
 msgstr "Expenses"
 
@@ -4155,12 +4158,12 @@ msgstr "File is being processed..."
 msgid "File successfully attached"
 msgstr "File successfully attached"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:332
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:346
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:355
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:301
 msgid "Filter by date"
 msgstr "Filter by date"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:310
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:333
 msgid "Filter by employee"
 msgstr "Filter by employee"
 
@@ -5541,7 +5544,7 @@ msgstr "Loading..."
 msgid "Loan sum"
 msgstr "Loan sum"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:100
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:93
 msgid "Location"
 msgstr "Location"
 
@@ -5759,8 +5762,9 @@ msgstr "Mens, Womens Clothing Stores"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:224
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:186
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:231
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:147
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:83
 msgid "Merchant"
 msgstr "Merchant"
 
@@ -6203,13 +6207,13 @@ msgstr "No Credit Notes"
 msgid "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
 msgstr "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:385
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:400
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:409
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:353
 msgid "No expenses found"
 msgstr "No expenses found"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:382
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:397
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:406
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:350
 msgid "No expenses yet"
 msgstr "No expenses yet"
 
@@ -6237,7 +6241,7 @@ msgstr "No items yet"
 msgid "No logo"
 msgstr "No logo"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:177
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:204
 msgid "No matching receipt."
 msgstr "No matching receipt."
 
@@ -6273,7 +6277,7 @@ msgstr "No products or services yet"
 msgid "No Quotes"
 msgstr "No Quotes"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:172
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:199
 msgid "No receipt file"
 msgstr "No receipt file"
 
@@ -6287,7 +6291,7 @@ msgstr "No Receivables"
 msgid "No reminder"
 msgstr "No reminder"
 
-#: src/ui/components/data-table.tsx:409
+#: src/ui/components/data-table.tsx:413
 msgid "No results."
 msgstr "No results."
 
@@ -6393,7 +6397,7 @@ msgstr "NOT allowed"
 msgid "Not available"
 msgstr "Not available"
 
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:242
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:203
 msgid "Not matched"
 msgstr "Not matched"
 
@@ -6444,7 +6448,7 @@ msgstr "Nurseries, Lawn and Garden Supply Stores"
 msgid "Nursing/Personal Care"
 msgstr "Nursing/Personal Care"
 
-#: src/ui/FileViewer/FileViewer.tsx:87
+#: src/ui/FileViewer/FileViewer.tsx:96
 msgid "of"
 msgstr "of"
 
@@ -6807,8 +6811,8 @@ msgstr "Payment flow started"
 msgid "Payment link is still loading. Please wait a moment and try again."
 msgstr "Payment link is still loading. Please wait a moment and try again."
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:240
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:202
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:247
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:163
 #: src/components/tags/helpers.ts:22
 msgid "Payment Method"
 msgstr "Payment Method"
@@ -7244,7 +7248,7 @@ msgstr "Preview email"
 msgid "Preview of {0}"
 msgstr "Preview of {0}"
 
-#: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:32
+#: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:30
 msgid "Preview of receipt {0}"
 msgstr "Preview of receipt {0}"
 
@@ -7469,11 +7473,14 @@ msgstr "Real Estate Agents and Managers - Rentals"
 msgid "Reason for Payment Code (Russia)"
 msgstr "Reason for Payment Code (Russia)"
 
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:227
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:188
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:151
 msgid "Receipt"
 msgstr "Receipt"
 
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:263
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:220
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:225
+#: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:29
 msgid "Receipt {0}"
 msgstr "Receipt {0}"
 
@@ -8003,8 +8010,8 @@ msgstr "Script in Monite Script is required"
 msgid "Search"
 msgstr "Search"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:297
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:308
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:320
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:284
 msgid "Search by merchant"
 msgstr "Search by merchant"
 
@@ -9193,7 +9200,7 @@ msgstr "Trailer Parks, Campgrounds"
 msgid "Transaction"
 msgstr "Transaction"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:82
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:144
 msgid "Transaction details"
 msgstr "Transaction details"
 
@@ -9231,8 +9238,8 @@ msgstr "Truck StopIteration"
 msgid "Truck/Utility Trailer Rentals"
 msgstr "Truck/Utility Trailer Rentals"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:386
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:401
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:410
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:354
 #: src/components/products/ProductsTable/ProductsTable.tsx:309
 msgid "Try adjusting your search or filter criteria"
 msgstr "Try adjusting your search or filter criteria"
@@ -9889,7 +9896,7 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:157
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:184
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:176
@@ -9915,8 +9922,8 @@ msgid "View details"
 msgstr "View details"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:256
-msgid "View Receipt {0}"
-msgstr "View Receipt {0}"
+#~ msgid "View Receipt {0}"
+#~ msgstr "View Receipt {0}"
 
 #: src/core/utils/countries.ts:255
 msgid "Virgin Islands, British"
@@ -10155,11 +10162,11 @@ msgstr "You don’t have any counterparts yet."
 msgid "You don’t have any credit notes yet."
 msgstr "You don’t have any credit notes yet."
 
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:398
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:351
 msgid "You don't have any expenses yet"
 msgstr "You don't have any expenses yet"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:383
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:407
 msgid "You don’t have any expenses yet"
 msgstr "You don’t have any expenses yet"
 
@@ -10260,8 +10267,8 @@ msgstr "Your bank account must be a checking account."
 msgid "Your customers can make direct bank transfers outside the payment links"
 msgstr "Your customers can make direct bank transfers outside the payment links"
 
-#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:384
-#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:399
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:408
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:352
 msgid "Your expenses will appear here"
 msgstr "Your expenses will appear here"
 
