@@ -110,13 +110,18 @@ const PdfFileViewer = ({
         </Worker>
       </div>
       <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:bg-white mtw:w-fit mtw:rounded-md mtw:shadow-xs mtw:p-0.5">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={pageNavigationPluginInstance.jumpToPreviousPage}
-        >
-          <ChevronLeft />
-        </Button>
+        <pageNavigationPluginInstance.GoToPreviousPage>
+          {({ onClick, isDisabled }) => (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClick}
+              disabled={isDisabled}
+            >
+              <ChevronLeft />
+            </Button>
+          )}
+        </pageNavigationPluginInstance.GoToPreviousPage>
 
         <pageNavigationPluginInstance.CurrentPageLabel>
           {(props: RenderCurrentPageLabelProps) => (
@@ -127,13 +132,19 @@ const PdfFileViewer = ({
             </span>
           )}
         </pageNavigationPluginInstance.CurrentPageLabel>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={pageNavigationPluginInstance.jumpToNextPage}
-        >
-          <ChevronRight />
-        </Button>
+
+        <pageNavigationPluginInstance.GoToNextPage>
+          {({ onClick, isDisabled }) => (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClick}
+              disabled={isDisabled}
+            >
+              <ChevronRight />
+            </Button>
+          )}
+        </pageNavigationPluginInstance.GoToNextPage>
       </div>
     </div>
   );
