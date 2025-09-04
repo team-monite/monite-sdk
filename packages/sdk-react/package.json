@@ -108,6 +108,7 @@
     "@storybook/react-webpack5": "~7.6.20",
     "@swc/jest": "~0.2.26",
     "@tailwindcss/postcss": "~4.1.11",
+    "@tanstack/react-query-devtools": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
     "@testing-library/dom": "~9.3.1",
     "@testing-library/jest-dom": "~5.16.5",

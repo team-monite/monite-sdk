@@ -37,7 +37,6 @@ export const ReminderBeforeDueDate = ({
   });
 
   const { control, watch } = useFormContext<CreateReceivablesFormProps>();
-  const counterpartId = watch('counterpart_id');
   const paymentReminderId = watch('payment_reminder_id');
   const { data: paymentReminder, isLoading: isPaymentReminderLoading } =
     useGetPaymentReminderById(paymentReminderId);
@@ -73,7 +72,7 @@ export const ReminderBeforeDueDate = ({
         optionKey="value"
         labelKey="label"
         noOptionsText={t(i18n)`No payment reminders available`}
-        disabled={disabled || !counterpartId}
+        disabled={disabled}
         getOptionDisabled={(option) =>
           option.value === 'create'
             ? Boolean(!isCreatePaymentReminderAllowed)
