@@ -1093,13 +1093,15 @@ export function usePayableDetails({
 
         onPay(payable.id, {
           resolve: (options?: { showToast?: boolean }) => {
-            if (options?.showToast) toast.success(t(i18n)`Payment flow started`);
+            if (options?.showToast)
+              toast.success(t(i18n)`Payment flow started`);
 
             refetchPayable();
             refetchPaymentRecords();
           },
           reject: (_error?: unknown, options?: { showToast?: boolean }) => {
-            if (options?.showToast) toast.error(t(i18n)`Payment failed or cancelled`);
+            if (options?.showToast)
+              toast.error(t(i18n)`Payment failed or cancelled`);
 
             refetchPayable();
             refetchPaymentRecords();
