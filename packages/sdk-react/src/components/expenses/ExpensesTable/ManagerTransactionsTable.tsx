@@ -416,6 +416,7 @@ export const ManagerTransactionsTable = () => {
         />
       </div>
       <TransactionDetails
+        isManagerView={true}
         transaction={selectedTransaction}
         open={detailsModalOpened}
         onClose={closeDetailsModal}
