@@ -186,7 +186,7 @@ export const InvoicePreviewLegacy = ({
                         <br />
                         {t(i18n)`${rateMinorToMajor(
                           selectedPaymentTerm.term_2.discount
-                        )}%discount`}
+                        )}% discount`}
                       </span>
                     )}
                   </p>

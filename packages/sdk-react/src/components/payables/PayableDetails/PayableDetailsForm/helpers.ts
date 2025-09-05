@@ -9,7 +9,6 @@ import {
   OptionalFields,
 } from '@/components/payables/types';
 import type { LineItem, PayableDetailsFormFields } from './types';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';

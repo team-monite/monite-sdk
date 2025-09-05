@@ -13,7 +13,7 @@ import {
   prepareDefaultValues,
   prepareSubmit,
 } from './helpers';
-import type { LineItem } from './types';
+import type { LineItem, PayableDetailsFormFields } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import {
   type PayableDetailsValidationFields,
@@ -83,7 +83,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
     id: string,
     payable: components['schemas']['PayableUpdateSchema'],
     lineItems?: Array<LineItem>,
-    dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsValidationFields>
+    dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
   ) => void;
   createPayable?: (
     payable: components['schemas']['PayableUploadWithDataSchema'],

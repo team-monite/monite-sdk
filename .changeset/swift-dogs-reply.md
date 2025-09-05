@@ -1,6 +1,6 @@
 ---
-'@monite/sdk-react': patch
-'@monite/sdk-drop-in': patch
+'@monite/sdk-react': minor
+'@monite/sdk-drop-in': minor
 ---
 
 New default invoice preview template

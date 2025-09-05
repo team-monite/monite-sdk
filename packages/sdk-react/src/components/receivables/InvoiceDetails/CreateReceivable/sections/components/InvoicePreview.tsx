@@ -18,7 +18,7 @@ export const InvoicePreview = ({
   entityVatIds,
   isNonVatSupported,
   paymentTerms,
-  templateName,
+  templateName = 'default_monite',
 }: InvoicePreviewBaseProps) => {
   const { defaultInvoiceTemplate } = useDocumentTemplatesApi();
   const containerRef = useRef<HTMLDivElement>(null);
