@@ -95,7 +95,7 @@ export const InvoicePreviewMonite = ({
           {entityData?.logo?.url ? (
             <img className={styles.logoImage} src={entityData.logo.url} alt={t(i18n)`Logo`} />
           ) : (
-            <span className={styles.logoText}>{t(i18n)`Logo`}</span>
+            <span className={styles.logoText}>{t(i18n)`No logo`}</span>
           )}
         </div>
       </header>
@@ -127,14 +127,14 @@ export const InvoicePreviewMonite = ({
                 {counterpart &&
                   isOrganizationCounterpart(counterpart) &&
                   counterpart.organization.email && (
-                    <p className={cn(styles.columnTextm, styles.email)}>
+                    <p className={cn(styles.columnText, styles.email)}>
                       {counterpart.organization.email}
                     </p>
                   )}
                 {counterpart &&
                   isIndividualCounterpart(counterpart) &&
                   counterpart.individual.email && (
-                    <p className={cn(styles.columnTextm, styles.email)}>
+                    <p className={cn(styles.columnText, styles.email)}>
                       {counterpart.individual.email}
                     </p>
                   )}

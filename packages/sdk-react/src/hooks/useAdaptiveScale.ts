@@ -16,7 +16,6 @@ interface UseAdaptiveScaleOptions {
 /**
  * Custom hook for adaptive scaling of preview components
  * Combines ResizeObserver and window resize handling
- * NextJS-safe with proper SSR handling
  */
 export const useAdaptiveScale = (
   containerRef: RefObject<HTMLElement>,

@@ -5709,7 +5709,6 @@ msgid "Loan sum"
 msgstr "Loan sum"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:96
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:98
 msgid "Logo"
 msgstr "Logo"
 
@@ -6404,6 +6403,7 @@ msgid "No items yet"
 msgstr "No items yet"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:85
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:98
 msgid "No logo"
 msgstr "No logo"
 
