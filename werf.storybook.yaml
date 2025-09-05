@@ -1,0 +1,6 @@
+project: sdkapp
+configVersion: 1
+---
+image: sdk-storybook
+dockerfile: ./Dockerfile.sdk-storybook
+context: .

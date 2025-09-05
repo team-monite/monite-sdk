@@ -38,7 +38,6 @@ export const ReminderOverdue = ({
   });
 
   const { control, watch } = useFormContext<CreateReceivablesFormProps>();
-  const counterpartId = watch('counterpart_id');
   const overdueReminderId = watch('overdue_reminder_id');
   const { data: overdueReminder, isLoading: isOverdueReminderLoading } =
     useGetOverdueReminderById(overdueReminderId);
@@ -74,7 +73,7 @@ export const ReminderOverdue = ({
         optionKey="value"
         labelKey="label"
         noOptionsText={t(i18n)`No overdue reminders available`}
-        disabled={disabled || !counterpartId}
+        disabled={disabled}
         getOptionDisabled={(option) =>
           option.value === 'create'
             ? Boolean(!isCreateOverdueReminderAllowed)

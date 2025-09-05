@@ -15,7 +15,7 @@ import {
   useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries/useReceivables';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -109,7 +109,7 @@ const QuotesTableBase = ({
     isLoading,
     isError,
     refetch,
-  } = useReceivables({
+  } = useGetReceivables({
     ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -165,7 +165,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Status`,
         width: 140,
         renderCell: (params) => (
-          <InvoiceStatusChip status={params.value} size="small" />
+          <InvoiceStatusChip status={params.value} />
         ),
       },
       {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,15 +17,11 @@
   </head>
   <body>
     <script type="module">
-      import { createAPIClient } from '@monite/sdk-react';
-      import { createEntityUsersMyEntityRequestFn } from '@team-monite/sdk-demo';
-
       import {
         MONITE_APP_ELEMENT_NAME,
         MoniteDropin,
       } from './src/custom-elements/monite-app';
       import { getConfig } from './src/lib/ConfigLoader.tsx';
-      import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
       import {
         MoniteEventTypes,
         addMoniteEventListener,
@@ -33,6 +29,9 @@
         getMoniteAppElement,
         getMoniteAppEventTarget,
       } from './src/lib/MoniteEvents';
+      import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
+      import { createEntityUsersMyEntityRequestFn } from './src/utils/demo-utils';
+      import { createAPIClient } from '@monite/sdk-react';
 
       /**
        * Initialize event listeners using the manual approach with standard DOM API
@@ -73,6 +72,22 @@
                 event.detail
               );
             },
+          },
+          {
+            eventName: `${MONITE_EVENT_PREFIX}:${MoniteEventTypes.PAYABLE_PAY}`,
+            handler: (event) => {
+              const { payload: { id, actions } } = event.detail;
+
+                console.log('[Manual Event Listener] onPay called for payable id:', id);
+                const confirmed = window.confirm(
+                  `Start custom payment flow for payable ${id}?\nOK = resolve, Cancel = reject`
+                );
+                if (confirmed) {
+                  actions?.resolve({ showToast: true });
+                } else {
+                  actions?.reject(new Error('User cancelled custom payment flow'));
+                }
+              },
           },
         ];
 

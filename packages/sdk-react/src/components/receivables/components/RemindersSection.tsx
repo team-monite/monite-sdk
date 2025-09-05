@@ -1,5 +1,5 @@
-import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/Section.types';
-import { CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
+import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sections/types';
+import { type CreateReceivablesFormProps } from '../InvoiceDetails/CreateReceivable/validation';
 import { ReminderSectionContent } from '@/components/receivables/components/ReminderSectionContent';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -12,6 +12,7 @@ interface ReminderSectionProps extends SectionGeneralProps {
   onUpdatePaymentReminder: () => void;
   onUpdateOverdueReminder: () => void;
   handleEditCounterpartModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
 }
 
 export const RemindersSection = (props: ReminderSectionProps) => {

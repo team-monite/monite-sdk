@@ -1,1 +1,0 @@
-export { SDKDemo } from './SDKDemo';

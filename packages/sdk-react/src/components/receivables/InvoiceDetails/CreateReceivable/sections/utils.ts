@@ -1,15 +1,37 @@
-import { UseFormSetValue } from 'react-hook-form';
+import { rateMinorToMajor, rateMajorToMinor } from '@/core/utils/currencies';
+import { generateUniqueId } from '@/utils/uuid';
 
-import { DeepKeys } from '@/core/types/utils';
+import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
+import type { CurrencyEnum, LineItemPath, SanitizableLineItem } from './types';
 
-import {
-  CreateReceivablesFormBeforeValidationProps,
-  CreateReceivablesFormBeforeValidationLineItemProps,
-} from '../validation';
+const extractFromObject = (
+  obj: Record<string, unknown>,
+  pathKeys: string[]
+): string | undefined => {
+  let current: Record<string, unknown> = obj;
 
-export type LineItemPath =
-  DeepKeys<CreateReceivablesFormBeforeValidationLineItemProps>;
+  for (const k of pathKeys) {
+    if (typeof current !== 'object' || current === null || !(k in current)) {
+      return undefined;
+    }
+    current = current[k] as Record<string, unknown>;
+  }
 
+  return typeof current === 'object' &&
+    current !== null &&
+    'message' in current &&
+    typeof current.message === 'string'
+    ? String(current.message)
+    : undefined;
+};
+
+/**
+ * Retrieves a specific error message from an error object or array based on a path.
+ *
+ * @param error The error object or array containing validation errors.
+ * @param path A dot-separated string representing the path to the desired error message.
+ * @returns The error message string if found, otherwise undefined.
+ */
 export function getErrorMessage(
   error: unknown,
   path: string
@@ -18,27 +40,26 @@ export function getErrorMessage(
     return undefined;
   }
 
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
+  const isObject = typeof error === 'object';
+
+  if (isObject && 'message' in error && typeof error.message === 'string') {
     return error.message;
   }
 
-  if (!Array.isArray(error)) {
-    return undefined;
+  const keys = path.split('.');
+  const notArray = !Array.isArray(error);
+
+  if (notArray && isObject) {
+    return extractFromObject(error as Record<string, unknown>, keys);
   }
 
-  const keys = path.split('.');
+  if (notArray) return undefined;
 
   const specificError = error.find((item: unknown) => {
-    if (!item) return false;
-
-    if (typeof item !== 'object' || item === null) return false;
+    if (!item || typeof item !== 'object' || item === null) return false;
 
     let current: Record<string, unknown> = item as Record<string, unknown>;
+
     for (const k of keys) {
       if (typeof current !== 'object' || current === null || !(k in current)) {
         return false;
@@ -59,48 +80,19 @@ export function getErrorMessage(
     return undefined;
   }
 
-  let result: Record<string, unknown> = specificError as Record<
-    string,
-    unknown
-  >;
-  for (const k of keys) {
-    if (!result || typeof result !== 'object' || result === null)
-      return undefined;
-    result = result[k] as Record<string, unknown>;
-  }
-
-  return result && typeof result === 'object' && 'message' in result
-    ? String(result.message)
-    : undefined;
-}
-
-export function getLineItemErrorMessage(
-  error: unknown,
-  path: LineItemPath
-): string | undefined {
-  return getErrorMessage(error, path);
+  return extractFromObject(specificError as Record<string, unknown>, keys);
 }
 
 /**
- * Sets a value in the form with optional validation
+ * Retrieves a specific error message for a line item field.
+ * This is a specialized version of getErrorMessage for line item paths.
  *
- * @param name Field name
- * @param value Field value
- * @param shouldValidate Whether to validate after setting
- * @param setValue Form setValue function
+ * @param error The error object or array containing validation errors.
+ * @param path The LineItemPath (type-safe path) to the line item's error message.
+ * @returns The error message string if found, otherwise undefined.
  */
-export const setValueWithValidation = (
-  name: string,
-  value: unknown,
-  shouldValidate = true,
-  setValue: UseFormSetValue<CreateReceivablesFormBeforeValidationProps>
-) => {
-  // Need to use any due to React Hook Form's typing limitations
-  setValue(name as any, value, {
-    shouldValidate,
-    shouldDirty: true,
-  });
-};
+export const getLineItemErrorMessage = (error: unknown, path: LineItemPath) =>
+  getErrorMessage(error, path);
 
 /**
  * Handles tax/VAT rate input value
@@ -123,13 +115,12 @@ export const processTaxRateValue = (inputValue: string): number => {
 };
 
 /**
- * Handles cleaning up the input element for tax/VAT rate fields
- * Fixes issues like leading zeros
+ * Formats the value of an input element intended for tax/VAT rates.
+ * Specifically, it removes leading zeros unless the value is a decimal like "0.5".
  *
- * @param inputElement The input HTML element
+ * @param inputElement The HTMLInputElement whose value needs to be formatted.
  */
 export const formatTaxRate = (inputElement: HTMLInputElement): void => {
-  // Remove leading zeros (but keep values like 0.5)
   if (
     inputElement.value.startsWith('0') &&
     inputElement.value.length > 1 &&
@@ -139,4 +130,158 @@ export const formatTaxRate = (inputElement: HTMLInputElement): void => {
 
     inputElement.value = newValue || '0';
   }
+};
+
+/**
+ * Converts a minor unit value to a locale-formatted major unit string.
+ * Example: 12345 (minor units) with 'en-US' locale -> "123.45"
+ *
+ * @param minorValue The numeric value in minor units (e.g., cents).
+ * @param numberFormatter An Intl.NumberFormat instance configured for the desired locale and currency.
+ * @returns A string representing the value in major units, formatted according to the locale, or an empty string if minorValue is undefined or NaN.
+ */
+export const formatMinorToMajorCurrency = (
+  minorValue: number | undefined,
+  numberFormatter: Intl.NumberFormat
+): string => {
+  if (minorValue === undefined || isNaN(minorValue)) return '';
+
+  const majorValue = rateMinorToMajor(minorValue);
+
+  return numberFormatter.format(majorValue);
+};
+
+/**
+ * Converts a locale-formatted major unit string to a minor unit number.
+ * Example: "1,234.56" with English locale -> 123456
+ *
+ * @param majorValueString The string representing the value in major units, formatted according to a specific locale.
+ * @param localeDecimalSeparator The decimal separator character used in majorValueString (e.g., "." or ",").
+ * @param localeGroupSeparator Optional. The group separator character used in majorValueString (e.g., "," or ".").
+ * @returns A number representing the value in minor units. Returns 0 for empty or invalid input strings.
+ */
+export const parseMajorToMinorCurrency = (
+  majorValueString: string,
+  localeDecimalSeparator: string,
+  localeGroupSeparator?: string
+): number => {
+  if (majorValueString.trim() === '') return 0;
+
+  let normalizedValue = majorValueString;
+  if (localeGroupSeparator) {
+    const escapedGroupSeparator = localeGroupSeparator.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    );
+    normalizedValue = normalizedValue.replace(
+      new RegExp(escapedGroupSeparator, 'g'),
+      ''
+    );
+  }
+  normalizedValue = normalizedValue.replace(localeDecimalSeparator, '.');
+
+  const numValue = parseFloat(normalizedValue);
+
+  if (isNaN(numValue)) return 0;
+
+  return rateMajorToMinor(numValue);
+};
+
+const COMMON_DECIMAL_SEPARATOR = '.';
+
+const escapeRegexChars = (str: string) =>
+  str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const getLocaleSeparators = (locale?: string) => {
+  if (typeof Intl === 'undefined' || typeof Intl.NumberFormat === 'undefined') {
+    return { decimal: '.', group: ',' };
+  }
+
+  try {
+    const parts = Intl.NumberFormat(locale).formatToParts(12345.6);
+    const decimal = parts.find((part) => part.type === 'decimal')?.value || '.';
+    const group = parts.find((part) => part.type === 'group')?.value || ',';
+
+    return { decimal, group };
+  } catch (error) {
+    console.error('Error getting locale separators:', error);
+
+    return { decimal: '.', group: ',' };
+  }
+};
+
+/**
+ * Parses a string that might contain locale-specific formatting (e.g., commas for decimals)
+ * into a standard number.
+ *
+ * @param inputValue The raw input string.
+ * @param locale Optional: The BCP 47 language tag for the locale to use for parsing (e.g., "en-US", "de-DE"). Defaults to browser's locale.
+ * @returns A number, or 0 if parsing fails.
+ */
+export const parseLocaleNumericString = (
+  inputValue: string,
+  locale?: string
+): number => {
+  if (typeof inputValue !== 'string' || !inputValue.trim()) {
+    return 0;
+  }
+
+  const { decimal: localeDecimalSeparator, group: localeGroupSeparator } =
+    getLocaleSeparators(locale);
+  const cleanedString = inputValue.replace(
+    new RegExp(escapeRegexChars(localeGroupSeparator), 'g'),
+    ''
+  );
+
+  let resultString = '';
+  let hasSeparator = false;
+
+  for (const char of cleanedString) {
+    if (/\d/.test(char)) {
+      resultString += char;
+    } else if (char === localeDecimalSeparator && !hasSeparator) {
+      resultString += COMMON_DECIMAL_SEPARATOR;
+      hasSeparator = true;
+    }
+  }
+
+  const numValue = parseFloat(resultString);
+
+  return isNaN(numValue) ? 0 : numValue;
+};
+
+/**
+ * Sanitizes line items for use in invoice creation
+ * Formats the data consistently and handles type conversions
+ */
+export const sanitizeLineItems = (
+  items: ReadonlyArray<SanitizableLineItem> | undefined
+): CreateReceivablesFormBeforeValidationLineItemProps[] => {
+  if (!items || !Array.isArray(items)) return [];
+
+  return items
+    .filter((item) => Boolean(item?.product?.name))
+    .map((item) => ({
+      ...item,
+      id: item.product_id || generateUniqueId(),
+      quantity: item.quantity ?? 1,
+      product: {
+        ...item.product,
+        type: item.product?.type as 'product' | 'service',
+        price: {
+          ...(item.product?.price || {}),
+          value: item.product?.price?.value ?? 0,
+          currency: (item.product?.price?.currency || 'USD') as CurrencyEnum,
+        },
+        measure_unit_id: item.product?.measure_unit_id || '',
+      },
+      ...(item.measure_unit?.name
+        ? {
+            measure_unit: {
+              name: item.measure_unit.name,
+              id: null,
+            },
+          }
+        : {}),
+    }));
 };

@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 
-import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FinanceMenuButtons } from '@/components/financing/components';
 import { FINANCING_LABEL } from '@/components/financing/consts';
@@ -61,23 +60,6 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
     setInvoiceId('');
   }, []);
 
-  const handleUpdate = useCallback(
-    (
-      receivableId: string,
-      invoice?: components['schemas']['InvoiceResponsePayload']
-    ) => {
-      receivablesCallbacks.onUpdate?.(receivableId, invoice);
-    },
-    [receivablesCallbacks]
-  );
-
-  const handleDelete = useCallback(
-    (receivableId: string) => {
-      receivablesCallbacks.onDelete?.(receivableId);
-    },
-    [receivablesCallbacks]
-  );
-
   const handleCreate = useCallback(
     (receivableId: string) => {
       setIsCreateInvoiceDialogOpen(false);
@@ -86,13 +68,6 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       receivablesCallbacks.onCreate?.(receivableId);
     },
     [receivablesCallbacks, openInvoiceModal, setActiveTab]
-  );
-
-  const handleSendEmail = useCallback(
-    (invoiceId: string) => {
-      receivablesCallbacks.onInvoiceSent?.(invoiceId);
-    },
-    [receivablesCallbacks]
   );
 
   const { root } = useRootElements();
@@ -158,24 +133,11 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
           setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
-      <Dialog
-        className={className + '-Dialog-ReceivableDetails'}
-        open={!!invoiceId}
-        fullScreen
-        container={root}
+      <InvoiceDetails
+        id={invoiceId}
         onClose={closeModal}
-      >
-        <InvoiceDetails
-          id={invoiceId}
-          onDuplicate={openInvoiceModal}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
-          onSendEmail={handleSendEmail}
-        />
-      </Dialog>
+        onDuplicate={openInvoiceModal}
+      />
       <Dialog
         className={className + '-Dialog-CreateReceivable'}
         open={isCreateInvoiceDialogOpen}

@@ -1,9 +1,9 @@
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../../utils';
 import type {
   CreateReceivablesFormProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../../validation';
+import { sanitizeLineItems } from '../utils';
 // @ts-expect-error Importing css file from a different package is not supported
 import invoicePreviewStyles from './InvoicePreview.css';
 import { components } from '@/api';

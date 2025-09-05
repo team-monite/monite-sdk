@@ -8,6 +8,7 @@ import {
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
+import { type PayActionHandlers } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import {
@@ -117,7 +118,7 @@ export type UsePayableDetailsProps = {
    *
    * @returns {void}
    */
-  onPay?: (id: string) => void;
+  onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
 
   /**
    * Callback function that is called when the user press the Pay button in US
@@ -1086,10 +1087,35 @@ export function usePayableDetails({
       if (onPayUS && payable.currency === 'USD') {
         onPayUS(payable.id);
       } else {
-        onPay ? onPay?.(payable.id) : handlePay();
+        if (!onPay) return handlePay();
+
+        if (onPay?.length < 2) return onPay(payable.id);
+
+        onPay(payable.id, {
+          resolve: (options?: { showToast?: boolean }) => {
+            if (options?.showToast) toast.success(t(i18n)`Payment flow started`);
+
+            refetchPayable();
+            refetchPaymentRecords();
+          },
+          reject: (_error?: unknown, options?: { showToast?: boolean }) => {
+            if (options?.showToast) toast.error(t(i18n)`Payment failed or cancelled`);
+
+            refetchPayable();
+            refetchPaymentRecords();
+          },
+        });
       }
     }
-  }, [payable, handlePay, onPay, onPayUS]);
+  }, [
+    i18n,
+    payable,
+    handlePay,
+    onPay,
+    onPayUS,
+    refetchPayable,
+    refetchPaymentRecords,
+  ]);
 
   return {
     payable,

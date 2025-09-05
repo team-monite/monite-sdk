@@ -16346,11 +16346,27 @@
           {
             "name": "id__in",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "array",
-              "items": { "type": "string", "format": "uuid" },
-              "maxItems": 250
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": { "type": "string", "format": "uuid" },
+                  "maxItems": 250
+                },
+                { "type": "null" }
+              ]
+            }
+          },
+          {
+            "name": "file_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/AllowedFileTypes" },
+                { "type": "null" }
+              ]
             }
           }
         ],
@@ -30409,8 +30425,8 @@
     "/payables/{payable_id}/reopen": {
       "post": {
         "tags": ["Payables"],
-        "summary": "Reopen a rejected payable",
-        "description": "Reset payable state from rejected to new.",
+        "summary": "Reopen a rejected or waiting_to_be_paid payable",
+        "description": "Reset payable state from rejected or waiting_to_be_paid to new.",
         "operationId": "post_payables_id_reopen",
         "parameters": [
           {
@@ -38788,6 +38804,1449 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/receipts": {
+      "get": {
+        "tags": ["Receipts"],
+        "summary": "Lists all receipts from the connected entity.",
+        "operationId": "get_receipts",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/ReceiptCursorFields" }]
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "id__in",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/CurrencyEnum" },
+            "name": "currency",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "document_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "document_id__contains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "document_id__icontains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total_amount__gt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total_amount__lt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total_amount__gte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total_amount__lte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "boolean" },
+            "name": "has_file",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "boolean" },
+            "name": "has_transaction",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptPaginationResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["Receipts"],
+        "summary": "Create a receipt",
+        "operationId": "post_receipts",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReceiptCreateSchema" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receipts/upload_from_file": {
+      "post": {
+        "tags": ["Receipts"],
+        "summary": "Upload a receipt from a file",
+        "description": "Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
+        "operationId": "post_receipts_upload_from_file",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/ReceiptUploadFile" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error uploading the file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receipts/{receipt_id}": {
+      "get": {
+        "tags": ["Receipts"],
+        "summary": "Retrieves information about a specific receipt with the given ID.",
+        "operationId": "get_receipts_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "delete": {
+        "tags": ["Receipts"],
+        "summary": "Deletes a specific receipt.",
+        "operationId": "delete_receipts_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "patch": {
+        "tags": ["Receipts"],
+        "summary": "Updates the information about a specific receipt.",
+        "operationId": "patch_receipts_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReceiptUpdateSchema" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receipts/{receipt_id}/attach_file": {
+      "post": {
+        "tags": ["Receipts"],
+        "summary": "Attach a file to a receipt",
+        "description": "Attach file to receipt without existing attachment.",
+        "operationId": "post_receipts_id_attach_file",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/ReceiptAttachFile" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receipts/{receipt_id}/line_items": {
+      "get": {
+        "tags": ["Receipts"],
+        "summary": "Get all line items of a receipt",
+        "operationId": "get_receipts_id_line_items",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "Sort order (ascending by default). Typically used together with the `sort` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.\n\nIf not specified, the first page of results will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "The field to sort the results by. Typically used together with the `order` parameter.",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/ReceiptLineItemCursorFields" }
+              ]
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "name__iexact",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "name__contains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "name__icontains",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total__gt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total__lt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total__gte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0.0 },
+            "name": "total__lte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "created_by_user_id",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptLineItemsPaginationResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["Receipts"],
+        "summary": "Add a new line item to a receipt",
+        "operationId": "post_receipts_id_line_items",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptLineItemCreateSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptLineItemResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receipts/{receipt_id}/line_items/{line_item_id}": {
+      "delete": {
+        "tags": ["Receipts"],
+        "summary": "Delete a line item from a receipt",
+        "operationId": "delete_receipts_id_line_items_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "line_item_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "patch": {
+        "tags": ["Receipts"],
+        "summary": "Update a line item of a receipt",
+        "operationId": "patch_receipts_id_line_items_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "line_item_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptLineItemUpdateSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptLineItemResponseSchema"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchemaResponse3"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/receivables": {
       "get": {
         "tags": ["Receivables"],
@@ -46620,7 +48079,8 @@
           "identity_documents",
           "additional_identity_documents",
           "receivable_signatures",
-          "einvoices_xml"
+          "einvoices_xml",
+          "attachments"
         ]
       },
       "AnalyticsDataPoint": {
@@ -47034,6 +48494,81 @@
       "ApprovalRequestStatus": {
         "type": "string",
         "enum": ["waiting", "approved", "rejected", "canceled"]
+      },
+      "AttachmentRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
+      },
+      "AttachmentResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of the file (e.g., 'application/pdf')."
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename of the attachment."
+          },
+          "size": { "type": "integer", "description": "File size in bytes." },
+          "url": {
+            "type": "string",
+            "description": "URL to access the attachment file."
+          }
+        },
+        "type": "object",
+        "required": ["id", "mimetype", "name", "size", "url"]
+      },
+      "AttachmentResponse2": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of the file (e.g., 'application/pdf')."
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename of the attachment."
+          },
+          "size": { "type": "integer", "description": "File size in bytes." },
+          "url": {
+            "type": "string",
+            "description": "URL to access the attachment file."
+          }
+        },
+        "type": "object",
+        "required": ["id", "mimetype", "name", "size", "url"]
       },
       "AuthPayload": {
         "properties": {
@@ -47606,7 +49141,8 @@
               "workflow",
               "approval_request",
               "approval_policy",
-              "payment_record"
+              "payment_record",
+              "receipt"
             ],
             "description": "Object type",
             "default": "comment"
@@ -47653,7 +49189,8 @@
               "workflow",
               "approval_request",
               "approval_policy",
-              "payment_record"
+              "payment_record",
+              "receipt"
             ],
             "description": "Object type",
             "default": "comment"
@@ -48931,6 +50468,10 @@
             "type": "string",
             "description": "required for non-GB bank accounts"
           },
+          "routing_number": {
+            "type": "string",
+            "description": "required for US bank accounts"
+          },
           "sort_code": {
             "type": "string",
             "description": "required for GB bank accounts"
@@ -48959,6 +50500,10 @@
             "type": "string",
             "maxLength": 34,
             "description": "required for non-GB bank accounts"
+          },
+          "routing_number": {
+            "type": "string",
+            "description": "required for US bank accounts"
           },
           "sort_code": {
             "type": "string",
@@ -50148,7 +51693,16 @@
         "required": ["data"],
         "description": "A paginated list of credit notes."
       },
-      "CreditNoteRenderingSettings": { "properties": {}, "type": "object" },
+      "CreditNoteRenderingSettings": {
+        "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the credit note PDF.",
+            "default": true
+          }
+        },
+        "type": "object"
+      },
       "CreditNoteResponse": {
         "properties": {
           "id": {
@@ -50374,6 +51928,11 @@
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
           },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "based_on": {
             "type": "string",
             "format": "uuid",
@@ -50519,6 +52078,11 @@
           "footer": {
             "type": "string",
             "description": "Optional text displayed below the line items table in the PDF."
+          },
+          "is_einvoice": {
+            "type": "boolean",
+            "description": "If `true`, the credit note will be sent through an e-invoicing network. The value is inherited from the invoice for which the credit note was created, and cannot be changed.",
+            "default": false
           },
           "issue_date": {
             "type": "string",
@@ -51102,7 +52666,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -51132,7 +52696,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -51176,7 +52740,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -52884,6 +54448,27 @@
           "type"
         ]
       },
+      "EntityMailSettings": {
+        "properties": {
+          "reply_to": {
+            "anyOf": [
+              {
+                "items": { "type": "string", "format": "email" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "Reply-to email addresses for outgoing entity emails. When set, recipients can reply directly to these addresses instead of the sender's email address. Used for invoices, reminders, and other automated emails.",
+            "examples": [
+              ["support@example.com"],
+              ["billing@example.com", "support@example.com"]
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "Email settings for entity"
+      },
       "EntityOnboardingDataRequest": {
         "properties": {
           "business_profile": {
@@ -54575,6 +56160,11 @@
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
           },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "based_on": {
             "type": "string",
             "format": "uuid",
@@ -54960,7 +56550,16 @@
         "type": "object",
         "required": ["mimetype", "name", "url"]
       },
-      "InvoiceRenderingSettings": { "properties": {}, "type": "object" },
+      "InvoiceRenderingSettings": {
+        "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the invoice PDF.",
+            "default": true
+          }
+        },
+        "type": "object"
+      },
       "InvoiceResponsePayload": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -54988,6 +56587,11 @@
             "type": "integer",
             "maximum": 9007199254740991.0,
             "description": "How much is left to be paid in in [minor units](https://docs.monite.com/references/currencies#minor-units), including payment_term discounts."
+          },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
           },
           "based_on": {
             "type": "string",
@@ -55786,9 +57390,8 @@
           "precision": {
             "type": "integer",
             "maximum": 4.0,
-            "minimum": 0.0,
-            "description": "Number of decimal places to display for numeric values in this column. Defaults to 2, which is common for currency values.",
-            "default": 2
+            "minimum": 2.0,
+            "description": "Number of decimal places to display for numeric values in this column."
           }
         },
         "type": "object",
@@ -56212,11 +57815,12 @@
             "allOf": [
               { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
             ],
-            "description": "Settings for the VAT amount column in the line items table."
+            "description": "Settings for the VAT amount column in the line items table.",
+            "default": { "display": false }
           },
           "vat_rate": {
             "allOf": [
-              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
             ],
             "description": "Settings for the VAT rate column in the line items table."
           }
@@ -56293,7 +57897,11 @@
       },
       "MailSettings": {
         "properties": {
-          "attach_documents_as_pdf": { "type": "boolean" },
+          "attach_documents_as_pdf": {
+            "type": "boolean",
+            "description": "Attach documents as PDF in emails.",
+            "default": true
+          },
           "from_email_username": {
             "anyOf": [
               { "type": "string", "maxLength": 64, "minLength": 1 },
@@ -56307,8 +57915,7 @@
             ]
           }
         },
-        "type": "object",
-        "required": ["attach_documents_as_pdf"]
+        "type": "object"
       },
       "MailboxDataResponse": {
         "properties": {
@@ -56343,7 +57950,10 @@
         "type": "object",
         "required": ["entity_ids"]
       },
-      "MailboxObjectTypeEnum": { "type": "string", "enum": ["payable"] },
+      "MailboxObjectTypeEnum": {
+        "type": "string",
+        "enum": ["payable", "receipt"]
+      },
       "MailboxResponse": {
         "properties": {
           "id": {
@@ -56689,7 +58299,10 @@
         "type": "object",
         "required": ["sender", "recipient", "line_items"]
       },
-      "OCRDocumentTypeEnum": { "enum": ["invoice", "credit_note", "receipt"] },
+      "OCRDocumentTypeEnum": {
+        "type": "string",
+        "enum": ["invoice", "credit_note", "receipt"]
+      },
       "OCRFileUpload": {
         "properties": { "file": { "type": "string", "format": "binary" } },
         "type": "object",
@@ -56800,6 +58413,10 @@
           "counterpart_address_object": {
             "allOf": [{ "$ref": "#/components/schemas/OCRAddress" }],
             "description": "Counterpart address as a json object compatible with counterparts service"
+          },
+          "counterpart_branch_number": {
+            "type": "string",
+            "description": "The bank branch number"
           },
           "counterpart_email": {
             "type": "string",
@@ -58923,6 +60540,13 @@
               { "type": "null" }
             ]
           },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/EntityMailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Email settings for the entity"
+          },
           "payables_ocr_auto_tagging": {
             "anyOf": [
               {
@@ -59848,9 +61472,8 @@
           },
           "enable_line_items": {
             "type": "boolean",
-            "description": "Starting from version 2024-05-25 by default is always set to True.",
-            "default": true,
-            "deprecated": true
+            "description": "Partners can set this to True or False to control line item detection in OCR flows.",
+            "default": true
           },
           "skip_approval_for_paid_invoice": {
             "anyOf": [{ "type": "boolean" }, { "type": "null" }],
@@ -59923,6 +61546,11 @@
       },
       "PayableUpdateSchema": {
         "properties": {
+          "amount_paid": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "How much was paid on the invoice (in minor units)."
+          },
           "counterpart_address_id": {
             "type": "string",
             "format": "uuid",
@@ -60874,7 +62502,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["amount", "currency", "object", "payment_intent_id"]
+        "required": ["amount", "currency", "object"]
       },
       "PaymentRecordResponse": {
         "properties": {
@@ -60945,8 +62573,7 @@
           "currency",
           "history",
           "is_external",
-          "object",
-          "payment_intent_id"
+          "object"
         ]
       },
       "PaymentRecordResponseList": {
@@ -63066,6 +64693,11 @@
       },
       "QuoteRenderingSettings": {
         "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the quote PDF.",
+            "default": true
+          },
           "display_signature": {
             "type": "boolean",
             "description": "If set to `true`, the signature field will be displayed on the quote PDF.",
@@ -63086,6 +64718,11 @@
             "type": "string",
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
+          },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
           },
           "based_on": {
             "type": "string",
@@ -63378,6 +65015,345 @@
           "declined",
           "deleted"
         ]
+      },
+      "ReceiptAttachFile": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
+      "ReceiptCreateSchema": {
+        "properties": {
+          "base64_encoded_file": {
+            "type": "string",
+            "description": "Base64-encoded contents of the original receipt file."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code used in the receipt.",
+            "example": "EUR"
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Unique receipt number assigned by the issuer.",
+            "example": "DE2287"
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Receipt issued date and time."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Location of the merchant.",
+            "example": "West Street, London, UK"
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "Name of the merchant.",
+            "example": "Tesco"
+          },
+          "total_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Total amount for the receipt in minor units (e.g. cents).",
+            "example": 15000
+          },
+          "transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Transaction ID."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "ReceiptCursorFields": { "type": "string", "enum": ["id", "created_at"] },
+      "ReceiptLineItemCreateSchema": {
+        "properties": {
+          "accounting_tax_rate_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Accounting tax rate ID."
+          },
+          "cost_center_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Cost center ID."
+          },
+          "general_ledger_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "General ledger ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "Line item name/description."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Line item total in minor units."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "ReceiptLineItemCursorFields": {
+        "type": "string",
+        "enum": ["created_at", "updated_at"]
+      },
+      "ReceiptLineItemResponseSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique line item ID."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at."
+          },
+          "accounting_tax_rate_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Accounting tax rate ID."
+          },
+          "cost_center_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Cost center ID."
+          },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Created by user."
+          },
+          "name": { "type": "string", "description": "Line item name." },
+          "receipt_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Receipt ID."
+          },
+          "total": { "type": "integer", "description": "Total." }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "created_at", "updated_at", "receipt_id"]
+      },
+      "ReceiptLineItemUpdateSchema": {
+        "properties": {
+          "accounting_tax_rate_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Accounting tax rate ID."
+          },
+          "cost_center_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Cost center ID."
+          },
+          "general_ledger_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "General ledger ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "Line item name/description."
+          },
+          "total": {
+            "type": "integer",
+            "description": "Line item total in minor units."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "ReceiptLineItemsPaginationResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ReceiptLineItemResponseSchema"
+            },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "Next page token."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "Previous page token."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
+      "ReceiptPaginationResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/ReceiptResponseSchema" },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "Next page token."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "Previous page token."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
+      "ReceiptResponseSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique receipt ID."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Creation timestamp."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Update timestamp."
+          },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Entity user who created."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code."
+          },
+          "currency_exchange": {
+            "type": "object",
+            "description": "Currency exchange details."
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Receipt number."
+          },
+          "file_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The id of the receipt file stored in the file saver.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "file_url": {
+            "type": "string",
+            "description": "The URL of the receipt file stored in the file saver."
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date when the receipt was issued."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Merchant location."
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "Merchant name."
+          },
+          "ocr_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "OCR request id."
+          },
+          "ocr_status": { "type": "string", "description": "OCR status." },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Partner metadata."
+          },
+          "source_of_data": {
+            "allOf": [
+              { "$ref": "#/components/schemas/SourceOfReceiptDataEnum" }
+            ],
+            "description": "Source of data."
+          },
+          "total_amount": {
+            "type": "integer",
+            "description": "Total amount in minor units."
+          },
+          "transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Transaction ID."
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "updated_at"]
+      },
+      "ReceiptUpdateSchema": {
+        "properties": {
+          "base64_encoded_file": {
+            "type": "string",
+            "description": "Base64-encoded file contents."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "Currency code."
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Receipt number."
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date when the receipt was issued."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Merchant location."
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "Merchant name."
+          },
+          "total_amount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Total amount."
+          },
+          "transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Transaction ID."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "ReceiptUploadFile": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
       },
       "ReceivableCounterpartContact": {
         "properties": {
@@ -63875,6 +65851,12 @@
       },
       "ReceivableFacadeCreateInvoicePayload": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "commercial_condition_description": { "type": "string" },
           "counterpart_billing_address_id": {
             "type": "string",
@@ -64052,6 +66034,12 @@
       },
       "ReceivableFacadeCreateQuotePayload": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "commercial_condition_description": { "type": "string" },
           "counterpart_billing_address_id": {
             "type": "string",
@@ -65809,6 +67797,7 @@
             "person": "#/components/schemas/CommonSchema-Input",
             "product": "#/components/schemas/CommonSchema-Input",
             "project": "#/components/schemas/CommonSchema-Input",
+            "receipt": "#/components/schemas/CommonSchema-Input",
             "receivable": "#/components/schemas/CommonSchema-Input",
             "reconciliation": "#/components/schemas/CommonSchema-Input",
             "role": "#/components/schemas/CommonSchema-Input",
@@ -65850,6 +67839,7 @@
             "person": "#/components/schemas/CommonSchema-Output",
             "product": "#/components/schemas/CommonSchema-Output",
             "project": "#/components/schemas/CommonSchema-Output",
+            "receipt": "#/components/schemas/CommonSchema-Output",
             "receivable": "#/components/schemas/CommonSchema-Output",
             "reconciliation": "#/components/schemas/CommonSchema-Output",
             "role": "#/components/schemas/CommonSchema-Output",
@@ -65971,6 +67961,13 @@
               { "$ref": "#/components/schemas/LanguageCodeEnum" },
               { "type": "null" }
             ]
+          },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/EntityMailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Email settings for the entity"
           },
           "payables_ocr_auto_tagging": {
             "anyOf": [
@@ -66163,6 +68160,10 @@
         "type": "string",
         "enum": ["ocr", "user_specified", "einvoicing"]
       },
+      "SourceOfReceiptDataEnum": {
+        "type": "string",
+        "enum": ["ocr", "user_specified"]
+      },
       "StatusChangedEventData": {
         "properties": {
           "new_status": {
@@ -66197,7 +68198,7 @@
           "receive_guid": { "type": "string", "format": "uuid" }
         },
         "type": "object",
-        "required": ["document_guid", "event_type", "event_group", "event"]
+        "required": ["event_type", "event_group", "event"]
       },
       "StripeData": {
         "properties": {
@@ -66976,6 +68977,12 @@
       },
       "UpdateCreditNote": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "counterpart_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -67277,6 +69284,12 @@
       },
       "UpdateInvoice": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",
@@ -67430,6 +69443,12 @@
       },
       "UpdateIssuedInvoice": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",
@@ -67676,6 +69695,12 @@
       },
       "UpdateQuote": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",
@@ -68520,7 +70545,9 @@
           "workflow",
           "workflow_pipeline",
           "ocr_task",
-          "delivery_note"
+          "delivery_note",
+          "receipt",
+          "transaction"
         ]
       },
       "WebhookSubscriptionCursorFields": {
@@ -68689,6 +70716,7 @@
     { "name": "Projects settings" },
     { "name": "Purchase orders" },
     { "name": "Quotes internal" },
+    { "name": "Receipts" },
     { "name": "Receivables" },
     { "name": "Recurrences" },
     { "name": "Register" },

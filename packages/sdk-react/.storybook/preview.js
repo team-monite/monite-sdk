@@ -1,12 +1,6 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
-import { initialize, mswLoader } from 'msw-storybook-addon';
-
 import { handlers } from '../src/mocks/handlers';
 import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 
 /**
  * Turn to `false` to make real requests to the server.
