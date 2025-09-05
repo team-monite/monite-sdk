@@ -7,7 +7,7 @@ import {
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useReceivableById } from '@/core/queries';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -47,7 +47,7 @@ export const InvoiceRecurrenceIterations = ({
     name: 'MoniteInvoiceRecurrenceIterationStatusChip',
   });
 
-  const { data: baseReceivable } = useReceivableById(invoice_id);
+  const { data: baseReceivable } = useGetReceivableById(invoice_id);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -97,10 +97,7 @@ export const InvoiceRecurrenceIterations = ({
                       <Skeleton width="100px" />
                     ) : (
                       receivable?.status && (
-                        <InvoiceStatusChip
-                          status={receivable?.status}
-                          size={unifiedChipSize}
-                        />
+                        <InvoiceStatusChip status={receivable?.status} />
                       )
                     )
                   ) : (

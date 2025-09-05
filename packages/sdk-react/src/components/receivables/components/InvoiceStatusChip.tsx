@@ -1,72 +1,54 @@
+/* eslint-disable lingui/no-unlocalized-strings */
+import { components } from '@/api';
+import { getCommonStatusLabel } from '@/components/receivables/utils';
+import { Badge } from '@/ui/components/badge';
+import { cn } from '@/ui/lib/utils';
+import { useLingui } from '@lingui/react';
+import { cva } from 'class-variance-authority';
 import { forwardRef } from 'react';
 
-import { components } from '@/api';
-import {
-  INVOICE_STATUS_TO_MUI_ICON_MAP,
-  ROW_TO_TAG_STATUS_MUI_MAP,
-} from '@/components/receivables/consts';
-import { getCommonStatusLabel } from '@/components/receivables/utils';
-import { useLingui } from '@lingui/react';
-import { Circle } from '@mui/icons-material';
-import { Chip, ChipProps } from '@mui/material';
-import { styled, useThemeProps } from '@mui/material/styles';
-
 export interface MoniteInvoiceStatusChipProps {
-  icon?: boolean;
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  /** The status of the invoice. */
   status: components['schemas']['ReceivablesStatusEnum'];
-  /** The variant of the Chip. */
+  className?: string;
 }
 
-/**
- * Displays the status of an Invoice.
- */
-
-export const InvoiceStatusChip = forwardRef<
-  HTMLDivElement,
-  MoniteInvoiceStatusChipProps
->((inProps, ref) => {
-  const { status, variant, icon, size } = useThemeProps({
-    props: inProps,
-    name: 'MoniteInvoiceStatusChip',
-  });
-
-  const { i18n } = useLingui();
-
-  const Icon = INVOICE_STATUS_TO_MUI_ICON_MAP[status];
-
-  return (
-    <StyledChip
-      ref={ref}
-      color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-      icon={
-        icon && Icon ? (
-          <Icon fontSize="small" />
-        ) : (
-          <Circle sx={{ fontSize: '10px !important' }} />
-        )
-      }
-      label={getCommonStatusLabel(i18n, status)}
-      size={size}
-      status={status}
-      variant={variant ?? 'filled'}
-    />
-  );
+const statusChipVariants = cva('', {
+  variants: {
+    variant: {
+      draft: 'mtw:bg-gray-100 mtw:text-gray-950',
+      issuing: 'mtw:bg-blue-50 mtw:text-blue-600',
+      issued: 'mtw:bg-blue-50 mtw:text-blue-600',
+      failed: 'mtw:bg-red-50 mtw:text-red-600',
+      accepted: 'mtw:bg-green-50 mtw:text-green-600',
+      partially_paid: 'mtw:bg-purple-50 mtw:text-purple-600',
+      paid: 'mtw:bg-green-50 mtw:text-green-600',
+      expired: 'mtw:bg-red-50 mtw:text-red-600',
+      uncollectible: 'mtw:bg-red-50 mtw:text-red-600',
+      canceled: 'mtw:bg-red-50 mtw:text-red-600',
+      recurring: 'mtw:bg-muted mtw:text-foreground',
+      declined: 'mtw:bg-red-50 mtw:text-red-600',
+      overdue: 'mtw:bg-amber-50 mtw:text-amber-600',
+      deleted: 'mtw:bg-red-50 mtw:text-red-600',
+    },
+  },
 });
 
-const StyledChip = styled(
-  forwardRef<
-    HTMLDivElement,
-    ChipProps & Omit<MoniteInvoiceStatusChipProps, 'icon'>
-  >((props, ref) => <Chip ref={ref} {...props} />),
-  {
-    name: 'MoniteInvoiceStatusChip',
-    slot: 'root',
-    shouldForwardProp: () => true,
-  }
-)({});
+export const InvoiceStatusChip = forwardRef<
+  HTMLSpanElement,
+  MoniteInvoiceStatusChipProps
+>(({ status, className }, ref) => {
+  const { i18n } = useLingui();
+
+  return (
+    <Badge
+      ref={ref}
+      className={cn(
+        'mtw:inline-flex mtw:items-center mtw:gap-1',
+        statusChipVariants({ variant: status }),
+        className
+      )}
+    >
+      {getCommonStatusLabel(i18n, status)}
+    </Badge>
+  );
+});

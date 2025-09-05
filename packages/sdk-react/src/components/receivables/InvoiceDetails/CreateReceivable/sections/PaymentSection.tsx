@@ -1,6 +1,8 @@
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-
+import {
+  PaymentTermsSummary,
+  PaymentTermsDialog,
+} from './components/PaymentTerms';
+import type { SectionGeneralProps } from './types';
 import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
@@ -8,12 +10,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, MenuItem, Skeleton, useTheme, Button } from '@mui/material';
-
-import {
-  PaymentTermsSummary,
-  PaymentTermsDialog,
-} from './components/PaymentTerms';
-import type { SectionGeneralProps } from './Section.types';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 type Props = SectionGeneralProps & {
   paymentTerms:

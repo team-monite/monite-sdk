@@ -5,14 +5,16 @@ import { CustomerType } from '@/components/counterparts/types';
 import { CounterpartSelector } from '@/components/receivables/components/CounterpartSelector';
 import { EditCounterpartModal } from '@/components/receivables/components/EditCounterpartModal';
 import { useCounterpartAddresses, useCounterpartVatList } from '@/core/queries';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export interface CustomerSectionProps {
   disabled: boolean;
   customerTypes?: CustomerType[];
   isEditModalOpen?: boolean;
+  isEditProfileOpen?: boolean;
   handleEditModal?: (isOpen: boolean) => void;
+  handleEditProfileState?: (isOpen: boolean) => void;
   counterpart?: components['schemas']['CounterpartResponse'];
 }
 
@@ -20,11 +22,13 @@ export const CustomerSection = ({
   disabled,
   customerTypes,
   isEditModalOpen,
+  isEditProfileOpen,
   handleEditModal,
+  handleEditProfileState,
   counterpart,
 }: CustomerSectionProps) => {
   const { watch, setValue } = useFormContext<CreateReceivablesFormProps>();
-
+  const counterpartIdRef = useRef<string | undefined>('');
   const selectedBillingAddressId = watch('default_billing_address_id');
   const selectedShippingAddressId = watch('default_shipping_address_id');
 
@@ -42,6 +46,7 @@ export const CustomerSection = ({
     if (!counterpartAddresses?.data?.length) return;
 
     if (!selectedBillingAddressId) {
+      counterpartIdRef.current = counterpart?.id;
       const billingAddressId =
         counterpart?.default_billing_address_id ||
         (counterpartAddresses.data.length === 1
@@ -51,6 +56,28 @@ export const CustomerSection = ({
     }
 
     if (!selectedShippingAddressId) {
+      const shippingAddressId = counterpart?.default_shipping_address_id || '';
+      setValue('default_shipping_address_id', shippingAddressId);
+    }
+
+    if (
+      selectedBillingAddressId &&
+      counterpartIdRef.current !== counterpart?.id
+    ) {
+      counterpartIdRef.current = counterpart?.id;
+      const billingAddressId =
+        counterpart?.default_billing_address_id ||
+        (counterpartAddresses.data.length === 1
+          ? counterpartAddresses.data[0].id
+          : '');
+      setValue('default_billing_address_id', billingAddressId);
+    }
+
+    if (
+      selectedShippingAddressId &&
+      counterpartIdRef.current !== counterpart?.id
+    ) {
+      counterpartIdRef.current = counterpart?.id;
       const shippingAddressId = counterpart?.default_shipping_address_id || '';
       setValue('default_shipping_address_id', shippingAddressId);
     }
@@ -95,11 +122,17 @@ export const CustomerSection = ({
           initialBillingAddressId={selectedBillingAddressId}
           initialShippingAddressId={selectedShippingAddressId}
           disabled={disabled}
+          isEditProfileOpen={isEditProfileOpen}
           open={isEditModalOpen || isEditCounterpartOpened}
           onClose={() => {
             if (handleEditModal) {
               handleEditModal(false);
             }
+
+            if (handleEditProfileState) {
+              handleEditProfileState(false);
+            }
+
             setIsEditCounterpartOpened(false);
           }}
         />

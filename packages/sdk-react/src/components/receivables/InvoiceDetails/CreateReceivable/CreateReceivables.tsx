@@ -1,8 +1,8 @@
-import { useGetEntityBankAccounts } from '../../hooks';
-import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import {
+  useGetEntityBankAccounts,
+  useInvoiceReminderDialogs,
+} from '../../hooks';
+import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
@@ -14,12 +14,16 @@ import {
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { showErrorToast } from '@/components/onboarding/utils';
 import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
 import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
 import { CustomerSection } from '@/components/receivables/components/CustomerSection';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -29,13 +33,15 @@ import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups'
 import {
   useCounterpartAddresses,
   useCounterpartById,
+  useCounterpartContactList,
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
-import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,23 +70,54 @@ import {
 import { format } from 'date-fns';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 type Schemas = components['schemas'];
+
+export interface InvoiceDetailsCreateProps {
+  id?: never;
+
+  /** The type of the receivable */
+  type: components['schemas']['ReceivableResponse']['type'];
+
+  /**
+   * Indicates that the invoice has been successfuly created.
+   *
+   * @param {string} receivableId Invoice ID
+   *
+   * @returns {void}
+   */
+  onCreate?: (receivableId: string) => void;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+}
 
 /**
  * A component for creating a new Receivable
  * Supported only `invoice` type
  */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
-  <MoniteScopedProviders>
-    <CreateReceivablesBase {...props} />
-  </MoniteScopedProviders>
-);
+export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
+  const { i18n } = useLingui();
+
+  return (
+    <MoniteScopedProviders>
+      {props.type === 'invoice' ? (
+        <CreateReceivablesBase {...props} />
+      ) : (
+        <AccessRestriction
+          description={t(
+            i18n
+          )`You can not create receivable with a type other than “${'invoice'}”`}
+        />
+      )}
+    </MoniteScopedProviders>
+  );
+};
 
 const CreateReceivablesBase = ({
   type,
-  onCreate,
   customerTypes,
+  onCreate,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const { api, entityId, componentSettings } = useMoniteContext();
@@ -93,13 +130,29 @@ const CreateReceivablesBase = ({
     isLoading: isPaymentTermsLoading,
     refetch: refetchPaymentTerms,
   } = api.paymentTerms.getPaymentTerms.useQuery();
-  const { data: entityVatIds } = api.entities.getEntitiesIdVatIds.useQuery({
-    path: { entity_id: entityId },
-  });
+  const { data: entityVatIds, error: vatIdsError } =
+    api.entities.getEntitiesIdVatIds.useQuery(
+      {
+        path: { entity_id: entityId },
+      },
+      {
+        enabled: !!entityId,
+      }
+    );
+
+  if (vatIdsError) {
+    const message = getAPIErrorMessage(i18n, vatIdsError);
+
+    if (message) {
+      toast.error(message);
+    }
+  }
+
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
       path: { entity_id: entityId },
     });
+
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
     enableEntityBankAccount
@@ -111,6 +164,8 @@ const CreateReceivablesBase = ({
     data: entityData,
   } = useMyEntity();
   const [isEditCounterpartModalOpen, setIsEditCounterpartModalOpen] =
+    useState(false);
+  const [isEditCounterpartProfileOpen, setIsEditCounterpartProfileOpen] =
     useState(false);
   const [isBankFormOpen, setIsBankFormOpen] = useState(false);
   const [selectedBankId, setSelectedBankId] = useState('');
@@ -150,6 +205,10 @@ const CreateReceivablesBase = ({
     ),
   });
 
+  const handleEditCounterpartProfileState = (isOpen: boolean) => {
+    setIsEditCounterpartProfileOpen(isOpen);
+  };
+
   const handleEditCounterpartModalState = (isOpen: boolean) => {
     setIsEditCounterpartModalOpen(isOpen);
   };
@@ -163,6 +222,9 @@ const CreateReceivablesBase = ({
     getFieldState,
     formState,
   } = methods;
+
+  const { registerLineItemCleanupFn, runLineItemCleanup } =
+    useLineItemSubmitCleanup();
 
   const counterpartId = watch('counterpart_id');
 
@@ -186,6 +248,8 @@ const CreateReceivablesBase = ({
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+  const { data: counterpartContacts } =
+    useCounterpartContactList(counterpartId);
 
   const billingAddressId = watch('default_billing_address_id');
   const counterpartBillingAddress = useMemo(
@@ -246,15 +310,77 @@ const CreateReceivablesBase = ({
     api.measureUnits.getMeasureUnits.useQuery();
 
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+    const customerHasRemindersEnabled =
+      counterpart && counterpart?.reminders_enabled;
+    const customerHasDefaultEmail =
+      counterpart &&
+      counterpartContacts?.find((contact) => contact.is_default)?.email;
+
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+
       return;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
+
       return;
     }
+
+    if (!counterpartBillingAddress) {
+      showErrorToast(new Error('`Billing address` is not provided'));
+
+      return;
+    }
+
+    if (
+      !customerHasRemindersEnabled &&
+      customerHasDefaultEmail &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.'
+        )
+      );
+
+      return;
+    }
+
+    if (
+      !customerHasDefaultEmail &&
+      customerHasRemindersEnabled &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.'
+        )
+      );
+
+      return;
+    }
+
+    if (
+      !customerHasRemindersEnabled &&
+      !customerHasDefaultEmail &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.'
+        )
+      );
+
+      return;
+    }
+
+    const shippingAddressId = values.default_shipping_address_id;
+
+    const counterpartShippingAddress = counterpartAddresses?.data?.find(
+      (address) => address.id === shippingAddressId
+    );
 
     const invoicePayload: Omit<
       Schemas['ReceivableFacadeCreateInvoicePayload'],
@@ -263,9 +389,9 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: values.default_billing_address_id ?? '',
-      counterpart_shipping_address_id:
-        values.default_shipping_address_id || undefined,
+      counterpart_billing_address_id: counterpartBillingAddress?.id,
+      counterpart_shipping_address_id: counterpartShippingAddress?.id,
+
       entity_bank_account_id: values.entity_bank_account_id || undefined,
       payment_terms_id: values.payment_terms_id,
       line_items: values.line_items.map((item) => ({
@@ -288,7 +414,11 @@ const CreateReceivablesBase = ({
           type: 'product',
         },
         ...(isNonVatSupported
-          ? { tax_rate_value: rateMajorToMinor(item?.tax_rate_value ?? 0) }
+          ? {
+              tax_rate_value: item?.tax_rate_value
+                ? rateMajorToMinor(item.tax_rate_value)
+                : undefined,
+            }
           : { vat_rate_id: item.vat_rate_id }),
       })),
       memo: values.memo,
@@ -402,7 +532,7 @@ const CreateReceivablesBase = ({
 
         if (
           newAccounts?.newDefault &&
-          newAccounts?.currentlySelected?.id !== newAccounts?.newDefault?.id &&
+          newAccounts?.currentlySelected?.id !== newAccounts.newDefault.id &&
           newAccounts?.currentlySelected?.is_default_for_currency
         ) {
           setValue('entity_bank_account_id', newAccounts?.newDefault?.id);
@@ -434,6 +564,22 @@ const CreateReceivablesBase = ({
       clearErrors('entity_bank_account_id');
     }
   }, [entityBankAccountId, bankAccountField, clearErrors]);
+
+  useEffect(() => {
+    if (entityBankAccountId && bankAccounts?.data) {
+      const selectedBankAccount = bankAccounts.data.find(
+        (bank) => bank.id === entityBankAccountId
+      );
+
+      if (!selectedBankAccount?.currency) return;
+
+      const newCurrency = selectedBankAccount.currency;
+
+      if (newCurrency !== actualCurrency) {
+        setActualCurrency(newCurrency);
+      }
+    }
+  }, [entityBankAccountId, bankAccounts?.data, actualCurrency]);
 
   useEffect(() => {
     if (entityVatIds && entityVatIds.data.length > 0) {
@@ -509,6 +655,7 @@ const CreateReceivablesBase = ({
 
               <Button
                 variant="contained"
+                key="next"
                 color="primary"
                 type="submit"
                 form={formName}
@@ -819,7 +966,11 @@ const CreateReceivablesBase = ({
             <form
               id={formName}
               noValidate
-              onSubmit={(e) => handleSubmit(handleCreateReceivable)(e)}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                runLineItemCleanup();
+                await handleSubmit(handleCreateReceivable)(e);
+              }}
               style={{ marginBottom: theme.spacing(7) }}
             >
               <Stack direction="column" spacing={7}>
@@ -869,12 +1020,15 @@ const CreateReceivablesBase = ({
                     disabled={createReceivable.isPending}
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
+                    isEditProfileOpen={isEditCounterpartProfileOpen}
                     handleEditModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                     counterpart={counterpart}
                   />
                 </Box>
 
                 <ItemsSection
+                  registerLineItemCleanupFn={registerLineItemCleanupFn}
                   defaultCurrency={
                     settings?.currency?.default || fallbackCurrency
                   }
@@ -919,6 +1073,7 @@ const CreateReceivablesBase = ({
                     onUpdatePaymentReminder={onEditPaymentReminder}
                     onCreateReminder={onCreateReminder}
                     handleEditCounterpartModal={handleEditCounterpartModalState}
+                    handleEditProfileState={handleEditCounterpartProfileState}
                   />
 
                   <EntitySection

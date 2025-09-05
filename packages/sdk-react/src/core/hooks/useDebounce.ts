@@ -24,7 +24,7 @@ export const useDebounce = <T>(value: T, delay: number = 300): T => {
 };
 
 /**
- * Hook to debounce a callback function
+ * Hook to debounce a callback function with auto-cleanup on unmount
  * @template Args - The argument types of the callback function
  * @template R - The return type of the callback function
  * @param callback The function to be debounced
@@ -50,13 +50,14 @@ export const useDebounceCallback = <Args extends unknown[], R>(
     [callback, delay]
   );
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-    };
-  }, []);
+    },
+    []
+  );
 
   return debouncedCallback;
 };

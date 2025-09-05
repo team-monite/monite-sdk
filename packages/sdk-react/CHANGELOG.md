@@ -1,5 +1,19 @@
 # @monite/sdk-react
 
+## 4.5.0
+
+### Minor Changes
+
+- a1fbd0b: AI suggested Counterparts available on Payable details screen.
+- cd86e73: Fix UX issue on forms when some data would automatically refetch on the background
+- 98ac11b: Added feature to auto-link a Counterpart to a Payable based on AI suggestions. Enhanced Counterpart edit forms with inline suggestions from raw Payable data
+
+### Patch Changes
+
+- d332e4f: Various line item fixes (validation, formatting, etc)
+- ec9113e: Implemented footer field for customer notes in invoice
+- ba35d0e: Save input upon chat closure. Add chat to chat history right away. Fix UI problem with buttons.
+
 ## 4.4.0
 
 ### Minor Changes

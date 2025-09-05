@@ -14,6 +14,7 @@ import {
   useInvoiceRowActionMenuCell,
   type UseInvoiceRowActionMenuCellProps,
 } from '@/components/receivables/hooks';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
@@ -28,7 +29,6 @@ import {
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useMyEntity } from '@/core/queries';
-import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
@@ -144,7 +144,7 @@ const InvoicesTableBase = ({
     isLoading,
     isError,
     refetch,
-  } = useReceivables({
+  } = useGetReceivables({
     ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -295,7 +295,7 @@ const InvoicesTableBase = ({
               marginLeft: '4px',
             }}
           >
-            <InvoiceStatusChip status={params.value} size="small" />
+            <InvoiceStatusChip status={params.value} />
           </Box>
         ),
       },

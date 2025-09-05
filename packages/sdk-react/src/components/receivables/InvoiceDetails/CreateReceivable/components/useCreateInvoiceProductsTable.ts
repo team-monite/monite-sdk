@@ -1,19 +1,18 @@
-import { useMemo } from 'react';
-
 import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import { useMemo } from 'react';
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
   lineItems: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
+  isInclusivePricing: boolean;
+  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
-  actualCurrency?: components['schemas']['CurrencyEnum'] | undefined;
-  isInclusivePricing: boolean;
 }
 
 interface UseCreateInvoiceProductsTableProps {
@@ -30,10 +29,10 @@ interface UseCreateInvoiceProductsTableProps {
  */
 export const useCreateInvoiceProductsTable = ({
   lineItems,
-  formatCurrencyToDisplay,
   isNonVatSupported,
-  actualCurrency,
   isInclusivePricing,
+  actualCurrency,
+  formatCurrencyToDisplay,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const getPriceAndQuantity = (
     field: CreateReceivablesFormBeforeValidationLineItemProps
@@ -84,29 +83,32 @@ export const useCreateInvoiceProductsTable = ({
   ]);
 
   const taxesByVatRate = useMemo(() => {
-    return lineItems.reduce((acc, field) => {
-      const { price, quantity } = getPriceAndQuantity(field);
-      const vatRate = getRateValueForDisplay(
-        isNonVatSupported,
-        field.vat_rate_value ?? 0,
-        field.tax_rate_value ?? 0
-      );
+    return lineItems.reduce(
+      (acc, field) => {
+        const { price, quantity } = getPriceAndQuantity(field);
+        const vatRate = getRateValueForDisplay(
+          isNonVatSupported,
+          field.vat_rate_value ?? 0,
+          field.tax_rate_value ?? 0
+        );
 
-      if (!vatRate) return acc;
+        if (!vatRate) return acc;
 
-      const amount = price * quantity;
-      const tax = isInclusivePricing
-        ? amount - amount / (1 + vatRate / 100)
-        : amount * (vatRate / 100);
+        const amount = price * quantity;
+        const tax = isInclusivePricing
+          ? amount - amount / (1 + vatRate / 100)
+          : amount * (vatRate / 100);
 
-      if (acc[vatRate]) {
-        acc[vatRate] += tax;
-      } else {
-        acc[vatRate] = tax;
-      }
+        if (acc[vatRate]) {
+          acc[vatRate] += tax;
+        } else {
+          acc[vatRate] = tax;
+        }
 
-      return acc;
-    }, {} as Record<number, number>);
+        return acc;
+      },
+      {} as Record<number, number>
+    );
   }, [lineItems, isInclusivePricing, isNonVatSupported]);
 
   const totalTaxes = useMemo(() => {

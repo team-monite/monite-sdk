@@ -1,5 +1,5 @@
-import { Controller, useFormContext } from 'react-hook-form';
-
+import { PaymentSection } from '../../PaymentSection';
+import type { SectionGeneralProps } from '../../types';
 import { components } from '@/api';
 import { calculateDueDate } from '@/components/counterparts/helpers';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
@@ -11,9 +11,7 @@ import { LockOutlined } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
-
-import { PaymentSection } from '../../PaymentSection';
-import { SectionGeneralProps } from '../../Section.types';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface FullfillmentSummaryProps extends SectionGeneralProps {
   paymentTerms:
@@ -61,8 +59,14 @@ export const FullfillmentSummary = ({
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
 
   const handlePaymentTermsChange = async (newId: string = '') => {
-    await refetch();
-    setValue('payment_terms_id', newId);
+    try {
+      await refetch();
+      await Promise.resolve();
+
+      setValue('payment_terms_id', newId);
+    } catch (error) {
+      console.error('Error changing payment terms:', error);
+    }
   };
 
   return (

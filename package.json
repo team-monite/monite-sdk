@@ -14,8 +14,6 @@
     "storybook:build": "turbo run build-storybook",
     "storybook": "turbo run storybook --output-logs=new-only",
     "dev": "turbo run dev",
-    "dev:widgets": "printf '\\033[1;31mDEPRECATED: This command is deprecated! Please use \"yarn storybook\" instead.\\033[0m\\n' && yarn storybook >> /dev/null",
-    "dev:sdk-demo": "turbo run dev --filter=@team-monite/sdk-demo",
     "build": "turbo run build",
     "clean": "rm -rf packages/*/dist",
     "prepare": "husky install"
