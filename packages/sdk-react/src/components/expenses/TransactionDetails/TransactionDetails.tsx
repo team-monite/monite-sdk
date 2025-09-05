@@ -20,7 +20,7 @@ import {
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DownloadIcon, EyeIcon } from 'lucide-react';
-import { useState, useMemo, memo } from 'react';
+import { useState } from 'react';
 
 interface TagFormModalProps {
   transaction?: components['schemas']['TransactionResponse'];
@@ -65,56 +65,6 @@ const TransactionDetailsBase = ({
     isManagerView ? transaction?.entity_user_id : undefined
   );
 
-  const formattedAmount = useMemo(() => {
-    if (!transaction?.amount || !transaction?.currency) return '-';
-
-    return (
-      formatCurrencyToDisplay(transaction.amount, transaction.currency) || '-'
-    );
-  }, [transaction?.amount, transaction?.currency, formatCurrencyToDisplay]);
-
-  const details = useMemo(() => {
-    const baseDetails = [
-      {
-        label: t(i18n)`Merchant`,
-        value: transaction?.merchant_name,
-      },
-      {
-        label: t(i18n)`Date`,
-        value: transaction?.started_at
-          ? i18n.date(transaction.started_at, locale.dateTimeFormat)
-          : '-',
-      },
-      {
-        label: t(i18n)`Location`,
-        value: transaction?.merchant_location,
-      },
-      {
-        label: t(i18n)`Amount`,
-        value: formattedAmount,
-      },
-    ];
-
-    return isManagerView
-      ? [
-          {
-            label: t(i18n)`Employee`,
-            value: getUserDisplayName({ ...transactionUser }),
-          },
-          ...baseDetails,
-        ]
-      : baseDetails;
-  }, [
-    transaction?.merchant_name,
-    transaction?.started_at,
-    transaction?.merchant_location,
-    formattedAmount,
-    isManagerView,
-    i18n,
-    locale.dateTimeFormat,
-    transactionUser,
-  ]);
-
   return (
     <>
       <Sheet
@@ -139,7 +89,78 @@ const TransactionDetailsBase = ({
                 <h3 className="mtw:text-lg mtw:font-semibold">
                   {t(i18n)`Transaction details`}
                 </h3>
-                <DetailsTable detailsData={details} />
+                <div className="mtw:border mtw:border-gray-200 mtw:rounded-xl">
+                  <table className="mtw:w-full mtw:border-collapse">
+                    <tbody className="mtw:divide-y mtw:divide-gray-200">
+                      {isManagerView && (
+                        <tr className="mtw:text-sm">
+                          <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                            {t(i18n)`Employee`}
+                          </td>
+                          <td className="mtw:p-3 mtw:font-medium">
+                            {getUserDisplayName({ ...transactionUser }) || '-'}
+                          </td>
+                        </tr>
+                      )}
+                      <tr className="mtw:text-sm">
+                        <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                          {t(i18n)`Merchant`}
+                        </td>
+                        <td className="mtw:p-3 mtw:font-medium">
+                          {transaction?.merchant_name || '-'}
+                        </td>
+                      </tr>
+                      <tr className="mtw:text-sm">
+                        <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                          {t(i18n)`Date`}
+                        </td>
+                        <td className="mtw:p-3 mtw:font-medium">
+                          {transaction?.started_at
+                            ? i18n.date(
+                                transaction.started_at,
+                                locale.dateTimeFormat
+                              )
+                            : '-'}
+                        </td>
+                      </tr>
+                      <tr className="mtw:text-sm">
+                        <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                          {t(i18n)`Location`}
+                        </td>
+                        <td className="mtw:p-3 mtw:font-medium">
+                          {transaction?.merchant_location}
+                        </td>
+                      </tr>
+                      <tr className="mtw:text-sm">
+                        <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                          {t(i18n)`Amount`}
+                        </td>
+                        <td className="mtw:p-3 mtw:flex mtw:items-center mtw:justify-between">
+                          <span className="mtw:font-medium">
+                            {transaction?.amount && transaction?.currency
+                              ? formatCurrencyToDisplay(
+                                  transaction.merchant_amount,
+                                  transaction.merchant_currency
+                                )
+                              : '-'}
+                          </span>
+                          {transaction?.currency !==
+                            transaction?.merchant_currency && (
+                            <span className="mtw:text-sm mtw:text-neutral-500">
+                              ≈&nbsp;
+                              {transaction?.amount && transaction?.currency
+                                ? formatCurrencyToDisplay(
+                                    transaction.amount,
+                                    transaction.currency
+                                  )
+                                : '-'}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               <div className="mtw:flex mtw:flex-col mtw:gap-4">
@@ -207,14 +228,20 @@ const TransactionDetailsBase = ({
                 <h3 className="mtw:text-lg mtw:font-semibold">
                   {t(i18n)`Expense details`}
                 </h3>
-                <DetailsTable
-                  detailsData={[
-                    {
-                      label: t(i18n)`Description`,
-                      value: transaction?.description,
-                    },
-                  ]}
-                />
+                <div className="mtw:border mtw:border-gray-200 mtw:rounded-xl">
+                  <table className="mtw:w-full mtw:border-collapse">
+                    <tbody className="mtw:divide-y mtw:divide-gray-200">
+                      <tr className="mtw:text-sm">
+                        <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
+                          {t(i18n)`Description`}
+                        </td>
+                        <td className="mtw:p-3 mtw:font-medium">
+                          {transaction?.description || '-'}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </SheetContentWrapper>
@@ -231,31 +258,3 @@ const TransactionDetailsBase = ({
     </>
   );
 };
-
-const DetailsTable = memo(
-  ({
-    detailsData,
-  }: {
-    detailsData: Array<{
-      label: string | undefined;
-      value: string | undefined;
-    }>;
-  }) => {
-    return (
-      <div className="mtw:border mtw:border-gray-200 mtw:rounded-xl">
-        <table className="mtw:w-full mtw:border-collapse">
-          <tbody className="mtw:divide-y mtw:divide-gray-200">
-            {detailsData.map((item, index) => (
-              <tr key={index} className="mtw:text-sm">
-                <td className="mtw:p-3 mtw:min-w-[120px] mtw:w-[35%]">
-                  {item.label || '-'}
-                </td>
-                <td className="mtw:p-3 mtw:font-medium">{item.value || '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-);
