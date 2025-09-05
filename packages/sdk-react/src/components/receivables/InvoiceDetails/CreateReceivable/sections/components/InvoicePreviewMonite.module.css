@@ -35,10 +35,10 @@
   
   --col-number-width: 1.25rem;
   --col-product-min-width: 15rem;
-  --col-qty-width: 4rem;
-  --col-price-width: 6rem;
-  --col-discount-width: 4rem;
-  --col-amount-width: 6.5rem;
+  --col-qty-width: 3rem;
+  --col-price-width: 4.5rem;
+  --col-discount-width: 3rem;
+  --col-amount-width: 5rem;
   --col-tax-width: 3rem;
   
   --text-primary: #101011;
@@ -196,34 +196,34 @@
   border-bottom: none;
 }
 
-.invoicePreviewMonite .colProduct {
+.invoicePreviewMonite .lineItemsTable .colProduct {
   min-width: var(--col-product-min-width);
   max-width: 20rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-.invoicePreviewMonite .colQty {
+.invoicePreviewMonite .lineItemsTable .colQty {
   width: var(--col-qty-width);
-  text-align: right;
+  text-align: left;
 }
 
-.invoicePreviewMonite .colPrice {
+.invoicePreviewMonite .lineItemsTable .colPrice {
   width: var(--col-price-width);
-  text-align: right;
+  text-align: left;
 }
 
-.invoicePreviewMonite .colDiscount {
+.invoicePreviewMonite .lineItemsTable .colDiscount {
   width: var(--col-discount-width);
-  text-align: right;
+  text-align: left;
 }
 
-.invoicePreviewMonite .colAmount {
+.invoicePreviewMonite .lineItemsTable .colAmount {
   width: var(--col-amount-width);
-  text-align: right;
+  text-align: left;
 }
 
-.invoicePreviewMonite .colTax {
+.invoicePreviewMonite .lineItemsTable .colTax {
   width: var(--col-tax-width);
   text-align: right;
 }

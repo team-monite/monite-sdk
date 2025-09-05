@@ -1,12 +1,14 @@
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../utils';
-import type { SanitizableLineItem } from '../types';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
+import type { SanitizableLineItem } from '../types';
+import { sanitizeLineItems } from '../utils';
 import type { InvoicePreviewBaseProps } from './InvoicePreview.types';
 import {
-  getPaymentTermsDiscount,
   getMeasureUnitName,
   getRateValueForItem,
+  getTaxTerminology,
+  getCounterpartPhone,
+  getCountryName,
 } from './InvoicePreview.utils';
 import styles from './InvoicePreviewMonite.module.css';
 import {
@@ -28,9 +30,11 @@ import { isValid } from 'date-fns';
 export const InvoicePreviewMonite = ({
   address,
   counterpart,
+  counterpartVats,
   currency,
   invoiceData,
   entityData,
+  entityVatIds,
   isNonVatSupported,
   paymentTerms,
   measureUnits = [],
@@ -38,6 +42,7 @@ export const InvoicePreviewMonite = ({
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
+  const { taxLabel } = getTaxTerminology(i18n, isNonVatSupported);
 
   const {
     document_id: documentId,
@@ -54,7 +59,6 @@ export const InvoicePreviewMonite = ({
     (term) => term.id === paymentTermsId
   );
   const dueDate = selectedPaymentTerm && calculateDueDate(selectedPaymentTerm);
-  const discount = getPaymentTermsDiscount(selectedPaymentTerm);
 
   const sanitizedItems = sanitizeLineItems(items as SanitizableLineItem[]).map(
     (item, index) => ({
@@ -91,9 +95,18 @@ export const InvoicePreviewMonite = ({
             </span>
           </h1>
         </div>
-        <div className={cn(styles.logoWrapper, !entityData?.logo?.url && styles.noLogo)}>
+        <div
+          className={cn(
+            styles.logoWrapper,
+            !entityData?.logo?.url && styles.noLogo
+          )}
+        >
           {entityData?.logo?.url ? (
-            <img className={styles.logoImage} src={entityData.logo.url} alt={t(i18n)`Logo`} />
+            <img
+              className={styles.logoImage}
+              src={entityData.logo.url}
+              alt={t(i18n)`Logo`}
+            />
           ) : (
             <span className={styles.logoText}>{t(i18n)`No logo`}</span>
           )}
@@ -121,9 +134,23 @@ export const InvoicePreviewMonite = ({
                     {address.line2 && ` ${address.line2}`}
                     {address.postal_code && `, ${address.postal_code}`}
                     {address.city && ` ${address.city}`}
-                    {address.country && `, ${address.country}`}
+                    {address.country &&
+                      `, ${getCountryName(i18n, address.country)}`}
                   </p>
                 )}
+
+                {counterpartVats?.data[0]?.value && (
+                  <p className={cn(styles.columnText, styles.vatId)}>
+                    {taxLabel}: {counterpartVats.data[0].value}
+                  </p>
+                )}
+
+                {getCounterpartPhone(counterpart) && (
+                  <p className={cn(styles.columnText, styles.phone)}>
+                    {getCounterpartPhone(counterpart)}
+                  </p>
+                )}
+
                 {counterpart &&
                   isOrganizationCounterpart(counterpart) &&
                   counterpart.organization.email && (
@@ -252,19 +279,17 @@ export const InvoicePreviewMonite = ({
               <th className={styles.colProduct}>{t(i18n)`Product`}</th>
               <th className={styles.colQty}>{t(i18n)`Qty`}</th>
               <th className={styles.colPrice}>{t(i18n)`Price`}</th>
-              <th className={styles.colDiscount}>{t(i18n)`Disc.`}</th>
               <th className={styles.colAmount}>{t(i18n)`Amount`}</th>
-              <th className={styles.colTax}>{t(i18n)`Tax`}</th>
+              <th className={styles.colTax}>{taxLabel}</th>
             </tr>
           </thead>
           <tbody>
             {sanitizedItems.length > 0 ? (
               sanitizedItems.map((item, index) => {
                 const taxRate = getRateValueForItem(item, isNonVatSupported);
-                const quantity = item?.quantity || 1;
-                const price = item?.product?.price?.value || 0;
-                const priceAfterDiscount = price * (1 - discount / 100);
-                const totalAmount = priceAfterDiscount * quantity;
+                const quantity = item?.quantity ?? 1;
+                const price = item?.product?.price?.value ?? 0;
+                const totalAmount = price * quantity;
 
                 return (
                   <tr key={item.id} className={styles.itemRow}>
@@ -301,15 +326,6 @@ export const InvoicePreviewMonite = ({
                           )
                         : ''}
                     </td>
-                    <td className={styles.colDiscount}>
-                      {discount > 0 && item.product?.price
-                        ? formatCurrencyToDisplay(
-                            (price * quantity * discount) / 100,
-                            item.product.price.currency,
-                            true
-                          )
-                        : ''}
-                    </td>
                     <td className={styles.colAmount}>
                       {item.product?.price
                         ? formatCurrencyToDisplay(
@@ -327,7 +343,7 @@ export const InvoicePreviewMonite = ({
               })
             ) : (
               <tr className={styles.noItemsRow}>
-                <td colSpan={7} className={styles.noItemsCell}>
+                <td colSpan={6} className={styles.noItemsCell}>
                   <p className={styles.notSet}>{t(i18n)`No items`}</p>
                 </td>
               </tr>
@@ -349,7 +365,7 @@ export const InvoicePreviewMonite = ({
             {Object.entries(taxesByVatRate).map(([rate, totalTax], index) => (
               <div className={styles.totalRow} key={index}>
                 <span className={styles.totalLabel}>
-                  {t(i18n)`Total tax`} ({rate}%)
+                  {t(i18n)`Total`} {taxLabel} ({rate}%)
                 </span>
                 <span className={styles.totalValue}>
                   {currency &&
@@ -391,7 +407,12 @@ export const InvoicePreviewMonite = ({
                 {entityData.address.line2 && ` ${entityData.address.line2}`}
                 {entityData.address.city && `, ${entityData.address.city}`}
                 {entityData.address.country &&
-                  `, ${entityData.address.country}`}
+                  `, ${getCountryName(i18n, entityData.address.country)}`}
+              </p>
+            )}
+            {entityVatIds?.data[0]?.value && (
+              <p className={cn(styles.companyText, styles.companyVat)}>
+                {taxLabel}: {entityVatIds.data[0].value}
               </p>
             )}
             {entityData?.phone && (

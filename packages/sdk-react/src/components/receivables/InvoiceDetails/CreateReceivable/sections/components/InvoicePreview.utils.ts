@@ -3,6 +3,7 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { getRateValueForDisplay, rateMinorToMajor } from '@/core/utils/vatUtils';
 import type { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
+import { getCountries } from '@/core/utils/countries';
 
 /**
  * Calculate discount from payment terms
@@ -76,6 +77,52 @@ export const getRateValueForItem = (
     item.vat_rate_value ?? 0,
     item.tax_rate_value ?? 0
   );
+};
+
+/**
+ * Get the appropriate tax terminology based on isNonVatSupported
+ * Simple logic: VAT for VAT-supported regions, Tax for non-VAT regions
+ */
+export const getTaxTerminology = (
+  i18n: I18n,
+  isNonVatSupported: boolean
+): { taxLabel: string; taxIdLabel: string } => {
+  if (isNonVatSupported) {
+    return {
+      taxLabel: t(i18n)`Tax`,
+      taxIdLabel: t(i18n)`Tax ID`,
+    };
+  }
+  
+  return {
+    taxLabel: t(i18n)`VAT`,
+    taxIdLabel: t(i18n)`VAT ID`,
+  };
+};
+
+/**
+ * Get phone number from counterpart (organization or individual)
+ */
+export const getCounterpartPhone = (
+  counterpart?: components['schemas']['CounterpartResponse']
+): string | undefined => {
+  if (!counterpart) return undefined;
+  
+  if ('organization' in counterpart) {
+    return counterpart.organization.phone;
+  }
+  
+  if ('individual' in counterpart) {
+    return counterpart.individual.phone;
+  }
+  
+  return undefined;
+};
+
+export const getCountryName = (i18n: I18n, countryCode?: string) => {
+  if (!countryCode) return '';
+
+  return getCountries(i18n)[countryCode] ?? countryCode;
 };
 
 type UnitResponse = components['schemas']['UnitResponse'];
