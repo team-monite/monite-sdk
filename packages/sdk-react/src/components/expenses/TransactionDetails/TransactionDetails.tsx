@@ -70,10 +70,11 @@ const TransactionDetailsBase = ({
       <Sheet
         open={open}
         onOpenChange={(isOpen) => {
-          if (!isOpen) {
+          if (!isOpen && !isReceiptViewerOpen) {
             onClose?.();
           }
         }}
+        modal={false}
       >
         <SheetContent container={root} className="mtw:w-[600px]">
           <SheetHeader>
@@ -172,7 +173,9 @@ const TransactionDetailsBase = ({
                     {receipt.file_url && (
                       <div
                         className="mtw:w-14 mtw:h-14 mtw:overflow-hidden mtw:rounded-lg mtw:border mtw:bg-gray-200 mtw:border-gray-200 mtw:flex mtw:items-center mtw:justify-center mtw:cursor-pointer"
-                        onClick={() => setIsReceiptViewerOpen(true)}
+                        onClick={() => {
+                          setIsReceiptViewerOpen(true);
+                        }}
                       >
                         {/* // TODO: only show image if not pdf; once PDF image previews are implemented, refactor the condition */}
                         {getMimetypeFromUrl(receipt.file_url) !==
@@ -195,7 +198,9 @@ const TransactionDetailsBase = ({
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => setIsReceiptViewerOpen(true)}
+                          onClick={() => {
+                            setIsReceiptViewerOpen(true);
+                          }}
                           className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:flex mtw:items-center mtw:gap-1"
                         >
                           <EyeIcon className="mtw:size-4" /> {t(i18n)`View`}

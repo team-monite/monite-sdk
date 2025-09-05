@@ -253,8 +253,16 @@ export const UserTransactionsTable = () => {
       if (hasSelectedText()) {
         return;
       }
-      setSelectedTransaction(transaction);
-      setDetailsModalOpened(true);
+
+      // Close any existing modal and receipt preview
+      setDetailsModalOpened(false);
+      setReceiptPreviewReceipt(undefined);
+
+      // Use setTimeout to ensure clean state transition
+      setTimeout(() => {
+        setSelectedTransaction(transaction);
+        setDetailsModalOpened(true);
+      }, 0);
     },
     []
   );

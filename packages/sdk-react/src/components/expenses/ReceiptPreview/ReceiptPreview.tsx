@@ -23,7 +23,7 @@ export const ReceiptPreview = ({
   const { i18n } = useLingui();
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DialogContent className="mtw:w-[744px] mtw:h-[744px] mtw:max-w-[90vw] mtw:max-h-[95vh] mtw:p-0 mtw:flex mtw:flex-col">
         <DialogHeader className="mtw:p-6 mtw:pb-0 mtw:flex-shrink-0">
           <DialogTitle>{t(i18n)`Receipt ${receipt.document_id}`}</DialogTitle>
