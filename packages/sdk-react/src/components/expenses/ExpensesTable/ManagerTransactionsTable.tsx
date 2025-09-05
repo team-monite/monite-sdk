@@ -1,3 +1,4 @@
+import { TransactionDetails } from '../TransactionDetails';
 import { useGetTransactions } from '../hooks/useTransactions';
 import {
   FILTER_TYPE_SEARCH,
@@ -25,18 +26,24 @@ import {
   SelectValue,
 } from '@/ui/components/select';
 import { LoadingPage } from '@/ui/loadingPage';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const ManagerTransactionsTable = () => {
   const { api, componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
+
+  const [selectedTransaction, setSelectedTransaction] = useState<
+    components['schemas']['TransactionResponse'] | undefined
+  >(undefined);
+  const [detailsModalOpened, setDetailsModalOpened] = useState<boolean>(false);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -265,22 +272,40 @@ export const ManagerTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(
-              formatFromMinorUnits(
+            return (
+              formatCurrencyToDisplay(
                 row.original.merchant_amount,
                 row.original.merchant_currency
-              ) || 0,
-              {
-                style: 'currency',
-                currency: row.original.merchant_currency,
-              }
+              ) || '-'
             );
-            return formattedAmount;
           },
         },
       ],
-      [UserCell, formatFromMinorUnits, i18n, locale.dateTimeFormat]
+      [UserCell, formatCurrencyToDisplay, i18n, locale.dateTimeFormat]
     );
+
+  const openDetailsModal = useCallback(
+    (transaction: components['schemas']['TransactionResponse']) => {
+      if (hasSelectedText()) {
+        return;
+      }
+
+      // Close any existing modal and receipt preview
+      setDetailsModalOpened(false);
+
+      // Use setTimeout to ensure clean state transition
+      setTimeout(() => {
+        setSelectedTransaction(transaction);
+        setDetailsModalOpened(true);
+      }, 0);
+    },
+    []
+  );
+
+  const closeDetailsModal = useCallback(() => {
+    setSelectedTransaction(undefined);
+    setDetailsModalOpened(false);
+  }, []);
 
   if (isTransaxtionReadSupportedLoading || isUserReadSupportedLoading) {
     return <LoadingPage />;
@@ -368,6 +393,7 @@ export const ManagerTransactionsTable = () => {
           sorting={sorting}
           onSortingChange={onSortingChange}
           pageCount={pageCount}
+          onRowClick={openDetailsModal}
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
@@ -391,6 +417,12 @@ export const ManagerTransactionsTable = () => {
           )}
         />
       </div>
+      <TransactionDetails
+        isManagerView={true}
+        transaction={selectedTransaction}
+        open={detailsModalOpened}
+        onClose={closeDetailsModal}
+      />
     </div>
   );
 };

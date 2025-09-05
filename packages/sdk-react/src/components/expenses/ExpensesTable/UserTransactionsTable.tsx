@@ -1,3 +1,5 @@
+import { ReceiptPreview } from '../ReceiptPreview';
+import { TransactionDetails } from '../TransactionDetails';
 import { useGetTransactions } from '../hooks/useTransactions';
 import { FILTER_TYPE_SEARCH, FILTER_TYPE_STARTED_AT } from './consts';
 import type { FilterTypes } from './types';
@@ -11,22 +13,32 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useReceiptsByTransactionIds } from '@/core/queries/useReceiptsByTransactionIds';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { DataTable } from '@/ui/components/data-table';
 import { Input } from '@/ui/components/input';
 import { Skeleton } from '@/ui/components/skeleton';
 import { LoadingPage } from '@/ui/loadingPage';
+import { hasSelectedText } from '@/utils/text-selection';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DatePicker } from '@mui/x-date-pickers';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatISO, addDays } from 'date-fns';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const UserTransactionsTable = () => {
   const { componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { formatFromMinorUnits } = useCurrencies();
+  const { formatCurrencyToDisplay } = useCurrencies();
+
+  const [selectedTransaction, setSelectedTransaction] = useState<
+    components['schemas']['TransactionResponse'] | undefined
+  >(undefined);
+  const [detailsModalOpened, setDetailsModalOpened] = useState<boolean>(false);
+  const [receiptPreviewReceipt, setReceiptPreviewReceipt] = useState<
+    components['schemas']['ReceiptResponseSchema'] | undefined
+  >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -196,22 +208,21 @@ export const UserTransactionsTable = () => {
 
             if (receipt.file_url) {
               return (
-                <a
-                  href={receipt.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mtw:text-primary mtw:hover:underline"
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setReceiptPreviewReceipt(receipt);
+                  }}
+                  className="mtw:text-primary mtw:font-medium mtw:text-sm mtw:p-0 mtw:h-5"
                 >
-                  {t(i18n)`View Receipt ${receipt.document_id}`}
-                </a>
+                  {t(i18n)`Receipt ${receipt.document_id}`}
+                </Button>
               );
             }
 
-            return (
-              <span className="">
-                {t(i18n)`Receipt ${receipt.document_id}`}
-              </span>
-            );
+            return <span>{t(i18n)`Receipt ${receipt.document_id}`}</span>;
           },
           enableSorting: false,
         },
@@ -219,17 +230,12 @@ export const UserTransactionsTable = () => {
           header: t(i18n)`Amount`,
           accessorKey: 'amount',
           cell: ({ row }) => {
-            const formattedAmount = i18n.number(
-              formatFromMinorUnits(
+            return (
+              formatCurrencyToDisplay(
                 row.original.merchant_amount,
                 row.original.merchant_currency
-              ) || 0,
-              {
-                style: 'currency',
-                currency: row.original.merchant_currency,
-              }
+              ) || '-'
             );
-            return formattedAmount;
           },
         },
       ],
@@ -238,9 +244,33 @@ export const UserTransactionsTable = () => {
         locale.dateTimeFormat,
         receiptsByTransactionId,
         isReceiptsLoading,
-        formatFromMinorUnits,
+        formatCurrencyToDisplay,
       ]
     );
+
+  const openDetailsModal = useCallback(
+    (transaction: components['schemas']['TransactionResponse']) => {
+      if (hasSelectedText()) {
+        return;
+      }
+
+      // Close any existing modal and receipt preview
+      setDetailsModalOpened(false);
+      setReceiptPreviewReceipt(undefined);
+
+      // Use setTimeout to ensure clean state transition
+      setTimeout(() => {
+        setSelectedTransaction(transaction);
+        setDetailsModalOpened(true);
+      }, 0);
+    },
+    []
+  );
+
+  const closeDetailsModal = useCallback(() => {
+    setSelectedTransaction(undefined);
+    setDetailsModalOpened(false);
+  }, []);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
@@ -310,6 +340,7 @@ export const UserTransactionsTable = () => {
           sorting={sorting}
           onSortingChange={onSortingChange}
           pageCount={pageCount}
+          onRowClick={openDetailsModal}
           noRowsOverlay={() => (
             <GetNoRowsOverlay
               isLoading={isLoading}
@@ -331,6 +362,22 @@ export const UserTransactionsTable = () => {
           )}
         />
       </div>
+      <TransactionDetails
+        transaction={selectedTransaction}
+        open={detailsModalOpened}
+        onClose={closeDetailsModal}
+      />
+      {receiptPreviewReceipt && (
+        <ReceiptPreview
+          receipt={receiptPreviewReceipt}
+          isOpen={!!receiptPreviewReceipt}
+          setIsOpen={(isOpen) => {
+            if (!isOpen) {
+              setReceiptPreviewReceipt(undefined);
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

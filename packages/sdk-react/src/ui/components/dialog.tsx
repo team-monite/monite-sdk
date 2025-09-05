@@ -1,9 +1,9 @@
-import * as React from 'react';
-
 import { cn } from '@/ui/lib/utils';
+import { i18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-
 import { XIcon } from 'lucide-react';
+import * as React from 'react';
 
 function Dialog({
   ...props
@@ -68,10 +68,10 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-muted-foreground mtw:absolute mtw:top-4 mtw:right-4 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:disabled:pointer-events-none mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4"
+            className="mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-muted-foreground mtw:absolute mtw:top-5 mtw:right-5 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:disabled:pointer-events-none mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4"
           >
-            <XIcon />
-            <span className="mtw:sr-only">Close</span>
+            <XIcon className="mtw:size-6" />
+            <span className="mtw:sr-only">{t(i18n)`Close`}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
