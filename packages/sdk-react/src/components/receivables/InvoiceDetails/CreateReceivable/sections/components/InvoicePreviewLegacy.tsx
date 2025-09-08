@@ -1,9 +1,8 @@
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
-import { sanitizeLineItems } from '../utils';
 import type { SanitizableLineItem } from '../types';
+import { sanitizeLineItems } from '../utils';
 import type { InvoicePreviewBaseProps } from './InvoicePreview.types';
 import {
-  getPaymentTermsDiscount,
   getMeasureUnitName,
   getRateValueForItem,
 } from './InvoicePreview.utils';
@@ -232,7 +231,7 @@ export const InvoicePreviewLegacy = ({
                 {!isInclusivePricing && <th>{t(i18n)`Tax`} (%)</th>}
               </tr>
               <tr className={styles.spacer}>
-                <td colSpan={7} />
+                <td colSpan={isInclusivePricing ? 7 : 6} />
               </tr>
             </thead>
             <tbody className={styles.products}>
@@ -241,9 +240,7 @@ export const InvoicePreviewLegacy = ({
                   const taxRate = getRateValueForItem(item, isNonVatSupported);
                   const quantity = item?.quantity ?? 1;
                   const price = item?.product?.price?.value ?? 0;
-                  const discount = getPaymentTermsDiscount(selectedPaymentTerm);
-                  const priceAfterDiscount = price * (1 - discount / 100);
-                  const totalAmount = priceAfterDiscount * quantity;
+                  const totalAmount = price * quantity;
 
                   return (
                     <tr key={item.id}>
@@ -314,9 +311,11 @@ export const InvoicePreviewLegacy = ({
               <tbody>
                 <tr className={styles.subtotal}>
                   <td colSpan={4}>
-                    <span>{t(i18n)`Subtotal${
-                      isInclusivePricing ? ' excl. tax' : ''
-                    }`}</span>
+                    <span>
+                      {isInclusivePricing
+                        ? t(i18n)`Subtotal excl. tax`
+                        : t(i18n)`Subtotal`}
+                    </span>
                   </td>
                   <td>{subtotalPrice?.toString()}</td>
                 </tr>
