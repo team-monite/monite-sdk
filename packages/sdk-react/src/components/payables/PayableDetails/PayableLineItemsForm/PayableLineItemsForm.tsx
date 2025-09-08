@@ -82,7 +82,6 @@ export const PayableLineItemsForm = () => {
                 name={`lineItems.${index}.price`}
                 label={t(i18n)`Price`}
                 type="number"
-                inputProps={{ min: 0 }}
                 fullWidth
                 InputProps={{
                   endAdornment: getSymbolFromCurrency(watch('currency')),
