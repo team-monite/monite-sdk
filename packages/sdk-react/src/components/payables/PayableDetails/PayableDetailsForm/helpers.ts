@@ -78,21 +78,19 @@ export const prepareDefaultValues = (
     currency: components['schemas']['CurrencyEnum'] | string
   ) => number | null,
   payable?: components['schemas']['PayableResponseSchema'],
-  lineItems?: components['schemas']['LineItemResponse'][]
+  lineItems?: components['schemas']['LineItemResponse'][],
+  isCalculateTotalsEnabled?: boolean
 ): PayableDetailsFormFields => {
   if (!payable) {
-    return {
+    const defaultValuesCreating = {
       invoiceNumber: '',
       counterpart: '',
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: DEFAULT_CURRENCY,
+      currency: DEFAULT_CURRENCY as components['schemas']['CurrencyEnum'],
       tags: [],
       discount: null,
-      subtotal: 0,
-      tax_amount: 0,
-      total_amount: 0,
       lineItems: [
         {
           id: '',
@@ -103,6 +101,16 @@ export const prepareDefaultValues = (
         },
       ],
     };
+
+    if (!isCalculateTotalsEnabled) {
+      return {
+        ...defaultValuesCreating,
+        subtotal: 0,
+        tax_amount: 0,
+        total_amount: 0,
+      };
+    }
+    return defaultValuesCreating;
   }
 
   const {
@@ -119,7 +127,7 @@ export const prepareDefaultValues = (
     total_amount,
   } = payable;
 
-  return {
+  const defaultValuesEditing = {
     invoiceNumber: document_id ?? '',
     counterpart: counterpart_id ?? '',
     counterpartBankAccount: counterpart_bank_account_id ?? '',
@@ -129,14 +137,6 @@ export const prepareDefaultValues = (
     tags: tags ?? [],
     discount:
       discount && currency ? formatFromMinorUnits(discount, currency) : null,
-    subtotal:
-      subtotal && currency ? formatFromMinorUnits(subtotal, currency) : 0,
-    tax_amount:
-      tax_amount && currency ? formatFromMinorUnits(tax_amount, currency) : 0,
-    total_amount:
-      total_amount && currency
-        ? formatFromMinorUnits(total_amount, currency)
-        : 0,
     lineItems: (lineItems || []).map((lineItem) => {
       return {
         id: lineItem.id ?? '',
@@ -150,6 +150,21 @@ export const prepareDefaultValues = (
       };
     }),
   };
+
+  if (!isCalculateTotalsEnabled) {
+    return {
+      ...defaultValuesEditing,
+      subtotal:
+        subtotal && currency ? formatFromMinorUnits(subtotal, currency) : 0,
+      tax_amount:
+        tax_amount && currency ? formatFromMinorUnits(tax_amount, currency) : 0,
+      total_amount:
+        total_amount && currency
+          ? formatFromMinorUnits(total_amount, currency)
+          : 0,
+    };
+  }
+  return defaultValuesEditing;
 };
 
 export const prepareSubmit = (
@@ -167,22 +182,32 @@ export const prepareSubmit = (
     discount,
     total_amount,
   }: SubmitPayload,
-  formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['PayableUpdateSchema'] => ({
-  document_id: invoiceNumber,
-  counterpart_id: counterpart || undefined,
-  counterpart_bank_account_id: counterpartBankAccount || undefined,
-  issued_at:
-    invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
-  due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
-  currency,
-  tag_ids: tags.map((tag) => tag.id),
-  counterpart_address_id: counterpartAddressId,
-  subtotal: formatToMinorUnits(subtotal ?? 0, currency) ?? 0,
-  tax_amount: formatToMinorUnits(tax_amount ?? 0, currency) ?? 0,
-  discount: formatToMinorUnits(discount ?? 0, currency) ?? 0,
-  total_amount: formatToMinorUnits(total_amount ?? 0, currency) ?? 0,
-});
+  formatToMinorUnits: (amount: number, currency: string) => number | null,
+  isCalculateTotalsEnabled?: boolean
+): components['schemas']['PayableUpdateSchema'] => {
+  const submitPayload = {
+    document_id: invoiceNumber,
+    counterpart_id: counterpart || undefined,
+    counterpart_bank_account_id: counterpartBankAccount || undefined,
+    issued_at:
+      invoiceDate instanceof Date ? dateToString(invoiceDate) : undefined,
+    due_date: dueDate instanceof Date ? dateToString(dueDate) : undefined,
+    currency,
+    tag_ids: tags.map((tag) => tag.id),
+    counterpart_address_id: counterpartAddressId,
+    discount: formatToMinorUnits(discount ?? 0, currency) ?? 0,
+  };
+
+  if (!isCalculateTotalsEnabled) {
+    return {
+      ...submitPayload,
+      subtotal: formatToMinorUnits(subtotal ?? 0, currency) ?? 0,
+      tax_amount: formatToMinorUnits(tax_amount ?? 0, currency) ?? 0,
+      total_amount: formatToMinorUnits(total_amount ?? 0, currency) ?? 0,
+    };
+  }
+  return submitPayload;
+};
 
 const calculateLineItemSubtotal = (price: number, quantity: number): number => {
   const subtotal = price * quantity;
@@ -324,6 +349,7 @@ export interface MonitePayableDetailsInfoProps {
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
   isTagsDisabled?: boolean;
+  disableAutoCalculateTotals?: boolean;
 }
 
 export const findDefaultBankAccount = (
