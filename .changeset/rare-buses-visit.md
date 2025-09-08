@@ -2,6 +2,6 @@
 '@monite/sdk-react': minor
 ---
 
-Allow manually editing Payable totals. This requires new API version.
+- Added a new `disableAutoCalculateTotals` flag in Payables `componentSettings`. When set to `true`, this allows users to manually edit the totals values of a Payable; no automatic calculation will be performed on the client side. The default is `false`.
 
-Removed automatic calculations on browser side of Payable totals and allow user to manually edit and input totals values.
+Note: Enabling manual totals editing may require coordination with API Partner Settings to allow this functionality.
