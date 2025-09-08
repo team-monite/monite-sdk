@@ -120,6 +120,24 @@ export const getPayableDetailsValidationSchema = (
       .nullable()
       .optional(),
 
+    subtotal: z
+      .number()
+      .min(0, t(i18n)`Subtotal cannot be negative`)
+      .nullable()
+      .optional(),
+
+    tax_amount: z
+      .number()
+      .min(0, t(i18n)`Tax amount cannot be negative`)
+      .nullable()
+      .optional(),
+
+    total_amount: z
+      .number()
+      .min(0, t(i18n)`Total amount cannot be negative`)
+      .nullable()
+      .optional(),
+
     lineItems: z.array(lineItemSchema),
 
     tags: z.array(tagSchema),
