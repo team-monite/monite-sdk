@@ -1,15 +1,13 @@
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
-import {
-  calculateTotalPriceForLineItem,
-} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { calculateTotalPriceForLineItem } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 export const PayableLineItemsForm = () => {
   const { i18n } = useLingui();
@@ -52,22 +50,13 @@ export const PayableLineItemsForm = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <Controller
+              <RHFTextField
                 name={`lineItems.${index}.quantity`}
                 control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    id={field.name}
-                    label={t(i18n)`Quantity`}
-                    variant="standard"
-                    type="number"
-                    inputProps={{ min: 1 }}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    fullWidth
-                  />
-                )}
+                label={t(i18n)`Quantity`}
+                type="number"
+                inputProps={{ min: 1 }}
+                fullWidth
               />
             </Grid>
             <Grid
@@ -97,47 +86,29 @@ export const PayableLineItemsForm = () => {
             justifyContent="flex-end"
           >
             <Grid item xs={8}>
-              <Controller
+              <RHFTextField
                 name={`lineItems.${index}.price`}
                 control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    id={field.name}
-                    label={t(i18n)`Price`}
-                    variant="standard"
-                    type="number"
-                    inputProps={{ min: 0 }}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    fullWidth
-                    InputProps={{
-                      endAdornment: getSymbolFromCurrency(watch('currency')),
-                    }}
-                  />
-                )}
+                label={t(i18n)`Price`}
+                type="number"
+                inputProps={{ min: 0 }}
+                fullWidth
+                InputProps={{
+                  endAdornment: getSymbolFromCurrency(watch('currency')),
+                }}
               />
             </Grid>
             <Grid item xs={3}>
-              <Controller
+              <RHFTextField
                 name={`lineItems.${index}.tax`}
                 control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    id={field.name}
-                    label={t(i18n)`VAT`}
-                    variant="standard"
-                    type="number"
-                    inputProps={{ min: 0, max: 100 }}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    fullWidth
-                    InputProps={{
-                      endAdornment: '%',
-                    }}
-                  />
-                )}
+                label={t(i18n)`VAT`}
+                type="number"
+                inputProps={{ min: 0, max: 100 }}
+                fullWidth
+                InputProps={{
+                  endAdornment: '%',
+                }}
               />
             </Grid>
             <Grid item xs={1} />
