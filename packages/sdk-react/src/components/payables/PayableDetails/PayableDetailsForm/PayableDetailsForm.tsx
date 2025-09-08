@@ -3,8 +3,10 @@ import {
   usePayableDetailsThemeProps,
 } from '../../hooks';
 import { OptionalFields } from '../../types';
+import { DisplayPayableLineItems } from '../PayableDetailsInfo';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
+  calculateTotalsForPayable,
   findDefaultBankAccount,
   isFieldRequired,
   LineItem,
@@ -221,6 +223,7 @@ const getValidationSchema = (i18n: I18n) =>
  *     currency: true,            // The currency is required based on OCR data
  *   },
  *   isTagsDisabled: true,        // The tags field is disabled
+ *   disableAutoCalculateTotals: false, // If true, user can manually edit the totals values, no automatic calculation will be performed. Defaults to false.
  * };
  * ```
  *
@@ -264,17 +267,36 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
     const className = 'Monite-PayableDetailsForm';
 
-    const { formatFromMinorUnits, formatToMinorUnits, getSymbolFromCurrency } =
-      useCurrencies();
+    const {
+      formatFromMinorUnits,
+      formatToMinorUnits,
+      formatCurrencyToDisplay,
+      getSymbolFromCurrency,
+    } = useCurrencies();
 
-    const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
+    const {
+      ocrRequiredFields,
+      optionalFields,
+      isTagsDisabled,
+      disableAutoCalculateTotals,
+    } = usePayableDetailsThemeProps(inProps);
 
     const { data: payablesValidations } =
       api.payables.getPayablesValidations.useQuery();
 
+    const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false;
+    const isLineItemsEditable = isDisableAutoCalculateTotals || !payable;
+    const isTotalsEditable = isDisableAutoCalculateTotals;
+
     const defaultValues = useMemo(
-      () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
-      [formatFromMinorUnits, payable, lineItems]
+      () =>
+        prepareDefaultValues(
+          formatFromMinorUnits,
+          payable,
+          lineItems,
+          !isDisableAutoCalculateTotals
+        ),
+      [formatFromMinorUnits, payable, lineItems, isDisableAutoCalculateTotals]
     );
     const formContext = useMemo(
       () => ({
@@ -304,7 +326,10 @@ const PayableDetailsFormBase = forwardRef<
     const currentInvoiceDate = watch('invoiceDate');
     const currentDueDate = watch('dueDate');
     const currentCurrency = watch('currency');
+    const currentLineItems = watch('lineItems');
     const currentDiscount = watch('discount');
+
+    const totals = calculateTotalsForPayable(currentLineItems, currentDiscount);
 
     const [isEditCounterpartOpened, setIsEditCounterpartOpened] =
       useState<boolean>(false);
@@ -314,8 +339,6 @@ const PayableDetailsFormBase = forwardRef<
         currentCounterpartId: currentCounterpart,
       });
 
-    const { ocrRequiredFields, optionalFields } =
-      usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
       optionalFields,
       {
@@ -452,6 +475,7 @@ const PayableDetailsFormBase = forwardRef<
                 isSubmittedByKeyboardRef.current = event.key === 'Enter';
               }}
               onSubmit={handleSubmit(async (values) => {
+                console.log('values', values);
                 const invoiceData = prepareSubmit(
                   {
                     ...values,
@@ -459,7 +483,8 @@ const PayableDetailsFormBase = forwardRef<
                       ({ id }) => id === values.counterpart
                     )?.default_billing_address_id,
                   },
-                  formatToMinorUnits
+                  formatToMinorUnits,
+                  !isDisableAutoCalculateTotals
                 );
 
                 if (payable) {
@@ -729,20 +754,31 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-
                 <Grid item xs={12}>
-                  <Paper
-                    variant="outlined"
-                    sx={{ p: 3 }}
-                    className={className + '-Items'}
-                  >
-                    <Typography variant="subtitle2" mb={2}>
-                      {t(i18n)`Items`}
-                    </Typography>
-                    <PayableLineItemsForm />
-                  </Paper>
+                  {isLineItemsEditable ? (
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 3 }}
+                      className={className + '-Items'}
+                    >
+                      <Typography variant="subtitle2" mb={2}>
+                        {t(i18n)`Items`}
+                      </Typography>
+                      <PayableLineItemsForm />
+                    </Paper>
+                  ) : (
+                    <>
+                      <Typography variant="subtitle2" mb={2}>
+                        {t(i18n)`Items`}
+                      </Typography>
+                      <DisplayPayableLineItems
+                        lineItems={lineItems}
+                        currency={currentCurrency}
+                      />
+                    </>
+                  )}
                 </Grid>
-                {showAlertChangedValues && (
+                {isTotalsEditable && showAlertChangedValues && (
                   <Grid item xs={12}>
                     <Alert variant="warning" icon={<AlertCircleIcon />}>
                       {t(
@@ -777,29 +813,48 @@ const PayableDetailsFormBase = forwardRef<
                                   {t(i18n)`Add Discount`}
                                 </Button>
                               )}
-                              <Controller
-                                name="subtotal"
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                  <TextField
-                                    {...field}
-                                    id={field.name}
-                                    variant="standard"
-                                    size="small"
-                                    type="number"
-                                    onChange={(event) =>
-                                      field.onChange(Number(event.target.value))
-                                    }
-                                    inputProps={{ min: 0 }}
-                                    error={Boolean(error)}
-                                    sx={{ width: 150 }}
-                                    InputProps={{
-                                      endAdornment:
-                                        getSymbolFromCurrency(currentCurrency),
-                                    }}
-                                  />
-                                )}
-                              />
+                              {isTotalsEditable ? (
+                                <Controller
+                                  name="subtotal"
+                                  control={control}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <TextField
+                                      {...field}
+                                      id={field.name}
+                                      variant="standard"
+                                      size="small"
+                                      type="number"
+                                      onChange={(event) =>
+                                        field.onChange(
+                                          Number(event.target.value)
+                                        )
+                                      }
+                                      inputProps={{ min: 0 }}
+                                      error={Boolean(error)}
+                                      sx={{ width: 150 }}
+                                      InputProps={{
+                                        endAdornment:
+                                          getSymbolFromCurrency(
+                                            currentCurrency
+                                          ),
+                                      }}
+                                    />
+                                  )}
+                                />
+                              ) : totals.subtotal && currentCurrency ? (
+                                formatCurrencyToDisplay(
+                                  formatToMinorUnits(
+                                    totals.subtotal,
+                                    currentCurrency
+                                  ) || 0,
+                                  currentCurrency
+                                )
+                              ) : (
+                                '—'
+                              )}
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -822,7 +877,6 @@ const PayableDetailsFormBase = forwardRef<
                                 >
                                   <DeleteIcon />
                                 </IconButton>
-
                                 <Controller
                                   name="discount"
                                   control={control}
@@ -865,28 +919,47 @@ const PayableDetailsFormBase = forwardRef<
                               justifyContent="flex-end"
                               display="flex"
                             >
-                              <Controller
-                                name="tax_amount"
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                  <TextField
-                                    {...field}
-                                    id={field.name}
-                                    variant="standard"
-                                    type="number"
-                                    onChange={(event) =>
-                                      field.onChange(Number(event.target.value))
-                                    }
-                                    inputProps={{ min: 0 }}
-                                    error={Boolean(error)}
-                                    sx={{ width: 150 }}
-                                    InputProps={{
-                                      endAdornment:
-                                        getSymbolFromCurrency(currentCurrency),
-                                    }}
-                                  />
-                                )}
-                              />
+                              {isTotalsEditable ? (
+                                <Controller
+                                  name="tax_amount"
+                                  control={control}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <TextField
+                                      {...field}
+                                      id={field.name}
+                                      variant="standard"
+                                      type="number"
+                                      onChange={(event) =>
+                                        field.onChange(
+                                          Number(event.target.value)
+                                        )
+                                      }
+                                      inputProps={{ min: 0 }}
+                                      error={Boolean(error)}
+                                      sx={{ width: 150 }}
+                                      InputProps={{
+                                        endAdornment:
+                                          getSymbolFromCurrency(
+                                            currentCurrency
+                                          ),
+                                      }}
+                                    />
+                                  )}
+                                />
+                              ) : totals.taxes && currentCurrency ? (
+                                formatCurrencyToDisplay(
+                                  formatToMinorUnits(
+                                    totals.taxes,
+                                    currentCurrency
+                                  ) || 0,
+                                  currentCurrency
+                                )
+                              ) : (
+                                '—'
+                              )}
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -903,28 +976,49 @@ const PayableDetailsFormBase = forwardRef<
                               justifyContent="flex-end"
                               display="flex"
                             >
-                              <Controller
-                                name="total_amount"
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                  <TextField
-                                    {...field}
-                                    id={field.name}
-                                    variant="standard"
-                                    type="number"
-                                    onChange={(event) =>
-                                      field.onChange(Number(event.target.value))
-                                    }
-                                    inputProps={{ min: 0 }}
-                                    error={Boolean(error)}
-                                    sx={{ width: 150 }}
-                                    InputProps={{
-                                      endAdornment:
-                                        getSymbolFromCurrency(currentCurrency),
-                                    }}
-                                  />
-                                )}
-                              />
+                              {isTotalsEditable ? (
+                                <Controller
+                                  name="total_amount"
+                                  control={control}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <TextField
+                                      {...field}
+                                      id={field.name}
+                                      variant="standard"
+                                      type="number"
+                                      onChange={(event) =>
+                                        field.onChange(
+                                          Number(event.target.value)
+                                        )
+                                      }
+                                      inputProps={{ min: 0 }}
+                                      error={Boolean(error)}
+                                      sx={{ width: 150 }}
+                                      InputProps={{
+                                        endAdornment:
+                                          getSymbolFromCurrency(
+                                            currentCurrency
+                                          ),
+                                      }}
+                                    />
+                                  )}
+                                />
+                              ) : (
+                                <Typography variant="subtitle1">
+                                  {totals.total && currentCurrency
+                                    ? formatCurrencyToDisplay(
+                                        formatToMinorUnits(
+                                          totals.total,
+                                          currentCurrency
+                                        ) || 0,
+                                        currentCurrency
+                                      )
+                                    : '—'}
+                                </Typography>
+                              )}
                             </Box>
                           </TableCell>
                         </TableRow>
