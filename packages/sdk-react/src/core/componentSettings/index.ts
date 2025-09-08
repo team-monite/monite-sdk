@@ -364,6 +364,8 @@ export const getDefaultComponentSettings = (
       counterpart_bank_account_id: false,
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
+    disableAutoCalculateTotals:
+      componentSettings?.payables?.disableAutoCalculateTotals ?? false,
     onSaved: componentSettings?.payables?.onSaved,
     onCanceled: componentSettings?.payables?.onCanceled,
     onSubmitted: componentSettings?.payables?.onSubmitted,
