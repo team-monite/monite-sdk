@@ -1,8 +1,9 @@
-import type { OptionalFields } from '../../types';
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
 } from '../../hooks';
+import type { OptionalFields } from '../../types';
+import { DisplayPayableLineItems } from '../PayableDetailsInfo';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   type MonitePayableDetailsInfoProps,
@@ -41,7 +42,9 @@ import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
+import { Alert } from '@/ui/components/alert';
 import { classNames } from '@/utils/css-utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
@@ -68,6 +71,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
+import { AlertCircleIcon } from 'lucide-react';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type FieldNamesMarkedBoolean,
@@ -121,6 +125,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
  *     currency: true,            // The currency is required based on OCR data
  *   },
  *   isTagsDisabled: true,        // The tags field is disabled
+ *   disableAutoCalculateTotals: false, // If true, user can manually edit the totals values, no automatic calculation will be performed. Defaults to false.
  * };
  * ```
  *
@@ -171,14 +176,29 @@ const PayableDetailsFormBase = forwardRef<
       getSymbolFromCurrency,
     } = useCurrencies();
 
-    const { isTagsDisabled } = usePayableDetailsThemeProps(inProps);
+    const {
+      ocrRequiredFields,
+      optionalFields,
+      isTagsDisabled,
+      disableAutoCalculateTotals,
+    } = usePayableDetailsThemeProps(inProps);
 
     const { data: payablesValidations } =
       api.payables.getPayablesValidations.useQuery();
 
+    const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false;
+    const isLineItemsEditable = isDisableAutoCalculateTotals || !payable;
+    const isTotalsEditable = isDisableAutoCalculateTotals;
+
     const defaultValues = useMemo(
-      () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
-      [formatFromMinorUnits, payable, lineItems]
+      () =>
+        prepareDefaultValues(
+          formatFromMinorUnits,
+          payable,
+          lineItems,
+          !isDisableAutoCalculateTotals
+        ),
+      [formatFromMinorUnits, payable, lineItems, isDisableAutoCalculateTotals]
     );
 
     const methods = useForm<PayableDetailsValidationFields>({
@@ -217,8 +237,6 @@ const PayableDetailsFormBase = forwardRef<
         currentCounterpartId: currentCounterpart,
       });
 
-    const { ocrRequiredFields, optionalFields } =
-      usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
       optionalFields,
       {
@@ -300,6 +318,35 @@ const PayableDetailsFormBase = forwardRef<
     const { currencyGroups, isLoadingCurrencyGroups } =
       useProductCurrencyGroups();
 
+    // Check if Line Items values have changed
+    const areLineItemsValuesChanged = (() => {
+      if (!dirtyFields.lineItems) return false;
+      const hasLengthChanged =
+        dirtyFields.lineItems.length !== (lineItems?.length || 0);
+      const hasRelevantFieldsChanged = dirtyFields.lineItems.some(
+        (lineItemDirtyFields) => {
+          if (!lineItemDirtyFields) return false;
+          return !!(
+            lineItemDirtyFields.quantity ||
+            lineItemDirtyFields.price ||
+            lineItemDirtyFields.tax
+          );
+        }
+      );
+      return hasLengthChanged || hasRelevantFieldsChanged;
+    })();
+    // Check if Totals values have changed
+    const areTotalsValuesChanged = !!(
+      dirtyFields.subtotal ||
+      dirtyFields.discount ||
+      dirtyFields.tax_amount ||
+      dirtyFields.total_amount
+    );
+    const areValuesDifferent =
+      areLineItemsValuesChanged || areTotalsValuesChanged;
+
+    const showAlertChangedValues = !!payable && areValuesDifferent;
+
     return (
       <>
         <Box
@@ -335,7 +382,8 @@ const PayableDetailsFormBase = forwardRef<
                 };
                 const invoiceData = prepareSubmit(
                   submitPayload,
-                  formatToMinorUnits
+                  formatToMinorUnits,
+                  !isDisableAutoCalculateTotals
                 );
 
                 if (payable) {
@@ -579,7 +627,10 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<PayableDetailsValidationFields, "currency">
+                      <MoniteCurrency<
+                        PayableDetailsValidationFields,
+                        'currency'
+                      >
                         name="currency"
                         control={control}
                         required={
@@ -606,17 +657,38 @@ const PayableDetailsFormBase = forwardRef<
                   </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                  <Paper
-                    variant="outlined"
-                    sx={{ p: 3 }}
-                    className={className + '-Items'}
-                  >
-                    <Typography variant="subtitle2" mb={2}>
-                      {t(i18n)`Items`}
-                    </Typography>
-                    <PayableLineItemsForm />
-                  </Paper>
+                  {isLineItemsEditable ? (
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 3 }}
+                      className={className + '-Items'}
+                    >
+                      <Typography variant="subtitle2" mb={2}>
+                        {t(i18n)`Items`}
+                      </Typography>
+                      <PayableLineItemsForm />
+                    </Paper>
+                  ) : (
+                    <>
+                      <Typography variant="subtitle2" mb={2}>
+                        {t(i18n)`Items`}
+                      </Typography>
+                      <DisplayPayableLineItems
+                        lineItems={lineItems}
+                        currency={currentCurrency}
+                      />
+                    </>
+                  )}
                 </Grid>
+                {isTotalsEditable && showAlertChangedValues && (
+                  <Grid item xs={12}>
+                    <Alert variant="warning" icon={<AlertCircleIcon />}>
+                      {t(
+                        i18n
+                      )`The amounts have been modified. Check all fields carefully before saving.`}
+                    </Alert>
+                  </Grid>
+                )}
                 <Grid item xs={12} className={className + '-Totals'}>
                   <Paper variant="outlined">
                     <Table>
@@ -643,15 +715,30 @@ const PayableDetailsFormBase = forwardRef<
                                   {t(i18n)`Add Discount`}
                                 </Button>
                               )}
-                              {totals.subtotal && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.subtotal,
-                                      currentCurrency
-                                    ) || 0,
+                              {isTotalsEditable ? (
+                                <RHFTextField
+                                  name="subtotal"
+                                  control={control}
+                                  size="small"
+                                  type="number"
+                                  inputProps={{ min: 0 }}
+                                  sx={{ width: 150 }}
+                                  InputProps={{
+                                    endAdornment:
+                                      getSymbolFromCurrency(currentCurrency),
+                                  }}
+                                />
+                              ) : totals.subtotal && currentCurrency ? (
+                                formatCurrencyToDisplay(
+                                  formatToMinorUnits(
+                                    totals.subtotal,
                                     currentCurrency
-                                  )
-                                : '—'}
+                                  ) || 0,
+                                  currentCurrency
+                                )
+                              ) : (
+                                '—'
+                              )}
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -674,30 +761,16 @@ const PayableDetailsFormBase = forwardRef<
                                 >
                                   <DeleteIcon />
                                 </IconButton>
-
-                                <Controller
+                                <RHFTextField
                                   name="discount"
                                   control={control}
-                                  render={({
-                                    field,
-                                    fieldState: { error },
-                                  }) => (
-                                    <TextField
-                                      {...field}
-                                      id={field.name}
-                                      variant="standard"
-                                      type="number"
-                                      inputProps={{ min: 0, step: 0.01 }}
-                                      error={Boolean(error)}
-                                      sx={{ width: 150 }}
-                                      InputProps={{
-                                        endAdornment:
-                                          getSymbolFromCurrency(
-                                            currentCurrency
-                                          ),
-                                      }}
-                                    />
-                                  )}
+                                  type="number"
+                                  inputProps={{ min: 0, step: 0.01 }}
+                                  sx={{ width: 150 }}
+                                  InputProps={{
+                                    endAdornment:
+                                      getSymbolFromCurrency(currentCurrency),
+                                  }}
                                 />
                               </Box>
                             </TableCell>
@@ -706,15 +779,36 @@ const PayableDetailsFormBase = forwardRef<
                         <TableRow className={className + '-Totals-Taxes'}>
                           <TableCell>{t(i18n)`VAT total`}</TableCell>
                           <TableCell align="right">
-                            {totals.taxes && currentCurrency
-                              ? formatCurrencyToDisplay(
+                            <Box
+                              gap={0.5}
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              display="flex"
+                            >
+                              {isTotalsEditable ? (
+                                <RHFTextField
+                                  name="tax_amount"
+                                  control={control}
+                                  type="number"
+                                  inputProps={{ min: 0 }}
+                                  sx={{ width: 150 }}
+                                  InputProps={{
+                                    endAdornment:
+                                      getSymbolFromCurrency(currentCurrency),
+                                  }}
+                                />
+                              ) : totals.taxes && currentCurrency ? (
+                                formatCurrencyToDisplay(
                                   formatToMinorUnits(
                                     totals.taxes,
                                     currentCurrency
                                   ) || 0,
                                   currentCurrency
                                 )
-                              : '—'}
+                              ) : (
+                                '—'
+                              )}
+                            </Box>
                           </TableCell>
                         </TableRow>
                         <TableRow className={className + '-Totals-Total'}>
@@ -724,17 +818,38 @@ const PayableDetailsFormBase = forwardRef<
                             )`Total`}</Typography>
                           </TableCell>
                           <TableCell align="right">
-                            <Typography variant="subtitle1">
-                              {totals.total && currentCurrency
-                                ? formatCurrencyToDisplay(
-                                    formatToMinorUnits(
-                                      totals.total,
-                                      currentCurrency
-                                    ) || 0,
-                                    currentCurrency
-                                  )
-                                : '—'}
-                            </Typography>
+                            <Box
+                              gap={0.5}
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              display="flex"
+                            >
+                              {isTotalsEditable ? (
+                                <RHFTextField
+                                  name="total_amount"
+                                  control={control}
+                                  type="number"
+                                  inputProps={{ min: 0 }}
+                                  sx={{ width: 150 }}
+                                  InputProps={{
+                                    endAdornment:
+                                      getSymbolFromCurrency(currentCurrency),
+                                  }}
+                                />
+                              ) : (
+                                <Typography variant="subtitle1">
+                                  {totals.total && currentCurrency
+                                    ? formatCurrencyToDisplay(
+                                        formatToMinorUnits(
+                                          totals.total,
+                                          currentCurrency
+                                        ) || 0,
+                                        currentCurrency
+                                      )
+                                    : '—'}
+                                </Typography>
+                              )}
+                            </Box>
                           </TableCell>
                         </TableRow>
                       </TableBody>
