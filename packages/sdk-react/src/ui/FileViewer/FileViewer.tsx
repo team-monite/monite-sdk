@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 // react-pdf-viewer styles are imported in app.css to avoid conflicts when using Dropin
@@ -15,30 +13,45 @@ import {
   RenderCurrentPageLabelProps,
 } from '@react-pdf-viewer/page-navigation';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
+import { useRef } from 'react';
 
 interface FileViewerProps {
   url: string;
   mimetype: string;
   name?: string;
-  pdfHeight?: number | string;
-  showPdfToolbar?: number;
 }
 
 export const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
   if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
 
+  return <ImageFileViewer url={url} name={name || ''} />;
+};
+
+export const ImageFileViewer = ({
+  url,
+  name,
+}: {
+  url: string;
+  name: string;
+}) => {
   return (
     <img
       className="Monite-ImageFileViewer"
       src={url}
       alt={name}
       loading="lazy"
-      style={{ width: '100%', objectFit: 'contain' }}
+      style={{
+        maxWidth: '100%',
+        maxHeight: '100%',
+        width: 'auto',
+        height: 'auto',
+        objectFit: 'contain',
+      }}
     />
   );
 };
 
-const PdfFileViewer = ({ url }: { url: string }) => {
+export const PdfFileViewer = ({ url }: { url: string }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
@@ -54,6 +67,8 @@ const PdfFileViewer = ({ url }: { url: string }) => {
         height: '100%',
         maxHeight: '100%',
         border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <div
@@ -61,7 +76,8 @@ const PdfFileViewer = ({ url }: { url: string }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          margin: '0 8px',
+          margin: '0 8px 8px 8px',
+          flexShrink: 0,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -85,9 +101,11 @@ const PdfFileViewer = ({ url }: { url: string }) => {
       </div>
       <div
         style={{
-          height: '100%',
+          flex: 1,
           backgroundColor: '#F0F2F4',
           borderRadius: '8px',
+          minHeight: 0,
+          overflow: 'hidden',
         }}
       >
         <Worker workerUrl="https://js.monite.com/libs/pdf.js/3.4.120/pdf.worker.min.js">

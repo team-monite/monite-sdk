@@ -1,9 +1,9 @@
-import * as React from 'react';
-
 import { cn } from '@/ui/lib/utils';
+import { i18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
-
 import { XIcon } from 'lucide-react';
+import * as React from 'react';
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -68,7 +68,7 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:fixed mtw:z-1300 mtw:flex mtw:flex-col mtw:gap-4 mtw:shadow-lg mtw:transition mtw:ease-in-out mtw:data-[state=closed]:duration-300 mtw:data-[state=open]:duration-500',
+          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:fixed mtw:z-1300 mtw:flex mtw:flex-col mtw:shadow-lg mtw:transition mtw:ease-in-out mtw:data-[state=closed]:duration-300 mtw:data-[state=open]:duration-500',
           side === 'right' &&
             'mtw:data-[state=closed]:slide-out-to-right mtw:data-[state=open]:slide-in-from-right mtw:inset-y-0 mtw:right-0 mtw:h-full mtw:w-3/4 mtw:sm:max-w-[600px]',
           side === 'left' &&
@@ -82,9 +82,9 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="mtw:p-2 mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-secondary mtw:absolute mtw:top-4 mtw:right-4 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:cursor-pointer mtw:disabled:pointer-events-none">
-          <XIcon className="mtw:size-4" />
-          <span className="mtw:sr-only">Close</span>
+        <SheetPrimitive.Close className="mtw:p-2 mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-secondary mtw:absolute mtw:top-7 mtw:right-7 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:cursor-pointer mtw:disabled:pointer-events-none">
+          <XIcon className="mtw:size-6" />
+          <span className="mtw:sr-only">{t(i18n)`Close`}</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </SheetPortal>
@@ -95,7 +95,20 @@ function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn('mtw:flex mtw:flex-col mtw:gap-1.5 mtw:p-4', className)}
+      className={cn('mtw:flex mtw:flex-col mtw:gap-1.5 mtw:p-8', className)}
+      {...props}
+    />
+  );
+}
+
+function SheetContentWrapper({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="sheet-content-wrapper"
+      className={cn('mtw:overflow-y-scroll mtw:p-8', className)}
       {...props}
     />
   );
@@ -106,7 +119,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="sheet-footer"
       className={cn(
-        'mtw:mt-auto mtw:flex mtw:flex-col mtw:gap-2 mtw:p-4',
+        'mtw:mt-auto mtw:flex mtw:flex-col mtw:gap-2 mtw:p-8',
         className
       )}
       {...props}
@@ -121,7 +134,10 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn('mtw:text-foreground mtw:font-semibold', className)}
+      className={cn(
+        'mtw:text-foreground mtw:font-semibold mtw:text-2xl',
+        className
+      )}
       {...props}
     />
   );
@@ -146,6 +162,7 @@ export {
   SheetClose,
   SheetContent,
   SheetHeader,
+  SheetContentWrapper,
   SheetFooter,
   SheetTitle,
   SheetDescription,
