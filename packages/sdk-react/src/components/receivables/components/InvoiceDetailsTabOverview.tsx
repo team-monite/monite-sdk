@@ -1,8 +1,11 @@
+import { getTypeLabel } from '../utils';
+import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
+import { InvoiceStatusChip } from './InvoiceStatusChip';
 import { components } from '@/api';
 import { FinanceInvoice } from '@/components/financing';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   Accordion,
   AccordionContent,
@@ -13,13 +16,8 @@ import { Badge } from '@/ui/components/badge';
 import { Card, CardContent } from '@/ui/components/card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { File } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
-
-import { getTypeLabel } from '../utils';
-import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
-import { InvoiceStatusChip } from './InvoiceStatusChip';
 
 type OverviewBlockProps = {
   label: string;
@@ -37,7 +35,7 @@ const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
         className={twMerge(
           'mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-10',
           status && status === 'overdue' && 'mtw:text-danger-10',
-          status && status === 'draft' && 'mtw:text-neutral-50',
+          status && status === 'draft' && 'mtw:text-neutral-50'
         )}
       >
         {value}
@@ -193,8 +191,8 @@ export const InvoiceDetailsTabOverview = ({
                 documentId={creditNote?.document_id ?? ''}
                 issueDate={
                   creditNote?.status === 'draft'
-                    ? creditNote?.created_at ?? ''
-                    : creditNote?.issue_date ?? ''
+                    ? (creditNote?.created_at ?? '')
+                    : (creditNote?.issue_date ?? '')
                 }
                 totalAmount={creditNote?.total_amount ?? 0}
                 currency={creditNote?.currency}

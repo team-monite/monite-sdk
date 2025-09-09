@@ -35,6 +35,9 @@ export const NavigationList = () => {
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
           {t(i18n)`Invoicing`}
         </NavigationListItem>
+        <NavigationListItem href="/expenses" icon={<IconUsdCircle />}>
+          {t(i18n)`Expenses`}
+        </NavigationListItem>
         <NavigationListItem href="/projects" icon={<IconBag />}>
           {t(i18n)`Projects`}
         </NavigationListItem>

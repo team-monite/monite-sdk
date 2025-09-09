@@ -1,8 +1,7 @@
+import { InvoiceDetails } from './InvoiceDetails';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { InvoiceDetails } from './InvoiceDetails';
 
 const meta: Meta<typeof InvoiceDetails> = {
   title: 'Receivables/InvoiceDetails',

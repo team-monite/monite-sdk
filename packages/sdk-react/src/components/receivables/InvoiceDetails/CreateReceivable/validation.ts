@@ -58,7 +58,7 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
     vat_rate_id: z.string().optional(),
     tax_rate_value: z
       .number({
-        message: t(i18n)`Tax is a required field`
+        message: t(i18n)`Tax is a required field`,
       })
       .min(0, t(i18n)`Tax rate must be 0 or greater`)
       .max(100, t(i18n)`Tax rate must be 100 or less`),

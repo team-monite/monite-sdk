@@ -1,17 +1,16 @@
-import { ReactNode } from 'react';
-
+import { LoadingSpinner } from '../loading';
+import { Button } from '@/ui/components/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/ui/components/dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button } from '@/ui/components/button';
-import { LoadingSpinner } from '../loading';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
-} from '@/ui/components/dialog';
+import { ReactNode } from 'react';
 
 type BaseConfirmationModalProps = {
   open: boolean;
@@ -72,7 +71,9 @@ export const ConfirmationModal = ({
             disabled={isLoading}
             variant="destructive"
           >
-            {isLoading && <LoadingSpinner className="mtw:w-5 mtw:h-5 mtw:border-inherit mtw:border-t-transparent" />}
+            {isLoading && (
+              <LoadingSpinner className="mtw:w-5 mtw:h-5 mtw:border-inherit mtw:border-t-transparent" />
+            )}
             {confirmLabel}
           </Button>
         </DialogFooter>

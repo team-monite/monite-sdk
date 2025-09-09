@@ -1,3 +1,4 @@
+import { PaymentRecordDetails } from './RecordManualPaymentModal';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -7,8 +8,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Alert, Box, Skeleton, Typography } from '@mui/material';
-
-import { PaymentRecordDetails } from './RecordManualPaymentModal';
 
 type Props = {
   paymentRecords: PaymentRecordDetails;

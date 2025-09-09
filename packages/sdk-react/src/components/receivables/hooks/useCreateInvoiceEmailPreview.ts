@@ -1,4 +1,4 @@
-import { useMoniteContext } from "@/core/context/MoniteContext";
+import { useMoniteContext } from '@/core/context/MoniteContext';
 
 export const useCreateInvoiceEmailPreview = (receivable_id: string) => {
   const { api } = useMoniteContext();

@@ -1,8 +1,4 @@
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
-import {
-  calculateTotalPriceForLineItem,
-} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { calculateTotalPriceForLineItem } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
@@ -10,6 +6,7 @@ import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 export const PayableLineItemsForm = () => {
   const { i18n } = useLingui();

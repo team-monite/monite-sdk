@@ -1,3 +1,4 @@
+import type { LineItem, PayableDetailsFormFields } from './types';
 import { components } from '@/api';
 import {
   isIndividualCounterpart,
@@ -8,7 +9,6 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
-import type { LineItem, PayableDetailsFormFields } from './types';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { format } from 'date-fns';

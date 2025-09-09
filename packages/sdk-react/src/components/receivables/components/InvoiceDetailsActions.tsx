@@ -1,4 +1,12 @@
+import { useDuplicateInvoice } from '../hooks/useDuplicateInvoice';
+import { useGetReceivablePDFById } from '../hooks/useGetReceivablePDFById';
+import { useIssueReceivableById } from '../hooks/useIssueReceivableById';
+import { InvoiceCancelModal } from './InvoiceCancelModal';
+import { InvoiceDeleteModal } from './InvoiceDeleteModal';
+import { MarkAsUncollectibleModal } from './MarkAsUncollectibleModal';
+import { RecordManualPaymentModal } from './RecordManualPaymentModal';
 import { components } from '@/api';
+import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { Button } from '@/ui/components/button';
 import {
@@ -9,7 +17,6 @@ import {
 } from '@/ui/components/dropdown-menu';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import {
   Download,
   Eye,
@@ -19,17 +26,8 @@ import {
   MoreVerticalIcon,
   SquarePen,
 } from 'lucide-react';
-
-import { useDuplicateInvoice } from '../hooks/useDuplicateInvoice';
-import { useGetReceivablePDFById } from '../hooks/useGetReceivablePDFById';
-import { useIssueReceivableById } from '../hooks/useIssueReceivableById';
-import { RecordManualPaymentModal } from './RecordManualPaymentModal';
-import { toast } from 'react-hot-toast';
-import { MarkAsUncollectibleModal } from './MarkAsUncollectibleModal';
 import { useState } from 'react';
-import { InvoiceDeleteModal } from './InvoiceDeleteModal';
-import { InvoiceCancelModal } from './InvoiceCancelModal';
-import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
+import { toast } from 'react-hot-toast';
 
 type InvoiceDetailsActionsProps = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -52,24 +50,29 @@ export const InvoiceDetailsActions = ({
 }: InvoiceDetailsActionsProps) => {
   const { i18n } = useLingui();
   const isMobileScreen = useIsMobileScreen();
-  const [markAsUncollectibleModalOpen, setMarkAsUncollectibleModalOpen] = useState(false);
+  const [markAsUncollectibleModalOpen, setMarkAsUncollectibleModalOpen] =
+    useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
 
-  const PERMISSION_ERROR_MESSAGE = t(i18n)`You don't have permission to update this document. Please, contact your system administrator for details.`;
+  const PERMISSION_ERROR_MESSAGE = t(
+    i18n
+  )`You don't have permission to update this document. Please, contact your system administrator for details.`;
 
-  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } = useIsActionAllowed({
-    method: 'receivable',
-    action: 'update',
-    entityUserId: invoice?.entity_user_id,
-  });
+  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: 'update',
+      entityUserId: invoice?.entity_user_id,
+    });
 
-  const { refetch: downloadPdf, isLoading: isDownloadingPdf } = useGetReceivablePDFById(invoice.id, false);
+  const { refetch: downloadPdf, isLoading: isDownloadingPdf } =
+    useGetReceivablePDFById(invoice.id, false);
 
   const { mutate: issueInvoice, isPending: isIssuingInvoice } =
     useIssueReceivableById(invoice.id);
   const { mutate: duplicateInvoice } = useDuplicateInvoice(actions.onDuplicate);
-  
+
   const isDraft = invoice.status === 'draft';
   const isIssued = invoice.status === 'issued';
   const isOverdue = invoice.status === 'overdue';
@@ -134,9 +137,9 @@ export const InvoiceDetailsActions = ({
 
       {isDraft && (
         <>
-          <Button 
-            type="button" 
-            size="sm" 
+          <Button
+            type="button"
+            size="sm"
             onClick={() => handleButtonClick(actions.onIssueAndSendButtonClick)}
             disabled={isUpdateAllowedLoading}
           >
@@ -169,7 +172,12 @@ export const InvoiceDetailsActions = ({
       {allowRecordPayment && (
         <RecordManualPaymentModal invoice={invoice}>
           {({ openModal }) => (
-            <Button type="button" size="sm" disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(openModal)}>
+            <Button
+              type="button"
+              size="sm"
+              disabled={isUpdateAllowedLoading}
+              onClick={() => handleButtonClick(openModal)}
+            >
               {t(i18n)`Record payment`}
             </Button>
           )}
@@ -200,28 +208,45 @@ export const InvoiceDetailsActions = ({
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" size="sm" disabled={isUpdateAllowedLoading}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isUpdateAllowedLoading}
+          >
             <MoreVerticalIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {isDraft && isMobileScreen && (
             <>
-              <DropdownMenuItem disabled={isIssuingInvoice || isUpdateAllowedLoading} onClick={() => handleButtonClick(issueInvoice)}>
+              <DropdownMenuItem
+                disabled={isIssuingInvoice || isUpdateAllowedLoading}
+                onClick={() => handleButtonClick(issueInvoice)}
+              >
                 {t(i18n)`Issue`}
               </DropdownMenuItem>
-              <DropdownMenuItem disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(actions.onEditButtonClick)}>
+              <DropdownMenuItem
+                disabled={isUpdateAllowedLoading}
+                onClick={() => handleButtonClick(actions.onEditButtonClick)}
+              >
                 {t(i18n)`Edit`}
               </DropdownMenuItem>
             </>
           )}
-          <DropdownMenuItem onClick={() => handleButtonClick(handleDuplicateInvoice)}>
+          <DropdownMenuItem
+            onClick={() => handleButtonClick(handleDuplicateInvoice)}
+          >
             {t(i18n)`Duplicate`}
           </DropdownMenuItem>
-          
+
           {(isDraft || hideSendAndPdfButtons) && (
             <>
-              <DropdownMenuItem onClick={() => handleButtonClick(actions.onIssueAndSendButtonClick)}>
+              <DropdownMenuItem
+                onClick={() =>
+                  handleButtonClick(actions.onIssueAndSendButtonClick)
+                }
+              >
                 {t(i18n)`Send draft`}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleDownloadPdf}>
@@ -242,7 +267,7 @@ export const InvoiceDetailsActions = ({
               {t(i18n)`Delete`}
             </DropdownMenuItem>
           )}
-          
+
           {(isIssued || isOverdue) && (
             <DropdownMenuItem
               onClick={() => handleButtonClick(() => setCancelModalOpen(true))}
@@ -253,7 +278,9 @@ export const InvoiceDetailsActions = ({
 
           {isOverdue && (
             <DropdownMenuItem
-              onClick={() => handleButtonClick(() => setMarkAsUncollectibleModalOpen(true))}
+              onClick={() =>
+                handleButtonClick(() => setMarkAsUncollectibleModalOpen(true))
+              }
             >
               {t(i18n)`Mark as uncollectible`}
             </DropdownMenuItem>

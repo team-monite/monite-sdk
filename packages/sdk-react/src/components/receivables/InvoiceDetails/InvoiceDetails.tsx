@@ -1,4 +1,7 @@
-import { CreateReceivables, InvoiceDetailsCreateProps } from './CreateReceivable/CreateReceivables';
+import {
+  CreateReceivables,
+  InvoiceDetailsCreateProps,
+} from './CreateReceivable/CreateReceivables';
 import { InvoiceDetails as InvoiceDetailsComponent } from '@/components/receivables/components/InvoiceDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -25,7 +28,9 @@ interface ExistingReceivableDetailsProps {
   onMarkAsUncollectible?: (invoiceId: string) => void;
 }
 
-type InvoiceDetailsProps = ExistingReceivableDetailsProps | InvoiceDetailsCreateProps;
+type InvoiceDetailsProps =
+  | ExistingReceivableDetailsProps
+  | InvoiceDetailsCreateProps;
 
 export const InvoiceDetails = (props: InvoiceDetailsProps) => (
   <MoniteScopedProviders>

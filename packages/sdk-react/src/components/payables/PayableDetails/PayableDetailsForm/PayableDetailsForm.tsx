@@ -1,8 +1,8 @@
-import type { OptionalFields } from '../../types';
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
 } from '../../hooks';
+import type { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   type MonitePayableDetailsInfoProps,
@@ -579,7 +579,10 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<PayableDetailsValidationFields, "currency">
+                      <MoniteCurrency<
+                        PayableDetailsValidationFields,
+                        'currency'
+                      >
                         name="currency"
                         control={control}
                         required={

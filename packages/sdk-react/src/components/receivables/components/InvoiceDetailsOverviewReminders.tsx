@@ -1,26 +1,31 @@
+import { useGetOverdueReminderById, useGetPaymentReminderById } from '../hooks';
+import { CounterpartOrganizationRootResponse } from '../types';
+import { getDefaultContact } from '../utils/contacts';
+import { PreviewEmail } from './PreviewEmail';
+import {
+  useCounterpartById,
+  useCounterpartContactList,
+} from '@/core/queries/useCounterpart';
 import { AccordionContent, AccordionTrigger } from '@/ui/components/accordion';
 import { Badge } from '@/ui/components/badge';
 import { Button } from '@/ui/components/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+} from '@/ui/components/dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { Bell, Calendar } from 'lucide-react';
-import { twMerge } from 'tailwind-merge';
-
-import { useGetOverdueReminderById, useGetPaymentReminderById } from '../hooks';
 import { useState } from 'react';
-import { PreviewEmail } from './PreviewEmail';
-import { Dialog, DialogContent, DialogDescription } from '@/ui/components/dialog';
-import { getDefaultContact } from '../utils/contacts';
-import { useCounterpartById, useCounterpartContactList } from '@/core/queries/useCounterpart';
-import { CounterpartOrganizationRootResponse } from '../types';
+import { twMerge } from 'tailwind-merge';
 
 const TermItem = ({
   term,
   isLastTerm,
   invoiceId,
 }: {
-  term: { body: string, subject: string, reminderTerm: string; id: string };
+  term: { body: string; subject: string; reminderTerm: string; id: string };
   isLastTerm: boolean;
   invoiceId: string;
 }) => {
@@ -47,13 +52,21 @@ const TermItem = ({
           {term.reminderTerm}
         </span>
       </div>
-      <Button variant="link" onClick={() => setIsPreviewOpen(true)}>{t(i18n)`View email`}</Button>
+      <Button variant="link" onClick={() => setIsPreviewOpen(true)}>{t(
+        i18n
+      )`View email`}</Button>
 
       {isPreviewOpen && (
         <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
           <DialogContent fullScreen>
-            <PreviewEmail invoiceId={invoiceId} body={term.body} subject={term.subject} />
-            <DialogDescription hidden>{t(i18n)`Email preview`}</DialogDescription>
+            <PreviewEmail
+              invoiceId={invoiceId}
+              body={term.body}
+              subject={term.subject}
+            />
+            <DialogDescription hidden>{t(
+              i18n
+            )`Email preview`}</DialogDescription>
           </DialogContent>
         </Dialog>
       )}
@@ -164,57 +177,59 @@ export const InvoiceDetailsOverviewReminders = ({
         </span>
       </AccordionTrigger>
       <AccordionContent className="mtw:flex mtw:gap-6">
-          <div className="mtw:flex mtw:flex-col mtw:gap-0.5 mtw:flex-1">
-            <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
-              {t(i18n)`Recipients`}
-            </h3>
-            <span className="mtw:text-sm mtw:font-normal mtw:leading-5">{defaultContact?.email ?? '-'}</span>
-          </div>
+        <div className="mtw:flex mtw:flex-col mtw:gap-0.5 mtw:flex-1">
+          <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
+            {t(i18n)`Recipients`}
+          </h3>
+          <span className="mtw:text-sm mtw:font-normal mtw:leading-5">
+            {defaultContact?.email ?? '-'}
+          </span>
+        </div>
 
-          <div className="mtw:flex mtw:flex-col mtw:flex-1">
-            <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
-              {t(i18n)`Scheduled reminders`}
-            </h3>
-            <ul>
-              {paymentTerms?.length > 0 &&
-                paymentTerms.map((term, index) => (
-                  <TermItem
-                    key={term.id}
-                    term={term}
-                    isLastTerm={
-                      overdueTerms.length > 0
-                        ? false
-                        : index === paymentTerms.length - 1
-                    }
-                    invoiceId={invoiceId}
-                  />
-                ))}
+        <div className="mtw:flex mtw:flex-col mtw:flex-1">
+          <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
+            {t(i18n)`Scheduled reminders`}
+          </h3>
+          <ul>
+            {paymentTerms?.length > 0 &&
+              paymentTerms.map((term, index) => (
+                <TermItem
+                  key={term.id}
+                  term={term}
+                  isLastTerm={
+                    overdueTerms.length > 0
+                      ? false
+                      : index === paymentTerms.length - 1
+                  }
+                  invoiceId={invoiceId}
+                />
+              ))}
 
-              {overdueTerms.length > 0 && (
-                <li className="mtw:flex mtw:gap-1 mtw:items-center mtw:justify-between">
-                  <div className="mtw:flex mtw:items-center mtw:gap-3">
-                    <div className="mtw:flex mtw:flex-col mtw:justify-end mtw:items-center mtw:gap-1 mtw:pt-2">
-                      <Calendar className="mtw:size-4 mtw:text-neutral-50" />
-                      <div className="mtw:w-px mtw:h-1.5 mtw:bg-neutral-80" />
-                    </div>
-                    <span className="mtw:text-neutral-50 mtw:text-sm mtw:font-normal mtw:leading-5">
-                      {t(i18n)`Due date`}
-                    </span>
+            {overdueTerms.length > 0 && (
+              <li className="mtw:flex mtw:gap-1 mtw:items-center mtw:justify-between">
+                <div className="mtw:flex mtw:items-center mtw:gap-3">
+                  <div className="mtw:flex mtw:flex-col mtw:justify-end mtw:items-center mtw:gap-1 mtw:pt-2">
+                    <Calendar className="mtw:size-4 mtw:text-neutral-50" />
+                    <div className="mtw:w-px mtw:h-1.5 mtw:bg-neutral-80" />
                   </div>
-                </li>
-              )}
+                  <span className="mtw:text-neutral-50 mtw:text-sm mtw:font-normal mtw:leading-5">
+                    {t(i18n)`Due date`}
+                  </span>
+                </div>
+              </li>
+            )}
 
-              {overdueTerms?.length > 0 &&
-                overdueTerms.map((term, index) => (
-                  <TermItem
-                    key={term.id}
-                    term={term}
-                    isLastTerm={index === overdueTerms.length - 1}
-                    invoiceId={invoiceId}
-                  />
-                ))}
-            </ul>
-          </div>
+            {overdueTerms?.length > 0 &&
+              overdueTerms.map((term, index) => (
+                <TermItem
+                  key={term.id}
+                  term={term}
+                  isLastTerm={index === overdueTerms.length - 1}
+                  invoiceId={invoiceId}
+                />
+              ))}
+          </ul>
+        </div>
       </AccordionContent>
     </>
   );

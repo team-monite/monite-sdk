@@ -5,9 +5,9 @@ import {
   InvoiceStatusChip,
 } from '@/components/receivables/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
-import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -97,9 +97,7 @@ export const InvoiceRecurrenceIterations = ({
                       <Skeleton width="100px" />
                     ) : (
                       receivable?.status && (
-                        <InvoiceStatusChip
-                          status={receivable?.status}
-                        />
+                        <InvoiceStatusChip status={receivable?.status} />
                       )
                     )
                   ) : (

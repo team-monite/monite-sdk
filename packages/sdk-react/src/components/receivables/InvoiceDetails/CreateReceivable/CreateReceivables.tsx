@@ -1,4 +1,7 @@
-import { useGetEntityBankAccounts, useInvoiceReminderDialogs } from '../../hooks';
+import {
+  useGetEntityBankAccounts,
+  useInvoiceReminderDialogs,
+} from '../../hooks';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
@@ -12,14 +15,16 @@ import {
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { showErrorToast } from '@/components/onboarding/utils';
 import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
 import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
 import { CustomerSection } from '@/components/receivables/components/CustomerSection';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
-import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
+import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -33,11 +38,11 @@ import {
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
-import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,8 +72,6 @@ import { format } from 'date-fns';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
-import { CustomerTypes } from '@/components/counterparts/types';
 
 type Schemas = components['schemas'];
 
@@ -109,7 +112,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
         />
       )}
     </MoniteScopedProviders>
-  )
+  );
 };
 
 const CreateReceivablesBase = ({
@@ -147,9 +150,9 @@ const CreateReceivablesBase = ({
   }
 
   const { data: settings, isLoading: isSettingsLoading } =
-  api.entities.getEntitiesIdSettings.useQuery({
-    path: { entity_id: entityId },
-  });
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: entityId },
+    });
 
   const { data: bankAccounts } = useGetEntityBankAccounts(
     undefined,
@@ -206,7 +209,7 @@ const CreateReceivablesBase = ({
   const handleEditCounterpartProfileState = (isOpen: boolean) => {
     setIsEditCounterpartProfileOpen(isOpen);
   };
-  
+
   const handleEditCounterpartModalState = (isOpen: boolean) => {
     setIsEditCounterpartModalOpen(isOpen);
   };
@@ -246,7 +249,8 @@ const CreateReceivablesBase = ({
 
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats } = useCounterpartVatList(counterpartId);
-  const { data: counterpartContacts } = useCounterpartContactList(counterpartId);
+  const { data: counterpartContacts } =
+    useCounterpartContactList(counterpartId);
 
   const billingAddressId = watch('default_billing_address_id');
   const counterpartBillingAddress = useMemo(
@@ -307,8 +311,11 @@ const CreateReceivablesBase = ({
     api.measureUnits.getMeasureUnits.useQuery();
 
   const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
-    const customerHasRemindersEnabled = counterpart && counterpart?.reminders_enabled;
-    const customerHasDefaultEmail = counterpart && counterpartContacts?.find((contact) => contact.is_default)?.email;
+    const customerHasRemindersEnabled =
+      counterpart && counterpart?.reminders_enabled;
+    const customerHasDefaultEmail =
+      counterpart &&
+      counterpartContacts?.find((contact) => contact.is_default)?.email;
 
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
@@ -327,25 +334,49 @@ const CreateReceivablesBase = ({
 
       return;
     }
-    
-    if (!customerHasRemindersEnabled && customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
-      showErrorToast(new Error("Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."));
+
+    if (
+      !customerHasRemindersEnabled &&
+      customerHasDefaultEmail &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.'
+        )
+      );
 
       return;
     }
 
-    if (!customerHasDefaultEmail && customerHasRemindersEnabled && (values.payment_reminder_id || values.overdue_reminder_id)) {
-      showErrorToast(new Error("No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."));
+    if (
+      !customerHasDefaultEmail &&
+      customerHasRemindersEnabled &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.'
+        )
+      );
 
       return;
     }
-    
-    if (!customerHasRemindersEnabled && !customerHasDefaultEmail && (values.payment_reminder_id || values.overdue_reminder_id)) {
-      showErrorToast(new Error("Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."));
+
+    if (
+      !customerHasRemindersEnabled &&
+      !customerHasDefaultEmail &&
+      (values.payment_reminder_id || values.overdue_reminder_id)
+    ) {
+      showErrorToast(
+        new Error(
+          'Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.'
+        )
+      );
 
       return;
     }
-    
+
     const shippingAddressId = values.default_shipping_address_id;
 
     const counterpartShippingAddress = counterpartAddresses?.data?.find(
@@ -1073,7 +1104,7 @@ const CreateReceivablesBase = ({
         <InvoicePreview
           invoiceData={{
             payment_terms_id: paymentTermsId,
-            line_items: (lineItems || []).map(item => ({
+            line_items: (lineItems || []).map((item) => ({
               ...item,
               id: item.id || `temp-${Math.random().toString(36).substr(2, 9)}`,
             })) as CreateReceivablesFormBeforeValidationLineItemProps[],

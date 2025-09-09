@@ -1,5 +1,6 @@
-import { useState } from 'react';
-
+import { ManualPaymentRecordFormValues } from '../validation';
+import { ManualPaymentRecordDetails } from './ManualPaymentRecordDetails';
+import { PaymentRecordForm } from './PaymentRecordForm';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -14,12 +15,7 @@ import {
   DialogActions,
   DialogContent,
 } from '@mui/material';
-
-import { ManualPaymentRecordDetails } from './ManualPaymentRecordDetails';
-import {
-  PaymentRecordForm,
-} from './PaymentRecordForm';
-import { ManualPaymentRecordFormValues } from '../validation';
+import { useState } from 'react';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -52,7 +48,8 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const closeModal = () => setModalOpen(false);
 
   const { api, queryClient } = useMoniteContext();
-  const { mutate: createPaymentRecord, isPending: isCreatingPaymentRecord } = useCreatePaymentRecord();
+  const { mutate: createPaymentRecord, isPending: isCreatingPaymentRecord } =
+    useCreatePaymentRecord();
   const { data: user, isLoading: isLoadingUser } = useEntityUserByAuthToken();
 
   const showConfirmation = (data: ManualPaymentRecordFormValues) => {
@@ -66,9 +63,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   };
 
   const createManualPaymentRecord = () => {
-    const dateTimeWithReplacedTime = new Date(
-      formValues.payment_date
-    ).setHours(
+    const dateTimeWithReplacedTime = new Date(formValues.payment_date).setHours(
       formValues.payment_time.getHours(),
       formValues.payment_time.getMinutes()
     );
@@ -151,7 +146,11 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
                 >
                   {t(i18n)`Edit record`}
                 </Button>
-                <Button variant="contained" disabled={isLoading} onClick={createManualPaymentRecord}>
+                <Button
+                  variant="contained"
+                  disabled={isLoading}
+                  onClick={createManualPaymentRecord}
+                >
                   {t(i18n)`Confirm`}
                 </Button>
               </Box>
