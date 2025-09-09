@@ -1,31 +1,30 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { useForm, type UseFormGetValues } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
-import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { Form, FormContent } from './EmailInvoiceDetails.form.components';
+import { PreviewEmail } from '@/components/receivables/components/PreviewEmail';
+import { useIssueReceivableById } from '@/components/receivables/hooks/useIssueReceivableById';
+import { useSendReceivableById } from '@/components/receivables/hooks/useSendReceivableById';
+import type { CounterpartOrganizationRootResponse } from '@/components/receivables/types';
+import { getDefaultContact } from '@/components/receivables/utils/contacts';
+import {
+  EmailInvoiceDetailsFormValues,
+  getEmailInvoiceDetailsSchema,
+} from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   useMe,
   useMyEntity,
-  useReceivableById,
-  useReceivableContacts,
   useCounterpartById,
+  useCounterpartContactList,
 } from '@/core/queries';
-import {
-  useIssueReceivableById,
-  useReceivableEmailPreview,
-  useSendReceivableById,
-} from '@/core/queries/useReceivables';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
+import { Dialog } from '@/ui/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Button,
   CircularProgress,
@@ -35,22 +34,16 @@ import {
   Stack,
   Toolbar,
   Typography,
-  Box,
 } from '@mui/material';
-
-import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
-import {
-  type ControlProps,
-  Form,
-  FormContent,
-} from './EmailInvoiceDetails.form.components';
-import { getDefaultContact } from './helpers/contacts';
-import { isInvoiceIssued } from './helpers/invoiceStatus';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
   onSendEmail?: (invoiceId: string) => void;
+  isOpen: boolean;
 }
 
 interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
@@ -65,10 +58,10 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { data: me, isLoading: isLoadingUser } = useMe();
   const { data: receivable, isLoading: isLoadingReceivable } =
-    useReceivableById(props.invoiceId);
-  const { data: contacts, isLoading: isLoadingContacts } =
-    useReceivableContacts(props.invoiceId);
+    useGetReceivableById(props.invoiceId);
   const { entityName, isLoading: isLoadingEntity } = useMyEntity();
+  const { data: contacts, isLoading: isLoadingContacts } =
+    useCounterpartContactList(receivable?.counterpart_id);
   const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
 
   const defaultContact = getDefaultContact(
@@ -111,7 +104,8 @@ export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
         body={body}
         subject={subject}
         isLoading={isLoading}
-        isIssued={isInvoiceIssued(receivable?.status)}
+        isIssued={receivable?.status !== 'draft'}
+        isOpen={props.isOpen}
       />
     </MoniteScopedProviders>
   );
@@ -126,21 +120,25 @@ export const EmailInvoiceDetailsBase = ({
   isIssued,
   onClose,
   onSendEmail,
+  isOpen,
 }: EmailInvoiceFormProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
 
-  const { control, handleSubmit, getValues, trigger, reset } = useForm({
-    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        subject,
-        body,
-        to,
-      }),
-      [subject, body, to]
-    ),
-  });
+  const { control, handleSubmit, getValues, trigger, reset } =
+    useForm<EmailInvoiceDetailsFormValues>({
+      resolver: zodResolver(getEmailInvoiceDetailsSchema(i18n)),
+      defaultValues: useMemo(
+        () => ({
+          subject,
+          body,
+          to,
+        }),
+        [subject, body, to]
+      ),
+    });
+
+  const { subject: emailSubject, body: emailBody } = getValues();
 
   useEffect(() => {
     reset({ subject, body, to });
@@ -255,7 +253,7 @@ export const EmailInvoiceDetailsBase = ({
 
   const isPreview = presentation == FormPresentation.Preview;
   return (
-    <>
+    <Dialog open={isOpen} fullScreen onClose={onClose}>
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
@@ -362,80 +360,16 @@ export const EmailInvoiceDetailsBase = ({
               />
             )
           )}
-          {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
+          {isPreview && (
+            <PreviewEmail
+              invoiceId={invoiceId}
+              body={emailBody}
+              subject={emailSubject}
+            />
+          )}
         </Form>
       </DialogContent>
-    </>
-  );
-};
-interface PreviewProps {
-  invoiceId: string;
-  getValues: UseFormGetValues<ControlProps>;
-}
-
-const Preview = ({ invoiceId, getValues }: PreviewProps) => {
-  const { i18n } = useLingui();
-  const { subject, body } = getValues();
-  const { isLoading, preview, error, refresh } = useReceivableEmailPreview(
-    invoiceId,
-    subject,
-    body
-  );
-
-  return (
-    <Box
-      sx={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 0,
-        overflow: 'hidden',
-      }}
-    >
-      {isLoading && (
-        <CenteredContentBox className="Monite-LoadingPage">
-          <CircularProgress />
-        </CenteredContentBox>
-      )}
-      {!isLoading && preview && (
-        <iframe
-          srcDoc={preview}
-          style={{
-            width: '100%',
-            height: '100%',
-            marginBottom: '-16px', // Margin is necessary to avoid vertical scrollbar on the iframe container element. It's not clear why, but it helps.
-            border: 0,
-            flex: 1,
-          }}
-        ></iframe>
-      )}
-      {!isLoading && error && (
-        <CenteredContentBox className="Monite-LoadingPage">
-          <Stack alignItems="center" gap={2}>
-            <ErrorOutlineIcon color="error" />
-            <Stack gap={0.5} alignItems="center">
-              <Typography variant="body1" fontWeight="bold">{t(
-                i18n
-              )`Failed to generate email preview`}</Typography>
-              <Stack alignItems="center">
-                <Typography variant="body2">{t(
-                  i18n
-                )`Please try to reload.`}</Typography>
-                <Typography variant="body2">{t(
-                  i18n
-                )`If the error recurs, contact support, please.`}</Typography>
-              </Stack>
-              <Button
-                variant="text"
-                onClick={refresh}
-                startIcon={<RefreshIcon />}
-                data-testid="reload-preview-button"
-              >{t(i18n)`Reload`}</Button>
-            </Stack>
-          </Stack>
-        </CenteredContentBox>
-      )}
-    </Box>
+    </Dialog>
   );
 };
 

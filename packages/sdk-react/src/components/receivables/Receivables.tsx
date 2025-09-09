@@ -1,27 +1,25 @@
-import { useState, useCallback } from 'react';
-
-import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FinanceMenuButtons } from '@/components/financing/components';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { useFinancing } from '@/components/financing/hooks';
+import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import {
   ReceivablesTable,
   ReceivablesTableTabEnum,
 } from '@/components/receivables/components';
-import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useComponentSettings } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
-import { Button } from '@/ui/components/button';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress } from '@mui/material';
+import { useState, useCallback } from 'react';
 
 type ReceivablesProps = {
   /** @see {@link CustomerTypes} */
@@ -61,23 +59,6 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
     setInvoiceId('');
   }, []);
 
-  const handleUpdate = useCallback(
-    (
-      receivableId: string,
-      invoice?: components['schemas']['InvoiceResponsePayload']
-    ) => {
-      receivablesCallbacks.onUpdate?.(receivableId, invoice);
-    },
-    [receivablesCallbacks]
-  );
-
-  const handleDelete = useCallback(
-    (receivableId: string) => {
-      receivablesCallbacks.onDelete?.(receivableId);
-    },
-    [receivablesCallbacks]
-  );
-
   const handleCreate = useCallback(
     (receivableId: string) => {
       setIsCreateInvoiceDialogOpen(false);
@@ -86,13 +67,6 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
       receivablesCallbacks.onCreate?.(receivableId);
     },
     [receivablesCallbacks, openInvoiceModal, setActiveTab]
-  );
-
-  const handleSendEmail = useCallback(
-    (invoiceId: string) => {
-      receivablesCallbacks.onInvoiceSent?.(invoiceId);
-    },
-    [receivablesCallbacks]
   );
 
   const { root } = useRootElements();
@@ -158,24 +132,11 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
           setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
-      <Dialog
-        className={className + '-Dialog-ReceivableDetails'}
-        open={!!invoiceId}
-        fullScreen
-        container={root}
+      <InvoiceDetails
+        id={invoiceId}
         onClose={closeModal}
-      >
-        <InvoiceDetails
-          id={invoiceId}
-          onDuplicate={openInvoiceModal}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
-          onSendEmail={handleSendEmail}
-        />
-      </Dialog>
+        onDuplicate={openInvoiceModal}
+      />
       <Dialog
         className={className + '-Dialog-CreateReceivable'}
         open={isCreateInvoiceDialogOpen}

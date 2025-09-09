@@ -1,19 +1,12 @@
-import type {
-  PropsWithChildren,
-  CSSProperties,
-  ReactNode,
-  FormEvent,
-} from 'react';
-import { Control, Controller } from 'react-hook-form';
-
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
-import type { CounterpartOrganizationRootResponse } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import type { CounterpartOrganizationRootResponse } from '@/components/receivables/types';
 import {
-  useReceivableById,
-  useReceivableContacts,
-  useCounterpartById,
-} from '@/core/queries';
+  getDefaultContact,
+  getContactList,
+} from '@/components/receivables/utils/contacts';
+import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useCounterpartById, useCounterpartContactList } from '@/core/queries';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -28,8 +21,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { getDefaultContact, getContactList } from './helpers/contacts';
+import type {
+  PropsWithChildren,
+  CSSProperties,
+  ReactNode,
+  FormEvent,
+} from 'react';
+import { Control, Controller } from 'react-hook-form';
 
 export interface FormProps {
   formName: string;
@@ -63,9 +61,11 @@ interface RecipientSelectorProps {
 }
 
 const RecipientSelector = ({ invoiceId, control }: RecipientSelectorProps) => {
-  const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
-  const { data: receivable } = useReceivableById(invoiceId);
+  const { data: receivable } = useGetReceivableById(invoiceId);
   const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
+  const { data: contacts, isLoading } = useCounterpartContactList(
+    receivable?.counterpart_id
+  );
 
   const { root } = useRootElements();
 

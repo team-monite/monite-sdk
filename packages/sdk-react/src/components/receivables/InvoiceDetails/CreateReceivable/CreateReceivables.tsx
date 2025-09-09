@@ -1,26 +1,30 @@
-import { useGetEntityBankAccounts } from '../../hooks';
-import { CreateInvoiceReminderDialog } from '../CreateInvoiceReminderDialog';
-import { EditInvoiceReminderDialog } from '../EditInvoiceReminderDialog';
-import { InvoiceDetailsCreateProps } from '../InvoiceDetails.types';
-import { useInvoiceReminderDialogs } from '../useInvoiceReminderDialogs';
+import {
+  useGetEntityBankAccounts,
+  useInvoiceReminderDialogs,
+} from '../../hooks';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
 import { EntitySection } from './sections/EntitySection';
 import { ItemsSection } from './sections/ItemsSection';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { InvoicePreview } from './sections/components/InvoicePreview';
 import {
+  type CreateReceivablesFormProps,
+  type CreateReceivablesProductsFormProps,
+  type CreateReceivablesFormBeforeValidationLineItemProps,
   getCreateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-  CreateReceivablesProductsFormProps,
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
 import { components } from '@/api';
+import { CustomerTypes } from '@/components/counterparts/types';
 import { showErrorToast } from '@/components/onboarding/utils';
 import { BankAccountFormDialog } from '@/components/receivables/components/BankAccountFormDialog';
 import { BankAccountSection } from '@/components/receivables/components/BankAccountSection';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
 import { CustomerSection } from '@/components/receivables/components/CustomerSection';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
+import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -34,11 +38,11 @@ import {
   useCounterpartVatList,
   useMyEntity,
 } from '@/core/queries';
-import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,15 +75,45 @@ import { toast } from 'react-hot-toast';
 
 type Schemas = components['schemas'];
 
+export interface InvoiceDetailsCreateProps {
+  id?: never;
+
+  /** The type of the receivable */
+  type: components['schemas']['ReceivableResponse']['type'];
+
+  /**
+   * Indicates that the invoice has been successfuly created.
+   *
+   * @param {string} receivableId Invoice ID
+   *
+   * @returns {void}
+   */
+  onCreate?: (receivableId: string) => void;
+  /** @see {@link CustomerTypes} */
+  customerTypes?: CustomerTypes;
+}
+
 /**
  * A component for creating a new Receivable
  * Supported only `invoice` type
  */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
-  <MoniteScopedProviders>
-    <CreateReceivablesBase {...props} />
-  </MoniteScopedProviders>
-);
+export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
+  const { i18n } = useLingui();
+
+  return (
+    <MoniteScopedProviders>
+      {props.type === 'invoice' ? (
+        <CreateReceivablesBase {...props} />
+      ) : (
+        <AccessRestriction
+          description={t(
+            i18n
+          )`You can not create receivable with a type other than “${'invoice'}”`}
+        />
+      )}
+    </MoniteScopedProviders>
+  );
+};
 
 const CreateReceivablesBase = ({
   type,
@@ -223,7 +257,7 @@ const CreateReceivablesBase = ({
     () =>
       counterpartAddresses?.data?.find(
         (address) => address.id === billingAddressId
-      ) ?? null,
+      ),
     [billingAddressId, counterpartAddresses?.data]
   );
 
@@ -356,7 +390,7 @@ const CreateReceivablesBase = ({
       type: values.type,
       counterpart_id: values.counterpart_id,
       counterpart_vat_id_id: values.counterpart_vat_id_id || undefined,
-      counterpart_billing_address_id: counterpartBillingAddress.id,
+      counterpart_billing_address_id: counterpartBillingAddress?.id,
       counterpart_shipping_address_id: counterpartShippingAddress?.id,
 
       entity_bank_account_id: values.entity_bank_account_id || undefined,
@@ -458,6 +492,11 @@ const CreateReceivablesBase = ({
 
   const lineItems = watch('line_items');
   const entityBankAccountId = watch('entity_bank_account_id');
+  const paymentTermsId = watch('payment_terms_id');
+  const fulfillmentDate = watch('fulfillment_date');
+  const memo = watch('memo');
+  const footer = watch('footer');
+  const vatMode = watch('vat_mode');
   const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
@@ -1063,7 +1102,18 @@ const CreateReceivablesBase = ({
         }}
       >
         <InvoicePreview
-          watch={watch}
+          invoiceData={{
+            payment_terms_id: paymentTermsId,
+            line_items: (lineItems || []).map((item) => ({
+              ...item,
+              id: item.id || `temp-${Math.random().toString(36).substr(2, 9)}`,
+            })) as CreateReceivablesFormBeforeValidationLineItemProps[],
+            fulfillment_date: fulfillmentDate,
+            memo,
+            footer,
+            entity_bank_account_id: entityBankAccountId,
+            vat_mode: vatMode,
+          }}
           counterpart={counterpart}
           currency={
             actualCurrency || settings?.currency?.default || fallbackCurrency

@@ -16346,11 +16346,27 @@
           {
             "name": "id__in",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "array",
-              "items": { "type": "string", "format": "uuid" },
-              "maxItems": 250
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": { "type": "string", "format": "uuid" },
+                  "maxItems": 250
+                },
+                { "type": "null" }
+              ]
+            }
+          },
+          {
+            "name": "file_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/AllowedFileTypes" },
+                { "type": "null" }
+              ]
             }
           }
         ],
@@ -30409,8 +30425,8 @@
     "/payables/{payable_id}/reopen": {
       "post": {
         "tags": ["Payables"],
-        "summary": "Reopen a rejected payable",
-        "description": "Reset payable state from rejected to new.",
+        "summary": "Reopen a rejected or waiting_to_be_paid payable",
+        "description": "Reset payable state from rejected or waiting_to_be_paid to new.",
         "operationId": "post_payables_id_reopen",
         "parameters": [
           {
@@ -38791,7 +38807,7 @@
     "/receipts": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Get receipts",
+        "summary": "Lists all receipts from the connected entity.",
         "operationId": "get_receipts",
         "parameters": [
           {
@@ -38930,21 +38946,6 @@
             "required": false,
             "schema": { "type": "boolean" },
             "name": "has_transaction",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": { "type": "string", "format": "uuid" },
-            "name": "transaction_id",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "items": { "type": "string", "format": "uuid" },
-              "type": "array"
-            },
-            "name": "transaction_id__in",
             "in": "query"
           },
           {
@@ -39140,7 +39141,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Upload a receipt from a file",
-        "description": "Upload an incoming receipt in the PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20 MB.",
+        "description": "Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
         "operationId": "post_receipts_upload_from_file",
         "parameters": [
           {
@@ -39256,7 +39257,7 @@
     "/receipts/{receipt_id}": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Get a receipt by ID",
+        "summary": "Retrieves information about a specific receipt with the given ID.",
         "operationId": "get_receipts_id",
         "parameters": [
           {
@@ -39358,7 +39359,7 @@
       },
       "delete": {
         "tags": ["Receipts"],
-        "summary": "Delete a receipt",
+        "summary": "Deletes a specific receipt.",
         "operationId": "delete_receipts_id",
         "parameters": [
           {
@@ -39461,7 +39462,7 @@
       },
       "patch": {
         "tags": ["Receipts"],
-        "summary": "Update a receipt",
+        "summary": "Updates the information about a specific receipt.",
         "operationId": "patch_receipts_id",
         "parameters": [
           {
@@ -39574,7 +39575,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Attach a file to a receipt",
-        "description": "Attach a file to a receipt without an existing attachment.",
+        "description": "Attach file to receipt without existing attachment.",
         "operationId": "post_receipts_id_attach_file",
         "parameters": [
           {
@@ -48837,7 +48838,8 @@
           "identity_documents",
           "additional_identity_documents",
           "receivable_signatures",
-          "einvoices_xml"
+          "einvoices_xml",
+          "attachments"
         ]
       },
       "AnalyticsDataPoint": {
@@ -49251,6 +49253,81 @@
       "ApprovalRequestStatus": {
         "type": "string",
         "enum": ["waiting", "approved", "rejected", "canceled"]
+      },
+      "AttachmentRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id"]
+      },
+      "AttachmentResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of the file (e.g., 'application/pdf')."
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename of the attachment."
+          },
+          "size": { "type": "integer", "description": "File size in bytes." },
+          "url": {
+            "type": "string",
+            "description": "URL to access the attachment file."
+          }
+        },
+        "type": "object",
+        "required": ["id", "mimetype", "name", "size", "url"]
+      },
+      "AttachmentResponse2": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the file with file_type=attachment from /v1/files."
+          },
+          "include_in_email": {
+            "type": "boolean",
+            "description": "Indicates whether the file would be included in the email.",
+            "default": false
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of the file (e.g., 'application/pdf')."
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename of the attachment."
+          },
+          "size": { "type": "integer", "description": "File size in bytes." },
+          "url": {
+            "type": "string",
+            "description": "URL to access the attachment file."
+          }
+        },
+        "type": "object",
+        "required": ["id", "mimetype", "name", "size", "url"]
       },
       "AuthPayload": {
         "properties": {
@@ -51259,6 +51336,10 @@
             "type": "string",
             "description": "required for non-GB bank accounts"
           },
+          "routing_number": {
+            "type": "string",
+            "description": "required for US bank accounts"
+          },
           "sort_code": {
             "type": "string",
             "description": "required for GB bank accounts"
@@ -51287,6 +51368,10 @@
             "type": "string",
             "maxLength": 34,
             "description": "required for non-GB bank accounts"
+          },
+          "routing_number": {
+            "type": "string",
+            "description": "required for US bank accounts"
           },
           "sort_code": {
             "type": "string",
@@ -52476,7 +52561,16 @@
         "required": ["data"],
         "description": "A paginated list of credit notes."
       },
-      "CreditNoteRenderingSettings": { "properties": {}, "type": "object" },
+      "CreditNoteRenderingSettings": {
+        "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the credit note PDF.",
+            "default": true
+          }
+        },
+        "type": "object"
+      },
       "CreditNoteResponse": {
         "properties": {
           "id": {
@@ -52702,6 +52796,11 @@
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
           },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "based_on": {
             "type": "string",
             "format": "uuid",
@@ -52847,6 +52946,11 @@
           "footer": {
             "type": "string",
             "description": "Optional text displayed below the line items table in the PDF."
+          },
+          "is_einvoice": {
+            "type": "boolean",
+            "description": "If `true`, the credit note will be sent through an e-invoicing network. The value is inherited from the invoice for which the credit note was created, and cannot be changed.",
+            "default": false
           },
           "issue_date": {
             "type": "string",
@@ -53430,7 +53534,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -53460,7 +53564,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -53504,7 +53608,7 @@
           "components": {
             "items": { "$ref": "#/components/schemas/VatRateComponent2" },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 10,
             "minItems": 1,
             "description": "Sub-taxes included in the Custom VAT."
           },
@@ -55212,6 +55316,27 @@
           "type"
         ]
       },
+      "EntityMailSettings": {
+        "properties": {
+          "reply_to": {
+            "anyOf": [
+              {
+                "items": { "type": "string", "format": "email" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "Reply-to email addresses for outgoing entity emails. When set, recipients can reply directly to these addresses instead of the sender's email address. Used for invoices, reminders, and other automated emails.",
+            "examples": [
+              ["support@example.com"],
+              ["billing@example.com", "support@example.com"]
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "Email settings for entity"
+      },
       "EntityOnboardingDataRequest": {
         "properties": {
           "business_profile": {
@@ -56903,6 +57028,11 @@
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
           },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "based_on": {
             "type": "string",
             "format": "uuid",
@@ -57288,7 +57418,16 @@
         "type": "object",
         "required": ["mimetype", "name", "url"]
       },
-      "InvoiceRenderingSettings": { "properties": {}, "type": "object" },
+      "InvoiceRenderingSettings": {
+        "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the invoice PDF.",
+            "default": true
+          }
+        },
+        "type": "object"
+      },
       "InvoiceResponsePayload": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -57316,6 +57455,11 @@
             "type": "integer",
             "maximum": 9007199254740991.0,
             "description": "How much is left to be paid in in [minor units](https://docs.monite.com/references/currencies#minor-units), including payment_term discounts."
+          },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
           },
           "based_on": {
             "type": "string",
@@ -58114,9 +58258,8 @@
           "precision": {
             "type": "integer",
             "maximum": 4.0,
-            "minimum": 0.0,
-            "description": "Number of decimal places to display for numeric values in this column. Defaults to 2, which is common for currency values.",
-            "default": 2
+            "minimum": 2.0,
+            "description": "Number of decimal places to display for numeric values in this column."
           }
         },
         "type": "object",
@@ -58540,11 +58683,12 @@
             "allOf": [
               { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
             ],
-            "description": "Settings for the VAT amount column in the line items table."
+            "description": "Settings for the VAT amount column in the line items table.",
+            "default": { "display": false }
           },
           "vat_rate": {
             "allOf": [
-              { "$ref": "#/components/schemas/LineItemColumnSettings" }
+              { "$ref": "#/components/schemas/LineItemNumericColumnSettings" }
             ],
             "description": "Settings for the VAT rate column in the line items table."
           }
@@ -58621,7 +58765,11 @@
       },
       "MailSettings": {
         "properties": {
-          "attach_documents_as_pdf": { "type": "boolean" },
+          "attach_documents_as_pdf": {
+            "type": "boolean",
+            "description": "Attach documents as PDF in emails.",
+            "default": true
+          },
           "from_email_username": {
             "anyOf": [
               { "type": "string", "maxLength": 64, "minLength": 1 },
@@ -58635,8 +58783,7 @@
             ]
           }
         },
-        "type": "object",
-        "required": ["attach_documents_as_pdf"]
+        "type": "object"
       },
       "MailboxDataResponse": {
         "properties": {
@@ -59134,6 +59281,10 @@
           "counterpart_address_object": {
             "allOf": [{ "$ref": "#/components/schemas/OCRAddress" }],
             "description": "Counterpart address as a json object compatible with counterparts service"
+          },
+          "counterpart_branch_number": {
+            "type": "string",
+            "description": "The bank branch number"
           },
           "counterpart_email": {
             "type": "string",
@@ -61257,6 +61408,13 @@
               { "type": "null" }
             ]
           },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/EntityMailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Email settings for the entity"
+          },
           "payables_ocr_auto_tagging": {
             "anyOf": [
               {
@@ -62182,9 +62340,8 @@
           },
           "enable_line_items": {
             "type": "boolean",
-            "description": "Starting from version 2024-05-25 by default is always set to True.",
-            "default": true,
-            "deprecated": true
+            "description": "Partners can set this to True or False to control line item detection in OCR flows.",
+            "default": true
           },
           "skip_approval_for_paid_invoice": {
             "anyOf": [{ "type": "boolean" }, { "type": "null" }],
@@ -62257,6 +62414,11 @@
       },
       "PayableUpdateSchema": {
         "properties": {
+          "amount_paid": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "How much was paid on the invoice (in minor units)."
+          },
           "counterpart_address_id": {
             "type": "string",
             "format": "uuid",
@@ -63208,7 +63370,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["amount", "currency", "object", "payment_intent_id"]
+        "required": ["amount", "currency", "object"]
       },
       "PaymentRecordResponse": {
         "properties": {
@@ -63279,8 +63441,7 @@
           "currency",
           "history",
           "is_external",
-          "object",
-          "payment_intent_id"
+          "object"
         ]
       },
       "PaymentRecordResponseList": {
@@ -65400,6 +65561,11 @@
       },
       "QuoteRenderingSettings": {
         "properties": {
+          "display_entity_bank_account": {
+            "type": "boolean",
+            "description": "If set to `true`, the entity's bank account details will be displayed on the quote PDF.",
+            "default": true
+          },
           "display_signature": {
             "type": "boolean",
             "description": "If set to `true`, the signature field will be displayed on the quote PDF.",
@@ -65420,6 +65586,11 @@
             "type": "string",
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
+          },
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentResponse2" },
+            "type": "array",
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
           },
           "based_on": {
             "type": "string",
@@ -65729,12 +65900,6 @@
             "description": "Currency code used in the receipt.",
             "example": "EUR"
           },
-          "description": {
-            "type": "string",
-            "maxLength": 1024,
-            "description": "Short transaction description.",
-            "example": "Payment for lunch with clients"
-          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -65757,10 +65922,6 @@
             "maxLength": 128,
             "description": "Name of the merchant.",
             "example": "Tesco"
-          },
-          "partner_metadata": {
-            "type": "object",
-            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",
@@ -65905,7 +66066,6 @@
         "type": "object",
         "required": ["data"]
       },
-      "ReceiptOriginEnum": { "type": "string", "enum": ["upload", "email"] },
       "ReceiptPaginationResponse": {
         "properties": {
           "data": {
@@ -65955,12 +66115,6 @@
             "type": "object",
             "description": "Currency exchange details."
           },
-          "description": {
-            "type": "string",
-            "maxLength": 1024,
-            "description": "Short transaction description.",
-            "example": "Payment for lunch with clients"
-          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -65997,19 +66151,9 @@
             "description": "OCR request id."
           },
           "ocr_status": { "type": "string", "description": "OCR status." },
-          "origin": {
-            "allOf": [{ "$ref": "#/components/schemas/ReceiptOriginEnum" }],
-            "description": "Specifies how this receipt was created in Monite."
-          },
           "partner_metadata": {
             "type": "object",
             "description": "Partner metadata."
-          },
-          "sender": {
-            "type": "string",
-            "format": "email",
-            "description": "The email address from which the invoice was sent to the entity.",
-            "example": "hello@example.com"
           },
           "source_of_data": {
             "allOf": [
@@ -66028,7 +66172,7 @@
           }
         },
         "type": "object",
-        "required": ["id", "created_at", "updated_at", "origin"]
+        "required": ["id", "created_at", "updated_at"]
       },
       "ReceiptUpdateSchema": {
         "properties": {
@@ -66039,12 +66183,6 @@
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
             "description": "Currency code."
-          },
-          "description": {
-            "type": "string",
-            "maxLength": 1024,
-            "description": "Short transaction description.",
-            "example": "Payment for lunch with clients"
           },
           "document_id": {
             "type": "string",
@@ -66065,10 +66203,6 @@
             "type": "string",
             "maxLength": 128,
             "description": "Merchant name."
-          },
-          "partner_metadata": {
-            "type": "object",
-            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",
@@ -66585,6 +66719,12 @@
       },
       "ReceivableFacadeCreateInvoicePayload": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "commercial_condition_description": { "type": "string" },
           "counterpart_billing_address_id": {
             "type": "string",
@@ -66762,6 +66902,12 @@
       },
       "ReceivableFacadeCreateQuotePayload": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "commercial_condition_description": { "type": "string" },
           "counterpart_billing_address_id": {
             "type": "string",
@@ -68684,6 +68830,13 @@
               { "type": "null" }
             ]
           },
+          "mail": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/EntityMailSettings" },
+              { "type": "null" }
+            ],
+            "description": "Email settings for the entity"
+          },
           "payables_ocr_auto_tagging": {
             "anyOf": [
               {
@@ -68913,7 +69066,7 @@
           "receive_guid": { "type": "string", "format": "uuid" }
         },
         "type": "object",
-        "required": ["document_guid", "event_type", "event_group", "event"]
+        "required": ["event_type", "event_group", "event"]
       },
       "StripeData": {
         "properties": {
@@ -70049,6 +70202,12 @@
       },
       "UpdateCreditNote": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "counterpart_billing_address_id": {
             "type": "string",
             "format": "uuid",
@@ -70350,6 +70509,12 @@
       },
       "UpdateInvoice": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",
@@ -70503,6 +70668,12 @@
       },
       "UpdateIssuedInvoice": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",
@@ -70749,6 +70920,12 @@
       },
       "UpdateQuote": {
         "properties": {
+          "attachments": {
+            "items": { "$ref": "#/components/schemas/AttachmentRequest" },
+            "type": "array",
+            "minItems": 1,
+            "description": "List of attachments to include with the receivable. Each attachment can be configured for email inclusion. If not provided, no attachments will be associated."
+          },
           "contact_id": {
             "type": "string",
             "format": "uuid",

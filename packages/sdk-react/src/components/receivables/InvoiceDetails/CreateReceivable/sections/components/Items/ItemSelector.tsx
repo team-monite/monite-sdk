@@ -1,6 +1,3 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
   CreateReceivablesProductsFormProps,
@@ -22,10 +19,13 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
+import { useCallback, useMemo, useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 interface ItemSelectorOptionProps {
   id: string;
   label: string;
+  description?: string;
   price?: {
     currency: CurrencyEnum;
     value: number;
@@ -71,6 +71,7 @@ function isCustomOption(
 export interface ProductItem {
   id: string;
   label: string;
+  description?: string;
   price?: {
     currency: CurrencyEnum;
     value: number;
@@ -162,6 +163,7 @@ export const ItemSelector = ({
       return {
         id: item.id,
         label: item.name,
+        description: item.description,
         price: item.price,
         smallestAmount: item.smallest_amount,
         measureUnit: unit,
@@ -393,8 +395,8 @@ export const ItemSelector = ({
               label: selectedItem.name,
             }
           : customName
-          ? { id: CUSTOM_ID, label: customName }
-          : null;
+            ? { id: CUSTOM_ID, label: customName }
+            : null;
 
         return (
           <Autocomplete
@@ -550,5 +552,4 @@ export const ItemSelector = ({
 };
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type MeasureUnit =
-  components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];

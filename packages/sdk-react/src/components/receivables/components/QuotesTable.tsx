@@ -3,6 +3,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
 import { ReceivableFilters } from '@/components/receivables/components/ReceivableFilters';
 import { useReceivablesFilters } from '@/components/receivables/hooks';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
@@ -15,7 +16,6 @@ import {
   useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -109,7 +109,7 @@ const QuotesTableBase = ({
     isLoading,
     isError,
     refetch,
-  } = useReceivables({
+  } = useGetReceivables({
     ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -164,9 +164,7 @@ const QuotesTableBase = ({
         field: 'status',
         headerName: t(i18n)`Status`,
         width: 140,
-        renderCell: (params) => (
-          <InvoiceStatusChip status={params.value} size="small" />
-        ),
+        renderCell: (params) => <InvoiceStatusChip status={params.value} />,
       },
       {
         field: 'created_at',

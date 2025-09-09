@@ -3,6 +3,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceStatusChip } from '@/components/receivables/components/InvoiceStatusChip';
 import { ReceivableFilters } from '@/components/receivables/components/ReceivableFilters';
 import { useReceivablesFilters } from '@/components/receivables/hooks';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   ReceivableFilterType,
   ReceivablesTabFilter,
@@ -15,7 +16,6 @@ import {
   useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -100,7 +100,7 @@ const CreditNotesTableBase = ({
     isLoading,
     isError,
     refetch,
-  } = useReceivables({
+  } = useGetReceivables({
     ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -136,7 +136,7 @@ const CreditNotesTableBase = ({
             >
               {value || t(i18n)`INV-auto`}
             </Typography>
-            <InvoiceStatusChip status={row.status} size="small" />
+            <InvoiceStatusChip status={row.status} />
           </Stack>
         ),
       },

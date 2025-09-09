@@ -1,6 +1,5 @@
 import { SvgIcon } from '@mui/material';
 import { SvgIconOwnProps } from '@mui/material/SvgIcon/SvgIcon';
-import React from 'react';
 
 export const AssistantLogo = (props: SvgIconOwnProps) => (
   <SvgIcon sx={{ fontSize: 51 }} {...props}>
@@ -232,7 +231,7 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
             cy="14"
             r="13.954"
             stroke="url(#paint5_linear_1031_9613)"
-            stroke-width="0.0920812"
+            strokeWidth="0.0920812"
           />
         </g>
         <g opacity="0.5" filter="url(#filter30_f_1031_9613)">
@@ -271,9 +270,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="38.8625"
           height="37.1799"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -292,9 +291,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="42.4719"
           height="41.1721"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -313,9 +312,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="39.1819"
           height="37.4729"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -334,9 +333,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="35.3362"
           height="33.9455"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -355,9 +354,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="26.3341"
           height="26.3077"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -376,9 +375,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="38.4748"
           height="40.5588"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -397,9 +396,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="20.1568"
           height="16.4439"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -418,9 +417,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="24.4882"
           height="24.7333"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -439,9 +438,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="11.0056"
           height="9.864"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -460,9 +459,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="18.0641"
           height="18.0036"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -481,9 +480,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="18.2335"
           height="18.3859"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -502,9 +501,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="23.1357"
           height="20.9775"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -523,9 +522,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="19.4794"
           height="22.6044"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -544,9 +543,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="23.3595"
           height="20.9034"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -565,9 +564,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="14.9018"
           height="14.8608"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -586,9 +585,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="32.4973"
           height="31.053"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -607,9 +606,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="19.2872"
           height="18.4581"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -628,9 +627,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="15.7477"
           height="13.902"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -649,9 +648,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="23.2394"
           height="22.1671"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -670,9 +669,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="26.9888"
           height="25.689"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -691,9 +690,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="21.3771"
           height="25.2237"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -712,9 +711,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="13.3354"
           height="22.81"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -733,9 +732,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="14.4168"
           height="17.5936"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -754,9 +753,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="15.072"
           height="16.4949"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -775,9 +774,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="10.5028"
           height="11.8299"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -796,9 +795,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="18.8296"
           height="19.312"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -817,9 +816,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="23.0981"
           height="23.7456"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -838,9 +837,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="25.188"
           height="9.82672"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -859,9 +858,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="14.8973"
           height="15.8631"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -880,9 +879,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="28.1842"
           height="28.1842"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -901,9 +900,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="36.7425"
           height="36.7415"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -922,9 +921,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="33.98"
           height="33.9791"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -943,9 +942,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="18.7859"
           height="19.5632"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -964,9 +963,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           width="31.2176"
           height="31.2166"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -986,8 +985,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="17.7277"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#A1A6F7" />
-          <stop offset="1" stop-color="#A1A6F7" stop-opacity="0" />
+          <stop stopColor="#A1A6F7" />
+          <stop offset="1" stopColor="#A1A6F7" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1031_9613"
@@ -997,8 +996,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="9.27252"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_1031_9613"
@@ -1008,9 +1007,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="2.59409"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="0.735428" stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.735428" stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_1031_9613"
@@ -1020,9 +1019,9 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="2.59346"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="0.735428" stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.735428" stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_1031_9613"
@@ -1032,8 +1031,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="32.5014"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#524ECB" />
-          <stop offset="1" stop-color="#9F9DE2" />
+          <stop stopColor="#524ECB" />
+          <stop offset="1" stopColor="#9F9DE2" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_1031_9613"
@@ -1043,10 +1042,10 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="28.8902"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#B48AFA" stop-opacity="0.6" />
-          <stop offset="0.348958" stop-color="#516685" stop-opacity="0.1" />
-          <stop offset="0.71875" stop-color="#587092" stop-opacity="0.1" />
-          <stop offset="1" stop-color="#9686DF" />
+          <stop stopColor="#B48AFA" stopOpacity="0.6" />
+          <stop offset="0.348958" stopColor="#516685" stopOpacity="0.1" />
+          <stop offset="0.71875" stopColor="#587092" stopOpacity="0.1" />
+          <stop offset="1" stopColor="#9686DF" />
         </linearGradient>
         <radialGradient
           id="paint6_radial_1031_9613"
@@ -1056,8 +1055,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(13.9818 10.4113) rotate(90) scale(18.2749)"
         >
-          <stop stop-color="white" stop-opacity="0" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="white" />
         </radialGradient>
         <linearGradient
           id="paint7_linear_1031_9613"
@@ -1067,8 +1066,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="27.2701"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#DAB3F5" />
-          <stop offset="1" stop-color="#F4DCF6" />
+          <stop stopColor="#DAB3F5" />
+          <stop offset="1" stopColor="#F4DCF6" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_1031_9613"
@@ -1078,8 +1077,8 @@ export const AssistantLogo = (props: SvgIconOwnProps) => (
           y2="34.7785"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#524ECB" />
-          <stop offset="1" stop-color="#9F9DE2" />
+          <stop stopColor="#524ECB" />
+          <stop offset="1" stopColor="#9F9DE2" />
         </linearGradient>
       </defs>
     </svg>

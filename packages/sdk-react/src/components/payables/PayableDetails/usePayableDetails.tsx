@@ -1,10 +1,10 @@
 import { useGetPayableCounterpart } from '../hooks/useGetPayableCounterpart';
 import { components } from '@/api';
-import {
+import { prepareLineItemSubmit } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import type {
   LineItem,
   PayableDetailsFormFields,
-  prepareLineItemSubmit,
-} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+} from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { usePaymentHandler } from '@/components/payables/PayablesTable/hooks/usePaymentHandler';
 import { usePayButtonVisibility } from '@/components/payables/hooks/usePayButtonVisibility';
 import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
