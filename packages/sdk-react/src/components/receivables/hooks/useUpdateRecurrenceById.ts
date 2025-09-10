@@ -39,13 +39,6 @@ export const useUpdateRecurrenceById = (recurrence_id: string, invoiceId: string
             ]);
   
             toast.success(t(i18n)`Recurrence has been updated`);
-  
-            // api.recurrences.getRecurrencesId.invalidateQueries(
-            //   {
-            //     parameters: { path: { recurrence_id: updatedRecurrence.id } },
-            //   },
-            //   queryClient
-            // );
           },
         }
     );

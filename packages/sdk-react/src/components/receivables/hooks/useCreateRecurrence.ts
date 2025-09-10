@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react";
 import { toast } from "react-hot-toast";
 
 export const useCreateRecurrence = () => {
-    const { api } = useMoniteContext();
+    const { api, queryClient } = useMoniteContext();
     const { i18n } = useLingui();
     
     return api.recurrences.postRecurrences.useMutation(
@@ -14,7 +14,8 @@ export const useCreateRecurrence = () => {
           onError(error) {
             toast.error(getAPIErrorMessage(i18n, error));
           },
-          onSuccess() {
+          async onSuccess() {
+            await api.receivables.getReceivables.invalidateQueries(queryClient);
             toast.success(t(i18n)`Recurrence has been created`);
           },
         }

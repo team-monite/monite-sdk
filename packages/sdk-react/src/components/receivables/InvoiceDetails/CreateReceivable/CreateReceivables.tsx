@@ -120,7 +120,7 @@ const CreateReceivablesBase = ({
   onCreate,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
-  const { api, entityId, componentSettings } = useMoniteContext();
+  const { api, entityId, componentSettings, queryClient } = useMoniteContext();
   const [isRecurrenceEnabled, setIsRecurrenceEnabled] = useState(false);
   const hasInitiallySetDefaultBank = useRef(false);
   const enableEntityBankAccount = Boolean(
@@ -424,15 +424,14 @@ const CreateReceivablesBase = ({
     const { id: receivableId } = await createReceivable(
       invoicePayload as Schemas['ReceivableFacadeCreateInvoicePayload'],
       {
-        onSuccess: (createdReceivable) => {
+        onSuccess: async (createdReceivable) => {
           if (!isRecurrenceEnabled) {
+            await api.receivables.getReceivables.invalidateQueries(queryClient);
             onCreate?.(createdReceivable.id);
           }
         },
       }
     );
-
-    console.log(values.recurrence_start_date, values.recurrence_end_date);
 
     if (isRecurrenceEnabled) {
       createRecurrence({

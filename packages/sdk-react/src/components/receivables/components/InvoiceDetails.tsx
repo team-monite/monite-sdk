@@ -85,7 +85,6 @@ const InvoiceDetailsBase = ({
     action: 'read',
     entityUserId: invoice?.entity_user_id,
   });
-  console.log(invoice);
 
   const actions = useMemo(() => {
     return {
