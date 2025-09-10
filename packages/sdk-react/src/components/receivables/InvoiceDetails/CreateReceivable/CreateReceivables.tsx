@@ -33,6 +33,7 @@ import {
   useMyEntity,
 } from '@/core/queries';
 import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
+import { useCreateRecurrence } from '@/components/receivables/hooks/useCreateRecurrence';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -68,6 +69,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
 import { CustomerTypes } from '@/components/counterparts/types';
+import { RecurrenceSection } from '../../components/RecurrenceSection';
 
 type Schemas = components['schemas'];
 
@@ -118,6 +120,7 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const { api, entityId, componentSettings } = useMoniteContext();
+  const [isRecurrenceEnabled, setIsRecurrenceEnabled] = useState(false);
   const hasInitiallySetDefaultBank = useRef(false);
   const enableEntityBankAccount = Boolean(
     componentSettings?.receivables?.enableEntityBankAccount
@@ -173,7 +176,8 @@ const CreateReceivablesBase = ({
         i18n,
         isNonVatSupported,
         isNonCompliantFlow,
-        enableEntityBankAccount
+        enableEntityBankAccount,
+        isRecurrenceEnabled
       )
     ),
     defaultValues: useMemo(
@@ -197,6 +201,9 @@ const CreateReceivablesBase = ({
         )`Dear client, as discussed, please find attached our invoice:`,
         footer: '',
         vat_mode: settings?.vat_mode ?? 'exclusive',
+        recurrence_start_date: undefined,
+        recurrence_end_date: undefined,
+        recurrence_issue_mode: 'first_day',
       }),
       [type, i18n, settings?.vat_mode]
     ),
@@ -256,7 +263,9 @@ const CreateReceivablesBase = ({
     [billingAddressId, counterpartAddresses?.data]
   );
 
-  const createReceivable = useCreateReceivable();
+  const { mutateAsync: createReceivable, isPending: isPendingReceivable} = useCreateReceivable();
+  const { mutate: createRecurrence, isPending: isActivatingRecurrence} = useCreateRecurrence();
+  const isCreatingReceivable = isPendingReceivable || isActivatingRecurrence;
 
   const [actualCurrency, setActualCurrency] = useState<
     Schemas['CurrencyEnum'] | undefined
@@ -305,7 +314,7 @@ const CreateReceivablesBase = ({
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
 
-  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+  const handleCreateReceivable = async (values: CreateReceivablesFormProps) => {
     const customerHasRemindersEnabled = counterpart && counterpart?.reminders_enabled;
     const customerHasDefaultEmail = counterpart && counterpartContacts?.find((contact) => contact.is_default)?.email;
 
@@ -411,14 +420,35 @@ const CreateReceivablesBase = ({
       vat_mode: values.vat_mode || 'exclusive',
     };
 
-    createReceivable.mutate(
+    const { id: receivableId } = await createReceivable(
       invoicePayload as Schemas['ReceivableFacadeCreateInvoicePayload'],
       {
         onSuccess: (createdReceivable) => {
-          onCreate?.(createdReceivable.id);
+          if (!isRecurrenceEnabled) {
+            onCreate?.(createdReceivable.id);
+          }
         },
       }
     );
+
+    console.log(values.recurrence_start_date, values.recurrence_end_date);
+
+    if (isRecurrenceEnabled) {
+      createRecurrence({
+        body: {
+          invoice_id: receivableId,
+          frequency: 'month',
+          interval: 1,
+          start_date: values.recurrence_start_date ? format(new Date(values.recurrence_start_date), 'yyyy-MM-dd') : undefined,
+          end_date: values.recurrence_end_date ? format(new Date(values.recurrence_end_date), 'yyyy-MM-dd') : undefined,
+          automation_level: 'issue',
+        }
+      }, {
+        onSuccess: () => {
+          onCreate?.(receivableId);
+        },
+      });
+    }
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
@@ -584,7 +614,7 @@ const CreateReceivablesBase = ({
                     variant="outlined"
                     color="primary"
                     sx={{ marginRight: '.5em' }}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                   >
                     <SettingsOutlinedIcon />
                   </Button>
@@ -628,9 +658,9 @@ const CreateReceivablesBase = ({
                 color="primary"
                 type="submit"
                 form={formName}
-                disabled={createReceivable.isPending}
+                disabled={isCreatingReceivable}
               >
-                {t(i18n)`Save and continue`}
+                {isRecurrenceEnabled ? t(i18n)`Activate` : t(i18n)`Save and continue`}
               </Button>
             </>
           }
@@ -986,7 +1016,7 @@ const CreateReceivablesBase = ({
                   )}
 
                   <CustomerSection
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
                     isEditProfileOpen={isEditCounterpartProfileOpen}
@@ -1021,13 +1051,13 @@ const CreateReceivablesBase = ({
                     isPaymentTermsLoading={isPaymentTermsLoading}
                     isFieldShown={visibleSettingsFields.isFulfillmentDateShown}
                     refetch={refetchPaymentTerms}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                   />
 
                   {enableEntityBankAccount && (
                     <BankAccountSection
                       entityCurrency={actualCurrency}
-                      disabled={createReceivable.isPending}
+                      disabled={isCreatingReceivable}
                       handleOpenBankModal={(id?: string) => {
                         setIsBankFormOpen(true);
                         if (id) setSelectedBankId(id);
@@ -1037,7 +1067,7 @@ const CreateReceivablesBase = ({
                 </Box>
                 <Box>
                   <RemindersSection
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                     onUpdateOverdueReminder={onEditOverdueReminder}
                     onUpdatePaymentReminder={onEditPaymentReminder}
                     onCreateReminder={onCreateReminder}
@@ -1047,7 +1077,12 @@ const CreateReceivablesBase = ({
 
                   <EntitySection
                     visibleFields={visibleSettingsFields}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
+                  />
+
+                  <RecurrenceSection
+                    isRecurrenceEnabled={isRecurrenceEnabled}
+                    toggleRecurrence={() => setIsRecurrenceEnabled(!isRecurrenceEnabled)}
                   />
                 </Box>
               </Stack>

@@ -11,6 +11,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 import {
+  Copy,
   Download,
   Eye,
   EyeOff,
@@ -30,6 +31,7 @@ import { useState } from 'react';
 import { InvoiceDeleteModal } from './InvoiceDeleteModal';
 import { InvoiceCancelModal } from './InvoiceCancelModal';
 import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
+import { RecurrenceCancelModal } from './RecurrenceCancelModal';
 
 type InvoiceDetailsActionsProps = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -55,6 +57,7 @@ export const InvoiceDetailsActions = ({
   const [markAsUncollectibleModalOpen, setMarkAsUncollectibleModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [cancelRecurrenceModalOpen, setCancelRecurrenceModalOpen] = useState(false);
 
   const PERMISSION_ERROR_MESSAGE = t(i18n)`You don't have permission to update this document. Please, contact your system administrator for details.`;
 
@@ -75,6 +78,8 @@ export const InvoiceDetailsActions = ({
   const isOverdue = invoice.status === 'overdue';
   const isPartiallyPaid = invoice.status === 'partially_paid';
   const isUncollectible = invoice.status === 'uncollectible';
+  const isCancelled = invoice.status === 'canceled';
+  const isRecurring = invoice.status === 'recurring';
   const allowRecordPayment = isIssued || isOverdue || isPartiallyPaid;
   const hideSendAndPdfButtons = allowRecordPayment && isMobileScreen;
 
@@ -131,6 +136,26 @@ export const InvoiceDetailsActions = ({
           onClose={() => setCancelModalOpen(false)}
         />
       )}
+      
+      {cancelRecurrenceModalOpen && (
+        <RecurrenceCancelModal
+          invoice={invoice}
+          open={cancelRecurrenceModalOpen}
+          onClose={() => setCancelRecurrenceModalOpen(false)}
+        />
+      )}
+
+      {isRecurring && !isCancelled && (
+        <Button 
+          type="button"
+          variant="destructive"
+          size="sm" 
+          onClick={() => handleButtonClick(() => setCancelRecurrenceModalOpen(true))}
+          disabled={isUpdateAllowedLoading}
+        >
+          {t(i18n)`Cancel recurrence`}
+        </Button>
+      )}
 
       {isDraft && (
         <>
@@ -175,7 +200,7 @@ export const InvoiceDetailsActions = ({
           )}
         </RecordManualPaymentModal>
       )}
-      {!isDraft && !isUncollectible && !hideSendAndPdfButtons && (
+      {!isDraft && !isUncollectible && !hideSendAndPdfButtons && !isRecurring && (
         <Button
           type="button"
           variant="outline"
@@ -198,68 +223,82 @@ export const InvoiceDetailsActions = ({
         </Button>
       )}
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" size="sm" disabled={isUpdateAllowedLoading}>
-            <MoreVerticalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {isDraft && isMobileScreen && (
-            <>
-              <DropdownMenuItem disabled={isIssuingInvoice || isUpdateAllowedLoading} onClick={() => handleButtonClick(issueInvoice)}>
-                {t(i18n)`Issue`}
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(actions.onEditButtonClick)}>
-                {t(i18n)`Edit`}
-              </DropdownMenuItem>
-            </>
-          )}
-          <DropdownMenuItem onClick={() => handleButtonClick(handleDuplicateInvoice)}>
-            {t(i18n)`Duplicate`}
-          </DropdownMenuItem>
-          
-          {(isDraft || hideSendAndPdfButtons) && (
-            <>
-              <DropdownMenuItem onClick={() => handleButtonClick(actions.onIssueAndSendButtonClick)}>
-                {t(i18n)`Send draft`}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDownloadPdf}>
-                {t(i18n)`Download draft`}
-              </DropdownMenuItem>
-            </>
-          )}
+      {isRecurring && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => handleButtonClick(handleDuplicateInvoice)}
+        >
+          <Copy /> {t(i18n)`Duplicate`}
+        </Button>
+      )}
 
-          <DropdownMenuItem onClick={actions.onTemplateSettingsButtonClick}>
-            {t(i18n)`Edit template settings`}
-          </DropdownMenuItem>
+      {!isRecurring && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="outline" size="sm" disabled={isUpdateAllowedLoading}>
+              <MoreVerticalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {isDraft && isMobileScreen && (
+              <>
+                <DropdownMenuItem disabled={isIssuingInvoice || isUpdateAllowedLoading} onClick={() => handleButtonClick(issueInvoice)}>
+                  {t(i18n)`Issue`}
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled={isUpdateAllowedLoading} onClick={() => handleButtonClick(actions.onEditButtonClick)}>
+                  {t(i18n)`Edit`}
+                </DropdownMenuItem>
+              </>
+            )}
+            <DropdownMenuItem onClick={() => handleButtonClick(handleDuplicateInvoice)}>
+              {t(i18n)`Duplicate`}
+            </DropdownMenuItem>
+            
+            {(isDraft || hideSendAndPdfButtons) && (
+              <>
+                <DropdownMenuItem onClick={() => handleButtonClick(actions.onIssueAndSendButtonClick)}>
+                  {t(i18n)`Send draft`}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownloadPdf}>
+                  {t(i18n)`Download draft`}
+                </DropdownMenuItem>
+              </>
+            )}
 
-          {isDraft && (
-            <DropdownMenuItem
-              onClick={() => setDeleteModalOpen(true)}
-              variant="destructive"
-            >
-              {t(i18n)`Delete`}
+            <DropdownMenuItem onClick={actions.onTemplateSettingsButtonClick}>
+              {t(i18n)`Edit template settings`}
             </DropdownMenuItem>
-          )}
-          
-          {(isIssued || isOverdue) && (
-            <DropdownMenuItem
-              onClick={() => handleButtonClick(() => setCancelModalOpen(true))}
-            >
-              {t(i18n)`Cancel invoice`}
-            </DropdownMenuItem>
-          )}
 
-          {isOverdue && (
-            <DropdownMenuItem
-              onClick={() => handleButtonClick(() => setMarkAsUncollectibleModalOpen(true))}
-            >
-              {t(i18n)`Mark as uncollectible`}
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            {isDraft && (
+              <DropdownMenuItem
+                onClick={() => setDeleteModalOpen(true)}
+                variant="destructive"
+              >
+                {t(i18n)`Delete`}
+              </DropdownMenuItem>
+            )}
+            
+            {(isIssued || isOverdue) && (
+              <DropdownMenuItem
+                onClick={() => handleButtonClick(() => setCancelModalOpen(true))}
+              >
+                {t(i18n)`Cancel invoice`}
+              </DropdownMenuItem>
+            )}
+
+            {isOverdue && (
+              <DropdownMenuItem
+                onClick={() => handleButtonClick(() => setMarkAsUncollectibleModalOpen(true))}
+              >
+                {t(i18n)`Mark as uncollectible`}
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+      )}
       <Button
         type="button"
         variant="secondary"

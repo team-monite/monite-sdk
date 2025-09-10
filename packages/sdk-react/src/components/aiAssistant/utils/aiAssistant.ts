@@ -1,8 +1,7 @@
 import { Chart, Conversation, Conversations, Part } from '../types';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { format } from 'date-fns';
-import isThisMonth from 'date-fns/isThisMonth';
+import { format, isThisMonth } from 'date-fns';
 
 export const createConversationGroups = (
   conversations: Conversation[],
