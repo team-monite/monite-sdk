@@ -5,9 +5,10 @@ import { ItemsSection } from './sections/ItemsSection';
 import { FullfillmentSummary } from './sections/components/Billing/FullfillmentSummary';
 import { InvoicePreview } from './sections/components/InvoicePreview';
 import {
+  type CreateReceivablesFormProps,
+  type CreateReceivablesProductsFormProps,
+  type CreateReceivablesFormBeforeValidationLineItemProps,
   getCreateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-  CreateReceivablesProductsFormProps,
   getCreateInvoiceProductsValidationSchema,
 } from './validation';
 import { components } from '@/api';
@@ -259,7 +260,7 @@ const CreateReceivablesBase = ({
     () =>
       counterpartAddresses?.data?.find(
         (address) => address.id === billingAddressId
-      ) ?? null,
+      ),
     [billingAddressId, counterpartAddresses?.data]
   );
 
@@ -490,6 +491,11 @@ const CreateReceivablesBase = ({
 
   const lineItems = watch('line_items');
   const entityBankAccountId = watch('entity_bank_account_id');
+  const paymentTermsId = watch('payment_terms_id');
+  const fulfillmentDate = watch('fulfillment_date');
+  const memo = watch('memo');
+  const footer = watch('footer');
+  const vatMode = watch('vat_mode');
   const bankAccountField = getFieldState('entity_bank_account_id');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
@@ -1100,7 +1106,18 @@ const CreateReceivablesBase = ({
         }}
       >
         <InvoicePreview
-          watch={watch}
+          invoiceData={{
+            payment_terms_id: paymentTermsId,
+            line_items: (lineItems || []).map(item => ({
+              ...item,
+              id: item.id || `temp-${Math.random().toString(36).substr(2, 9)}`,
+            })) as CreateReceivablesFormBeforeValidationLineItemProps[],
+            fulfillment_date: fulfillmentDate,
+            memo,
+            footer,
+            entity_bank_account_id: entityBankAccountId,
+            vat_mode: vatMode,
+          }}
           counterpart={counterpart}
           currency={
             actualCurrency || settings?.currency?.default || fallbackCurrency

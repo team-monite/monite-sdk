@@ -2,8 +2,8 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import {
   calculateTotalPriceForLineItem,
-  PayableDetailsFormFields,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
