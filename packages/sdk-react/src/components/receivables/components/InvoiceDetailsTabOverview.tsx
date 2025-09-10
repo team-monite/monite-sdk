@@ -121,7 +121,7 @@ export const InvoiceDetailsTabOverview = ({
               label={t(i18n)`Created`}
               value={
                 recurrence?.created_at
-                  ? i18n.date(invoice?.created_at, locale.dateFormat)
+                  ? i18n.date(recurrence?.created_at, locale.dateFormat)
                   : '-'
               }
             />

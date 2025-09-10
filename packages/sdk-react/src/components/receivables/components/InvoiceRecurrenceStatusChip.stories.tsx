@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { InvoiceRecurrenceStatusChip as InvoiceRecurrenceStatusChipComponent } from './InvoiceRecurrenceStatusChip';
 
 const meta: Meta<typeof InvoiceRecurrenceStatusChipComponent> = {
-  title: 'Components / InvoiceStatusChip',
+  title: 'Components / InvoiceRecurrenceStatusChip',
   component: InvoiceRecurrenceStatusChipComponent,
   parameters: {
     docs: {

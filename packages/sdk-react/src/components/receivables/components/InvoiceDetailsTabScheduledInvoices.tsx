@@ -91,10 +91,10 @@ export const InvoiceDetailsTabScheduledInvoices = ({
                 </tr>
             </thead>
             <tbody>
-                {recurrence?.iterations?.map((iteration) => {
+                {recurrence?.iterations?.map((iteration, index) => {
                     return (
                         <IterationInvoice 
-                            key={t(i18n)`iteration-${iteration?.iteration}`} 
+                            key={t(i18n)`iteration-${iteration?.iteration}-${index}`} 
                             iteration={iteration} 
                             invoice={invoice} 
                             i18n={i18n}

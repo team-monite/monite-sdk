@@ -5441,8 +5441,12 @@ msgid "Items"
 msgstr "Items"
 
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:97
-msgid "iteration-{0}"
-msgstr "iteration-{0}"
+#~ msgid "iteration-{0}"
+#~ msgstr "iteration-{0}"
+
+#: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:97
+msgid "iteration-{0}-{index}"
+msgstr "iteration-{0}-{index}"
 
 #: src/core/utils/countries.ts:127
 msgid "Jamaica"

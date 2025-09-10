@@ -31,7 +31,7 @@ export const InvoiceDetailsOverviewRecurrenceSection = ({
     const { i18n } = useLingui();
     const [isEditRecurrenceOpen, setIsEditRecurrenceOpen] = useState(false);
     const startDay = new Date(recurrence?.start_date).getDate();
-    const issuedDocuments = useMemo(() => recurrence?.iterations.filter(iteration => iteration.status === 'completed'), [recurrence]);
+    const issuedDocuments = useMemo(() => recurrence?.iterations?.filter(iteration => iteration.status === 'completed'), [recurrence]);
     const { mutateAsync: updateRecurrence, isPending: isUpdatingRecurrence } = useUpdateRecurrenceById(recurrence?.id, recurrence?.invoice_id);
 
   const formName = 'edit-recurrence-form';

@@ -35,7 +35,7 @@ export const RecurrenceCancelModal = ({
     previousRecurrence?.status === 'active' && recurrence?.status === 'canceled'
       ? previousRecurrence
       : recurrence
-  )?.iterations.filter(({ status }) => status === 'pending').length;
+  )?.iterations?.filter(({ status }) => status === 'pending')?.length ?? 0;
 
   const pendingInvoicesTotalAmountWithCreditNotes =
     invoice && totalPendingInvoices !== undefined
