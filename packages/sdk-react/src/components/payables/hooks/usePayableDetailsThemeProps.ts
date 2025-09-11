@@ -17,5 +17,8 @@ export const usePayableDetailsThemeProps = (
       componentSettings?.payables?.ocrMismatchFields,
     isTagsDisabled:
       inProps?.isTagsDisabled ?? componentSettings?.payables?.isTagsDisabled,
+    disableAutoCalculateTotals:
+      inProps?.disableAutoCalculateTotals ??
+      componentSettings?.payables?.disableAutoCalculateTotals,
   };
 };

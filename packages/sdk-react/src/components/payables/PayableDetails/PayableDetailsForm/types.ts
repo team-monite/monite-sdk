@@ -17,4 +17,7 @@ export interface PayableDetailsFormFields {
   tags: components['schemas']['TagReadSchema'][];
   lineItems: LineItem[];
   discount?: number | null;
+  subtotal?: number | null;
+  tax_amount?: number | null;
+  total_amount?: number | null;
 }
