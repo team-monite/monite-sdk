@@ -76,6 +76,7 @@
     "libphonenumber-js": "~1.10.55",
     "lucide-react": "~0.485.0",
     "pdfjs-dist": "3.4.120",
+    "react-day-picker": "~9.9.0",
     "react-hook-form": "~7.59.0",
     "react-hot-toast": "~2.2.0",
     "react-international-phone": "~4.2.4",

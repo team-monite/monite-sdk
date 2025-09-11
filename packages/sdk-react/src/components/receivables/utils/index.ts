@@ -1,4 +1,4 @@
-export { getCommonStatusLabel } from './getCommonStatusLabel';
+export * from './invoiceStatus';
 export {
   prepareBankAccountCreatePayload,
   prepareBankAccountUpdatePayload,

@@ -3860,6 +3860,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/tz@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@date-fns/tz@npm:1.4.1"
+  checksum: 10/062097590005cce3da4c7d9880f9c77d386cff5b4dd58fa3dde3c346a8b2e4f4a8025a613306351a7cad8eb71178a0f67b4840d5884f73aa4c759085fac92063
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:^0.5.3":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -5867,6 +5874,7 @@ __metadata:
     pdfjs-dist: "npm:3.4.120"
     prettier: "npm:^3.0.0"
     react: "npm:^18.2.0"
+    react-day-picker: "npm:~9.9.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:~7.59.0"
     react-hot-toast: "npm:~2.2.0"
@@ -14928,6 +14936,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns-jalali@npm:^4.1.0-0":
+  version: 4.1.0-0
+  resolution: "date-fns-jalali@npm:4.1.0-0"
+  checksum: 10/0005e0e37d449aa998cfc353395b0292eea4778aba4283dad4fa0e3559cf0a7fc7ce9123fb6f22c235285219d4f4774c88bb9c01fa2694c6a5efbbcd33efe7fc
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^2.16.1, date-fns@npm:^2.28.0, date-fns@npm:^2.29.3":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
@@ -14937,7 +14952,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:~4.1.0":
+"date-fns@npm:^4.1.0, date-fns@npm:~4.1.0":
   version: 4.1.0
   resolution: "date-fns@npm:4.1.0"
   checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
@@ -24327,6 +24342,19 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 10/3e02ba013454818d0c323949bd961fb2c19ac18130dfc67a4032aa5b03787c5ffe7ff159c4b97dc3475072d576828ca0c4b8e8ce85b55eaf484180596cdf0403
+  languageName: node
+  linkType: hard
+
+"react-day-picker@npm:~9.9.0":
+  version: 9.9.0
+  resolution: "react-day-picker@npm:9.9.0"
+  dependencies:
+    "@date-fns/tz": "npm:^1.4.1"
+    date-fns: "npm:^4.1.0"
+    date-fns-jalali: "npm:^4.1.0-0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10/b4c804639228e6e0517213d156ff44feed81f14100dbb55a6abcca0acdb02444deadf7d3e1c8c95405aee9ca01f862ff8eafa1ddc9f90175fdffd3a9d98b4664
   languageName: node
   linkType: hard
 
