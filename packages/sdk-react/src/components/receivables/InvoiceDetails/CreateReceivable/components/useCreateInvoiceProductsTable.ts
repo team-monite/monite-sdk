@@ -1,10 +1,16 @@
-import { useMemo } from 'react';
-
 import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import { useMemo } from 'react';
+
+type ExtendedLineItem = CreateReceivablesFormBeforeValidationLineItemProps & {
+  price?:
+    | number
+    | { value?: number; currency?: components['schemas']['CurrencyEnum'] };
+  currency?: components['schemas']['CurrencyEnum'];
+};
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
@@ -38,7 +44,18 @@ export const useCreateInvoiceProductsTable = ({
   const getPriceAndQuantity = (
     field: CreateReceivablesFormBeforeValidationLineItemProps
   ) => {
-    const price = field.product?.price?.value ?? field.price?.value ?? 0;
+    const extField = field as ExtendedLineItem;
+    const flatNumeric =
+      typeof extField.price === 'number' ? extField.price : undefined;
+    const flatObjectVal =
+      typeof extField.price === 'object' ? extField.price?.value : undefined;
+    const nestedVal = field.product?.price?.value;
+    const candidates = [flatNumeric, flatObjectVal, nestedVal]
+      .map((v) => (typeof v === 'number' ? v : Number(v)))
+      .filter((v) => Number.isFinite(v));
+    const price = (candidates.find((v) => v > 0) ??
+      candidates[0] ??
+      0) as number;
     const quantity = field.quantity ?? 1;
     return { price, quantity };
   };
@@ -63,18 +80,26 @@ export const useCreateInvoiceProductsTable = ({
       actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
         ?.product?.price?.currency ??
-      lineItems.find((field) => Boolean(field.price?.currency))?.price
-        ?.currency;
+      lineItems.find((field) => {
+        const extField = field as ExtendedLineItem;
+        return typeof extField.price === 'object' && extField.price?.currency;
+      })?.product?.price?.currency ??
+      (
+        lineItems.find((field) =>
+          Boolean((field as ExtendedLineItem).currency)
+        ) as ExtendedLineItem
+      )?.currency;
 
     if (!currency) {
       return undefined;
     }
 
-    return new Price({
+    const priceObj = new Price({
       value: price,
       currency,
       formatter: formatCurrencyToDisplay,
     });
+    return priceObj;
   }, [
     lineItems,
     formatCurrencyToDisplay,
@@ -84,29 +109,32 @@ export const useCreateInvoiceProductsTable = ({
   ]);
 
   const taxesByVatRate = useMemo(() => {
-    return lineItems.reduce((acc, field) => {
-      const { price, quantity } = getPriceAndQuantity(field);
-      const vatRate = getRateValueForDisplay(
-        isNonVatSupported,
-        field.vat_rate_value ?? 0,
-        field.tax_rate_value ?? 0
-      );
+    return lineItems.reduce(
+      (acc, field) => {
+        const { price, quantity } = getPriceAndQuantity(field);
+        const vatRate = getRateValueForDisplay(
+          isNonVatSupported,
+          field.vat_rate_value ?? 0,
+          field.tax_rate_value ?? 0
+        );
 
-      if (!vatRate) return acc;
+        if (!vatRate) return acc;
 
-      const amount = price * quantity;
-      const tax = isInclusivePricing
-        ? amount - amount / (1 + vatRate / 100)
-        : amount * (vatRate / 100);
+        const amount = price * quantity;
+        const tax = isInclusivePricing
+          ? amount - amount / (1 + vatRate / 100)
+          : amount * (vatRate / 100);
 
-      if (acc[vatRate]) {
-        acc[vatRate] += tax;
-      } else {
-        acc[vatRate] = tax;
-      }
+        if (acc[vatRate]) {
+          acc[vatRate] += tax;
+        } else {
+          acc[vatRate] = tax;
+        }
 
-      return acc;
-    }, {} as Record<number, number>);
+        return acc;
+      },
+      {} as Record<number, number>
+    );
   }, [lineItems, isInclusivePricing, isNonVatSupported]);
 
   const totalTaxes = useMemo(() => {
@@ -116,25 +144,35 @@ export const useCreateInvoiceProductsTable = ({
       actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
         ?.product?.price?.currency ??
-      lineItems.find((field) => Boolean(field.price?.currency))?.price
-        ?.currency;
+      lineItems.find((field) => {
+        const extField = field as ExtendedLineItem;
+        return typeof extField.price === 'object' && extField.price?.currency;
+      })?.product?.price?.currency ??
+      (
+        lineItems.find((field) =>
+          Boolean((field as ExtendedLineItem).currency)
+        ) as ExtendedLineItem
+      )?.currency;
 
     if (!currency) {
       return undefined;
     }
 
-    return new Price({
+    const priceObj = new Price({
       value: taxes,
       currency,
       formatter: formatCurrencyToDisplay,
     });
+    return priceObj;
   }, [lineItems, formatCurrencyToDisplay, actualCurrency, taxesByVatRate]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
       return undefined;
     }
-    return subtotalPrice.add(totalTaxes);
+    const totalObj = subtotalPrice.add(totalTaxes);
+
+    return totalObj;
   }, [subtotalPrice, totalTaxes]);
 
   const shouldShowVatExemptRationale =

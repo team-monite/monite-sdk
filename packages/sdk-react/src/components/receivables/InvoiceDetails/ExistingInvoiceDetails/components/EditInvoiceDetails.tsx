@@ -7,22 +7,24 @@ import {
   UpdateReceivablesFormProps,
 } from '../../CreateReceivable/validation';
 import { components } from '@/api';
-import { RemindersSection, CreateInvoiceReminderDialog, EditInvoiceReminderDialog } from '@/components/receivables/components';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
+import { RemindersSection } from '@/components/receivables/components/RemindersSection';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
-import { useUpdateReceivableLineItems } from '@/components/receivables/hooks/useUpdateReceivableLineItems';
-import { useUpdateReceivable } from '@/components/receivables/hooks/useUpdateReceivable';
-import { useMeasureUnitsMapping } from '@/components/receivables/hooks/useMeasureUnitsMapping';
 import { useInvoiceReminderDialogs } from '@/components/receivables/hooks/useInvoiceReminderDialogs';
+import { useMeasureUnitsMapping } from '@/components/receivables/hooks/useMeasureUnitsMapping';
+import { useUpdateReceivable } from '@/components/receivables/hooks/useUpdateReceivable';
+import { useUpdateReceivableLineItems } from '@/components/receivables/hooks/useUpdateReceivableLineItems';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
+import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { Dialog } from '@/ui/Dialog';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import {
   Box,
   Button,
@@ -154,7 +156,8 @@ const EditInvoiceDetailsContent = ({
       overdue_reminder_id: invoice.overdue_reminder_id ?? '',
       vat_mode: invoice.vat_mode ?? 'exclusive',
     }),
-  [invoice, isNonVatSupported]);
+    [invoice, isNonVatSupported]
+  );
 
   const methods = useForm<UpdateReceivablesFormProps>({
     resolver: zodResolver(
@@ -291,7 +294,7 @@ const EditInvoiceDetailsContent = ({
                         price: lineItem.product.price
                           ? {
                               currency:
-                                lineItem.product.price.currency ?? 'USD',
+                                (lineItem.product.price.currency ?? 'USD') as Schemas['CurrencyEnum'],
                               value: Math.round(
                                 lineItem.product.price.value ?? 0
                               ),
