@@ -63,14 +63,17 @@ export const useLineItemManagement = ({
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
   const watchedLineItems = watch('line_items');
+  const watchedLineItemsContentHash = JSON.stringify(watchedLineItems);
   const currentLineItems = useMemo(
     () => watchedLineItems ?? [],
-    [watchedLineItems]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [watchedLineItemsContentHash]
   );
 
   const sanitizedLineItemsForTable = useMemo(
     () => sanitizeLineItems(currentLineItems),
-    [currentLineItems]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [watchedLineItemsContentHash]
   );
 
   const { formatCurrencyToDisplay } = useCurrencies();

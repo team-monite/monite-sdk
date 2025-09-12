@@ -11,9 +11,9 @@ import { CreateInvoiceReminderDialog } from '@/components/receivables/components
 import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { useUpdateReceivable } from '@/components/receivables/hooks/useUpdateReceivable';
 import { useInvoiceReminderDialogs } from '@/components/receivables/hooks/useInvoiceReminderDialogs';
 import { useMeasureUnitsMapping } from '@/components/receivables/hooks/useMeasureUnitsMapping';
-import { useUpdateReceivable } from '@/components/receivables/hooks/useUpdateReceivable';
 import { useUpdateReceivableLineItems } from '@/components/receivables/hooks/useUpdateReceivableLineItems';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
@@ -285,8 +285,8 @@ const EditInvoiceDetailsContent = ({
                           : undefined,
                         price: lineItem.product.price
                           ? {
-                              currency: (lineItem.product.price.currency ??
-                                'USD') as components['schemas']['CurrencyEnum'],
+                              currency:
+                                (lineItem.product.price.currency ?? 'USD') as Schemas['CurrencyEnum'],
                               value: Math.round(
                                 lineItem.product.price.value ?? 0
                               ),
