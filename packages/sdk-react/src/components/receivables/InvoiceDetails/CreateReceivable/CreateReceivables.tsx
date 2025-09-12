@@ -269,12 +269,12 @@ const CreateReceivablesBase = ({
   const isCreatingReceivable = isPendingReceivable || isActivatingRecurrence;
 
   const { data: requiredFields } = useGetInvoiceRequiredFields({
-    entity_vat_id_id: entityVatIds?.data?.[0]?.id ?? undefined,
-    counterpart_billing_address_id: billingAddressId ?? undefined,
-    counterpart_country: counterpartBillingAddress?.country ?? undefined,
-    counterpart_id: counterpartId ?? undefined,
-    counterpart_type: counterpart?.type ?? undefined,
-    counterpart_vat_id_id: counterpartVats?.data?.[0]?.id ?? undefined,
+    entity_vat_id_id: entityVatIds?.data?.[0]?.id || undefined,
+    counterpart_billing_address_id: billingAddressId || undefined,
+    counterpart_country: counterpartBillingAddress?.country || undefined,
+    counterpart_id: counterpartId || undefined,
+    counterpart_type: counterpart?.type || undefined,
+    counterpart_vat_id_id: counterpartVats?.data?.[0]?.id || undefined,
   });
 
   const entityVatId = watch('entity_vat_id_id');
