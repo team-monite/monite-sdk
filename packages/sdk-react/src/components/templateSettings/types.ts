@@ -40,3 +40,5 @@ export type ARDocumentType =
   | 'delivery_note';
 export type APDocumentType = 'purchase_order';
 export type DocumentType = ARDocumentType | APDocumentType;
+
+export type SelectableDocumentType = 'receivable' | 'purchase_order';

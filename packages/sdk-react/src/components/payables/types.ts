@@ -31,3 +31,16 @@ export type PaymentRecordWithIntent = {
   intent: string;
   record: components['schemas']['PaymentRecordResponse'];
 };
+
+/**
+ * Enum for Payables tabs to avoid magic strings
+ */
+export enum PayablesTabEnum {
+  Bills = 'bills',
+  PurchaseOrders = 'purchase-orders',
+}
+
+/**
+ * Type alias for better type safety
+ */
+export type PayablesTab = PayablesTabEnum;

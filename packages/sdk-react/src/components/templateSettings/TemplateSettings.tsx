@@ -1,22 +1,19 @@
-import { useState } from 'react';
-
+import { DocumentNumber, LayoutAndLogo, OtherSettings } from './components';
+import { DiscardChangesModal } from './components/DiscardChangesModal';
 import {
   DiscardChangesContextProvider,
   useDiscardChangesContext,
 } from '@/core/context/DiscardChangesContext';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { Dialog } from '@/ui/Dialog';
-import { IconWrapper } from '@/ui/iconWrapper';
 import { PageHeader } from '@/ui/PageHeader';
+import { IconWrapper } from '@/ui/iconWrapper';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Close } from '@mui/icons-material';
 import { Box, Tab, Tabs, DialogContent } from '@mui/material';
-
+import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import { DocumentNumber, LayoutAndLogo, OtherSettings } from './components';
-import { DiscardChangesModal } from './components/DiscardChangesModal';
 
 type TabType = 'documentDesign' | 'documentNumber' | 'otherSettings';
 
@@ -27,6 +24,8 @@ export type TemplateSettingsProps = {
   isOpen?: boolean;
   /** Callback function that is called when you close the dialog. It's meant to be passed in when isDialog is true */
   handleCloseDialog?: () => void;
+  /** Document type context for filtering templates */
+  documentType?: 'receivable' | 'purchase_order';
 };
 
 export const TemplateSettings = (props: TemplateSettingsProps) => (
@@ -39,6 +38,7 @@ const TemplateSettingsBase = ({
   isDialog,
   isOpen,
   handleCloseDialog,
+  documentType,
 }: TemplateSettingsProps) => {
   const { componentSettings } = useMoniteContext();
   const { shouldShowChangesModal, handleShowModal } =
@@ -117,7 +117,10 @@ const TemplateSettingsBase = ({
             minHeight: '0',
           }}
         >
-          <LayoutAndLogo shouldApplyDialogStyles={isDialog} />
+          <LayoutAndLogo
+            shouldApplyDialogStyles={isDialog}
+            documentType={documentType}
+          />
         </Box>
       )}
 

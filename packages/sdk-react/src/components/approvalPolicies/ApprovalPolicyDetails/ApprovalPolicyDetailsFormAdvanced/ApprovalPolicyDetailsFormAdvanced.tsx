@@ -3,7 +3,7 @@ import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicy
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useDialog } from '@/ui/Dialog';
+import { useDialog } from '@/ui/Dialog/Dialog';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { zodResolver } from '@hookform/resolvers/zod';

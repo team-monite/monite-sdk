@@ -24,6 +24,7 @@ const rollupConfig = (packageJson, options) => {
               format: 'commonjs',
               sourcemap: true,
               interop: 'compat',
+              inlineDynamicImports: true,
             })
           : null,
         packageJson.module
@@ -31,6 +32,7 @@ const rollupConfig = (packageJson, options) => {
               file: packageJson.module,
               format: 'esm',
               sourcemap: true,
+              inlineDynamicImports: true,
             })
           : null,
       ].filter((output) => Boolean(output)),

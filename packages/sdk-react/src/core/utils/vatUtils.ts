@@ -51,3 +51,23 @@ export const formatVatRateForDisplay = (rateValue: number): string => {
     maximumFractionDigits: 2,
   });
 };
+
+/**
+ * Converts a VAT rate from percentage (UI display format) to basis points (API format)
+ * Example: 7.5 -> 750 (7.5% -> 750 basis points)
+ * @param ratePercentage The rate value in percentage (from UI)
+ * @returns The rate value in basis points (for API)
+ */
+export const vatRatePercentageToBasisPoints = (ratePercentage: number): number => {
+  return rateMajorToMinor(ratePercentage);
+};
+
+/**
+ * Converts a VAT rate from basis points (API format) to percentage (UI display format)
+ * Example: 750 -> 7.5 (750 basis points -> 7.5%)
+ * @param rateBasisPoints The rate value in basis points (from API)
+ * @returns The rate value in percentage (for UI display)
+ */
+export const vatRateBasisPointsToPercentage = (rateBasisPoints: number): number => {
+  return rateMinorToMajor(rateBasisPoints);
+};
