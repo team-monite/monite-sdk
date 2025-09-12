@@ -1737,7 +1737,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:28
 #: src/components/receivables/components/BankAccountFormDialog.tsx:206
-#: src/components/receivables/components/EntityProfileModal.tsx:164
+#: src/components/receivables/components/EntityProfileModal.tsx:175
 #: src/components/receivables/components/InvoiceCancelModal.tsx:51
 #: src/components/receivables/components/InvoiceDeleteModal.tsx:75
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:79
@@ -3623,7 +3623,7 @@ msgstr "Edit individual"
 #~ msgid "Edit invoice"
 #~ msgstr "Edit invoice"
 
-#: src/components/receivables/components/EntityProfileModal.tsx:150
+#: src/components/receivables/components/EntityProfileModal.tsx:161
 msgid "Edit my entity profile"
 msgstr "Edit my entity profile"
 
@@ -3705,7 +3705,7 @@ msgstr "Edit user role"
 msgid "Edit VAT ID"
 msgstr "Edit VAT ID"
 
-#: src/components/receivables/components/EntityProfileModal.tsx:154
+#: src/components/receivables/components/EntityProfileModal.tsx:165
 msgid "Edit your entity profile to update your information."
 msgstr "Edit your entity profile to update your information."
 
@@ -8223,7 +8223,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:75
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/components/EditCounterpartModal.tsx:439
-#: src/components/receivables/components/EntityProfileModal.tsx:171
+#: src/components/receivables/components/EntityProfileModal.tsx:182
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:82
 #: src/components/receivables/components/PaymentRecordForm.tsx:149
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:866

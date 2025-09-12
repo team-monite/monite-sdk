@@ -29,6 +29,7 @@ import {
   EntityProfileFormValues,
 } from '../validation';
 import { EntityProfileFormContent } from './EntityProfileFormContent';
+import { useCreateEntityVatId } from '../hooks/useCreateEntityVatId';
 
 type EntityProfileFormComponentProps = EntityProfileModalProps & {
   entity:
@@ -53,7 +54,7 @@ const getDefaultValues = (
     tax_id: entity.tax_id || undefined,
     vat_id: vatId?.value || undefined,
     vat_type: vatId?.type || undefined,
-    vat_country: vatId?.country || undefined,
+    vat_country: vatId?.country || entity.address.country || undefined,
     address_line_1: entity.address.line1 || undefined,
     address_line_2: entity.address.line2 || undefined,
     city: entity.address.city || undefined,
@@ -89,6 +90,7 @@ const EntityProfileForm = ({
   const vatId = vatIds?.[0];
   const { mutate: patchEntity } = usePatchEntityById();
   const { mutate: patchEntityVat } = usePatchEntityVatById(vatId?.id ?? '');
+  const { mutate: createEntityVatId } = useCreateEntityVatId();
 
   const defaultValues = useMemo(
     () => getDefaultValues(entity, vatId),
@@ -135,12 +137,21 @@ const EntityProfileForm = ({
                   }),
             });
 
-            patchEntityVat({
-              value: values.vat_id,
-              type: values.vat_type as components['schemas']['VatIDTypeEnum'],
-              country:
-                values.vat_country as components['schemas']['AllowedCountries'],
-            });
+            if (!vatId && values.vat_id && values.vat_id?.trim() !== '') {
+              createEntityVatId({
+                value: values.vat_id,
+                type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                country:
+                  values.vat_country as components['schemas']['AllowedCountries'],
+              });
+            } else {
+              patchEntityVat({
+                value: values.vat_id,
+                type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                country:
+                  values.vat_country as components['schemas']['AllowedCountries'],
+              });
+            }
 
             onClose();
           })}
