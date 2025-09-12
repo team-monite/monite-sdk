@@ -109,6 +109,7 @@ export const prepareDefaultValues = (
             ? (formatFromMinorUnits(lineItem.unit_price, currency) ?? 0)
             : 0,
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
+        ledger_account_id: lineItem.ledger_account_id,
       };
     }),
   };
@@ -195,13 +196,14 @@ export const prepareLineItemSubmit = (
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null
 ): LineItemRequest => {
-  const { name, quantity, price, tax } = lineItem;
+  const { name, quantity, price, tax, ledger_account_id } = lineItem;
 
   return {
     name,
     quantity,
     tax: formatTaxToMinorUnits(tax),
     unit_price: formatToMinorUnits(price, currency) ?? 0,
+    ledger_account_id,
   };
 };
 

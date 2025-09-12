@@ -28,6 +28,7 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  enableGLCodes?: boolean;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -50,6 +51,7 @@ const PayableDetailsBase = ({
   onDeleted,
   onPay,
   onPayUS,
+  enableGLCodes = false,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -234,6 +236,7 @@ const PayableDetailsBase = ({
                     customerTypes ||
                     componentSettings?.counterparts?.customerTypes
                   }
+                  enableGLCodes={enableGLCodes}
                 />
               ) : (
                 payable && (
@@ -241,6 +244,7 @@ const PayableDetailsBase = ({
                     updateTags={(tags) => id && updateTags(id, tags || [])}
                     payable={payable}
                     optionalFields={optionalFields}
+                    enableGLCodes={enableGLCodes}
                   />
                 )
               )}

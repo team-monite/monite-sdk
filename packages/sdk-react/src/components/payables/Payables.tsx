@@ -23,6 +23,13 @@ import { toast } from 'react-hot-toast';
 export type PayablesProps = {
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  /**
+   * Enable GL code selection for payable line items.
+   * When true, users can assign GL codes to individual line items.
+   * GL codes are fetched from the connected accounting system.
+   * @default false
+   */
+  enableGLCodes?: boolean;
 } & Pick<
   UsePayableDetailsProps,
   | 'onSaved'
@@ -45,6 +52,8 @@ export const Payables = (props: PayablesProps) => {
 };
 
 const PayablesBase = ({
+  customerTypes,
+  enableGLCodes = false,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -54,7 +63,6 @@ const PayablesBase = ({
   onDeleted,
   onPay,
   onPayUS,
-  customerTypes,
 }: PayablesProps) => {
   const { i18n } = useLingui();
   const { api, queryClient, componentSettings } = useMoniteContext();
@@ -221,6 +229,7 @@ const PayablesBase = ({
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
+          enableGLCodes={enableGLCodes}
         />
       </Dialog>
 
@@ -237,6 +246,7 @@ const PayablesBase = ({
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
+          enableGLCodes={enableGLCodes}
         />
       </Dialog>
     </>
