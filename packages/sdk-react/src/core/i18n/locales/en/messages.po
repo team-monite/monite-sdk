@@ -96,7 +96,6 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:80
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:36
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:46
-#: src/components/shared/ItemsSection/ItemsSection.tsx:445
 #: src/core/utils/date.ts:5
 msgid "{0}"
 msgstr "{0}"
@@ -445,7 +444,7 @@ msgstr "Add a dedicated space for signature on PDF"
 msgid "Add a director"
 msgstr "Add a director"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:571
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:658
 msgid "Add a message for the vendor"
 msgstr "Add a message for the vendor"
 
@@ -454,7 +453,7 @@ msgstr "Add a message for the vendor"
 msgid "Add a message for the vendor..."
 msgstr "Add a message for the vendor..."
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:592
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:688
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:841
 msgid "Add a note that will be displayed below the line items"
 msgstr "Add a note that will be displayed below the line items"
@@ -553,7 +552,7 @@ msgstr "Add number"
 msgid "Add reminder"
 msgstr "Add reminder"
 
-#: src/components/shared/ItemsSection/ItemsSection.tsx:642
+#: src/components/shared/ItemsSection/ItemsSection.tsx:650
 msgid "Add row"
 msgstr "Add row"
 
@@ -611,7 +610,7 @@ msgstr "Added on"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:197
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:153
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:75
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:99
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:114
 #: src/components/receivables/components/EntityProfileFormContent.tsx:261
 msgid "Address"
 msgstr "Address"
@@ -748,7 +747,7 @@ msgstr "All items in the invoice must be in this currency. Remove items that don
 #~ msgid "All items in the invoice must be in this currency. Remove items that don’t match it."
 #~ msgstr "All items in the invoice must be in this currency. Remove items that don’t match it."
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:538
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:615
 msgid "All items in the purchase order must be in this currency. Remove items that don't match it."
 msgstr "All items in the purchase order must be in this currency. Remove items that don't match it."
 
@@ -761,7 +760,7 @@ msgid "All loans are subject to credit approval. Your terms may vary. Flourish C
 msgstr "All loans are subject to credit approval. Your terms may vary. Flourish Capital loans are issued by Kanmon. California Loans are made pursuant to a Department of Financial Protection and Innovation California Lenders Law License. Read more about Kanmon"
 
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:64
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:77
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:78
 #: src/components/receivables/components/ReceivableFilters.tsx:85
 msgid "All statuses"
 msgstr "All statuses"
@@ -784,7 +783,7 @@ msgstr "All users from list, one by one"
 msgid "All users from the list"
 msgstr "All users from the list"
 
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:106
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:108
 msgid "All vendors"
 msgstr "All vendors"
 
@@ -800,7 +799,7 @@ msgstr "Allowed"
 #~ msgid "Already updated PDFs can’t be reverted to the default view"
 #~ msgstr "Already updated PDFs can’t be reverted to the default view"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:613
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:713
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:908
 msgid "Always display selected fields on the form (where available)"
 msgstr "Always display selected fields on the form (where available)"
@@ -818,8 +817,8 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:42
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:57
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:225
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:99
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:192
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:127
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:211
 #: src/components/receivables/components/CreditNotesTable.tsx:168
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:113
 #: src/components/receivables/components/InvoicesTable.tsx:338
@@ -1232,7 +1231,7 @@ msgstr "Azerbaijani Manat"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:461
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:478
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:210
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:212
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:26
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:271
 msgid "Back"
@@ -1523,11 +1522,11 @@ msgstr "Boat Rentals and Leases"
 msgid "Body"
 msgstr "Body"
 
-#: src/components/payables/PurchaseOrders/validation.ts:188
+#: src/components/payables/PurchaseOrders/validation.ts:194
 msgid "Body is a required field"
 msgstr "Body is a required field"
 
-#: src/components/payables/PurchaseOrders/validation.ts:179
+#: src/components/payables/PurchaseOrders/validation.ts:185
 #: src/components/receivables/validation.ts:317
 msgid "Body is required"
 msgstr "Body is required"
@@ -1793,8 +1792,8 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:106
 #: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:71
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:83
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:545
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:619
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:624
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:721
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/PurchaseOrderDeleteModal.tsx:90
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:68
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
@@ -1813,7 +1812,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:85
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:454
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:235
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:236
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:346
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:77
@@ -1877,7 +1876,7 @@ msgstr "Cancel recurrence"
 msgid "Cancel Recurring Invoice"
 msgstr "Cancel Recurring Invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:411
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:412
 msgid "Cancel without saving?"
 msgstr "Cancel without saving?"
 
@@ -1966,7 +1965,7 @@ msgstr "CFP Franc"
 msgid "Chad"
 msgstr "Chad"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:515
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:586
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:671
 msgid "Change document currency"
 msgstr "Change document currency"
@@ -2136,11 +2135,11 @@ msgstr "Close payable details"
 msgid "Close product details"
 msgstr "Close product details"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:505
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:570
 msgid "Close purchase order creation"
 msgstr "Close purchase order creation"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:505
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:569
 msgid "Close purchase order editing"
 msgstr "Close purchase order editing"
 
@@ -2264,7 +2263,7 @@ msgstr "Company or personal website URL"
 msgid "Completed"
 msgstr "Completed"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:211
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:213
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/ExistingPurchaseOrderDetails.tsx:284
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:152
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:272
@@ -2711,8 +2710,8 @@ msgstr "Create new counterpart"
 msgid "Create new counterpart:"
 msgstr "Create new counterpart:"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:485
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:520
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:483
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:518
 msgid "Create new item"
 msgstr "Create new item"
 
@@ -2750,13 +2749,13 @@ msgid "Create product or service"
 msgstr "Create product or service"
 
 #: src/components/payables/PurchaseOrders/components/CreatePurchaseOrderHeader.tsx:38
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:468
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:514
 msgid "Create purchase order"
 msgstr "Create purchase order"
 
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:174
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:175
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:177
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:189
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:194
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:199
 msgid "Create Purchase Order"
 msgstr "Create Purchase Order"
 
@@ -2781,7 +2780,7 @@ msgstr "Create user role"
 msgid "Create your first counterpart."
 msgstr "Create your first counterpart."
 
-#: src/components/payables/shared/ConfigurableDataTable.tsx:143
+#: src/components/payables/shared/ConfigurableDataTable.tsx:146
 msgid "Create your first item to get started"
 msgstr "Create your first item to get started"
 
@@ -2789,11 +2788,11 @@ msgstr "Create your first item to get started"
 msgid "Create your first product or service"
 msgstr "Create your first product or service"
 
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:172
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:183
 msgid "Create your first purchase order to get started"
 msgstr "Create your first purchase order to get started"
 
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:74
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:91
 msgid "Created"
 msgstr "Created"
 
@@ -2880,7 +2879,7 @@ msgstr "Cuba"
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:77
 #: src/components/onboarding/validators/validationSchemas.ts:111
 #: src/components/payables/PurchaseOrders/components/CreatePurchaseOrderHeader.tsx:60
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:484
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:542
 #: src/components/products/ProductDetails/validation.ts:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:609
 #: src/components/receivables/validation.ts:16
@@ -2892,12 +2891,12 @@ msgstr "Currency"
 msgid "Currency for the invoice amount"
 msgstr "Currency for the invoice amount"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:299
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:325
 msgid "Currency is not defined"
 msgstr "Currency is not defined"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:150
-#: src/components/payables/PurchaseOrders/validation.ts:147
+#: src/components/payables/PurchaseOrders/validation.ts:153
 #: src/components/receivables/validation.ts:102
 msgid "Currency is required"
 msgstr "Currency is required"
@@ -2999,7 +2998,7 @@ msgstr "Date when the invoice was issued"
 msgid "Dating/Escort Services"
 msgstr "Dating/Escort Services"
 
-#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:68
+#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:77
 msgid "day{0}"
 msgstr "day{0}"
 
@@ -3298,9 +3297,9 @@ msgstr "Description is required"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:362
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:217
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:668
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:67
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:152
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:776
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:78
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:171
 #: src/components/receivables/components/InvoiceDetails.tsx:186
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:175
 msgid "Details"
@@ -3453,12 +3452,12 @@ msgstr "Doctors"
 #~ msgid "Document design"
 #~ msgstr "Document design"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:118
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:139
 msgid "Document ID"
 msgstr "Document ID"
 
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:129
-#: src/components/templateSettings/TemplateSettings.tsx:96
+#: src/components/templateSettings/TemplateSettings.tsx:93
 msgid "Document number"
 msgstr "Document number"
 
@@ -3536,9 +3535,9 @@ msgstr "Download PDF"
 #: src/components/payables/consts.ts:32
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:82
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:119
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:26
-#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:44
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:77
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:27
+#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:45
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:91
 #: src/components/receivables/utils/getCommonStatusLabel.ts:11
 msgid "Draft"
 msgstr "Draft"
@@ -3815,7 +3814,7 @@ msgstr "Edit preset"
 msgid "Edit profile"
 msgstr "Edit profile"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:468
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:513
 msgid "Edit purchase order"
 msgstr "Edit purchase order"
 
@@ -3850,7 +3849,7 @@ msgid "Edit tags"
 msgstr "Edit tags"
 
 #: src/components/payables/PurchaseOrders/components/CreatePurchaseOrderHeader.tsx:65
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:489
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:549
 #: src/components/receivables/components/InvoiceDetailsActions.tsx:234
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:616
 #: src/components/templateSettings/TemplateSettings.tsx:180
@@ -3996,7 +3995,7 @@ msgstr "Employment/Temp Agencies"
 msgid "Enable email reminders"
 msgstr "Enable email reminders"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:557
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:641
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:621
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:750
 msgid "Enable more fields"
@@ -4275,21 +4274,21 @@ msgstr "Expires on"
 #~ msgid "Expires on: {0}"
 #~ msgstr "Expires on: {0}"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:163
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:182
 #: src/components/payables/PurchaseOrders/sections/PurchaseOrderDetailsSection.tsx:29
-#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:54
+#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:63
 msgid "Expiry date"
 msgstr "Expiry date"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:130
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:155
 msgid "Expiry Date"
 msgstr "Expiry Date"
 
-#: src/components/payables/PurchaseOrders/validation.ts:124
+#: src/components/payables/PurchaseOrders/validation.ts:130
 msgid "Expiry date is a required field"
 msgstr "Expiry date is a required field"
 
-#: src/components/payables/PurchaseOrders/validation.ts:141
+#: src/components/payables/PurchaseOrders/validation.ts:147
 msgid "Expiry date must be today or in the future"
 msgstr "Expiry date must be today or in the future"
 
@@ -4342,11 +4341,11 @@ msgstr "Failed to create payment record: {errorMessage}"
 msgid "Failed to create payment term, please try again."
 msgstr "Failed to create payment term, please try again."
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:366
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:405
 msgid "Failed to create purchase order"
 msgstr "Failed to create purchase order"
 
-#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:27
+#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:31
 msgid "Failed to create purchase order: {errorMessage}"
 msgstr "Failed to create purchase order: {errorMessage}"
 
@@ -4407,7 +4406,7 @@ msgstr "Failed to remove logo."
 msgid "Failed to retrieve payment link. Please try again."
 msgstr "Failed to retrieve payment link. Please try again."
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:173
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:175
 msgid "Failed to send purchase order"
 msgstr "Failed to send purchase order"
 
@@ -4444,7 +4443,7 @@ msgstr "Failed to update Contact Person."
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:349
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:384
 msgid "Failed to update purchase order"
 msgstr "Failed to update purchase order"
 
@@ -4936,6 +4935,18 @@ msgstr "Greece"
 msgid "Greenland"
 msgstr "Greenland"
 
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:79
+msgid ""
+"Greetings {0},\n"
+"Please find the purchase order attached to this letter.\n"
+"Kind Regards,\n"
+"{1}"
+msgstr ""
+"Greetings {0},\n"
+"Please find the purchase order attached to this letter.\n"
+"Kind Regards,\n"
+"{1}"
+
 #: src/core/utils/countries.ts:104
 msgid "Grenada"
 msgstr "Grenada"
@@ -5041,14 +5052,14 @@ msgstr ""
 "{1}"
 
 #: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:74
-msgid ""
-"Hi {0},\n"
-"Please find the purchase order attached as discussed.\n"
-"Kind Regards"
-msgstr ""
-"Hi {0},\n"
-"Please find the purchase order attached as discussed.\n"
-"Kind Regards"
+#~ msgid ""
+#~ "Hi {0},\n"
+#~ "Please find the purchase order attached as discussed.\n"
+#~ "Kind Regards"
+#~ msgstr ""
+#~ "Hi {0},\n"
+#~ "Please find the purchase order attached as discussed.\n"
+#~ "Kind Regards"
 
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.tsx:75
 #~ msgid ""
@@ -5374,7 +5385,7 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/receivables/components/QuotesTable.tsx:303
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:77
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:92
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:377
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:378
 #: src/components/receivables/utils/getTypeLabel.ts:11
 #: src/components/templateSettings/components/DisplayBankSection.tsx:106
 #: src/components/templateSettings/utils.ts:9
@@ -5551,7 +5562,7 @@ msgstr "Issue"
 msgid "Issue and send"
 msgstr "Issue and send"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:229
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:231
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:321
 msgid "Issue and Send"
 msgstr "Issue and Send"
@@ -5568,7 +5579,7 @@ msgstr "Issue at"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:197
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:546
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:306
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:157
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:176
 #: src/components/receivables/components/CreditNotesTable.tsx:152
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:133
 #: src/components/receivables/components/InvoicesTable.tsx:326
@@ -5578,7 +5589,7 @@ msgstr "Issue at"
 msgid "Issue date"
 msgstr "Issue date"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:126
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:149
 #: src/components/receivables/components/QuotesTable.tsx:180
 msgid "Issue Date"
 msgstr "Issue Date"
@@ -5603,9 +5614,9 @@ msgstr "Issue only"
 msgid "Issue purchase order and email it to vendor"
 msgstr "Issue purchase order and email it to vendor"
 
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:85
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:27
-#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:48
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:107
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:28
+#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:49
 #: src/components/receivables/utils/getCommonStatusLabel.ts:13
 msgid "Issued"
 msgstr "Issued"
@@ -5669,7 +5680,7 @@ msgstr "Italy"
 msgid "item"
 msgstr "item"
 
-#: src/components/payables/shared/ConfigurableDataTable.tsx:145
+#: src/components/payables/shared/ConfigurableDataTable.tsx:148
 msgid "Item"
 msgstr "Item"
 
@@ -5688,7 +5699,7 @@ msgstr "Item"
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:28
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:298
-#: src/components/shared/ItemsSection/ItemsSection.tsx:467
+#: src/components/shared/ItemsSection/ItemsSection.tsx:470
 msgid "Item name"
 msgstr "Item name"
 
@@ -5745,6 +5756,7 @@ msgstr "items"
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:99
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:120
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:282
+#: src/components/shared/ItemsSection/ItemsSection.tsx:445
 msgid "Items"
 msgstr "Items"
 
@@ -5928,7 +5940,7 @@ msgstr "Laundries"
 msgid "Laundry, Cleaning Services"
 msgstr "Laundry, Cleaning Services"
 
-#: src/components/templateSettings/TemplateSettings.tsx:88
+#: src/components/templateSettings/TemplateSettings.tsx:85
 msgid "Layout and logo"
 msgstr "Layout and logo"
 
@@ -6021,9 +6033,9 @@ msgstr "Line 1"
 msgid "Line 2"
 msgstr "Line 2"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:373
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:548
-#: src/components/shared/ItemsSection/ManualItemSelector.tsx:35
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:371
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/ItemSelector.tsx:546
+#: src/components/shared/ItemsSection/ManualItemSelector.tsx:39
 msgid "Line item"
 msgstr "Line item"
 
@@ -6056,7 +6068,7 @@ msgstr "Loading..."
 msgid "Loan sum"
 msgstr "Loan sum"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:90
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:104
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:108
 msgid "Logo"
 msgstr "Logo"
@@ -6284,10 +6296,10 @@ msgstr "Mens, Womens Clothing Stores"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:568
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:578
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:134
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:176
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:655
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:667
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:163
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:195
 #: src/components/payables/PurchaseOrders/sections/PurchaseOrderDetailsSection.tsx:58
 #: src/components/payables/PurchaseOrders/sections/PurchaseOrderEntitySection.tsx:31
 msgid "Message"
@@ -6516,7 +6528,7 @@ msgstr "N/A"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:41
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:478
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:95
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:106
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:111
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:137
 #: src/components/receivables/components/EntityProfileFormContent.tsx:74
@@ -6683,7 +6695,7 @@ msgid "Niue"
 msgstr "Niue"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:40
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:416
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:417
 msgid "No"
 msgstr "No"
 
@@ -6732,11 +6744,11 @@ msgstr "No counterparts yet"
 msgid "No Credit Notes"
 msgstr "No Credit Notes"
 
-#: src/components/payables/shared/ConfigurableDataTable.tsx:144
+#: src/components/payables/shared/ConfigurableDataTable.tsx:147
 msgid "No data found"
 msgstr "No data found"
 
-#: src/components/payables/shared/ConfigurableDataTable.tsx:141
+#: src/components/payables/shared/ConfigurableDataTable.tsx:142
 msgid "No data yet"
 msgstr "No data yet"
 
@@ -6756,7 +6768,7 @@ msgstr "No file provided"
 msgid "No info"
 msgstr "No info"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:243
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:264
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:299
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:347
 msgid "No items"
@@ -6774,7 +6786,7 @@ msgstr "No items created in"
 msgid "No items yet"
 msgstr "No items yet"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:93
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:84
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:111
 msgid "No logo"
@@ -6829,11 +6841,11 @@ msgstr "No products or services yet"
 #~ msgid "No purchase orders"
 #~ msgstr "No purchase orders"
 
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:173
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:186
 msgid "No purchase orders found"
 msgstr "No purchase orders found"
 
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:170
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:181
 msgid "No purchase orders yet"
 msgstr "No purchase orders yet"
 
@@ -6971,7 +6983,7 @@ msgid "Not available"
 msgstr "Not available"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:409
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:105
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:124
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:95
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:140
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:159
@@ -6992,8 +7004,8 @@ msgstr "Not specified"
 msgid "Note to customer"
 msgstr "Note to customer"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:589
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:599
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:685
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:699
 #: src/components/payables/PurchaseOrders/sections/PurchaseOrderEntitySection.tsx:70
 msgid "Note to vendor"
 msgstr "Note to vendor"
@@ -7002,7 +7014,7 @@ msgstr "Note to vendor"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:372
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:242
 #: src/components/payables/PayablesTable/PayablesTable.tsx:257
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:41
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:50
 #: src/components/receivables/components/CreditNotesTable.tsx:123
 #: src/components/receivables/components/InvoicesTable.tsx:210
 #: src/components/receivables/components/QuotesTable.tsx:144
@@ -7120,7 +7132,7 @@ msgstr "Osteopaths"
 msgid "Other countries"
 msgstr "Other countries"
 
-#: src/components/templateSettings/TemplateSettings.tsx:105
+#: src/components/templateSettings/TemplateSettings.tsx:102
 msgid "Other settings"
 msgstr "Other settings"
 
@@ -7145,7 +7157,7 @@ msgstr "Overdue reminder error"
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:61
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:72
 #: src/components/receivables/components/InvoiceDetails.tsx:183
 msgid "Overview"
 msgstr "Overview"
@@ -7391,7 +7403,7 @@ msgstr "Payment"
 msgid "Payment details"
 msgstr "Payment details"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:142
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:173
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:397
 msgid "Payment Details"
 msgstr "Payment Details"
@@ -7666,7 +7678,7 @@ msgstr "Please add any individual who owns 25% or more of the company."
 msgid "Please add any individual who owns 25% or more of your business."
 msgstr "Please add any individual who owns 25% or more of your business."
 
-#: src/components/payables/PurchaseOrders/validation.ts:102
+#: src/components/payables/PurchaseOrders/validation.ts:105
 msgid "Please add at least 1 item to proceed"
 msgstr "Please add at least 1 item to proceed"
 
@@ -7674,7 +7686,7 @@ msgstr "Please add at least 1 item to proceed"
 msgid "Please check the form for errors"
 msgstr "Please check the form for errors"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:638
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:743
 msgid "Please check the form for errors and try again."
 msgstr "Please check the form for errors and try again."
 
@@ -7710,12 +7722,12 @@ msgstr ""
 "{0}"
 
 #: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:79
-msgid ""
-"Please find the purchase order attached as discussed.\n"
-"Kind Regards"
-msgstr ""
-"Please find the purchase order attached as discussed.\n"
-"Kind Regards"
+#~ msgid ""
+#~ "Please find the purchase order attached as discussed.\n"
+#~ "Kind Regards"
+#~ msgstr ""
+#~ "Please find the purchase order attached as discussed.\n"
+#~ "Kind Regards"
 
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.tsx:81
 #~ msgid ""
@@ -7727,7 +7739,15 @@ msgstr ""
 #~ "Kind Regards,\n"
 #~ "{0}"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/useExistingPurchaseOrderDetails.tsx:78
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:85
+msgid ""
+"Please find the purchase order attached to this letter.\n"
+"Kind Regards"
+msgstr ""
+"Please find the purchase order attached to this letter.\n"
+"Kind Regards"
+
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/useExistingPurchaseOrderDetails.tsx:74
 msgid "Please find the purchase order attached."
 msgstr "Please find the purchase order attached."
 
@@ -7765,7 +7785,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/components/payables/PurchaseOrders/validation.ts:39
+#: src/components/payables/PurchaseOrders/validation.ts:42
 msgid "Please select a valid measure unit"
 msgstr "Please select a valid measure unit"
 
@@ -7785,7 +7805,7 @@ msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:423
-#: src/components/shared/ItemsSection/ItemsSection.tsx:645
+#: src/components/shared/ItemsSection/ItemsSection.tsx:653
 msgid "Please use some of the rows before adding new ones."
 msgstr "Please use some of the rows before adding new ones."
 
@@ -7822,7 +7842,7 @@ msgstr "Please, review the offered credit limit and approved financing plans."
 msgid "Plumbing, Heating Equipment, and Supplies"
 msgstr "Plumbing, Heating Equipment, and Supplies"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:119
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:140
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/ExistingPurchaseOrderDetails.tsx:136
 msgid "PO-auto"
 msgstr "PO-auto"
@@ -7922,7 +7942,7 @@ msgstr "Preset Name"
 msgid "Preview email"
 msgstr "Preview email"
 
-#: src/components/templateSettings/components/LayoutAndLogo.tsx:52
+#: src/components/templateSettings/components/LayoutAndLogo.tsx:53
 #: src/components/templateSettings/components/TemplateOption.tsx:62
 msgid "Preview of {0}"
 msgstr "Preview of {0}"
@@ -7938,12 +7958,12 @@ msgstr "Previous page"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:480
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:191
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:210
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:218
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:281
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:313
-#: src/components/shared/ItemsSection/ItemsSection.tsx:482
+#: src/components/shared/ItemsSection/ItemsSection.tsx:485
 msgid "Price"
 msgstr "Price"
 
@@ -7951,7 +7971,7 @@ msgstr "Price"
 #~ msgid "PRICE ({currency})"
 #~ msgstr "PRICE ({currency})"
 
-#: src/components/payables/PurchaseOrders/validation.ts:50
+#: src/components/payables/PurchaseOrders/validation.ts:53
 msgid "Price must be 0 or greater"
 msgstr "Price must be 0 or greater"
 
@@ -7983,7 +8003,7 @@ msgstr "Processing file"
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:189
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:208
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:138
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:18
 #: src/components/products/ProductsTable/ProductsTable.tsx:315
@@ -8099,17 +8119,16 @@ msgstr "Puerto Rico"
 msgid "Purchase order"
 msgstr "Purchase order"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:86
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/useExistingPurchaseOrderDetails.tsx:77
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/useExistingPurchaseOrderDetails.tsx:73
 #: src/components/payables/PurchaseOrders/PreviewPurchaseOrderEmail.tsx:115
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:181
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:76
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:205
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:90
 msgid "Purchase Order"
 msgstr "Purchase Order"
 
 #: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:85
-msgid "Purchase Order {0}"
-msgstr "Purchase Order {0}"
+#~ msgid "Purchase Order {0}"
+#~ msgstr "Purchase Order {0}"
 
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.tsx:89
 #~ msgid "Purchase order {0} from {entityName}"
@@ -8119,19 +8138,19 @@ msgstr "Purchase Order {0}"
 msgid "Purchase order {documentId} to {0}"
 msgstr "Purchase order {documentId} to {0}"
 
-#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:114
+#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:125
 msgid "Purchase order created successfully"
 msgstr "Purchase order created successfully"
 
-#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:151
+#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:162
 msgid "Purchase order deleted successfully"
 msgstr "Purchase order deleted successfully"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:115
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:136
 msgid "Purchase Order Details"
 msgstr "Purchase Order Details"
 
-#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:19
+#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:21
 msgid "Purchase order for \"{0}\" was created"
 msgstr "Purchase order for \"{0}\" was created"
 
@@ -8143,11 +8162,15 @@ msgstr "Purchase order for \"{0}\" was updated"
 #~ msgid "Purchase order from {entityName}"
 #~ msgstr "Purchase order from {entityName}"
 
-#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:23
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:89
+msgid "Purchase Order from Monite"
+msgstr "Purchase Order from Monite"
+
+#: src/components/payables/PurchaseOrders/hooks/useCreatePurchaseOrder.ts:27
 msgid "Purchase order has been created"
 msgstr "Purchase order has been created"
 
-#: src/components/payables/PurchaseOrders/hooks/useSendPurchaseOrderById.ts:29
+#: src/components/payables/PurchaseOrders/hooks/useSendPurchaseOrderById.ts:26
 msgid "Purchase order has been sent"
 msgstr "Purchase order has been sent"
 
@@ -8155,7 +8178,7 @@ msgstr "Purchase order has been sent"
 msgid "Purchase order has been updated"
 msgstr "Purchase order has been updated"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:163
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:165
 msgid "Purchase order issued and sent successfully"
 msgstr "Purchase order issued and sent successfully"
 
@@ -8169,16 +8192,16 @@ msgstr "Purchase order not found"
 #~ msgid "Purchase Order Preview"
 #~ msgstr "Purchase Order Preview"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:164
-#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:171
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:166
+#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:182
 msgid "Purchase order sent successfully"
 msgstr "Purchase order sent successfully"
 
-#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:133
+#: src/components/payables/PurchaseOrders/hooks/usePurchaseOrderDetails.tsx:144
 msgid "Purchase order updated successfully"
 msgstr "Purchase order updated successfully"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:519
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:590
 msgid "Purchase order will be issued with items in the selected currency"
 msgstr "Purchase order will be issued with items in the selected currency"
 
@@ -8194,7 +8217,7 @@ msgstr "Qatar"
 msgid "Qatari Rial"
 msgstr "Qatari Rial"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:190
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:209
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:215
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:280
 msgid "Qty"
@@ -8211,7 +8234,7 @@ msgstr "Qty x Price"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:479
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:62
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:301
-#: src/components/shared/ItemsSection/ItemsSection.tsx:470
+#: src/components/shared/ItemsSection/ItemsSection.tsx:473
 msgid "Quantity"
 msgstr "Quantity"
 
@@ -8219,7 +8242,7 @@ msgstr "Quantity"
 msgid "Quantity is a required field"
 msgstr "Quantity is a required field"
 
-#: src/components/payables/PurchaseOrders/validation.ts:30
+#: src/components/payables/PurchaseOrders/validation.ts:33
 msgid "Quantity must be greater than 0"
 msgstr "Quantity must be greater than 0"
 
@@ -8647,7 +8670,7 @@ msgid "Routing number must be 9 digits"
 msgstr "Routing number must be 9 digits"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:420
-#: src/components/shared/ItemsSection/ItemsSection.tsx:641
+#: src/components/shared/ItemsSection/ItemsSection.tsx:650
 msgid "Row"
 msgstr "Row"
 
@@ -8760,8 +8783,8 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:332
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:75
 #: src/components/payables/PurchaseOrders/components/CreatePurchaseOrderHeader.tsx:76
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:548
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:622
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:627
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:727
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/components/EditCounterpartModal.tsx:439
 #: src/components/receivables/components/EntityProfileModal.tsx:171
@@ -8778,7 +8801,7 @@ msgstr "Saudi Riyal"
 msgid "Save"
 msgstr "Save"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:501
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:563
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:639
 msgid "Save and continue"
 msgstr "Save and continue"
@@ -8849,7 +8872,7 @@ msgid "Search by name"
 msgstr "Search by name"
 
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:40
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:53
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:54
 msgid "Search by number or vendor"
 msgstr "Search by number or vendor"
 
@@ -8926,7 +8949,7 @@ msgstr "Select VAT mode"
 msgid "Select vendor"
 msgstr "Select vendor"
 
-#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:229
+#: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.tsx:231
 #: src/components/receivables/components/InvoiceDetailsActions.tsx:186
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:321
 msgid "Send"
@@ -9352,9 +9375,9 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/financing/components/FinancedInvoicesTable.tsx:169
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:53
 #: src/components/payables/PayablesTable/PayablesTable.tsx:338
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:56
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:122
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:66
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:69
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:143
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:67
 #: src/components/receivables/components/InvoicesTable.tsx:285
 #: src/components/receivables/components/QuotesTable.tsx:165
 #: src/components/receivables/components/ReceivableFilters.tsx:74
@@ -9371,7 +9394,7 @@ msgid "Stylish"
 msgstr "Stylish"
 
 #: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.form.components.tsx:169
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.form.components.tsx:129
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.form.components.tsx:137
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:261
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:316
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:371
@@ -9383,11 +9406,11 @@ msgstr "Stylish"
 msgid "Subject"
 msgstr "Subject"
 
-#: src/components/payables/PurchaseOrders/validation.ts:187
+#: src/components/payables/PurchaseOrders/validation.ts:193
 msgid "Subject is a required field"
 msgstr "Subject is a required field"
 
-#: src/components/payables/PurchaseOrders/validation.ts:178
+#: src/components/payables/PurchaseOrders/validation.ts:184
 #: src/components/receivables/validation.ts:316
 msgid "Subject is required"
 msgstr "Subject is required"
@@ -9420,8 +9443,8 @@ msgstr "Submit purchase order"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:625
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:528
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:145
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:255
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:176
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:276
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:67
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:317
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:359
@@ -9567,16 +9590,16 @@ msgstr "Tanzania"
 msgid "Tanzanian Shilling"
 msgstr "Tanzanian Shilling"
 
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:149
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:185
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:92
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:231
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
-#: src/components/shared/ItemsSection/ItemsSection.tsx:488
+#: src/components/shared/ItemsSection/ItemsSection.tsx:491
 msgid "Tax"
 msgstr "Tax"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:193
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:212
 msgid "Tax (%)"
 msgstr "Tax (%)"
 
@@ -9671,7 +9694,7 @@ msgstr "Tax rate cannot exceed 100%"
 #~ msgid "Tax rate is a required field"
 #~ msgstr "Tax rate is a required field"
 
-#: src/components/payables/PurchaseOrders/validation.ts:87
+#: src/components/payables/PurchaseOrders/validation.ts:90
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:63
 msgid "Tax rate must be 0 or greater"
 msgstr "Tax rate must be 0 or greater"
@@ -9680,7 +9703,7 @@ msgstr "Tax rate must be 0 or greater"
 msgid "Tax rate must be 100 or less"
 msgstr "Tax rate must be 100 or less"
 
-#: src/components/payables/PurchaseOrders/validation.ts:88
+#: src/components/payables/PurchaseOrders/validation.ts:91
 msgid "Tax rate must be 100% or less"
 msgstr "Tax rate must be 100% or less"
 
@@ -9732,7 +9755,7 @@ msgstr "Tell us more about your business"
 msgid "Template settings"
 msgstr "Template settings"
 
-#: src/components/templateSettings/TemplateSettings.tsx:75
+#: src/components/templateSettings/TemplateSettings.tsx:72
 msgid "Template settings tabs"
 msgstr "Template settings tabs"
 
@@ -9906,7 +9929,7 @@ msgstr "There are no items created with this measure unit."
 #~ msgid "There are no items here"
 #~ msgstr "There are no items here"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:412
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:413
 msgid "There are unsaved changes. If you leave, they will be lost."
 msgstr "There are unsaved changes. If you leave, they will be lost."
 
@@ -10085,8 +10108,8 @@ msgid "Title"
 msgstr "Title"
 
 #: src/components/payables/PurchaseOrders/EmailPurchaseOrderDetails.form.components.tsx:148
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.form.components.tsx:111
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:101
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/EmailPurchaseOrderDetails.form.components.tsx:116
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:120
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:119
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.components.tsx:137
 msgid "To"
@@ -10115,7 +10138,7 @@ msgstr "To delete this role, remove it from all users"
 msgid "to get discount"
 msgstr "to get discount"
 
-#: src/components/payables/PurchaseOrders/validation.ts:177
+#: src/components/payables/PurchaseOrders/validation.ts:183
 #: src/components/receivables/validation.ts:315
 msgid "To is required"
 msgstr "To is required"
@@ -10155,7 +10178,7 @@ msgstr "Tongan Paʻanga"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:722
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:340
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:566
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:153
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:194
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/OverviewTabPanel.tsx:58
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:339
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:368
@@ -10169,7 +10192,7 @@ msgstr "Total"
 msgid "Total"
 msgstr "Total"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:274
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:300
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:379
 msgid "TOTAL"
 msgstr "TOTAL"
@@ -10186,7 +10209,7 @@ msgstr "Total Amount"
 msgid "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 msgstr "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 
-#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:264
+#: src/components/payables/PurchaseOrders/sections/components/PurchaseOrderPreviewMonite.tsx:285
 msgid "Total tax"
 msgstr "Total tax"
 
@@ -10412,7 +10435,7 @@ msgstr "Unique Entity Number (Singapore)"
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:165
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:151
 #: src/components/products/ProductsTable/ProductsTable.tsx:193
-#: src/components/shared/ItemsSection/GenericQuantityField.tsx:69
+#: src/components/shared/ItemsSection/GenericQuantityField.tsx:78
 msgid "Unit"
 msgstr "Unit"
 
@@ -10483,7 +10506,7 @@ msgstr "Units"
 #~ msgstr "UNITS"
 
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:84
-#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:63
+#: src/components/payables/PurchaseOrders/PurchaseOrderStatusChip.tsx:66
 #: src/components/receivables/components/InvoiceRecurrenceIterationStatusChip.tsx:109
 #: src/components/receivables/components/InvoiceRecurrenceStatusChip.tsx:102
 #: src/components/templateSettings/utils.ts:37
@@ -10521,7 +10544,7 @@ msgstr "Unsupported file type for {0}"
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:208
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:464
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:244
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:245
 #: src/ui/tagsModal/tagsModal.tsx:53
 msgid "Update"
 msgstr "Update"
@@ -10691,16 +10714,16 @@ msgstr "Uzbekistan"
 msgid "Uzbekistan Som"
 msgstr "Uzbekistan Som"
 
-#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:68
+#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:77
 msgid "Valid for"
 msgstr "Valid for"
 
 #: src/components/payables/PurchaseOrders/sections/PurchaseOrderDetailsSection.tsx:40
-#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:92
+#: src/components/payables/PurchaseOrders/sections/PurchaseOrderTermsSummary.tsx:104
 msgid "Valid for (days)"
 msgstr "Valid for (days)"
 
-#: src/components/payables/PurchaseOrders/validation.ts:111
+#: src/components/payables/PurchaseOrders/validation.ts:117
 msgid "Valid for days must be greater than 0"
 msgstr "Valid for days must be greater than 0"
 
@@ -10775,7 +10798,7 @@ msgstr "Variety Stores"
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:98
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
-#: src/components/shared/ItemsSection/ItemsSection.tsx:488
+#: src/components/shared/ItemsSection/ItemsSection.tsx:491
 msgid "VAT"
 msgstr "VAT"
 
@@ -10796,7 +10819,7 @@ msgid "VAT Country"
 msgstr "VAT Country"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:438
-#: src/components/shared/ItemsSection/ItemsSection.tsx:661
+#: src/components/shared/ItemsSection/ItemsSection.tsx:669
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
@@ -10864,11 +10887,11 @@ msgstr "VAT is a required field"
 #~ msgid "VAT Rate"
 #~ msgstr "VAT Rate"
 
-#: src/components/payables/PurchaseOrders/validation.ts:72
+#: src/components/payables/PurchaseOrders/validation.ts:75
 msgid "VAT rate must be 0 or greater"
 msgstr "VAT rate must be 0 or greater"
 
-#: src/components/payables/PurchaseOrders/validation.ts:73
+#: src/components/payables/PurchaseOrders/validation.ts:76
 msgid "VAT rate must be 100% or less"
 msgstr "VAT rate must be 100% or less"
 
@@ -10933,11 +10956,11 @@ msgstr "VAT Value is required"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:253
 #: src/components/payables/PayablesTable/PayablesTable.tsx:287
 #: src/components/payables/PurchaseOrders/components/VendorSelector.tsx:213
-#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:65
-#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:92
+#: src/components/payables/PurchaseOrders/config/tableConfig.tsx:80
+#: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/Overview.tsx:103
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/components/OverviewTabPanel.tsx:46
 #: src/components/payables/PurchaseOrders/ExistingPurchaseOrderDetails/ExistingPurchaseOrderDetails.tsx:183
-#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:95
+#: src/components/payables/PurchaseOrders/Filters/Filters.tsx:97
 #: src/components/payables/PurchaseOrders/PreviewPurchaseOrderEmail.tsx:28
 #: src/components/payables/PurchaseOrders/PreviewPurchaseOrderEmail.tsx:35
 msgid "Vendor"
@@ -10951,7 +10974,7 @@ msgstr "Vendor auto-matched by AI"
 msgid "Vendor auto-matched by AI. The vendor name on the bill doesn’t exactly match the saved counterpart, so AI selected the closest option."
 msgstr "Vendor auto-matched by AI. The vendor name on the bill doesn’t exactly match the saved counterpart, so AI selected the closest option."
 
-#: src/components/payables/PurchaseOrders/validation.ts:99
+#: src/components/payables/PurchaseOrders/validation.ts:102
 msgid "Vendor is a required field"
 msgstr "Vendor is a required field"
 
@@ -11147,7 +11170,7 @@ msgid "Yemeni Rial"
 msgstr "Yemeni Rial"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:35
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:415
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:416
 msgid "Yes"
 msgstr "Yes"
 
@@ -11203,7 +11226,7 @@ msgstr "You can create your first tag."
 msgid "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 msgstr "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 
-#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:120
+#: src/components/payables/PurchaseOrders/CreatePurchaseOrder.tsx:123
 msgid "You can not create purchase order with a type other than \"{purchase_order}\""
 msgstr "You can not create purchase order with a type other than \"{purchase_order}\""
 
@@ -11278,7 +11301,7 @@ msgstr "You don’t have any counterparts yet."
 msgid "You don’t have any credit notes yet."
 msgstr "You don’t have any credit notes yet."
 
-#: src/components/payables/shared/ConfigurableDataTable.tsx:142
+#: src/components/payables/shared/ConfigurableDataTable.tsx:144
 msgid "You don't have any data yet"
 msgstr "You don't have any data yet"
 
@@ -11290,7 +11313,7 @@ msgstr "You don’t have any invoices yet."
 msgid "You don’t have any products or services yet"
 msgstr "You don’t have any products or services yet"
 
-#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:171
+#: src/components/payables/PurchaseOrders/PurchaseOrdersTable.tsx:182
 msgid "You don't have any purchase orders yet"
 msgstr "You don't have any purchase orders yet"
 
