@@ -143,6 +143,10 @@ const EntityProfileForm = ({
                 type: values.vat_type as components['schemas']['VatIDTypeEnum'],
                 country:
                   values.vat_country as components['schemas']['AllowedCountries'],
+              }, { 
+                onSuccess: () => {
+                  onClose();
+                }
               });
             } else {
               patchEntityVat({
@@ -150,10 +154,12 @@ const EntityProfileForm = ({
                 type: values.vat_type as components['schemas']['VatIDTypeEnum'],
                 country:
                   values.vat_country as components['schemas']['AllowedCountries'],
+              }, {
+                onSuccess: () => {
+                  onClose();
+                }
               });
             }
-
-            onClose();
           })}
         >
           <DialogContent className="mtw:max-h-4/5 mtw:overflow-y-auto">
