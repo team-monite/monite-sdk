@@ -82,7 +82,6 @@ const EditInvoiceDetailsContent = ({
   const {
     isLoading: isEntityLoading,
     isNonVatSupported,
-    isNonCompliantFlow,
   } = useMyEntity();
 
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
@@ -161,7 +160,6 @@ const EditInvoiceDetailsContent = ({
       getUpdateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
-        isNonCompliantFlow
       )
     ),
     defaultValues,

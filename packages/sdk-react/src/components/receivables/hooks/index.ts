@@ -30,3 +30,5 @@ export { useCreateRecurrence } from './useCreateRecurrence';
 export { useGetRecurrenceById } from './useGetRecurrenceById';
 export { useCancelRecurrence } from './useCancelRecurrence';
 export { useUpdateRecurrenceById } from './useUpdateRecurrenceById';
+export { useGetInvoiceRequiredFields } from './useGetInvoiceRequiredFields';
+export { useCreateEntityVatId } from './useCreateEntityVatId';

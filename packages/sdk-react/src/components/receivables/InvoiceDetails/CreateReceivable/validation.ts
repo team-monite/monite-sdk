@@ -82,14 +82,10 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
 const getBaseInvoiceSchema = (
   i18n: I18n,
   isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean
 ) =>
   z.object({
     counterpart_id: z.string().min(1, t(i18n)`Customer is a required field`),
-    entity_vat_id_id:
-      isNonCompliantFlow || isNonVatSupported
-        ? z.string().optional()
-        : z.string().min(1, t(i18n)`Entity VAT is a required field`),
+    entity_vat_id_id: z.string().optional(),
     counterpart_vat_id_id: z.string().optional(),
     fulfillment_date: z.date().nullable().optional(),
     purchase_order: z.string().optional(),
@@ -116,14 +112,12 @@ const getBaseInvoiceSchema = (
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
   isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean,
   shouldEnableBankAccount: boolean,
   isRecurrenceEnabled: boolean,
 ) => {
   const baseInvoiceSchema = getBaseInvoiceSchema(
     i18n,
     isNonVatSupported,
-    isNonCompliantFlow
   );
 
   return baseInvoiceSchema.extend({
@@ -155,12 +149,10 @@ export type CreateReceivablesFormProps = z.infer<
 export const getUpdateInvoiceValidationSchema = (
   i18n: I18n,
   isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean
 ) => {
   const baseInvoiceSchema = getBaseInvoiceSchema(
     i18n,
     isNonVatSupported,
-    isNonCompliantFlow
   );
 
   return baseInvoiceSchema.extend({
