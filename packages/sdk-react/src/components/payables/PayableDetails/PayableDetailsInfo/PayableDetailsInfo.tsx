@@ -1,6 +1,7 @@
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
+  useLedgerAccounts,
 } from '../../hooks';
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
@@ -56,6 +57,12 @@ export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
   payable: components['schemas']['PayableResponseSchema'];
   updateTags?: (tags: components['schemas']['TagReadSchema'][]) => void;
+  /**
+   * Enable GL code display for payable line items.
+   * When true, GL codes are displayed next to line items.
+   * @default false
+   */
+  enableGLCodes?: boolean;
 }
 
 const DetailsWrapper = styled(Box)(() => ({
@@ -104,6 +111,7 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 const PayableDetailsInfoBase = ({
   payable,
   updateTags,
+  enableGLCodes = false,
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
@@ -133,6 +141,18 @@ const PayableDetailsInfoBase = ({
       payableId: payable.id,
     }
   );
+
+  const { data: ledgerAccounts } = useLedgerAccounts(enableGLCodes);
+
+  const getLedgerAccountName = (ledgerAccountId?: string) => {
+    if (!ledgerAccountId || !ledgerAccounts?.data) return null;
+
+    const account = ledgerAccounts.data.find(
+      (acc) => acc.id === ledgerAccountId
+    );
+
+    return account?.name || null;
+  };
 
   const ocrMismatchWarning = useMemo(() => {
     if (!payable || !ocrMismatchFields) return null;
@@ -478,6 +498,7 @@ const PayableDetailsInfoBase = ({
                   <TableCell>{t(i18n)`Name`}</TableCell>
                   <TableCell>{t(i18n)`Quantity`}</TableCell>
                   <TableCell>{t(i18n)`Price`}</TableCell>
+                  {enableGLCodes && <TableCell>{t(i18n)`GL Code`}</TableCell>}
                   <TableCell align="right">{t(i18n)`Total, tax`}</TableCell>
                 </TableRow>
               </TableHead>
@@ -494,6 +515,11 @@ const PayableDetailsInfoBase = ({
                           )
                         : '—'}
                     </TableCell>
+                    {enableGLCodes && (
+                      <TableCell>
+                        {getLedgerAccountName(item.ledger_account_id) || '—'}
+                      </TableCell>
+                    )}
                     <TableCell align="right">
                       {item.subtotal && payable.currency ? (
                         <>

@@ -6,6 +6,7 @@ export type LineItem = {
   quantity: number;
   price: number;
   tax: number;
+  ledger_account_id?: string;
 };
 export interface PayableDetailsFormFields {
   invoiceNumber: string;
