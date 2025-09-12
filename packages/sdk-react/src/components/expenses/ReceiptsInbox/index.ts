@@ -1,0 +1,1 @@
+export { ReceiptsInbox } from './ReceiptsInbox';
