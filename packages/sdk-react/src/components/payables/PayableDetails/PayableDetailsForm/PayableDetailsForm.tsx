@@ -1,8 +1,8 @@
-import type { OptionalFields } from '../../types';
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
 } from '../../hooks';
+import type { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   type MonitePayableDetailsInfoProps,
@@ -41,6 +41,7 @@ import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -579,7 +580,10 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<PayableDetailsValidationFields, "currency">
+                      <MoniteCurrency<
+                        PayableDetailsValidationFields,
+                        'currency'
+                      >
                         name="currency"
                         control={control}
                         required={
@@ -675,29 +679,16 @@ const PayableDetailsFormBase = forwardRef<
                                   <DeleteIcon />
                                 </IconButton>
 
-                                <Controller
-                                  name="discount"
+                                <RHFTextField
                                   control={control}
-                                  render={({
-                                    field,
-                                    fieldState: { error },
-                                  }) => (
-                                    <TextField
-                                      {...field}
-                                      id={field.name}
-                                      variant="standard"
-                                      type="number"
-                                      inputProps={{ min: 0, step: 0.01 }}
-                                      error={Boolean(error)}
-                                      sx={{ width: 150 }}
-                                      InputProps={{
-                                        endAdornment:
-                                          getSymbolFromCurrency(
-                                            currentCurrency
-                                          ),
-                                      }}
-                                    />
-                                  )}
+                                  name="discount"
+                                  type="number"
+                                  inputProps={{ min: 0, step: 0.01 }}
+                                  sx={{ width: 150 }}
+                                  InputProps={{
+                                    endAdornment:
+                                      getSymbolFromCurrency(currentCurrency),
+                                  }}
                                 />
                               </Box>
                             </TableCell>
