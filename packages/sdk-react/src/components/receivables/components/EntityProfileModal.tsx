@@ -88,7 +88,7 @@ const EntityProfileForm = ({
   const { i18n } = useLingui();
   const vatId = vatIds?.[0];
   const { mutate: patchEntity } = usePatchEntityById();
-  const { mutate: patchEntityVat } = usePatchEntityVatById(vatId.id ?? '');
+  const { mutate: patchEntityVat } = usePatchEntityVatById(vatId?.id ?? '');
 
   const defaultValues = useMemo(
     () => getDefaultValues(entity, vatId),
@@ -193,7 +193,7 @@ export const EntityProfileModal = (props: EntityProfileModalProps) => {
   if (!isUpdateAllowed)
     return <AccessRestrictionModal open={props.open} onClose={props.onClose} />;
 
-  if (isLoading || isVatIdsLoading || !entity || !vatIds) return null;
+  if (isLoading || isVatIdsLoading || !entity) return null;
 
   return (
     <EntityProfileForm {...props} entity={entity} vatIds={vatIds?.data ?? []} />
