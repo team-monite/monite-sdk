@@ -270,11 +270,11 @@ const CreateReceivablesBase = ({
 
   const { data: requiredFields } = useGetInvoiceRequiredFields({
     entity_vat_id_id: entityVatIds?.data?.[0]?.id || undefined,
-    counterpart_billing_address_id: billingAddressId || undefined,
-    counterpart_country: counterpartBillingAddress?.country || undefined,
+    counterpart_billing_address_id: (counterpart?.id === counterpartId && billingAddressId) || undefined,
+    counterpart_country: (counterpartBillingAddress?.id === billingAddressId && counterpartBillingAddress?.country) || undefined,
     counterpart_id: counterpartId || undefined,
-    counterpart_type: counterpart?.type || undefined,
-    counterpart_vat_id_id: counterpartVats?.data?.[0]?.id || undefined,
+    counterpart_type: (counterpart?.id === counterpartId && counterpart?.type) || undefined,
+    counterpart_vat_id_id: (counterpart?.id === counterpartId && counterpartVats?.data?.[0]?.id) || undefined,
   });
 
   const entityVatId = watch('entity_vat_id_id');
