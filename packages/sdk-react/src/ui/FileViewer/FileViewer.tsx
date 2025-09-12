@@ -46,9 +46,11 @@ export const FileViewer = ({
 export const ImageFileViewer = ({
   url,
   name,
+  objectFit = 'contain',
 }: {
   url: string;
   name: string;
+  objectFit?: 'contain' | 'cover' | 'fill';
 }) => {
   return (
     <img
@@ -57,11 +59,9 @@ export const ImageFileViewer = ({
       alt={name}
       loading="lazy"
       style={{
-        maxWidth: '100%',
-        maxHeight: '100%',
-        width: 'auto',
-        height: 'auto',
-        objectFit: 'contain',
+        width: '100%',
+        height: '100%',
+        objectFit: objectFit,
       }}
     />
   );
