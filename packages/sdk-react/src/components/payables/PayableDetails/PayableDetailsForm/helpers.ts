@@ -71,6 +71,7 @@ export const prepareDefaultValues = (
           quantity: 1,
           price: 0,
           tax: 19,
+          ledger_account_id: '',
         },
       ],
     };
@@ -107,6 +108,7 @@ export const prepareDefaultValues = (
             ? (formatFromMinorUnits(lineItem.unit_price, currency) ?? 0)
             : 0,
         tax: lineItem.tax ? formatTaxFromMinorUnits(lineItem.tax) : 0,
+        ledger_account_id: lineItem.ledger_account_id ?? '',
       };
     }),
   };

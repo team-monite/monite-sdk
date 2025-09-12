@@ -4,6 +4,7 @@ import {
   calculateTotalPriceForLineItem,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
+import { GLCodeSelector } from '@/components/payables/PayableDetails/GLCodeSelector';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,7 +12,17 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 
-export const PayableLineItemsForm = () => {
+export interface PayableLineItemsFormProps {
+  /**
+   * Enable GL code selection for payable line items.
+   * When true, users can assign GL codes to individual line items.
+   * GL codes are fetched from the connected accounting system.
+   * @default false
+   */
+  enableGLCodes?: boolean;
+}
+
+export const PayableLineItemsForm = ({ enableGLCodes = false }: PayableLineItemsFormProps) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency, formatCurrencyToDisplay, formatToMinorUnits } =
     useCurrencies();
@@ -96,7 +107,7 @@ export const PayableLineItemsForm = () => {
             flexWrap="nowrap"
             justifyContent="flex-end"
           >
-            <Grid item xs={8}>
+            <Grid item xs={enableGLCodes ? 8 : 8}>
               <Controller
                 name={`lineItems.${index}.price`}
                 control={control}
@@ -118,7 +129,7 @@ export const PayableLineItemsForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={enableGLCodes ? 4 : 3}>
               <Controller
                 name={`lineItems.${index}.tax`}
                 control={control}
@@ -142,6 +153,22 @@ export const PayableLineItemsForm = () => {
             </Grid>
             <Grid item xs={1} />
           </Grid>
+          {enableGLCodes && (
+            <Grid item xs={12}>
+              <Controller
+                name={`lineItems.${index}.ledger_account_id`}
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <GLCodeSelector
+                    value={field.value || ''}
+                    onChange={(value) => field.onChange(value || '')}
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                  />
+                )}
+              />
+            </Grid>
+          )}
           {currentLineItems?.[index] && currentCurrency && (
             <Grid
               item
@@ -166,7 +193,14 @@ export const PayableLineItemsForm = () => {
         <Button
           startIcon={<AddIcon />}
           onClick={() =>
-            append({ id: '', name: '', quantity: 1, price: 0, tax: 19 })
+            append({ 
+              id: '', 
+              name: '', 
+              quantity: 1, 
+              price: 0, 
+              tax: 19,
+              ledger_account_id: ''
+            })
           }
         >
           {t(i18n)`Add item`}

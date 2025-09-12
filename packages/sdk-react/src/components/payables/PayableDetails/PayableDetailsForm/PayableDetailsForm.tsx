@@ -93,6 +93,13 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payableDetailsFormId: string;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  /**
+   * Enable GL code selection for payable line items.
+   * When true, users can assign GL codes to individual line items.
+   * GL codes are fetched from the connected accounting system.
+   * @default false
+   */
+  enableGLCodes?: boolean;
 }
 
 /**
@@ -155,6 +162,7 @@ const PayableDetailsFormBase = forwardRef<
       lineItems,
       payableDetailsFormId,
       customerTypes,
+      enableGLCodes = false,
       ...inProps
     },
     ref
@@ -614,7 +622,7 @@ const PayableDetailsFormBase = forwardRef<
                     <Typography variant="subtitle2" mb={2}>
                       {t(i18n)`Items`}
                     </Typography>
-                    <PayableLineItemsForm />
+                    <PayableLineItemsForm enableGLCodes={enableGLCodes} />
                   </Paper>
                 </Grid>
                 <Grid item xs={12} className={className + '-Totals'}>
