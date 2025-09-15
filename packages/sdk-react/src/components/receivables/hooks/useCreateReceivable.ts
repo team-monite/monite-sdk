@@ -6,14 +6,12 @@ import { toast } from 'react-hot-toast';
 
 export const useCreateReceivable = () => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api } = useMoniteContext();
 
   return api.receivables.postReceivables.useMutation(
     {},
     {
       onSuccess: async (receivable) => {
-        await api.receivables.getReceivables.invalidateQueries(queryClient);
-
         if (receivable.counterpart_name) {
           return toast.success(
             t(i18n)`Invoice to “${receivable.counterpart_name}” was created`

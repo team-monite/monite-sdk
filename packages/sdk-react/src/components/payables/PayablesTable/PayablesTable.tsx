@@ -287,9 +287,17 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Vendor`,
         display: 'flex',
         width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartNameCellById counterpartId={params.value} />
-        ),
+        renderCell: (params) => {
+          const payable = params.row;
+
+          if (payable.counterpart?.name) {
+            return <span>{payable.counterpart.name}</span>;
+          } else if (params.value) {
+            return <CounterpartNameCellById counterpartId={params.value} />;
+          }
+
+          return <span style={{ opacity: 0.4 }}>-</span>;
+        },
       },
       {
         field: 'created_at',

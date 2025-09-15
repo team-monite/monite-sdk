@@ -305,9 +305,21 @@ const InvoicesTableBase = ({
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         display: 'flex',
         width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartNameCellById counterpartId={params.row.counterpart_id} />
-        ),
+        renderCell: (params) => {
+          const receivable = params.row;
+
+          if (receivable.counterpart_name) {
+            return <span>{receivable.counterpart_name}</span>;
+          } else if (params.row) {
+            return (
+              <CounterpartNameCellById
+                counterpartId={params.row.counterpart_id}
+              />
+            );
+          }
+
+          return <span style={{ opacity: 0.4 }}>-</span>;
+        },
       },
       {
         field: 'created_at',

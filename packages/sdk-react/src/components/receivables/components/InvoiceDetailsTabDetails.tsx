@@ -1,3 +1,4 @@
+import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
 import { InvoiceDetailsSummary } from './InvoiceDetailsSummary';
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
@@ -5,34 +6,6 @@ import { getCountries } from '@/core/utils';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ReactNode } from 'react';
-import { twMerge } from 'tailwind-merge';
-
-type OverviewBlockProps = {
-  label: string;
-  value: ReactNode;
-  status?: components['schemas']['ReceivablesStatusEnum'];
-};
-
-const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
-  return (
-    <div className="mtw:flex mtw:flex-col">
-      <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
-        {label}
-      </h3>
-      <p
-        className={twMerge(
-          'mtw:text-sm mtw:font-normal mtw:leading-5',
-          status && status === 'overdue'
-            ? 'mtw:text-danger-10'
-            : 'mtw:text-neutral-50'
-        )}
-      >
-        {value}
-      </p>
-    </div>
-  );
-};
 
 type InvoiceDetailsTabDetailsProps = {
   invoice?: components['schemas']['ReceivableResponse'];
@@ -58,17 +31,17 @@ export const InvoiceDetailsTabDetails = ({
         </h2>
 
         <div className="mtw:grid mtw:grid-cols-2 mtw:gap-4">
-          <OverviewBlock
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Name`}
             value={invoice?.counterpart_name ?? '-'}
           />
           {invoice?.counterpart_vat_id?.value && (
-            <OverviewBlock
+            <InvoiceDetailsInfoBlock
               label={t(i18n)`Tax ID`}
               value={invoice?.counterpart_vat_id?.value}
             />
           )}
-          <OverviewBlock
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Billing address`}
             value={`${invoice?.counterpart_billing_address?.line1}${
               invoice?.counterpart_billing_address?.line2
@@ -82,7 +55,7 @@ export const InvoiceDetailsTabDetails = ({
               ]
             }`}
           />
-          <OverviewBlock
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Contact person`}
             value={`${invoice?.counterpart_contact?.first_name} ${invoice?.counterpart_contact?.last_name}`}
           />
@@ -162,11 +135,11 @@ export const InvoiceDetailsTabDetails = ({
         </h2>
 
         <div className="mtw:grid mtw:grid-cols-2 mtw:gap-4">
-          <OverviewBlock
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Payment terms`}
             value={invoice?.payment_terms?.name ?? '-'}
           />
-          <OverviewBlock
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Payment details`}
             value={
               <>

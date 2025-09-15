@@ -26,6 +26,7 @@ interface ExistingReceivableDetailsProps {
    */
   onDuplicate?: (invoiceId: string) => void;
   onMarkAsUncollectible?: (invoiceId: string) => void;
+  openInvoiceDetails?: (invoiceId: string) => void;
 }
 
 type InvoiceDetailsProps =
@@ -59,6 +60,7 @@ const InvoiceDetailsBase = (props: InvoiceDetailsProps) => {
       invoiceId={props.id}
       onDuplicate={props.onDuplicate}
       onMarkAsUncollectible={props.onMarkAsUncollectible}
+      openInvoiceDetails={props.openInvoiceDetails}
     />
   );
 };

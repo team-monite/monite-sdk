@@ -79,17 +79,10 @@ const getLineItemsSchema = (i18n: I18n, isNonVatSupported: boolean) => {
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`);
 };
 
-const getBaseInvoiceSchema = (
-  i18n: I18n,
-  isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean
-) =>
+const getBaseInvoiceSchema = (i18n: I18n, isNonVatSupported: boolean) =>
   z.object({
     counterpart_id: z.string().min(1, t(i18n)`Customer is a required field`),
-    entity_vat_id_id:
-      isNonCompliantFlow || isNonVatSupported
-        ? z.string().optional()
-        : z.string().min(1, t(i18n)`Entity VAT is a required field`),
+    entity_vat_id_id: z.string().optional(),
     counterpart_vat_id_id: z.string().optional(),
     fulfillment_date: z.date().nullable().optional(),
     purchase_order: z.string().optional(),
@@ -116,21 +109,36 @@ const getBaseInvoiceSchema = (
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
   isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean,
-  shouldEnableBankAccount: boolean
+  shouldEnableBankAccount: boolean,
+  isRecurrenceEnabled: boolean
 ) => {
-  const baseInvoiceSchema = getBaseInvoiceSchema(
-    i18n,
-    isNonVatSupported,
-    isNonCompliantFlow
-  );
+  const baseInvoiceSchema = getBaseInvoiceSchema(i18n, isNonVatSupported);
 
-  return baseInvoiceSchema.extend({
-    type: z.string(),
-    entity_bank_account_id: shouldEnableBankAccount
-      ? z.string().min(1, t(i18n)`Choose how to get paid.`)
-      : z.string().optional(),
-  });
+  return baseInvoiceSchema
+    .extend({
+      type: z.string(),
+      entity_bank_account_id: shouldEnableBankAccount
+        ? z.string().min(1, t(i18n)`Choose how to get paid.`)
+        : z.string().optional(),
+      ...getBaseRecurrenceSchema(i18n, isRecurrenceEnabled).shape,
+    })
+    .refine(
+      (data) => {
+        if (data.recurrence_issue_mode === 'first_day') {
+          return (
+            data.recurrence_start_date &&
+            data.recurrence_start_date >= new Date()
+          );
+        }
+        return true;
+      },
+      {
+        error: t(
+          i18n
+        )`The start date for the recurrence shouldn't be in the past`,
+        path: ['recurrence_issue_mode'],
+      }
+    );
 };
 
 export type CreateReceivablesFormProps = z.infer<
@@ -139,14 +147,9 @@ export type CreateReceivablesFormProps = z.infer<
 
 export const getUpdateInvoiceValidationSchema = (
   i18n: I18n,
-  isNonVatSupported: boolean,
-  isNonCompliantFlow: boolean
+  isNonVatSupported: boolean
 ) => {
-  const baseInvoiceSchema = getBaseInvoiceSchema(
-    i18n,
-    isNonVatSupported,
-    isNonCompliantFlow
-  );
+  const baseInvoiceSchema = getBaseInvoiceSchema(i18n, isNonVatSupported);
 
   return baseInvoiceSchema.extend({
     entity_bank_account_id: z.string().optional(),
@@ -155,6 +158,51 @@ export const getUpdateInvoiceValidationSchema = (
 
 export type UpdateReceivablesFormProps = z.infer<
   ReturnType<typeof getUpdateInvoiceValidationSchema>
+>;
+
+const getBaseRecurrenceSchema = (i18n: I18n, isRecurrenceEnabled = true) => {
+  return z.object({
+    recurrence_start_date: isRecurrenceEnabled
+      ? z.date().min(1, t(i18n)`Recurrence start date is a required field`)
+      : z.string().optional(),
+    recurrence_end_date: isRecurrenceEnabled
+      ? z.date().min(1, t(i18n)`Recurrence end date is a required field`)
+      : z.string().optional(),
+    recurrence_issue_mode: isRecurrenceEnabled
+      ? z.enum(['first_day', 'last_day'])
+      : z.string().optional(),
+  });
+};
+
+export const getCreateRecurrenceValidationSchema = (
+  i18n: I18n,
+  isRecurrenceEnabled = true
+) => {
+  const baseRecurrenceSchema = getBaseRecurrenceSchema(
+    i18n,
+    isRecurrenceEnabled
+  );
+
+  return baseRecurrenceSchema.refine(
+    (data) => {
+      if (data.recurrence_issue_mode === 'first_day') {
+        return (
+          data.recurrence_start_date && data.recurrence_start_date >= new Date()
+        );
+      }
+      return true;
+    },
+    {
+      error: t(
+        i18n
+      )`The start date for the recurrence shouldn't be in the past`,
+      path: ['recurrence_issue_mode'],
+    }
+  );
+};
+
+export type CreateRecurrenceFormProps = z.infer<
+  ReturnType<typeof getCreateRecurrenceValidationSchema>
 >;
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {

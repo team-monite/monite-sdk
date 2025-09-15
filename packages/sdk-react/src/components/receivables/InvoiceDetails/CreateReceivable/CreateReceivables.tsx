@@ -1,5 +1,7 @@
+import { RecurrenceSection } from '../../components/RecurrenceSection';
 import {
   useGetEntityBankAccounts,
+  useGetInvoiceRequiredFields,
   useInvoiceReminderDialogs,
 } from '../../hooks';
 import { useLineItemSubmitCleanup } from './hooks/useLineItemSubmitCleanup';
@@ -25,6 +27,7 @@ import { EditInvoiceReminderDialog } from '@/components/receivables/components/E
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { RemindersSection } from '@/components/receivables/components/RemindersSection';
 import { useCreateReceivable } from '@/components/receivables/hooks/useCreateReceivable';
+import { useCreateRecurrence } from '@/components/receivables/hooks/useCreateRecurrence';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -121,7 +124,8 @@ const CreateReceivablesBase = ({
   onCreate,
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
-  const { api, entityId, componentSettings } = useMoniteContext();
+  const { api, entityId, componentSettings, queryClient } = useMoniteContext();
+  const [isRecurrenceEnabled, setIsRecurrenceEnabled] = useState(false);
   const hasInitiallySetDefaultBank = useRef(false);
   const enableEntityBankAccount = Boolean(
     componentSettings?.receivables?.enableEntityBankAccount
@@ -161,7 +165,6 @@ const CreateReceivablesBase = ({
   const {
     isNonVatSupported,
     isLoading: isEntityLoading,
-    isNonCompliantFlow,
     data: entityData,
   } = useMyEntity();
   const [isEditCounterpartModalOpen, setIsEditCounterpartModalOpen] =
@@ -171,13 +174,14 @@ const CreateReceivablesBase = ({
   const [isBankFormOpen, setIsBankFormOpen] = useState(false);
   const [selectedBankId, setSelectedBankId] = useState('');
   const fallbackCurrency = 'USD';
+
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: zodResolver(
       getCreateInvoiceValidationSchema(
         i18n,
         isNonVatSupported,
-        isNonCompliantFlow,
-        enableEntityBankAccount
+        enableEntityBankAccount,
+        isRecurrenceEnabled
       )
     ),
     defaultValues: useMemo(
@@ -201,6 +205,9 @@ const CreateReceivablesBase = ({
         )`Dear client, as discussed, please find attached our invoice:`,
         footer: '',
         vat_mode: settings?.vat_mode ?? 'exclusive',
+        recurrence_start_date: undefined,
+        recurrence_end_date: undefined,
+        recurrence_issue_mode: 'first_day',
       }),
       [type, i18n, settings?.vat_mode]
     ),
@@ -247,6 +254,7 @@ const CreateReceivablesBase = ({
     initialSettingsFields
   );
 
+  const { data: counterpart } = useCounterpartById(counterpartId);
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
   const { data: counterpartVats } = useCounterpartVatList(counterpartId);
   const { data: counterpartContacts } =
@@ -261,7 +269,134 @@ const CreateReceivablesBase = ({
     [billingAddressId, counterpartAddresses?.data]
   );
 
-  const createReceivable = useCreateReceivable();
+  const { mutateAsync: createReceivable, isPending: isPendingReceivable } =
+    useCreateReceivable();
+  const { mutate: createRecurrence, isPending: isActivatingRecurrence } =
+    useCreateRecurrence();
+  const isCreatingReceivable = isPendingReceivable || isActivatingRecurrence;
+
+  const { data: requiredFields } = useGetInvoiceRequiredFields({
+    entity_vat_id_id: entityVatIds?.data?.[0]?.id || undefined,
+    counterpart_billing_address_id:
+      (counterpart?.id === counterpartId && billingAddressId) || undefined,
+    counterpart_country:
+      (counterpartBillingAddress?.id === billingAddressId &&
+        counterpartBillingAddress?.country) ||
+      undefined,
+    counterpart_id: counterpartId || undefined,
+    counterpart_type:
+      (counterpart?.id === counterpartId && counterpart?.type) || undefined,
+    counterpart_vat_id_id:
+      (counterpart?.id === counterpartId && counterpartVats?.data?.[0]?.id) ||
+      undefined,
+  });
+
+  const entityVatId = watch('entity_vat_id_id');
+  const counterpartVatId = watch('counterpart_vat_id_id');
+  const isCounterpartTaxIdRequired =
+    requiredFields?.counterpart?.tax_id?.required;
+  const isCounterpartVatIdRequired =
+    requiredFields?.counterpart?.vat_id?.required;
+  const isEntityTaxIdRequired = requiredFields?.entity?.tax_id?.required;
+  const isEntityVatIdRequired = requiredFields?.entity?.vat_id?.required;
+  const isLineItemVatRateIdRequired =
+    requiredFields?.line_item?.vat_rate_id?.required;
+
+  const handleEntityVatTaxIdWarnings = () => {
+    if (!requiredFields) return null;
+
+    let message = '';
+
+    if (
+      isEntityTaxIdRequired &&
+      !isEntityVatIdRequired &&
+      !entityData?.tax_id
+    ) {
+      message = t(i18n)`Set your entity's Tax ID to issue invoice`;
+    }
+
+    if (!isEntityTaxIdRequired && isEntityVatIdRequired && !entityVatId) {
+      message = t(i18n)`Set your entity's VAT ID to issue invoice`;
+    }
+
+    if (
+      isEntityTaxIdRequired &&
+      isEntityVatIdRequired &&
+      !entityVatId &&
+      !entityData?.tax_id
+    ) {
+      message = t(i18n)`Set your entity's VAT ID and Tax ID to issue invoice`;
+    }
+
+    if (!message) return null;
+
+    return (
+      <Alert severity="error" sx={{ mb: 5 }}>
+        <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+          <span>{message}</span>
+
+          <button
+            className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+            type="button"
+            onClick={() => setIsMyEntityProfileModalOpen(true)}
+          >
+            {t(i18n)`Edit profile`}
+          </button>
+        </div>
+      </Alert>
+    );
+  };
+
+  const handleCounterpartVatTaxIdWarnings = () => {
+    if (!requiredFields) return null;
+
+    let message: string | null = null;
+
+    if (
+      isCounterpartTaxIdRequired &&
+      !isCounterpartVatIdRequired &&
+      !counterpart?.tax_id
+    ) {
+      message = t(i18n)`Set a Tax ID for this customer to issue invoice`;
+    }
+
+    if (
+      !isCounterpartTaxIdRequired &&
+      isCounterpartVatIdRequired &&
+      !counterpartVatId
+    ) {
+      message = t(i18n)`Set a VAT ID for this customer to issue invoice`;
+    }
+
+    if (
+      isCounterpartTaxIdRequired &&
+      isCounterpartVatIdRequired &&
+      !counterpartVatId &&
+      !counterpart?.tax_id
+    ) {
+      message = t(
+        i18n
+      )`Set a VAT ID and Tax ID for this customer to issue invoice`;
+    }
+
+    if (!message) return null;
+
+    return (
+      <Alert severity="error" sx={{ mb: 5 }}>
+        <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
+          <span>{message}</span>
+
+          <button
+            className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
+            type="button"
+            onClick={() => handleEditCounterpartModalState(true)}
+          >
+            {t(i18n)`Edit customer`}
+          </button>
+        </div>
+      </Alert>
+    );
+  };
 
   const [actualCurrency, setActualCurrency] = useState<
     Schemas['CurrencyEnum'] | undefined
@@ -303,14 +438,12 @@ const CreateReceivablesBase = ({
 
   const theme = useTheme();
 
-  const { data: counterpart } = useCounterpartById(counterpartId);
-
   const className = 'Monite-CreateReceivable';
 
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
 
-  const handleCreateReceivable = (values: CreateReceivablesFormProps) => {
+  const handleCreateReceivable = async (values: CreateReceivablesFormProps) => {
     const customerHasRemindersEnabled =
       counterpart && counterpart?.reminders_enabled;
     const customerHasDefaultEmail =
@@ -319,19 +452,80 @@ const CreateReceivablesBase = ({
 
     if (values.type !== 'invoice') {
       showErrorToast(new Error('`type` except `invoice` is not supported yet'));
+      return;
+    }
 
+    if (
+      isEntityTaxIdRequired &&
+      !isEntityVatIdRequired &&
+      !entityData?.tax_id
+    ) {
+      showErrorToast(new Error("Set your entity's Tax ID to issue invoice"));
+      return;
+    }
+
+    if (
+      !isEntityTaxIdRequired &&
+      isEntityVatIdRequired &&
+      !values.entity_vat_id_id
+    ) {
+      showErrorToast(new Error("Set your entity's VAT ID to issue invoice"));
+      return;
+    }
+
+    if (
+      isEntityTaxIdRequired &&
+      isEntityVatIdRequired &&
+      !values.entity_vat_id_id &&
+      !entityData?.tax_id
+    ) {
+      showErrorToast(
+        new Error("Set your entity's VAT ID and Tax ID to issue invoice")
+      );
+      return;
+    }
+
+    if (
+      isCounterpartTaxIdRequired &&
+      !isCounterpartVatIdRequired &&
+      !counterpart?.tax_id
+    ) {
+      showErrorToast(
+        new Error('Set a Tax ID for this customer to issue invoice')
+      );
+      return;
+    }
+
+    if (
+      !isCounterpartTaxIdRequired &&
+      isCounterpartVatIdRequired &&
+      !values.counterpart_vat_id_id
+    ) {
+      showErrorToast(
+        new Error('Set a VAT ID for this customer to issue invoice')
+      );
+      return;
+    }
+
+    if (
+      isCounterpartTaxIdRequired &&
+      isCounterpartVatIdRequired &&
+      !values.counterpart_vat_id_id &&
+      !counterpart?.tax_id
+    ) {
+      showErrorToast(
+        new Error('Set a VAT ID and Tax ID for this customer to issue invoice')
+      );
       return;
     }
 
     if (!actualCurrency) {
       showErrorToast(new Error('`actualCurrency` is not defined'));
-
       return;
     }
 
     if (!counterpartBillingAddress) {
       showErrorToast(new Error('`Billing address` is not provided'));
-
       return;
     }
 
@@ -345,7 +539,6 @@ const CreateReceivablesBase = ({
           'Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.'
         )
       );
-
       return;
     }
 
@@ -359,7 +552,6 @@ const CreateReceivablesBase = ({
           'No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.'
         )
       );
-
       return;
     }
 
@@ -373,7 +565,6 @@ const CreateReceivablesBase = ({
           'Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.'
         )
       );
-
       return;
     }
 
@@ -414,7 +605,7 @@ const CreateReceivablesBase = ({
             : undefined,
           type: 'product',
         },
-        ...(isNonVatSupported
+        ...(isNonVatSupported || !isLineItemVatRateIdRequired
           ? {
               tax_rate_value: item?.tax_rate_value
                 ? rateMajorToMinor(item.tax_rate_value)
@@ -443,14 +634,41 @@ const CreateReceivablesBase = ({
       vat_mode: values.vat_mode || 'exclusive',
     };
 
-    createReceivable.mutate(
+    const { id: receivableId } = await createReceivable(
       invoicePayload as Schemas['ReceivableFacadeCreateInvoicePayload'],
       {
-        onSuccess: (createdReceivable) => {
-          onCreate?.(createdReceivable.id);
+        onSuccess: async (createdReceivable) => {
+          if (!isRecurrenceEnabled) {
+            await api.receivables.getReceivables.invalidateQueries(queryClient);
+            onCreate?.(createdReceivable.id);
+          }
         },
       }
     );
+
+    if (isRecurrenceEnabled) {
+      createRecurrence(
+        {
+          body: {
+            invoice_id: receivableId,
+            frequency: 'month',
+            interval: 1,
+            start_date: values.recurrence_start_date
+              ? format(new Date(values.recurrence_start_date), 'yyyy-MM-dd')
+              : undefined,
+            end_date: values.recurrence_end_date
+              ? format(new Date(values.recurrence_end_date), 'yyyy-MM-dd')
+              : undefined,
+            automation_level: 'issue',
+          },
+        },
+        {
+          onSuccess: () => {
+            onCreate?.(receivableId);
+          },
+        }
+      );
+    }
   };
 
   const { control } = useForm<CreateReceivablesProductsFormProps>({
@@ -621,7 +839,7 @@ const CreateReceivablesBase = ({
                     variant="outlined"
                     color="primary"
                     sx={{ marginRight: '.5em' }}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                   >
                     <SettingsOutlinedIcon />
                   </Button>
@@ -665,9 +883,11 @@ const CreateReceivablesBase = ({
                 color="primary"
                 type="submit"
                 form={formName}
-                disabled={createReceivable.isPending}
+                disabled={isCreatingReceivable}
               >
-                {t(i18n)`Save and continue`}
+                {isRecurrenceEnabled
+                  ? t(i18n)`Activate`
+                  : t(i18n)`Save and continue`}
               </Button>
             </>
           }
@@ -996,34 +1216,18 @@ const CreateReceivablesBase = ({
                           type="button"
                           onClick={() => handleEditCounterpartModalState(true)}
                         >
-                          {t(i18n)`Edit customer's profile`}
+                          {t(i18n)`Edit customer`}
                         </button>
                       </div>
                     </Alert>
                   )}
 
-                  {Boolean(formState?.errors?.entity_vat_id_id) && (
-                    <Alert severity="error" sx={{ mb: 5 }}>
-                      <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
-                        <span>
-                          {t(
-                            i18n
-                          )`Add your entity's tax registration number to issue invoice`}
-                        </span>
+                  {handleEntityVatTaxIdWarnings()}
 
-                        <button
-                          className="mtw:underline mtw:p-0 mtw:border-none mtw:outline-none mtw:hover:cursor-pointer mtw:transition-all mtw:hover:opacity-80"
-                          type="button"
-                          onClick={() => setIsMyEntityProfileModalOpen(true)}
-                        >
-                          {t(i18n)`Edit my entity profile`}
-                        </button>
-                      </div>
-                    </Alert>
-                  )}
+                  {handleCounterpartVatTaxIdWarnings()}
 
                   <CustomerSection
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                     customerTypes={customerTypes}
                     isEditModalOpen={isEditCounterpartModalOpen}
                     isEditProfileOpen={isEditCounterpartProfileOpen}
@@ -1039,7 +1243,9 @@ const CreateReceivablesBase = ({
                     settings?.currency?.default || fallbackCurrency
                   }
                   actualCurrency={actualCurrency}
-                  isNonVatSupported={isNonVatSupported}
+                  isNonVatSupported={
+                    isNonVatSupported || !isLineItemVatRateIdRequired
+                  }
                 />
 
                 <Box
@@ -1058,13 +1264,13 @@ const CreateReceivablesBase = ({
                     isPaymentTermsLoading={isPaymentTermsLoading}
                     isFieldShown={visibleSettingsFields.isFulfillmentDateShown}
                     refetch={refetchPaymentTerms}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                   />
 
                   {enableEntityBankAccount && (
                     <BankAccountSection
                       entityCurrency={actualCurrency}
-                      disabled={createReceivable.isPending}
+                      disabled={isCreatingReceivable}
                       handleOpenBankModal={(id?: string) => {
                         setIsBankFormOpen(true);
                         if (id) setSelectedBankId(id);
@@ -1074,7 +1280,7 @@ const CreateReceivablesBase = ({
                 </Box>
                 <Box>
                   <RemindersSection
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
                     onUpdateOverdueReminder={onEditOverdueReminder}
                     onUpdatePaymentReminder={onEditPaymentReminder}
                     onCreateReminder={onCreateReminder}
@@ -1084,7 +1290,14 @@ const CreateReceivablesBase = ({
 
                   <EntitySection
                     visibleFields={visibleSettingsFields}
-                    disabled={createReceivable.isPending}
+                    disabled={isCreatingReceivable}
+                  />
+
+                  <RecurrenceSection
+                    isRecurrenceEnabled={isRecurrenceEnabled}
+                    toggleRecurrence={() =>
+                      setIsRecurrenceEnabled(!isRecurrenceEnabled)
+                    }
                   />
                 </Box>
               </Stack>
@@ -1118,7 +1331,7 @@ const CreateReceivablesBase = ({
           currency={
             actualCurrency || settings?.currency?.default || fallbackCurrency
           }
-          isNonVatSupported={isNonVatSupported}
+          isNonVatSupported={isNonVatSupported || !isLineItemVatRateIdRequired}
           entityData={entityData}
           address={counterpartBillingAddress}
           paymentTerms={paymentTerms}

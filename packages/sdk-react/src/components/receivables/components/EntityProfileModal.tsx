@@ -1,6 +1,9 @@
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-
+import { useCreateEntityVatId } from '../hooks/useCreateEntityVatId';
+import {
+  getEntityProfileValidationSchema,
+  EntityProfileFormValues,
+} from '../validation';
+import { EntityProfileFormContent } from './EntityProfileFormContent';
 import { components } from '@/api';
 import {
   useGetEntityVatIds,
@@ -23,12 +26,8 @@ import { Form } from '@/ui/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import {
-  getEntityProfileValidationSchema,
-  EntityProfileFormValues,
-} from '../validation';
-import { EntityProfileFormContent } from './EntityProfileFormContent';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 type EntityProfileFormComponentProps = EntityProfileModalProps & {
   entity:
@@ -53,7 +52,7 @@ const getDefaultValues = (
     tax_id: entity.tax_id || undefined,
     vat_id: vatId?.value || undefined,
     vat_type: vatId?.type || undefined,
-    vat_country: vatId?.country || undefined,
+    vat_country: vatId?.country || entity.address.country || undefined,
     address_line_1: entity.address.line1 || undefined,
     address_line_2: entity.address.line2 || undefined,
     city: entity.address.city || undefined,
@@ -88,7 +87,8 @@ const EntityProfileForm = ({
   const { i18n } = useLingui();
   const vatId = vatIds?.[0];
   const { mutate: patchEntity } = usePatchEntityById();
-  const { mutate: patchEntityVat } = usePatchEntityVatById(vatId.id ?? '');
+  const { mutate: patchEntityVat } = usePatchEntityVatById(vatId?.id ?? '');
+  const { mutate: createEntityVatId } = useCreateEntityVatId();
 
   const defaultValues = useMemo(
     () => getDefaultValues(entity, vatId),
@@ -135,14 +135,35 @@ const EntityProfileForm = ({
                   }),
             });
 
-            patchEntityVat({
-              value: values.vat_id,
-              type: values.vat_type as components['schemas']['VatIDTypeEnum'],
-              country:
-                values.vat_country as components['schemas']['AllowedCountries'],
-            });
-
-            onClose();
+            if (!vatId && values.vat_id && values.vat_id?.trim() !== '') {
+              createEntityVatId(
+                {
+                  value: values.vat_id,
+                  type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                  country:
+                    values.vat_country as components['schemas']['AllowedCountries'],
+                },
+                {
+                  onSuccess: () => {
+                    onClose();
+                  },
+                }
+              );
+            } else {
+              patchEntityVat(
+                {
+                  value: values.vat_id,
+                  type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                  country:
+                    values.vat_country as components['schemas']['AllowedCountries'],
+                },
+                {
+                  onSuccess: () => {
+                    onClose();
+                  },
+                }
+              );
+            }
           })}
         >
           <DialogContent className="mtw:max-h-4/5 mtw:overflow-y-auto">
@@ -193,7 +214,7 @@ export const EntityProfileModal = (props: EntityProfileModalProps) => {
   if (!isUpdateAllowed)
     return <AccessRestrictionModal open={props.open} onClose={props.onClose} />;
 
-  if (isLoading || isVatIdsLoading || !entity || !vatIds) return null;
+  if (isLoading || isVatIdsLoading || !entity) return null;
 
   return (
     <EntityProfileForm {...props} entity={entity} vatIds={vatIds?.data ?? []} />
