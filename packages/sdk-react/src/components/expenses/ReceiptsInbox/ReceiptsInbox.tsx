@@ -1,5 +1,5 @@
 import { useMailboxes } from '../hooks/useMailboxes';
-import { useInfiniteGetReceipts } from '../hooks/useReceipts';
+import { useGetReceipts, useInfiniteGetReceipts } from '../hooks/useReceipts';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
 import { ReceiptsFilters } from './types';
@@ -116,6 +116,11 @@ export const ReceiptsInbox = () => {
     return userMap;
   }, [usersData?.data]);
 
+  const { receipts: unmatchedReceipts } = useGetReceipts({
+    has_transaction: false,
+    limit: 1,
+  });
+
   const { data: mailboxexData } = useMailboxes();
   const receiptsEmailAddress = mailboxexData?.data?.find(
     (mailbox) => mailbox.related_object_type === 'receipt'
@@ -157,10 +162,17 @@ export const ReceiptsInbox = () => {
         >
           <TabBarList>
             <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
+            <TabBarTrigger value="unmatched">
+              <div className="mtw:flex mtw:items-center">
+                {t(i18n)`Unmatched`}
+                {unmatchedReceipts?.length && unmatchedReceipts?.length > 0 ? (
+                  <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
+                    &nbsp;
+                  </div>
+                ) : null}
+              </div>
+            </TabBarTrigger>
             <TabBarTrigger value="matched">{t(i18n)`Matched`}</TabBarTrigger>
-            <TabBarTrigger value="unmatched">{t(
-              i18n
-            )`Unmatched`}</TabBarTrigger>
           </TabBarList>
         </TabBar>
         {receiptsEmailAddress && (
