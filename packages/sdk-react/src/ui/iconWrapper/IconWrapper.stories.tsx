@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
+import { IconWrapper } from './IconWrapper';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-
-import { IconWrapper } from './IconWrapper';
+import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof IconWrapper> = {
   title: 'components/IconWrapper',

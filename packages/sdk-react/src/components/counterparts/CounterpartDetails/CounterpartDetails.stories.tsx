@@ -1,12 +1,11 @@
+import { CounterpartDetails } from './CounterpartDetails';
 import {
   individualId,
   organizationId,
 } from '@/mocks/counterparts/counterpart.mocks.types';
 import { Dialog } from '@/ui/Dialog';
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-
-import { CounterpartDetails } from './CounterpartDetails';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof CounterpartDetails> = {
   title: 'Counterparts/Counterparts — Details View',

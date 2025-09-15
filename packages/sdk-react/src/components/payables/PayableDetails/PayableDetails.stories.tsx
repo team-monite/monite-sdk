@@ -1,16 +1,14 @@
-import { useState } from 'react';
-
-import { Dialog } from '@/ui/Dialog';
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_LOW_PERMISSIONS,
   PAYABLE_ID_WITHOUT_FILE,
 } from '../../../mocks';
 import { PayableDetails } from './PayableDetails';
+import { Dialog } from '@/ui/Dialog';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof PayableDetails> = {
   title: 'Payables/Payables — Details View',

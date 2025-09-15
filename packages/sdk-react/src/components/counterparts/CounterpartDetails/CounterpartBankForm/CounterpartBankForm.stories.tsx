@@ -1,10 +1,9 @@
+import { CounterpartBankForm } from './CounterpartBankForm';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { counterpartBankListFixture } from '@/mocks';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-
-import { CounterpartBankForm } from './CounterpartBankForm';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof CounterpartBankForm> = {
   title: 'Counterparts/Counterparts — Bank Form',

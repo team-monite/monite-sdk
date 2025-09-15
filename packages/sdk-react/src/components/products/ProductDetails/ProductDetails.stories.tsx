@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import { ProductDetails } from './ProductDetails';
 import {
   ENTITY_ID_FOR_LOW_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -7,10 +6,9 @@ import {
 import { productsListFixture } from '@/mocks/products';
 import { Dialog } from '@/ui/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-
-import { ProductDetails } from './ProductDetails';
+import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ProductDetails> = {
   title: 'Products/Products — Details View',

@@ -1,9 +1,8 @@
+import { PayableDetailsForm } from './PayableDetailsForm';
 import { Dialog } from '@/ui/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { PayableDetailsForm } from './PayableDetailsForm';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof PayableDetailsForm> = {
   title: 'Payables/Payables — Details Form',

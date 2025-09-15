@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
+import { Error as ErrorComponent } from './Error';
 import { Button } from '@mui/material';
 import { ErrorBoundary } from '@sentry/react';
-import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { Error as ErrorComponent } from './Error';
+import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ErrorComponent> = {
   title: 'components/Error',

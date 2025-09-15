@@ -12,7 +12,7 @@
     "e2e": "turbo run e2e --output-logs=new-only",
     "storybook:widgets": "turbo run storybook --filter=@monite/sdk-react --output-logs=new-only",
     "storybook:build": "turbo run build-storybook",
-    "storybook": "turbo run storybook --output-logs=new-only",
+    "storybook": "yarn workspace @monite/sdk-react storybook",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "clean": "rm -rf packages/*/dist",

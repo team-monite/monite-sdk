@@ -1,8 +1,7 @@
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { ReceivablesTable } from './ReceivablesTable';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import type { Meta, StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ReceivablesTable> = {
   title: 'Receivables/Receivables — Table View',

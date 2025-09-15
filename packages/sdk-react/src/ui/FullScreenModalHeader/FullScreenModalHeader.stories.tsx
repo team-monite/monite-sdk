@@ -1,9 +1,8 @@
+import { FullScreenModalHeader } from './FullScreenModalHeader';
 import { Dialog } from '@/ui/Dialog';
 import { Button, Chip } from '@mui/material';
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-
-import { FullScreenModalHeader } from './FullScreenModalHeader';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof FullScreenModalHeader> = {
   title: 'Components/FullScreenModalHeader',

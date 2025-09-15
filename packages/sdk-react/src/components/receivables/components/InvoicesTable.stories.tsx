@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { InvoicesTable } from './InvoicesTable';
+import type { Meta, StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof InvoicesTable> = {
   title: 'Receivables/Invoices — Table View',

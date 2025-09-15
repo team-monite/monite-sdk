@@ -1,8 +1,7 @@
-import { css } from '@emotion/react';
-import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/react';
-
 import { UserRolesTable as UserRolesTableComponent } from './UserRolesTable';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
 
 const Story = {
   title: 'User Roles/User Roles — Table View',

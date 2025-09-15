@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
-
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
+import { Meta, StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ConfirmDeleteModal> = {
   title: 'Tags/Tags — Confirm Delete Modal',

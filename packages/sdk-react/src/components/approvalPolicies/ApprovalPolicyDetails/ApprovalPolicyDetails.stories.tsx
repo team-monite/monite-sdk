@@ -1,9 +1,8 @@
+import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
 import { Dialog } from '@/ui/Dialog';
-import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ApprovalPolicyDetails> = {
   title: 'Approval Policies/Approval Policies — Details View',
