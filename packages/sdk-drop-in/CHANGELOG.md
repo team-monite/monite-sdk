@@ -1,5 +1,20 @@
 # @monite/sdk-drop-in
 
+## 2.5.0
+
+### Minor Changes
+
+- 669a095: Reworked InvoiceDetails design, new modern look and more aligned with our latest API version
+- 90f7f1e: Readded recurrence to the new invoice details panel and moved add recurrence functionality to the create new invoice flow
+- e21d4c5: New default invoice preview template
+
+### Patch Changes
+
+- 1553822: Optimize counterpart fetching in Invoices and Payables tables
+- a29b838: Fixed bug with record payments setting wrong status. Also fixed a bug on dialog for editing customer's profile not opening correctly when "Edit customer's profile" warning is clicked.
+- 037181b: Fixed bug that prevent entity profile modal from being opened and invoice from being created using the wrong vat rate id
+- 558419d: Enhanced onPay callback with actions
+
 ## 2.4.0
 
 ### Minor Changes

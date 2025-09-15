@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-drop-in",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "publishConfig": {
     "access": "public"
   },
@@ -8,19 +8,19 @@
   "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/src/custom-elements/monite-app.d.ts",
       "import": "./dist/monite-app.js",
-      "require": "./dist/monite-app.cjs",
-      "types": "./dist/types/src/custom-elements/monite-app.d.ts"
+      "require": "./dist/monite-app.cjs"
     },
     "./monite-iframe-app": {
+      "types": "./dist/types/src/monite-iframe-app.d.ts",
       "import": "./dist/monite-iframe-app.js",
-      "require": "./dist/monite-iframe-app.cjs",
-      "types": "./dist/types/src/monite-iframe-app.d.ts"
+      "require": "./dist/monite-iframe-app.cjs"
     },
     "./monite-iframe-app-communicator": {
+      "types": "./dist/types/src/monite-iframe-app-communicator.d.ts",
       "import": "./dist/monite-iframe-app-communicator.js",
-      "require": "./dist/monite-iframe-app-communicator.cjs",
-      "types": "./dist/types/src/monite-iframe-app-communicator.d.ts"
+      "require": "./dist/monite-iframe-app-communicator.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -66,8 +66,8 @@
     "@team-monite/eslint-plugin": "workspace:~",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "@vitejs/plugin-react": "~4.3.4",
-    "@vitejs/plugin-react-swc": "~3.7.1",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-react-swc": "^4.0.0",
     "eslint": "~8.57.0",
     "playwright": "~1.45.0",
     "react": "^18.1.0",
@@ -76,7 +76,7 @@
     "react-use": "^17.3.2",
     "rimraf": "~5.0.0",
     "typescript": "~5.5.4",
-    "vite": "~5.4.19"
+    "vite": "^7.0.0"
   },
   "files": [
     "dist"

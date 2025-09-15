@@ -136,6 +136,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
         id={invoiceId}
         onClose={closeModal}
         onDuplicate={openInvoiceModal}
+        openInvoiceDetails={openInvoiceModal}
       />
       <Dialog
         className={className + '-Dialog-CreateReceivable'}

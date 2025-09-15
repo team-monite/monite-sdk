@@ -83,11 +83,7 @@ const EditInvoiceDetailsContent = ({
 }: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
-  const {
-    isLoading: isEntityLoading,
-    isNonVatSupported,
-    isNonCompliantFlow,
-  } = useMyEntity();
+  const { isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
 
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
@@ -163,11 +159,7 @@ const EditInvoiceDetailsContent = ({
 
   const methods = useForm<UpdateReceivablesFormProps>({
     resolver: zodResolver(
-      getUpdateInvoiceValidationSchema(
-        i18n,
-        isNonVatSupported,
-        isNonCompliantFlow
-      )
+      getUpdateInvoiceValidationSchema(i18n, isNonVatSupported)
     ),
     defaultValues,
   });

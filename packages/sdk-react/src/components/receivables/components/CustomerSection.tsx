@@ -90,8 +90,10 @@ export const CustomerSection = ({
   ]);
 
   useEffect(() => {
-    if (counterpartVats && counterpartVats.data.length === 1) {
+    if (counterpartVats && counterpartVats?.data?.length >= 1) {
       setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
+    } else {
+      setValue('counterpart_vat_id_id', '');
     }
   }, [counterpartVats, setValue]);
 

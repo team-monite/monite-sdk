@@ -1,111 +1,46 @@
-import { ElementType, forwardRef } from 'react';
-
+/* eslint-disable lingui/no-unlocalized-strings */
 import { components } from '@/api';
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { getCommonRecurrenceIterationStatusLabel } from '@/components/receivables/utils';
+import { Badge } from '@/ui/components/badge';
+import { cn } from '@/ui/lib/utils';
 import { useLingui } from '@lingui/react';
-import {
-  CancelOutlined,
-  CheckCircleOutline,
-  ErrorOutline,
-  AccessTimeOutlined,
-  SkipNextOutlined,
-} from '@mui/icons-material';
-import { Chip, ChipProps } from '@mui/material';
-import { styled, useThemeProps } from '@mui/material/styles';
+import { cva } from 'class-variance-authority';
+import { forwardRef } from 'react';
 
 export interface MoniteInvoiceRecurrenceIterationStatusChipProps {
-  /** The status of the iteration. */
   status: components['schemas']['IterationStatus'];
-  /** The variant of the Chip. */
-  variant?: ChipProps['variant'];
-  /** The size of the Chip. */
-  size?: ChipProps['size'];
-  /** Display status icon? */
-  icon?: boolean;
+  className?: string;
 }
 
-/**
- * Displays the status of an Invoice Recurrence Iteration.
- */
-export const InvoiceRecurrenceIterationStatusChip = forwardRef<
-  HTMLDivElement,
-  MoniteInvoiceRecurrenceIterationStatusChipProps
->((inProps, ref) => {
-  const { status, variant, icon, size } = useThemeProps({
-    props: inProps,
-    name: 'MoniteInvoiceRecurrenceIterationStatusChip',
-  });
-
-  const { i18n } = useLingui();
-
-  const Icon = ITERATION_STATUS_TO_MUI_ICON_MAP[status];
-
-  return (
-    <StyledChip
-      ref={ref}
-      color={ITERATION_STATUS_TO_MUI_COLOR_MAP[status]}
-      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
-      label={getIterationStatusLabel(i18n, status)}
-      status={status}
-      size={size}
-      variant={variant ?? 'filled'}
-    />
-  );
+const statusChipVariants = cva('', {
+  variants: {
+    variant: {
+      pending: 'mtw:bg-gray-100 mtw:text-gray-950',
+      skipped: 'mtw:bg-amber-50 mtw:text-amber-600',
+      canceled: 'mtw:bg-red-50 mtw:text-red-600',
+      issue_failed: 'mtw:bg-red-50 mtw:text-red-600',
+      send_failed: 'mtw:bg-red-50 mtw:text-red-600',
+      completed: 'mtw:bg-green-50 mtw:text-green-600',
+    },
+  },
 });
 
-const StyledChip = styled(
-  forwardRef<
-    HTMLDivElement,
-    ChipProps & Omit<MoniteInvoiceRecurrenceIterationStatusChipProps, 'icon'>
-  >((props, ref) => <Chip ref={ref} {...props} />),
-  {
-    name: 'MoniteInvoiceRecurrenceIterationStatusChip',
-    slot: 'root',
-    shouldForwardProp: () => true,
-  }
-)({});
+export const InvoiceRecurrenceIterationStatusChip = forwardRef<
+  HTMLSpanElement,
+  MoniteInvoiceRecurrenceIterationStatusChipProps
+>(({ status, className }, ref) => {
+  const { i18n } = useLingui();
 
-const ITERATION_STATUS_TO_MUI_ICON_MAP: Record<
-  components['schemas']['IterationStatus'],
-  ElementType<any>
-> = {
-  pending: AccessTimeOutlined,
-  completed: CheckCircleOutline,
-  canceled: CancelOutlined,
-  issue_failed: ErrorOutline,
-  send_failed: ErrorOutline,
-  skipped: SkipNextOutlined,
-};
-
-const ITERATION_STATUS_TO_MUI_COLOR_MAP: Record<
-  components['schemas']['IterationStatus'],
-  ChipProps['color']
-> = {
-  pending: 'default',
-  completed: 'info',
-  canceled: 'error',
-  issue_failed: 'error',
-  send_failed: 'error',
-  skipped: undefined,
-};
-
-const getIterationStatusLabel = (
-  i18n: I18n,
-  status: components['schemas']['IterationStatus']
-) => {
-  switch (status) {
-    case 'pending':
-      return t(i18n)`Scheduled`;
-    case 'completed':
-      return t(i18n)`Completed`;
-    case 'canceled':
-      return t(i18n)`Canceled`;
-    case 'issue_failed':
-      return t(i18n)`Issue failed`;
-    case 'send_failed':
-      return t(i18n)`Send failed`;
-    default:
-      return t(i18n)`Unknown`;
-  }
-};
+  return (
+    <Badge
+      ref={ref}
+      className={cn(
+        'mtw:inline-flex mtw:items-center mtw:gap-1',
+        statusChipVariants({ variant: status }),
+        className
+      )}
+    >
+      {getCommonRecurrenceIterationStatusLabel(i18n, status)}
+    </Badge>
+  );
+});
