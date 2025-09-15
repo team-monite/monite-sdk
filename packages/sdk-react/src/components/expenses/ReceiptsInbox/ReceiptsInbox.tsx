@@ -1,3 +1,4 @@
+import { useMailboxes } from '../hooks/useMailboxes';
 import { useInfiniteGetReceipts } from '../hooks/useReceipts';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
@@ -7,10 +8,13 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useDebounce } from '@/core/hooks';
 import { PageHeader } from '@/ui/PageHeader';
 import { ResponsiveGrid, useResponsiveGridState } from '@/ui/ResponsiveGrid';
+import { Button } from '@/ui/components/button';
 import { Input } from '@/ui/components/input';
+import { Separator } from '@/ui/components/separator';
 import { TabBar, TabBarList, TabBarTrigger } from '@/ui/components/tab-bar';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { CopyIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const ReceiptsInbox = () => {
@@ -112,6 +116,11 @@ export const ReceiptsInbox = () => {
     return userMap;
   }, [usersData?.data]);
 
+  const { data: mailboxexData } = useMailboxes();
+  const receiptsEmailAddress = mailboxexData?.data?.find(
+    (mailbox) => mailbox.related_object_type === 'receipt'
+  )?.mailbox_full_address;
+
   const handleReceiptClick = useCallback(
     (
       receipt: components['schemas']['ReceiptResponseSchema'],
@@ -134,22 +143,50 @@ export const ReceiptsInbox = () => {
         <PageHeader title={t(i18n)`Receipt inbox`} />
       </div>
 
-      <TabBar
-        defaultValue="all"
-        onValueChange={useCallback(
-          (value: string) => {
-            setSearchInputValue('');
-            onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
-          },
-          [onFilterChange]
+      <div className="mtw:pt-5 mtw:md:pt-0 mtw:flex mtw:w-full mtw:relative">
+        <TabBar
+          defaultValue="all"
+          onValueChange={useCallback(
+            (value: string) => {
+              setSearchInputValue('');
+              onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
+            },
+            [onFilterChange]
+          )}
+          className="mtw:flex-1"
+        >
+          <TabBarList>
+            <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
+            <TabBarTrigger value="matched">{t(i18n)`Matched`}</TabBarTrigger>
+            <TabBarTrigger value="unmatched">{t(
+              i18n
+            )`Unmatched`}</TabBarTrigger>
+          </TabBarList>
+        </TabBar>
+        {receiptsEmailAddress && (
+          <div className="mtw:flex mtw:flex-col">
+            <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
+              <span className="mtw:text-neutral-50">{t(
+                i18n
+              )`Inbox address:`}</span>
+              <a href={`mailto:${receiptsEmailAddress}`}>
+                {receiptsEmailAddress}
+              </a>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  navigator.clipboard.writeText(receiptsEmailAddress);
+                }}
+                aria-label={t(i18n)`Copy inbox email address`}
+              >
+                <CopyIcon />
+              </Button>
+            </div>
+            <Separator />
+          </div>
         )}
-      >
-        <TabBarList>
-          <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
-          <TabBarTrigger value="matched">{t(i18n)`Matched`}</TabBarTrigger>
-          <TabBarTrigger value="unmatched">{t(i18n)`Unmatched`}</TabBarTrigger>
-        </TabBarList>
-      </TabBar>
+      </div>
 
       <Input
         placeholder={t(i18n)`Search by Document ID`}
