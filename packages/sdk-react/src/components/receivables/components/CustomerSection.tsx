@@ -60,7 +60,10 @@ export const CustomerSection = ({
       setValue('default_shipping_address_id', shippingAddressId);
     }
 
-    if (selectedBillingAddressId && counterpartIdRef.current !== counterpart?.id) {
+    if (
+      selectedBillingAddressId &&
+      counterpartIdRef.current !== counterpart?.id
+    ) {
       counterpartIdRef.current = counterpart?.id;
       const billingAddressId =
         counterpart?.default_billing_address_id ||
@@ -70,7 +73,10 @@ export const CustomerSection = ({
       setValue('default_billing_address_id', billingAddressId);
     }
 
-    if (selectedShippingAddressId && counterpartIdRef.current !== counterpart?.id) {
+    if (
+      selectedShippingAddressId &&
+      counterpartIdRef.current !== counterpart?.id
+    ) {
       counterpartIdRef.current = counterpart?.id;
       const shippingAddressId = counterpart?.default_shipping_address_id || '';
       setValue('default_shipping_address_id', shippingAddressId);
@@ -84,8 +90,10 @@ export const CustomerSection = ({
   ]);
 
   useEffect(() => {
-    if (counterpartVats && counterpartVats.data.length === 1) {
+    if (counterpartVats && counterpartVats?.data?.length >= 1) {
       setValue('counterpart_vat_id_id', counterpartVats.data[0].id);
+    } else {
+      setValue('counterpart_vat_id_id', '');
     }
   }, [counterpartVats, setValue]);
 

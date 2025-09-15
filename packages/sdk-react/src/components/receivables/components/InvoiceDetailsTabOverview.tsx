@@ -1,8 +1,13 @@
+import { getTypeLabel } from '../utils';
+import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
+import { InvoiceDetailsOverviewRecurrenceSection } from './InvoiceDetailsOverviewRecurrenceSection';
+import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
+import { InvoiceStatusChip } from './InvoiceStatusChip';
 import { components } from '@/api';
 import { FinanceInvoice } from '@/components/financing';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   Accordion,
   AccordionContent,
@@ -13,38 +18,7 @@ import { Badge } from '@/ui/components/badge';
 import { Card, CardContent } from '@/ui/components/card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { File } from 'lucide-react';
-import { twMerge } from 'tailwind-merge';
-
-import { getTypeLabel } from '../utils';
-import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
-import { InvoiceStatusChip } from './InvoiceStatusChip';
-
-type OverviewBlockProps = {
-  label: string;
-  value: string;
-  status?: components['schemas']['ReceivablesStatusEnum'];
-};
-
-const OverviewBlock = ({ label, value, status }: OverviewBlockProps) => {
-  return (
-    <div className="mtw:flex mtw:flex-col">
-      <h3 className="mtw:text-neutral-10 mtw:text-sm mtw:font-medium mtw:leading-5">
-        {label}
-      </h3>
-      <p
-        className={twMerge(
-          'mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-10',
-          status && status === 'overdue' && 'mtw:text-danger-10',
-          status && status === 'draft' && 'mtw:text-neutral-50',
-        )}
-      >
-        {value}
-      </p>
-    </div>
-  );
-};
 
 type DocumentCardProps = {
   documentId: string;
@@ -92,14 +66,22 @@ const DocumentCard = ({
 
 type InvoiceDetailsTabOverviewProps = {
   invoice?: components['schemas']['ReceivableResponse'];
+  recurrence?: components['schemas']['RecurrenceResponse'];
+  handleTabChange: (value: string) => void;
+  openInvoiceDetails?: (invoiceId: string) => void;
 };
 
 export const InvoiceDetailsTabOverview = ({
   invoice,
+  recurrence,
+  handleTabChange,
+  openInvoiceDetails,
 }: InvoiceDetailsTabOverviewProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
+
+  const isRecurringInvoice = invoice?.status === 'recurring';
 
   const creditNoteIds =
     invoice?.type === 'invoice'
@@ -121,33 +103,56 @@ export const InvoiceDetailsTabOverview = ({
   return (
     <>
       <div className="mtw:grid mtw:grid-cols-2 mtw:gap-4">
-        <OverviewBlock
+        <InvoiceDetailsInfoBlock
           label={t(i18n)`Customer`}
           value={invoice?.counterpart_name ?? '-'}
         />
-        <OverviewBlock
-          label={t(i18n)`Document number`}
-          value={invoice?.document_id ?? t(i18n)`INV-auto`}
-        />
-        <OverviewBlock
-          label={t(i18n)`Issue date`}
-          value={
-            invoice?.issue_date
-              ? i18n.date(invoice?.issue_date, locale.dateFormat)
-              : '-'
-          }
-        />
-        <OverviewBlock
-          label={t(i18n)`Due date`}
-          value={
-            invoice?.due_date
-              ? i18n.date(invoice?.due_date, locale.dateFormat)
-              : '-'
-          }
-          status={invoice?.status}
-        />
-        {invoice?.status !== 'draft' && (
-          <OverviewBlock
+
+        {recurrence && (
+          <>
+            <InvoiceDetailsInfoBlock
+              label={t(i18n)`Payment terms`}
+              value={invoice?.payment_terms?.name ?? '-'}
+            />
+
+            <InvoiceDetailsInfoBlock
+              label={t(i18n)`Created`}
+              value={
+                recurrence?.created_at
+                  ? i18n.date(recurrence?.created_at, locale.dateFormat)
+                  : '-'
+              }
+            />
+          </>
+        )}
+
+        {!recurrence && (
+          <>
+            <InvoiceDetailsInfoBlock
+              label={t(i18n)`Document number`}
+              value={invoice?.document_id ?? t(i18n)`INV-auto`}
+            />
+            <InvoiceDetailsInfoBlock
+              label={t(i18n)`Issue date`}
+              value={
+                invoice?.issue_date
+                  ? i18n.date(invoice?.issue_date, locale.dateFormat)
+                  : '-'
+              }
+            />
+            <InvoiceDetailsInfoBlock
+              label={t(i18n)`Due date`}
+              value={
+                invoice?.due_date
+                  ? i18n.date(invoice?.due_date, locale.dateFormat)
+                  : '-'
+              }
+              status={invoice?.status}
+            />
+          </>
+        )}
+        {invoice?.status !== 'draft' && !recurrence && (
+          <InvoiceDetailsInfoBlock
             label={t(i18n)`Payment status`}
             value={t(i18n)`${formatCurrencyToDisplay(
               invoice?.amount_paid,
@@ -159,6 +164,21 @@ export const InvoiceDetailsTabOverview = ({
           />
         )}
       </div>
+
+      {recurrence && (
+        <>
+          <div className="mtw:w-full mtw:h-px mtw:bg-border" />
+
+          <InvoiceDetailsOverviewRecurrenceSection
+            recurrence={recurrence}
+            isCreatedFromRecurrence={Boolean(
+              invoice?.recurrence_id && !isRecurringInvoice
+            )}
+            openInvoiceDetails={openInvoiceDetails}
+            handleTabChange={handleTabChange}
+          />
+        </>
+      )}
 
       <FinanceInvoice invoice={invoice} />
 
@@ -193,8 +213,8 @@ export const InvoiceDetailsTabOverview = ({
                 documentId={creditNote?.document_id ?? ''}
                 issueDate={
                   creditNote?.status === 'draft'
-                    ? creditNote?.created_at ?? ''
-                    : creditNote?.issue_date ?? ''
+                    ? (creditNote?.created_at ?? '')
+                    : (creditNote?.issue_date ?? '')
                 }
                 totalAmount={creditNote?.total_amount ?? 0}
                 currency={creditNote?.currency}
