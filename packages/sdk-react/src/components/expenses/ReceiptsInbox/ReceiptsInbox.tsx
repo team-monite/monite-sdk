@@ -152,12 +152,12 @@ export const ReceiptsInbox = ({
     (value: HasTransactionFilterValue) => {
       onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
       setSearchInputValue('');
-      // Scroll to top when changing tabs (use setTimeout to ensure it happens after re-render)
-      setTimeout(() => {
+      // Scroll to top when changing tabs
+      requestAnimationFrame(() => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTop = 0;
         }
-      }, 100);
+      });
     },
     [onFilterChange]
   );
