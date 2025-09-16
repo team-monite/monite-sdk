@@ -56,8 +56,10 @@ export const ImageFileViewer = ({
     <img
       className="Monite-ImageFileViewer"
       src={url}
+      referrerPolicy="no-referrer"
       alt={name}
       loading="lazy"
+      decoding="async"
       style={{
         width: '100%',
         height: '100%',
