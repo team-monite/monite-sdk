@@ -320,7 +320,7 @@ const PayableDetailsFormBase = forwardRef<
       useProductCurrencyGroups();
 
     // Check if Line Items values have changed
-    const areLineItemsValuesChanged = (() => {
+    const areLineItemsValuesChanged = useMemo(() => {
       if (!dirtyFields.lineItems) return false;
       const hasLengthChanged =
         dirtyFields.lineItems.length !== (lineItems?.length || 0);
@@ -335,18 +335,34 @@ const PayableDetailsFormBase = forwardRef<
         }
       );
       return hasLengthChanged || hasRelevantFieldsChanged;
-    })();
-    // Check if Totals values have changed
-    const areTotalsValuesChanged = !!(
-      dirtyFields.subtotal ||
-      dirtyFields.discount ||
-      dirtyFields.tax_amount ||
-      dirtyFields.total_amount
-    );
-    const areValuesDifferent =
-      areLineItemsValuesChanged || areTotalsValuesChanged;
+    }, [dirtyFields.lineItems, lineItems?.length]);
 
-    const showAlertChangedValues = !!payable && areValuesDifferent;
+    // Check if Totals values have changed
+    const areTotalsValuesChanged = useMemo(
+      () =>
+        !!(
+          dirtyFields.subtotal ||
+          dirtyFields.discount ||
+          dirtyFields.tax_amount ||
+          dirtyFields.total_amount
+        ),
+      [
+        dirtyFields.subtotal,
+        dirtyFields.discount,
+        dirtyFields.tax_amount,
+        dirtyFields.total_amount,
+      ]
+    );
+
+    const areValuesDifferent = useMemo(
+      () => areLineItemsValuesChanged || areTotalsValuesChanged,
+      [areLineItemsValuesChanged, areTotalsValuesChanged]
+    );
+
+    const showAlertChangedValues = useMemo(
+      () => !!payable && areValuesDifferent,
+      [payable, areValuesDifferent]
+    );
 
     return (
       <>
