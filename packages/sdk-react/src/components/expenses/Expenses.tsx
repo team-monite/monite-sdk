@@ -29,6 +29,7 @@ export const Expenses = () => {
                 className="mtw:rounded-2xl mtw:text-accent-foreground"
                 onClick={() => setReceiptsInboxOpened(true)}
                 title={t(i18n)`Open receipts inbox`}
+                aria-label={t(i18n)`Open receipts inbox`}
               >
                 <ArchiveIcon />
               </Button>
