@@ -6,20 +6,31 @@ import { ReceiptsFilters } from './types';
 import { components } from '@/api/schema';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useDebounce } from '@/core/hooks';
-import { PageHeader } from '@/ui/PageHeader';
 import { ResponsiveGrid, useResponsiveGridState } from '@/ui/ResponsiveGrid';
 import { Button } from '@/ui/components/button';
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/ui/components/dialog';
 import { Input } from '@/ui/components/input';
 import { Separator } from '@/ui/components/separator';
 import { TabBar, TabBarList, TabBarTrigger } from '@/ui/components/tab-bar';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CopyIcon } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { CopyIcon, XIcon } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export const ReceiptsInbox = () => {
+export const ReceiptsInbox = ({
+  setIsOpen,
+}: {
+  setIsOpen: (open: boolean) => void;
+}) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { filters, onFilterChange } = useResponsiveGridState<ReceiptsFilters>({
     filters: {
@@ -137,77 +148,110 @@ export const ReceiptsInbox = () => {
     []
   );
 
-  // TODO: make this component be a full screen modal
+  const handleChangeTab = useCallback(
+    (value: string) => {
+      onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
+      setSearchInputValue('');
+      // Scroll to top when changing tabs (use setTimeout to ensure it happens after re-render)
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = 0;
+        }
+      }, 100);
+    },
+    [onFilterChange]
+  );
 
   return (
-    <div
-      className="mtw:flex mtw:flex-col mtw:gap-6 mtw:h-full Monite-ExpensesPage"
-      data-testid="Monite-ExpensesPage"
+    <DialogContent
+      fullScreen
+      showCloseButton={false}
+      className="mtw:flex mtw:flex-col mtw:h-screen mtw:p-0"
     >
-      <div className="mtw:flex-shrink-0">
-        <PageHeader title={t(i18n)`Receipt inbox`} />
-      </div>
-
-      <div className="mtw:pt-5 mtw:md:pt-0 mtw:flex mtw:w-full mtw:relative">
-        <TabBar
-          defaultValue="all"
-          onValueChange={useCallback(
-            (value: string) => {
-              setSearchInputValue('');
-              onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
-            },
-            [onFilterChange]
-          )}
-          className="mtw:flex-1"
-        >
-          <TabBarList>
-            <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
-            <TabBarTrigger value="unmatched">
-              <div className="mtw:flex mtw:items-center">
-                {t(i18n)`Unmatched`}
-                {unmatchedReceipts?.length && unmatchedReceipts?.length > 0 ? (
-                  <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
-                    &nbsp;
-                  </div>
-                ) : null}
-              </div>
-            </TabBarTrigger>
-            <TabBarTrigger value="matched">{t(i18n)`Matched`}</TabBarTrigger>
-          </TabBarList>
-        </TabBar>
-        {receiptsEmailAddress && (
-          <div className="mtw:flex mtw:flex-col">
-            <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
-              <span className="mtw:text-neutral-50">{t(
-                i18n
-              )`Inbox address:`}</span>
-              <a href={`mailto:${receiptsEmailAddress}`}>
-                {receiptsEmailAddress}
-              </a>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  navigator.clipboard.writeText(receiptsEmailAddress);
-                }}
-                aria-label={t(i18n)`Copy inbox email address`}
-              >
-                <CopyIcon />
-              </Button>
-            </div>
-            <Separator />
+      <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6">
+        <DialogHeader className="mtw:py-4">
+          <div className="mtw:flex mtw:items-center mtw:gap-4">
+            <Button
+              onClick={() => setIsOpen(false)}
+              variant="ghost"
+              size="icon"
+            >
+              <XIcon className="mtw:size-6" />
+            </Button>
+            <DialogTitle className="mtw:font-semibold mtw:text-2xl">{t(
+              i18n
+            )`Receipt inbox`}</DialogTitle>
+            <DialogDescription className="mtw:sr-only">{t(
+              i18n
+            )`Receipt inbox`}</DialogDescription>
           </div>
-        )}
+        </DialogHeader>
+
+        {/* Fixed Tabs and Search Section */}
+        <div className="mtw:space-y-4">
+          <div className="mtw:flex mtw:w-full mtw:relative">
+            <TabBar
+              defaultValue="all"
+              onValueChange={handleChangeTab}
+              className="mtw:flex-1"
+            >
+              <TabBarList>
+                <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
+                <TabBarTrigger value="unmatched">
+                  <div className="mtw:flex mtw:items-center">
+                    {t(i18n)`Unmatched`}
+                    {unmatchedReceipts?.length &&
+                    unmatchedReceipts?.length > 0 ? (
+                      <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
+                        &nbsp;
+                      </div>
+                    ) : null}
+                  </div>
+                </TabBarTrigger>
+                <TabBarTrigger value="matched">{t(
+                  i18n
+                )`Matched`}</TabBarTrigger>
+              </TabBarList>
+            </TabBar>
+            {receiptsEmailAddress && (
+              <div className="mtw:flex mtw:flex-col">
+                <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
+                  <span className="mtw:text-neutral-50">{t(
+                    i18n
+                  )`Inbox address:`}</span>
+                  <a href={`mailto:${receiptsEmailAddress}`}>
+                    {receiptsEmailAddress}
+                  </a>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      navigator.clipboard.writeText(receiptsEmailAddress);
+                    }}
+                    aria-label={t(i18n)`Copy inbox email address`}
+                  >
+                    <CopyIcon />
+                  </Button>
+                </div>
+                <Separator />
+              </div>
+            )}
+          </div>
+
+          <Input
+            placeholder={t(i18n)`Search by Document ID`}
+            value={searchInputValue}
+            onChange={handleSearchChange}
+            className="mtw:max-w-sm"
+          />
+        </div>
       </div>
 
-      <Input
-        placeholder={t(i18n)`Search by Document ID`}
-        value={searchInputValue}
-        onChange={handleSearchChange}
-        className="mtw:max-w-sm"
-      />
-
-      <div className="mtw:flex-1">
+      {/* Scrollable Content Area */}
+      <div
+        ref={scrollContainerRef}
+        className="mtw:flex-1 mtw:overflow-auto mtw:px-6 mtw:py-4"
+      >
         <ResponsiveGrid
           data={receipts || []}
           renderItem={(receipt) => (
@@ -226,8 +270,9 @@ export const ReceiptsInbox = () => {
           fetchNextPage={fetchNextPage}
           autoLoadMore={true}
           error={errorState}
+          scrollContainer={scrollContainerRef}
         />
       </div>
-    </div>
+    </DialogContent>
   );
 };
