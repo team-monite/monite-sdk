@@ -225,7 +225,7 @@ export const InvoiceDetailsTabOverview = ({
             </AccordionContent>
           </AccordionItem>
         )}
-        {invoice?.payment_reminder_id || invoice?.overdue_reminder_id && (
+        {(invoice?.payment_reminder_id || invoice?.overdue_reminder_id) && (
           <AccordionItem
             value="item-2"
             className="mtw:border-border"

@@ -43,7 +43,7 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
                                 setValue('recurrence_start_date', undefined);
                                 setValue('recurrence_end_date', undefined);
                             }}
-                            defaultValue={field.value}
+                            value={field.value}
                         >
                             <FormControl>
                                 <SelectTrigger className="mtw:w-full">

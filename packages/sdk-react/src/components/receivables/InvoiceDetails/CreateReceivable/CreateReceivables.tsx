@@ -1186,12 +1186,20 @@ const CreateReceivablesBase = ({
                   <RecurrenceSection
                     isRecurrenceEnabled={isRecurrenceEnabled}
                     toggleRecurrence={() => {
-                      setIsRecurrenceEnabled(!isRecurrenceEnabled);
-                      if (isRecurrenceEnabled) {
-                        clearErrors('recurrence_issue_mode');
-                        setValue('recurrence_start_date', undefined);
-                        setValue('recurrence_end_date', undefined);
-                      }
+                      setIsRecurrenceEnabled(prevState => {
+                        const nextState = !prevState;
+
+                        if (!nextState) {
+                          clearErrors([
+                            'recurrence_issue_mode', 
+                            'recurrence_start_date', 
+                            'recurrence_end_date',
+                          ]);
+                          setValue('recurrence_start_date', undefined, { shouldDirty: false });
+                          setValue('recurrence_end_date', undefined, { shouldDirty: false });
+                        }
+                        return nextState;
+                      });
                     }}
                   />
                 </Box>
