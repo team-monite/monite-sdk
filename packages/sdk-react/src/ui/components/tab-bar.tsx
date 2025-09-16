@@ -48,7 +48,7 @@ const TabBarList = forwardRef<
       {...props}
     />
     {/* Bottom separator line */}
-    <Separator className="mtw:absolute mtw:bottom-0 mtw:left-0 mtw:right-0 mtw:bg-[#dce2eb]" />
+    <Separator className="mtw:absolute mtw:bottom-0 mtw:left-0 mtw:right-0 mtw:bg-border" />
   </div>
 ));
 TabBarList.displayName = 'TabBarList';
@@ -61,9 +61,9 @@ const TabBarTrigger = forwardRef<
     ref={ref}
     data-slot="tab-bar-trigger"
     className={cn(
-      'mtw:group mtw:flex mtw:flex-col mtw:gap-2 mtw:h-11 mtw:items-center mtw:justify-center mtw:relative mtw:rounded-[10px] mtw:shrink-0 mtw:px-3 mtw:py-2 mtw:transition-colors mtw:focus-visible:outline-none mtw:focus-visible:ring-2 mtw:focus-visible:ring-ring mtw:focus-visible:ring-offset-2 mtw:disabled:pointer-events-none mtw:disabled:opacity-50',
-      'mtw:data-[state=active]:text-[#212126] mtw:data-[state=inactive]:text-[#6b7280]',
-      'mtw:hover:text-[#212126] mtw:hover:bg-gray-50',
+      'mtw:group mtw:flex mtw:flex-col mtw:gap-2 mtw:h-11 mtw:items-center mtw:justify-center mtw:relative mtw:rounded-t-md mtw:shrink-0 mtw:px-3 mtw:py-2 mtw:transition-colors mtw:focus-visible:outline-none mtw:focus-visible:ring-2 mtw:focus-visible:ring-ring mtw:focus-visible:ring-offset-2 mtw:disabled:pointer-events-none mtw:disabled:opacity-50',
+      'mtw:data-[state=active]:text-foreground mtw:data-[state=inactive]:text-muted-foreground',
+      'mtw:hover:text-foreground mtw:hover:bg-gray-50',
       className
     )}
     {...props}
@@ -76,7 +76,10 @@ const TabBarTrigger = forwardRef<
       </div>
     </div>
     {/* Active indicator - blue bottom line */}
-    <div className="mtw:absolute mtw:bg-[#3737ff] mtw:bottom-0 mtw:h-1 mtw:left-0 mtw:right-0 mtw:rounded-[10px] mtw:opacity-0 mtw:group-data-[state=active]:opacity-100 mtw:transition-opacity" />
+    <div
+      aria-hidden="true"
+      className="mtw:absolute mtw:bg-primary mtw:bottom-0 mtw:h-1 mtw:left-0 mtw:right-0 mtw:rounded-t-lg mtw:opacity-0 mtw:group-data-[state=active]:opacity-100 mtw:transition-opacity"
+    />
   </TabsPrimitive.Trigger>
 ));
 TabBarTrigger.displayName = 'TabBarTrigger';
