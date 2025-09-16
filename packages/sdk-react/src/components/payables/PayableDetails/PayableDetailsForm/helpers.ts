@@ -46,6 +46,40 @@ export const dateToString = (date: Date): string => {
   return format(date, 'yyyy-MM-dd');
 };
 
+const getDefaultValuesForCreating = (
+  isCalculateTotalsEnabled?: boolean
+): PayableDetailsFormFields => {
+  const defaultValuesCreating = {
+    invoiceNumber: '',
+    counterpart: '',
+    counterpartBankAccount: '',
+    invoiceDate: undefined,
+    dueDate: undefined,
+    currency: 'EUR' as CurrencyEnum,
+    tags: [],
+    discount: null,
+    lineItems: [
+      {
+        id: '',
+        name: '',
+        quantity: 1,
+        price: 0,
+        tax: 19,
+      },
+    ],
+  };
+
+  if (!isCalculateTotalsEnabled) {
+    return {
+      ...defaultValuesCreating,
+      subtotal: 0,
+      tax_amount: 0,
+      total_amount: 0,
+    };
+  }
+  return defaultValuesCreating;
+};
+
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
@@ -56,35 +90,7 @@ export const prepareDefaultValues = (
   isCalculateTotalsEnabled?: boolean
 ): PayableDetailsFormFields => {
   if (!payable) {
-    const defaultValuesCreating = {
-      invoiceNumber: '',
-      counterpart: '',
-      counterpartBankAccount: '',
-      invoiceDate: undefined,
-      dueDate: undefined,
-      currency: 'EUR' as CurrencyEnum,
-      tags: [],
-      discount: null,
-      lineItems: [
-        {
-          id: '',
-          name: '',
-          quantity: 1,
-          price: 0,
-          tax: 19,
-        },
-      ],
-    };
-
-    if (!isCalculateTotalsEnabled) {
-      return {
-        ...defaultValuesCreating,
-        subtotal: 0,
-        tax_amount: 0,
-        total_amount: 0,
-      };
-    }
-    return defaultValuesCreating;
+    return getDefaultValuesForCreating(isCalculateTotalsEnabled);
   }
 
   const {
