@@ -605,7 +605,7 @@ const CreateReceivablesBase = ({
             : undefined,
           type: 'product',
         },
-        ...(isNonVatSupported || !isLineItemVatRateIdRequired
+        ...(isNonVatSupported
           ? {
               tax_rate_value: item?.tax_rate_value
                 ? rateMajorToMinor(item.tax_rate_value)
@@ -1331,7 +1331,7 @@ const CreateReceivablesBase = ({
           currency={
             actualCurrency || settings?.currency?.default || fallbackCurrency
           }
-          isNonVatSupported={isNonVatSupported || !isLineItemVatRateIdRequired}
+          isNonVatSupported={isNonVatSupported}
           entityData={entityData}
           address={counterpartBillingAddress}
           paymentTerms={paymentTerms}
