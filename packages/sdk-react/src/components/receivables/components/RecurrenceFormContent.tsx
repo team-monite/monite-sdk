@@ -30,56 +30,6 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
 
     return (
         <div className="mtw:flex mtw:flex-col mtw:gap-6">
-            <div className="mtw:flex mtw:gap-4">
-                <FormField
-                    control={control}
-                    name="recurrence_start_date"
-                    render={({ field }) => (
-                        <FormItem className="mtw:flex-1">
-                            <FormLabel>{t(i18n)`Period starts on`}</FormLabel>
-                            <FormControl>
-                                <DatePicker 
-                                    {...field} 
-                                    selected={field.value ? new Date(field.value) : undefined} 
-                                    onSelect={field.onChange}
-                                    showOutsideDays={false}
-                                    disabled={isDateDisabled}
-                                    shouldDisableButton={isUpdate}
-                                    startMonth={new Date()}
-                                    endMonth={new Date(2050, 11)}
-                                />
-                            </FormControl>  
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                
-                <FormField
-                    control={control}
-                    name="recurrence_end_date"
-                    render={({ field }) => (
-                        <FormItem className="mtw:flex-1">
-                            <FormLabel>{t(i18n)`Period ends on`}</FormLabel>
-                            <FormControl>
-                                <DatePicker 
-                                    {...field} 
-                                    selected={field.value ? new Date(field.value) : undefined} 
-                                    onSelect={field.onChange}
-                                    showOutsideDays={false}
-                                    disabled={isDateDisabled}
-                                    startMonth={recurrenceStartDate ? 
-                                        new Date(recurrenceStartDate.getFullYear(), recurrenceStartDate.getMonth() + 2, 0) : 
-                                        new Date()
-                                    }
-                                    endMonth={new Date(2050, 11)}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-
             <FormField
                 control={control}
                 name="recurrence_issue_mode"
@@ -109,6 +59,58 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
                     </FormItem>
                 )}
             />
+            
+            <div className="mtw:flex mtw:items-start mtw:gap-4">
+                <FormField
+                    control={control}
+                    name="recurrence_start_date"
+                    render={({ field }) => (
+                        <FormItem className="mtw:flex-1">
+                            <FormLabel>{t(i18n)`Period starts on`}</FormLabel>
+                            <FormControl>
+                                <DatePicker 
+                                    {...field} 
+                                    selected={field.value ? new Date(field.value) : undefined} 
+                                    onSelect={field.onChange}
+                                    showOutsideDays={false}
+                                    disabled={isDateDisabled}
+                                    shouldDisableButton={isUpdate}
+                                    startMonth={new Date()}
+                                    endMonth={new Date(2050, 11)}
+                                    {...(isUpdate && field.value ? { defaultMonth: new Date(field.value) } : {})}
+                                />
+                            </FormControl>  
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                
+                <FormField
+                    control={control}
+                    name="recurrence_end_date"
+                    render={({ field }) => (
+                        <FormItem className="mtw:flex-1">
+                            <FormLabel>{t(i18n)`Period ends on`}</FormLabel>
+                            <FormControl>
+                                <DatePicker 
+                                    {...field} 
+                                    selected={field.value ? new Date(field.value) : undefined} 
+                                    onSelect={field.onChange}
+                                    showOutsideDays={false}
+                                    disabled={isDateDisabled}
+                                    startMonth={recurrenceStartDate ? 
+                                        new Date(recurrenceStartDate.getFullYear(), recurrenceStartDate.getMonth() + 2, 0) : 
+                                        new Date()
+                                    }
+                                    endMonth={new Date(2050, 11)}
+                                    {...(isUpdate && field.value ? { defaultMonth: new Date(field.value) } : {})}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div> 
         </div>
     );
 };
