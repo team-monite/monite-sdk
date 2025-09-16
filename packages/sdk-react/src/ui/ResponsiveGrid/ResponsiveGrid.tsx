@@ -235,17 +235,33 @@ function ResponsiveGridComponent<TData>({
     <div className="mtw:flex mtw:flex-col">
       <div className="mtw:flex mtw:flex-col">
         <div style={autoColumnsGridStyle}>
-          {data.map((item, index) => (
-            <div
-              key={(item as any)?.id || `grid-item-${index}`}
-              className="mtw:cursor-pointer mtw:transition-transform"
-              onClick={() => handleItemClick(item, index)}
-            >
-              <div className="mtw:w-full mtw:h-full">
-                {renderItem(item, index)}
+          {data.map((item, index) => {
+            const isClickable = Boolean(onItemClick);
+            const key = (item as any)?.id ?? `grid-item-${index}`;
+            return (
+              <div
+                key={key}
+                className={`mtw:transition-transform ${isClickable ? 'mtw:cursor-pointer' : ''}`}
+                onClick={() => isClickable && handleItemClick(item, index)}
+                role={isClickable ? 'button' : undefined}
+                tabIndex={isClickable ? 0 : undefined}
+                onKeyDown={
+                  isClickable
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleItemClick(item, index);
+                        }
+                      }
+                    : undefined
+                }
+              >
+                <div className="mtw:w-full mtw:h-full">
+                  {renderItem(item, index)}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
