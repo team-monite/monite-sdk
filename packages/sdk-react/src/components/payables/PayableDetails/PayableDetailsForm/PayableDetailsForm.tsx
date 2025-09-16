@@ -268,8 +268,21 @@ const PayableDetailsFormBase = forwardRef<
       counterpart.id === currentCounterpart;
 
     useEffect(() => {
-      reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
-    }, [payable, formatFromMinorUnits, reset, lineItems]);
+      reset(
+        prepareDefaultValues(
+          formatFromMinorUnits,
+          payable,
+          lineItems,
+          !isDisableAutoCalculateTotals
+        )
+      );
+    }, [
+      payable,
+      formatFromMinorUnits,
+      reset,
+      lineItems,
+      isDisableAutoCalculateTotals,
+    ]);
 
     useEffect(() => {
       if (!currentCounterpart && !!currentCounterpartBankAccount) {
