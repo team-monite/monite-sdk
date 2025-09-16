@@ -5,12 +5,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
-const INTERSECTION_OPTIONS = {
-  root: null,
-  rootMargin: '100px',
-  threshold: 0.1,
-} as const;
-
 interface ResponsiveGridProps<TData> {
   data: TData[];
   renderItem: (item: TData, index: number) => React.ReactNode;
@@ -30,6 +24,8 @@ interface ResponsiveGridProps<TData> {
   skeletonCount?: number;
   // Auto-load more when scrolling (default: true)
   autoLoadMore?: boolean;
+  // Custom scroll container for intersection observer (default: null = viewport)
+  scrollContainer?: React.RefObject<Element> | (() => Element | null);
 }
 
 /**
@@ -56,6 +52,7 @@ interface ResponsiveGridProps<TData> {
  * @param loadingSkeleton - Custom component to show during loading
  * @param skeletonCount - Number of skeleton items to show during loading (default: 12)
  * @param autoLoadMore - Whether to automatically load more data on scroll (default: true)
+ * @param scrollContainer - Custom scroll container for intersection observer (default: null = viewport)
  *
  * @example
  * ```tsx
@@ -82,6 +79,24 @@ interface ResponsiveGridProps<TData> {
  *   autoLoadMore={false} // Manual load more only
  * />
  * ```
+ *
+ * @example
+ * ```tsx
+ * // With custom scroll container (e.g., inside a dialog or modal)
+ * const scrollContainerRef = useRef<HTMLDivElement>(null);
+ *
+ * return (
+ *   <div ref={scrollContainerRef} className="overflow-auto h-full">
+ *     <ResponsiveGrid
+ *       data={items}
+ *       renderItem={(item) => <ItemCard item={item} />}
+ *       scrollContainer={scrollContainerRef}
+ *       hasNextPage={hasNextPage}
+ *       fetchNextPage={fetchNextPage}
+ *     />
+ *   </div>
+ * );
+ * ```
  */
 function ResponsiveGridComponent<TData>({
   data,
@@ -97,6 +112,7 @@ function ResponsiveGridComponent<TData>({
   loadingSkeleton: LoadingSkeleton,
   skeletonCount = 12,
   autoLoadMore = true,
+  scrollContainer,
 }: ResponsiveGridProps<TData>) {
   const { i18n } = useLingui();
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -107,17 +123,36 @@ function ResponsiveGridComponent<TData>({
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (
-        entry.isIntersecting &&
-        hasNextPage &&
-        !isFetchingNextPage &&
-        fetchNextPage
-      ) {
-        fetchNextPage();
+    // Get the scroll container element
+    const getScrollRoot = () => {
+      if (!scrollContainer) return null;
+      if (typeof scrollContainer === 'function') {
+        return scrollContainer();
       }
-    }, INTERSECTION_OPTIONS);
+      return scrollContainer.current;
+    };
+
+    const scrollRoot = getScrollRoot();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (
+          entry.isIntersecting &&
+          hasNextPage &&
+          !isFetchingNextPage &&
+          fetchNextPage
+        ) {
+          fetchNextPage();
+        }
+      },
+      {
+        root: scrollRoot,
+        rootMargin: '250px',
+        threshold: 0.1,
+      }
+    );
 
     const currentRef = loadMoreRef.current;
     if (currentRef) {
@@ -125,11 +160,16 @@ function ResponsiveGridComponent<TData>({
     }
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      observer.disconnect();
     };
-  }, [autoLoadMore, fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [
+    autoLoadMore,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    scrollContainer,
+    data.length,
+  ]);
 
   // Auto-columns grid style that automatically adjusts the number of columns based on the available width, given a minimum item width
   const autoColumnsGridStyle = useMemo(
@@ -170,10 +210,8 @@ function ResponsiveGridComponent<TData>({
   // Early return for loading state
   if (loading && data.length === 0) {
     return (
-      <div className="mtw:flex mtw:flex-col mtw:h-full">
-        <div className="mtw:flex-1">
-          <div style={autoColumnsGridStyle}>{skeletonItems}</div>
-        </div>
+      <div className="mtw:flex mtw:flex-col">
+        <div style={autoColumnsGridStyle}>{skeletonItems}</div>
       </div>
     );
   }
@@ -181,8 +219,8 @@ function ResponsiveGridComponent<TData>({
   // Early return for empty state
   if (data.length === 0) {
     return (
-      <div className="mtw:flex mtw:flex-col mtw:h-full">
-        <div className="mtw:flex-1 mtw:flex mtw:items-center mtw:justify-center">
+      <div className="mtw:flex mtw:flex-col">
+        <div className="mtw:flex mtw:items-center mtw:justify-center mtw:py-8">
           {NoItemsOverlay ? (
             <NoItemsOverlay />
           ) : (
@@ -194,30 +232,28 @@ function ResponsiveGridComponent<TData>({
   }
 
   return (
-    <div className="mtw:flex mtw:flex-col mtw:h-full">
-      <div className="mtw:flex mtw:flex-col mtw:flex-1 mtw:min-h-0">
-        <div className="mtw:flex-1">
-          <div style={autoColumnsGridStyle}>
-            {data.map((item, index) => (
-              <div
-                key={(item as any)?.id || `grid-item-${index}`}
-                className="mtw:cursor-pointer mtw:transition-transform"
-                onClick={() => handleItemClick(item, index)}
-              >
-                <div className="mtw:w-full mtw:h-full">
-                  {renderItem(item, index)}
-                </div>
+    <div className="mtw:flex mtw:flex-col">
+      <div className="mtw:flex mtw:flex-col">
+        <div style={autoColumnsGridStyle}>
+          {data.map((item, index) => (
+            <div
+              key={(item as any)?.id || `grid-item-${index}`}
+              className="mtw:cursor-pointer mtw:transition-transform"
+              onClick={() => handleItemClick(item, index)}
+            >
+              <div className="mtw:w-full mtw:h-full">
+                {renderItem(item, index)}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Infinite scroll load more section */}
-      {(hasNextPage || isFetchingNextPage || error) && (
+      {(hasNextPage || isFetchingNextPage) && (
         <div className="mtw:flex-shrink-0 mtw:mt-4">
           {autoLoadMore ? (
-            <div ref={loadMoreRef}>
+            <div className="mtw:min-h-[1px]">
               {isFetchingNextPage && (
                 <div className="mtw:flex mtw:items-center mtw:justify-center mtw:py-4">
                   <div className="mtw:flex mtw:items-center mtw:space-x-2">
@@ -228,6 +264,10 @@ function ResponsiveGridComponent<TData>({
                   </div>
                 </div>
               )}
+              {/* Trigger element positioned at the very end - only when not fetching */}
+              {!isFetchingNextPage && (
+                <div ref={loadMoreRef} className="mtw:h-[1px] mtw:w-full" />
+              )}
             </div>
           ) : (
             <InfiniteScrollManualLoadMore
@@ -237,6 +277,17 @@ function ResponsiveGridComponent<TData>({
               error={error}
             />
           )}
+        </div>
+      )}
+
+      {/* Show error state separately if needed */}
+      {error && !hasNextPage && (
+        <div className="mtw:flex-shrink-0 mtw:mt-4">
+          <div className="mtw:flex mtw:items-center mtw:justify-center mtw:py-4">
+            <p className="mtw:text-destructive mtw:text-sm">
+              {t(i18n)`Failed to load more items`}
+            </p>
+          </div>
         </div>
       )}
     </div>
