@@ -2,7 +2,7 @@ import { useMailboxes } from '../hooks/useMailboxes';
 import { useGetReceipts, useInfiniteGetReceipts } from '../hooks/useReceipts';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
-import { ReceiptsFilters } from './types';
+import { HasTransactionFilterValue, ReceiptsFilters } from './types';
 import { components } from '@/api/schema';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useDebounce } from '@/core/hooks';
@@ -149,7 +149,7 @@ export const ReceiptsInbox = ({
   );
 
   const handleChangeTab = useCallback(
-    (value: string) => {
+    (value: HasTransactionFilterValue) => {
       onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
       setSearchInputValue('');
       // Scroll to top when changing tabs (use setTimeout to ensure it happens after re-render)
@@ -192,7 +192,9 @@ export const ReceiptsInbox = ({
           <div className="mtw:flex mtw:w-full mtw:relative">
             <TabBar
               defaultValue="all"
-              onValueChange={handleChangeTab}
+              onValueChange={(value: string) =>
+                handleChangeTab(value as HasTransactionFilterValue)
+              }
               className="mtw:flex-1"
             >
               <TabBarList>
