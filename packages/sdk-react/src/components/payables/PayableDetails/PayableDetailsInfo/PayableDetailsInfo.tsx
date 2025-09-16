@@ -139,14 +139,21 @@ const PayableDetailsInfoBase = ({
 
   const { data: ledgerAccounts } = useLedgerAccounts(enableGLCodes);
 
-  const getLedgerAccountName = (ledgerAccountId?: string) => {
+  const getLedgerAccountSubtitle = (ledgerAccountId?: string) => {
     if (!ledgerAccountId || !ledgerAccounts?.data) return undefined;
 
     const account = ledgerAccounts.data.find(
       (acc) => acc.id === ledgerAccountId
     );
 
-    return account?.name;
+    if (!account) return undefined;
+
+    const main =
+      account.nominal_code && account.type
+        ? `${account.nominal_code} — ${account.type}`
+        : (account.nominal_code ?? account.type ?? '');
+
+    return main ? `${t(i18n)`GL code`}: ${main}` : undefined;
   };
 
   const ocrMismatchWarning = useMemo(() => {
@@ -494,14 +501,22 @@ const PayableDetailsInfoBase = ({
                   <TableCell>{t(i18n)`Name`}</TableCell>
                   <TableCell>{t(i18n)`Quantity`}</TableCell>
                   <TableCell>{t(i18n)`Price`}</TableCell>
-                  {enableGLCodes && <TableCell>{t(i18n)`GL Code`}</TableCell>}
                   <TableCell align="right">{t(i18n)`Total, tax`}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {lineItems?.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      <Stack>
+                        <Box>{item.name}</Box>
+                        {enableGLCodes && item.ledger_account_id && (
+                          <Typography variant="body2" color="secondary.main">
+                            {getLedgerAccountSubtitle(item.ledger_account_id)}
+                          </Typography>
+                        )}
+                      </Stack>
+                    </TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
                       {item.unit_price
@@ -511,11 +526,6 @@ const PayableDetailsInfoBase = ({
                           )
                         : '—'}
                     </TableCell>
-                    {enableGLCodes && (
-                      <TableCell>
-                        {getLedgerAccountName(item.ledger_account_id) ?? '—'}
-                      </TableCell>
-                    )}
                     <TableCell align="right">
                       {item.subtotal && payable.currency ? (
                         <>
