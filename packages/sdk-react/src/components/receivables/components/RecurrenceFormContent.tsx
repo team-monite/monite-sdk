@@ -30,7 +30,37 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
 
     return (
         <div className="mtw:flex mtw:flex-col mtw:gap-6">
-            <div className="mtw:flex mtw:gap-4">
+            <FormField
+                control={control}
+                name="recurrence_issue_mode"
+                render={({ field }) => (
+                    <FormItem className="mtw:flex-1">
+                        <FormLabel>{t(i18n)`Issue at`}</FormLabel>
+                        <Select
+                            disabled={isUpdate}
+                            onValueChange={(value) => {
+                                field.onChange(value);
+                                setValue('recurrence_start_date', undefined);
+                                setValue('recurrence_end_date', undefined);
+                            }}
+                            value={field.value}
+                        >
+                            <FormControl>
+                                <SelectTrigger className="mtw:w-full">
+                                    <SelectValue className="mtw:max-w-4/5 mtw:text-ellipsis mtw:whitespace-nowrap" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value="first_day">{t(i18n)`Start of the month`}</SelectItem>
+                                <SelectItem value="last_day">{t(i18n)`End of the month`}</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            
+            <div className="mtw:flex mtw:items-start mtw:gap-4">
                 <FormField
                     control={control}
                     name="recurrence_start_date"
@@ -47,6 +77,7 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
                                     shouldDisableButton={isUpdate}
                                     startMonth={new Date()}
                                     endMonth={new Date(2050, 11)}
+                                    {...(isUpdate && field.value ? { defaultMonth: new Date(field.value) } : {})}
                                 />
                             </FormControl>  
                             <FormMessage />
@@ -72,43 +103,14 @@ export const RecurrenceFormContent = ({ isUpdate = false }) => {
                                         new Date()
                                     }
                                     endMonth={new Date(2050, 11)}
+                                    {...(isUpdate && field.value ? { defaultMonth: new Date(field.value) } : {})}
                                 />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-            </div>
-
-            <FormField
-                control={control}
-                name="recurrence_issue_mode"
-                render={({ field }) => (
-                    <FormItem className="mtw:flex-1">
-                        <FormLabel>{t(i18n)`Issue at`}</FormLabel>
-                        <Select
-                            disabled={isUpdate}
-                            onValueChange={(value) => {
-                                field.onChange(value);
-                                setValue('recurrence_start_date', undefined);
-                                setValue('recurrence_end_date', undefined);
-                            }}
-                            defaultValue={field.value}
-                        >
-                            <FormControl>
-                                <SelectTrigger className="mtw:w-full">
-                                    <SelectValue className="mtw:max-w-4/5 mtw:text-ellipsis mtw:whitespace-nowrap" />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                <SelectItem value="first_day">{t(i18n)`Start of the month`}</SelectItem>
-                                <SelectItem value="last_day">{t(i18n)`End of the month`}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+            </div> 
         </div>
     );
 };

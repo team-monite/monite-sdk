@@ -183,60 +183,64 @@ export const InvoiceDetailsTabOverview = ({
       <FinanceInvoice invoice={invoice} />
 
       <Accordion type="multiple" className="mtw:w-full">
-        <AccordionItem
-          value="item-1"
-          disabled={!creditNoteQuery?.data?.length}
-          className="mtw:border-border"
-        >
-          <AccordionTrigger className="mtw:hover:no-underline mtw:group">
-            <span className="mtw:flex mtw:items-center mtw:gap-3">
-              <span className="mtw:group-hover:underline">
-                {t(i18n)`Linked documents`}
-              </span>
+        {creditNoteQuery?.data?.length && creditNoteQuery?.data?.length > 0 && (
+          <AccordionItem
+            value="item-1"
+            disabled={!creditNoteQuery?.data?.length}
+            className="mtw:border-border"
+          >
+            <AccordionTrigger className="mtw:hover:no-underline mtw:group">
+              <span className="mtw:flex mtw:items-center mtw:gap-3">
+                <span className="mtw:group-hover:underline">
+                  {t(i18n)`Linked documents`}
+                </span>
 
-              {creditNoteQuery?.data?.length &&
-                creditNoteQuery?.data?.length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="mtw:h-5 mtw:min-w-5 mtw:rounded-full mtw:px-1 mtw:tabular-nums"
-                  >
-                    {creditNoteQuery?.data?.length}
-                  </Badge>
-                )}
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="mtw:flex mtw:flex-col mtw:gap-2">
-            {creditNoteQuery?.data?.map((creditNote) => (
-              <DocumentCard
-                key={creditNote.id}
-                type={creditNote?.type}
-                documentId={creditNote?.document_id ?? ''}
-                issueDate={
-                  creditNote?.status === 'draft'
-                    ? creditNote?.created_at ?? ''
-                    : creditNote?.issue_date ?? ''
-                }
-                totalAmount={creditNote?.total_amount ?? 0}
-                currency={creditNote?.currency}
-                status={creditNote?.status}
-              />
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem
-          value="item-2"
-          className="mtw:border-border"
-          disabled={
-            !invoice?.payment_reminder_id && !invoice?.overdue_reminder_id
-          }
-        >
-          <InvoiceDetailsOverviewReminders
-            paymentReminderId={invoice?.payment_reminder_id}
-            overdueReminderId={invoice?.overdue_reminder_id}
-            invoiceId={invoice?.id}
-            counterpartId={invoice?.counterpart_id}
-          />
-        </AccordionItem>
+                {creditNoteQuery?.data?.length &&
+                  creditNoteQuery?.data?.length > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="mtw:h-5 mtw:min-w-5 mtw:rounded-full mtw:px-1 mtw:tabular-nums"
+                    >
+                      {creditNoteQuery?.data?.length}
+                    </Badge>
+                  )}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent className="mtw:flex mtw:flex-col mtw:gap-2">
+              {creditNoteQuery?.data?.map((creditNote) => (
+                <DocumentCard
+                  key={creditNote.id}
+                  type={creditNote?.type}
+                  documentId={creditNote?.document_id ?? ''}
+                  issueDate={
+                    creditNote?.status === 'draft'
+                      ? creditNote?.created_at ?? ''
+                      : creditNote?.issue_date ?? ''
+                  }
+                  totalAmount={creditNote?.total_amount ?? 0}
+                  currency={creditNote?.currency}
+                  status={creditNote?.status}
+                />
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        )}
+        {(invoice?.payment_reminder_id || invoice?.overdue_reminder_id) && (
+          <AccordionItem
+            value="item-2"
+            className="mtw:border-border"
+            disabled={
+              !invoice?.payment_reminder_id && !invoice?.overdue_reminder_id
+            }
+          >
+            <InvoiceDetailsOverviewReminders
+              paymentReminderId={invoice?.payment_reminder_id}
+              overdueReminderId={invoice?.overdue_reminder_id}
+              invoiceId={invoice?.id}
+              counterpartId={invoice?.counterpart_id}
+            />
+          </AccordionItem>
+        )}
       </Accordion>
     </>
   );
