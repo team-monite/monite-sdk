@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react';
-
 import { resolve } from 'node:path';
 import { defineConfig, ConfigEnv } from 'vite';
 
@@ -15,6 +14,7 @@ export default async function viteConfig({ mode }: ConfigEnv) {
     ],
     build: {
       sourcemap: true,
+      target: 'baseline-widely-available',
       lib: {
         formats: ['cjs', 'es'], // order is important, cjs first, es second
         entry: {

@@ -1,26 +1,25 @@
-import { useState, useCallback } from 'react';
-
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FinanceMenuButtons } from '@/components/financing/components';
 import { FINANCING_LABEL } from '@/components/financing/consts';
 import { useFinancing } from '@/components/financing/hooks';
+import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import {
   ReceivablesTable,
   ReceivablesTableTabEnum,
 } from '@/components/receivables/components';
-import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useComponentSettings } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
-import { Button } from '@/ui/components/button';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, CircularProgress } from '@mui/material';
+import { useState, useCallback } from 'react';
 
 type ReceivablesProps = {
   /** @see {@link CustomerTypes} */
@@ -137,6 +136,7 @@ const ReceivablesBase = ({ customerTypes }: ReceivablesProps) => {
         id={invoiceId}
         onClose={closeModal}
         onDuplicate={openInvoiceModal}
+        openInvoiceDetails={openInvoiceModal}
       />
       <Dialog
         className={className + '-Dialog-CreateReceivable'}
