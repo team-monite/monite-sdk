@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.6.1
+
+### Patch Changes
+
+- c5404a2: Fixed issue with vat rate field not displaying correctly when creating an invoice
+
 ## 4.6.0
 
 ### Minor Changes

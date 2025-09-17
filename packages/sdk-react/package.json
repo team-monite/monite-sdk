@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-react",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "apiVersion": "2024-05-25",
   "publishConfig": {
     "access": "public"
@@ -103,9 +103,14 @@
     "@lingui/swc-plugin": "5.6.0",
     "@lingui/vite-plugin": "~5.4.1",
     "@openapi-qraft/cli": "1.14.0",
+    "@rollup/plugin-commonjs": "~24.1.0",
+    "@rollup/plugin-image": "~3.0.3",
+    "@rollup/plugin-json": "~6.0.0",
     "@rollup/plugin-typescript": "~12.1.4",
+    "@rollup/plugin-url": "~8.0.1",
     "@storybook/addon-docs": "~9.1.5",
     "@storybook/react-vite": "~9.1.5",
+    "@svgr/rollup": "~8.1.0",
     "@swc/core": "~1.12.0",
     "@swc/jest": "~0.2.26",
     "@swc/plugin-emotion": "~11.1.0",

@@ -124,7 +124,7 @@ export const getCreateInvoiceValidationSchema = (
     })
     .refine(
       (data) => {
-        if (data.recurrence_issue_mode === 'first_day') {
+        if (isRecurrenceEnabled && data.recurrence_issue_mode === 'first_day') {
           return (
             data.recurrence_start_date &&
             data.recurrence_start_date >= new Date()
