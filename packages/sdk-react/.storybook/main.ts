@@ -49,7 +49,7 @@ const config: StorybookConfig = {
     config.css = {
       ...config.css,
       postcss: {
-        plugins: [],
+        plugins: [require('@tailwindcss/postcss')],
       },
     };
 
