@@ -1,7 +1,6 @@
+import { InvoiceRecurrenceStatusChip as InvoiceRecurrenceStatusChipComponent } from './InvoiceRecurrenceStatusChip';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { InvoiceRecurrenceStatusChip as InvoiceRecurrenceStatusChipComponent } from './InvoiceRecurrenceStatusChip';
 
 const meta: Meta<typeof InvoiceRecurrenceStatusChipComponent> = {
   title: 'Components / InvoiceRecurrenceStatusChip',
@@ -9,19 +8,15 @@ const meta: Meta<typeof InvoiceRecurrenceStatusChipComponent> = {
   parameters: {
     docs: {
       description: {
-        component: 'A chip component that displays the status of a recurring invoice.',
+        component:
+          'A chip component that displays the status of a recurring invoice.',
       },
     },
   },
   argTypes: {
     status: {
       control: 'select',
-      options: [
-        'active',
-        'paused',
-        'completed',
-        'canceled',
-      ],
+      options: ['active', 'paused', 'completed', 'canceled'],
       description: 'The status of the recurring invoice',
     },
     className: {

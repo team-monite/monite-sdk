@@ -37,41 +37,41 @@ export const getCommonStatusLabel = (
 };
 
 export const getCommonRecurrenceStatusLabel = (
-    i18n: I18n,
-    status: components['schemas']['RecurrenceStatus']
-  ) => {
-    switch (status) {
-      case 'active':
-        return t(i18n)`Active`;
-      case 'paused':
-        return t(i18n)`Paused`;
-      case 'canceled':
-        return t(i18n)`Canceled`;
-      case 'completed':
-        return t(i18n)`Completed`;
-      default:
-        throw new Error(`Unknown status ${JSON.stringify(status)}`);
-    }
+  i18n: I18n,
+  status: components['schemas']['RecurrenceStatus']
+) => {
+  switch (status) {
+    case 'active':
+      return t(i18n)`Active`;
+    case 'paused':
+      return t(i18n)`Paused`;
+    case 'canceled':
+      return t(i18n)`Canceled`;
+    case 'completed':
+      return t(i18n)`Completed`;
+    default:
+      throw new Error(`Unknown status ${JSON.stringify(status)}`);
+  }
 };
 
 export const getCommonRecurrenceIterationStatusLabel = (
-    i18n: I18n,
-    status: components['schemas']['IterationStatus']
-  ) => {
-    switch (status) {
-      case 'pending':
-        return t(i18n)`Scheduled`;
-      case 'skipped':
-        return t(i18n)`Skipped`;
-      case 'canceled':
-        return t(i18n)`Canceled`;
-      case 'issue_failed':
-        return t(i18n)`Issue failed`;
-      case 'send_failed':
-        return t(i18n)`Send failed`;
-      case 'completed':
-        return t(i18n)`Completed`;
-      default:
-        throw new Error(`Unknown status ${JSON.stringify(status)}`);
-    }
+  i18n: I18n,
+  status: components['schemas']['IterationStatus']
+) => {
+  switch (status) {
+    case 'pending':
+      return t(i18n)`Scheduled`;
+    case 'skipped':
+      return t(i18n)`Skipped`;
+    case 'canceled':
+      return t(i18n)`Canceled`;
+    case 'issue_failed':
+      return t(i18n)`Issue failed`;
+    case 'send_failed':
+      return t(i18n)`Send failed`;
+    case 'completed':
+      return t(i18n)`Completed`;
+    default:
+      throw new Error(`Unknown status ${JSON.stringify(status)}`);
+  }
 };

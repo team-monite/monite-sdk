@@ -1,14 +1,12 @@
-import { usePreviousDistinct } from 'react-use';
-
+import { components } from '@/api';
+import { useCancelRecurrence } from '@/components/receivables/hooks/useCancelRecurrence';
+import { useGetRecurrenceById } from '@/components/receivables/hooks/useGetRecurrenceById';
 import { useCurrencies } from '@/core/hooks';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { plural, t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import deepEqual from 'deep-eql';
-import { components } from '@/api';
-import { useCancelRecurrence } from '@/components/receivables/hooks/useCancelRecurrence';
-import { useGetRecurrenceById } from '@/components/receivables/hooks/useGetRecurrenceById';
+import { usePreviousDistinct } from 'react-use';
 
 export const RecurrenceCancelModal = ({
   invoice,
@@ -24,18 +22,19 @@ export const RecurrenceCancelModal = ({
 
   const recurrence_id = invoice?.recurrence_id ?? '';
 
-  const { mutate: cancelRecurrence, isPending: isCancellingRecurrence } = 
+  const { mutate: cancelRecurrence, isPending: isCancellingRecurrence } =
     useCancelRecurrence(recurrence_id, invoice.id);
 
   const { data: recurrence } = useGetRecurrenceById(recurrence_id);
 
   const previousRecurrence = usePreviousDistinct(recurrence, deepEqual);
 
-  const totalPendingInvoices = (
-    previousRecurrence?.status === 'active' && recurrence?.status === 'canceled'
+  const totalPendingInvoices =
+    (previousRecurrence?.status === 'active' &&
+    recurrence?.status === 'canceled'
       ? previousRecurrence
       : recurrence
-  )?.iterations?.filter(({ status }) => status === 'pending')?.length ?? 0;
+    )?.iterations?.filter(({ status }) => status === 'pending')?.length ?? 0;
 
   const pendingInvoicesTotalAmountWithCreditNotes =
     invoice && totalPendingInvoices !== undefined
@@ -61,9 +60,11 @@ export const RecurrenceCancelModal = ({
       confirmLabel={t(i18n)`Cancel recurrence`}
       cancelLabel={t(i18n)`Close`}
       onClose={onClose}
-      onConfirm={() => cancelRecurrence(undefined, {
-        onSuccess: onClose,
-      })}
+      onConfirm={() =>
+        cancelRecurrence(undefined, {
+          onSuccess: onClose,
+        })
+      }
       isLoading={isCancellingRecurrence}
     >
       <span className="mtw:inline-block">
@@ -81,7 +82,9 @@ export const RecurrenceCancelModal = ({
           </Trans>
         </span>
       )}
-      <span className="mtw:inline-block">{t(i18n)`This action can't be undone.`}</span>
+      <span className="mtw:inline-block">{t(
+        i18n
+      )`This action can't be undone.`}</span>
     </ConfirmationModal>
   );
 };

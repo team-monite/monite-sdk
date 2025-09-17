@@ -1,5 +1,15 @@
-import { useMemo, useState } from 'react';
-
+import { EditInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { EmailInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
+import { useGetRecurrenceById } from '../hooks/useGetRecurrenceById';
+import { InvoiceDetailsActions } from './InvoiceDetailsActions';
+import { InvoiceDetailsTabDetails } from './InvoiceDetailsTabDetails';
+import { InvoiceDetailsTabOverview } from './InvoiceDetailsTabOverview';
+import { InvoiceDetailsTabPayments } from './InvoiceDetailsTabPayments';
+import { InvoiceDetailsTabScheduledInvoices } from './InvoiceDetailsTabScheduledInvoices';
+import { InvoicePDFViewer } from './InvoicePDFViewer';
+import { InvoiceRecurrenceStatusChip } from './InvoiceRecurrenceStatusChip';
+import { InvoiceStatusChip } from './InvoiceStatusChip';
+import { components } from '@/api';
 import { TemplateSettings } from '@/components/templateSettings';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -7,6 +17,10 @@ import {
   useCurrencies,
   useIsLargeDesktopScreen,
 } from '@/core/hooks';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
+import { DialogTitle } from '@/ui/components/dialog';
 import {
   Sheet,
   SheetContent,
@@ -16,26 +30,10 @@ import {
 } from '@/ui/components/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/tabs';
 import { LoadingSpinner } from '@/ui/loading';
+import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
-import { EditInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
-import { EmailInvoiceDetails } from '../InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
-import { InvoicePDFViewer } from './InvoicePDFViewer';
-import { InvoiceDetailsActions } from './InvoiceDetailsActions';
-import { InvoiceDetailsTabDetails } from './InvoiceDetailsTabDetails';
-import { InvoiceDetailsTabOverview } from './InvoiceDetailsTabOverview';
-import { InvoiceDetailsTabPayments } from './InvoiceDetailsTabPayments';
-import { InvoiceStatusChip } from './InvoiceStatusChip';
-import { NotFound } from '@/ui/notFound';
-import { components } from '@/api';
-import { DialogTitle } from '@/ui/components/dialog';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
-import { useGetRecurrenceById } from '../hooks/useGetRecurrenceById';
-import { InvoiceRecurrenceStatusChip } from './InvoiceRecurrenceStatusChip';
-import { InvoiceDetailsTabScheduledInvoices } from './InvoiceDetailsTabScheduledInvoices';
+import { useMemo, useState } from 'react';
 
 enum Tab {
   Overview = 'overview',
@@ -73,18 +71,21 @@ const InvoiceDetailsBase = ({
   const isLargeDesktop = useIsLargeDesktopScreen();
   const { data: invoice, isLoading: isLoadingInvoiceDetails } =
     useGetReceivableById(invoiceId, true);
-  const { data: recurrence, isLoading: isLoadingRecurrence } = 
-    useGetRecurrenceById(invoice?.type === 'invoice' ? invoice?.recurrence_id : undefined);
+  const { data: recurrence, isLoading: isLoadingRecurrence } =
+    useGetRecurrenceById(
+      invoice?.type === 'invoice' ? invoice?.recurrence_id : undefined
+    );
   const [isEditing, setIsEditing] = useState(false);
   const [editTemplateModalOpen, setEditTemplateModalOpen] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [showPDF, setShowPDF] = useState(false);
   const [selectedTab, setSelectedTab] = useState<Tab>(Tab.Overview);
-  const { data: isReadAllowed, isLoading: isReadAllowedLoading } = useIsActionAllowed({
-    method: 'receivable',
-    action: 'read',
-    entityUserId: invoice?.entity_user_id,
-  });
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: 'read',
+      entityUserId: invoice?.entity_user_id,
+    });
 
   const actions = useMemo(() => {
     return {
@@ -103,28 +104,26 @@ const InvoiceDetailsBase = ({
   // TODO: This is a workaround until we replace all MUI with shadcn
   // If this is not done, then shadcn's overlay overrides MUI's overlay
   const isSheetOpen =
-    open &&
-    !isEditing &&
-    !editTemplateModalOpen &&
-    !showEmail;
+    open && !isEditing && !editTemplateModalOpen && !showEmail;
   const isPDFOpen =
-    showPDF &&
-    !isEditing &&
-    !editTemplateModalOpen &&
-    !showEmail;
+    showPDF && !isEditing && !editTemplateModalOpen && !showEmail;
 
   const handleTabChange = (value: string) => {
     setSelectedTab(value as Tab);
-  }
+  };
 
   const handleSheetContent = () => {
-    if (isLoadingInvoiceDetails || isReadAllowedLoading || isLoadingRecurrence) {
+    if (
+      isLoadingInvoiceDetails ||
+      isReadAllowedLoading ||
+      isLoadingRecurrence
+    ) {
       return (
         <div className="mtw:flex mtw:w-full mtw:items-center mtw:justify-center mtw:h-full">
           <DialogTitle hidden>{t(i18n)`Loading invoice details`}</DialogTitle>
           <LoadingSpinner />
         </div>
-      )
+      );
     }
 
     if (!isReadAllowed) {
@@ -141,16 +140,20 @@ const InvoiceDetailsBase = ({
           <DialogTitle hidden>{t(i18n)`Invoice not found`}</DialogTitle>
           <NotFound
             title={t(i18n)`Invoice not found`}
-            description={t(i18n)`There is no invoice for the provided id: ${invoiceId}`}
+            description={t(
+              i18n
+            )`There is no invoice for the provided id: ${invoiceId}`}
           />
         </div>
-      )
+      );
     }
 
     if (invoice.type !== 'invoice') {
       return (
         <div className="mtw:w-3/4 mtw:m-auto">
-          <DialogTitle hidden>{t(i18n)`Receivable type not supported`}</DialogTitle>
+          <DialogTitle hidden>{t(
+            i18n
+          )`Receivable type not supported`}</DialogTitle>
           <NotFound
             title={t(i18n)`Receivable type not supported`}
             description={t(
@@ -158,7 +161,7 @@ const InvoiceDetailsBase = ({
             )`Receivable type ${invoice.type} is not supported. Only invoice is supported.`}
           />
         </div>
-      )
+      );
     }
 
     return (
@@ -166,7 +169,9 @@ const InvoiceDetailsBase = ({
         <SheetHeader className="mtw:pl-8 mtw:gap-2 mtw:flex-row">
           <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:flex-1">
             <SheetTitle className="mtw:text-xl mtw:font-semibold mtw:leading-6">
-              {recurrence && isRecurringInvoice ? t(i18n)`Recurring invoice` : t(i18n)`Invoice`}
+              {recurrence && isRecurringInvoice
+                ? t(i18n)`Recurring invoice`
+                : t(i18n)`Invoice`}
             </SheetTitle>
             {recurrence && isRecurringInvoice ? (
               <InvoiceRecurrenceStatusChip status={recurrence?.status} />
@@ -175,9 +180,7 @@ const InvoiceDetailsBase = ({
             )}
           </div>
 
-          <SheetDescription hidden>
-            {t(i18n)`Invoice details`}
-          </SheetDescription>
+          <SheetDescription hidden>{t(i18n)`Invoice details`}</SheetDescription>
         </SheetHeader>
 
         <div className="mtw:flex mtw:flex-col mtw:gap-8">
@@ -202,19 +205,15 @@ const InvoiceDetailsBase = ({
           </section>
 
           <section className="mtw:border-t mtw:border-neutral-80 mtw:pt-4 mtw:px-8">
-            <Tabs 
-              defaultValue={Tab.Overview} 
-              className="mtw:gap-8" 
-              value={selectedTab} 
+            <Tabs
+              defaultValue={Tab.Overview}
+              className="mtw:gap-8"
+              value={selectedTab}
               onValueChange={handleTabChange}
             >
               <TabsList className="mtw:w-full">
-                <TabsTrigger value="overview">
-                  {t(i18n)`Overview`}
-                </TabsTrigger>
-                <TabsTrigger value="details">
-                  {t(i18n)`Details`}
-                </TabsTrigger>
+                <TabsTrigger value="overview">{t(i18n)`Overview`}</TabsTrigger>
+                <TabsTrigger value="details">{t(i18n)`Details`}</TabsTrigger>
                 {recurrence ? (
                   <TabsTrigger value="scheduled-invoices">
                     {t(i18n)`Scheduled invoices`}
@@ -229,11 +228,11 @@ const InvoiceDetailsBase = ({
                 value="overview"
                 className="mtw:flex mtw:flex-col mtw:gap-8"
               >
-                <InvoiceDetailsTabOverview 
-                  invoice={invoice} 
-                  recurrence={recurrence} 
-                  handleTabChange={handleTabChange} 
-                  openInvoiceDetails={openInvoiceDetails} 
+                <InvoiceDetailsTabOverview
+                  invoice={invoice}
+                  recurrence={recurrence}
+                  handleTabChange={handleTabChange}
+                  openInvoiceDetails={openInvoiceDetails}
                 />
               </TabsContent>
               <TabsContent
@@ -247,10 +246,10 @@ const InvoiceDetailsBase = ({
                   value="scheduled-invoices"
                   className="mtw:flex mtw:flex-col mtw:gap-8"
                 >
-                  <InvoiceDetailsTabScheduledInvoices 
-                    invoice={invoice} 
-                    recurrence={recurrence} 
-                    openInvoiceDetails={openInvoiceDetails} 
+                  <InvoiceDetailsTabScheduledInvoices
+                    invoice={invoice}
+                    recurrence={recurrence}
+                    openInvoiceDetails={openInvoiceDetails}
                   />
                 </TabsContent>
               ) : (
@@ -265,8 +264,8 @@ const InvoiceDetailsBase = ({
           </section>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -304,9 +303,9 @@ const InvoiceDetailsBase = ({
         />
       )}
 
-      <Sheet 
-        open={isSheetOpen} 
-        modal={false} 
+      <Sheet
+        open={isSheetOpen}
+        modal={false}
         onOpenChange={() => {
           onCloseInvoiceDetails();
           if (showPDF) setShowPDF(false);

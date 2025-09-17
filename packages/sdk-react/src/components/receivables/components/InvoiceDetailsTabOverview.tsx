@@ -1,8 +1,13 @@
+import { getTypeLabel } from '../utils';
+import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
+import { InvoiceDetailsOverviewRecurrenceSection } from './InvoiceDetailsOverviewRecurrenceSection';
+import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
+import { InvoiceStatusChip } from './InvoiceStatusChip';
 import { components } from '@/api';
 import { FinanceInvoice } from '@/components/financing';
+import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useGetReceivables } from '@/components/receivables/hooks/useGetReceivables';
 import {
   Accordion,
   AccordionContent,
@@ -13,14 +18,7 @@ import { Badge } from '@/ui/components/badge';
 import { Card, CardContent } from '@/ui/components/card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { File } from 'lucide-react';
-
-import { getTypeLabel } from '../utils';
-import { InvoiceDetailsOverviewReminders } from './InvoiceDetailsOverviewReminders';
-import { InvoiceStatusChip } from './InvoiceStatusChip';
-import { InvoiceDetailsOverviewRecurrenceSection } from './InvoiceDetailsOverviewRecurrenceSection';
-import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
 
 type DocumentCardProps = {
   documentId: string;
@@ -171,11 +169,13 @@ export const InvoiceDetailsTabOverview = ({
         <>
           <div className="mtw:w-full mtw:h-px mtw:bg-border" />
 
-          <InvoiceDetailsOverviewRecurrenceSection 
-            recurrence={recurrence} 
-            isCreatedFromRecurrence={Boolean(invoice?.recurrence_id && !isRecurringInvoice)}
-            openInvoiceDetails={openInvoiceDetails} 
-            handleTabChange={handleTabChange} 
+          <InvoiceDetailsOverviewRecurrenceSection
+            recurrence={recurrence}
+            isCreatedFromRecurrence={Boolean(
+              invoice?.recurrence_id && !isRecurringInvoice
+            )}
+            openInvoiceDetails={openInvoiceDetails}
+            handleTabChange={handleTabChange}
           />
         </>
       )}
@@ -214,8 +214,8 @@ export const InvoiceDetailsTabOverview = ({
                   documentId={creditNote?.document_id ?? ''}
                   issueDate={
                     creditNote?.status === 'draft'
-                      ? creditNote?.created_at ?? ''
-                      : creditNote?.issue_date ?? ''
+                      ? (creditNote?.created_at ?? '')
+                      : (creditNote?.issue_date ?? '')
                   }
                   totalAmount={creditNote?.total_amount ?? 0}
                   currency={creditNote?.currency}
