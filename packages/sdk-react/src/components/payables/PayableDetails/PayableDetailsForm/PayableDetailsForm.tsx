@@ -187,7 +187,7 @@ const PayableDetailsFormBase = forwardRef<
       api.payables.getPayablesValidations.useQuery();
 
     // const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false; // TODO: commented for debugging (DEV-15658)
-    const isDisableAutoCalculateTotals = true; // TODO: for debugging (DEV-15658)
+    const isDisableAutoCalculateTotals = false; // TODO: for debugging (DEV-15658)
     const isLineItemsEditable = isDisableAutoCalculateTotals || !payable;
     const isTotalsEditable = isDisableAutoCalculateTotals;
 
