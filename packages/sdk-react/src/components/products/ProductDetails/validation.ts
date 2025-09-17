@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { CurrencyEnum as currencies } from '@/enums/CurrencyEnum';
+import { CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
@@ -16,13 +16,12 @@ export interface ProductFormValues {
 
 export const getValidationSchema = (i18n: I18n) =>
   z.object({
-    name: z.string().min(1, t(i18n)`Product name is required`)
+    name: z.string().trim().min(1, t(i18n)`Product name is required`)
       .meta({ title: t(i18n)`Product Name` }),
-    type: z.enum(
-      ['product', 'service'] as const,
-      t(i18n)`Product type is required`
-    ).meta({ title: t(i18n)`Type` }),
-    units: z.string().min(1, t(i18n)`Units is required`)
+    type: z
+      .enum(['product', 'service'] as const, t(i18n)`Product type is required`)
+      .meta({ title: t(i18n)`Type` }),
+    units: z.string().trim().min(1, t(i18n)`Units is required`)
       .meta({ title: t(i18n)`Units` }),
     smallestAmount: z.coerce
       .number()
@@ -32,10 +31,10 @@ export const getValidationSchema = (i18n: I18n) =>
       .number()
       .min(0, t(i18n)`Price per unit must be 0 or greater`)
       .meta({ title: t(i18n)`Price Per Unit` }),
-    currency: z.enum(currencies, t(i18n)`Currency is required`)
-      .meta({ title: t(i18n)`Currency` }),
+    currency: CurrencyEnumSchema.meta({ title: t(i18n)`Currency` }),
     description: z
       .string()
+      .trim()
       .max(255, t(i18n)`Description must be 255 characters or less`)
       .optional()
       .meta({ title: t(i18n)`Description` }),

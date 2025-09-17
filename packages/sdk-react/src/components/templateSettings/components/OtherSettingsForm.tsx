@@ -14,15 +14,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 type Props = {
   entityId: string;
-  entitySettings: components['schemas']['SettingsResponse'];
-};
-
-type DocumentRendering =
-  components['schemas']['SettingsResponse']['document_rendering'];
-type QuoteRendering = NonNullable<DocumentRendering>['quote'];
-
-type QuoteRenderingCompat = QuoteRendering & {
-  display_entity_bank_account?: boolean;
+  entitySettings: SettingsResponse;
 };
 
 const hasBankDisplay = (
@@ -93,23 +85,27 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
               values.quote_bank_display
           );
 
+          const hadQuotePerDocFlag = hasBankDisplay(
+            entitySettings?.document_rendering?.quote
+          );
           const displayLineItems = Boolean(
             entitySettings?.document_rendering?.display_line_items
           );
 
-          const quoteCompat: QuoteRenderingCompat = {
-            display_signature: values.quote_signature_display,
-            display_entity_bank_account: Boolean(values.quote_bank_display),
-          };
-          const quote: QuoteRendering = quoteCompat;
+          const newDocumentRendering = {
+            display_entity_bank_account: displayEntityBankAccount,
+            display_line_items: displayLineItems,
+            quote: {
+              display_signature: values.quote_signature_display,
+              ...(hadQuotePerDocFlag
+                ? { display_entity_bank_account: values.quote_bank_display }
+                : {}),
+            },
+          } as DocumentRendering;
 
           return {
             ...entitySettings,
-            document_rendering: {
-              display_entity_bank_account: displayEntityBankAccount,
-              display_line_items: displayLineItems,
-              quote,
-            },
+            document_rendering: newDocumentRendering,
             generate_paid_invoice_pdf: values.update_paid_invoices,
             quote_signature_required:
               values.quote_electronic_signature === true ||
@@ -181,3 +177,7 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
     </FormProvider>
   );
 };
+
+type SettingsResponse = components['schemas']['SettingsResponse'];
+type DocumentRendering =
+  components['schemas']['SettingsResponse']['document_rendering'];

@@ -19,16 +19,42 @@ export const getValidation = (i18n: I18n) =>
         .optional(),
       term_1: z
         .object({
-          number_of_days: z.union([z.coerce.number(), z.null()]),
-          discount: z.union([z.coerce.number(), z.null()]),
+          number_of_days: z
+            .preprocess(
+              (v) => (v === '' || v === undefined ? null : v),
+              z.coerce.number().int().positive()
+            )
+            .nullable(),
+          discount: z
+            .preprocess(
+              (v) => (v === '' || v === undefined ? null : v),
+              z.coerce.number().min(0)
+            )
+            .nullable(),
         })
+        .transform((v) =>
+          v.number_of_days == null && v.discount == null ? null : v
+        )
         .nullable()
         .optional(),
       term_2: z
         .object({
-          number_of_days: z.union([z.coerce.number(), z.null()]),
-          discount: z.union([z.coerce.number(), z.null()]),
+          number_of_days: z
+            .preprocess(
+              (v) => (v === '' || v === undefined ? null : v),
+              z.coerce.number().int().positive()
+            )
+            .nullable(),
+          discount: z
+            .preprocess(
+              (v) => (v === '' || v === undefined ? null : v),
+              z.coerce.number().min(0)
+            )
+            .nullable(),
         })
+        .transform((v) =>
+          v.number_of_days == null && v.discount == null ? null : v
+        )
         .nullable()
         .optional(),
     })

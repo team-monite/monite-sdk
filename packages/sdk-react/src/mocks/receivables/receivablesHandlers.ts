@@ -1,6 +1,6 @@
 import { getMockPagination } from '../utils';
 import { components } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import {
   receivableListFixture,
   ReceivablesListFixture,
@@ -83,7 +83,7 @@ const createInvoiceValidationSchema = z.object({
   type: z.string().refine((v) => receivableListFixture.hasOwnProperty(v), {
     message: 'Unsupported receivable type',
   }),
-  currency: z.enum(CurrencyEnum),
+  currency: CurrencyEnumSchema,
   line_items: z
     .array(
       z.object({

@@ -16,7 +16,7 @@ const getReminderValidationSchema = (i18n: I18n) => {
   return z
     .object({
       days_before: z
-        .number()
+        .int()
         .min(1, t(i18n)`Days before must be at least 1`)
         .max(10000, t(i18n)`Days before must be at most 10000`),
       subject: z.string().min(1, t(i18n)`Subject is required`),
@@ -28,7 +28,7 @@ const getReminderValidationSchema = (i18n: I18n) => {
 const getOverdueReminderValidationSchema = (i18n: I18n) => {
   return z.object({
     days_after: z
-      .number()
+      .int()
       .min(1, t(i18n)`Days after must be at least 1`)
       .max(10000, t(i18n)`Days after must be at most 10000`),
     subject: z.string().min(1, t(i18n)`Subject is required`),

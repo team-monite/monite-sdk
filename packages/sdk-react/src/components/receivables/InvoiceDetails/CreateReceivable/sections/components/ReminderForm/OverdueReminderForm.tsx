@@ -10,7 +10,6 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -108,11 +107,16 @@ const CreateOverdueReminderComponent = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  type OverdueFormValues = z.infer<ReturnType<typeof getOverdueValidationSchema>>;
+  type OverdueReminderFormValues = Omit<
+    OverdueReminderRequest,
+    'terms'
+  > & {
+    terms: NonNullable<OverdueReminderRequest['terms']>;
+  };
 
-  const { control, handleSubmit, formState } = useForm<OverdueFormValues>({
+  const { control, handleSubmit, formState } = useForm<OverdueReminderFormValues>({
     resolver: zodResolver(getOverdueValidationSchema(i18n)),
-    defaultValues: ((): components['schemas']['OverdueReminderRequest'] => ({
+    defaultValues: ((): OverdueReminderFormValues => ({
       name: reminder?.name ?? '',
       terms: reminder?.terms ?? [],
     }))(),
@@ -314,3 +318,5 @@ const CreateOverdueReminderComponent = ({
     </>
   );
 };
+
+type OverdueReminderRequest = components['schemas']['OverdueReminderRequest'];

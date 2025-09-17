@@ -1,5 +1,5 @@
-import type { components, paths } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { components, paths } from '@/api';
+import { CurrencyEnum, CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -22,7 +22,7 @@ const createProductValidationSchema = z.object({
   name: z.string(),
   price: z.object({
     value: z.number(),
-    currency: z.enum(CurrencyEnum),
+    currency: CurrencyEnumSchema,
   }),
   type: z.string(),
   measure_unit_id: z.string(),

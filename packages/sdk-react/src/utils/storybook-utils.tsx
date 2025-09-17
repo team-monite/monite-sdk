@@ -35,13 +35,16 @@ export function getRandomProperty<T = unknown>(obj: Record<string, T>): T {
   return obj[keys[(keys.length * Math.random()) << 0]];
 }
 
-export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
+export function getRandomItemFromArray<T = unknown>(
+  array: ReadonlyArray<T>
+): T {
   const randomIndex = Math.floor(Math.random() * array.length);
-
-  return array[randomIndex];
+  return array[randomIndex]!;
 }
 
-export function getSampleFromArray<T = unknown>(array: Array<T>): Array<T> {
+export function getSampleFromArray<T = unknown>(
+  array: ReadonlyArray<T>
+): Array<T> {
   const sampleSize = getRandomNumber(0, array.length - 1);
 
   return array.slice(0, sampleSize);

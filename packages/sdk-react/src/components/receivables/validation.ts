@@ -1,5 +1,5 @@
 import { AllowedCountries } from '@/enums/AllowedCountries';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import { toMinorUnits } from '@/core/utils/currency';
 import type { I18n } from '@lingui/core';
@@ -10,7 +10,7 @@ import { z } from 'zod';
 export type { EntityBankAccountFields } from './types';
 
 export const getCurrencyEnum = (_i18n: I18n) =>
-  z.enum(CurrencyEnum);
+  CurrencyEnumSchema;
 
 const entityBankAccountSchema = z.object({
   account_holder_name: z.string().optional(),
