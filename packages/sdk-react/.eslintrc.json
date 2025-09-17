@@ -13,7 +13,8 @@
     "src/api/api-version.ts",
     "src/api/create-api-client.ts",
     "src/api/index.ts",
-    "src/api/schema.ts"
+    "src/api/schema.ts",
+    "src/__mocks__/**/*"
   ],
   "rules": {
     "import/no-unresolved": "error",
