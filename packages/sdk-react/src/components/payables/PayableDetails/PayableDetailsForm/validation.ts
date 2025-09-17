@@ -16,34 +16,47 @@ export const isFieldRequiredByValidations = (
 
 const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
   z.object({
-    invoiceNumber: z.string().min(1, t(i18n)`Invoice Number is required`),
-    counterpart: z.string(),
-    counterpartBankAccount: z.string().optional(),
+    invoiceNumber: z.string().min(1, t(i18n)`Invoice Number is required`)
+      .meta({ title: t(i18n)`Invoice Number` }),
+    counterpart: z.string()
+      .meta({ title: t(i18n)`Counterpart` }),
+    counterpartBankAccount: z.string().optional()
+      .meta({ title: t(i18n)`Counterpart Bank Account` }),
     invoiceDate: z
       .preprocess((v) => (v === null ? undefined : v), z.date())
-      .optional(),
+      .optional()
+      .meta({ title: t(i18n)`Invoice Date` }),
     dueDate: z
       .preprocess((v) => (v === null ? undefined : v), z.date())
-      .optional(),
-    currency: getCurrencyEnum(i18n).optional(),
-    tags: z.array(z.object({ id: z.string(), name: z.string() }).passthrough()),
+      .optional()
+      .meta({ title: t(i18n)`Due Date` }),
+    currency: getCurrencyEnum(i18n).optional()
+      .meta({ title: t(i18n)`Currency` }),
+    tags: z.array(z.object({ id: z.string(), name: z.string() }).loose())
+      .meta({ title: t(i18n)`Tags` }),
     lineItems: z.array(
       z.object({
-        id: z.string(),
-        name: z.string().min(1, t(i18n)`Item name is required`),
+        id: z.string()
+          .meta({ title: t(i18n)`Item ID` }),
+        name: z.string().min(1, t(i18n)`Item name is required`)
+          .meta({ title: t(i18n)`Item Name` }),
         quantity: z.coerce
           .number()
-          .positive(t(i18n)`Item quantity must be positive`),
+          .positive(t(i18n)`Item quantity must be positive`)
+          .meta({ title: t(i18n)`Quantity` }),
         price: z.coerce
           .number()
-          .min(0, t(i18n)`Item price must be 0 or greater`),
+          .min(0, t(i18n)`Item price must be 0 or greater`)
+          .meta({ title: t(i18n)`Price` }),
         tax: z.coerce
           .number()
           .min(0, t(i18n)`Item tax must be 0 or greater`)
-          .max(100, t(i18n)`Item tax must be 100 or less`),
+          .max(100, t(i18n)`Item tax must be 100 or less`)
+          .meta({ title: t(i18n)`Tax` }),
       })
-    ),
-    discount: z.union([z.coerce.number().min(0), z.null()]).optional(),
+    ).meta({ title: t(i18n)`Line Items` }),
+    discount: z.union([z.coerce.number().min(0), z.null()]).optional()
+      .meta({ title: t(i18n)`Discount` }),
   });
 
 export const getPayableDetailsFormSchema = (

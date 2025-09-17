@@ -9,6 +9,8 @@ export const getValidationSchema = (i18n: I18n) =>
       .string()
       .trim()
       .max(255, t(i18n)`Name cannot exceed 255 characters`)
-      .min(1, t(i18n)`Name is required`),
-    permissions: z.array(z.custom<PermissionRow>()),
+      .min(1, t(i18n)`Name is required`)
+      .meta({ title: t(i18n)`Role Name` }),
+    permissions: z.array(z.custom<PermissionRow>())
+      .meta({ title: t(i18n)`Permissions` }),
   });

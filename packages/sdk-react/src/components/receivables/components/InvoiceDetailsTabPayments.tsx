@@ -20,7 +20,7 @@ type InvoiceDetailsTabPaymentsProps = {
 type PaymentCardProps = {
   issueDate?: string;
   totalAmount: number;
-  currency: string;
+  currency: components['schemas']['CurrencyEnum'];
   paymentMethod: PaymentMethod;
   isExternal: boolean;
   entityUserId: string;

@@ -11,7 +11,7 @@ const meta: Meta<typeof InvoiceDetails> = {
     layout: 'fullscreen',
   },
   argTypes: {
-    onClose: { action: 'onClose' },
+    onCloseInvoiceDetails: { action: 'onClose' },
     onDuplicate: { action: 'onDuplicate' },
     onMarkAsUncollectible: { action: 'onMarkAsUncollectible' },
   },
@@ -86,7 +86,7 @@ export const WithAllCallbacks: Story = {
   args: {
     open: true,
     invoiceId: defaultInvoiceId,
-    onClose: action('onClose'),
+    onCloseInvoiceDetails: action('onClose'),
     onDuplicate: action('onDuplicate'),
     onMarkAsUncollectible: action('onMarkAsUncollectible'),
   },

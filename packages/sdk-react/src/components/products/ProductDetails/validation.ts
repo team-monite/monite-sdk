@@ -16,23 +16,29 @@ export interface ProductFormValues {
 
 export const getValidationSchema = (i18n: I18n) =>
   z.object({
-    name: z.string().min(1, t(i18n)`Product name is required`),
+    name: z.string().min(1, t(i18n)`Product name is required`)
+      .meta({ title: t(i18n)`Product Name` }),
     type: z.enum(
       ['product', 'service'] as const,
       t(i18n)`Product type is required`
-    ),
-    units: z.string().min(1, t(i18n)`Units is required`),
+    ).meta({ title: t(i18n)`Type` }),
+    units: z.string().min(1, t(i18n)`Units is required`)
+      .meta({ title: t(i18n)`Units` }),
     smallestAmount: z.coerce
       .number()
-      .min(0, t(i18n)`Minimum quantity must be 0 or greater`),
+      .min(0, t(i18n)`Minimum quantity must be 0 or greater`)
+      .meta({ title: t(i18n)`Minimum Quantity` }),
     pricePerUnit: z.coerce
       .number()
-      .min(0, t(i18n)`Price per unit must be 0 or greater`),
-    currency: z.enum(currencies, t(i18n)`Currency is required`),
+      .min(0, t(i18n)`Price per unit must be 0 or greater`)
+      .meta({ title: t(i18n)`Price Per Unit` }),
+    currency: z.enum(currencies, t(i18n)`Currency is required`)
+      .meta({ title: t(i18n)`Currency` }),
     description: z
       .string()
       .max(255, t(i18n)`Description must be 255 characters or less`)
-      .optional(),
+      .optional()
+      .meta({ title: t(i18n)`Description` }),
   });
 
 export type IProductFormSubmitValues = z.infer<

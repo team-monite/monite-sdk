@@ -1,10 +1,12 @@
-import { useState } from 'react';
-
+import { ManualPaymentRecordDetails } from './ManualPaymentRecordDetails';
+import { PaymentRecordForm } from './PaymentRecordForm';
 import { components } from '@/api';
+import { type ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCreatePaymentRecord } from '@/core/queries/usePaymentRecords';
+import { fromMinorUnits, toMinorUnits } from '@/core/utils/currency';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -14,24 +16,14 @@ import {
   DialogActions,
   DialogContent,
 } from '@mui/material';
-
-import { toMinorUnits } from '@/core/utils/currency';
-
-import { ManualPaymentRecordDetails } from './ManualPaymentRecordDetails';
-import {
-  PaymentRecordForm,
-} from './PaymentRecordForm';
-import { ManualPaymentRecordFormValues } from '../validation';
+import { useState } from 'react';
 
 type Props = {
   invoice: components['schemas']['InvoiceResponsePayload'];
   children: ({ openModal }: { openModal: () => void }) => React.ReactNode;
 };
 
-export type PaymentRecordDetails = {
-  amount: number | null;
-  payment_date: Date | null;
-  payment_time: Date | null;
+type PaymentRecordDetails = ManualPaymentRecordFormValues & {
   created_by: string;
 };
 
@@ -45,7 +37,7 @@ const DEFAULT_PAYMENT_RECORD: PaymentRecordDetails = {
 export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmSubmission, setConfirmSubmission] = useState(false);
-  const [formValues, setFormValues] = useState<ManualPaymentRecordFormValues>(
+  const [formValues, setFormValues] = useState<PaymentRecordDetails>(
     DEFAULT_PAYMENT_RECORD
   );
 
@@ -56,13 +48,15 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   const closeModal = () => setModalOpen(false);
 
   const { api, queryClient } = useMoniteContext();
-  const { mutate: createPaymentRecord, isPending: isCreatingPaymentRecord } = useCreatePaymentRecord();
+  const { mutate: createPaymentRecord, isPending: isCreatingPaymentRecord } =
+    useCreatePaymentRecord();
   const { data: user, isLoading: isLoadingUser } = useEntityUserByAuthToken();
 
   const showConfirmation = (data: ManualPaymentRecordFormValues) => {
-    setFormValues({ 
-      ...data, 
-      amount: toMinorUnits(data?.amount ?? 0)
+    setFormValues({
+      ...data,
+      amount: toMinorUnits(data?.amount ?? 0),
+      created_by: user?.id ?? '',
     });
     setConfirmSubmission(true);
   };
@@ -73,9 +67,7 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
   };
 
   const createManualPaymentRecord = () => {
-    const dateTimeWithReplacedTime = new Date(
-      formValues.payment_date
-    ).setHours(
+    const dateTimeWithReplacedTime = new Date(formValues.payment_date).setHours(
       formValues.payment_time.getHours(),
       formValues.payment_time.getMinutes()
     );
@@ -158,7 +150,11 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
                 >
                   {t(i18n)`Edit record`}
                 </Button>
-                <Button variant="contained" disabled={isLoading} onClick={createManualPaymentRecord}>
+                <Button
+                  variant="contained"
+                  disabled={isLoading}
+                  onClick={createManualPaymentRecord}
+                >
                   {t(i18n)`Confirm`}
                 </Button>
               </Box>
@@ -168,8 +164,9 @@ export const RecordManualPaymentModal = ({ children, invoice }: Props) => {
           <PaymentRecordForm
             invoice={invoice}
             initialValues={{
-              ...formValues,
-              amount: formValues.amount ? formValues.amount / 100 : 0,
+              amount: formValues.amount ? fromMinorUnits(formValues.amount) : 0,
+              payment_date: formValues.payment_date,
+              payment_time: formValues.payment_time,
             }}
             isLoading={isLoading}
             onCancel={closeModal}

@@ -72,7 +72,7 @@ export const useGetPayableCounterpart = ({
     },
     {
       enabled: shouldCheckOCRMatching,
-      select: (data) => data.data.at(0),
+      select: (data) => data.data[0],
     }
   );
 

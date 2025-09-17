@@ -1093,7 +1093,7 @@ export function usePayableDetails({
 
         if (onPay?.length < 2) return onPay(payable.id);
 
-        onPay(payable.id, {
+        onPay(payable.id, undefined, {
           resolve: (options?: { showToast?: boolean }) => {
             if (options?.showToast) toast.success(t(i18n)`Payment flow started`);
 

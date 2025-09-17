@@ -1,6 +1,7 @@
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
+import { toMinorUnits } from '@/core/utils/currency';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
@@ -28,9 +29,12 @@ const entityBankAccountSchema = z.object({
 const getCreateBankAccountSchema = (i18n: I18n) =>
   entityBankAccountSchema
     .extend({
-      country: z.string().min(1, t(i18n)`Country is required`),
-      currency: getCurrencyEnum(i18n),
-      is_default_for_currency: z.boolean(),
+      country: z.string().min(1, t(i18n)`Country is required`)
+        .meta({ title: t(i18n)`Country` }),
+      currency: getCurrencyEnum(i18n)
+        .meta({ title: t(i18n)`Currency` }),
+      is_default_for_currency: z.boolean()
+        .meta({ title: t(i18n)`Default for Currency` }),
       display_name: z
         .string()
         .max(200, t(i18n)`Display name must be 200 characters or less`)
@@ -109,8 +113,10 @@ const getUpdateBankAccountSchema = (i18n: I18n) => {
       display_name: z
         .string()
         .max(200, t(i18n)`Display name must be 200 characters or less`)
-        .optional(),
-      account_holder_name: z.string().optional(),
+        .optional()
+        .meta({ title: t(i18n)`Display Name` }),
+      account_holder_name: z.string().optional()
+        .meta({ title: t(i18n)`Account Holder Name` }),
     })
     .loose();
 };
@@ -210,13 +216,25 @@ export const manualPaymentRecordValidationSchema = (
   amount_due: number
 ) =>
   z.object({
-    amount: z
-      .number()
+    amount: z.coerce
+      .number({ error: t(i18n)`Amount is required` })
       .meta({ title: t(i18n)`Amount` })
       .min(0, t(i18n)`Can't be a negative number`)
-      .max(amount_due, t(i18n)`Can't be more than the amount due`),
-    payment_date: z.date().meta({ title: t(i18n)`Date` }),
-    payment_time: z.date().meta({ title: t(i18n)`Time` }),
+      .refine(
+        (value) => {
+          const currencyAmount = toMinorUnits(value);
+          return currencyAmount <= amount_due;
+        },
+        {
+          message: t(i18n)`Can't be more than the amount due`,
+        }
+      ),
+    payment_date: z
+      .date({ error: t(i18n)`Date is required` })
+      .meta({ title: t(i18n)`Date` }),
+    payment_time: z
+      .date({ error: t(i18n)`Time is required` })
+      .meta({ title: t(i18n)`Time` }),
   });
 
 export type ManualPaymentRecordFormValues = z.infer<
@@ -225,9 +243,12 @@ export type ManualPaymentRecordFormValues = z.infer<
 
 export const getEmailInvoiceDetailsSchema = (i18n: I18n) =>
   z.object({
-    to: z.email().min(1, t(i18n)`To is required`),
-    subject: z.string().min(1, t(i18n)`Subject is required`),
-    body: z.string().min(1, t(i18n)`Body is required`),
+    to: z.email().min(1, t(i18n)`To is required`)
+      .meta({ title: t(i18n)`To` }),
+    subject: z.string().min(1, t(i18n)`Subject is required`)
+      .meta({ title: t(i18n)`Subject` }),
+    body: z.string().min(1, t(i18n)`Body is required`)
+      .meta({ title: t(i18n)`Body` }),
   });
 
 export type EmailInvoiceDetailsFormValues = z.infer<

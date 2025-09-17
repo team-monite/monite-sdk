@@ -99,10 +99,8 @@ export const OtherSettingsForm = ({ entityId, entitySettings }: Props) => {
 
           const quoteCompat: QuoteRenderingCompat = {
             display_signature: values.quote_signature_display,
+            display_entity_bank_account: Boolean(values.quote_bank_display),
           };
-          if (typeof values.quote_bank_display === 'boolean') {
-            quoteCompat.display_entity_bank_account = values.quote_bank_display;
-          }
           const quote: QuoteRendering = quoteCompat;
 
           return {

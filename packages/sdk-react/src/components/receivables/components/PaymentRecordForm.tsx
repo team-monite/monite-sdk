@@ -1,8 +1,6 @@
-import {
-  manualPaymentRecordValidationSchema,
-  ManualPaymentRecordFormValues,
-} from '../validation';
+import { manualPaymentRecordValidationSchema } from '../validation';
 import { components } from '@/api';
+import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useCurrencies } from '@/core/hooks';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';

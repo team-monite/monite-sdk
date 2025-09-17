@@ -348,6 +348,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     status: getRandomItemFromArray(CreditNoteStateEnum),
     tags: [],
     vat_mode: 'exclusive',
+    is_einvoice: false,
   };
 }
 

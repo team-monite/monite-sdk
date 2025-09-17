@@ -26,7 +26,7 @@ type DocumentCardProps = {
   documentId: string;
   issueDate: string;
   totalAmount: number;
-  currency: string;
+  currency: components['schemas']['CurrencyEnum'];
   status: components['schemas']['ReceivablesStatusEnum'];
   type: components['schemas']['ReceivableType'];
 };

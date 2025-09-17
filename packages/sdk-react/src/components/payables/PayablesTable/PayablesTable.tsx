@@ -60,7 +60,7 @@ interface PayablesTableProps extends MonitePayableTableProps {
    *
    * @param id - The identifier of the row to perform the pay action on, a string.
    */
-  onPay?: (id: string, actions?: PayActionHandlers) => void;
+  onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
   /**
    * The event handler for the pay action in US
    *
