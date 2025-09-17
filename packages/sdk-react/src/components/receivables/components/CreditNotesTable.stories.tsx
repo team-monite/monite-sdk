@@ -1,5 +1,5 @@
 import { CreditNotesTable } from './CreditNotesTable';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof CreditNotesTable> = {

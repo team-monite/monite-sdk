@@ -1,6 +1,5 @@
-import { StoryObj } from '@storybook/react';
-
 import { Onboarding as OnboardingComponent } from './Onboarding';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Onboarding',

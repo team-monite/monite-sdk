@@ -1,6 +1,6 @@
 import { InvoiceDetails } from './InvoiceDetails';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof InvoiceDetails> = {

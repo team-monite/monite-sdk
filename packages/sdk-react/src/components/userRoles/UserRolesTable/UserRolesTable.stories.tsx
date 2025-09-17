@@ -1,6 +1,6 @@
 import { UserRolesTable as UserRolesTableComponent } from './UserRolesTable';
 import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const Story = {

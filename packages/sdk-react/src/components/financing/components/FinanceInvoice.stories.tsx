@@ -1,8 +1,7 @@
+import { FinanceInvoice as FinanceInvoiceComponent } from './FinanceInvoice';
 import { receivableListFixture } from '@/mocks';
 import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
-import { FinanceInvoice as FinanceInvoiceComponent } from './FinanceInvoice';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Financing/FinanceInvoice',

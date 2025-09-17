@@ -1,6 +1,6 @@
 import { Payables as PayablesComponent } from './Payables';
 import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 

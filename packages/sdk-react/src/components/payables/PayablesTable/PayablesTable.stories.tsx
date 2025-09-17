@@ -3,7 +3,7 @@ import { addNewItemToPayablesList } from '../../../mocks';
 import { PayablesTable } from './PayablesTable';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { Typography } from '@mui/material';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof PayablesTable> = {

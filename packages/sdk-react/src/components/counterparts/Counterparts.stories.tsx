@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { Counterparts as CounterpartsComponent } from './Counterparts';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Counterparts',

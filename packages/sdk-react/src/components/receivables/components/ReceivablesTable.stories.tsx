@@ -1,6 +1,6 @@
 import { ReceivablesTable } from './ReceivablesTable';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ReceivablesTable> = {

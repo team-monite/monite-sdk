@@ -1,14 +1,12 @@
-import { FormProvider, useForm } from 'react-hook-form';
-
+import { OnboardingContextProvider } from '../context';
+import { OnboardingEntity } from './OnboardingEntity';
 import {
   authenticationHandlers,
   entityUsersHandlers,
   onboardingHandlers,
 } from '@/mocks';
-import { Meta, StoryObj } from '@storybook/react';
-
-import { OnboardingContextProvider } from '../context';
-import { OnboardingEntity } from './OnboardingEntity';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const meta: Meta<typeof OnboardingEntity> = {
   title: 'Onboarding/Entity',

@@ -1,7 +1,7 @@
 import { Error as ErrorComponent } from './Error';
 import { Button } from '@mui/material';
 import { ErrorBoundary } from '@sentry/react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 

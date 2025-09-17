@@ -1,20 +1,17 @@
-import { ReactNode } from 'react';
-import { FormProvider } from 'react-hook-form';
-
+import { OnboardingAddress } from '../../OnboardingAddress';
+import { OnboardingFormActionsTemplate } from '../../OnboardingFormActions';
+import { OnboardingForm, OnboardingStepContent } from '../../OnboardingLayout';
+import { OnboardingContextProvider } from '../../context';
+import { useOnboardingForm } from '../../hooks/useOnboardingForm';
+import { OnboardingEntityIndividual } from './OnboardingEntityIndividual';
 import { components } from '@/api';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import type { Meta, StoryObj } from '@storybook/react';
-
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { http, HttpResponse } from 'msw';
-
-import { OnboardingContextProvider } from '../../context';
-import { useOnboardingForm } from '../../hooks/useOnboardingForm';
-import { OnboardingAddress } from '../../OnboardingAddress';
-import { OnboardingFormActionsTemplate } from '../../OnboardingFormActions';
-import { OnboardingForm, OnboardingStepContent } from '../../OnboardingLayout';
-import { OnboardingEntityIndividual } from './OnboardingEntityIndividual';
+import { ReactNode } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 type StoryWrapperProps = {
   children: ReactNode;

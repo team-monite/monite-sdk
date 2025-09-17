@@ -4,7 +4,7 @@ import {
   organizationId,
 } from '@/mocks/counterparts/counterpart.mocks.types';
 import { Dialog } from '@/ui/Dialog';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof CounterpartDetails> = {

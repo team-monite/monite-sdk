@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { FinanceTab as FinanceTabComponent } from './FinanceTab';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Financing/FinanceTab',

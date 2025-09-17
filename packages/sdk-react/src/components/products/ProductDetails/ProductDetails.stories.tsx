@@ -6,7 +6,7 @@ import {
 import { productsListFixture } from '@/mocks/products';
 import { Dialog } from '@/ui/Dialog';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 

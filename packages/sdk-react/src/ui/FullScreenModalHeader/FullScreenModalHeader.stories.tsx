@@ -1,7 +1,7 @@
 import { FullScreenModalHeader } from './FullScreenModalHeader';
 import { Dialog } from '@/ui/Dialog';
 import { Button, Chip } from '@mui/material';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof FullScreenModalHeader> = {

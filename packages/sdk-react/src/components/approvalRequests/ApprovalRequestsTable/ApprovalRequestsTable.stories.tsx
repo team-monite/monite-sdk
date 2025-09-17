@@ -4,7 +4,7 @@ import {
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
 } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ApprovalRequestsTable> = {

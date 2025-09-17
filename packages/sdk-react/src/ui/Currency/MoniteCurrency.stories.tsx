@@ -2,7 +2,7 @@ import { MoniteCurrency } from './MoniteCurrency';
 import { components } from '@/api';
 import type { CurrencyGroup, CurrencyType } from '@/core/utils';
 import { Box } from '@mui/material';
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { FormProvider, useForm } from 'react-hook-form';
 import { action } from 'storybook/actions';
 

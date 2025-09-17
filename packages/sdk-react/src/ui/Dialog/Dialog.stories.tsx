@@ -3,7 +3,7 @@ import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof Dialog> = {

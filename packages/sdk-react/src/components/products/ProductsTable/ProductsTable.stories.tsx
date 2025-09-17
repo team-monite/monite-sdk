@@ -1,11 +1,10 @@
+import { ProductsTable } from './ProductsTable';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
 } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { Meta, StoryObj } from '@storybook/react';
-
-import { ProductsTable } from './ProductsTable';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof ProductsTable> = {
   title: 'Products/Products — Table View',

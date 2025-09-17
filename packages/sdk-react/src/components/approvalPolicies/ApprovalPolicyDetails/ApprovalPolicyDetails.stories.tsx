@@ -1,7 +1,7 @@
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
 import { Dialog } from '@/ui/Dialog';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ApprovalPolicyDetails> = {

@@ -1,7 +1,7 @@
 import { IconWrapper } from './IconWrapper';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 

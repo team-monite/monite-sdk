@@ -1,13 +1,11 @@
-import { components } from '@/api';
-import { onboardingHandlers } from '@/mocks/onboarding';
-import { StoryObj, Meta } from '@storybook/react';
-
-import { http, HttpResponse } from 'msw';
-
-import { OnboardingContextProvider } from '../context';
 import { Onboarding as OnboardingComponent } from '../Onboarding';
 import { OnboardingStepContent } from '../OnboardingLayout';
+import { OnboardingContextProvider } from '../context';
 import { OnboardingBankAccount } from './OnboardingBankAccount';
+import { components } from '@/api';
+import { onboardingHandlers } from '@/mocks/onboarding';
+import { StoryObj, Meta } from '@storybook/react-vite';
+import { http, HttpResponse } from 'msw';
 
 const meta: Meta<typeof OnboardingBankAccount> = {
   title: 'Onboarding/Bank Account',

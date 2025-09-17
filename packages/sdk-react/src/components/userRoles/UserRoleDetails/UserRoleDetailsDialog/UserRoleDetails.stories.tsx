@@ -1,7 +1,7 @@
 import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 import { FULL_PERMISSION_ROLE_ID } from '@/mocks/roles/rolesFixtures';
 import { Dialog } from '@/ui/Dialog';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
 const meta: Meta<typeof UserRoleDetailsDialog> = {
