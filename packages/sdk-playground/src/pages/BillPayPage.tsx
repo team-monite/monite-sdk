@@ -4,7 +4,7 @@ import { Payables } from '@monite/sdk-react';
 export function BillPayPage() {
   return (
     <AppMoniteProvider>
-      <Payables />
+      <Payables enableGLCodes />
     </AppMoniteProvider>
   );
 }
