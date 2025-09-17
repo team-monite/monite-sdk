@@ -1,3 +1,4 @@
+import '../src/core/theme/app.css';
 import { handlers } from '../src/mocks/handlers';
 import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
 import { initialize, mswLoader } from 'msw-storybook-addon';
