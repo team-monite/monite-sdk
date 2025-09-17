@@ -188,8 +188,6 @@ const PayableDetailsFormBase = forwardRef<
 
     // const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false; // TODO: commented for debugging (DEV-15658)
     const isDisableAutoCalculateTotals = false; // TODO: for debugging (DEV-15658)
-    const isLineItemsEditable = isDisableAutoCalculateTotals || !payable;
-    const isTotalsEditable = isDisableAutoCalculateTotals;
 
     const defaultValues = useMemo(
       () =>
@@ -687,30 +685,18 @@ const PayableDetailsFormBase = forwardRef<
                   </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                  {isLineItemsEditable ? (
-                    <Paper
-                      variant="outlined"
-                      sx={{ p: 3 }}
-                      className={className + '-Items'}
-                    >
-                      <Typography variant="subtitle2" mb={2}>
-                        {t(i18n)`Items`}
-                      </Typography>
-                      <PayableLineItemsForm />
-                    </Paper>
-                  ) : (
-                    <>
-                      <Typography variant="subtitle2" mb={2}>
-                        {t(i18n)`Items`}
-                      </Typography>
-                      <DisplayPayableLineItems
-                        lineItems={lineItems}
-                        currency={currentCurrency}
-                      />
-                    </>
-                  )}
+                  <Paper
+                    variant="outlined"
+                    sx={{ p: 3 }}
+                    className={className + '-Items'}
+                  >
+                    <Typography variant="subtitle2" mb={2}>
+                      {t(i18n)`Items`}
+                    </Typography>
+                    <PayableLineItemsForm />
+                  </Paper>
                 </Grid>
-                {isTotalsEditable && showAlertChangedValues && (
+                {isDisableAutoCalculateTotals && showAlertChangedValues && (
                   <Grid item xs={12}>
                     <Alert variant="warning" icon={<AlertCircleIcon />}>
                       {t(
@@ -745,7 +731,7 @@ const PayableDetailsFormBase = forwardRef<
                                   {t(i18n)`Add Discount`}
                                 </Button>
                               )}
-                              {isTotalsEditable ? (
+                              {isDisableAutoCalculateTotals ? (
                                 <RHFTextField
                                   name="subtotal"
                                   control={control}
@@ -815,7 +801,7 @@ const PayableDetailsFormBase = forwardRef<
                               justifyContent="flex-end"
                               display="flex"
                             >
-                              {isTotalsEditable ? (
+                              {isDisableAutoCalculateTotals ? (
                                 <RHFTextField
                                   name="tax_amount"
                                   control={control}
@@ -854,7 +840,7 @@ const PayableDetailsFormBase = forwardRef<
                               justifyContent="flex-end"
                               display="flex"
                             >
-                              {isTotalsEditable ? (
+                              {isDisableAutoCalculateTotals ? (
                                 <RHFTextField
                                   name="total_amount"
                                   control={control}
