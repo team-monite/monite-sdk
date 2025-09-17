@@ -2,10 +2,10 @@ import { components } from '@/api';
 
 export interface IPriceConstructor {
   value: string | number;
-  currency: CurrencyEnum | string;
+  currency: CurrencyEnum;
   formatter: (
     value: string | number,
-    currency: CurrencyEnum | string
+    currency: CurrencyEnum
   ) => string | null;
 }
 

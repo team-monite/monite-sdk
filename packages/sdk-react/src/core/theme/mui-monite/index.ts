@@ -4,6 +4,7 @@ import { getSuccessColors } from '@/core/theme/mui-monite/colors/success';
 import { getWarningColors } from '@/core/theme/mui-monite/colors/warning';
 import { MonitePalette, ThemeConfig } from '@/core/theme/types';
 import { Components } from '@mui/material/styles';
+import type { CSSProperties } from 'react';
 import type {
   Palette,
   PaletteOptions,
@@ -59,7 +60,9 @@ function renderColors<T extends { [key: string]: any }>(
   components: T,
   palette: PaletteOptions
 ): T {
-  const output: T = Array.isArray(components) ? ([] as any as T) : ({} as T);
+  const output: T = Array.isArray(components)
+    ? ([] as unknown as T)
+    : ({} as T);
 
   Object.keys(components).forEach((key) => {
     const prop = key as keyof T;
@@ -166,34 +169,44 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       fontSize: moniteTheme.typography.h1.fontSize,
       fontWeight: moniteTheme.typography.h1.fontWeight,
       lineHeight: moniteTheme.typography.h1.lineHeight,
-      textTransform: moniteTheme.typography.h1.textTransform,
+      textTransform:
+        moniteTheme.typography.h1
+          .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     h2: {
       fontSize: moniteTheme.typography.h2.fontSize,
       fontWeight: moniteTheme.typography.h2.fontWeight,
       lineHeight: moniteTheme.typography.h2.lineHeight,
-      textTransform: moniteTheme.typography.h2.textTransform,
+      textTransform:
+        moniteTheme.typography.h2
+          .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     h3: {
       fontSize: moniteTheme.typography.h3.fontSize,
       fontWeight: moniteTheme.typography.h3.fontWeight,
       lineHeight: moniteTheme.typography.h3.lineHeight,
-      textTransform: moniteTheme.typography.h3.textTransform,
+      textTransform:
+        moniteTheme.typography.h3
+          .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     subtitle1: {
       fontSize: moniteTheme.typography.subtitle1.fontSize,
       fontWeight: moniteTheme.typography.subtitle1.fontWeight,
       lineHeight: moniteTheme.typography.subtitle1.lineHeight,
-      textTransform: moniteTheme.typography.subtitle1.textTransform,
+      textTransform:
+        moniteTheme.typography.subtitle1
+          .textTransform as CSSProperties['textTransform'],
     },
     subtitle2: {
       fontSize: moniteTheme.typography.subtitle2.fontSize,
       fontWeight: moniteTheme.typography.subtitle2.fontWeight,
       lineHeight: moniteTheme.typography.subtitle2.lineHeight,
-      textTransform: moniteTheme.typography.subtitle2.textTransform,
+      textTransform:
+        moniteTheme.typography.subtitle2
+          .textTransform as CSSProperties['textTransform'],
     },
     body1: {
       fontSize: moniteTheme.typography.body1?.fontSize,

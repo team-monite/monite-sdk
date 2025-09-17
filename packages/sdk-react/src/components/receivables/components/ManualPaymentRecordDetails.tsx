@@ -8,10 +8,10 @@ import { useLingui } from '@lingui/react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Alert, Box, Skeleton, Typography } from '@mui/material';
 
-import { PaymentRecordDetails } from './RecordManualPaymentModal';
+import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 
 type Props = {
-  paymentRecords: PaymentRecordDetails;
+  paymentRecords: ManualPaymentRecordFormValues & { created_by: string };
   invoice: components['schemas']['InvoiceResponsePayload'];
 };
 

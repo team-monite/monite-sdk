@@ -13,7 +13,7 @@ import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -120,7 +120,7 @@ export const UserRoleEditDialog = ({
   });
 
   const methods = useForm<UserRoleFormValues>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: {
       name: roleData?.name || '',
       permissions: roleData?.permissions.objects

@@ -1,13 +1,16 @@
+import type { PermissionRow } from './types';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import * as yup from 'yup';
+import { z } from 'zod';
 
 export const getValidationSchema = (i18n: I18n) =>
-  yup.object({
-    name: yup
+  z.object({
+    name: z
       .string()
-      .label(i18n._(t(i18n)`Name`))
-      .max(255)
-      .required(),
+      .trim()
+      .max(255, t(i18n)`Name cannot exceed 255 characters`)
+      .min(1, t(i18n)`Name is required`)
+      .meta({ title: t(i18n)`Role Name` }),
+    permissions: z.array(z.custom<PermissionRow>())
+      .meta({ title: t(i18n)`Permissions` }),
   });

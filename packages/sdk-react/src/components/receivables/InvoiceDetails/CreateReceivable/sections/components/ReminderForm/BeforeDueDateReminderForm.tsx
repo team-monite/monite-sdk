@@ -15,7 +15,7 @@ import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -119,7 +119,7 @@ const CreateBeforeDueDateReminderComponent = ({
   };
 
   const methods = useForm({
-    resolver: yupResolver(getBeforeDueDateValidationSchema(i18n)),
+    resolver: zodResolver(getBeforeDueDateValidationSchema(i18n)),
     defaultValues: ((): components['schemas']['PaymentReminder'] => ({
       name: reminder?.name ?? '',
       // @ts-expect-error - back-end does not support `null` values

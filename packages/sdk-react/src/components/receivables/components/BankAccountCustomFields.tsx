@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { NO_ROUTING_NUMBER, NO_SORT_CODE } from '../consts';
-import { EntityBankAccountFields } from '../types';
+import type { EntityBankAccountFields } from '../types';
 
 type Props = {
   currency: components['schemas']['CurrencyEnum'];

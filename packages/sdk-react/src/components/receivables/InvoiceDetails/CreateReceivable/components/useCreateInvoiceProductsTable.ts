@@ -72,7 +72,7 @@ export const useCreateInvoiceProductsTable = ({
 
     return new Price({
       value: price,
-      currency,
+      currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
   }, [
@@ -125,7 +125,7 @@ export const useCreateInvoiceProductsTable = ({
 
     return new Price({
       value: taxes,
-      currency,
+      currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
   }, [lineItems, formatCurrencyToDisplay, actualCurrency, taxesByVatRate]);
@@ -158,3 +158,5 @@ export const useCreateInvoiceProductsTable = ({
     taxesByVatRate,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

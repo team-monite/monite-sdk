@@ -11,7 +11,7 @@ import {
 import { tagListFixture } from '@/mocks/tags';
 import { renderHook } from '@testing-library/react';
 
-import { OPERATOR_OPERATIONS } from './triggerUtils';
+import { OPERATOR_OPERATIONS, OperatorOperation } from './triggerUtils';
 import {
   useApprovalPolicyTrigger,
   AmountTuple,
@@ -230,6 +230,7 @@ describe('useApprovalPolicyTrigger', () => {
         created_by: 'user-1',
         updated_by: 'user-1',
         script: [],
+        priority: 1,
       };
 
       const { result } = renderHook(() =>
@@ -377,7 +378,7 @@ describe('useApprovalPolicyTrigger', () => {
       ];
 
       operators.forEach(([operator, expectedText]) => {
-        const amountValue: AmountTuple[] = [[operator as any, 1000]];
+        const amountValue: AmountTuple[] = [[operator as OperatorOperation, 1000]];
         const label = result.current.getAmountLabel(amountValue, 'USD');
         expect(label).toContain(expectedText);
       });

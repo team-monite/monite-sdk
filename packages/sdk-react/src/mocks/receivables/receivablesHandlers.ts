@@ -1,4 +1,6 @@
+import { getMockPagination } from '../utils';
 import { components } from '@/api';
+import { CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import {
   receivableListFixture,
   ReceivablesListFixture,
@@ -6,11 +8,8 @@ import {
   receivablePreviewFixture,
 } from '@/mocks';
 import { faker } from '@faker-js/faker';
-
 import { http, HttpResponse, delay } from 'msw';
-import * as yup from 'yup';
-
-import { getMockPagination } from '../utils';
+import { z } from 'zod';
 
 const RECEIVABLES_ENDPOINT = 'receivables';
 
@@ -23,20 +22,78 @@ const receivableSendPath = `${receivableDetailPath}/send`;
 const receivablePreviewPath = `${receivableDetailPath}/preview`;
 const receivableContactsPath = `*/${RECEIVABLES_ENDPOINT}/:receivableId/contacts`;
 
-const createInvoiceValidationSchema = yup.object({
-  type: yup.string().required(),
-  currency: yup.string().required(),
-  line_items: yup
-    .array()
-    .of(
-      yup.object({
-        quantity: yup.number().required(),
-        product_id: yup.string().required(),
-        vat_rate_id: yup.string().required(),
+type AttachmentRequest = {
+  id: string;
+  include_in_email: boolean;
+};
+
+type AttachmentResponse = {
+  id: string;
+  include_in_email: boolean;
+  mimetype: string;
+  name: string;
+  size: number;
+  url: string;
+};
+
+type RequestWithAttachments = {
+  attachments?: AttachmentRequest[];
+};
+
+type ResponseWithAttachmentsAndEntity = {
+  attachments?: AttachmentResponse[];
+  entity?: {
+    type?: 'organization' | 'individual';
+    name?: string;
+    first_name?: string;
+    last_name?: string;
+    [key: string]: unknown;
+  };
+};
+
+function createReceivableResponse<
+  TRequest extends Record<string, unknown> & RequestWithAttachments,
+  TResponse extends Record<string, unknown> & ResponseWithAttachmentsAndEntity
+>(request: TRequest, response: TResponse): TResponse {
+  const { line_items, ...requestWithoutLineItems } = request;
+
+  return {
+    ...response,
+    ...requestWithoutLineItems,
+    attachments: request.attachments?.map((attachment: AttachmentRequest): AttachmentResponse => ({
+      id: attachment.id,
+      include_in_email: attachment.include_in_email,
+      mimetype: 'application/pdf',
+      name: 'attachment.pdf',  
+      size: 1024,
+      url: `/files/${attachment.id}`,
+    })) || response.attachments,
+    entity: response.entity ? {
+      ...response.entity,
+      type: 'organization' as const,
+      name: 'Mock Organization',
+    } : {
+      type: 'organization' as const,
+      name: 'Mock Organization',
+    },
+  } as TResponse;
+}
+
+const createInvoiceValidationSchema = z.object({
+  type: z.string().refine((v) => receivableListFixture.hasOwnProperty(v), {
+    message: 'Unsupported receivable type',
+  }),
+  currency: CurrencyEnumSchema,
+  line_items: z
+    .array(
+      z.object({
+        quantity: z.coerce.number().min(0, 'Quantity is required'),
+        product_id: z.string().min(1, 'product_id is required'),
+        vat_rate_id: z.string().min(1, 'vat_rate_id is required'),
       })
     )
-    .required(),
-  counterpart_id: yup.string().required(),
+    .nonempty('At least one line item is required'),
+  counterpart_id: z.string().min(1, 'counterpart_id is required'),
 });
 
 interface IReceivableByIdParams {
@@ -105,7 +162,7 @@ export const receivableHandlers = [
   >(receivablePath, async ({ request }) => {
     const jsonBody = await request.json();
     try {
-      await createInvoiceValidationSchema.validate(jsonBody);
+      createInvoiceValidationSchema.parse(jsonBody);
 
       await delay();
 
@@ -188,10 +245,10 @@ export const receivableHandlers = [
 
       await delay();
 
-      return HttpResponse.json({
-        ...invoiceRequest,
-        ...invoiceResponse,
-      });
+      const response: components['schemas']['InvoiceResponsePayload'] = 
+        createReceivableResponse(invoiceRequest, invoiceResponse);
+      
+      return HttpResponse.json(response);
     } else if ('quote' in jsonBody) {
       const quoteRequest = jsonBody.quote;
       const quoteResponse = receivableListFixture.quote.find(
@@ -215,10 +272,10 @@ export const receivableHandlers = [
 
       await delay();
 
-      return HttpResponse.json({
-        ...quoteRequest,
-        ...quoteResponse,
-      });
+      const response: components['schemas']['QuoteResponsePayload'] = 
+        createReceivableResponse(quoteRequest, quoteResponse);
+      
+      return HttpResponse.json(response);
     } else if ('credit_note' in jsonBody) {
       const creditNoteRequest = jsonBody.credit_note;
       const creditNoteResponse = receivableListFixture.credit_note.find(
@@ -242,10 +299,10 @@ export const receivableHandlers = [
 
       await delay();
 
-      return HttpResponse.json({
-        ...creditNoteRequest,
-        ...creditNoteResponse,
-      });
+      const response: components['schemas']['CreditNoteResponsePayload'] = 
+        createReceivableResponse(creditNoteRequest, creditNoteResponse);
+      
+      return HttpResponse.json(response);
     }
 
     await delay();
