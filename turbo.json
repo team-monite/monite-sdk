@@ -22,15 +22,6 @@
         "!.next/static/chunks/**"
       ]
     },
-    "storybook": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": [
-        "write-package-version-file",
-        "compile-translations",
-        "^build"
-      ]
-    },
     "build-storybook": {
       "cache": true,
       "dependsOn": [

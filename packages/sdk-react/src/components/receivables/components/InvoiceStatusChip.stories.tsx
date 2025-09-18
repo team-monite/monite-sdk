@@ -1,6 +1,6 @@
 import { InvoiceStatusChip as InvoiceStatusChipComponent } from './InvoiceStatusChip';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof InvoiceStatusChipComponent> = {
   title: 'Components / InvoiceStatusChip',

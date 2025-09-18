@@ -2,11 +2,8 @@ import { components } from '@/api';
 
 export interface IPriceConstructor {
   value: string | number;
-  currency: CurrencyEnum | string;
-  formatter: (
-    value: string | number,
-    currency: CurrencyEnum | string
-  ) => string | null;
+  currency: CurrencyEnum;
+  formatter: (value: string | number, currency: CurrencyEnum) => string | null;
 }
 
 export class Price {

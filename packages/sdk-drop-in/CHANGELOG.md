@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.5.1
+
+### Patch Changes
+
+- dec4c86: Upgrade Vite version on SDK Drop-in package
+- c5404a2: Fixed issue with vat rate field not displaying correctly when creating an invoice
+
 ## 2.5.0
 
 ### Minor Changes

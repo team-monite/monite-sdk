@@ -1,7 +1,7 @@
 import { InvoiceDetails } from './InvoiceDetails';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof InvoiceDetails> = {
   title: 'Receivables/InvoiceDetails',
@@ -10,7 +10,7 @@ const meta: Meta<typeof InvoiceDetails> = {
     layout: 'fullscreen',
   },
   argTypes: {
-    onClose: { action: 'onClose' },
+    onCloseInvoiceDetails: { action: 'onClose' },
     onDuplicate: { action: 'onDuplicate' },
     onMarkAsUncollectible: { action: 'onMarkAsUncollectible' },
   },
@@ -85,7 +85,7 @@ export const WithAllCallbacks: Story = {
   args: {
     open: true,
     invoiceId: defaultInvoiceId,
-    onClose: action('onClose'),
+    onCloseInvoiceDetails: action('onClose'),
     onDuplicate: action('onDuplicate'),
     onMarkAsUncollectible: action('onMarkAsUncollectible'),
   },

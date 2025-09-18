@@ -1,5 +1,6 @@
 import { PaymentRecordDetails } from './RecordManualPaymentModal';
 import { components } from '@/api';
+import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -10,7 +11,7 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import { Alert, Box, Skeleton, Typography } from '@mui/material';
 
 type Props = {
-  paymentRecords: PaymentRecordDetails;
+  paymentRecords: ManualPaymentRecordFormValues & { created_by: string };
   invoice: components['schemas']['InvoiceResponsePayload'];
 };
 

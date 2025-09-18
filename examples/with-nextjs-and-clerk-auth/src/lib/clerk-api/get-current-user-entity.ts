@@ -16,7 +16,9 @@ export const getCurrentUserEntity = async () => {
       }))) ||
     undefined;
 
+  // @ts-ignore
   const { entity_id } = getOrganizationEntityData(organization);
+  // @ts-ignore
   const entityUserData = getEntityUserData(entity_id, await currentUser());
   return { entity_id, ...entityUserData };
 };

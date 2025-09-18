@@ -1,61 +1,53 @@
 import { components } from '@/api';
-import { getCurrencies } from '@/core/utils';
-import { currenciesToStringArray } from '@/core/utils/selectHelpers';
-import { I18n } from '@lingui/core';
+import { CurrencyEnumSchema } from '@/enums/CurrencyEnum';
+import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import * as yup from 'yup';
+import { z } from 'zod';
 
 export interface ProductFormValues {
-  name?: string;
+  name: string;
   type: ProductServiceTypeEnum;
-  units?: string;
-  smallestAmount?: number;
-  pricePerUnit?: number;
-  currency?: CurrencyEnum;
+  units: string;
+  smallestAmount: number;
+  pricePerUnit: number;
+  currency: CurrencyEnum;
   description?: string;
 }
 
 export const getValidationSchema = (i18n: I18n) =>
-  yup.object({
-    name: yup
+  z.object({
+    name: z
       .string()
-      .label(t(i18n)`Product name`)
-      .required(),
-    type: yup
-      .mixed<ProductServiceTypeEnum>()
-      .oneOf(['product', 'service'], t(i18n)`Product type is required`)
-      .required(),
-    units: yup
+      .trim()
+      .min(1, t(i18n)`Product name is required`)
+      .meta({ title: t(i18n)`Product Name` }),
+    type: z
+      .enum(['product', 'service'] as const, t(i18n)`Product type is required`)
+      .meta({ title: t(i18n)`Type` }),
+    units: z
       .string()
-      .label(t(i18n)`Units`)
-      .required(),
-    smallestAmount: yup
+      .trim()
+      .min(1, t(i18n)`Units is required`)
+      .meta({ title: t(i18n)`Units` }),
+    smallestAmount: z.coerce
       .number()
-      .typeError(t(i18n)`Please enter a number`)
       .min(0, t(i18n)`Minimum quantity must be 0 or greater`)
-      .label(t(i18n)`Minimum quantity`)
-      .required(),
-    pricePerUnit: yup
+      .meta({ title: t(i18n)`Minimum Quantity` }),
+    pricePerUnit: z.coerce
       .number()
-      .typeError(t(i18n)`Please enter a number`)
-      .min(0)
-      .label(t(i18n)`Price per unit`)
-      .required(),
-    currency: yup
-      .mixed<CurrencyEnum>()
-      .oneOf(currenciesToStringArray(getCurrencies(i18n)))
-      .label(t(i18n)`Currency`)
-      .required(),
-    description: yup
+      .min(0, t(i18n)`Price per unit must be 0 or greater`)
+      .meta({ title: t(i18n)`Price Per Unit` }),
+    currency: CurrencyEnumSchema.meta({ title: t(i18n)`Currency` }),
+    description: z
       .string()
-      .max(255)
-      .label(t(i18n)`Description`),
+      .trim()
+      .max(255, t(i18n)`Description must be 255 characters or less`)
+      .optional()
+      .meta({ title: t(i18n)`Description` }),
   });
 
-export type IProductFormSubmitValues = yup.InferType<
+export type IProductFormSubmitValues = z.infer<
   ReturnType<typeof getValidationSchema>
 >;
-
 type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];
 type CurrencyEnum = components['schemas']['CurrencyEnum'];

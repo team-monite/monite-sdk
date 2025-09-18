@@ -1,9 +1,8 @@
+import { Products as ProductsComponent } from './Products';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
-import { Products as ProductsComponent } from './Products';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Products',

@@ -1,7 +1,6 @@
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { ApprovalRequestStatusChip as ApprovalRequestStatusChipComponent } from './ApprovalRequestStatusChip';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof ApprovalRequestStatusChipComponent> = {
   title: 'Components / ApprovalRequestStatusChip',

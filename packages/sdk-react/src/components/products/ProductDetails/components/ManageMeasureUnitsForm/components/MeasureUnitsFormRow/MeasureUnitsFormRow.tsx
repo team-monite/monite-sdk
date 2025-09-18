@@ -1,9 +1,7 @@
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { type FormValues, getValidationSchema } from './validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CheckIcon from '@mui/icons-material/Check';
@@ -17,27 +15,29 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
-import * as yup from 'yup';
-
-interface MeasureUnitsForm {
-  id?: string;
-  name: string;
-  description?: string;
-}
-
-const defaultValues: MeasureUnitsForm = {
+const defaultValues: FormValues = {
   name: '',
   description: '',
 };
 
-interface MeasureUnitFormRowProps {
-  isEditMode: boolean;
-  initialValues?: MeasureUnitsForm;
-  onCancel?: () => void;
-  onEdit?: () => void;
-  id?: string;
-}
+type MeasureUnitFormRowProps =
+  | {
+      isEditMode: true;
+      id: string;
+      initialValues?: Partial<FormValues>;
+      onCancel?: () => void;
+      onEdit?: () => void;
+    }
+  | {
+      isEditMode: false;
+      id?: undefined;
+      initialValues?: Partial<FormValues>;
+      onCancel?: () => void;
+      onEdit?: () => void;
+    };
 
 const buttonStyle = {
   '&:hover': { borderRadius: '8px', background: '#F8F8FF' },
@@ -55,17 +55,12 @@ export const MeasureUnitsFormRow = ({
 }: MeasureUnitFormRowProps) => {
   const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
+  const validationSchema = getValidationSchema(i18n);
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(t(i18n)`Unit label is required`),
-    description: yup.string(),
+  const { handleSubmit, control, reset, setError } = useForm<FormValues>({
+    defaultValues: initialValues,
+    resolver: zodResolver(validationSchema),
   });
-
-  const { getValues, handleSubmit, control, reset, setError } =
-    useForm<MeasureUnitsForm>({
-      defaultValues: initialValues,
-      resolver: yupResolver(validationSchema),
-    });
 
   const createMutation = api.measureUnits.postMeasureUnits.useMutation(
     {},
@@ -90,7 +85,7 @@ export const MeasureUnitsFormRow = ({
   const updateMutation = api.measureUnits.patchMeasureUnitsId.useMutation(
     {
       path: {
-        unit_id: id as string,
+        unit_id: id!,
       },
     },
     {
@@ -98,7 +93,7 @@ export const MeasureUnitsFormRow = ({
         await Promise.all([
           api.measureUnits.getMeasureUnits.invalidateQueries(queryClient),
           api.measureUnits.getMeasureUnitsId.invalidateQueries(
-            { parameters: { path: { unit_id: id } } },
+            { parameters: { path: { unit_id: id! } } },
             queryClient
           ),
         ]);
@@ -117,15 +112,16 @@ export const MeasureUnitsFormRow = ({
     }
   );
 
-  const handleEdit = () => {
-    updateMutation.mutate({
-      name: getValues().name,
-      description: getValues().description,
-    });
+  const handleEdit = (values: FormValues) => {
+    if (!isEditMode || !id) {
+      console.error('handleEdit called without valid id or edit mode');
+      return;
+    }
+    updateMutation.mutate(values);
   };
 
-  const handleCreate = () => {
-    createMutation.mutate(getValues());
+  const handleCreate = (values: FormValues) => {
+    createMutation.mutate(values);
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;

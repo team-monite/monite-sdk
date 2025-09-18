@@ -1,3 +1,4 @@
+import '../src/core/theme/app.css';
 import { handlers } from '../src/mocks/handlers';
 import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
 import { initialize, mswLoader } from 'msw-storybook-addon';
@@ -13,10 +14,11 @@ const decorators = [withGlobalStorybookDecorator()];
 // Initialize MSW
 initialize();
 
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/react-webpack5').Preview } */
 const preview = {
   parameters: {
     layout: 'fullscreen',
+
     options: {
       storySort: {
         order: [
@@ -28,10 +30,16 @@ const preview = {
         ],
       },
     },
+
     backgrounds: { disable: true },
     actions: { argTypesRegex: '^on[A-Z].*' },
+
     msw: {
       handlers,
+    },
+
+    docs: {
+      codePanel: true,
     },
   },
   loaders: [mswLoader],

@@ -1,6 +1,5 @@
-import { create } from '@storybook/theming';
-
 import Logo from './monite_logo.svg';
+import { create } from 'storybook/theming';
 
 export default create({
   base: 'light',

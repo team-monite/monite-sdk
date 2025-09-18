@@ -17,8 +17,8 @@ import type { LineItem, PayableDetailsFormFields } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import {
   type PayableDetailsValidationFields,
-  getPayableDetailsValidationSchema,
   isFieldRequiredByValidations,
+  getPayableDetailsFormSchema,
 } from './validation';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -38,12 +38,12 @@ import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups'
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { Dialog } from '@/ui/Dialog';
 import { TagsAutocompleteInput } from '@/ui/TagsAutocomplete';
 import { classNames } from '@/utils/css-utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -180,10 +180,9 @@ const PayableDetailsFormBase = forwardRef<
       () => prepareDefaultValues(formatFromMinorUnits, payable, lineItems),
       [formatFromMinorUnits, payable, lineItems]
     );
-
-    const methods = useForm<PayableDetailsValidationFields>({
-      resolver: zodResolver(
-        getPayableDetailsValidationSchema(i18n, payablesValidations)
+    const methods = useForm<PayableDetailsFormFields>({
+      resolver: safeZodResolver<PayableDetailsFormFields>(
+        getPayableDetailsFormSchema(i18n, payablesValidations)
       ),
       defaultValues,
       mode: 'onTouched',

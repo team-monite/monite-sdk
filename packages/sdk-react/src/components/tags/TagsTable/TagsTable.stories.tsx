@@ -1,6 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
-
 import { TagsTable } from './TagsTable';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof TagsTable> = {
   title: 'Tags/Tags — Table View',

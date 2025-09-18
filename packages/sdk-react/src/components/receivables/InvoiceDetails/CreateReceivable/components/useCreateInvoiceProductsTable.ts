@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
-
 import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import { useMemo } from 'react';
 
 interface UseCreateInvoiceProductsTable {
   isNonVatSupported: boolean;
@@ -72,7 +71,7 @@ export const useCreateInvoiceProductsTable = ({
 
     return new Price({
       value: price,
-      currency,
+      currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
   }, [
@@ -84,29 +83,32 @@ export const useCreateInvoiceProductsTable = ({
   ]);
 
   const taxesByVatRate = useMemo(() => {
-    return lineItems.reduce((acc, field) => {
-      const { price, quantity } = getPriceAndQuantity(field);
-      const vatRate = getRateValueForDisplay(
-        isNonVatSupported,
-        field.vat_rate_value ?? 0,
-        field.tax_rate_value ?? 0
-      );
+    return lineItems.reduce(
+      (acc, field) => {
+        const { price, quantity } = getPriceAndQuantity(field);
+        const vatRate = getRateValueForDisplay(
+          isNonVatSupported,
+          field.vat_rate_value ?? 0,
+          field.tax_rate_value ?? 0
+        );
 
-      if (!vatRate) return acc;
+        if (!vatRate) return acc;
 
-      const amount = price * quantity;
-      const tax = isInclusivePricing
-        ? amount - amount / (1 + vatRate / 100)
-        : amount * (vatRate / 100);
+        const amount = price * quantity;
+        const tax = isInclusivePricing
+          ? amount - amount / (1 + vatRate / 100)
+          : amount * (vatRate / 100);
 
-      if (acc[vatRate]) {
-        acc[vatRate] += tax;
-      } else {
-        acc[vatRate] = tax;
-      }
+        if (acc[vatRate]) {
+          acc[vatRate] += tax;
+        } else {
+          acc[vatRate] = tax;
+        }
 
-      return acc;
-    }, {} as Record<number, number>);
+        return acc;
+      },
+      {} as Record<number, number>
+    );
   }, [lineItems, isInclusivePricing, isNonVatSupported]);
 
   const totalTaxes = useMemo(() => {
@@ -125,7 +127,7 @@ export const useCreateInvoiceProductsTable = ({
 
     return new Price({
       value: taxes,
-      currency,
+      currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
   }, [lineItems, formatCurrencyToDisplay, actualCurrency, taxesByVatRate]);
@@ -158,3 +160,5 @@ export const useCreateInvoiceProductsTable = ({
     taxesByVatRate,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

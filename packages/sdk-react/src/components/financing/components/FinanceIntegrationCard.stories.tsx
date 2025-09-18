@@ -1,9 +1,7 @@
-import { MemoryRouter } from 'react-router-dom';
-
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { FinanceIntegrationCard as FinanceIntegrationCardComponent } from './FinanceIntegrationCard';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
+import { MemoryRouter } from 'react-router-dom';
 
 const Story = {
   title: 'Financing/FinanceIntegrationCard',
