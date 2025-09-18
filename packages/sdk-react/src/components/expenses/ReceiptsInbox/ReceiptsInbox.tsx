@@ -2,8 +2,6 @@ import { useGetMailboxes } from '../hooks/useGetMailboxes';
 import { useGetReceipts } from '../hooks/useGetReceipts';
 import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
-import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
-import { HasTransactionFilterValue, ReceiptsFilters } from './types';
 import { components } from '@/api/schema';
 import { useDebounce } from '@/core/hooks';
 import { useEntityUsersByIds } from '@/core/queries';
@@ -22,6 +20,16 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CopyIcon, XIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+const FILTER_TYPE_SEARCH = 'search';
+const FILTER_TYPE_HAS_TRANSACTION = 'has_transaction';
+
+type HasTransactionFilterValue = 'all' | 'matched' | 'unmatched';
+
+type ReceiptsFilters = Partial<{
+  [FILTER_TYPE_SEARCH]: string;
+  [FILTER_TYPE_HAS_TRANSACTION]: HasTransactionFilterValue;
+}>;
 
 export const ReceiptsInbox = ({
   setIsOpen,
