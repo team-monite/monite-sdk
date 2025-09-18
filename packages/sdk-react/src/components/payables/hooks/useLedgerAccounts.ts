@@ -6,7 +6,7 @@ export const useLedgerAccounts = (enabled = true) => {
   return api.ledgerAccounts.getLedgerAccounts.useQuery(
     {
       query: {
-        limit: 100,
+        limit: 250,
         sort: 'name',
       },
     },

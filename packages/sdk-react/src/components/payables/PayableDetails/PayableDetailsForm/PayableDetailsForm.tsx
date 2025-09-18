@@ -382,7 +382,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <CounterpartAutocomplete<PayableDetailsValidationFields>
+                      <CounterpartAutocomplete<PayableDetailsFormFields>
                         control={control}
                         disabled={isCounterpartLoading}
                         name="counterpart"
@@ -580,10 +580,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<
-                        PayableDetailsValidationFields,
-                        'currency'
-                      >
+                      <MoniteCurrency<PayableDetailsFormFields, "currency">
                         name="currency"
                         control={control}
                         required={

@@ -40,7 +40,6 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) => {
         ledger_account_id: z
           .string()
           .optional()
-          .nullable()
           .meta({ title: t(i18n)`Ledger Account` }),
       })
     )
@@ -89,7 +88,7 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) => {
     currency: getCurrencyEnum(i18n)
       .optional()
       .meta({ title: t(i18n)`Currency` }),
-    tags: tagsSchema,
+    tags: z.array(tagsSchema).meta({ title: t(i18n)`Tags` }),
     lineItems: lineItemsSchema,
     discount: z
       .union([z.coerce.number().min(0), z.null()])
