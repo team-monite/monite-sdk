@@ -27,14 +27,15 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
     receipt.file_url &&
     getMimetypeFromUrl(receipt.file_url) !== 'application/pdf';
 
+  const NBSP = '\u00A0'; // non-breaking space
   const formattedDate = i18n.date(receipt.created_at, locale.dateFormat);
   const formattedAmount =
     receipt.total_amount && receipt.currency
       ? formatCurrencyToDisplay(receipt.total_amount, receipt.currency)
-      : '\u00A0';
+      : NBSP;
   const formattedIssuedDate = receipt.issued_at
     ? i18n.date(receipt.issued_at, locale.dateFormat)
-    : '\u00A0';
+    : NBSP;
 
   return (
     <Card className="mtw:h-full mtw:w-full mtw:shadow-none mtw:hover:shadow-md mtw:transition-shadow mtw:gap-4 mtw:py-4 mtw:border-neutral-80 mtw:rounded-md">
@@ -52,7 +53,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
           </span>
         </div>
         <p className="mtw:text-sm mtw:text-muted-foreground mtw:overflow-hidden mtw:text-ellipsis mtw:whitespace-nowrap">
-          {userDisplayName || '\u00A0'}
+          {userDisplayName || NBSP}
         </p>
       </CardHeader>
       <CardContent className="mtw:h-full mtw:flex mtw:flex-col mtw:px-5 mtw:gap-4">
@@ -75,7 +76,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
               className="mtw:overflow-hidden mtw:text-ellipsis"
               title={receipt.merchant_name ?? undefined}
             >
-              {receipt.merchant_name || '\u00A0'}
+              {receipt.merchant_name || NBSP}
             </span>
             <span className="mtw:text-end">{formattedAmount}</span>
           </div>
@@ -84,7 +85,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
               className="mtw:overflow-hidden mtw:text-ellipsis"
               title={receipt.merchant_location ?? undefined}
             >
-              {receipt.merchant_location || '\u00A0'}
+              {receipt.merchant_location || NBSP}
             </span>
             <span className="mtw:text-end">{formattedIssuedDate}</span>
           </div>
