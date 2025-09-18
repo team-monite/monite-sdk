@@ -1,5 +1,6 @@
-import { useMailboxes } from '../hooks/useMailboxes';
-import { useGetReceipts, useInfiniteGetReceipts } from '../hooks/useReceipts';
+import { useGetMailboxes } from '../hooks/useGetMailboxes';
+import { useGetReceipts } from '../hooks/useGetReceipts';
+import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
 import { HasTransactionFilterValue, ReceiptsFilters } from './types';
@@ -132,7 +133,7 @@ export const ReceiptsInbox = ({
     limit: 1,
   });
 
-  const { data: mailboxexData } = useMailboxes();
+  const { data: mailboxexData } = useGetMailboxes();
   const receiptsEmailAddress = mailboxexData?.data?.find(
     (mailbox) => mailbox.related_object_type === 'receipt'
   )?.mailbox_full_address;

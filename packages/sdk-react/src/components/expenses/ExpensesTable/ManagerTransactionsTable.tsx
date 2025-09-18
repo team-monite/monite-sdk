@@ -1,5 +1,5 @@
 import { TransactionDetails } from '../TransactionDetails';
-import { useGetTransactions } from '../hooks/useTransactions';
+import { useGetTransactions } from '../hooks/useGetTransactions';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STARTED_AT,

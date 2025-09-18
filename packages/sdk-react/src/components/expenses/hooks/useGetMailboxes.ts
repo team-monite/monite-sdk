@@ -1,6 +1,6 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 
-export const useMailboxes = () => {
+export const useGetMailboxes = () => {
   const { api } = useMoniteContext();
 
   const { data, isLoading, error } = api.mailboxes.getMailboxes.useQuery();
