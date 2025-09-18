@@ -1,3 +1,4 @@
+import { PaymentRecordDetails } from './RecordManualPaymentModal';
 import { components } from '@/api';
 import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';

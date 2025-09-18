@@ -1,5 +1,5 @@
-import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { useCancelReceivableById } from '@/components/receivables/hooks/useCancelReceivableById';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

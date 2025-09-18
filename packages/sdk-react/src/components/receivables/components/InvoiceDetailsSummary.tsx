@@ -1,13 +1,12 @@
+import { useGetPaymentRecords } from '../hooks/useGetPaymentRecords';
+import { useGetReceivables } from '../hooks/useGetReceivables';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { twMerge } from 'tailwind-merge';
-import { useGetPaymentRecords } from '../hooks/useGetPaymentRecords';
-import { useGetReceivables } from '../hooks/useGetReceivables';
 
 const SummaryLine = ({
   label,
@@ -107,9 +106,12 @@ export const InvoiceDetailsSummary = ({
             return (
               <SummaryLine
                 key={paymentRecord?.id}
-                label={paymentRecord?.paid_at ? 
-                  t(i18n)`Amount paid on ${i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)}` : 
-                  t(i18n)`Amount paid`
+                label={
+                  paymentRecord?.paid_at
+                    ? t(
+                        i18n
+                      )`Amount paid on ${i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)}`
+                    : t(i18n)`Amount paid`
                 }
                 value={formatCurrencyToDisplay(
                   paymentRecord?.amount ?? 0,
@@ -118,14 +120,17 @@ export const InvoiceDetailsSummary = ({
               />
             );
           })}
-          
+
           {creditNoteQuery?.data?.map((creditNote) => {
             return (
               <SummaryLine
                 key={creditNote?.id}
-                label={creditNote?.issue_date ? 
-                  t(i18n)`Credit applied on ${i18n.date(creditNote?.issue_date, locale.dateTimeFormat)}` : 
-                  t(i18n)`Credit applied`
+                label={
+                  creditNote?.issue_date
+                    ? t(
+                        i18n
+                      )`Credit applied on ${i18n.date(creditNote?.issue_date, locale.dateTimeFormat)}`
+                    : t(i18n)`Credit applied`
                 }
                 value={formatCurrencyToDisplay(
                   creditNote?.total_amount ?? 0,

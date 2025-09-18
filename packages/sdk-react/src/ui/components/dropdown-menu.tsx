@@ -1,9 +1,7 @@
-import * as React from 'react';
-
 import { cn } from '@/ui/lib/utils';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
+import * as React from 'react';
 
 function DropdownMenu({
   ...props
@@ -41,7 +39,7 @@ function DropdownMenuContent({
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         className={cn(
-          'mtw:bg-popover mtw:text-popover-foreground mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:data-[side=bottom]:slide-in-from-top-2 mtw:data-[side=left]:slide-in-from-right-2 mtw:data-[side=right]:slide-in-from-left-2 mtw:data-[side=top]:slide-in-from-bottom-2 mtw:z-1300 mtw:max-h-(--radix-dropdown-menu-content-available-height) mtw:min-w-[8rem] mtw:origin-(--radix-dropdown-menu-content-transform-origin) mtw:overflow-x-hidden mtw:overflow-y-auto mtw:rounded-md mtw:border-none mtw:p-1 mtw:shadow-md',
+          'mtw:bg-popover mtw:text-popover-foreground mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:data-[side=bottom]:slide-in-from-top-2 mtw:data-[side=left]:slide-in-from-right-2 mtw:data-[side=right]:slide-in-from-left-2 mtw:data-[side=top]:slide-in-from-bottom-2 mtw:z-1300 mtw:max-h-[var(--radix-dropdown-menu-content-available-height)] mtw:min-w-[8rem] mtw:origin-[var(--radix-dropdown-menu-content-transform-origin)] mtw:overflow-x-hidden mtw:overflow-y-auto mtw:rounded-md mtw:border-none mtw:p-1 mtw:shadow-md',
           className
         )}
         {...props}
@@ -210,7 +208,7 @@ function DropdownMenuSubTrigger({
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        'mtw:focus:bg-accent mtw:focus:text-accent-foreground mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-accent-foreground mtw:flex mtw:cursor-default mtw:items-center mtw:rounded-sm mtw:px-2 mtw:py-1.5 mtw:text-sm mtw:outline-hidden mtw:select-none mtw:data-[inset]:pl-8',
+        'mtw:focus:bg-accent mtw:focus:text-accent-foreground mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-accent-foreground mtw:[&_svg:not([class*=text-])]:text-muted-foreground mtw:relative mtw:flex mtw:cursor-pointer mtw:items-center mtw:gap-2 mtw:rounded-sm mtw:px-2 mtw:py-1.5 mtw:text-sm mtw:outline-hidden mtw:select-none mtw:data-[disabled]:pointer-events-none mtw:data-[disabled]:opacity-50 mtw:data-[inset]:pl-8 mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4',
         className
       )}
       {...props}
@@ -229,7 +227,7 @@ function DropdownMenuSubContent({
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
-        'mtw:bg-popover mtw:text-popover-foreground mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:data-[side=bottom]:slide-in-from-top-2 mtw:data-[side=left]:slide-in-from-right-2 mtw:data-[side=right]:slide-in-from-left-2 mtw:data-[side=top]:slide-in-from-bottom-2 mtw:z-1300 mtw:min-w-[8rem] mtw:origin-(--radix-dropdown-menu-content-transform-origin) mtw:overflow-hidden mtw:rounded-md mtw:border mtw:p-1 mtw:shadow-lg',
+        'mtw:bg-popover mtw:text-popover-foreground mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:data-[side=bottom]:slide-in-from-top-2 mtw:data-[side=left]:slide-in-from-right-2 mtw:data-[side=right]:slide-in-from-left-2 mtw:data-[side=top]:slide-in-from-bottom-2 mtw:z-1300 mtw:max-h-[var(--radix-dropdown-menu-content-available-height)] mtw:min-w-[8rem] mtw:origin-[var(--radix-dropdown-menu-content-transform-origin)] mtw:overflow-x-hidden mtw:overflow-y-auto mtw:rounded-md mtw:border-none mtw:p-1 mtw:shadow-md',
         className
       )}
       {...props}

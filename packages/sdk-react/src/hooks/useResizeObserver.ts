@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { useIsMounted } from '@/core/hooks';
+import { useEffect, useRef } from 'react';
 
 /**
  * Custom hook for observing element resize events
@@ -31,7 +31,7 @@ export const useResizeObserver = (
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      
+
       // Debounce the callback
       timeoutRef.current = setTimeout(() => {
         if (isMountedRef.current) {

@@ -37,7 +37,8 @@ export const InvoiceDeleteModal = ({
   const { i18n } = useLingui();
   const { receivablesCallbacks } = useComponentSettings();
 
-  const { mutate: deleteInvoice, isPending: isDeletingReceivable } = useDeleteReceivableById(invoiceId);
+  const { mutate: deleteInvoice, isPending: isDeletingReceivable } =
+    useDeleteReceivableById(invoiceId);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
     useIsActionAllowed({
@@ -47,7 +48,7 @@ export const InvoiceDeleteModal = ({
     });
 
   const handleConfirm = () => {
-    if (isDeleteAllowed){
+    if (isDeleteAllowed) {
       deleteInvoice(undefined, {
         onSuccess: () => {
           receivablesCallbacks?.onDelete?.(invoiceId);
@@ -57,7 +58,9 @@ export const InvoiceDeleteModal = ({
       });
     } else {
       toast.error(
-        t(i18n)`You don't have permission to delete this document. Please, contact your system administrator for details.`
+        t(
+          i18n
+        )`You don't have permission to delete this document. Please, contact your system administrator for details.`
       );
     }
   };

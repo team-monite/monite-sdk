@@ -12,7 +12,7 @@
   --font-size-body: 0.6239625rem; /* 9.9834px */
   --font-size-small: 0.554rem; /* 8.8741px */
   --line-height-body: 0.83195rem; /* 13.3112px */
-  
+
   --spacing-xxs: 0.139rem; /* 2.219px */
   --spacing-xs: 0.25rem; /* 4px */
   --spacing-xs-sm: 0.41625rem; /* 6.66px */
@@ -25,14 +25,14 @@
   --padding-xs: 0.208125rem; /* 3.33px */
   --padding-sm: 0.2775rem; /* 4.44px */
   --padding-md: 0.554rem; /* 8.874px */
-  
+
   --logo-width: 8.875rem; /* ~142px */
   --logo-height: 4.4375rem; /* ~71px */
   --totals-table-width: 18.75rem; /* 300px */
   --payment-section-gap: 1.875rem; /* 30px */
   --payment-details-width: 12.5rem; /* 200px */
   --qr-code-size: 5rem; /* 80px */
-  
+
   --col-number-width: 1.25rem;
   --col-product-min-width: 15rem;
   --col-qty-width: 3rem;
@@ -40,13 +40,13 @@
   --col-discount-width: 3rem;
   --col-amount-width: 5rem;
   --col-tax-width: 3rem;
-  
+
   --text-primary: #101011;
   --text-secondary: #666666;
   --text-muted: #999999;
-  --border-color: #F2F2F2;
-  --bg-header: #FAFAFA;
-  --accent-color: #3737FF;
+  --border-color: #f2f2f2;
+  --bg-header: #fafafa;
+  --accent-color: #3737ff;
 
   --border-radius: var(--spacing-xs);
 }

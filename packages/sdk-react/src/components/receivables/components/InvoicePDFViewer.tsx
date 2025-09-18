@@ -1,7 +1,7 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { CenteredContentBox } from '@/ui/box';
 import { FileViewer } from '@/ui/FileViewer';
+import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
