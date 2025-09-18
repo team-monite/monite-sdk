@@ -180,14 +180,13 @@ const PayableDetailsFormBase = forwardRef<
       ocrRequiredFields,
       optionalFields,
       isTagsDisabled,
-      // disableAutoCalculateTotals, // TODO: commented for debugging (DEV-15658)
+      disableAutoCalculateTotals,
     } = usePayableDetailsThemeProps(inProps);
 
     const { data: payablesValidations } =
       api.payables.getPayablesValidations.useQuery();
 
-    // const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false; // TODO: commented for debugging (DEV-15658)
-    const isDisableAutoCalculateTotals = false; // TODO: for debugging (DEV-15658)
+    const isDisableAutoCalculateTotals = disableAutoCalculateTotals || false;
 
     const defaultValues = useMemo(
       () =>
