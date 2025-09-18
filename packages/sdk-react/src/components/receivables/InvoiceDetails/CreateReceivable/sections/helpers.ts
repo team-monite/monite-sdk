@@ -1,9 +1,13 @@
+import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
 
 export const usePriceHelper = () => {
   const { formatCurrencyToDisplay, formatToMinorUnits } = useCurrencies();
 
-  const sanitizeAndFormatValue = (inputValue: string, currency: string) => {
+  const sanitizeAndFormatValue = (
+    inputValue: string,
+    currency: CurrencyEnum
+  ) => {
     let sanitizedValue = inputValue.replace(/[^0-9.,]/g, '');
 
     // Handle comma and dot formatting for decimals
@@ -49,3 +53,5 @@ export const usePriceHelper = () => {
 
   return { sanitizeAndFormatValue };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

@@ -1,3 +1,4 @@
+import type { LineItem, PayableDetailsFormFields } from './types';
 import { components } from '@/api';
 import {
   isIndividualCounterpart,
@@ -8,12 +9,13 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
-import type { LineItem, PayableDetailsFormFields } from './types';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
+import { toMinorUnits, fromMinorUnits } from '@/core/utils/currency';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
 
+export type Option = { label: string; value: string };
 export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddressId?: string;
 }
@@ -49,10 +51,10 @@ export const dateToString = (date: Date): string => {
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
-    currency: CurrencyEnum | string
+    currency: CurrencyEnum
   ) => number | null,
-  payable?: components['schemas']['PayableResponseSchema'],
-  lineItems?: components['schemas']['LineItemResponse'][]
+  payable?: PayableResponseSchema,
+  lineItems?: LineItemResponse[]
 ): PayableDetailsFormFields => {
   if (!payable) {
     return {
@@ -124,8 +126,8 @@ export const prepareSubmit = (
     tags,
     counterpartAddressId,
   }: SubmitPayload,
-  formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['PayableUpdateSchema'] => ({
+  formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null
+): PayableUpdateSchema => ({
   document_id: invoiceNumber,
   discount:
     discount && currency ? (formatToMinorUnits(discount, currency) ?? 0) : 0,
@@ -191,8 +193,8 @@ export const calculateTotalsForPayable = (
 export const prepareLineItemSubmit = (
   currency: CurrencyEnum,
   lineItem: LineItem,
-  formatToMinorUnits: (amount: number, currency: string) => number | null
-): components['schemas']['LineItemRequest'] => {
+  formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null
+): LineItemRequest => {
   const { name, quantity, price, tax } = lineItem;
 
   return {
@@ -204,11 +206,11 @@ export const prepareLineItemSubmit = (
 };
 
 function formatTaxToMinorUnits(tax: number): number {
-  return tax * 100;
+  return toMinorUnits(tax);
 }
 
 function formatTaxFromMinorUnits(tax: number): number {
-  return tax / 100;
+  return fromMinorUnits(tax);
 }
 
 export const isFieldRequired = <TFieldValues extends FieldValues>(
@@ -233,9 +235,7 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
   return isDefaultRequired || isOcrRequired;
 };
 
-export const isOcrMismatch = (
-  payableData: components['schemas']['PayableResponseSchema']
-) => {
+export const isOcrMismatch = (payableData: PayableResponseSchema) => {
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
 
@@ -266,7 +266,7 @@ export const isOcrMismatch = (
 };
 
 export type OcrMismatchField = keyof Pick<
-  components['schemas']['PayableResponseSchema'],
+  PayableResponseSchema,
   'amount_to_pay' | 'counterpart_bank_account_id'
 >;
 
@@ -282,13 +282,20 @@ export interface MonitePayableDetailsInfoProps {
 }
 
 export const findDefaultBankAccount = (
-  accounts: components['schemas']['CounterpartBankAccountResponse'][],
-  currentCurrency: CurrencyEnum
+  accounts: CounterpartBankAccountResponse[],
+  currentCurrency?: CurrencyEnum
 ): string => {
   const defaultAccount = accounts.find(
     (acc) => acc.currency === currentCurrency && acc.is_default_for_currency
   );
+
   return defaultAccount?.id || '';
 };
 
+type PayableUpdateSchema = components['schemas']['PayableUpdateSchema'];
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
+type LineItemResponse = components['schemas']['LineItemResponse'];
+type CounterpartBankAccountResponse =
+  components['schemas']['CounterpartBankAccountResponse'];
+type LineItemRequest = components['schemas']['LineItemRequest'];

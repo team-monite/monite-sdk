@@ -1,8 +1,6 @@
 import { useGetPayableCounterpart } from '../hooks/useGetPayableCounterpart';
 import { components } from '@/api';
-import {
-  prepareLineItemSubmit,
-} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { prepareLineItemSubmit } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import type {
   LineItem,
   PayableDetailsFormFields,
@@ -1093,15 +1091,17 @@ export function usePayableDetails({
 
         if (onPay?.length < 2) return onPay(payable.id);
 
-        onPay(payable.id, {
+        onPay(payable.id, undefined, {
           resolve: (options?: { showToast?: boolean }) => {
-            if (options?.showToast) toast.success(t(i18n)`Payment flow started`);
+            if (options?.showToast)
+              toast.success(t(i18n)`Payment flow started`);
 
             refetchPayable();
             refetchPaymentRecords();
           },
           reject: (_error?: unknown, options?: { showToast?: boolean }) => {
-            if (options?.showToast) toast.error(t(i18n)`Payment failed or cancelled`);
+            if (options?.showToast)
+              toast.error(t(i18n)`Payment failed or cancelled`);
 
             refetchPayable();
             refetchPaymentRecords();

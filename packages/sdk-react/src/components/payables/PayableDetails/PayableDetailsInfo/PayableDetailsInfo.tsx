@@ -363,7 +363,8 @@ const PayableDetailsInfoBase = ({
                             &asymp;{' '}
                             {formatCurrencyToDisplay(
                               payable.currency_exchange.total,
-                              payable.currency_exchange.default_currency_code
+                              payable.currency_exchange
+                                .default_currency_code as CurrencyEnum
                             )}
                           </Box>
                         )}
@@ -731,3 +732,5 @@ const PayableCounterpartName = ({
     </Stack>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

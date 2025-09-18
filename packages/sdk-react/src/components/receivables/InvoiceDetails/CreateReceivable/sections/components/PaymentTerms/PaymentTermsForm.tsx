@@ -1,8 +1,9 @@
-import { useState, FormEvent, ReactNode, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { DiscountForm } from './DiscountForm';
+import { getValidation } from './paymentTermsValidation';
+import { PaymentTermsFields, TermField } from './types';
+import { usePaymentTermsApi } from './usePaymentTermsApi';
 import { components } from '@/api';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -16,11 +17,8 @@ import {
   Alert,
   TextField,
 } from '@mui/material';
-
-import { DiscountForm } from './DiscountForm';
-import { getValidation } from './paymentTermsValidation';
-import { PaymentTermsFields, TermField } from './types';
-import { usePaymentTermsApi } from './usePaymentTermsApi';
+import { useState, FormEvent, ReactNode, useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 
 const MAX_DISCOUNTS = 2;
 
@@ -42,7 +40,7 @@ export const PaymentTermsForm = ({
   const { i18n } = useLingui();
   const methods = useForm<PaymentTermsFields>({
     defaultValues: { ...selectedTermsFields },
-    resolver: yupResolver(getValidation(i18n, () => methods.watch())),
+    resolver: safeZodResolver<PaymentTermsFields>(getValidation(i18n)),
   });
 
   const {

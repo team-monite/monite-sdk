@@ -12,7 +12,7 @@ export const prepareCounterpartBank = (
     account_holder_name: bank?.account_holder_name ?? '',
     account_number: bank?.account_number ?? '',
     country: bank?.country ?? '',
-    currency: bank?.currency ?? '',
+    currency: (bank?.currency ?? '') as components['schemas']['CurrencyEnum'],
     routing_number: bank?.routing_number ?? '',
     sort_code: bank?.sort_code ?? '',
     name: bank?.name ?? '',

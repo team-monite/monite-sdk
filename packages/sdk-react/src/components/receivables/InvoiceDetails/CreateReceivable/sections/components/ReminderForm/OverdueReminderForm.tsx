@@ -1,15 +1,13 @@
-import { useId } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { ReminderFormLayout } from './ReminderFormLayout';
+import { getOverdueValidationSchema } from './validation';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,9 +23,9 @@ import {
   InputLabel,
   Alert,
 } from '@mui/material';
-
-import { ReminderFormLayout } from './ReminderFormLayout';
-import { getOverdueValidationSchema } from './validation';
+import { useId } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 interface OverdueReminderBasePropsProps {
   onClose?(): void;
@@ -107,13 +105,18 @@ const CreateOverdueReminderComponent = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { control, handleSubmit, formState } = useForm({
-    resolver: yupResolver(getOverdueValidationSchema(i18n)),
-    defaultValues: ((): components['schemas']['OverdueReminderRequest'] => ({
-      name: reminder?.name ?? '',
-      terms: reminder?.terms ?? [],
-    }))(),
-  });
+  type OverdueReminderFormValues = Omit<OverdueReminderRequest, 'terms'> & {
+    terms: NonNullable<OverdueReminderRequest['terms']>;
+  };
+
+  const { control, handleSubmit, formState } =
+    useForm<OverdueReminderFormValues>({
+      resolver: zodResolver(getOverdueValidationSchema(i18n)),
+      defaultValues: ((): OverdueReminderFormValues => ({
+        name: reminder?.name ?? '',
+        terms: reminder?.terms ?? [],
+      }))(),
+    });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -311,3 +314,5 @@ const CreateOverdueReminderComponent = ({
     </>
   );
 };
+
+type OverdueReminderRequest = components['schemas']['OverdueReminderRequest'];

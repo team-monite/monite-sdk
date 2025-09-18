@@ -12,7 +12,7 @@ function getBankAccount(): Omit<
     account_holder_name: 'John Doe',
     iban: 'DE89370400440532013000',
     account_number: 'DE89370400440532013000',
-    sort_code: 'DE89370400440532013000',
+    sort_code: '123456',
   };
 }
 
@@ -48,7 +48,7 @@ export const onboardingBankAccountMixedFixture = (): OnboardingTestData<
           message: 'error',
         },
         required: true,
-        value: 'DE89370400440532013000',
+        value: '123456',
       },
     } as OnboardingBankAccount,
     errors: [

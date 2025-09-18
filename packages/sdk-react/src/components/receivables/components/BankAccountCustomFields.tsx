@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Control, Controller, UseFormSetValue } from 'react-hook-form';
-
+import { NO_ROUTING_NUMBER, NO_SORT_CODE } from '../consts';
+import type { EntityBankAccountFields } from '../types';
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -13,9 +12,8 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-
-import { NO_ROUTING_NUMBER, NO_SORT_CODE } from '../consts';
-import { EntityBankAccountFields } from '../types';
+import { useEffect, useState } from 'react';
+import { Control, Controller, UseFormSetValue } from 'react-hook-form';
 
 type Props = {
   currency: components['schemas']['CurrencyEnum'];

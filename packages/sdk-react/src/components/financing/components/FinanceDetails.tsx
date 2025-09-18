@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 
 type Props = {
-  invoice: components['schemas']['InvoiceResponsePayload'];
+  invoice: components['schemas']['ReceivableResponse'];
   financedInvoice: components['schemas']['FinancingInvoice'] | null;
   offers?: components['schemas']['FinancingOffer'][];
   enableNavigate?: boolean;

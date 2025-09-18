@@ -75,9 +75,6 @@ export const IvoiceDetails: Story = {
     <Dialog {...args}>
       <InvoiceDetails
         id={receivableListFixture.invoice[0].id}
-        onCancel={action('onCancel')}
-        onIssue={action('onIssue')}
-        onDelete={action('onDelete')}
         onMarkAsUncollectible={action('onMarkAsUncollectible')}
         {...actions}
       />

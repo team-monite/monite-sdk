@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { z } from 'zod';
 
 const schema: {
   [key in components['schemas']['CurrencyEnum']]: key;
@@ -150,4 +151,13 @@ const schema: {
   ZMW: 'ZMW',
 };
 
-export const CurrencyEnum = Object.values(schema);
+export const CurrencyEnum = Object.values(schema) as Array<
+  components['schemas']['CurrencyEnum']
+>;
+
+export const CurrencyEnumSchema = z.enum(
+  Object.keys(schema) as [
+    components['schemas']['CurrencyEnum'],
+    ...components['schemas']['CurrencyEnum'][],
+  ]
+);

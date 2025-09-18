@@ -22,7 +22,7 @@ interface PayablesTableActionProps {
   payable: components['schemas']['PayableResponseSchema'];
   payableRecentPaymentRecordByIntent: PaymentRecordWithIntent[];
   refetchPaymentRecords: () => void;
-  onPay?: (id: string, actions?: PayActionHandlers) => void;
+  onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
   onPayUS?: (id: string) => void;
   onPayableActionComplete?: (payableId: string, status: string) => void;
 }
@@ -72,7 +72,7 @@ export const PayablesTableAction = ({
 
         if (onPay.length < 2) return onPay(payable.id);
 
-        return onPay(payable.id, {
+        return onPay(payable.id, undefined, {
           resolve: () => {
             handlePaymentComplete(payable.id, 'success');
           },
