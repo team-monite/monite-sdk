@@ -47,6 +47,12 @@ export const OnboardingBankAccount = ({
     if (country && countries.length > 0 && !countries.includes(country)) {
       resetField('country');
     }
+
+    if (!country && countries.length === 1) {
+      resetField('country', {
+        defaultValue: countries[0],
+      });
+    }
   }, [countries, resetField, getValues]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -93,8 +99,8 @@ export const OnboardingBankAccount = ({
             name="country"
             control={control}
             disabled={isPending}
-            defaultValue={allowedCountries?.[0]}
-            allowedCountries={allowedCountries}
+            defaultValue={countries.length === 1 ? countries[0] : allowedCountries?.[0]}
+            allowedCountries={countries.length > 0 ? countries : allowedCountries}
             required
           />
         )}
