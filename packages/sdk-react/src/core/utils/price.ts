@@ -3,10 +3,7 @@ import { components } from '@/api';
 export interface IPriceConstructor {
   value: string | number;
   currency: CurrencyEnum;
-  formatter: (
-    value: string | number,
-    currency: CurrencyEnum
-  ) => string | null;
+  formatter: (value: string | number, currency: CurrencyEnum) => string | null;
 }
 
 export class Price {

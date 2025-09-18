@@ -1,5 +1,3 @@
-import { ReactNode, useMemo } from 'react';
-
 import { apiVersion } from '@/api/api-version';
 import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -17,11 +15,9 @@ import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';
+import { ReactNode, useMemo } from 'react';
 
 export const generateRandomId = () =>
   (Math.random() + 1).toString(36).substring(2);
@@ -71,17 +67,17 @@ export const withGlobalStorybookDecorator = (
     componentSettings: undefined,
   };
 
-  return withThemeFromJSXProvider({
-    Provider: (...args: any[]) => {
-      return GlobalStorybookDecorator({
-        ...args,
-        children: args[0].children,
-        monite,
-        theme,
-        componentSettings,
-      });
-    },
-  });
+  return (Story: any, context: any) => {
+    return (
+      <GlobalStorybookDecorator
+        monite={monite}
+        theme={theme}
+        componentSettings={componentSettings}
+      >
+        <Story {...context} />
+      </GlobalStorybookDecorator>
+    );
+  };
 };
 
 /**

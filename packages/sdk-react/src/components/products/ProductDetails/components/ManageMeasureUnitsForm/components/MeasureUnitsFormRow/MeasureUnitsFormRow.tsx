@@ -1,6 +1,4 @@
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { type FormValues, getValidationSchema } from './validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +15,8 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
-import { type FormValues, getValidationSchema } from './validation';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 const defaultValues: FormValues = {
   name: '',
@@ -58,11 +57,10 @@ export const MeasureUnitsFormRow = ({
   const { i18n } = useLingui();
   const validationSchema = getValidationSchema(i18n);
 
-  const { handleSubmit, control, reset, setError } =
-    useForm<FormValues>({
-      defaultValues: initialValues,
-      resolver: zodResolver(validationSchema),
-    });
+  const { handleSubmit, control, reset, setError } = useForm<FormValues>({
+    defaultValues: initialValues,
+    resolver: zodResolver(validationSchema),
+  });
 
   const createMutation = api.measureUnits.postMeasureUnits.useMutation(
     {},

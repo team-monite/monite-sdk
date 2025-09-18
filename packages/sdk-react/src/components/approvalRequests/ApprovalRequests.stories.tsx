@@ -1,9 +1,8 @@
+import { ApprovalRequests as ApprovalRequestsComponent } from './ApprovalRequests';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
-import { ApprovalRequests as ApprovalRequestsComponent } from './ApprovalRequests';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Approval Requests',

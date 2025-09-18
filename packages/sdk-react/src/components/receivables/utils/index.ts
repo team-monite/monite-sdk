@@ -5,5 +5,8 @@ export {
 } from './prepareBankAccountPayload';
 export { getVatTypeList } from './getVatTypeList';
 export { getTypeLabel } from './getTypeLabel';
-export { getPaymentMethodName, type PaymentMethod } from './getPaymentMethodName';
+export {
+  getPaymentMethodName,
+  type PaymentMethod,
+} from './getPaymentMethodName';
 export * from './contacts';

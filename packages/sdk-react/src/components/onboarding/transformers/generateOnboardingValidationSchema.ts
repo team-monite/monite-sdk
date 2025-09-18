@@ -16,12 +16,12 @@ import {
   personSchema,
   relationshipSchema,
 } from '../validators/validationSchemas';
+import { withIbanCountryConsistency } from '../validators/validators';
 import { isOnboardingField } from './commonDataTransformers';
 import { components } from '@/api';
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { I18n } from '@lingui/core';
 import { z, type ZodType, type ZodObject, type ZodRawShape } from 'zod';
-import { withIbanCountryConsistency } from '../validators/validators';
 
 export type ValidationSchemasType =
   | 'entity'
@@ -70,7 +70,8 @@ export const generateOnboardingValidationSchema = ({
     (acc: Record<string, ZodType>, [key, item]) => {
       const field = item as OnboardingFieldsType;
       const schemaKey = key as keyof typeof schema;
-      const validator = schemaKey in schema ? (schema[schemaKey] as ValidatorType) : undefined;
+      const validator =
+        schemaKey in schema ? (schema[schemaKey] as ValidatorType) : undefined;
 
       const subresourceType = getSubresourceTypeByKey(key);
 

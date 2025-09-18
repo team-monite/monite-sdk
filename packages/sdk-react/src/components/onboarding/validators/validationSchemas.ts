@@ -1,8 +1,3 @@
-import { components } from '@/api';
-import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
-import { z } from 'zod';
-
 import { getIdentificationLabel } from '../helpers';
 import {
   booleanValidator,
@@ -15,6 +10,10 @@ import {
   urlValidator,
 } from './validators';
 import type { ValidationSchema } from './validators';
+import { components } from '@/api';
+import { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+import { z } from 'zod';
 
 export const entitySchema = (
   i18n: I18n

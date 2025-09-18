@@ -1,17 +1,16 @@
+import { useGetPaymentRecords } from '../hooks';
+import { getPaymentMethodName, PaymentMethod } from '../utils';
+import { RecordManualPaymentModal } from './RecordManualPaymentModal';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { useEntityUserById } from '@/core/queries';
 import { Button } from '@/ui/components/button';
 import { Card, CardContent } from '@/ui/components/card';
+import { LoadingSpinner } from '@/ui/loading';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { useGetPaymentRecords } from '../hooks';
-import { RecordManualPaymentModal } from './RecordManualPaymentModal';
-import { useEntityUserById } from '@/core/queries';
 import { CheckCircle } from 'lucide-react';
-import { LoadingSpinner } from '@/ui/loading';
-import { getPaymentMethodName, PaymentMethod } from '../utils';
 
 type InvoiceDetailsTabPaymentsProps = {
   invoice?: components['schemas']['ReceivableResponse'];
@@ -51,7 +50,7 @@ const PaymentCard = ({
     return `${t(i18n)`Recorded by`} ${`${entityUser?.first_name ?? ''} ${
       entityUser?.last_name ?? ''
     }`}`;
-  }
+  };
 
   return (
     <Card className="mtw:py-3 mtw:px-4 mtw:border-border">
@@ -61,7 +60,8 @@ const PaymentCard = ({
             {t(i18n)`Payment received`}
           </span>
           <span className="mtw:text-sm mtw:font-normal mtw:leading-5 mtw:text-neutral-50">
-            {getPayedByText()} {issueDate && `• ${i18n.date(issueDate, locale.dateFormat)}`}
+            {getPayedByText()}{' '}
+            {issueDate && `• ${i18n.date(issueDate, locale.dateFormat)}`}
           </span>
         </div>
 
@@ -84,7 +84,8 @@ export const InvoiceDetailsTabPayments = ({
 }: InvoiceDetailsTabPaymentsProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { data: paymentRecords, isLoading: isLoadingPaymentRecords } = useGetPaymentRecords(invoice?.id);
+  const { data: paymentRecords, isLoading: isLoadingPaymentRecords } =
+    useGetPaymentRecords(invoice?.id);
 
   const isUncollectible = invoice?.status === 'uncollectible';
   const isIssued = invoice?.status === 'issued';
@@ -93,30 +94,30 @@ export const InvoiceDetailsTabPayments = ({
   const isPaid = invoice?.status === 'paid';
 
   const shouldShowRecordPaymentButton =
+    isIssued || isOverdue || isPartiallyPaid;
+
+  const shouldShowAmountPaidAndAmountDue =
     isIssued ||
     isOverdue ||
-    isPartiallyPaid;
-
-  const shouldShowAmountPaidAndAmountDue = 
-    isIssued || 
-    isOverdue || 
-    isPartiallyPaid || 
-    isPaid || 
-    (isUncollectible && paymentRecords?.data && paymentRecords?.data?.length > 0);
+    isPartiallyPaid ||
+    isPaid ||
+    (isUncollectible &&
+      paymentRecords?.data &&
+      paymentRecords?.data?.length > 0);
 
   function getEmptyListMessage() {
     switch (invoice?.status) {
       case 'draft':
-        return t(i18n)`Issue invoice to make a payment record.`
+        return t(i18n)`Issue invoice to make a payment record.`;
 
       case 'canceled':
-        return t(i18n)`Invoice was cancelled and won't be paid.`
+        return t(i18n)`Invoice was cancelled and won't be paid.`;
 
       case 'uncollectible':
-        return t(i18n)`Invoice was marked as uncollectible.`
+        return t(i18n)`Invoice was marked as uncollectible.`;
 
       default:
-        return t(i18n)`You can record a payment if you've already received it.`
+        return t(i18n)`You can record a payment if you've already received it.`;
     }
   }
 
@@ -149,11 +150,13 @@ export const InvoiceDetailsTabPayments = ({
                     issueDate={paymentRecord?.paid_at}
                     totalAmount={paymentRecord?.amount}
                     currency={paymentRecord?.currency}
-                    paymentMethod={(paymentRecord?.payment_method ?? '') as PaymentMethod}
+                    paymentMethod={
+                      (paymentRecord?.payment_method ?? '') as PaymentMethod
+                    }
                     isExternal={paymentRecord?.is_external}
                     entityUserId={paymentRecord?.entity_user_id ?? ''}
                   />
-                )
+                );
               })}
             </>
           ) : (
@@ -186,7 +189,10 @@ export const InvoiceDetailsTabPayments = ({
                 {t(i18n)`Amount due`}
               </span>
               <span className="mtw:text-base mtw:leading-6">
-                {formatCurrencyToDisplay(invoice?.amount_due, invoice?.currency)}
+                {formatCurrencyToDisplay(
+                  invoice?.amount_due,
+                  invoice?.currency
+                )}
               </span>
             </div>
 
@@ -195,7 +201,10 @@ export const InvoiceDetailsTabPayments = ({
                 {t(i18n)`Amount paid`}
               </span>
               <span className="mtw:text-base mtw:leading-6 mtw:text-right">
-                {formatCurrencyToDisplay(invoice?.amount_paid, invoice?.currency)}
+                {formatCurrencyToDisplay(
+                  invoice?.amount_paid,
+                  invoice?.currency
+                )}
               </span>
             </div>
           </div>

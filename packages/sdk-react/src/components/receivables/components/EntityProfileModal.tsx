@@ -1,6 +1,9 @@
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-
+import { useCreateEntityVatId } from '../hooks/useCreateEntityVatId';
+import {
+  getEntityProfileValidationSchema,
+  EntityProfileFormValues,
+} from '../validation';
+import { EntityProfileFormContent } from './EntityProfileFormContent';
 import { components } from '@/api';
 import {
   useGetEntityVatIds,
@@ -23,13 +26,8 @@ import { Form } from '@/ui/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import {
-  getEntityProfileValidationSchema,
-  EntityProfileFormValues,
-} from '../validation';
-import { EntityProfileFormContent } from './EntityProfileFormContent';
-import { useCreateEntityVatId } from '../hooks/useCreateEntityVatId';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 type EntityProfileFormComponentProps = EntityProfileModalProps & {
   entity:
@@ -138,27 +136,33 @@ const EntityProfileForm = ({
             });
 
             if (!vatId && values.vat_id && values.vat_id?.trim() !== '') {
-              createEntityVatId({
-                value: values.vat_id,
-                type: values.vat_type as components['schemas']['VatIDTypeEnum'],
-                country:
-                  values.vat_country as components['schemas']['AllowedCountries'],
-              }, { 
-                onSuccess: () => {
-                  onClose();
+              createEntityVatId(
+                {
+                  value: values.vat_id,
+                  type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                  country:
+                    values.vat_country as components['schemas']['AllowedCountries'],
+                },
+                {
+                  onSuccess: () => {
+                    onClose();
+                  },
                 }
-              });
+              );
             } else {
-              patchEntityVat({
-                value: values.vat_id,
-                type: values.vat_type as components['schemas']['VatIDTypeEnum'],
-                country:
-                  values.vat_country as components['schemas']['AllowedCountries'],
-              }, {
-                onSuccess: () => {
-                  onClose();
+              patchEntityVat(
+                {
+                  value: values.vat_id,
+                  type: values.vat_type as components['schemas']['VatIDTypeEnum'],
+                  country:
+                    values.vat_country as components['schemas']['AllowedCountries'],
+                },
+                {
+                  onSuccess: () => {
+                    onClose();
+                  },
                 }
-              });
+              );
             }
           })}
         >

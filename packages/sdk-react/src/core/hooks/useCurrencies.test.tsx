@@ -1,8 +1,7 @@
+import { useCurrencies } from './useCurrencies';
+import { components } from '@/api';
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook, waitFor } from '@testing-library/react';
-
-import { components } from '@/api';
-import { useCurrencies } from './useCurrencies';
 
 describe('useCurrencies', () => {
   describe('# getSymbolFromCurrency', () => {
@@ -85,7 +84,9 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatFromMinorUnits(1, 'unavailable' as CurrencyEnum)).toBe(null);
+      expect(
+        result.current.formatFromMinorUnits(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
     });
 
     test('should return "null" for NaN input', async () => {
@@ -147,7 +148,9 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatToMinorUnits(1, 'unavailable' as CurrencyEnum)).toBe(null);
+      expect(
+        result.current.formatToMinorUnits(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
     });
 
     test('should return "null" for empty string input', async () => {
@@ -227,9 +230,9 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatCurrencyToDisplay(1, 'unavailable' as CurrencyEnum)).toBe(
-        null
-      );
+      expect(
+        result.current.formatCurrencyToDisplay(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
     });
   });
 });

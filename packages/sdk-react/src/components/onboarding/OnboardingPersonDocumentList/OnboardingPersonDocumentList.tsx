@@ -1,5 +1,17 @@
-import { useCallback, useMemo } from 'react';
-
+import { OnboardingFileDescription } from '../OnboardingFile/OnboardingFileDescription';
+import { OnboardingFormActions } from '../OnboardingFormActions';
+import {
+  OnboardingForm,
+  OnboardingStepContent,
+  OnboardingSubTitle,
+  OnboardingTitle,
+} from '../OnboardingLayout';
+import { useOnboardingRequirementsContext } from '../context';
+import {
+  generateErrorsByFields,
+  generateOnboardingValidationSchema,
+  generateValuesByFields,
+} from '../transformers';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
@@ -10,21 +22,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button } from '@mui/material';
-
-import { useOnboardingRequirementsContext } from '../context';
-import { OnboardingFileDescription } from '../OnboardingFile/OnboardingFileDescription';
-import { OnboardingFormActions } from '../OnboardingFormActions';
-import {
-  OnboardingForm,
-  OnboardingStepContent,
-  OnboardingSubTitle,
-  OnboardingTitle,
-} from '../OnboardingLayout';
-import {
-  generateErrorsByFields,
-  generateOnboardingValidationSchema,
-  generateValuesByFields,
-} from '../transformers';
+import { useCallback, useMemo } from 'react';
 
 export const OnboardingPersonDocumentList = () => {
   const { i18n } = useLingui();

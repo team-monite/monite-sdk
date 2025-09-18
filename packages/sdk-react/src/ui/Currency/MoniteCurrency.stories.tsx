@@ -1,12 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
-
+import { MoniteCurrency } from './MoniteCurrency';
 import { components } from '@/api';
 import type { CurrencyGroup, CurrencyType } from '@/core/utils';
 import { Box } from '@mui/material';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryFn } from '@storybook/react';
-
-import { MoniteCurrency } from './MoniteCurrency';
+import type { Meta, StoryFn } from '@storybook/react-vite';
+import { FormProvider, useForm } from 'react-hook-form';
+import { action } from 'storybook/actions';
 
 const StoryContainer = ({ children }: { children: React.ReactNode }) => (
   <div style={{ padding: 20 }}>

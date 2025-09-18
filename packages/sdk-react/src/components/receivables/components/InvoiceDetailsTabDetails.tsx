@@ -1,12 +1,11 @@
+import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
+import { InvoiceDetailsSummary } from './InvoiceDetailsSummary';
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
 import { getCountries } from '@/core/utils';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { InvoiceDetailsSummary } from './InvoiceDetailsSummary';
-import { InvoiceDetailsInfoBlock } from './InvoiceDetailsInfoBlock';
 
 type InvoiceDetailsTabDetailsProps = {
   invoice?: components['schemas']['ReceivableResponse'];
@@ -101,13 +100,17 @@ export const InvoiceDetailsTabDetails = ({
                       </td>
                       <td className="mtw:py-4 mtw:px-2 mtw:font-normal mtw:whitespace-nowrap">
                         {t(i18n)`${item?.quantity} x ${formatCurrencyToDisplay(
-                          isInclusivePricing ? item?.product?.price_after_vat?.value : item?.product?.price?.value,
+                          isInclusivePricing
+                            ? item?.product?.price_after_vat?.value
+                            : item?.product?.price?.value,
                           item?.product?.price?.currency
                         )}`}
                       </td>
                       <td className="mtw:py-4 mtw:px-2 mtw:font-normal mtw:text-right mtw:whitespace-nowrap">
                         {formatCurrencyToDisplay(
-                          isInclusivePricing ? item?.total_after_vat : item?.product?.price?.value * item?.quantity,
+                          isInclusivePricing
+                            ? item?.total_after_vat
+                            : item?.product?.price?.value * item?.quantity,
                           item?.product?.price?.currency
                         )}
                       </td>

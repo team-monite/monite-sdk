@@ -547,7 +547,5 @@ const InvoiceRecurrenceStatusChipLoader = ({
 
   if (!recurrence?.status) return null;
 
-  return (
-    <InvoiceRecurrenceStatusChip status={recurrence.status} />
-  );
+  return <InvoiceRecurrenceStatusChip status={recurrence.status} />;
 };

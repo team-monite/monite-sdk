@@ -7,7 +7,6 @@ import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { z, type ZodObject, type ZodRawShape } from 'zod';
 
-
 type CheckContext = z.core.ParsePayload<string | null>;
 
 export type ValidatorType =
@@ -148,7 +147,9 @@ function validateDateOfBirth(
   if (difference < 18) {
     ctx.issues.push({
       code: 'custom',
-      message: t(i18n)`Managers and owners must be at least 18 years old to use this service.`,
+      message: t(
+        i18n
+      )`Managers and owners must be at least 18 years old to use this service.`,
       input: value,
       params: { minimumAge: 18, actualAge: difference },
     });
@@ -179,11 +180,7 @@ export const phoneValidator = (i18n: I18n) =>
  * @param payload - Zod ParsePayload for adding issues.
  * @returns void - Issues are added to payload.issues.
  */
-function validatePhone(
-  value: string,
-  i18n: I18n,
-  ctx: CheckContext
-): void {
+function validatePhone(value: string, i18n: I18n, ctx: CheckContext): void {
   try {
     const phoneNumber = parsePhoneNumber(value);
 

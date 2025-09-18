@@ -1,6 +1,6 @@
-import { useId, useMemo, useState } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
+import { ProductForm } from '../components/ProductForm';
+import { type ProductFormValues } from '../validation';
 import { components } from '@/api';
 import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -11,10 +11,8 @@ import { DialogHeader } from '@/ui/DialogHeader';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { DialogContent } from '@mui/material';
-
-import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
-import { ProductForm } from '../components/ProductForm';
-import { type ProductFormValues } from '../validation';
+import { useId, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 const initialValues: Partial<ProductFormValues> = {
   name: '',

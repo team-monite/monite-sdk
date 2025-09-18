@@ -1,22 +1,4 @@
 /* eslint lingui/no-unlocalized-strings: 0 */
-import { getErrorColors } from '@/core/theme/mui-monite/colors/error';
-import { getSuccessColors } from '@/core/theme/mui-monite/colors/success';
-import { getWarningColors } from '@/core/theme/mui-monite/colors/warning';
-import { MonitePalette, ThemeConfig } from '@/core/theme/types';
-import { Components } from '@mui/material/styles';
-import type { CSSProperties } from 'react';
-import type {
-  Palette,
-  PaletteOptions,
-} from '@mui/material/styles/createPalette.js';
-import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
-import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { isPlainObject } from '@mui/utils';
-import '@mui/x-data-grid/themeAugmentation';
-
-import chroma from 'chroma-js';
-
 import { getTheme as getMoniteTheme } from '../monite';
 import {
   getPrimaryColors,
@@ -26,6 +8,22 @@ import {
   getTextColors,
 } from './colors';
 import { getFormControlStyles } from './components';
+import { getErrorColors } from '@/core/theme/mui-monite/colors/error';
+import { getSuccessColors } from '@/core/theme/mui-monite/colors/success';
+import { getWarningColors } from '@/core/theme/mui-monite/colors/warning';
+import { MonitePalette, ThemeConfig } from '@/core/theme/types';
+import { Components } from '@mui/material/styles';
+import type {
+  Palette,
+  PaletteOptions,
+} from '@mui/material/styles/createPalette.js';
+import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
+import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { isPlainObject } from '@mui/utils';
+import '@mui/x-data-grid/themeAugmentation';
+import chroma from 'chroma-js';
+import type { CSSProperties } from 'react';
 
 // Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
 function renderColor(strVal: string, palette: PaletteOptions): string {
@@ -169,44 +167,39 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       fontSize: moniteTheme.typography.h1.fontSize,
       fontWeight: moniteTheme.typography.h1.fontWeight,
       lineHeight: moniteTheme.typography.h1.lineHeight,
-      textTransform:
-        moniteTheme.typography.h1
-          .textTransform as CSSProperties['textTransform'],
+      textTransform: moniteTheme.typography.h1
+        .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     h2: {
       fontSize: moniteTheme.typography.h2.fontSize,
       fontWeight: moniteTheme.typography.h2.fontWeight,
       lineHeight: moniteTheme.typography.h2.lineHeight,
-      textTransform:
-        moniteTheme.typography.h2
-          .textTransform as CSSProperties['textTransform'],
+      textTransform: moniteTheme.typography.h2
+        .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     h3: {
       fontSize: moniteTheme.typography.h3.fontSize,
       fontWeight: moniteTheme.typography.h3.fontWeight,
       lineHeight: moniteTheme.typography.h3.lineHeight,
-      textTransform:
-        moniteTheme.typography.h3
-          .textTransform as CSSProperties['textTransform'],
+      textTransform: moniteTheme.typography.h3
+        .textTransform as CSSProperties['textTransform'],
       color: palette.text.primary,
     },
     subtitle1: {
       fontSize: moniteTheme.typography.subtitle1.fontSize,
       fontWeight: moniteTheme.typography.subtitle1.fontWeight,
       lineHeight: moniteTheme.typography.subtitle1.lineHeight,
-      textTransform:
-        moniteTheme.typography.subtitle1
-          .textTransform as CSSProperties['textTransform'],
+      textTransform: moniteTheme.typography.subtitle1
+        .textTransform as CSSProperties['textTransform'],
     },
     subtitle2: {
       fontSize: moniteTheme.typography.subtitle2.fontSize,
       fontWeight: moniteTheme.typography.subtitle2.fontWeight,
       lineHeight: moniteTheme.typography.subtitle2.lineHeight,
-      textTransform:
-        moniteTheme.typography.subtitle2
-          .textTransform as CSSProperties['textTransform'],
+      textTransform: moniteTheme.typography.subtitle2
+        .textTransform as CSSProperties['textTransform'],
     },
     body1: {
       fontSize: moniteTheme.typography.body1?.fontSize,

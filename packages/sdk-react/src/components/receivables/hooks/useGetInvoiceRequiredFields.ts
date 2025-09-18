@@ -32,7 +32,10 @@ export const useGetInvoiceRequiredFields = ({
       },
     },
     {
-      enabled: Boolean(entity_vat_id_id) && Boolean(counterpart_billing_address_id) && Boolean(counterpart_id),
+      enabled:
+        Boolean(entity_vat_id_id) &&
+        Boolean(counterpart_billing_address_id) &&
+        Boolean(counterpart_id),
     }
   );
 };

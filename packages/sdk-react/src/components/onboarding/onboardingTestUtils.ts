@@ -1,10 +1,9 @@
-import { createRenderWithClient } from '@/utils/test-utils';
-import { renderHook } from '@testing-library/react';
-import type { ZodObject, ZodRawShape } from 'zod';
-
 import { useOnboardingValidationSchema } from './hooks';
 import { ValidationSchemasType } from './transformers';
 import type { OnboardingOutputFieldsType } from './types';
+import { createRenderWithClient } from '@/utils/test-utils';
+import { renderHook } from '@testing-library/react';
+import type { ZodObject, ZodRawShape } from 'zod';
 
 export const getOnboardingValidationSchema = (
   fields: OnboardingOutputFieldsType,

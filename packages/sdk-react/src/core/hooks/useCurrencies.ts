@@ -1,15 +1,13 @@
+import { useMoniteContext } from '../context/MoniteContext';
+import { components } from '@/api';
+import {
+  fromMinorUnitsWithCurrency,
+  toMinorUnitsWithCurrency,
+} from '@/core/utils/currency';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { useLingui } from '@lingui/react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-
-import { components } from '@/api';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { 
-  fromMinorUnitsWithCurrency, 
-  toMinorUnitsWithCurrency 
-} from '@/core/utils/currency';
-import { useLingui } from '@lingui/react';
-
-import { useMoniteContext } from '../context/MoniteContext';
 
 /**
  * `useCurrencies` hook used for working with currencies
@@ -45,7 +43,12 @@ export const useCurrencies = () => {
    * ```
    */
   const getSymbolFromCurrency = (currency?: CurrencyEnum | string) => {
-    if (typeof currency !== 'string' || !currencyList || !currencyList[currency]) return currency;
+    if (
+      typeof currency !== 'string' ||
+      !currencyList ||
+      !currencyList[currency]
+    )
+      return currency;
 
     return currencyList[currency]?.symbol;
   };
@@ -73,10 +76,7 @@ export const useCurrencies = () => {
    * @returns Minor units or `null` if this currency is not in the list
    */
   const formatToMinorUnits = useCallback(
-    (
-      amount: string | number,
-      currency: CurrencyEnum
-    ): number | null => {
+    (amount: string | number, currency: CurrencyEnum): number | null => {
       return toMinorUnitsWithCurrency(amount, currency, currencyList);
     },
     [currencyList]

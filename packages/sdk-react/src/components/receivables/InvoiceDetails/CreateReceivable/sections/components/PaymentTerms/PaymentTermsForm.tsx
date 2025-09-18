@@ -1,6 +1,7 @@
-import { useState, FormEvent, ReactNode, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { DiscountForm } from './DiscountForm';
+import { getValidation } from './paymentTermsValidation';
+import { PaymentTermsFields, TermField } from './types';
+import { usePaymentTermsApi } from './usePaymentTermsApi';
 import { components } from '@/api';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { t } from '@lingui/macro';
@@ -16,11 +17,8 @@ import {
   Alert,
   TextField,
 } from '@mui/material';
-
-import { DiscountForm } from './DiscountForm';
-import { getValidation } from './paymentTermsValidation';
-import { PaymentTermsFields, TermField } from './types';
-import { usePaymentTermsApi } from './usePaymentTermsApi';
+import { useState, FormEvent, ReactNode, useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 
 const MAX_DISCOUNTS = 2;
 

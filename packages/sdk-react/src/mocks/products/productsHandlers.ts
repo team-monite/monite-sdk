@@ -1,3 +1,4 @@
+import { createProduct, productsListFixture } from './productsFixtures';
 import { components, paths } from '@/api';
 import { CurrencyEnum, CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import {
@@ -5,11 +6,8 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
 import { filterByPageAndLimit } from '@/mocks/utils';
-
 import { http, HttpResponse, delay } from 'msw';
 import { z } from 'zod';
-
-import { createProduct, productsListFixture } from './productsFixtures';
 
 type ProductParams = { productId: string };
 

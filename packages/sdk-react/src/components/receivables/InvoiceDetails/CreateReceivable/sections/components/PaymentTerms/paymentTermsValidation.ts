@@ -11,7 +11,9 @@ export const getValidation = (i18n: I18n) =>
         .max(100, t(i18n)`Name must be 100 characters or less`)
         .min(1, t(i18n)`Name is required`),
       term_final: z.object({
-        number_of_days: z.coerce.number().min(1, t(i18n)`Number of days is required`),
+        number_of_days: z.coerce
+          .number()
+          .min(1, t(i18n)`Number of days is required`),
       }),
       description: z
         .string()

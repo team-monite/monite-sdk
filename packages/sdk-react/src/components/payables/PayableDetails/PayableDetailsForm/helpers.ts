@@ -1,3 +1,4 @@
+import type { LineItem, PayableDetailsFormFields } from './types';
 import { components } from '@/api';
 import {
   isIndividualCounterpart,
@@ -8,13 +9,9 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
-import type { LineItem, PayableDetailsFormFields } from './types';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
-import { 
-  toMinorUnits, 
-  fromMinorUnits 
-} from '@/core/utils/currency';
+import { toMinorUnits, fromMinorUnits } from '@/core/utils/currency';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
 
@@ -238,9 +235,7 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
   return isDefaultRequired || isOcrRequired;
 };
 
-export const isOcrMismatch = (
-  payableData: PayableResponseSchema
-) => {
+export const isOcrMismatch = (payableData: PayableResponseSchema) => {
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
 
@@ -301,5 +296,6 @@ type PayableUpdateSchema = components['schemas']['PayableUpdateSchema'];
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
 type LineItemResponse = components['schemas']['LineItemResponse'];
-type CounterpartBankAccountResponse = components['schemas']['CounterpartBankAccountResponse'];
-type LineItemRequest= components['schemas']['LineItemRequest'];
+type CounterpartBankAccountResponse =
+  components['schemas']['CounterpartBankAccountResponse'];
+type LineItemRequest = components['schemas']['LineItemRequest'];

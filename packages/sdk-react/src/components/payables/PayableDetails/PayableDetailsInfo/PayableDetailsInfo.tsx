@@ -363,7 +363,8 @@ const PayableDetailsInfoBase = ({
                             &asymp;{' '}
                             {formatCurrencyToDisplay(
                               payable.currency_exchange.total,
-                              payable.currency_exchange.default_currency_code as CurrencyEnum
+                              payable.currency_exchange
+                                .default_currency_code as CurrencyEnum
                             )}
                           </Box>
                         )}

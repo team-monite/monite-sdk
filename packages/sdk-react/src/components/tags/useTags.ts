@@ -1,10 +1,9 @@
-import { toast } from 'react-hot-toast';
-
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntitySettings, usePatchEntitiesIdSettings } from '@/core/queries';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
+import { toast } from 'react-hot-toast';
 
 export type UseTagsProps = {
   setNameError?: (error: string) => void;

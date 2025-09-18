@@ -36,9 +36,7 @@ const getValidationSchema = (i18n: I18n) =>
       .string()
       .max(255, t(i18n)`Description cannot exceed 255 characters`)
       .min(1, t(i18n)`Description is required`),
-    trigger: z
-      .string()
-      .min(1, t(i18n)`Trigger in Monite Script is required`),
+    trigger: z.string().min(1, t(i18n)`Trigger in Monite Script is required`),
     script: z.string().min(1, t(i18n)`Script in Monite Script is required`),
     priority: z.number().min(1, t(i18n)`Priority is required`),
   });

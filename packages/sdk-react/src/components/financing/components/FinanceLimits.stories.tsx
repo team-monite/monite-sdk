@@ -1,8 +1,7 @@
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { OFFERS_MOCK } from '../mocks';
 import { FinanceLimits as FinanceLimitsComponent } from './FinanceLimits';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Financing/FinanceTab/FinanceWidget/FinanceLimits',

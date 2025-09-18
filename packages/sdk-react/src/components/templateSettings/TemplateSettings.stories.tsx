@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { TemplateSettings as TemplateSettingsComponent } from './TemplateSettings';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Template settings/Template settings',

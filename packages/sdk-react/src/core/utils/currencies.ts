@@ -1,8 +1,7 @@
+import { fromMinorUnits, toMinorUnits } from './currency';
 import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-
-import { fromMinorUnits, toMinorUnits } from './currency';
 
 export type CurrenciesType = Record<CurrencyEnum, string>;
 

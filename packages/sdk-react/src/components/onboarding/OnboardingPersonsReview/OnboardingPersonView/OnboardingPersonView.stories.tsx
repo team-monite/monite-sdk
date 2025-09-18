@@ -1,9 +1,8 @@
-import { components } from '@/api';
-import { StoryObj } from '@storybook/react';
-
-import { OnboardingContextProvider } from '../../context';
 import { OnboardingStepContent } from '../../OnboardingLayout';
+import { OnboardingContextProvider } from '../../context';
 import { OnboardingPersonView } from './OnboardingPersonView';
+import { components } from '@/api';
+import { StoryObj } from '@storybook/react-vite';
 
 type OnboardingPerson = components['schemas']['OnboardingPerson'];
 

@@ -1,7 +1,14 @@
-import type { SyntheticEvent } from 'react';
-import { useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
+import { useSetDefaultBankAccount } from '../hooks';
+import {
+  prepareBankAccountCreatePayload,
+  prepareBankAccountUpdatePayload,
+} from '../utils';
+import {
+  type EntityBankAccountFields,
+  getEntityBankAccountValidationSchema,
+} from '../validation';
+import { BankAccountCustomFields } from './BankAccountCustomFields';
+import { FormSelect } from './FormSelect';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
@@ -10,24 +17,15 @@ import {
   getCountriesArray,
   CountryType,
 } from '@/core/utils/countries';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
-import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Switch, TextField, Typography } from '@mui/material';
-
-import { useSetDefaultBankAccount } from '../hooks';
-import { 
-  type EntityBankAccountFields,
-  getEntityBankAccountValidationSchema
-} from '../validation';
-import {
-  prepareBankAccountCreatePayload,
-  prepareBankAccountUpdatePayload,
-} from '../utils';
-import { BankAccountCustomFields } from './BankAccountCustomFields';
-import { FormSelect } from './FormSelect';
+import type { SyntheticEvent } from 'react';
+import { useMemo } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 type Props = {
   bankAccount?: components['schemas']['EntityBankAccountResponse'];
@@ -88,7 +86,9 @@ export const BankAccountFormContent = ({
 
   const { watch, control, handleSubmit, setValue, clearErrors } =
     useForm<EntityBankAccountFields>({
-      resolver: safeZodResolver<EntityBankAccountFields>(getEntityBankAccountValidationSchema(i18n, Boolean(bankAccount))),
+      resolver: safeZodResolver<EntityBankAccountFields>(
+        getEntityBankAccountValidationSchema(i18n, Boolean(bankAccount))
+      ),
       defaultValues,
     });
 

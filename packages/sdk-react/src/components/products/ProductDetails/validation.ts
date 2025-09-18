@@ -16,12 +16,18 @@ export interface ProductFormValues {
 
 export const getValidationSchema = (i18n: I18n) =>
   z.object({
-    name: z.string().trim().min(1, t(i18n)`Product name is required`)
+    name: z
+      .string()
+      .trim()
+      .min(1, t(i18n)`Product name is required`)
       .meta({ title: t(i18n)`Product Name` }),
     type: z
       .enum(['product', 'service'] as const, t(i18n)`Product type is required`)
       .meta({ title: t(i18n)`Type` }),
-    units: z.string().trim().min(1, t(i18n)`Units is required`)
+    units: z
+      .string()
+      .trim()
+      .min(1, t(i18n)`Units is required`)
       .meta({ title: t(i18n)`Units` }),
     smallestAmount: z.coerce
       .number()

@@ -1,9 +1,8 @@
+import { UserRoleEditDialog } from './UserRoleEditDialog';
 import { FULL_PERMISSION_ROLE_ID } from '@/mocks/roles/rolesFixtures';
 import { Dialog } from '@/ui/Dialog';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
-import { UserRoleEditDialog } from './UserRoleEditDialog';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof UserRoleEditDialog> = {
   title: 'User Roles/User Roles — Edit View',

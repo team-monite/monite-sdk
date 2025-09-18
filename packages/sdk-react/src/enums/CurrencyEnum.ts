@@ -158,6 +158,6 @@ export const CurrencyEnum = Object.values(schema) as Array<
 export const CurrencyEnumSchema = z.enum(
   Object.keys(schema) as [
     components['schemas']['CurrencyEnum'],
-    ...components['schemas']['CurrencyEnum'][]
+    ...components['schemas']['CurrencyEnum'][],
   ]
 );

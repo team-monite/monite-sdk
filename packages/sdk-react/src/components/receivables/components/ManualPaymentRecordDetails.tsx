@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -7,8 +8,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Alert, Box, Skeleton, Typography } from '@mui/material';
-
-import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 
 type Props = {
   paymentRecords: ManualPaymentRecordFormValues & { created_by: string };

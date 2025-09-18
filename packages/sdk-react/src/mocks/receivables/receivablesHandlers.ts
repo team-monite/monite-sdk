@@ -53,29 +53,34 @@ type ResponseWithAttachmentsAndEntity = {
 
 function createReceivableResponse<
   TRequest extends Record<string, unknown> & RequestWithAttachments,
-  TResponse extends Record<string, unknown> & ResponseWithAttachmentsAndEntity
+  TResponse extends Record<string, unknown> & ResponseWithAttachmentsAndEntity,
 >(request: TRequest, response: TResponse): TResponse {
   const { line_items, ...requestWithoutLineItems } = request;
 
   return {
     ...response,
     ...requestWithoutLineItems,
-    attachments: request.attachments?.map((attachment: AttachmentRequest): AttachmentResponse => ({
-      id: attachment.id,
-      include_in_email: attachment.include_in_email,
-      mimetype: 'application/pdf',
-      name: 'attachment.pdf',  
-      size: 1024,
-      url: `/files/${attachment.id}`,
-    })) || response.attachments,
-    entity: response.entity ? {
-      ...response.entity,
-      type: 'organization' as const,
-      name: 'Mock Organization',
-    } : {
-      type: 'organization' as const,
-      name: 'Mock Organization',
-    },
+    attachments:
+      request.attachments?.map(
+        (attachment: AttachmentRequest): AttachmentResponse => ({
+          id: attachment.id,
+          include_in_email: attachment.include_in_email,
+          mimetype: 'application/pdf',
+          name: 'attachment.pdf',
+          size: 1024,
+          url: `/files/${attachment.id}`,
+        })
+      ) || response.attachments,
+    entity: response.entity
+      ? {
+          ...response.entity,
+          type: 'organization' as const,
+          name: 'Mock Organization',
+        }
+      : {
+          type: 'organization' as const,
+          name: 'Mock Organization',
+        },
   } as TResponse;
 }
 
@@ -245,9 +250,9 @@ export const receivableHandlers = [
 
       await delay();
 
-      const response: components['schemas']['InvoiceResponsePayload'] = 
+      const response: components['schemas']['InvoiceResponsePayload'] =
         createReceivableResponse(invoiceRequest, invoiceResponse);
-      
+
       return HttpResponse.json(response);
     } else if ('quote' in jsonBody) {
       const quoteRequest = jsonBody.quote;
@@ -272,9 +277,9 @@ export const receivableHandlers = [
 
       await delay();
 
-      const response: components['schemas']['QuoteResponsePayload'] = 
+      const response: components['schemas']['QuoteResponsePayload'] =
         createReceivableResponse(quoteRequest, quoteResponse);
-      
+
       return HttpResponse.json(response);
     } else if ('credit_note' in jsonBody) {
       const creditNoteRequest = jsonBody.credit_note;
@@ -299,9 +304,9 @@ export const receivableHandlers = [
 
       await delay();
 
-      const response: components['schemas']['CreditNoteResponsePayload'] = 
+      const response: components['schemas']['CreditNoteResponsePayload'] =
         createReceivableResponse(creditNoteRequest, creditNoteResponse);
-      
+
       return HttpResponse.json(response);
     }
 

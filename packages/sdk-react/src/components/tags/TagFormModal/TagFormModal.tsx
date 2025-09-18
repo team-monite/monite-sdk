@@ -1,4 +1,8 @@
-import { getTagCategoryLabel, tagCategories, type TagCategory } from '../helpers';
+import {
+  getTagCategoryLabel,
+  tagCategories,
+  type TagCategory,
+} from '../helpers';
 import { useTags } from '../useTags';
 import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -247,7 +251,7 @@ const TagFormModalBase = ({
                   name="keywords"
                   control={control}
                   render={({ field }) => (
-                  <FormItem className="mtw:flex mtw:flex-col">
+                    <FormItem className="mtw:flex mtw:flex-col">
                       <FormLabel>{t(i18n)`Keywords`}</FormLabel>
 
                       <InputTags {...field} value={field.value ?? []} />

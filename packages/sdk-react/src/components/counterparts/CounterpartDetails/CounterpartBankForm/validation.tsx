@@ -1,6 +1,6 @@
+import { getCurrencyEnum } from '@/components/receivables/validation';
 import { AllowedCountries } from '@/enums/AllowedCountries';
 import type { I18n } from '@lingui/core';
-import { getCurrencyEnum } from '@/components/receivables/validation';
 import { z } from 'zod';
 
 export const getBankValidationSchema = () =>
