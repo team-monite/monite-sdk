@@ -1,8 +1,11 @@
+import type { PayableDetailsFormFields } from './types';
 import { components } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { getCurrencyEnum } from '@/components/receivables/validation';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
+
+export type Option = { label: string; value: string };
 
 export const isFieldRequiredByValidations = (
   fieldName: PayablesFieldsAllowedForValidate,
@@ -11,182 +14,111 @@ export const isFieldRequiredByValidations = (
   return Boolean(payablesValidations?.required_fields?.includes(fieldName));
 };
 
-const requiredString = (i18n: I18n, label: string) =>
-  z
-    .string()
-    .min(1, t(i18n)`${label} is required`)
-    .refine((val) => val.trim().length > 0, {
-      message: t(i18n)`${label} cannot be empty or only whitespace`,
-    })
-    .meta({ title: label });
-
-export const getPayableDetailsValidationSchema = (
-  i18n: I18n,
-  payablesValidations?: PayableValidationsResource
-) => {
-  const lineItemSchema = z.object({
-    id: z.string(),
-    name: requiredString(i18n, t(i18n)`Item name`),
-
-    quantity: z
-      .number()
-      .int(t(i18n)`Item quantity must be a whole number`)
-      .positive(t(i18n)`Item quantity must be greater than 0`)
-      .meta({
-        title: t(i18n)`Item quantity`,
-        description: t(i18n)`Number of items`,
-        examples: [1, 2, 5, 10],
-      }),
-
-    price: z
-      .number()
-      .min(0, t(i18n)`Item price cannot be negative`)
-      .meta({
-        title: t(i18n)`Item price`,
-        description: t(i18n)`Price per unit`,
-        examples: [10.99, 25.5, 100.0],
-      }),
-
-    tax: z
-      .number()
-      .min(0, t(i18n)`Tax rate cannot be negative`)
-      .max(100, t(i18n)`Tax rate cannot exceed 100%`)
-      .meta({
-        title: t(i18n)`Item tax percentage`,
-        description: t(i18n)`Tax rate as percentage (0-100)`,
-        examples: [0, 7.7, 19, 21],
-      }),
-  });
-
-  const tagSchema = z.object({
-    id: z.string(),
-    created_at: z.string(),
-    updated_at: z.string(),
-    category: z
-      .enum([
-        'document_type',
-        'department',
-        'project',
-        'cost_center',
-        'vendor_type',
-        'payment_method',
-        'approval_status',
-      ])
-      .optional(),
-    created_by_entity_user_id: z.string().optional(),
-    description: z.string().optional(),
-    name: z.string(),
-  });
-
-  const baseSchema = z.object({
-    invoiceNumber: requiredString(i18n, t(i18n)`Invoice number`),
-
-    counterpart: z.string(),
-
+const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
+  z.object({
+    invoiceNumber: z
+      .string()
+      .min(1, t(i18n)`Invoice Number is required`)
+      .meta({ title: t(i18n)`Invoice Number` }),
+    counterpart: z.string().meta({ title: t(i18n)`Counterpart` }),
     counterpartBankAccount: z
       .string()
       .optional()
-      .meta({
-        title: t(i18n)`Counterpart bank account ID`,
-        description: t(i18n)`ID of counterpart's bank account`,
-      }),
-
+      .meta({ title: t(i18n)`Counterpart Bank Account` }),
     invoiceDate: z
-      .date()
+      .preprocess((v) => (v === null ? undefined : v), z.date())
       .optional()
-      .meta({
-        title: t(i18n)`Invoice issue date`,
-        description: t(i18n)`Date when the invoice was issued`,
-      }),
-
-    dueDate: z.date().optional(),
-
-    currency: z
-      .enum(
-        CurrencyEnum as [
-          components['schemas']['CurrencyEnum'],
-          ...components['schemas']['CurrencyEnum'][],
-        ]
+      .meta({ title: t(i18n)`Invoice Date` }),
+    dueDate: z
+      .preprocess((v) => (v === null ? undefined : v), z.date())
+      .optional()
+      .meta({ title: t(i18n)`Due Date` }),
+    currency: getCurrencyEnum(i18n)
+      .optional()
+      .meta({ title: t(i18n)`Currency` }),
+    tags: z
+      .array(z.object({ id: z.string(), name: z.string() }).loose())
+      .meta({ title: t(i18n)`Tags` }),
+    lineItems: z
+      .array(
+        z.object({
+          id: z.string().meta({ title: t(i18n)`Item ID` }),
+          name: z
+            .string()
+            .min(1, t(i18n)`Item name is required`)
+            .meta({ title: t(i18n)`Item Name` }),
+          quantity: z.coerce
+            .number()
+            .positive(t(i18n)`Item quantity must be positive`)
+            .meta({ title: t(i18n)`Quantity` }),
+          price: z.coerce
+            .number()
+            .min(0, t(i18n)`Item price must be 0 or greater`)
+            .meta({ title: t(i18n)`Price` }),
+          tax: z.coerce
+            .number()
+            .min(0, t(i18n)`Item tax must be 0 or greater`)
+            .max(100, t(i18n)`Item tax must be 100 or less`)
+            .meta({ title: t(i18n)`Tax` }),
+        })
       )
-      .meta({
-        title: t(i18n)`Invoice currency`,
-        description: t(i18n)`Currency for the invoice amount`,
-        examples: ['EUR', 'USD', 'GBP'],
-      }),
-
+      .meta({ title: t(i18n)`Line Items` }),
     discount: z
-      .number()
-      .min(0, t(i18n)`Discount cannot be negative`)
-      .nullable()
-      .optional(),
-
-    lineItems: z.array(lineItemSchema),
-
-    tags: z.array(tagSchema),
-
-    counterpartAddressId: z.string().optional(),
+      .union([z.coerce.number().min(0), z.null()])
+      .optional()
+      .meta({ title: t(i18n)`Discount` }),
   });
 
-  return baseSchema
+export const getPayableDetailsFormSchema = (
+  i18n: I18n,
+  payablesValidations?: components['schemas']['PayableValidationsResource']
+) =>
+  getPayableDetailsFormSchemaInternal(i18n)
+    .refine((v) => v.dueDate instanceof Date, {
+      path: ['dueDate'],
+      message: t(i18n)`Due date is required`,
+    })
     .refine(
-      (data) => {
-        if (
-          isFieldRequiredByValidations('counterpart_id', payablesValidations)
-        ) {
-          return data.counterpart.trim().length > 0;
-        }
-        return true;
-      },
+      (v) =>
+        !isFieldRequiredByValidations('counterpart_id', payablesValidations) ||
+        Boolean(v.counterpart),
       {
-        message: t(i18n)`Counterpart is required`,
         path: ['counterpart'],
+        message: t(i18n)`Counterpart is required`,
       }
     )
     .refine(
-      (data) => {
-        if (
-          isFieldRequiredByValidations(
-            'counterpart_bank_account_id',
-            payablesValidations
-          )
-        ) {
-          return (data.counterpartBankAccount?.trim().length ?? 0) > 0;
-        }
-        return true;
-      },
+      (v) =>
+        !isFieldRequiredByValidations(
+          'counterpart_bank_account_id',
+          payablesValidations
+        ) || Boolean(v.counterpartBankAccount),
       {
-        message: t(i18n)`Counterpart bank account is required`,
         path: ['counterpartBankAccount'],
+        message: t(i18n)`Counterpart bank account is required`,
       }
     )
     .refine(
-      (data) => {
-        if (isFieldRequiredByValidations('issued_at', payablesValidations)) {
-          return data.invoiceDate instanceof Date;
-        }
-        return true;
-      },
+      (v) =>
+        !isFieldRequiredByValidations('issued_at', payablesValidations) ||
+        v.invoiceDate instanceof Date,
       {
-        message: t(i18n)`Invoice date is required`,
         path: ['invoiceDate'],
+        message: t(i18n)`Invoice date is required`,
       }
     )
     .refine(
-      (data) => {
-        if (isFieldRequiredByValidations('currency', payablesValidations)) {
-          return data.currency.trim().length > 0;
-        }
-        return true;
-      },
+      (v) =>
+        !isFieldRequiredByValidations('currency', payablesValidations) ||
+        v.currency !== undefined,
       {
-        message: t(i18n)`Currency is required`,
         path: ['currency'],
+        message: t(i18n)`Currency is required`,
       }
-    );
-};
+    ) satisfies z.ZodType<PayableDetailsFormFields>;
 
 export type PayableDetailsValidationFields = z.infer<
-  ReturnType<typeof getPayableDetailsValidationSchema>
+  ReturnType<typeof getPayableDetailsFormSchema>
 >;
 
 type PayablesFieldsAllowedForValidate =

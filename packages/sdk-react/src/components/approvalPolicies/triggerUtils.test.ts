@@ -1,4 +1,6 @@
 import {
+  type NamedValue,
+  type OperatorTrigger,
   formatFieldName,
   extractFieldName,
   getTriggerKeyAndValue,
@@ -6,7 +8,6 @@ import {
   OPERATOR_OPERATIONS,
   isValidTriggerKey,
   isValidOperation,
-  NamedValue,
 } from './triggerUtils';
 
 describe('triggerUtils', () => {
@@ -95,7 +96,7 @@ describe('triggerUtils', () => {
         operator: 'invalid',
         left_operand: 'invalid',
         right_operand: 'invalid',
-      } as any;
+      } as unknown as OperatorTrigger;
 
       const result = getTriggerKeyAndValue(trigger);
       expect(result.key).toBe(null);
@@ -107,7 +108,7 @@ describe('triggerUtils', () => {
         operator: 'in',
         left_operand: null,
         right_operand: null,
-      } as any;
+      } as unknown as OperatorTrigger;
 
       const result = getTriggerKeyAndValue(trigger);
       expect(result.key).toBe(null);
@@ -189,7 +190,7 @@ describe('triggerUtils', () => {
         operator: 'in',
         left_operand: undefined,
         right_operand: undefined,
-      } as any;
+      } as unknown as OperatorTrigger;
 
       const result = getTriggerKeyAndValue(trigger);
       expect(result.key).toBe(null);
@@ -201,7 +202,7 @@ describe('triggerUtils', () => {
         operator: 'in',
         left_operand: null,
         right_operand: null,
-      } as any;
+      } as unknown as OperatorTrigger;
 
       const result = getTriggerKeyAndValue(trigger);
       expect(result.key).toBe(null);

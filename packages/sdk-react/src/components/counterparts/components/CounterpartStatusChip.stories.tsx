@@ -1,7 +1,6 @@
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { CounterpartStatusChip as CounterpartStatusChipComponent } from './CounterpartStatusChip';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof CounterpartStatusChipComponent> = {
   title: 'Components / CounterpartStatusChip',

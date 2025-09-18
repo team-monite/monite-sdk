@@ -1,12 +1,11 @@
+import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
 } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
-
-import { ApprovalRequestsTable } from './ApprovalRequestsTable';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ApprovalRequestsTable> = {
   title: 'Approval Requests/Approval Requests — Table View',

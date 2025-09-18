@@ -1,9 +1,7 @@
-import { MemoryRouter } from 'react-router-dom';
-
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { Tags as TagsComponent } from './Tags';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
+import { MemoryRouter } from 'react-router-dom';
 
 const Story = {
   title: 'Tags',

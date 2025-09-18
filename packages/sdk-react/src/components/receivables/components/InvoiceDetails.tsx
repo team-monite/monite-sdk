@@ -43,9 +43,9 @@ enum Tab {
 }
 
 export interface InvoiceDetailsProps {
+  invoiceId: string;
   open: boolean;
   onCloseInvoiceDetails: () => void;
-  invoiceId: string;
   onDuplicate?: (invoiceId: string) => void;
   onMarkAsUncollectible?: (invoiceId: string) => void;
   openInvoiceDetails?: (invoiceId: string) => void;
@@ -58,9 +58,9 @@ export const InvoiceDetails = (props: InvoiceDetailsProps) => (
 );
 
 const InvoiceDetailsBase = ({
+  invoiceId,
   open,
   onCloseInvoiceDetails,
-  invoiceId,
   onDuplicate,
   onMarkAsUncollectible,
   openInvoiceDetails,

@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { TablePagination as TablePaginationComponent } from './TablePagination';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof TablePaginationComponent> = {
   title: 'Components / TablePagination',

@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { ApprovalPoliciesTable } from './ApprovalPoliciesTable';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof ApprovalPoliciesTable> = {
   title: 'Approval Policies/Approval Policies — Table View',

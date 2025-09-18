@@ -1,7 +1,7 @@
+import { useCurrencies } from './useCurrencies';
+import { components } from '@/api';
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook, waitFor } from '@testing-library/react';
-
-import { useCurrencies } from './useCurrencies';
 
 describe('useCurrencies', () => {
   describe('# getSymbolFromCurrency', () => {
@@ -84,7 +84,29 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatFromMinorUnits(1, 'unavailable')).toBe(null);
+      expect(
+        result.current.formatFromMinorUnits(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
+    });
+
+    test('should return "null" for NaN input', async () => {
+      const { result } = renderHook(() => useCurrencies(), {
+        wrapper: createRenderWithClient(),
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      expect(result.current.formatFromMinorUnits(NaN, 'USD')).toBe(null);
+    });
+
+    test('should return "null" for Infinity input', async () => {
+      const { result } = renderHook(() => useCurrencies(), {
+        wrapper: createRenderWithClient(),
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      expect(result.current.formatFromMinorUnits(Infinity, 'USD')).toBe(null);
     });
   });
 
@@ -126,7 +148,29 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatToMinorUnits(1, 'unavailable')).toBe(null);
+      expect(
+        result.current.formatToMinorUnits(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
+    });
+
+    test('should return "null" for empty string input', async () => {
+      const { result } = renderHook(() => useCurrencies(), {
+        wrapper: createRenderWithClient(),
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      expect(result.current.formatToMinorUnits('', 'USD')).toBe(null);
+    });
+
+    test('should return "null" for non-numeric string input', async () => {
+      const { result } = renderHook(() => useCurrencies(), {
+        wrapper: createRenderWithClient(),
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      expect(result.current.formatToMinorUnits('abc', 'USD')).toBe(null);
     });
   });
 
@@ -186,9 +230,11 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatCurrencyToDisplay(1, 'unavailable')).toBe(
-        null
-      );
+      expect(
+        result.current.formatCurrencyToDisplay(1, 'unavailable' as CurrencyEnum)
+      ).toBe(null);
     });
   });
 });
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

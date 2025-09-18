@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
-import { StoryObj } from '@storybook/react';
-
 import { RolesAndApprovalPolicies as RolesAndPoliciesComponent } from './RolesAndPolicies';
+import { css } from '@emotion/react';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Approval Policies / Roles and Approvals',

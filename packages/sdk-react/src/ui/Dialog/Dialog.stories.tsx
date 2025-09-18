@@ -1,11 +1,10 @@
+import { Dialog } from './Dialog';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
-
-import { Dialog } from './Dialog';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof Dialog> = {
   title: 'Components/Dialog',
@@ -76,9 +75,6 @@ export const IvoiceDetails: Story = {
     <Dialog {...args}>
       <InvoiceDetails
         id={receivableListFixture.invoice[0].id}
-        onCancel={action('onCancel')}
-        onIssue={action('onIssue')}
-        onDelete={action('onDelete')}
         onMarkAsUncollectible={action('onMarkAsUncollectible')}
         {...actions}
       />

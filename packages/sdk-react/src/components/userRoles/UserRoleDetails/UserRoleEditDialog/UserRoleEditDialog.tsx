@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useId } from 'react';
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
-
+import { useUserRoleMutations, useUserRoleQuery } from '../../useUserRoles';
+import { UserRoleRow } from '../UserRoleRow';
+import { UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
+import { PermissionRow } from '../types';
+import { getValidationSchema } from '../validation';
 import { components } from '@/api';
 import {
   transformPermissionsToComponentFormat,
@@ -10,10 +12,10 @@ import {
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -30,12 +32,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-
-import { useUserRoleMutations, useUserRoleQuery } from '../../useUserRoles';
-import { PermissionRow } from '../types';
-import { UserRoleRow } from '../UserRoleRow';
-import { UserRoleViewMode } from '../UserRoleRow/UserRoleRow';
-import { getValidationSchema } from '../validation';
+import { useCallback, useEffect, useId } from 'react';
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 
 interface UserRoleFormValues {
   name: string;
@@ -120,7 +118,7 @@ export const UserRoleEditDialog = ({
   });
 
   const methods = useForm<UserRoleFormValues>({
-    resolver: yupResolver(getValidationSchema(i18n)),
+    resolver: zodResolver(getValidationSchema(i18n)),
     defaultValues: {
       name: roleData?.name || '',
       permissions: roleData?.permissions.objects

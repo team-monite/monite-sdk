@@ -1,15 +1,13 @@
-import type { components, paths } from '@/api';
-import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { createProduct, productsListFixture } from './productsFixtures';
+import { components, paths } from '@/api';
+import { CurrencyEnum, CurrencyEnumSchema } from '@/enums/CurrencyEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
 import { filterByPageAndLimit } from '@/mocks/utils';
-
 import { http, HttpResponse, delay } from 'msw';
-import * as yup from 'yup';
-
-import { createProduct, productsListFixture } from './productsFixtures';
+import { z } from 'zod';
 
 type ProductParams = { productId: string };
 
@@ -18,14 +16,14 @@ const productByIdPath = `${productsPath}/:productId`;
 
 let productsList = productsListFixture;
 
-const createProductValidationSchema = yup.object({
-  name: yup.string().required(),
-  price: yup.object({
-    value: yup.number().required(),
-    currency: yup.string().required(),
+const createProductValidationSchema = z.object({
+  name: z.string(),
+  price: z.object({
+    value: z.number(),
+    currency: CurrencyEnumSchema,
   }),
-  type: yup.string().required(),
-  measure_unit_id: yup.string().required(),
+  type: z.string(),
+  measure_unit_id: z.string(),
 });
 
 export const productsHandlers = [
@@ -173,7 +171,7 @@ export const productsHandlers = [
     const jsonBody = await request.json();
 
     try {
-      await createProductValidationSchema.validate(jsonBody);
+      createProductValidationSchema.parse(jsonBody);
     } catch (_error) {
       await delay();
 

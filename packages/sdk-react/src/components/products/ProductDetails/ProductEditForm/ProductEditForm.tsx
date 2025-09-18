@@ -1,24 +1,22 @@
-import { useId, useMemo, useState } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { ProductCancelEditModal } from '../../ProductCancelEditModal';
+import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
+import { ProductForm } from '../components/ProductForm';
+import { type ProductFormValues } from '../validation';
 import { components } from '@/api';
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { CenteredContentBox } from '@/ui/box';
 import { DialogFooter } from '@/ui/DialogFooter/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader';
+import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, DialogContent, Stack, Typography } from '@mui/material';
-
-import { ProductCancelEditModal } from '../../ProductCancelEditModal';
-import { ManageMeasureUnitsForm } from '../components/ManageMeasureUnitsForm';
-import { ProductForm } from '../components/ProductForm';
-import { IProductFormSubmitValues } from '../validation';
+import { useId, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 type IProductEditFormProps = Pick<
   ExistingProductDetailsProps,
@@ -110,7 +108,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
     ]
   );
 
-  const handleSubmit = async (values: IProductFormSubmitValues) => {
+  const handleSubmit = async (values: ProductFormValues) => {
     const payload: ProductServiceRequest = {
       name: values.name,
       type: values.type,
@@ -120,7 +118,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         value:
           formatToMinorUnits(values.pricePerUnit, values.currency) ??
           values.pricePerUnit,
-        currency: values.currency,
+        currency: values.currency as CurrencyEnum,
       },
       description: values.description,
     };

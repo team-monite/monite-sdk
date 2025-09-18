@@ -1,5 +1,3 @@
-import { ReactNode, useMemo } from 'react';
-
 import { apiVersion } from '@/api/api-version';
 import { ComponentSettings } from '@/core/componentSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -17,11 +15,9 @@ import { deepmerge } from '@mui/utils';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';
+import { ReactNode, useMemo } from 'react';
 
 export const generateRandomId = () =>
   (Math.random() + 1).toString(36).substring(2);
@@ -35,13 +31,16 @@ export function getRandomProperty<T = unknown>(obj: Record<string, T>): T {
   return obj[keys[(keys.length * Math.random()) << 0]];
 }
 
-export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
+export function getRandomItemFromArray<T = unknown>(
+  array: ReadonlyArray<T>
+): T {
   const randomIndex = Math.floor(Math.random() * array.length);
-
-  return array[randomIndex];
+  return array[randomIndex]!;
 }
 
-export function getSampleFromArray<T = unknown>(array: Array<T>): Array<T> {
+export function getSampleFromArray<T = unknown>(
+  array: ReadonlyArray<T>
+): Array<T> {
   const sampleSize = getRandomNumber(0, array.length - 1);
 
   return array.slice(0, sampleSize);
@@ -68,17 +67,17 @@ export const withGlobalStorybookDecorator = (
     componentSettings: undefined,
   };
 
-  return withThemeFromJSXProvider({
-    Provider: (...args: any[]) => {
-      return GlobalStorybookDecorator({
-        ...args,
-        children: args[0].children,
-        monite,
-        theme,
-        componentSettings,
-      });
-    },
-  });
+  return (Story: any, context: any) => {
+    return (
+      <GlobalStorybookDecorator
+        monite={monite}
+        theme={theme}
+        componentSettings={componentSettings}
+      >
+        <Story {...context} />
+      </GlobalStorybookDecorator>
+    );
+  };
 };
 
 /**

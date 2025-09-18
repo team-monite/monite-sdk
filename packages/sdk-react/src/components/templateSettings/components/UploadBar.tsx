@@ -14,7 +14,7 @@ export const UploadBar = ({
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timer;
+    let intervalId: ReturnType<typeof setInterval>;
 
     if (shouldStartProgress) {
       intervalId = setInterval(() => {

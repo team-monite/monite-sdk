@@ -1,8 +1,7 @@
-import { StoryObj } from '@storybook/react';
-
-import { OnboardingContextProvider } from '../context';
 import { OnboardingStepContent } from '../OnboardingLayout';
+import { OnboardingContextProvider } from '../context';
 import { OnboardingAgreements } from './OnboardingAgreements';
+import { StoryObj } from '@storybook/react-vite';
 
 const Story = {
   title: 'Onboarding/Agreements',

@@ -110,9 +110,9 @@ export const usePayableCallbacks = (props: PayableCallbackProps) => {
     onDeleted || payablesCallbacks.onDeleted ? deletedCallback : undefined;
 
   const payCallback = useCallback(
-    (id: string, actions?: PayActionHandlers) => {
-      onPay?.(id, undefined, actions);
-      payablesCallbacks.onPay?.(id, undefined, actions);
+    (id: string, data?: unknown, actions?: PayActionHandlers) => {
+      onPay?.(id, data, actions);
+      payablesCallbacks.onPay?.(id, data, actions);
     },
     [onPay, payablesCallbacks]
   );

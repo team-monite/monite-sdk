@@ -329,7 +329,7 @@ const FinancedInvoicesTableBase = ({
           alignDialog="right"
         >
           <FinanceDetails
-            invoice={invoice as any}
+            invoice={invoice}
             offers={offers ?? []}
             financedInvoice={financedInvoice}
             enableNavigate

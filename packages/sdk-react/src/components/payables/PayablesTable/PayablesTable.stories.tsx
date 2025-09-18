@@ -1,11 +1,10 @@
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { Typography } from '@mui/material';
-import { action } from '@storybook/addon-actions';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '../../../mocks';
 import { addNewItemToPayablesList } from '../../../mocks';
 import { PayablesTable } from './PayablesTable';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import { Typography } from '@mui/material';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 const meta: Meta<typeof PayablesTable> = {
   title: 'Payables/Payables — Table View',

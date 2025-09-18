@@ -1,17 +1,3 @@
-import { FormEvent, useCallback, useEffect, useMemo, useRef } from 'react';
-import {
-  FieldValues,
-  Path,
-  useForm,
-  UseFormReturn,
-  DefaultValues,
-} from 'react-hook-form';
-
-import { components } from '@/api';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-import deepEqual from 'deep-eql';
-
 import {
   enrichFieldsByValues,
   generateErrorsByFields,
@@ -23,6 +9,17 @@ import {
 import { OnboardingErrorField, OnboardingOutputFieldsType } from '../types';
 import { useOnboardingValidationSchema } from './useOnboardingValidationSchema';
 import { useScrollToError } from './useScrollToError';
+import { components } from '@/api';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
+import deepEqual from 'deep-eql';
+import { FormEvent, useCallback, useEffect, useMemo, useRef } from 'react';
+import {
+  FieldValues,
+  Path,
+  useForm,
+  UseFormReturn,
+  DefaultValues,
+} from 'react-hook-form';
 
 type FormType = (e: FormEvent<HTMLFormElement>) => void;
 type ApiContractType<V, R> = (values: V) => Promise<R> | R;
@@ -30,7 +27,7 @@ type HandleSubmitType<V, R> = (apiContract: ApiContractType<V, R>) => FormType;
 
 export type OnboardingFormType<
   V extends FieldValues,
-  R extends FieldValues | undefined | void
+  R extends FieldValues | undefined | void,
 > = {
   defaultValues: DefaultValues<V> | undefined;
   methods: UseFormReturn<V>;
@@ -56,7 +53,7 @@ const getErrorsFieldsByValidationErrors = (
 
 export function useOnboardingForm<
   V extends FieldValues,
-  R extends FieldValues | undefined | void
+  R extends FieldValues | undefined | void,
 >(
   _incomingFields: OnboardingOutputFieldsType | undefined,
   type: ValidationSchemasType,
@@ -76,7 +73,7 @@ export function useOnboardingForm<
   });
 
   const methods = useForm<V>({
-    resolver: validationSchema && yupResolver(validationSchema),
+    resolver: validationSchema && safeZodResolver(validationSchema),
     mode: 'onChange',
     defaultValues: incomingFields
       ? generateValuesByFields<DefaultValues<V>>(incomingFields)

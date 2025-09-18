@@ -299,8 +299,6 @@ const CreateReceivablesBase = ({
     requiredFields?.counterpart?.vat_id?.required;
   const isEntityTaxIdRequired = requiredFields?.entity?.tax_id?.required;
   const isEntityVatIdRequired = requiredFields?.entity?.vat_id?.required;
-  const isLineItemVatRateIdRequired =
-    requiredFields?.line_item?.vat_rate_id?.required;
 
   const handleEntityVatTaxIdWarnings = () => {
     if (!requiredFields) return null;
@@ -605,7 +603,7 @@ const CreateReceivablesBase = ({
             : undefined,
           type: 'product',
         },
-        ...(isNonVatSupported || !isLineItemVatRateIdRequired
+        ...(isNonVatSupported
           ? {
               tax_rate_value: item?.tax_rate_value
                 ? rateMajorToMinor(item.tax_rate_value)
@@ -1243,9 +1241,7 @@ const CreateReceivablesBase = ({
                     settings?.currency?.default || fallbackCurrency
                   }
                   actualCurrency={actualCurrency}
-                  isNonVatSupported={
-                    isNonVatSupported || !isLineItemVatRateIdRequired
-                  }
+                  isNonVatSupported={isNonVatSupported}
                 />
 
                 <Box
@@ -1295,9 +1291,26 @@ const CreateReceivablesBase = ({
 
                   <RecurrenceSection
                     isRecurrenceEnabled={isRecurrenceEnabled}
-                    toggleRecurrence={() =>
-                      setIsRecurrenceEnabled(!isRecurrenceEnabled)
-                    }
+                    toggleRecurrence={() => {
+                      setIsRecurrenceEnabled((prevState) => {
+                        const nextState = !prevState;
+
+                        if (!nextState) {
+                          clearErrors([
+                            'recurrence_issue_mode',
+                            'recurrence_start_date',
+                            'recurrence_end_date',
+                          ]);
+                          setValue('recurrence_start_date', undefined, {
+                            shouldDirty: false,
+                          });
+                          setValue('recurrence_end_date', undefined, {
+                            shouldDirty: false,
+                          });
+                        }
+                        return nextState;
+                      });
+                    }}
                   />
                 </Box>
               </Stack>
@@ -1331,7 +1344,7 @@ const CreateReceivablesBase = ({
           currency={
             actualCurrency || settings?.currency?.default || fallbackCurrency
           }
-          isNonVatSupported={isNonVatSupported || !isLineItemVatRateIdRequired}
+          isNonVatSupported={isNonVatSupported}
           entityData={entityData}
           address={counterpartBillingAddress}
           paymentTerms={paymentTerms}

@@ -1,7 +1,6 @@
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { ConfirmationModal } from './ConfirmationModal';
+import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof ConfirmationModal> = {
   title: 'Components/ConfirmationModal',
