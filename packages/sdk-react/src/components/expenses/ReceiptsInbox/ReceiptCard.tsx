@@ -8,14 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/ui/components/card';
 import { Skeleton } from '@/ui/components/skeleton';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface ReceiptCardProps {
   receipt: components['schemas']['ReceiptResponseSchema'];
   user: components['schemas']['EntityUserResponse'] | undefined;
 }
 
-const ReceiptCardComponent = ({ receipt, user }: ReceiptCardProps) => {
+export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -93,10 +93,6 @@ const ReceiptCardComponent = ({ receipt, user }: ReceiptCardProps) => {
     </Card>
   );
 };
-
-export const ReceiptCard = memo(ReceiptCardComponent);
-// eslint-disable-next-line lingui/no-unlocalized-strings
-ReceiptCard.displayName = 'ReceiptCard';
 
 export const ReceiptCardSkeleton = () => {
   return (
