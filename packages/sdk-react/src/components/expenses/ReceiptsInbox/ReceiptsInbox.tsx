@@ -5,8 +5,8 @@ import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { FILTER_TYPE_HAS_TRANSACTION, FILTER_TYPE_SEARCH } from './consts';
 import { HasTransactionFilterValue, ReceiptsFilters } from './types';
 import { components } from '@/api/schema';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useDebounce } from '@/core/hooks';
+import { useEntityUsersByIds } from '@/core/queries';
 import { ResponsiveGrid, useResponsiveGridState } from '@/ui/ResponsiveGrid';
 import { Button } from '@/ui/components/button';
 import {
@@ -28,7 +28,6 @@ export const ReceiptsInbox = ({
 }: {
   setIsOpen: (open: boolean) => void;
 }) => {
-  const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -87,7 +86,7 @@ export const ReceiptsInbox = ({
     return new Error('Failed to load receipts');
   }, [error]);
 
-  // Extract unique user IDs from transactions data
+  // Extract unique user IDs from receipts data
   const uniqueUserIds = useMemo(() => {
     if (!receipts || receipts.length === 0) return [];
 
@@ -103,20 +102,9 @@ export const ReceiptsInbox = ({
   }, [receipts]);
 
   // Fetch user details for the unique user IDs
-  const { data: usersData } = api.entityUsers.getEntityUsers.useQuery(
-    {
-      query: {
-        id__in: uniqueUserIds.length > 0 ? uniqueUserIds : undefined,
-      },
-    },
-    {
-      enabled: uniqueUserIds.length > 0,
-      staleTime: 10 * 60 * 1000, // 10 minutes - user data rarely changes
-      gcTime: 30 * 60 * 1000, // 30 minutes - keep in cache longer
-      refetchOnWindowFocus: false, // Don't refetch on window focus
-      refetchOnMount: false, // Don't refetch if data is fresh
-    }
-  );
+  const { data: usersData } = useEntityUsersByIds(uniqueUserIds);
+
+  // Create user data map
   const userDataMap = useMemo(() => {
     if (!usersData?.data) return new Map();
 

@@ -12,7 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies, useDataTableState } from '@/core/hooks';
 import { useDebounce } from '@/core/hooks/useDebounce';
-import { useEntityUserByAuthToken } from '@/core/queries';
+import { useEntityUserByAuthToken, useEntityUsersByIds } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -35,7 +35,7 @@ import { formatISO, addDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const ManagerTransactionsTable = () => {
-  const { api, componentSettings, locale } = useMoniteContext();
+  const { componentSettings, locale } = useMoniteContext();
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -164,19 +164,7 @@ export const ManagerTransactionsTable = () => {
   }, [transactions]);
 
   // Fetch user details for the unique user IDs
-  const { data: usersData } = api.entityUsers.getEntityUsers.useQuery(
-    {
-      query: {
-        id__in: uniqueUserIds.length > 0 ? uniqueUserIds : undefined,
-        limit: 100,
-      },
-    },
-    {
-      enabled: uniqueUserIds.length > 0,
-      staleTime: 5 * 60 * 1000, // 5 minutes - user data doesn't change frequently
-      gcTime: 10 * 60 * 1000, // 10 minutes
-    }
-  );
+  const { data: usersData } = useEntityUsersByIds(uniqueUserIds);
 
   // Create user data map and filter array
   const { userDataMap, users } = useMemo(() => {
