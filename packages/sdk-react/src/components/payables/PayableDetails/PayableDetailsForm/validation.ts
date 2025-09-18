@@ -1,7 +1,6 @@
 import type { PayableDetailsFormFields } from './types';
 import { components } from '@/api';
 import { getCurrencyEnum } from '@/components/receivables/validation';
-import { getCurrencyEnum } from '@/components/receivables/validation';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { z } from 'zod';
@@ -45,27 +44,25 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) => {
     )
     .meta({ title: t(i18n)`Line Items` });
 
-  const tagsSchema = z
-    .object({
-      id: z.string(),
-      created_at: z.string(),
-      updated_at: z.string(),
-      category: z
-        .enum([
-          'document_type',
-          'department',
-          'project',
-          'cost_center',
-          'vendor_type',
-          'payment_method',
-          'approval_status',
-        ])
-        .optional(),
-      created_by_entity_user_id: z.string().optional(),
-      description: z.string().optional(),
-      name: z.string(),
-    })
-    .meta({ title: t(i18n)`Tags` });
+  const tagSchema = z.object({
+    id: z.string(),
+    created_at: z.string(),
+    updated_at: z.string(),
+    category: z
+      .enum([
+        'document_type',
+        'department',
+        'project',
+        'cost_center',
+        'vendor_type',
+        'payment_method',
+        'approval_status',
+      ])
+      .optional(),
+    created_by_entity_user_id: z.string().optional(),
+    description: z.string().optional(),
+    name: z.string(),
+  });
 
   return z.object({
     invoiceNumber: z
@@ -88,7 +85,7 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) => {
     currency: getCurrencyEnum(i18n)
       .optional()
       .meta({ title: t(i18n)`Currency` }),
-    tags: z.array(tagsSchema).meta({ title: t(i18n)`Tags` }),
+    tags: z.array(tagSchema).meta({ title: t(i18n)`Tags` }),
     lineItems: lineItemsSchema,
     discount: z
       .union([z.coerce.number().min(0), z.null()])

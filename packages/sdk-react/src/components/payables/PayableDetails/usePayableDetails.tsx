@@ -748,7 +748,7 @@ export function usePayableDetails({
               body: prepareLineItemSubmit(
                 payable.currency,
                 lineItem,
-                formatToMinorUnits
+                formatToMinorUnits,
               ),
             })
           );
@@ -841,7 +841,8 @@ export function usePayableDetails({
                 body: prepareLineItemSubmit(
                   payable.currency,
                   updatedLineItem,
-                  formatToMinorUnits
+                  formatToMinorUnits,
+                  lineItems?.find((li) => li.id === lineItemId)?.ledger_account_id
                 ),
               })
             );

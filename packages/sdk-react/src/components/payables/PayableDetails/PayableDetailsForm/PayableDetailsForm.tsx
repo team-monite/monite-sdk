@@ -16,7 +16,6 @@ import {
 import type { LineItem, PayableDetailsFormFields } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import {
-  type PayableDetailsValidationFields,
   isFieldRequiredByValidations,
   getPayableDetailsFormSchema,
 } from './validation';
@@ -29,6 +28,7 @@ import {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
+import { createLocaleNumberChangeHandler } from '@/components/payables/utils/numberInput';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -580,7 +580,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<PayableDetailsFormFields, "currency">
+                      <MoniteCurrency<PayableDetailsFormFields, 'currency'>
                         name="currency"
                         control={control}
                         required={
@@ -687,7 +687,8 @@ const PayableDetailsFormBase = forwardRef<
                                       {...field}
                                       id={field.name}
                                       variant="standard"
-                                      type="number"
+                                      type="text"
+                                      inputMode="decimal"
                                       inputProps={{ min: 0, step: 0.01 }}
                                       error={Boolean(error)}
                                       sx={{ width: 150 }}
@@ -697,6 +698,11 @@ const PayableDetailsFormBase = forwardRef<
                                             currentCurrency
                                           ),
                                       }}
+                                      onChange={createLocaleNumberChangeHandler(
+                                        i18n.locale,
+                                        'null',
+                                        field.onChange
+                                      )}
                                     />
                                   )}
                                 />

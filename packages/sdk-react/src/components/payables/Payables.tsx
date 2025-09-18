@@ -5,6 +5,7 @@ import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/use
 import { PayablesTable } from '@/components/payables/PayablesTable';
 import { usePayableCallbacks } from '@/components/payables/hooks/usePayableCallbacks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFileInput } from '@/core/hooks';
@@ -53,7 +54,7 @@ export const Payables = (props: PayablesProps) => {
 
 const PayablesBase = ({
   customerTypes,
-  enableGLCodes = false,
+  enableGLCodes,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -65,7 +66,8 @@ const PayablesBase = ({
   onPayUS,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient, componentSettings } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
+  const { componentSettings } = useComponentSettings();
 
   const {
     handleSaved,
@@ -162,6 +164,11 @@ const PayablesBase = ({
 
   const className = 'Monite-Payables-Header';
 
+  const finalEnableGLCodes =
+    enableGLCodes !== undefined
+      ? enableGLCodes
+      : componentSettings?.payables?.enableGLCodes ?? false;
+
   return (
     <>
       <PageHeader
@@ -229,7 +236,7 @@ const PayablesBase = ({
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
-          enableGLCodes={enableGLCodes}
+          enableGLCodes={finalEnableGLCodes}
         />
       </Dialog>
 
@@ -246,7 +253,7 @@ const PayablesBase = ({
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
-          enableGLCodes={enableGLCodes}
+          enableGLCodes={finalEnableGLCodes}
         />
       </Dialog>
     </>

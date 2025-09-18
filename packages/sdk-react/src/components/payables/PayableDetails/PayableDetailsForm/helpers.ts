@@ -14,6 +14,7 @@ import { getIndividualName } from '@/core/utils';
 import { toMinorUnits, fromMinorUnits } from '@/core/utils/currency';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
+import { resolveNullableUpdate } from '@/components/payables/utils/resolveNullableUpdate';
 
 export type Option = { label: string; value: string };
 export interface SubmitPayload extends PayableDetailsFormFields {
@@ -194,17 +195,26 @@ export const calculateTotalsForPayable = (
 export const prepareLineItemSubmit = (
   currency: CurrencyEnum,
   lineItem: LineItem,
-  formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null
+  formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null,
+  previousLedgerAccountId?: string
 ): LineItemRequest => {
   const { name, quantity, price, tax, ledger_account_id } = lineItem;
 
-  return {
+  const resolvedLedgerId = resolveNullableUpdate(
+    ledger_account_id,
+    previousLedgerAccountId
+  );
+
+  const payload: LineItemRequestLocal = {
     name,
     quantity,
     tax: formatTaxToMinorUnits(tax),
     unit_price: formatToMinorUnits(price, currency) ?? 0,
-    ledger_account_id,
   };
+
+  payload.ledger_account_id = resolvedLedgerId;
+
+  return payload as unknown as LineItemRequest;
 };
 
 function formatTaxToMinorUnits(tax: number): number {
@@ -300,4 +310,7 @@ type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
 type LineItemResponse = components['schemas']['LineItemResponse'];
 type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
-type LineItemRequest = components['schemas']['LineItemRequest'];
+type LineItemRequest  = components['schemas']['LineItemRequest'];
+type LineItemRequestLocal = Omit<LineItemRequest, 'ledger_account_id'> & {
+  ledger_account_id?: string | null;
+};
