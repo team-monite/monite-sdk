@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import { CenteredContentBox } from '@/ui/box';
 import {
   DropdownMenu,
@@ -12,10 +10,12 @@ import NoDataIcon from '@mui/icons-material/Block';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import CountryUnsupportedIcon from '@mui/icons-material/HourglassEmpty';
 import AccessRestrictedIcon from '@mui/icons-material/Lock';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import ReceiptLong from '@mui/icons-material/ReceiptLong';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 export interface BaseProps {
   onAction?: (option?: string) => void;
@@ -24,6 +24,7 @@ export interface BaseProps {
   type?:
     | 'no-data'
     | 'no-data=payables'
+    | 'no-data=receipts'
     | 'error'
     | 'access-restricted'
     | 'unsupported-country'
@@ -69,6 +70,11 @@ export const DataGridEmptyState = ({
     case 'no-data=payables':
       defaultIcon = (
         <ReceiptLong sx={{ fontSize: '4rem', color: 'primary.main' }} />
+      );
+      break;
+    case 'no-data=receipts':
+      defaultIcon = (
+        <ReceiptIcon sx={{ fontSize: '4rem', color: 'primary.main' }} />
       );
       break;
     case 'no-filter':
