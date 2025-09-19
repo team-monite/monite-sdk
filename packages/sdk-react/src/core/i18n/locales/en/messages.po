@@ -14,6 +14,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/core/context/MoniteI18nProvider.test.tsx:29
+msgid "Delete {type} “{name}”?"
+msgstr "Delete {type} “{name}”?"
+
+#. js-lingui-explicit-id
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:108
 msgid "Scheduled for {amount} on {date}"
 msgstr "Scheduled for {amount} on {date}"
@@ -33,10 +38,19 @@ msgstr "{count} payment for {amount} processing"
 msgid "{count} Processing"
 msgstr "{count} Processing"
 
-#. js-lingui-explicit-id
-#: src/core/context/MoniteI18nProvider.test.tsx:29
-msgid "Delete {type} “{name}”?"
-msgstr "Delete {type} “{name}”?"
+#: src/components/financing/components/FinanceLimits.tsx:42
+msgid ""
+"\n"
+"        Your amount available for financing additional invoices.\n"
+"      "
+msgstr ""
+"\n"
+"        Your amount available for financing additional invoices.\n"
+"      "
+
+#: src/components/counterparts/components/CounterpartAutocomplete.tsx:462
+msgid " or "
+msgstr " or "
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:69
 msgid "-"
@@ -66,34 +80,41 @@ msgstr "(.pdf, .png, .jpg supported)"
 #~ msgid "(Optional) Feel free to add specific details"
 #~ msgstr "(Optional) Feel free to add specific details"
 
+#. placeholder {0}: totalPendingInvoices ?? 0
 #: src/components/receivables/components/RecurrenceCancelModal.tsx:47
 msgid "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 msgstr "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 
-#: src/components/receivables/hooks/useCancelReceivableById.ts:48
+#. placeholder {0}: previousReceivable?.type ?? ''
+#: src/components/receivables/hooks/useCancelReceivableById.ts:47
 msgid "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice has been canceled} quote {Quote has been canceled} other {Receivable has been canceled}}"
 msgstr "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice has been canceled} quote {Quote has been canceled} other {Receivable has been canceled}}"
 
-#: src/components/receivables/hooks/useDeleteReceivableById.ts:38
+#. placeholder {0}: previousReceivable?.type ?? ''
+#: src/components/receivables/hooks/useDeleteReceivableById.ts:37
 msgid "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 msgstr "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 
-#: src/components/receivables/hooks/useSendReceivableById.ts:39
+#. placeholder {0}: receivable?.type ?? ''
+#: src/components/receivables/hooks/useSendReceivableById.ts:38
 msgid "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 
+#. placeholder {0}: faq.answer
+#. placeholder {0}: faq.question
+#. placeholder {0}: getRegionName(country?.value)
 #: src/components/financing/components/FinanceDetails.tsx:186
 #: src/components/financing/components/FinanceFaqDetails.tsx:58
 #: src/components/financing/components/FinanceFaqDetails.tsx:62
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
 #: src/components/receivables/components/EditCounterpartModal.tsx:431
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:55
-#: src/components/receivables/components/RecurrenceCancelModal.tsx:47
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:120
-#: src/core/utils/date.ts:5
 msgid "{0}"
 msgstr "{0}"
 
+#. placeholder {0}: formatCurrencyToDisplay( leftRange[1], currency )
+#. placeholder {1}: formatCurrencyToDisplay(rightRange[1], currency)
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:101
 msgid "{0} - {1}"
 msgstr "{0} - {1}"
@@ -102,11 +123,19 @@ msgstr "{0} - {1}"
 #~ msgid "{0} ({code})"
 #~ msgstr "{0} ({code})"
 
+#. placeholder {0}: term.days_after
+#. placeholder {1}: term?.days_after === 1 ? 'day' : 'days'
 #: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:143
 #: src/components/receivables/components/ReminderDetails.tsx:67
 msgid "{0} {1} after"
 msgstr "{0} {1} after"
 
+#. placeholder {0}: paymentReminder?.term_1_reminder.days_before
+#. placeholder {0}: paymentReminder?.term_2_reminder.days_before
+#. placeholder {0}: paymentReminder?.term_final_reminder.days_before
+#. placeholder {1}: paymentReminder?.term_1_reminder?.days_before === 1 ? 'day' : 'days'
+#. placeholder {1}: paymentReminder?.term_2_reminder?.days_before === 1 ? 'day' : 'days'
+#. placeholder {1}: paymentReminder?.term_final_reminder?.days_before === 1 ? 'day' : 'days'
 #: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:94
 #: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:110
 #: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:126
@@ -116,27 +145,36 @@ msgstr "{0} {1} after"
 msgid "{0} {1} before"
 msgstr "{0} {1} before"
 
+#. placeholder {0}: issuedDocuments.length
+#. placeholder {1}: recurrence?.iterations.length
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:184
 msgid "{0} / {1} issued"
 msgstr "{0} / {1} issued"
 
+#. placeholder {0}: selectedPaymentTerm.term_final?.number_of_days
+#. placeholder {0}: term_final?.number_of_days
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:196
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:47
 msgid "{0} days"
 msgstr "{0} days"
 
+#. placeholder {0}: receivable.type
 #: src/components/receivables/hooks/useCreateReceivable.ts:21
 msgid "{0} has been created"
 msgstr "{0} has been created"
 
+#. placeholder {0}: receivable.type
 #: src/components/receivables/hooks/useIssueReceivableById.ts:48
 msgid "{0} has been issued"
 msgstr "{0} has been issued"
 
+#. placeholder {0}: receivable.type
 #: src/components/receivables/hooks/useUpdateReceivable.ts:42
 msgid "{0} has been updated"
 msgstr "{0} has been updated"
 
+#. placeholder {0}: formatCurrencyToDisplay( invoice?.amount_paid, invoice?.currency )
+#. placeholder {1}: formatCurrencyToDisplay( invoice?.amount_due, invoice?.currency )
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:157
 msgid "{0} paid / {1} due"
 msgstr "{0} paid / {1} due"
@@ -149,10 +187,13 @@ msgstr "{0} paid / {1} due"
 #~ msgid "{0} Processing"
 #~ msgstr "{0} Processing"
 
+#. placeholder {0}: isInclusivePricing ? 'Incl.' : 'Excl.'
 #: src/components/receivables/components/VatModeMenu.tsx:33
 msgid "{0} tax"
 msgstr "{0} tax"
 
+#. placeholder {0}: item?.quantity
+#. placeholder {1}: formatCurrencyToDisplay( isInclusivePricing ? item?.product?.price_after_vat?.value : item?.product?.price?.value, item?.product?.price?.currency )
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:102
 msgid "{0} x {1}"
 msgstr "{0} x {1}"
@@ -161,14 +202,21 @@ msgstr "{0} x {1}"
 #~ msgid "{0}/{1} issued"
 #~ msgstr "{0}/{1} issued"
 
+#. placeholder {0}: item.advance_rate_percentage / 100
 #: src/components/financing/components/FinanceOffers.tsx:68
 msgid "{0}% advance rate"
 msgstr "{0}% advance rate"
 
+#. placeholder {0}: (pricingPlan?.data?.advance_rate_percentage ?? 0) / 100
+#. placeholder {1}: pricingPlan?.data?.repayment_duration_days
+#. placeholder {2}: (pricingPlan?.data?.fee_percentage ?? 0) / 100
 #: src/components/financing/components/FinanceDetails.tsx:140
 msgid "{0}% advance rate, Pay in {1} days, {2}% fee"
 msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
 
+#. placeholder {0}: rateMinorToMajor( selectedPaymentTerm.term_1.discount )
+#. placeholder {0}: rateMinorToMajor( selectedPaymentTerm.term_2.discount )
+#. placeholder {0}: rateMinorToMajor(term_1.discount)
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:171
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:186
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsSummary.tsx:32
@@ -176,6 +224,7 @@ msgstr "{0}% advance rate, Pay in {1} days, {2}% fee"
 msgid "{0}% discount"
 msgstr "{0}% discount"
 
+#. placeholder {0}: item.fee_percentage / 100
 #: src/components/financing/components/FinanceOffers.tsx:78
 msgid "{0}% fee"
 msgstr "{0}% fee"
@@ -236,6 +285,7 @@ msgstr "{label}"
 msgid "{name} template has been set as the default."
 msgstr "{name} template has been set as the default."
 
+#. placeholder {0}: createDayPluralForm( i18n, overdueDays )
 #: src/ui/DueDateCell/DueDateCell.tsx:53
 msgid "{overdueDays} {0} overdue"
 msgstr "{overdueDays} {0} overdue"
@@ -594,6 +644,7 @@ msgstr "Added on"
 msgid "Address"
 msgstr "Address"
 
+#. placeholder {0}: updatedAddress.line1
 #: src/core/queries/useCounterpart.ts:69
 msgid "Address “{0}” has been updated."
 msgstr "Address “{0}” has been updated."
@@ -799,6 +850,7 @@ msgstr "Amount"
 msgid "Amount due"
 msgstr "Amount due"
 
+#. placeholder {0}: invoice?.currency
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:139
 msgid "Amount due ({0})"
 msgstr "Amount due ({0})"
@@ -826,6 +878,7 @@ msgstr "Amount paid"
 #~ msgid "Amount paid {0}"
 #~ msgstr "Amount paid {0}"
 
+#. placeholder {0}: i18n.date(paymentRecord?.paid_at, locale.dateTimeFormat)
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:111
 msgid "Amount paid on {0}"
 msgstr "Amount paid on {0}"
@@ -878,6 +931,7 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
+#. placeholder {0}: count.toString()
 #: src/components/approvalPolicies/shared/approvalRuleLabels.ts:8
 msgid "Any {0} users from the list"
 msgstr "Any {0} users from the list"
@@ -1282,16 +1336,21 @@ msgstr "Bank account"
 msgid "Bank Account"
 msgstr "Bank Account"
 
+#. placeholder {0}: bank.display_name
+#. placeholder {0}: bank.name
 #: src/components/receivables/hooks/useCreateEntityBankAccount.ts:16
 #: src/core/queries/useCounterpart.ts:94
 msgid "Bank Account “{0}” has been created."
 msgstr "Bank Account “{0}” has been created."
 
+#. placeholder {0}: bank.display_name
+#. placeholder {0}: bank.name
 #: src/components/receivables/hooks/useUpdateEntityBankAccount.ts:14
 #: src/core/queries/useCounterpart.ts:131
 msgid "Bank Account “{0}” has been updated."
 msgstr "Bank Account “{0}” has been updated."
 
+#. placeholder {0}: bankAccounts?.length + 1
 #: src/components/receivables/components/BankAccountFormContent.tsx:77
 msgid "Bank account {0}"
 msgstr "Bank account {0}"
@@ -1677,6 +1736,9 @@ msgstr "Can't be greater than 20"
 #~ msgid "Can't be greater than 25"
 #~ msgstr "Can't be greater than 25"
 
+#. placeholder {0}: nextNumbers.credit_note
+#. placeholder {0}: nextNumbers.delivery_note
+#. placeholder {0}: nextNumbers.invoice
 #: src/components/templateSettings/schemas.ts:22
 #: src/components/templateSettings/schemas.ts:30
 #: src/components/templateSettings/schemas.ts:36
@@ -1801,6 +1863,7 @@ msgstr "Cancel invoice"
 #~ msgid "Cancel receivable \"{0}\"?"
 #~ msgstr "Cancel receivable \"{0}\"?"
 
+#. placeholder {0}: receivable?.document_id
 #: src/components/receivables/components/InvoiceCancelModal.tsx:35
 msgid "Cancel receivable “{0}”?"
 msgstr "Cancel receivable “{0}”?"
@@ -2276,10 +2339,12 @@ msgstr "Contact person"
 #~ msgid "Contact Person"
 #~ msgstr "Contact Person"
 
+#. placeholder {0}: getIndividualName( contact.first_name, contact.last_name )
 #: src/core/queries/useCounterpart.ts:439
 msgid "Contact Person “{0}” has been created."
 msgstr "Contact Person “{0}” has been created."
 
+#. placeholder {0}: getIndividualName( contact.first_name, contact.last_name )
 #: src/core/queries/useCounterpart.ts:500
 msgid "Contact Person “{0}” has been updated."
 msgstr "Contact Person “{0}” has been updated."
@@ -2407,10 +2472,12 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
+#. placeholder {0}: getCounterpartName( counterpart )
 #: src/core/queries/useCounterpart.ts:557
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
+#. placeholder {0}: getCounterpartName( counterpart )
 #: src/core/queries/useCounterpart.ts:618
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
@@ -2732,6 +2799,7 @@ msgstr "Credit applied"
 #~ msgid "Credit applied {0}"
 #~ msgstr "Credit applied {0}"
 
+#. placeholder {0}: i18n.date(creditNote?.issue_date, locale.dateTimeFormat)
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:127
 msgid "Credit applied on {0}"
 msgstr "Credit applied on {0}"
@@ -3028,6 +3096,7 @@ msgstr "Delete"
 #~ msgid "Delete \"{0}\" tag?"
 #~ msgstr "Delete \"{0}\" tag?"
 
+#. placeholder {0}: tag.name
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:74
 msgid "Delete “{0}” tag?"
 msgstr "Delete “{0}” tag?"
@@ -3036,10 +3105,12 @@ msgstr "Delete “{0}” tag?"
 #~ msgid "Delete “{0}” tag???"
 #~ msgstr "Delete “{0}” tag???"
 
+#. placeholder {0}: role?.name
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:70
 msgid "Delete \"{0}\"?"
 msgstr "Delete \"{0}\"?"
 
+#. placeholder {0}: product.name
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
 msgid "Delete “{0}“?"
 msgstr "Delete “{0}“?"
@@ -3082,6 +3153,7 @@ msgstr "Delete bill"
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
 
+#. placeholder {0}: getIndividualName( firstName, lastName )
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:221
 msgid "Delete Contact Person “{0}“?"
 msgstr "Delete Contact Person “{0}“?"
@@ -3090,6 +3162,7 @@ msgstr "Delete Contact Person “{0}“?"
 #~ msgid "Delete Counterpart \"{0}\"?"
 #~ msgstr "Delete Counterpart \"{0}\"?"
 
+#. placeholder {0}: getCounterpartName( counterpart )
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:154
 msgid "Delete Counterpart “{0}“?"
 msgstr "Delete Counterpart “{0}“?"
@@ -3287,6 +3360,7 @@ msgstr "discount"
 msgid "Discount"
 msgstr "Discount"
 
+#. placeholder {0}: index + 1
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:67
 msgid "Discount {0}"
 msgstr "Discount {0}"
@@ -3544,13 +3618,13 @@ msgstr "Due to regulations, we’re required to collect information about a comp
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 msgstr "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:247
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:283
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:259
+msgctxt "InvoicesTableRowActionMenu"
 msgid "Duplicate"
 msgstr "Duplicate"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:259
-msgctxt "InvoicesTableRowActionMenu"
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:247
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:283
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -3624,6 +3698,8 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
 
+#. placeholder {0}: getCounterpartName( counterpartMatchingToOCR )
+#. placeholder {0}: product?.type
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:459
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:144
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:168
@@ -3631,6 +3707,7 @@ msgstr "Edit"
 msgid "Edit {0}"
 msgstr "Edit {0}"
 
+#. placeholder {0}: isEntity ? "my entity's" : 'customer’s'
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:71
 msgid "Edit {0} profile"
 msgstr "Edit {0} profile"
@@ -3738,6 +3815,7 @@ msgstr "Edit settings"
 #~ msgid "Edit tag"
 #~ msgstr "Edit tag"
 
+#. placeholder {0}: tag.name
 #: src/components/tags/TagFormModal/TagFormModal.tsx:177
 #: src/components/tags/TagFormModal/TagFormModal.tsx:180
 msgid "Edit tag ”{0}”"
@@ -4113,6 +4191,7 @@ msgstr "European VAT number (Spain)"
 msgid "European VAT number (Sweden)"
 msgstr "European VAT number (Sweden)"
 
+#. placeholder {0}: startDay === 1 ? 'first' : 'last'
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:178
 msgid "Every {0} day of month"
 msgstr "Every {0} day of month"
@@ -4352,6 +4431,7 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
+#. placeholder {0}: file.name
 #: src/core/hooks/useFileInput.tsx:92
 msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
 msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
@@ -4412,6 +4492,7 @@ msgstr "Financing menu"
 msgid "Financing plan"
 msgstr "Financing plan"
 
+#. placeholder {0}: (pricingPlan?.pricingPlanIndex ?? 0) + 1
 #: src/components/financing/components/FinanceDetails.tsx:135
 msgid "Financing plan {0}"
 msgstr "Financing plan {0}"
@@ -4464,6 +4545,8 @@ msgstr "Florists Supplies, Nursery Stock, and Flowers"
 msgid "Flow"
 msgstr "Flow"
 
+#. placeholder {0}: invoice?.counterpart_name
+#. placeholder {0}: mockInvoice.counterpart_name
 #: src/components/receivables/components/InvoiceDetails.test.tsx:170
 #: src/components/receivables/components/InvoiceDetails.tsx:196
 msgid "for {0}"
@@ -4537,6 +4620,7 @@ msgstr "from"
 msgid "From (including)"
 msgstr "From (including)"
 
+#. placeholder {0}: invoice.counterpart_name
 #: src/components/receivables/components/ManualPaymentRecordDetails.tsx:78
 msgid "from {0}"
 msgstr "from {0}"
@@ -4864,17 +4948,35 @@ msgstr "Heating, Plumbing, A/C"
 msgid "here."
 msgstr "here."
 
+#. placeholder {0}: defaultContact.first_name
+#. placeholder {1}: me.first_name
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:77
 msgid ""
 "Hi {0},\n"
-"Please find the invoice attached as discussed.\n"
-"Kind Regards,\n"
-"{1}"
+"\n"
+"          Please find the invoice attached as discussed.\n"
+"\n"
+"          Kind Regards,\n"
+"          {1}"
 msgstr ""
 "Hi {0},\n"
-"Please find the invoice attached as discussed.\n"
-"Kind Regards,\n"
-"{1}"
+"\n"
+"          Please find the invoice attached as discussed.\n"
+"\n"
+"          Kind Regards,\n"
+"          {1}"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:77
+#~ msgid ""
+#~ "Hi {0},\n"
+#~ "Please find the invoice attached as discussed.\n"
+#~ "Kind Regards,\n"
+#~ "{1}"
+#~ msgstr ""
+#~ "Hi {0},\n"
+#~ "Please find the invoice attached as discussed.\n"
+#~ "Kind Regards,\n"
+#~ "{1}"
 
 #: src/components/financing/components/FinanceBanner.tsx:300
 msgid "Hide"
@@ -5197,10 +5299,12 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 msgid "Invoice"
 msgstr "Invoice"
 
+#. placeholder {0}: invoice.document_id || INVOICE_DOCUMENT_AUTO_ID
 #: src/components/financing/components/FinanceDetails.tsx:223
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
+#. placeholder {0}: receivable.document_id
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:91
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
@@ -5290,6 +5394,7 @@ msgstr "Invoice Number is required"
 msgid "Invoice Reminder type is not provided"
 msgstr "Invoice Reminder type is not provided"
 
+#. placeholder {0}: receivable.counterpart_name
 #: src/components/receivables/hooks/useCreateReceivable.ts:17
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
@@ -5359,13 +5464,13 @@ msgstr "Israel VAT"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:185
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:270
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:235
+msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:235
-msgctxt "InvoicesTableRowActionMenu"
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:185
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:270
 msgid "Issue"
 msgstr "Issue"
 
@@ -5456,8 +5561,16 @@ msgid "It will remain in all the documents where it is added. You can’t undo t
 msgstr "It will remain in all the documents where it is added. You can’t undo this action."
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:137
-msgid "It’s required to add any individual who is on the governing board of the company."
-msgstr "It’s required to add any individual who is on the governing board of the company."
+#~ msgid "It’s required to add any individual who is on the governing board of the company."
+#~ msgstr "It’s required to add any individual who is on the governing board of the company."
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:137
+msgid ""
+"It’s required to add any individual who is on the governing board of the company.\n"
+""
+msgstr ""
+"It’s required to add any individual who is on the governing board of the company.\n"
+""
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:152
 msgid "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
@@ -5561,6 +5674,7 @@ msgstr "Items"
 #~ msgid "iteration-{0}"
 #~ msgstr "iteration-{0}"
 
+#. placeholder {0}: iteration?.iteration
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:113
 msgid "iteration-{0}-{index}"
 msgstr "iteration-{0}-{index}"
@@ -5976,12 +6090,15 @@ msgid "Malta"
 msgstr "Malta"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:20
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:177
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:110
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:167
 #: src/components/products/Products.tsx:107
 msgid "Manage measure units"
 msgstr "Manage measure units"
+
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:177
+msgid "Manage measure units "
+msgstr "Manage measure units "
 
 #: src/components/onboarding/validators/validators.ts:150
 msgid "Managers and owners must be at least 18 years old to use this service."
@@ -6446,6 +6563,7 @@ msgstr "New counterpart"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
+#. placeholder {0}: createdTag.name
 #: src/components/tags/TagFormModal/TagFormModal.tsx:147
 msgid "New tag “{0}” created"
 msgstr "New tag “{0}” created"
@@ -6855,8 +6973,8 @@ msgid "Optometrists, Ophthalmologist"
 msgstr "Optometrists, Ophthalmologist"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:462
-msgid "or"
-msgstr "or"
+#~ msgid "or"
+#~ msgstr "or"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:114
 msgid "Or add bill manually"
@@ -7041,10 +7159,14 @@ msgstr "Pay"
 msgid "Pay in"
 msgstr "Pay in"
 
+#. placeholder {0}: item.repayment_duration_days
 #: src/components/financing/components/FinanceOffers.tsx:73
 msgid "Pay in {0} days"
 msgstr "Pay in {0} days"
 
+#. placeholder {0}: selectedPaymentTerm.term_1.number_of_days
+#. placeholder {0}: selectedPaymentTerm.term_2.number_of_days
+#. placeholder {0}: term_1.number_of_days
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:165
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:180
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:220
@@ -7067,6 +7189,7 @@ msgstr "Payable"
 #~ msgid "Payable \"{0}\" has been approved"
 #~ msgstr "Payable \"{0}\" has been approved"
 
+#. placeholder {0}: payable?.document_id ?? 'document id is unknown'
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1004
 msgid "Payable “{0}” has been approved"
 msgstr "Payable “{0}” has been approved"
@@ -7075,6 +7198,7 @@ msgstr "Payable “{0}” has been approved"
 #~ msgid "Payable \"{0}\" has been canceled"
 #~ msgstr "Payable \"{0}\" has been canceled"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:910
 msgid "Payable “{0}” has been canceled"
 msgstr "Payable “{0}” has been canceled"
@@ -7083,14 +7207,17 @@ msgstr "Payable “{0}” has been canceled"
 #~ msgid "Payable \"{0}\" has been created"
 #~ msgstr "Payable \"{0}\" has been created"
 
+#. placeholder {0}: createdPayable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:732
 msgid "Payable “{0}” has been created"
 msgstr "Payable “{0}” has been created"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1042
 msgid "Payable “{0}” has been force approved"
 msgstr "Payable “{0}” has been force approved"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1024
 msgid "Payable “{0}” has been force rejected"
 msgstr "Payable “{0}” has been force rejected"
@@ -7103,6 +7230,7 @@ msgstr "Payable “{0}” has been force rejected"
 #~ msgid "Payable \"{0}\" has been rejected"
 #~ msgstr "Payable \"{0}\" has been rejected"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:986
 msgid "Payable “{0}” has been rejected"
 msgstr "Payable “{0}” has been rejected"
@@ -7111,6 +7239,7 @@ msgstr "Payable “{0}” has been rejected"
 #~ msgid "Payable \"{0}\" has been reopened"
 #~ msgstr "Payable \"{0}\" has been reopened"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1060
 msgid "Payable “{0}” has been reopened"
 msgstr "Payable “{0}” has been reopened"
@@ -7119,6 +7248,7 @@ msgstr "Payable “{0}” has been reopened"
 #~ msgid "Payable \"{0}\" has been submitted"
 #~ msgstr "Payable \"{0}\" has been submitted"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:964
 msgid "Payable “{0}” has been submitted"
 msgstr "Payable “{0}” has been submitted"
@@ -7127,10 +7257,12 @@ msgstr "Payable “{0}” has been submitted"
 #~ msgid "Payable \"{0}\" has been updated"
 #~ msgstr "Payable \"{0}\" has been updated"
 
+#. placeholder {0}: updatedPayable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:796
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
+#. placeholder {0}: file.name
 #: src/components/payables/Payables.tsx:130
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
@@ -7459,15 +7591,28 @@ msgstr "Please enter a valid phone number."
 #~ msgid "Please fill in all required fields"
 #~ msgstr "Please fill in all required fields"
 
+#. placeholder {0}: me?.first_name ?? ''
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:83
 msgid ""
 "Please find the invoice attached as discussed.\n"
-"Kind Regards,\n"
-"{0}"
+"\n"
+"          Kind Regards,\n"
+"          {0}"
 msgstr ""
 "Please find the invoice attached as discussed.\n"
-"Kind Regards,\n"
-"{0}"
+"\n"
+"          Kind Regards,\n"
+"          {0}"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:83
+#~ msgid ""
+#~ "Please find the invoice attached as discussed.\n"
+#~ "Kind Regards,\n"
+#~ "{0}"
+#~ msgstr ""
+#~ "Please find the invoice attached as discussed.\n"
+#~ "Kind Regards,\n"
+#~ "{0}"
 
 #: src/components/financing/components/FinanceBanner.tsx:221
 msgid "Please get in touch with the provider if you still wish to receive financing."
@@ -7526,6 +7671,14 @@ msgstr "Please use some of the rows before adding new ones."
 msgid "Please, add at least 1 item to proceed with this invoice"
 msgstr "Please, add at least 1 item to proceed with this invoice"
 
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:116
+msgid ""
+"Please, check the details of your payment record.\n"
+"  You won’t be able to change or delete it after."
+msgstr ""
+"Please, check the details of your payment record.\n"
+"  You won’t be able to change or delete it after."
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/TabPanels/PaymentTabPanel/ManualPaymentRecordDetails.tsx:117
 #~ msgid ""
 #~ "Please, check the details of your payment record.\n"
@@ -7535,12 +7688,12 @@ msgstr "Please, add at least 1 item to proceed with this invoice"
 #~ "You won't be able to change or delete it after."
 
 #: src/components/receivables/components/ManualPaymentRecordDetails.tsx:116
-msgid ""
-"Please, check the details of your payment record.\n"
-"You won’t be able to change or delete it after."
-msgstr ""
-"Please, check the details of your payment record.\n"
-"You won’t be able to change or delete it after."
+#~ msgid ""
+#~ "Please, check the details of your payment record.\n"
+#~ "You won’t be able to change or delete it after."
+#~ msgstr ""
+#~ "Please, check the details of your payment record.\n"
+#~ "You won’t be able to change or delete it after."
 
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:71
 msgid "Please, check the list of products and services that will get deleted:"
@@ -7662,6 +7815,8 @@ msgstr "Preset Name must be 255 characters or less"
 msgid "Preview email"
 msgstr "Preview email"
 
+#. placeholder {0}: selectedTemplate.name || 'template'
+#. placeholder {0}: template?.name || 'template'
 #: src/components/templateSettings/components/LayoutAndLogo.tsx:52
 #: src/components/templateSettings/components/TemplateOption.tsx:62
 msgid "Preview of {0}"
@@ -7735,10 +7890,12 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
+#. placeholder {0}: product.name
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:73
 msgid "Product {0} was created."
 msgstr "Product {0} was created."
 
+#. placeholder {0}: product.name
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:72
 msgid "Product {0} was updated."
 msgstr "Product {0} was updated."
@@ -7927,6 +8084,7 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
+#. placeholder {0}: invoice.type
 #: src/components/receivables/components/InvoiceDetails.tsx:159
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
@@ -8085,6 +8243,7 @@ msgstr "Remaining limit"
 msgid "Remind"
 msgstr "Remind"
 
+#. placeholder {0}: index + 1
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:217
 msgid "Reminder {0}"
 msgstr "Reminder {0}"
@@ -8223,10 +8382,12 @@ msgstr "Review terms and sign"
 msgid "Role"
 msgstr "Role"
 
+#. placeholder {0}: role.name
 #: src/components/userRoles/useUserRoles.ts:80
 msgid "Role {0} was created"
 msgstr "Role {0} was created"
 
+#. placeholder {0}: role.name
 #: src/components/userRoles/useUserRoles.ts:95
 msgid "Role {0} was updated"
 msgstr "Role {0} was updated"
@@ -8549,13 +8710,13 @@ msgstr "Select month"
 msgid "Select someone"
 msgstr "Select someone"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:225
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:321
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:211
+msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:211
-msgctxt "InvoicesTableRowActionMenu"
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:225
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:321
 msgid "Send"
 msgstr "Send"
 
@@ -8597,10 +8758,12 @@ msgstr "Serbian Dinar"
 msgid "Service"
 msgstr "Service"
 
+#. placeholder {0}: product.name
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:74
 msgid "Service {0} was created."
 msgstr "Service {0} was created."
 
+#. placeholder {0}: product.name
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:73
 msgid "Service {0} was updated."
 msgstr "Service {0} was updated."
@@ -8617,6 +8780,7 @@ msgstr "Service Stations"
 msgid "Services"
 msgstr "Services"
 
+#. placeholder {0}: getText()
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:60
 msgid "Set a {0} for this customer to issue invoice"
 msgstr "Set a {0} for this customer to issue invoice"
@@ -8678,6 +8842,7 @@ msgstr "Set this counterpart as:"
 msgid "Set up bank account to add payment info and set a QR code"
 msgstr "Set up bank account to add payment info and set a QR code"
 
+#. placeholder {0}: getText()
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/VatAndTaxValidator.tsx:59
 msgid "Set your entity's {0} to issue invoice"
 msgstr "Set your entity's {0} to issue invoice"
@@ -8830,10 +8995,18 @@ msgstr "Something went wrong"
 #: src/components/aiAssistant/components/AssistantMessage/AssistantMessage.tsx:50
 msgid ""
 "Something went wrong. If this issue persists please contact us through\n"
-"the chat icon in the bottom right or email us at help@getargon.ai"
+"            the chat icon in the bottom right or email us at help@getargon.ai"
 msgstr ""
 "Something went wrong. If this issue persists please contact us through\n"
-"the chat icon in the bottom right or email us at help@getargon.ai"
+"            the chat icon in the bottom right or email us at help@getargon.ai"
+
+#: src/components/aiAssistant/components/AssistantMessage/AssistantMessage.tsx:50
+#~ msgid ""
+#~ "Something went wrong. If this issue persists please contact us through\n"
+#~ "the chat icon in the bottom right or email us at help@getargon.ai"
+#~ msgstr ""
+#~ "Something went wrong. If this issue persists please contact us through\n"
+#~ "the chat icon in the bottom right or email us at help@getargon.ai"
 
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:151
 msgid "Something went wrong. Please try again"
@@ -9120,14 +9293,18 @@ msgstr "Syrian Arab Republic"
 msgid "Tag"
 msgstr "Tag"
 
+#. placeholder {0}: tag.name
+#. placeholder {1}: updatedTag.name
 #: src/components/tags/TagFormModal/TagFormModal.tsx:156
 msgid "Tag “{0}” renamed to “{1}”"
 msgstr "Tag “{0}” renamed to “{1}”"
 
+#. placeholder {0}: tag.name
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:63
 msgid "Tag “{0}” was deleted"
 msgstr "Tag “{0}” was deleted"
 
+#. placeholder {0}: tag.name
 #: src/components/tags/TagFormModal/TagFormModal.tsx:157
 msgid "Tag “{0}” was updated”"
 msgstr "Tag “{0}” was updated”"
@@ -9385,6 +9562,7 @@ msgstr "The bill will receive the “Canceled” status and will require no paym
 msgid "The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 msgstr "The counterpart details in the bill don’t fully match the saved counterpart. Consider editing the saved counterpart or creating a new one."
 
+#. placeholder {0}: receivable?.document_id
 #: src/components/receivables/components/InvoiceCancelModal.tsx:39
 msgid "The Credit note to this invoice “{0}” was created earlier. Following that you can’t cancel invoice."
 msgstr "The Credit note to this invoice “{0}” was created earlier. Following that you can’t cancel invoice."
@@ -9479,6 +9657,7 @@ msgstr "There are no items created with this measure unit."
 msgid "There are unsaved changes. If you leave, they will be lost."
 msgstr "There are unsaved changes. If you leave, they will be lost."
 
+#. placeholder {0}: props.id
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:138
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
@@ -9487,6 +9666,7 @@ msgstr "There is no counterpart by provided id: {0}"
 #~ msgid "There is no invoice by provided id: {0}"
 #~ msgstr "There is no invoice by provided id: {0}"
 
+#. placeholder {0}: defaultProps.id
 #: src/components/receivables/components/InvoiceDetails.test.tsx:120
 msgid "There is no invoice for the provided id: {0}"
 msgstr "There is no invoice for the provided id: {0}"
@@ -9525,6 +9705,7 @@ msgstr "There is no role by provided id: {id}"
 msgid "There may be a mismatch between the OCR data and payable data. Please review the details"
 msgstr "There may be a mismatch between the OCR data and payable data. Please review the details"
 
+#. placeholder {0}: entityName.toLowerCase()
 #: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:92
 msgid "There was an error loading {0}."
 msgstr "There was an error loading {0}."
@@ -9723,6 +9904,7 @@ msgstr "Total"
 msgid "TOTAL"
 msgstr "TOTAL"
 
+#. placeholder {0}: invoice?.currency
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:96
 msgid "Total ({0})"
 msgstr "Total ({0})"
@@ -9743,6 +9925,7 @@ msgstr "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralF
 msgid "Total Tax"
 msgstr "Total Tax"
 
+#. placeholder {0}: rateMinorToMajor( vatRate?.value )
 #: src/components/receivables/components/InvoiceDetailsSummary.tsx:81
 msgid "Total tax ({0}%)"
 msgstr "Total tax ({0}%)"
@@ -9945,14 +10128,17 @@ msgstr "Unique Entity Number (Singapore)"
 msgid "Unit"
 msgstr "Unit"
 
+#. placeholder {0}: data.name
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:70
 msgid "Unit {0} was added to the list"
 msgstr "Unit {0} was added to the list"
 
+#. placeholder {0}: deletingUnit.name
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:57
 msgid "Unit {0} was deleted from the list."
 msgstr "Unit {0} was deleted from the list."
 
+#. placeholder {0}: data.name
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:100
 msgid "Unit {0} was updated"
 msgstr "Unit {0} was updated"
@@ -10033,6 +10219,7 @@ msgstr "Unrecognized error. Please contact support."
 msgid "Unspecified"
 msgstr "Unspecified"
 
+#. placeholder {0}: file.name
 #: src/core/hooks/useFileInput.tsx:88
 msgid "Unsupported file type for {0}"
 msgstr "Unsupported file type for {0}"
@@ -10091,8 +10278,12 @@ msgid "Update to match bill"
 msgstr "Update to match bill"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/InlineSuggestionFill.tsx:21
-msgid "Update to match bill:"
-msgstr "Update to match bill:"
+#~ msgid "Update to match bill:"
+#~ msgstr "Update to match bill:"
+
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/InlineSuggestionFill.tsx:21
+msgid "Update to match bill: "
+msgstr "Update to match bill: "
 
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:100
 #~ msgid "Update Vat Id"
@@ -10123,6 +10314,7 @@ msgstr "Upload payable file"
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
+#. placeholder {0}: file.name
 #: src/components/payables/Payables.tsx:129
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
@@ -10283,10 +10475,12 @@ msgstr "Variety Stores"
 msgid "VAT"
 msgstr "VAT"
 
+#. placeholder {0}: vatId.value
 #: src/core/queries/useCounterpart.ts:214
 msgid "Vat “{0}” has been created."
 msgstr "Vat “{0}” has been created."
 
+#. placeholder {0}: updatedVatId.value
 #: src/core/queries/useCounterpart.ts:270
 msgid "Vat “{0}” has been updated."
 msgstr "Vat “{0}” has been updated."
@@ -10478,14 +10672,14 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:207
-msgctxt "InvoicesTableRowActionMenu"
-msgid "View"
-msgstr "View"
-
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:174
+msgid "View"
+msgstr "View"
+
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:207
+msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
 
@@ -10636,6 +10830,7 @@ msgstr "You can add a document number to have it in the PDF"
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
 
+#. placeholder {0}: entityName.toLowerCase()
 #: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:74
 msgid "You can create your first {0}."
 msgstr "You can create your first {0}."
@@ -10680,13 +10875,18 @@ msgstr "You can create your first tag."
 msgid "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 msgstr "You can include details about the warranty, insurance, liability, late payment fees and any other important notes"
 
+#. placeholder {0}: 'invoice'
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:112
+msgid "You can not create receivable with a type other than “{0}”"
+msgstr "You can not create receivable with a type other than “{0}”"
+
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.tsx:31
 #~ msgid "You can not create receivable with a type other than \"{invoice}\""
 #~ msgstr "You can not create receivable with a type other than \"{invoice}\""
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:112
-msgid "You can not create receivable with a type other than “{invoice}”"
-msgstr "You can not create receivable with a type other than “{invoice}”"
+#~ msgid "You can not create receivable with a type other than “{invoice}”"
+#~ msgstr "You can not create receivable with a type other than “{invoice}”"
 
 #: src/components/receivables/components/InvoiceDetailsTabPayments.tsx:120
 msgid "You can record a payment if you've already received it."
@@ -10727,6 +10927,7 @@ msgstr "You can't undo this action."
 msgid "You can’t undo this action."
 msgstr "You can’t undo this action."
 
+#. placeholder {0}: entityName.toLowerCase()
 #: src/ui/DataGridEmptyState/GetNoRowsOverlay.tsx:70
 msgid "You don’t have any {0} yet."
 msgstr "You don’t have any {0} yet."
@@ -10834,8 +11035,8 @@ msgid "Your AI Assistant chat history will be shown here"
 msgstr "Your AI Assistant chat history will be shown here"
 
 #: src/components/financing/components/FinanceLimits.tsx:42
-msgid "Your amount available for financing additional invoices."
-msgstr "Your amount available for financing additional invoices."
+#~ msgid "Your amount available for financing additional invoices."
+#~ msgstr "Your amount available for financing additional invoices."
 
 #: src/components/financing/components/FinanceBanner.tsx:177
 msgid "Your application is in review"
