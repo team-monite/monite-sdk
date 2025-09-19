@@ -50,6 +50,9 @@ export type UsePayableDetailsProps = {
    */
   id?: string;
 
+  /** when provided it takes precedence over component settings */
+  enableGLCodes?: boolean;
+
   /**
    * Callback function that is called when the payable is saved
    *
@@ -132,6 +135,7 @@ export type UsePayableDetailsProps = {
 
 export function usePayableDetails({
   id,
+  enableGLCodes,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -749,6 +753,7 @@ export function usePayableDetails({
                 payable.currency,
                 lineItem,
                 formatToMinorUnits,
+                { allowLedgerUpdate: false }
               ),
             })
           );
@@ -842,7 +847,13 @@ export function usePayableDetails({
                   payable.currency,
                   updatedLineItem,
                   formatToMinorUnits,
-                  lineItems?.find((li) => li.id === lineItemId)?.ledger_account_id
+                  {
+                    allowLedgerUpdate:
+                      Boolean(lineItemsDirtyFields.ledger_account_id) &&
+                      enableGLCodes,
+                    previous: lineItems?.find((li) => li.id === lineItemId)
+                      ?.ledger_account_id,
+                  }
                 ),
               })
             );

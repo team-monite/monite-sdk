@@ -196,14 +196,13 @@ export const prepareLineItemSubmit = (
   currency: CurrencyEnum,
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: CurrencyEnum) => number | null,
-  previousLedgerAccountId?: string
+  options?: { allowLedgerUpdate?: boolean; previous?: string | null }
 ): LineItemRequest => {
   const { name, quantity, price, tax, ledger_account_id } = lineItem;
 
-  const resolvedLedgerId = resolveNullableUpdate(
-    ledger_account_id,
-    previousLedgerAccountId
-  );
+  const resolvedLedgerId = options?.allowLedgerUpdate
+    ? resolveNullableUpdate(ledger_account_id, options?.previous)
+    : ledger_account_id;
 
   const payload: LineItemRequestLocal = {
     name,

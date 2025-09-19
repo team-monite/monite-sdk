@@ -17,7 +17,7 @@ export interface PayableLineItemsFormProps {
   enableGLCodes?: boolean;
 }
 
-export const PayableLineItemsForm = ({ enableGLCodes = false }: PayableLineItemsFormProps) => {
+export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProps) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency, formatCurrencyToDisplay, formatToMinorUnits } =
     useCurrencies();

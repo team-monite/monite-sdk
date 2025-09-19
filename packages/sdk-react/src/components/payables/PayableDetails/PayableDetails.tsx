@@ -41,6 +41,7 @@ const PayableDetailsBase = ({
   id,
   optionalFields,
   customerTypes,
+  enableGLCodes,
   onClose,
   onSaved,
   onCanceled,
@@ -51,7 +52,6 @@ const PayableDetailsBase = ({
   onDeleted,
   onPay,
   onPayUS,
-  enableGLCodes = false,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -79,6 +79,7 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
+    enableGLCodes,
     onSaved,
     onCanceled,
     onSubmitted,

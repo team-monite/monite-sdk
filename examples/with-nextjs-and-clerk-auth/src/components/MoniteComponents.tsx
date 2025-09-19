@@ -518,7 +518,7 @@ export const Payables = () => {
   return (
     <>
       <PayablesBase
-        enableGLCodes={true}
+        enableGLCodes
         onPayUS={(payableId: string) => {
           setCurrentPayableId(payableId);
           setModalOpen(true);

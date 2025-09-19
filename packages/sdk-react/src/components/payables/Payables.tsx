@@ -5,10 +5,10 @@ import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/use
 import { PayablesTable } from '@/components/payables/PayablesTable';
 import { usePayableCallbacks } from '@/components/payables/hooks/usePayableCallbacks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFileInput } from '@/core/hooks';
+import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -28,7 +28,6 @@ export type PayablesProps = {
    * Enable GL code selection for payable line items.
    * When true, users can assign GL codes to individual line items.
    * GL codes are fetched from the connected accounting system.
-   * @default false
    */
   enableGLCodes?: boolean;
 } & Pick<
@@ -165,9 +164,7 @@ const PayablesBase = ({
   const className = 'Monite-Payables-Header';
 
   const finalEnableGLCodes =
-    enableGLCodes !== undefined
-      ? enableGLCodes
-      : componentSettings?.payables?.enableGLCodes ?? false;
+    enableGLCodes ?? componentSettings?.payables?.enableGLCodes ?? false;
 
   return (
     <>

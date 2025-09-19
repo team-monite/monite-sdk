@@ -56,8 +56,8 @@ import { useMemo, useState } from 'react';
 export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
   payable: components['schemas']['PayableResponseSchema'];
-  updateTags?: (tags: components['schemas']['TagReadSchema'][]) => void;
   enableGLCodes?: boolean;
+  updateTags?: (tags: components['schemas']['TagReadSchema'][]) => void;
 }
 
 const DetailsWrapper = styled(Box)(() => ({

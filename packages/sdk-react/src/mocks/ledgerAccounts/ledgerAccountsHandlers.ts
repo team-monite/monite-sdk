@@ -45,7 +45,7 @@ export const ledgerAccountsHandlers = [
     } catch (_error) {
       return new HttpResponse(null, {
         status: 404,
-        statusText: 'Ledger Account Not Found',
+        statusText: 'GL Code Not Found',
       });
     }
   }),
