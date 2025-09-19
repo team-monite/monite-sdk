@@ -90,10 +90,25 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
   const [representativePersonId, setRepresentativePersonId] =
     useState<OnboardingPersonId>(null);
 
-  const onboardingRequirements = useMemo(
-    () => onboarding?.requirements ?? [],
-    [onboarding?.requirements]
+  const hasRepresentative = useMemo(
+    () =>
+      Boolean(
+        onboarding?.data?.persons?.some(
+          (person) => person?.relationship?.representative
+        )
+      ),
+    [onboarding?.data?.persons]
   );
+
+  // Frontend safeguard: if a representative person already exists, skip the
+  // 'representative' requirement even if backend still lists it.
+  // TODO: Remove this once the backend is updated (if it is a BE bug actually)
+  const onboardingRequirements = useMemo(() => {
+    const base = onboarding?.requirements ?? [];
+    if (!hasRepresentative) return base;
+
+    return base.filter((req) => req !== 'representative');
+  }, [onboarding?.requirements, hasRepresentative]);
 
   const requirements = useMemo(() => {
     return OnboardingRequirement.filter((requirement) =>
