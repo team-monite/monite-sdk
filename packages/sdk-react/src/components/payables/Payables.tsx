@@ -160,9 +160,7 @@ const PayablesBase = ({
     });
 
   const { root } = useRootElements();
-
   const className = 'Monite-Payables-Header';
-
   const finalEnableGLCodes =
     enableGLCodes ?? componentSettings?.payables?.enableGLCodes ?? false;
 
@@ -214,6 +212,10 @@ const PayablesBase = ({
       >
         <PayableDetails
           id={invoiceIdDialog.invoiceId}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+          enableGLCodes={finalEnableGLCodes}
           onClose={closeEditDialog}
           onSaved={handleSaved}
           onCanceled={handleCanceled}
@@ -230,10 +232,6 @@ const PayablesBase = ({
           }}
           onPay={handlePay}
           onPayUS={onPayUS}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
-          enableGLCodes={finalEnableGLCodes}
         />
       </Dialog>
 
@@ -245,12 +243,12 @@ const PayablesBase = ({
         fullScreen
       >
         <PayableDetails
-          onClose={() => setIsCreateInvoiceDialogOpen(false)}
-          onSaved={handleSaved}
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
           enableGLCodes={finalEnableGLCodes}
+          onClose={() => setIsCreateInvoiceDialogOpen(false)}
+          onSaved={handleSaved}
         />
       </Dialog>
     </>

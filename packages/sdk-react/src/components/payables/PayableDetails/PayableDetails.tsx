@@ -24,11 +24,11 @@ import { PayableDetailsForm } from './PayableDetailsForm';
 import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
-  onClose?: () => void;
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
   enableGLCodes?: boolean;
+  onClose?: () => void;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
