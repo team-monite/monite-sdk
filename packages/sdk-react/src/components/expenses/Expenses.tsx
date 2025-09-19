@@ -1,5 +1,7 @@
 import { UserTransactionsTable } from './ExpensesTable/UserTransactionsTable';
 import { ReceiptsInbox } from './ReceiptsInbox';
+import { useEntityUserByAuthToken } from '@/core/queries/useEntityUsers';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { PageHeader } from '@/ui/PageHeader';
 import { Button } from '@/ui/components/button';
 import { Dialog } from '@/ui/components/dialog';
@@ -10,9 +12,16 @@ import { useState } from 'react';
 
 export const Expenses = () => {
   const { i18n } = useLingui();
+  const { data: user } = useEntityUserByAuthToken();
 
   const [receiptsInboxOpened, setReceiptsInboxOpened] =
     useState<boolean>(false);
+
+  const { data: isReadReceiptsAllowed } = useIsActionAllowed({
+    method: 'receipt',
+    action: 'read',
+    entityUserId: user?.id,
+  });
 
   return (
     <div
@@ -30,6 +39,7 @@ export const Expenses = () => {
                 onClick={() => setReceiptsInboxOpened(true)}
                 title={t(i18n)`Open receipts inbox`}
                 aria-label={t(i18n)`Open receipts inbox`}
+                disabled={!isReadReceiptsAllowed}
               >
                 <ArchiveIcon />
               </Button>
