@@ -24,10 +24,11 @@ import { PayableDetailsForm } from './PayableDetailsForm';
 import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
-  onClose?: () => void;
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  enableGLCodes?: boolean;
+  onClose?: () => void;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -40,6 +41,7 @@ const PayableDetailsBase = ({
   id,
   optionalFields,
   customerTypes,
+  enableGLCodes,
   onClose,
   onSaved,
   onCanceled,
@@ -77,6 +79,7 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
+    enableGLCodes,
     onSaved,
     onCanceled,
     onSubmitted,
@@ -234,6 +237,7 @@ const PayableDetailsBase = ({
                     customerTypes ||
                     componentSettings?.counterparts?.customerTypes
                   }
+                  enableGLCodes={enableGLCodes}
                 />
               ) : (
                 payable && (
@@ -241,6 +245,7 @@ const PayableDetailsBase = ({
                     updateTags={(tags) => id && updateTags(id, tags || [])}
                     payable={payable}
                     optionalFields={optionalFields}
+                    enableGLCodes={enableGLCodes}
                   />
                 )
               )}

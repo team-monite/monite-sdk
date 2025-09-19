@@ -15,6 +15,7 @@ import { entitiesHandlers } from './entities';
 import { entityOnboardingDataHandlers } from './entitiyOnboardingData';
 import { entityUsersHandlers } from './entityUsers';
 import { filesHandlers } from './files';
+import { ledgerAccountsHandlers } from './ledgerAccounts';
 import { lineItemsHandlers } from './lineItems';
 import { measureUnitsHandlers } from './measureUnits';
 import { onboardingHandlers } from './onboarding';
@@ -63,4 +64,5 @@ export const handlers = [
   ...rolesHandlers,
   ...filesHandlers,
   ...documentTemplateHandlers,
+  ...ledgerAccountsHandlers,
 ];

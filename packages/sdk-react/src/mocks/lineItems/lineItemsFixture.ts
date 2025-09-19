@@ -27,6 +27,9 @@ export const generateLineItem = (
     subtotal: lineItem?.subtotal ?? subtotal,
     payable_id: payableId || lineItem?.payable_id || faker.string.uuid(),
     ocr_set_quantity_to_one: lineItem?.ocr_set_quantity_to_one ?? false,
+    ledger_account_id:
+      lineItem?.ledger_account_id ?? faker.string.uuid(),
+    unit: lineItem?.unit ?? 'unit',
   };
 };
 

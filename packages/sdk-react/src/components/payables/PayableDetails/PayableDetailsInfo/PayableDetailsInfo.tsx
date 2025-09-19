@@ -1,6 +1,7 @@
 import {
   useGetPayableCounterpart,
   usePayableDetailsThemeProps,
+  useLedgerAccounts,
 } from '../../hooks';
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
@@ -55,6 +56,7 @@ import { useMemo, useState } from 'react';
 export interface PayablesDetailsInfoProps
   extends MonitePayableDetailsInfoProps {
   payable: components['schemas']['PayableResponseSchema'];
+  enableGLCodes?: boolean;
   updateTags?: (tags: components['schemas']['TagReadSchema'][]) => void;
 }
 
@@ -103,6 +105,7 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 
 const PayableDetailsInfoBase = ({
   payable,
+  enableGLCodes,
   updateTags,
   ...inProps
 }: PayablesDetailsInfoProps) => {
@@ -133,6 +136,25 @@ const PayableDetailsInfoBase = ({
       payableId: payable.id,
     }
   );
+
+  const { data: ledgerAccounts } = useLedgerAccounts(enableGLCodes);
+
+  const getLedgerAccountSubtitle = (ledgerAccountId?: string) => {
+    if (!ledgerAccountId || !ledgerAccounts?.data) return undefined;
+
+    const account = ledgerAccounts.data.find(
+      (acc) => acc.id === ledgerAccountId
+    );
+
+    if (!account) return undefined;
+
+    const main =
+      account.nominal_code && account.type
+        ? `${account.nominal_code} — ${account.type}`
+        : (account.nominal_code ?? account.type ?? '');
+
+    return main ? `${t(i18n)`GL code`}: ${main}` : undefined;
+  };
 
   const ocrMismatchWarning = useMemo(() => {
     if (!payable || !ocrMismatchFields) return null;
@@ -485,7 +507,16 @@ const PayableDetailsInfoBase = ({
               <TableBody>
                 {lineItems?.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      <Stack>
+                        <Box>{item.name}</Box>
+                        {enableGLCodes && item.ledger_account_id && (
+                          <Typography variant="body2" color="secondary.main">
+                            {getLedgerAccountSubtitle(item.ledger_account_id)}
+                          </Typography>
+                        )}
+                      </Stack>
+                    </TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
                       {item.unit_price
