@@ -131,7 +131,8 @@ export const ReceiptsInbox = ({
 
   const { data: mailboxexData } = useGetMailboxes();
   const receiptsEmailAddress = mailboxexData?.data?.find(
-    (mailbox) => mailbox.related_object_type === 'receipt'
+    (mailbox) =>
+      mailbox.related_object_type === 'receipt' && mailbox.status === 'active'
   )?.mailbox_full_address;
 
   const handleReceiptClick = useCallback(
