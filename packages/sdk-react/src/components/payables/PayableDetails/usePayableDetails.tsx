@@ -849,8 +849,8 @@ export function usePayableDetails({
                   formatToMinorUnits,
                   {
                     allowLedgerUpdate:
-                      Boolean(lineItemsDirtyFields.ledger_account_id) &&
-                      enableGLCodes,
+                      enableGLCodes &&
+                      Boolean(lineItemsDirtyFields.ledger_account_id),
                     previous: lineItems?.find((li) => li.id === lineItemId)
                       ?.ledger_account_id,
                   }

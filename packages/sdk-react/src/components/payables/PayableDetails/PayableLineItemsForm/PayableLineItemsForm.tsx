@@ -1,5 +1,4 @@
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { createLocaleNumberChangeHandler } from '@/components/payables/utils/numberInput';
 
 import {
   calculateTotalPriceForLineItem,
@@ -67,17 +66,11 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
                     id={field.name}
                     label={t(i18n)`Quantity`}
                     variant="standard"
-                    type="text"
-                    inputMode="decimal"
+                    type="number"
                     inputProps={{ min: 1 }}
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    onChange={createLocaleNumberChangeHandler(
-                      i18n.locale,
-                      'undefined',
-                      field.onChange
-                    )}
                   />
                 )}
               />
@@ -143,20 +136,12 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
                     id={field.name}
                     label={t(i18n)`Price`}
                     variant="standard"
-                    type="text"
-                    inputMode="decimal"
+                    type="number"
                     inputProps={{ min: 0 }}
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    InputProps={{
-                      endAdornment: getSymbolFromCurrency(watch('currency')),
-                    }}
-                    onChange={createLocaleNumberChangeHandler(
-                      i18n.locale,
-                      'undefined',
-                      field.onChange
-                    )}
+                    InputProps={{ endAdornment: getSymbolFromCurrency(watch('currency')) }}
                   />
                 )}
               />
@@ -171,20 +156,12 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
                     id={field.name}
                     label={t(i18n)`VAT`}
                     variant="standard"
-                    type="text"
-                    inputMode="decimal"
+                    type="number"
                     inputProps={{ min: 0, max: 100 }}
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    InputProps={{
-                      endAdornment: '%',
-                    }}
-                    onChange={createLocaleNumberChangeHandler(
-                      i18n.locale,
-                      'undefined',
-                      field.onChange
-                    )}
+                    InputProps={{ endAdornment: '%' }}
                   />
                 )}
               />

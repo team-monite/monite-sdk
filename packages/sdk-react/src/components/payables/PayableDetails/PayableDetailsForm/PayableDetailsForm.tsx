@@ -28,7 +28,6 @@ import {
   DefaultValuesOCRIndividual,
   DefaultValuesOCROrganization,
 } from '@/components/counterparts/types';
-import { createLocaleNumberChangeHandler } from '@/components/payables/utils/numberInput';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -687,8 +686,7 @@ const PayableDetailsFormBase = forwardRef<
                                       {...field}
                                       id={field.name}
                                       variant="standard"
-                                      type="text"
-                                      inputMode="decimal"
+                                      type="number"
                                       inputProps={{ min: 0, step: 0.01 }}
                                       error={Boolean(error)}
                                       sx={{ width: 150 }}
@@ -698,11 +696,6 @@ const PayableDetailsFormBase = forwardRef<
                                             currentCurrency
                                           ),
                                       }}
-                                      onChange={createLocaleNumberChangeHandler(
-                                        i18n.locale,
-                                        'null',
-                                        field.onChange
-                                      )}
                                     />
                                   )}
                                 />

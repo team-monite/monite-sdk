@@ -211,7 +211,9 @@ export const prepareLineItemSubmit = (
     unit_price: formatToMinorUnits(price, currency) ?? 0,
   };
 
-  payload.ledger_account_id = resolvedLedgerId;
+  if (resolvedLedgerId !== undefined) {
+    payload.ledger_account_id = resolvedLedgerId;
+  }
 
   return payload as unknown as LineItemRequest;
 };
