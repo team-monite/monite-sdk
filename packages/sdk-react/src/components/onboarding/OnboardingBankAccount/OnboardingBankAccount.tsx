@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-
+import { OnboardingFormActions } from '../OnboardingFormActions';
+import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
 import { components } from '@/api';
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { MoniteCountry } from '@/ui/Country';
@@ -7,9 +7,7 @@ import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem } from '@mui/material';
-
-import { OnboardingFormActions } from '../OnboardingFormActions';
-import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
+import { useEffect, useMemo } from 'react';
 
 interface OnboardingBankAccountProps {
   allowedCurrencies?: CurrencyEnum[];
@@ -31,7 +29,7 @@ export const OnboardingBankAccount = ({
     onboardingForm: {
       checkValue,
       handleSubmit,
-      methods: { control, getValues, resetField, watch },
+      methods: { control, getValues, resetField, setValue, watch },
     },
   } = useOnboardingBankAccount();
 
@@ -49,11 +47,12 @@ export const OnboardingBankAccount = ({
     }
 
     if (!country && countries.length === 1) {
-      resetField('country', {
-        defaultValue: countries[0],
+      setValue('country', countries[0], {
+        shouldDirty: false,
+        shouldValidate: true,
       });
     }
-  }, [countries, resetField, getValues]);
+  }, [countries, getValues, resetField, setValue]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
@@ -99,8 +98,10 @@ export const OnboardingBankAccount = ({
             name="country"
             control={control}
             disabled={isPending}
-            defaultValue={countries.length === 1 ? countries[0] : allowedCountries?.[0]}
-            allowedCountries={countries.length > 0 ? countries : allowedCountries}
+            defaultValue={countries.length === 1 ? countries[0] : undefined}
+            allowedCountries={
+              countries.length > 0 ? countries : allowedCountries
+            }
             required
           />
         )}
